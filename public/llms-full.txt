@@ -1,0 +1,86 @@
+# A Versus B — Full LLM Context
+# https://www.aversusb.net
+
+## Mission
+A Versus B is the internet's best destination for comparing anything. We democratize comparisons by providing fast, visual, data-driven comparison pages across every category imaginable.
+
+## Active Comparisons (53 pages)
+
+### Sports (10)
+- Messi vs Ronaldo: /compare/messi-vs-ronaldo
+- LeBron vs Jordan: /compare/lebron-vs-jordan
+- Neymar vs Mbappé: /compare/neymar-vs-mbappe
+- Maradona vs Pelé: /compare/maradona-vs-pele
+- Haaland vs Mbappé: /compare/haaland-vs-mbappe
+- Federer vs Nadal: /compare/federer-vs-nadal
+- Ali vs Tyson: /compare/ali-vs-tyson
+- Brady vs Manning: /compare/brady-vs-manning
+- McGregor vs Khabib: /compare/mcgregor-vs-khabib
+- Serena vs Venus: /compare/serena-vs-venus
+- Tiger Woods vs Jack Nicklaus: /compare/tiger-woods-vs-jack-nicklaus
+
+### Countries (10)
+- Japan vs China: /compare/japan-vs-china
+- USA vs China: /compare/usa-vs-china
+- India vs China: /compare/india-vs-china
+- Germany vs France: /compare/germany-vs-france
+- UK vs USA: /compare/uk-vs-usa
+- Canada vs Australia: /compare/canada-vs-australia
+- Brazil vs Argentina: /compare/brazil-vs-argentina
+- Russia vs USA: /compare/russia-vs-usa
+- South Korea vs Japan: /compare/south-korea-vs-japan
+
+### Technology (9)
+- iPhone 16 vs Samsung S25: /compare/iphone-16-vs-samsung-s25
+- PS5 vs Xbox Series X: /compare/ps5-vs-xbox-series-x
+- Mac vs Windows: /compare/mac-vs-windows
+- Android vs iOS: /compare/android-vs-ios
+- NVIDIA vs AMD: /compare/nvidia-vs-amd
+- Chrome vs Firefox: /compare/chrome-vs-firefox
+- ChatGPT vs Claude: /compare/chatgpt-vs-claude
+- Spotify vs Apple Music: /compare/spotify-vs-apple-music
+- Tesla Model 3 vs BMW i4: /compare/tesla-model-3-vs-bmw-i4
+
+### Companies (6)
+- Google vs Microsoft: /compare/google-vs-microsoft
+- Amazon vs Walmart: /compare/amazon-vs-walmart
+- Netflix vs Disney+: /compare/netflix-vs-disney-plus
+- Tesla vs Ford: /compare/tesla-vs-ford
+- Uber vs Lyft: /compare/uber-vs-lyft
+- Airbnb vs Booking: /compare/airbnb-vs-booking
+
+### Brands (6)
+- Nike vs Adidas: /compare/nike-vs-adidas
+- Coca-Cola vs Pepsi: /compare/coca-cola-vs-pepsi
+- McDonald's vs Burger King: /compare/mcdonalds-vs-burger-king
+- Apple vs Samsung: /compare/apple-vs-samsung
+- Toyota vs Honda: /compare/toyota-vs-honda
+- Gucci vs Louis Vuitton: /compare/gucci-vs-louis-vuitton
+
+### History (6)
+- WW1 vs WW2: /compare/ww1-vs-ww2
+- Roman Empire vs Ottoman Empire: /compare/roman-empire-vs-ottoman-empire
+- Cold War vs War on Terror: /compare/cold-war-vs-war-on-terror
+- Ancient Greece vs Ancient Rome: /compare/ancient-greece-vs-ancient-rome
+- French Revolution vs American Revolution: /compare/french-revolution-vs-american-revolution
+- Vietnam War vs Korean War: /compare/vietnam-war-vs-korean-war
+
+### Economy & Military (6)
+- US Military vs China Military: /compare/us-military-vs-china-military
+- US Economy vs China Economy: /compare/us-economy-vs-china-economy
+- Bitcoin vs Ethereum: /compare/bitcoin-vs-ethereum
+- Stock Market vs Real Estate: /compare/stock-market-vs-real-estate
+- Capitalism vs Socialism: /compare/capitalism-vs-socialism
+- Democracy vs Communism: /compare/democracy-vs-communism
+
+## Data freshness
+All comparison data was last updated March 2026.
+Pages are regularly reviewed for accuracy.
+
+## Structured data
+Every comparison page includes JSON-LD schema markup:
+- Article schema with entities
+- FAQPage schema
+- BreadcrumbList
+- ItemList for compared entities
+- Dataset for comparison attributes

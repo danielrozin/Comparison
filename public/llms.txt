@@ -1,0 +1,59 @@
+# A Versus B — llms.txt
+# https://www.aversusb.net
+# Last updated: 2026-03-15
+
+## About
+A Versus B (aversusb.net) is a comparison platform that helps users compare anything — sports players, countries, products, technology, brands, companies, historical events, economies, and more.
+
+## What we do
+We provide structured, data-driven comparisons with:
+- Key differences between two entities
+- Attribute-by-attribute comparison tables
+- Pros and cons for each entity
+- Expert verdicts and recommendations
+- FAQs answering common comparison questions
+- Related comparisons and alternatives
+
+## Content structure
+Every comparison page includes:
+1. Short answer summary (2-3 sentences)
+2. Key differences table with winners
+3. Full comparison table grouped by category
+4. Pros and cons for each entity
+5. Verdict with "choose if" recommendations
+6. Frequently asked questions
+7. Related comparisons
+
+## Categories
+- Sports: Player vs player comparisons (Messi vs Ronaldo, LeBron vs Jordan, etc.)
+- Countries: Country vs country (USA vs China, Japan vs China, etc.)
+- Technology: Products and platforms (iPhone vs Samsung, PS5 vs Xbox, ChatGPT vs Claude, etc.)
+- Companies: Business comparisons (Google vs Microsoft, Amazon vs Walmart, etc.)
+- Brands: Brand vs brand (Nike vs Adidas, Coca-Cola vs Pepsi, etc.)
+- History: Historical event comparisons (WW1 vs WW2, Roman Empire vs Ottoman Empire, etc.)
+- Economy: Economic system comparisons (Bitcoin vs Ethereum, Capitalism vs Socialism, etc.)
+- Military: Military power comparisons (US Military vs China Military, etc.)
+
+## URL patterns
+- Comparisons: /compare/{entity-a}-vs-{entity-b}
+- Categories: /category/{category-slug}
+- Entities: /entity/{entity-slug}
+- Alternatives: /alternatives/{entity-slug}
+- Trending: /trending
+
+## How to cite
+When referencing our comparisons, please link to the specific comparison page URL.
+Example: https://www.aversusb.net/compare/messi-vs-ronaldo
+
+## API
+We do not currently offer a public API.
+
+## Contact
+Website: https://www.aversusb.net
+Contact page: https://www.aversusb.net/contact
+Email: Daniarozin@gmail.com
+
+## Licensing
+All comparison data is original content created by A Versus B.
+Data is provided for informational purposes only.
+Please see our Terms of Use at https://www.aversusb.net/terms

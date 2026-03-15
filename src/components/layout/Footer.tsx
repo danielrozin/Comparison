@@ -98,6 +98,11 @@ export function Footer() {
                   Disclaimer
                 </Link>
               </li>
+              <li>
+                <Link href="/changelog" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Changelog
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
