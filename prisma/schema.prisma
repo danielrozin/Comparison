@@ -1,0 +1,437 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENTITY SYSTEM — The core knowledge graph
+// ============================================================
+
+model EntityType {
+  id          String   @id @default(cuid())
+  slug        String   @unique // "person", "country", "product", "team", etc.
+  name        String   // "Person", "Country", "Product"
+  description String?
+  icon        String?  // emoji or icon name
+  parentId    String?  @map("parent_id")
+  parent      EntityType?  @relation("EntityTypeHierarchy", fields: [parentId], references: [id])
+  children    EntityType[] @relation("EntityTypeHierarchy")
+
+  entities    Entity[]
+  attributes  Attribute[]
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("entity_types")
+}
+
+model Entity {
+  id            String   @id @default(cuid())
+  slug          String   @unique // "lionel-messi", "japan", "iphone-15"
+  name          String   // "Lionel Messi", "Japan", "iPhone 15"
+  shortDesc     String?  @map("short_desc") // one-liner
+  description   String?  // longer description
+  imageUrl      String?  @map("image_url")
+  thumbnailUrl  String?  @map("thumbnail_url")
+  entityTypeId  String   @map("entity_type_id")
+  entityType    EntityType @relation(fields: [entityTypeId], references: [id])
+
+  // Metadata (flexible JSON for type-specific data)
+  metadata      Json?    @default("{}")
+
+  // Relationships
+  attributeValues  AttributeValue[]
+  comparisonsA     ComparisonEntity[] @relation("ComparisonEntityA")
+  faqs             FAQ[]
+  internalLinksFrom InternalLink[] @relation("InternalLinkFrom")
+  internalLinksTo   InternalLink[] @relation("InternalLinkTo")
+
+  // SEO
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+
+  // Status
+  status          String   @default("draft") // draft, published, archived
+  publishedAt     DateTime? @map("published_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([entityTypeId])
+  @@index([status])
+  @@index([slug])
+  @@map("entities")
+}
+
+// ============================================================
+// ATTRIBUTE SYSTEM — Structured comparison dimensions
+// ============================================================
+
+model Attribute {
+  id            String   @id @default(cuid())
+  slug          String   // "height", "population", "price"
+  name          String   // "Height", "Population", "Price"
+  description   String?
+  unit          String?  // "cm", "people", "USD"
+  dataType      String   @default("text") @map("data_type") // text, number, boolean, date, list, json
+  category      String?  // grouping: "Physical", "Economic", "Technical"
+  sortOrder     Int      @default(0) @map("sort_order")
+  entityTypeId  String   @map("entity_type_id")
+  entityType    EntityType @relation(fields: [entityTypeId], references: [id])
+  isComparable  Boolean  @default(true) @map("is_comparable")
+  higherIsBetter Boolean? @map("higher_is_better") // for numeric comparisons
+
+  values        AttributeValue[]
+
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@unique([slug, entityTypeId])
+  @@index([entityTypeId])
+  @@map("attributes")
+}
+
+model AttributeValue {
+  id           String   @id @default(cuid())
+  entityId     String   @map("entity_id")
+  entity       Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  attributeId  String   @map("attribute_id")
+  attribute    Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  valueText    String?  @map("value_text")
+  valueNumber  Float?   @map("value_number")
+  valueBoolean Boolean? @map("value_boolean")
+  valueDate    DateTime? @map("value_date")
+  valueJson    Json?    @map("value_json")
+
+  source       String?  // where the data came from
+  confidence   Float?   @default(1.0) // 0-1 confidence score
+  asOfDate     DateTime? @map("as_of_date") // when this value was accurate
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([entityId, attributeId])
+  @@index([entityId])
+  @@index([attributeId])
+  @@map("attribute_values")
+}
+
+// ============================================================
+// COMPARISON SYSTEM — The core content pages
+// ============================================================
+
+model Comparison {
+  id            String   @id @default(cuid())
+  slug          String   @unique // "messi-vs-ronaldo"
+  title         String   // "Messi vs Ronaldo"
+  shortAnswer   String?  @map("short_answer") @db.Text // answer-first summary
+  keyDifferences Json?   @map("key_differences") // structured differences
+  verdict       String?  @db.Text // conclusion/verdict
+  content       Json?    // full structured content blocks
+  category      String?  // "soccer", "countries", "phones"
+
+  // Entities in this comparison
+  entities      ComparisonEntity[]
+
+  // SEO
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  schemaMarkup    Json?    @map("schema_markup")
+
+  // Internal linking
+  relatedComparisonIds String[] @map("related_comparison_ids")
+
+  // Status & quality
+  status          String   @default("draft") // draft, review, published, archived
+  contentScore    Float?   @map("content_score") // quality score 0-100
+  isAutoGenerated Boolean  @default(false) @map("is_auto_generated")
+  isHumanReviewed Boolean  @default(false) @map("is_human_reviewed")
+  reviewedBy      String?  @map("reviewed_by")
+  reviewedAt      DateTime? @map("reviewed_at")
+
+  // Engagement
+  viewCount       Int      @default(0) @map("view_count")
+  searchImpressions Int    @default(0) @map("search_impressions")
+
+  // Freshness
+  publishedAt     DateTime? @map("published_at")
+  lastRefreshedAt DateTime? @map("last_refreshed_at")
+  nextRefreshAt   DateTime? @map("next_refresh_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  // Related
+  faqs            FAQ[]
+  changeLogs      ChangeLog[]
+
+  @@index([status])
+  @@index([category])
+  @@index([slug])
+  @@index([viewCount])
+  @@map("comparisons")
+}
+
+model ComparisonEntity {
+  id           String   @id @default(cuid())
+  comparisonId String   @map("comparison_id")
+  comparison   Comparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  entityId     String   @map("entity_id")
+  entity       Entity   @relation("ComparisonEntityA", fields: [entityId], references: [id])
+  position     Int      @default(0) // order in comparison (0 = left, 1 = right)
+  pros         String[] // pros for this entity in this comparison
+  cons         String[] // cons for this entity
+  bestFor      String?  @map("best_for") // "Best for competitive players"
+
+  @@unique([comparisonId, entityId])
+  @@index([comparisonId])
+  @@index([entityId])
+  @@map("comparison_entities")
+}
+
+// ============================================================
+// FAQ SYSTEM
+// ============================================================
+
+model FAQ {
+  id           String   @id @default(cuid())
+  question     String
+  answer       String   @db.Text
+  entityId     String?  @map("entity_id")
+  entity       Entity?  @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  comparisonId String?  @map("comparison_id")
+  comparison   Comparison? @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+  sortOrder    Int      @default(0) @map("sort_order")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([entityId])
+  @@index([comparisonId])
+  @@map("faqs")
+}
+
+// ============================================================
+// KEYWORD INTELLIGENCE SYSTEM
+// ============================================================
+
+model KeywordOpportunity {
+  id               String   @id @default(cuid())
+  keyword          String
+  searchVolume     Int?     @map("search_volume")
+  cpc              Float?
+  competition      Float?   // 0-1
+  difficulty       Float?   // 0-100
+  intent           String?  // informational, commercial, navigational
+  category         String?
+  entityTypeSlug   String?  @map("entity_type_slug")
+
+  // Parsed entities from keyword
+  entityA          String?  @map("entity_a")
+  entityB          String?  @map("entity_b")
+  queryPattern     String?  @map("query_pattern") // "vs", "alternative", "compare", "difference"
+
+  // Scoring
+  opportunityScore Float?   @map("opportunity_score") // composite score
+  hasExistingPage  Boolean  @default(false) @map("has_existing_page")
+  existingPageId   String?  @map("existing_page_id")
+
+  // Source
+  source           String?  // "dataforseo", "manual", "competitor_scan"
+  sourceData       Json?    @map("source_data")
+
+  // Cluster
+  clusterId        String?  @map("cluster_id")
+  cluster          KeywordCluster? @relation(fields: [clusterId], references: [id])
+
+  // Status
+  status           String   @default("discovered") // discovered, queued, building, published, rejected
+  processedAt      DateTime? @map("processed_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@unique([keyword])
+  @@index([status])
+  @@index([opportunityScore])
+  @@index([category])
+  @@index([queryPattern])
+  @@map("keyword_opportunities")
+}
+
+model KeywordCluster {
+  id          String   @id @default(cuid())
+  name        String
+  category    String?
+  pillarKeyword String? @map("pillar_keyword")
+  keywords    KeywordOpportunity[]
+  totalVolume Int?     @map("total_volume")
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("keyword_clusters")
+}
+
+// ============================================================
+// COMPETITOR INTELLIGENCE
+// ============================================================
+
+model CompetitorDomain {
+  id          String   @id @default(cuid())
+  domain      String   @unique
+  name        String?
+  description String?
+  categories  String[] // what types of comparisons they cover
+  authority   Float?   // domain authority score
+  pages       CompetitorPage[]
+
+  lastScannedAt DateTime? @map("last_scanned_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("competitor_domains")
+}
+
+model CompetitorPage {
+  id           String   @id @default(cuid())
+  url          String   @unique
+  domainId     String   @map("domain_id")
+  domain       CompetitorDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  title        String?
+  h1           String?
+  category     String?
+  entityTypes  String[] @map("entity_types")
+  urlPattern   String?  @map("url_pattern")
+  titlePattern String?  @map("title_pattern")
+  hasTable     Boolean  @default(false) @map("has_table")
+  hasSchema    Boolean  @default(false) @map("has_schema")
+  hasFaq       Boolean  @default(false) @map("has_faq")
+  contentBlocks Json?   @map("content_blocks")
+  analysis     Json?
+
+  lastScannedAt DateTime? @map("last_scanned_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@index([domainId])
+  @@map("competitor_pages")
+}
+
+// ============================================================
+// CONTENT OPERATIONS
+// ============================================================
+
+model ContentBrief {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String?
+  category       String?
+  entityTypeSlug String?  @map("entity_type_slug")
+  entityA        String?  @map("entity_a")
+  entityB        String?  @map("entity_b")
+  keywordIds     String[] @map("keyword_ids")
+  brief          Json?    // structured brief content
+  templateId     String?  @map("template_id")
+
+  // Status
+  status         String   @default("pending") // pending, approved, generating, published, rejected
+  priority       Int      @default(0)
+  assignedTo     String?  @map("assigned_to")
+
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([priority])
+  @@map("content_briefs")
+}
+
+model RefreshJob {
+  id           String   @id @default(cuid())
+  jobType      String   @map("job_type") // "keyword_discovery", "competitor_scan", "page_refresh", "link_build"
+  status       String   @default("pending") // pending, running, completed, failed
+  config       Json?
+  result       Json?
+  error        String?
+  startedAt    DateTime? @map("started_at")
+  completedAt  DateTime? @map("completed_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([status])
+  @@index([jobType])
+  @@map("refresh_jobs")
+}
+
+// ============================================================
+// INTERNAL LINKING
+// ============================================================
+
+model InternalLink {
+  id           String   @id @default(cuid())
+  fromEntityId String?  @map("from_entity_id")
+  fromEntity   Entity?  @relation("InternalLinkFrom", fields: [fromEntityId], references: [id])
+  toEntityId   String?  @map("to_entity_id")
+  toEntity     Entity?  @relation("InternalLinkTo", fields: [toEntityId], references: [id])
+  fromPath     String   @map("from_path")
+  toPath       String   @map("to_path")
+  anchorText   String   @map("anchor_text")
+  linkType     String   @map("link_type") // "related", "alternative", "category", "trending"
+  position     String?  // "sidebar", "footer", "inline", "module"
+  score        Float?   @default(1.0) // relevance score
+
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([fromPath])
+  @@index([toPath])
+  @@index([linkType])
+  @@map("internal_links")
+}
+
+// ============================================================
+// AUDIT & CHANGE TRACKING
+// ============================================================
+
+model ChangeLog {
+  id           String   @id @default(cuid())
+  entityType   String   @map("entity_type") // "comparison", "entity", "keyword"
+  entityId     String   @map("entity_id")
+  action       String   // "created", "updated", "published", "archived"
+  changes      Json?
+  performedBy  String?  @map("performed_by")
+  comparisonId String?  @map("comparison_id")
+  comparison   Comparison? @relation(fields: [comparisonId], references: [id])
+
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("change_logs")
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  icon        String?
+  parentId    String?  @map("parent_id")
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  sortOrder   Int      @default(0) @map("sort_order")
+
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
