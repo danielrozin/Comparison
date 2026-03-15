@@ -5,26 +5,16 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:worker": "opennextjs-cloudflare",
-    "preview": "wrangler dev",
-    "deploy": "wrangler deploy",
     "start": "next start",
-    "lint": "next lint",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "lint": "next lint"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
-    "@opennextjs/cloudflare": "^1.17.1",
     "@prisma/client": "^5.22.0",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "bull": "^4.16.5",
-    "ioredis": "^5.10.0",
     "next": "15.5.2",
     "next-sitemap": "^4.2.3",
     "postcss": "^8.5.8",
@@ -36,7 +26,6 @@
   },
   "devDependencies": {
     "eslint": "^10.0.3",
-    "eslint-config-next": "15.5.2",
-    "wrangler": "^4.73.0"
+    "eslint-config-next": "15.5.2"
   }
 }
