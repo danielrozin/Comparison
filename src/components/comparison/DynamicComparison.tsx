@@ -31,7 +31,6 @@ export function DynamicComparison({ slug }: { slug: string }) {
     setError(null);
 
     try {
-      // Trigger generation
       const res = await fetch("/api/comparisons/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,45 +39,18 @@ export function DynamicComparison({ slug }: { slug: string }) {
 
       const data = await res.json();
 
-      if (data.status === "ready") {
+      if (data.status === "ready" && data.comparison) {
         setComparison(data.comparison);
         setStatus("ready");
-        return;
+      } else {
+        setError(data.error || "Generation failed. Please try again.");
+        setStatus("error");
       }
-
-      // Poll for completion
-      const pollInterval = setInterval(async () => {
-        try {
-          const pollRes = await fetch(`/api/comparisons/generate?slug=${slug}`);
-          const pollData = await pollRes.json();
-
-          if (pollData.status === "ready") {
-            setComparison(pollData.comparison);
-            setStatus("ready");
-            clearInterval(pollInterval);
-          } else if (pollData.status === "error") {
-            setError(pollData.error || "Generation failed");
-            setStatus("error");
-            clearInterval(pollInterval);
-          }
-        } catch {
-          // Keep polling
-        }
-      }, 2000);
-
-      // Timeout after 60 seconds
-      setTimeout(() => {
-        clearInterval(pollInterval);
-        if (status === "generating") {
-          setError("Generation timed out. Please try again.");
-          setStatus("error");
-        }
-      }, 60000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to start generation");
+      setError(err instanceof Error ? err.message : "Failed to generate comparison");
       setStatus("error");
     }
-  }, [slug, status]);
+  }, [slug]);
 
   // Auto-start generation on mount
   useEffect(() => {
