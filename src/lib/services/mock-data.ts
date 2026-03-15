@@ -4,8 +4,12 @@
  */
 
 import type { ComparisonPageData, TrendingComparison, RelatedComparison } from "@/types";
+import { getExtraComparisons, getExtraTrendingData } from "./mock-data-extra";
 
-const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
+// Merge original 3 comparisons with 50 extra
+const EXTRA = getExtraComparisons();
+
+const MOCK_COMPARISONS_BASE: Record<string, ComparisonPageData> = {
   "messi-vs-ronaldo": {
     id: "comp-1",
     slug: "messi-vs-ronaldo",
@@ -391,29 +395,30 @@ const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
   },
 };
 
-const MOCK_TRENDING: TrendingComparison[] = [
-  { slug: "messi-vs-ronaldo", title: "Messi vs Ronaldo", category: "Sports", viewCount: 1542300, entityImages: [] },
-  { slug: "iphone-16-vs-samsung-s25", title: "iPhone 16 vs Samsung S25", category: "Technology", viewCount: 2105000, entityImages: [] },
-  { slug: "japan-vs-china", title: "Japan vs China", category: "Countries", viewCount: 892100, entityImages: [] },
-  { slug: "usa-vs-china", title: "USA vs China", category: "Countries", viewCount: 1203000, entityImages: [] },
-  { slug: "lebron-vs-jordan", title: "LeBron vs Jordan", category: "Sports", viewCount: 983400, entityImages: [] },
-  { slug: "tesla-vs-ford", title: "Tesla vs Ford", category: "Companies", viewCount: 456200, entityImages: [] },
-  { slug: "ww1-vs-ww2", title: "WW1 vs WW2", category: "History", viewCount: 678900, entityImages: [] },
-  { slug: "nike-vs-adidas", title: "Nike vs Adidas", category: "Brands", viewCount: 534100, entityImages: [] },
-  { slug: "ps5-vs-xbox-series-x", title: "PS5 vs Xbox Series X", category: "Technology", viewCount: 789300, entityImages: [] },
-  { slug: "netflix-vs-disney-plus", title: "Netflix vs Disney+", category: "Companies", viewCount: 421800, entityImages: [] },
+// Merge base + extra comparisons
+const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
+  ...MOCK_COMPARISONS_BASE,
+  ...EXTRA,
+};
+
+// Build trending from all comparisons, sorted by views
+const ALL_TRENDING_DATA = [
+  { slug: "iphone-16-vs-samsung-s25", title: "iPhone 16 vs Samsung S25", category: "Technology", viewCount: 2105000 },
+  { slug: "messi-vs-ronaldo", title: "Messi vs Ronaldo", category: "Sports", viewCount: 1542300 },
+  { slug: "japan-vs-china", title: "Japan vs China", category: "Countries", viewCount: 892100 },
+  ...getExtraTrendingData(),
 ];
 
-const MOCK_RELATED: RelatedComparison[] = [
-  { slug: "neymar-vs-mbappe", title: "Neymar vs Mbappé", category: "sports" },
-  { slug: "maradona-vs-pele", title: "Maradona vs Pelé", category: "sports" },
-  { slug: "haaland-vs-mbappe", title: "Haaland vs Mbappé", category: "sports" },
-  { slug: "lebron-vs-jordan", title: "LeBron vs Jordan", category: "sports" },
-  { slug: "usa-vs-china", title: "USA vs China", category: "countries" },
-  { slug: "india-vs-china", title: "India vs China", category: "countries" },
-  { slug: "ps5-vs-xbox-series-x", title: "PS5 vs Xbox Series X", category: "technology" },
-  { slug: "tesla-vs-ford", title: "Tesla vs Ford", category: "companies" },
-];
+const MOCK_TRENDING: TrendingComparison[] = ALL_TRENDING_DATA
+  .sort((a, b) => b.viewCount - a.viewCount)
+  .slice(0, 20)
+  .map((t) => ({ ...t, entityImages: [] }));
+
+// Build related from all comparisons (diverse selection)
+const MOCK_RELATED: RelatedComparison[] = Object.entries(MOCK_COMPARISONS)
+  .map(([slug, comp]) => ({ slug, title: comp.title, category: comp.category }))
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 15);
 
 export function getMockComparison(slug: string): ComparisonPageData | null {
   return MOCK_COMPARISONS[slug] || null;
