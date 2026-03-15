@@ -75,8 +75,13 @@ export async function getComparisonsByCategory(
   _offset: number = 0
 ): Promise<{ comparisons: RelatedComparison[]; total: number }> {
   const all = getMockComparisonsByCategory(category);
+  const comparisons = all.map((comp) => ({
+    slug: comp.slug,
+    title: comp.title,
+    category: comp.category,
+  }));
   return {
-    comparisons: all.slice(0, limit),
-    total: all.length,
+    comparisons: comparisons.slice(0, limit),
+    total: comparisons.length,
   };
 }
