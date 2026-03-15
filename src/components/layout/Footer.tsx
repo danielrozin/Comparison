@@ -93,6 +93,11 @@ export function Footer() {
                   Terms of Use
                 </Link>
               </li>
+              <li>
+                <Link href="/disclaimer" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Disclaimer
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
