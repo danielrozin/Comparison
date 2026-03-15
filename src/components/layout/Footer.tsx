@@ -103,6 +103,11 @@ export function Footer() {
                   Changelog
                 </Link>
               </li>
+              <li>
+                <a href="/sitemap.xml" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Sitemap
+                </a>
+              </li>
             </ul>
           </div>
         </div>
