@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/utils/constants";

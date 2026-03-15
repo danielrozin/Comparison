@@ -11,7 +11,7 @@ function getAuthHeader(): string {
   if (!login || !password) {
     throw new Error("DataForSEO credentials not configured. Set DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD.");
   }
-  return "Basic " + Buffer.from(`${login}:${password}`).toString("base64");
+  return "Basic " + btoa(`${login}:${password}`);
 }
 
 async function apiRequest<T>(endpoint: string, body?: unknown): Promise<T> {
