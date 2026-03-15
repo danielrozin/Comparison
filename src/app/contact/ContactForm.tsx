@@ -31,9 +31,21 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
-    // Simulate submission — wire to your backend or form service as needed
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    setStatus("success");
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: `contact-${form.subject}`,
+          message: `Name: ${form.name}\nSubject: ${form.subject}\n\n${form.message}`,
+          email: form.email,
+          url: window.location.href,
+        }),
+      });
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
   };
 
   if (status === "success") {

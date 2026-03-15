@@ -23,14 +23,15 @@ export function ComparisonTable({
         Full Comparison
       </h2>
 
+      {/* Mobile: card layout / Desktop: table layout */}
       <div className="bg-white border border-border rounded-xl overflow-hidden">
-        {/* Sticky header */}
-        <div className="grid grid-cols-3 bg-surface-dark text-white sticky top-16 z-10">
-          <div className="px-4 py-3 text-sm font-semibold">Attribute</div>
-          <div className="px-4 py-3 text-sm font-semibold text-center">
+        {/* Table header — sticky */}
+        <div className="grid grid-cols-[1fr_1fr_1fr] sm:grid-cols-3 bg-surface-dark text-white sticky top-16 z-10">
+          <div className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold">Attribute</div>
+          <div className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-center truncate">
             {entityA.name}
           </div>
-          <div className="px-4 py-3 text-sm font-semibold text-center">
+          <div className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-center truncate">
             {entityB.name}
           </div>
         </div>
@@ -38,35 +39,35 @@ export function ComparisonTable({
         {Array.from(categories.entries()).map(([categoryName, attrs]) => (
           <div key={categoryName}>
             {/* Category header */}
-            <div className="bg-surface-alt px-4 py-2 border-b border-border">
-              <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+            <div className="bg-surface-alt px-3 sm:px-4 py-2 border-b border-border">
+              <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
                 {categoryName}
               </span>
             </div>
 
             {/* Attribute rows */}
             {attrs.map((attr, i) => {
-              const valA = attr.values.find((v) => v.entityId === entityA.id);
-              const valB = attr.values.find((v) => v.entityId === entityB.id);
+              const valA = attr.values[0];
+              const valB = attr.values[1];
 
               return (
                 <div
                   key={attr.id}
-                  className={`grid grid-cols-3 ${
+                  className={`grid grid-cols-[1fr_1fr_1fr] sm:grid-cols-3 ${
                     i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
                   } hover:bg-surface-alt/50 transition-colors`}
                 >
                   {/* Attribute name */}
-                  <div className="px-4 py-3 text-sm font-medium text-text">
+                  <div className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-text break-words">
                     {attr.name}
                     {attr.unit && (
-                      <span className="ml-1 text-xs text-text-secondary">({attr.unit})</span>
+                      <span className="ml-1 text-[10px] sm:text-xs text-text-secondary">({attr.unit})</span>
                     )}
                   </div>
 
                   {/* Entity A value */}
                   <div
-                    className={`px-4 py-3 text-sm text-center font-medium ${
+                    className={`px-2 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-center font-medium break-words ${
                       valA?.winner === true
                         ? "text-win bg-green-50/50"
                         : valA?.winner === false
@@ -76,13 +77,13 @@ export function ComparisonTable({
                   >
                     {valA?.valueText || "—"}
                     {valA?.winner === true && (
-                      <span className="ml-1 text-xs text-win font-bold">W</span>
+                      <span className="ml-0.5 sm:ml-1 text-[10px] sm:text-xs text-win font-bold">W</span>
                     )}
                   </div>
 
                   {/* Entity B value */}
                   <div
-                    className={`px-4 py-3 text-sm text-center font-medium ${
+                    className={`px-2 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-center font-medium break-words ${
                       valB?.winner === true
                         ? "text-win bg-green-50/50"
                         : valB?.winner === false
@@ -92,7 +93,7 @@ export function ComparisonTable({
                   >
                     {valB?.valueText || "—"}
                     {valB?.winner === true && (
-                      <span className="ml-1 text-xs text-win font-bold">W</span>
+                      <span className="ml-0.5 sm:ml-1 text-[10px] sm:text-xs text-win font-bold">W</span>
                     )}
                   </div>
                 </div>

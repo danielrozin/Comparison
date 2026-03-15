@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// In-memory store (in production, use database)
-const feedbackStore: {
-  id: string;
-  type: string;
-  message: string;
-  email: string | null;
-  url: string;
-  timestamp: string;
-}[] = [];
+import { sendNotificationEmail } from "@/lib/services/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,29 +10,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
-    const feedback = {
-      id: `fb-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    // Send email notification to Daniarozin@gmail.com
+    await sendNotificationEmail({
+      subject: `New ${type || "feedback"}: ${message.trim().slice(0, 50)}`,
       type: type || "general",
       message: message.trim(),
-      email: email?.trim() || null,
-      url: url || "",
-      timestamp: new Date().toISOString(),
-    };
+      senderEmail: email?.trim(),
+      pageUrl: url,
+    });
 
-    feedbackStore.push(feedback);
-
-    // TODO: Store in database, send notification email
-
-    return NextResponse.json({ success: true, id: feedback.id });
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Failed to submit feedback" }, { status: 500 });
   }
 }
 
 export async function GET() {
-  // Admin-only endpoint
-  return NextResponse.json({
-    count: feedbackStore.length,
-    feedback: feedbackStore.slice(-50).reverse(),
-  });
+  return NextResponse.json({ status: "ok" });
 }

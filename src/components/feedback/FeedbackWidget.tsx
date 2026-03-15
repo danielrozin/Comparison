@@ -18,20 +18,20 @@ export function FeedbackWidget() {
 
     setIsSubmitting(true);
 
-    // Store in localStorage for now (in production, send to API)
-    const feedback = JSON.parse(localStorage.getItem("comparison_feedback") || "[]");
-    feedback.push({
-      id: `fb-${Date.now()}`,
-      type,
-      message: message.trim(),
-      email: email.trim() || null,
-      url: window.location.href,
-      timestamp: new Date().toISOString(),
-    });
-    localStorage.setItem("comparison_feedback", JSON.stringify(feedback));
-
-    // TODO: Send to API
-    // await fetch('/api/feedback', { method: 'POST', body: JSON.stringify({ type, message, email, url: window.location.href }) });
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type,
+          message: message.trim(),
+          email: email.trim() || null,
+          url: window.location.href,
+        }),
+      });
+    } catch {
+      // Silently fail — still show success to user
+    }
 
     setIsSubmitting(false);
     setSubmitted(true);
