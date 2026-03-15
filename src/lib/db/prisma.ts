@@ -1,15 +1,22 @@
-import { PrismaClient } from "@prisma/client";
+/**
+ * Prisma Client — lazy initialization
+ * Currently unused (mock data), will be needed when DB is connected
+ */
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+let prismaInstance: unknown = null;
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
+export function getPrisma() {
+  if (!prismaInstance) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { PrismaClient } = require("@prisma/client");
+      prismaInstance = new PrismaClient();
+    } catch {
+      console.warn("Prisma Client not available — using mock data");
+      prismaInstance = null;
+    }
+  }
+  return prismaInstance;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
+export default getPrisma;
