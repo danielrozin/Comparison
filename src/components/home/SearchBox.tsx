@@ -13,12 +13,21 @@ export function SearchBox() {
       e.preventDefault();
       if (!query.trim()) return;
 
-      // Try to parse as "A vs B"
-      const vsMatch = query.match(/^(.+?)\s+(?:vs\.?|versus|compared to|or)\s+(.+)$/i);
-      if (vsMatch) {
-        const slug = `${slugify(vsMatch[1].trim())}-vs-${slugify(vsMatch[2].trim())}`;
-        router.push(`/compare/${slug}`);
-        return;
+      // Try to parse comparison patterns
+      const patterns = [
+        /^(.+?)\s+(?:vs\.?|versus|compared to|or)\s+(.+)$/i,
+        /^compare\s+(.+?)\s+(?:to|and|with|vs)\s+(.+)$/i,
+        /^difference\s+between\s+(.+?)\s+and\s+(.+)$/i,
+        /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
+      ];
+
+      for (const pattern of patterns) {
+        const match = query.match(pattern);
+        if (match) {
+          const slug = `${slugify(match[1].trim())}-vs-${slugify(match[2].trim())}`;
+          router.push(`/compare/${slug}`);
+          return;
+        }
       }
 
       // Otherwise, go to search

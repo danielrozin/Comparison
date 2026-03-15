@@ -1,0 +1,152 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { slugify } from "@/lib/utils/slugify";
+import { Suspense } from "react";
+
+function SearchContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const query = searchParams.get("q") || "";
+  const [searchQuery, setSearchQuery] = useState(query);
+  const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setSearchQuery(query);
+    if (query) {
+      setLoading(true);
+      fetch(`/api/search?q=${encodeURIComponent(query)}`)
+        .then((r) => r.json())
+        .then((data) => {
+          setResults(data.results || []);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    }
+  }, [query]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    // Check if it's a comparison query
+    const patterns = [
+      /^(.+?)\s+(?:vs\.?|versus|compared to|or)\s+(.+)$/i,
+      /^compare\s+(.+?)\s+(?:to|and|with|vs)\s+(.+)$/i,
+      /^difference\s+between\s+(.+?)\s+and\s+(.+)$/i,
+    ];
+
+    for (const pattern of patterns) {
+      const match = searchQuery.match(pattern);
+      if (match) {
+        const slug = `${slugify(match[1].trim())}-vs-${slugify(match[2].trim())}`;
+        router.push(`/compare/${slug}`);
+        return;
+      }
+    }
+
+    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-3xl font-display font-bold text-text mb-6">Search Comparisons</h1>
+
+      {/* Search form */}
+      <form onSubmit={handleSearch} className="mb-8">
+        <div className="relative">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder='Search comparisons or type "A vs B" to create one...'
+            className="w-full pl-12 pr-28 py-4 border border-border rounded-xl text-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
+          />
+          <button
+            type="submit"
+            className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+
+      {/* Results */}
+      {loading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      ) : query && results.length > 0 ? (
+        <div className="space-y-3">
+          <p className="text-sm text-text-secondary mb-4">
+            {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
+          </p>
+          {results.map((result) => {
+            const parts = result.title.split(/\s+vs\.?\s+/i);
+            return (
+              <Link
+                key={result.slug}
+                href={`/compare/${result.slug}`}
+                className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
+              >
+                <div className="flex -space-x-2">
+                  <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
+                    {(parts[0] || "A").charAt(0)}
+                  </div>
+                  <div className="w-10 h-10 bg-accent-50 rounded-full flex items-center justify-center text-sm font-bold text-accent-600 ring-2 ring-white">
+                    {(parts[1] || "B").charAt(0)}
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-text group-hover:text-primary-700 transition-colors">
+                    {result.title}
+                  </p>
+                  <p className="text-xs text-text-secondary capitalize">{result.category}</p>
+                </div>
+                <svg className="w-5 h-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            );
+          })}
+        </div>
+      ) : query ? (
+        <div className="text-center py-12 bg-surface-alt rounded-xl">
+          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <p className="text-text font-semibold mb-2">No results found for &ldquo;{query}&rdquo;</p>
+          <p className="text-text-secondary text-sm mb-4">
+            Try typing a comparison like &ldquo;Tesla vs Ford&rdquo; — we&apos;ll generate it for you instantly!
+          </p>
+          <Link
+            href={`/compare/${slugify(query)}-vs-`}
+            className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            Request this comparison
+          </Link>
+        </div>
+      ) : (
+        <div className="text-center py-12 text-text-secondary">
+          <p>Type a search term or comparison to get started.</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="max-w-4xl mx-auto px-4 py-12">Loading...</div>}>
+      <SearchContent />
+    </Suspense>
+  );
+}

@@ -430,3 +430,13 @@ export function getMockRelated(_comparisonId: string, limit: number): RelatedCom
 export function getAllMockSlugs(): string[] {
   return Object.keys(MOCK_COMPARISONS);
 }
+
+export function getMockComparisonsByCategory(category: string): RelatedComparison[] {
+  const results: RelatedComparison[] = [];
+  for (const [slug, comp] of Object.entries(MOCK_COMPARISONS)) {
+    if (!category || comp.category === category) {
+      results.push({ slug, title: comp.title, category: comp.category });
+    }
+  }
+  return results;
+}
