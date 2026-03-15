@@ -1,5 +1,5 @@
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "Comparison";
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
 
 export const COMPARISON_PATTERNS = [
   "vs",
