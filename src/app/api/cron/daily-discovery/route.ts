@@ -1,4 +1,3 @@
-export const runtime = "edge";
 import { NextRequest, NextResponse } from "next/server";
 import { discoverByCategory, discoverFromCompetitors, CATEGORY_SEEDS } from "@/lib/dataforseo/keyword-discovery";
 
