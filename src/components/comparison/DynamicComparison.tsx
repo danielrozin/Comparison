@@ -30,12 +30,27 @@ export function DynamicComparison({ slug }: { slug: string }) {
     setStatus("generating");
     setError(null);
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+
     try {
       const res = await fetch("/api/comparisons/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slug }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        const text = await res.text();
+        let errorMsg = "Generation failed";
+        try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
+        setError(errorMsg);
+        setStatus("error");
+        return;
+      }
 
       const data = await res.json();
 
@@ -47,7 +62,12 @@ export function DynamicComparison({ slug }: { slug: string }) {
         setStatus("error");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to generate comparison");
+      clearTimeout(timeout);
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setError("Request timed out. The server may be busy. Please try again.");
+      } else {
+        setError(err instanceof Error ? err.message : "Failed to generate comparison");
+      }
       setStatus("error");
     }
   }, [slug]);
