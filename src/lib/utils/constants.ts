@@ -31,12 +31,16 @@ export const CATEGORIES = [
   { slug: "countries", name: "Countries", icon: "🌍" },
   { slug: "technology", name: "Technology", icon: "💻" },
   { slug: "products", name: "Products", icon: "📦" },
-  { slug: "celebrities", name: "Celebrities", icon: "⭐" },
+  { slug: "health", name: "Health & Wellness", icon: "💊" },
+  { slug: "finance", name: "Finance", icon: "💰" },
+  { slug: "education", name: "Education", icon: "🎓" },
+  { slug: "entertainment", name: "Entertainment", icon: "🎬" },
   { slug: "history", name: "History", icon: "📜" },
   { slug: "military", name: "Military", icon: "🎖️" },
   { slug: "economy", name: "Economy", icon: "📈" },
   { slug: "companies", name: "Companies", icon: "🏢" },
   { slug: "brands", name: "Brands", icon: "🏷️" },
+  { slug: "celebrities", name: "Celebrities", icon: "⭐" },
 ] as const;
 
 export const PAGE_SIZES = {
