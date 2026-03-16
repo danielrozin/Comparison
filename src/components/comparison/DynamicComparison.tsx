@@ -57,6 +57,20 @@ export function DynamicComparison({ slug }: { slug: string }) {
       if (data.status === "ready" && data.comparison) {
         setComparison(data.comparison);
         setStatus("ready");
+
+        // Log to recent searches
+        const parts = slug.split("-vs-");
+        fetch("/api/recent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug,
+            title: data.comparison.title,
+            entityA: parts[0]?.replace(/-/g, " ") || "",
+            entityB: parts[1]?.replace(/-/g, " ") || "",
+            generated: true,
+          }),
+        }).catch(() => {});
       } else {
         setError(data.error || "Generation failed. Please try again.");
         setStatus("error");

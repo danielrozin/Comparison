@@ -4,6 +4,7 @@ import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
+import { RecentSearches } from "@/components/home/RecentSearches";
 
 export default async function HomePage() {
   const trending = await getTrendingComparisons(10);
@@ -61,6 +62,9 @@ export default async function HomePage() {
           </svg>
         </div>
       </section>
+
+      {/* Recent Searches */}
+      <RecentSearches />
 
       {/* Trending Comparisons */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
