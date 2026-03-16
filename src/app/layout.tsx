@@ -22,11 +22,18 @@ export const metadata: Metadata = {
     title: `${SITE_NAME} — Compare Anything`,
     description:
       "Compare sports players, countries, products, technology, and anything else — fast, visual, and data-driven.",
+    images: [{
+      url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
+      width: 1200,
+      height: 630,
+      alt: "A Versus B — Compare Anything",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Compare Anything`,
     description: "The internet's best destination for comparisons.",
+    images: [`${SITE_URL}/api/og?title=Compare+Anything&type=home`],
   },
   robots: {
     index: true,

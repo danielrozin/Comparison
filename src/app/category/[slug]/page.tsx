@@ -18,10 +18,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const category = CATEGORIES.find((c) => c.slug === slug);
   if (!category) return { title: "Category Not Found" };
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(category.name + " Comparisons")}&cat=${encodeURIComponent(category.name)}&type=category`;
   return {
     title: `${category.name} Comparisons`,
     description: `Browse the best ${category.name.toLowerCase()} comparisons. Compare players, teams, countries, products, and more.`,
     alternates: { canonical: `${SITE_URL}/category/${slug}` },
+    openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+    twitter: { card: "summary_large_image", images: [ogImage] },
   };
 }
 
