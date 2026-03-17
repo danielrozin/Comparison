@@ -364,7 +364,7 @@ const DEFS: CompactDef[] = [
       { name: "Price", cat: "Value", unit: "USD", a: "$499", an: 499, b: "$499", bn: 499 },
     ],
     faqs: [["Which is more powerful?", "The Xbox Series X has more raw GPU power (12 vs 10.28 TFLOPS), but the PS5's faster SSD provides better loading times."]],
-    related: [["iphone-16-vs-samsung-s25", "iPhone 16 vs Samsung S25", "technology"], ["mac-vs-windows", "Mac vs Windows", "technology"]],
+    related: [["iphone-17-vs-samsung-s26", "iPhone 17 vs Samsung S26", "technology"], ["mac-vs-windows", "Mac vs Windows", "technology"]],
     views: 789300,
   },
   {
@@ -395,7 +395,7 @@ const DEFS: CompactDef[] = [
       { name: "Average Update Support", cat: "Software", unit: "years", a: "2-3", an: 2.5, b: "5-6", bn: 5.5, w: "b" },
     ],
     faqs: [["Which is more secure?", "iOS is generally considered more secure due to Apple's walled garden approach, mandatory app review, and longer update support."]],
-    related: [["mac-vs-windows", "Mac vs Windows", "technology"], ["iphone-16-vs-samsung-s25", "iPhone 16 vs Samsung S25", "technology"]],
+    related: [["mac-vs-windows", "Mac vs Windows", "technology"], ["iphone-17-vs-samsung-s26", "iPhone 17 vs Samsung S26", "technology"]],
     views: 534200,
   },
   {
@@ -470,7 +470,7 @@ const DEFS: CompactDef[] = [
       { name: "Starting Price", cat: "Value", unit: "USD", a: "$38,990", an: 38990, b: "$52,200", bn: 52200, w: "a" },
     ],
     faqs: [["Which has better range?", "The Tesla Model 3 Long Range has 358 miles of EPA-rated range, compared to 301 miles for the BMW i4 eDrive40."]],
-    related: [["iphone-16-vs-samsung-s25", "iPhone 16 vs Samsung S25", "technology"], ["tesla-vs-ford", "Tesla vs Ford", "companies"]],
+    related: [["iphone-17-vs-samsung-s26", "iPhone 17 vs Samsung S26", "technology"], ["tesla-vs-ford", "Tesla vs Ford", "companies"]],
     views: 234500,
   },
   // ===== COMPANIES (6) =====
@@ -621,7 +621,7 @@ const DEFS: CompactDef[] = [
       { name: "Brand Value", cat: "Business", a: "#1 ($502B)", b: "#5 ($100B)" },
     ],
     faqs: [["Which sells more phones?", "Samsung sells slightly more phones globally (~21% share vs Apple's ~20%), but Apple captures the majority of smartphone industry profits."]],
-    related: [["iphone-16-vs-samsung-s25", "iPhone 16 vs Samsung S25", "technology"], ["nike-vs-adidas", "Nike vs Adidas", "brands"]],
+    related: [["iphone-17-vs-samsung-s26", "iPhone 17 vs Samsung S26", "technology"], ["nike-vs-adidas", "Nike vs Adidas", "brands"]],
     views: 567300,
   },
   {

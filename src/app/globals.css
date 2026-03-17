@@ -33,11 +33,25 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & font rendering */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Fix blurry text on Android Chrome */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* Prevent text overflow on mobile */
+* {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Focus styles */

@@ -22,96 +22,59 @@ export function ComparisonTable({
         Full Comparison
       </h2>
 
-      <div className="bg-white border border-border rounded-xl overflow-x-auto">
-        <table className="w-full border-collapse min-w-[400px]">
-          {/* Header */}
+      {/* Desktop: Table layout */}
+      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-x-auto">
+        <table className="w-full border-collapse">
           <thead>
             <tr className="bg-surface-dark text-white">
-              <th className="px-3 sm:px-5 py-3 text-left text-xs sm:text-sm font-semibold w-[40%]">
+              <th className="px-5 py-3 text-left text-sm font-semibold w-[40%]">
                 Attribute
               </th>
-              <th className="px-3 sm:px-5 py-3 text-center text-xs sm:text-sm font-semibold w-[30%]">
+              <th className="px-5 py-3 text-center text-sm font-semibold w-[30%]">
                 {entityA.name}
               </th>
-              <th className="px-3 sm:px-5 py-3 text-center text-xs sm:text-sm font-semibold w-[30%]">
+              <th className="px-5 py-3 text-center text-sm font-semibold w-[30%]">
                 {entityB.name}
               </th>
             </tr>
           </thead>
-
           <tbody>
             {Array.from(categories.entries()).map(([categoryName, attrs]) => (
               <>
-                {/* Category header row */}
                 <tr key={`cat-${categoryName}`}>
-                  <td
-                    colSpan={3}
-                    className="bg-surface-alt px-3 sm:px-5 py-2 border-b border-border"
-                  >
-                    <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                  <td colSpan={3} className="bg-surface-alt px-5 py-2 border-b border-border">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                       {categoryName}
                     </span>
                   </td>
                 </tr>
-
-                {/* Attribute rows */}
                 {attrs.map((attr, i) => {
                   const valA = attr.values[0];
                   const valB = attr.values[1];
-
                   return (
                     <tr
                       key={attr.id}
                       className={`${
-                        i !== attrs.length - 1
-                          ? "border-b border-border/30"
-                          : "border-b border-border"
+                        i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
                       } hover:bg-surface-alt/50 transition-colors`}
                     >
-                      {/* Attribute name */}
-                      <td className="px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-text">
+                      <td className="px-5 py-3 text-sm font-medium text-text">
                         {attr.name}
                         {attr.unit && (
-                          <span className="ml-1 text-[10px] sm:text-xs text-text-secondary">
-                            ({attr.unit})
-                          </span>
+                          <span className="ml-1 text-xs text-text-secondary">({attr.unit})</span>
                         )}
                       </td>
-
-                      {/* Entity A value */}
-                      <td
-                        className={`px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm text-center font-medium ${
-                          valA?.winner === true
-                            ? "text-win bg-green-50/50"
-                            : valA?.winner === false
-                            ? "text-text-secondary"
-                            : "text-text"
-                        }`}
-                      >
+                      <td className={`px-5 py-3 text-sm text-center font-medium ${
+                        valA?.winner === true ? "text-win bg-green-50/50" : valA?.winner === false ? "text-text-secondary" : "text-text"
+                      }`}>
                         {valA?.valueText || "—"}
-                        {valA?.winner === true && (
-                          <span className="ml-1 text-[10px] sm:text-xs text-win font-bold">
-                            W
-                          </span>
-                        )}
+                        {valA?.winner === true && <span className="ml-1 text-xs text-win font-bold">W</span>}
                       </td>
-
-                      {/* Entity B value */}
-                      <td
-                        className={`px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm text-center font-medium ${
-                          valB?.winner === true
-                            ? "text-win bg-green-50/50"
-                            : valB?.winner === false
-                            ? "text-text-secondary"
-                            : "text-text"
-                        }`}
-                      >
+                      <td className={`px-5 py-3 text-sm text-center font-medium ${
+                        valB?.winner === true ? "text-win bg-green-50/50" : valB?.winner === false ? "text-text-secondary" : "text-text"
+                      }`}>
                         {valB?.valueText || "—"}
-                        {valB?.winner === true && (
-                          <span className="ml-1 text-[10px] sm:text-xs text-win font-bold">
-                            W
-                          </span>
-                        )}
+                        {valB?.winner === true && <span className="ml-1 text-xs text-win font-bold">W</span>}
                       </td>
                     </tr>
                   );
@@ -120,6 +83,59 @@ export function ComparisonTable({
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile: Stacked card layout — fully readable, no overflow */}
+      <div className="sm:hidden space-y-2">
+        {Array.from(categories.entries()).map(([categoryName, attrs]) => (
+          <div key={categoryName}>
+            <div className="bg-surface-alt px-3 py-2 rounded-lg mb-2">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
+                {categoryName}
+              </span>
+            </div>
+            <div className="space-y-2">
+              {attrs.map((attr) => {
+                const valA = attr.values[0];
+                const valB = attr.values[1];
+                return (
+                  <div key={attr.id} className="bg-white border border-border rounded-xl overflow-hidden">
+                    {/* Attribute name */}
+                    <div className="px-3 py-2 border-b border-border/50 bg-gray-50/50">
+                      <span className="text-xs font-semibold text-text">
+                        {attr.name}
+                        {attr.unit && (
+                          <span className="ml-1 text-text-secondary font-normal">({attr.unit})</span>
+                        )}
+                      </span>
+                    </div>
+                    {/* Values */}
+                    <div className="grid grid-cols-2 divide-x divide-border/50">
+                      <div className={`px-3 py-2.5 ${valA?.winner === true ? "bg-green-50" : ""}`}>
+                        <p className="text-[10px] font-medium text-text-secondary mb-0.5 truncate">{entityA.name}</p>
+                        <p className={`text-sm font-medium break-words ${
+                          valA?.winner === true ? "text-win" : valA?.winner === false ? "text-text-secondary" : "text-text"
+                        }`}>
+                          {valA?.valueText || "—"}
+                          {valA?.winner === true && <span className="ml-1 text-[10px] text-win font-bold">W</span>}
+                        </p>
+                      </div>
+                      <div className={`px-3 py-2.5 ${valB?.winner === true ? "bg-green-50" : ""}`}>
+                        <p className="text-[10px] font-medium text-text-secondary mb-0.5 truncate">{entityB.name}</p>
+                        <p className={`text-sm font-medium break-words ${
+                          valB?.winner === true ? "text-win" : valB?.winner === false ? "text-text-secondary" : "text-text"
+                        }`}>
+                          {valB?.valueText || "—"}
+                          {valB?.winner === true && <span className="ml-1 text-[10px] text-win font-bold">W</span>}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

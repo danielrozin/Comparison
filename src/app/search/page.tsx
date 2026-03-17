@@ -34,14 +34,17 @@ function SearchContent() {
 
     // Check if it's a comparison query
     const patterns = [
-      /^(.+?)\s+(?:vs\.?|versus|compared to|or)\s+(.+)$/i,
-      /^compare\s+(.+?)\s+(?:to|and|with|vs)\s+(.+)$/i,
-      /^difference\s+between\s+(.+?)\s+and\s+(.+)$/i,
+      /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
+      /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
+      /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
+      /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
+      /^(.+?)\s+[-–—]\s+(.+)$/,
+      /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
     ];
 
     for (const pattern of patterns) {
       const match = searchQuery.match(pattern);
-      if (match) {
+      if (match && match[1].trim() && match[2].trim()) {
         const slug = `${slugify(match[1].trim())}-vs-${slugify(match[2].trim())}`;
         router.push(`/compare/${slug}`);
         return;

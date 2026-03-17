@@ -15,7 +15,8 @@ export function KeyDifferencesBlock({
         Key Differences
       </h2>
 
-      <div className="bg-white border border-border rounded-xl overflow-hidden">
+      {/* Desktop: 3-column grid layout */}
+      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
         {/* Header */}
         <div className="grid grid-cols-[1fr_auto_1fr] bg-surface-alt border-b border-border">
           <div className="px-4 py-3 text-sm font-semibold text-primary-700 text-center">
@@ -48,13 +49,7 @@ export function KeyDifferencesBlock({
               }`}
             >
               {diff.entityAValue}
-              {diff.winner === "a" && (
-                <span className="ml-1.5 inline-flex items-center text-xs text-win">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </span>
-              )}
+              {diff.winner === "a" && <WinBadge />}
             </div>
 
             {/* Label */}
@@ -73,17 +68,72 @@ export function KeyDifferencesBlock({
               }`}
             >
               {diff.entityBValue}
-              {diff.winner === "b" && (
-                <span className="ml-1.5 inline-flex items-center text-xs text-win">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                </span>
-              )}
+              {diff.winner === "b" && <WinBadge />}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile: Stacked card layout — no text overflow, fully readable */}
+      <div className="sm:hidden space-y-3">
+        {differences.map((diff) => (
+          <div key={diff.label} className="bg-white border border-border rounded-xl overflow-hidden">
+            {/* Attribute label */}
+            <div className="bg-surface-alt px-4 py-2">
+              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
+                {diff.label}
+              </span>
+            </div>
+
+            {/* Values side by side */}
+            <div className="grid grid-cols-2 divide-x divide-border/50">
+              {/* Entity A */}
+              <div className={`px-3 py-3 ${diff.winner === "a" ? "bg-green-50" : ""}`}>
+                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                  {entityA.name}
+                </p>
+                <p className={`text-sm font-semibold break-words ${
+                  diff.winner === "a"
+                    ? "text-win"
+                    : diff.winner === "b"
+                    ? "text-text-secondary"
+                    : "text-text"
+                }`}>
+                  {diff.entityAValue}
+                  {diff.winner === "a" && <WinBadge />}
+                </p>
+              </div>
+
+              {/* Entity B */}
+              <div className={`px-3 py-3 ${diff.winner === "b" ? "bg-green-50" : ""}`}>
+                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                  {entityB.name}
+                </p>
+                <p className={`text-sm font-semibold break-words ${
+                  diff.winner === "b"
+                    ? "text-win"
+                    : diff.winner === "a"
+                    ? "text-text-secondary"
+                    : "text-text"
+                }`}>
+                  {diff.entityBValue}
+                  {diff.winner === "b" && <WinBadge />}
+                </p>
+              </div>
             </div>
           </div>
         ))}
       </div>
     </section>
+  );
+}
+
+function WinBadge() {
+  return (
+    <span className="ml-1.5 inline-flex items-center text-xs text-win">
+      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+      </svg>
+    </span>
   );
 }

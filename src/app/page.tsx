@@ -37,7 +37,7 @@ export default async function HomePage() {
               {[
                 { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
                 { label: "Japan vs China", href: "/compare/japan-vs-china" },
-                { label: "iPhone vs Samsung", href: "/compare/iphone-16-vs-samsung-s25" },
+                { label: "iPhone vs Samsung", href: "/compare/iphone-17-vs-samsung-s26" },
                 { label: "WW1 vs WW2", href: "/compare/ww1-vs-ww2" },
               ].map((example) => (
                 <Link

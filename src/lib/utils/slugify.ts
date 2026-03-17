@@ -2,7 +2,11 @@ export function slugify(text: string): string {
   return text
     .toLowerCase()
     .trim()
-    .replace(/[^\w\s-]/g, "")
+    // Transliterate common non-Latin characters to ASCII equivalents
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    // Keep Unicode letters, digits, spaces, and hyphens (supports Hebrew, Arabic, CJK, etc.)
+    .replace(/[^\p{L}\p{N}\s-]/gu, "")
     .replace(/[\s_]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");

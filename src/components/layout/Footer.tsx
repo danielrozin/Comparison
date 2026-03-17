@@ -55,8 +55,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/compare/iphone-16-vs-samsung-s25" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  iPhone 16 vs Samsung S25
+                <Link href="/compare/iphone-17-vs-samsung-s26" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  iPhone 17 vs Samsung S26
                 </Link>
               </li>
               <li>
