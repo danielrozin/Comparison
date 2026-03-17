@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Log to admin panel
-    logAdminEvent(type?.startsWith("contact") ? "contact" : "feedback", {
+    await logAdminEvent(type?.startsWith("contact") ? "contact" : "feedback", {
       feedbackType: type,
       message: message.trim().slice(0, 200),
       email: email?.trim() || null,

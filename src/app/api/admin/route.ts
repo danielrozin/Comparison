@@ -37,8 +37,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
+  const [stats, recentEvents] = await Promise.all([
+    getAdminStats(),
+    getAdminEvents(),
+  ]);
+
   return NextResponse.json({
-    stats: getAdminStats(),
-    recentEvents: getAdminEvents().slice(0, 50),
+    stats,
+    recentEvents: recentEvents.slice(0, 50),
   });
 }
