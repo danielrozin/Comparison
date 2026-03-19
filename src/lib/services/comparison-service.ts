@@ -23,10 +23,9 @@ import {
 // Lazy-import prisma to avoid crash when DATABASE_URL is not set
 function getPrismaClient() {
   try {
-    if (!process.env.DATABASE_URL) return null;
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { prisma } = require("@/lib/db/prisma");
-    return prisma;
+    const { getPrisma } = require("@/lib/db/prisma");
+    return getPrisma();
   } catch {
     return null;
   }
