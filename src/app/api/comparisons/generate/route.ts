@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { saveComparison } from "@/lib/services/comparison-service";
 
 export const maxDuration = 60; // Allow up to 60s for AI generation
 
@@ -29,6 +30,10 @@ export async function POST(request: NextRequest) {
     const result = await generateComparison(entityA, entityB, slug);
 
     if (result.success && result.comparison) {
+      // Persist to database (non-blocking, don't fail the response if DB save fails)
+      saveComparison(result.comparison).catch((err) =>
+        console.error("Failed to save generated comparison to DB:", err)
+      );
       return NextResponse.json({ status: "ready", comparison: result.comparison });
     } else {
       return NextResponse.json(

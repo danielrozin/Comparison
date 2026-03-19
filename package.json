@@ -22,11 +22,16 @@
     "prisma": "^5.22.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "recharts": "^3.8.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
     "eslint": "^9.0.0",
-    "eslint-config-next": "^15.5.3"
+    "eslint-config-next": "^15.5.3",
+    "ts-node": "^10.9.2"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
