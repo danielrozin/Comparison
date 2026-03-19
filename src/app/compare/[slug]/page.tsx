@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ComparisonTable } from "@/components/comparison/ComparisonTable";
+import { ComparisonCharts } from "@/components/comparison/ComparisonCharts";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { VerdictBlock } from "@/components/comparison/Verdict";
 import { FAQBlock } from "@/components/comparison/FAQ";
@@ -145,6 +146,15 @@ export default async function ComparisonPage({ params }: PageProps) {
       {/* Comparison Table */}
       {comparison.attributes.length > 0 && (
         <ComparisonTable
+          attributes={comparison.attributes}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
+
+      {/* Visual Comparison Charts */}
+      {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
+        <ComparisonCharts
           attributes={comparison.attributes}
           entityA={comparison.entities[0]}
           entityB={comparison.entities[1]}
