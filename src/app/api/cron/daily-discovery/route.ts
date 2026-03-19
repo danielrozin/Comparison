@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendNotificationEmail } from "@/lib/services/email";
+import { mergeOpportunities } from "@/lib/services/pipeline-service";
+import { parseComparisonKeyword } from "@/lib/dataforseo/keyword-discovery";
+import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
 export const maxDuration = 60;
 
 /**
  * GET /api/cron/daily-discovery
  *
- * Daily cron job: discovers comparison keyword opportunities via DataForSEO
- * and sends a report email to the team.
+ * Daily cron job: discovers comparison keyword opportunities via DataForSEO,
+ * saves them to the Redis pipeline, and sends a report email.
  *
  * Triggered by Vercel Cron (vercel.json) once daily at 8am UTC.
  */
@@ -85,6 +88,31 @@ export async function GET(request: NextRequest) {
   const sorted = Array.from(unique.values()).sort((a, b) => b.volume - a.volume);
   const duration = Date.now() - startTime;
 
+  // Save to Redis pipeline (convert to DiscoveredOpportunity format)
+  const pipelineOpps: DiscoveredOpportunity[] = sorted.map((opp) => {
+    const parsed = parseComparisonKeyword(opp.keyword);
+    const volumeScore = opp.volume > 0 ? Math.log10(opp.volume) * 20 : 0;
+    const diffScore = Math.max(0, 100 - opp.difficulty) * 0.3;
+    const cpcScore = Math.min(opp.cpc * 5, 25);
+
+    return {
+      keyword: opp.keyword,
+      searchVolume: opp.volume,
+      cpc: opp.cpc,
+      competition: 0,
+      difficulty: opp.difficulty,
+      intent: "informational",
+      entityA: parsed.entityA,
+      entityB: parsed.entityB,
+      queryPattern: parsed.queryPattern,
+      category: null,
+      opportunityScore: Math.round((volumeScore + diffScore + cpcScore) * 100) / 100,
+      source: "daily_cron",
+    };
+  });
+
+  await mergeOpportunities(pipelineOpps);
+
   // Build email report
   const top20 = sorted.slice(0, 20);
   const reportLines = top20.map((k, i) =>
@@ -97,13 +125,14 @@ Date: ${new Date().toISOString().split("T")[0]}
 Duration: ${duration}ms
 Total keywords found: ${sorted.length}
 Seeds queried: ${seeds.length}
+Saved to pipeline: ${pipelineOpps.length} opportunities
 
 Top 20 Opportunities:
 ${reportLines.join("\n")}
 
 Total estimated search volume (top 20): ${top20.reduce((s, k) => s + k.volume, 0).toLocaleString()}/mo
 
-Full results available via API: /api/cron/daily-discovery
+Full results available via API: /api/pipeline/opportunities
 `;
 
   // Send email notification
@@ -118,6 +147,7 @@ Full results available via API: /api/cron/daily-discovery
     success: true,
     duration: `${duration}ms`,
     totalKeywords: sorted.length,
+    savedToPipeline: pipelineOpps.length,
     top20: top20,
     timestamp: new Date().toISOString(),
   });

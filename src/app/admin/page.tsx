@@ -23,6 +23,34 @@ interface DashboardData {
   recentEvents: AdminEvent[];
 }
 
+interface PipelineRun {
+  id: string;
+  mode: string;
+  startedAt: string;
+  completedAt: string | null;
+  discovered: number;
+  generated: number;
+  errors: string[];
+}
+
+interface PipelineStatus {
+  lastRun: PipelineRun | null;
+  totalDiscovered: number;
+  totalGenerated: number;
+  recentRuns: PipelineRun[];
+}
+
+interface PipelineOpportunity {
+  keyword: string;
+  searchVolume: number;
+  cpc: number;
+  difficulty: number;
+  entityA: string | null;
+  entityB: string | null;
+  opportunityScore: number;
+  source: string;
+}
+
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
@@ -31,6 +59,10 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [pipelineStatus, setPipelineStatus] = useState<PipelineStatus | null>(null);
+  const [pipelineOpps, setPipelineOpps] = useState<PipelineOpportunity[]>([]);
+  const [pipelineLoading, setPipelineLoading] = useState(false);
+  const [pipelineMessage, setPipelineMessage] = useState("");
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +105,46 @@ export default function AdminPage() {
     setLoading(false);
   }, [token]);
 
+  const fetchPipelineData = useCallback(async () => {
+    if (!token) return;
+    try {
+      const [statusRes, oppsRes] = await Promise.all([
+        fetch("/api/pipeline/status", { headers: { authorization: `Bearer ${token}` } }),
+        fetch("/api/pipeline/opportunities?limit=20", { headers: { authorization: `Bearer ${token}` } }),
+      ]);
+      if (statusRes.ok) setPipelineStatus(await statusRes.json());
+      if (oppsRes.ok) {
+        const oppsData = await oppsRes.json();
+        setPipelineOpps(oppsData.opportunities || []);
+      }
+    } catch {
+      // ignore
+    }
+  }, [token]);
+
+  const triggerPipeline = async (mode: "discover" | "generate" | "full") => {
+    if (!token) return;
+    setPipelineLoading(true);
+    setPipelineMessage("");
+    try {
+      const res = await fetch("/api/pipeline/run", {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, category: "technology", limit: 5 }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setPipelineMessage(`${mode}: ${result.discovered} discovered, ${result.generated} generated (${result.duration})`);
+        fetchPipelineData();
+      } else {
+        setPipelineMessage(`Error: ${result.error || "Failed"}`);
+      }
+    } catch {
+      setPipelineMessage("Connection error");
+    }
+    setPipelineLoading(false);
+  };
+
   // Auto-login from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("admin_token");
@@ -84,8 +156,11 @@ export default function AdminPage() {
 
   // Fetch data on login
   useEffect(() => {
-    if (isLoggedIn && token) fetchData();
-  }, [isLoggedIn, token, fetchData]);
+    if (isLoggedIn && token) {
+      fetchData();
+      fetchPipelineData();
+    }
+  }, [isLoggedIn, token, fetchData, fetchPipelineData]);
 
   // Login screen
   if (!isLoggedIn) {
@@ -181,6 +256,98 @@ export default function AdminPage() {
                 <p className="text-xs text-text-secondary mt-1">{stat.label}</p>
               </div>
             ))}
+          </div>
+
+          {/* Content Pipeline */}
+          <div className="bg-white border border-border rounded-xl overflow-hidden mb-8">
+            <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-text">Content Pipeline</h2>
+                {pipelineStatus?.lastRun && (
+                  <p className="text-xs text-text-secondary mt-0.5">
+                    Last run: {new Date(pipelineStatus.lastRun.startedAt).toLocaleString()} ({pipelineStatus.lastRun.mode})
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => triggerPipeline("discover")}
+                  disabled={pipelineLoading}
+                  className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                >
+                  Discover
+                </button>
+                <button
+                  onClick={() => triggerPipeline("generate")}
+                  disabled={pipelineLoading}
+                  className="px-3 py-1.5 bg-amber-600 text-white text-xs font-medium rounded-lg hover:bg-amber-700 disabled:opacity-50"
+                >
+                  Generate
+                </button>
+                <button
+                  onClick={() => triggerPipeline("full")}
+                  disabled={pipelineLoading}
+                  className="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 disabled:opacity-50"
+                >
+                  Full Pipeline
+                </button>
+              </div>
+            </div>
+
+            {pipelineMessage && (
+              <div className="px-5 py-2 bg-surface-alt text-sm text-text-secondary border-b border-border/50">
+                {pipelineMessage}
+              </div>
+            )}
+
+            {/* Pipeline stats */}
+            <div className="grid grid-cols-3 gap-4 p-5 border-b border-border/50">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-blue-600">{pipelineStatus?.totalDiscovered || 0}</p>
+                <p className="text-xs text-text-secondary">Discovered</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-amber-600">{pipelineStatus?.totalGenerated || 0}</p>
+                <p className="text-xs text-text-secondary">Generated</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-green-600">{pipelineStatus?.recentRuns?.length || 0}</p>
+                <p className="text-xs text-text-secondary">Runs</p>
+              </div>
+            </div>
+
+            {/* Recent opportunities */}
+            {pipelineOpps.length > 0 && (
+              <div className="divide-y divide-border/50 max-h-[400px] overflow-y-auto">
+                <div className="px-5 py-2 bg-surface-alt">
+                  <p className="text-xs font-semibold text-text-secondary uppercase">Top Opportunities</p>
+                </div>
+                {pipelineOpps.map((opp, i) => (
+                  <div key={`${opp.keyword}-${i}`} className="px-5 py-2.5 hover:bg-surface-alt/50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-text">{opp.keyword}</span>
+                      <span className="text-xs font-mono text-text-secondary">
+                        Score: {opp.opportunityScore}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 mt-0.5 text-xs text-text-secondary">
+                      <span>{opp.searchVolume.toLocaleString()}/mo</span>
+                      <span>${opp.cpc} CPC</span>
+                      <span>Diff: {opp.difficulty}</span>
+                      {opp.entityA && opp.entityB && (
+                        <span className="text-green-600">{opp.entityA} vs {opp.entityB}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {pipelineOpps.length === 0 && !pipelineLoading && (
+              <div className="p-6 text-center text-text-secondary text-sm">
+                No opportunities discovered yet. Click &quot;Discover&quot; to start.
+              </div>
+            )}
           </div>
 
           {/* Event log */}
