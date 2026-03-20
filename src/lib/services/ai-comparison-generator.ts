@@ -6,6 +6,8 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData } from "@/types";
+import { enrichComparisonData } from "./tavily-service";
+import { fetchEntityImages } from "@/lib/services/image-service";
 
 function getClient(): Anthropic {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -83,10 +85,26 @@ export interface GenerationResult {
 export async function generateComparison(
   entityA: string,
   entityB: string,
-  slug: string
+  slug: string,
+  options?: { skipEnrichment?: boolean }
 ): Promise<GenerationResult> {
   try {
     const client = getClient();
+
+    // Fetch real-time web data via Tavily (graceful — skipped on failure)
+    let tavilyContext = "";
+    if (!options?.skipEnrichment) {
+      try {
+        tavilyContext = await enrichComparisonData(entityA, entityB);
+      } catch (err) {
+        console.warn("Tavily enrichment failed, proceeding without:", err);
+      }
+    }
+
+    let userMessage = `${GENERATION_PROMPT}\n\nGenerate a comparison for: "${entityA}" vs "${entityB}"`;
+    if (tavilyContext) {
+      userMessage += `\n\nHere is current real-world data to incorporate into your comparison:\n${tavilyContext}`;
+    }
 
     const message = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
@@ -94,7 +112,7 @@ export async function generateComparison(
       messages: [
         {
           role: "user",
-          content: `${GENERATION_PROMPT}\n\nGenerate a comparison for: "${entityA}" vs "${entityB}"`,
+          content: userMessage,
         },
       ],
     });
@@ -184,6 +202,23 @@ export async function generateComparison(
         viewCount: 0,
       },
     };
+
+    // Auto-fetch images for entities (non-critical)
+    try {
+      const images = await fetchEntityImages(
+        comparison.entities.map((e) => ({
+          name: e.name,
+          type: e.entityType,
+          slug: e.slug,
+        }))
+      );
+      comparison.entities.forEach((e) => {
+        const img = images.get(e.slug);
+        if (img) e.imageUrl = img;
+      });
+    } catch {
+      // Images are non-critical — don't break comparison generation
+    }
 
     return { success: true, comparison };
   } catch (error) {
