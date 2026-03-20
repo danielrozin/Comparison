@@ -12,6 +12,7 @@ import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
+import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
@@ -129,7 +130,10 @@ export default async function ComparisonPage({ params }: PageProps) {
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
         <ShareBar title={comparison.title} slug={comparison.slug} />
-        <LikeButton comparisonId={comparison.id} />
+        <div className="flex items-center gap-2">
+          <EmbedButton slug={comparison.slug} title={comparison.title} />
+          <LikeButton comparisonId={comparison.id} />
+        </div>
       </div>
 
       {/* Hero: Title + Short Answer + Entity Cards */}
