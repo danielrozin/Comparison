@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { CATEGORIES } from "@/lib/utils/constants";
+import { listBlogArticles } from "@/lib/services/blog-generator";
 
 const SITE_URL = "https://www.aversusb.net";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   // Static pages
@@ -61,11 +62,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  // Blog pages
+  const blogListPage: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+  ];
+
+  let blogArticlePages: MetadataRoute.Sitemap = [];
+  try {
+    const { articles } = await listBlogArticles({ limit: 1000, status: "published" });
+    blogArticlePages = articles.map((article) => ({
+      url: `${SITE_URL}/blog/${article.slug}`,
+      lastModified: article.updatedAt ? new Date(article.updatedAt).toISOString() : now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // Blog articles unavailable — skip
+  }
+
   return [
     ...staticPages,
     ...categoryPages,
     ...comparisonPages,
     ...entityPages,
     ...alternativesPages,
+    ...blogListPage,
+    ...blogArticlePages,
   ];
 }
