@@ -12,6 +12,13 @@ import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 
+const FUN_FACTS = [
+  "Did you know? We\u2019ve compared 107+ topics!",
+  "Our AI analyzes dozens of data points for each comparison.",
+  "Every comparison is unique and generated in real-time.",
+  "We compare everything from tech to food to travel destinations.",
+];
+
 function formatSlugToTitle(slug: string): string {
   const parts = slug.split("-vs-");
   if (parts.length !== 2) return slug.replace(/-/g, " ");
@@ -24,11 +31,26 @@ export function DynamicComparison({ slug }: { slug: string }) {
   const [status, setStatus] = useState<"idle" | "generating" | "ready" | "error">("idle");
   const [comparison, setComparison] = useState<ComparisonPageData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [funFact] = useState(() => FUN_FACTS[Math.floor(Math.random() * FUN_FACTS.length)]);
   const title = formatSlugToTitle(slug);
+
+  // Animate progress bar during generation
+  useEffect(() => {
+    if (status !== "generating") return;
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 90) return prev;
+        return prev + Math.random() * 8 + 2;
+      });
+    }, 800);
+    return () => clearInterval(interval);
+  }, [status]);
 
   const startGeneration = useCallback(async () => {
     setStatus("generating");
     setError(null);
+    setProgress(5);
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000);
@@ -55,6 +77,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
       const data = await res.json();
 
       if (data.status === "ready" && data.comparison) {
+        setProgress(100);
         setComparison(data.comparison);
         setStatus("ready");
 
@@ -113,18 +136,21 @@ export function DynamicComparison({ slug }: { slug: string }) {
             We&apos;re generating this comparison for you right now. This usually takes 10-20 seconds.
           </p>
 
-          {/* Loading animation */}
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="flex gap-1">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="w-3 h-3 bg-primary-500 rounded-full animate-bounce"
-                  style={{ animationDelay: `${i * 0.15}s` }}
-                />
-              ))}
-            </div>
-            <span className="text-sm text-text-secondary ml-2">Analyzing data...</span>
+          {/* Progress bar */}
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
+            <div
+              className="h-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-500 ease-out"
+              style={{ width: `${Math.min(progress, 100)}%` }}
+            />
+          </div>
+          <p className="text-xs text-text-secondary mb-6">{Math.round(Math.min(progress, 100))}% complete</p>
+
+          {/* Fun fact */}
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/50 rounded-xl p-4 mb-6">
+            <p className="text-sm text-primary-700 font-medium">
+              <span className="mr-1.5">&#x2728;</span>
+              {funFact}
+            </p>
           </div>
 
           <div className="bg-surface-alt rounded-xl p-4 text-left text-sm text-text-secondary space-y-2">
@@ -155,18 +181,19 @@ export function DynamicComparison({ slug }: { slug: string }) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
+          <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-4xl">&#x1F614;</span>
           </div>
           <h1 className="text-2xl font-display font-bold text-text mb-3">{title}</h1>
-          <p className="text-text-secondary mb-4">
+          <p className="text-text-secondary mb-2">
+            Oops! Something didn&apos;t go as planned.
+          </p>
+          <p className="text-sm text-text-secondary mb-6">
             {error || "We couldn't generate this comparison. Please try again."}
           </p>
           <button
-            onClick={() => { setStatus("idle"); setError(null); }}
-            className="px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+            onClick={() => { setStatus("idle"); setError(null); setProgress(0); }}
+            className="px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-accent-600 transition-all shadow-md"
           >
             Try Again
           </button>

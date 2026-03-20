@@ -36,7 +36,14 @@ export function KeyDifferencesBlock({
             key={diff.label}
             className={`grid grid-cols-[1fr_auto_1fr] ${
               i !== differences.length - 1 ? "border-b border-border/50" : ""
-            }`}
+            } ${
+              diff.winner === "a"
+                ? "border-l-[3px] border-l-green-500"
+                : diff.winner === "b"
+                ? "border-l-[3px] border-l-purple-500"
+                : ""
+            } hover:bg-gray-50/50 transition-colors duration-200`}
+            style={{ animationDelay: `${i * 60}ms` }}
           >
             {/* Entity A Value */}
             <div
@@ -74,10 +81,20 @@ export function KeyDifferencesBlock({
         ))}
       </div>
 
-      {/* Mobile: Stacked card layout — no text overflow, fully readable */}
+      {/* Mobile: Stacked card layout */}
       <div className="sm:hidden space-y-3">
-        {differences.map((diff) => (
-          <div key={diff.label} className="bg-white border border-border rounded-xl overflow-hidden">
+        {differences.map((diff, i) => (
+          <div
+            key={diff.label}
+            className={`bg-white border border-border rounded-xl overflow-hidden ${
+              diff.winner === "a"
+                ? "border-l-[3px] border-l-green-500"
+                : diff.winner === "b"
+                ? "border-l-[3px] border-l-purple-500"
+                : ""
+            }`}
+            style={{ animationDelay: `${i * 60}ms` }}
+          >
             {/* Attribute label */}
             <div className="bg-surface-alt px-4 py-2">
               <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
@@ -131,6 +148,7 @@ export function KeyDifferencesBlock({
 function WinBadge() {
   return (
     <span className="ml-1.5 inline-flex items-center text-xs text-win">
+      <span className="mr-0.5">&#x1F3C6;</span>
       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
       </svg>
