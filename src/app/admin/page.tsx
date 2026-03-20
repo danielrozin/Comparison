@@ -51,6 +51,29 @@ interface PipelineOpportunity {
   source: string;
 }
 
+interface OutreachQuestion {
+  id: string;
+  platform: "reddit" | "quora";
+  title: string;
+  url: string;
+  subreddit?: string;
+  upvotes?: number;
+  comments?: number;
+  createdAt: string;
+  entityA: string | null;
+  entityB: string | null;
+  matchingComparisonSlug: string | null;
+  matchingComparisonUrl: string | null;
+}
+
+interface OutreachAnswer {
+  questionId: string;
+  question: OutreachQuestion;
+  answer: string;
+  comparisonUrl: string;
+  shortSummary: string;
+}
+
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState("");
@@ -63,6 +86,13 @@ export default function AdminPage() {
   const [pipelineOpps, setPipelineOpps] = useState<PipelineOpportunity[]>([]);
   const [pipelineLoading, setPipelineLoading] = useState(false);
   const [pipelineMessage, setPipelineMessage] = useState("");
+  // Outreach state
+  const [outreachQuestions, setOutreachQuestions] = useState<OutreachQuestion[]>([]);
+  const [outreachLoading, setOutreachLoading] = useState(false);
+  const [outreachStats, setOutreachStats] = useState<{ total: number; withMatches: number } | null>(null);
+  const [outreachAnswers, setOutreachAnswers] = useState<Record<string, OutreachAnswer>>({});
+  const [generatingAnswerId, setGeneratingAnswerId] = useState<string | null>(null);
+  const [outreachPlatform, setOutreachPlatform] = useState<string>("all");
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,6 +173,45 @@ export default function AdminPage() {
       setPipelineMessage("Connection error");
     }
     setPipelineLoading(false);
+  };
+
+  const findOutreachQuestions = async () => {
+    if (!token) return;
+    setOutreachLoading(true);
+    try {
+      const res = await fetch(`/api/outreach/questions?platform=${outreachPlatform}&limit=30`, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const result = await res.json();
+        setOutreachQuestions(result.questions || []);
+        setOutreachStats({ total: result.stats?.total || 0, withMatches: result.stats?.withMatches || 0 });
+      }
+    } catch {
+      // ignore
+    }
+    setOutreachLoading(false);
+  };
+
+  const generateAnswer = async (question: OutreachQuestion) => {
+    if (!token) return;
+    setGeneratingAnswerId(question.id);
+    try {
+      const res = await fetch("/api/outreach/answers", {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ questionIds: [question.id], limit: 1 }),
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (result.answers && result.answers.length > 0) {
+          setOutreachAnswers((prev) => ({ ...prev, [question.id]: result.answers[0] }));
+        }
+      }
+    } catch {
+      // ignore
+    }
+    setGeneratingAnswerId(null);
   };
 
   // Auto-login from localStorage
@@ -346,6 +415,141 @@ export default function AdminPage() {
             {pipelineOpps.length === 0 && !pipelineLoading && (
               <div className="p-6 text-center text-text-secondary text-sm">
                 No opportunities discovered yet. Click &quot;Discover&quot; to start.
+              </div>
+            )}
+          </div>
+
+          {/* Social Outreach */}
+          <div className="bg-white border border-border rounded-xl overflow-hidden mb-8">
+            <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+              <div>
+                <h2 className="font-bold text-text">Social Outreach</h2>
+                <p className="text-xs text-text-secondary mt-0.5">
+                  Find &quot;X vs Y&quot; questions on Reddit &amp; Quora and generate answers
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <select
+                  value={outreachPlatform}
+                  onChange={(e) => setOutreachPlatform(e.target.value)}
+                  className="px-2 py-1.5 border border-border rounded-lg text-xs bg-white"
+                >
+                  <option value="all">All Platforms</option>
+                  <option value="reddit">Reddit Only</option>
+                  <option value="quora">Quora Only</option>
+                </select>
+                <button
+                  onClick={findOutreachQuestions}
+                  disabled={outreachLoading}
+                  className="px-3 py-1.5 bg-orange-600 text-white text-xs font-medium rounded-lg hover:bg-orange-700 disabled:opacity-50"
+                >
+                  {outreachLoading ? "Searching..." : "Find Questions"}
+                </button>
+              </div>
+            </div>
+
+            {/* Outreach stats */}
+            {outreachStats && (
+              <div className="grid grid-cols-2 gap-4 p-5 border-b border-border/50">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-orange-600">{outreachStats.total}</p>
+                  <p className="text-xs text-text-secondary">Questions Found</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-green-600">{outreachStats.withMatches}</p>
+                  <p className="text-xs text-text-secondary">With Matching Pages</p>
+                </div>
+              </div>
+            )}
+
+            {/* Questions list */}
+            {outreachQuestions.length > 0 ? (
+              <div className="divide-y divide-border/50 max-h-[600px] overflow-y-auto">
+                {outreachQuestions.map((q) => (
+                  <div key={q.id} className="px-5 py-3 hover:bg-surface-alt/50 transition-colors">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`inline-flex items-center justify-center w-5 h-5 rounded text-[10px] font-bold ${
+                            q.platform === "reddit"
+                              ? "bg-orange-100 text-orange-700"
+                              : "bg-red-100 text-red-700"
+                          }`}>
+                            {q.platform === "reddit" ? "R" : "Q"}
+                          </span>
+                          {q.subreddit && (
+                            <span className="text-[10px] text-text-secondary">r/{q.subreddit}</span>
+                          )}
+                          {q.upvotes !== undefined && (
+                            <span className="text-[10px] text-text-secondary">{q.upvotes} upvotes</span>
+                          )}
+                          {q.comments !== undefined && (
+                            <span className="text-[10px] text-text-secondary">{q.comments} comments</span>
+                          )}
+                        </div>
+                        <a
+                          href={q.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-text hover:text-primary-600 transition-colors"
+                        >
+                          {q.title}
+                        </a>
+                        {q.entityA && q.entityB && (
+                          <p className="text-xs text-text-secondary mt-0.5">
+                            Parsed: {q.entityA} vs {q.entityB}
+                          </p>
+                        )}
+                        {q.matchingComparisonSlug && (
+                          <p className="text-xs text-green-600 mt-0.5">
+                            Matching page: /{q.matchingComparisonSlug}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0">
+                        {q.matchingComparisonSlug ? (
+                          <button
+                            onClick={() => generateAnswer(q)}
+                            disabled={generatingAnswerId === q.id}
+                            className="px-2.5 py-1 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 whitespace-nowrap"
+                          >
+                            {generatingAnswerId === q.id ? "Generating..." : "Generate Answer"}
+                          </button>
+                        ) : (
+                          <span className="text-[10px] text-text-secondary italic">No match</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Generated answer */}
+                    {outreachAnswers[q.id] && (
+                      <div className="mt-3 bg-surface-alt rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-semibold text-text-secondary">Generated Answer</span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(outreachAnswers[q.id].answer);
+                            }}
+                            className="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-medium rounded hover:bg-primary-700"
+                          >
+                            Copy
+                          </button>
+                        </div>
+                        <textarea
+                          readOnly
+                          value={outreachAnswers[q.id].answer}
+                          className="w-full h-32 text-xs text-text bg-white border border-border rounded p-2 resize-y font-mono"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="p-6 text-center text-text-secondary text-sm">
+                {outreachLoading
+                  ? "Searching for comparison questions..."
+                  : "Click \"Find Questions\" to search Reddit & Quora for comparison questions."}
               </div>
             )}
           </div>
