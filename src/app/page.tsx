@@ -1,39 +1,65 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
-import { getTrendingComparisons } from "@/lib/services/comparison-service";
+import { getTrendingComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
 
 export default async function HomePage() {
-  const trending = await getTrendingComparisons(10);
+  const [trending, totalCount] = await Promise.all([
+    getTrendingComparisons(10),
+    getTotalComparisonsCount(),
+  ]);
 
   return (
     <>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
+
+        {/* Floating gradient blobs */}
+        <div className="absolute top-10 left-10 w-72 h-72 bg-accent-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "4s" }} />
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-6 animate-slide-up">
               Compare{" "}
               <span className="bg-gradient-to-r from-accent-400 to-primary-300 bg-clip-text text-transparent">
                 Anything
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-6 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
               Sports players, countries, products, technology, history — get clear,
               visual, data-driven comparisons in seconds.
             </p>
 
+            {/* Animated counter */}
+            <div className="flex justify-center gap-8 mb-10 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-accent-400 to-white bg-clip-text text-transparent">
+                  {totalCount}+
+                </div>
+                <div className="text-xs sm:text-sm text-primary-200 mt-1">Comparisons</div>
+              </div>
+              <div className="w-px bg-white/20" />
+              <div className="text-center">
+                <div className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-white to-accent-400 bg-clip-text text-transparent">
+                  {CATEGORIES.length}
+                </div>
+                <div className="text-xs sm:text-sm text-primary-200 mt-1">Categories</div>
+              </div>
+            </div>
+
             {/* Search Box */}
-            <div id="search" className="max-w-2xl mx-auto">
+            <div id="search" className="max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.3s" }}>
               <SearchBox />
             </div>
 
             {/* Quick Examples */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
+            <div className="flex flex-wrap justify-center gap-2 mt-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
               {[
                 { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
                 { label: "Japan vs China", href: "/compare/japan-vs-china" },
@@ -111,36 +137,83 @@ export default async function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <h2 className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
           How It Works
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+          {/* Connecting line (desktop only) */}
+          <div className="hidden md:block absolute top-10 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200" />
+
           {[
             {
               step: "1",
               title: "Search or Browse",
               desc: "Type any two things you want to compare, or browse our categories.",
+              icon: (
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              ),
             },
             {
               step: "2",
               title: "Get Instant Answers",
               desc: "See key differences, structured tables, and visual comparisons at a glance.",
+              icon: (
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              ),
             },
             {
               step: "3",
               title: "Explore & Discover",
               desc: "Find related comparisons, alternatives, and deeper analysis.",
+              icon: (
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ),
             },
           ].map((item) => (
-            <div key={item.step} className="text-center">
-              <div className="w-12 h-12 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold">
-                {item.step}
+            <div key={item.step} className="relative text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-primary-200/50 relative z-10">
+                {item.icon}
+                <span className="absolute -top-2 -right-2 w-7 h-7 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
+                  {item.step}
+                </span>
               </div>
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-text-secondary text-sm leading-relaxed">{item.desc}</p>
+              <p className="text-text-secondary text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Trust Section */}
+      <section className="bg-surface-alt py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-text mb-4">
+            Trusted by Thousands
+          </h2>
+          <p className="text-text-secondary mb-10 max-w-2xl mx-auto">
+            Join thousands of users making informed decisions with clear, side-by-side comparisons across {CATEGORIES.length} categories.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {[
+              { value: `${totalCount}+`, label: "Comparisons", icon: "📊" },
+              { value: `${CATEGORIES.length}`, label: "Categories", icon: "📁" },
+              { value: "24/7", label: "Available", icon: "🕐" },
+              { value: "Free", label: "Always", icon: "💎" },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white rounded-xl p-5 shadow-sm border border-border">
+                <div className="text-2xl mb-2">{stat.icon}</div>
+                <div className="text-2xl font-bold text-primary-700">{stat.value}</div>
+                <div className="text-xs text-text-secondary mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

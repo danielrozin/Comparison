@@ -11,6 +11,31 @@ interface PopularComparison {
   category: string;
 }
 
+const CATEGORY_ICONS: Record<string, string> = {
+  sports: "⚽",
+  countries: "🌍",
+  technology: "💻",
+  products: "📦",
+  health: "💊",
+  finance: "💰",
+  education: "🎓",
+  entertainment: "🎬",
+  history: "📜",
+  military: "🎖️",
+  economy: "📈",
+  companies: "🏢",
+  brands: "🏷️",
+  celebrities: "⭐",
+};
+
+const TYPING_SUGGESTIONS = [
+  "Messi vs Ronaldo",
+  "iPhone vs Samsung",
+  "Python vs JavaScript",
+  "Japan vs China",
+  "Tesla vs BMW",
+];
+
 // Parse user input into two entities, supporting many formats
 function parseComparison(input: string): [string, string] | null {
   const trimmed = input.trim();
@@ -45,8 +70,18 @@ export function SearchBox() {
   const [query, setQuery] = useState("");
   const [popular, setPopular] = useState<PopularComparison[]>([]);
   const [showPopular, setShowPopular] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  // Cycle typing suggestions
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSuggestionIndex((prev) => (prev + 1) % TYPING_SUGGESTIONS.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch popular comparisons on mount
   useEffect(() => {
@@ -61,6 +96,7 @@ export function SearchBox() {
     function handleClick(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
         setShowPopular(false);
+        setIsFocused(false);
       }
     }
     document.addEventListener("mousedown", handleClick);
@@ -89,7 +125,13 @@ export function SearchBox() {
   return (
     <div ref={wrapperRef} className="relative">
       <form onSubmit={handleSearch} className="relative">
-        <div className="relative">
+        <div
+          className={`relative rounded-2xl transition-all duration-300 ${
+            isFocused
+              ? "ring-4 ring-primary-400/30 shadow-2xl shadow-primary-500/20"
+              : "shadow-2xl shadow-black/20"
+          }`}
+        >
           <svg
             className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
             fill="none"
@@ -107,23 +149,34 @@ export function SearchBox() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setShowPopular(true)}
-            placeholder='Try "Messi vs Ronaldo" or "Israel - Iran"'
-            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 shadow-2xl shadow-black/20 border-0 focus:ring-4 focus:ring-primary-400/30 outline-none transition-shadow"
+            onFocus={() => {
+              setShowPopular(true);
+              setIsFocused(true);
+            }}
+            onBlur={() => setIsFocused(false)}
+            placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
+            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 border-2 border-transparent focus:border-primary-400/50 outline-none transition-all duration-300"
             autoComplete="off"
           />
           <button
             type="submit"
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors text-sm sm:text-base"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all text-sm sm:text-base animate-pulse-subtle hover:animate-none"
           >
             Compare
           </button>
         </div>
       </form>
 
+      {/* Ghost text suggestion */}
+      {!query && !showPopular && (
+        <p className="absolute -bottom-7 left-0 right-0 text-center text-xs text-white/50 animate-fade-in">
+          Type anything — e.g. &quot;{TYPING_SUGGESTIONS[suggestionIndex]}&quot;
+        </p>
+      )}
+
       {/* Popular comparisons dropdown */}
       {showPopular && popular.length > 0 && !query && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-slide-up">
           <div className="px-4 py-2.5 border-b border-gray-100">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
@@ -140,11 +193,13 @@ export function SearchBox() {
                 onClick={() => setShowPopular(false)}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
-                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                <span className="text-base flex-shrink-0">
+                  {CATEGORY_ICONS[item.category.toLowerCase()] || "📊"}
+                </span>
                 <span className="text-sm text-gray-700 flex-1 truncate">{item.title}</span>
-                <span className="text-[10px] text-gray-400 capitalize flex-shrink-0">{item.category}</span>
+                <span className="text-[10px] text-gray-400 capitalize flex-shrink-0 bg-gray-100 px-2 py-0.5 rounded-full">
+                  {item.category}
+                </span>
               </Link>
             ))}
           </div>

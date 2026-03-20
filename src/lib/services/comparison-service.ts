@@ -738,3 +738,15 @@ export async function getComparisonHistory(
     return [];
   }
 }
+
+export async function getTotalComparisonsCount(): Promise<number> {
+  const prisma = getPrismaClient();
+  if (!prisma) return 107; // fallback
+  try {
+    return await prisma.comparison.count({
+      where: { status: "published" },
+    });
+  } catch {
+    return 107;
+  }
+}
