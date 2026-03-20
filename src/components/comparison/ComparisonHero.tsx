@@ -1,4 +1,57 @@
-import type { ComparisonPageData } from "@/types";
+import type { ComparisonPageData, ComparisonEntityData } from "@/types";
+import Image from "next/image";
+
+function EntityAvatar({
+  entity,
+  variant,
+}: {
+  entity: ComparisonEntityData;
+  variant: "a" | "b";
+}) {
+  const hasImage =
+    entity.imageUrl &&
+    !entity.imageUrl.includes("ui-avatars.com");
+
+  const gradientClass =
+    variant === "a"
+      ? "from-primary-100 to-primary-200"
+      : "from-accent-50 to-accent-400/30";
+  const textClass =
+    variant === "a" ? "text-primary-700" : "text-accent-600";
+
+  if (hasImage) {
+    return (
+      <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-full overflow-hidden mx-auto mb-2 sm:mb-4 ring-2 ring-white shadow-md">
+        <Image
+          src={entity.imageUrl!}
+          alt={entity.name}
+          width={80}
+          height={80}
+          className="w-full h-full object-cover"
+          unoptimized
+        />
+      </div>
+    );
+  }
+
+  // Fallback: show initials
+  const initials = entity.name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w.charAt(0))
+    .join("")
+    .toUpperCase();
+
+  return (
+    <div
+      className={`w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br ${gradientClass} rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4`}
+    >
+      <span className={`text-xl sm:text-3xl font-bold ${textClass}`}>
+        {initials || entity.name.charAt(0)}
+      </span>
+    </div>
+  );
+}
 
 export function ComparisonHero({ comparison }: { comparison: ComparisonPageData }) {
   const entityA = comparison.entities[0];
@@ -36,11 +89,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
       <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-6 items-start">
         {/* Entity A */}
         <div className="bg-white border border-border rounded-xl p-3 sm:p-6 text-center">
-          <div className="w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4">
-            <span className="text-xl sm:text-3xl font-bold text-primary-700">
-              {entityA.name.charAt(0)}
-            </span>
-          </div>
+          <EntityAvatar entity={entityA} variant="a" />
           <h3 className="text-sm sm:text-xl font-bold text-text mb-1">{entityA.name}</h3>
           {entityA.shortDesc && (
             <p className="text-xs sm:text-sm text-text-secondary leading-snug hidden sm:block">{entityA.shortDesc}</p>
@@ -61,11 +110,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Entity B */}
         <div className="bg-white border border-border rounded-xl p-3 sm:p-6 text-center">
-          <div className="w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-accent-50 to-accent-400/30 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4">
-            <span className="text-xl sm:text-3xl font-bold text-accent-600">
-              {entityB.name.charAt(0)}
-            </span>
-          </div>
+          <EntityAvatar entity={entityB} variant="b" />
           <h3 className="text-sm sm:text-xl font-bold text-text mb-1">{entityB.name}</h3>
           {entityB.shortDesc && (
             <p className="text-xs sm:text-sm text-text-secondary leading-snug hidden sm:block">{entityB.shortDesc}</p>
