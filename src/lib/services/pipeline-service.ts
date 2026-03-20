@@ -11,6 +11,7 @@ import {
   type DiscoveredOpportunity,
 } from "@/lib/dataforseo/keyword-discovery";
 import { generateComparison } from "./ai-comparison-generator";
+import { saveComparison, getComparisonBySlug } from "./comparison-service";
 
 // Redis key constants
 const REDIS_KEY_OPPORTUNITIES = "pipeline:opportunities";
@@ -113,12 +114,14 @@ export async function mergeOpportunities(
 
 /**
  * Take top N discovered opportunities and generate comparisons via Claude.
+ * Saves generated comparisons to both Redis and PostgreSQL database.
  */
 export async function runGeneration(
   limit: number = 5
-): Promise<{ generated: number; errors: string[] }> {
+): Promise<{ generated: number; errors: string[]; slugs: string[] }> {
   const opportunities = await getStoredOpportunities();
   const errors: string[] = [];
+  const slugs: string[] = [];
   let generated = 0;
 
   // Take top N by opportunityScore that have both entities parsed
@@ -132,7 +135,13 @@ export async function runGeneration(
     try {
       const slug = makeSlug(opp.entityA!, opp.entityB!);
 
-      // Skip if already generated
+      // Skip if already exists in DB
+      const existingInDb = await getComparisonBySlug(slug);
+      if (existingInDb) {
+        continue;
+      }
+
+      // Skip if already generated in Redis (as a cache)
       if (redis) {
         const existing = await redis.get(generatedKey(slug));
         if (existing) {
@@ -143,13 +152,23 @@ export async function runGeneration(
       const result = await generateComparison(opp.entityA!, opp.entityB!, slug);
 
       if (result.success && result.comparison) {
+        // Save to PostgreSQL database (persistent)
+        try {
+          await saveComparison(result.comparison);
+        } catch (dbErr) {
+          console.warn(`DB save failed for ${slug}, saved to Redis only:`, dbErr);
+        }
+
+        // Also save to Redis as cache
         if (redis) {
           await redis.set(
             generatedKey(slug),
             JSON.stringify(result.comparison)
           );
         }
+
         generated++;
+        slugs.push(slug);
       } else {
         errors.push(`${opp.keyword}: ${result.error || "Generation failed"}`);
       }
@@ -160,7 +179,7 @@ export async function runGeneration(
     }
   }
 
-  return { generated, errors };
+  return { generated, errors, slugs };
 }
 
 /**

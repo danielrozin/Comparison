@@ -58,9 +58,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Generation phase
+    let newSlugs: string[] = [];
     if (mode === "generate" || mode === "full") {
       const genResult = await runGeneration(limit);
       generated = genResult.generated;
+      newSlugs = genResult.slugs;
       errors.push(...genResult.errors);
     }
 
@@ -76,6 +78,7 @@ export async function POST(request: NextRequest) {
       success: true,
       discovered,
       generated,
+      newPages: newSlugs,
       errors,
       runId: run.id,
       duration: `${Date.now() - new Date(run.startedAt).getTime()}ms`,
