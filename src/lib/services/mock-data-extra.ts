@@ -1705,6 +1705,31 @@ const DEFS: CompactDef[] = [
     related: [["capitalism-vs-socialism", "Capitalism vs Socialism", "economy"], ["usa-vs-china", "USA vs China", "countries"]],
     views: 256700,
   },
+  // ===== AUTOMOTIVE =====
+  {
+    slug: "mercedes-vs-bmw", title: "Mercedes vs BMW", category: "automotive",
+    shortAnswer: "Mercedes-Benz excels in luxury comfort, interior quality, and cutting-edge technology. BMW is known for superior driving dynamics, sportier handling, and more engaging performance. Both are premier German luxury automakers.",
+    verdict: "Choose Mercedes for luxury and comfort. Choose BMW for driving pleasure and performance. Both offer excellent build quality and prestige.",
+    entityA: { name: "Mercedes-Benz", slug: "mercedes-benz", type: "brand", desc: "German luxury automaker, known for comfort and innovation", pros: ["Superior interior luxury", "More advanced tech features", "Smoother ride quality", "Better autonomous driving (Drive Pilot)", "Stronger brand prestige globally"], cons: ["More expensive maintenance", "Less sporty handling", "Complex infotainment system", "Higher depreciation on some models"], bestFor: "Buyers who prioritize luxury, comfort, and cutting-edge technology" },
+    entityB: { name: "BMW", slug: "bmw", type: "brand", desc: "German luxury automaker, 'Ultimate Driving Machine'", pros: ["Best-in-class driving dynamics", "More engaging steering feel", "Better weight distribution (50/50)", "iDrive infotainment is more intuitive", "Better resale value on M models"], cons: ["Firmer ride on sport models", "Interior not as luxurious", "Subscription controversies", "Some models less reliable"], bestFor: "Buyers who want a luxury car that's exciting to drive" },
+    diffs: [["Starting Price (Sedan)", "$44,400 (C-Class)", "$42,000 (3 Series)", "b"], ["Horsepower (Base)", "255 HP", "255 HP", "tie"], ["Interior Quality", "Superior", "Very Good", "a"], ["Driving Dynamics", "Comfortable", "Sporty", "b"], ["Technology", "MBUX + Drive Pilot", "iDrive 9", "a"], ["Global Sales (2025)", "2.1M", "2.0M", "a"]],
+    attrs: [
+      { name: "Global Sales", cat: "Market", unit: "million", a: "2.1M", an: 2100000, b: "2.0M", bn: 2000000, w: "a" },
+      { name: "Starting Price", cat: "Pricing", unit: "USD", a: "$44,400", an: 44400, b: "$42,000", bn: 42000 },
+      { name: "Horsepower (Base Sedan)", cat: "Performance", unit: "HP", a: "255", an: 255, b: "255", bn: 255 },
+      { name: "0-60 mph", cat: "Performance", unit: "seconds", a: "5.9s", an: 5.9, b: "5.6s", bn: 5.6, w: "b" },
+      { name: "J.D. Power Reliability", cat: "Reliability", a: "Average", b: "Average" },
+      { name: "EV Option", cat: "Electric", a: "EQS, EQE, EQB", b: "i4, i5, i7, iX" },
+    ],
+    faqs: [
+      ["Is Mercedes or BMW more reliable?", "Both brands rank similarly in reliability surveys. Mercedes has improved significantly in recent years. BMW's newer models have good reliability, but older models (especially with turbocharged engines) can be costly to repair."],
+      ["Which is cheaper to maintain?", "BMW is slightly cheaper for basic maintenance due to free scheduled maintenance programs. Mercedes maintenance costs are higher but include more premium service. Both are significantly more expensive than non-luxury brands."],
+      ["Which has better resale value?", "BMW generally holds value slightly better, especially M models and the 3 Series. Mercedes S-Class and AMG models hold value well. Both depreciate more than Toyota/Lexus."],
+      ["What are the best alternatives to Mercedes?", "Top alternatives include BMW (sporty luxury), Audi (tech-focused luxury), Lexus (reliable luxury), Genesis (value luxury), and Porsche (performance luxury). Each offers a different take on premium driving."],
+    ],
+    related: [["toyota-vs-honda", "Toyota vs Honda", "brands"], ["tesla-vs-ford", "Tesla vs Ford", "companies"], ["bmw-vs-mercedes", "BMW vs Mercedes-Benz", "automotive"]],
+    views: 445000,
+  },
 ];
 
 export function getExtraComparisons(): Record<string, ComparisonPageData> {

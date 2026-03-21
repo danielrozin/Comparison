@@ -41,6 +41,8 @@ export const CATEGORIES = [
   { slug: "companies", name: "Companies", icon: "🏢" },
   { slug: "brands", name: "Brands", icon: "🏷️" },
   { slug: "celebrities", name: "Celebrities", icon: "⭐" },
+  { slug: "automotive", name: "Automotive", icon: "🚗" },
+  { slug: "travel", name: "Travel", icon: "✈️" },
 ] as const;
 
 export const PAGE_SIZES = {
