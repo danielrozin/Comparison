@@ -2068,3 +2068,24 @@ export function getMockComparisonsByCategory(category: string): ComparisonPageDa
     (comp) => comp.category?.toLowerCase() === category.toLowerCase()
   );
 }
+
+export function getMockLatest(limit: number): TrendingComparison[] {
+  // Return comparisons sorted by updatedAt (most recently updated first)
+  // These simulate "latest" comparisons distinct from the trending list
+  const allComps = Object.values(MOCK_COMPARISONS);
+  const sorted = allComps
+    .sort((a, b) => {
+      const dateA = a.metadata?.updatedAt ? new Date(a.metadata.updatedAt).getTime() : 0;
+      const dateB = b.metadata?.updatedAt ? new Date(b.metadata.updatedAt).getTime() : 0;
+      return dateB - dateA;
+    })
+    .slice(0, limit);
+  return sorted.map((comp) => ({
+    slug: comp.slug,
+    title: comp.title,
+    category: comp.category || "general",
+    viewCount: comp.metadata?.viewCount || 0,
+    entityImages: [],
+    updatedAt: comp.metadata?.updatedAt || null,
+  }));
+}

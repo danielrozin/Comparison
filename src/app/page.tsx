@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
-import { getTrendingComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
+import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
+import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
 
 export default async function HomePage() {
-  const [trending, totalCount] = await Promise.all([
+  const [trending, latest, totalCount, blogResult] = await Promise.all([
     getTrendingComparisons(10),
+    getLatestComparisons(8),
     getTotalComparisonsCount(),
+    listBlogArticles({ limit: 3, status: "published" }),
   ]);
+  const blogArticles = blogResult.articles;
 
   return (
     <>
@@ -116,8 +120,59 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Categories */}
+      {/* Latest Comparisons */}
       <section className="bg-surface-alt py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+                Latest Comparisons
+              </h2>
+              <p className="text-text-secondary mt-1">Recently added and updated comparisons</p>
+            </div>
+            <Link
+              href="/trending"
+              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              View all &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {latest.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/compare/${item.slug}`}
+                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 p-5 flex flex-col"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 capitalize">
+                    {item.category}
+                  </span>
+                  {item.updatedAt && (
+                    <span className="text-xs text-text-secondary">
+                      {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    </span>
+                  )}
+                </div>
+                <h3 className="font-semibold text-text group-hover:text-primary-600 transition-colors mb-2">
+                  {item.title}
+                </h3>
+                <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  {item.viewCount.toLocaleString()} views
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="bg-surface py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
@@ -216,6 +271,70 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* From the Blog */}
+      {blogArticles.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+                From the Blog
+              </h2>
+              <p className="text-text-secondary mt-1">Expert guides and in-depth analyses</p>
+            </div>
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              View all articles &rarr;
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {blogArticles.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/blog/${article.slug}`}
+                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col"
+              >
+                <div className="h-2 bg-gradient-to-r from-primary-500 to-indigo-500" />
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-3">
+                    {article.category && (
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 capitalize">
+                        {article.category}
+                      </span>
+                    )}
+                    <span className="text-xs text-text-secondary">
+                      {Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200))} min read
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-text group-hover:text-primary-600 transition-colors mb-2 line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-sm text-text-secondary flex-1 line-clamp-3 mb-4">
+                    {article.excerpt}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
+                    <span>
+                      {article.publishedAt
+                        ? new Date(article.publishedAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : ""}
+                    </span>
+                    <span className="text-primary-600 font-medium group-hover:underline">
+                      Read more &rarr;
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="bg-primary-600 text-white py-16">

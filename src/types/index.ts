@@ -94,6 +94,7 @@ export interface TrendingComparison {
   category: string;
   viewCount: number;
   entityImages: string[];
+  updatedAt?: string | null;
 }
 
 export interface CategoryData {
