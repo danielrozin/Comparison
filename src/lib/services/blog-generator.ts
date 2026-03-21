@@ -421,48 +421,58 @@ export async function listBlogArticles(params: {
       prisma.blogArticle.count({ where }),
     ]);
 
-    return {
-      articles: articles.map(
-        (a: {
-          id: string;
-          slug: string;
-          title: string;
-          excerpt: string | null;
-          content: string;
-          category: string | null;
-          tags: string[];
-          metaTitle: string | null;
-          metaDescription: string | null;
-          relatedComparisonSlugs: string[];
-          sourceQuery: string | null;
-          sourceImpressions: number | null;
-          status: string;
-          publishedAt: Date | null;
-          createdAt: Date;
-          updatedAt: Date;
-          viewCount: number;
-        }) => ({
-          id: a.id,
-          slug: a.slug,
-          title: a.title,
-          excerpt: a.excerpt || "",
-          content: a.content,
-          category: a.category || "",
-          tags: a.tags || [],
-          metaTitle: a.metaTitle || a.title,
-          metaDescription: a.metaDescription || "",
-          relatedComparisonSlugs: a.relatedComparisonSlugs || [],
-          status: a.status,
-          publishedAt: a.publishedAt,
-          createdAt: a.createdAt,
-          updatedAt: a.updatedAt,
-          viewCount: a.viewCount,
-        })
-      ),
-      total,
-    };
+    if (total > 0) {
+      return {
+        articles: articles.map(
+          (a: {
+            id: string;
+            slug: string;
+            title: string;
+            excerpt: string | null;
+            content: string;
+            category: string | null;
+            tags: string[];
+            metaTitle: string | null;
+            metaDescription: string | null;
+            relatedComparisonSlugs: string[];
+            sourceQuery: string | null;
+            sourceImpressions: number | null;
+            status: string;
+            publishedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
+            viewCount: number;
+          }) => ({
+            id: a.id,
+            slug: a.slug,
+            title: a.title,
+            excerpt: a.excerpt || "",
+            content: a.content,
+            category: a.category || "",
+            tags: a.tags || [],
+            metaTitle: a.metaTitle || a.title,
+            metaDescription: a.metaDescription || "",
+            relatedComparisonSlugs: a.relatedComparisonSlugs || [],
+            status: a.status,
+            publishedAt: a.publishedAt,
+            createdAt: a.createdAt,
+            updatedAt: a.updatedAt,
+            viewCount: a.viewCount,
+          })
+        ),
+        total,
+      };
+    }
   } catch (e) {
     console.error("Failed to list blog articles:", e);
-    return { articles: [], total: 0 };
   }
+
+  // Fallback to mock articles when DB is empty or query fails
+  const { category: cat, limit: lim = 12, offset: off = 0 } = params;
+  let filtered = MOCK_BLOG_ARTICLES.filter((a) => a.status === "published");
+  if (cat) filtered = filtered.filter((a) => a.category === cat);
+  return {
+    articles: filtered.slice(off, off + lim),
+    total: filtered.length,
+  };
 }
