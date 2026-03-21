@@ -213,7 +213,11 @@ export async function getBlogBySlug(
   }
 
   // Fallback to mock articles when DB returns null or query fails
-  return MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) || null;
+  const article = MOCK_BLOG_ARTICLES.find((a) => a.slug === slug);
+  if (article && article.publishedAt && new Date(article.publishedAt).getTime() > Date.now()) {
+    return null; // Not yet published
+  }
+  return article || null;
 }
 
 const MOCK_BLOG_ARTICLES: BlogArticle[] = [
@@ -653,7 +657,10 @@ export async function listBlogArticles(params: {
 
   // Fallback to mock articles when DB is empty or query fails
   const { category: cat, limit: lim = 12, offset: off = 0 } = params;
-  let filtered = MOCK_BLOG_ARTICLES.filter((a) => a.status === "published");
+  const now = Date.now();
+  let filtered = MOCK_BLOG_ARTICLES.filter(
+    (a) => a.status === "published" && (!a.publishedAt || new Date(a.publishedAt).getTime() <= now)
+  );
   if (cat) filtered = filtered.filter((a) => a.category === cat);
   return {
     articles: filtered.slice(off, off + lim),
