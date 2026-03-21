@@ -187,31 +187,33 @@ export async function getBlogBySlug(
     const article = await prisma.blogArticle.findUnique({
       where: { slug },
     });
-    if (!article) return null;
-
-    return {
-      id: article.id,
-      slug: article.slug,
-      title: article.title,
-      excerpt: article.excerpt || "",
-      content: article.content,
-      category: article.category || "",
-      tags: article.tags || [],
-      metaTitle: article.metaTitle || article.title,
-      metaDescription: article.metaDescription || "",
-      relatedComparisonSlugs: article.relatedComparisonSlugs || [],
-      sourceQuery: article.sourceQuery || undefined,
-      sourceImpressions: article.sourceImpressions || undefined,
-      status: article.status,
-      publishedAt: article.publishedAt,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      viewCount: article.viewCount,
-    };
+    if (article) {
+      return {
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        excerpt: article.excerpt || "",
+        content: article.content,
+        category: article.category || "",
+        tags: article.tags || [],
+        metaTitle: article.metaTitle || article.title,
+        metaDescription: article.metaDescription || "",
+        relatedComparisonSlugs: article.relatedComparisonSlugs || [],
+        sourceQuery: article.sourceQuery || undefined,
+        sourceImpressions: article.sourceImpressions || undefined,
+        status: article.status,
+        publishedAt: article.publishedAt,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+        viewCount: article.viewCount,
+      };
+    }
   } catch (e) {
     console.error("Failed to get blog article:", e);
-    return null;
   }
+
+  // Fallback to mock articles when DB returns null or query fails
+  return MOCK_BLOG_ARTICLES.find((a) => a.slug === slug) || null;
 }
 
 const MOCK_BLOG_ARTICLES: BlogArticle[] = [
