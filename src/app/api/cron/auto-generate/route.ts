@@ -1,24 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { runGeneration, recordPipelineRun, mergeOpportunities } from "@/lib/services/pipeline-service";
+import { recordPipelineRun, mergeOpportunities } from "@/lib/services/pipeline-service";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { discoverTopics } from "@/lib/services/content-discovery";
 import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-generator";
+import { generateComparison } from "@/lib/services/ai-comparison-generator";
+import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
-export const maxDuration = 300; // 5 minutes — enough for discovery + generation
+export const maxDuration = 300; // 5 minutes
 
 /**
  * GET /api/cron/auto-generate
  *
  * Automated cron job that runs the full content velocity pipeline:
  * 1. Discovers new topics from Reddit, Quora, Tavily, and DataForSEO
- * 2. Separates into comparisons and blog topics
- * 3. Generates comparisons via Claude AI (with Tavily real-time data enrichment)
- * 4. Generates blog articles for blog-type topics
- * 5. Saves new pages to PostgreSQL database
- * 6. Sends an email report
- *
- * Triggered by Vercel Cron (vercel.json) twice daily at 6am and 6pm UTC.
+ * 2. Generates comparisons directly from discovered topics via Claude AI
+ * 3. Generates blog articles for blog-type topics
+ * 4. Saves new pages to PostgreSQL database
+ * 5. Sends an email report
  */
 export async function GET(request: NextRequest) {
   // Verify cron secret
@@ -42,15 +41,20 @@ export async function GET(request: NextRequest) {
 
   let discoveredCount = 0;
   const allErrors: string[] = [];
+  const sourceBreakdown: Record<string, number> = {};
 
   // Step 1: Discover topics from all sources (Reddit, Quora, Tavily, DataForSEO)
-  let comparisonTopics: typeof topics = [];
-  let blogTopics: typeof topics = [];
-  let topics: Awaited<ReturnType<typeof discoverTopics>> = [];
+  let comparisonTopics: Awaited<ReturnType<typeof discoverTopics>> = [];
+  let blogTopics: Awaited<ReturnType<typeof discoverTopics>> = [];
 
   try {
-    topics = await discoverTopics({ categories: [category], limit: 50 });
+    const topics = await discoverTopics({ categories: [category], limit: 50 });
     discoveredCount = topics.length;
+
+    // Track source breakdown
+    for (const t of topics) {
+      sourceBreakdown[t.source] = (sourceBreakdown[t.source] || 0) + 1;
+    }
 
     // Separate into comparisons and blog topics
     comparisonTopics = topics.filter(t => t.type === "comparison" && t.entityA && t.entityB);
@@ -59,7 +63,7 @@ export async function GET(request: NextRequest) {
     allErrors.push(`Discovery failed: ${err instanceof Error ? err.message : "Unknown"}`);
   }
 
-  // Step 2: Feed comparison topics into the pipeline (merge with existing opportunities)
+  // Step 2: Also try to store in Redis if available (non-blocking)
   try {
     if (comparisonTopics.length > 0) {
       const asOpportunities: DiscoveredOpportunity[] = comparisonTopics.map(t => ({
@@ -78,20 +82,39 @@ export async function GET(request: NextRequest) {
       }));
       await mergeOpportunities(asOpportunities);
     }
-  } catch (err) {
-    allErrors.push(`Merge opportunities failed: ${err instanceof Error ? err.message : "Unknown"}`);
+  } catch {
+    // Redis storage is optional — pipeline works without it
   }
 
-  // Step 3: Generate top 10 comparisons from discovered opportunities
+  // Step 3: Generate comparisons DIRECTLY from discovered topics (no Redis dependency)
   let generatedCount = 0;
-  let generatedSlugs: string[] = [];
-  try {
-    const genResult = await runGeneration(10);
-    generatedCount = genResult.generated;
-    generatedSlugs = genResult.slugs;
-    allErrors.push(...genResult.errors);
-  } catch (err) {
-    allErrors.push(`Generation failed: ${err instanceof Error ? err.message : "Unknown"}`);
+  const generatedSlugs: string[] = [];
+  const compLimit = 5; // Generate up to 5 comparisons per run
+
+  for (const topic of comparisonTopics.slice(0, compLimit)) {
+    try {
+      const slug = `${slugify(topic.entityA!)}-vs-${slugify(topic.entityB!)}`;
+
+      // Skip if already exists
+      const existing = await getComparisonBySlug(slug);
+      if (existing) continue;
+
+      const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
+
+      if (result.success && result.comparison) {
+        try {
+          await saveComparison(result.comparison);
+          generatedCount++;
+          generatedSlugs.push(slug);
+        } catch (dbErr) {
+          allErrors.push(`DB save "${slug}": ${dbErr instanceof Error ? dbErr.message : "Unknown"}`);
+        }
+      } else {
+        allErrors.push(`Generate "${slug}": ${result.error || "Failed"}`);
+      }
+    } catch (err) {
+      allErrors.push(`"${topic.entityA} vs ${topic.entityB}": ${err instanceof Error ? err.message : "Unknown"}`);
+    }
   }
 
   // Step 4: Generate blog articles from blog topics (up to 3 per run)
@@ -114,16 +137,20 @@ export async function GET(request: NextRequest) {
 
   const duration = Date.now() - startTime;
 
-  // Step 5: Record the pipeline run
-  await recordPipelineRun({
-    id: runId,
-    mode: "full",
-    startedAt: new Date(startTime).toISOString(),
-    completedAt: new Date().toISOString(),
-    discovered: discoveredCount,
-    generated: generatedCount + blogArticlesCreated,
-    errors: allErrors,
-  });
+  // Step 5: Record the pipeline run (if Redis is available)
+  try {
+    await recordPipelineRun({
+      id: runId,
+      mode: "full",
+      startedAt: new Date(startTime).toISOString(),
+      completedAt: new Date().toISOString(),
+      discovered: discoveredCount,
+      generated: generatedCount + blogArticlesCreated,
+      errors: allErrors,
+    });
+  } catch {
+    // Non-critical
+  }
 
   // Step 6: Send email report
   const newCompPages = generatedSlugs.map(
@@ -132,11 +159,6 @@ export async function GET(request: NextRequest) {
   const newBlogPages = blogSlugs.map(
     (slug) => `  - https://www.aversusb.net/blog/${slug}`
   );
-
-  const sourceBreakdown = topics.reduce((acc, t) => {
-    acc[t.source] = (acc[t.source] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
 
   const report = `Auto-Generation Pipeline Report
 ========================================
@@ -158,7 +180,6 @@ ${newCompPages.length > 0 ? `\nNew Comparison Pages:\n${newCompPages.join("\n")}
 ${newBlogPages.length > 0 ? `\nNew Blog Articles:\n${newBlogPages.join("\n")}` : ""}
 ${allErrors.length > 0 ? `\nErrors (${allErrors.length}):\n${allErrors.map((e) => `  - ${e}`).join("\n")}` : "\nNo errors!"}
 
-Total comparisons on site: growing daily
 Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
 `;
 
@@ -187,4 +208,14 @@ Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
     errors: allErrors,
     timestamp: new Date().toISOString(),
   });
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60);
 }
