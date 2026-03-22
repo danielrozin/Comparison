@@ -743,47 +743,8 @@ export async function getComparisonHistory(
 export async function getLatestComparisons(
   limit: number = 8
 ): Promise<TrendingComparison[]> {
-  const prisma = getPrismaClient();
-  if (prisma) {
-    try {
-      const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
-        orderBy: { updatedAt: "desc" },
-        take: limit,
-        include: {
-          entities: {
-            include: {
-              entity: { select: { imageUrl: true } },
-            },
-            orderBy: { position: "asc" },
-          },
-        },
-      });
-      if (rows.length > 0) {
-        return rows.map(
-          (r: {
-            slug: string;
-            title: string;
-            category: string | null;
-            viewCount: number;
-            updatedAt: Date;
-            entities: { entity: { imageUrl: string | null } }[];
-          }) => ({
-            slug: r.slug,
-            title: r.title,
-            category: r.category || "general",
-            viewCount: r.viewCount,
-            entityImages: r.entities
-              .map((e: { entity: { imageUrl: string | null } }) => e.entity.imageUrl)
-              .filter(Boolean) as string[],
-            updatedAt: r.updatedAt.toISOString(),
-          })
-        );
-      }
-    } catch (e) {
-      console.warn("Prisma query failed for getLatestComparisons, falling back to mock:", e);
-    }
-  }
+  // Always use mock data for latest — it contains all curated + scheduled content
+  // DB comparisons are merged into mock via the pipeline, so mock is the source of truth
   return getMockLatest(limit);
 }
 
