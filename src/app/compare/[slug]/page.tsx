@@ -17,6 +17,8 @@ import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
+import { ResourcesSection } from "@/components/comparison/ResourcesSection";
+import { generateResources } from "@/lib/services/resources";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 
 interface PageProps {
@@ -179,6 +181,11 @@ export default async function ComparisonPage({ params }: PageProps) {
 
       {/* FAQ */}
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+
+      {/* Resources & Learn More */}
+      <ResourcesSection
+        resources={generateResources(comparison.slug, comparison.entities)}
+      />
 
       {/* Related Comparisons */}
       {comparison.relatedComparisons.length > 0 && (

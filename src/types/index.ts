@@ -15,6 +15,14 @@ export interface ComparisonPageData {
   faqs: FAQData[];
   relatedComparisons: RelatedComparison[];
   metadata: ComparisonMetadata;
+  resources?: ComparisonResource[];
+}
+
+export interface ComparisonResource {
+  type: "wikipedia" | "blog" | "external";
+  label: string;
+  url: string;
+  description?: string;
 }
 
 export interface ComparisonEntityData {
