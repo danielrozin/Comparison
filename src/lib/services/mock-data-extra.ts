@@ -1730,7 +1730,7 @@ const DEFS: CompactDef[] = [
       ["How effective is Iron Dome against Iranian missiles?", "Iron Dome has a 90%+ interception rate against short-range rockets. For ballistic missiles, Israel uses David's Sling and Arrow systems. A mass salvo of 3,000+ missiles could overwhelm defenses."],
     ],
     related: [["us-military-vs-iran-military", "US Military vs Iran Military", "military"], ["usa-vs-china", "USA vs China", "countries"], ["us-military-vs-china-military", "US Military vs China Military", "military"]],
-    views: 890000, publishAt: "2026-03-22T06:00:00Z",
+    views: 890000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "us-military-vs-iran-military", title: "US Military vs Iran Military", category: "military",
@@ -1752,7 +1752,7 @@ const DEFS: CompactDef[] = [
       ["What weapons is the US using against Iran?", "The US has deployed B-2 stealth bombers with GBU-57 bunker busters, F-35s, Tomahawk cruise missiles from naval vessels, and carrier-based aircraft for strikes against nuclear and military facilities."],
     ],
     related: [["israel-vs-iran-military", "Israel vs Iran Military", "military"], ["us-military-vs-china-military", "US Military vs China Military", "military"], ["russia-vs-usa", "Russia vs USA", "countries"]],
-    views: 780000, publishAt: "2026-03-22T06:00:00Z",
+    views: 780000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "f-35-vs-su-57", title: "F-35 vs Su-57", category: "military",
@@ -1773,7 +1773,7 @@ const DEFS: CompactDef[] = [
       ["How many Su-57s does Russia have?", "Russia has approximately 30 Su-57s as of 2026, with plans for 76 by 2028. Production has been slow due to engine issues and sanctions. Compare this to 1,000+ F-35s delivered worldwide."],
     ],
     related: [["f-22-vs-f-35", "F-22 vs F-35", "military"], ["f-15-vs-f-16", "F-15 vs F-16", "military"], ["israel-vs-iran-military", "Israel vs Iran Military", "military"]],
-    views: 567000, publishAt: "2026-03-22T06:00:00Z",
+    views: 567000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "f-22-vs-f-35", title: "F-22 Raptor vs F-35 Lightning II", category: "military",
@@ -1793,7 +1793,7 @@ const DEFS: CompactDef[] = [
       ["Why did the US stop making F-22s?", "Production ended in 2011 at 187 units due to high costs ($150M+ each), lack of peer adversary at the time, and a shift toward the more affordable, multi-role F-35 program."],
     ],
     related: [["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["f-15-vs-f-16", "F-15 vs F-16", "military"], ["b-2-vs-b-52", "B-2 vs B-52", "military"]],
-    views: 445000, publishAt: "2026-03-22T06:00:00Z",
+    views: 445000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "b-2-vs-b-52", title: "B-2 Spirit vs B-52 Stratofortress", category: "military",
@@ -1814,7 +1814,7 @@ const DEFS: CompactDef[] = [
       ["What is the GBU-57?", "The GBU-57 Massive Ordnance Penetrator is a 30,000-lb bomb designed to destroy deeply buried targets. Only the B-2 can carry it. It can penetrate 200+ feet of earth or 60 feet of reinforced concrete."],
     ],
     related: [["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["us-military-vs-iran-military", "US Military vs Iran Military", "military"], ["f-22-vs-f-35", "F-22 vs F-35", "military"]],
-    views: 534000, publishAt: "2026-03-22T06:00:00Z",
+    views: 534000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "m1-abrams-vs-t-90", title: "M1 Abrams vs T-90", category: "military",
@@ -1834,7 +1834,7 @@ const DEFS: CompactDef[] = [
       ["How did they perform in Ukraine?", "Both have been used in Ukraine. Abrams (supplied to Ukraine) proved vulnerable to drones and ATGMs when used without infantry support. T-90Ms have also been destroyed but performed better than older Russian tanks."],
     ],
     related: [["leopard-2-vs-t-90", "Leopard 2 vs T-90", "military"], ["us-military-vs-iran-military", "US Military vs Iran Military", "military"], ["israel-vs-iran-military", "Israel vs Iran Military", "military"]],
-    views: 412000, publishAt: "2026-03-22T06:00:00Z",
+    views: 412000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "iron-dome-vs-s-400", title: "Iron Dome vs S-400", category: "military",
@@ -1854,7 +1854,7 @@ const DEFS: CompactDef[] = [
       ["Can the S-400 shoot down an F-35?", "This is disputed. Russia claims yes. Western analysts are skeptical, as the F-35's stealth and electronic warfare capabilities are designed specifically to defeat systems like the S-400. No S-400 has successfully engaged an F-35 in combat."],
     ],
     related: [["israel-vs-iran-military", "Israel vs Iran Military", "military"], ["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["patriot-vs-s-300", "Patriot vs S-300", "military"]],
-    views: 478000, publishAt: "2026-03-22T06:00:00Z",
+    views: 478000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "f-15-vs-f-16", title: "F-15 Eagle vs F-16 Fighting Falcon", category: "military",
@@ -1875,7 +1875,7 @@ const DEFS: CompactDef[] = [
       ["Which is better in a dogfight?", "The F-16 is more agile in a turning fight. The F-15 has more energy and can dictate the engagement with its speed and altitude advantage. In BVR (beyond visual range), the F-15's more powerful radar wins."],
     ],
     related: [["f-22-vs-f-35", "F-22 vs F-35", "military"], ["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["israel-vs-iran-military", "Israel vs Iran Military", "military"]],
-    views: 389000, publishAt: "2026-03-22T06:00:00Z",
+    views: 389000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "patriot-vs-s-300", title: "Patriot vs S-300", category: "military",
@@ -1894,7 +1894,7 @@ const DEFS: CompactDef[] = [
       ["Which performed better in combat?", "Patriot has a much better combat record, especially with PAC-3 interceptors in Ukraine and the Middle East. S-300 systems in Syria failed to prevent Israeli strikes, though Syria's crews may have been poorly trained."],
     ],
     related: [["iron-dome-vs-s-400", "Iron Dome vs S-400", "military"], ["israel-vs-iran-military", "Israel vs Iran Military", "military"], ["us-military-vs-iran-military", "US Military vs Iran Military", "military"]],
-    views: 312000, publishAt: "2026-03-22T06:00:00Z",
+    views: 312000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "apache-vs-ka-52", title: "Apache AH-64E vs Ka-52 Alligator", category: "military",
@@ -1913,7 +1913,7 @@ const DEFS: CompactDef[] = [
       ["Which performed better in real combat?", "The Apache has a decades-long proven track record. Ka-52 suffered significant losses in Ukraine (30+ destroyed) from MANPADS and air defenses, though it proved effective when used with proper support."],
     ],
     related: [["f-15-vs-f-16", "F-15 vs F-16", "military"], ["m1-abrams-vs-t-90", "M1 Abrams vs T-90", "military"], ["us-military-vs-iran-military", "US Military vs Iran Military", "military"]],
-    views: 267000, publishAt: "2026-03-22T06:00:00Z",
+    views: 267000, publishAt: "2026-03-21T00:00:00Z",
   },
   {
     slug: "barrett-m82-vs-dragunov", title: "Barrett M82 vs Dragunov SVD", category: "military",
@@ -1933,7 +1933,7 @@ const DEFS: CompactDef[] = [
       ["Which is better for sniping?", "For anti-personnel sniping, the Dragunov is more practical — lighter, quieter, and adequate range. For extreme-range anti-materiel work (destroying equipment), the Barrett is unmatched. Modern military snipers often have access to both types."],
     ],
     related: [["m1-abrams-vs-t-90", "M1 Abrams vs T-90", "military"], ["apache-vs-ka-52", "Apache vs Ka-52", "military"], ["us-military-vs-iran-military", "US Military vs Iran Military", "military"]],
-    views: 198000, publishAt: "2026-03-22T06:00:00Z",
+    views: 198000, publishAt: "2026-03-21T00:00:00Z",
   },
   // ===== AUTOMOTIVE =====
   {
