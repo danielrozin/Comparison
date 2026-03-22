@@ -1960,6 +1960,31 @@ const DEFS: CompactDef[] = [
     related: [["toyota-vs-honda", "Toyota vs Honda", "brands"], ["tesla-vs-ford", "Tesla vs Ford", "companies"], ["bmw-vs-mercedes", "BMW vs Mercedes-Benz", "automotive"]],
     views: 445000,
   },
+  // ===== GSC-DRIVEN: REVERSE SLUG for "korean war vs vietnam war" =====
+  {
+    slug: "korean-war-vs-vietnam-war", title: "Korean War vs Vietnam War", category: "history",
+    shortAnswer: "The Korean War (1950-1953) was a 3-year conflict that ended in a stalemate with Korea divided at the 38th parallel. The Vietnam War (1955-1975) lasted 20 years, was far more controversial domestically, and ended with a US withdrawal and North Vietnamese victory.",
+    verdict: "The Korean War preserved South Korea as a thriving democracy. The Vietnam War was longer, costlier in lives, and ended in US defeat. Both were Cold War proxy conflicts but had very different outcomes and legacies.",
+    entityA: { name: "Korean War", slug: "korean-war", type: "event", desc: "1950-1953, Cold War proxy conflict, ended in stalemate at 38th parallel", pros: ["Preserved South Korean democracy", "Demonstrated UN collective security", "Clear defensive objective"], cons: ["36,574 US deaths", "Korea remains divided", "Often called 'Forgotten War'"], bestFor: "Understanding Cold War containment policy" },
+    entityB: { name: "Vietnam War", slug: "vietnam-war", type: "event", desc: "1955-1975, longest US military engagement of the 20th century", pros: ["Led to military reform (all-volunteer force)", "Strengthened anti-war movement and civil liberties", "Lessons shaped future foreign policy"], cons: ["58,220 US deaths", "Ended in US withdrawal and defeat", "Deep domestic division", "Agent Orange long-term effects"], bestFor: "Understanding limits of US military intervention" },
+    diffs: [["Duration", "3 years (1950-1953)", "20 years (1955-1975)", "tie"], ["US Deaths", "36,574", "58,220", "tie"], ["Total Deaths", "~2.5 million", "~3.5 million", "tie"], ["Outcome", "Stalemate (Korea divided)", "US withdrawal / North Vietnam victory", "tie"], ["Draft Resistance", "Minimal", "Massive anti-war movement", "tie"], ["UN Involvement", "UN coalition force", "Primarily US + South Vietnam", "tie"]],
+    attrs: [
+      { name: "Duration", cat: "Timeline", unit: "years", a: "3", an: 3, b: "20", bn: 20 },
+      { name: "US Military Deaths", cat: "Casualties", a: "36,574", an: 36574, b: "58,220", bn: 58220 },
+      { name: "Total Deaths (all sides)", cat: "Casualties", a: "~2.5 Million", an: 2500000, b: "~3.5 Million", bn: 3500000 },
+      { name: "US Troops Deployed (peak)", cat: "Military", a: "326,000", an: 326000, b: "549,500", bn: 549500 },
+      { name: "Cost (inflation-adjusted)", cat: "Cost", unit: "USD", a: "$389 Billion", an: 389, b: "$1 Trillion", bn: 1000 },
+      { name: "Countries Involved", cat: "Scope", a: "21 UN nations", an: 21, b: "Primarily US + South Vietnam", bn: 2 },
+    ],
+    faqs: [
+      ["What are the key differences between the Korean and Vietnam War?", "The Korean War lasted 3 years and ended in a stalemate preserving South Korea. The Vietnam War lasted 20 years and ended in US defeat. The Korean War had broad UN support while Vietnam was primarily a US-South Vietnam effort. Vietnam generated massive domestic opposition; Korea did not."],
+      ["Which war had more casualties?", "The Vietnam War had more US deaths (58,220 vs 36,574) and more total deaths (~3.5 million vs ~2.5 million). The Vietnam War also lasted nearly 7 times longer."],
+      ["Why is the Korean War called the Forgotten War?", "The Korean War is called the 'Forgotten War' because it was overshadowed by World War II before it and the Vietnam War after it. It lacked the clear victory of WWII and the cultural impact of Vietnam."],
+      ["How were the outcomes different?", "The Korean War achieved its goal of defending South Korea, which became a prosperous democracy. The Vietnam War ended with the fall of Saigon and reunification under communist North Vietnam — a strategic defeat for the US."],
+    ],
+    related: [["ww1-vs-ww2", "WW1 vs WW2", "history"], ["cold-war-vs-war-on-terror", "Cold War vs War on Terror", "history"], ["vietnam-war-vs-korean-war", "Vietnam War vs Korean War", "history"]],
+    views: 156000, publishAt: "2026-03-23T00:00:00Z",
+  },
 ];
 
 function isPublished(d: CompactDef): boolean {
