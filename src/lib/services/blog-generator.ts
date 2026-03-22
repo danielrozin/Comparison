@@ -662,6 +662,12 @@ export async function listBlogArticles(params: {
     (a) => a.status === "published" && (!a.publishedAt || new Date(a.publishedAt).getTime() <= now)
   );
   if (cat) filtered = filtered.filter((a) => a.category === cat);
+  // Sort by publishedAt descending (newest first)
+  filtered.sort((a, b) => {
+    const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0;
+    const db = b.publishedAt ? new Date(b.publishedAt).getTime() : 0;
+    return db - da;
+  });
   return {
     articles: filtered.slice(off, off + lim),
     total: filtered.length,
