@@ -19,7 +19,7 @@ export function Header() {
   // Close mobile menu on route change (resize as proxy)
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+      if (window.innerWidth >= 1024) setMobileMenuOpen(false);
     }
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -42,25 +42,25 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5 flex-shrink min-w-0">
             {CATEGORIES.slice(0, 6).map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                className="px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
+                className="px-2.5 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors whitespace-nowrap"
               >
-                {cat.icon} {cat.name}
+                <span className="hidden xl:inline">{cat.icon} </span>{cat.name}
               </Link>
             ))}
             <Link
               href="/trending"
-              className="px-3 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+              className="px-2.5 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
             >
               Trending
             </Link>
             <Link
               href="/blog"
-              className="px-3 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+              className="px-2.5 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
             >
               Blog
             </Link>
@@ -81,7 +81,7 @@ export function Header() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface-alt transition-colors"
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface-alt transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -100,7 +100,7 @@ export function Header() {
 
       {/* Mobile slide-down menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
