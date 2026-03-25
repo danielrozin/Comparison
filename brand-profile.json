@@ -1,0 +1,55 @@
+{
+  "brand_name": "ADGPT",
+  "website": "https://adgpt.com/book-advertising",
+  "tagline": "Turn any book into a full ad campaign in 2 minutes",
+  "industry": "SaaS / MarTech / Book Marketing",
+  "voice": ["innovative", "direct", "empowering"],
+  "colors": {
+    "primary": "#000000",
+    "secondary": "#4F46E5",
+    "accent": "#10B981"
+  },
+  "typography": "Modern sans-serif",
+  "target_audience": {
+    "primary": "Self-published authors",
+    "secondary": "Indie publishers",
+    "tertiary": "Online bookstores",
+    "demographics": "25-55, entrepreneurs, authors, small business owners",
+    "pain_points": [
+      "Writing the book was hard, marketing it is harder",
+      "No budget for agencies ($1K-$5K/month)",
+      "No design or video editing skills",
+      "Need ads across multiple platforms but no time"
+    ]
+  },
+  "product": {
+    "name": "ADGPT Book Advertising",
+    "description": "AI-powered platform that generates full book marketing campaigns (UGC videos, static ads, Google Ads, TikTok videos) from a single book link in ~2 minutes",
+    "pricing": {
+      "basic": "$29/month (annual) / $39/month (monthly)",
+      "pro": "$99/month (annual) / $149/month (monthly)",
+      "prime": "$199/month (annual) / $299/month (monthly) - Most Popular",
+      "premium": "$399/month (annual) / $599/month (monthly)"
+    },
+    "key_features": [
+      "UGC-style video ads with AI presenters",
+      "Short product videos (5-8 seconds)",
+      "Static banner ads in multiple sizes",
+      "Google Ads search campaigns",
+      "High-intent keyword suggestions",
+      "TikTok-optimized vertical videos"
+    ],
+    "social_proof": {
+      "campaigns_created": "2,400+",
+      "avg_generation_time": "45 seconds",
+      "rating": "4.8/5 from 320 reviews"
+    },
+    "free_trial": true,
+    "cta": "Try For Free"
+  },
+  "existing_assets": {
+    "ugc_video_ads": 6,
+    "static_ads": 3
+  },
+  "competitors": ["Traditional book marketing agencies", "Canva", "BookBub Ads"]
+}
