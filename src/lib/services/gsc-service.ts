@@ -299,6 +299,133 @@ export async function analyzeGSCOpportunities(): Promise<GSCOpportunity[]> {
   return opportunities;
 }
 
+// ---------------------------------------------------------------------------
+// Technical SEO Analysis
+// ---------------------------------------------------------------------------
+
+export interface GSCTechnicalIssue {
+  type: "low_ctr" | "declining_position" | "high_impressions_no_clicks" | "content_gap" | "cannibalization";
+  severity: "critical" | "warning" | "info";
+  query: string;
+  detail: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  position: number;
+  suggestedAction: string;
+}
+
+/**
+ * Analyze GSC data for technical SEO issues.
+ * Detects: low CTR pages, zero-click queries, content gaps, and potential cannibalization.
+ */
+export async function analyzeGSCTechnicalIssues(): Promise<GSCTechnicalIssue[]> {
+  const queries = await fetchGSCQueries();
+  if (queries.length === 0) return [];
+
+  const issues: GSCTechnicalIssue[] = [];
+
+  // Group queries by similar topic to detect cannibalization
+  const queryGroups = new Map<string, GSCQuery[]>();
+
+  for (const q of queries) {
+    // --- High impressions, zero clicks ---
+    if (q.impressions >= 5 && q.clicks === 0) {
+      issues.push({
+        type: "high_impressions_no_clicks",
+        severity: q.impressions >= 20 ? "critical" : "warning",
+        query: q.query,
+        detail: `${q.impressions} impressions but 0 clicks (position ${q.position.toFixed(1)})`,
+        impressions: q.impressions,
+        clicks: q.clicks,
+        ctr: q.ctr,
+        position: q.position,
+        suggestedAction: q.position <= 10
+          ? "Improve meta title and description to boost CTR — you rank well but nobody clicks"
+          : "Create or optimize content to improve ranking from position " + q.position.toFixed(0),
+      });
+    }
+
+    // --- Low CTR for good position ---
+    if (q.position <= 5 && q.ctr < 0.03 && q.impressions >= 10) {
+      issues.push({
+        type: "low_ctr",
+        severity: "critical",
+        query: q.query,
+        detail: `Position ${q.position.toFixed(1)} but only ${(q.ctr * 100).toFixed(1)}% CTR`,
+        impressions: q.impressions,
+        clicks: q.clicks,
+        ctr: q.ctr,
+        position: q.position,
+        suggestedAction: "Rewrite meta title/description — you rank in top 5 but CTR is far below average. Expected CTR at this position is 5-15%.",
+      });
+    } else if (q.position <= 10 && q.ctr < 0.02 && q.impressions >= 5) {
+      issues.push({
+        type: "low_ctr",
+        severity: "warning",
+        query: q.query,
+        detail: `Position ${q.position.toFixed(1)} but only ${(q.ctr * 100).toFixed(1)}% CTR`,
+        impressions: q.impressions,
+        clicks: q.clicks,
+        ctr: q.ctr,
+        position: q.position,
+        suggestedAction: "Consider improving meta title/description or adding structured data to stand out in SERPs.",
+      });
+    }
+
+    // --- Content gap: blog/informational query with no page ---
+    const parsed = parseComparisonQuery(q.query);
+    const isComp = isComparisonQuery(q.query);
+    if (!isComp && q.impressions >= 3 && !parsed) {
+      issues.push({
+        type: "content_gap",
+        severity: q.impressions >= 10 ? "warning" : "info",
+        query: q.query,
+        detail: `Informational query with ${q.impressions} impressions — potential blog topic`,
+        impressions: q.impressions,
+        clicks: q.clicks,
+        ctr: q.ctr,
+        position: q.position,
+        suggestedAction: `Create a blog article targeting "${q.query}" to capture this traffic.`,
+      });
+    }
+
+    // --- Group for cannibalization detection ---
+    const words = q.query.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(w => w.length > 2).sort();
+    const groupKey = words.slice(0, 3).join("-");
+    if (groupKey) {
+      if (!queryGroups.has(groupKey)) queryGroups.set(groupKey, []);
+      queryGroups.get(groupKey)!.push(q);
+    }
+  }
+
+  // --- Cannibalization: multiple queries with same topic competing ---
+  for (const [, group] of queryGroups) {
+    if (group.length >= 3) {
+      const totalImpressions = group.reduce((s, q) => s + q.impressions, 0);
+      if (totalImpressions >= 5) {
+        issues.push({
+          type: "cannibalization",
+          severity: "info",
+          query: group.map(q => q.query).join(" | "),
+          detail: `${group.length} similar queries (${totalImpressions} total impressions) — may be splitting ranking signals`,
+          impressions: totalImpressions,
+          clicks: group.reduce((s, q) => s + q.clicks, 0),
+          ctr: totalImpressions > 0 ? group.reduce((s, q) => s + q.clicks, 0) / totalImpressions : 0,
+          position: group.reduce((s, q) => s + q.position, 0) / group.length,
+          suggestedAction: "Consider consolidating these queries into a single comprehensive page with all variations as H2/H3 sections.",
+        });
+      }
+    }
+  }
+
+  // Sort by severity (critical first) then by impressions
+  const severityOrder = { critical: 0, warning: 1, info: 2 };
+  issues.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity] || b.impressions - a.impressions);
+
+  return issues;
+}
+
 /**
  * Get aggregate stats from GSC queries.
  */

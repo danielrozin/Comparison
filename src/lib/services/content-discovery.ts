@@ -18,7 +18,7 @@ import { discoverByCategory, type DiscoveredOpportunity } from "@/lib/dataforseo
 
 export interface DiscoveredTopic {
   topic: string;
-  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends";
+  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends" | "gsc";
   type: "comparison" | "blog";
   entityA: string | null;
   entityB: string | null;
@@ -298,6 +298,40 @@ export async function discoverFromDataForSEO(
 }
 
 // ---------------------------------------------------------------------------
+// Google Search Console (real search query data — highest signal)
+// ---------------------------------------------------------------------------
+
+export async function discoverFromGSC(): Promise<DiscoveredTopic[]> {
+  try {
+    const { analyzeGSCOpportunities } = await import("@/lib/services/gsc-service");
+    const opportunities = await analyzeGSCOpportunities();
+
+    return opportunities
+      .filter((o) => !o.hasExistingPage && o.impressions >= 2)
+      .map((opp) => ({
+        topic: opp.query,
+        source: "gsc" as const,
+        type: opp.type === "comparison" ? ("comparison" as const) : ("blog" as const),
+        entityA: opp.entityA,
+        entityB: opp.entityB,
+        searchVolume: opp.impressions,
+        engagementScore: opp.impressions,
+        // GSC data is highest-signal: real users searched for this
+        opportunityScore: opp.opportunityScore + 30,
+        sourceUrl: null,
+        rawData: {
+          clicks: opp.clicks,
+          ctr: opp.ctr,
+          position: opp.position,
+        },
+      }));
+  } catch (err) {
+    console.warn("GSC discovery failed:", err instanceof Error ? err.message : err);
+    return [];
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main: discover from all sources in parallel
 // ---------------------------------------------------------------------------
 
@@ -309,7 +343,7 @@ export async function discoverTopics(options?: {
   const limit = options?.limit || 50;
 
   // Run all sources in parallel — each one is resilient to failure
-  const [redditTopics, quoraTopics, tavilyTopics, dataforseoTopics] =
+  const [redditTopics, quoraTopics, tavilyTopics, dataforseoTopics, gscTopics] =
     await Promise.all([
       discoverFromReddit().catch((err) => {
         console.warn("Reddit discovery failed entirely:", err);
@@ -330,10 +364,15 @@ export async function discoverTopics(options?: {
           console.warn("DataForSEO discovery failed entirely:", err);
           return [] as DiscoveredTopic[];
         }),
+      // GSC: real search queries — highest signal source
+      discoverFromGSC().catch((err) => {
+        console.warn("GSC discovery failed entirely:", err);
+        return [] as DiscoveredTopic[];
+      }),
     ]);
 
-  // Merge all topics
-  const all = [...redditTopics, ...quoraTopics, ...tavilyTopics, ...dataforseoTopics];
+  // Merge all topics (GSC first for priority in dedup)
+  const all = [...gscTopics, ...redditTopics, ...quoraTopics, ...tavilyTopics, ...dataforseoTopics];
 
   // Deduplicate by normalized topic key (keep highest opportunityScore)
   const deduped = new Map<string, DiscoveredTopic>();

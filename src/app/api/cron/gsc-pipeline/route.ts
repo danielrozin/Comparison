@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeGSCOpportunities } from "@/lib/services/gsc-service";
+import { analyzeGSCOpportunities, analyzeGSCTechnicalIssues } from "@/lib/services/gsc-service";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison } from "@/lib/services/comparison-service";
 import { sendNotificationEmail } from "@/lib/services/email";
@@ -9,8 +9,8 @@ export const maxDuration = 300;
 /**
  * GET /api/cron/gsc-pipeline
  *
- * Daily cron: fetches GSC data, creates comparison pages + blog articles,
- * and sends a summary email report.
+ * Daily cron (8am UTC): fetches GSC data, creates comparison pages + blog articles,
+ * runs technical SEO analysis, and sends a summary email report.
  */
 export async function GET(request: NextRequest) {
   // Verify cron secret
@@ -33,14 +33,30 @@ export async function GET(request: NextRequest) {
     totalOpportunities: 0,
     comparisonOpportunities: 0,
     blogOpportunities: 0,
+    technicalIssues: { critical: 0, warning: 0, info: 0 },
+    topIssues: [] as string[],
   };
 
   try {
-    const opportunities = await analyzeGSCOpportunities();
-    report.totalOpportunities = opportunities.length;
+    // Run content opportunities and technical SEO analysis in parallel
+    const [opportunities, technicalIssues] = await Promise.all([
+      analyzeGSCOpportunities(),
+      analyzeGSCTechnicalIssues().catch(() => []),
+    ]);
 
-    if (opportunities.length === 0) {
-      // No GSC data (credentials likely not configured)
+    report.totalOpportunities = opportunities.length;
+    report.technicalIssues = {
+      critical: technicalIssues.filter((i) => i.severity === "critical").length,
+      warning: technicalIssues.filter((i) => i.severity === "warning").length,
+      info: technicalIssues.filter((i) => i.severity === "info").length,
+    };
+    // Include top 5 critical/warning issues in report
+    report.topIssues = technicalIssues
+      .filter((i) => i.severity === "critical" || i.severity === "warning")
+      .slice(0, 5)
+      .map((i) => `[${i.severity.toUpperCase()}] ${i.query}: ${i.detail} → ${i.suggestedAction}`);
+
+    if (opportunities.length === 0 && technicalIssues.length === 0) {
       return NextResponse.json({
         success: true,
         message:
@@ -111,8 +127,16 @@ export async function GET(request: NextRequest) {
     // --- Send email report ---
     const durationMs = Date.now() - startTime;
     try {
+      const techSection = report.technicalIssues.critical > 0 || report.technicalIssues.warning > 0
+        ? `\nTechnical SEO Issues:
+  Critical: ${report.technicalIssues.critical}
+  Warning: ${report.technicalIssues.warning}
+  Info: ${report.technicalIssues.info}
+${report.topIssues.length > 0 ? `\nTop Issues:\n${report.topIssues.map((i) => `  - ${i}`).join("\n")}` : ""}`
+        : "\nTechnical SEO: No critical issues found!";
+
       await sendNotificationEmail({
-        subject: "GSC Pipeline Report",
+        subject: `GSC Pipeline: ${report.comparisonsCreated.length} comparisons + ${report.blogArticlesCreated.length} blogs | ${report.technicalIssues.critical} critical issues`,
         type: "gsc-pipeline",
         message: [
           `GSC Pipeline completed in ${(durationMs / 1000).toFixed(1)}s`,
@@ -121,9 +145,10 @@ export async function GET(request: NextRequest) {
           `Blog opportunities: ${report.blogOpportunities}`,
           `Comparisons created: ${report.comparisonsCreated.length} — ${report.comparisonsCreated.join(", ") || "none"}`,
           `Blog articles created: ${report.blogArticlesCreated.length} — ${report.blogArticlesCreated.join(", ") || "none"}`,
+          techSection,
           report.errors.length > 0
-            ? `Errors (${report.errors.length}): ${report.errors.join("; ")}`
-            : "No errors",
+            ? `\nErrors (${report.errors.length}): ${report.errors.join("; ")}`
+            : "\nNo errors",
         ].join("\n"),
       });
     } catch (emailErr) {
