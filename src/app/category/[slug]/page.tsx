@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, SITE_URL } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, categoryPageSchema } from "@/lib/seo/schema";
 
@@ -34,7 +34,58 @@ export default async function CategoryPage({ params }: PageProps) {
 
   if (!category) notFound();
 
-  const { comparisons, total } = await getComparisonsByCategory(slug);
+  const { comparisons, total } = await getComparisonsByCategory(slug, 200);
+
+  // For products category, group by subcategory
+  const isProducts = slug === "products";
+  const subcategoryGroups: { name: string; icon: string; items: typeof comparisons }[] = [];
+  const ungrouped: typeof comparisons = [];
+
+  if (isProducts && comparisons.length > 0) {
+    for (const subcat of PRODUCT_SUBCATEGORIES) {
+      const items = comparisons.filter((comp) => {
+        const lower = comp.title.toLowerCase() + " " + comp.slug.toLowerCase();
+        return subcat.keywords.some((kw) => lower.includes(kw));
+      });
+      if (items.length > 0) {
+        subcategoryGroups.push({ name: subcat.name, icon: subcat.icon, items });
+      }
+    }
+    // Collect ungrouped items
+    const grouped = new Set(subcategoryGroups.flatMap((g) => g.items.map((i) => i.slug)));
+    ungrouped.push(...comparisons.filter((c) => !grouped.has(c.slug)));
+    if (ungrouped.length > 0) {
+      subcategoryGroups.push({ name: "Other Products", icon: "📦", items: ungrouped });
+    }
+  }
+
+  const renderComparisonCard = (comp: { slug: string; title: string }) => {
+    const parts = comp.title.split(/\s+vs\.?\s+/i);
+    return (
+      <Link
+        key={comp.slug}
+        href={`/compare/${comp.slug}`}
+        className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all group"
+      >
+        <div className="flex -space-x-3">
+          <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
+            {(parts[0] || "A").charAt(0)}
+          </div>
+          <div className="w-10 h-10 bg-accent-50 rounded-full flex items-center justify-center text-sm font-bold text-accent-600 ring-2 ring-white">
+            {(parts[1] || "B").charAt(0)}
+          </div>
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+            {comp.title}
+          </p>
+        </div>
+        <svg className="w-5 h-5 text-text-secondary group-hover:text-primary-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -71,35 +122,24 @@ export default async function CategoryPage({ params }: PageProps) {
           </div>
         </div>
 
-        {comparisons.length > 0 ? (
+        {isProducts && subcategoryGroups.length > 0 ? (
+          <div className="space-y-10">
+            {subcategoryGroups.map((group) => (
+              <section key={group.name}>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-2xl">{group.icon}</span>
+                  <h2 className="text-xl font-display font-bold text-text">{group.name}</h2>
+                  <span className="text-sm text-text-secondary ml-1">({group.items.length})</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {group.items.map(renderComparisonCard)}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : comparisons.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {comparisons.map((comp) => {
-              const parts = comp.title.split(/\s+vs\.?\s+/i);
-              return (
-                <Link
-                  key={comp.slug}
-                  href={`/compare/${comp.slug}`}
-                  className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all group"
-                >
-                  <div className="flex -space-x-3">
-                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
-                      {(parts[0] || "A").charAt(0)}
-                    </div>
-                    <div className="w-10 h-10 bg-accent-50 rounded-full flex items-center justify-center text-sm font-bold text-accent-600 ring-2 ring-white">
-                      {(parts[1] || "B").charAt(0)}
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
-                      {comp.title}
-                    </p>
-                  </div>
-                  <svg className="w-5 h-5 text-text-secondary group-hover:text-primary-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              );
-            })}
+            {comparisons.map(renderComparisonCard)}
           </div>
         ) : (
           <div className="text-center py-16">

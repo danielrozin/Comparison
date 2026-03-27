@@ -45,6 +45,20 @@ export const CATEGORIES = [
   { slug: "travel", name: "Travel", icon: "✈️" },
 ] as const;
 
+// Product subcategories for organizing the Products category page
+export const PRODUCT_SUBCATEGORIES: { slug: string; name: string; icon: string; keywords: string[] }[] = [
+  { slug: "home-kitchen", name: "Home & Kitchen", icon: "🏠", keywords: ["vacuum", "dyson", "shark", "roomba", "roborock", "kitchen", "coffee", "blender", "air purifier", "instant pot"] },
+  { slug: "personal-care", name: "Personal Care & Beauty", icon: "💄", keywords: ["airwrap", "flexstyle", "skincare", "shampoo", "moisturizer", "serum", "haircare", "beauty"] },
+  { slug: "audio-wearables", name: "Audio & Wearables", icon: "🎧", keywords: ["airpods", "buds", "headphones", "earbuds", "oura", "whoop", "garmin", "fitbit", "smartwatch", "apple watch"] },
+  { slug: "smart-home", name: "Smart Home", icon: "🏡", keywords: ["ring", "nest", "doorbell", "camera", "thermostat", "smart speaker", "alexa", "echo", "homepod"] },
+  { slug: "fitness-equipment", name: "Fitness & Equipment", icon: "🏋️", keywords: ["peloton", "nordictrack", "treadmill", "bike", "rower", "creatine", "pre workout", "protein", "supplement"] },
+  { slug: "outdoor-travel", name: "Outdoor & Travel", icon: "🏕️", keywords: ["yeti", "hydroflask", "hydro flask", "stanley", "luggage", "cooler", "backpack", "tent"] },
+  { slug: "fashion-shopping", name: "Fashion & Shopping", icon: "👗", keywords: ["temu", "shein", "lululemon", "athleta", "nike", "adidas", "fashion", "clothing"] },
+  { slug: "streaming", name: "Streaming & Entertainment", icon: "📺", keywords: ["netflix", "max", "hbo", "hulu", "disney", "youtube tv", "streaming", "kindle", "kobo"] },
+  { slug: "gaming", name: "Gaming", icon: "🎮", keywords: ["ps6", "ps5", "xbox", "nintendo", "switch", "steam deck", "gaming", "console"] },
+  { slug: "automotive", name: "Cars & EVs", icon: "🚗", keywords: ["tesla", "rivian", "lucid", "ford", "chevy", "honda", "toyota", "rav4", "civic", "corolla", "cr-v", "ev", "hybrid"] },
+];
+
 export const PAGE_SIZES = {
   COMPARISONS_PER_CATEGORY: 20,
   TRENDING_COUNT: 10,
