@@ -47,10 +47,12 @@ export function VerdictBlock({
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-sm ${
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
                         idx === 0 ? "bg-primary-500/30" : "bg-accent-500/30"
                       }`}>
-                        {idx === 0 ? "&#x1F44D;" : "&#x1F44D;"}
+                        <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
                       </div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
                         Choose {entity.name} if
