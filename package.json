@@ -11,6 +11,8 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
     "@prisma/client": "^5.22.0",
+    "@remotion/cli": "^4.0.441",
+    "@remotion/renderer": "^4.0.441",
     "@tailwindcss/postcss": "^4.2.1",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
@@ -23,6 +25,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "recharts": "^3.8.0",
+    "remotion": "^4.0.441",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   },

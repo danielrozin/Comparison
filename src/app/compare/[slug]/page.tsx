@@ -14,6 +14,9 @@ import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
+import { ComparisonVideoPlayer } from "@/components/comparison/ComparisonVideoPlayer";
+import fs from "fs";
+import path from "path";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
@@ -181,6 +184,11 @@ export default async function ComparisonPage({ params }: PageProps) {
 
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Video Comparison (if video exists) */}
+      {fs.existsSync(path.join(process.cwd(), "public", "videos", `${comparison.slug}.mp4`)) && (
+        <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} />
+      )}
 
       {/* Key Differences */}
       {comparison.keyDifferences.length > 0 && (
