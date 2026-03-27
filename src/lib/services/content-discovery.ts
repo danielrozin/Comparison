@@ -370,7 +370,7 @@ async function runApifyActorSync(
 
 /**
  * Discover comparison topics from Twitter/X via Apify.
- * Uses the Twitter Search actor to find tweets with comparison keywords.
+ * Uses the Tweet Scraper V2 actor to find tweets with comparison keywords.
  */
 export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
   if (!getApifyToken()) return [];
@@ -380,15 +380,17 @@ export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
     "vs better which 2026",
     "versus comparison review",
     "compared to which should",
+    "vs which one should I buy",
+    "better than alternative to",
   ];
 
   try {
-    // Using apify/twitter-scraper (lightweight tweet search)
-    const items = await runApifyActorSync("apidojo/tweet-scraper", {
+    // apidojo~tweet-scraper (134M+ runs, most popular Twitter actor)
+    const items = await runApifyActorSync("apidojo~tweet-scraper", {
       searchTerms: searchQueries,
-      maxTweets: 50,
+      maxTweets: 100,
       searchMode: "live",
-    }, 90_000);
+    }, 120_000);
 
     for (const item of items) {
       const text = (item.full_text || item.text || "") as string;
@@ -431,13 +433,13 @@ export async function discoverFromFacebook(): Promise<DiscoveredTopic[]> {
   const topics: DiscoveredTopic[] = [];
 
   try {
-    // Using apify/facebook-posts-scraper for public post search
-    const items = await runApifyActorSync("apify/facebook-posts-scraper", {
+    // apify~facebook-posts-scraper for public post search
+    const items = await runApifyActorSync("apify~facebook-posts-scraper", {
       searchType: "posts",
-      searchQueries: ["vs comparison 2026", "versus which is better", "compared to review"],
-      maxPosts: 50,
-      resultsLimit: 50,
-    }, 90_000);
+      searchQueries: ["vs comparison 2026", "versus which is better", "compared to review", "which one is better buy"],
+      maxPosts: 100,
+      resultsLimit: 100,
+    }, 120_000);
 
     for (const item of items) {
       const text = (item.text || item.postText || item.message || "") as string;
@@ -479,14 +481,15 @@ export async function discoverFromInstagram(): Promise<DiscoveredTopic[]> {
   if (!getApifyToken()) return [];
 
   const topics: DiscoveredTopic[] = [];
-  const hashtags = ["vs", "versus", "comparison", "whichisbetter", "headtohead"];
+  const hashtags = ["vs", "versus", "comparison", "whichisbetter", "headtohead", "review2026"];
 
   try {
-    // Using apify/instagram-hashtag-scraper
-    const items = await runApifyActorSync("apify/instagram-hashtag-scraper", {
-      hashtags,
-      resultsLimit: 50,
-    }, 90_000);
+    // apify~instagram-scraper (107M+ runs, most popular Instagram actor)
+    const items = await runApifyActorSync("apify~instagram-scraper", {
+      search: hashtags.join(" "),
+      searchType: "hashtag",
+      resultsLimit: 100,
+    }, 120_000);
 
     for (const item of items) {
       const caption = (item.caption || item.text || "") as string;
@@ -520,7 +523,104 @@ export async function discoverFromInstagram(): Promise<DiscoveredTopic[]> {
 }
 
 /**
- * Discover from all social media platforms via Apify (Twitter, Facebook, Instagram).
+ * Discover comparison topics from TikTok via Apify.
+ * Uses the TikTok Scraper actor to find comparison videos.
+ */
+export async function discoverFromTikTok(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) return [];
+
+  const topics: DiscoveredTopic[] = [];
+
+  try {
+    // clockworks~tiktok-scraper (72M+ runs)
+    const items = await runApifyActorSync("clockworks~tiktok-scraper", {
+      searchQueries: ["vs comparison", "versus which is better", "vs review 2026"],
+      resultsPerPage: 50,
+      shouldDownloadVideos: false,
+    }, 120_000);
+
+    for (const item of items) {
+      const text = (item.text || item.desc || item.description || "") as string;
+      if (!text || text.length < 10) continue;
+
+      const parsed = parseComparisonFromTitle(text.slice(0, 300));
+      if (!parsed.isComparison) continue;
+
+      const likes = ((item.diggCount || item.likes || 0) as number);
+      const shares = ((item.shareCount || item.shares || 0) as number);
+      const views = ((item.playCount || item.views || 0) as number);
+      const engagement = likes + shares * 3 + Math.floor(views / 100);
+
+      topics.push({
+        topic: text.slice(0, 200),
+        source: "twitter", // reuse type for social
+        type: "comparison",
+        entityA: parsed.entityA,
+        entityB: parsed.entityB,
+        searchVolume: null,
+        engagementScore: engagement,
+        opportunityScore: Math.min(engagement * 0.08, 50) + 12,
+        sourceUrl: (item.webVideoUrl || item.url || null) as string | null,
+        rawData: { likes, shares, views, platform: "tiktok" },
+      });
+    }
+  } catch (err) {
+    console.warn("TikTok discovery failed:", err instanceof Error ? err.message : err);
+  }
+
+  return topics;
+}
+
+/**
+ * Discover comparison topics from YouTube via Apify.
+ * Searches for comparison/review videos.
+ */
+export async function discoverFromYouTube(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) return [];
+
+  const topics: DiscoveredTopic[] = [];
+
+  try {
+    // streamers~youtube-scraper (13M+ runs)
+    const items = await runApifyActorSync("streamers~youtube-scraper", {
+      searchKeywords: ["vs comparison 2026", "versus which is better", "head to head review"],
+      maxResults: 50,
+    }, 120_000);
+
+    for (const item of items) {
+      const title = (item.title || item.text || "") as string;
+      if (!title || title.length < 10) continue;
+
+      const parsed = parseComparisonFromTitle(title);
+      if (!parsed.isComparison) continue;
+
+      const views = ((item.viewCount || item.views || 0) as number);
+      const likes = ((item.likes || 0) as number);
+      const engagement = views + likes * 10;
+
+      topics.push({
+        topic: title.slice(0, 200),
+        source: "twitter", // reuse type for social
+        type: "comparison",
+        entityA: parsed.entityA,
+        entityB: parsed.entityB,
+        searchVolume: null,
+        engagementScore: engagement,
+        opportunityScore: Math.min(Math.log10(Math.max(engagement, 1)) * 15, 60) + 10,
+        sourceUrl: (item.url || null) as string | null,
+        rawData: { views, likes, platform: "youtube" },
+      });
+    }
+  } catch (err) {
+    console.warn("YouTube discovery failed:", err instanceof Error ? err.message : err);
+  }
+
+  return topics;
+}
+
+/**
+ * Discover from all social media platforms via Apify.
+ * Twitter/X, Facebook, Instagram, TikTok, YouTube — all in parallel.
  */
 export async function discoverFromSocialMedia(): Promise<DiscoveredTopic[]> {
   if (!getApifyToken()) {
@@ -528,8 +628,8 @@ export async function discoverFromSocialMedia(): Promise<DiscoveredTopic[]> {
     return [];
   }
 
-  // Run all 3 platforms in parallel
-  const [twitter, facebook, instagram] = await Promise.all([
+  // Run all 5 platforms in parallel
+  const [twitter, facebook, instagram, tiktok, youtube] = await Promise.all([
     discoverFromTwitter().catch((err) => {
       console.warn("Twitter scrape failed:", err instanceof Error ? err.message : err);
       return [] as DiscoveredTopic[];
@@ -542,9 +642,17 @@ export async function discoverFromSocialMedia(): Promise<DiscoveredTopic[]> {
       console.warn("Instagram scrape failed:", err instanceof Error ? err.message : err);
       return [] as DiscoveredTopic[];
     }),
+    discoverFromTikTok().catch((err) => {
+      console.warn("TikTok scrape failed:", err instanceof Error ? err.message : err);
+      return [] as DiscoveredTopic[];
+    }),
+    discoverFromYouTube().catch((err) => {
+      console.warn("YouTube scrape failed:", err instanceof Error ? err.message : err);
+      return [] as DiscoveredTopic[];
+    }),
   ]);
 
-  return [...twitter, ...facebook, ...instagram];
+  return [...twitter, ...facebook, ...instagram, ...tiktok, ...youtube];
 }
 
 // ---------------------------------------------------------------------------

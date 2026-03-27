@@ -23,8 +23,8 @@ export async function GET(request: NextRequest) {
   }
 
   const startTime = Date.now();
-  const MAX_COMPARISONS = 5;
-  const MAX_BLOG_ARTICLES = 5;
+  const MAX_COMPARISONS = 10;
+  const MAX_BLOG_ARTICLES = 10;
 
   const report = {
     comparisonsCreated: [] as string[],

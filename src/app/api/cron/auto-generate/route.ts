@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
   const categories = [
     "sports", "countries", "technology", "products",
     "companies", "history", "entertainment", "brands",
+    "health", "automotive",
   ];
   const dayOfYear = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
   const hourOfDay = new Date().getUTCHours();
@@ -48,7 +49,7 @@ export async function GET(request: NextRequest) {
   let blogTopics: Awaited<ReturnType<typeof discoverTopics>> = [];
 
   try {
-    const topics = await discoverTopics({ categories: [category], limit: 50 });
+    const topics = await discoverTopics({ categories: [category], limit: 200 });
     discoveredCount = topics.length;
 
     // Track source breakdown
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
   // Step 3: Generate comparisons DIRECTLY from discovered topics (no Redis dependency)
   let generatedCount = 0;
   const generatedSlugs: string[] = [];
-  const compLimit = 5; // Generate up to 5 comparisons per run
+  const compLimit = 30; // Generate up to 30 comparisons per run (10 GSC + 10 Apify + 10 DataForSEO)
 
   for (const topic of comparisonTopics.slice(0, compLimit)) {
     try {
@@ -117,10 +118,10 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Step 4: Generate blog articles from blog topics (up to 3 per run)
+  // Step 4: Generate blog articles from blog topics (up to 10 per run)
   let blogArticlesCreated = 0;
   const blogSlugs: string[] = [];
-  const blogLimit = 3;
+  const blogLimit = 10;
 
   for (const blogTopic of blogTopics.slice(0, blogLimit)) {
     try {

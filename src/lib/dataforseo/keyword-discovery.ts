@@ -39,10 +39,20 @@ const CATEGORY_SEEDS: Record<string, string[]> = {
   technology: [
     "iphone vs samsung", "mac vs windows", "android vs ios",
     "ps5 vs xbox", "nvidia vs amd", "chrome vs firefox",
+    "chatgpt vs claude", "midjourney vs stable diffusion",
+    "ipad vs samsung tablet", "ring vs nest doorbell",
   ],
   products: [
     "nike vs adidas", "coca cola vs pepsi", "uber vs lyft",
     "airpods vs galaxy buds", "macbook vs dell xps",
+    "dyson vs shark vacuum", "peloton vs nordictrack",
+    "roomba vs roborock", "yeti vs hydroflask",
+    "temu vs shein", "kindle vs kobo",
+  ],
+  health: [
+    "keto vs paleo", "keto vs carnivore diet", "ozempic vs wegovy",
+    "whey vs plant protein", "creatine vs pre workout",
+    "peloton vs treadmill", "yoga vs pilates",
   ],
   history: [
     "ww1 vs ww2", "roman empire vs ottoman empire",
@@ -51,6 +61,23 @@ const CATEGORY_SEEDS: Record<string, string[]> = {
   companies: [
     "google vs microsoft", "amazon vs walmart", "tesla vs ford",
     "apple vs samsung", "netflix vs disney plus",
+    "openai vs anthropic", "tesla vs rivian", "rivian vs lucid",
+    "zoom vs teams", "notion vs obsidian",
+  ],
+  entertainment: [
+    "netflix vs max", "spotify vs apple music", "marvel vs dc",
+    "ps5 vs xbox", "nintendo switch vs steam deck",
+    "disney plus vs hulu", "youtube tv vs hulu live",
+  ],
+  brands: [
+    "gucci vs louis vuitton", "toyota vs honda",
+    "costco vs sams club", "target vs walmart",
+    "home depot vs lowes", "starbucks vs dunkin",
+  ],
+  automotive: [
+    "tesla vs rivian", "bmw vs mercedes", "toyota vs honda",
+    "ford vs chevy", "tesla model y vs model 3",
+    "honda civic vs toyota corolla", "rav4 vs crv",
   ],
 };
 
