@@ -44,12 +44,14 @@ export async function GET(request: NextRequest) {
   const allErrors: string[] = [];
   const sourceBreakdown: Record<string, number> = {};
 
-  // Step 1: Discover topics from all sources (Reddit, Quora, Tavily, DataForSEO)
+  // Step 1: Discover topics from all sources — always include "products" alongside the rotated category
   let comparisonTopics: Awaited<ReturnType<typeof discoverTopics>> = [];
   let blogTopics: Awaited<ReturnType<typeof discoverTopics>> = [];
 
   try {
-    const topics = await discoverTopics({ categories: [category], limit: 200 });
+    // Always discover from the rotated category + products (for 20 daily product comparisons)
+    const categoriesToDiscover = category === "products" ? [category] : [category, "products"];
+    const topics = await discoverTopics({ categories: categoriesToDiscover, limit: 200 });
     discoveredCount = topics.length;
 
     // Track source breakdown

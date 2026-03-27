@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
-import { CATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 
 const SITE_URL = "https://www.aversusb.net";
@@ -27,6 +27,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.8,
+  }));
+
+  // Subcategory pages (products)
+  const subcategoryPages: MetadataRoute.Sitemap = PRODUCT_SUBCATEGORIES.map((sub) => ({
+    url: `${SITE_URL}/category/products/${sub.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
   }));
 
   // Comparison pages (highest value)
@@ -83,6 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     ...categoryPages,
+    ...subcategoryPages,
     ...comparisonPages,
     ...entityPages,
     ...alternativesPages,

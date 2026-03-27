@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { comparisonPageSchema } from "@/lib/seo/schema";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ComparisonTable } from "@/components/comparison/ComparisonTable";
@@ -105,7 +106,27 @@ export default async function ComparisonPage({ params }: PageProps) {
         />
       ))}
 
-      {/* Breadcrumbs */}
+      {/* Breadcrumbs with Schema */}
+      {(() => {
+        const lower = (comparison.title?.toLowerCase() || "") + " " + (comparison.slug || "");
+        const subcat = comparison.category === "products"
+          ? PRODUCT_SUBCATEGORIES.find((s) => s.keywords.some((kw) => lower.includes(kw)))
+          : undefined;
+        const crumbs = [{ name: "Home", url: SITE_URL }];
+        if (comparison.category) {
+          crumbs.push({ name: comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1), url: `${SITE_URL}/category/${comparison.category}` });
+        }
+        if (subcat) {
+          crumbs.push({ name: subcat.name, url: `${SITE_URL}/category/${comparison.category}/${subcat.slug}` });
+        }
+        crumbs.push({ name: comparison.title, url: `${SITE_URL}/compare/${comparison.slug}` });
+        return (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(crumbs)) }}
+          />
+        );
+      })()}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
           <li>
@@ -124,6 +145,26 @@ export default async function ComparisonPage({ params }: PageProps) {
               </li>
             </>
           )}
+          {(() => {
+            const lower = (comparison.title?.toLowerCase() || "") + " " + (comparison.slug || "");
+            const subcat = comparison.category === "products"
+              ? PRODUCT_SUBCATEGORIES.find((s) => s.keywords.some((kw) => lower.includes(kw)))
+              : undefined;
+            if (!subcat) return null;
+            return (
+              <>
+                <li>/</li>
+                <li>
+                  <a
+                    href={`/category/${comparison.category}/${subcat.slug}`}
+                    className="hover:text-primary-600 transition-colors"
+                  >
+                    {subcat.name}
+                  </a>
+                </li>
+              </>
+            );
+          })()}
           <li>/</li>
           <li className="text-text font-medium truncate">{comparison.title}</li>
         </ol>
