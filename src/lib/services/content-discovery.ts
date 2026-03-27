@@ -18,7 +18,7 @@ import { discoverByCategory, type DiscoveredOpportunity } from "@/lib/dataforseo
 
 export interface DiscoveredTopic {
   topic: string;
-  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends" | "gsc";
+  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends" | "gsc" | "twitter" | "facebook" | "instagram";
   type: "comparison" | "blog";
   entityA: string | null;
   entityB: string | null;
@@ -332,6 +332,222 @@ export async function discoverFromGSC(): Promise<DiscoveredTopic[]> {
 }
 
 // ---------------------------------------------------------------------------
+// Apify Social Media Scrapers (Twitter/X, Facebook, Instagram)
+// ---------------------------------------------------------------------------
+
+const APIFY_BASE = "https://api.apify.com/v2";
+
+function getApifyToken(): string | null {
+  return process.env.APIFY_API_TOKEN || null;
+}
+
+/** Run an Apify actor synchronously and return dataset items (with timeout). */
+async function runApifyActorSync(
+  actorId: string,
+  input: Record<string, unknown>,
+  timeoutMs = 60_000
+): Promise<Record<string, unknown>[]> {
+  const token = getApifyToken();
+  if (!token) return [];
+
+  const res = await fetch(
+    `${APIFY_BASE}/acts/${actorId}/run-sync-get-dataset-items?token=${token}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+      signal: AbortSignal.timeout(timeoutMs),
+    }
+  );
+
+  if (!res.ok) {
+    console.warn(`Apify actor ${actorId} failed: ${res.status}`);
+    return [];
+  }
+
+  return (await res.json()) as Record<string, unknown>[];
+}
+
+/**
+ * Discover comparison topics from Twitter/X via Apify.
+ * Uses the Twitter Search actor to find tweets with comparison keywords.
+ */
+export async function discoverFromTwitter(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) return [];
+
+  const topics: DiscoveredTopic[] = [];
+  const searchQueries = [
+    "vs better which 2026",
+    "versus comparison review",
+    "compared to which should",
+  ];
+
+  try {
+    // Using apify/twitter-scraper (lightweight tweet search)
+    const items = await runApifyActorSync("apidojo/tweet-scraper", {
+      searchTerms: searchQueries,
+      maxTweets: 50,
+      searchMode: "live",
+    }, 90_000);
+
+    for (const item of items) {
+      const text = (item.full_text || item.text || "") as string;
+      if (!text || text.length < 15) continue;
+
+      const parsed = parseComparisonFromTitle(text);
+      if (!parsed.isComparison) continue;
+
+      const likes = ((item.favorite_count || item.likeCount || 0) as number);
+      const retweets = ((item.retweet_count || item.retweetCount || 0) as number);
+      const engagement = likes + retweets * 3;
+
+      topics.push({
+        topic: text.slice(0, 200),
+        source: "twitter",
+        type: "comparison",
+        entityA: parsed.entityA,
+        entityB: parsed.entityB,
+        searchVolume: null,
+        engagementScore: engagement,
+        opportunityScore: Math.min(engagement * 0.15, 60) + 15,
+        sourceUrl: (item.url || item.tweetUrl || null) as string | null,
+        rawData: { likes, retweets, platform: "twitter" },
+      });
+    }
+  } catch (err) {
+    console.warn("Twitter/X discovery failed:", err instanceof Error ? err.message : err);
+  }
+
+  return topics;
+}
+
+/**
+ * Discover comparison topics from Facebook via Apify.
+ * Searches public Facebook posts for comparison discussions.
+ */
+export async function discoverFromFacebook(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) return [];
+
+  const topics: DiscoveredTopic[] = [];
+
+  try {
+    // Using apify/facebook-posts-scraper for public post search
+    const items = await runApifyActorSync("apify/facebook-posts-scraper", {
+      searchType: "posts",
+      searchQueries: ["vs comparison 2026", "versus which is better", "compared to review"],
+      maxPosts: 50,
+      resultsLimit: 50,
+    }, 90_000);
+
+    for (const item of items) {
+      const text = (item.text || item.postText || item.message || "") as string;
+      if (!text || text.length < 15) continue;
+
+      const parsed = parseComparisonFromTitle(text.slice(0, 300));
+      if (!parsed.isComparison) continue;
+
+      const likes = ((item.likes || item.likesCount || 0) as number);
+      const shares = ((item.shares || item.sharesCount || 0) as number);
+      const comments = ((item.comments || item.commentsCount || 0) as number);
+      const engagement = likes + shares * 3 + comments * 2;
+
+      topics.push({
+        topic: text.slice(0, 200),
+        source: "facebook",
+        type: "comparison",
+        entityA: parsed.entityA,
+        entityB: parsed.entityB,
+        searchVolume: null,
+        engagementScore: engagement,
+        opportunityScore: Math.min(engagement * 0.1, 50) + 10,
+        sourceUrl: (item.url || item.postUrl || null) as string | null,
+        rawData: { likes, shares, comments, platform: "facebook" },
+      });
+    }
+  } catch (err) {
+    console.warn("Facebook discovery failed:", err instanceof Error ? err.message : err);
+  }
+
+  return topics;
+}
+
+/**
+ * Discover comparison topics from Instagram via Apify.
+ * Searches Instagram hashtags and posts for comparison content.
+ */
+export async function discoverFromInstagram(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) return [];
+
+  const topics: DiscoveredTopic[] = [];
+  const hashtags = ["vs", "versus", "comparison", "whichisbetter", "headtohead"];
+
+  try {
+    // Using apify/instagram-hashtag-scraper
+    const items = await runApifyActorSync("apify/instagram-hashtag-scraper", {
+      hashtags,
+      resultsLimit: 50,
+    }, 90_000);
+
+    for (const item of items) {
+      const caption = (item.caption || item.text || "") as string;
+      if (!caption || caption.length < 15) continue;
+
+      const parsed = parseComparisonFromTitle(caption.slice(0, 300));
+      if (!parsed.isComparison) continue;
+
+      const likes = ((item.likesCount || item.likes || 0) as number);
+      const comments = ((item.commentsCount || item.comments || 0) as number);
+      const engagement = likes + comments * 2;
+
+      topics.push({
+        topic: caption.slice(0, 200),
+        source: "instagram",
+        type: "comparison",
+        entityA: parsed.entityA,
+        entityB: parsed.entityB,
+        searchVolume: null,
+        engagementScore: engagement,
+        opportunityScore: Math.min(engagement * 0.05, 40) + 10,
+        sourceUrl: (item.url || item.postUrl || null) as string | null,
+        rawData: { likes, comments, platform: "instagram" },
+      });
+    }
+  } catch (err) {
+    console.warn("Instagram discovery failed:", err instanceof Error ? err.message : err);
+  }
+
+  return topics;
+}
+
+/**
+ * Discover from all social media platforms via Apify (Twitter, Facebook, Instagram).
+ */
+export async function discoverFromSocialMedia(): Promise<DiscoveredTopic[]> {
+  if (!getApifyToken()) {
+    console.warn("Social media discovery skipped: APIFY_API_TOKEN not set");
+    return [];
+  }
+
+  // Run all 3 platforms in parallel
+  const [twitter, facebook, instagram] = await Promise.all([
+    discoverFromTwitter().catch((err) => {
+      console.warn("Twitter scrape failed:", err instanceof Error ? err.message : err);
+      return [] as DiscoveredTopic[];
+    }),
+    discoverFromFacebook().catch((err) => {
+      console.warn("Facebook scrape failed:", err instanceof Error ? err.message : err);
+      return [] as DiscoveredTopic[];
+    }),
+    discoverFromInstagram().catch((err) => {
+      console.warn("Instagram scrape failed:", err instanceof Error ? err.message : err);
+      return [] as DiscoveredTopic[];
+    }),
+  ]);
+
+  return [...twitter, ...facebook, ...instagram];
+}
+
+// ---------------------------------------------------------------------------
 // Main: discover from all sources in parallel
 // ---------------------------------------------------------------------------
 
@@ -343,7 +559,7 @@ export async function discoverTopics(options?: {
   const limit = options?.limit || 50;
 
   // Run all sources in parallel — each one is resilient to failure
-  const [redditTopics, quoraTopics, tavilyTopics, dataforseoTopics, gscTopics] =
+  const [redditTopics, quoraTopics, tavilyTopics, dataforseoTopics, gscTopics, socialMediaTopics] =
     await Promise.all([
       discoverFromReddit().catch((err) => {
         console.warn("Reddit discovery failed entirely:", err);
@@ -369,10 +585,15 @@ export async function discoverTopics(options?: {
         console.warn("GSC discovery failed entirely:", err);
         return [] as DiscoveredTopic[];
       }),
+      // Social media: Twitter/X, Facebook, Instagram via Apify
+      discoverFromSocialMedia().catch((err) => {
+        console.warn("Social media discovery failed entirely:", err);
+        return [] as DiscoveredTopic[];
+      }),
     ]);
 
-  // Merge all topics (GSC first for priority in dedup)
-  const all = [...gscTopics, ...redditTopics, ...quoraTopics, ...tavilyTopics, ...dataforseoTopics];
+  // Merge all topics (GSC first for priority in dedup, then social, then others)
+  const all = [...gscTopics, ...socialMediaTopics, ...redditTopics, ...quoraTopics, ...tavilyTopics, ...dataforseoTopics];
 
   // Deduplicate by normalized topic key (keep highest opportunityScore)
   const deduped = new Map<string, DiscoveredTopic>();
