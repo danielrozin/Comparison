@@ -72,7 +72,9 @@ function getServiceAccountKey(): {
 }
 
 function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+  // GSC property can be a domain property (sc-domain:example.com) or URL prefix (https://...)
+  // Check for explicit GSC site URL first, then fall back to domain property format
+  return process.env.GSC_SITE_URL || "sc-domain:aversusb.net";
 }
 
 async function getAccessToken(): Promise<string | null> {
