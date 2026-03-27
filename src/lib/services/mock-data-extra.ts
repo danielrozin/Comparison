@@ -2113,7 +2113,7 @@ const DEFS: CompactDef[] = [
       ["Which is better for air superiority in 2026?", "The F-22 remains the world's best air superiority fighter. Its combination of stealth, supercruise, advanced radar, and 20 years of operational refinement make it unmatched. The Su-57 has potential but lacks the production numbers, proven reliability, and combat experience to compete."],
     ],
     related: [["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["f-22-vs-f-35", "F-22 vs F-35", "military"], ["f-15-vs-f-16", "F-15 vs F-16", "military"], ["f-35-vs-j-20", "F-35 vs J-20", "military"]],
-    views: 0, publishAt: "2026-03-25T00:00:00Z",
+    views: 0, publishAt: "2026-03-27T00:00:00Z",
   },
   {
     slug: "f-35-vs-j-20", title: "F-35 Lightning II vs J-20 Mighty Dragon", category: "military",
@@ -2143,7 +2143,7 @@ const DEFS: CompactDef[] = [
       ["Which fighter jet is the best in the world in 2026?", "For air superiority: the F-22 Raptor. For multi-role versatility: the F-35 Lightning II. The J-20 is the most capable non-Western fighter. The 'best' depends on the mission — the F-35's sensor fusion and allied network make it the most strategically valuable single platform."],
     ],
     related: [["f-22-vs-f-35", "F-22 vs F-35", "military"], ["f-35-vs-su-57", "F-35 vs Su-57", "military"], ["f-22-vs-su-57", "F-22 vs Su-57", "military"], ["f-15-vs-f-16", "F-15 vs F-16", "military"]],
-    views: 0, publishAt: "2026-03-25T00:00:00Z",
+    views: 0, publishAt: "2026-03-27T00:00:00Z",
   },
 ];
 
