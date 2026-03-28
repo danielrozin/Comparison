@@ -6,6 +6,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { searchTavily } from "./tavily-service";
+import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 
 export interface BlogArticle {
   id?: string;
@@ -80,7 +81,7 @@ You MUST respond with valid JSON only, no other text. The JSON must have this ex
   "title": "SEO-optimized title",
   "excerpt": "2-3 sentence compelling excerpt",
   "content": "Full markdown article with ## and ### headings, bullet points, comparison tables using | syntax, bold text, and a ## Conclusion section. Include internal links like [iPhone vs Samsung](/compare/iphone-vs-samsung). Use proper markdown formatting.",
-  "category": "one of: technology, sports, entertainment, lifestyle, science, business, education, health, travel, food",
+  "category": "one of: ${BLOG_CATEGORIES.join(", ")}. IMPORTANT: Use 'automotive' for anything about cars, vehicles, EVs, or car brands (Mercedes, BMW, Tesla, Toyota, etc). Do NOT use 'technology' for car-related content.",
   "tags": ["tag1", "tag2", "tag3", "tag4"],
   "metaTitle": "SEO meta title (50-60 chars)",
   "metaDescription": "SEO meta description (150-160 chars)",
@@ -120,7 +121,7 @@ Remember to respond with ONLY valid JSON in the exact format specified.`;
     title: parsed.title || topic,
     excerpt: parsed.excerpt || "",
     content: parsed.content || "",
-    category: parsed.category || "technology",
+    category: validateBlogCategory(parsed.category || "", parsed.title || topic, topic),
     tags: parsed.tags || [],
     metaTitle: parsed.metaTitle || parsed.title || topic,
     metaDescription: parsed.metaDescription || parsed.excerpt || "",

@@ -8,6 +8,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData } from "@/types";
 import { enrichComparisonData } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
+import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 
 function getClient(): Anthropic {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -27,7 +28,7 @@ Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
     {"label": "Attribute Name", "entityAValue": "value", "entityBValue": "value", "winner": "a" or "b" or "tie"}
   ],
   "verdict": "2-3 sentence balanced conclusion",
-  "category": "one of: sports, countries, technology, products, companies, brands, history, economy, military, science, entertainment, general",
+  "category": "one of: ${COMPARISON_CATEGORIES.join(", ")}. IMPORTANT: Use 'automotive' for anything about cars, vehicles, EVs, or car brands. Do NOT use 'technology' for car-related content.",
   "entities": [
     {
       "name": "Entity A Full Name",
@@ -149,7 +150,7 @@ export async function generateComparison(
         winner: kd.winner as "a" | "b" | "tie" | undefined,
       })),
       verdict: data.verdict || null,
-      category: data.category || "general",
+      category: validateComparisonCategory(data.category || "", data.title || `${entityA} vs ${entityB}`, entityA, entityB),
       entities: (data.entities || []).map((e: Record<string, unknown>, idx: number) => ({
         id: `gen-ent-${idx}-${Date.now()}`,
         slug: String(e.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/g, ""),

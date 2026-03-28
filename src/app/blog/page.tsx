@@ -26,6 +26,7 @@ const CATEGORIES = [
   "health",
   "travel",
   "food",
+  "automotive",
 ];
 
 function estimateReadTime(content: string): number {
@@ -55,6 +56,7 @@ function categoryColor(cat: string): string {
     health: "bg-red-100 text-red-700",
     travel: "bg-teal-100 text-teal-700",
     food: "bg-orange-100 text-orange-700",
+    automotive: "bg-slate-100 text-slate-700",
   };
   return colors[cat] || "bg-gray-100 text-gray-700";
 }
