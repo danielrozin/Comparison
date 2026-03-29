@@ -577,3 +577,48 @@ model SyndicatedContent {
   @@index([sourceType])
   @@map("syndicated_content")
 }
+
+// ============================================================
+// EMBED PARTNER SYSTEM — White-label embed widget for partners
+// ============================================================
+
+model EmbedPartner {
+  id              String   @id @default(cuid())
+  partnerKey      String   @unique @map("partner_key") // public key used in embed URLs
+  name            String   // partner company name
+  email           String
+  website         String?  // partner's website URL
+  tier            String   @default("free") // free, pro, enterprise
+  status          String   @default("active") // active, suspended, cancelled
+
+  // White-label branding
+  brandName       String?  @map("brand_name") // replaces "A Versus B" in footer
+  primaryColor    String?  @map("primary_color") // hex color for header gradient start
+  accentColor     String?  @map("accent_color") // hex color for header gradient end
+  logoUrl         String?  @map("logo_url") // partner logo URL for embed header
+  hideBranding    Boolean  @default(false) @map("hide_branding") // hide "Powered by" footer
+  customFooterText String? @map("custom_footer_text") // custom footer text
+  customFooterUrl  String? @map("custom_footer_url") // custom footer link URL
+
+  // Allowed categories/comparisons (null = all)
+  allowedCategories String[] @map("allowed_categories")
+  featuredSlugs     String[] @map("featured_slugs") // pinned comparisons for this partner
+
+  // Usage limits
+  monthlyEmbedViews  Int     @default(0) @map("monthly_embed_views")
+  monthlyViewLimit   Int?    @map("monthly_view_limit") // null = unlimited
+  lastViewResetAt    DateTime @default(now()) @map("last_view_reset_at")
+
+  // Stripe billing
+  stripeCustomerId     String?  @map("stripe_customer_id")
+  stripeSubscriptionId String?  @map("stripe_subscription_id")
+
+  // Timestamps
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([email])
+  @@index([tier])
+  @@index([status])
+  @@map("embed_partners")
+}
