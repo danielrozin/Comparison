@@ -6,6 +6,7 @@ import { discoverTopics } from "@/lib/services/content-discovery";
 import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-generator";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
+import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
 export const maxDuration = 300; // 5 minutes
@@ -99,34 +100,56 @@ export async function GET(request: NextRequest) {
     // Redis storage is optional — pipeline works without it
   }
 
-  // Step 3: Generate comparisons DIRECTLY from discovered topics (no Redis dependency)
+  // Step 3: Enqueue comparisons into the generation queue, then process with parallel workers
   let generatedCount = 0;
   const generatedSlugs: string[] = [];
-  const compLimit = 30; // Generate up to 30 comparisons per run (10 GSC + 10 Apify + 10 DataForSEO)
+  const compLimit = 30;
 
-  for (const topic of comparisonTopics.slice(0, compLimit)) {
-    try {
-      const slug = `${slugify(topic.entityA!)}-vs-${slugify(topic.entityB!)}`;
+  // Enqueue all discovered comparison topics
+  const queueItems = comparisonTopics.slice(0, compLimit).map((topic) => ({
+    entityA: topic.entityA!,
+    entityB: topic.entityB!,
+    category,
+    source: `cron:${topic.source}`,
+    priority: Math.round(topic.opportunityScore || 0),
+  }));
 
-      // Skip if already exists
-      const existing = await getComparisonBySlug(slug);
-      if (existing) continue;
+  try {
+    const { enqueued, skipped } = await enqueueBatch(queueItems);
+    if (skipped > 0) {
+      allErrors.push(`Queue: ${skipped} topics skipped (already exist or in queue)`);
+    }
 
-      const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
-
-      if (result.success && result.comparison) {
-        try {
-          await saveComparison(result.comparison);
-          generatedCount++;
-          generatedSlugs.push(slug);
-        } catch (dbErr) {
-          allErrors.push(`DB save "${slug}": ${dbErr instanceof Error ? dbErr.message : "Unknown"}`);
+    // Process queue with 5 parallel workers
+    if (enqueued > 0) {
+      const queueResult = await processQueue(5, compLimit);
+      generatedCount = queueResult.succeeded;
+      generatedSlugs.push(...queueResult.slugs);
+      allErrors.push(...queueResult.errors);
+    }
+  } catch (err) {
+    // Fallback to sequential generation if queue fails
+    allErrors.push(`Queue failed, falling back to sequential: ${err instanceof Error ? err.message : "Unknown"}`);
+    for (const topic of comparisonTopics.slice(0, compLimit)) {
+      try {
+        const slug = `${slugify(topic.entityA!)}-vs-${slugify(topic.entityB!)}`;
+        const existing = await getComparisonBySlug(slug);
+        if (existing) continue;
+        const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
+        if (result.success && result.comparison) {
+          try {
+            await saveComparison(result.comparison);
+            generatedCount++;
+            generatedSlugs.push(slug);
+          } catch (dbErr) {
+            allErrors.push(`DB save "${slug}": ${dbErr instanceof Error ? dbErr.message : "Unknown"}`);
+          }
+        } else {
+          allErrors.push(`Generate "${slug}": ${result.error || "Failed"}`);
         }
-      } else {
-        allErrors.push(`Generate "${slug}": ${result.error || "Failed"}`);
+      } catch (genErr) {
+        allErrors.push(`"${topic.entityA} vs ${topic.entityB}": ${genErr instanceof Error ? genErr.message : "Unknown"}`);
       }
-    } catch (err) {
-      allErrors.push(`"${topic.entityA} vs ${topic.entityB}": ${err instanceof Error ? err.message : "Unknown"}`);
     }
   }
 
