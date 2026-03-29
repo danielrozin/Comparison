@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { recordPipelineRun, mergeOpportunities } from "@/lib/services/pipeline-service";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { discoverTopics } from "@/lib/services/content-discovery";
@@ -25,6 +26,15 @@ export async function GET(request: NextRequest) {
   if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const checkInId = Sentry.captureCheckIn({
+    monitorSlug: "auto-generate",
+    status: "in_progress",
+  }, {
+    schedule: { type: "crontab", value: "0 6 * * *" },
+    maxRuntime: 10,
+    checkinMargin: 5,
+  });
 
   const startTime = Date.now();
   const runId = `auto-${Date.now()}`;
@@ -196,6 +206,12 @@ Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
   } catch {
     // Email is non-critical
   }
+
+  Sentry.captureCheckIn({
+    checkInId,
+    monitorSlug: "auto-generate",
+    status: allErrors.length > generatedCount ? "error" : "ok",
+  });
 
   return NextResponse.json({
     success: true,

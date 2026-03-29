@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { analyzeGSCOpportunities, analyzeGSCTechnicalIssues } from "@/lib/services/gsc-service";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison } from "@/lib/services/comparison-service";
@@ -21,6 +22,15 @@ export async function GET(request: NextRequest) {
   ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  const checkInId = Sentry.captureCheckIn({
+    monitorSlug: "gsc-pipeline",
+    status: "in_progress",
+  }, {
+    schedule: { type: "crontab", value: "0 8 * * *" },
+    maxRuntime: 10,
+    checkinMargin: 5,
+  });
 
   const startTime = Date.now();
   const MAX_COMPARISONS = 10;
@@ -155,12 +165,23 @@ ${report.topIssues.length > 0 ? `\nTop Issues:\n${report.topIssues.map((i) => ` 
       console.warn("GSC Pipeline: Failed to send email report:", emailErr);
     }
 
+    Sentry.captureCheckIn({
+      checkInId,
+      monitorSlug: "gsc-pipeline",
+      status: report.errors.length > 0 && report.comparisonsCreated.length === 0 ? "error" : "ok",
+    });
+
     return NextResponse.json({
       success: true,
       report,
       durationMs,
     });
   } catch (err) {
+    Sentry.captureCheckIn({
+      checkInId,
+      monitorSlug: "gsc-pipeline",
+      status: "error",
+    });
     console.error("GSC Pipeline cron error:", err);
     return NextResponse.json(
       {
