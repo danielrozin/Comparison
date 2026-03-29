@@ -536,3 +536,44 @@ model BlogArticle {
   @@index([slug])
   @@map("blog_articles")
 }
+
+// ============================================================
+// CONTENT SYNDICATION SYSTEM
+// ============================================================
+
+model SyndicatedContent {
+  id              String   @id @default(cuid())
+
+  // Source content reference (comparison or blog article)
+  sourceType      String   @map("source_type")   // "comparison" | "blog"
+  sourceSlug      String   @map("source_slug")    // slug of the comparison or blog
+  sourceTitle     String   @map("source_title")
+
+  // Syndication target
+  platform        String   // "medium" | "devto" | "linkedin"
+  platformUrl     String?  @map("platform_url")   // URL on the target platform once published
+  canonicalUrl    String   @map("canonical_url")   // https://www.aversusb.net/compare/... or /blog/...
+
+  // Formatted content ready for publishing
+  formattedTitle  String   @map("formatted_title")
+  formattedBody   String   @db.Text @map("formatted_body") // markdown/html for the platform
+
+  // Status tracking
+  status          String   @default("pending")  // pending, published, failed, skipped
+  publishedAt     DateTime? @map("published_at")
+  errorMessage    String?  @map("error_message")
+
+  // Referral tracking
+  utmCampaign     String?  @map("utm_campaign")
+  utmSource       String?  @map("utm_source")
+  referralClicks  Int      @default(0) @map("referral_clicks")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([sourceSlug, platform])
+  @@index([status])
+  @@index([platform])
+  @@index([sourceType])
+  @@map("syndicated_content")
+}
