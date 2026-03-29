@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { ShareBar } from "@/components/engagement/ShareBar";
 
 // ---------- Markdown renderer ----------
 
@@ -318,32 +319,7 @@ export default async function BlogPostPage({
             <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
               Share this article
             </h3>
-            <div className="flex gap-3">
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`${SITE_URL}/blog/${slug}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-[#1DA1F2] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                Twitter
-              </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${SITE_URL}/blog/${slug}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-[#4267B2] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                Facebook
-              </a>
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blog/${slug}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-[#0A66C2] text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-              >
-                LinkedIn
-              </a>
-            </div>
+            <ShareBar title={article.title} slug={slug} path="blog" />
           </div>
 
           {/* Related Comparisons */}

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { SITE_URL } from "@/lib/utils/constants";
 
-export function ShareBar({ title, slug }: { title: string; slug: string }) {
+export function ShareBar({ title, slug, path = "compare" }: { title: string; slug: string; path?: string }) {
   const [copied, setCopied] = useState(false);
-  const url = `${SITE_URL}/compare/${slug}`;
+  const url = `${SITE_URL}/${path}/${slug}`;
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 

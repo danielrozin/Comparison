@@ -57,13 +57,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const entityA = comparison.entities[0]?.name || "";
   const entityB = comparison.entities[1]?.name || "";
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(comparison.category || "")}&type=comparison`;
+  const fallbackDescription = comparison.shortAnswer
+    || `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`;
 
   return {
     title: comparison.metadata.metaTitle || comparison.title,
-    description: comparison.metadata.metaDescription || comparison.shortAnswer || "",
+    description: comparison.metadata.metaDescription || fallbackDescription,
     openGraph: {
       title: comparison.metadata.metaTitle || comparison.title,
-      description: comparison.metadata.metaDescription || "",
+      description: comparison.metadata.metaDescription || fallbackDescription,
       url: `${SITE_URL}/compare/${slug}`,
       type: "article",
       publishedTime: comparison.metadata.publishedAt || undefined,
@@ -73,7 +75,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     twitter: {
       card: "summary_large_image",
       title: comparison.title,
-      description: comparison.metadata.metaDescription || "",
+      description: comparison.metadata.metaDescription || fallbackDescription,
       images: [ogImage],
     },
     alternates: {
