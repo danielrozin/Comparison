@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-03-29T10:46:04.574Z",
+  "comparisons": [
+    {
+      "slug": "hostinger-vs-namecheap",
+      "success": true,
+      "time": 28.4
+    },
+    {
+      "slug": "expressvpn-vs-nordvpn",
+      "success": true,
+      "time": 24.6
+    },
+    {
+      "slug": "nordvpn-vs-surfshark",
+      "success": true,
+      "time": 23.2
+    },
+    {
+      "slug": "square-vs-stripe",
+      "success": true,
+      "time": 24.3
+    },
+    {
+      "slug": "asana-vs-monday-com",
+      "success": true,
+      "time": 25.8
+    },
+    {
+      "slug": "chatgpt-vs-perplexity",
+      "success": true,
+      "time": 25.9
+    },
+    {
+      "slug": "quickbooks-vs-xero",
+      "success": true,
+      "time": 27.2
+    },
+    {
+      "slug": "squarespace-vs-wix",
+      "success": true,
+      "time": 24.2
+    },
+    {
+      "slug": "cloudflare-vs-porkbun",
+      "success": true,
+      "time": 28
+    },
+    {
+      "slug": "mcafee-vs-norton",
+      "success": true,
+      "time": 25.8
+    },
+    {
+      "slug": "quickbooks-vs-wave",
+      "success": true,
+      "time": 24.2
+    },
+    {
+      "slug": "aws-vs-azure",
+      "success": true,
+      "time": 25.1
+    },
+    {
+      "slug": "chatgpt-vs-claude",
+      "success": true,
+      "time": 26.9
+    },
+    {
+      "slug": "jira-vs-trello",
+      "success": true,
+      "time": 24
+    },
+    {
+      "slug": "hubspot-vs-salesforce",
+      "success": true,
+      "time": 27.1
+    },
+    {
+      "slug": "notion-vs-obsidian",
+      "success": true,
+      "time": 25.9
+    },
+    {
+      "slug": "1password-vs-bitwarden",
+      "success": true,
+      "time": 23
+    },
+    {
+      "slug": "constant-contact-vs-mailchimp",
+      "success": true,
+      "time": 24.2
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "success": true,
+      "time": 27
+    },
+    {
+      "slug": "wix-vs-wordpress",
+      "success": true,
+      "time": 24.6
+    },
+    {
+      "slug": "chatgpt-vs-copilot",
+      "success": true,
+      "time": 27.7
+    },
+    {
+      "slug": "docker-vs-kubernetes",
+      "success": true,
+      "time": 23.9
+    },
+    {
+      "slug": "shopify-vs-woocommerce",
+      "success": true,
+      "time": 28
+    },
+    {
+      "slug": "bluehost-vs-siteground",
+      "success": true,
+      "time": 23.5
+    },
+    {
+      "slug": "godaddy-vs-squarespace",
+      "success": true,
+      "time": 27.3
+    },
+    {
+      "slug": "freshbooks-vs-quickbooks",
+      "success": true,
+      "time": 23.6
+    },
+    {
+      "slug": "jira-vs-linear",
+      "success": true,
+      "time": 25.9
+    },
+    {
+      "slug": "bluehost-vs-godaddy",
+      "success": true,
+      "time": 22.3
+    },
+    {
+      "slug": "godaddy-vs-hostinger",
+      "success": true,
+      "time": 25.3
+    },
+    {
+      "slug": "clickup-vs-monday-com",
+      "success": true,
+      "time": 23.1
+    }
+  ],
+  "blogs": [],
+  "summary": {
+    "comparisonsSuccess": 30,
+    "comparisonsTotal": 30,
+    "blogsSuccess": 0,
+    "blogsTotal": 0,
+    "totalTimeSeconds": 759.9999999999999
+  }
+}
