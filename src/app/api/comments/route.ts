@@ -1,4 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+const commentSchema = z.object({
+  comparisonId: z.string().min(1).max(200),
+  name: z.string().min(1).max(100).transform((s) => s.trim()),
+  text: z.string().min(1).max(2000).transform((s) => s.trim()),
+});
 
 // In-memory store (in production, use database)
 const commentStore: Map<string, {
@@ -13,17 +20,18 @@ const commentStore: Map<string, {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { comparisonId, name, text } = body;
-
-    if (!comparisonId || !name?.trim() || !text?.trim()) {
-      return NextResponse.json({ error: "comparisonId, name, and text are required" }, { status: 400 });
+    const parsed = commentSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid input", details: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
+
+    const { comparisonId, name, text } = parsed.data;
 
     const comment = {
       id: `c-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       comparisonId,
-      name: name.trim(),
-      text: text.trim(),
+      name,
+      text,
       likes: 0,
       timestamp: new Date().toISOString(),
     };

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { classifyComparison } from "@/lib/services/categorizer";
 import { logAdminEvent } from "@/lib/services/admin-logger";
 import { getRedis } from "@/lib/services/redis";
@@ -21,14 +22,23 @@ const MAX_RECENT = 100;
 // In-memory fallback
 const memorySearches: RecentSearch[] = [];
 
+const recentSearchSchema = z.object({
+  slug: z.string().min(1).max(200),
+  title: z.string().max(300).optional(),
+  entityA: z.string().min(1).max(200),
+  entityB: z.string().min(1).max(200),
+  generated: z.boolean().optional(),
+});
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { slug, title, entityA, entityB, generated } = body;
-
-    if (!slug || !entityA || !entityB) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    const parsed = recentSearchSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
+
+    const { slug, title, entityA, entityB, generated } = parsed.data;
 
     const classification = classifyComparison(entityA, entityB);
 
