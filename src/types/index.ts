@@ -19,10 +19,17 @@ export interface ComparisonPageData {
 }
 
 export interface ComparisonResource {
-  type: "wikipedia" | "blog" | "external";
+  type: "wikipedia" | "blog" | "external" | "affiliate";
   label: string;
   url: string;
   description?: string;
+  partner?: string;
+}
+
+export interface AffiliateLink {
+  url: string;
+  partner: string;
+  label: string;
 }
 
 export interface ComparisonEntityData {
@@ -36,6 +43,7 @@ export interface ComparisonEntityData {
   pros: string[];
   cons: string[];
   bestFor: string | null;
+  affiliateLinks?: AffiliateLink[];
 }
 
 export interface ComparisonAttribute {

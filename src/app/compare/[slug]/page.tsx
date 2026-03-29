@@ -18,6 +18,7 @@ import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { generateResources } from "@/lib/services/resources";
+import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -110,11 +111,17 @@ export default async function ComparisonPage({ params }: PageProps) {
 
   const schemas = comparisonPageSchema(comparison);
 
+  // Enrich entities with affiliate links
+  const enrichedComparison = {
+    ...comparison,
+    entities: enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
+  };
+
   if (VERDICT_FIRST) {
-    return <VerdictFirstLayout comparison={comparison} schemas={schemas} slug={slug} />;
+    return <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} />;
   }
 
-  return <ClassicLayout comparison={comparison} schemas={schemas} slug={slug} />;
+  return <ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} />;
 }
 
 function VerdictFirstLayout({
@@ -215,6 +222,7 @@ function VerdictFirstLayout({
       {/* Resources & Learn More */}
       <ResourcesSection
         resources={generateResources(comparison.slug, comparison.entities)}
+        entities={comparison.entities}
       />
 
       {/* Related Comparisons */}
@@ -332,6 +340,7 @@ function ClassicLayout({
       {/* Resources & Learn More */}
       <ResourcesSection
         resources={generateResources(comparison.slug, comparison.entities)}
+        entities={comparison.entities}
       />
 
       {/* Related Comparisons */}
