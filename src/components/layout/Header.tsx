@@ -65,28 +65,30 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav ref={navRef} className="hidden lg:flex items-center gap-0.5">
-            {NAV_ITEMS.map((item) => {
+          <nav ref={navRef} className="hidden lg:flex items-center">
+            {NAV_ITEMS.map((item, idx) => {
               const subs = CATEGORY_SUBCATEGORIES[item.slug];
               const hasSubs = subs && subs.length > 0;
               const isOpen = openDropdown === item.slug;
+              // Hide last 2 items on lg, show all on xl
+              const hideOnLg = idx >= NAV_ITEMS.length - 2;
 
               return (
                 <div
                   key={item.slug}
-                  className="relative"
+                  className={`relative flex-shrink-0 ${hideOnLg ? "hidden xl:block" : ""}`}
                   onMouseEnter={() => hasSubs && handleEnter(item.slug)}
                   onMouseLeave={handleLeave}
                 >
                   <Link
                     href={`/category/${item.slug}`}
-                    className={`inline-flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors ${
                       isOpen ? "text-gray-900 bg-gray-100" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                     }`}
                   >
                     {item.name}
                     {hasSubs && (
-                      <svg className={`w-3 h-3 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className={`w-3 h-3 flex-shrink-0 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                       </svg>
                     )}
@@ -125,12 +127,12 @@ export function Header() {
               );
             })}
 
-            <div className="w-px h-5 bg-gray-200 mx-1" />
+            <div className="w-px h-5 bg-gray-200 mx-1 flex-shrink-0" />
 
-            <Link href="/trending" className="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+            <Link href="/trending" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
               Trending
             </Link>
-            <Link href="/blog" className="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors">
+            <Link href="/blog" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
               Blog
             </Link>
           </nav>
