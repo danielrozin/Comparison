@@ -24,6 +24,7 @@ import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
 
 // Lazy-load heavy below-fold components
@@ -156,8 +157,18 @@ function VerdictFirstLayout({
         </div>
       </div>
 
-      {/* Hero: Title + Entity Cards (short answer moved to verdict card) */}
+      {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Short Answer Block — AEO/featured snippet target */}
+      {(comparison.shortAnswer || comparison.verdict) && (
+        <ShortAnswerBlock
+          shortAnswer={comparison.shortAnswer || ""}
+          verdict={comparison.verdict}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
 
       {/* VERDICT CARD — above the fold */}
       {(comparison.verdict || comparison.shortAnswer) && (
