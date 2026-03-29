@@ -15,6 +15,7 @@ import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { generateResources } from "@/lib/services/resources";
@@ -355,6 +356,9 @@ function ClassicLayout({
         entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
         relatedComparisons={comparison.relatedComparisons}
       />
+
+      {/* Newsletter Signup */}
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
       <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />

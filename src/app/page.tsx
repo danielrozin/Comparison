@@ -8,6 +8,7 @@ import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export default async function HomePage() {
   const [trending, latest, totalCount, blogResult] = await Promise.all([
@@ -337,6 +338,9 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Newsletter Signup */}
+      <NewsletterSignup source="homepage" />
 
       {/* CTA */}
       <section className="bg-primary-600 text-white py-16">
