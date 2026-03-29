@@ -21,6 +21,8 @@ import {
   getMockLatest,
 } from "./mock-data";
 
+import { getRedis } from "./redis";
+
 // Lazy-import prisma to avoid crash when DATABASE_URL is not set
 function getPrismaClient() {
   try {
@@ -29,6 +31,42 @@ function getPrismaClient() {
     return getPrisma();
   } catch {
     return null;
+  }
+}
+
+// Cache TTLs in seconds
+const CACHE_TTL_COMPARISON = 300; // 5 min for individual comparisons
+const CACHE_TTL_TRENDING = 120;   // 2 min for trending lists
+const CACHE_TTL_SEARCH = 60;      // 1 min for search results
+
+async function getFromCache<T>(key: string): Promise<T | null> {
+  const redis = getRedis();
+  if (!redis) return null;
+  try {
+    return await redis.get<T>(key);
+  } catch {
+    return null;
+  }
+}
+
+async function setCache(key: string, value: unknown, ttl: number): Promise<void> {
+  const redis = getRedis();
+  if (!redis) return;
+  try {
+    await redis.set(key, value, { ex: ttl });
+  } catch {
+    // Silently fail — cache is optional
+  }
+}
+
+async function invalidateCache(pattern: string): Promise<void> {
+  const redis = getRedis();
+  if (!redis) return;
+  try {
+    // Delete specific keys — pattern-based scan not used to keep it simple
+    await redis.del(pattern);
+  } catch {
+    // Silently fail
   }
 }
 
@@ -237,6 +275,11 @@ const COMPARISON_INCLUDE = {
 export async function getComparisonBySlug(
   slug: string
 ): Promise<ComparisonPageData | null> {
+  // Check cache first
+  const cacheKey = `comparison:${slug}`;
+  const cached = await getFromCache<ComparisonPageData>(cacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -245,20 +288,27 @@ export async function getComparisonBySlug(
         include: COMPARISON_INCLUDE,
       });
       if (row) {
-        // Fetch related comparisons
         const related = await getRelatedFromDb(prisma, row);
-        return transformToPageData(row as PrismaComparisonRow, related);
+        const result = transformToPageData(row as PrismaComparisonRow, related);
+        await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+        return result;
       }
     } catch (e) {
       console.warn("Prisma query failed for getComparisonBySlug, falling back to mock:", e);
     }
   }
-  return getMockComparison(slug);
+  const mock = getMockComparison(slug);
+  if (mock) await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
+  return mock;
 }
 
 export async function getTrendingComparisons(
   limit: number = 10
 ): Promise<TrendingComparison[]> {
+  const cacheKey = `trending:${limit}`;
+  const cached = await getFromCache<TrendingComparison[]>(cacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -276,7 +326,7 @@ export async function getTrendingComparisons(
         },
       });
       if (rows.length > 0) {
-        return rows.map(
+        const result = rows.map(
           (r: {
             slug: string;
             title: string;
@@ -293,12 +343,16 @@ export async function getTrendingComparisons(
               .filter(Boolean) as string[],
           })
         );
+        await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+        return result;
       }
     } catch (e) {
       console.warn("Prisma query failed for getTrendingComparisons, falling back to mock:", e);
     }
   }
-  return getMockTrending(limit);
+  const mock = getMockTrending(limit);
+  await setCache(cacheKey, mock, CACHE_TTL_TRENDING);
+  return mock;
 }
 
 export async function getRelatedComparisons(
@@ -353,6 +407,10 @@ export async function searchComparisons(
   query: string,
   limit: number = 20
 ): Promise<{ slug: string; title: string; category: string; viewCount: number }[]> {
+  const searchCacheKey = `search:${query.toLowerCase().trim()}:${limit}`;
+  const cached = await getFromCache<{ slug: string; title: string; category: string; viewCount: number }[]>(searchCacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -421,7 +479,9 @@ export async function searchComparisons(
     return b.viewCount - a.viewCount;
   });
 
-  return results.slice(0, limit);
+  const finalResults = results.slice(0, limit);
+  await setCache(searchCacheKey, finalResults, CACHE_TTL_SEARCH);
+  return finalResults;
 }
 
 export async function incrementViewCount(comparisonId: string): Promise<void> {
@@ -681,6 +741,9 @@ export async function saveComparison(
         comparisonId: comparison.id,
       },
     });
+
+    // Invalidate cached version
+    await invalidateCache(`comparison:${data.slug}`);
 
     return { id: comparison.id };
   } catch (e) {

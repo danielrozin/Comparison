@@ -4,6 +4,7 @@
  */
 
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
+import { getPrisma } from "@/lib/db/prisma";
 import { comparisonSlug } from "@/lib/utils/slugify";
 
 /**
@@ -13,20 +14,53 @@ import { comparisonSlug } from "@/lib/utils/slugify";
 export async function storeKeywordOpportunities(
   opportunities: DiscoveredOpportunity[]
 ): Promise<{ created: number; updated: number }> {
+  const prisma = getPrisma();
+  if (!prisma) {
+    console.warn("storeKeywordOpportunities: database not available, skipping");
+    return { created: 0, updated: 0 };
+  }
+
   let created = 0;
   let updated = 0;
 
   for (const opp of opportunities) {
-    // TODO: Implement with Prisma upsert
-    // const existing = await prisma.keywordOpportunity.findUnique({ where: { keyword: opp.keyword } });
-    // if (existing) {
-    //   await prisma.keywordOpportunity.update({ ... });
-    //   updated++;
-    // } else {
-    //   await prisma.keywordOpportunity.create({ ... });
-    //   created++;
-    // }
-    created++; // placeholder
+    const result = await prisma.keywordOpportunity.upsert({
+      where: { keyword: opp.keyword },
+      update: {
+        searchVolume: opp.searchVolume,
+        cpc: opp.cpc,
+        competition: opp.competition,
+        difficulty: opp.difficulty,
+        intent: opp.intent,
+        entityA: opp.entityA,
+        entityB: opp.entityB,
+        queryPattern: opp.queryPattern,
+        category: opp.category,
+        opportunityScore: opp.opportunityScore,
+        source: opp.source,
+      },
+      create: {
+        keyword: opp.keyword,
+        searchVolume: opp.searchVolume,
+        cpc: opp.cpc,
+        competition: opp.competition,
+        difficulty: opp.difficulty,
+        intent: opp.intent,
+        entityA: opp.entityA,
+        entityB: opp.entityB,
+        queryPattern: opp.queryPattern,
+        category: opp.category,
+        opportunityScore: opp.opportunityScore,
+        source: opp.source,
+        status: "discovered",
+      },
+    });
+
+    if (result.createdAt.getTime() === result.updatedAt.getTime()) {
+      created++;
+    } else {
+      updated++;
+    }
   }
 
   return { created, updated };
@@ -39,13 +73,33 @@ export async function getTopUnbuiltOpportunities(
   limit: number = 50,
   category?: string
 ): Promise<DiscoveredOpportunity[]> {
-  // TODO: Implement with Prisma
-  // return prisma.keywordOpportunity.findMany({
-  //   where: { hasExistingPage: false, status: "discovered", ...(category && { category }) },
-  //   orderBy: { opportunityScore: "desc" },
-  //   take: limit,
-  // });
-  return [];
+  const prisma = getPrisma();
+  if (!prisma) return [];
+
+  const rows = await prisma.keywordOpportunity.findMany({
+    where: {
+      hasExistingPage: false,
+      status: "discovered",
+      ...(category ? { category } : {}),
+    },
+    orderBy: { opportunityScore: "desc" },
+    take: limit,
+  });
+
+  return rows.map((r) => ({
+    keyword: r.keyword,
+    searchVolume: r.searchVolume ?? 0,
+    cpc: r.cpc ?? 0,
+    competition: r.competition ?? 0,
+    difficulty: r.difficulty ?? 0,
+    intent: r.intent ?? "informational",
+    entityA: r.entityA,
+    entityB: r.entityB,
+    queryPattern: r.queryPattern,
+    category: r.category,
+    opportunityScore: r.opportunityScore ?? 0,
+    source: r.source ?? "unknown",
+  }));
 }
 
 /**
