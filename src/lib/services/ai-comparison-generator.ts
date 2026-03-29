@@ -28,7 +28,7 @@ Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
     {"label": "Attribute Name", "entityAValue": "value", "entityBValue": "value", "winner": "a" or "b" or "tie"}
   ],
   "verdict": "2-3 sentence balanced conclusion",
-  "category": "one of: ${COMPARISON_CATEGORIES.join(", ")}. IMPORTANT: Use 'automotive' for anything about cars, vehicles, EVs, or car brands. Do NOT use 'technology' for car-related content.",
+  "category": "one of: ${COMPARISON_CATEGORIES.join(", ")}. IMPORTANT: Use 'software' for any software tools, SaaS, apps, platforms, VPNs, antivirus, hosting, CRM, project management tools, AI tools, email marketing, password managers, website builders, cloud services, design tools, or dev tools. Use 'automotive' for cars, vehicles, EVs. Do NOT use 'technology' for software or car content.",
   "entities": [
     {
       "name": "Entity A Full Name",

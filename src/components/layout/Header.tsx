@@ -43,7 +43,13 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-0.5 flex-shrink min-w-0">
-            {CATEGORIES.slice(0, 6).map((cat) => (
+            <Link
+              href="/category/software"
+              className="px-2.5 py-2 text-sm font-semibold text-primary-600 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
+            >
+              <span className="hidden xl:inline">🖥️ </span>Software
+            </Link>
+            {CATEGORIES.filter((c) => !["software", "celebrities", "travel", "military", "economy", "history", "brands", "finance", "education"].includes(c.slug)).slice(0, 6).map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
@@ -54,13 +60,13 @@ export function Header() {
             ))}
             <Link
               href="/trending"
-              className="px-2.5 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors whitespace-nowrap"
             >
               Trending
             </Link>
             <Link
               href="/blog"
-              className="px-2.5 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors whitespace-nowrap"
+              className="px-2.5 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors whitespace-nowrap"
             >
               Blog
             </Link>
@@ -105,7 +111,16 @@ export function Header() {
         }`}
       >
         <nav className="bg-white/95 backdrop-blur-xl border-t border-border px-4 py-4 space-y-1">
-          {CATEGORIES.slice(0, 6).map((cat) => (
+          <Link
+            href="/category/software"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+          >
+            <span>🖥️</span>
+            Software
+          </Link>
+          <div className="border-t border-border my-2" />
+          {CATEGORIES.filter((c) => !["software", "celebrities", "travel", "military", "economy", "history", "brands", "finance", "education"].includes(c.slug)).slice(0, 6).map((cat) => (
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
@@ -120,14 +135,14 @@ export function Header() {
           <Link
             href="/trending"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           >
             <span>🔥</span> Trending
           </Link>
           <Link
             href="/blog"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           >
             <span>📝</span> Blog
           </Link>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, PRODUCT_SUBCATEGORIES, SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -46,11 +46,14 @@ export default async function CategoryPage({ params }: PageProps) {
 
   const { comparisons, total } = await getComparisonsByCategory(slug, 200);
   const isProducts = slug === "products";
+  const isSoftware = slug === "software";
+  const hasSubcategories = isProducts || isSoftware;
+  const activeSubcategories = isProducts ? PRODUCT_SUBCATEGORIES : isSoftware ? SOFTWARE_SUBCATEGORIES : [];
 
-  // Build subcategory data for products
-  const subcategoryData: { subcat: (typeof PRODUCT_SUBCATEGORIES)[number]; items: typeof comparisons }[] = [];
-  if (isProducts) {
-    for (const subcat of PRODUCT_SUBCATEGORIES) {
+  // Build subcategory data for products or software
+  const subcategoryData: { subcat: (typeof activeSubcategories)[number]; items: typeof comparisons }[] = [];
+  if (hasSubcategories) {
+    for (const subcat of activeSubcategories) {
       const items = getSubcategoryComparisons(comparisons, subcat);
       subcategoryData.push({ subcat, items });
     }
@@ -115,13 +118,13 @@ export default async function CategoryPage({ params }: PageProps) {
             </h1>
             <p className="text-text-secondary mt-1">
               {total} comparison{total !== 1 ? "s" : ""} available
-              {isProducts && subcategoryData.length > 0 && ` across ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
+              {hasSubcategories && subcategoryData.length > 0 && ` across ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
             </p>
           </div>
         </div>
 
         {/* Products: Subcategory Grid Squares + Comparisons */}
-        {isProducts && subcategoryData.length > 0 ? (
+        {hasSubcategories && subcategoryData.length > 0 ? (
           <div className="space-y-12">
             {/* Subcategory Navigation Grid */}
             <section>

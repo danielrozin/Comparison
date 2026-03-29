@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
+import { SITE_NAME, CATEGORIES, SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
 
 export function Footer() {
   return (
     <footer className="bg-surface-dark text-white mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
@@ -19,13 +19,40 @@ export function Footer() {
             </p>
           </div>
 
+          {/* Software — prominent column */}
+          <div>
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
+              Software
+            </h3>
+            <ul className="space-y-2">
+              {SOFTWARE_SUBCATEGORIES.slice(0, 8).map((sub) => (
+                <li key={sub.slug}>
+                  <Link
+                    href={`/category/software/${sub.slug}`}
+                    className="text-sm text-gray-300 hover:text-white transition-colors"
+                  >
+                    {sub.icon} {sub.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/category/software"
+                  className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors"
+                >
+                  View all software
+                </Link>
+              </li>
+            </ul>
+          </div>
+
           {/* Categories */}
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Categories
             </h3>
             <ul className="space-y-2">
-              {CATEGORIES.slice(0, 6).map((cat) => (
+              {CATEGORIES.filter((c) => c.slug !== "software").slice(0, 8).map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     href={`/category/${cat.slug}`}
@@ -45,13 +72,23 @@ export function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/compare/messi-vs-ronaldo" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Messi vs Ronaldo
+                <Link href="/compare/chatgpt-vs-claude" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  ChatGPT vs Claude
                 </Link>
               </li>
               <li>
-                <Link href="/compare/japan-vs-china" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Japan vs China
+                <Link href="/compare/nordvpn-vs-expressvpn" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  NordVPN vs ExpressVPN
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare/squarespace-vs-wix" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Squarespace vs Wix
+                </Link>
+              </li>
+              <li>
+                <Link href="/compare/messi-vs-ronaldo" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Messi vs Ronaldo
                 </Link>
               </li>
               <li>
@@ -67,7 +104,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* About */}
+          {/* Company */}
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Company
@@ -84,6 +121,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Privacy Policy
                 </Link>
@@ -96,11 +138,6 @@ export function Footer() {
               <li>
                 <Link href="/disclaimer" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Disclaimer
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Blog
                 </Link>
               </li>
               <li>
