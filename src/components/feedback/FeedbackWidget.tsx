@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
 type FeedbackType = "question" | "request" | "bug" | "suggestion";
 
@@ -35,6 +36,7 @@ export function FeedbackWidget() {
 
     setIsSubmitting(false);
     setSubmitted(true);
+    trackNewsletterSignup(window.location.pathname, "feedback_widget");
     setTimeout(() => {
       setSubmitted(false);
       setIsOpen(false);

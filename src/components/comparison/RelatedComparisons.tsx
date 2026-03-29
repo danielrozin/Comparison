@@ -1,10 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import type { RelatedComparison } from "@/types";
+import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 
 export function RelatedComparisons({
   comparisons,
+  sourceSlug,
 }: {
   comparisons: RelatedComparison[];
+  sourceSlug?: string;
 }) {
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -19,6 +24,7 @@ export function RelatedComparisons({
             <Link
               key={comp.slug}
               href={`/compare/${comp.slug}`}
+              onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
               className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
             >
               <div className="flex -space-x-2">

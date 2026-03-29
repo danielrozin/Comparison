@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { trackComparisonVote } from "@/lib/utils/analytics";
 
 export function LikeButton({ comparisonId }: { comparisonId: string }) {
   const [liked, setLiked] = useState(false);
@@ -27,6 +28,8 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
     } else {
       likes[comparisonId] = true;
       setCount((c) => c + 1);
+      const parts = comparisonId.split("-vs-");
+      trackComparisonVote(parts[0] || comparisonId, parts[1] || "", "like");
     }
 
     localStorage.setItem("comparison_likes", JSON.stringify(likes));

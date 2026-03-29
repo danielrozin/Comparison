@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { comparisonPageSchema } from "@/lib/seo/schema";
-import { SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
-import { ComparisonTable } from "@/components/comparison/ComparisonTable";
-import { ComparisonCharts } from "@/components/comparison/ComparisonCharts";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { VerdictBlock } from "@/components/comparison/Verdict";
 import { FAQBlock } from "@/components/comparison/FAQ";
@@ -14,8 +12,6 @@ import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
-// Video player disabled — will re-enable after local testing
-// import { ComparisonVideoPlayer } from "@/components/comparison/ComparisonVideoPlayer";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
@@ -23,6 +19,22 @@ import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { generateResources } from "@/lib/services/resources";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
+import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
+import { VerdictCard } from "@/components/comparison/VerdictCard";
+import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+
+// Lazy-load heavy below-fold components
+const ComparisonTable = dynamic(
+  () => import("@/components/comparison/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
+  { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
+);
+const ComparisonCharts = dynamic(
+  () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
+  { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
+);
+
+// Feature flag: verdict-first layout (default: enabled)
+const VERDICT_FIRST = process.env.NEXT_PUBLIC_VERDICT_FIRST !== "false";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -92,13 +104,28 @@ export default async function ComparisonPage({ params }: PageProps) {
   const { slug } = await params;
   const comparison = await getComparisonBySlug(slug);
 
-  // If no existing comparison, render dynamic generator
   if (!comparison) {
     return <DynamicComparison slug={slug} />;
   }
 
   const schemas = comparisonPageSchema(comparison);
 
+  if (VERDICT_FIRST) {
+    return <VerdictFirstLayout comparison={comparison} schemas={schemas} slug={slug} />;
+  }
+
+  return <ClassicLayout comparison={comparison} schemas={schemas} slug={slug} />;
+}
+
+function VerdictFirstLayout({
+  comparison,
+  schemas,
+  slug,
+}: {
+  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
+  schemas: ReturnType<typeof comparisonPageSchema>;
+  slug: string;
+}) {
   return (
     <>
       {/* Schema markup */}
@@ -110,69 +137,144 @@ export default async function ComparisonPage({ params }: PageProps) {
         />
       ))}
 
-      {/* Breadcrumbs with Schema */}
-      {(() => {
-        const lower = (comparison.title?.toLowerCase() || "") + " " + (comparison.slug || "");
-        const subcat = comparison.category === "products"
-          ? PRODUCT_SUBCATEGORIES.find((s) => s.keywords.some((kw) => lower.includes(kw)))
-          : undefined;
-        const crumbs = [{ name: "Home", url: SITE_URL }];
-        if (comparison.category) {
-          crumbs.push({ name: comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1), url: `${SITE_URL}/category/${comparison.category}` });
-        }
-        if (subcat) {
-          crumbs.push({ name: subcat.name, url: `${SITE_URL}/category/${comparison.category}/${subcat.slug}` });
-        }
-        crumbs.push({ name: comparison.title, url: `${SITE_URL}/compare/${comparison.slug}` });
-        return (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(crumbs)) }}
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        title={comparison.title}
+        slug={comparison.slug}
+        category={comparison.category}
+      />
+
+      {/* Share + Like Bar */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+        <ShareBar title={comparison.title} slug={comparison.slug} />
+        <div className="flex items-center gap-2">
+          <EmbedButton slug={comparison.slug} title={comparison.title} />
+          <LikeButton comparisonId={comparison.id} />
+        </div>
+      </div>
+
+      {/* Hero: Title + Entity Cards (short answer moved to verdict card) */}
+      <ComparisonHero comparison={comparison} />
+
+      {/* VERDICT CARD — above the fold */}
+      {(comparison.verdict || comparison.shortAnswer) && (
+        <VerdictCard
+          verdict={comparison.verdict || ""}
+          shortAnswer={comparison.shortAnswer}
+          entities={comparison.entities}
+          attributes={comparison.attributes}
+        />
+      )}
+
+      {/* Key Differences Summary — top 3, above the fold */}
+      {comparison.keyDifferences.length > 0 && (
+        <KeyDifferencesSummary
+          differences={comparison.keyDifferences}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
+
+      {/* ── Below the fold ── */}
+
+      {/* Full Key Differences Table */}
+      {comparison.keyDifferences.length > 0 && (
+        <div id="key-differences">
+          <KeyDifferencesBlock
+            differences={comparison.keyDifferences}
+            entityA={comparison.entities[0]}
+            entityB={comparison.entities[1]}
           />
-        );
-      })()}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <a href="/" className="hover:text-primary-600 transition-colors">Home</a>
-          </li>
-          {comparison.category && (
-            <>
-              <li>/</li>
-              <li>
-                <a
-                  href={`/category/${comparison.category}`}
-                  className="hover:text-primary-600 transition-colors capitalize"
-                >
-                  {comparison.category}
-                </a>
-              </li>
-            </>
-          )}
-          {(() => {
-            const lower = (comparison.title?.toLowerCase() || "") + " " + (comparison.slug || "");
-            const subcat = comparison.category === "products"
-              ? PRODUCT_SUBCATEGORIES.find((s) => s.keywords.some((kw) => lower.includes(kw)))
-              : undefined;
-            if (!subcat) return null;
-            return (
-              <>
-                <li>/</li>
-                <li>
-                  <a
-                    href={`/category/${comparison.category}/${subcat.slug}`}
-                    className="hover:text-primary-600 transition-colors"
-                  >
-                    {subcat.name}
-                  </a>
-                </li>
-              </>
-            );
-          })()}
-          <li>/</li>
-          <li className="text-text font-medium truncate">{comparison.title}</li>
-        </ol>
-      </nav>
+        </div>
+      )}
+
+      {/* Comparison Table (lazy loaded) */}
+      {comparison.attributes.length > 0 && (
+        <ComparisonTable
+          attributes={comparison.attributes}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
+
+      {/* Visual Comparison Charts (lazy loaded) */}
+      {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
+        <ComparisonCharts
+          attributes={comparison.attributes}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
+
+      {/* Pros & Cons */}
+      <ProsConsBlock entities={comparison.entities} />
+
+      {/* FAQ */}
+      {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+
+      {/* Resources & Learn More */}
+      <ResourcesSection
+        resources={generateResources(comparison.slug, comparison.entities)}
+      />
+
+      {/* Related Comparisons */}
+      {comparison.relatedComparisons.length > 0 && (
+        <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
+      )}
+
+      {/* Internal Links */}
+      <InternalLinks
+        currentSlug={comparison.slug}
+        category={comparison.category}
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        relatedComparisons={comparison.relatedComparisons}
+      />
+
+      {/* Comments */}
+      <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+
+      {/* Version History */}
+      <VersionHistory
+        comparisonSlug={comparison.slug}
+        currentVersion={{
+          updatedAt: comparison.metadata.updatedAt,
+          isAutoGenerated: comparison.metadata.isAutoGenerated,
+          isHumanReviewed: comparison.metadata.isHumanReviewed,
+        }}
+      />
+
+      {/* Freshness */}
+      <FreshnessFooter metadata={comparison.metadata} />
+    </>
+  );
+}
+
+function ClassicLayout({
+  comparison,
+  schemas,
+  slug,
+}: {
+  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
+  schemas: ReturnType<typeof comparisonPageSchema>;
+  slug: string;
+}) {
+  return (
+    <>
+      {/* Schema markup */}
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+
+      {/* Breadcrumbs */}
+      <Breadcrumbs
+        title={comparison.title}
+        slug={comparison.slug}
+        category={comparison.category}
+      />
 
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
@@ -185,10 +287,6 @@ export default async function ComparisonPage({ params }: PageProps) {
 
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
-
-      {/* Video Comparison — disabled until approved locally
-      <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} />
-      */}
 
       {/* Key Differences */}
       {comparison.keyDifferences.length > 0 && (
@@ -238,7 +336,7 @@ export default async function ComparisonPage({ params }: PageProps) {
 
       {/* Related Comparisons */}
       {comparison.relatedComparisons.length > 0 && (
-        <RelatedComparisons comparisons={comparison.relatedComparisons} />
+        <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
 
       {/* Internal Links */}
@@ -263,29 +361,35 @@ export default async function ComparisonPage({ params }: PageProps) {
       />
 
       {/* Freshness */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-text-secondary">
-        Last updated: {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-        {comparison.metadata.isHumanReviewed && (
-          <span className="ml-2 inline-flex items-center gap-1 text-green-600">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            Human reviewed
-          </span>
-        )}
-        {comparison.metadata.isAutoGenerated && (
-          <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-            </svg>
-            AI generated
-          </span>
-        )}
-      </div>
+      <FreshnessFooter metadata={comparison.metadata} />
     </>
+  );
+}
+
+function FreshnessFooter({ metadata }: { metadata: { updatedAt: string; isHumanReviewed: boolean; isAutoGenerated: boolean } }) {
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-text-secondary">
+      Last updated: {new Date(metadata.updatedAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })}
+      {metadata.isHumanReviewed && (
+        <span className="ml-2 inline-flex items-center gap-1 text-green-600">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Human reviewed
+        </span>
+      )}
+      {metadata.isAutoGenerated && (
+        <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+          </svg>
+          AI generated
+        </span>
+      )}
+    </div>
   );
 }
