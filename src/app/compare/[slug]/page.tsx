@@ -17,7 +17,9 @@ import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
+import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
+import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -209,6 +211,12 @@ function VerdictFirstLayout({
       {/* Pros & Cons */}
       <ProsConsBlock entities={comparison.entities} />
 
+      {/* Partner Reviews (SmartReview) */}
+      {(() => {
+        const partnerReviews = getPartnerReviews(comparison.slug);
+        return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
+      })()}
+
       {/* FAQ */}
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
 
@@ -325,6 +333,12 @@ function ClassicLayout({
           entities={comparison.entities}
         />
       )}
+
+      {/* Partner Reviews (SmartReview) */}
+      {(() => {
+        const partnerReviews = getPartnerReviews(comparison.slug);
+        return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
+      })()}
 
       {/* FAQ */}
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
