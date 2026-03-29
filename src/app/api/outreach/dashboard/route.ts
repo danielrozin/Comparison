@@ -33,11 +33,19 @@ export async function GET(request: NextRequest) {
       .slice(0, 10)
       .map(([name, count]) => ({ name, count }));
 
+    // Category breakdown
+    const categoryCounts: Record<string, number> = {};
+    for (const q of questions) {
+      const cat = q.category || "uncategorized";
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+    }
+
     return NextResponse.json({
       totalQuestions: questions.length,
       questionsWithMatches: withMatches.length,
       answersPrepared: 0, // In-memory only, no persistence for now
       topSubreddits,
+      categoryBreakdown: categoryCounts,
       recentQuestions: questions.slice(0, 20),
     });
   } catch (error) {
