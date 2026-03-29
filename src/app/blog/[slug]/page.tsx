@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { ShareBar } from "@/components/engagement/ShareBar";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 // ---------- Markdown renderer ----------
 
@@ -166,20 +168,26 @@ export async function generateMetadata({
   if (!article) {
     return { title: "Article Not Found" };
   }
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog&cat=${encodeURIComponent(article.category || "")}`;
   return {
     title: article.metaTitle || article.title,
     description: article.metaDescription || article.excerpt,
+    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
       url: `${SITE_URL}/blog/${slug}`,
       type: "article",
       siteName: SITE_NAME,
+      publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
+      modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
+      images: [ogImage],
     },
   };
 }
@@ -226,11 +234,21 @@ export default async function BlogPostPage({
     url: `${SITE_URL}/blog/${slug}`,
   };
 
+  const breadcrumbs = [
+    { name: "Home", url: SITE_URL },
+    { name: "Blog", url: `${SITE_URL}/blog` },
+    { name: article.title, url: `${SITE_URL}/blog/${slug}` },
+  ];
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
       />
 
       <main className="min-h-screen bg-surface">
@@ -320,6 +338,11 @@ export default async function BlogPostPage({
               Share this article
             </h3>
             <ShareBar title={article.title} slug={slug} path="blog" />
+          </div>
+
+          {/* Newsletter Signup */}
+          <div className="mt-8">
+            <NewsletterSignup source="blog" referrerSlug={slug} />
           </div>
 
           {/* Related Comparisons */}
