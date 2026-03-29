@@ -108,11 +108,11 @@ export const CATEGORY_SUBCATEGORIES: Record<string, SubcategoryDef[]> = {
     { slug: "networking", name: "Networking & WiFi", icon: "📡", keywords: ["wifi", "router", "mesh", "5g", "bluetooth", "vpn", "network", "ethernet"] },
   ],
   companies: [
-    { slug: "big-tech", name: "Big Tech", icon: "🏢", keywords: ["google", "apple", "microsoft", "amazon", "meta", "facebook", "alphabet", "nvidia", "tesla"] },
-    { slug: "startups-saas", name: "Startups & SaaS", icon: "🚀", keywords: ["startup", "saas", "openai", "anthropic", "stripe", "shopify", "notion", "figma", "canva"] },
-    { slug: "finance-companies", name: "Finance & Fintech", icon: "🏦", keywords: ["bank", "visa", "mastercard", "paypal", "robinhood", "coinbase", "binance", "revolut", "wise"] },
-    { slug: "retail-ecommerce", name: "Retail & eCommerce", icon: "🛒", keywords: ["amazon", "walmart", "costco", "target", "ebay", "etsy", "alibaba", "temu", "shein"] },
-    { slug: "food-beverage", name: "Food & Beverage", icon: "🍔", keywords: ["coca cola", "pepsi", "starbucks", "dunkin", "mcdonalds", "burger king", "chipotle", "subway"] },
+    { slug: "big-tech", name: "Big Tech", icon: "🏢", keywords: ["google", "apple", "microsoft", "amazon", "meta", "facebook", "alphabet", "nvidia", "tesla", "samsung", "spacex", "blue origin", "deepmind"] },
+    { slug: "startups-saas", name: "Startups & SaaS", icon: "🚀", keywords: ["startup", "saas", "openai", "anthropic", "stripe", "adyen", "shopify", "bigcommerce", "notion", "coda", "figma", "canva", "slack", "discord", "zoom", "vercel", "netlify", "uber", "lyft", "airbnb", "vrbo"] },
+    { slug: "finance-companies", name: "Finance & Fintech", icon: "🏦", keywords: ["bank", "visa", "mastercard", "paypal", "robinhood", "webull", "coinbase", "binance", "revolut", "wise", "jpmorgan", "goldman", "schwab", "fidelity", "venmo", "cash app", "fintech"] },
+    { slug: "retail-ecommerce", name: "Retail & eCommerce", icon: "🛒", keywords: ["amazon", "walmart", "costco", "target", "ebay", "etsy", "alibaba", "temu", "shein", "sam's club"] },
+    { slug: "food-beverage", name: "Food & Beverage", icon: "🍔", keywords: ["coca-cola", "coca cola", "pepsi", "starbucks", "dunkin", "mcdonald", "burger king", "chipotle", "taco bell", "subway", "jimmy john", "chick-fil-a", "popeyes", "domino", "pizza hut", "kfc"] },
   ],
   entertainment: [
     { slug: "streaming-services", name: "Streaming Services", icon: "📺", keywords: ["netflix", "disney", "hbo", "max", "hulu", "amazon prime", "apple tv", "paramount", "peacock", "youtube"] },
