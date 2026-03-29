@@ -24,6 +24,7 @@ import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+import { InContentAd } from "@/components/ads/AdUnit";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -211,6 +212,9 @@ function VerdictFirstLayout({
       {/* Pros & Cons */}
       <ProsConsBlock entities={comparison.entities} />
 
+      {/* Ad: between pros/cons and partner reviews */}
+      <InContentAd />
+
       {/* Partner Reviews (SmartReview) */}
       {(() => {
         const partnerReviews = getPartnerReviews(comparison.slug);
@@ -219,6 +223,9 @@ function VerdictFirstLayout({
 
       {/* FAQ */}
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+
+      {/* Ad: between FAQ and resources */}
+      <InContentAd />
 
       {/* Resources & Learn More */}
       <ResourcesSection
@@ -334,6 +341,9 @@ function ClassicLayout({
         />
       )}
 
+      {/* Ad: between verdict and partner reviews */}
+      <InContentAd />
+
       {/* Partner Reviews (SmartReview) */}
       {(() => {
         const partnerReviews = getPartnerReviews(comparison.slug);
@@ -342,6 +352,9 @@ function ClassicLayout({
 
       {/* FAQ */}
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+
+      {/* Ad: between FAQ and resources */}
+      <InContentAd />
 
       {/* Resources & Learn More */}
       <ResourcesSection

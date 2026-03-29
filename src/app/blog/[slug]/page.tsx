@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { ShareBar } from "@/components/engagement/ShareBar";
+import { InContentAd } from "@/components/ads/AdUnit";
 
 // ---------- Markdown renderer ----------
 
@@ -300,6 +301,11 @@ export default async function BlogPostPage({
             />
           </div>
 
+          {/* Ad: after article content */}
+          <div className="my-8">
+            <InContentAd />
+          </div>
+
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-2">
@@ -349,6 +355,11 @@ export default async function BlogPostPage({
                 </div>
               </div>
             )}
+
+          {/* Ad: before back button */}
+          <div className="my-8">
+            <InContentAd />
+          </div>
 
           {/* Back to Blog */}
           <div className="mt-10 text-center">
