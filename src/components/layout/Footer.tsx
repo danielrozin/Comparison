@@ -1,153 +1,88 @@
 import Link from "next/link";
-import { SITE_NAME, CATEGORIES, SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
+import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+
+const FOOTER_CATEGORIES = [
+  { slug: "software", name: "Software" },
+  { slug: "sports", name: "Sports" },
+  { slug: "countries", name: "Countries" },
+  { slug: "technology", name: "Technology" },
+  { slug: "products", name: "Products" },
+  { slug: "companies", name: "Companies" },
+  { slug: "entertainment", name: "Entertainment" },
+  { slug: "automotive", name: "Automotive" },
+];
 
 export function Footer() {
   return (
     <footer className="bg-surface-dark text-white mt-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        {/* Top: Brand */}
-        <div className="mb-10">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">VS</span>
-            </div>
-            <span className="text-xl font-bold">{SITE_NAME}</span>
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed max-w-md">
-            The internet&apos;s best destination for comparing anything. Fast, visual, and data-driven.
-          </p>
-        </div>
 
-        {/* Link columns — 2 cols on mobile, 4 on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Software */}
-          <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
-              Software
-            </h3>
-            <ul className="space-y-2.5">
-              {SOFTWARE_SUBCATEGORIES.slice(0, 6).map((sub) => (
-                <li key={sub.slug}>
-                  <Link
-                    href={`/category/software/${sub.slug}`}
-                    className="text-sm text-gray-300 hover:text-white transition-colors"
-                  >
-                    {sub.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/category/software"
-                  className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors"
-                >
-                  View all →
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Categories */}
-          <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
-              Categories
-            </h3>
-            <ul className="space-y-2.5">
-              {CATEGORIES.filter((c) => c.slug !== "software").slice(0, 7).map((cat) => (
-                <li key={cat.slug}>
+        {/* ─── Category sections with subcategories ─── */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 lg:gap-10">
+          {FOOTER_CATEGORIES.map((cat) => {
+            const subs = CATEGORY_SUBCATEGORIES[cat.slug] || [];
+            return (
+              <div key={cat.slug}>
+                <h3 className="mb-3">
                   <Link
                     href={`/category/${cat.slug}`}
-                    className="text-sm text-gray-300 hover:text-white transition-colors"
+                    className="font-semibold text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors"
                   >
                     {cat.name}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Popular */}
-          <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
-              Popular
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/compare/chatgpt-vs-claude" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  ChatGPT vs Claude
-                </Link>
-              </li>
-              <li>
-                <Link href="/compare/expressvpn-vs-nordvpn" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  NordVPN vs ExpressVPN
-                </Link>
-              </li>
-              <li>
-                <Link href="/compare/squarespace-vs-wix" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Squarespace vs Wix
-                </Link>
-              </li>
-              <li>
-                <Link href="/compare/messi-vs-ronaldo" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Messi vs Ronaldo
-                </Link>
-              </li>
-              <li>
-                <Link href="/trending" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Trending Comparisons
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Blog
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
-              Company
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/about" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Terms of Use
-                </Link>
-              </li>
-              <li>
-                <Link href="/disclaimer" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Disclaimer
-                </Link>
-              </li>
-              <li>
-                <a href="/sitemap.xml" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Sitemap
-                </a>
-              </li>
-            </ul>
-          </div>
+                </h3>
+                <ul className="space-y-2">
+                  {subs.slice(0, 5).map((sub) => (
+                    <li key={sub.slug}>
+                      <Link
+                        href={`/category/${cat.slug}/${sub.slug}`}
+                        className="text-sm text-gray-400 hover:text-white transition-colors"
+                      >
+                        {sub.name}
+                      </Link>
+                    </li>
+                  ))}
+                  {subs.length > 5 && (
+                    <li>
+                      <Link
+                        href={`/category/${cat.slug}`}
+                        className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors"
+                      >
+                        View all →
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-gray-800 mt-10 pt-8 text-center">
-          <p className="text-sm text-gray-500">
+        {/* ─── Bottom section ─── */}
+        <div className="border-t border-gray-800 mt-10 pt-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            {/* Brand */}
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-primary-600 rounded-md flex items-center justify-center">
+                <span className="text-white font-bold text-xs">VS</span>
+              </div>
+              <span className="text-base font-bold">{SITE_NAME}</span>
+            </div>
+
+            {/* Quick links */}
+            <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+              <Link href="/trending" className="text-sm text-gray-400 hover:text-white transition-colors">Trending</Link>
+              <Link href="/blog" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</Link>
+              <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+              <Link href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
+              <Link href="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms</Link>
+              <Link href="/disclaimer" className="text-sm text-gray-400 hover:text-white transition-colors">Disclaimer</Link>
+              <a href="/sitemap.xml" className="text-sm text-gray-400 hover:text-white transition-colors">Sitemap</a>
+            </nav>
+          </div>
+
+          <p className="text-center text-sm text-gray-500 mt-6">
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved. Data is for informational purposes only.
           </p>
         </div>

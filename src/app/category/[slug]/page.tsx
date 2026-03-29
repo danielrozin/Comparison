@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, SITE_URL, PRODUCT_SUBCATEGORIES, SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
+import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 function getSubcategoryComparisons<T extends { slug: string; title: string }>(
   comparisons: T[],
-  subcat: (typeof PRODUCT_SUBCATEGORIES)[number]
+  subcat: SubcategoryDef
 ): T[] {
   return comparisons.filter((comp) => {
     const lower = comp.title.toLowerCase() + " " + comp.slug.toLowerCase();
@@ -45,13 +46,11 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const { comparisons, total } = await getComparisonsByCategory(slug, 200);
-  const isProducts = slug === "products";
-  const isSoftware = slug === "software";
-  const hasSubcategories = isProducts || isSoftware;
-  const activeSubcategories = isProducts ? PRODUCT_SUBCATEGORIES : isSoftware ? SOFTWARE_SUBCATEGORIES : [];
+  const activeSubcategories = getSubcategoriesForSlug(slug);
+  const hasSubcategories = activeSubcategories.length > 0;
 
-  // Build subcategory data for products or software
-  const subcategoryData: { subcat: (typeof activeSubcategories)[number]; items: typeof comparisons }[] = [];
+  // Build subcategory data
+  const subcategoryData: { subcat: SubcategoryDef; items: typeof comparisons }[] = [];
   if (hasSubcategories) {
     for (const subcat of activeSubcategories) {
       const items = getSubcategoryComparisons(comparisons, subcat);

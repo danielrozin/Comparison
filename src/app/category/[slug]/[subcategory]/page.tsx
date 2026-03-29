@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, PRODUCT_SUBCATEGORIES, SOFTWARE_SUBCATEGORIES, SITE_URL } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
+import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
 interface PageProps {
   params: Promise<{ slug: string; subcategory: string }>;
-}
-
-type SubcategoryDef = { slug: string; name: string; icon: string; keywords: string[] };
-
-function getSubcategoriesForCategory(categorySlug: string): SubcategoryDef[] {
-  if (categorySlug === "products") return PRODUCT_SUBCATEGORIES;
-  if (categorySlug === "software") return SOFTWARE_SUBCATEGORIES;
-  return [];
 }
 
 function getSubcategoryComparisons(
@@ -27,31 +20,29 @@ function getSubcategoryComparisons(
   });
 }
 
+const CATEGORIES_WITH_SUBS = ["products", "software", "sports", "countries", "technology", "companies", "entertainment", "automotive"];
+
 export async function generateStaticParams() {
-  // Generate all category + subcategory combos for products and software
-  return [
-    ...PRODUCT_SUBCATEGORIES.map((sub) => ({
-      slug: "products",
-      subcategory: sub.slug,
-    })),
-    ...SOFTWARE_SUBCATEGORIES.map((sub) => ({
-      slug: "software",
-      subcategory: sub.slug,
-    })),
-  ];
+  const params: { slug: string; subcategory: string }[] = [];
+  for (const catSlug of CATEGORIES_WITH_SUBS) {
+    const subs = getSubcategoriesForSlug(catSlug);
+    for (const sub of subs) {
+      params.push({ slug: catSlug, subcategory: sub.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug, subcategory } = await params;
   const category = CATEGORIES.find((c) => c.slug === slug);
-  const subcategories = getSubcategoriesForCategory(slug);
+  const subcategories = getSubcategoriesForSlug(slug);
   const subcat = subcategories.find((s) => s.slug === subcategory);
   if (!category || !subcat) return { title: "Not Found" };
 
-  const isSoftware = slug === "software";
   return {
-    title: `${subcat.name} Comparisons — Best ${subcat.name} ${isSoftware ? "Software" : "Products"} Compared`,
-    description: `Compare the best ${subcat.name.toLowerCase()} ${isSoftware ? "software and tools" : "products"} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`,
+    title: `${subcat.name} Comparisons — Best ${subcat.name} Compared`,
+    description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`,
     alternates: { canonical: `${SITE_URL}/category/${slug}/${subcategory}` },
   };
 }
@@ -59,7 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function SubcategoryPage({ params }: PageProps) {
   const { slug, subcategory } = await params;
   const category = CATEGORIES.find((c) => c.slug === slug);
-  const subcategories = getSubcategoriesForCategory(slug);
+  const subcategories = getSubcategoriesForSlug(slug);
   const subcat = subcategories.find((s) => s.slug === subcategory);
 
   if (!category || !subcat) notFound();

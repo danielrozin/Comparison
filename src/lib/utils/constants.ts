@@ -76,6 +76,65 @@ export const SOFTWARE_SUBCATEGORIES: { slug: string; name: string; icon: string;
   { slug: "office-tools", name: "Office & Documents", icon: "📄", keywords: ["google docs", "excel", "word", "google sheets", "office 365", "microsoft 365", "libreoffice", "acrobat", "pdf", "grammarly", "google workspace", "dropbox", "google drive", "onedrive"] },
 ];
 
+// ─── Unified subcategory system for ALL categories ───
+export type SubcategoryDef = { slug: string; name: string; icon: string; keywords: string[] };
+
+export const CATEGORY_SUBCATEGORIES: Record<string, SubcategoryDef[]> = {
+  software: SOFTWARE_SUBCATEGORIES,
+  products: PRODUCT_SUBCATEGORIES,
+  sports: [
+    { slug: "football", name: "Football / Soccer", icon: "⚽", keywords: ["messi", "ronaldo", "mbappe", "neymar", "haaland", "premier league", "la liga", "champions league", "soccer", "footballer"] },
+    { slug: "basketball", name: "Basketball", icon: "🏀", keywords: ["lebron", "jordan", "curry", "durant", "nba", "basketball", "lakers", "celtics"] },
+    { slug: "american-football", name: "American Football", icon: "🏈", keywords: ["brady", "mahomes", "nfl", "quarterback", "super bowl", "touchdown", "football"] },
+    { slug: "combat-sports", name: "Combat Sports", icon: "🥊", keywords: ["mcgregor", "khabib", "ufc", "mma", "boxing", "tyson", "ali", "fury", "canelo"] },
+    { slug: "tennis", name: "Tennis", icon: "🎾", keywords: ["federer", "nadal", "djokovic", "serena", "tennis", "wimbledon", "grand slam"] },
+    { slug: "cricket", name: "Cricket", icon: "🏏", keywords: ["cricket", "ipl", "virat", "sachin", "kohli", "ashes", "t20", "test match"] },
+    { slug: "motorsport", name: "Motorsport", icon: "🏎️", keywords: ["f1", "formula 1", "nascar", "verstappen", "hamilton", "racing", "grand prix"] },
+    { slug: "other-sports", name: "Other Sports", icon: "🏅", keywords: ["golf", "rugby", "hockey", "swimming", "athletics", "olympics", "baseball", "mlb"] },
+  ],
+  countries: [
+    { slug: "asia", name: "Asia", icon: "🌏", keywords: ["japan", "china", "india", "korea", "vietnam", "thailand", "indonesia", "philippines", "singapore", "malaysia", "pakistan", "bangladesh"] },
+    { slug: "europe", name: "Europe", icon: "🇪🇺", keywords: ["germany", "france", "uk", "italy", "spain", "netherlands", "sweden", "norway", "poland", "switzerland", "portugal", "ireland", "denmark", "finland", "austria", "belgium", "greece"] },
+    { slug: "americas", name: "Americas", icon: "🌎", keywords: ["usa", "canada", "mexico", "brazil", "argentina", "colombia", "chile", "peru", "united states", "america"] },
+    { slug: "middle-east-africa", name: "Middle East & Africa", icon: "🌍", keywords: ["saudi", "uae", "dubai", "israel", "egypt", "south africa", "nigeria", "kenya", "turkey", "iran", "qatar", "morocco"] },
+    { slug: "oceania", name: "Oceania", icon: "🦘", keywords: ["australia", "new zealand", "fiji", "oceania"] },
+  ],
+  technology: [
+    { slug: "smartphones", name: "Smartphones", icon: "📱", keywords: ["iphone", "samsung", "pixel", "oneplus", "xiaomi", "smartphone", "phone", "galaxy"] },
+    { slug: "laptops-computers", name: "Laptops & Computers", icon: "💻", keywords: ["macbook", "laptop", "pc", "chromebook", "dell", "lenovo", "hp", "computer", "desktop", "imac"] },
+    { slug: "tablets", name: "Tablets", icon: "📟", keywords: ["ipad", "tablet", "surface", "galaxy tab", "fire tablet"] },
+    { slug: "gaming-tech", name: "Gaming Tech", icon: "🎮", keywords: ["ps5", "ps6", "xbox", "nintendo", "switch", "steam deck", "gaming", "console", "gpu", "graphics card"] },
+    { slug: "ai-ml", name: "AI & Machine Learning", icon: "🧠", keywords: ["ai", "machine learning", "neural", "deep learning", "chatgpt", "claude", "llm", "artificial intelligence"] },
+    { slug: "networking", name: "Networking & WiFi", icon: "📡", keywords: ["wifi", "router", "mesh", "5g", "bluetooth", "vpn", "network", "ethernet"] },
+  ],
+  companies: [
+    { slug: "big-tech", name: "Big Tech", icon: "🏢", keywords: ["google", "apple", "microsoft", "amazon", "meta", "facebook", "alphabet", "nvidia", "tesla"] },
+    { slug: "startups-saas", name: "Startups & SaaS", icon: "🚀", keywords: ["startup", "saas", "openai", "anthropic", "stripe", "shopify", "notion", "figma", "canva"] },
+    { slug: "finance-companies", name: "Finance & Fintech", icon: "🏦", keywords: ["bank", "visa", "mastercard", "paypal", "robinhood", "coinbase", "binance", "revolut", "wise"] },
+    { slug: "retail-ecommerce", name: "Retail & eCommerce", icon: "🛒", keywords: ["amazon", "walmart", "costco", "target", "ebay", "etsy", "alibaba", "temu", "shein"] },
+    { slug: "food-beverage", name: "Food & Beverage", icon: "🍔", keywords: ["coca cola", "pepsi", "starbucks", "dunkin", "mcdonalds", "burger king", "chipotle", "subway"] },
+  ],
+  entertainment: [
+    { slug: "streaming-services", name: "Streaming Services", icon: "📺", keywords: ["netflix", "disney", "hbo", "max", "hulu", "amazon prime", "apple tv", "paramount", "peacock", "youtube"] },
+    { slug: "music", name: "Music & Audio", icon: "🎵", keywords: ["spotify", "apple music", "tidal", "youtube music", "pandora", "soundcloud", "deezer"] },
+    { slug: "gaming-entertainment", name: "Gaming", icon: "🎮", keywords: ["playstation", "xbox", "nintendo", "steam", "epic games", "twitch", "gaming"] },
+    { slug: "social-media", name: "Social Media", icon: "📱", keywords: ["tiktok", "instagram", "twitter", "reddit", "snapchat", "linkedin", "threads", "bluesky", "youtube", "social media"] },
+    { slug: "movies-tv", name: "Movies & TV", icon: "🎬", keywords: ["marvel", "dc", "movie", "film", "series", "show", "anime", "manga"] },
+  ],
+  automotive: [
+    { slug: "electric-vehicles", name: "Electric Vehicles", icon: "⚡", keywords: ["tesla", "rivian", "lucid", "ev", "electric", "polestar", "byd", "model y", "model 3", "model s"] },
+    { slug: "suvs-trucks", name: "SUVs & Trucks", icon: "🚙", keywords: ["suv", "truck", "rav4", "cr-v", "highlander", "explorer", "tahoe", "4runner", "f-150", "silverado", "ram"] },
+    { slug: "sedans-coupes", name: "Sedans & Coupes", icon: "🚗", keywords: ["sedan", "coupe", "civic", "corolla", "camry", "accord", "3 series", "c-class", "a4"] },
+    { slug: "luxury", name: "Luxury Cars", icon: "✨", keywords: ["bmw", "mercedes", "audi", "lexus", "porsche", "bentley", "rolls royce", "maserati", "luxury"] },
+    { slug: "motorcycles", name: "Motorcycles", icon: "🏍️", keywords: ["motorcycle", "harley", "ducati", "yamaha", "kawasaki", "honda cb", "bike"] },
+  ],
+};
+
+// Helper to get subcategories for any category
+export function getSubcategoriesForSlug(categorySlug: string): SubcategoryDef[] {
+  return CATEGORY_SUBCATEGORIES[categorySlug] || [];
+}
+
 export const PAGE_SIZES = {
   COMPARISONS_PER_CATEGORY: 20,
   TRENDING_COUNT: 10,
