@@ -83,7 +83,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-surface text-text font-body min-h-screen flex flex-col">
+      <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

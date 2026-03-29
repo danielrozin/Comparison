@@ -3,35 +3,36 @@ import { SITE_NAME, CATEGORIES, SOFTWARE_SUBCATEGORIES } from "@/lib/utils/const
 
 export function Footer() {
   return (
-    <footer className="bg-surface-dark text-white mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">VS</span>
-              </div>
-              <span className="text-xl font-bold">{SITE_NAME}</span>
+    <footer className="bg-surface-dark text-white mt-20 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        {/* Top: Brand */}
+        <div className="mb-10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">VS</span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              The internet&apos;s best destination for comparing anything. Fast, visual, and data-driven.
-            </p>
+            <span className="text-xl font-bold">{SITE_NAME}</span>
           </div>
+          <p className="text-sm text-gray-400 leading-relaxed max-w-md">
+            The internet&apos;s best destination for comparing anything. Fast, visual, and data-driven.
+          </p>
+        </div>
 
-          {/* Software — prominent column */}
+        {/* Link columns — 2 cols on mobile, 4 on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {/* Software */}
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Software
             </h3>
-            <ul className="space-y-2">
-              {SOFTWARE_SUBCATEGORIES.slice(0, 8).map((sub) => (
+            <ul className="space-y-2.5">
+              {SOFTWARE_SUBCATEGORIES.slice(0, 6).map((sub) => (
                 <li key={sub.slug}>
                   <Link
                     href={`/category/software/${sub.slug}`}
                     className="text-sm text-gray-300 hover:text-white transition-colors"
                   >
-                    {sub.icon} {sub.name}
+                    {sub.name}
                   </Link>
                 </li>
               ))}
@@ -40,7 +41,7 @@ export function Footer() {
                   href="/category/software"
                   className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors"
                 >
-                  View all software
+                  View all →
                 </Link>
               </li>
             </ul>
@@ -51,8 +52,8 @@ export function Footer() {
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Categories
             </h3>
-            <ul className="space-y-2">
-              {CATEGORIES.filter((c) => c.slug !== "software").slice(0, 8).map((cat) => (
+            <ul className="space-y-2.5">
+              {CATEGORIES.filter((c) => c.slug !== "software").slice(0, 7).map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     href={`/category/${cat.slug}`}
@@ -70,14 +71,14 @@ export function Footer() {
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Popular
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
                 <Link href="/compare/chatgpt-vs-claude" className="text-sm text-gray-300 hover:text-white transition-colors">
                   ChatGPT vs Claude
                 </Link>
               </li>
               <li>
-                <Link href="/compare/nordvpn-vs-expressvpn" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link href="/compare/expressvpn-vs-nordvpn" className="text-sm text-gray-300 hover:text-white transition-colors">
                   NordVPN vs ExpressVPN
                 </Link>
               </li>
@@ -92,13 +93,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/compare/iphone-17-vs-samsung-s26" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  iPhone 17 vs Samsung S26
+                <Link href="/trending" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Trending Comparisons
                 </Link>
               </li>
               <li>
-                <Link href="/trending" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Trending Comparisons
+                <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
+                  Blog
                 </Link>
               </li>
             </ul>
@@ -109,7 +110,7 @@ export function Footer() {
             <h3 className="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-4">
               Company
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
                 <Link href="/about" className="text-sm text-gray-300 hover:text-white transition-colors">
                   About
@@ -118,11 +119,6 @@ export function Footer() {
               <li>
                 <Link href="/contact" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Blog
                 </Link>
               </li>
               <li>
@@ -141,11 +137,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/changelog" className="text-sm text-gray-300 hover:text-white transition-colors">
-                  Changelog
-                </Link>
-              </li>
-              <li>
                 <a href="/sitemap.xml" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Sitemap
                 </a>
@@ -154,7 +145,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+        {/* Bottom bar */}
+        <div className="border-t border-gray-800 mt-10 pt-8 text-center">
           <p className="text-sm text-gray-500">
             &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved. Data is for informational purposes only.
           </p>
