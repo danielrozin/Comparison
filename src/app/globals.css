@@ -147,3 +147,12 @@ body {
 .animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
 .animate-flame { animation: flame-flicker 0.8s ease-in-out infinite; }
 .animate-border-gradient { animation: border-gradient 3s ease infinite; }
+
+/* Hide scrollbar for horizontal scroll strips */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

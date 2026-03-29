@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
 import { comparisonPageSchema } from "@/lib/seo/schema";
 import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
@@ -9,6 +9,11 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { VerdictBlock } from "@/components/comparison/Verdict";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
+// Lazy-load sidebar to avoid LCP regression
+const RelatedComparisonsSidebar = dynamic(
+  () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
+  { loading: () => null }
+);
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
@@ -118,21 +123,35 @@ export default async function ComparisonPage({ params }: PageProps) {
     entities: enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
   };
 
-  if (VERDICT_FIRST) {
-    return <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} />;
+  // Fallback to trending if fewer than 3 related comparisons
+  let sidebarComparisons = enrichedComparison.relatedComparisons;
+  if (sidebarComparisons.length < 3) {
+    const trending = await getTrendingComparisons(6);
+    const trendingAsRelated = trending
+      .filter((t) => t.slug !== slug)
+      .map((t) => ({ slug: t.slug, title: t.title, category: t.category }));
+    const existingSlugs = new Set(sidebarComparisons.map((c) => c.slug));
+    const additional = trendingAsRelated.filter((t) => !existingSlugs.has(t.slug));
+    sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
-  return <ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} />;
+  if (VERDICT_FIRST) {
+    return <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
+  }
+
+  return <ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
 }
 
 function VerdictFirstLayout({
   comparison,
   schemas,
   slug,
+  sidebarComparisons,
 }: {
   comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
   schemas: ReturnType<typeof comparisonPageSchema>;
   slug: string;
+  sidebarComparisons: import("@/types").RelatedComparison[];
 }) {
   return (
     <>
@@ -183,50 +202,71 @@ function VerdictFirstLayout({
         />
       )}
 
-      {/* ── Below the fold ── */}
+      {/* Mobile: related comparisons scroll strip below verdict area */}
+      {sidebarComparisons.length > 0 && (
+        <RelatedComparisonsSidebar
+          comparisons={sidebarComparisons}
+          sourceSlug={slug}
+        />
+      )}
 
-      {/* Full Key Differences Table */}
-      {comparison.keyDifferences.length > 0 && (
-        <div id="key-differences">
-          <KeyDifferencesBlock
-            differences={comparison.keyDifferences}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
+      {/* ── Below the fold ── */}
+      <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
+        {/* Main content column */}
+        <div className="flex-1 min-w-0">
+          {/* Full Key Differences Table */}
+          {comparison.keyDifferences.length > 0 && (
+            <div id="key-differences">
+              <KeyDifferencesBlock
+                differences={comparison.keyDifferences}
+                entityA={comparison.entities[0]}
+                entityB={comparison.entities[1]}
+              />
+            </div>
+          )}
+
+          {/* Comparison Table (lazy loaded) */}
+          {comparison.attributes.length > 0 && (
+            <ComparisonTable
+              attributes={comparison.attributes}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+
+          {/* Visual Comparison Charts (lazy loaded) */}
+          {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
+            <ComparisonCharts
+              attributes={comparison.attributes}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+
+          {/* Pros & Cons */}
+          <ProsConsBlock entities={comparison.entities} />
+
+          {/* FAQ */}
+          {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+
+          {/* Resources & Learn More */}
+          <ResourcesSection
+            resources={generateResources(comparison.slug, comparison.entities)}
+            entities={comparison.entities}
           />
         </div>
-      )}
 
-      {/* Comparison Table (lazy loaded) */}
-      {comparison.attributes.length > 0 && (
-        <ComparisonTable
-          attributes={comparison.attributes}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
+        {/* Desktop: sticky related comparisons sidebar */}
+        {sidebarComparisons.length > 0 && (
+          <RelatedComparisonsSidebar
+            comparisons={sidebarComparisons}
+            sourceSlug={slug}
+          />
+        )}
+      </div>
 
-      {/* Visual Comparison Charts (lazy loaded) */}
-      {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
-        <ComparisonCharts
-          attributes={comparison.attributes}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
-
-      {/* Pros & Cons */}
-      <ProsConsBlock entities={comparison.entities} />
-
-      {/* FAQ */}
-      {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
-
-      {/* Resources & Learn More */}
-      <ResourcesSection
-        resources={generateResources(comparison.slug, comparison.entities)}
-        entities={comparison.entities}
-      />
-
-      {/* Related Comparisons */}
+      {/* Full-width sections below sidebar area */}
+      {/* Related Comparisons (bottom grid, kept for SEO internal links) */}
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
@@ -262,10 +302,12 @@ function ClassicLayout({
   comparison,
   schemas,
   slug,
+  sidebarComparisons,
 }: {
   comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
   schemas: ReturnType<typeof comparisonPageSchema>;
   slug: string;
+  sidebarComparisons: import("@/types").RelatedComparison[];
 }) {
   return (
     <>
@@ -297,54 +339,77 @@ function ClassicLayout({
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
-      {/* Key Differences */}
-      {comparison.keyDifferences.length > 0 && (
-        <KeyDifferencesBlock
-          differences={comparison.keyDifferences}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
+      {/* Mobile: related comparisons scroll strip */}
+      {sidebarComparisons.length > 0 && (
+        <RelatedComparisonsSidebar
+          comparisons={sidebarComparisons}
+          sourceSlug={slug}
         />
       )}
 
-      {/* Comparison Table */}
-      {comparison.attributes.length > 0 && (
-        <ComparisonTable
-          attributes={comparison.attributes}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
+      {/* ── Below the fold with sidebar ── */}
+      <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
+        {/* Main content column */}
+        <div className="flex-1 min-w-0">
+          {/* Key Differences */}
+          {comparison.keyDifferences.length > 0 && (
+            <KeyDifferencesBlock
+              differences={comparison.keyDifferences}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
 
-      {/* Visual Comparison Charts */}
-      {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
-        <ComparisonCharts
-          attributes={comparison.attributes}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
+          {/* Comparison Table */}
+          {comparison.attributes.length > 0 && (
+            <ComparisonTable
+              attributes={comparison.attributes}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
 
-      {/* Pros & Cons */}
-      <ProsConsBlock entities={comparison.entities} />
+          {/* Visual Comparison Charts */}
+          {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
+            <ComparisonCharts
+              attributes={comparison.attributes}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
 
-      {/* Verdict */}
-      {comparison.verdict && (
-        <VerdictBlock
-          verdict={comparison.verdict}
-          entities={comparison.entities}
-        />
-      )}
+          {/* Pros & Cons */}
+          <ProsConsBlock entities={comparison.entities} />
 
-      {/* FAQ */}
-      {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+          {/* Verdict */}
+          {comparison.verdict && (
+            <VerdictBlock
+              verdict={comparison.verdict}
+              entities={comparison.entities}
+            />
+          )}
 
-      {/* Resources & Learn More */}
-      <ResourcesSection
-        resources={generateResources(comparison.slug, comparison.entities)}
-        entities={comparison.entities}
-      />
+          {/* FAQ */}
+          {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
 
-      {/* Related Comparisons */}
+          {/* Resources & Learn More */}
+          <ResourcesSection
+            resources={generateResources(comparison.slug, comparison.entities)}
+            entities={comparison.entities}
+          />
+        </div>
+
+        {/* Desktop: sticky related comparisons sidebar */}
+        {sidebarComparisons.length > 0 && (
+          <RelatedComparisonsSidebar
+            comparisons={sidebarComparisons}
+            sourceSlug={slug}
+          />
+        )}
+      </div>
+
+      {/* Full-width sections below sidebar area */}
+      {/* Related Comparisons (bottom grid) */}
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
