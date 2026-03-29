@@ -29,6 +29,7 @@ import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -294,6 +295,13 @@ function VerdictFirstLayout({
 
       {/* Freshness */}
       <FreshnessFooter metadata={comparison.metadata} />
+
+      {/* Sticky Affiliate CTA Bar */}
+      <StickyAffiliateCTA
+        entities={comparison.entities}
+        category={comparison.category}
+        slug={slug}
+      />
     </>
   );
 }
@@ -440,6 +448,13 @@ function ClassicLayout({
 
       {/* Freshness */}
       <FreshnessFooter metadata={comparison.metadata} />
+
+      {/* Sticky Affiliate CTA Bar */}
+      <StickyAffiliateCTA
+        entities={comparison.entities}
+        category={comparison.category}
+        slug={slug}
+      />
     </>
   );
 }

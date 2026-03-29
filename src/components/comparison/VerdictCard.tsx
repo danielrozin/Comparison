@@ -13,7 +13,7 @@ export function VerdictCard({
   const displayText = shortAnswer || verdict;
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <section data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="bg-gradient-to-r from-primary-50 to-indigo-50 border border-primary-200 rounded-xl p-5 sm:p-6">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
