@@ -390,6 +390,10 @@ export async function getRelatedComparisons(
   comparisonId: string,
   limit: number = 8
 ): Promise<RelatedComparison[]> {
+  const cacheKey = `related:${comparisonId}:${limit}`;
+  const cached = await getFromCache<RelatedComparison[]>(cacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -398,13 +402,17 @@ export async function getRelatedComparisons(
         select: { category: true, relatedComparisonIds: true },
       });
       if (comp) {
-        return getRelatedFromDb(prisma, comp, limit);
+        const result = await getRelatedFromDb(prisma, comp, limit);
+        await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+        return result;
       }
     } catch (e) {
       console.warn("Prisma query failed for getRelatedComparisons, falling back to mock:", e);
     }
   }
-  return getMockRelated(comparisonId, limit);
+  const mock = getMockRelated(comparisonId, limit);
+  await setCache(cacheKey, mock, CACHE_TTL_TRENDING);
+  return mock;
 }
 
 async function getRelatedFromDb(
@@ -773,8 +781,9 @@ export async function saveComparison(
       },
     });
 
-    // Invalidate cached version
+    // Invalidate cached comparison and trending list
     await invalidateCache(`comparison:${data.slug}`);
+    await invalidateCache(`trending:10`);
 
     return { id: comparison.id };
   } catch (e) {
