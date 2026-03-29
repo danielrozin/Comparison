@@ -231,6 +231,37 @@ export function entityPageSchema(entity: {
 }
 
 // ============================================================
+// AggregateRating schema (for review/entity pages)
+// ============================================================
+
+export function aggregateRatingSchema(entity: {
+  name: string;
+  slug: string;
+  entityType: string;
+  ratingValue: number;
+  reviewCount: number;
+  bestRating?: number;
+  worstRating?: number;
+}) {
+  const url = `${SITE_URL}/entity/${entity.slug}`;
+  const schemaType = entitySchemaType(entity.entityType);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    name: entity.name,
+    url,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: entity.ratingValue.toFixed(1),
+      bestRating: entity.bestRating ?? 5,
+      worstRating: entity.worstRating ?? 1,
+      reviewCount: entity.reviewCount,
+    },
+  };
+}
+
+// ============================================================
 // Helpers
 // ============================================================
 
