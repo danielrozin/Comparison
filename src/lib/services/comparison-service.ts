@@ -302,6 +302,37 @@ export async function getComparisonBySlug(
   return mock;
 }
 
+/**
+ * Batch check which slugs exist in the comparisons table.
+ * Returns only the slugs that have matching records — single query, no N+1.
+ */
+export async function getComparisonSlugsExisting(
+  slugs: string[]
+): Promise<string[]> {
+  if (slugs.length === 0) return [];
+
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    // Fall back to mock data check
+    return slugs.filter((slug) => getMockComparison(slug) !== null);
+  }
+
+  try {
+    const rows = await prisma.comparison.findMany({
+      where: { slug: { in: slugs } },
+      select: { slug: true },
+    });
+    const dbSlugs = rows.map((r: { slug: string }) => r.slug);
+    // Also check mock data for any slugs not in DB
+    const mockSlugs = slugs.filter(
+      (s) => !dbSlugs.includes(s) && getMockComparison(s) !== null
+    );
+    return [...dbSlugs, ...mockSlugs];
+  } catch {
+    return slugs.filter((slug) => getMockComparison(slug) !== null);
+  }
+}
+
 export async function getTrendingComparisons(
   limit: number = 10
 ): Promise<TrendingComparison[]> {
