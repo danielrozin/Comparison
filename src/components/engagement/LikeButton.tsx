@@ -6,14 +6,16 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
 
-  // Load from localStorage
+  // Load liked state from localStorage and count from API
   useEffect(() => {
     const likes = JSON.parse(localStorage.getItem("comparison_likes") || "{}");
     if (likes[comparisonId]) {
       setLiked(true);
     }
-    // Simulate a count (in production, fetch from API)
-    setCount(Math.floor(Math.random() * 200) + 10);
+    fetch(`/api/comparisons/like?comparisonId=${encodeURIComponent(comparisonId)}`)
+      .then((res) => res.ok ? res.json() : Promise.reject(res))
+      .then((data) => setCount(data.count || 0))
+      .catch(() => setCount(0));
   }, [comparisonId]);
 
   const toggleLike = () => {
@@ -30,8 +32,11 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
     localStorage.setItem("comparison_likes", JSON.stringify(likes));
     setLiked(!liked);
 
-    // TODO: Send to API
-    // fetch('/api/comparisons/like', { method: 'POST', body: JSON.stringify({ comparisonId, liked: !liked }) });
+    fetch("/api/comparisons/like", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ comparisonId, liked: !liked }),
+    }).catch(() => {/* localStorage already updated as fallback */});
   };
 
   return (

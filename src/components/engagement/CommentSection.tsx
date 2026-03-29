@@ -23,36 +23,68 @@ export function CommentSection({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
-  // Load comments from localStorage (in production, fetch from API)
+  // Load comments from API, fall back to localStorage
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem(`comments_${comparisonId}`) || "[]");
-    setComments(stored);
+    let cancelled = false;
+    fetch(`/api/comments?comparisonId=${encodeURIComponent(comparisonId)}`)
+      .then((res) => res.ok ? res.json() : Promise.reject(res))
+      .then((data) => {
+        if (!cancelled && data.comments?.length) {
+          setComments(data.comments);
+        } else if (!cancelled) {
+          const stored = JSON.parse(localStorage.getItem(`comments_${comparisonId}`) || "[]");
+          setComments(stored);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          const stored = JSON.parse(localStorage.getItem(`comments_${comparisonId}`) || "[]");
+          setComments(stored);
+        }
+      });
+    return () => { cancelled = true; };
   }, [comparisonId]);
 
-  const submitComment = (e: React.FormEvent) => {
+  const submitComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !text.trim()) return;
 
     setIsSubmitting(true);
 
-    const newComment: Comment = {
-      id: `c-${Date.now()}`,
-      name: name.trim(),
-      text: text.trim(),
-      timestamp: new Date().toISOString(),
-      likes: 0,
-    };
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ comparisonId, name: name.trim(), text: text.trim() }),
+      });
 
-    const updated = [newComment, ...comments];
-    setComments(updated);
-    localStorage.setItem(`comments_${comparisonId}`, JSON.stringify(updated));
+      if (!res.ok) throw new Error("Failed to post comment");
 
-    // TODO: Send to API
-    // fetch('/api/comments', { method: 'POST', body: JSON.stringify({ comparisonId, ...newComment }) });
+      const data = await res.json();
+      const savedComment: Comment = data.comment;
+      const updated = [savedComment, ...comments];
+      setComments(updated);
+      localStorage.setItem(`comments_${comparisonId}`, JSON.stringify(updated));
 
-    setName("");
-    setText("");
-    setIsSubmitting(false);
+      setName("");
+      setText("");
+    } catch {
+      // Fallback: save locally if API fails
+      const newComment: Comment = {
+        id: `c-${Date.now()}`,
+        name: name.trim(),
+        text: text.trim(),
+        timestamp: new Date().toISOString(),
+        likes: 0,
+      };
+      const updated = [newComment, ...comments];
+      setComments(updated);
+      localStorage.setItem(`comments_${comparisonId}`, JSON.stringify(updated));
+      setName("");
+      setText("");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const likeComment = (commentId: string) => {
