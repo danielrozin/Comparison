@@ -189,6 +189,42 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           </div>
         </div>
 
+        {/* Top 5 Comparisons — highlighted for quick discovery */}
+        {allComparisons.length >= 5 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-display font-bold text-text mb-4">
+              Top {category.name} Comparisons
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              {allComparisons.slice(0, 5).map((comp, idx) => {
+                const parts = comp.title.split(/\s+vs\.?\s+/i);
+                return (
+                  <Link
+                    key={comp.slug}
+                    href={`/compare/${comp.slug}`}
+                    className="relative flex flex-col p-4 bg-gradient-to-br from-primary-50 to-white border border-primary-200 rounded-xl hover:border-primary-400 hover:shadow-md transition-all group"
+                  >
+                    <span className="absolute top-2 right-3 text-xs font-bold text-primary-400">
+                      #{idx + 1}
+                    </span>
+                    <div className="flex -space-x-2 mb-2">
+                      <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                        {(parts[0] || "A").charAt(0)}
+                      </div>
+                      <div className="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                        {(parts[1] || "B").charAt(0)}
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
+                      {comp.title}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Subcategory Navigation (if applicable) */}
         {hasSubcategories && subcategoryData.length > 0 && (
           <section className="mb-10">

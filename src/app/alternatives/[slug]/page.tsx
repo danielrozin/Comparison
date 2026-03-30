@@ -132,14 +132,25 @@ export default async function AlternativesPage({ params }: PageProps) {
         {alternatives.length} alternative{alternatives.length !== 1 ? "s" : ""} found
       </p>
 
-      {entityContent && (
-        <div className="mb-8 p-5 bg-white border border-border rounded-xl">
+      {/* Entity hub link */}
+      <div className="mb-6 p-5 bg-primary-50 border border-primary-200 rounded-xl flex items-center gap-4">
+        <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <span className="text-xl font-bold text-primary-700">{name.charAt(0)}</span>
+        </div>
+        <div className="flex-1">
           <p className="text-sm text-text-secondary leading-relaxed">
-            Looking for alternatives to {name}? {entityContent.description.split(". ").slice(0, 2).join(". ")}.
-            Below are the top alternatives and competitors you should consider.
+            {entityContent
+              ? `${entityContent.description.split(". ").slice(0, 2).join(". ")}.`
+              : `Looking for alternatives to ${name}? Compare the top competitors below.`}
           </p>
         </div>
-      )}
+        <Link
+          href={`/entity/${slug}`}
+          className="flex-shrink-0 px-4 py-2 bg-white text-primary-700 text-sm font-semibold rounded-lg border border-primary-300 hover:bg-primary-50 transition-colors"
+        >
+          About {name} &rarr;
+        </Link>
+      </div>
 
       {alternatives.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -182,6 +193,30 @@ export default async function AlternativesPage({ params }: PageProps) {
           >
             Search for a comparison
           </Link>
+        </div>
+      )}
+
+      {/* Related Alternatives — cross-link to alternatives pages for each alternative entity */}
+      {alternatives.length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-xl font-bold text-text mb-4">Related Alternatives</h2>
+          <p className="text-sm text-text-secondary mb-4">
+            Explore alternatives pages for entities compared with {name}.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {alternatives.slice(0, 12).map((alt) => (
+              <Link
+                key={`related-alt-${alt.slug}`}
+                href={`/alternatives/${alt.slug}`}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border rounded-full text-sm text-primary-600 hover:border-primary-300 hover:bg-primary-50 transition-all"
+              >
+                <span className="w-5 h-5 bg-accent-50 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 flex-shrink-0">
+                  {alt.name.charAt(0)}
+                </span>
+                Alternatives to {alt.name}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 

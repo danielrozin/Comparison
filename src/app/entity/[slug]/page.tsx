@@ -222,6 +222,24 @@ export default async function EntityPage({ params }: PageProps) {
           </>
         )}
 
+        {/* Alternatives Link (always visible, even without curated content) */}
+        {!entityContent && relatedComparisons.length > 0 && (
+          <div className="mb-8 p-5 bg-white border border-border rounded-xl flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-text">Alternatives to {name}</h2>
+              <p className="text-sm text-text-secondary mt-1">
+                Explore other options and compare them side by side.
+              </p>
+            </div>
+            <Link
+              href={`/alternatives/${slug}`}
+              className="flex-shrink-0 px-5 py-2.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              View alternatives &rarr;
+            </Link>
+          </div>
+        )}
+
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
           <div className="space-y-3">
