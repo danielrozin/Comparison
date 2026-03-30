@@ -1,16 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { SITE_NAME } from "@/lib/utils/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+
+const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
+const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
 
 export const metadata: Metadata = {
   title: `Blog — ${SITE_NAME}`,
-  description:
-    "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.",
+  description: blogDescription,
+  alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
     title: `Blog — ${SITE_NAME}`,
-    description:
-      "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.",
+    description: blogDescription,
+    url: `${SITE_URL}/blog`,
+    type: "website",
+    siteName: SITE_NAME,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: `${SITE_NAME} Blog` }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Blog — ${SITE_NAME}`,
+    description: blogDescription,
+    images: [ogImage],
   },
 };
 
