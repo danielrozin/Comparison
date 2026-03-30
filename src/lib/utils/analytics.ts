@@ -4,12 +4,19 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
+    dataLayer?: Record<string, unknown>[];
   }
 }
 
 function trackEvent(eventName: string, params: Record<string, string | number>) {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
+  if (typeof window === "undefined") return;
+
+  if (typeof window.gtag === "function") {
+    // gtag.js mode: gtag() pushes to dataLayer internally
     window.gtag("event", eventName, params);
+  } else if (Array.isArray(window.dataLayer)) {
+    // GTM mode: push event directly to dataLayer for GTM triggers
+    window.dataLayer.push({ event: eventName, ...params });
   }
 }
 

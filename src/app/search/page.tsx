@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
+import { trackComparisonSearch } from "@/lib/utils/analytics";
 import { Suspense } from "react";
 
 function SearchContent() {
@@ -21,8 +22,10 @@ function SearchContent() {
       fetch(`/api/search?q=${encodeURIComponent(query)}`)
         .then((r) => r.json())
         .then((data) => {
-          setResults(data.results || []);
+          const items = data.results || [];
+          setResults(items);
           setLoading(false);
+          trackComparisonSearch(query, items.length > 0 ? "results" : "no_results");
         })
         .catch(() => setLoading(false));
     }

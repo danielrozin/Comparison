@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { trackConversionFunnel } from "@/lib/utils/analytics";
+import { trackConversionFunnel, trackComparisonView } from "@/lib/utils/analytics";
 
 export function ConversionFunnelTracker({
   slug,
@@ -15,10 +15,11 @@ export function ConversionFunnelTracker({
   useEffect(() => {
     const page = `/compare/${slug}`;
 
-    // Step 1: Page view
+    // Step 1: Page view + comparison_view GA4 event
     if (!firedRef.current.has("page_view")) {
       firedRef.current.add("page_view");
       trackConversionFunnel("page_view", page, { category });
+      trackComparisonView(slug, category);
     }
 
     // Step 2: Scroll depth tracking
