@@ -4,8 +4,10 @@ import { withSentryConfig } from "@sentry/nextjs";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  productionBrowserSourceMaps: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 86400,
     remotePatterns: [
       { protocol: "https", hostname: "*.wikipedia.org" },
       { protocol: "https", hostname: "*.wikimedia.org" },
@@ -15,6 +17,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "logo.clearbit.com" },
       { protocol: "https", hostname: "*.googleusercontent.com" },
     ],
+  },
+  experimental: {
+    optimizePackageImports: ["recharts", "@sentry/nextjs"],
   },
 };
 

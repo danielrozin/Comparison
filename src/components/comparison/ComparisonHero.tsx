@@ -33,7 +33,7 @@ function EntityAvatar({
           width={112}
           height={112}
           className="w-full h-full object-cover"
-          unoptimized
+          priority
         />
       </div>
     );
@@ -113,7 +113,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* VS Badge */}
         <div className="flex items-center justify-center self-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-accent-500 text-white rounded-full flex items-center justify-center shadow-lg animate-pulse">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-accent-500 text-white rounded-full flex items-center justify-center shadow-lg">
             <span className="font-display font-black text-base sm:text-xl">VS</span>
           </div>
         </div>
