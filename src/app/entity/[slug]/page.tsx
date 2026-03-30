@@ -4,6 +4,7 @@ import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { SmartScore } from "@/components/ui/SmartScore";
 import { ReviewSection } from "@/components/engagement/ReviewSection";
 import { SmartReviewBrowseTrigger } from "@/components/surveys/SmartReviewBrowseTrigger";
 
@@ -28,6 +29,27 @@ function getReviewCount(slug: string): number {
   return 12 + (hash % 200);
 }
 
+function getSmartScore(slug: string, rating: number) {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = (hash * 41 + slug.charCodeAt(i)) & 0x7fffffff;
+  }
+  const ratingPct = (rating / 5) * 100;
+  const consistency = 55 + (hash % 40);
+  const volume = 40 + ((hash >> 4) % 50);
+  const value = 50 + ((hash >> 8) % 45);
+  const score = Math.round(ratingPct * 0.4 + consistency * 0.25 + volume * 0.15 + value * 0.2);
+  return {
+    score: Math.min(score, 100),
+    breakdown: {
+      rating: Math.round(ratingPct),
+      consistency,
+      volume,
+      value,
+    },
+  };
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
@@ -43,6 +65,7 @@ export default async function EntityPage({ params }: PageProps) {
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
+  const smartScore = getSmartScore(slug, rating);
 
   // Find all comparisons that include this entity
   const allSlugs = getAllMockSlugs();
@@ -125,6 +148,9 @@ export default async function EntityPage({ params }: PageProps) {
             <h1 className="text-3xl sm:text-4xl font-display font-black text-text">{name}</h1>
             <div className="mt-2">
               <StarRating rating={rating} size="lg" reviewCount={reviewCount} />
+            </div>
+            <div className="mt-2">
+              <SmartScore score={smartScore.score} breakdown={smartScore.breakdown} />
             </div>
             <p className="text-text-secondary mt-2">
               {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""} available
