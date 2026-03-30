@@ -67,9 +67,21 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
       {/* Title */}
-      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-4 sm:mb-6">
+      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-2 sm:mb-3">
         {comparison.title}
       </h1>
+
+      {/* Last Updated */}
+      {comparison.metadata?.updatedAt && (
+        <p className="text-center text-xs sm:text-sm text-text-secondary mb-4 sm:mb-6 flex items-center justify-center gap-1.5">
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          <time dateTime={comparison.metadata.updatedAt}>
+            Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </time>
+        </p>
+      )}
 
       {/* Entity VS Cards */}
       <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
