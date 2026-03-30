@@ -273,6 +273,11 @@ function VerdictFirstLayout({
             </div>
           )}
 
+          {/* Mid-content Newsletter Signup */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <NewsletterSignup source="comparison_mid" referrerSlug={slug} variant="card" />
+          </div>
+
           {/* Comparison Table (lazy loaded) */}
           {comparison.attributes.length > 0 && (
             <div id="comparison-table">
@@ -443,6 +448,11 @@ function ClassicLayout({
               entityB={comparison.entities[1]}
             />
           )}
+
+          {/* Mid-content Newsletter Signup */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <NewsletterSignup source="comparison_mid" referrerSlug={slug} variant="card" />
+          </div>
 
           {/* Comparison Table */}
           {comparison.attributes.length > 0 && (
