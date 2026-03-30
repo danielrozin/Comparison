@@ -52,4 +52,16 @@ export function trackFunnelStep(step: string, page: string, value?: number) {
   trackEvent("funnel_step", { step, page, ...(value !== undefined ? { value } : {}) });
 }
 
+export function trackComparisonSearch(query: string, resultType: string) {
+  trackEvent("comparison_search", { search_term: query, result_type: resultType });
+}
+
+export function trackComparisonView(slug: string, category: string) {
+  trackEvent("comparison_view", { comparison_slug: slug, category });
+}
+
+export function trackEmbedCtaClick(comparisonSlug: string, page: string) {
+  trackEvent("embed_cta_click", { comparison_slug: comparisonSlug, page });
+}
+
 export { trackEvent };

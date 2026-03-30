@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { slugify } from "@/lib/utils/slugify";
+import { trackComparisonSearch } from "@/lib/utils/analytics";
 import Link from "next/link";
 
 interface PopularComparison {
@@ -112,11 +113,13 @@ export function SearchBox() {
       const parsed = parseComparison(query);
       if (parsed) {
         const slug = `${slugify(parsed[0])}-vs-${slugify(parsed[1])}`;
+        trackComparisonSearch(query.trim(), "comparison");
         router.push(`/compare/${slug}`);
         return;
       }
 
       // Otherwise, go to search
+      trackComparisonSearch(query.trim(), "general");
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     },
     [query, router]

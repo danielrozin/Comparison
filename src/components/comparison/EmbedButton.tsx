@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { SITE_URL } from "@/lib/utils/constants";
+import { trackEmbedCtaClick } from "@/lib/utils/analytics";
 
 interface EmbedButtonProps {
   slug: string;
@@ -67,7 +68,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-gray-200 rounded-lg transition-all duration-200"
         title="Embed this comparison"
       >
