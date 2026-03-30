@@ -413,6 +413,22 @@ model ChangeLog {
 }
 
 // ============================================================
+// COMPARISON POLLS / VOTING
+// ============================================================
+
+model ComparisonVote {
+  id           String   @id @default(cuid())
+  comparisonId String   @map("comparison_id")
+  entityChoice String   @map("entity_choice") // entity name chosen
+  sessionId    String   @map("session_id")    // cookie-based session
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([comparisonId, sessionId])
+  @@index([comparisonId])
+  @@map("comparison_votes")
+}
+
+// ============================================================
 // CATEGORIES
 // ============================================================
 

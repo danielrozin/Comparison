@@ -30,6 +30,7 @@ import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
+import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -191,6 +192,19 @@ function VerdictFirstLayout({
           shortAnswer={comparison.shortAnswer}
           entities={comparison.entities}
           attributes={comparison.attributes}
+        />
+      )}
+
+      {/* User Poll — after verdict card */}
+      {comparison.entities.length >= 2 && (
+        <ComparisonPoll
+          comparisonId={comparison.id}
+          comparisonSlug={comparison.slug}
+          entities={comparison.entities.map((e) => ({
+            name: e.name,
+            imageUrl: e.imageUrl,
+            position: e.position,
+          }))}
         />
       )}
 
@@ -394,6 +408,19 @@ function ClassicLayout({
             <VerdictBlock
               verdict={comparison.verdict}
               entities={comparison.entities}
+            />
+          )}
+
+          {/* User Poll — after verdict */}
+          {comparison.entities.length >= 2 && (
+            <ComparisonPoll
+              comparisonId={comparison.id}
+              comparisonSlug={comparison.slug}
+              entities={comparison.entities.map((e) => ({
+                name: e.name,
+                imageUrl: e.imageUrl,
+                position: e.position,
+              }))}
             />
           )}
 
