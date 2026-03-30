@@ -40,11 +40,12 @@ export async function GET(request: NextRequest) {
   const startTime = Date.now();
   const runId = `auto-${Date.now()}`;
 
-  // Rotate through categories each run for variety
+  // Rotate through all categories each run for variety
   const categories = [
     "sports", "countries", "technology", "products",
     "companies", "history", "entertainment", "brands",
-    "health", "automotive",
+    "health", "automotive", "finance", "software",
+    "education", "military", "economy", "celebrities", "travel",
   ];
   const dayOfYear = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
   const hourOfDay = new Date().getUTCHours();

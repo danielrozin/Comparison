@@ -29,17 +29,20 @@ const CATEGORY_SEEDS: Record<string, string[]> = {
   sports: [
     "messi vs ronaldo", "lebron vs jordan", "brady vs manning",
     "mcgregor vs khabib", "federer vs nadal", "ali vs tyson",
+    "curry vs durant", "mahomes vs allen", "djokovic vs nadal",
     "nba player comparison", "nfl quarterback comparison",
   ],
   countries: [
     "usa vs china", "japan vs china", "india vs china",
     "germany vs france", "uk vs usa", "canada vs australia",
-    "country comparison", "military comparison",
+    "south korea vs japan", "brazil vs argentina", "india vs pakistan",
+    "country comparison", "cost of living comparison",
   ],
   technology: [
     "iphone vs samsung", "mac vs windows", "android vs ios",
     "ps5 vs xbox", "nvidia vs amd", "chrome vs firefox",
-    "chatgpt vs claude", "midjourney vs stable diffusion",
+    "chatgpt vs claude", "chatgpt vs gemini", "claude vs gemini",
+    "midjourney vs stable diffusion", "cursor vs copilot",
     "ipad vs samsung tablet", "ring vs nest doorbell",
   ],
   products: [
@@ -47,37 +50,79 @@ const CATEGORY_SEEDS: Record<string, string[]> = {
     "airpods vs galaxy buds", "macbook vs dell xps",
     "dyson vs shark vacuum", "peloton vs nordictrack",
     "roomba vs roborock", "yeti vs hydroflask",
-    "temu vs shein", "kindle vs kobo",
+    "temu vs shein", "kindle vs kobo", "oura vs whoop",
   ],
   health: [
     "keto vs paleo", "keto vs carnivore diet", "ozempic vs wegovy",
     "whey vs plant protein", "creatine vs pre workout",
     "peloton vs treadmill", "yoga vs pilates",
+    "ozempic vs mounjaro", "vitamin d2 vs d3",
   ],
   history: [
     "ww1 vs ww2", "roman empire vs ottoman empire",
     "cold war vs world war", "ancient greece vs ancient rome",
+    "capitalism vs communism", "democracy vs republic",
   ],
   companies: [
     "google vs microsoft", "amazon vs walmart", "tesla vs ford",
     "apple vs samsung", "netflix vs disney plus",
     "openai vs anthropic", "tesla vs rivian", "rivian vs lucid",
     "zoom vs teams", "notion vs obsidian",
+    "uber vs lyft", "stripe vs paypal",
   ],
   entertainment: [
     "netflix vs max", "spotify vs apple music", "marvel vs dc",
     "ps5 vs xbox", "nintendo switch vs steam deck",
     "disney plus vs hulu", "youtube tv vs hulu live",
+    "tiktok vs instagram reels", "twitch vs youtube",
   ],
   brands: [
     "gucci vs louis vuitton", "toyota vs honda",
     "costco vs sams club", "target vs walmart",
     "home depot vs lowes", "starbucks vs dunkin",
+    "lululemon vs athleta", "north face vs patagonia",
   ],
   automotive: [
     "tesla vs rivian", "bmw vs mercedes", "toyota vs honda",
     "ford vs chevy", "tesla model y vs model 3",
     "honda civic vs toyota corolla", "rav4 vs crv",
+    "byd vs tesla", "toyota camry vs honda accord",
+  ],
+  finance: [
+    "robinhood vs webull", "vanguard vs fidelity", "roth ira vs traditional ira",
+    "etf vs mutual fund", "bitcoin vs ethereum", "coinbase vs binance",
+    "visa vs mastercard", "venmo vs zelle", "schwab vs fidelity",
+  ],
+  software: [
+    "notion vs obsidian", "slack vs teams", "figma vs sketch",
+    "vscode vs intellij", "aws vs azure", "vercel vs netlify",
+    "github vs gitlab", "jira vs linear", "1password vs bitwarden",
+    "nordvpn vs expressvpn", "wix vs squarespace",
+  ],
+  education: [
+    "online vs in person learning", "community college vs university",
+    "sat vs act", "coursera vs udemy", "khan academy vs coursera",
+    "mba vs masters", "ivy league comparison",
+  ],
+  military: [
+    "us military vs china military", "army vs marines",
+    "navy vs air force", "f-35 vs f-22", "nato vs russia",
+    "aircraft carrier comparison", "nuclear submarine comparison",
+  ],
+  economy: [
+    "gdp vs gnp", "inflation vs deflation", "recession vs depression",
+    "stocks vs bonds", "s&p 500 vs nasdaq", "us economy vs china economy",
+    "socialism vs capitalism", "free trade vs protectionism",
+  ],
+  celebrities: [
+    "taylor swift vs beyonce", "drake vs kendrick lamar",
+    "elon musk vs jeff bezos", "mark zuckerberg vs elon musk",
+    "joe rogan vs lex fridman", "mr beast vs pewdiepie",
+  ],
+  travel: [
+    "bali vs thailand", "paris vs london", "tokyo vs seoul",
+    "hawaii vs caribbean", "airbnb vs hotel", "europe vs asia travel",
+    "new york vs los angeles", "dubai vs singapore",
   ],
 };
 
@@ -171,8 +216,13 @@ function scoreOpportunity(kw: KeywordSuggestion): number {
   // Volume is king (log scale to not over-weight massive keywords)
   score += Math.log10(Math.max(kw.search_volume, 1)) * 20;
 
-  // Lower difficulty = higher opportunity
-  score += Math.max(0, 100 - kw.keyword_difficulty) * 0.3;
+  // Lower difficulty = higher opportunity (increased weight from 0.3 to 0.6)
+  score += Math.max(0, 100 - kw.keyword_difficulty) * 0.6;
+
+  // Penalize very high difficulty keywords (>70) — hard to rank for newer sites
+  if (kw.keyword_difficulty > 70) {
+    score -= (kw.keyword_difficulty - 70) * 0.5;
+  }
 
   // CPC indicates commercial value
   score += Math.min(kw.cpc * 5, 25);

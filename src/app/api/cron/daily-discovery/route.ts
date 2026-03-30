@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { mergeOpportunities } from "@/lib/services/pipeline-service";
-import { parseComparisonKeyword } from "@/lib/dataforseo/keyword-discovery";
+import { parseComparisonKeyword, scoreOpportunity } from "@/lib/dataforseo/keyword-discovery";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
 export const maxDuration = 60;
@@ -37,7 +37,9 @@ export async function GET(request: NextRequest) {
     "vs", "comparison", "alternative to", "difference between",
     "iphone vs", "samsung vs", "tesla vs", "nike vs",
     "country comparison", "player comparison", "chatgpt vs",
-    "best alternative", "which is better"
+    "best alternative", "which is better",
+    "claude vs", "notion vs", "aws vs", "bitcoin vs",
+    "ozempic vs", "toyota vs", "netflix vs",
   ];
 
   // Query DataForSEO for each seed
@@ -62,12 +64,15 @@ export async function GET(request: NextRequest) {
       for (const item of items) {
         const kw = item.keyword?.toLowerCase() || "";
         // Only keep comparison-type keywords
-        if (kw.match(/\bvs\b|versus|compar|alternative|difference between/i)) {
+        if (kw.match(/\bvs\b|versus|compar|alternative|difference between|\bor\b/i)) {
+          const difficulty = item.keyword_properties?.keyword_difficulty || 0;
+          // Skip keywords with extreme difficulty (>80) — not worth targeting
+          if (difficulty > 80) continue;
           allOpportunities.push({
             keyword: kw,
             volume: item.keyword_info?.search_volume || 0,
             cpc: item.keyword_info?.cpc || 0,
-            difficulty: item.keyword_properties?.keyword_difficulty || 0,
+            difficulty,
           });
         }
       }
@@ -91,9 +96,6 @@ export async function GET(request: NextRequest) {
   // Save to Redis pipeline (convert to DiscoveredOpportunity format)
   const pipelineOpps: DiscoveredOpportunity[] = sorted.map((opp) => {
     const parsed = parseComparisonKeyword(opp.keyword);
-    const volumeScore = opp.volume > 0 ? Math.log10(opp.volume) * 20 : 0;
-    const diffScore = Math.max(0, 100 - opp.difficulty) * 0.3;
-    const cpcScore = Math.min(opp.cpc * 5, 25);
 
     return {
       keyword: opp.keyword,
@@ -106,7 +108,14 @@ export async function GET(request: NextRequest) {
       entityB: parsed.entityB,
       queryPattern: parsed.queryPattern,
       category: null,
-      opportunityScore: Math.round((volumeScore + diffScore + cpcScore) * 100) / 100,
+      opportunityScore: scoreOpportunity({
+        keyword: opp.keyword,
+        search_volume: opp.volume,
+        cpc: opp.cpc,
+        competition: 0,
+        keyword_difficulty: opp.difficulty,
+        search_intent: "informational",
+      }),
       source: "daily_cron",
     };
   });
