@@ -452,6 +452,32 @@ model Comment {
 }
 
 // ============================================================
+// REVIEWS
+// ============================================================
+
+model Review {
+  id          String   @id @default(cuid())
+  entitySlug  String   @map("entity_slug") // product slug (e.g. "iphone-15")
+  productName String   @map("product_name") // display name submitted by user
+  rating      Int      // 1-5
+  text        String   @db.Text
+  pros        String   @default("") // comma-separated or free text
+  cons        String   @default("") // comma-separated or free text
+  authorName  String   @default("Anonymous") @map("author_name")
+  flagged     Boolean  @default(false)  // flagged for moderation
+  published   Boolean  @default(true)
+  ipHash      String?  @map("ip_hash")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([entitySlug, published])
+  @@index([rating])
+  @@index([createdAt])
+  @@index([flagged])
+  @@map("reviews")
+}
+
+// ============================================================
 // CATEGORIES
 // ============================================================
 

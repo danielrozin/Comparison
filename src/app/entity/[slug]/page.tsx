@@ -4,6 +4,7 @@ import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { ReviewSection } from "@/components/engagement/ReviewSection";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -176,6 +177,9 @@ export default async function EntityPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        {/* Review Section */}
+        <ReviewSection entitySlug={slug} entityName={name} />
       </div>
     </>
   );
