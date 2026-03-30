@@ -694,3 +694,111 @@ export async function listBlogArticles(params: {
     total: filtered.length,
   };
 }
+
+/**
+ * Find blog articles that reference a given comparison slug
+ * via their relatedComparisonSlugs field, or share the same category.
+ */
+export async function getRelatedBlogArticles(
+  comparisonSlug: string,
+  category?: string,
+  limit: number = 3
+): Promise<BlogArticle[]> {
+  const prisma = getPrismaClient();
+
+  if (prisma) {
+    try {
+      // First: articles that directly reference this comparison
+      const direct = await prisma.blogArticle.findMany({
+        where: {
+          status: "published",
+          relatedComparisonSlugs: { has: comparisonSlug },
+        },
+        orderBy: { publishedAt: "desc" },
+        take: limit,
+      });
+
+      if (direct.length >= limit) {
+        return direct.map(mapPrismaArticle);
+      }
+
+      // Fill remaining slots with same-category articles
+      const directIds = direct.map((a: { id: string }) => a.id);
+      const remaining = limit - direct.length;
+
+      if (category && remaining > 0) {
+        const catArticles = await prisma.blogArticle.findMany({
+          where: {
+            status: "published",
+            category,
+            id: { notIn: directIds },
+          },
+          orderBy: { publishedAt: "desc" },
+          take: remaining,
+        });
+        return [...direct, ...catArticles].map(mapPrismaArticle);
+      }
+
+      return direct.map(mapPrismaArticle);
+    } catch (e) {
+      console.error("Failed to get related blog articles:", e);
+    }
+  }
+
+  // Fallback to mock articles
+  const now = Date.now();
+  const published = MOCK_BLOG_ARTICLES.filter(
+    (a) => a.status === "published" && (!a.publishedAt || new Date(a.publishedAt).getTime() <= now)
+  );
+
+  const direct = published.filter((a) =>
+    a.relatedComparisonSlugs?.includes(comparisonSlug)
+  );
+
+  if (direct.length >= limit) return direct.slice(0, limit);
+
+  const directSlugs = new Set(direct.map((a) => a.slug));
+  const catArticles = category
+    ? published.filter((a) => a.category === category && !directSlugs.has(a.slug))
+    : [];
+
+  return [...direct, ...catArticles].slice(0, limit);
+}
+
+function mapPrismaArticle(a: {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  category: string | null;
+  tags: string[];
+  metaTitle: string | null;
+  metaDescription: string | null;
+  relatedComparisonSlugs: string[];
+  sourceQuery: string | null;
+  sourceImpressions: number | null;
+  status: string;
+  publishedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  viewCount: number;
+}): BlogArticle {
+  return {
+    id: a.id,
+    slug: a.slug,
+    title: a.title,
+    excerpt: a.excerpt || "",
+    content: a.content,
+    category: a.category || "",
+    tags: a.tags || [],
+    metaTitle: a.metaTitle || a.title,
+    metaDescription: a.metaDescription || "",
+    relatedComparisonSlugs: a.relatedComparisonSlugs || [],
+    status: a.status,
+    publishedAt: a.publishedAt,
+    createdAt: a.createdAt,
+    updatedAt: a.updatedAt,
+    viewCount: a.viewCount,
+  };
+}

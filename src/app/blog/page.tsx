@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     description:
       "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.",
   },
+  alternates: {
+    types: {
+      "application/rss+xml": "/blog/feed.xml",
+    },
+  },
 };
 
 const CATEGORIES = [
@@ -106,7 +111,7 @@ export default async function BlogPage({
           {CATEGORIES.map((cat) => (
             <Link
               key={cat}
-              href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
+              href={cat === "all" ? "/blog" : `/blog/category/${cat}`}
               className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
                 activeCategory === cat
                   ? "bg-primary-600 text-white shadow-sm"

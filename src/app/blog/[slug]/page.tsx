@@ -282,9 +282,12 @@ export default async function BlogPostPage({
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center gap-3 mb-4">
               {article.category && (
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm capitalize">
+                <Link
+                  href={`/blog/category/${article.category}`}
+                  className="text-xs font-semibold px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm capitalize hover:bg-white/30 transition-colors"
+                >
                   {article.category}
-                </span>
+                </Link>
               )}
               <span className="text-xs text-primary-200">
                 {readTime} min read

@@ -30,6 +30,7 @@ import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
+import { RelatedArticles } from "@/components/comparison/RelatedArticles";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { LayoutExperiment, CTAExperiment } from "@/components/experiments/ComparisonExperiments";
 import { ViewCount, TrendingBadge } from "@/components/experiments/SocialProofBadges";
@@ -297,6 +298,9 @@ function VerdictFirstLayout({
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
 
+      {/* Related Blog Articles */}
+      <RelatedArticles comparisonSlug={slug} category={comparison.category || undefined} />
+
       {/* Internal Links */}
       <InternalLinks
         currentSlug={comparison.slug}
@@ -470,6 +474,9 @@ function ClassicLayout({
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
+
+      {/* Related Blog Articles */}
+      <RelatedArticles comparisonSlug={slug} category={comparison.category || undefined} />
 
       {/* Internal Links */}
       <InternalLinks
