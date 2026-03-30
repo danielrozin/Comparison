@@ -8,6 +8,7 @@ import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
+import { HeroCTA } from "@/components/home/HeroCTA";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export default async function HomePage() {
@@ -30,43 +31,34 @@ export default async function HomePage() {
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "4s" }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-6 animate-slide-up">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-4 animate-slide-up">
               Compare{" "}
               <span className="bg-gradient-to-r from-accent-400 to-primary-300 bg-clip-text text-transparent">
                 Anything
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-6 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
               Sports players, countries, products, technology, history — get clear,
               visual, data-driven comparisons in seconds.
             </p>
 
-            {/* Animated counter */}
-            <div className="flex justify-center gap-8 mb-10 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-accent-400 to-white bg-clip-text text-transparent">
-                  {totalCount}+
-                </div>
-                <div className="text-xs sm:text-sm text-primary-200 mt-1">Comparisons</div>
-              </div>
-              <div className="w-px bg-white/20" />
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-white to-accent-400 bg-clip-text text-transparent">
-                  {CATEGORIES.length}
-                </div>
-                <div className="text-xs sm:text-sm text-primary-200 mt-1">Categories</div>
-              </div>
-            </div>
-
-            {/* Search Box */}
-            <div id="search" className="max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.3s" }}>
+            {/* Search Box — primary CTA */}
+            <div id="search" className="max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
               <SearchBox />
             </div>
 
+            {/* Start Comparing CTA */}
+            <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <HeroCTA />
+              <p className="text-xs text-primary-200 mt-3">
+                {totalCount}+ comparisons across {CATEGORIES.length} categories
+              </p>
+            </div>
+
             {/* Quick Examples */}
-            <div className="flex flex-wrap justify-center gap-2 mt-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+            <div className="flex flex-wrap justify-center gap-2 mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
               {[
                 { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
                 { label: "Japan vs China", href: "/compare/japan-vs-china" },
