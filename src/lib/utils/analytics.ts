@@ -36,4 +36,8 @@ export function trackReviewSubmission(product: string, rating: number) {
   trackEvent("review_submission", { product, rating });
 }
 
+export function trackExperimentView(experimentId: string, experimentName: string, variant: string) {
+  trackEvent("experiment_view", { experiment_id: experimentId, experiment_name: experimentName, variant });
+}
+
 export { trackEvent };

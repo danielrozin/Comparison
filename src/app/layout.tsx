@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
 import { organizationSchema } from "@/lib/seo/schema";
 import { StickyFooterAd } from "@/components/ads/AdUnit";
+import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -97,11 +98,13 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <FeedbackWidget />
-        <StickyFooterAd />
+        <ExperimentProviderServer>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <FeedbackWidget />
+          <StickyFooterAd />
+        </ExperimentProviderServer>
       </body>
     </html>
   );
