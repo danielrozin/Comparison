@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { trackComparisonVote } from "@/lib/utils/analytics";
+import { trackComparisonVote, trackPollEmailCapture } from "@/lib/utils/analytics";
 
 interface PollEntity {
   name: string;
@@ -17,6 +17,7 @@ interface ComparisonPollProps {
 
 const COOKIE_NAME = "poll_session_id";
 const VOTED_KEY_PREFIX = "poll_voted_";
+const POLL_EMAIL_SUBSCRIBED_KEY = "poll_email_subscribed";
 
 function getSessionId(): string {
   if (typeof document === "undefined") return "";
@@ -44,12 +45,18 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [emailCaptureEmail, setEmailCaptureEmail] = useState("");
+  const [emailCaptureStatus, setEmailCaptureStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [alreadySubscribed, setAlreadySubscribed] = useState(false);
 
   const entityA = entities.find((e) => e.position === 0) || entities[0];
   const entityB = entities.find((e) => e.position === 1) || entities[1];
 
   useEffect(() => {
     setMounted(true);
+    if (typeof localStorage !== "undefined" && localStorage.getItem(POLL_EMAIL_SUBSCRIBED_KEY)) {
+      setAlreadySubscribed(true);
+    }
     const existingVote = getVotedChoice(comparisonId);
     if (existingVote) {
       setVoted(existingVote);
@@ -107,6 +114,38 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
       }
     },
     [comparisonId, voted, loading, entityA.name, entityB.name]
+  );
+
+  const handleEmailCapture = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!emailCaptureEmail.trim()) return;
+      setEmailCaptureStatus("loading");
+      try {
+        const res = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: emailCaptureEmail.trim(),
+            source: "poll_capture",
+            referrerSlug: comparisonSlug,
+          }),
+        });
+        if (res.ok) {
+          setEmailCaptureStatus("success");
+          setEmailCaptureEmail("");
+          if (typeof localStorage !== "undefined") {
+            localStorage.setItem(POLL_EMAIL_SUBSCRIBED_KEY, "1");
+          }
+          trackPollEmailCapture(comparisonSlug);
+        } else {
+          setEmailCaptureStatus("error");
+        }
+      } catch {
+        setEmailCaptureStatus("error");
+      }
+    },
+    [emailCaptureEmail, comparisonSlug]
   );
 
   if (!entityA || !entityB) return null;
@@ -173,6 +212,42 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
             <p className="text-center text-xs text-text-secondary">
               {total.toLocaleString()} vote{total !== 1 ? "s" : ""} total
             </p>
+
+            {!alreadySubscribed && emailCaptureStatus !== "success" && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs font-medium text-text-secondary text-center mb-2">
+                  Get weekly poll results and new comparisons
+                </p>
+                <form onSubmit={handleEmailCapture} className="flex gap-2 max-w-sm mx-auto">
+                  <input
+                    type="email"
+                    value={emailCaptureEmail}
+                    onChange={(e) => { setEmailCaptureEmail(e.target.value); setEmailCaptureStatus("idle"); }}
+                    placeholder="you@example.com"
+                    required
+                    className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                  />
+                  <button
+                    type="submit"
+                    disabled={emailCaptureStatus === "loading"}
+                    className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
+                  >
+                    {emailCaptureStatus === "loading" ? "..." : "Subscribe"}
+                  </button>
+                </form>
+                {emailCaptureStatus === "error" && (
+                  <p className="text-red-600 text-xs mt-1 text-center">Something went wrong. Try again.</p>
+                )}
+              </div>
+            )}
+
+            {emailCaptureStatus === "success" && (
+              <div className="mt-4 pt-4 border-t border-gray-100 text-center">
+                <p className="text-sm font-medium text-green-600">
+                  You&apos;re subscribed! We&apos;ll send you weekly results.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

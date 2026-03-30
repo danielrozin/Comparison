@@ -107,6 +107,11 @@ export function trackComparisonView(slug: string, category: string) {
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
 }
 
+export function trackPollEmailCapture(page: string) {
+  trackEvent("poll_email_capture", { page, placement: "post_poll" });
+  trackMetaEvent("Lead", { content_name: "newsletter", content_category: "poll_capture" });
+}
+
 export function trackEmbedCtaClick(comparisonSlug: string, page: string) {
   trackEvent("embed_cta_click", { comparison_slug: comparisonSlug, page });
 }
