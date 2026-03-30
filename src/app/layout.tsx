@@ -7,6 +7,8 @@ import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { StickyFooterAd } from "@/components/ads/AdUnit";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
+import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
+import { MetaPixel } from "@/components/tracking/MetaPixel";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -67,12 +69,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BWYZ5V9QK" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0BWYZ5V9QK');`,
-          }}
-        />
         {ADSENSE_PUB_ID && (
           <script
             async
@@ -105,6 +101,8 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
+        <GoogleTagManager />
+        <MetaPixel />
         <ExperimentProviderServer>
           <Header />
           <main className="flex-1">{children}</main>
