@@ -53,23 +53,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  // Entity pages
-  const entitySlugs = new Set<string>();
+  // Entity pages — use the latest comparison updatedAt for each entity
+  const entityData = new Map<string, string>(); // slug → latest updatedAt
   for (const slug of slugs) {
     const comp = getMockComparison(slug);
-    if (comp) comp.entities.forEach((e) => entitySlugs.add(e.slug));
+    if (comp) {
+      const compUpdated = comp.metadata?.updatedAt || now;
+      comp.entities.forEach((e) => {
+        const existing = entityData.get(e.slug);
+        if (!existing || compUpdated > existing) {
+          entityData.set(e.slug, compUpdated);
+        }
+      });
+    }
   }
-  const entityPages: MetadataRoute.Sitemap = Array.from(entitySlugs).map((slug) => ({
+  const entityPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
     url: `${SITE_URL}/entity/${slug}`,
-    lastModified: now,
+    lastModified: updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
 
   // Alternatives pages
-  const alternativesPages: MetadataRoute.Sitemap = Array.from(entitySlugs).map((slug) => ({
+  const alternativesPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
     url: `${SITE_URL}/alternatives/${slug}`,
-    lastModified: now,
+    lastModified: updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
