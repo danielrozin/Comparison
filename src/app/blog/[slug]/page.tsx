@@ -221,11 +221,21 @@ export default async function BlogPostPage({
     author: {
       "@type": "Organization",
       name: `${SITE_NAME} Team`,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
       url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+      sameAs: [
+        "https://twitter.com/aversusb",
+        "https://www.linkedin.com/company/aversusb",
+        "https://github.com/aversusb",
+      ],
     },
     datePublished: article.publishedAt
       ? new Date(article.publishedAt).toISOString()

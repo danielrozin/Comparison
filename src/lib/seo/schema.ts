@@ -17,8 +17,20 @@ export function organizationSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/images/logo.png`,
-    sameAs: [],
+    sameAs: [
+      "https://twitter.com/aversusb",
+      "https://www.linkedin.com/company/aversusb",
+      "https://github.com/aversusb",
+      "https://www.facebook.com/aversusb",
+      "https://www.youtube.com/@aversusb",
+    ],
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
+    foundingDate: "2024",
+    knowsAbout: [
+      "Product Comparisons",
+      "Technology Reviews",
+      "Data-Driven Analysis",
+    ],
   };
 }
 
@@ -91,14 +103,21 @@ export function comparisonPageSchema(comparison: ComparisonPageData) {
     author: {
       "@type": "Organization",
       name: SITE_NAME,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
       },
+      sameAs: [
+        "https://twitter.com/aversusb",
+        "https://www.linkedin.com/company/aversusb",
+        "https://github.com/aversusb",
+      ],
     },
     mainEntityOfPage: {
       "@type": "WebPage",
