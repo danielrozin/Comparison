@@ -13,6 +13,7 @@ function SearchContent() {
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [compareTarget, setCompareTarget] = useState("");
 
   useEffect(() => {
     setSearchQuery(query);
@@ -128,14 +129,36 @@ function SearchContent() {
           </div>
           <p className="text-text font-semibold mb-2">No results found for &ldquo;{query}&rdquo;</p>
           <p className="text-text-secondary text-sm mb-4">
-            Try typing a comparison like &ldquo;Tesla vs Ford&rdquo; — we&apos;ll generate it for you instantly!
+            Want to create a comparison? Type what you&apos;d like to compare it against:
           </p>
-          <Link
-            href={`/compare/${slugify(query)}-vs-`}
-            className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Request this comparison
-          </Link>
+          <div className="inline-flex items-center gap-2 bg-white border border-border rounded-xl px-4 py-3 shadow-sm">
+            <span className="font-semibold text-primary-700">{query}</span>
+            <span className="text-text-secondary font-medium">vs</span>
+            <input
+              type="text"
+              value={compareTarget}
+              onChange={(e) => setCompareTarget(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && compareTarget.trim()) {
+                  router.push(`/compare/${slugify(query)}-vs-${slugify(compareTarget.trim())}`);
+                }
+              }}
+              placeholder="type something..."
+              className="border-none outline-none text-text bg-transparent w-40 sm:w-56 placeholder:text-gray-400"
+              autoFocus
+            />
+            <button
+              onClick={() => {
+                if (compareTarget.trim()) {
+                  router.push(`/compare/${slugify(query)}-vs-${slugify(compareTarget.trim())}`);
+                }
+              }}
+              disabled={!compareTarget.trim()}
+              className="px-4 py-1.5 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Compare
+            </button>
+          </div>
         </div>
       ) : (
         <div className="text-center py-12 text-text-secondary">

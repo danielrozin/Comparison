@@ -69,10 +69,12 @@ function parseComparison(input: string): [string, string] | null {
 export function SearchBox() {
   const [query, setQuery] = useState("");
   const [popular, setPopular] = useState<PopularComparison[]>([]);
+  const [searchResults, setSearchResults] = useState<PopularComparison[]>([]);
   const [showPopular, setShowPopular] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
 
   // Cycle typing suggestions
@@ -90,6 +92,25 @@ export function SearchBox() {
       .then((data) => setPopular(data.comparisons || []))
       .catch(() => {});
   }, []);
+
+  // Debounced search for single-entity / partial queries
+  useEffect(() => {
+    if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    const trimmed = query.trim();
+    if (trimmed.length < 2 || parseComparison(trimmed)) {
+      setSearchResults([]);
+      return;
+    }
+    searchTimerRef.current = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(trimmed)}&limit=6`)
+        .then((r) => r.json())
+        .then((data) => setSearchResults(data.results || []))
+        .catch(() => setSearchResults([]));
+    }, 300);
+    return () => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+    };
+  }, [query]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -172,6 +193,38 @@ export function SearchBox() {
         <p className="absolute -bottom-7 left-0 right-0 text-center text-xs text-white/50 animate-fade-in">
           Type anything — e.g. &quot;{TYPING_SUGGESTIONS[suggestionIndex]}&quot;
         </p>
+      )}
+
+      {/* Search results dropdown (single-entity / partial queries) */}
+      {isFocused && query.trim().length >= 2 && searchResults.length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-slide-up">
+          <div className="px-4 py-2.5 border-b border-gray-100">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Matching comparisons
+            </p>
+          </div>
+          <div className="max-h-64 overflow-y-auto">
+            {searchResults.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/compare/${item.slug}`}
+                onClick={() => setShowPopular(false)}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+              >
+                <span className="text-base flex-shrink-0">
+                  {CATEGORY_ICONS[item.category.toLowerCase()] || "📊"}
+                </span>
+                <span className="text-sm text-gray-700 flex-1 truncate">{item.title}</span>
+                <span className="text-[10px] text-gray-400 capitalize flex-shrink-0 bg-gray-100 px-2 py-0.5 rounded-full">
+                  {item.category}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Popular comparisons dropdown */}
