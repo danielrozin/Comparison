@@ -8,7 +8,7 @@ import { getRedis } from "./redis";
 
 export interface AdminEvent {
   id: string;
-  type: "search" | "generation" | "feedback" | "contact" | "page_view" | "survey_response";
+  type: "search" | "generation" | "feedback" | "contact" | "page_view" | "survey_response" | "consent";
   data: Record<string, unknown>;
   timestamp: string;
 }

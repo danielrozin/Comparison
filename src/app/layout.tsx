@@ -4,6 +4,8 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
+import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
+import { ConsentScripts } from "@/components/consent/ConsentScripts";
 import { ExperimentProvider } from "@/lib/experiments";
 import { organizationSchema } from "@/lib/seo/schema";
 import "./globals.css";
@@ -68,15 +70,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* Google Consent Mode v2 — must run BEFORE gtag loads */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+(function(){var c=document.cookie.match(/(?:^|; )cookie_consent=([^;]*)/);if(c){try{var s=JSON.parse(decodeURIComponent(c[1]));gtag('consent','default',{analytics_storage:s.analytics?'granted':'denied',ad_storage:s.marketing?'granted':'denied',ad_user_data:s.marketing?'granted':'denied',ad_personalization:s.marketing?'granted':'denied',functionality_storage:s.functional?'granted':'denied',personalization_storage:s.functional?'granted':'denied',security_storage:'granted'});return}catch(e){}}var isEU=document.cookie.indexOf('consent_region=eu')!==-1;var d=isEU?'denied':'granted';gtag('consent','default',{analytics_storage:d,ad_storage:d,ad_user_data:d,ad_personalization:d,functionality_storage:d,personalization_storage:d,security_storage:'granted',wait_for_update:500})})();`,
+          }}
+        />
+        {/* gtag.js — loads in consent mode, respects consent state */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BWYZ5V9QK" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0BWYZ5V9QK');`,
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `setTimeout(function(){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "w2svnzrk4f");},3000);`,
+            __html: `gtag('js', new Date());gtag('config', 'G-0BWYZ5V9QK');`,
           }}
         />
         <script
@@ -92,6 +97,8 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <FeedbackWidget />
+          <CookieConsentBanner />
+          <ConsentScripts />
         </ExperimentProvider>
       </body>
     </html>
