@@ -1,19 +1,15 @@
 import { NextResponse } from "next/server";
+import { getRedis } from "@/lib/services/redis";
+import { prisma } from "@/lib/db/prisma";
 
 /**
  * Analytics Dashboard API
  *
- * Returns the GA4 custom events configuration, funnel definitions,
- * and KPI targets for the Comparison product.
+ * GET /api/analytics — full config + live metrics
+ * GET /api/analytics?section=funnel|kpis|events|reporting|live|report
  *
- * This serves as the source of truth for:
- * - Looker Studio dashboard configuration
- * - Weekly metrics report structure
- * - Funnel analysis queries
- *
- * GET /api/analytics — returns full configuration
- * GET /api/analytics?section=funnel — returns only funnel config
- * GET /api/analytics?section=kpis — returns only KPI targets
+ * "live" returns real-time metrics from Redis event log + DB counts.
+ * "report" returns a structured weekly metrics report.
  */
 
 const GA4_PROPERTY = "G-0BWYZ5V9QK";
@@ -49,12 +45,12 @@ const KPI_TARGETS = {
   northStar: {
     metric: "Weekly active comparisons viewed",
     description: "Unique comparison pages viewed per week",
-    currentBaseline: null,
+    currentBaseline: null as string | null,
     target: "To be set after 2 weeks of data collection",
   },
   core: [
-    { metric: "Sessions", source: "GA4 session_start", frequency: "weekly", target: null },
-    { metric: "Unique Users", source: "GA4 active_users", frequency: "weekly", target: null },
+    { metric: "Sessions", source: "GA4 session_start", frequency: "weekly", target: null as string | null },
+    { metric: "Unique Users", source: "GA4 active_users", frequency: "weekly", target: null as string | null },
     { metric: "Bounce Rate", source: "GA4 bounce_rate", frequency: "weekly", target: "<60%" },
     { metric: "Avg Session Duration", source: "GA4 average_session_duration", frequency: "weekly", target: ">2 min" },
     { metric: "Pages/Session", source: "GA4 screen_page_views_per_session", frequency: "weekly", target: ">2.5" },
@@ -106,6 +102,190 @@ const REPORTING_CADENCE = {
   },
 };
 
+interface AdminEvent {
+  id: string;
+  type: string;
+  data: Record<string, unknown>;
+  timestamp: string;
+}
+
+async function getLiveMetrics() {
+  const redis = getRedis();
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+
+  // Get last 7 days date range
+  const days: string[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    days.push(d.toISOString().split("T")[0]);
+  }
+
+  // Pull admin events from Redis
+  let events: AdminEvent[] = [];
+  if (redis) {
+    try {
+      const raw = await redis.lrange("admin:events", 0, 499);
+      events = raw.map((item) => {
+        if (typeof item === "string") return JSON.parse(item);
+        return item as AdminEvent;
+      });
+    } catch (err) {
+      console.error("Redis analytics error:", err);
+    }
+  }
+
+  // Pull recent searches from Redis
+  let recentSearches: Array<{ slug: string; title: string; category: string; searchedAt: string; generated: boolean }> = [];
+  if (redis) {
+    try {
+      const raw = await redis.lrange("recent:searches", 0, 99);
+      recentSearches = raw.map((item) => {
+        if (typeof item === "string") return JSON.parse(item);
+        return item;
+      });
+    } catch (err) {
+      console.error("Redis recent searches error:", err);
+    }
+  }
+
+  // DB counts
+  let dbStats = { comparisons: 0, entities: 0, blogArticles: 0, newsletterSubscribers: 0, embedPartners: 0, votes: 0, keywords: 0 };
+  try {
+    const [comparisons, entities, blogArticles, newsletterSubscribers, embedPartners, votes, keywords] = await Promise.all([
+      prisma.comparison.count(),
+      prisma.entity.count(),
+      prisma.blogArticle.count(),
+      prisma.newsletterSubscriber.count(),
+      prisma.embedPartner.count(),
+      prisma.comparisonVote.count(),
+      prisma.keywordOpportunity.count(),
+    ]);
+    dbStats = { comparisons, entities, blogArticles, newsletterSubscribers, embedPartners, votes, keywords };
+  } catch (err) {
+    console.error("DB stats error:", err);
+  }
+
+  // Aggregate events by day
+  const dailyBreakdown = days.map((day) => {
+    const dayEvents = events.filter((e) => e.timestamp.startsWith(day));
+    return {
+      date: day,
+      label: new Date(day + "T00:00:00Z").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
+      total: dayEvents.length,
+      searches: dayEvents.filter((e) => e.type === "search").length,
+      generations: dayEvents.filter((e) => e.type === "generation").length,
+      feedbacks: dayEvents.filter((e) => e.type === "feedback").length,
+    };
+  });
+
+  // Aggregate events by type
+  const todayEvents = events.filter((e) => e.timestamp.startsWith(today));
+  const eventsByType: Record<string, number> = {};
+  events.forEach((e) => { eventsByType[e.type] = (eventsByType[e.type] || 0) + 1; });
+  const todayByType: Record<string, number> = {};
+  todayEvents.forEach((e) => { todayByType[e.type] = (todayByType[e.type] || 0) + 1; });
+
+  // Top searched categories
+  const categoryCount: Record<string, number> = {};
+  recentSearches.forEach((s) => {
+    categoryCount[s.category] = (categoryCount[s.category] || 0) + 1;
+  });
+  const topCategories = Object.entries(categoryCount)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10)
+    .map(([category, count]) => ({ category, count }));
+
+  // Top comparisons by search frequency
+  const slugCount: Record<string, { title: string; count: number }> = {};
+  recentSearches.forEach((s) => {
+    if (!slugCount[s.slug]) slugCount[s.slug] = { title: s.title, count: 0 };
+    slugCount[s.slug].count++;
+  });
+  const topComparisons = Object.entries(slugCount)
+    .sort(([, a], [, b]) => b.count - a.count)
+    .slice(0, 10)
+    .map(([slug, { title, count }]) => ({ slug, title, count }));
+
+  // Generation vs organic ratio
+  const generated = recentSearches.filter((s) => s.generated).length;
+  const organic = recentSearches.filter((s) => !s.generated).length;
+
+  return {
+    period: { start: days[0], end: days[days.length - 1], days: days.length },
+    summary: {
+      totalEvents: events.length,
+      todayEvents: todayEvents.length,
+      eventsByType,
+      todayByType,
+    },
+    dailyBreakdown,
+    content: {
+      ...dbStats,
+      recentSearchCount: recentSearches.length,
+      generatedCount: generated,
+      organicCount: organic,
+    },
+    topCategories,
+    topComparisons,
+  };
+}
+
+async function generateWeeklyReport() {
+  const live = await getLiveMetrics();
+  const now = new Date();
+
+  const totalSearches = live.summary.eventsByType["search"] || 0;
+  const totalGenerations = live.summary.eventsByType["generation"] || 0;
+  const totalFeedbacks = live.summary.eventsByType["feedback"] || 0;
+
+  const report = {
+    title: `Weekly Metrics Report — ${live.period.start} to ${live.period.end}`,
+    generatedAt: now.toISOString(),
+    headline: {
+      totalEvents: live.summary.totalEvents,
+      searches: totalSearches,
+      generations: totalGenerations,
+      feedbacks: totalFeedbacks,
+      contentInDB: live.content.comparisons,
+      newsletterSubscribers: live.content.newsletterSubscribers,
+    },
+    dailyTrend: live.dailyBreakdown,
+    topComparisons: live.topComparisons,
+    topCategories: live.topCategories,
+    contentHealth: {
+      totalComparisons: live.content.comparisons,
+      totalEntities: live.content.entities,
+      totalBlogArticles: live.content.blogArticles,
+      embedPartners: live.content.embedPartners,
+      totalVotes: live.content.votes,
+      keywordsTracked: live.content.keywords,
+      generationRatio: live.content.recentSearchCount > 0
+        ? `${Math.round((live.content.generatedCount / live.content.recentSearchCount) * 100)}% AI-generated`
+        : "No data",
+    },
+    callouts: [] as string[],
+  };
+
+  // Generate callouts
+  if (live.summary.todayEvents === 0) {
+    report.callouts.push("No events recorded today — verify tracking is active.");
+  }
+  if (totalGenerations > totalSearches * 2) {
+    report.callouts.push("High generation-to-search ratio — most content is AI-generated, not user-driven.");
+  }
+  if (live.content.newsletterSubscribers > 0) {
+    report.callouts.push(`${live.content.newsletterSubscribers} newsletter subscribers captured.`);
+  }
+  const peakDay = live.dailyBreakdown.reduce((max, d) => d.total > max.total ? d : max, live.dailyBreakdown[0]);
+  if (peakDay && peakDay.total > 0) {
+    report.callouts.push(`Peak activity day: ${peakDay.label} with ${peakDay.total} events.`);
+  }
+
+  return report;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const section = searchParams.get("section");
@@ -122,7 +302,17 @@ export async function GET(request: Request) {
   if (section === "reporting") {
     return NextResponse.json({ reporting: REPORTING_CADENCE });
   }
+  if (section === "live") {
+    const live = await getLiveMetrics();
+    return NextResponse.json(live);
+  }
+  if (section === "report") {
+    const report = await generateWeeklyReport();
+    return NextResponse.json(report);
+  }
 
+  // Default: config + live metrics
+  const live = await getLiveMetrics();
   return NextResponse.json({
     product: "Comparison (aversusb.net)",
     ga4Property: GA4_PROPERTY,
@@ -131,5 +321,6 @@ export async function GET(request: Request) {
     funnel: CONVERSION_FUNNEL,
     kpis: KPI_TARGETS,
     reporting: REPORTING_CADENCE,
+    live,
   });
 }
