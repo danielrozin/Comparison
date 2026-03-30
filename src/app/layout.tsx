@@ -3,6 +3,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
+import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { organizationSchema } from "@/lib/seo/schema";
 import "./globals.css";
 
@@ -88,6 +89,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <FeedbackWidget />
+        <ExitIntentPopup />
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
 interface NewsletterSignupProps {
   source: string;
@@ -26,6 +27,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       if (res.ok) {
         setStatus("success");
         setEmail("");
+        trackNewsletterSignup(referrerSlug || source, variant);
       } else {
         setStatus("error");
       }
