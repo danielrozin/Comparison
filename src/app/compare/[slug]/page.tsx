@@ -37,6 +37,7 @@ import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
+import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -374,6 +375,9 @@ function VerdictFirstLayout({
         category={comparison.category}
         slug={slug}
       />
+
+      {/* Conversion Funnel Tracking */}
+      <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
     </>
   );
 }
@@ -554,6 +558,9 @@ function ClassicLayout({
         category={comparison.category}
         slug={slug}
       />
+
+      {/* Conversion Funnel Tracking */}
+      <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
     </>
   );
 }

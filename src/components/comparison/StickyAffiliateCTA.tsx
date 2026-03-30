@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { ComparisonEntityData } from "@/types";
 import { trackEvent } from "@/lib/utils/analytics";
+import { useExperiment } from "@/lib/experiments";
 
 const PRODUCT_CATEGORIES = new Set([
   "technology",
@@ -27,6 +28,8 @@ export function StickyAffiliateCTA({
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const { variant: ctaVariant } = useExperiment("cta-button-style");
+  const isTreatment = ctaVariant === "treatment";
 
   // Only show on product-related categories with affiliate links
   const isProductCategory =
@@ -80,6 +83,7 @@ export function StickyAffiliateCTA({
       position,
       page: slug,
       source: "sticky_cta",
+      cta_variant: ctaVariant,
     });
   };
 
@@ -108,7 +112,11 @@ export function StickyAffiliateCTA({
                   target="_blank"
                   rel="noopener noreferrer nofollow sponsored"
                   onClick={() => handleClick(entityA, "left")}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors truncate"
+                  className={`flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-white text-sm font-semibold rounded-lg transition-all truncate ${
+                    isTreatment
+                      ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
+                      : "bg-indigo-600 hover:bg-indigo-700"
+                  }`}
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0"
@@ -123,7 +131,7 @@ export function StickyAffiliateCTA({
                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                   </svg>
-                  <span className="truncate">Buy {entityA.name}</span>
+                  <span className="truncate">{isTreatment ? "Get" : "Buy"} {entityA.name}</span>
                 </a>
               )}
               {linkB && entityB && (
@@ -132,7 +140,11 @@ export function StickyAffiliateCTA({
                   target="_blank"
                   rel="noopener noreferrer nofollow sponsored"
                   onClick={() => handleClick(entityB, "right")}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-lg transition-colors truncate"
+                  className={`flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-white text-sm font-semibold rounded-lg transition-all truncate ${
+                    isTreatment
+                      ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
+                      : "bg-purple-600 hover:bg-purple-700"
+                  }`}
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0"
@@ -147,7 +159,7 @@ export function StickyAffiliateCTA({
                       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                   </svg>
-                  <span className="truncate">Buy {entityB.name}</span>
+                  <span className="truncate">{isTreatment ? "Get" : "Buy"} {entityB.name}</span>
                 </a>
               )}
             </div>

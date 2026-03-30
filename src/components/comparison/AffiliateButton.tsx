@@ -2,6 +2,7 @@
 
 import type { AffiliateLink } from "@/types";
 import { trackEvent } from "@/lib/utils/analytics";
+import { useExperiment } from "@/lib/experiments";
 
 const PARTNER_ICONS: Record<string, React.ReactNode> = {
   amazon: (
@@ -30,15 +31,23 @@ export function AffiliateButton({
   size?: "sm" | "md";
 }) {
   const icon = PARTNER_ICONS[link.partner];
+  const { variant: ctaVariant } = useExperiment("cta-button-style");
+  const isTreatment = ctaVariant === "treatment";
 
   const baseClasses =
     "inline-flex items-center gap-1.5 font-semibold rounded-lg transition-all duration-200 no-underline";
   const sizeClasses =
     size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
-  const variantClasses =
-    variant === "primary"
+
+  const variantClasses = isTreatment
+    ? variant === "primary"
+      ? "bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg hover:scale-105"
+      : "bg-white border-2 border-green-500 text-green-700 hover:bg-green-50 hover:border-green-600"
+    : variant === "primary"
       ? "bg-amber-500 hover:bg-amber-600 text-white shadow-sm hover:shadow-md"
       : "bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400";
+
+  const ctaText = isTreatment ? "Buy Now" : "Check Price";
 
   return (
     <a
@@ -50,11 +59,12 @@ export function AffiliateButton({
         trackEvent("affiliate_click", {
           affiliate_partner: link.partner,
           affiliate_label: link.label,
+          cta_variant: ctaVariant,
         });
       }}
     >
       {icon}
-      <span>Check Price</span>
+      <span>{ctaText}</span>
       <svg
         className="w-3 h-3 opacity-60"
         fill="none"
@@ -125,15 +135,10 @@ export function WhereToBuySection({
               rel="noopener noreferrer nofollow sponsored"
               className="group flex items-center gap-3 p-3 rounded-lg border border-border hover:border-amber-300 hover:bg-amber-50/50 transition-all"
               onClick={() => {
-                if (
-                  typeof window !== "undefined" &&
-                  typeof window.gtag === "function"
-                ) {
-                  window.gtag("event", "affiliate_click", {
-                    affiliate_partner: link.partner,
-                    affiliate_label: link.label,
-                  });
-                }
+                trackEvent("affiliate_click", {
+                  affiliate_partner: link.partner,
+                  affiliate_label: link.label,
+                });
               }}
             >
               <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">

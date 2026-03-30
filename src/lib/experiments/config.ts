@@ -15,8 +15,8 @@ export const experiments: ExperimentConfig[] = [
     name: "CTA Button Style",
     variants: ["control", "treatment"],
     trafficPercent: 100,
-    startDate: "2026-05-15",
-    endDate: "2026-06-15",
+    startDate: "2026-03-30",
+    endDate: "2026-05-30",
     goalMetric: "affiliate_click",
   },
   {
