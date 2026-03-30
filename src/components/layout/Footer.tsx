@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -89,12 +91,30 @@ export function Footer() {
               <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
               <Link href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
               <Link href="/partnerships" className="text-sm text-gray-400 hover:text-white transition-colors">Partnerships</Link>
-              <Link href="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy</Link>
-              <Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms</Link>
-              <Link href="/disclaimer" className="text-sm text-gray-400 hover:text-white transition-colors">Disclaimer</Link>
               <a href="/feed" className="text-sm text-gray-400 hover:text-white transition-colors">RSS Feed</a>
               <a href="/sitemap.xml" className="text-sm text-gray-400 hover:text-white transition-colors">Sitemap</a>
             </nav>
+          </div>
+
+          {/* Legal links */}
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 mt-4">
+            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Legal</span>
+            <Link href="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/cookie-policy" className="text-sm text-gray-400 hover:text-white transition-colors">Cookie Policy</Link>
+            <Link href="/acceptable-use" className="text-sm text-gray-400 hover:text-white transition-colors">Acceptable Use</Link>
+            <Link href="/disclaimer" className="text-sm text-gray-400 hover:text-white transition-colors">Disclaimer</Link>
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
+                }
+              }}
+              className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+            >
+              Cookie Preferences
+            </button>
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-6">
