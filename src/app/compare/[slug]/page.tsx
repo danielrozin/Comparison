@@ -27,6 +27,9 @@ import { generateResources } from "@/lib/services/resources";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
+import { BackToResults } from "@/components/navigation/BackToResults";
+import { YouMightAlsoCompare } from "@/components/comparison/YouMightAlsoCompare";
+import { RelatedProducts } from "@/components/comparison/RelatedProducts";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
@@ -172,6 +175,9 @@ function VerdictFirstLayout({
         />
       ))}
 
+      {/* Back to search results */}
+      <BackToResults />
+
       {/* Breadcrumbs */}
       <Breadcrumbs
         title={comparison.title}
@@ -302,6 +308,21 @@ function VerdictFirstLayout({
       {/* Related Blog Articles */}
       <RelatedArticles comparisonSlug={slug} category={comparison.category || undefined} />
 
+      {/* You Might Also Compare */}
+      {comparison.relatedComparisons.length > 0 && (
+        <YouMightAlsoCompare
+          comparisons={comparison.relatedComparisons}
+          sourceSlug={slug}
+        />
+      )}
+
+      {/* Related Products */}
+      <RelatedProducts
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        sourceSlug={slug}
+        category={comparison.category}
+      />
+
       {/* Internal Links */}
       <InternalLinks
         currentSlug={comparison.slug}
@@ -364,6 +385,9 @@ function ClassicLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
+
+      {/* Back to search results */}
+      <BackToResults />
 
       {/* Breadcrumbs */}
       <Breadcrumbs
@@ -481,6 +505,21 @@ function ClassicLayout({
 
       {/* Related Blog Articles */}
       <RelatedArticles comparisonSlug={slug} category={comparison.category || undefined} />
+
+      {/* You Might Also Compare */}
+      {comparison.relatedComparisons.length > 0 && (
+        <YouMightAlsoCompare
+          comparisons={comparison.relatedComparisons}
+          sourceSlug={slug}
+        />
+      )}
+
+      {/* Related Products */}
+      <RelatedProducts
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        sourceSlug={slug}
+        category={comparison.category}
+      />
 
       {/* Internal Links */}
       <InternalLinks

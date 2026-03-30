@@ -7,6 +7,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { SmartScore } from "@/components/ui/SmartScore";
 import { ReviewSection } from "@/components/engagement/ReviewSection";
 import { SmartReviewBrowseTrigger } from "@/components/surveys/SmartReviewBrowseTrigger";
+import { BackToResults } from "@/components/navigation/BackToResults";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -118,6 +119,9 @@ export default async function EntityPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
+
+      {/* Back to search results */}
+      <BackToResults />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumbs */}

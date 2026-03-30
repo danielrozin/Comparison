@@ -1,10 +1,41 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
+import { saveSearchContext } from "@/components/navigation/BackToResults";
 import { Suspense } from "react";
+
+/** Highlight matching portions of text with a bold span. */
+function HighlightedText({ text, query }: { text: string; query: string }) {
+  if (!query.trim()) return <>{text}</>;
+
+  const words = query
+    .trim()
+    .split(/\s+/)
+    .filter((w) => w.length >= 2)
+    .map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+  if (words.length === 0) return <>{text}</>;
+
+  const regex = new RegExp(`(${words.join("|")})`, "gi");
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="bg-primary-100 text-primary-800 rounded-sm px-0.5 font-bold">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -14,23 +45,61 @@ function SearchContent() {
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [compareTarget, setCompareTarget] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
+  // Sync input with URL param
   useEffect(() => {
     setSearchQuery(query);
-    if (query) {
-      setLoading(true);
-      fetch(`/api/search?q=${encodeURIComponent(query)}`)
-        .then((r) => r.json())
-        .then((data) => {
-          setResults(data.results || []);
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
-    }
   }, [query]);
+
+  // Fetch results when URL query changes
+  useEffect(() => {
+    if (!query) {
+      setResults([]);
+      return;
+    }
+    setLoading(true);
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal: controller.signal })
+      .then((r) => r.json())
+      .then((data) => {
+        setResults(data.results || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") setLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [query]);
+
+  // Debounced search-as-you-type: update URL after 400ms of no typing
+  const handleInputChange = useCallback(
+    (value: string) => {
+      setSearchQuery(value);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+
+      const trimmed = value.trim();
+      if (!trimmed) return;
+
+      debounceRef.current = setTimeout(() => {
+        // Don't auto-search if it looks like a comparison query mid-typing
+        const hasVs = /\s+(vs\.?|versus|compared\s+to|against)\s+/i.test(trimmed);
+        if (hasVs) return;
+
+        router.replace(`/search?q=${encodeURIComponent(trimmed)}`, { scroll: false });
+      }, 400);
+    },
+    [router]
+  );
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    if (debounceRef.current) clearTimeout(debounceRef.current);
     if (!searchQuery.trim()) return;
 
     // Check if it's a comparison query
@@ -68,7 +137,7 @@ function SearchContent() {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             placeholder='Search comparisons or type "A vs B" to create one...'
             className="w-full pl-12 pr-28 py-4 border border-border rounded-xl text-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
           />
@@ -83,8 +152,20 @@ function SearchContent() {
 
       {/* Results */}
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+        <div className="space-y-3">
+          {/* Skeleton loading */}
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl animate-pulse">
+              <div className="flex -space-x-2">
+                <div className="w-10 h-10 bg-gray-200 rounded-full" />
+                <div className="w-10 h-10 bg-gray-200 rounded-full" />
+              </div>
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-3 bg-gray-100 rounded w-1/4" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : query && results.length > 0 ? (
         <div className="space-y-3">
@@ -97,6 +178,7 @@ function SearchContent() {
               <Link
                 key={result.slug}
                 href={`/compare/${result.slug}`}
+                onClick={() => saveSearchContext(query, `/search?q=${encodeURIComponent(query)}`)}
                 className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
               >
                 <div className="flex -space-x-2">
@@ -109,7 +191,7 @@ function SearchContent() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-text group-hover:text-primary-700 transition-colors">
-                    {result.title}
+                    <HighlightedText text={result.title} query={query} />
                   </p>
                   <p className="text-xs text-text-secondary capitalize">{result.category}</p>
                 </div>

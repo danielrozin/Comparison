@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { slugify } from "@/lib/utils/slugify";
+import { saveSearchContext } from "@/components/navigation/BackToResults";
 import Link from "next/link";
 
 interface PopularComparison {
@@ -211,7 +212,10 @@ export function SearchBox() {
               <Link
                 key={item.slug}
                 href={`/compare/${item.slug}`}
-                onClick={() => setShowPopular(false)}
+                onClick={() => {
+                  setShowPopular(false);
+                  saveSearchContext(query, `/search?q=${encodeURIComponent(query)}`);
+                }}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
               >
                 <span className="text-base flex-shrink-0">
