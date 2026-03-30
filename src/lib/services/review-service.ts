@@ -117,25 +117,31 @@ export async function getReviewsByEntity(
     return { reviews: [], total: mockEntity?.reviewAggregation?.totalReviews ?? 0 };
   }
 
-  const where = {
-    entity: { slug: entitySlug },
-    status: "active",
-    ...(source && { source }),
-  };
+  try {
+    const where = {
+      entity: { slug: entitySlug },
+      status: "active",
+      ...(source && { source }),
+    };
 
-  const [reviews, total] = await Promise.all([
-    prisma.productReview.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip: offset,
-      take: limit,
-    }),
-    prisma.productReview.count({ where }),
-  ]);
+    const [reviews, total] = await Promise.all([
+      prisma.productReview.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        skip: offset,
+        take: limit,
+      }),
+      prisma.productReview.count({ where }),
+    ]);
 
-  const result = { reviews: reviews as ReviewData[], total };
-  await setCache(cacheKey, result, CACHE_TTL_REVIEW);
-  return result;
+    const result = { reviews: reviews as ReviewData[], total };
+    await setCache(cacheKey, result, CACHE_TTL_REVIEW);
+    return result;
+  } catch (e) {
+    console.warn("Prisma query failed for getReviewsByEntity, falling back to mock:", e);
+    const mockEntity = MOCK_REVIEWED_ENTITIES.find((em) => em.slug === entitySlug);
+    return { reviews: [], total: mockEntity?.reviewAggregation?.totalReviews ?? 0 };
+  }
 }
 
 export async function getEntityAggregation(entitySlug: string): Promise<AggregationData | null> {
@@ -149,28 +155,34 @@ export async function getEntityAggregation(entitySlug: string): Promise<Aggregat
     return mock?.reviewAggregation ?? null;
   }
 
-  const agg = await prisma.reviewAggregation.findFirst({
-    where: { entity: { slug: entitySlug } },
-  });
+  try {
+    const agg = await prisma.reviewAggregation.findFirst({
+      where: { entity: { slug: entitySlug } },
+    });
 
-  if (!agg) return null;
+    if (!agg) return null;
 
-  const result: AggregationData = {
-    entityId: agg.entityId,
-    averageRating: agg.averageRating,
-    totalReviews: agg.totalReviews,
-    smartScore: agg.smartScore,
-    sourceBreakdown: agg.sourceBreakdown as AggregationData["sourceBreakdown"],
-    avgSentiment: agg.avgSentiment,
-    positivePct: agg.positivePct,
-    negativePct: agg.negativePct,
-    topPros: agg.topPros,
-    topCons: agg.topCons,
-    lastAggregatedAt: agg.lastAggregatedAt,
-  };
+    const result: AggregationData = {
+      entityId: agg.entityId,
+      averageRating: agg.averageRating,
+      totalReviews: agg.totalReviews,
+      smartScore: agg.smartScore,
+      sourceBreakdown: agg.sourceBreakdown as AggregationData["sourceBreakdown"],
+      avgSentiment: agg.avgSentiment,
+      positivePct: agg.positivePct,
+      negativePct: agg.negativePct,
+      topPros: agg.topPros,
+      topCons: agg.topCons,
+      lastAggregatedAt: agg.lastAggregatedAt,
+    };
 
-  await setCache(cacheKey, result, CACHE_TTL_AGGREGATION);
-  return result;
+    await setCache(cacheKey, result, CACHE_TTL_AGGREGATION);
+    return result;
+  } catch (e) {
+    console.warn("Prisma query failed for getEntityAggregation, falling back to mock:", e);
+    const mock = MOCK_REVIEWED_ENTITIES.find((em) => em.slug === entitySlug);
+    return mock?.reviewAggregation ?? null;
+  }
 }
 
 export async function getReviewedEntities(options: {
@@ -195,39 +207,48 @@ export async function getReviewedEntities(options: {
     return { entities: entities.slice(offset, offset + limit), total: entities.length };
   }
 
-  const orderBy = sort === "rating"
-    ? { reviewAggregation: { averageRating: "desc" as const } }
-    : sort === "reviews"
-    ? { reviewAggregation: { totalReviews: "desc" as const } }
-    : sort === "alphabetical"
-    ? { name: "asc" as const }
-    : { reviewAggregation: { smartScore: "desc" as const } };
+  try {
+    const orderBy = sort === "rating"
+      ? { reviewAggregation: { averageRating: "desc" as const } }
+      : sort === "reviews"
+      ? { reviewAggregation: { totalReviews: "desc" as const } }
+      : sort === "alphabetical"
+      ? { name: "asc" as const }
+      : { reviewAggregation: { smartScore: "desc" as const } };
 
-  const where = {
-    reviewAggregation: minRating
-      ? { is: { averageRating: { gte: minRating } } }
-      : { isNot: null },
-    status: "published" as const,
-    ...(category && { entityType: { is: { slug: category } } }),
-  };
+    const where = {
+      reviewAggregation: minRating
+        ? { is: { averageRating: { gte: minRating } } }
+        : { isNot: null },
+      status: "published" as const,
+      ...(category && { entityType: { is: { slug: category } } }),
+    };
 
-  const [entities, total] = await Promise.all([
-    prisma.entity.findMany({
-      where,
-      include: {
-        entityType: { select: { slug: true, name: true } },
-        reviewAggregation: true,
-      },
-      orderBy,
-      skip: offset,
-      take: limit,
-    }),
-    prisma.entity.count({ where }),
-  ]);
+    const [entities, total] = await Promise.all([
+      prisma.entity.findMany({
+        where,
+        include: {
+          entityType: { select: { slug: true, name: true } },
+          reviewAggregation: true,
+        },
+        orderBy,
+        skip: offset,
+        take: limit,
+      }),
+      prisma.entity.count({ where }),
+    ]);
 
-  const result = { entities: entities as unknown as ReviewedEntity[], total };
-  await setCache(cacheKey, result, CACHE_TTL_AGGREGATION);
-  return result;
+    const result = { entities: entities as unknown as ReviewedEntity[], total };
+    await setCache(cacheKey, result, CACHE_TTL_AGGREGATION);
+    return result;
+  } catch (e) {
+    console.warn("Prisma query failed for getReviewedEntities, falling back to mock:", e);
+    let entities = [...MOCK_REVIEWED_ENTITIES];
+    if (minRating) {
+      entities = entities.filter((em) => (em.reviewAggregation?.averageRating ?? 0) >= minRating);
+    }
+    return { entities: entities.slice(offset, offset + limit), total: entities.length };
+  }
 }
 
 export async function getReviewCategories(): Promise<{ slug: string; name: string; count: number }[]> {
@@ -243,20 +264,28 @@ export async function getReviewCategories(): Promise<{ slug: string; name: strin
     ];
   }
 
-  const result = await prisma.$queryRaw<{ slug: string; name: string; count: bigint }[]>`
-    SELECT et.slug, et.name, COUNT(ra.id)::bigint as count
-    FROM entity_types et
-    JOIN entities e ON e.entity_type_id = et.id
-    JOIN review_aggregations ra ON ra.entity_id = e.id
-    WHERE e.status = 'published'
-    GROUP BY et.slug, et.name
-    HAVING COUNT(ra.id) > 0
-    ORDER BY count DESC
-  `;
+  try {
+    const result = await prisma.$queryRaw<{ slug: string; name: string; count: bigint }[]>`
+      SELECT et.slug, et.name, COUNT(ra.id)::bigint as count
+      FROM entity_types et
+      JOIN entities e ON e.entity_type_id = et.id
+      JOIN review_aggregations ra ON ra.entity_id = e.id
+      WHERE e.status = 'published'
+      GROUP BY et.slug, et.name
+      HAVING COUNT(ra.id) > 0
+      ORDER BY count DESC
+    `;
 
-  const categories = result.map((r) => ({ slug: r.slug, name: r.name, count: Number(r.count) }));
-  await setCache(cacheKey, categories, CACHE_TTL_AGGREGATION);
-  return categories;
+    const categories = result.map((r) => ({ slug: r.slug, name: r.name, count: Number(r.count) }));
+    await setCache(cacheKey, categories, CACHE_TTL_AGGREGATION);
+    return categories;
+  } catch (e) {
+    console.warn("Prisma query failed for getReviewCategories, falling back to mock:", e);
+    return [
+      { slug: "technology", name: "Technology", count: 2 },
+      { slug: "product", name: "Product", count: 1 },
+    ];
+  }
 }
 
 // ============================================================
