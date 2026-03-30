@@ -132,7 +132,9 @@ export async function GET(request: NextRequest) {
     allErrors.push(`Queue failed, falling back to sequential: ${err instanceof Error ? err.message : "Unknown"}`);
     for (const topic of comparisonTopics.slice(0, compLimit)) {
       try {
-        const slug = `${slugify(topic.entityA!)}-vs-${slugify(topic.entityB!)}`;
+        const a = slugify(topic.entityA!);
+        const b = slugify(topic.entityB!);
+        const slug = a <= b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
         const existing = await getComparisonBySlug(slug);
         if (existing) continue;
         const result = await generateComparison(topic.entityA!, topic.entityB!, slug);

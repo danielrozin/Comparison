@@ -461,5 +461,8 @@ export async function clearQueue(status?: "pending" | "failed"): Promise<void> {
 function makeSlug(entityA: string, entityB: string): string {
   const clean = (s: string) =>
     s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
-  return `${clean(entityA)}-vs-${clean(entityB)}`;
+  const a = clean(entityA);
+  const b = clean(entityB);
+  // Sort alphabetically so "A vs B" and "B vs A" produce the same slug
+  return a <= b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
 }

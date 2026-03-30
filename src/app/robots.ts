@@ -44,6 +44,18 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "cohere-ai",
         allow: "/",
       },
+      {
+        userAgent: "CopilotBot",
+        allow: "/",
+      },
+      {
+        userAgent: "Microsoft-AI",
+        allow: "/",
+      },
+      {
+        userAgent: "YouBot",
+        allow: "/",
+      },
     ],
     sitemap: "https://www.aversusb.net/sitemap.xml",
   };
