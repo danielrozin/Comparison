@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
 
-// Map categories to related categories (logical groupings)
+// Category affinity map (synced with internal-linking-engine.ts)
 const RELATED_CATEGORIES: Record<string, string[]> = {
   sports: ["celebrities"],
   countries: ["military", "economy"],
@@ -13,6 +13,13 @@ const RELATED_CATEGORIES: Record<string, string[]> = {
   economy: ["countries", "companies"],
   companies: ["brands", "technology", "economy"],
   brands: ["products", "companies"],
+  health: ["products"],
+  entertainment: ["celebrities"],
+  automotive: ["products", "technology"],
+  software: ["technology", "companies"],
+  finance: ["economy", "companies"],
+  education: [],
+  travel: ["countries"],
 };
 
 interface InternalLinksProps {
@@ -58,16 +65,16 @@ export function InternalLinks({
                   </Link>
                 </li>
               ))}
-              {entities.length >= 2 && (
-                <li>
+              {entities.map((entity) => (
+                <li key={`alt-${entity.slug}`}>
                   <Link
-                    href={`/alternatives/${entities[0].slug}`}
+                    href={`/alternatives/${entity.slug}`}
                     className="text-sm text-primary-600 hover:text-primary-700 hover:underline"
                   >
-                    Alternatives to {entities[0].name} &rarr;
+                    Alternatives to {entity.name} &rarr;
                   </Link>
                 </li>
-              )}
+              ))}
             </ul>
           </div>
         )}

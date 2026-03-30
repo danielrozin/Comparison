@@ -224,10 +224,35 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           </div>
         )}
 
+        {/* Sibling subcategory navigation */}
+        {subcategories.length > 1 && (
+          <div className="mt-10 pt-6 border-t border-border">
+            <h2 className="text-lg font-display font-bold text-text mb-4">
+              More in {category.name}
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {subcategories.map((sib) => (
+                <Link
+                  key={sib.slug}
+                  href={`/category/${slug}/${sib.slug}`}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors ${
+                    sib.slug === subcategory
+                      ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
+                      : "bg-white border-border text-text-secondary hover:border-primary-300 hover:text-primary-700"
+                  }`}
+                >
+                  <span>{sib.icon}</span>
+                  {sib.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Back link */}
-        <div className="mt-10 pt-6 border-t border-border">
+        <div className="mt-6">
           <Link href={`/category/${slug}`} className="text-primary-600 hover:underline font-medium">
-            View all {category.name} subcategories
+            &larr; All {category.name} Comparisons
           </Link>
         </div>
       </div>

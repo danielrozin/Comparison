@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getEntityAggregation } from "@/lib/services/review-service";
 import { StarRating } from "@/components/ui/StarRating";
 
+const SMARTREVIEW_URL = process.env.NEXT_PUBLIC_SMARTREVIEW_URL || "https://smartreview.com";
+
 interface SmartReviewLinksProps {
   entities: { name: string; slug: string }[];
 }
@@ -42,29 +44,41 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
             : "bg-gray-100 text-gray-700";
 
           return (
-            <Link
-              key={slug}
-              href={`/reviews/${slug}`}
-              className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
-            >
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold shrink-0 ${scoreColor}`}>
-                {agg.smartScore}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
-                  {name}
-                </p>
-                <StarRating rating={agg.averageRating} size="sm" reviewCount={agg.totalReviews} />
-                {agg.topPros.length > 0 && (
-                  <p className="text-xs text-text-secondary mt-1 truncate">
-                    Top: {agg.topPros.slice(0, 2).join(", ")}
+            <div key={slug} className="flex flex-col gap-2">
+              {/* Internal review page link */}
+              <Link
+                href={`/reviews/${slug}`}
+                className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
+              >
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold shrink-0 ${scoreColor}`}>
+                  {agg.smartScore}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+                    {name}
                   </p>
-                )}
-              </div>
-              <span className="text-xs font-medium text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                Full review &rarr;
-              </span>
-            </Link>
+                  <StarRating rating={agg.averageRating} size="sm" reviewCount={agg.totalReviews} />
+                  {agg.topPros.length > 0 && (
+                    <p className="text-xs text-text-secondary mt-1 truncate">
+                      Top: {agg.topPros.slice(0, 2).join(", ")}
+                    </p>
+                  )}
+                </div>
+                <span className="text-xs font-medium text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                  Full review &rarr;
+                </span>
+              </Link>
+              {/* Cross-site SmartReview deep link */}
+              <a
+                href={`${SMARTREVIEW_URL}/search?q=${encodeURIComponent(name)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline"
+              >
+                <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-[10px] font-bold shrink-0">SR</span>
+                Read {name} reviews on SmartReview &rarr;
+              </a>
+            </div>
           );
         })}
       </div>

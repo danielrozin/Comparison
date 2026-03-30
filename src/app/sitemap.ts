@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
-import { CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { getReviewCategories } from "@/lib/services/review-service";
+import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 
 const SITE_URL = "https://www.aversusb.net";
 
@@ -34,13 +34,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // Subcategory pages (products)
-  const subcategoryPages: MetadataRoute.Sitemap = PRODUCT_SUBCATEGORIES.map((sub) => ({
-    url: `${SITE_URL}/category/products/${sub.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.85,
-  }));
+  // Subcategory pages (all categories with subcategories)
+  const subcategoryPages: MetadataRoute.Sitemap = Object.entries(CATEGORY_SUBCATEGORIES).flatMap(
+    ([catSlug, subs]) =>
+      subs.map((sub) => ({
+        url: `${SITE_URL}/category/${catSlug}/${sub.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      }))
+  );
 
   // Comparison pages (highest value)
   const slugs = getAllMockSlugs();
@@ -115,6 +118,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Review categories unavailable — skip
   }
 
+  // Individual review pages (/reviews/{entitySlug})
+  let reviewEntityPages: MetadataRoute.Sitemap = [];
+  try {
+    const { entities: reviewedEntities } = await getReviewedEntities({ limit: 1000 });
+    reviewEntityPages = reviewedEntities.map((entity) => ({
+      url: `${SITE_URL}/reviews/${entity.slug}`,
+      lastModified: entity.reviewAggregation?.lastAggregatedAt
+        ? new Date(entity.reviewAggregation.lastAggregatedAt).toISOString()
+        : now,
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    }));
+  } catch {
+    // Review entities unavailable — skip
+  }
+
   return [
     ...staticPages,
     ...categoryPages,
@@ -125,5 +144,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogListPage,
     ...blogArticlePages,
     ...reviewCategoryPages,
+    ...reviewEntityPages,
   ];
 }
