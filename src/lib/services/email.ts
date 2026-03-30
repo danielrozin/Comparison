@@ -46,3 +46,51 @@ export async function sendNotificationEmail(opts: {
 
   return { success: true, method: "logged" };
 }
+
+export async function sendPartnerKeyEmail(opts: {
+  partnerEmail: string;
+  partnerName: string;
+  partnerKey: string;
+  tier: string;
+}) {
+  if (WEB3FORMS_KEY) {
+    try {
+      const res = await fetch(WEB3FORMS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          to: opts.partnerEmail,
+          subject: "[A Versus B] Your Embed Partner Key",
+          from_name: "A Versus B",
+          message: [
+            `Hi ${opts.partnerName},`,
+            "",
+            "Welcome to the A Versus B embed partner program!",
+            "",
+            `Your partner key: ${opts.partnerKey}`,
+            `Plan: ${opts.tier.charAt(0).toUpperCase() + opts.tier.slice(1)}`,
+            "",
+            "Keep this key safe — you'll need it for all embed codes.",
+            "",
+            "Get started: https://aversusb.net/embed/register",
+            "API docs: https://aversusb.net/developers",
+            "",
+            "— The A Versus B Team",
+          ].join("\n"),
+        }),
+      });
+      const data = await res.json();
+      return { success: data.success, method: "web3forms" };
+    } catch (err) {
+      console.error("Partner key email failed:", err);
+    }
+  }
+
+  console.log(`[PARTNER EMAIL] To: ${opts.partnerEmail}`);
+  console.log(`  Partner: ${opts.partnerName}`);
+  console.log(`  Key: ${opts.partnerKey}`);
+  console.log(`  Tier: ${opts.tier}`);
+
+  return { success: true, method: "logged" };
+}

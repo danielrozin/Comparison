@@ -149,10 +149,21 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
     <div className="space-y-6">
       <div className="p-4 bg-green-50 border border-green-200 rounded-xl">
         <h3 className="text-sm font-semibold text-green-800 mb-1">Account Created!</h3>
-        <p className="text-sm text-green-700">
-          Your partner key: <code className="bg-green-100 px-2 py-0.5 rounded font-mono text-xs">{partnerKey}</code>
-        </p>
-        <p className="text-xs text-green-600 mt-1">Save this key — you will need it for all embed codes.</p>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-sm text-green-700">Your partner key:</span>
+          <code className="bg-green-100 px-2 py-0.5 rounded font-mono text-xs">{partnerKey}</code>
+          <button
+            onClick={() => handleCopy(partnerKey, "key")}
+            className={`text-xs px-2.5 py-1 rounded-lg border transition-colors ${
+              copied === "key"
+                ? "bg-green-200 text-green-800 border-green-300"
+                : "bg-white text-green-700 border-green-200 hover:bg-green-100"
+            }`}
+          >
+            {copied === "key" ? "Copied!" : "Copy Key"}
+          </button>
+        </div>
+        <p className="text-xs text-green-600 mt-2">Save this key — you will need it for all embed codes. A copy has also been sent to your email.</p>
       </div>
 
       <div>

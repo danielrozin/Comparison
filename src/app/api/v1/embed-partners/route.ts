@@ -6,6 +6,7 @@ import {
   type EmbedTier,
   EMBED_TIERS,
 } from "@/lib/services/embed-partner-service";
+import { sendPartnerKeyEmail, sendNotificationEmail } from "@/lib/services/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,11 +34,29 @@ export async function POST(request: NextRequest) {
       tier: (tier as EmbedTier) || "free",
     });
 
+    const selectedTier = (tier as EmbedTier) || "free";
+
+    // Send confirmation email to partner and notification to admin (non-blocking)
+    Promise.all([
+      sendPartnerKeyEmail({
+        partnerEmail: email,
+        partnerName: name,
+        partnerKey: result.partnerKey,
+        tier: selectedTier,
+      }),
+      sendNotificationEmail({
+        subject: `New Embed Partner: ${name} (${selectedTier})`,
+        type: "embed_partner_registration",
+        message: `New embed partner registered:\n\nName: ${name}\nEmail: ${email}\nTier: ${selectedTier}\nWebsite: ${website || "N/A"}`,
+        senderEmail: email,
+      }),
+    ]).catch((err) => console.error("Email send error:", err));
+
     return NextResponse.json({
       success: true,
       partner: result.partner,
       partnerKey: result.partnerKey,
-      tier: EMBED_TIERS[(tier as EmbedTier) || "free"],
+      tier: EMBED_TIERS[selectedTier],
     }, { status: 201 });
   } catch (error) {
     console.error("Failed to create embed partner:", error);
