@@ -69,11 +69,14 @@ Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
 }
 
 Requirements:
-- Include 5-7 key differences
-- Include 5-8 attributes with real data
-- Include 3-5 FAQs
-- Include 3-5 pros and 2-3 cons per entity
-- Be factual and balanced
+- Include 5-7 key differences with specific, verifiable data points (not generic statements)
+- Include 5-8 attributes with real data — use correct units (GB, MHz, USD, cm, etc.). Never use vague values like "Good" or "Very Good"
+- Include 3-5 FAQs that answer questions users actually search for
+- Include 3-5 pros and 2-3 cons per entity — be specific (e.g., "48MP main camera with OIS" not "good camera"). Avoid generic pros like "popular" or "well-known"
+- Cons must be honest weaknesses, not hedged non-answers like "has a learning curve"
+- The shortAnswer must state the core factual difference, never just "it depends"
+- The verdict must include "Choose X if... Choose Y if..." guidance
+- Be factual and balanced — present both sides fairly
 - Use real statistics and data where possible
 - Keep the year current (2026)`;
 
