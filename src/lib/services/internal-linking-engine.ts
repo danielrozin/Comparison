@@ -416,3 +416,132 @@ export async function getRelatedBlogPosts(
     return [];
   }
 }
+
+// ---------------------------------------------------------------------------
+// Orphan page detection
+// ---------------------------------------------------------------------------
+
+export interface OrphanPage {
+  slug: string;
+  title: string;
+  category: string | null;
+  inboundLinkCount: number;
+  viewCount: number;
+}
+
+/**
+ * Detect orphan comparison pages — pages with zero or very few inbound internal links.
+ * These pages are hard for both users and search engines to discover.
+ */
+export async function detectOrphanPages(
+  maxInboundLinks = 0
+): Promise<OrphanPage[]> {
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    return detectOrphanPagesMock(maxInboundLinks);
+  }
+
+  try {
+    // Get all published comparisons
+    const comparisons = await prisma.comparison.findMany({
+      where: { status: "published" },
+      select: { id: true, slug: true, title: true, category: true, viewCount: true },
+    });
+
+    // Count inbound internal links for each comparison
+    const orphans: OrphanPage[] = [];
+
+    for (const comp of comparisons) {
+      const toPath = `/compare/${comp.slug}`;
+      let inboundCount = 0;
+
+      try {
+        inboundCount = await prisma.internalLink.count({
+          where: { toPath },
+        });
+      } catch {
+        // InternalLink table may not exist yet
+      }
+
+      // Also count entity overlap links (comparisons sharing entities)
+      let entityOverlapCount = 0;
+      try {
+        const entities = await prisma.comparisonEntity.findMany({
+          where: { comparisonId: comp.id },
+          select: { entityId: true },
+        });
+        if (entities.length > 0) {
+          entityOverlapCount = await prisma.comparisonEntity.count({
+            where: {
+              entityId: { in: entities.map((e: { entityId: string }) => e.entityId) },
+              comparisonId: { not: comp.id },
+            },
+          });
+        }
+      } catch {
+        // Entity tables may not exist
+      }
+
+      const totalInbound = inboundCount + Math.min(entityOverlapCount, 1);
+
+      if (totalInbound <= maxInboundLinks) {
+        orphans.push({
+          slug: comp.slug,
+          title: comp.title,
+          category: comp.category,
+          inboundLinkCount: totalInbound,
+          viewCount: comp.viewCount || 0,
+        });
+      }
+    }
+
+    return orphans.sort((a, b) => a.inboundLinkCount - b.inboundLinkCount || a.viewCount - b.viewCount);
+  } catch (e) {
+    console.error("Orphan detection DB error:", e);
+    return detectOrphanPagesMock(maxInboundLinks);
+  }
+}
+
+function detectOrphanPagesMock(maxInboundLinks: number): OrphanPage[] {
+  const allSlugs = getAllMockSlugs();
+  const inboundCounts = new Map<string, number>();
+
+  // Initialize all slugs with 0 inbound links
+  for (const slug of allSlugs) {
+    inboundCounts.set(slug, 0);
+  }
+
+  // Count entity overlap links between all comparisons
+  for (const slug of allSlugs) {
+    const comp = getMockComparison(slug);
+    if (!comp) continue;
+    const entitySlugs = comp.entities.map((e) => e.slug);
+
+    for (const otherSlug of allSlugs) {
+      if (otherSlug === slug) continue;
+      const other = getMockComparison(otherSlug);
+      if (!other) continue;
+      const otherEntitySlugs = other.entities.map((e) => e.slug);
+      if (entitySlugs.some((s) => otherEntitySlugs.includes(s))) {
+        inboundCounts.set(otherSlug, (inboundCounts.get(otherSlug) || 0) + 1);
+      }
+    }
+  }
+
+  const orphans: OrphanPage[] = [];
+  for (const slug of allSlugs) {
+    const count = inboundCounts.get(slug) || 0;
+    if (count <= maxInboundLinks) {
+      const comp = getMockComparison(slug);
+      orphans.push({
+        slug,
+        title: comp?.title || slug,
+        category: comp?.category || null,
+        inboundLinkCount: count,
+        viewCount: comp?.metadata?.viewCount || 0,
+      });
+    }
+  }
+
+  return orphans.sort((a, b) => a.inboundLinkCount - b.inboundLinkCount || a.viewCount - b.viewCount);
+}

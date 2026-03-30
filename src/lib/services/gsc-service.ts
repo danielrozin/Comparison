@@ -442,6 +442,124 @@ export async function analyzeGSCTechnicalIssues(): Promise<GSCTechnicalIssue[]> 
   return issues;
 }
 
+// ---------------------------------------------------------------------------
+// Page-level indexing coverage
+// ---------------------------------------------------------------------------
+
+export interface GSCPageData {
+  page: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+export interface GSCIndexingCoverage {
+  totalPagesWithTraffic: number;
+  totalSitemapPages: number;
+  indexedRate: number;
+  pagesWithTraffic: GSCPageData[];
+  orphanPages: string[];
+  lowPerformingPages: GSCPageData[];
+}
+
+/**
+ * Fetch page-level search analytics from GSC (dimension: page).
+ */
+export async function fetchGSCPageData(days = 28): Promise<GSCPageData[]> {
+  const token = await getAccessToken();
+  if (!token) {
+    console.warn("GSC: No access token available — returning empty page data");
+    return [];
+  }
+
+  const siteUrl = getSiteUrl();
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - days);
+
+  const formatDate = (d: Date) => d.toISOString().split("T")[0];
+
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: formatDate(startDate),
+          endDate: formatDate(endDate),
+          dimensions: ["page"],
+          rowLimit: 5000,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error("GSC: Page data fetch failed:", res.status, errText);
+      return [];
+    }
+
+    const data = await res.json();
+    if (!data.rows) return [];
+
+    return data.rows.map(
+      (row: {
+        keys: string[];
+        clicks: number;
+        impressions: number;
+        ctr: number;
+        position: number;
+      }) => ({
+        page: row.keys[0],
+        clicks: row.clicks,
+        impressions: row.impressions,
+        ctr: row.ctr,
+        position: row.position,
+      })
+    );
+  } catch (err) {
+    console.error("GSC: Page data fetch error:", err);
+    return [];
+  }
+}
+
+/**
+ * Analyze indexing coverage by comparing GSC page data against sitemap URLs.
+ * Returns pages with traffic, orphan sitemap pages (no GSC data), and low performers.
+ */
+export async function analyzeIndexingCoverage(
+  sitemapUrls: string[]
+): Promise<GSCIndexingCoverage> {
+  const pageData = await fetchGSCPageData();
+
+  const pagesWithTraffic = new Set(pageData.map((p) => p.page));
+  const sitemapSet = new Set(sitemapUrls);
+
+  // Pages in sitemap but with zero GSC data (not indexed or no impressions)
+  const orphanPages = sitemapUrls.filter((url) => !pagesWithTraffic.has(url));
+
+  // Pages with traffic but low performance (high impressions, low CTR, poor position)
+  const lowPerformingPages = pageData.filter(
+    (p) => sitemapSet.has(p.page) && p.impressions >= 10 && p.ctr < 0.02 && p.position > 15
+  );
+
+  const indexedCount = sitemapUrls.filter((url) => pagesWithTraffic.has(url)).length;
+
+  return {
+    totalPagesWithTraffic: pageData.length,
+    totalSitemapPages: sitemapUrls.length,
+    indexedRate: sitemapUrls.length > 0 ? indexedCount / sitemapUrls.length : 0,
+    pagesWithTraffic: pageData.sort((a, b) => b.clicks - a.clicks),
+    orphanPages,
+    lowPerformingPages: lowPerformingPages.sort((a, b) => b.impressions - a.impressions),
+  };
+}
+
 /**
  * Get aggregate stats from GSC queries.
  */
