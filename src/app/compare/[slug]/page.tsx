@@ -35,6 +35,7 @@ import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
+import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -303,6 +304,11 @@ function VerdictFirstLayout({
         return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
       })()}
 
+      {/* SmartReview Cross-Links */}
+      <SmartReviewLinks
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+      />
+
       {/* Full-width sections below sidebar area */}
       {/* Related Comparisons (bottom grid, kept for SEO internal links) */}
       {comparison.relatedComparisons.length > 0 && (
@@ -455,6 +461,11 @@ function ClassicLayout({
             const partnerReviews = getPartnerReviews(comparison.slug);
             return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
           })()}
+
+          {/* SmartReview Cross-Links */}
+          <SmartReviewLinks
+            entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+          />
 
           {/* FAQ */}
           {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
