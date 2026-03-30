@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
 interface NewsletterSignupProps {
   source: string;
@@ -25,6 +26,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       });
       if (res.ok) {
         setStatus("success");
+        trackNewsletterSignup(window.location.pathname, source);
         setEmail("");
       } else {
         setStatus("error");
@@ -39,7 +41,10 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       <div className={variant === "card" ? "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : ""}>
         <div className={`${variant === "card" ? "bg-green-50 border border-green-200 rounded-xl p-6" : ""} text-center`}>
           <p className={`font-medium ${variant === "card" ? "text-green-800" : "text-green-400"}`}>
-            You&apos;re subscribed! We&apos;ll send you the best comparisons weekly.
+            Check your email to confirm your subscription!
+          </p>
+          <p className={`text-sm mt-1 ${variant === "card" ? "text-green-600" : "text-green-500/70"}`}>
+            We sent a confirmation link to your inbox.
           </p>
         </div>
       </div>
@@ -48,26 +53,34 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
 
   if (variant === "inline") {
     return (
-      <form onSubmit={handleSubmit} className="flex gap-2 max-w-md">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
-          placeholder="Your email address"
-          required
-          className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
-        >
-          {status === "loading" ? "..." : "Subscribe"}
-        </button>
-        {status === "error" && (
-          <p className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
-        )}
-      </form>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-surface-alt/50 border border-border rounded-xl p-4 sm:p-5">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-text">Get weekly comparison picks</p>
+            <p className="text-xs text-text-secondary mt-0.5">No spam. Unsubscribe anytime.</p>
+          </div>
+          <form onSubmit={handleSubmit} className="flex gap-2 w-full sm:w-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
+              placeholder="you@example.com"
+              required
+              className="flex-1 sm:w-56 px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text placeholder-text-secondary focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
+            >
+              {status === "loading" ? "..." : "Subscribe"}
+            </button>
+          </form>
+          {status === "error" && (
+            <p className="text-red-500 text-xs">Something went wrong. Try again.</p>
+          )}
+        </div>
+      </div>
     );
   }
 

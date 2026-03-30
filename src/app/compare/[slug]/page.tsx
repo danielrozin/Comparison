@@ -203,7 +203,10 @@ function VerdictFirstLayout({
         />
       )}
 
-      {/* User Poll — after verdict card */}
+      {/* Newsletter Signup — inline after verdict card */}
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} variant="inline" />
+
+      {/* User Poll — after newsletter */}
       {comparison.entities.length >= 2 && (
         <ComparisonPoll
           comparisonId={comparison.id}
@@ -427,7 +430,10 @@ function ClassicLayout({
             />
           )}
 
-          {/* User Poll — after verdict */}
+          {/* Newsletter Signup — inline after verdict */}
+          <NewsletterSignup source="comparison" referrerSlug={comparison.slug} variant="inline" />
+
+          {/* User Poll — after newsletter */}
           {comparison.entities.length >= 2 && (
             <ComparisonPoll
               comparisonId={comparison.id}
@@ -472,9 +478,6 @@ function ClassicLayout({
         entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
         relatedComparisons={comparison.relatedComparisons}
       />
-
-      {/* Newsletter Signup */}
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
       <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />

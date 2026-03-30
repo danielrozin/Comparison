@@ -457,17 +457,21 @@ model Category {
 // ============================================================
 
 model NewsletterSubscriber {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  source       String?  // "footer", "comparison", "homepage", "blog"
-  referrerSlug String?  @map("referrer_slug") // which page they signed up from
-  status       String   @default("active") // active, unsubscribed
-  subscribedAt DateTime @default(now()) @map("subscribed_at")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id                String   @id @default(cuid())
+  email             String   @unique
+  source            String?  // "footer", "comparison", "homepage", "blog"
+  referrerSlug      String?  @map("referrer_slug") // which page they signed up from
+  status            String   @default("pending") // pending, active, unsubscribed
+  confirmationToken String?  @unique @map("confirmation_token")
+  confirmedAt       DateTime? @map("confirmed_at")
+  lastSignupAt      DateTime @default(now()) @map("last_signup_at") // rate limit tracking
+  subscribedAt      DateTime @default(now()) @map("subscribed_at")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   @@index([status])
   @@index([source])
+  @@index([confirmationToken])
   @@map("newsletter_subscribers")
 }
 
