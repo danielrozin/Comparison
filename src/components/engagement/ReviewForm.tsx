@@ -1,11 +1,56 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { trackReviewSubmission } from "@/lib/utils/analytics";
 
 interface Product {
   slug: string;
   name: string;
+}
+
+interface SavedReviewDraft {
+  entitySlug: string;
+  productName: string;
+  rating: number;
+  text: string;
+  pros: string;
+  cons: string;
+  authorName: string;
+  savedAt: number;
+}
+
+const DRAFT_KEY = "review_draft_pending";
+
+function saveDraftToLocal(draft: SavedReviewDraft) {
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch {
+    // storage full or unavailable
+  }
+}
+
+function loadDraftFromLocal(): SavedReviewDraft | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const draft = JSON.parse(raw) as SavedReviewDraft;
+    // Expire drafts older than 7 days
+    if (Date.now() - draft.savedAt > 7 * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    return draft;
+  } catch {
+    return null;
+  }
+}
+
+function clearDraftFromLocal() {
+  try {
+    localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // ignore
+  }
 }
 
 export function ReviewForm({
@@ -35,10 +80,14 @@ export function ReviewForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [savedLocally, setSavedLocally] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [copied, setCopied] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const hasInteracted = useRef(false);
   const surveyTriggered = useRef(false);
+  const pendingDraftRef = useRef<SavedReviewDraft | null>(null);
 
   // Track form interaction for abandon detection
   useEffect(() => {
@@ -103,8 +152,114 @@ export function ReviewForm({
     setShowDropdown(false);
   };
 
+  // Load any pending draft on mount
+  useEffect(() => {
+    const draft = loadDraftFromLocal();
+    if (draft) {
+      pendingDraftRef.current = draft;
+      setSavedLocally(true);
+      if (!entitySlug) {
+        setProductQuery(draft.productName);
+      }
+      setRating(draft.rating);
+      setText(draft.text);
+      setPros(draft.pros);
+      setCons(draft.cons);
+      setAuthorName(draft.authorName);
+      setError("Review saved locally — we could not submit it last time.");
+    }
+  }, [entitySlug]);
+
+  const submitToApi = useCallback(async (draft: SavedReviewDraft): Promise<boolean> => {
+    const res = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        entitySlug: draft.entitySlug,
+        productName: draft.productName,
+        rating: draft.rating,
+        text: draft.text.trim(),
+        pros: draft.pros.trim(),
+        cons: draft.cons.trim(),
+        authorName: draft.authorName.trim() || "Anonymous",
+        website: honeypot,
+      }),
+    });
+
+    if (res.status === 429) {
+      setError("Too many reviews. Please try again in a minute.");
+      return false;
+    }
+
+    if (!res.ok) throw new Error("Failed");
+
+    const data = await res.json();
+    if (data.success) {
+      trackReviewSubmission(draft.productName, draft.rating);
+      clearDraftFromLocal();
+      pendingDraftRef.current = null;
+      setSavedLocally(false);
+
+      if (data.review?.flagged) {
+        setSuccessMessage("Review submitted! Short reviews may be reviewed before appearing publicly.");
+      } else {
+        setSuccessMessage("Review submitted! Thank you for your feedback.");
+      }
+
+      // Reset form
+      if (!entitySlug) {
+        setProductQuery("");
+        setSelectedProduct(null);
+      }
+      setRating(0);
+      setText("");
+      setPros("");
+      setCons("");
+      setAuthorName("");
+      setHoneypot("");
+
+      onReviewSubmitted?.();
+
+      if (!surveyTriggered.current) {
+        surveyTriggered.current = true;
+        onSurveyTrigger?.("form_submit_success");
+      }
+      return true;
+    }
+    return false;
+  }, [entitySlug, honeypot, onReviewSubmitted, onSurveyTrigger]);
+
+  // Auto-retry on reconnection
+  useEffect(() => {
+    const handleOnline = async () => {
+      const draft = loadDraftFromLocal();
+      if (!draft || isSubmitting) return;
+      setIsSubmitting(true);
+      setError(null);
+      try {
+        await submitToApi(draft);
+      } catch {
+        // Still offline or failed — leave draft in place
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
+  }, [submitToApi, isSubmitting]);
+
+  const handleConfirmSubmit = () => {
+    setShowConfirmDialog(false);
+    performSubmit();
+  };
+
   const submitReview = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!rating || !text.trim()) return;
+    setShowConfirmDialog(true);
+  };
+
+  const performSubmit = async () => {
     if (!rating || !text.trim()) return;
 
     const slug = selectedProduct?.slug || productQuery.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
@@ -112,67 +267,70 @@ export function ReviewForm({
 
     if (!name) return;
 
+    const draft: SavedReviewDraft = {
+      entitySlug: slug,
+      productName: name,
+      rating,
+      text: text.trim(),
+      pros: pros.trim(),
+      cons: cons.trim(),
+      authorName: authorName.trim() || "Anonymous",
+      savedAt: Date.now(),
+    };
+
     setIsSubmitting(true);
     setError(null);
     setSuccessMessage(null);
+    setSavedLocally(false);
 
     try {
-      const res = await fetch("/api/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          entitySlug: slug,
-          productName: name,
-          rating,
-          text: text.trim(),
-          pros: pros.trim(),
-          cons: cons.trim(),
-          authorName: authorName.trim() || "Anonymous",
-          website: honeypot,
-        }),
-      });
-
-      if (res.status === 429) {
-        setError("Too many reviews. Please try again in a minute.");
-        return;
-      }
-
-      if (!res.ok) throw new Error("Failed");
-
-      const data = await res.json();
-      if (data.success) {
-        trackReviewSubmission(name, rating);
-
-        if (data.review?.flagged) {
-          setSuccessMessage("Review submitted! Short reviews may be reviewed before appearing publicly.");
-        } else {
-          setSuccessMessage("Review submitted! Thank you for your feedback.");
-        }
-
-        // Reset form
-        if (!entitySlug) {
-          setProductQuery("");
-          setSelectedProduct(null);
-        }
-        setRating(0);
-        setText("");
-        setPros("");
-        setCons("");
-        setAuthorName("");
-        setHoneypot("");
-
-        onReviewSubmitted?.();
-
-        // Trigger survey after successful submission
-        if (!surveyTriggered.current) {
-          surveyTriggered.current = true;
-          onSurveyTrigger?.("form_submit_success");
-        }
-      }
+      await submitToApi(draft);
     } catch {
-      setError("Failed to submit review. Please try again.");
+      // Save to localStorage on failure
+      saveDraftToLocal(draft);
+      pendingDraftRef.current = draft;
+      setSavedLocally(true);
+      setError("Review saved locally — we could not submit it right now.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const retrySubmit = async () => {
+    const draft = pendingDraftRef.current || loadDraftFromLocal();
+    if (!draft) return;
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      const success = await submitToApi(draft);
+      if (!success && !savedLocally) {
+        setSavedLocally(true);
+        setError("Review saved locally — we could not submit it right now.");
+      }
+    } catch {
+      setError("Still unable to submit. Your review is saved locally.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const copyReviewText = async () => {
+    const draft = pendingDraftRef.current || loadDraftFromLocal();
+    if (!draft) return;
+    const copyText = [
+      `Rating: ${draft.rating}/5`,
+      `Product: ${draft.productName}`,
+      `Review: ${draft.text}`,
+      draft.pros ? `Pros: ${draft.pros}` : "",
+      draft.cons ? `Cons: ${draft.cons}` : "",
+      draft.authorName ? `By: ${draft.authorName}` : "",
+    ].filter(Boolean).join("\n");
+    try {
+      await navigator.clipboard.writeText(copyText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback: select text approach not needed for modern browsers
     }
   };
 
@@ -328,7 +486,40 @@ export function ReviewForm({
         />
       </div>
 
-      {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
+      {/* Warning banner for locally-saved reviews */}
+      {savedLocally && error && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-300 rounded-lg">
+          <div className="flex items-start gap-2">
+            <svg className="w-5 h-5 text-amber-600 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-amber-800">{error}</p>
+              <p className="text-xs text-amber-700 mt-1">Your review has been saved to this device and will auto-retry when you reconnect.</p>
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={retrySubmit}
+                  disabled={isSubmitting}
+                  className="px-3 py-1.5 bg-amber-600 text-white text-xs font-semibold rounded-md hover:bg-amber-700 disabled:opacity-50 transition-colors"
+                >
+                  {isSubmitting ? "Retrying..." : "Retry Now"}
+                </button>
+                <button
+                  type="button"
+                  onClick={copyReviewText}
+                  className="px-3 py-1.5 bg-white border border-amber-300 text-amber-800 text-xs font-semibold rounded-md hover:bg-amber-50 transition-colors"
+                >
+                  {copied ? "Copied!" : "Copy Text"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Standard error (non-local-save errors like rate limiting) */}
+      {error && !savedLocally && <p className="text-sm text-red-600 mb-3">{error}</p>}
       {successMessage && <p className="text-sm text-green-600 mb-3">{successMessage}</p>}
 
       <button
@@ -338,6 +529,35 @@ export function ReviewForm({
       >
         {isSubmitting ? "Submitting..." : "Submit Review"}
       </button>
+
+      {/* Confirmation dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4 w-full">
+            <h4 className="text-base font-display font-bold text-text mb-2">Submit your review?</h4>
+            <p className="text-sm text-text-secondary mb-1">
+              <strong>{selectedProduct?.name || productQuery}</strong> — {rating}/5 stars
+            </p>
+            <p className="text-sm text-text-secondary mb-4 line-clamp-3">{text}</p>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => setShowConfirmDialog(false)}
+                className="px-4 py-2 text-sm font-medium text-text-secondary border border-border rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Go Back
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmSubmit}
+                className="px-4 py-2 text-sm font-semibold text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
+              >
+                Confirm & Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
