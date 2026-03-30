@@ -38,6 +38,9 @@ import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
 import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
+import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
+import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
+import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -48,9 +51,6 @@ const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
 );
-
-// Feature flag: verdict-first layout (default: enabled)
-const VERDICT_FIRST = process.env.NEXT_PUBLIC_VERDICT_FIRST !== "false";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -145,11 +145,15 @@ export default async function ComparisonPage({ params }: PageProps) {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
-  if (VERDICT_FIRST) {
-    return <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
-  }
-
-  return <ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
+  // A/B experiment: verdict-first vs classic layout
+  // LayoutSwitcher is a client component that reads the experiment variant.
+  // When the experiment is not active, it defaults to verdict-first (treatment).
+  return (
+    <LayoutSwitcher
+      verdictFirst={<VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
+      classic={<ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
+    />
+  );
 }
 
 function VerdictFirstLayout({
@@ -298,6 +302,11 @@ function VerdictFirstLayout({
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
+          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
+          </div>
+
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
             <div id="faq">
@@ -381,6 +390,10 @@ function VerdictFirstLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
+      <ExitIntentPopup />
+      <MobileExitIntent />
     </>
   );
 }
@@ -564,6 +577,10 @@ function ClassicLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
+      <ExitIntentPopup />
+      <MobileExitIntent />
     </>
   );
 }

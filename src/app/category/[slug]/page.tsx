@@ -10,7 +10,6 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
-
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
