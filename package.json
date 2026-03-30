@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
@@ -33,10 +36,15 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/jsonwebtoken": "^9.0.10",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.5.3",
-    "ts-node": "^10.9.2"
+    "jsdom": "^29.0.1",
+    "ts-node": "^10.9.2",
+    "vitest": "^4.1.2"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
