@@ -100,4 +100,19 @@ export function trackEmbedCtaClick(comparisonSlug: string, page: string) {
   trackEvent("embed_cta_click", { comparison_slug: comparisonSlug, page });
 }
 
+export type FunnelStep =
+  | "page_view"
+  | "scroll_depth_50"
+  | "scroll_depth_100"
+  | "engagement"
+  | "newsletter_shown"
+  | "newsletter_signup"
+  | "affiliate_shown"
+  | "affiliate_click"
+  | "conversion";
+
+export function trackConversionFunnel(step: FunnelStep, page: string, meta?: Record<string, string | number>) {
+  trackEvent("conversion_funnel", { funnel_step: step, page, ...meta });
+}
+
 export { trackEvent };

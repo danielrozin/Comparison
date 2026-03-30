@@ -17,6 +17,7 @@ import { getRedis } from "./redis";
 import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
 import { warmCacheForSlug } from "./cache-warming";
+import { checkAndAlert } from "./pipeline-alerting";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -182,6 +183,9 @@ export async function processQueue(
 
   // Update stats
   await updateStats(redis, succeeded, failed);
+
+  // Check pipeline health and send alerts if needed
+  checkAndAlert({ processed: jobs.length, succeeded, failed, errors }).catch(() => {});
 
   return { processed: jobs.length, succeeded, failed, slugs, errors };
 }
