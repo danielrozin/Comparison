@@ -31,7 +31,7 @@ function createPrismaClient(): PrismaClient | null {
 export function getPrisma(): PrismaClient | null {
   if (globalForPrisma.prisma) return globalForPrisma.prisma;
   const client = createPrismaClient();
-  if (client && process.env.NODE_ENV !== "production") {
+  if (client) {
     globalForPrisma.prisma = client;
   }
   return client;
