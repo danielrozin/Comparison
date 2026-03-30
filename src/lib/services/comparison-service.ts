@@ -386,6 +386,107 @@ export async function getTrendingComparisons(
   return mock;
 }
 
+export type TrendingSortOption = "views" | "newest" | "score";
+
+export interface TrendingPaginatedResult {
+  items: TrendingComparison[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export async function getTrendingComparisonsPaginated(options: {
+  page?: number;
+  pageSize?: number;
+  category?: string;
+  sort?: TrendingSortOption;
+} = {}): Promise<TrendingPaginatedResult> {
+  const page = Math.max(1, options.page || 1);
+  const pageSize = Math.min(100, Math.max(1, options.pageSize || 20));
+  const category = options.category || "all";
+  const sort = options.sort || "views";
+
+  const cacheKey = `trending:paginated:${category}:${sort}:${page}:${pageSize}`;
+  const cached = await getFromCache<TrendingPaginatedResult>(cacheKey);
+  if (cached) return cached;
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const where: Record<string, unknown> = { status: "published" };
+      if (category !== "all") {
+        where.category = category;
+      }
+
+      const orderBy: Record<string, string> =
+        sort === "newest" ? { createdAt: "desc" } :
+        sort === "score" ? { contentScore: "desc" } :
+        { viewCount: "desc" };
+
+      const [rows, total] = await Promise.all([
+        prisma.comparison.findMany({
+          where,
+          orderBy,
+          skip: (page - 1) * pageSize,
+          take: pageSize,
+          include: {
+            entities: {
+              include: {
+                entity: { select: { imageUrl: true } },
+              },
+              orderBy: { position: "asc" },
+            },
+          },
+        }),
+        prisma.comparison.count({ where }),
+      ]);
+
+      if (rows.length > 0 || total > 0) {
+        const result: TrendingPaginatedResult = {
+          items: rows.map(
+            (r: {
+              slug: string;
+              title: string;
+              category: string | null;
+              viewCount: number;
+              updatedAt: Date;
+              entities: { entity: { imageUrl: string | null } }[];
+            }) => ({
+              slug: r.slug,
+              title: r.title,
+              category: r.category || "general",
+              viewCount: r.viewCount,
+              updatedAt: r.updatedAt?.toISOString() ?? null,
+              entityImages: r.entities
+                .map((e: { entity: { imageUrl: string | null } }) => e.entity.imageUrl)
+                .filter(Boolean) as string[],
+            })
+          ),
+          total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        };
+        await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+        return result;
+      }
+    } catch (e) {
+      console.warn("Prisma query failed for getTrendingComparisonsPaginated, falling back to mock:", e);
+    }
+  }
+
+  // Mock fallback: simulate pagination from full mock list
+  const allMock = getMockTrending(200);
+  const filtered = category === "all" ? allMock : allMock.filter(m => m.category === category);
+  const sorted = sort === "newest" ? [...filtered].reverse() : filtered; // mock is already sorted by views
+  const total = sorted.length;
+  const items = sorted.slice((page - 1) * pageSize, page * pageSize);
+  const result: TrendingPaginatedResult = { items, total, page, pageSize, totalPages: Math.ceil(total / pageSize) };
+  await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+  return result;
+}
+
 export async function getRelatedComparisons(
   comparisonId: string,
   limit: number = 8
