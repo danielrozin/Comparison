@@ -117,62 +117,115 @@ export function DynamicComparison({ slug }: { slug: string }) {
     }
   }, [status, startGeneration]);
 
-  // Generating state
+  // Generating state — skeleton UI mimicking actual comparison layout
   if (status === "generating" || status === "idle") {
+    const entityNames = slug.split("-vs-");
+    const entityA = entityNames[0]?.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()) || "Entity A";
+    const entityB = entityNames[1]?.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()) || "Entity B";
+
     return (
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
-        <div className="text-center max-w-lg">
-          <div className="relative w-24 h-24 mx-auto mb-8">
-            {/* Animated VS badge */}
-            <div className="absolute inset-0 bg-primary-100 rounded-full animate-ping opacity-30" />
-            <div className="relative w-24 h-24 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center shadow-xl">
-              <span className="text-white font-display font-black text-2xl">VS</span>
+      <div className="animate-in fade-in duration-300">
+        {/* Progress overlay banner */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/50 rounded-xl p-4">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin flex-shrink-0" />
+              <p className="text-sm font-medium text-primary-700">
+                Generating comparison... This usually takes 10-20 seconds.
+              </p>
             </div>
-          </div>
-
-          <h1 className="text-2xl sm:text-3xl font-display font-bold text-text mb-3">
-            {title}
-          </h1>
-          <p className="text-text-secondary mb-6">
-            We&apos;re generating this comparison for you right now. This usually takes 10-20 seconds.
-          </p>
-
-          {/* Progress bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
-            <div
-              className="h-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-500 ease-out"
-              style={{ width: `${Math.min(progress, 100)}%` }}
-            />
-          </div>
-          <p className="text-xs text-text-secondary mb-6">{Math.round(Math.min(progress, 100))}% complete</p>
-
-          {/* Fun fact */}
-          <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/50 rounded-xl p-4 mb-6">
-            <p className="text-sm text-primary-700 font-medium">
-              <span className="mr-1.5">&#x2728;</span>
-              {funFact}
-            </p>
-          </div>
-
-          <div className="bg-surface-alt rounded-xl p-4 text-left text-sm text-text-secondary space-y-2">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-green-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Researching entities...
+            <div className="w-full bg-primary-100 rounded-full h-2 overflow-hidden">
+              <div
+                className="h-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-500 ease-out"
+                style={{ width: `${Math.min(progress, 100)}%` }}
+              />
             </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-green-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20" style={{ animationDelay: "0.3s" }}>
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Comparing attributes...
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" />
-              Generating comparison...
-            </div>
+            <p className="text-xs text-primary-600 mt-1.5">{Math.round(Math.min(progress, 100))}% complete &middot; {funFact}</p>
           </div>
         </div>
+
+        {/* Skeleton Hero — two entity cards with VS badge */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center mb-8">
+            <div className="h-5 w-48 bg-gray-200 rounded animate-pulse mx-auto mb-3" />
+            <h1 className="text-2xl sm:text-3xl font-display font-bold text-text">{title}</h1>
+          </div>
+
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8">
+            {/* Entity A skeleton card */}
+            <div className="text-center">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full mx-auto mb-3 sm:mb-4 animate-pulse" />
+              <p className="font-display font-bold text-lg sm:text-xl text-text">{entityA}</p>
+              <div className="h-3 w-24 bg-gray-200 rounded animate-pulse mx-auto mt-2" />
+              <div className="h-3 w-16 bg-gray-200 rounded animate-pulse mx-auto mt-1.5" />
+            </div>
+
+            {/* VS badge */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary-100 rounded-full animate-ping opacity-20" />
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-white font-display font-black text-lg sm:text-xl">VS</span>
+              </div>
+            </div>
+
+            {/* Entity B skeleton card */}
+            <div className="text-center">
+              <div className="w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-br from-accent-50 to-accent-400/30 rounded-full mx-auto mb-3 sm:mb-4 animate-pulse" />
+              <p className="font-display font-bold text-lg sm:text-xl text-text">{entityB}</p>
+              <div className="h-3 w-24 bg-gray-200 rounded animate-pulse mx-auto mt-2" />
+              <div className="h-3 w-16 bg-gray-200 rounded animate-pulse mx-auto mt-1.5" />
+            </div>
+          </div>
+        </section>
+
+        {/* Skeleton Key Differences */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="h-7 w-48 bg-gray-200 rounded animate-pulse mb-6" />
+          <div className="bg-white border border-border rounded-xl overflow-hidden">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className={`grid grid-cols-[1fr_auto_1fr] gap-4 px-4 py-4 ${i < 3 ? "border-b border-border/50" : ""}`}>
+                <div className="flex flex-col gap-1.5 items-center">
+                  <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
+                </div>
+                <div className="h-4 w-24 bg-gray-100 rounded animate-pulse self-center" style={{ animationDelay: `${i * 150 + 50}ms` }} />
+                <div className="flex flex-col gap-1.5 items-center">
+                  <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" style={{ animationDelay: `${i * 150 + 100}ms` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Skeleton Comparison Table */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="h-7 w-40 bg-gray-200 rounded animate-pulse mb-6" />
+          <div className="bg-white border border-border rounded-xl overflow-hidden">
+            {/* Table header */}
+            <div className="grid grid-cols-3 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 px-5 py-3.5">
+              <div className="h-4 w-20 bg-white/20 rounded" />
+              <div className="h-4 w-24 bg-white/20 rounded mx-auto" />
+              <div className="h-4 w-24 bg-white/20 rounded ml-auto" />
+            </div>
+            {/* Table rows */}
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className={`grid grid-cols-3 px-5 py-3.5 ${i < 5 ? "border-b border-border/50" : ""}`}>
+                <div className="h-3 w-16 bg-gray-200 rounded animate-pulse" style={{ animationDelay: `${i * 100}ms` }} />
+                <div className="h-3 w-20 bg-gray-200 rounded animate-pulse mx-auto" style={{ animationDelay: `${i * 100 + 50}ms` }} />
+                <div className="h-3 w-20 bg-gray-200 rounded animate-pulse ml-auto" style={{ animationDelay: `${i * 100 + 100}ms` }} />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Skeleton Verdict */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="h-7 w-28 bg-gray-200 rounded animate-pulse mb-6" />
+          <div className="bg-white border border-border rounded-xl p-6">
+            <div className="h-4 w-full bg-gray-200 rounded animate-pulse mb-3" />
+            <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse mb-3" />
+            <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse" />
+          </div>
+        </section>
       </div>
     );
   }
