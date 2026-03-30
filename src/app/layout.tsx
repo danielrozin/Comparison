@@ -4,7 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
-import { organizationSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -81,6 +81,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteSchema()),
           }}
         />
       </head>
