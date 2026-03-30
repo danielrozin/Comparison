@@ -565,3 +565,43 @@ model BlogArticle {
   @@index([slug])
   @@map("blog_articles")
 }
+
+// ============================================================
+// USER RESEARCH — Intercept Surveys
+// ============================================================
+
+model InterceptSurvey {
+  id              String   @id @default(cuid())
+  comparisonSlug  String   @map("comparison_slug")
+  category        String?
+  deviceType      String   @map("device_type") // "mobile", "tablet", "desktop"
+  referralSource  String?  @map("referral_source") // UTM or referrer
+
+  // Q1: What brought you here?
+  q1Intent        String   @map("q1_intent") // "purchase", "curiosity", "project", "browsing", "other"
+  q1Other         String?  @map("q1_other")
+
+  // Q2: Did you find what you were looking for?
+  q2Found         Boolean  @map("q2_found")
+  q2Missing       String?  @map("q2_missing") @db.VarChar(200)
+
+  // Q3: How would you rate this comparison? (1-5)
+  q3Rating        Int      @map("q3_rating")
+
+  // Q4: What would make this page more useful?
+  q4Improvement   String?  @map("q4_improvement") @db.VarChar(300)
+
+  // Q5: How did you find us?
+  q5Discovery     String   @map("q5_discovery") // "search", "social", "shared", "direct", "other"
+  q5Other         String?  @map("q5_other")
+
+  // Optional email opt-in
+  optInEmail      String?  @map("opt_in_email")
+
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([comparisonSlug])
+  @@index([category])
+  @@index([createdAt])
+  @@map("intercept_surveys")
+}

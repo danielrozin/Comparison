@@ -34,6 +34,7 @@ import { RelatedArticles } from "@/components/comparison/RelatedArticles";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { LayoutExperiment, CTAExperiment } from "@/components/experiments/ComparisonExperiments";
 import { ViewCount, TrendingBadge } from "@/components/experiments/SocialProofBadges";
+import { InterceptSurvey } from "@/components/surveys/InterceptSurvey";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -335,6 +336,9 @@ function VerdictFirstLayout({
           />
         }
       />
+
+      {/* Intercept Survey */}
+      <InterceptSurvey comparisonSlug={slug} category={comparison.category} />
     </>
   );
 }
@@ -512,6 +516,9 @@ function ClassicLayout({
           />
         }
       />
+
+      {/* Intercept Survey */}
+      <InterceptSurvey comparisonSlug={slug} category={comparison.category} />
     </>
   );
 }
