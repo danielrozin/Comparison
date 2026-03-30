@@ -87,9 +87,11 @@ export function Footer() {
               <Link href="/blog" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</Link>
               <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
               <Link href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
+              <Link href="/partnerships" className="text-sm text-gray-400 hover:text-white transition-colors">Partnerships</Link>
               <Link href="/privacy" className="text-sm text-gray-400 hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">Terms</Link>
               <Link href="/disclaimer" className="text-sm text-gray-400 hover:text-white transition-colors">Disclaimer</Link>
+              <a href="/feed" className="text-sm text-gray-400 hover:text-white transition-colors">RSS Feed</a>
               <a href="/sitemap.xml" className="text-sm text-gray-400 hover:text-white transition-colors">Sitemap</a>
             </nav>
           </div>

@@ -3,9 +3,13 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
-import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
+import { StickyFooterAd } from "@/components/ads/AdUnit";
+import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
+import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import "./globals.css";
+
+const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +53,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed`,
+    },
   },
 };
 
@@ -66,6 +73,13 @@ export default function RootLayout({
             __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-0BWYZ5V9QK');`,
           }}
         />
+        {ADSENSE_PUB_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-${ADSENSE_PUB_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -91,11 +105,14 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <FeedbackWidget />
-        <ExitIntentPopup />
+        <ExperimentProviderServer>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <FeedbackWidget />
+          <StickyFooterAd />
+          <ExitIntentPopup />
+        </ExperimentProviderServer>
       </body>
     </html>
   );

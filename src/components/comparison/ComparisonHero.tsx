@@ -71,25 +71,6 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         {comparison.title}
       </h1>
 
-      {/* Short Answer */}
-      {comparison.shortAnswer && (
-        <div className="bg-primary-50 border border-primary-200 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 max-w-3xl mx-auto">
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center mt-0.5">
-              <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="font-semibold text-primary-900 mb-1 text-sm uppercase tracking-wide">
-                Quick Answer
-              </h2>
-              <p className="text-primary-800 leading-relaxed text-sm sm:text-base">{comparison.shortAnswer}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Entity VS Cards */}
       <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
         {/* Entity A */}

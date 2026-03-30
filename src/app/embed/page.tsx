@@ -211,6 +211,116 @@ export default function EmbedLandingPage() {
         </div>
       </section>
 
+      {/* White-Label Pricing */}
+      <section id="pricing" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
+            White-Label Embed Plans
+          </h2>
+          <p className="text-text-secondary text-lg max-w-2xl mx-auto">
+            Embed comparisons with your own branding. Remove attribution, customize colors,
+            and make it yours.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Free */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-8">
+            <h3 className="font-display font-bold text-text text-lg mb-1">Free</h3>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-3xl font-display font-black text-text">$0</span>
+              <span className="text-text-secondary text-sm">/month</span>
+            </div>
+            <p className="text-sm text-text-secondary mb-6">Get started with branded embeds</p>
+            <ul className="space-y-3 mb-8">
+              {[
+                "Up to 10,000 embed views/month",
+                "All comparisons available",
+                "Script tag, iFrame, & badge",
+                "Auto-resize & responsive",
+                "\"Powered by A Versus B\" branding",
+              ].map((f) => (
+                <li key={f} className="flex gap-2 text-sm text-text-secondary">
+                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/embed/register"
+              className="block w-full text-center px-6 py-3 bg-gray-100 text-text font-semibold rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              Get Started Free
+            </Link>
+          </div>
+
+          {/* Pro */}
+          <div className="bg-white border-2 border-primary-600 rounded-2xl p-8 relative ring-2 ring-primary-600/20">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+              Most Popular
+            </div>
+            <h3 className="font-display font-bold text-text text-lg mb-1">Pro</h3>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-3xl font-display font-black text-text">$199</span>
+              <span className="text-text-secondary text-sm">/month</span>
+            </div>
+            <p className="text-sm text-text-secondary mb-6">Full white-label experience</p>
+            <ul className="space-y-3 mb-8">
+              {[
+                "Up to 100,000 embed views/month",
+                "Custom brand colors & gradient",
+                "Your logo in embed header",
+                "Remove \"Powered by\" attribution",
+                "Custom footer text & link",
+                "Priority support",
+              ].map((f) => (
+                <li key={f} className="flex gap-2 text-sm text-text-secondary">
+                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/embed/register?tier=pro"
+              className="block w-full text-center px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+            >
+              Start Pro Trial
+            </Link>
+          </div>
+
+          {/* Enterprise */}
+          <div className="bg-white border border-gray-200 rounded-2xl p-8">
+            <h3 className="font-display font-bold text-text text-lg mb-1">Enterprise</h3>
+            <div className="flex items-baseline gap-1 mb-2">
+              <span className="text-3xl font-display font-black text-text">$499</span>
+              <span className="text-text-secondary text-sm">/month</span>
+            </div>
+            <p className="text-sm text-text-secondary mb-6">For high-volume publishers</p>
+            <ul className="space-y-3 mb-8">
+              {[
+                "Unlimited embed views",
+                "Everything in Pro",
+                "Category-specific embeds",
+                "Featured comparison pinning",
+                "API access to comparison data",
+                "Dedicated account manager",
+              ].map((f) => (
+                <li key={f} className="flex gap-2 text-sm text-text-secondary">
+                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/embed/register?tier=enterprise"
+              className="block w-full text-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
+            >
+              Contact Sales
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-gradient-to-br from-primary-600 to-accent-600 text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
@@ -218,17 +328,25 @@ export default function EmbedLandingPage() {
             Ready to embed?
           </h2>
           <p className="text-white/85 text-lg mb-8">
-            Browse our comparison library and start embedding in seconds.
+            Start free or go white-label. Embed comparisons on your site in seconds.
           </p>
-          <Link
-            href="/trending"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg text-lg"
-          >
-            Browse Comparisons to Embed
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/trending"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg text-lg"
+            >
+              Browse Comparisons
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/embed/register"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/20 text-lg"
+            >
+              Register as Partner
+            </Link>
+          </div>
         </div>
       </section>
     </>

@@ -19,6 +19,7 @@ export interface FoundQuestion {
   title: string;
   url: string;
   subreddit?: string;
+  category?: string;
   upvotes?: number;
   comments?: number;
   createdAt: string;
@@ -40,28 +41,74 @@ export interface PreparedAnswer {
 // Helpers
 // ---------------------------------------------------------------------------
 
-const REDDIT_SUBREDDITS = [
-  "technology",
-  "gadgets",
-  "android",
-  "apple",
-  "gaming",
-  "fitness",
-  "personalfinance",
-  "cars",
-  "nutrition",
-  "programming",
-  "soccer",
-  "nba",
-  "movies",
-  "buildapc",
-  "buyitforlife",
-  "ShouldIbuythiscar",
-  "laptops",
-  "headphones",
-  "running",
-  "AskReddit",
-];
+const REDDIT_SUBREDDITS_BY_CATEGORY: Record<string, string[]> = {
+  technology: [
+    "technology",
+    "gadgets",
+    "android",
+    "apple",
+    "buildapc",
+    "laptops",
+    "headphones",
+    "homeautomation",
+    "SmartThings",
+    "techsupport",
+  ],
+  automotive: [
+    "cars",
+    "whatcarshouldIbuy",
+    "electricvehicles",
+    "Autos",
+    "motorcycles",
+    "MechanicAdvice",
+  ],
+  health: [
+    "fitness",
+    "nutrition",
+    "running",
+    "supplements",
+    "SkincareAddiction",
+    "bodyweightfitness",
+  ],
+  finance: [
+    "personalfinance",
+    "investing",
+    "CreditCards",
+    "cryptocurrency",
+    "Bogleheads",
+  ],
+  education: [
+    "college",
+    "GradSchool",
+    "cscareerquestions",
+    "learnprogramming",
+  ],
+  gaming: [
+    "gaming",
+    "pcgaming",
+    "PS5",
+    "XboxSeriesX",
+    "NintendoSwitch",
+    "ShouldIbuythisgame",
+  ],
+  software: [
+    "SaaS",
+    "selfhosted",
+    "webdev",
+    "programming",
+    "sysadmin",
+  ],
+  entertainment: [
+    "movies",
+    "television",
+    "Music",
+    "books",
+  ],
+  sports: ["soccer", "nba", "nfl", "tennis", "MMA"],
+  general: ["AskReddit", "buyitforlife", "Frugal"],
+};
+
+const REDDIT_SUBREDDITS = Object.values(REDDIT_SUBREDDITS_BY_CATEGORY).flat();
 
 const REDDIT_SEARCH_QUERIES = [
   "vs",
@@ -69,7 +116,19 @@ const REDDIT_SEARCH_QUERIES = [
   "which is better",
   "compare",
   "should I get",
+  "compared to",
+  "difference between",
+  "or should I",
 ];
+
+function getCategoryForSubreddit(subreddit: string): string | undefined {
+  for (const [category, subs] of Object.entries(REDDIT_SUBREDDITS_BY_CATEGORY)) {
+    if (subs.some((s) => s.toLowerCase() === subreddit.toLowerCase())) {
+      return category;
+    }
+  }
+  return undefined;
+}
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -142,11 +201,17 @@ interface RedditSearchResponse {
 export async function findRedditQuestions(
   options?: {
     subreddits?: string[];
+    categories?: string[];
     limit?: number;
     timeframe?: string;
   }
 ): Promise<FoundQuestion[]> {
-  const subreddits = options?.subreddits || REDDIT_SUBREDDITS;
+  let subreddits = options?.subreddits || REDDIT_SUBREDDITS;
+  if (options?.categories) {
+    subreddits = options.categories.flatMap(
+      (cat) => REDDIT_SUBREDDITS_BY_CATEGORY[cat] || []
+    );
+  }
   const limit = options?.limit || 25;
   const timeframe = options?.timeframe || "week";
   const questions: FoundQuestion[] = [];
@@ -212,6 +277,7 @@ export async function findRedditQuestions(
           title: post.data.title,
           url: `https://www.reddit.com${post.data.permalink}`,
           subreddit: post.data.subreddit,
+          category: getCategoryForSubreddit(post.data.subreddit),
           upvotes: post.data.ups,
           comments: post.data.num_comments,
           createdAt: new Date(post.data.created_utc * 1000).toISOString(),

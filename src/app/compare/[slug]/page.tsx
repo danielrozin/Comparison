@@ -23,12 +23,16 @@ import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
+import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
+import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
+import { InContentAd } from "@/components/ads/AdUnit";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 
@@ -182,8 +186,18 @@ function VerdictFirstLayout({
         </div>
       </div>
 
-      {/* Hero: Title + Entity Cards (short answer moved to verdict card) */}
+      {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Short Answer Block — AEO/featured snippet target */}
+      {(comparison.shortAnswer || comparison.verdict) && (
+        <ShortAnswerBlock
+          shortAnswer={comparison.shortAnswer || ""}
+          verdict={comparison.verdict}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
 
       {/* VERDICT CARD — above the fold */}
       {(comparison.verdict || comparison.shortAnswer) && (
@@ -279,6 +293,15 @@ function VerdictFirstLayout({
           />
         )}
       </div>
+
+      {/* Ad: between main content and partner reviews */}
+      <InContentAd />
+
+      {/* Partner Reviews (SmartReview) */}
+      {(() => {
+        const partnerReviews = getPartnerReviews(comparison.slug);
+        return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
+      })()}
 
       {/* Full-width sections below sidebar area */}
       {/* Related Comparisons (bottom grid, kept for SEO internal links) */}
@@ -423,6 +446,15 @@ function ClassicLayout({
               }))}
             />
           )}
+
+          {/* Ad: between verdict and partner reviews */}
+          <InContentAd />
+
+          {/* Partner Reviews (SmartReview) */}
+          {(() => {
+            const partnerReviews = getPartnerReviews(comparison.slug);
+            return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
+          })()}
 
           {/* FAQ */}
           {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}

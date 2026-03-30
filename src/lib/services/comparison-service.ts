@@ -20,6 +20,7 @@ import {
   getMockComparisonsByCategory,
   getMockLatest,
 } from "./mock-data";
+import { getLinkedComparisons } from "./internal-linking-engine";
 
 import { getRedis } from "./redis";
 
@@ -288,7 +289,21 @@ export async function getComparisonBySlug(
         include: COMPARISON_INCLUDE,
       });
       if (row) {
-        const related = await getRelatedFromDb(prisma, row);
+        // Use the linking engine for smarter related suggestions
+        const entitySlugs = (row as PrismaComparisonRow).entities.map(
+          (ce) => ce.entity.slug
+        );
+        const linked = await getLinkedComparisons({
+          comparisonId: row.id,
+          slug: row.slug,
+          category: row.category,
+          entitySlugs,
+        });
+        const related: RelatedComparison[] = linked.map((l) => ({
+          slug: l.slug,
+          title: l.title,
+          category: l.category,
+        }));
         const result = transformToPageData(row as PrismaComparisonRow, related);
         await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
         return result;
@@ -297,8 +312,23 @@ export async function getComparisonBySlug(
       console.warn("Prisma query failed for getComparisonBySlug, falling back to mock:", e);
     }
   }
+
+  // Mock fallback — also use the linking engine
   const mock = getMockComparison(slug);
-  if (mock) await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
+  if (mock) {
+    const linked = await getLinkedComparisons({
+      comparisonId: mock.id,
+      slug: mock.slug,
+      category: mock.category,
+      entitySlugs: mock.entities.map((e) => e.slug),
+    });
+    mock.relatedComparisons = linked.map((l) => ({
+      slug: l.slug,
+      title: l.title,
+      category: l.category,
+    }));
+    await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
+  }
   return mock;
 }
 
@@ -399,10 +429,23 @@ export async function getRelatedComparisons(
     try {
       const comp = await prisma.comparison.findUnique({
         where: { id: comparisonId },
-        select: { category: true, relatedComparisonIds: true },
+        select: {
+          slug: true,
+          category: true,
+          relatedComparisonIds: true,
+          entities: {
+            select: { entity: { select: { slug: true } } },
+          },
+        },
       });
       if (comp) {
-        const result = await getRelatedFromDb(prisma, comp, limit);
+        const linked = await getLinkedComparisons({
+          comparisonId,
+          slug: comp.slug,
+          category: comp.category,
+          entitySlugs: comp.entities.map((ce: { entity: { slug: string } }) => ce.entity.slug),
+        }, limit);
+        const result = linked.map((l) => ({ slug: l.slug, title: l.title, category: l.category }));
         await setCache(cacheKey, result, CACHE_TTL_TRENDING);
         return result;
       }

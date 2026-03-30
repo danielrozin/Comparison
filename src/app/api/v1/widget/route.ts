@@ -13,6 +13,7 @@ export async function OPTIONS() {
 
 export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
+  const partner = request.nextUrl.searchParams.get("partner");
 
   if (!slug) {
     return NextResponse.json(
@@ -21,7 +22,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const embedUrl = `${SITE_URL}/api/v1/embed/${encodeURIComponent(slug)}`;
+  const partnerParam = partner ? `&partner=${encodeURIComponent(partner)}` : "";
+  const embedUrl = `${SITE_URL}/api/v1/embed/${encodeURIComponent(slug)}?${partnerParam.replace(/^&/, "")}`;
 
   const js = `(function(){
   var d=document,s=d.currentScript||d.scripts[d.scripts.length-1];
@@ -38,7 +40,7 @@ export async function GET(request: NextRequest) {
   iframe.style.minHeight='400px';
   iframe.style.borderRadius='12px';
   iframe.setAttribute('loading','lazy');
-  iframe.setAttribute('title','A Versus B Comparison');
+  iframe.setAttribute('title','Comparison Widget');
 
   container.appendChild(iframe);
   s.parentNode.insertBefore(container,s);
