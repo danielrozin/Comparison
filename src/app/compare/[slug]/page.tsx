@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema } from "@/lib/seo/schema";
+import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
@@ -117,6 +118,30 @@ function capitalize(s: string): string {
   return s.replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
+async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
+  try {
+    const prisma = getPrisma();
+    if (!prisma) return null;
+
+    const results = await prisma.comparisonVote.groupBy({
+      by: ["entityChoice"],
+      where: { comparisonId },
+      _count: { entityChoice: true },
+    });
+
+    const votes: Record<string, number> = {};
+    let total = 0;
+    for (const r of results) {
+      votes[r.entityChoice] = r._count.entityChoice;
+      total += r._count.entityChoice;
+    }
+
+    return { votes, total };
+  } catch {
+    return null;
+  }
+}
+
 export default async function ComparisonPage({ params }: PageProps) {
   const { slug } = await params;
   const comparison = await getComparisonBySlug(slug);
@@ -125,7 +150,8 @@ export default async function ComparisonPage({ params }: PageProps) {
     return <DynamicComparison slug={slug} />;
   }
 
-  const schemas = comparisonPageSchema(comparison);
+  const voteData = await getComparisonVotes(comparison.id);
+  const schemas = comparisonPageSchema(comparison, voteData);
 
   // Enrich entities with affiliate links
   const enrichedComparison = {

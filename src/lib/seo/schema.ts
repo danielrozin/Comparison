@@ -84,10 +84,22 @@ export function webPageSchema(opts: {
 }
 
 // ============================================================
+// Vote data for AggregateRating on comparisons
+// ============================================================
+
+export interface ComparisonVoteData {
+  votes: Record<string, number>; // entityName → vote count
+  total: number;
+}
+
+// ============================================================
 // Comparison page schema (Article + FAQPage + BreadcrumbList + ItemList)
 // ============================================================
 
-export function comparisonPageSchema(comparison: ComparisonPageData) {
+export function comparisonPageSchema(
+  comparison: ComparisonPageData,
+  voteData?: ComparisonVoteData | null,
+) {
   const url = `${SITE_URL}/compare/${comparison.slug}`;
   const schemas: Record<string, unknown>[] = [];
 
@@ -172,6 +184,33 @@ export function comparisonPageSchema(comparison: ComparisonPageData) {
       url,
       variableMeasured: comparison.attributes.map((attr) => attr.name),
     });
+  }
+
+  // 6. AggregateRating per entity from user poll votes
+  if (voteData && voteData.total >= 10) {
+    for (const entity of comparison.entities) {
+      const entityVotes = voteData.votes[entity.name] || 0;
+      if (entityVotes === 0) continue;
+      const voteShare = entityVotes / voteData.total;
+      // Map vote share to 1–5 scale: 0% → 1.0, 50% → 3.0, 100% → 5.0
+      const ratingValue = 1 + voteShare * 4;
+      const schemaType = entitySchemaType(entity.entityType);
+
+      schemas.push({
+        "@context": "https://schema.org",
+        "@type": schemaType,
+        name: entity.name,
+        url: `${SITE_URL}/entity/${entity.slug}`,
+        ...(entity.imageUrl && { image: entity.imageUrl }),
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: ratingValue.toFixed(1),
+          bestRating: 5,
+          worstRating: 1,
+          ratingCount: entityVotes,
+        },
+      });
+    }
   }
 
   return schemas;
