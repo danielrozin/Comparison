@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { trackNewsletterSignup } from "@/lib/utils/analytics";
+import { trackNewsletterSignup, trackExitIntentShown, trackExitIntentDismissed } from "@/lib/utils/analytics";
 
 const DISMISSED_KEY = "exit_intent_dismissed";
 const DISMISS_DAYS = 7;
@@ -14,6 +14,7 @@ export function ExitIntentPopup() {
   const dismiss = useCallback(() => {
     setVisible(false);
     localStorage.setItem(DISMISSED_KEY, Date.now().toString());
+    trackExitIntentDismissed(typeof window !== "undefined" ? window.location.pathname : "");
   }, []);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export function ExitIntentPopup() {
       if (e.clientY <= 0 && !triggered) {
         triggered = true;
         setVisible(true);
+        trackExitIntentShown(window.location.pathname);
       }
     };
 
@@ -107,9 +109,12 @@ export function ExitIntentPopup() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold text-text">Wait — don&apos;t miss out!</h2>
+              <h2 className="text-xl font-bold text-text">Before you go — one quick thing</h2>
               <p className="text-sm text-text-secondary mt-2">
-                Get a weekly digest of the most popular comparisons, new categories, and expert insights. Free, no spam.
+                Join readers who get our top comparisons, buying guides, and expert picks delivered weekly. Always free, unsubscribe anytime.
+              </p>
+              <p className="text-xs text-primary-600 font-medium mt-1.5">
+                Trusted by comparison shoppers everywhere
               </p>
             </div>
 
@@ -128,7 +133,7 @@ export function ExitIntentPopup() {
                 disabled={status === "loading"}
                 className="w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
               >
-                {status === "loading" ? "Subscribing..." : "Subscribe Free"}
+                {status === "loading" ? "Subscribing..." : "Yes, Send Me the Best Picks"}
               </button>
             </form>
 

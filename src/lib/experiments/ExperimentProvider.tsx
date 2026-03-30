@@ -49,19 +49,33 @@ function hashString(str: string): number {
   return Math.abs(hash);
 }
 
+/** Stable visitor ID persisted in localStorage for deterministic assignment. */
+function getVisitorId(): string {
+  if (typeof window === "undefined") return "server";
+  const key = "ab_visitor_id";
+  let id = localStorage.getItem(key);
+  if (!id) {
+    id = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    localStorage.setItem(key, id);
+  }
+  return id;
+}
+
 function assignVariant(
   experiment: ExperimentConfig,
   existing: ExperimentAssignments
 ): ExperimentAssignments {
   if (existing[experiment.id]) return existing;
 
-  // Traffic gating: use a deterministic hash so the same user always
-  // gets the same in/out decision even before a cookie exists.
-  const bucket = hashString(experiment.id + (Math.random() * 1e9).toString()) % 100;
+  const visitorId = getVisitorId();
+
+  // Traffic gating: deterministic hash of visitor + experiment for stable bucket
+  const bucket = hashString(experiment.id + visitorId) % 100;
   if (bucket >= experiment.trafficPercent) return existing;
 
+  // Variant assignment: deterministic so same visitor always sees same variant
   const variantIndex =
-    hashString(experiment.id + Date.now().toString()) % experiment.variants.length;
+    hashString(visitorId + experiment.id) % experiment.variants.length;
 
   return {
     ...existing,

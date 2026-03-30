@@ -1,6 +1,7 @@
 "use client";
 
 import type { AffiliateLink } from "@/types";
+import { trackEvent } from "@/lib/utils/analytics";
 
 const PARTNER_ICONS: Record<string, React.ReactNode> = {
   amazon: (
@@ -46,12 +47,10 @@ export function AffiliateButton({
       rel="noopener noreferrer nofollow sponsored"
       className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       onClick={() => {
-        if (typeof window !== "undefined" && typeof window.gtag === "function") {
-          window.gtag("event", "affiliate_click", {
-            affiliate_partner: link.partner,
-            affiliate_label: link.label,
-          });
-        }
+        trackEvent("affiliate_click", {
+          affiliate_partner: link.partner,
+          affiliate_label: link.label,
+        });
       }}
     >
       {icon}

@@ -6,8 +6,8 @@ export const experiments: ExperimentConfig[] = [
     name: "Verdict-First vs Classic Layout",
     variants: ["control", "treatment"],
     trafficPercent: 100,
-    startDate: "2026-05-15",
-    endDate: "2026-06-15",
+    startDate: "2026-03-30",
+    endDate: "2026-05-30",
     goalMetric: "bounce_rate",
   },
   {

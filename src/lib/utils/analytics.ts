@@ -40,4 +40,16 @@ export function trackExperimentView(experimentId: string, experimentName: string
   trackEvent("experiment_view", { experiment_id: experimentId, experiment_name: experimentName, variant });
 }
 
+export function trackExitIntentShown(page: string) {
+  trackEvent("exit_intent_shown", { page });
+}
+
+export function trackExitIntentDismissed(page: string) {
+  trackEvent("exit_intent_dismissed", { page });
+}
+
+export function trackFunnelStep(step: string, page: string, value?: number) {
+  trackEvent("funnel_step", { step, page, ...(value !== undefined ? { value } : {}) });
+}
+
 export { trackEvent };
