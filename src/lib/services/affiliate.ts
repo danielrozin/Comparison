@@ -70,23 +70,44 @@ function generateAmazonLink(entityName: string): AffiliateLink | null {
 }
 
 /**
+ * Generate a generic "Learn More" link for non-product entities.
+ * Uses a Google search to help users find more information.
+ */
+function generateGenericLink(entityName: string): AffiliateLink {
+  const query = encodeURIComponent(entityName);
+  return {
+    url: `https://www.google.com/search?q=${query}`,
+    partner: "generic",
+    label: `Learn more about ${entityName}`,
+  };
+}
+
+/**
  * Generate all affiliate links for an entity.
- * Returns empty array if affiliate links are disabled or entity is not eligible.
+ * Product-eligible entities get affiliate links (e.g. Amazon).
+ * All other entities get a generic "Learn More" CTA.
+ * Returns empty array if affiliate links are disabled.
  */
 export function generateAffiliateLinks(
   entity: ComparisonEntityData,
   category: string | null,
 ): AffiliateLink[] {
   if (!AFFILIATE_ENABLED) return [];
-  if (!isAffiliateEligible(entity, category)) return [];
 
   const links: AffiliateLink[] = [];
 
-  const amazon = generateAmazonLink(entity.name);
-  if (amazon) links.push(amazon);
+  if (isAffiliateEligible(entity, category)) {
+    const amazon = generateAmazonLink(entity.name);
+    if (amazon) links.push(amazon);
 
-  // Future: add Impact, ShareASale, etc. based on entity metadata
-  // if (entity.metadata?.impactUrl) links.push({ ... });
+    // Future: add Impact, ShareASale, etc. based on entity metadata
+    // if (entity.metadata?.impactUrl) links.push({ ... });
+  }
+
+  // If no affiliate links, add a generic "Learn More" CTA
+  if (links.length === 0) {
+    links.push(generateGenericLink(entity.name));
+  }
 
   return links;
 }

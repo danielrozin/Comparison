@@ -16,6 +16,10 @@ const PRODUCT_CATEGORIES = new Set([
   "fitness",
 ]);
 
+function isGenericLink(entity: ComparisonEntityData): boolean {
+  return entity.affiliateLinks?.[0]?.partner === "generic";
+}
+
 export function StickyAffiliateCTA({
   entities,
   category,
@@ -31,7 +35,6 @@ export function StickyAffiliateCTA({
   const { variant: ctaVariant } = useExperiment("cta-button-style");
   const isTreatment = ctaVariant === "treatment";
 
-  // Only show on product-related categories with affiliate links
   const isProductCategory =
     category != null && PRODUCT_CATEGORIES.has(category.toLowerCase());
   const entityA = entities[0];
@@ -39,9 +42,10 @@ export function StickyAffiliateCTA({
   const hasLinks =
     (entityA?.affiliateLinks?.length ?? 0) > 0 ||
     (entityB?.affiliateLinks?.length ?? 0) > 0;
+  const isGeneric = entityA ? isGenericLink(entityA) : false;
 
   useEffect(() => {
-    if (!isProductCategory || !hasLinks) return;
+    if (!hasLinks) return;
 
     // Check sessionStorage for dismissal
     const key = `affiliate_cta_dismissed_${slug}`;
@@ -66,9 +70,9 @@ export function StickyAffiliateCTA({
 
     observer.observe(target);
     return () => observer.disconnect();
-  }, [isProductCategory, hasLinks, slug]);
+  }, [hasLinks, slug]);
 
-  if (!isProductCategory || !hasLinks || dismissed) return null;
+  if (!hasLinks || dismissed) return null;
 
   const handleDismiss = () => {
     setDismissed(true);
@@ -78,12 +82,14 @@ export function StickyAffiliateCTA({
   };
 
   const handleClick = (entity: ComparisonEntityData, position: string) => {
-    trackEvent("affiliate_click", {
+    const isEntityGeneric = isGenericLink(entity);
+    trackEvent(isEntityGeneric ? "generic_cta_click" : "affiliate_click", {
       product: entity.name,
       position,
       page: slug,
       source: "sticky_cta",
       cta_variant: ctaVariant,
+      cta_type: isEntityGeneric ? "learn_more" : "affiliate",
     });
   };
 
@@ -110,56 +116,56 @@ export function StickyAffiliateCTA({
                 <a
                   href={linkA.url}
                   target="_blank"
-                  rel="noopener noreferrer nofollow sponsored"
+                  rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   onClick={() => handleClick(entityA, "left")}
                   className={`flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-white text-sm font-semibold rounded-lg transition-all truncate ${
-                    isTreatment
-                      ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
-                      : "bg-indigo-600 hover:bg-indigo-700"
+                    isGenericLink(entityA)
+                      ? "bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
+                      : isTreatment
+                        ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
+                        : "bg-indigo-600 hover:bg-indigo-700"
                   }`}
                 >
-                  <svg
-                    className="w-4 h-4 flex-shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
-                  </svg>
-                  <span className="truncate">{isTreatment ? "Get" : "Buy"} {entityA.name}</span>
+                  {isGenericLink(entityA) ? (
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                  )}
+                  <span className="truncate">
+                    {isGenericLink(entityA) ? `Learn about ${entityA.name}` : `${isTreatment ? "Get" : "Buy"} ${entityA.name}`}
+                  </span>
                 </a>
               )}
               {linkB && entityB && (
                 <a
                   href={linkB.url}
                   target="_blank"
-                  rel="noopener noreferrer nofollow sponsored"
+                  rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   onClick={() => handleClick(entityB, "right")}
                   className={`flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-white text-sm font-semibold rounded-lg transition-all truncate ${
-                    isTreatment
-                      ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
-                      : "bg-purple-600 hover:bg-purple-700"
+                    isGenericLink(entityB)
+                      ? "bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
+                      : isTreatment
+                        ? "bg-green-600 hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-105"
+                        : "bg-purple-600 hover:bg-purple-700"
                   }`}
                 >
-                  <svg
-                    className="w-4 h-4 flex-shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
-                  </svg>
-                  <span className="truncate">{isTreatment ? "Get" : "Buy"} {entityB.name}</span>
+                  {isGenericLink(entityB) ? (
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                  )}
+                  <span className="truncate">
+                    {isGenericLink(entityB) ? `Learn about ${entityB.name}` : `${isTreatment ? "Get" : "Buy"} ${entityB.name}`}
+                  </span>
                 </a>
               )}
             </div>

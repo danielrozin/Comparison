@@ -17,6 +17,7 @@ function partnerLabel(partner: string): string {
     amazon: "Amazon",
     impact: "Official Store",
     shareasale: "Partner Store",
+    generic: "Learn More",
   };
   return labels[partner] || "Shop";
 }
@@ -107,73 +108,125 @@ export function WhereToBuySection({
   );
   if (!hasAnyLinks) return null;
 
+  const isAllGeneric = entities.every(
+    (e) => e.affiliateLinks?.every((l) => l.partner === "generic") ?? true,
+  );
+
   return (
     <div className="mt-4 pt-4 border-t border-border/50">
       <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
-        <svg
-          className="w-4 h-4 text-amber-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-          />
-        </svg>
-        Where to Buy
+        {isAllGeneric ? (
+          <svg
+            className="w-4 h-4 text-blue-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        ) : (
+          <svg
+            className="w-4 h-4 text-amber-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+            />
+          </svg>
+        )}
+        {isAllGeneric ? "Learn More" : "Where to Buy"}
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {entities.map((entity) =>
-          entity.affiliateLinks?.map((link) => (
-            <a
-              key={`${entity.name}-${link.partner}`}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer nofollow sponsored"
-              className="group flex items-center gap-3 p-3 rounded-lg border border-border hover:border-amber-300 hover:bg-amber-50/50 transition-all"
-              onClick={() => {
-                trackEvent("affiliate_click", {
-                  affiliate_partner: link.partner,
-                  affiliate_label: link.label,
-                });
-              }}
-            >
-              <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
-                {PARTNER_ICONS[link.partner] || (
-                  <svg
-                    className="w-4 h-4 text-amber-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
-                  </svg>
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-text group-hover:text-amber-700 transition-colors truncate">
-                  {entity.name}
-                </p>
-                <p className="text-xs text-text-secondary">
-                  {partnerLabel(link.partner)}
-                </p>
-              </div>
-              <span className="text-xs text-amber-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                Shop &rarr;
-              </span>
-            </a>
-          )),
+          entity.affiliateLinks?.map((link) => {
+            const isGeneric = link.partner === "generic";
+            return (
+              <a
+                key={`${entity.name}-${link.partner}`}
+                href={link.url}
+                target="_blank"
+                rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
+                className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all ${
+                  isGeneric
+                    ? "hover:border-blue-300 hover:bg-blue-50/50"
+                    : "hover:border-amber-300 hover:bg-amber-50/50"
+                }`}
+                onClick={() => {
+                  trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
+                    affiliate_partner: link.partner,
+                    affiliate_label: link.label,
+                    cta_type: isGeneric ? "learn_more" : "affiliate",
+                  });
+                }}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                  isGeneric
+                    ? "bg-blue-50 group-hover:bg-blue-100"
+                    : "bg-amber-50 group-hover:bg-amber-100"
+                }`}>
+                  {isGeneric ? (
+                    <svg
+                      className="w-4 h-4 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  ) : (
+                    PARTNER_ICONS[link.partner] || (
+                      <svg
+                        className="w-4 h-4 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                        />
+                      </svg>
+                    )
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className={`text-sm font-medium text-text transition-colors truncate ${
+                    isGeneric ? "group-hover:text-blue-700" : "group-hover:text-amber-700"
+                  }`}>
+                    {entity.name}
+                  </p>
+                  <p className="text-xs text-text-secondary">
+                    {partnerLabel(link.partner)}
+                  </p>
+                </div>
+                <span className={`text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ${
+                  isGeneric ? "text-blue-600" : "text-amber-600"
+                }`}>
+                  {isGeneric ? "Explore" : "Shop"} &rarr;
+                </span>
+              </a>
+            );
+          }),
         )}
       </div>
-      <AffiliateDisclosure />
+      {!isAllGeneric && <AffiliateDisclosure />}
     </div>
   );
 }
