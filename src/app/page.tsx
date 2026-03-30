@@ -50,7 +50,7 @@ export default async function HomePage() {
             </div>
 
             {/* Start Comparing CTA */}
-            <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+            <div className="mt-6 max-w-xs sm:max-w-none mx-auto animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <HeroCTA />
               <p className="text-xs text-primary-200 mt-3">
                 {totalCount}+ comparisons across {CATEGORIES.length} categories
