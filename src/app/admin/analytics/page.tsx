@@ -381,11 +381,11 @@ export default function AnalyticsDashboard() {
                     <div className="h-2 bg-gray-100 rounded-full flex-1">
                       <div
                         className="h-2 bg-indigo-400 rounded-full transition-all"
-                        style={{ width: `${100 - i * 20}%` }}
+                        style={{ width: `${Math.round(100 * Math.pow(0.75, i))}%` }}
                       />
                     </div>
                     <span className="text-xs text-gray-400 w-12 text-right">
-                      {100 - i * 20}%
+                      {Math.round(100 * Math.pow(0.75, i))}%
                     </span>
                   </div>
                 </div>

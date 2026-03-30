@@ -21,13 +21,19 @@ const CUSTOM_EVENTS = [
   { name: "related_comparison_click", category: "exploration", description: "User clicks a related comparison", params: ["source_page", "target_page"] },
   { name: "affiliate_click", category: "conversion", description: "User clicks a product affiliate CTA", params: ["product", "position", "page"] },
   { name: "embed_cta_click", category: "partnership", description: "User clicks embed button", params: ["comparison_slug", "page"] },
+  { name: "embed_key_registration", category: "partnership", description: "User registers for embed key", params: ["tier"] },
+  { name: "embed_key_emailed", category: "partnership", description: "Embed key delivered via email", params: ["tier"] },
+  { name: "api_key_generation", category: "partnership", description: "User generates an API key", params: ["key_name"] },
   { name: "share_click", category: "amplification", description: "User shares content", params: ["platform", "page"] },
   { name: "newsletter_signup", category: "lead_capture", description: "User signs up for newsletter", params: ["page", "placement"] },
+  { name: "poll_email_capture", category: "lead_capture", description: "User provides email after poll", params: ["page", "placement"] },
+  { name: "comment_submission", category: "engagement", description: "User submits a comment", params: ["comparison_id", "page"] },
   { name: "comparison_vote", category: "engagement", description: "User votes on a comparison", params: ["entity_a", "entity_b", "choice"] },
-  { name: "exit_intent_shown", category: "retention", description: "Exit intent popup shown", params: ["page"] },
+  { name: "exit_intent_shown", category: "retention", description: "Exit intent popup shown", params: ["page", "trigger"] },
+  { name: "exit_intent_mobile", category: "retention", description: "Mobile scroll-back exit intent", params: ["page"] },
   { name: "exit_intent_dismissed", category: "retention", description: "Exit intent popup dismissed", params: ["page"] },
   { name: "experiment_view", category: "experimentation", description: "A/B test variant assigned", params: ["experiment_id", "experiment_name", "variant"] },
-  { name: "funnel_step", category: "engagement", description: "User reaches a funnel milestone", params: ["step", "page", "value"] },
+  { name: "conversion_funnel", category: "engagement", description: "User reaches a funnel milestone", params: ["funnel_step", "page"] },
 ];
 
 const CONVERSION_FUNNEL = {
@@ -36,8 +42,11 @@ const CONVERSION_FUNNEL = {
     { step: 1, name: "Landing", event: "page_view", description: "User arrives at aversusb.net" },
     { step: 2, name: "Search/Browse", event: "comparison_search", description: "User searches or browses categories" },
     { step: 3, name: "View Comparison", event: "comparison_view", description: "User views a comparison page" },
-    { step: 4, name: "Engage", event: "comparison_vote|share_click|newsletter_signup", description: "User engages with content" },
-    { step: 5, name: "Embed CTA", event: "embed_cta_click", description: "User clicks embed or affiliate CTA" },
+    { step: 4, name: "Scroll 25%", event: "conversion_funnel:scroll_depth_25", description: "User scrolls to 25% of comparison" },
+    { step: 5, name: "Scroll 50%", event: "conversion_funnel:scroll_depth_50", description: "User scrolls to 50% of comparison" },
+    { step: 6, name: "Deep Engagement", event: "conversion_funnel:engagement", description: "User spends 30+ seconds on page" },
+    { step: 7, name: "Engage", event: "comparison_vote|share_click|newsletter_signup|comment_submission", description: "User actively engages" },
+    { step: 8, name: "Convert", event: "affiliate_click|embed_cta_click|embed_key_registration", description: "User clicks affiliate CTA or registers for embed" },
   ],
 };
 
