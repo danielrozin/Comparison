@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { logAdminEvent } from "@/lib/services/admin-logger";
+import { sendNotificationEmail } from "@/lib/services/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,36 +12,51 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Store in database (non-blocking — don't fail the signup if DB is down)
     const prisma = getPrisma();
     if (prisma) {
-      await prisma.newsletterSubscriber.upsert({
-        where: { email: email.toLowerCase().trim() },
-        update: { status: "active", updatedAt: new Date() },
-        create: {
-          email: email.toLowerCase().trim(),
-          source: source || "unknown",
-          referrerSlug: referrerSlug || null,
-        },
-      });
+      try {
+        await prisma.newsletterSubscriber.upsert({
+          where: { email: normalizedEmail },
+          update: { status: "active", updatedAt: new Date() },
+          create: {
+            email: normalizedEmail,
+            source: source || "unknown",
+            referrerSlug: referrerSlug || null,
+          },
+        });
+      } catch (dbError) {
+        // Log but don't fail — P2002 (duplicate) is fine, other errors are non-fatal
+        if (
+          dbError &&
+          typeof dbError === "object" &&
+          "code" in dbError &&
+          (dbError as { code: string }).code !== "P2002"
+        ) {
+          console.error("Newsletter DB error (non-fatal):", dbError);
+        }
+      }
     }
+
+    // Send email notification to admin
+    await sendNotificationEmail({
+      subject: "New Newsletter Subscriber",
+      type: "newsletter_subscribe",
+      message: `New subscriber: ${normalizedEmail}\nSource: ${source || "unknown"}${referrerSlug ? `\nReferrer: ${referrerSlug}` : ""}`,
+      senderEmail: normalizedEmail,
+    });
 
     await logAdminEvent("contact", {
       subtype: "newsletter_subscribe",
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       source,
       referrerSlug,
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    if (
-      error &&
-      typeof error === "object" &&
-      "code" in error &&
-      (error as { code: string }).code === "P2002"
-    ) {
-      return NextResponse.json({ success: true });
-    }
     console.error("Newsletter signup error:", error);
     return NextResponse.json({ error: "Failed to subscribe" }, { status: 500 });
   }
