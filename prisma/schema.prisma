@@ -50,6 +50,8 @@ model Entity {
   faqs             FAQ[]
   internalLinksFrom InternalLink[] @relation("InternalLinkFrom")
   internalLinksTo   InternalLink[] @relation("InternalLinkTo")
+  productReviews    ProductReview[]
+  reviewAggregation ReviewAggregation?
 
   // SEO
   metaTitle       String?  @map("meta_title")
@@ -616,6 +618,73 @@ model SyndicatedContent {
 // ============================================================
 // EMBED PARTNER SYSTEM — White-label embed widget for partners
 // ============================================================
+
+// ============================================================
+// SMARTREVIEW — Product reviews & ratings
+// ============================================================
+
+model ProductReview {
+  id           String   @id @default(cuid())
+  entityId     String   @map("entity_id")
+  entity       Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  // Review content
+  source       String   // "reddit", "g2", "capterra", "trustpilot", "producthunt", "tavily"
+  sourceUrl    String?  @map("source_url")
+  authorName   String?  @map("author_name")
+  rating       Float?   // 0-5 normalized rating
+  title        String?
+  body         String?  @db.Text
+  pros         String[]
+  cons         String[]
+
+  // Metadata
+  sourceDate   DateTime? @map("source_date") // when the review was originally posted
+  sentiment    Float?   // -1 to 1 sentiment score
+  isVerified   Boolean  @default(false) @map("is_verified")
+  status       String   @default("active") // active, flagged, hidden
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([entityId])
+  @@index([source])
+  @@index([status])
+  @@index([entityId, source])
+  @@map("product_reviews")
+}
+
+model ReviewAggregation {
+  id            String   @id @default(cuid())
+  entityId      String   @unique @map("entity_id")
+  entity        Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  // Aggregated scores
+  averageRating Float    @map("average_rating") // 0-5
+  totalReviews  Int      @map("total_reviews")
+  smartScore    Int      @default(0) @map("smart_score") // 0-100 composite score
+
+  // Per-source breakdown
+  sourceBreakdown Json?  @map("source_breakdown") // { "reddit": { avg: 4.2, count: 15 }, ... }
+
+  // Sentiment
+  avgSentiment  Float?   @map("avg_sentiment") // -1 to 1
+  positivePct   Float?   @map("positive_pct") // 0-100
+  negativePct   Float?   @map("negative_pct") // 0-100
+
+  // Common themes
+  topPros       String[] @map("top_pros")
+  topCons       String[] @map("top_cons")
+
+  // Freshness
+  lastAggregatedAt DateTime @default(now()) @map("last_aggregated_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@index([averageRating])
+  @@index([smartScore])
+  @@map("review_aggregations")
+}
 
 model EmbedPartner {
   id              String   @id @default(cuid())
