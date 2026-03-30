@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { trackApiKeyGeneration } from "@/lib/utils/analytics";
 
 type ApiKeyInfo = {
   id: string;
@@ -72,6 +73,7 @@ export default function DeveloperDashboard() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create key");
       setNewKeyResult(data.apiKey);
+      trackApiKeyGeneration(newKeyName.trim());
       setNewKeyName("");
       await fetchKeys(email);
     } catch (err) {

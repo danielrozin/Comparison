@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { trackCommentSubmission } from "@/lib/utils/analytics";
 
 interface Comment {
   id: string;
@@ -65,6 +66,7 @@ export function CommentSection({
       const updated = [savedComment, ...comments];
       setComments(updated);
       localStorage.setItem(`comments_${comparisonId}`, JSON.stringify(updated));
+      trackCommentSubmission(comparisonId, window.location.pathname);
 
       setName("");
       setText("");

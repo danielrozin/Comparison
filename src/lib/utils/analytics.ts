@@ -100,9 +100,24 @@ export function trackEmbedCtaClick(comparisonSlug: string, page: string) {
   trackEvent("embed_cta_click", { comparison_slug: comparisonSlug, page });
 }
 
+export function trackCommentSubmission(comparisonId: string, page: string) {
+  trackEvent("comment_submission", { comparison_id: comparisonId, page });
+}
+
+export function trackEmbedKeyRegistration(tier: string) {
+  trackEvent("embed_key_registration", { tier });
+  trackMetaEvent("CompleteRegistration", { content_name: "embed_partner", content_category: tier });
+}
+
+export function trackApiKeyGeneration(keyName: string) {
+  trackEvent("api_key_generation", { key_name: keyName });
+}
+
 export type FunnelStep =
   | "page_view"
+  | "scroll_depth_25"
   | "scroll_depth_50"
+  | "scroll_depth_75"
   | "scroll_depth_100"
   | "engagement"
   | "newsletter_shown"

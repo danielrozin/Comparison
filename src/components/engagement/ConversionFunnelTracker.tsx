@@ -26,9 +26,19 @@ export function ConversionFunnelTracker({
       const scrollPercent =
         (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
 
+      if (scrollPercent >= 25 && !firedRef.current.has("scroll_depth_25")) {
+        firedRef.current.add("scroll_depth_25");
+        trackConversionFunnel("scroll_depth_25", page, { category });
+      }
+
       if (scrollPercent >= 50 && !firedRef.current.has("scroll_depth_50")) {
         firedRef.current.add("scroll_depth_50");
         trackConversionFunnel("scroll_depth_50", page, { category });
+      }
+
+      if (scrollPercent >= 75 && !firedRef.current.has("scroll_depth_75")) {
+        firedRef.current.add("scroll_depth_75");
+        trackConversionFunnel("scroll_depth_75", page, { category });
       }
 
       if (scrollPercent >= 90 && !firedRef.current.has("scroll_depth_100")) {
