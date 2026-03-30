@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 300; // ISR: revalidate home page every 5 minutes
 
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
