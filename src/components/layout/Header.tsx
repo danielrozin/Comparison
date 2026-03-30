@@ -135,6 +135,9 @@ export function Header() {
             <Link href="/blog" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
               Blog
             </Link>
+            <Link href="/reviews" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+              Reviews
+            </Link>
           </nav>
 
           {/* Right side */}
@@ -243,6 +246,9 @@ export function Header() {
             </Link>
             <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
               📝 Blog
+            </Link>
+            <Link href="/reviews" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+              ⭐ Reviews
             </Link>
           </div>
         </div>

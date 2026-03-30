@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { CATEGORIES, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
+import { getAllReviewCategorySlugs } from "@/lib/services/review-service";
 
 const SITE_URL = "https://www.aversusb.net";
 
@@ -89,6 +90,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog articles unavailable — skip
   }
 
+  // Review pages
+  const reviewListPage: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/reviews`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+  ];
+  const reviewCategoryPages: MetadataRoute.Sitemap = getAllReviewCategorySlugs().map((slug) => ({
+    url: `${SITE_URL}/reviews/category/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...categoryPages,
@@ -98,5 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...alternativesPages,
     ...blogListPage,
     ...blogArticlePages,
+    ...reviewListPage,
+    ...reviewCategoryPages,
   ];
 }
