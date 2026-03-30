@@ -36,6 +36,7 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
+import { TableOfContents } from "@/components/comparison/TableOfContents";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -178,6 +179,19 @@ function VerdictFirstLayout({
         category={comparison.category}
       />
 
+      {/* Table of Contents */}
+      <TableOfContents
+        items={[
+          ...(comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Verdict" }] : []),
+          ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
+          ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
+          { id: "pros-cons", label: "Pros & Cons" },
+          ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          { id: "resources", label: "Resources" },
+          { id: "comments", label: "Comments" },
+        ]}
+      />
+
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
         <ShareBar title={comparison.title} slug={comparison.slug} />
@@ -192,12 +206,14 @@ function VerdictFirstLayout({
 
       {/* Short Answer Block — AEO/featured snippet target */}
       {(comparison.shortAnswer || comparison.verdict) && (
-        <ShortAnswerBlock
-          shortAnswer={comparison.shortAnswer || ""}
-          verdict={comparison.verdict}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
+        <div id="verdict">
+          <ShortAnswerBlock
+            shortAnswer={comparison.shortAnswer || ""}
+            verdict={comparison.verdict}
+            entityA={comparison.entities[0]}
+            entityB={comparison.entities[1]}
+          />
+        </div>
       )}
 
       {/* VERDICT CARD — above the fold */}
@@ -257,11 +273,13 @@ function VerdictFirstLayout({
 
           {/* Comparison Table (lazy loaded) */}
           {comparison.attributes.length > 0 && (
-            <ComparisonTable
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
+            <div id="comparison-table">
+              <ComparisonTable
+                attributes={comparison.attributes}
+                entityA={comparison.entities[0]}
+                entityB={comparison.entities[1]}
+              />
+            </div>
           )}
 
           {/* Visual Comparison Charts (lazy loaded) */}
@@ -274,16 +292,24 @@ function VerdictFirstLayout({
           )}
 
           {/* Pros & Cons */}
-          <ProsConsBlock entities={comparison.entities} />
+          <div id="pros-cons">
+            <ProsConsBlock entities={comparison.entities} />
+          </div>
 
           {/* FAQ */}
-          {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
+          {comparison.faqs.length > 0 && (
+            <div id="faq">
+              <FAQBlock faqs={comparison.faqs} />
+            </div>
+          )}
 
           {/* Resources & Learn More */}
-          <ResourcesSection
-            resources={generateResources(comparison.slug, comparison.entities)}
-            entities={comparison.entities}
-          />
+          <div id="resources">
+            <ResourcesSection
+              resources={generateResources(comparison.slug, comparison.entities)}
+              entities={comparison.entities}
+            />
+          </div>
         </div>
 
         {/* Desktop: sticky related comparisons sidebar */}
@@ -324,7 +350,9 @@ function VerdictFirstLayout({
       />
 
       {/* Comments */}
-      <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+      <div id="comments">
+        <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+      </div>
 
       {/* Version History */}
       <VersionHistory
