@@ -31,6 +31,8 @@ import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
+import { LayoutExperiment, CTAExperiment } from "@/components/experiments/ComparisonExperiments";
+import { ViewCount, TrendingBadge } from "@/components/experiments/SocialProofBadges";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -42,8 +44,8 @@ const ComparisonCharts = dynamic(
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
 );
 
-// Feature flag: verdict-first layout (default: enabled)
-const VERDICT_FIRST = process.env.NEXT_PUBLIC_VERDICT_FIRST !== "false";
+// Experiment 1 replaces the old NEXT_PUBLIC_VERDICT_FIRST env flag.
+// Layout selection is now driven by the "verdict-first-layout" A/B experiment.
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -137,11 +139,13 @@ export default async function ComparisonPage({ params }: PageProps) {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
-  if (VERDICT_FIRST) {
-    return <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
-  }
-
-  return <ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />;
+  // Experiment 1: verdict-first-layout — A/B test between classic and verdict-first
+  return (
+    <LayoutExperiment
+      classic={<ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
+      verdictFirst={<VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
+    />
+  );
 }
 
 function VerdictFirstLayout({
@@ -173,9 +177,13 @@ function VerdictFirstLayout({
         category={comparison.category}
       />
 
-      {/* Share + Like Bar */}
+      {/* Share + Like Bar + Social Proof (Experiment 3) */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
-        <ShareBar title={comparison.title} slug={comparison.slug} />
+        <div className="flex items-center gap-3">
+          <ShareBar title={comparison.title} slug={comparison.slug} />
+          <ViewCount count={comparison.metadata.viewCount} />
+          <TrendingBadge viewCount={comparison.metadata.viewCount} />
+        </div>
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />
           <LikeButton comparisonId={comparison.id} />
@@ -310,11 +318,15 @@ function VerdictFirstLayout({
       {/* Freshness */}
       <FreshnessFooter metadata={comparison.metadata} />
 
-      {/* Sticky Affiliate CTA Bar */}
-      <StickyAffiliateCTA
-        entities={comparison.entities}
-        category={comparison.category}
-        slug={slug}
+      {/* Experiment 2: CTA Button Style — treatment shows sticky CTA */}
+      <CTAExperiment
+        stickyCTA={
+          <StickyAffiliateCTA
+            entities={comparison.entities}
+            category={comparison.category}
+            slug={slug}
+          />
+        }
       />
     </>
   );
@@ -349,9 +361,13 @@ function ClassicLayout({
         category={comparison.category}
       />
 
-      {/* Share + Like Bar */}
+      {/* Share + Like Bar + Social Proof (Experiment 3) */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
-        <ShareBar title={comparison.title} slug={comparison.slug} />
+        <div className="flex items-center gap-3">
+          <ShareBar title={comparison.title} slug={comparison.slug} />
+          <ViewCount count={comparison.metadata.viewCount} />
+          <TrendingBadge viewCount={comparison.metadata.viewCount} />
+        </div>
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />
           <LikeButton comparisonId={comparison.id} />
@@ -476,11 +492,15 @@ function ClassicLayout({
       {/* Freshness */}
       <FreshnessFooter metadata={comparison.metadata} />
 
-      {/* Sticky Affiliate CTA Bar */}
-      <StickyAffiliateCTA
-        entities={comparison.entities}
-        category={comparison.category}
-        slug={slug}
+      {/* Experiment 2: CTA Button Style — treatment shows sticky CTA */}
+      <CTAExperiment
+        stickyCTA={
+          <StickyAffiliateCTA
+            entities={comparison.entities}
+            category={comparison.category}
+            slug={slug}
+          />
+        }
       />
     </>
   );

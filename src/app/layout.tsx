@@ -3,6 +3,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
+import { ExperimentProvider } from "@/lib/experiments";
 import { organizationSchema } from "@/lib/seo/schema";
 import "./globals.css";
 
@@ -84,10 +85,12 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <FeedbackWidget />
+        <ExperimentProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <FeedbackWidget />
+        </ExperimentProvider>
       </body>
     </html>
   );
