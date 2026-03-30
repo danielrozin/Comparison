@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { trackNewsletterSignup, trackExitIntentShown, trackExitIntentDismissed } from "@/lib/utils/analytics";
+import { trackNewsletterSignup, trackExitIntentShown, trackExitIntentDismissed, trackExitIntentMobile } from "@/lib/utils/analytics";
 
 const DISMISSED_KEY = "exit_intent_dismissed";
 const DISMISS_DAYS = 7;
+const MOBILE_SCROLL_BACK_PX = 300;
+const MOBILE_MIN_SCROLL_PERCENT = 0.5;
 
 export function ExitIntentPopup() {
   const [visible, setVisible] = useState(false);
@@ -17,23 +19,28 @@ export function ExitIntentPopup() {
     trackExitIntentDismissed(typeof window !== "undefined" ? window.location.pathname : "");
   }, []);
 
-  useEffect(() => {
-    // Don't show on mobile (no reliable exit intent) or if recently dismissed
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) return;
-
+  // Check cooldown (shared between desktop and mobile)
+  const isCoolingDown = useCallback(() => {
     const dismissedAt = localStorage.getItem(DISMISSED_KEY);
     if (dismissedAt) {
       const daysSince = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60 * 24);
-      if (daysSince < DISMISS_DAYS) return;
+      return daysSince < DISMISS_DAYS;
     }
+    return false;
+  }, []);
+
+  // Desktop: mouseleave exit intent
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+    if (isCoolingDown()) return;
 
     let triggered = false;
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !triggered) {
         triggered = true;
         setVisible(true);
-        trackExitIntentShown(window.location.pathname);
+        trackExitIntentShown(window.location.pathname, "desktop");
       }
     };
 
@@ -46,7 +53,49 @@ export function ExitIntentPopup() {
       clearTimeout(timer);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [isCoolingDown]);
+
+  // Mobile: scroll-back detection (user scrolls down past 50%, then scrolls back up 300px+)
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+    if (isCoolingDown()) return;
+
+    let triggered = false;
+    let maxScrollY = 0;
+
+    const handleScroll = () => {
+      if (triggered) return;
+
+      const currentY = window.scrollY;
+      const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = pageHeight > 0 ? currentY / pageHeight : 0;
+
+      // Track the furthest point the user scrolled to
+      if (currentY > maxScrollY) {
+        maxScrollY = currentY;
+      }
+
+      // Trigger when: user has scrolled past 50% of the page AND scrolled back up 300px+
+      const scrolledBack = maxScrollY - currentY;
+      if (scrollPercent < MOBILE_MIN_SCROLL_PERCENT && maxScrollY > 0 && scrolledBack >= MOBILE_SCROLL_BACK_PX) {
+        triggered = true;
+        setVisible(true);
+        trackExitIntentShown(window.location.pathname, "mobile_scroll_back");
+        trackExitIntentMobile(window.location.pathname);
+      }
+    };
+
+    // Delay to avoid triggering on initial scroll positioning
+    const timer = setTimeout(() => {
+      window.addEventListener("scroll", handleScroll, { passive: true });
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isCoolingDown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

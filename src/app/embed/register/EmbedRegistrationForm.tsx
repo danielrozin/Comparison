@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SITE_URL } from "@/lib/utils/constants";
-import { trackEmbedKeyRegistration } from "@/lib/utils/analytics";
+import { trackEmbedKeyRegistration, trackEmbedKeyEmailed } from "@/lib/utils/analytics";
 
 const TIER_INFO = {
   free: { name: "Free", price: "$0/month", features: "Branded embeds, 10K views/month" },
@@ -38,6 +38,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
 
       setPartnerKey(data.partnerKey);
       trackEmbedKeyRegistration(tier);
+      trackEmbedKeyEmailed(tier);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

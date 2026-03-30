@@ -53,6 +53,38 @@ export async function sendPartnerKeyEmail(opts: {
   partnerKey: string;
   tier: string;
 }) {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+  const embedSnippet = `<iframe src="${siteUrl}/embed/YOUR-COMPARISON-SLUG?partner=${opts.partnerKey}" width="100%" height="400" frameborder="0" style="border-radius: 12px; border: 1px solid #e2e8f0;"></iframe>`;
+  const scriptSnippet = `<script src="${siteUrl}/api/v1/widget?slug=YOUR-COMPARISON-SLUG&partner=${opts.partnerKey}"></script>`;
+
+  const messageLines = [
+    `Hi ${opts.partnerName},`,
+    "",
+    "Welcome to the A Versus B embed partner program!",
+    "",
+    `Your partner key: ${opts.partnerKey}`,
+    `Plan: ${opts.tier.charAt(0).toUpperCase() + opts.tier.slice(1)}`,
+    "",
+    "Keep this key safe — you'll need it for all embed codes.",
+    "",
+    "--- Embed Code Snippet ---",
+    "",
+    "Option 1 — iFrame (recommended):",
+    embedSnippet,
+    "",
+    "Option 2 — Script tag:",
+    scriptSnippet,
+    "",
+    "Replace YOUR-COMPARISON-SLUG with the comparison you want to embed (e.g. react-vs-angular).",
+    "",
+    "--- Quick Links ---",
+    "",
+    `Get started: ${siteUrl}/embed/register`,
+    `API docs: ${siteUrl}/developers`,
+    "",
+    "— The A Versus B Team",
+  ];
+
   if (WEB3FORMS_KEY) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
@@ -63,21 +95,7 @@ export async function sendPartnerKeyEmail(opts: {
           to: opts.partnerEmail,
           subject: "[A Versus B] Your Embed Partner Key",
           from_name: "A Versus B",
-          message: [
-            `Hi ${opts.partnerName},`,
-            "",
-            "Welcome to the A Versus B embed partner program!",
-            "",
-            `Your partner key: ${opts.partnerKey}`,
-            `Plan: ${opts.tier.charAt(0).toUpperCase() + opts.tier.slice(1)}`,
-            "",
-            "Keep this key safe — you'll need it for all embed codes.",
-            "",
-            "Get started: https://aversusb.net/embed/register",
-            "API docs: https://aversusb.net/developers",
-            "",
-            "— The A Versus B Team",
-          ].join("\n"),
+          message: messageLines.join("\n"),
         }),
       });
       const data = await res.json();

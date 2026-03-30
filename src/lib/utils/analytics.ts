@@ -81,8 +81,12 @@ export function trackExperimentView(experimentId: string, experimentName: string
   trackEvent("experiment_view", { experiment_id: experimentId, experiment_name: experimentName, variant });
 }
 
-export function trackExitIntentShown(page: string) {
-  trackEvent("exit_intent_shown", { page });
+export function trackExitIntentShown(page: string, trigger: "desktop" | "mobile_scroll_back" = "desktop") {
+  trackEvent("exit_intent_shown", { page, trigger });
+}
+
+export function trackExitIntentMobile(page: string) {
+  trackEvent("exit_intent_mobile", { page });
 }
 
 export function trackExitIntentDismissed(page: string) {
@@ -114,6 +118,10 @@ export function trackCommentSubmission(comparisonId: string, page: string) {
 export function trackEmbedKeyRegistration(tier: string) {
   trackEvent("embed_key_registration", { tier });
   trackMetaEvent("CompleteRegistration", { content_name: "embed_partner", content_category: tier });
+}
+
+export function trackEmbedKeyEmailed(tier: string) {
+  trackEvent("embed_key_emailed", { tier });
 }
 
 export function trackApiKeyGeneration(keyName: string) {
