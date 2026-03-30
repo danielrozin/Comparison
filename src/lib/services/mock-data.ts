@@ -5,6 +5,7 @@
 
 import type { ComparisonPageData, TrendingComparison, RelatedComparison } from "@/types";
 import { getExtraComparisons, getExtraTrendingData } from "./mock-data-extra";
+import { FAQ_EXPANSION } from "@/lib/data/faq-expansion";
 
 const EXTRA_COMPARISONS = getExtraComparisons();
 
@@ -2055,6 +2056,17 @@ export function getMockComparison(slug: string): ComparisonPageData | null {
   // Ensure relatedBlogPosts is always present (mock data doesn't include it)
   if (!comp.relatedBlogPosts) {
     comp.relatedBlogPosts = [];
+  }
+  // Merge expanded FAQs if the comparison has fewer than 3
+  const extraFaqs = FAQ_EXPANSION[slug];
+  if (extraFaqs && comp.faqs.length < 5) {
+    const existingQuestions = new Set(comp.faqs.map((f) => f.question));
+    for (const faq of extraFaqs) {
+      if (!existingQuestions.has(faq.question) && comp.faqs.length < 5) {
+        comp.faqs.push(faq);
+        existingQuestions.add(faq.question);
+      }
+    }
   }
   return comp;
 }

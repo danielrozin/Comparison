@@ -5,6 +5,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -14,9 +15,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
+  const content = ENTITY_CONTENT[slug];
+  const altNames = content?.alternatives.slice(0, 3).map((a) => a.name).join(", ");
+  const metaDesc = altNames
+    ? `Best alternatives to ${name} in 2026: ${altNames}, and more. Compare side-by-side and find the right option for you.`
+    : `Discover the best alternatives to ${name}. Compare ${name} against top competitors and find the best option for you.`;
   return {
     title: `Alternatives to ${name}`,
-    description: `Discover the best alternatives to ${name}. Compare ${name} against top competitors and find the best option for you.`,
+    description: metaDesc,
     alternates: { canonical: `${SITE_URL}/alternatives/${slug}` },
     openGraph: {
       title: `Alternatives to ${name}`,
@@ -57,6 +63,23 @@ export default async function AlternativesPage({ params }: PageProps) {
           comparisonSlug: comp.slug,
           comparisonTitle: comp.title,
         });
+      }
+    }
+  }
+
+  // Merge curated alternatives (from entity-content) with comparison-derived ones
+  const entityContent = ENTITY_CONTENT[slug];
+  if (entityContent) {
+    const existingSlugs = new Set(alternatives.map((a) => a.slug));
+    for (const curated of entityContent.alternatives) {
+      if (!existingSlugs.has(curated.slug)) {
+        alternatives.push({
+          name: curated.name,
+          slug: curated.slug,
+          comparisonSlug: `${slug}-vs-${curated.slug}`,
+          comparisonTitle: `${name} vs ${curated.name}`,
+        });
+        existingSlugs.add(curated.slug);
       }
     }
   }
@@ -105,9 +128,18 @@ export default async function AlternativesPage({ params }: PageProps) {
       <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-2">
         Alternatives to {name}
       </h1>
-      <p className="text-text-secondary mb-8">
+      <p className="text-text-secondary mb-4">
         {alternatives.length} alternative{alternatives.length !== 1 ? "s" : ""} found
       </p>
+
+      {entityContent && (
+        <div className="mb-8 p-5 bg-white border border-border rounded-xl">
+          <p className="text-sm text-text-secondary leading-relaxed">
+            Looking for alternatives to {name}? {entityContent.description.split(". ").slice(0, 2).join(". ")}.
+            Below are the top alternatives and competitors you should consider.
+          </p>
+        </div>
+      )}
 
       {alternatives.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -119,7 +151,9 @@ export default async function AlternativesPage({ params }: PageProps) {
                 </div>
                 <div>
                   <h3 className="font-bold text-text">{alt.name}</h3>
-                  <p className="text-xs text-text-secondary">Alternative to {name}</p>
+                  <p className="text-xs text-text-secondary">
+                    {entityContent?.alternatives.find((a) => a.slug === alt.slug)?.reason || `Alternative to ${name}`}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2">

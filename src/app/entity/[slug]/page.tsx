@@ -4,6 +4,7 @@ import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -29,9 +30,13 @@ function getReviewCount(slug: string): number {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const content = ENTITY_CONTENT[slug];
+  const description = content
+    ? content.description.slice(0, 155)
+    : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`;
   return {
     title: `${name} — All Comparisons`,
-    description: `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`,
+    description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
   };
 }
@@ -41,6 +46,7 @@ export default async function EntityPage({ params }: PageProps) {
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
+  const entityContent = ENTITY_CONTENT[slug];
 
   // Find all comparisons that include this entity
   const allSlugs = getAllMockSlugs();
@@ -129,6 +135,92 @@ export default async function EntityPage({ params }: PageProps) {
             </p>
           </div>
         </div>
+
+        {/* Rich Content Section */}
+        {entityContent && (
+          <>
+            <div className="mb-8 p-6 bg-white border border-border rounded-2xl">
+              <h2 className="text-xl font-bold text-text mb-3">About {name}</h2>
+              <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
+                {entityContent.description}
+              </p>
+              {entityContent.highlights.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {entityContent.highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="inline-flex items-center px-3 py-1 bg-primary-50 text-primary-700 text-xs font-medium rounded-full"
+                    >
+                      {h}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {entityContent.faqs.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-bold text-text mb-4">Frequently Asked Questions</h2>
+                <div className="space-y-3">
+                  {entityContent.faqs.map((faq) => (
+                    <details
+                      key={faq.question}
+                      className="bg-white border border-border rounded-xl overflow-hidden group"
+                    >
+                      <summary className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-surface-alt/50 transition-colors">
+                        <span className="font-medium text-text text-sm sm:text-base pr-4">
+                          {faq.question}
+                        </span>
+                        <svg
+                          className="w-5 h-5 text-text-secondary flex-shrink-0 transition-transform duration-200 group-open:rotate-180"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </summary>
+                      <div className="px-5 pb-4">
+                        <p className="text-sm text-text-secondary leading-relaxed">{faq.answer}</p>
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {entityContent.alternatives.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-bold text-text mb-4">Top Alternatives to {name}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {entityContent.alternatives.map((alt) => (
+                    <Link
+                      key={alt.slug}
+                      href={`/entity/${alt.slug}`}
+                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all"
+                    >
+                      <div className="w-10 h-10 bg-accent-50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-accent-600 font-bold">{alt.name.charAt(0)}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-text text-sm truncate">{alt.name}</p>
+                        <p className="text-xs text-text-secondary truncate">{alt.reason}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-3 text-center">
+                  <Link
+                    href={`/alternatives/${slug}`}
+                    className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  >
+                    View all alternatives to {name} &rarr;
+                  </Link>
+                </div>
+              </div>
+            )}
+          </>
+        )}
 
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
