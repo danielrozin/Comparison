@@ -75,6 +75,17 @@ interface AnalyticsConfig {
     engagement: Array<{ metric: string; formula: string; target: string }>;
   };
   reporting: Record<string, { name: string; audience: string[]; sections: string[] }>;
+  experiments: Array<{
+    id: string;
+    name: string;
+    variants: string[];
+    trafficPercent: number;
+    startDate: string;
+    endDate: string;
+    goalMetric: string;
+    isActive: boolean;
+  }>;
+  activeExperimentCount: number;
   live: LiveMetrics;
 }
 
@@ -99,7 +110,7 @@ export default function AnalyticsDashboard() {
   const [report, setReport] = useState<WeeklyReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [reportLoading, setReportLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "funnel" | "events" | "report">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "funnel" | "events" | "experiments" | "report">("overview");
 
   useEffect(() => {
     fetch("/api/analytics")
@@ -143,6 +154,7 @@ export default function AnalyticsDashboard() {
     { key: "overview" as const, label: "Overview" },
     { key: "funnel" as const, label: "Conversion Funnel" },
     { key: "events" as const, label: "Custom Events" },
+    { key: "experiments" as const, label: `Experiments (${config.activeExperimentCount})` },
     { key: "report" as const, label: "Weekly Report" },
   ];
 
@@ -457,6 +469,88 @@ export default function AnalyticsDashboard() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Experiments Tab */}
+      {activeTab === "experiments" && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900">A/B Experiments</h3>
+            <span className="text-sm text-gray-500">{config.activeExperimentCount} active</span>
+          </div>
+
+          <div className="grid gap-4">
+            {config.experiments.map((exp) => {
+              const start = new Date(exp.startDate);
+              const end = new Date(exp.endDate);
+              const now = new Date();
+              const totalDays = Math.max(1, Math.floor((end.getTime() - start.getTime()) / 86400000));
+              const elapsed = exp.isActive ? Math.floor((now.getTime() - start.getTime()) / 86400000) : 0;
+              const progress = exp.isActive ? Math.min(100, Math.round((elapsed / totalDays) * 100)) : 0;
+
+              return (
+                <div key={exp.id} className={`bg-white border rounded-xl p-6 ${exp.isActive ? "border-indigo-200" : "border-gray-200 opacity-60"}`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-semibold text-gray-900">{exp.name}</h4>
+                        {exp.isActive ? (
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200">Active</span>
+                        ) : (
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-50 text-gray-500 border border-gray-200">Scheduled</span>
+                        )}
+                      </div>
+                      <code className="text-xs text-gray-500 mt-1">{exp.id}</code>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-gray-700">{exp.trafficPercent}% traffic</p>
+                      <p className="text-xs text-gray-400">{exp.variants.join(" vs ")}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                      <p className="text-xs text-gray-500">Goal Metric</p>
+                      <p className="text-sm font-medium text-indigo-600">{exp.goalMetric}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Start</p>
+                      <p className="text-sm text-gray-700">{exp.startDate}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">End</p>
+                      <p className="text-sm text-gray-700">{exp.endDate}</p>
+                    </div>
+                  </div>
+
+                  {exp.isActive && (
+                    <div>
+                      <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                        <span>Day {elapsed} of {totalDays}</span>
+                        <span>{progress}% elapsed</span>
+                      </div>
+                      <div className="h-2 bg-gray-100 rounded-full">
+                        <div className="h-2 bg-indigo-400 rounded-full transition-all" style={{ width: `${progress}%` }} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Analysis Notes */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+            <h4 className="font-semibold text-blue-900 mb-3">Analysis Notes</h4>
+            <ul className="space-y-2 text-sm text-blue-800">
+              <li>* <strong>verdict-first-layout:</strong> 50% traffic split. Compare bounce_rate between variants in GA4 Explore. Filter by <code className="bg-blue-100 px-1 rounded">experiment_view</code> event with <code className="bg-blue-100 px-1 rounded">variant</code> dimension.</li>
+              <li>* <strong>cta-button-style:</strong> 100% traffic. Measure affiliate_click rate per variant. Check <code className="bg-blue-100 px-1 rounded">affiliate_click</code> events segmented by experiment variant.</li>
+              <li>* <strong>social-proof-elements:</strong> Scheduled May 15. No action needed yet.</li>
+              <li>* <strong>Sample size:</strong> Need ~1,000 sessions per variant for 95% confidence on bounce_rate changes &gt;5 percentage points.</li>
+              <li>* <strong>Duration:</strong> Wait 2+ full weeks before drawing conclusions to control for day-of-week effects.</li>
+            </ul>
           </div>
         </div>
       )}

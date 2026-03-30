@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { prisma } from "@/lib/db/prisma";
+import { experiments, getActiveExperiments } from "@/lib/experiments/config";
 
 /**
  * Analytics Dashboard API
@@ -311,6 +312,29 @@ export async function GET(request: Request) {
   if (section === "reporting") {
     return NextResponse.json({ reporting: REPORTING_CADENCE });
   }
+  if (section === "experiments") {
+    const now = new Date();
+    const active = getActiveExperiments();
+    const experimentData = experiments.map((exp) => {
+      const start = new Date(exp.startDate);
+      const end = new Date(exp.endDate);
+      const isActive = now >= start && now <= end;
+      const daysRunning = isActive ? Math.floor((now.getTime() - start.getTime()) / 86400000) : 0;
+      const daysRemaining = isActive ? Math.floor((end.getTime() - now.getTime()) / 86400000) : 0;
+      return { ...exp, isActive, daysRunning, daysRemaining };
+    });
+    return NextResponse.json({
+      experiments: experimentData,
+      activeCount: active.length,
+      analysisNotes: [
+        "verdict-first-layout: 50% traffic split testing bounce_rate. Ensure GA4 bounce_rate custom dimension is configured in explore reports to compare variants.",
+        "cta-button-style: 100% traffic, testing affiliate_click rate. Filter GA4 events by experiment_view variant to measure treatment vs control.",
+        "social-proof-elements: Scheduled for May 15. Not yet active.",
+        "Minimum sample size: ~1,000 sessions per variant for 95% confidence on bounce_rate changes >5pp.",
+        "Recommended: Wait 2+ weeks before drawing conclusions to account for day-of-week effects.",
+      ],
+    });
+  }
   if (section === "live") {
     const live = await getLiveMetrics();
     return NextResponse.json(live);
@@ -322,6 +346,7 @@ export async function GET(request: Request) {
 
   // Default: config + live metrics
   const live = await getLiveMetrics();
+  const activeExperiments = getActiveExperiments();
   return NextResponse.json({
     product: "Comparison (aversusb.net)",
     ga4Property: GA4_PROPERTY,
@@ -330,6 +355,13 @@ export async function GET(request: Request) {
     funnel: CONVERSION_FUNNEL,
     kpis: KPI_TARGETS,
     reporting: REPORTING_CADENCE,
+    experiments: experiments.map((exp) => {
+      const start = new Date(exp.startDate);
+      const end = new Date(exp.endDate);
+      const now = new Date();
+      return { ...exp, isActive: now >= start && now <= end };
+    }),
+    activeExperimentCount: activeExperiments.length,
     live,
   });
 }
