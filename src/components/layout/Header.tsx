@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 
 const NAV_ITEMS = [
@@ -21,7 +22,19 @@ export function Header() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+    setMobileExpanded(null);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    closeMobileMenu();
+  }, [pathname, closeMobileMenu]);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 10);
@@ -30,10 +43,30 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const fn = () => { if (window.innerWidth >= 1024) setMobileMenuOpen(false); };
+    const fn = () => { if (window.innerWidth >= 1024) closeMobileMenu(); };
     window.addEventListener("resize", fn);
     return () => window.removeEventListener("resize", fn);
-  }, []);
+  }, [closeMobileMenu]);
+
+  // Close mobile menu on outside click
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const fn = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) closeMobileMenu();
+    };
+    document.addEventListener("mousedown", fn);
+    return () => document.removeEventListener("mousedown", fn);
+  }, [mobileMenuOpen, closeMobileMenu]);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const fn = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMobileMenu();
+    };
+    document.addEventListener("keydown", fn);
+    return () => document.removeEventListener("keydown", fn);
+  }, [mobileMenuOpen, closeMobileMenu]);
 
   useEffect(() => {
     const fn = (e: MouseEvent) => {
@@ -53,7 +86,7 @@ export function Header() {
   }
 
   return (
-    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-200 ${scrolled ? "shadow-md" : "border-b border-gray-200"}`}>
+    <header ref={headerRef} className={`sticky top-0 z-50 bg-white transition-shadow duration-200 ${scrolled ? "shadow-md" : "border-b border-gray-200"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -175,7 +208,7 @@ export function Header() {
           <div className="p-4 pb-2 sm:hidden">
             <Link
               href="/#search"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
               className="flex items-center gap-3 w-full h-11 px-4 bg-gray-100 border border-gray-200 rounded-full text-sm text-gray-500"
             >
               <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -196,7 +229,7 @@ export function Header() {
                   <div className="flex items-center">
                     <Link
                       href={`/category/${item.slug}`}
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={closeMobileMenu}
                       className="flex-1 px-3 py-3 text-[15px] font-medium text-gray-800 active:bg-gray-100 rounded-lg"
                     >
                       {item.name}
@@ -221,7 +254,7 @@ export function Header() {
                         <Link
                           key={sub.slug}
                           href={`/category/${item.slug}/${sub.slug}`}
-                          onClick={() => setMobileMenuOpen(false)}
+                          onClick={closeMobileMenu}
                           className="flex items-center gap-2 px-3 py-2 text-[13px] text-gray-500 rounded-lg active:bg-gray-100"
                         >
                           <span>{sub.icon}</span>
@@ -238,11 +271,25 @@ export function Header() {
           <div className="mx-4 h-px bg-gray-100" />
 
           <div className="p-4 flex gap-2">
-            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
-              🔥 Trending
+            <Link href="/trending" onClick={closeMobileMenu} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+              Trending
             </Link>
-            <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
-              📝 Blog
+            <Link href="/blog" onClick={closeMobileMenu} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+              Blog
+            </Link>
+          </div>
+
+          {/* Write a Review CTA */}
+          <div className="px-4 pb-4">
+            <Link
+              href="/search#write-review"
+              onClick={closeMobileMenu}
+              className="flex items-center justify-center gap-2 w-full py-3 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 active:bg-primary-800 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+              </svg>
+              Write a Review
             </Link>
           </div>
         </div>
