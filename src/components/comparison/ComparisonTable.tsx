@@ -498,82 +498,107 @@ function RedesignedTable({
         </div>
       </div>
 
-      {/* Mobile: Stacked card layout with winner accent border */}
-      <div className="md:hidden space-y-3">
-        {categoryEntries.map(([categoryName, attrs]) => {
-          const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
-          const isOpen = openGroups.has(categoryName);
-
-          return (
-            <div key={categoryName} className="rounded-xl border border-border overflow-hidden">
-              <GroupHeader
-                categoryName={categoryName}
-                aWins={aWins}
-                bWins={bWins}
-                ties={ties}
-                entityAName={entityA.name}
-                entityBName={entityB.name}
-                isOpen={isOpen}
-                onToggle={() => toggleGroup(categoryName)}
-              />
-              {isOpen && (
-                <div className="p-2 space-y-2 bg-white">
-                  {attrs.map((attr) => {
-                    const valA = attr.values[0];
-                    const valB = attr.values[1];
-                    const winner = getWinner(attr);
-
-                    // Winner accent border on the winning side
-                    const borderClass =
-                      winner === "a"
-                        ? "border-l-4 border-l-win"
-                        : winner === "b"
-                          ? "border-r-4 border-r-win"
-                          : winner === "tie"
-                            ? "border-l-2 border-l-tie border-r-2 border-r-tie"
-                            : "";
-
-                    return (
-                      <div
-                        key={attr.id}
-                        className={`bg-white border border-border rounded-lg overflow-hidden ${borderClass}`}
-                      >
-                        {/* Attribute name */}
-                        <div className="px-3 py-2 border-b border-border/50 bg-gradient-to-r from-gray-50 to-white">
-                          <span className="text-xs font-bold text-text">
-                            {attr.name}
-                            {attr.unit && (
-                              <span className="ml-1 text-text-secondary font-normal">
-                                ({attr.unit})
-                              </span>
-                            )}
-                          </span>
-                        </div>
-                        {/* Values */}
-                        <div className="grid grid-cols-2 divide-x divide-border/50">
-                          <MobileValueCell
-                            entityName={entityA.name}
-                            value={valA}
-                            isWinner={winner === "a"}
-                            isLoser={winner === "b"}
-                            isTie={winner === "tie"}
-                          />
-                          <MobileValueCell
-                            entityName={entityB.name}
-                            value={valB}
-                            isWinner={winner === "b"}
-                            isLoser={winner === "a"}
-                            isTie={winner === "tie"}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+      {/* Mobile: Sticky entity header + compact rows for density */}
+      <div className="md:hidden">
+        {/* Sticky entity names header */}
+        <div className="sticky top-0 z-20 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 rounded-t-xl grid grid-cols-[1fr_1fr] text-white">
+          <div className="px-3 py-2.5 text-center border-r border-white/10">
+            <div className="flex items-center justify-center gap-1.5">
+              {entityA.imageUrl && (
+                <img src={entityA.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover border border-white/30" />
               )}
+              <span className="text-xs font-semibold truncate">{entityA.name}</span>
             </div>
-          );
-        })}
+          </div>
+          <div className="px-3 py-2.5 text-center">
+            <div className="flex items-center justify-center gap-1.5">
+              {entityB.imageUrl && (
+                <img src={entityB.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover border border-white/30" />
+              )}
+              <span className="text-xs font-semibold truncate">{entityB.name}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Category groups */}
+        <div className="space-y-0 border border-border rounded-b-xl overflow-hidden">
+          {categoryEntries.map(([categoryName, attrs]) => {
+            const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
+            const isOpen = openGroups.has(categoryName);
+
+            return (
+              <div key={categoryName}>
+                <GroupHeader
+                  categoryName={categoryName}
+                  aWins={aWins}
+                  bWins={bWins}
+                  ties={ties}
+                  entityAName={entityA.name}
+                  entityBName={entityB.name}
+                  isOpen={isOpen}
+                  onToggle={() => toggleGroup(categoryName)}
+                />
+                {isOpen && (
+                  <div className="divide-y divide-border/40">
+                    {attrs.map((attr) => {
+                      const valA = attr.values[0];
+                      const valB = attr.values[1];
+                      const winner = getWinner(attr);
+
+                      const winnerIndicator =
+                        winner === "a"
+                          ? "border-l-3 border-l-win"
+                          : winner === "b"
+                            ? "border-r-3 border-r-win"
+                            : winner === "tie"
+                              ? "border-l-2 border-l-tie border-r-2 border-r-tie"
+                              : "";
+
+                      return (
+                        <div key={attr.id} className={`bg-white ${winnerIndicator}`}>
+                          {/* Attribute label row */}
+                          <div className="px-3 py-1.5 bg-gray-50/80">
+                            <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                              {attr.name}
+                              {attr.unit && (
+                                <span className="font-normal ml-0.5">({attr.unit})</span>
+                              )}
+                            </span>
+                          </div>
+                          {/* Side-by-side values — no entity name repeat (sticky header handles it) */}
+                          <div className="grid grid-cols-2 divide-x divide-border/30">
+                            <div className={`px-3 py-2.5 text-center ${winner === "a" ? "bg-green-50/70" : winner === "b" ? "bg-red-50/30" : ""}`}>
+                              <span className={`text-sm font-medium inline-flex items-center gap-1 ${
+                                winner === "a" ? "text-win" : winner === "b" ? "text-text-secondary" : "text-text"
+                              }`}>
+                                {valA?.valueText || "\u2014"}
+                                {winner === "a" && <TrophyIcon />}
+                                {winner === "tie" && (
+                                  <span className="text-[9px] font-semibold bg-gray-100 text-tie px-1 py-0.5 rounded-full">Tie</span>
+                                )}
+                              </span>
+                            </div>
+                            <div className={`px-3 py-2.5 text-center ${winner === "b" ? "bg-green-50/70" : winner === "a" ? "bg-red-50/30" : ""}`}>
+                              <span className={`text-sm font-medium inline-flex items-center gap-1 ${
+                                winner === "b" ? "text-win" : winner === "a" ? "text-text-secondary" : "text-text"
+                              }`}>
+                                {valB?.valueText || "\u2014"}
+                                {winner === "b" && <TrophyIcon />}
+                                {winner === "tie" && (
+                                  <span className="text-[9px] font-semibold bg-gray-100 text-tie px-1 py-0.5 rounded-full">Tie</span>
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
