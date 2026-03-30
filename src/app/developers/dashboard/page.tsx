@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { trackApiKeyGeneration } from "@/lib/utils/analytics";
 
@@ -33,6 +33,8 @@ type UsageStats = {
   };
 };
 
+const DASHBOARD_EMAIL_KEY = "api_dashboard_email";
+
 export default function DeveloperDashboard() {
   const [email, setEmail] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -52,12 +54,36 @@ export default function DeveloperDashboard() {
       if (!res.ok) throw new Error(data.error || "Failed to fetch keys");
       setKeys(data.keys || []);
       setIsAuthenticated(true);
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem(DASHBOARD_EMAIL_KEY, emailAddr);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch keys");
     } finally {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof localStorage === "undefined") return;
+    const savedEmail = localStorage.getItem(DASHBOARD_EMAIL_KEY);
+    if (savedEmail) {
+      setEmail(savedEmail);
+      fetchKeys(savedEmail);
+    }
+  }, [fetchKeys]);
+
+  const handleSignOut = () => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem(DASHBOARD_EMAIL_KEY);
+    }
+    setEmail("");
+    setIsAuthenticated(false);
+    setKeys([]);
+    setNewKeyResult(null);
+    setSelectedKeyStats(null);
+    setError(null);
+  };
 
   const createKey = async () => {
     if (!newKeyName.trim()) return;
@@ -145,6 +171,18 @@ export default function DeveloperDashboard() {
       </h1>
       <p className="text-text-secondary mb-8">
         Manage your API keys and monitor usage.
+        {isAuthenticated && (
+          <span className="ml-2">
+            Signed in as <span className="font-medium text-text">{email}</span>
+            {" "}
+            <button
+              onClick={handleSignOut}
+              className="text-primary-600 hover:text-primary-700 underline text-sm"
+            >
+              Not you? Sign out
+            </button>
+          </span>
+        )}
       </p>
 
       {error && (
@@ -157,6 +195,7 @@ export default function DeveloperDashboard() {
       {!isAuthenticated ? (
         <div className="max-w-md">
           <label className="block text-sm font-medium text-text mb-2">Your email address</label>
+
           <div className="flex gap-3">
             <input
               type="email"
