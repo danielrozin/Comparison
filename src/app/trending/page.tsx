@@ -5,6 +5,8 @@ import { TrendingCard } from "@/components/home/TrendingCard";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
+export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
+
 const trendingDescription = "See the most popular comparisons right now — sports, countries, products, technology, and more.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Trending Comparisons")}&type=trending`;
 

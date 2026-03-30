@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+
+export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";

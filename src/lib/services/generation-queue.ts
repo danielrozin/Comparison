@@ -16,6 +16,7 @@
 import { getRedis } from "./redis";
 import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
+import { warmCacheForSlug } from "./cache-warming";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -217,6 +218,9 @@ async function processOneJob(
       // Cache entity data for future comparisons sharing these entities
       await cacheEntityEnrichment(job.entityA, job.slug);
       await cacheEntityEnrichment(job.entityB, job.slug);
+
+      // Warm ISR cache for the new comparison page and home page
+      warmCacheForSlug(job.slug).catch(() => {});
 
       job.status = "completed";
       job.completedAt = new Date().toISOString();

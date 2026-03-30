@@ -54,6 +54,7 @@ interface PageProps {
 }
 
 export const dynamicParams = true;
+export const revalidate = 3600; // ISR: revalidate comparison pages every 1 hour
 
 export async function generateStaticParams() {
   const slugs = getAllMockSlugs();
