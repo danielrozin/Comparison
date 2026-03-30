@@ -5,6 +5,7 @@ import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ReviewSection } from "@/components/engagement/ReviewSection";
+import { SmartReviewBrowseTrigger } from "@/components/surveys/SmartReviewBrowseTrigger";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -180,6 +181,9 @@ export default async function EntityPage({ params }: PageProps) {
 
         {/* Review Section */}
         <ReviewSection entitySlug={slug} entityName={name} />
+
+        {/* SmartReview browse trigger (fires after 5+ entity page views) */}
+        <SmartReviewBrowseTrigger entitySlug={slug} />
       </div>
     </>
   );

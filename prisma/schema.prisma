@@ -605,3 +605,50 @@ model InterceptSurvey {
   @@index([createdAt])
   @@map("intercept_surveys")
 }
+
+// ============================================================
+// USER RESEARCH — SmartReview Onboarding Surveys
+// ============================================================
+
+model SmartReviewSurvey {
+  id              String   @id @default(cuid())
+  triggerType     String   @map("trigger_type") // "form_submit_success", "form_abandon", "browse_5_pages"
+  entitySlug      String?  @map("entity_slug") // which entity page triggered this
+  deviceType      String   @map("device_type") // "mobile", "tablet", "desktop"
+  referralSource  String?  @map("referral_source")
+  userType        String?  @map("user_type") // "new", "returning"
+  userRole        String?  @map("user_role") // "reviewer", "reader"
+
+  // Q1: What made you decide to [submit a review / browse reviews] today?
+  q1Motivation    String   @map("q1_motivation")
+  q1Other         String?  @map("q1_other")
+
+  // Q2: How easy was it to [submit your review / find what you were looking for]? (1-5)
+  q2Ease          Int      @map("q2_ease")
+  q2Difficulty    String?  @map("q2_difficulty") @db.VarChar(300) // follow-up if <= 2
+
+  // Q3: How much do you trust the reviews on this site? (1-5)
+  q3Trust         Int      @map("q3_trust")
+  q3TrustFactors  String[] @map("q3_trust_factors") // multi-select follow-up
+
+  // Q4: How did you discover the categories/topics you browsed?
+  q4Discovery     String   @map("q4_discovery")
+  q4Other         String?  @map("q4_other")
+
+  // Q5: What one feature would make this site more valuable?
+  q5Feature       String?  @map("q5_feature") @db.VarChar(300)
+
+  // Optional email opt-in
+  optInEmail      String?  @map("opt_in_email")
+
+  // Timing metadata
+  completionTimeSec Int?   @map("completion_time_sec") // how long to complete
+  stepsCompleted    Int    @default(5) @map("steps_completed") // partial tracking
+
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([entitySlug])
+  @@index([triggerType])
+  @@index([createdAt])
+  @@map("smartreview_surveys")
+}

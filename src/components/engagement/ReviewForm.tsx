@@ -12,10 +12,12 @@ export function ReviewForm({
   entitySlug,
   entityName,
   onReviewSubmitted,
+  onSurveyTrigger,
 }: {
   entitySlug?: string;
   entityName?: string;
   onReviewSubmitted?: () => void;
+  onSurveyTrigger?: (trigger: "form_submit_success" | "form_abandon") => void;
 }) {
   const [productQuery, setProductQuery] = useState(entityName || "");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(
@@ -35,6 +37,27 @@ export function ReviewForm({
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const hasInteracted = useRef(false);
+  const surveyTriggered = useRef(false);
+
+  // Track form interaction for abandon detection
+  useEffect(() => {
+    if (rating > 0 || text.length > 0 || pros.length > 0 || cons.length > 0) {
+      hasInteracted.current = true;
+    }
+  }, [rating, text, pros, cons]);
+
+  // Detect form abandon (user leaves page after interacting with form)
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (hasInteracted.current && !surveyTriggered.current && !successMessage) {
+        surveyTriggered.current = true;
+        onSurveyTrigger?.("form_abandon");
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [onSurveyTrigger, successMessage]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -139,6 +162,12 @@ export function ReviewForm({
         setHoneypot("");
 
         onReviewSubmitted?.();
+
+        // Trigger survey after successful submission
+        if (!surveyTriggered.current) {
+          surveyTriggered.current = true;
+          onSurveyTrigger?.("form_submit_success");
+        }
       }
     } catch {
       setError("Failed to submit review. Please try again.");
