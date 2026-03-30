@@ -8,7 +8,7 @@ import { getExtraComparisons, getExtraTrendingData } from "./mock-data-extra";
 
 const EXTRA_COMPARISONS = getExtraComparisons();
 
-const MOCK_COMPARISONS_BASE: Record<string, ComparisonPageData> = {
+const MOCK_COMPARISONS_BASE: Record<string, Omit<ComparisonPageData, "relatedBlogPosts">> = {
   "messi-vs-ronaldo": {
     id: "comp-1",
     slug: "messi-vs-ronaldo",
@@ -1998,9 +1998,11 @@ const MOCK_COMPARISONS_BASE: Record<string, ComparisonPageData> = {
   },
 };
 
-// Merge base comparisons with extra comparisons
+// Merge base comparisons with extra comparisons (relatedBlogPosts added at read time by getMockComparison)
 const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
-  ...MOCK_COMPARISONS_BASE,
+  ...Object.fromEntries(
+    Object.entries(MOCK_COMPARISONS_BASE).map(([k, v]) => [k, { ...v, relatedBlogPosts: [] }])
+  ),
   ...EXTRA_COMPARISONS,
 };
 
@@ -2048,7 +2050,13 @@ const MOCK_RELATED: RelatedComparison[] = [
 ];
 
 export function getMockComparison(slug: string): ComparisonPageData | null {
-  return MOCK_COMPARISONS[slug] || null;
+  const comp = MOCK_COMPARISONS[slug];
+  if (!comp) return null;
+  // Ensure relatedBlogPosts is always present (mock data doesn't include it)
+  if (!comp.relatedBlogPosts) {
+    comp.relatedBlogPosts = [];
+  }
+  return comp;
 }
 
 export function getMockTrending(limit: number): TrendingComparison[] {

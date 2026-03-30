@@ -11,7 +11,7 @@
  * Falls back to mock-data matching when DB is unavailable.
  */
 
-import type { RelatedComparison } from "@/types";
+import type { RelatedComparison, RelatedBlogPost } from "@/types";
 import { getRedis } from "./redis";
 import {
   getMockComparison,
@@ -341,4 +341,78 @@ function rankAndLimit(scored: Map<string, ScoredLink>, limit: number): ScoredLin
   return Array.from(scored.values())
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
+}
+
+// ---------------------------------------------------------------------------
+// Related Blog Posts — find blogs that link to this comparison
+// ---------------------------------------------------------------------------
+
+export async function getRelatedBlogPosts(
+  comparisonSlug: string,
+  category: string | null,
+  limit: number = 5
+): Promise<RelatedBlogPost[]> {
+  const cacheKey = `linking:blogs:${comparisonSlug}:${limit}`;
+  const cached = await getFromCache<RelatedBlogPost[]>(cacheKey);
+  if (cached) return cached;
+
+  const prisma = getPrismaClient();
+  if (!prisma) return [];
+
+  try {
+    // Find blogs whose relatedComparisonSlugs array contains this comparison
+    const blogs = await prisma.blogArticle.findMany({
+      where: {
+        status: "published",
+        relatedComparisonSlugs: { has: comparisonSlug },
+      },
+      select: { slug: true, title: true, excerpt: true, category: true },
+      orderBy: { viewCount: "desc" },
+      take: limit,
+    });
+
+    // If we have fewer than limit, supplement with same-category blogs
+    let results: RelatedBlogPost[] = blogs.map(
+      (b: { slug: string; title: string; excerpt: string | null; category: string | null }) => ({
+        slug: b.slug,
+        title: b.title,
+        excerpt: b.excerpt || "",
+        category: b.category,
+      })
+    );
+
+    if (results.length < limit && category) {
+      const existingSlugs = new Set(results.map((r) => r.slug));
+      const relatedCats = RELATED_CATEGORIES[category] || [];
+      const categoryBlogs = await prisma.blogArticle.findMany({
+        where: {
+          status: "published",
+          category: { in: [category, ...relatedCats] },
+          slug: { notIn: [...existingSlugs] },
+        },
+        select: { slug: true, title: true, excerpt: true, category: true },
+        orderBy: { viewCount: "desc" },
+        take: limit - results.length,
+      });
+      results = [
+        ...results,
+        ...categoryBlogs.map(
+          (b: { slug: string; title: string; excerpt: string | null; category: string | null }) => ({
+            slug: b.slug,
+            title: b.title,
+            excerpt: b.excerpt || "",
+            category: b.category,
+          })
+        ),
+      ];
+    }
+
+    if (results.length > 0) {
+      await setCache(cacheKey, results, CACHE_TTL);
+    }
+    return results;
+  } catch (e) {
+    console.warn("Linking engine: getRelatedBlogPosts failed:", e);
+    return [];
+  }
 }

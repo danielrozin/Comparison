@@ -196,6 +196,7 @@ export async function generateComparison(
         answer: faq.answer,
       })),
       relatedComparisons: [],
+      relatedBlogPosts: [],
       metadata: {
         metaTitle: data.metaTitle || `${entityA} vs ${entityB} | Comparison`,
         metaDescription: data.metaDescription || `Compare ${entityA} and ${entityB} across key attributes.`,

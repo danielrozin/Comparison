@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
+import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -212,6 +213,11 @@ export default async function BlogPostPage({
   const readTime = estimateReadTime(article.content);
   const renderedContent = renderMarkdown(article.content);
 
+  // Fetch actual comparison titles for related comparisons
+  const comparisonTitles = article.relatedComparisonSlugs?.length
+    ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
+    : {};
+
   // JSON-LD Article schema
   const jsonLd = {
     "@context": "https://schema.org",
@@ -371,22 +377,29 @@ export default async function BlogPostPage({
                   Related Comparisons
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {article.relatedComparisonSlugs.map((compSlug) => (
-                    <Link
-                      key={compSlug}
-                      href={`/compare/${compSlug}`}
-                      className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50 transition-all group"
-                    >
-                      <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-primary-600 font-bold text-xs">
-                          VS
+                  {article.relatedComparisonSlugs.map((compSlug) => {
+                    const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
+                    const parts = title.split(/\s+vs\.?\s+/i);
+                    return (
+                      <Link
+                        key={compSlug}
+                        href={`/compare/${compSlug}`}
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50 transition-all group"
+                      >
+                        <div className="flex -space-x-2 flex-shrink-0">
+                          <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                            {(parts[0] || "A").charAt(0).toUpperCase()}
+                          </div>
+                          <div className="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                            {(parts[1] || "B").charAt(0).toUpperCase()}
+                          </div>
+                        </div>
+                        <span className="text-sm font-medium text-text group-hover:text-primary-600">
+                          {title}
                         </span>
-                      </div>
-                      <span className="text-sm font-medium text-text group-hover:text-primary-600 capitalize">
-                        {compSlug.replace(/-/g, " ")}
-                      </span>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}

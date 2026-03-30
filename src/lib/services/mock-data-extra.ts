@@ -52,6 +52,7 @@ function build(d: CompactDef, idx: number): ComparisonPageData {
     })),
     faqs: d.faqs.map(([q, a]) => ({ question: q, answer: a })),
     relatedComparisons: d.related.map(([s, t, c]) => ({ slug: s, title: t, category: c })),
+    relatedBlogPosts: [],
     metadata: {
       metaTitle: `${d.title}: Complete Comparison (2026) | Comparison`,
       metaDescription: d.shortAnswer.slice(0, 155),

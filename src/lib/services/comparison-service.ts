@@ -10,6 +10,7 @@ import type {
   ComparisonAttribute,
   FAQData,
   RelatedComparison,
+  RelatedBlogPost,
   TrendingComparison,
 } from "@/types";
 import {
@@ -20,7 +21,7 @@ import {
   getMockComparisonsByCategory,
   getMockLatest,
 } from "./mock-data";
-import { getLinkedComparisons } from "./internal-linking-engine";
+import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
 
 import { getRedis } from "./redis";
 
@@ -126,7 +127,8 @@ interface PrismaComparisonRow {
 
 function transformToPageData(
   row: PrismaComparisonRow,
-  relatedComps: RelatedComparison[] = []
+  relatedComps: RelatedComparison[] = [],
+  relatedBlogs: RelatedBlogPost[] = []
 ): ComparisonPageData {
   // Build entities
   const entities: ComparisonEntityData[] = row.entities
@@ -239,6 +241,7 @@ function transformToPageData(
     attributes,
     faqs,
     relatedComparisons: relatedComps,
+    relatedBlogPosts: relatedBlogs,
     metadata: {
       metaTitle:
         row.metaTitle || `${row.title}: Complete Comparison | Comparison`,
@@ -293,18 +296,21 @@ export async function getComparisonBySlug(
         const entitySlugs = (row as PrismaComparisonRow).entities.map(
           (ce) => ce.entity.slug
         );
-        const linked = await getLinkedComparisons({
-          comparisonId: row.id,
-          slug: row.slug,
-          category: row.category,
-          entitySlugs,
-        });
+        const [linked, blogPosts] = await Promise.all([
+          getLinkedComparisons({
+            comparisonId: row.id,
+            slug: row.slug,
+            category: row.category,
+            entitySlugs,
+          }),
+          getRelatedBlogPosts(row.slug, row.category, 5),
+        ]);
         const related: RelatedComparison[] = linked.map((l) => ({
           slug: l.slug,
           title: l.title,
           category: l.category,
         }));
-        const result = transformToPageData(row as PrismaComparisonRow, related);
+        const result = transformToPageData(row as PrismaComparisonRow, related, blogPosts);
         await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
         return result;
       }
@@ -327,6 +333,7 @@ export async function getComparisonBySlug(
       title: l.title,
       category: l.category,
     }));
+    mock.relatedBlogPosts = [];
     await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
   }
   return mock;
@@ -361,6 +368,43 @@ export async function getComparisonSlugsExisting(
   } catch {
     return slugs.filter((slug) => getMockComparison(slug) !== null);
   }
+}
+
+/**
+ * Batch fetch comparison titles by slugs.
+ * Returns a map of slug -> title for existing comparisons.
+ */
+export async function getComparisonTitlesBySlugs(
+  slugs: string[]
+): Promise<Record<string, string>> {
+  if (slugs.length === 0) return {};
+
+  const result: Record<string, string> = {};
+  const prisma = getPrismaClient();
+
+  if (prisma) {
+    try {
+      const rows = await prisma.comparison.findMany({
+        where: { slug: { in: slugs } },
+        select: { slug: true, title: true },
+      });
+      for (const r of rows) {
+        result[r.slug] = r.title;
+      }
+    } catch {
+      // fall through to mock
+    }
+  }
+
+  // Fill in any missing from mock data
+  for (const slug of slugs) {
+    if (!result[slug]) {
+      const mock = getMockComparison(slug);
+      if (mock) result[slug] = mock.title;
+    }
+  }
+
+  return result;
 }
 
 export async function getTrendingComparisons(

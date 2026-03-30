@@ -2,6 +2,13 @@
 // Core domain types
 // ============================================================
 
+export interface RelatedBlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string | null;
+}
+
 export interface ComparisonPageData {
   id: string;
   slug: string;
@@ -14,6 +21,7 @@ export interface ComparisonPageData {
   attributes: ComparisonAttribute[];
   faqs: FAQData[];
   relatedComparisons: RelatedComparison[];
+  relatedBlogPosts: RelatedBlogPost[];
   metadata: ComparisonMetadata;
   resources?: ComparisonResource[];
 }

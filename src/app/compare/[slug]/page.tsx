@@ -10,6 +10,7 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { VerdictBlock } from "@/components/comparison/Verdict";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
+import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
 // Lazy-load sidebar to avoid LCP regression
 const RelatedComparisonsSidebar = dynamic(
   () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
@@ -378,6 +379,9 @@ function VerdictFirstLayout({
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
 
+      {/* Related Blog Posts (reciprocal blog-comparison linking) */}
+      <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
+
       {/* Internal Links */}
       <InternalLinks
         currentSlug={comparison.slug}
@@ -566,6 +570,9 @@ function ClassicLayout({
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
+
+      {/* Related Blog Posts (reciprocal blog-comparison linking) */}
+      <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
 
       {/* Internal Links */}
       <InternalLinks
