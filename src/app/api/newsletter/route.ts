@@ -5,13 +5,17 @@ import {
   sendConfirmationEmail,
   generateConfirmationToken,
 } from "@/lib/services/newsletter";
+import {
+  logMarketingConsent,
+  generateUnsubscribeToken,
+} from "@/lib/services/marketing-consent";
 
 const RATE_LIMIT_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, source, referrerSlug } = body;
+    const { email, source, referrerSlug, marketingConsent } = body;
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
@@ -46,15 +50,18 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // Generate confirmation token
+      // Generate confirmation token and unsubscribe token
       const confirmationToken = generateConfirmationToken();
+      const unsubscribeToken = generateUnsubscribeToken();
 
       // Upsert subscriber in pending state
-      await prisma.newsletterSubscriber.upsert({
+      const subscriber = await prisma.newsletterSubscriber.upsert({
         where: { email: normalizedEmail },
         update: {
           status: "pending",
           confirmationToken,
+          unsubscribeToken,
+          marketingConsent: marketingConsent === true,
           lastSignupAt: new Date(),
           source: source || undefined,
           referrerSlug: referrerSlug || undefined,
@@ -66,12 +73,29 @@ export async function POST(request: NextRequest) {
           referrerSlug: referrerSlug || null,
           status: "pending",
           confirmationToken,
+          unsubscribeToken,
+          marketingConsent: marketingConsent === true,
           lastSignupAt: new Date(),
         },
       });
 
-      // Send confirmation email via Resend
-      await sendConfirmationEmail(normalizedEmail, confirmationToken);
+      // Log consent audit trail
+      const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip");
+      const userAgent = request.headers.get("user-agent");
+      if (marketingConsent) {
+        await logMarketingConsent({
+          email: normalizedEmail,
+          action: "consent_given",
+          source: "newsletter",
+          ip,
+          userAgent,
+          subscriberId: subscriber.id,
+          metadata: { referrerSlug, formSource: source },
+        });
+      }
+
+      // Send confirmation email via Resend (with unsubscribe link)
+      await sendConfirmationEmail(normalizedEmail, confirmationToken, unsubscribeToken);
     }
 
     await logAdminEvent("contact", {

@@ -51,6 +51,7 @@ export function InterceptSurvey({ comparisonSlug, category }: InterceptSurveyPro
   const [q5Discovery, setQ5Discovery] = useState<string>("");
   const [q5Other, setQ5Other] = useState("");
   const [optInEmail, setOptInEmail] = useState("");
+  const [optInConsent, setOptInConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const triggered = useRef(false);
@@ -107,6 +108,7 @@ export function InterceptSurvey({ comparisonSlug, category }: InterceptSurveyPro
           q5Discovery,
           q5Other: q5Discovery === "other" ? q5Other : null,
           optInEmail: optInEmail || null,
+          optInConsent: optInEmail ? optInConsent : false,
         }),
       });
     } catch {
@@ -115,7 +117,7 @@ export function InterceptSurvey({ comparisonSlug, category }: InterceptSurveyPro
     setCookie(COOKIE_NAME, "1", COOKIE_DAYS);
     setIsSubmitting(false);
     setStep("done");
-  }, [comparisonSlug, category, q1Intent, q1Other, q2Found, q2Missing, q3Rating, q4Improvement, q5Discovery, q5Other, optInEmail]);
+  }, [comparisonSlug, category, q1Intent, q1Other, q2Found, q2Missing, q3Rating, q4Improvement, q5Discovery, q5Other, optInEmail, optInConsent]);
 
   if (!visible) return null;
 
@@ -436,6 +438,20 @@ export function InterceptSurvey({ comparisonSlug, category }: InterceptSurveyPro
               placeholder="your@email.com (optional)"
               className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
             />
+            {optInEmail && (
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={optInConsent}
+                  onChange={(e) => setOptInConsent(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                <span className="text-xs text-text-secondary leading-tight">
+                  I agree to receive emails about feedback opportunities. View our{" "}
+                  <a href="/privacy" target="_blank" className="underline hover:text-primary-600">Privacy Policy</a>.
+                </span>
+              </label>
+            )}
             <div className="flex gap-2">
               <button
                 onClick={submit}
@@ -446,7 +462,7 @@ export function InterceptSurvey({ comparisonSlug, category }: InterceptSurveyPro
               </button>
               <button
                 onClick={submit}
-                disabled={isSubmitting || !optInEmail}
+                disabled={isSubmitting || !optInEmail || !optInConsent}
                 className="flex-1 py-2.5 bg-primary-600 text-white font-semibold text-sm rounded-lg hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}

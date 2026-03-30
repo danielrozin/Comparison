@@ -512,15 +512,20 @@ model NewsletterSubscriber {
   referrerSlug      String?  @map("referrer_slug") // which page they signed up from
   status            String   @default("pending") // pending, active, unsubscribed
   confirmationToken String?  @unique @map("confirmation_token")
+  unsubscribeToken  String?  @unique @map("unsubscribe_token")
+  marketingConsent  Boolean  @default(false) @map("marketing_consent")
   confirmedAt       DateTime? @map("confirmed_at")
   lastSignupAt      DateTime @default(now()) @map("last_signup_at") // rate limit tracking
   subscribedAt      DateTime @default(now()) @map("subscribed_at")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
+  consentLogs       MarketingConsentLog[]
+
   @@index([status])
   @@index([source])
   @@index([confirmationToken])
+  @@index([unsubscribeToken])
   @@map("newsletter_subscribers")
 }
 
@@ -651,4 +656,28 @@ model SmartReviewSurvey {
   @@index([triggerType])
   @@index([createdAt])
   @@map("smartreview_surveys")
+}
+
+// ============================================================
+// MARKETING CONSENT AUDIT TRAIL
+// ============================================================
+
+model MarketingConsentLog {
+  id            String   @id @default(cuid())
+  email         String
+  action        String   // "consent_given", "confirmed", "unsubscribed", "resubscribed"
+  source        String   // "newsletter", "smartreview_survey", "intercept_survey"
+  ipHash        String?  @map("ip_hash") // SHA-256 truncated for privacy
+  userAgent     String?  @map("user_agent") @db.VarChar(500)
+  metadata      Json?    // extra context (referrerSlug, formVariant, etc.)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  subscriberId  String?  @map("subscriber_id")
+  subscriber    NewsletterSubscriber? @relation(fields: [subscriberId], references: [id])
+
+  @@index([email])
+  @@index([action])
+  @@index([createdAt])
+  @@index([subscriberId])
+  @@map("marketing_consent_logs")
 }

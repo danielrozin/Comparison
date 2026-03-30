@@ -9,9 +9,13 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "newsletter@aversusb.net";
 
 export async function sendConfirmationEmail(
   email: string,
-  confirmationToken: string
+  confirmationToken: string,
+  unsubscribeToken?: string
 ): Promise<boolean> {
   const confirmUrl = `${SITE_URL}/api/newsletter/confirm?token=${confirmationToken}`;
+  const unsubscribeUrl = unsubscribeToken
+    ? `${SITE_URL}/api/newsletter/unsubscribe?token=${unsubscribeToken}`
+    : null;
 
   if (!resend) {
     console.log(
@@ -21,10 +25,17 @@ export async function sendConfirmationEmail(
   }
 
   try {
+    const headers: Record<string, string> = {};
+    if (unsubscribeUrl) {
+      headers["List-Unsubscribe"] = `<${unsubscribeUrl}>`;
+      headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
+    }
+
     await resend.emails.send({
       from: `${SITE_NAME} <${FROM_EMAIL}>`,
       to: email,
       subject: `Confirm your subscription to ${SITE_NAME}`,
+      headers,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px;">
           <h2 style="color: #1a1a2e; margin-bottom: 16px;">Confirm your subscription</h2>
@@ -37,6 +48,12 @@ export async function sendConfirmationEmail(
           <p style="color: #8888a0; font-size: 13px; margin-top: 32px; line-height: 1.5;">
             If you didn&rsquo;t sign up, you can safely ignore this email.
           </p>
+          ${unsubscribeUrl ? `
+          <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;" />
+          <p style="color: #8888a0; font-size: 12px; line-height: 1.5; text-align: center;">
+            <a href="${unsubscribeUrl}" style="color: #6366f1; text-decoration: underline;">Unsubscribe</a> from future emails.
+          </p>
+          ` : ""}
         </div>
       `,
     });

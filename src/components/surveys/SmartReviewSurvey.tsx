@@ -105,6 +105,7 @@ export function SmartReviewSurvey({ triggerType, userRole, entitySlug, onClose }
   const [q4Other, setQ4Other] = useState("");
   const [q5Feature, setQ5Feature] = useState("");
   const [optInEmail, setOptInEmail] = useState("");
+  const [optInConsent, setOptInConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const startTime = useRef(Date.now());
@@ -145,6 +146,7 @@ export function SmartReviewSurvey({ triggerType, userRole, entitySlug, onClose }
           q4Other: q4Discovery === "other" ? q4Other : null,
           q5Feature: q5Feature || null,
           optInEmail: optInEmail || null,
+          optInConsent: optInEmail ? optInConsent : false,
           completionTimeSec,
           stepsCompleted: 5,
         }),
@@ -155,7 +157,7 @@ export function SmartReviewSurvey({ triggerType, userRole, entitySlug, onClose }
     setCookie(COOKIE_NAME, "1", COOKIE_DAYS);
     setIsSubmitting(false);
     setStep("done");
-  }, [triggerType, entitySlug, userRole, q1Motivation, q1Other, q2Ease, q2Difficulty, q3Trust, q3TrustFactors, q4Discovery, q4Other, q5Feature, optInEmail]);
+  }, [triggerType, entitySlug, userRole, q1Motivation, q1Other, q2Ease, q2Difficulty, q3Trust, q3TrustFactors, q4Discovery, q4Other, q5Feature, optInEmail, optInConsent]);
 
   if (!visible) return null;
 
@@ -479,6 +481,20 @@ export function SmartReviewSurvey({ triggerType, userRole, entitySlug, onClose }
                 placeholder="your@email.com (optional)"
                 className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
               />
+              {optInEmail && (
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={optInConsent}
+                    onChange={(e) => setOptInConsent(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  />
+                  <span className="text-xs text-text-secondary leading-tight">
+                    I agree to receive emails about feedback opportunities. View our{" "}
+                    <a href="/privacy" target="_blank" className="underline hover:text-primary-600">Privacy Policy</a>.
+                  </span>
+                </label>
+              )}
               <div className="flex gap-2">
                 <button
                   onClick={submit}
@@ -489,7 +505,7 @@ export function SmartReviewSurvey({ triggerType, userRole, entitySlug, onClose }
                 </button>
                 <button
                   onClick={submit}
-                  disabled={isSubmitting || !optInEmail}
+                  disabled={isSubmitting || !optInEmail || !optInConsent}
                   className="flex-1 py-2.5 bg-primary-600 text-white font-semibold text-sm rounded-lg hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   {isSubmitting ? "Submitting..." : "Submit"}

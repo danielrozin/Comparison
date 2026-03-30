@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { logMarketingConsent } from "@/lib/services/marketing-consent";
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token");
@@ -39,6 +40,17 @@ export async function GET(request: NextRequest) {
         confirmationToken: null,
         subscribedAt: new Date(),
       },
+    });
+
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip");
+    const userAgent = request.headers.get("user-agent");
+    await logMarketingConsent({
+      email: subscriber.email,
+      action: "confirmed",
+      source: "newsletter",
+      ip,
+      userAgent,
+      subscriberId: subscriber.id,
     });
 
     return NextResponse.redirect(
