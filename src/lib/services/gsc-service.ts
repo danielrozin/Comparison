@@ -11,7 +11,7 @@
  */
 
 import crypto from "crypto";
-import { getComparisonBySlug } from "./comparison-service";
+import { getComparisonSlugsExisting } from "./comparison-service";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -249,33 +249,47 @@ export async function fetchGSCQueries(days = 28): Promise<GSCQuery[]> {
 
 /**
  * Analyze GSC queries and score content opportunities.
+ * Uses batch slug lookup to avoid N+1 queries.
  */
 export async function analyzeGSCOpportunities(): Promise<GSCOpportunity[]> {
   const queries = await fetchGSCQueries();
   if (queries.length === 0) return [];
 
+  // Parse all queries first and collect slugs to check
+  const parsedQueries = queries.map((q) => ({
+    ...q,
+    parsed: parseComparisonQuery(q.query),
+    isComparison: isComparisonQuery(q.query),
+  }));
+
+  // Collect all slugs that need existence checks (both orderings)
+  const slugsToCheck = new Set<string>();
+  for (const q of parsedQueries) {
+    if (q.parsed) {
+      slugsToCheck.add(queryToSlug(q.parsed.entityA, q.parsed.entityB));
+      slugsToCheck.add(queryToSlug(q.parsed.entityB, q.parsed.entityA));
+    }
+  }
+
+  // Batch check which slugs exist — single DB query instead of N+1
+  let existingSlugs = new Set<string>();
+  try {
+    const found = await getComparisonSlugsExisting(Array.from(slugsToCheck));
+    existingSlugs = new Set(found);
+  } catch {
+    // Fall through with empty set
+  }
+
   const opportunities: GSCOpportunity[] = [];
 
-  for (const q of queries) {
-    const parsed = parseComparisonQuery(q.query);
-    const isComparison = isComparisonQuery(q.query);
-    const type: GSCOpportunity["type"] = isComparison
-      ? "comparison"
-      : "blog";
+  for (const q of parsedQueries) {
+    const type: GSCOpportunity["type"] = q.isComparison ? "comparison" : "blog";
 
     let hasExistingPage = false;
-
-    if (parsed) {
-      // Check both orderings of the slug
-      const slug1 = queryToSlug(parsed.entityA, parsed.entityB);
-      const slug2 = queryToSlug(parsed.entityB, parsed.entityA);
-      try {
-        const existing1 = await getComparisonBySlug(slug1);
-        const existing2 = existing1 ? existing1 : await getComparisonBySlug(slug2);
-        hasExistingPage = !!(existing1 || existing2);
-      } catch {
-        hasExistingPage = false;
-      }
+    if (q.parsed) {
+      const slug1 = queryToSlug(q.parsed.entityA, q.parsed.entityB);
+      const slug2 = queryToSlug(q.parsed.entityB, q.parsed.entityA);
+      hasExistingPage = existingSlugs.has(slug1) || existingSlugs.has(slug2);
     }
 
     // Opportunity score: high impressions where we rank poorly = biggest opportunity
@@ -288,8 +302,8 @@ export async function analyzeGSCOpportunities(): Promise<GSCOpportunity[]> {
       impressions: q.impressions,
       ctr: q.ctr,
       position: q.position,
-      entityA: parsed?.entityA ?? null,
-      entityB: parsed?.entityB ?? null,
+      entityA: q.parsed?.entityA ?? null,
+      entityB: q.parsed?.entityB ?? null,
       type,
       hasExistingPage,
       opportunityScore: Math.round(score * 100) / 100,

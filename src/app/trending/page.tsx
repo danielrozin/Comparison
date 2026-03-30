@@ -3,12 +3,29 @@ import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { breadcrumbSchema } from "@/lib/seo/schema";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+
+const trendingDescription = "See the most popular comparisons right now — sports, countries, products, technology, and more.";
+const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Trending Comparisons")}&type=trending`;
 
 export const metadata: Metadata = {
   title: "Trending Comparisons",
-  description: "See the most popular comparisons right now — sports, countries, products, technology, and more.",
+  description: trendingDescription,
   alternates: { canonical: `${SITE_URL}/trending` },
+  openGraph: {
+    title: "Trending Comparisons",
+    description: trendingDescription,
+    url: `${SITE_URL}/trending`,
+    type: "website",
+    siteName: SITE_NAME,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: "Trending Comparisons" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trending Comparisons",
+    description: trendingDescription,
+    images: [ogImage],
+  },
 };
 
 export default async function TrendingPage() {

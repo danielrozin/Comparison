@@ -5,7 +5,10 @@
 
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 import { getPrisma } from "@/lib/db/prisma";
+import { getRedis } from "./redis";
 import { comparisonSlug } from "@/lib/utils/slugify";
+
+const CACHE_TTL_OPPORTUNITIES = 300; // 5 min
 
 /**
  * Store discovered keyword opportunities in the database
@@ -63,16 +66,34 @@ export async function storeKeywordOpportunities(
     }
   }
 
+  // Invalidate cached opportunity lists after store
+  const redis = getRedis();
+  if (redis) {
+    try { await redis.del("kw:unbuilt:50:all"); } catch { /* ignore */ }
+  }
+
   return { created, updated };
 }
 
 /**
- * Get top keyword opportunities that don't have existing pages
+ * Get top keyword opportunities that don't have existing pages.
+ * Cached in Redis (5 min TTL) to avoid repeated DB scans during auto-generate.
  */
 export async function getTopUnbuiltOpportunities(
   limit: number = 50,
   category?: string
 ): Promise<DiscoveredOpportunity[]> {
+  const cacheKey = `kw:unbuilt:${limit}:${category || "all"}`;
+  const redis = getRedis();
+
+  // Check cache
+  if (redis) {
+    try {
+      const cached = await redis.get(cacheKey);
+      if (cached) return cached as DiscoveredOpportunity[];
+    } catch { /* fall through */ }
+  }
+
   const prisma = getPrisma();
   if (!prisma) return [];
 
@@ -86,7 +107,20 @@ export async function getTopUnbuiltOpportunities(
     take: limit,
   });
 
-  return rows.map((r) => ({
+  const result = rows.map((r: {
+    keyword: string;
+    searchVolume: number | null;
+    cpc: number | null;
+    competition: number | null;
+    difficulty: number | null;
+    intent: string | null;
+    entityA: string | null;
+    entityB: string | null;
+    queryPattern: string | null;
+    category: string | null;
+    opportunityScore: number | null;
+    source: string | null;
+  }) => ({
     keyword: r.keyword,
     searchVolume: r.searchVolume ?? 0,
     cpc: r.cpc ?? 0,
@@ -100,6 +134,13 @@ export async function getTopUnbuiltOpportunities(
     opportunityScore: r.opportunityScore ?? 0,
     source: r.source ?? "unknown",
   }));
+
+  // Cache result
+  if (redis) {
+    try { await redis.set(cacheKey, result, { ex: CACHE_TTL_OPPORTUNITIES }); } catch { /* ignore */ }
+  }
+
+  return result;
 }
 
 /**

@@ -472,6 +472,22 @@ model ChangeLog {
 }
 
 // ============================================================
+// COMPARISON POLLS / VOTING
+// ============================================================
+
+model ComparisonVote {
+  id           String   @id @default(cuid())
+  comparisonId String   @map("comparison_id")
+  entityChoice String   @map("entity_choice") // entity name chosen
+  sessionId    String   @map("session_id")    // cookie-based session
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([comparisonId, sessionId])
+  @@index([comparisonId])
+  @@map("comparison_votes")
+}
+
+// ============================================================
 // CATEGORIES
 // ============================================================
 
@@ -493,6 +509,25 @@ model Category {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("categories")
+}
+
+// ============================================================
+// NEWSLETTER SUBSCRIBERS
+// ============================================================
+
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  source       String?  // "footer", "comparison", "homepage", "blog"
+  referrerSlug String?  @map("referrer_slug") // which page they signed up from
+  status       String   @default("active") // active, unsubscribed
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([source])
+  @@map("newsletter_subscribers")
 }
 
 // ============================================================

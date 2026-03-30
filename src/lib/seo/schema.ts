@@ -23,6 +23,27 @@ export function organizationSchema() {
 }
 
 // ============================================================
+// WebSite schema with SearchAction (enables sitelinks search box)
+// ============================================================
+
+export function webSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+// ============================================================
 // WebPage schema
 // ============================================================
 
@@ -227,6 +248,37 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
+  };
+}
+
+// ============================================================
+// AggregateRating schema (for review/entity pages)
+// ============================================================
+
+export function aggregateRatingSchema(entity: {
+  name: string;
+  slug: string;
+  entityType: string;
+  ratingValue: number;
+  reviewCount: number;
+  bestRating?: number;
+  worstRating?: number;
+}) {
+  const url = `${SITE_URL}/entity/${entity.slug}`;
+  const schemaType = entitySchemaType(entity.entityType);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    name: entity.name,
+    url,
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: entity.ratingValue.toFixed(1),
+      bestRating: entity.bestRating ?? 5,
+      worstRating: entity.worstRating ?? 1,
+      reviewCount: entity.reviewCount,
+    },
   };
 }
 

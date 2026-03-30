@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { ComparisonResource } from "@/types";
+import type { ComparisonResource, AffiliateLink } from "@/types";
+import { WhereToBuySection, AffiliateDisclosure } from "./AffiliateButton";
 
 const ICON_MAP = {
   wikipedia: (
@@ -21,8 +22,10 @@ const ICON_MAP = {
 
 export function ResourcesSection({
   resources,
+  entities,
 }: {
   resources: ComparisonResource[];
+  entities?: { name: string; affiliateLinks?: AffiliateLink[] }[];
 }) {
   if (resources.length === 0) return null;
 
@@ -45,6 +48,9 @@ export function ResourcesSection({
       </div>
 
       <div className="p-6 space-y-6">
+        {/* Where to Buy (affiliate links) */}
+        {entities && <WhereToBuySection entities={entities} />}
+
         {/* Wikipedia */}
         {wikipedia.length > 0 && (
           <div>

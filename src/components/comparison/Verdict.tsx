@@ -16,7 +16,7 @@ export function VerdictBlock({
   entities: ComparisonEntityData[];
 }) {
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 rounded-xl p-6 sm:p-8 text-white overflow-hidden shadow-lg shadow-purple-900/20 border border-purple-700/30">
         {/* Decorative sparkles */}
         <SparkleIcon className="absolute top-4 right-6 w-4 h-4 text-yellow-400/30" />

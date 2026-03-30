@@ -332,6 +332,37 @@ export async function getComparisonBySlug(
   return mock;
 }
 
+/**
+ * Batch check which slugs exist in the comparisons table.
+ * Returns only the slugs that have matching records — single query, no N+1.
+ */
+export async function getComparisonSlugsExisting(
+  slugs: string[]
+): Promise<string[]> {
+  if (slugs.length === 0) return [];
+
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    // Fall back to mock data check
+    return slugs.filter((slug) => getMockComparison(slug) !== null);
+  }
+
+  try {
+    const rows = await prisma.comparison.findMany({
+      where: { slug: { in: slugs } },
+      select: { slug: true },
+    });
+    const dbSlugs = rows.map((r: { slug: string }) => r.slug);
+    // Also check mock data for any slugs not in DB
+    const mockSlugs = slugs.filter(
+      (s) => !dbSlugs.includes(s) && getMockComparison(s) !== null
+    );
+    return [...dbSlugs, ...mockSlugs];
+  } catch {
+    return slugs.filter((slug) => getMockComparison(slug) !== null);
+  }
+}
+
 export async function getTrendingComparisons(
   limit: number = 10
 ): Promise<TrendingComparison[]> {
@@ -389,6 +420,10 @@ export async function getRelatedComparisons(
   comparisonId: string,
   limit: number = 8
 ): Promise<RelatedComparison[]> {
+  const cacheKey = `related:${comparisonId}:${limit}`;
+  const cached = await getFromCache<RelatedComparison[]>(cacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -410,13 +445,17 @@ export async function getRelatedComparisons(
           category: comp.category,
           entitySlugs: comp.entities.map((ce: { entity: { slug: string } }) => ce.entity.slug),
         }, limit);
-        return linked.map((l) => ({ slug: l.slug, title: l.title, category: l.category }));
+        const result = linked.map((l) => ({ slug: l.slug, title: l.title, category: l.category }));
+        await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+        return result;
       }
     } catch (e) {
       console.warn("Prisma query failed for getRelatedComparisons, falling back to mock:", e);
     }
   }
-  return getMockRelated(comparisonId, limit);
+  const mock = getMockRelated(comparisonId, limit);
+  await setCache(cacheKey, mock, CACHE_TTL_TRENDING);
+  return mock;
 }
 
 async function getRelatedFromDb(
@@ -785,8 +824,9 @@ export async function saveComparison(
       },
     });
 
-    // Invalidate cached version
+    // Invalidate cached comparison and trending list
     await invalidateCache(`comparison:${data.slug}`);
+    await invalidateCache(`trending:10`);
 
     return { id: comparison.id };
   } catch (e) {

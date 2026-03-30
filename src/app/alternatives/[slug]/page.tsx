@@ -1,8 +1,10 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
+import { breadcrumbSchema } from "@/lib/seo/schema";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -11,10 +13,25 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
   return {
     title: `Alternatives to ${name}`,
     description: `Discover the best alternatives to ${name}. Compare ${name} against top competitors and find the best option for you.`,
     alternates: { canonical: `${SITE_URL}/alternatives/${slug}` },
+    openGraph: {
+      title: `Alternatives to ${name}`,
+      description: `Compare ${name} against top competitors and find the best option.`,
+      url: `${SITE_URL}/alternatives/${slug}`,
+      type: "website",
+      siteName: SITE_NAME,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `Alternatives to ${name}` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Alternatives to ${name}`,
+      description: `Compare ${name} against top competitors.`,
+      images: [ogImage],
+    },
   };
 }
 
@@ -44,7 +61,35 @@ export default async function AlternativesPage({ params }: PageProps) {
     }
   }
 
+  const breadcrumbs = [
+    { name: "Home", url: SITE_URL },
+    { name, url: `${SITE_URL}/entity/${slug}` },
+    { name: "Alternatives", url: `${SITE_URL}/alternatives/${slug}` },
+  ];
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `Alternatives to ${name}`,
+    numberOfItems: alternatives.length,
+    itemListElement: alternatives.slice(0, 10).map((alt, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      name: alt.name,
+      url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+    })),
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumbs */}
       <nav className="mb-6">
@@ -105,6 +150,12 @@ export default async function AlternativesPage({ params }: PageProps) {
           </Link>
         </div>
       )}
+
+      {/* Newsletter Signup */}
+      <div className="mt-12">
+        <NewsletterSignup source="alternatives" referrerSlug={slug} />
+      </div>
     </div>
+    </>
   );
 }

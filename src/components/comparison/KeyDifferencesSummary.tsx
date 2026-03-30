@@ -38,6 +38,7 @@ function getEmoji(label: string): string {
   return "\ud83d\udd39";
 }
 
+
 export function KeyDifferencesSummary({
   differences,
   entityA,

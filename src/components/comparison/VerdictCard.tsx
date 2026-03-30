@@ -1,10 +1,10 @@
-import type { ComparisonEntityData } from "@/types";
+import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
 
 interface VerdictCardProps {
   verdict: string;
   shortAnswer: string | null;
   entities: ComparisonEntityData[];
-  attributes: { values: { entityId: string; winner?: boolean }[] }[];
+  attributes: ComparisonAttribute[];
 }
 
 function TrophyIcon({ className }: { className?: string }) {
@@ -56,7 +56,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes }: Verd
   const scores = computeScores(entities, attributes);
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <section data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 rounded-2xl p-5 sm:p-8 text-white overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative background circles */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-yellow-500/5 rounded-full" />

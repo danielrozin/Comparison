@@ -1,5 +1,6 @@
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
+import { AffiliateButton } from "./AffiliateButton";
 
 function EntityAvatar({
   entity,
@@ -84,6 +85,11 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
               {entityA.bestFor}
             </p>
           )}
+          {entityA.affiliateLinks && entityA.affiliateLinks.length > 0 && (
+            <div className="mt-3">
+              <AffiliateButton link={entityA.affiliateLinks[0]} size="sm" />
+            </div>
+          )}
         </div>
 
         {/* VS Badge */}
@@ -104,6 +110,11 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             <p className="mt-3 text-[11px] sm:text-xs font-semibold text-accent-600 bg-gradient-to-r from-accent-50 to-purple-100 px-3 py-1.5 rounded-full inline-block border border-accent-200/50">
               {entityB.bestFor}
             </p>
+          )}
+          {entityB.affiliateLinks && entityB.affiliateLinks.length > 0 && (
+            <div className="mt-3">
+              <AffiliateButton link={entityB.affiliateLinks[0]} size="sm" />
+            </div>
           )}
         </div>
       </div>

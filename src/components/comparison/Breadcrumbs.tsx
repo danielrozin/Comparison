@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
@@ -42,20 +43,18 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
           <li>
-            <a href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </a>
+            <Link href="/" className="hover:text-primary-600 transition-colors">Home</Link>
           </li>
           {category && (
             <>
               <li>/</li>
               <li>
-                <a
+                <Link
                   href={`/category/${category}`}
                   className="hover:text-primary-600 transition-colors capitalize"
                 >
                   {category}
-                </a>
+                </Link>
               </li>
             </>
           )}
@@ -63,12 +62,12 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
             <>
               <li>/</li>
               <li>
-                <a
+                <Link
                   href={`/category/${category}/${subcat.slug}`}
                   className="hover:text-primary-600 transition-colors"
                 >
                   {subcat.name}
-                </a>
+                </Link>
               </li>
             </>
           )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const FOOTER_CATEGORIES = [
   { slug: "software", name: "Software" },
@@ -58,8 +59,19 @@ export function Footer() {
           })}
         </div>
 
+        {/* ─── Newsletter ─── */}
+        <div className="border-t border-gray-800 mt-10 pt-8 pb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 className="text-sm font-semibold text-white">Stay in the loop</h3>
+              <p className="text-xs text-gray-400 mt-1">Weekly trending comparisons delivered to your inbox.</p>
+            </div>
+            <NewsletterSignup source="footer" variant="inline" />
+          </div>
+        </div>
+
         {/* ─── Bottom section ─── */}
-        <div className="border-t border-gray-800 mt-10 pt-8">
+        <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             {/* Brand */}
             <div className="flex items-center gap-2">

@@ -3,9 +3,10 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
-import { organizationSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { StickyFooterAd } from "@/components/ads/AdUnit";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
+import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -96,6 +97,12 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema()),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteSchema()),
+          }}
+        />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <ExperimentProviderServer>
@@ -104,6 +111,7 @@ export default function RootLayout({
           <Footer />
           <FeedbackWidget />
           <StickyFooterAd />
+          <ExitIntentPopup />
         </ExperimentProviderServer>
       </body>
     </html>
