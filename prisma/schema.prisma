@@ -429,6 +429,29 @@ model ComparisonVote {
 }
 
 // ============================================================
+// COMMENTS
+// ============================================================
+
+model Comment {
+  id           String   @id @default(cuid())
+  comparisonId String   @map("comparison_id")
+  name         String   @default("Anonymous")
+  text         String   @db.Text
+  likes        Int      @default(0)
+  hasLinks     Boolean  @default(false) @map("has_links")
+  flagged      Boolean  @default(false)  // flagged for moderation
+  published    Boolean  @default(true)
+  ipHash       String?  @map("ip_hash")  // hashed IP for rate limiting
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([comparisonId, published])
+  @@index([createdAt])
+  @@index([flagged])
+  @@map("comments")
+}
+
+// ============================================================
 // CATEGORIES
 // ============================================================
 

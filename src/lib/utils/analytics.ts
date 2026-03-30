@@ -36,4 +36,8 @@ export function trackReviewSubmission(product: string, rating: number) {
   trackEvent("review_submission", { product, rating });
 }
 
+export function trackCommentSubmitted(comparisonId: string, comparisonTitle: string) {
+  trackEvent("comment_submitted", { comparison_id: comparisonId, comparison_title: comparisonTitle });
+}
+
 export { trackEvent };
