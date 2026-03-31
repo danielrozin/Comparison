@@ -52,6 +52,8 @@ model Entity {
   internalLinksTo   InternalLink[] @relation("InternalLinkTo")
   productReviews    ProductReview[]
   reviewAggregation ReviewAggregation?
+  affiliateLinks    AffiliateLink[]
+  affiliateClicks   AffiliateClick[]
 
   // SEO
   metaTitle       String?  @map("meta_title")
@@ -725,4 +727,55 @@ model EmbedPartner {
   @@index([tier])
   @@index([status])
   @@map("embed_partners")
+}
+
+// ============================================================
+// AFFILIATE LINK MANAGEMENT & CLICK TRACKING
+// ============================================================
+
+model AffiliateLink {
+  id              String    @id @default(cuid())
+  entityId        String    @map("entity_id")
+  entity          Entity    @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  partner         String    // "amazon", "impact", "shareasale", "brand_direct"
+  url             String
+  label           String
+  priority        Int       @default(0) // higher = shown first
+  isActive        Boolean   @default(true) @map("is_active")
+  expiresAt       DateTime? @map("expires_at")
+  lastValidatedAt DateTime? @map("last_validated_at")
+  source          String    @default("manual") // "manual", "import", "generated"
+  metadata        Json?
+
+  clicks          AffiliateClick[]
+
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@unique([entityId, partner])
+  @@index([entityId])
+  @@index([isActive])
+  @@index([expiresAt])
+  @@map("affiliate_links")
+}
+
+model AffiliateClick {
+  id              String   @id @default(cuid())
+  affiliateLinkId String?  @map("affiliate_link_id")
+  affiliateLink   AffiliateLink? @relation(fields: [affiliateLinkId], references: [id], onDelete: SetNull)
+  entityId        String   @map("entity_id")
+  entity          Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  comparisonSlug  String   @map("comparison_slug")
+  affiliateNetwork String  @map("affiliate_network")
+  sessionId       String   @map("session_id")
+  source          String?  // "hero_cta", "sticky_cta", "where_to_buy", "attribute_row"
+  metadata        Json?
+
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([entityId])
+  @@index([comparisonSlug])
+  @@index([createdAt])
+  @@index([affiliateLinkId])
+  @@map("affiliate_clicks")
 }

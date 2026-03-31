@@ -10,6 +10,7 @@
  */
 
 import type { ComparisonEntityData, AffiliateLink } from "@/types";
+import { getPrisma } from "@/lib/db/prisma";
 
 const AMAZON_TAG = process.env.NEXT_PUBLIC_AMAZON_AFFILIATE_TAG || "";
 const AFFILIATE_ENABLED = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED === "true";
@@ -83,9 +84,41 @@ function generateGenericLink(entityName: string): AffiliateLink {
 }
 
 /**
+ * Fetch DB-stored affiliate links for an entity.
+ * Returns null if DB is unavailable or no links found.
+ */
+async function getDbAffiliateLinks(entityId: string): Promise<AffiliateLink[] | null> {
+  const prisma = getPrisma();
+  if (!prisma) return null;
+
+  try {
+    const dbLinks = await prisma.affiliateLink.findMany({
+      where: {
+        entityId,
+        isActive: true,
+        OR: [
+          { expiresAt: null },
+          { expiresAt: { gt: new Date() } },
+        ],
+      },
+      orderBy: { priority: "desc" },
+    });
+
+    if (dbLinks.length === 0) return null;
+
+    return dbLinks.map((link) => ({
+      url: link.url,
+      partner: link.partner,
+      label: link.label,
+    }));
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Generate all affiliate links for an entity.
- * Product-eligible entities get affiliate links (e.g. Amazon).
- * All other entities get a generic "Learn More" CTA.
+ * Prefers DB-stored links when available, falls back to auto-generated.
  * Returns empty array if affiliate links are disabled.
  */
 export function generateAffiliateLinks(
@@ -99,9 +132,6 @@ export function generateAffiliateLinks(
   if (isAffiliateEligible(entity, category)) {
     const amazon = generateAmazonLink(entity.name);
     if (amazon) links.push(amazon);
-
-    // Future: add Impact, ShareASale, etc. based on entity metadata
-    // if (entity.metadata?.impactUrl) links.push({ ... });
   }
 
   // If no affiliate links, add a generic "Learn More" CTA
@@ -114,15 +144,25 @@ export function generateAffiliateLinks(
 
 /**
  * Enrich entities with affiliate links.
+ * Uses DB-stored links when available, otherwise auto-generates them.
  */
-export function enrichEntitiesWithAffiliateLinks(
+export async function enrichEntitiesWithAffiliateLinks(
   entities: ComparisonEntityData[],
   category: string | null,
-): ComparisonEntityData[] {
+): Promise<ComparisonEntityData[]> {
   if (!AFFILIATE_ENABLED) return entities;
 
-  return entities.map((entity) => ({
-    ...entity,
-    affiliateLinks: generateAffiliateLinks(entity, category),
-  }));
+  const enriched = await Promise.all(
+    entities.map(async (entity) => {
+      // Try DB links first (by entity slug lookup)
+      const dbLinks = entity.id ? await getDbAffiliateLinks(entity.id) : null;
+
+      return {
+        ...entity,
+        affiliateLinks: dbLinks || generateAffiliateLinks(entity, category),
+      };
+    }),
+  );
+
+  return enriched;
 }

@@ -183,7 +183,7 @@ export default async function ComparisonPage({ params }: PageProps) {
   // Enrich entities with affiliate links
   const enrichedComparison = {
     ...comparison,
-    entities: enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
+    entities: await enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
   };
 
   // Fallback to trending if fewer than 3 related comparisons
