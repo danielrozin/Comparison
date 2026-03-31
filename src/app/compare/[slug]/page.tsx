@@ -30,6 +30,8 @@ import { generateResources } from "@/lib/services/resources";
 import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
+import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -68,7 +70,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+
+  let comparison;
+  try {
+    comparison = await getComparisonBySlug(slug);
+  } catch {
+    comparison = null;
+  }
 
   if (!comparison) {
     const parts = slug.split("-vs-");
@@ -145,7 +153,20 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
 
 export default async function ComparisonPage({ params }: PageProps) {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+
+  // Validate slug format — must be "entity-a-vs-entity-b"
+  const slugParts = parseComparisonSlug(slug);
+  if (!slugParts || !slugParts.entityA || !slugParts.entityB) {
+    notFound();
+  }
+
+  let comparison;
+  try {
+    comparison = await getComparisonBySlug(slug);
+  } catch {
+    // DB/cache error — fall through to dynamic generation
+    comparison = null;
+  }
 
   if (!comparison) {
     return <DynamicComparison slug={slug} />;
