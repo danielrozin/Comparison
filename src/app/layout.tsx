@@ -4,9 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
 import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
-import { StickyFooterAd } from "@/components/ads/AdUnit";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
-import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import "./globals.css";
@@ -108,8 +106,6 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <FeedbackWidget />
-          <StickyFooterAd />
-          <ExitIntentPopup />
         </ExperimentProviderServer>
       </body>
     </html>

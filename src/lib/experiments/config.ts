@@ -2,15 +2,6 @@ import { ExperimentConfig } from "./types";
 
 export const experiments: ExperimentConfig[] = [
   {
-    id: "verdict-first-layout",
-    name: "Verdict-First vs Classic Layout",
-    variants: ["control", "treatment"],
-    trafficPercent: 50,
-    startDate: "2026-03-30",
-    endDate: "2026-05-30",
-    goalMetric: "bounce_rate",
-  },
-  {
     id: "cta-button-style",
     name: "CTA Button Style",
     variants: ["control", "treatment"],

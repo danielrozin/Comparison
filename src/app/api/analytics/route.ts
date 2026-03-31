@@ -30,9 +30,6 @@ const CUSTOM_EVENTS = [
   { name: "poll_email_capture", category: "lead_capture", description: "User provides email after poll", params: ["page", "placement"] },
   { name: "comment_submission", category: "engagement", description: "User submits a comment", params: ["comparison_id", "page"] },
   { name: "comparison_vote", category: "engagement", description: "User votes on a comparison", params: ["entity_a", "entity_b", "choice"] },
-  { name: "exit_intent_shown", category: "retention", description: "Exit intent popup shown", params: ["page", "trigger"] },
-  { name: "exit_intent_mobile", category: "retention", description: "Mobile scroll-back exit intent", params: ["page"] },
-  { name: "exit_intent_dismissed", category: "retention", description: "Exit intent popup dismissed", params: ["page"] },
   { name: "experiment_view", category: "experimentation", description: "A/B test variant assigned", params: ["experiment_id", "experiment_name", "variant"] },
   { name: "conversion_funnel", category: "engagement", description: "User reaches a funnel milestone", params: ["funnel_step", "page"] },
 ];

@@ -7,7 +7,6 @@ import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
-import { VerdictBlock } from "@/components/comparison/Verdict";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
@@ -44,8 +43,6 @@ import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
 import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
-import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
-import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
@@ -197,14 +194,8 @@ export default async function ComparisonPage({ params }: PageProps) {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
-  // A/B experiment: verdict-first vs classic layout
-  // LayoutSwitcher is a client component that reads the experiment variant.
-  // When the experiment is not active, it defaults to verdict-first (treatment).
   return (
-    <LayoutSwitcher
-      verdictFirst={<VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
-      classic={<ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
-    />
+    <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />
   );
 }
 
@@ -484,227 +475,6 @@ function VerdictFirstLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
-
-      {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
-      <ExitIntentPopup />
-    </>
-  );
-}
-
-function ClassicLayout({
-  comparison,
-  schemas,
-  slug,
-  sidebarComparisons,
-}: {
-  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
-  schemas: ReturnType<typeof comparisonPageSchema>;
-  slug: string;
-  sidebarComparisons: import("@/types").RelatedComparison[];
-}) {
-  return (
-    <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-
-      {/* Track recently viewed */}
-      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
-
-      {/* Back to search results */}
-      <BackToResults />
-
-      {/* Breadcrumbs */}
-      <Breadcrumbs
-        title={comparison.title}
-        slug={comparison.slug}
-        category={comparison.category}
-      />
-
-      {/* Share + Like Bar */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
-        <ShareBar title={comparison.title} slug={comparison.slug} />
-        <div className="flex items-center gap-2">
-          <EmbedButton slug={comparison.slug} title={comparison.title} />
-          <LikeButton comparisonId={comparison.id} />
-        </div>
-      </div>
-
-      {/* Hero: Title + Short Answer + Entity Cards */}
-      <ComparisonHero comparison={comparison} />
-
-      {/* Citation Stats Bar — data density signal */}
-      {comparison.citationStats && (
-        <CitationStatsBar stats={comparison.citationStats} />
-      )}
-
-      {/* Quick Answer TL;DR — GEO-optimized */}
-      {comparison.quickAnswer?.tldr && (
-        <QuickAnswerTLDR
-          quickAnswer={comparison.quickAnswer}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
-
-      {/* Mobile: related comparisons scroll strip */}
-      {sidebarComparisons.length > 0 && (
-        <RelatedComparisonsSidebar
-          comparisons={sidebarComparisons}
-          sourceSlug={slug}
-        />
-      )}
-
-      {/* ── Below the fold with sidebar ── */}
-      <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
-        {/* Main content column */}
-        <div className="flex-1 min-w-0">
-          {/* Key Differences */}
-          {comparison.keyDifferences.length > 0 && (
-            <KeyDifferencesBlock
-              differences={comparison.keyDifferences}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
-          )}
-
-          {/* Key Facts & Figures table */}
-          {comparison.attributes.length > 0 && (
-            <DataFactsTable
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
-          )}
-
-          {/* Comparison Table */}
-          {comparison.attributes.length > 0 && (
-            <ComparisonTable
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
-          )}
-
-          {/* Visual Comparison Charts */}
-          {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
-            <ComparisonCharts
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
-          )}
-
-          {/* Pros & Cons */}
-          <ProsConsBlock entities={comparison.entities} />
-
-          {/* Verdict */}
-          {comparison.verdict && (
-            <VerdictBlock
-              verdict={comparison.verdict}
-              entities={comparison.entities}
-            />
-          )}
-
-          {/* User Poll — after verdict */}
-          {comparison.entities.length >= 2 && (
-            <ComparisonPoll
-              comparisonId={comparison.id}
-              comparisonSlug={comparison.slug}
-              entities={comparison.entities.map((e) => ({
-                name: e.name,
-                imageUrl: e.imageUrl,
-                position: e.position,
-              }))}
-            />
-          )}
-
-          {/* Ad: between verdict and partner reviews */}
-          <InContentAd />
-
-          {/* Partner Reviews (SmartReview) */}
-          {(() => {
-            const partnerReviews = getPartnerReviews(comparison.slug);
-            return partnerReviews.length > 0 ? <PartnerReviews reviews={partnerReviews} /> : null;
-          })()}
-
-          {/* SmartReview Cross-Links */}
-          <SmartReviewLinks
-            entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
-          />
-
-          {/* FAQ */}
-          {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
-
-          {/* Resources & Learn More */}
-          <ResourcesSection
-            resources={generateResources(comparison.slug, comparison.entities)}
-            entities={comparison.entities}
-          />
-        </div>
-
-        {/* Desktop: sticky related comparisons sidebar */}
-        {sidebarComparisons.length > 0 && (
-          <RelatedComparisonsSidebar
-            comparisons={sidebarComparisons}
-            sourceSlug={slug}
-          />
-        )}
-      </div>
-
-      {/* Full-width sections below sidebar area */}
-      {/* Related Comparisons (bottom grid) */}
-      {comparison.relatedComparisons.length > 0 && (
-        <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
-      )}
-
-      {/* Related Blog Posts (reciprocal blog-comparison linking) */}
-      <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
-
-      {/* Internal Links */}
-      <InternalLinks
-        currentSlug={comparison.slug}
-        category={comparison.category}
-        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
-        relatedComparisons={comparison.relatedComparisons}
-      />
-
-      {/* Newsletter Signup */}
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
-
-      {/* Comments */}
-      <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
-
-      {/* Version History */}
-      <VersionHistory
-        comparisonSlug={comparison.slug}
-        currentVersion={{
-          updatedAt: comparison.metadata.updatedAt,
-          isAutoGenerated: comparison.metadata.isAutoGenerated,
-          isHumanReviewed: comparison.metadata.isHumanReviewed,
-        }}
-      />
-
-      {/* Freshness */}
-      <FreshnessFooter metadata={comparison.metadata} />
-
-      {/* Sticky Affiliate CTA Bar */}
-      <StickyAffiliateCTA
-        entities={comparison.entities}
-        category={comparison.category}
-        slug={slug}
-      />
-
-      {/* Conversion Funnel Tracking */}
-      <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
-
-      {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
-      <ExitIntentPopup />
     </>
   );
 }
