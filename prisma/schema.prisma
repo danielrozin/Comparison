@@ -779,3 +779,52 @@ model AffiliateClick {
   @@index([affiliateLinkId])
   @@map("affiliate_clicks")
 }
+
+// ============================================================
+// USER RESEARCH — Survey response storage
+// ============================================================
+
+model InterceptSurvey {
+  id              String   @id @default(cuid())
+  comparisonSlug  String   @map("comparison_slug")
+  category        String?
+  deviceType      String?  @map("device_type")
+  referralSource  String?  @map("referral_source")
+  q1Intent        String?  @map("q1_intent")
+  q2Found         Boolean? @map("q2_found")
+  q2Missing       String?  @map("q2_missing") @db.Text
+  q3Rating        Int?     @map("q3_rating") // 1-5
+  q4Improvement   String?  @map("q4_improvement") @db.Text
+  q5Discovery     String?  @map("q5_discovery")
+  optInEmail      String?  @map("opt_in_email")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([category])
+  @@index([comparisonSlug])
+  @@map("intercept_surveys")
+}
+
+model SmartreviewSurvey {
+  id                     String   @id @default(cuid())
+  userType               String?  @map("user_type")
+  actionType             String?  @map("action_type")
+  category               String?
+  reviewCompletionTimeSec Int?    @map("review_completion_time_sec")
+  formFieldsFilled       Int?     @map("form_fields_filled")
+  surveyCompleted        Boolean  @default(false) @map("survey_completed")
+  q1Intent               String?  @map("q1_intent")
+  q2Found                Boolean? @map("q2_found")
+  q2Missing              String?  @map("q2_missing") @db.Text
+  q3Rating               Int?     @map("q3_rating") // 1-5
+  q4Improvement          String?  @map("q4_improvement") @db.Text
+  q5Discovery            String?  @map("q5_discovery")
+  deviceType             String?  @map("device_type")
+  referralSource         String?  @map("referral_source")
+  optInEmail             String?  @map("opt_in_email")
+  createdAt              DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([category])
+  @@map("smartreview_surveys")
+}
