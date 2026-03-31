@@ -8,15 +8,23 @@ declare global {
   }
 }
 
+function getDataLayer(): Record<string, unknown>[] {
+  if (typeof window === "undefined") return [];
+  if (!Array.isArray(window.dataLayer)) {
+    window.dataLayer = [];
+  }
+  return window.dataLayer;
+}
+
 function trackEvent(eventName: string, params: Record<string, string | number>) {
   if (typeof window === "undefined") return;
 
   if (typeof window.gtag === "function") {
     // gtag.js mode: gtag() pushes to dataLayer internally
     window.gtag("event", eventName, params);
-  } else if (Array.isArray(window.dataLayer)) {
-    // GTM mode: push event directly to dataLayer for GTM triggers
-    window.dataLayer.push({ event: eventName, ...params });
+  } else {
+    // GTM mode or pre-load: push to dataLayer (queued until GTM/gtag.js loads)
+    getDataLayer().push({ event: eventName, ...params });
   }
 }
 
@@ -62,6 +70,7 @@ export function trackComparisonVote(entityA: string, entityB: string, choice: st
 
 export function trackNewsletterSignup(page: string, placement: string) {
   trackEvent("newsletter_signup", { page, placement });
+  trackEvent("generate_lead", { lead_source: "newsletter", page, placement });
   trackMetaEvent("Lead", { content_name: "newsletter", content_category: placement });
 }
 
@@ -75,6 +84,7 @@ export function trackRelatedComparisonClick(sourcePage: string, targetPage: stri
 
 export function trackReviewSubmission(product: string, rating: number) {
   trackEvent("review_submission", { product, rating });
+  trackEvent("generate_lead", { lead_source: "review", product, value: rating });
 }
 
 export function trackExperimentView(experimentId: string, experimentName: string, variant: string) {
@@ -109,6 +119,7 @@ export function trackComparisonView(slug: string, category: string) {
 
 export function trackPollEmailCapture(page: string) {
   trackEvent("poll_email_capture", { page, placement: "post_poll" });
+  trackEvent("generate_lead", { lead_source: "poll_capture", page });
   trackMetaEvent("Lead", { content_name: "newsletter", content_category: "poll_capture" });
 }
 
@@ -122,6 +133,7 @@ export function trackCommentSubmission(comparisonId: string, page: string) {
 
 export function trackEmbedKeyRegistration(tier: string) {
   trackEvent("embed_key_registration", { tier });
+  trackEvent("generate_lead", { lead_source: "embed_registration", tier });
   trackMetaEvent("CompleteRegistration", { content_name: "embed_partner", content_category: tier });
 }
 
