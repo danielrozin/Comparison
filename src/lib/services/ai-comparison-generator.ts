@@ -5,8 +5,8 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
-import type { ComparisonPageData } from "@/types";
-import { enrichComparisonData } from "./tavily-service";
+import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types";
+import { enrichComparisonData, type TavilyResult } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 
@@ -64,6 +64,18 @@ Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
   "faqs": [
     {"question": "Common question?", "answer": "Detailed answer."}
   ],
+  "quickAnswer": {
+    "tldr": "One-sentence TL;DR that directly answers which is better and why (e.g., 'iPhone 16 wins for most users thanks to its superior camera and 20% longer battery life.')",
+    "winnerName": "Entity name or null if truly tied",
+    "winnerReason": "Single most decisive factor (e.g., '20% longer battery life')",
+    "keyFact": "Most compelling statistic from the comparison (e.g., 'Based on analysis of 1,200+ reviews, 78% of users prefer Entity A')"
+  },
+  "citationStats": {
+    "dataPointCount": 15,
+    "reviewsAnalyzed": 1200,
+    "preferencePercent": 78,
+    "preferenceEntity": "Entity A name"
+  },
   "metaTitle": "SEO title under 60 chars with current year",
   "metaDescription": "SEO description under 155 chars"
 }
@@ -76,8 +88,13 @@ Requirements:
 - Cons must be honest weaknesses, not hedged non-answers like "has a learning curve"
 - The shortAnswer must state the core factual difference, never just "it depends"
 - The verdict must include "Choose X if... Choose Y if..." guidance
+- The quickAnswer.tldr must be a single decisive sentence — never "it depends"
+- The quickAnswer.keyFact MUST include specific numbers (e.g., "Based on analysis of X reviews, Y% prefer...")
+- citationStats.dataPointCount = total number of factual data points in the comparison
+- citationStats.reviewsAnalyzed = estimate of reviews/sources analyzed (use null if unknown)
+- citationStats.preferencePercent = if data suggests a preference, include % (null otherwise)
 - Be factual and balanced — present both sides fairly
-- Use real statistics and data where possible
+- Use real statistics and data where possible — every claim should cite a number
 - Keep the year current (2026)`;
 
 export interface GenerationResult {
@@ -97,9 +114,18 @@ export async function generateComparison(
 
     // Fetch real-time web data via Tavily (graceful — skipped on failure)
     let tavilyContext = "";
+    let tavilySources: { name: string; url?: string }[] = [];
     if (!options?.skipEnrichment) {
       try {
-        tavilyContext = await enrichComparisonData(entityA, entityB);
+        const enrichment = await enrichComparisonData(entityA, entityB, true);
+        tavilyContext = enrichment.context;
+        tavilySources = enrichment.sources.map((s) => {
+          try {
+            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
+          } catch {
+            return { name: s.title || "web source", url: s.url };
+          }
+        });
       } catch (err) {
         console.warn("Tavily enrichment failed, proceeding without:", err);
       }
@@ -206,6 +232,8 @@ export async function generateComparison(
         isHumanReviewed: false,
         viewCount: 0,
       },
+      citationStats: buildCitationStats(data, tavilySources),
+      quickAnswer: buildQuickAnswer(data),
     };
 
     // Auto-fetch images for entities (non-critical)
@@ -234,4 +262,38 @@ export async function generateComparison(
       error: error instanceof Error ? error.message : "Generation failed",
     };
   }
+}
+
+function buildCitationStats(
+  data: Record<string, unknown>,
+  tavilySources: { name: string; url?: string }[]
+): CitationStats {
+  const aiStats = (data.citationStats || {}) as Record<string, unknown>;
+  // Deduplicate sources by hostname
+  const seen = new Set<string>();
+  const uniqueSources = tavilySources.filter((s) => {
+    if (seen.has(s.name)) return false;
+    seen.add(s.name);
+    return true;
+  });
+
+  return {
+    sourceCount: uniqueSources.length,
+    dataPointCount: typeof aiStats.dataPointCount === "number" ? aiStats.dataPointCount : (data.attributes as unknown[] || []).length + (data.keyDifferences as unknown[] || []).length,
+    reviewsAnalyzed: typeof aiStats.reviewsAnalyzed === "number" ? aiStats.reviewsAnalyzed : null,
+    preferencePercent: typeof aiStats.preferencePercent === "number" ? aiStats.preferencePercent : null,
+    preferenceEntity: typeof aiStats.preferenceEntity === "string" ? aiStats.preferenceEntity : null,
+    lastResearched: new Date().toISOString(),
+    sources: uniqueSources,
+  };
+}
+
+function buildQuickAnswer(data: Record<string, unknown>): QuickAnswerTLDR {
+  const qa = (data.quickAnswer || {}) as Record<string, unknown>;
+  return {
+    tldr: typeof qa.tldr === "string" ? qa.tldr : (typeof data.shortAnswer === "string" ? data.shortAnswer : ""),
+    winnerName: typeof qa.winnerName === "string" ? qa.winnerName : null,
+    winnerReason: typeof qa.winnerReason === "string" ? qa.winnerReason : null,
+    keyFact: typeof qa.keyFact === "string" ? qa.keyFact : "",
+  };
 }

@@ -540,6 +540,20 @@ function ClassicLayout({
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
+      {/* Citation Stats Bar — data density signal */}
+      {comparison.citationStats && (
+        <CitationStatsBar stats={comparison.citationStats} />
+      )}
+
+      {/* Quick Answer TL;DR — GEO-optimized */}
+      {comparison.quickAnswer?.tldr && (
+        <QuickAnswerTLDR
+          quickAnswer={comparison.quickAnswer}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
+
       {/* Mobile: related comparisons scroll strip */}
       {sidebarComparisons.length > 0 && (
         <RelatedComparisonsSidebar
@@ -556,6 +570,15 @@ function ClassicLayout({
           {comparison.keyDifferences.length > 0 && (
             <KeyDifferencesBlock
               differences={comparison.keyDifferences}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+
+          {/* Key Facts & Figures table */}
+          {comparison.attributes.length > 0 && (
+            <DataFactsTable
+              attributes={comparison.attributes}
               entityA={comparison.entities[0]}
               entityB={comparison.entities[1]}
             />

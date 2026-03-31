@@ -9,6 +9,23 @@ export interface RelatedBlogPost {
   category: string | null;
 }
 
+export interface CitationStats {
+  sourceCount: number;
+  dataPointCount: number;
+  reviewsAnalyzed: number | null;
+  preferencePercent: number | null;
+  preferenceEntity: string | null;
+  lastResearched: string;
+  sources: { name: string; url?: string }[];
+}
+
+export interface QuickAnswerTLDR {
+  tldr: string;
+  winnerName: string | null;
+  winnerReason: string | null;
+  keyFact: string;
+}
+
 export interface ComparisonPageData {
   id: string;
   slug: string;
@@ -24,6 +41,8 @@ export interface ComparisonPageData {
   relatedBlogPosts: RelatedBlogPost[];
   metadata: ComparisonMetadata;
   resources?: ComparisonResource[];
+  citationStats?: CitationStats;
+  quickAnswer?: QuickAnswerTLDR;
 }
 
 export interface ComparisonResource {

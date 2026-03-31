@@ -77,10 +77,25 @@ export async function enrichEntityData(
  * Searches for comparison data between two entities and returns a structured
  * context string (max ~500 words) suitable for injection into AI prompts.
  */
+export interface EnrichmentResult {
+  context: string;
+  sources: TavilyResult[];
+}
+
 export async function enrichComparisonData(
   entityA: string,
   entityB: string
-): Promise<string> {
+): Promise<string>;
+export async function enrichComparisonData(
+  entityA: string,
+  entityB: string,
+  returnSources: true
+): Promise<EnrichmentResult>;
+export async function enrichComparisonData(
+  entityA: string,
+  entityB: string,
+  returnSources?: boolean
+): Promise<string | EnrichmentResult> {
   // Run two searches in parallel: one for direct comparison, one for each entity
   const [comparisonResults, entityAResults, entityBResults] = await Promise.all([
     searchTavily(`${entityA} vs ${entityB} comparison 2026`, 3),
@@ -89,7 +104,9 @@ export async function enrichComparisonData(
   ]);
 
   const allResults = [...comparisonResults, ...entityAResults, ...entityBResults];
-  if (allResults.length === 0) return "";
+  if (allResults.length === 0) {
+    return returnSources ? { context: "", sources: [] } : "";
+  }
 
   // Build a concise context string, capped at roughly 500 words
   const parts: string[] = [];
@@ -111,5 +128,6 @@ export async function enrichComparisonData(
     wordCount += words;
   }
 
-  return parts.join("\n");
+  const context = parts.join("\n");
+  return returnSources ? { context, sources: allResults } : context;
 }

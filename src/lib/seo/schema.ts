@@ -4,7 +4,7 @@
  */
 
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import type { ComparisonPageData, FAQData, CategoryData } from "@/types";
+import type { ComparisonPageData, FAQData, CategoryData, CitationStats } from "@/types";
 
 // ============================================================
 // Organization schema (site-wide)
@@ -174,20 +174,31 @@ export function comparisonPageSchema(
   ];
   schemas.push(breadcrumbSchema(breadcrumbs));
 
-  // 5. Dataset for structured comparison data
+  // 5. Dataset for structured comparison data (enriched with citation stats)
   if (comparison.attributes.length > 0) {
+    const citation = comparison.citationStats;
     schemas.push({
       "@context": "https://schema.org",
       "@type": "Dataset",
       name: `${comparison.title} - Comparison Data`,
-      description: `Structured comparison data for ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      description: citation
+        ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}.`
+        : `Structured comparison data for ${comparison.entities.map((e) => e.name).join(" vs ")}`,
       url,
       variableMeasured: comparison.attributes.map((attr) => attr.name),
+      ...(citation && citation.sourceCount > 0 && {
+        isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
+          "@type": "CreativeWork",
+          name: s.name,
+          url: s.url,
+        })),
+      }),
     });
   }
 
-  // 6. AggregateRating per entity from user poll votes
+  // 6. AggregateRating per entity from user poll votes + review counts
   if (voteData && voteData.total >= 10) {
+    const citation = comparison.citationStats;
     for (const entity of comparison.entities) {
       const entityVotes = voteData.votes[entity.name] || 0;
       if (entityVotes === 0) continue;
@@ -208,6 +219,7 @@ export function comparisonPageSchema(
           bestRating: 5,
           worstRating: 1,
           ratingCount: entityVotes,
+          ...(citation?.reviewsAnalyzed && { reviewCount: citation.reviewsAnalyzed }),
         },
       });
     }
