@@ -45,7 +45,6 @@ import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
 import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
 import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
-import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
@@ -488,7 +487,6 @@ function VerdictFirstLayout({
 
       {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
       <ExitIntentPopup />
-      <MobileExitIntent />
     </>
   );
 }
@@ -707,7 +705,6 @@ function ClassicLayout({
 
       {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
       <ExitIntentPopup />
-      <MobileExitIntent />
     </>
   );
 }
