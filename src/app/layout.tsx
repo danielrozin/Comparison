@@ -78,12 +78,16 @@ export default function RootLayout({
           }}
         />
         {/* gtag.js — loads in consent mode, respects consent state */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BWYZ5V9QK" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `gtag('js', new Date());gtag('config', 'G-0BWYZ5V9QK');`,
-          }}
-        />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `gtag('js', new Date());gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');`,
+              }}
+            />
+          </>
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -31,8 +31,10 @@ export function ConsentScripts() {
 }
 
 function loadClarity() {
+  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
+  if (!clarityId) return;
   const script = document.createElement("script");
   script.async = true;
-  script.src = "https://www.clarity.ms/tag/w2svnzrk4f";
+  script.src = `https://www.clarity.ms/tag/${clarityId}`;
   document.head.appendChild(script);
 }
