@@ -230,7 +230,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <section className="mb-10">
             <h2 className="text-xl font-display font-bold text-text mb-4">Browse by Subcategory</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {subcategoryData.map(({ subcat, items }) => (
+              {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
                 <Link
                   key={subcat.slug}
                   href={`/category/${slug}/${subcat.slug}`}

@@ -133,12 +133,34 @@ function SearchContent() {
           <p className="text-text-secondary text-sm mb-4">
             Try typing a comparison like &ldquo;Tesla vs Ford&rdquo; — we&apos;ll generate it for you instantly!
           </p>
-          <Link
-            href={`/compare/${slugify(query)}-vs-`}
-            className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
-          >
-            Request this comparison
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+            <input
+              type="text"
+              placeholder="Compare with..."
+              id="compare-with"
+              className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none w-48"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const target = (e.target as HTMLInputElement).value.trim();
+                  if (target) {
+                    window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
+                  }
+                }
+              }}
+            />
+            <button
+              onClick={() => {
+                const input = document.getElementById("compare-with") as HTMLInputElement;
+                const target = input?.value.trim();
+                if (target) {
+                  window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
+                }
+              }}
+              className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              Compare Now
+            </button>
+          </div>
         </div>
       ) : (
         <div className="text-center py-12 text-text-secondary">
