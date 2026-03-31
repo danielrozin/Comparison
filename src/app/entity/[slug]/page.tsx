@@ -87,6 +87,18 @@ export default async function EntityPage({ params }: PageProps) {
     }
   }
 
+  // Determine entity type from comparison data (e.g. "person", "product", "country")
+  let entityType = "product"; // fallback
+  for (const compSlug of allSlugs) {
+    const comp = getMockComparison(compSlug);
+    if (!comp) continue;
+    const matchedEntity = comp.entities.find((e) => e.slug === slug);
+    if (matchedEntity?.entityType) {
+      entityType = matchedEntity.entityType;
+      break;
+    }
+  }
+
   // Determine category from the first comparison
   const primaryCategory = relatedComparisons[0]?.category || null;
   const categoryDef = primaryCategory
@@ -107,7 +119,7 @@ export default async function EntityPage({ params }: PageProps) {
     aggregateRatingSchema({
       name,
       slug,
-      entityType: "product",
+      entityType,
       ratingValue: rating,
       reviewCount,
     }),

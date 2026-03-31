@@ -240,7 +240,7 @@ function transformToPageData(
     relatedComparisons: relatedComps,
     metadata: {
       metaTitle:
-        row.metaTitle || `${row.title}: Complete Comparison | Comparison`,
+        row.metaTitle || `${row.title} | A Versus B`,
       metaDescription:
         row.metaDescription || row.shortAnswer?.slice(0, 155) || "",
       publishedAt: row.publishedAt?.toISOString() ?? null,

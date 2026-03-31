@@ -26,6 +26,9 @@ import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { generateResources } from "@/lib/services/resources";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
+import { generateComparison } from "@/lib/services/ai-comparison-generator";
+import { saveComparison } from "@/lib/services/comparison-service";
+import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { BackToResults } from "@/components/navigation/BackToResults";
 import { YouMightAlsoCompare } from "@/components/comparison/YouMightAlsoCompare";
@@ -68,6 +71,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const comparison = await getComparisonBySlug(slug);
 
   if (!comparison) {
+    // Fallback metadata for comparisons not yet generated (will be SSR-generated in page component)
     const parts = slug.split("-vs-");
     const a = parts[0]?.replace(/-/g, " ") || "";
     const b = parts[1]?.replace(/-/g, " ") || "";
@@ -118,8 +122,28 @@ function capitalize(s: string): string {
 
 export default async function ComparisonPage({ params }: PageProps) {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+  let comparison = await getComparisonBySlug(slug);
 
+  // SSR: If comparison doesn't exist yet, generate it server-side so Googlebot gets real content
+  if (!comparison) {
+    const slugParts = parseComparisonSlug(slug);
+    if (slugParts) {
+      const result = await generateComparison(
+        slugParts.entityA.replace(/-/g, " "),
+        slugParts.entityB.replace(/-/g, " "),
+        slug
+      );
+      if (result.success && result.comparison) {
+        comparison = result.comparison;
+        // Persist to DB in the background
+        saveComparison(result.comparison).catch((err) =>
+          console.error("Failed to save SSR-generated comparison:", err)
+        );
+      }
+    }
+  }
+
+  // Last resort: client-side generation if server-side failed
   if (!comparison) {
     return <DynamicComparison slug={slug} />;
   }
