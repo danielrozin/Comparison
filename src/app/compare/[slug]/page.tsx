@@ -32,6 +32,7 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
+import { BackToResults } from "@/components/comparison/BackToResults";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -225,6 +226,9 @@ function VerdictFirstLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
+
+      {/* Back to search results */}
+      <BackToResults />
 
       {/* Breadcrumbs */}
       <Breadcrumbs
@@ -475,6 +479,9 @@ function ClassicLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
+
+      {/* Back to search results */}
+      <BackToResults />
 
       {/* Breadcrumbs */}
       <Breadcrumbs

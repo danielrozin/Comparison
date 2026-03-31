@@ -98,7 +98,7 @@ function SearchContent() {
             return (
               <Link
                 key={result.slug}
-                href={`/compare/${result.slug}`}
+                href={`/compare/${result.slug}?from=${encodeURIComponent(query)}`}
                 className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
               >
                 <div className="flex -space-x-2">
@@ -123,43 +123,69 @@ function SearchContent() {
           })}
         </div>
       ) : query ? (
-        <div className="text-center py-12 bg-surface-alt rounded-xl">
-          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+        <div className="space-y-6">
+          {/* Entity page link — for single-entity searches */}
+          <div className="bg-white border border-border rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                <span className="text-primary-700 font-bold">{query.charAt(0).toUpperCase()}</span>
+              </div>
+              <div>
+                <p className="font-semibold text-text">Looking for {query}?</p>
+                <p className="text-sm text-text-secondary">View all comparisons featuring this entity</p>
+              </div>
+            </div>
+            <Link
+              href={`/entity/${slugify(query)}`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 font-medium rounded-lg hover:bg-primary-100 transition-colors text-sm"
+            >
+              View {query} comparisons
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
-          <p className="text-text font-semibold mb-2">No results found for &ldquo;{query}&rdquo;</p>
-          <p className="text-text-secondary text-sm mb-4">
-            Try typing a comparison like &ldquo;Tesla vs Ford&rdquo; — we&apos;ll generate it for you instantly!
-          </p>
-          <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
-            <input
-              type="text"
-              placeholder="Compare with..."
-              id="compare-with"
-              className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none w-48"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  const target = (e.target as HTMLInputElement).value.trim();
+
+          {/* Quick comparison builder */}
+          <div className="text-center py-8 bg-surface-alt rounded-xl">
+            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <p className="text-text font-semibold mb-2">Compare &ldquo;{query}&rdquo; with something</p>
+            <p className="text-text-secondary text-sm mb-4">
+              Type what you&apos;d like to compare it against — we&apos;ll generate the comparison instantly.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
+              <span className="text-sm font-medium text-text">{query} vs</span>
+              <input
+                type="text"
+                placeholder="Enter something to compare..."
+                id="compare-with"
+                className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none w-56"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    const target = (e.target as HTMLInputElement).value.trim();
+                    if (target) {
+                      window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
+                    }
+                  }
+                }}
+              />
+              <button
+                onClick={() => {
+                  const input = document.getElementById("compare-with") as HTMLInputElement;
+                  const target = input?.value.trim();
                   if (target) {
                     window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
                   }
-                }
-              }}
-            />
-            <button
-              onClick={() => {
-                const input = document.getElementById("compare-with") as HTMLInputElement;
-                const target = input?.value.trim();
-                if (target) {
-                  window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
-                }
-              }}
-              className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Compare Now
-            </button>
+                }}
+                className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+              >
+                Compare Now
+              </button>
+            </div>
           </div>
         </div>
       ) : (
