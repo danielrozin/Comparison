@@ -9,7 +9,6 @@ import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
 import { RecentlyViewed } from "@/components/home/RecentlyViewed";
-import { HeroCTA } from "@/components/home/HeroCTA";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export default async function HomePage() {
@@ -50,16 +49,11 @@ export default async function HomePage() {
               <SearchBox />
             </div>
 
-            {/* Start Comparing CTA */}
-            <div className="mt-6 max-w-xs sm:max-w-none mx-auto animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <HeroCTA />
-              <p className="text-xs text-primary-200 mt-3">
-                {totalCount}+ comparisons across {CATEGORIES.length} categories
-              </p>
-            </div>
-
-            {/* Quick Examples */}
-            <div className="flex flex-wrap justify-center gap-2 mt-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            {/* Stats + Quick Examples */}
+            <p className="text-xs text-primary-200 mt-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              {totalCount}+ comparisons across {CATEGORIES.length} categories
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 mt-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
               {[
                 { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
                 { label: "Japan vs China", href: "/compare/japan-vs-china" },
