@@ -1,8 +1,6 @@
-# A Versus B — Full LLM Context
-# https://www.aversusb.net
+# A Versus B — Full Context
 
-## Mission
-A Versus B is the internet's best destination for comparing anything. We democratize comparisons by providing fast, visual, data-driven comparison pages across every category imaginable.
+> Complete catalog of all active comparisons on aversusb.net. For a concise overview, see https://www.aversusb.net/llms.txt
 
 ## Active Comparisons (53 pages)
 

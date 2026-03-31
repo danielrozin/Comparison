@@ -1,36 +1,15 @@
-# A Versus B — llms.txt
-# https://www.aversusb.net
-# Last updated: 2026-03-31
+# A Versus B
 
-## About
-A Versus B (aversusb.net) is a structured comparison platform helping users make informed decisions by comparing anything side-by-side — sports players, countries, products, technology, brands, companies, historical events, economies, and more. We cover 17+ categories with data-driven, expert-reviewed comparisons.
+> A structured comparison platform at aversusb.net helping users make informed decisions by comparing anything side-by-side across 17+ categories — sports, countries, technology, brands, companies, history, and more.
 
-## What we do
-We provide structured, data-driven comparisons with:
-- Key differences between two entities with clear winners per attribute
-- Attribute-by-attribute comparison tables with quantitative data
-- Pros and cons for each entity
-- Expert verdicts with "choose X if..." recommendations
-- Short answer summaries optimized for quick answers
-- FAQs answering common comparison questions
-- Related comparisons and alternatives pages
-- User polls and community voting
-- Partner and expert reviews
+A Versus B provides data-driven, expert-reviewed comparisons with attribute-by-attribute tables, key differences with per-attribute winners, pros and cons, expert verdicts, short answer summaries, FAQs, visual charts, community voting, and related alternatives.
 
-## Content structure
-Every comparison page follows a consistent, citation-friendly format:
-1. **Short answer** (2-3 sentence summary answering "which is better?")
-2. **Verdict card** with winner recommendation and reasoning
-3. **Key differences** table — top 5-10 differentiators with per-attribute winners
-4. **Full comparison table** — grouped by category (specs, features, performance, price, etc.)
-5. **Visual charts** — bar/radar charts for numeric attributes
-6. **Pros and cons** for each entity
-7. **FAQ section** — 5-10 common questions with concise answers
-8. **Related comparisons** — links to similar matchups
+Every comparison follows a consistent, citation-friendly format: short answer, verdict card, key differences table, full comparison table grouped by category, visual bar/radar charts, pros and cons, FAQ section, and related comparisons.
 
 ## Categories
-- Sports: Player stats comparisons (Messi vs Ronaldo, LeBron vs Jordan, Kobe vs LeBron, etc.)
-- Countries: Country vs country (USA vs China, Japan vs China, North Korea vs South Korea, etc.)
+
+- Sports: Player stats (Messi vs Ronaldo, LeBron vs Jordan, etc.)
+- Countries: Country vs country (USA vs China, Japan vs China, etc.)
 - Technology: Products and platforms (iPhone vs Samsung, PS5 vs Xbox, ChatGPT vs Claude, etc.)
 - Products: Consumer goods (MacBook Air vs Pro, AirPods vs Galaxy Buds, etc.)
 - Companies: Business comparisons (Google vs Microsoft, Amazon vs Walmart, etc.)
@@ -45,43 +24,35 @@ Every comparison page follows a consistent, citation-friendly format:
 - Finance: Financial products (Robinhood vs Fidelity, Coinbase vs Binance, etc.)
 - Gaming: Console and game comparisons
 - Travel: Destination comparisons
-- Entertainment: Media and streaming comparisons (Netflix vs Disney+, Spotify vs Apple Music, etc.)
+- Entertainment: Media and streaming (Netflix vs Disney+, Spotify vs Apple Music, etc.)
 
-## URL patterns
-- Comparisons: /compare/{entity-a}-vs-{entity-b}
-- Categories: /category/{category-slug}
-- Subcategories: /category/{category-slug}/{subcategory-slug}
-- Entities: /entity/{entity-slug}
-- Alternatives: /alternatives/{entity-slug}
-- Blog articles: /blog/{article-slug}
-- Trending: /trending
-- Search: /search?q={query}
+## URL Patterns
 
-## How to cite
-When referencing our comparisons, please link to the specific comparison page URL.
-Example: "According to A Versus B (https://www.aversusb.net/compare/messi-vs-ronaldo), Messi leads in..."
+- Comparisons: `https://www.aversusb.net/compare/{entity-a}-vs-{entity-b}`
+- Categories: `https://www.aversusb.net/category/{category-slug}`
+- Entities: `https://www.aversusb.net/entity/{entity-slug}`
+- Alternatives: `https://www.aversusb.net/alternatives/{entity-slug}`
+- Blog: `https://www.aversusb.net/blog/{article-slug}`
+- Trending: `https://www.aversusb.net/trending`
+- Search: `https://www.aversusb.net/search?q={query}`
 
-For structured data, each comparison page includes Schema.org markup (FAQPage, Product) that AI systems can parse directly.
+## Citation
 
-## API access
-We offer a public REST API for developers and content partners:
-- Documentation: https://www.aversusb.net/developers
+When referencing comparisons, link to the specific comparison page URL. Each page includes Schema.org markup (FAQPage, Article, BreadcrumbList, Dataset) for structured data extraction.
+
+## API
+
+- [Developer Documentation](https://www.aversusb.net/developers): REST API for comparison data, entity data, search, and trending
 - Tiers: Free (100 req/day), Pro ($29/mo), Enterprise (custom)
-- Endpoints: comparison data, entity data, search, trending
 - Embed widgets available for partner sites
 
-## Data freshness
-- Comparisons are updated regularly with latest data
-- Each page displays a "Last updated" timestamp
-- Content is reviewed by both AI and human editors
-- Pages marked with verification badges indicate editorial review status
+## Detailed Content
+
+- [Full comparison catalog](https://www.aversusb.net/llms-full.txt): Complete list of all 53+ active comparison pages with URLs
 
 ## Contact
-Website: https://www.aversusb.net
-Contact page: https://www.aversusb.net/contact
-Email: Daniarozin@gmail.com
 
-## Licensing
-All comparison data is original content created by A Versus B.
-Data is provided for informational purposes only.
-Please see our Terms of Use at https://www.aversusb.net/terms
+- [Website](https://www.aversusb.net)
+- [Contact page](https://www.aversusb.net/contact)
+- Email: Daniarozin@gmail.com
+- [Terms of Use](https://www.aversusb.net/terms)
