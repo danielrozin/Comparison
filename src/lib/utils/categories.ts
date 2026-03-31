@@ -36,6 +36,12 @@ export const COMPARISON_CATEGORIES = [
   "science",
   "entertainment",
   "automotive",
+  "health",
+  "food_and_drink",
+  "education",
+  "gaming",
+  "finance",
+  "travel",
   "general",
 ] as const;
 
@@ -88,7 +94,7 @@ const CATEGORY_KEYWORD_RULES: { keywords: string[]; blogCategory: BlogCategory; 
       "pharmaceutical", "vaccine", "surgery", "dental", "skin care",
     ],
     blogCategory: "health",
-    comparisonCategory: "science",
+    comparisonCategory: "health",
   },
   // Food & Drink
   {
@@ -99,7 +105,7 @@ const CATEGORY_KEYWORD_RULES: { keywords: string[]; blogCategory: BlogCategory; 
       "vegan", "vegetarian", "organic", "gluten-free", "keto",
     ],
     blogCategory: "food",
-    comparisonCategory: "products",
+    comparisonCategory: "food_and_drink",
   },
   // Travel
   {
@@ -109,7 +115,7 @@ const CATEGORY_KEYWORD_RULES: { keywords: string[]; blogCategory: BlogCategory; 
       "hiking", "backpacking", "luggage", "passport", "visa",
     ],
     blogCategory: "travel",
-    comparisonCategory: "general",
+    comparisonCategory: "travel",
   },
   // Countries / Geography
   {
@@ -131,14 +137,29 @@ const CATEGORY_KEYWORD_RULES: { keywords: string[]; blogCategory: BlogCategory; 
     blogCategory: "science",
     comparisonCategory: "military",
   },
+  // Gaming — must come before Entertainment to catch gaming-specific comparisons
+  {
+    keywords: [
+      "gaming", "gamer", "esports", "fps", "mmorpg", "rpg",
+      "playstation", "ps5", "ps4", "xbox", "xbox series x", "nintendo switch",
+      "steam deck", "game pass", "ps plus", "fortnite", "minecraft", "roblox",
+      "call of duty", "battlefield", "apex legends", "valorant", "overwatch",
+      "elden ring", "zelda", "genshin impact", "gta", "cyberpunk",
+      "gaming laptop", "gaming pc", "gaming monitor", "gaming keyboard",
+      "gaming mouse", "mechanical keyboard", "graphics card", "gpu",
+      "oculus", "psvr", "vr headset", "steam", "epic games",
+    ],
+    blogCategory: "entertainment",
+    comparisonCategory: "gaming",
+  },
   // Entertainment
   {
     keywords: [
       "movie", "film", "tv show", "series", "streaming", "netflix",
       "disney", "hbo", "amazon prime", "hulu", "spotify", "music",
-      "album", "song", "artist", "band", "concert", "gaming", "game",
-      "playstation", "xbox", "nintendo", "steam", "twitch", "youtube",
-      "tiktok", "instagram", "social media", "podcast", "anime", "manga",
+      "album", "song", "artist", "band", "concert",
+      "youtube", "tiktok", "instagram", "social media", "podcast",
+      "anime", "manga",
     ],
     blogCategory: "entertainment",
     comparisonCategory: "entertainment",
@@ -151,16 +172,29 @@ const CATEGORY_KEYWORD_RULES: { keywords: string[]; blogCategory: BlogCategory; 
       "certification", "scholarship", "tuition", "campus",
     ],
     blogCategory: "education",
-    comparisonCategory: "general",
+    comparisonCategory: "education",
+  },
+  // Finance — must come before Business to catch finance-specific comparisons
+  {
+    keywords: [
+      "bank", "banking", "credit card", "debit card", "savings account",
+      "checking account", "mortgage", "loan", "interest rate", "apr",
+      "investment", "investing", "stock", "bond", "etf", "mutual fund",
+      "ira", "roth ira", "401k", "brokerage", "portfolio",
+      "cryptocurrency", "bitcoin", "ethereum", "crypto", "blockchain",
+      "coinbase", "binance", "robinhood", "webull", "fidelity", "vanguard",
+      "schwab", "visa", "mastercard", "venmo", "zelle", "paypal",
+      "fintech", "insurance", "life insurance", "auto insurance",
+    ],
+    blogCategory: "business",
+    comparisonCategory: "finance",
   },
   // Business / Economy
   {
     keywords: [
-      "business", "company", "startup", "stock", "market", "invest",
-      "revenue", "profit", "ceo", "entrepreneur", "management",
-      "marketing", "saas", "crm", "erp", "b2b", "economy", "inflation",
-      "interest rate", "bank", "finance", "fintech", "insurance",
-      "cryptocurrency", "bitcoin", "ethereum", "blockchain",
+      "business", "company", "startup", "revenue", "profit",
+      "ceo", "entrepreneur", "management", "marketing",
+      "saas", "crm", "erp", "b2b", "economy", "inflation",
     ],
     blogCategory: "business",
     comparisonCategory: "companies",

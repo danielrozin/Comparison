@@ -40,6 +40,11 @@ export async function GET(request: NextRequest) {
     "best alternative", "which is better",
     "claude vs", "notion vs", "aws vs", "bitcoin vs",
     "ozempic vs", "toyota vs", "netflix vs",
+    "ps5 vs", "fortnite vs", "gaming laptop vs",
+    "chipotle vs", "oat milk vs", "air fryer vs",
+    "harvard vs", "coursera vs", "online vs",
+    "delta vs", "airbnb vs", "bali vs",
+    "robinhood vs", "credit card vs", "etf vs",
   ];
 
   // Query DataForSEO for each seed

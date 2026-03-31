@@ -37,6 +37,8 @@ const REDDIT_SUBREDDITS = [
   "technology", "gadgets", "android", "apple", "gaming",
   "fitness", "personalfinance", "cars", "nutrition",
   "programming", "soccer", "nba", "movies",
+  "cooking", "food", "travel", "education", "pcgaming",
+  "investing", "cryptocurrency", "buildapc",
 ];
 
 const REDDIT_USER_AGENT = "AversusB/1.0 (content-discovery)";
@@ -50,6 +52,14 @@ const CATEGORY_TAVILY_SEEDS: Record<string, string[]> = {
   brands: ["brand", "manufacturer"],
   history: ["empire", "civilization", "era"],
   countries: ["country", "nation", "economy"],
+  health: ["medication", "diet", "supplement", "treatment", "fitness"],
+  food_and_drink: ["restaurant", "ingredient", "recipe", "cuisine", "beverage"],
+  education: ["university", "degree", "certification", "online course"],
+  automotive: ["car", "suv", "electric vehicle", "manufacturer"],
+  gaming: ["game", "console", "graphics card", "esports", "gaming laptop"],
+  software: ["saas", "dev tool", "productivity app", "cloud platform"],
+  finance: ["bank", "investment", "cryptocurrency", "trading platform"],
+  travel: ["destination", "airline", "hotel", "travel comparison"],
 };
 
 // ---------------------------------------------------------------------------

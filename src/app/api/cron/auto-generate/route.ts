@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
     "companies", "history", "entertainment", "brands",
     "health", "automotive", "finance", "software",
     "education", "military", "economy", "celebrities", "travel",
+    "food_and_drink", "gaming",
   ];
   const dayOfYear = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
   const hourOfDay = new Date().getUTCHours();
