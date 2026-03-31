@@ -8,6 +8,7 @@ import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
+import { RecentlyViewed } from "@/components/home/RecentlyViewed";
 import { HeroCTA } from "@/components/home/HeroCTA";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -87,6 +88,9 @@ export default async function HomePage() {
           </svg>
         </div>
       </section>
+
+      {/* Your Recently Viewed (localStorage-based, personal) */}
+      <RecentlyViewed />
 
       {/* Recent Searches */}
       <RecentSearches />

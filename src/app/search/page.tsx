@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
 import { trackComparisonSearch } from "@/lib/utils/analytics";
+import { saveSearchContext } from "@/lib/utils/recently-viewed";
 import { Suspense } from "react";
 
 function SearchContent() {
@@ -18,6 +19,7 @@ function SearchContent() {
   useEffect(() => {
     setSearchQuery(query);
     if (query) {
+      saveSearchContext(query);
       setLoading(true);
       fetch(`/api/search?q=${encodeURIComponent(query)}`)
         .then((r) => r.json())

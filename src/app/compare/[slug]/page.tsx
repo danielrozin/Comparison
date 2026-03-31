@@ -33,6 +33,7 @@ import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
 import { BackToResults } from "@/components/comparison/BackToResults";
+import { TrackRecentView } from "@/components/comparison/TrackRecentView";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -46,6 +47,9 @@ import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunne
 import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
 import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
+import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
+import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
+import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -227,6 +231,9 @@ function VerdictFirstLayout({
         />
       ))}
 
+      {/* Track recently viewed */}
+      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
+
       {/* Back to search results */}
       <BackToResults />
 
@@ -240,8 +247,9 @@ function VerdictFirstLayout({
       {/* Table of Contents */}
       <TableOfContents
         items={[
-          ...(comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Verdict" }] : []),
+          ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
           ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
+          ...(comparison.attributes.length > 0 ? [{ id: "key-facts", label: "Key Facts" }] : []),
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
           ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
@@ -262,8 +270,24 @@ function VerdictFirstLayout({
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
-      {/* Short Answer Block — AEO/featured snippet target */}
-      {(comparison.shortAnswer || comparison.verdict) && (
+      {/* Citation Stats Bar — data density signal */}
+      {comparison.citationStats && (
+        <CitationStatsBar stats={comparison.citationStats} />
+      )}
+
+      {/* Quick Answer TL;DR — above the fold, GEO-optimized */}
+      {comparison.quickAnswer?.tldr && (
+        <div id="verdict">
+          <QuickAnswerTLDR
+            quickAnswer={comparison.quickAnswer}
+            entityA={comparison.entities[0]}
+            entityB={comparison.entities[1]}
+          />
+        </div>
+      )}
+
+      {/* Short Answer Block — AEO/featured snippet target (fallback when no quickAnswer) */}
+      {!comparison.quickAnswer?.tldr && (comparison.shortAnswer || comparison.verdict) && (
         <div id="verdict">
           <ShortAnswerBlock
             shortAnswer={comparison.shortAnswer || ""}
@@ -304,6 +328,17 @@ function VerdictFirstLayout({
           entityA={comparison.entities[0]}
           entityB={comparison.entities[1]}
         />
+      )}
+
+      {/* Key Facts & Figures table — exact numbers alongside prose */}
+      {comparison.attributes.length > 0 && (
+        <div id="key-facts">
+          <DataFactsTable
+            attributes={comparison.attributes}
+            entityA={comparison.entities[0]}
+            entityB={comparison.entities[1]}
+          />
+        </div>
       )}
 
       {/* Mobile: related comparisons scroll strip below verdict area */}
@@ -479,6 +514,9 @@ function ClassicLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
+
+      {/* Track recently viewed */}
+      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
 
       {/* Back to search results */}
       <BackToResults />
