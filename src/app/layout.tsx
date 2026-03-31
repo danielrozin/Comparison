@@ -7,6 +7,7 @@ import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
 import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
 import { ConsentScripts } from "@/components/consent/ConsentScripts";
 import { ExperimentProvider } from "@/lib/experiments";
+import { SurveyInterceptPopup } from "@/components/surveys/SurveyInterceptPopup";
 import { organizationSchema } from "@/lib/seo/schema";
 import "./globals.css";
 
@@ -101,6 +102,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <FeedbackWidget />
+          <SurveyInterceptPopup />
           <CookieConsentBanner />
           <ConsentScripts />
         </ExperimentProvider>
