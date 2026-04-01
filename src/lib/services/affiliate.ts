@@ -12,7 +12,10 @@
 import type { ComparisonEntityData, AffiliateLink } from "@/types";
 import { getPrisma } from "@/lib/db/prisma";
 
-const AMAZON_TAG = process.env.NEXT_PUBLIC_AMAZON_AFFILIATE_TAG || "";
+const AMAZON_TAG =
+  process.env.NEXT_PUBLIC_AMAZON_AFFILIATE_TAG ||
+  process.env.AMAZON_ASSOCIATES_TAG ||
+  "";
 const AFFILIATE_ENABLED = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED === "true";
 
 // Entity types that are eligible for affiliate links (products people can buy)

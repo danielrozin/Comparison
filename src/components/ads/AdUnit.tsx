@@ -72,6 +72,30 @@ export function InContentAd() {
   );
 }
 
+/** Above-fold leaderboard ad — responsive 728x90 (desktop) / 320x100 (mobile) */
+export function LeaderboardAd() {
+  return (
+    <AdUnit
+      slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_LEADERBOARD || process.env.NEXT_PUBLIC_ADSENSE_SLOT_INCONTENT || ""}
+      format="horizontal"
+      className="my-4 max-w-5xl mx-auto px-4"
+    />
+  );
+}
+
+/** Sidebar sticky ad — rectangle format for desktop sidebar */
+export function SidebarStickyAd() {
+  return (
+    <div className="hidden lg:block sticky top-24">
+      <AdUnit
+        slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR || ""}
+        format="rectangle"
+        className="my-4"
+      />
+    </div>
+  );
+}
+
 /** Sticky footer ad */
 export function StickyFooterAd() {
   const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;

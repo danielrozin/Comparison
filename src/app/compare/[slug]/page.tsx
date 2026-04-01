@@ -32,23 +32,21 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
-import { BackToResults } from "@/components/comparison/BackToResults";
-import { TrackRecentView } from "@/components/comparison/TrackRecentView";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
-import { InContentAd } from "@/components/ads/AdUnit";
+import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
+import { InContentAd, LeaderboardAd, SidebarStickyAd } from "@/components/ads/AdUnit";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
+import { BestDealBanner } from "@/components/comparison/BestDealBanner";
 import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
 import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
 import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
+import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
-import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
-import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
-import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -230,12 +228,6 @@ function VerdictFirstLayout({
         />
       ))}
 
-      {/* Track recently viewed */}
-      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
-
-      {/* Back to search results */}
-      <BackToResults />
-
       {/* Breadcrumbs */}
       <Breadcrumbs
         title={comparison.title}
@@ -246,9 +238,8 @@ function VerdictFirstLayout({
       {/* Table of Contents */}
       <TableOfContents
         items={[
-          ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
+          ...(comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Verdict" }] : []),
           ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
-          ...(comparison.attributes.length > 0 ? [{ id: "key-facts", label: "Key Facts" }] : []),
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
           ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
@@ -269,30 +260,25 @@ function VerdictFirstLayout({
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
-      {/* Citation Stats Bar — data density signal */}
-      {comparison.citationStats && (
-        <CitationStatsBar stats={comparison.citationStats} />
-      )}
+      {/* Best Deal Banner — top of page, shows pricing CTAs for product comparisons */}
+      <BestDealBanner entities={comparison.entities} category={comparison.category} />
 
-      {/* Quick Answer TL;DR — above the fold, GEO-optimized */}
-      {comparison.quickAnswer?.tldr && (
-        <div id="verdict">
-          <QuickAnswerTLDR
-            quickAnswer={comparison.quickAnswer}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
-          />
-        </div>
-      )}
+      {/* Above-fold leaderboard ad */}
+      <LeaderboardAd />
 
-      {/* Short Answer Block — AEO/featured snippet target (fallback when no quickAnswer) */}
-      {!comparison.quickAnswer?.tldr && (comparison.shortAnswer || comparison.verdict) && (
+      {/* Quick Answer TL;DR — above the fold, with citation stats */}
+      <QuickAnswerTLDR comparison={comparison} />
+
+      {/* Short Answer Block — AEO/featured snippet target */}
+      {(comparison.shortAnswer || comparison.verdict) && (
         <div id="verdict">
           <ShortAnswerBlock
             shortAnswer={comparison.shortAnswer || ""}
             verdict={comparison.verdict}
             entityA={comparison.entities[0]}
             entityB={comparison.entities[1]}
+            attributeCount={comparison.attributes.length}
+            factCount={comparison.attributes.length + comparison.keyDifferences.length}
           />
         </div>
       )}
@@ -304,6 +290,12 @@ function VerdictFirstLayout({
           shortAnswer={comparison.shortAnswer}
           entities={comparison.entities}
           attributes={comparison.attributes}
+          totalDataPoints={
+            comparison.attributes.length * 2 +
+            comparison.keyDifferences.length +
+            comparison.faqs.length +
+            comparison.entities.reduce((c, e) => c + (e.pros?.length || 0) + (e.cons?.length || 0), 0)
+          }
         />
       )}
 
@@ -327,17 +319,6 @@ function VerdictFirstLayout({
           entityA={comparison.entities[0]}
           entityB={comparison.entities[1]}
         />
-      )}
-
-      {/* Key Facts & Figures table — exact numbers alongside prose */}
-      {comparison.attributes.length > 0 && (
-        <div id="key-facts">
-          <DataFactsTable
-            attributes={comparison.attributes}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
-          />
-        </div>
       )}
 
       {/* Mobile: related comparisons scroll strip below verdict area */}
@@ -383,14 +364,12 @@ function VerdictFirstLayout({
             />
           )}
 
+          {/* Mid-article ad — between comparison data and pros/cons */}
+          <InContentAd />
+
           {/* Pros & Cons */}
           <div id="pros-cons">
             <ProsConsBlock entities={comparison.entities} />
-          </div>
-
-          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
           </div>
 
           {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
@@ -414,17 +393,19 @@ function VerdictFirstLayout({
           </div>
         </div>
 
-        {/* Desktop: sticky related comparisons sidebar */}
-        {sidebarComparisons.length > 0 && (
-          <RelatedComparisonsSidebar
-            comparisons={sidebarComparisons}
-            sourceSlug={slug}
-          />
-        )}
-      </div>
+        {/* Desktop sidebar: related comparisons + sticky ad */}
+        <div className="hidden lg:block lg:w-72 flex-shrink-0">
+          {sidebarComparisons.length > 0 && (
+            <RelatedComparisonsSidebar
+              comparisons={sidebarComparisons}
+              sourceSlug={slug}
+            />
+          )}
+          <SidebarStickyAd />
+        </div>
 
-      {/* Ad: between main content and partner reviews */}
-      <InContentAd />
+        {/* Mobile: related comparisons (rendered earlier via scroll strip) */}
+      </div>
 
       {/* Partner Reviews (SmartReview) */}
       {(() => {
@@ -487,6 +468,7 @@ function VerdictFirstLayout({
 
       {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
       <ExitIntentPopup />
+      <MobileExitIntent />
     </>
   );
 }
@@ -513,12 +495,6 @@ function ClassicLayout({
         />
       ))}
 
-      {/* Track recently viewed */}
-      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
-
-      {/* Back to search results */}
-      <BackToResults />
-
       {/* Breadcrumbs */}
       <Breadcrumbs
         title={comparison.title}
@@ -538,19 +514,11 @@ function ClassicLayout({
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
-      {/* Citation Stats Bar — data density signal */}
-      {comparison.citationStats && (
-        <CitationStatsBar stats={comparison.citationStats} />
-      )}
+      {/* Best Deal Banner — top of page, shows pricing CTAs for product comparisons */}
+      <BestDealBanner entities={comparison.entities} category={comparison.category} />
 
-      {/* Quick Answer TL;DR — GEO-optimized */}
-      {comparison.quickAnswer?.tldr && (
-        <QuickAnswerTLDR
-          quickAnswer={comparison.quickAnswer}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
-      )}
+      {/* Above-fold leaderboard ad */}
+      <LeaderboardAd />
 
       {/* Mobile: related comparisons scroll strip */}
       {sidebarComparisons.length > 0 && (
@@ -573,15 +541,6 @@ function ClassicLayout({
             />
           )}
 
-          {/* Key Facts & Figures table */}
-          {comparison.attributes.length > 0 && (
-            <DataFactsTable
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
-          )}
-
           {/* Comparison Table */}
           {comparison.attributes.length > 0 && (
             <ComparisonTable
@@ -599,6 +558,9 @@ function ClassicLayout({
               entityB={comparison.entities[1]}
             />
           )}
+
+          {/* Mid-article ad — between comparison data and pros/cons */}
+          <InContentAd />
 
           {/* Pros & Cons */}
           <ProsConsBlock entities={comparison.entities} />
@@ -624,9 +586,6 @@ function ClassicLayout({
             />
           )}
 
-          {/* Ad: between verdict and partner reviews */}
-          <InContentAd />
-
           {/* Partner Reviews (SmartReview) */}
           {(() => {
             const partnerReviews = getPartnerReviews(comparison.slug);
@@ -648,13 +607,16 @@ function ClassicLayout({
           />
         </div>
 
-        {/* Desktop: sticky related comparisons sidebar */}
-        {sidebarComparisons.length > 0 && (
-          <RelatedComparisonsSidebar
-            comparisons={sidebarComparisons}
-            sourceSlug={slug}
-          />
-        )}
+        {/* Desktop sidebar: related comparisons + sticky ad */}
+        <div className="hidden lg:block lg:w-72 flex-shrink-0">
+          {sidebarComparisons.length > 0 && (
+            <RelatedComparisonsSidebar
+              comparisons={sidebarComparisons}
+              sourceSlug={slug}
+            />
+          )}
+          <SidebarStickyAd />
+        </div>
       </div>
 
       {/* Full-width sections below sidebar area */}
@@ -705,6 +667,7 @@ function ClassicLayout({
 
       {/* Exit Intent — desktop (mouse leave) + mobile (scroll-up) */}
       <ExitIntentPopup />
+      <MobileExitIntent />
     </>
   );
 }

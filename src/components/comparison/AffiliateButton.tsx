@@ -26,10 +26,12 @@ export function AffiliateButton({
   link,
   variant = "primary",
   size = "sm",
+  label,
 }: {
   link: AffiliateLink;
   variant?: "primary" | "secondary";
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
+  label?: string;
 }) {
   const icon = PARTNER_ICONS[link.partner];
   const { variant: ctaVariant } = useExperiment("cta-button-style");
@@ -38,7 +40,11 @@ export function AffiliateButton({
   const baseClasses =
     "inline-flex items-center gap-1.5 font-semibold rounded-lg transition-all duration-200 no-underline";
   const sizeClasses =
-    size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
+    size === "sm"
+      ? "px-3 py-2 text-xs min-h-[44px]"
+      : size === "md"
+        ? "px-4 py-2.5 text-sm min-h-[44px]"
+        : "px-5 py-3 text-base min-h-[48px]";
 
   const variantClasses = isTreatment
     ? variant === "primary"
@@ -48,7 +54,7 @@ export function AffiliateButton({
       ? "bg-amber-500 hover:bg-amber-600 text-white shadow-sm hover:shadow-md"
       : "bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400";
 
-  const ctaText = isTreatment ? "Buy Now" : "Check Price";
+  const ctaText = label || (isTreatment ? "Buy Now" : (link.partner === "amazon" ? "View Deal" : "Check Price"));
 
   return (
     <a
