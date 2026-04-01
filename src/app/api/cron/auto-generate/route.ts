@@ -7,6 +7,7 @@ import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-genera
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
 import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
+import { storeKeywordOpportunities } from "@/lib/services/keyword-service";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
 export const maxDuration = 300; // 5 minutes
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
     allErrors.push(`Discovery failed: ${err instanceof Error ? err.message : "Unknown"}`);
   }
 
-  // Step 2: Also try to store in Redis if available (non-blocking)
+  // Step 2: Persist discovered opportunities to DB and Redis
   try {
     if (comparisonTopics.length > 0) {
       const asOpportunities: DiscoveredOpportunity[] = comparisonTopics.map(t => ({
@@ -96,6 +97,13 @@ export async function GET(request: NextRequest) {
         opportunityScore: t.opportunityScore,
         source: `content-discovery:${t.source}`,
       }));
+      // Persist to PostgreSQL (durable)
+      try {
+        await storeKeywordOpportunities(asOpportunities);
+      } catch {
+        // DB persist is best-effort during auto-generate
+      }
+      // Cache in Redis for pipeline
       await mergeOpportunities(asOpportunities);
     }
   } catch {

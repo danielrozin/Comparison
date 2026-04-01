@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { mergeOpportunities } from "@/lib/services/pipeline-service";
+import { storeKeywordOpportunities } from "@/lib/services/keyword-service";
 import { parseComparisonKeyword, scoreOpportunity } from "@/lib/dataforseo/keyword-discovery";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
@@ -10,7 +12,8 @@ export const maxDuration = 60;
  * GET /api/cron/daily-discovery
  *
  * Daily cron job: discovers comparison keyword opportunities via DataForSEO,
- * saves them to the Redis pipeline, and sends a report email.
+ * saves them to both PostgreSQL (persistent) and Redis pipeline (cache),
+ * and sends a report email.
  *
  * Triggered by Vercel Cron (vercel.json) once daily at 8am UTC.
  */
@@ -21,11 +24,26 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const checkInId = Sentry.captureCheckIn({
+    monitorSlug: "daily-discovery",
+    status: "in_progress",
+  }, {
+    schedule: { type: "crontab", value: "0 8 * * *" },
+    maxRuntime: 2,
+    checkinMargin: 5,
+  });
+
   const startTime = Date.now();
   const login = process.env.DATAFORSEO_LOGIN;
   const password = process.env.DATAFORSEO_PASSWORD;
+  const allErrors: string[] = [];
 
   if (!login || !password) {
+    Sentry.captureCheckIn({
+      checkInId,
+      monitorSlug: "daily-discovery",
+      status: "error",
+    });
     return NextResponse.json({ error: "DataForSEO credentials not configured" }, { status: 500 });
   }
 
@@ -48,6 +66,7 @@ export async function GET(request: NextRequest) {
   ];
 
   // Query DataForSEO for each seed
+  let seedsQueried = 0;
   for (const seed of seeds) {
     try {
       const res = await fetch("https://api.dataforseo.com/v3/dataforseo_labs/google/keyword_suggestions/live", {
@@ -63,8 +82,14 @@ export async function GET(request: NextRequest) {
         }]),
       });
 
+      if (!res.ok) {
+        allErrors.push(`Seed "${seed}": HTTP ${res.status}`);
+        continue;
+      }
+
       const data = await res.json();
       const items = data.tasks?.[0]?.result?.[0]?.items || [];
+      seedsQueried++;
 
       for (const item of items) {
         const kw = item.keyword?.toLowerCase() || "";
@@ -82,7 +107,9 @@ export async function GET(request: NextRequest) {
         }
       }
     } catch (err) {
-      console.error(`Seed "${seed}" failed:`, err);
+      const msg = `Seed "${seed}" failed: ${err instanceof Error ? err.message : "Unknown"}`;
+      allErrors.push(msg);
+      console.error(msg);
     }
   }
 
@@ -98,7 +125,7 @@ export async function GET(request: NextRequest) {
   const sorted = Array.from(unique.values()).sort((a, b) => b.volume - a.volume);
   const duration = Date.now() - startTime;
 
-  // Save to Redis pipeline (convert to DiscoveredOpportunity format)
+  // Convert to DiscoveredOpportunity format
   const pipelineOpps: DiscoveredOpportunity[] = sorted.map((opp) => {
     const parsed = parseComparisonKeyword(opp.keyword);
 
@@ -125,7 +152,23 @@ export async function GET(request: NextRequest) {
     };
   });
 
-  await mergeOpportunities(pipelineOpps);
+  // Persist to PostgreSQL (durable storage)
+  let dbCreated = 0;
+  let dbUpdated = 0;
+  try {
+    const dbResult = await storeKeywordOpportunities(pipelineOpps);
+    dbCreated = dbResult.created;
+    dbUpdated = dbResult.updated;
+  } catch (err) {
+    allErrors.push(`DB persist failed: ${err instanceof Error ? err.message : "Unknown"}`);
+  }
+
+  // Save to Redis pipeline (cache for auto-generate, non-critical)
+  try {
+    await mergeOpportunities(pipelineOpps);
+  } catch (err) {
+    allErrors.push(`Redis merge failed: ${err instanceof Error ? err.message : "Unknown"}`);
+  }
 
   // Build email report
   const top20 = sorted.slice(0, 20);
@@ -137,32 +180,47 @@ export async function GET(request: NextRequest) {
 ========================================
 Date: ${new Date().toISOString().split("T")[0]}
 Duration: ${duration}ms
+Seeds queried: ${seedsQueried}/${seeds.length}
 Total keywords found: ${sorted.length}
-Seeds queried: ${seeds.length}
-Saved to pipeline: ${pipelineOpps.length} opportunities
+Saved to DB: ${dbCreated} new, ${dbUpdated} updated
+Saved to Redis pipeline: ${pipelineOpps.length} opportunities
 
 Top 20 Opportunities:
 ${reportLines.join("\n")}
 
 Total estimated search volume (top 20): ${top20.reduce((s, k) => s + k.volume, 0).toLocaleString()}/mo
+${allErrors.length > 0 ? `\nErrors (${allErrors.length}):\n${allErrors.map((e) => `  - ${e}`).join("\n")}` : "\nNo errors!"}
 
 Full results available via API: /api/pipeline/opportunities
 `;
 
-  // Send email notification
-  await sendNotificationEmail({
-    subject: `Daily Report: ${sorted.length} keywords found`,
-    type: "cron-report",
-    message: report,
-    pageUrl: "https://www.aversusb.net/api/cron/daily-discovery",
+  // Send email notification (non-critical)
+  try {
+    await sendNotificationEmail({
+      subject: `Daily Report: ${sorted.length} keywords found (${dbCreated} new)`,
+      type: "cron-report",
+      message: report,
+      pageUrl: "https://www.aversusb.net/api/cron/daily-discovery",
+    });
+  } catch {
+    // Email is non-critical
+  }
+
+  Sentry.captureCheckIn({
+    checkInId,
+    monitorSlug: "daily-discovery",
+    status: allErrors.length > sorted.length / 2 ? "error" : "ok",
   });
 
   return NextResponse.json({
     success: true,
     duration: `${duration}ms`,
+    seedsQueried,
     totalKeywords: sorted.length,
-    savedToPipeline: pipelineOpps.length,
+    savedToDb: { created: dbCreated, updated: dbUpdated },
+    savedToRedis: pipelineOpps.length,
     top20: top20,
+    errors: allErrors,
     timestamp: new Date().toISOString(),
   });
 }

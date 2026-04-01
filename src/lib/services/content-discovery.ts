@@ -18,7 +18,7 @@ import { discoverByCategory, type DiscoveredOpportunity } from "@/lib/dataforseo
 
 export interface DiscoveredTopic {
   topic: string;
-  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends" | "gsc" | "twitter" | "facebook" | "instagram";
+  source: "dataforseo" | "reddit" | "quora" | "tavily" | "google_trends" | "gsc" | "twitter" | "facebook" | "instagram" | "tiktok" | "youtube";
   type: "comparison" | "blog";
   entityA: string | null;
   entityB: string | null;
@@ -231,9 +231,10 @@ export async function discoverFromTavily(
   for (const cat of cats) {
     try {
       const seeds = CATEGORY_TAVILY_SEEDS[cat] || [cat];
-      // Search for trending comparisons in this category
+      // Search for trending comparisons using category-specific seed terms
+      const seedTerm = seeds[Math.floor(Math.random() * seeds.length)];
       const results = await searchTavily(
-        `${cat} vs comparison 2026 best which is better`,
+        `${seedTerm} vs comparison 2026 best which is better ${cat}`,
         10
       );
 
@@ -563,7 +564,7 @@ export async function discoverFromTikTok(): Promise<DiscoveredTopic[]> {
 
       topics.push({
         topic: text.slice(0, 200),
-        source: "twitter", // reuse type for social
+        source: "tiktok",
         type: "comparison",
         entityA: parsed.entityA,
         entityB: parsed.entityB,
@@ -610,7 +611,7 @@ export async function discoverFromYouTube(): Promise<DiscoveredTopic[]> {
 
       topics.push({
         topic: title.slice(0, 200),
-        source: "twitter", // reuse type for social
+        source: "youtube",
         type: "comparison",
         entityA: parsed.entityA,
         entityB: parsed.entityB,
