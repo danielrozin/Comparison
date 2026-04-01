@@ -35,8 +35,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
 
   return (
     <>
-      {/* Mobile: collapsible bar */}
-      <div className="lg:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
+      {/* Mobile/tablet/desktop: collapsible bar (hidden only on very wide screens where fixed sidebar fits) */}
+      <div className="min-[1700px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full flex items-center justify-between px-4 py-3 bg-surface-alt border border-border rounded-xl text-sm font-semibold text-text"
@@ -71,8 +71,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         )}
       </div>
 
-      {/* Desktop: fixed left-edge pill (only visible on xl screens where there's room) */}
-      <nav className="hidden xl:block fixed left-4 top-1/2 -translate-y-1/2 z-30 w-48">
+      {/* Desktop: fixed left-edge pill (only visible on very wide screens where there's room beside content) */}
+      <nav className="hidden min-[1700px]:block fixed left-4 top-1/2 -translate-y-1/2 z-30 w-48">
         <div className="bg-white/90 backdrop-blur-sm border border-border rounded-xl shadow-lg p-3 space-y-0.5">
           <p className="text-[10px] font-bold uppercase tracking-wider text-text-secondary px-3 pb-1.5 mb-1 border-b border-border">
             On this page
