@@ -3,6 +3,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget } from "@/components/feedback/FeedbackWidget";
+import { CookieConsentBanner } from "@/components/consent/CookieConsentBanner";
 import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
@@ -80,9 +81,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        {/* Clarity — only loads if analytics consent granted or non-EU without prior choice */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "w2svnzrk4f");`,
+            __html: `(function(){var c=document.cookie.match(/(?:^|; )cookie_consent=([^;]*)/);if(c){try{var s=JSON.parse(decodeURIComponent(c[1]));if(!s.analytics)return}catch(e){return}}else{if(document.cookie.indexOf('consent_region=eu')!==-1)return}(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","w2svnzrk4f")})();`,
           }}
         />
         <script
@@ -106,6 +108,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <FeedbackWidget />
+          <CookieConsentBanner />
         </ExperimentProviderServer>
       </body>
     </html>

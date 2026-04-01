@@ -8,8 +8,18 @@ const RATE_LIMITS: Record<string, { windowMs: number; maxRequests: number }> = {
   "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 5 },
   "/api/comments": { windowMs: 60_000, maxRequests: 10 },
   "/api/feedback": { windowMs: 60_000, maxRequests: 5 },
+  "/api/consent": { windowMs: 60_000, maxRequests: 5 },
   "/api/admin": { windowMs: 60_000, maxRequests: 10 },
 };
+
+// EU/EEA country codes for GDPR consent defaults
+const EU_COUNTRIES = new Set([
+  "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR",
+  "DE","GR","HU","IE","IT","LV","LT","LU","MT","NL",
+  "PL","PT","RO","SK","SI","ES","SE",
+  "IS","LI","NO", // EEA
+  "GB", // UK GDPR
+]);
 
 function getClientIp(request: NextRequest): string {
   return (
@@ -57,9 +67,18 @@ function cleanupStaleEntries() {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only apply to API routes
+  // For non-API routes, set geo cookie for consent banner EU detection
   if (!pathname.startsWith("/api/")) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    const country = request.headers.get("x-vercel-ip-country") || "";
+    const isEU = EU_COUNTRIES.has(country);
+    response.cookies.set("consent_region", isEU ? "eu" : "other", {
+      path: "/",
+      maxAge: 86400,
+      sameSite: "lax",
+      httpOnly: false,
+    });
+    return response;
   }
 
   // Rate limiting
@@ -94,5 +113,8 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: [
+    "/api/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

@@ -1,11 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
+import { getConsentFromCookie } from "@/lib/utils/consent";
 
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
 export function MetaPixel() {
-  if (!META_PIXEL_ID) return null;
+  const [hasMarketingConsent, setHasMarketingConsent] = useState(false);
+
+  useEffect(() => {
+    const consent = getConsentFromCookie();
+    // Load Meta Pixel only if marketing consent is granted,
+    // or if no consent cookie exists and user is non-EU (consent_region != eu)
+    if (consent) {
+      setHasMarketingConsent(consent.marketing);
+    } else {
+      const isEU = document.cookie.indexOf("consent_region=eu") !== -1;
+      setHasMarketingConsent(!isEU);
+    }
+  }, []);
+
+  if (!META_PIXEL_ID || !hasMarketingConsent) return null;
 
   return (
     <>
