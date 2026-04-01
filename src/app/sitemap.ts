@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
 import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+import { getAllSitemapData } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 
@@ -45,32 +45,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
   );
 
-  // Comparison pages (highest value)
-  const slugs = getAllMockSlugs();
-  const comparisonPages: MetadataRoute.Sitemap = slugs.map((slug) => {
-    const comp = getMockComparison(slug);
-    return {
-      url: `${SITE_URL}/compare/${slug}`,
-      lastModified: comp?.metadata?.updatedAt || now,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    };
-  });
+  // Comparison, entity, and alternatives pages — DB + mock merged
+  const { comparisons: allComparisons, entities: entityData } = await getAllSitemapData();
 
-  // Entity pages — use the latest comparison updatedAt for each entity
-  const entityData = new Map<string, string>(); // slug → latest updatedAt
-  for (const slug of slugs) {
-    const comp = getMockComparison(slug);
-    if (comp) {
-      const compUpdated = comp.metadata?.updatedAt || now;
-      comp.entities.forEach((e) => {
-        const existing = entityData.get(e.slug);
-        if (!existing || compUpdated > existing) {
-          entityData.set(e.slug, compUpdated);
-        }
-      });
-    }
-  }
+  const comparisonPages: MetadataRoute.Sitemap = allComparisons.map((comp) => ({
+    url: `${SITE_URL}/compare/${comp.slug}`,
+    lastModified: comp.updatedAt,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  }));
+
   const entityPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
     url: `${SITE_URL}/entity/${slug}`,
     lastModified: updatedAt,
@@ -78,7 +62,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // Alternatives pages
   const alternativesPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
     url: `${SITE_URL}/alternatives/${slug}`,
     lastModified: updatedAt,

@@ -1084,3 +1084,64 @@ export async function getTotalComparisonsCount(): Promise<number> {
     return 107;
   }
 }
+
+export async function getAllSitemapData(): Promise<{
+  comparisons: { slug: string; updatedAt: string }[];
+  entities: Map<string, string>;
+}> {
+  const comparisons: { slug: string; updatedAt: string }[] = [];
+  const entities = new Map<string, string>(); // slug → latest updatedAt
+  const seenSlugs = new Set<string>();
+  const now = new Date().toISOString();
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const rows = await prisma.comparison.findMany({
+        where: { status: "published" },
+        select: {
+          slug: true,
+          updatedAt: true,
+          entities: {
+            select: { entity: { select: { slug: true } } },
+          },
+        },
+      });
+
+      for (const row of rows) {
+        const updatedAt = row.updatedAt ? new Date(row.updatedAt).toISOString() : now;
+        if (!seenSlugs.has(row.slug)) {
+          seenSlugs.add(row.slug);
+          comparisons.push({ slug: row.slug, updatedAt });
+        }
+        for (const ce of row.entities) {
+          const existing = entities.get(ce.entity.slug);
+          if (!existing || updatedAt > existing) {
+            entities.set(ce.entity.slug, updatedAt);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Prisma getAllSitemapData failed, falling back to mock:", e);
+    }
+  }
+
+  // Merge mock data
+  const allMockSlugs = getAllMockSlugs();
+  for (const slug of allMockSlugs) {
+    if (seenSlugs.has(slug)) continue;
+    const comp = getMockComparison(slug);
+    if (!comp) continue;
+    seenSlugs.add(slug);
+    const updatedAt = comp.metadata?.updatedAt || now;
+    comparisons.push({ slug, updatedAt });
+    for (const e of comp.entities) {
+      const existing = entities.get(e.slug);
+      if (!existing || updatedAt > existing) {
+        entities.set(e.slug, updatedAt);
+      }
+    }
+  }
+
+  return { comparisons, entities };
+}
