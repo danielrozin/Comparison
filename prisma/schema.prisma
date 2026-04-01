@@ -522,15 +522,26 @@ model Category {
 model NewsletterSubscriber {
   id           String   @id @default(cuid())
   email        String   @unique
-  source       String?  // "footer", "comparison", "homepage", "blog"
+  source       String?  // "footer", "comparison", "homepage", "blog", "alert"
   referrerSlug String?  @map("referrer_slug") // which page they signed up from
-  status       String   @default("active") // active, unsubscribed
+  status       String   @default("pending") // pending, active, unsubscribed
+
+  // Category preferences — which comparison categories the user cares about
+  categories   String[] @default([]) // e.g. ["technology", "sports", "countries"]
+
+  // GDPR double opt-in
+  confirmToken    String?   @unique @map("confirm_token") // random token for email confirmation
+  confirmedAt     DateTime? @map("confirmed_at") // when the user clicked the confirm link
+  unsubscribeToken String?  @unique @map("unsubscribe_token") // signed token for one-click unsubscribe
+
   subscribedAt DateTime @default(now()) @map("subscribed_at")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@index([status])
   @@index([source])
+  @@index([confirmToken])
+  @@index([unsubscribeToken])
   @@map("newsletter_subscribers")
 }
 

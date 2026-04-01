@@ -47,6 +47,50 @@ export async function sendNotificationEmail(opts: {
   return { success: true, method: "logged" };
 }
 
+export async function sendConfirmationEmail(opts: {
+  to: string;
+  confirmUrl: string;
+  categories?: string[];
+}) {
+  const categoryLine =
+    opts.categories && opts.categories.length > 0
+      ? `\nCategories: ${opts.categories.join(", ")}`
+      : "";
+
+  const message = [
+    `Please confirm your subscription to A Versus B.`,
+    "",
+    `Click the link below to confirm:`,
+    opts.confirmUrl,
+    "",
+    `If you didn't sign up, you can safely ignore this email.${categoryLine}`,
+  ].join("\n");
+
+  if (WEB3FORMS_KEY) {
+    try {
+      const res = await fetch(WEB3FORMS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          to: opts.to,
+          subject: "[A Versus B] Confirm your subscription",
+          from_name: "A Versus B",
+          message,
+        }),
+      });
+      const data = await res.json();
+      return { success: data.success, method: "web3forms" };
+    } catch (err) {
+      console.error("Confirmation email failed:", err);
+    }
+  }
+
+  console.log(`[CONFIRM EMAIL] To: ${opts.to}`);
+  console.log(`  Confirm URL: ${opts.confirmUrl}`);
+  return { success: true, method: "logged" };
+}
+
 export async function sendPartnerKeyEmail(opts: {
   partnerEmail: string;
   partnerName: string;

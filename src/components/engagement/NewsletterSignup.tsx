@@ -3,15 +3,44 @@
 import { useState } from "react";
 import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
+const CATEGORY_OPTIONS = [
+  { value: "technology", label: "Technology" },
+  { value: "sports", label: "Sports" },
+  { value: "countries", label: "Countries" },
+  { value: "products", label: "Products" },
+  { value: "health", label: "Health" },
+  { value: "companies", label: "Companies" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "brands", label: "Brands" },
+  { value: "automotive", label: "Automotive" },
+];
+
 interface NewsletterSignupProps {
   source: string;
   referrerSlug?: string;
   variant?: "inline" | "card";
+  showCategories?: boolean;
+  defaultCategory?: string;
 }
 
-export function NewsletterSignup({ source, referrerSlug, variant = "card" }: NewsletterSignupProps) {
+export function NewsletterSignup({
+  source,
+  referrerSlug,
+  variant = "card",
+  showCategories = false,
+  defaultCategory,
+}: NewsletterSignupProps) {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    defaultCategory ? [defaultCategory] : []
+  );
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "already" | "error">("idle");
+
+  const toggleCategory = (value: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(value) ? prev.filter((c) => c !== value) : [...prev, value]
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +51,16 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       const res = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), source, referrerSlug }),
+        body: JSON.stringify({
+          email: email.trim(),
+          source,
+          referrerSlug,
+          categories: selectedCategories.length > 0 ? selectedCategories : undefined,
+        }),
       });
       if (res.ok) {
-        setStatus("success");
+        const data = await res.json();
+        setStatus(data.alreadySubscribed ? "already" : "success");
         setEmail("");
         trackNewsletterSignup(referrerSlug || source, variant);
       } else {
@@ -39,9 +74,24 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
   if (status === "success") {
     return (
       <div className={variant === "card" ? "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : ""}>
+        <div className={`${variant === "card" ? "bg-blue-50 border border-blue-200 rounded-xl p-6" : ""} text-center`}>
+          <p className={`font-medium ${variant === "card" ? "text-blue-800" : "text-blue-400"}`}>
+            Check your email to confirm your subscription!
+          </p>
+          <p className={`text-sm mt-1 ${variant === "card" ? "text-blue-600" : "text-blue-300"}`}>
+            We sent a confirmation link. Click it to start receiving comparisons.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "already") {
+    return (
+      <div className={variant === "card" ? "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : ""}>
         <div className={`${variant === "card" ? "bg-green-50 border border-green-200 rounded-xl p-6" : ""} text-center`}>
           <p className={`font-medium ${variant === "card" ? "text-green-800" : "text-green-400"}`}>
-            You&apos;re subscribed! We&apos;ll send you the best comparisons weekly.
+            You&apos;re already subscribed! Preferences updated.
           </p>
         </div>
       </div>
@@ -82,6 +132,26 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
         <p className="text-sm text-text-secondary mb-4">
           Weekly digest of trending comparisons, new categories, and expert insights. No spam.
         </p>
+
+        {showCategories && (
+          <div className="flex flex-wrap justify-center gap-2 mb-4 max-w-lg mx-auto">
+            {CATEGORY_OPTIONS.map((cat) => (
+              <button
+                key={cat.value}
+                type="button"
+                onClick={() => toggleCategory(cat.value)}
+                className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors ${
+                  selectedCategories.includes(cat.value)
+                    ? "bg-primary-600 text-white border-primary-600"
+                    : "bg-white text-text-secondary border-gray-300 hover:border-primary-400"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
           <input
             type="email"
@@ -103,7 +173,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           <p className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
         )}
         <p className="text-xs text-text-secondary mt-3">
-          Join 1,000+ readers. Unsubscribe anytime.
+          We&apos;ll send a confirmation email. Unsubscribe anytime.
         </p>
       </div>
     </div>

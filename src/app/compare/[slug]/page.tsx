@@ -24,6 +24,7 @@ import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { ComparisonAlertSignup } from "@/components/engagement/ComparisonAlertSignup";
 import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { PartnerReviews } from "@/components/comparison/PartnerReviews";
@@ -417,7 +418,7 @@ function VerdictFirstLayout({
           </div>
         </div>
 
-        {/* Desktop sidebar: related comparisons + sticky ad */}
+        {/* Desktop sidebar: related comparisons + alert signup + sticky ad */}
         <div className="hidden lg:block lg:w-72 flex-shrink-0">
           {sidebarComparisons.length > 0 && (
             <RelatedComparisonsSidebar
@@ -425,6 +426,14 @@ function VerdictFirstLayout({
               sourceSlug={slug}
             />
           )}
+          <div className="mt-4">
+            <ComparisonAlertSignup
+              comparisonSlug={comparison.slug}
+              entityA={comparison.entities[0]?.name || ""}
+              entityB={comparison.entities[1]?.name || ""}
+              category={comparison.category || undefined}
+            />
+          </div>
           <SidebarStickyAd />
         </div>
 
@@ -460,7 +469,7 @@ function VerdictFirstLayout({
       />
 
       {/* Newsletter Signup */}
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} showCategories defaultCategory={comparison.category || undefined} />
 
       {/* Comments */}
       <div id="comments">
@@ -631,7 +640,7 @@ function ClassicLayout({
           />
         </div>
 
-        {/* Desktop sidebar: related comparisons + sticky ad */}
+        {/* Desktop sidebar: related comparisons + alert signup + sticky ad */}
         <div className="hidden lg:block lg:w-72 flex-shrink-0">
           {sidebarComparisons.length > 0 && (
             <RelatedComparisonsSidebar
@@ -639,6 +648,14 @@ function ClassicLayout({
               sourceSlug={slug}
             />
           )}
+          <div className="mt-4">
+            <ComparisonAlertSignup
+              comparisonSlug={comparison.slug}
+              entityA={comparison.entities[0]?.name || ""}
+              entityB={comparison.entities[1]?.name || ""}
+              category={comparison.category || undefined}
+            />
+          </div>
           <SidebarStickyAd />
         </div>
       </div>
@@ -661,7 +678,7 @@ function ClassicLayout({
       />
 
       {/* Newsletter Signup */}
-      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} showCategories defaultCategory={comparison.category || undefined} />
 
       {/* Comments */}
       <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />

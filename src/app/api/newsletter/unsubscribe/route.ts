@@ -2,36 +2,66 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 
 export async function GET(request: NextRequest) {
-  const email = request.nextUrl.searchParams.get("email");
+  const token = request.nextUrl.searchParams.get("token");
+  // Backwards-compatible: also support ?email= for existing digest links
+  const emailParam = request.nextUrl.searchParams.get("email");
 
-  if (!email) {
-    return new NextResponse(unsubscribePage("Missing email parameter.", false), {
+  if (!token && !emailParam) {
+    return new NextResponse(unsubscribePage("Missing unsubscribe token.", false), {
       status: 400,
       headers: { "Content-Type": "text/html" },
     });
   }
 
-  const normalizedEmail = decodeURIComponent(email).toLowerCase().trim();
   const prisma = getPrisma();
+  if (!prisma) {
+    return new NextResponse(unsubscribePage("Service temporarily unavailable.", false), {
+      status: 503,
+      headers: { "Content-Type": "text/html" },
+    });
+  }
 
-  if (prisma) {
-    try {
+  try {
+    let email: string | null = null;
+
+    if (token) {
+      // Token-based unsubscribe (preferred, secure)
+      const subscriber = await prisma.newsletterSubscriber.findUnique({
+        where: { unsubscribeToken: token },
+      });
+
+      if (!subscriber) {
+        return new NextResponse(unsubscribePage("Invalid or expired unsubscribe link.", false), {
+          status: 404,
+          headers: { "Content-Type": "text/html" },
+        });
+      }
+
+      email = subscriber.email;
+      await prisma.newsletterSubscriber.update({
+        where: { id: subscriber.id },
+        data: { status: "unsubscribed" },
+      });
+    } else if (emailParam) {
+      // Legacy email-based unsubscribe (backwards compat for old digest emails)
+      const normalizedEmail = decodeURIComponent(emailParam).toLowerCase().trim();
+      email = normalizedEmail;
       await prisma.newsletterSubscriber.updateMany({
         where: { email: normalizedEmail },
         data: { status: "unsubscribed", updatedAt: new Date() },
       });
-    } catch (err) {
-      console.error("Unsubscribe error:", err);
-      return new NextResponse(unsubscribePage("Something went wrong. Please try again.", false), {
-        status: 500,
-        headers: { "Content-Type": "text/html" },
-      });
     }
-  }
 
-  return new NextResponse(unsubscribePage(normalizedEmail, true), {
-    headers: { "Content-Type": "text/html" },
-  });
+    return new NextResponse(unsubscribePage(email || "your email", true), {
+      headers: { "Content-Type": "text/html" },
+    });
+  } catch (err) {
+    console.error("Unsubscribe error:", err);
+    return new NextResponse(unsubscribePage("Something went wrong. Please try again.", false), {
+      status: 500,
+      headers: { "Content-Type": "text/html" },
+    });
+  }
 }
 
 function unsubscribePage(emailOrError: string, success: boolean): string {

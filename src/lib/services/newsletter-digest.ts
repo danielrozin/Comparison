@@ -19,13 +19,13 @@ interface DigestComparison {
   entityB: string;
 }
 
-export async function getActiveSubscribers(): Promise<{ email: string }[]> {
+export async function getActiveSubscribers(): Promise<{ email: string; unsubscribeToken: string | null }[]> {
   const prisma = getPrisma();
   if (!prisma) return [];
 
   return prisma.newsletterSubscriber.findMany({
     where: { status: "active" },
-    select: { email: true },
+    select: { email: true, unsubscribeToken: true },
   });
 }
 
@@ -121,7 +121,7 @@ export function buildDigestHtml(comparisons: DigestComparison[]): string {
             <td style="padding: 24px 32px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">
               <p style="margin: 0; color: #9ca3af; font-size: 12px; line-height: 1.6;">
                 You&rsquo;re receiving this because you subscribed to A Versus B updates.<br>
-                <a href="${SITE_URL}/api/newsletter/unsubscribe?email={{email}}" style="color: #6b7280; text-decoration: underline;">Unsubscribe</a>
+                <a href="${SITE_URL}/api/newsletter/unsubscribe?token={{unsubscribeToken}}" style="color: #6b7280; text-decoration: underline;">Unsubscribe</a>
                 &nbsp;&middot;&nbsp;
                 <a href="${SITE_URL}" style="color: #6b7280; text-decoration: underline;">Visit Website</a>
               </p>
@@ -137,10 +137,20 @@ export function buildDigestHtml(comparisons: DigestComparison[]): string {
 
 export async function sendDigestEmail(
   to: string,
-  html: string
+  html: string,
+  unsubscribeToken?: string | null
 ): Promise<{ success: boolean; method: string }> {
-  // Replace {{email}} placeholder with actual recipient
-  const personalizedHtml = html.replace(/\{\{email\}\}/g, encodeURIComponent(to));
+  // Replace placeholders with actual recipient data
+  let personalizedHtml = html.replace(/\{\{email\}\}/g, encodeURIComponent(to));
+  if (unsubscribeToken) {
+    personalizedHtml = personalizedHtml.replace(/\{\{unsubscribeToken\}\}/g, unsubscribeToken);
+  } else {
+    // Fallback to email-based unsubscribe for legacy subscribers without tokens
+    personalizedHtml = personalizedHtml.replace(
+      /token=\{\{unsubscribeToken\}\}/g,
+      `email=${encodeURIComponent(to)}`
+    );
+  }
 
   if (RESEND_API_KEY) {
     try {
@@ -190,7 +200,7 @@ export async function sendWeeklyDigest(): Promise<{
   let method = "none";
 
   for (const sub of subscribers) {
-    const result = await sendDigestEmail(sub.email, html);
+    const result = await sendDigestEmail(sub.email, html, sub.unsubscribeToken);
     method = result.method;
     if (result.success) {
       sentCount++;
