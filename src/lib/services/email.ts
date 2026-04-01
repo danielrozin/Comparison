@@ -1,12 +1,107 @@
 /**
- * Email notification service
- * Sends notifications to Daniarozin@gmail.com via Web3Forms (free, no signup needed for basic use)
- * Falls back to storing in-memory if email fails
+ * Email service
+ *
+ * Two providers:
+ * 1. Resend — for outreach / transactional emails (requires RESEND_API_KEY + verified domain)
+ * 2. Web3Forms — for internal notifications (lightweight, no domain needed)
  */
+
+import { Resend } from "resend";
 
 const NOTIFICATION_EMAIL = "Daniarozin@gmail.com";
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
 const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
+
+// Resend client (lazy-init)
+let _resend: Resend | null = null;
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) return null;
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
+  return _resend;
+}
+
+const RESEND_FROM =
+  process.env.RESEND_FROM_EMAIL || "A Versus B <noreply@aversusb.net>";
+
+// ─── Outreach email (Resend only) ───────────────────────────────────
+
+export async function sendOutreachEmail(opts: {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  replyTo?: string;
+  tags?: { name: string; value: string }[];
+}): Promise<{ success: boolean; id?: string; error?: string }> {
+  const resend = getResend();
+  if (!resend) {
+    return { success: false, error: "RESEND_API_KEY not configured" };
+  }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: RESEND_FROM,
+      to: opts.to,
+      subject: opts.subject,
+      html: opts.html,
+      text: opts.text,
+      replyTo: opts.replyTo || NOTIFICATION_EMAIL,
+      tags: opts.tags,
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, id: data?.id };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    console.error("Resend send failed:", msg);
+    return { success: false, error: msg };
+  }
+}
+
+// ─── Batch outreach (up to 100 at a time) ───────────────────────────
+
+export async function sendBatchOutreachEmails(
+  emails: {
+    to: string;
+    subject: string;
+    html: string;
+    text?: string;
+    replyTo?: string;
+    tags?: { name: string; value: string }[];
+  }[]
+): Promise<{ success: boolean; sent: number; failed: number; errors: string[] }> {
+  const resend = getResend();
+  if (!resend) {
+    return { success: false, sent: 0, failed: emails.length, errors: ["RESEND_API_KEY not configured"] };
+  }
+
+  const batch = emails.map((e) => ({
+    from: RESEND_FROM,
+    to: e.to,
+    subject: e.subject,
+    html: e.html,
+    text: e.text,
+    replyTo: e.replyTo || NOTIFICATION_EMAIL,
+    tags: e.tags,
+  }));
+
+  try {
+    const { data, error } = await resend.batch.send(batch);
+    if (error) {
+      return { success: false, sent: 0, failed: emails.length, errors: [error.message] };
+    }
+    return { success: true, sent: data?.data?.length || emails.length, failed: 0, errors: [] };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    return { success: false, sent: 0, failed: emails.length, errors: [msg] };
+  }
+}
+
+// ─── Internal notifications (Web3Forms → Resend fallback) ───────────
 
 export async function sendNotificationEmail(opts: {
   subject: string;
@@ -36,16 +131,32 @@ export async function sendNotificationEmail(opts: {
     }
   }
 
-  // Fallback: Use mailto-style notification via API (log it)
+  // Fallback: try Resend
+  const resend = getResend();
+  if (resend) {
+    try {
+      await resend.emails.send({
+        from: RESEND_FROM,
+        to: NOTIFICATION_EMAIL,
+        subject: `[A Versus B] ${opts.subject}`,
+        text: `Type: ${opts.type}\n\nMessage: ${opts.message}\n\nFrom: ${opts.senderEmail || "Anonymous"}\nPage: ${opts.pageUrl || "N/A"}\nTime: ${new Date().toISOString()}`,
+      });
+      return { success: true, method: "resend" };
+    } catch (err) {
+      console.error("Resend notification failed:", err);
+    }
+  }
+
+  // Last resort: log it
   console.log(`[EMAIL NOTIFICATION] To: ${NOTIFICATION_EMAIL}`);
   console.log(`  Subject: ${opts.subject}`);
   console.log(`  Type: ${opts.type}`);
   console.log(`  Message: ${opts.message}`);
-  console.log(`  From: ${opts.senderEmail || "Anonymous"}`);
-  console.log(`  Page: ${opts.pageUrl || "N/A"}`);
 
   return { success: true, method: "logged" };
 }
+
+// ─── Partner key email ──────────────────────────────────────────────
 
 export async function sendPartnerKeyEmail(opts: {
   partnerEmail: string;
@@ -85,6 +196,24 @@ export async function sendPartnerKeyEmail(opts: {
     "— The A Versus B Team",
   ];
 
+  // Prefer Resend for partner emails
+  const resend = getResend();
+  if (resend) {
+    try {
+      const { error } = await resend.emails.send({
+        from: RESEND_FROM,
+        to: opts.partnerEmail,
+        subject: "[A Versus B] Your Embed Partner Key",
+        text: messageLines.join("\n"),
+      });
+      if (!error) return { success: true, method: "resend" };
+      console.error("Resend partner email failed:", error);
+    } catch (err) {
+      console.error("Resend partner email error:", err);
+    }
+  }
+
+  // Fallback to Web3Forms
   if (WEB3FORMS_KEY) {
     try {
       const res = await fetch(WEB3FORMS_URL, {

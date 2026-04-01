@@ -31,6 +31,7 @@
     "react-dom": "^19.2.4",
     "recharts": "^3.8.0",
     "remotion": "^4.0.441",
+    "resend": "^6.10.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "zod": "^4.3.6"
