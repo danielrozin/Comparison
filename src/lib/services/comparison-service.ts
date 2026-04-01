@@ -933,9 +933,53 @@ export async function getComparisonHistory(
 export async function getLatestComparisons(
   limit: number = 8
 ): Promise<TrendingComparison[]> {
-  // Always use mock data for latest — it contains all curated + scheduled content
-  // DB comparisons are merged into mock via the pipeline, so mock is the source of truth
-  return getMockLatest(limit);
+  const cacheKey = `latest:${limit}`;
+  const cached = await getFromCache<TrendingComparison[]>(cacheKey);
+  if (cached) return cached;
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const rows = await prisma.comparison.findMany({
+        where: { status: "published" },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+        include: {
+          entities: {
+            include: {
+              entity: { select: { imageUrl: true } },
+            },
+            orderBy: { position: "asc" },
+          },
+        },
+      });
+      if (rows.length > 0) {
+        const result = rows.map(
+          (r: {
+            slug: string;
+            title: string;
+            category: string | null;
+            viewCount: number;
+            entities: { entity: { imageUrl: string | null } }[];
+          }) => ({
+            slug: r.slug,
+            title: r.title,
+            category: r.category || "general",
+            viewCount: r.viewCount,
+            imageA: r.entities[0]?.entity?.imageUrl || null,
+            imageB: r.entities[1]?.entity?.imageUrl || null,
+          })
+        );
+        await setCache(cacheKey, result, CACHE_TTL_TRENDING);
+        return result;
+      }
+    } catch (e) {
+      console.warn("Prisma query failed for getLatestComparisons, falling back to mock:", e);
+    }
+  }
+  const mock = getMockLatest(limit);
+  await setCache(cacheKey, mock, CACHE_TTL_TRENDING);
+  return mock;
 }
 
 /**
