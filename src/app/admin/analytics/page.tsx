@@ -39,6 +39,24 @@ interface LiveMetrics {
   topComparisons: Array<{ slug: string; title: string; count: number }>;
 }
 
+interface GSCInsight {
+  type: "high_impressions_low_ctr" | "striking_distance" | "quick_win" | "top_performer";
+  query: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+  action: string;
+}
+
+interface GSCCrossRef {
+  stats: { totalQueries: number; totalClicks: number; totalImpressions: number; avgPosition: number };
+  insights: GSCInsight[];
+  topQueries: Array<{ query: string; clicks: number; impressions: number; ctr: number; position: number }>;
+  strikingDistance: Array<{ query: string; clicks: number; impressions: number; ctr: number; position: number }>;
+  highImpressionLowCTR: Array<{ query: string; clicks: number; impressions: number; ctr: number; position: number }>;
+}
+
 interface WeeklyReport {
   title: string;
   generatedAt: string;
@@ -110,7 +128,9 @@ export default function AnalyticsDashboard() {
   const [report, setReport] = useState<WeeklyReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [reportLoading, setReportLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "funnel" | "events" | "experiments" | "report">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "funnel" | "events" | "experiments" | "gsc" | "report">("overview");
+  const [gscData, setGscData] = useState<GSCCrossRef | null>(null);
+  const [gscLoading, setGscLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/analytics")
@@ -128,6 +148,16 @@ export default function AnalyticsDashboard() {
       .then(setReport)
       .catch(() => {})
       .finally(() => setReportLoading(false));
+  };
+
+  const loadGsc = () => {
+    if (gscData) return;
+    setGscLoading(true);
+    fetch("/api/analytics?section=gsc-crossref")
+      .then((r) => r.json())
+      .then(setGscData)
+      .catch(() => {})
+      .finally(() => setGscLoading(false));
   };
 
   if (loading) {
@@ -155,6 +185,7 @@ export default function AnalyticsDashboard() {
     { key: "funnel" as const, label: "Conversion Funnel" },
     { key: "events" as const, label: "Custom Events" },
     { key: "experiments" as const, label: `Experiments (${config.activeExperimentCount})` },
+    { key: "gsc" as const, label: "GSC Insights" },
     { key: "report" as const, label: "Weekly Report" },
   ];
 
@@ -191,6 +222,7 @@ export default function AnalyticsDashboard() {
             onClick={() => {
               setActiveTab(tab.key);
               if (tab.key === "report") loadReport();
+              if (tab.key === "gsc") loadGsc();
             }}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               activeTab === tab.key
@@ -552,6 +584,166 @@ export default function AnalyticsDashboard() {
               <li>* <strong>Duration:</strong> Wait 2+ full weeks before drawing conclusions to control for day-of-week effects.</li>
             </ul>
           </div>
+        </div>
+      )}
+
+      {/* GSC Insights Tab */}
+      {activeTab === "gsc" && (
+        <div className="space-y-6">
+          {gscLoading && (
+            <div className="animate-pulse space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-1/3" />
+              <div className="h-48 bg-gray-200 rounded" />
+            </div>
+          )}
+          {gscData && (
+            <>
+              {/* GSC Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <StatCard label="Total Queries" value={gscData.stats.totalQueries} subtitle="Last 28 days" />
+                <StatCard label="Total Clicks" value={gscData.stats.totalClicks} subtitle="From search" />
+                <StatCard label="Total Impressions" value={gscData.stats.totalImpressions.toLocaleString()} subtitle="Search visibility" />
+                <StatCard label="Avg Position" value={gscData.stats.avgPosition.toFixed(1)} subtitle="In search results" />
+              </div>
+
+              {/* Insights */}
+              {gscData.insights.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold text-gray-900">Actionable Insights</h3>
+                  {gscData.insights.slice(0, 15).map((insight, i) => {
+                    const colorMap: Record<string, string> = {
+                      high_impressions_low_ctr: "border-red-200 bg-red-50",
+                      striking_distance: "border-amber-200 bg-amber-50",
+                      quick_win: "border-green-200 bg-green-50",
+                      top_performer: "border-blue-200 bg-blue-50",
+                    };
+                    const labelMap: Record<string, string> = {
+                      high_impressions_low_ctr: "Low CTR",
+                      striking_distance: "Striking Distance",
+                      quick_win: "Quick Win",
+                      top_performer: "Top Performer",
+                    };
+                    return (
+                      <div key={i} className={`border rounded-xl p-4 ${colorMap[insight.type] || "border-gray-200 bg-white"}`}>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                              {labelMap[insight.type] || insight.type}
+                            </span>
+                            <code className="text-xs bg-white/60 px-2 py-0.5 rounded border border-gray-200">
+                              {insight.query}
+                            </code>
+                          </div>
+                          <div className="flex gap-3 text-xs text-gray-500">
+                            <span>{insight.impressions} imp</span>
+                            <span>{insight.clicks} clicks</span>
+                            <span>Pos {insight.position.toFixed(1)}</span>
+                            <span>{(insight.ctr * 100).toFixed(1)}% CTR</span>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-700">{insight.action}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Striking Distance Keywords */}
+              {gscData.strikingDistance.length > 0 && (
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Striking Distance Keywords</h3>
+                  <p className="text-sm text-gray-500 mb-4">Position 5-15 — optimize to push into top 5</p>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-2 text-gray-500 font-medium">Query</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Impressions</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Clicks</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">CTR</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Position</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {gscData.strikingDistance.map((q, i) => (
+                        <tr key={i} className="border-b border-gray-50 last:border-0">
+                          <td className="py-2 text-gray-900">{q.query}</td>
+                          <td className="py-2 text-right text-gray-600">{q.impressions}</td>
+                          <td className="py-2 text-right text-gray-600">{q.clicks}</td>
+                          <td className="py-2 text-right text-gray-600">{(q.ctr * 100).toFixed(1)}%</td>
+                          <td className="py-2 text-right font-medium text-amber-600">{q.position.toFixed(1)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* High Impression Low CTR */}
+              {gscData.highImpressionLowCTR.length > 0 && (
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">High Impressions, Low CTR</h3>
+                  <p className="text-sm text-gray-500 mb-4">Top 10 positions with CTR below 3% — meta optimization needed</p>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-2 text-gray-500 font-medium">Query</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Impressions</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Clicks</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">CTR</th>
+                        <th className="text-right py-2 text-gray-500 font-medium">Position</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {gscData.highImpressionLowCTR.map((q, i) => (
+                        <tr key={i} className="border-b border-gray-50 last:border-0">
+                          <td className="py-2 text-gray-900">{q.query}</td>
+                          <td className="py-2 text-right text-gray-600">{q.impressions}</td>
+                          <td className="py-2 text-right text-gray-600">{q.clicks}</td>
+                          <td className="py-2 text-right font-medium text-red-600">{(q.ctr * 100).toFixed(1)}%</td>
+                          <td className="py-2 text-right text-gray-600">{q.position.toFixed(1)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* Top Queries by Clicks */}
+              {gscData.topQueries.length > 0 && (
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Queries by Clicks</h3>
+                  <ResponsiveContainer width="100%" height={Math.min(400, gscData.topQueries.length * 32 + 40)}>
+                    <BarChart data={gscData.topQueries.slice(0, 12)} layout="vertical">
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis type="number" tick={{ fontSize: 11 }} />
+                      <YAxis
+                        type="category"
+                        dataKey="query"
+                        width={200}
+                        tick={{ fontSize: 11 }}
+                        tickFormatter={(v: string) => v.length > 30 ? v.slice(0, 27) + "..." : v}
+                      />
+                      <Tooltip />
+                      <Bar dataKey="clicks" fill="#6366f1" radius={[0, 4, 4, 0]} name="Clicks" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </>
+          )}
+          {!gscLoading && !gscData && (
+            <div className="text-center py-12 text-gray-400">
+              No GSC data available. Ensure GOOGLE_SERVICE_ACCOUNT_KEY is configured.
+            </div>
+          )}
+          {gscData && gscData.stats.totalQueries === 0 && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
+              <p className="text-amber-800 font-medium">No GSC queries found</p>
+              <p className="text-sm text-amber-600 mt-1">
+                Either GSC credentials are not configured or no data is available yet. Data typically appears 2-3 days after site verification.
+              </p>
+            </div>
+          )}
         </div>
       )}
 

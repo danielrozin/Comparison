@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { prisma } from "@/lib/db/prisma";
 import { experiments, getActiveExperiments } from "@/lib/experiments/config";
+import { fetchGSCQueries, getGSCStats, type GSCQuery } from "@/lib/services/gsc-service";
 
 /**
  * Analytics Dashboard API
@@ -293,6 +294,75 @@ async function generateWeeklyReport() {
   return report;
 }
 
+interface GSCCrossRefInsight {
+  type: "high_impressions_low_ctr" | "striking_distance" | "quick_win" | "top_performer";
+  query: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+  action: string;
+}
+
+async function getGSCCrossReference(): Promise<{
+  stats: { totalQueries: number; totalClicks: number; totalImpressions: number; avgPosition: number };
+  insights: GSCCrossRefInsight[];
+  topQueries: GSCQuery[];
+  strikingDistance: GSCQuery[];
+  highImpressionLowCTR: GSCQuery[];
+}> {
+  const [queries, stats] = await Promise.all([fetchGSCQueries(), getGSCStats()]);
+
+  const insights: GSCCrossRefInsight[] = [];
+  const strikingDistance: GSCQuery[] = [];
+  const highImpressionLowCTR: GSCQuery[] = [];
+
+  for (const q of queries) {
+    // High impressions, low CTR — meta title/description optimization
+    if (q.impressions >= 10 && q.ctr < 0.03 && q.position <= 10) {
+      highImpressionLowCTR.push(q);
+      insights.push({
+        type: "high_impressions_low_ctr",
+        ...q,
+        action: `Rewrite meta title/description for "${q.query}" — position ${q.position.toFixed(1)} but only ${(q.ctr * 100).toFixed(1)}% CTR`,
+      });
+    }
+
+    // Striking distance (position 5-15) — content optimization to push into top 5
+    if (q.position >= 5 && q.position <= 15 && q.impressions >= 5) {
+      strikingDistance.push(q);
+      insights.push({
+        type: "striking_distance",
+        ...q,
+        action: `Optimize content for "${q.query}" — position ${q.position.toFixed(1)}, could reach top 5 with targeted improvements`,
+      });
+    }
+
+    // Quick wins — already ranking well with decent CTR, double down
+    if (q.position <= 3 && q.ctr >= 0.05 && q.impressions >= 10) {
+      insights.push({
+        type: "quick_win",
+        ...q,
+        action: `"${q.query}" is performing well — position ${q.position.toFixed(1)}, ${(q.ctr * 100).toFixed(1)}% CTR. Consider expanding content depth.`,
+      });
+    }
+  }
+
+  // Sort insights by impressions descending
+  insights.sort((a, b) => b.impressions - a.impressions);
+
+  // Top queries by clicks
+  const topQueries = [...queries].sort((a, b) => b.clicks - a.clicks).slice(0, 20);
+
+  return {
+    stats,
+    insights: insights.slice(0, 30),
+    topQueries,
+    strikingDistance: strikingDistance.sort((a, b) => b.impressions - a.impressions).slice(0, 20),
+    highImpressionLowCTR: highImpressionLowCTR.sort((a, b) => b.impressions - a.impressions).slice(0, 20),
+  };
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const section = searchParams.get("section");
@@ -331,6 +401,10 @@ export async function GET(request: Request) {
         "Recommended: Wait 2+ weeks before drawing conclusions to account for day-of-week effects.",
       ],
     });
+  }
+  if (section === "gsc-crossref") {
+    const crossref = await getGSCCrossReference();
+    return NextResponse.json(crossref);
   }
   if (section === "live") {
     const live = await getLiveMetrics();
