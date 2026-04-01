@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { withTiming } from "@/lib/utils/api-timing";
 
-export async function GET(
+export const GET = withTiming(async function GET(
   _request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  context?: unknown
 ) {
-  const { slug } = await params;
+  const { slug } = await (context as { params: Promise<{ slug: string }> }).params;
   const comparison = await getComparisonBySlug(slug);
 
   if (!comparison) {
@@ -13,4 +14,4 @@ export async function GET(
   }
 
   return NextResponse.json(comparison);
-}
+});

@@ -9,6 +9,8 @@ import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderSe
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
+import { WebVitalsReporter } from "@/components/tracking/WebVitalsReporter";
+import { PerformanceBudget } from "@/components/tracking/PerformanceBudget";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -103,6 +105,8 @@ export default function RootLayout({
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <GoogleTagManager />
         <MetaPixel />
+        <WebVitalsReporter />
+        <PerformanceBudget />
         <ExperimentProviderServer>
           <Header />
           <main className="flex-1">{children}</main>

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { saveComparison } from "@/lib/services/comparison-service";
+import { withTiming } from "@/lib/utils/api-timing";
 
 export const maxDuration = 60; // Allow up to 60s for AI generation
 
@@ -14,7 +15,7 @@ const generateSchema = z.object({
  * POST /api/comparisons/generate
  * Generate a comparison synchronously and return the result
  */
-export async function POST(request: NextRequest) {
+export const POST = withTiming(async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const parsed = generateSchema.safeParse(body);
@@ -53,4 +54,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
