@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { slugify } from "@/lib/utils/slugify";
 import { saveSearchContext } from "@/components/navigation/BackToResults";
+import { trackSearch } from "@/lib/utils/analytics";
 import Link from "next/link";
 
 interface PopularComparison {
@@ -130,6 +131,7 @@ export function SearchBox() {
       e.preventDefault();
       if (!query.trim()) return;
       setShowPopular(false);
+      trackSearch(query.trim());
 
       const parsed = parseComparison(query);
       if (parsed) {
