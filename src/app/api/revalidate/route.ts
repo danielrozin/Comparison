@@ -39,7 +39,10 @@ export async function POST(request: NextRequest) {
         path.startsWith("/blog/") ||
         path.startsWith("/entity/") ||
         path.startsWith("/alternatives/") ||
-        path.startsWith("/trending")
+        path.startsWith("/trending") ||
+        path.startsWith("/reviews") ||
+        path === "/sitemap.xml" ||
+        path.startsWith("/sitemap/")
       ) {
         revalidatePath(path);
         revalidated.push(path);
