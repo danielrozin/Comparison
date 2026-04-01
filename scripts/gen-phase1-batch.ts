@@ -92,6 +92,44 @@ const PHASE1_TARGETS: ComparisonTarget[] = [
   { entityA: "Starbucks", entityB: "Dunkin", category: "companies", entityType: "company", volume: 35000 },
   { entityA: "Shaq", entityB: "Kobe", category: "sports", entityType: "athlete", volume: 35000 },
   { entityA: "NFL", entityB: "NBA", category: "sports", entityType: "sports-league", volume: 35000 },
+  // Missing Sports
+  { entityA: "Gretzky", entityB: "Lemieux", category: "sports", entityType: "athlete", volume: 30000 },
+  { entityA: "Mahomes", entityB: "Brady", category: "sports", entityType: "athlete", volume: 28000 },
+  { entityA: "UFC", entityB: "Boxing", category: "sports", entityType: "sports-league", volume: 28000 },
+  { entityA: "Lakers", entityB: "Celtics", category: "sports", entityType: "sports-team", volume: 25000 },
+  { entityA: "Babe Ruth", entityB: "Mike Trout", category: "sports", entityType: "athlete", volume: 22000 },
+  { entityA: "Yankees", entityB: "Red Sox", category: "sports", entityType: "sports-team", volume: 30000 },
+  // Missing Technology
+  { entityA: "Docker", entityB: "Kubernetes", category: "technology", entityType: "software", volume: 30000 },
+  { entityA: "GitHub Copilot", entityB: "Cursor", category: "technology", entityType: "software", volume: 30000 },
+  // Missing Countries
+  { entityA: "Australia", entityB: "New Zealand", category: "countries", entityType: "country", volume: 30000 },
+  { entityA: "Spain", entityB: "Italy", category: "countries", entityType: "country", volume: 28000 },
+  { entityA: "Tokyo", entityB: "Seoul", category: "countries", entityType: "city", volume: 25000 },
+  { entityA: "Sweden", entityB: "Norway", category: "countries", entityType: "country", volume: 22000 },
+  { entityA: "Portugal", entityB: "Spain", category: "countries", entityType: "country", volume: 22000 },
+  { entityA: "Thailand", entityB: "Vietnam", category: "countries", entityType: "country", volume: 30000 },
+  { entityA: "Turkey", entityB: "Greece", category: "countries", entityType: "country", volume: 20000 },
+  // Missing Companies
+  { entityA: "Delta", entityB: "United Airlines", category: "companies", entityType: "company", volume: 30000 },
+  { entityA: "Visa", entityB: "Mastercard", category: "companies", entityType: "company", volume: 30000 },
+  { entityA: "Hilton", entityB: "Marriott", category: "companies", entityType: "company", volume: 25000 },
+  // Missing Health
+  { entityA: "Peloton", entityB: "NordicTrack", category: "health", entityType: "fitness", volume: 30000 },
+  { entityA: "CrossFit", entityB: "Gym", category: "health", entityType: "fitness", volume: 25000 },
+  { entityA: "Whey Protein", entityB: "Casein Protein", category: "health", entityType: "supplement", volume: 25000 },
+  { entityA: "Vitamix", entityB: "Blendtec", category: "health", entityType: "product", volume: 22000 },
+  { entityA: "Contact Lenses", entityB: "Glasses", category: "health", entityType: "eyewear", volume: 20000 },
+  { entityA: "Meditation", entityB: "Yoga", category: "health", entityType: "wellness", volume: 20000 },
+  { entityA: "Organic Food", entityB: "Non-organic Food", category: "health", entityType: "food", volume: 30000 },
+  { entityA: "LASIK", entityB: "PRK", category: "health", entityType: "surgery", volume: 18000 },
+  // Missing Education
+  { entityA: "MIT", entityB: "Stanford", category: "education", entityType: "university", volume: 30000 },
+  { entityA: "Software Engineer", entityB: "Data Scientist", category: "education", entityType: "career", volume: 30000 },
+  { entityA: "Online Degree", entityB: "Traditional Degree", category: "education", entityType: "concept", volume: 25000 },
+  { entityA: "Doctor", entityB: "Lawyer", category: "education", entityType: "career", volume: 25000 },
+  { entityA: "Community College", entityB: "University", category: "education", entityType: "concept", volume: 20000 },
+  { entityA: "Freelance", entityB: "Full-time Employment", category: "education", entityType: "career", volume: 20000 },
 ];
 
 function makeSlug(a: string, b: string): string {
