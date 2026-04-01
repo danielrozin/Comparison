@@ -828,3 +828,14 @@ model SmartreviewSurvey {
   @@index([category])
   @@map("smartreview_surveys")
 }
+
+model FullSurveyResponse {
+  id             String   @id @default(cuid())
+  responses      Json     // Full survey JSON payload
+  deviceType     String?  @map("device_type")
+  completedAt    DateTime @default(now()) @map("completed_at")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("full_survey_responses")
+}
