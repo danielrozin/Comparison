@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { CATEGORIES } from "@/lib/utils/constants";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  robots: { index: false, follow: false },
+};
 
 export default async function NotFound() {
   let trending: { slug: string; title: string; category: string }[] = [];
