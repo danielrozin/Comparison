@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { listBlogArticles, BlogArticle } from "@/lib/services/blog-generator";
-import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
+import { getRecentComparisonsForFeed } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 function escapeXml(str: string): string {
@@ -29,22 +29,6 @@ function buildBlogItem(article: BlogArticle): string {
     </item>`;
 }
 
-function buildComparisonItem(slug: string): string | null {
-  const comp = getMockComparison(slug);
-  if (!comp) return null;
-  const url = `${SITE_URL}/compare/${slug}`;
-  const pubDate = comp.metadata?.publishedAt || comp.metadata?.updatedAt || new Date().toISOString();
-  const description = comp.shortAnswer || comp.verdict || `Compare ${comp.entities.map((e) => e.name).join(" vs ")}`;
-  return `    <item>
-      <title>${escapeXml(comp.title)}</title>
-      <link>${url}</link>
-      <guid isPermaLink="true">${url}</guid>
-      <description>${escapeXml(description)}</description>
-      <pubDate>${toRFC822(pubDate)}</pubDate>
-      <category>${escapeXml(comp.category || "general")}</category>
-    </item>`;
-}
-
 export async function GET() {
   const items: string[] = [];
 
@@ -58,20 +42,19 @@ export async function GET() {
     // Blog unavailable — skip
   }
 
-  // Recent comparisons (limit to 50 most recent)
-  const slugs = getAllMockSlugs();
-  const comparisons = slugs
-    .map((slug) => {
-      const comp = getMockComparison(slug);
-      return comp ? { slug, updatedAt: comp.metadata?.updatedAt || "2024-01-01" } : null;
-    })
-    .filter(Boolean)
-    .sort((a, b) => new Date(b!.updatedAt).getTime() - new Date(a!.updatedAt).getTime())
-    .slice(0, 50);
-
-  for (const entry of comparisons) {
-    const item = buildComparisonItem(entry!.slug);
-    if (item) items.push(item);
+  // Recent comparisons from DB + mock (50 most recent)
+  const comparisons = await getRecentComparisonsForFeed(50);
+  for (const comp of comparisons) {
+    const url = `${SITE_URL}/compare/${comp.slug}`;
+    const description = comp.shortAnswer || `Compare side by side`;
+    items.push(`    <item>
+      <title>${escapeXml(comp.title)}</title>
+      <link>${url}</link>
+      <guid isPermaLink="true">${url}</guid>
+      <description>${escapeXml(description)}</description>
+      <pubDate>${toRFC822(comp.updatedAt)}</pubDate>
+      <category>${escapeXml(comp.category)}</category>
+    </item>`);
   }
 
   const now = toRFC822(new Date());

@@ -1145,3 +1145,89 @@ export async function getAllSitemapData(): Promise<{
 
   return { comparisons, entities };
 }
+
+export async function getRecentComparisonsForFeed(
+  limit: number = 50
+): Promise<{ slug: string; title: string; category: string; shortAnswer: string; updatedAt: string }[]> {
+  const prisma = getPrismaClient();
+  const results: { slug: string; title: string; category: string; shortAnswer: string; updatedAt: string }[] = [];
+  const seenSlugs = new Set<string>();
+
+  if (prisma) {
+    try {
+      const rows = await prisma.comparison.findMany({
+        where: { status: "published" },
+        select: { slug: true, title: true, category: true, shortAnswer: true, updatedAt: true },
+        orderBy: { updatedAt: "desc" },
+        take: limit,
+      });
+      for (const row of rows) {
+        seenSlugs.add(row.slug);
+        results.push({
+          slug: row.slug,
+          title: row.title,
+          category: row.category || "general",
+          shortAnswer: row.shortAnswer || "",
+          updatedAt: row.updatedAt ? new Date(row.updatedAt).toISOString() : new Date().toISOString(),
+        });
+      }
+    } catch (e) {
+      console.warn("Prisma getRecentComparisonsForFeed failed:", e);
+    }
+  }
+
+  // Fill with mock data if needed
+  if (results.length < limit) {
+    const allMockSlugs = getAllMockSlugs();
+    for (const slug of allMockSlugs) {
+      if (seenSlugs.has(slug) || results.length >= limit) break;
+      const comp = getMockComparison(slug);
+      if (!comp) continue;
+      seenSlugs.add(slug);
+      results.push({
+        slug: comp.slug,
+        title: comp.title,
+        category: comp.category || "general",
+        shortAnswer: comp.shortAnswer || comp.verdict || "",
+        updatedAt: comp.metadata?.updatedAt || new Date().toISOString(),
+      });
+    }
+  }
+
+  return results;
+}
+
+export async function listAllComparisons(
+  limit: number = 20,
+  offset: number = 0
+): Promise<{ comparisons: { slug: string; title: string; category: string }[]; total: number }> {
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const [rows, total] = await Promise.all([
+        prisma.comparison.findMany({
+          where: { status: "published" },
+          select: { slug: true, title: true, category: true },
+          orderBy: { viewCount: "desc" },
+          skip: offset,
+          take: limit,
+        }),
+        prisma.comparison.count({ where: { status: "published" } }),
+      ]);
+      return {
+        comparisons: rows.map((r: { slug: string; title: string; category: string | null }) => ({ slug: r.slug, title: r.title, category: r.category || "general" })),
+        total,
+      };
+    } catch (e) {
+      console.warn("Prisma listAllComparisons failed:", e);
+    }
+  }
+
+  // Fallback to mock
+  const allMockSlugs = getAllMockSlugs();
+  const all = allMockSlugs.map((slug) => {
+    const comp = getMockComparison(slug);
+    return comp ? { slug: comp.slug, title: comp.title, category: comp.category || "general" } : null;
+  }).filter(Boolean) as { slug: string; title: string; category: string }[];
+  return { comparisons: all.slice(offset, offset + limit), total: all.length };
+}
