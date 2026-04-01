@@ -3,7 +3,8 @@ import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
 import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
-import { SITE_URL } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL } from "@/lib/utils/constants";
+import { CategoryLandingPage } from "@/components/category/CategoryLandingPage";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
@@ -60,18 +61,35 @@ const ComparisonCharts = dynamic(
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string; sort?: string; rating?: string }>;
 }
+
+const CATEGORY_SLUGS = new Set<string>(CATEGORIES.map((c) => c.slug));
 
 export const dynamicParams = true;
 export const revalidate = 3600; // ISR: revalidate comparison pages every 1 hour
 
 export async function generateStaticParams() {
   const slugs = getAllMockSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const categorySlugs = CATEGORIES.map((c) => c.slug);
+  return [...slugs, ...categorySlugs].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+
+  // Category landing page metadata
+  const category = CATEGORIES.find((c) => c.slug === slug);
+  if (category) {
+    const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(category.name + " Comparisons")}&cat=${encodeURIComponent(category.name)}&type=category`;
+    return {
+      title: `${category.name} Comparisons 2026 — Compare the Best ${category.name} Side by Side`,
+      description: `Browse ${category.name.toLowerCase()} comparisons with expert analysis. Compare products, brands, and more side by side — find the best ${category.name.toLowerCase()} for your needs.`,
+      alternates: { canonical: `${SITE_URL}/compare/${slug}` },
+      openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+      twitter: { card: "summary_large_image", images: [ogImage] },
+    };
+  }
 
   let comparison;
   try {
@@ -153,8 +171,14 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
-export default async function ComparisonPage({ params }: PageProps) {
+export default async function ComparisonPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+
+  // Category landing page — render if slug matches a known category
+  if (CATEGORY_SLUGS.has(slug)) {
+    const sp = await searchParams;
+    return <CategoryLandingPage slug={slug} searchParams={sp} />;
+  }
 
   // Validate slug format — must be "entity-a-vs-entity-b"
   const slugParts = parseComparisonSlug(slug);

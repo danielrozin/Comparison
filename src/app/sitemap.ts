@@ -26,13 +26,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 
-  // Category pages
-  const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
-    url: `${SITE_URL}/category/${cat.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+  // Category pages (both /category/ and /compare/ routes)
+  const categoryPages: MetadataRoute.Sitemap = CATEGORIES.flatMap((cat) => [
+    {
+      url: `${SITE_URL}/category/${cat.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/compare/${cat.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    },
+  ]);
 
   // Subcategory pages (all categories with subcategories)
   const subcategoryPages: MetadataRoute.Sitemap = Object.entries(CATEGORY_SUBCATEGORIES).flatMap(
