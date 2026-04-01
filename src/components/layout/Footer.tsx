@@ -1,19 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+import { SITE_NAME, CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
-const FOOTER_CATEGORIES = [
-  { slug: "software", name: "Software" },
-  { slug: "sports", name: "Sports" },
-  { slug: "countries", name: "Countries" },
-  { slug: "technology", name: "Technology" },
-  { slug: "products", name: "Products" },
-  { slug: "companies", name: "Companies" },
-  { slug: "entertainment", name: "Entertainment" },
-  { slug: "automotive", name: "Automotive" },
-];
+const FOOTER_CATEGORIES = CATEGORIES;
 
 export function Footer() {
   return (

@@ -2,7 +2,7 @@ export const revalidate = 300; // ISR: revalidate home page every 5 minutes
 
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
-import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
+import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount, getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SearchBox } from "@/components/home/SearchBox";
 import { TrendingCard } from "@/components/home/TrendingCard";
@@ -12,13 +12,19 @@ import { RecentlyViewed } from "@/components/home/RecentlyViewed";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export default async function HomePage() {
-  const [trending, latest, totalCount, blogResult] = await Promise.all([
+  const featuredCategories = ["sports", "technology", "countries", "products", "entertainment"];
+  const [trending, latest, totalCount, blogResult, ...featuredResults] = await Promise.all([
     getTrendingComparisons(10),
     getLatestComparisons(8),
     getTotalComparisonsCount(),
     listBlogArticles({ limit: 3, status: "published" }),
+    ...featuredCategories.map((cat) => getComparisonsByCategory(cat, 3)),
   ]);
   const blogArticles = blogResult.articles;
+  const featuredByCategory = featuredCategories.map((cat, i) => ({
+    category: CATEGORIES.find((c) => c.slug === cat)!,
+    comparisons: featuredResults[i].comparisons,
+  })).filter((f) => f.comparisons.length > 0);
 
   return (
     <>
@@ -163,6 +169,54 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Featured Comparisons by Category */}
+      {featuredByCategory.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+              Popular Comparisons
+            </h2>
+            <p className="text-text-secondary mt-1">
+              Top comparisons across our most popular categories
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {featuredByCategory.map(({ category, comparisons }) => (
+              <div key={category.slug}>
+                <h3 className="mb-3">
+                  <Link
+                    href={`/category/${category.slug}`}
+                    className="text-sm font-semibold uppercase tracking-wider text-text-secondary hover:text-primary-600 transition-colors"
+                  >
+                    {category.icon} {category.name}
+                  </Link>
+                </h3>
+                <ul className="space-y-2">
+                  {comparisons.map((comp) => (
+                    <li key={comp.slug}>
+                      <Link
+                        href={`/compare/${comp.slug}`}
+                        className="text-sm text-primary-600 hover:text-primary-700 hover:underline line-clamp-2"
+                      >
+                        {comp.title}
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <Link
+                      href={`/category/${category.slug}`}
+                      className="text-xs text-accent-600 hover:text-accent-700 font-medium"
+                    >
+                      View all &rarr;
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Categories */}
       <section className="bg-surface py-16">

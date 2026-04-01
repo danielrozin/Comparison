@@ -949,3 +949,122 @@ export async function getTotalComparisonsCount(): Promise<number> {
     return 107;
   }
 }
+
+/**
+ * Get other comparisons that feature the same entity.
+ * Returns a map of entitySlug -> comparisons featuring that entity.
+ */
+export async function getComparisonsByEntitySlugs(
+  entitySlugs: string[],
+  excludeSlug: string,
+  limitPerEntity: number = 6
+): Promise<Record<string, { slug: string; title: string }[]>> {
+  const result: Record<string, { slug: string; title: string }[]> = {};
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      for (const entitySlug of entitySlugs) {
+        const rows = await prisma.comparison.findMany({
+          where: {
+            slug: { not: excludeSlug },
+            status: "published",
+            entities: {
+              some: { entity: { slug: entitySlug } },
+            },
+          },
+          select: { slug: true, title: true },
+          orderBy: { viewCount: "desc" },
+          take: limitPerEntity,
+        });
+        result[entitySlug] = rows;
+      }
+      return result;
+    } catch (e) {
+      console.warn("getComparisonsByEntitySlugs failed:", e);
+    }
+  }
+
+  // Mock fallback: scan all comparisons for entity overlap
+  const allSlugs = getAllMockSlugs();
+  for (const entitySlug of entitySlugs) {
+    const matches: { slug: string; title: string }[] = [];
+    for (const s of allSlugs) {
+      if (s === excludeSlug) continue;
+      const comp = getMockComparison(s);
+      if (comp && comp.entities.some((e) => e.slug === entitySlug)) {
+        matches.push({ slug: comp.slug, title: comp.title });
+        if (matches.length >= limitPerEntity) break;
+      }
+    }
+    result[entitySlug] = matches;
+  }
+  return result;
+}
+
+/**
+ * Get previous and next comparisons within the same category, ordered by viewCount.
+ */
+export async function getAdjacentComparisons(
+  slug: string,
+  category: string | null
+): Promise<{
+  prev: { slug: string; title: string } | null;
+  next: { slug: string; title: string } | null;
+}> {
+  if (!category) return { prev: null, next: null };
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const current = await prisma.comparison.findUnique({
+        where: { slug },
+        select: { viewCount: true, title: true },
+      });
+      if (!current) return { prev: null, next: null };
+
+      const [prevRows, nextRows] = await Promise.all([
+        prisma.comparison.findMany({
+          where: {
+            category,
+            status: "published",
+            viewCount: { gt: current.viewCount },
+          },
+          select: { slug: true, title: true },
+          orderBy: { viewCount: "asc" },
+          take: 1,
+        }),
+        prisma.comparison.findMany({
+          where: {
+            category,
+            status: "published",
+            viewCount: { lt: current.viewCount },
+          },
+          select: { slug: true, title: true },
+          orderBy: { viewCount: "desc" },
+          take: 1,
+        }),
+      ]);
+
+      return {
+        prev: prevRows[0] || null,
+        next: nextRows[0] || null,
+      };
+    } catch (e) {
+      console.warn("getAdjacentComparisons failed:", e);
+    }
+  }
+
+  // Mock fallback
+  const allInCategory = getMockComparisonsByCategory(category);
+  const idx = allInCategory.findIndex((c) => c.slug === slug);
+  if (idx === -1) return { prev: null, next: null };
+  return {
+    prev: idx > 0
+      ? { slug: allInCategory[idx - 1].slug, title: allInCategory[idx - 1].title }
+      : null,
+    next: idx < allInCategory.length - 1
+      ? { slug: allInCategory[idx + 1].slug, title: allInCategory[idx + 1].title }
+      : null,
+  };
+}

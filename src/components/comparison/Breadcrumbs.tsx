@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
+import { SITE_URL, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 
 interface BreadcrumbsProps {
@@ -10,12 +10,10 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
   const lower = (title?.toLowerCase() || "") + " " + (slug || "");
-  const subcat =
-    category === "products"
-      ? PRODUCT_SUBCATEGORIES.find((s) =>
-          s.keywords.some((kw) => lower.includes(kw))
-        )
-      : undefined;
+  const subcats = category ? CATEGORY_SUBCATEGORIES[category] || [] : [];
+  const subcat = subcats.find((s) =>
+    s.keywords.some((kw) => lower.includes(kw))
+  );
 
   const crumbs = [{ name: "Home", url: SITE_URL }];
   if (category) {

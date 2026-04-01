@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
+import { getComparisonBySlug, getTrendingComparisons, getComparisonsByEntitySlugs, getAdjacentComparisons } from "@/lib/services/comparison-service";
 import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { CATEGORIES, SITE_URL } from "@/lib/utils/constants";
@@ -49,6 +49,8 @@ import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunne
 import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
 import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
+import { EntityCrossLinks } from "@/components/comparison/EntityCrossLinks";
+import { CategoryPrevNext } from "@/components/comparison/CategoryPrevNext";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -220,13 +222,20 @@ export default async function ComparisonPage({ params, searchParams }: PageProps
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
+  // Fetch entity cross-links and adjacent comparisons in parallel
+  const entitySlugs = enrichedComparison.entities.map((e) => e.slug);
+  const [entityComparisons, adjacent] = await Promise.all([
+    getComparisonsByEntitySlugs(entitySlugs, slug),
+    getAdjacentComparisons(slug, enrichedComparison.category),
+  ]);
+
   // A/B experiment: verdict-first vs classic layout
   // LayoutSwitcher is a client component that reads the experiment variant.
   // When the experiment is not active, it defaults to verdict-first (treatment).
   return (
     <LayoutSwitcher
-      verdictFirst={<VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
-      classic={<ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />}
+      verdictFirst={<VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} entityComparisons={entityComparisons} adjacent={adjacent} />}
+      classic={<ClassicLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} entityComparisons={entityComparisons} adjacent={adjacent} />}
     />
   );
 }
@@ -236,11 +245,15 @@ function VerdictFirstLayout({
   schemas,
   slug,
   sidebarComparisons,
+  entityComparisons,
+  adjacent,
 }: {
   comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
   schemas: ReturnType<typeof comparisonPageSchema>;
   slug: string;
   sidebarComparisons: import("@/types").RelatedComparison[];
+  entityComparisons: Record<string, { slug: string; title: string }[]>;
+  adjacent: { prev: { slug: string; title: string } | null; next: { slug: string; title: string } | null };
 }) {
   return (
     <>
@@ -460,12 +473,26 @@ function VerdictFirstLayout({
       {/* Related Blog Posts (reciprocal blog-comparison linking) */}
       <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
 
+      {/* Entity Cross-Links — other comparisons featuring the same entities */}
+      <EntityCrossLinks
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        entityComparisons={entityComparisons}
+        currentSlug={slug}
+      />
+
       {/* Internal Links */}
       <InternalLinks
         currentSlug={comparison.slug}
         category={comparison.category}
         entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
         relatedComparisons={comparison.relatedComparisons}
+      />
+
+      {/* Previous / Next within category */}
+      <CategoryPrevNext
+        category={comparison.category}
+        prev={adjacent.prev}
+        next={adjacent.next}
       />
 
       {/* Newsletter Signup */}
@@ -511,11 +538,15 @@ function ClassicLayout({
   schemas,
   slug,
   sidebarComparisons,
+  entityComparisons,
+  adjacent,
 }: {
   comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
   schemas: ReturnType<typeof comparisonPageSchema>;
   slug: string;
   sidebarComparisons: import("@/types").RelatedComparison[];
+  entityComparisons: Record<string, { slug: string; title: string }[]>;
+  adjacent: { prev: { slug: string; title: string } | null; next: { slug: string; title: string } | null };
 }) {
   return (
     <>
@@ -669,12 +700,26 @@ function ClassicLayout({
       {/* Related Blog Posts (reciprocal blog-comparison linking) */}
       <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
 
+      {/* Entity Cross-Links — other comparisons featuring the same entities */}
+      <EntityCrossLinks
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        entityComparisons={entityComparisons}
+        currentSlug={slug}
+      />
+
       {/* Internal Links */}
       <InternalLinks
         currentSlug={comparison.slug}
         category={comparison.category}
         entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
         relatedComparisons={comparison.relatedComparisons}
+      />
+
+      {/* Previous / Next within category */}
+      <CategoryPrevNext
+        category={comparison.category}
+        prev={adjacent.prev}
+        next={adjacent.next}
       />
 
       {/* Newsletter Signup */}
