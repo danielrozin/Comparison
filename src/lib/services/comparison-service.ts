@@ -938,6 +938,89 @@ export async function getLatestComparisons(
   return getMockLatest(limit);
 }
 
+/**
+ * Get all alternatives for an entity by finding comparisons that include it.
+ * Queries DB first, then merges mock data.
+ */
+export async function getAlternativesForEntity(
+  entitySlug: string
+): Promise<{ name: string; slug: string; comparisonSlug: string; comparisonTitle: string }[]> {
+  const cacheKey = `alternatives:${entitySlug}`;
+  const cached = await getFromCache<{ name: string; slug: string; comparisonSlug: string; comparisonTitle: string }[]>(cacheKey);
+  if (cached) return cached;
+
+  const results: { name: string; slug: string; comparisonSlug: string; comparisonTitle: string }[] = [];
+  const seenSlugs = new Set<string>();
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      // Find all comparisons where this entity appears
+      const comparisons = await prisma.comparison.findMany({
+        where: {
+          entities: {
+            some: {
+              entity: { slug: entitySlug },
+            },
+          },
+        },
+        select: {
+          slug: true,
+          title: true,
+          entities: {
+            select: {
+              entity: {
+                select: { slug: true, name: true },
+              },
+            },
+          },
+        },
+      });
+
+      for (const comp of comparisons) {
+        for (const ce of comp.entities) {
+          if (ce.entity.slug !== entitySlug && !seenSlugs.has(ce.entity.slug)) {
+            seenSlugs.add(ce.entity.slug);
+            results.push({
+              name: ce.entity.name,
+              slug: ce.entity.slug,
+              comparisonSlug: comp.slug,
+              comparisonTitle: comp.title,
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Prisma getAlternativesForEntity failed, falling back to mock:", e);
+    }
+  }
+
+  // Also check mock data for any not yet in DB
+  const allMockSlugs = getAllMockSlugs();
+  for (const compSlug of allMockSlugs) {
+    const comp = getMockComparison(compSlug);
+    if (!comp) continue;
+    const matchEntity = comp.entities.find(
+      (e) => e.slug === entitySlug || compSlug.includes(entitySlug)
+    );
+    if (matchEntity) {
+      const otherEntity = comp.entities.find((e) => e.slug !== matchEntity.slug);
+      if (otherEntity && !seenSlugs.has(otherEntity.slug)) {
+        seenSlugs.add(otherEntity.slug);
+        results.push({
+          name: otherEntity.name,
+          slug: otherEntity.slug,
+          comparisonSlug: comp.slug,
+          comparisonTitle: comp.title,
+        });
+      }
+    }
+  }
+
+  await setCache(cacheKey, results, CACHE_TTL_COMPARISON);
+  return results;
+}
+
 export async function getTotalComparisonsCount(): Promise<number> {
   const prisma = getPrismaClient();
   if (!prisma) return 107; // fallback

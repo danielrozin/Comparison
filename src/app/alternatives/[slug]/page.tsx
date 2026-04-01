@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
-import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
+import { getAlternativesForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
@@ -45,27 +45,8 @@ export default async function AlternativesPage({ params }: PageProps) {
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
-  // Find all comparisons that include this entity and extract alternatives
-  const allSlugs = getAllMockSlugs();
-  const alternatives: { name: string; slug: string; comparisonSlug: string; comparisonTitle: string }[] = [];
-
-  for (const compSlug of allSlugs) {
-    const comp = getMockComparison(compSlug);
-    if (!comp) continue;
-
-    const matchEntity = comp.entities.find((e) => e.slug === slug || compSlug.includes(slug));
-    if (matchEntity) {
-      const otherEntity = comp.entities.find((e) => e.slug !== matchEntity.slug);
-      if (otherEntity) {
-        alternatives.push({
-          name: otherEntity.name,
-          slug: otherEntity.slug,
-          comparisonSlug: comp.slug,
-          comparisonTitle: comp.title,
-        });
-      }
-    }
-  }
+  // Find all comparisons that include this entity (DB + mock)
+  const alternatives = await getAlternativesForEntity(slug);
 
   // Merge curated alternatives (from entity-content) with comparison-derived ones
   const entityContent = ENTITY_CONTENT[slug];
