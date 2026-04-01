@@ -1021,6 +1021,58 @@ export async function getAlternativesForEntity(
   return results;
 }
 
+export async function getComparisonsForEntity(
+  entitySlug: string
+): Promise<{ slug: string; title: string; category: string | null }[]> {
+  const cacheKey = `entity-comparisons:${entitySlug}`;
+  const cached = await getFromCache<{ slug: string; title: string; category: string | null }[]>(cacheKey);
+  if (cached) return cached;
+
+  const results: { slug: string; title: string; category: string | null }[] = [];
+  const seenSlugs = new Set<string>();
+
+  const prisma = getPrismaClient();
+  if (prisma) {
+    try {
+      const comparisons = await prisma.comparison.findMany({
+        where: {
+          status: "published",
+          OR: [
+            { entities: { some: { entity: { slug: entitySlug } } } },
+            { slug: { contains: entitySlug } },
+          ],
+        },
+        select: { slug: true, title: true, category: true },
+        orderBy: { viewCount: "desc" },
+      });
+
+      for (const comp of comparisons) {
+        if (!seenSlugs.has(comp.slug)) {
+          seenSlugs.add(comp.slug);
+          results.push({ slug: comp.slug, title: comp.title, category: comp.category });
+        }
+      }
+    } catch (e) {
+      console.warn("Prisma getComparisonsForEntity failed, falling back to mock:", e);
+    }
+  }
+
+  // Merge mock data
+  const allMockSlugs = getAllMockSlugs();
+  for (const compSlug of allMockSlugs) {
+    if (seenSlugs.has(compSlug)) continue;
+    const comp = getMockComparison(compSlug);
+    if (!comp) continue;
+    if (comp.entities.some((e) => e.slug === entitySlug) || compSlug.includes(entitySlug)) {
+      seenSlugs.add(compSlug);
+      results.push({ slug: comp.slug, title: comp.title, category: comp.category });
+    }
+  }
+
+  await setCache(cacheKey, results, CACHE_TTL_COMPARISON);
+  return results;
+}
+
 export async function getTotalComparisonsCount(): Promise<number> {
   const prisma = getPrismaClient();
   if (!prisma) return 107; // fallback

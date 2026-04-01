@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
-import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
+import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
@@ -48,24 +48,8 @@ export default async function EntityPage({ params }: PageProps) {
   const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
 
-  // Find all comparisons that include this entity
-  const allSlugs = getAllMockSlugs();
-  const relatedComparisons: { slug: string; title: string; category: string | null }[] = [];
-
-  for (const compSlug of allSlugs) {
-    const comp = getMockComparison(compSlug);
-    if (!comp) continue;
-    if (
-      comp.entities.some((e) => e.slug === slug) ||
-      compSlug.includes(slug)
-    ) {
-      relatedComparisons.push({
-        slug: comp.slug,
-        title: comp.title,
-        category: comp.category,
-      });
-    }
-  }
+  // Find all comparisons that include this entity (DB + mock fallback)
+  const relatedComparisons = await getComparisonsForEntity(slug);
 
   // Determine category from the first comparison
   const primaryCategory = relatedComparisons[0]?.category || null;
