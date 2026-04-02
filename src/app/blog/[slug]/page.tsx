@@ -10,6 +10,8 @@ export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { MDXRenderer } from "@/components/blog/MDXRenderer";
+import { BlogTableOfContents, extractHeadings } from "@/components/blog/BlogTableOfContents";
 
 // ---------- Markdown renderer ----------
 
@@ -67,18 +69,22 @@ function renderMarkdown(md: string): string {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Headings
+    // Headings (with IDs for TOC anchor linking)
     if (line.startsWith("### ")) {
       if (inList) { processed.push("</ul>"); inList = false; }
+      const text = line.slice(4);
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       processed.push(
-        `<h3 class="text-xl font-bold text-text mt-8 mb-3">${line.slice(4)}</h3>`
+        `<h3 id="${id}" class="text-xl font-bold text-text mt-8 mb-3">${text}</h3>`
       );
       continue;
     }
     if (line.startsWith("## ")) {
       if (inList) { processed.push("</ul>"); inList = false; }
+      const text = line.slice(3);
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       processed.push(
-        `<h2 class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border">${line.slice(3)}</h2>`
+        `<h2 id="${id}" class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border">${text}</h2>`
       );
       continue;
     }
@@ -212,6 +218,7 @@ export default async function BlogPostPage({
 
   const readTime = estimateReadTime(article.content);
   const renderedContent = renderMarkdown(article.content);
+  const headings = extractHeadings(article.content);
 
   // Fetch actual comparison titles for related comparisons
   const comparisonTitles = article.relatedComparisonSlugs?.length
@@ -330,11 +337,11 @@ export default async function BlogPostPage({
 
         {/* Article Body */}
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {/* Table of Contents */}
+          <BlogTableOfContents headings={headings} />
+
           <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-            <div
-              className="prose-custom"
-              dangerouslySetInnerHTML={{ __html: renderedContent }}
-            />
+            <MDXRenderer html={renderedContent} rawMarkdown={article.content} />
           </div>
 
           {/* Ad: after article content */}
