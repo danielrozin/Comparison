@@ -274,6 +274,7 @@ function VoteButton({
       onClick={onClick}
       disabled={loading}
       className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all cursor-pointer ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed`}
+      aria-label={`Vote for ${entity.name}`}
     >
       {entity.imageUrl ? (
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-alt">

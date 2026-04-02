@@ -50,6 +50,8 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
           ? "bg-red-50 text-red-600 border border-red-200"
           : "bg-surface-alt text-text-secondary border border-border hover:border-red-200 hover:text-red-500"
       }`}
+      aria-label={liked ? `Unlike this comparison (${count} likes)` : `Like this comparison (${count} likes)`}
+      aria-pressed={liked}
     >
       <svg
         className={`w-4 h-4 transition-transform ${liked ? "scale-110" : ""}`}

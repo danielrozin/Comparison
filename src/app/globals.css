@@ -33,6 +33,109 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
+/* ─── Dark mode overrides ─── */
+html.dark {
+  --color-surface: #0f172a;
+  --color-surface-alt: #1e293b;
+  --color-surface-dark: #020617;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+
+  --color-primary-50: #172554;
+  --color-primary-100: #1e3a8a;
+
+  --color-accent-50: #2e1065;
+
+  color-scheme: dark;
+}
+
+/* Skip-to-content link */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.skip-to-content:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  padding: 12px 24px;
+  background: var(--color-primary-600, #2563eb);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Dark mode global overrides for hardcoded bg-white elements */
+html.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+html.dark .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+html.dark .text-gray-800 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-gray-400 {
+  color: #64748b !important;
+}
+
+html.dark .border-gray-200 {
+  border-color: #334155 !important;
+}
+
+html.dark .border-gray-100 {
+  border-color: #1e293b !important;
+}
+
+html.dark .bg-gray-50 {
+  background-color: #0f172a !important;
+}
+
+html.dark .bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-gray-50:hover {
+  background-color: #1e293b !important;
+}
+
+html.dark .hover\:bg-gray-100:hover {
+  background-color: #334155 !important;
+}
+
+html.dark .shadow-xl {
+  --tw-shadow-color: rgba(0, 0, 0, 0.3);
+}
+
 /* Smooth scrolling & font rendering */
 html {
   scroll-behavior: smooth;
@@ -54,10 +157,14 @@ body {
   overflow-wrap: break-word;
 }
 
-/* Focus styles */
+/* Focus styles — visible focus rings for keyboard navigation */
 *:focus-visible {
   outline: 2px solid var(--color-primary-500);
   outline-offset: 2px;
+}
+
+html.dark *:focus-visible {
+  outline-color: var(--color-primary-400, #60a5fa);
 }
 
 /* Custom scrollbar */
@@ -77,6 +184,11 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-secondary);
+}
+
+/* Dark mode scrollbar track */
+html.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
 }
 
 /* Comparison bar animation */

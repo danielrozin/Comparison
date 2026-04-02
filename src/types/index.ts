@@ -24,6 +24,18 @@ export interface ComparisonPageData {
   relatedBlogPosts: RelatedBlogPost[];
   metadata: ComparisonMetadata;
   resources?: ComparisonResource[];
+  quickAnswer?: {
+    tldr: string;
+    winner?: string | null;
+    confidence?: number | null;
+    reasoning?: string | null;
+  } | null;
+  citationStats?: {
+    totalSources?: number;
+    totalCitations?: number;
+    lastUpdated?: string;
+    dataPoints?: number;
+  } | null;
 }
 
 export interface ComparisonResource {

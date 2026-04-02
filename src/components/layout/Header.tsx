@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const NAV_ITEMS = [
   { slug: "software", name: "Software" },
@@ -53,19 +54,19 @@ export function Header() {
   }
 
   return (
-    <header className={`sticky top-0 z-50 bg-white transition-shadow duration-200 ${scrolled ? "shadow-md" : "border-b border-gray-200"}`}>
+    <header className={`sticky top-0 z-50 bg-white dark:bg-gray-900 transition-shadow duration-200 ${scrolled ? "shadow-md" : "border-b border-gray-200 dark:border-gray-700"}`} role="banner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0" aria-label={`${SITE_NAME} home`}>
             <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-accent-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-black text-xs">VS</span>
             </div>
-            <span className="text-lg font-bold text-gray-900 hidden sm:block">{SITE_NAME}</span>
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100 hidden sm:block">{SITE_NAME}</span>
           </Link>
 
           {/* Desktop nav */}
-          <nav ref={navRef} className="hidden lg:flex items-center">
+          <nav ref={navRef} className="hidden lg:flex items-center" aria-label="Main navigation">
             {NAV_ITEMS.map((item, idx) => {
               const subs = CATEGORY_SUBCATEGORIES[item.slug];
               const hasSubs = subs && subs.length > 0;
@@ -83,7 +84,7 @@ export function Header() {
                   <Link
                     href={`/category/${item.slug}`}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                      isOpen ? "text-gray-900 bg-gray-100" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      isOpen ? "text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800" : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800"
                     }`}
                   >
                     {item.name}
@@ -96,7 +97,7 @@ export function Header() {
 
                   {/* Dropdown */}
                   {hasSubs && (
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-gray-200 transition-all duration-150 ${
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 transition-all duration-150 ${
                       subs.length > 6 ? "w-[480px]" : "w-[260px]"
                     } ${isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1 pointer-events-none"}`}>
                       <div className={`p-2 ${subs.length > 6 ? "grid grid-cols-2 gap-0.5" : ""}`}>
@@ -105,18 +106,18 @@ export function Header() {
                             key={sub.slug}
                             href={`/category/${item.slug}/${sub.slug}`}
                             onClick={() => setOpenDropdown(null)}
-                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors group"
+                            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
                           >
                             <span className="text-base flex-shrink-0">{sub.icon}</span>
-                            <span className="text-sm text-gray-600 group-hover:text-gray-900">{sub.name}</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100">{sub.name}</span>
                           </Link>
                         ))}
                       </div>
-                      <div className="border-t border-gray-100 px-3 py-2">
+                      <div className="border-t border-gray-100 dark:border-gray-700 px-3 py-2">
                         <Link
                           href={`/category/${item.slug}`}
                           onClick={() => setOpenDropdown(null)}
-                          className="flex items-center justify-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 py-1.5 rounded-lg hover:bg-primary-50 transition-colors"
+                          className="flex items-center justify-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 py-1.5 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-700 transition-colors"
                         >
                           View all {item.name.toLowerCase()} →
                         </Link>
@@ -127,15 +128,15 @@ export function Header() {
               );
             })}
 
-            <div className="w-px h-5 bg-gray-200 mx-1 flex-shrink-0" />
+            <div className="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1 flex-shrink-0" />
 
-            <Link href="/trending" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/trending" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap">
               Trending
             </Link>
-            <Link href="/blog" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/blog" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap">
               Blog
             </Link>
-            <Link href="/reviews" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/reviews" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap">
               Reviews
             </Link>
           </nav>
@@ -144,25 +145,29 @@ export function Header() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href="/#search"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-full text-sm text-gray-400 hover:shadow-sm transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 rounded-full text-sm text-gray-400 hover:shadow-sm transition-all"
+              aria-label="Search comparisons"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="hidden sm:inline">Search...</span>
             </Link>
 
+            <ThemeToggle />
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition-colors"
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? (
-                <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
@@ -173,13 +178,14 @@ export function Header() {
 
       {/* ─── Mobile menu ─── */}
       <div className={`lg:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? "max-h-[85vh]" : "max-h-0"}`}>
-        <div className="bg-white border-t border-gray-200 overflow-y-auto max-h-[80vh]">
+        <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
             <Link
               href="/#search"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 w-full h-11 px-4 bg-gray-100 border border-gray-200 rounded-full text-sm text-gray-500"
+              className="flex items-center gap-3 w-full h-11 px-4 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full text-sm text-gray-500 dark:text-gray-400"
+              aria-label="Search comparisons"
             >
               <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -200,14 +206,14 @@ export function Header() {
                     <Link
                       href={`/category/${item.slug}`}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex-1 px-3 py-3 text-[15px] font-medium text-gray-800 active:bg-gray-100 rounded-lg"
+                      className="flex-1 px-3 py-3 text-[15px] font-medium text-gray-800 dark:text-gray-200 active:bg-gray-100 dark:active:bg-gray-800 rounded-lg"
                     >
                       {item.name}
                     </Link>
                     {subs.length > 0 && (
                       <button
                         onClick={() => setMobileExpanded(isExpanded ? null : item.slug)}
-                        className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-gray-100"
+                        className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-gray-100 dark:active:bg-gray-800"
                         aria-label={`Expand ${item.name}`}
                       >
                         <svg className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -225,7 +231,7 @@ export function Header() {
                           key={sub.slug}
                           href={`/category/${item.slug}/${sub.slug}`}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-[13px] text-gray-500 rounded-lg active:bg-gray-100"
+                          className="flex items-center gap-2 px-3 py-2 text-[13px] text-gray-500 dark:text-gray-400 rounded-lg active:bg-gray-100 dark:active:bg-gray-800"
                         >
                           <span>{sub.icon}</span>
                           <span className="truncate">{sub.name}</span>
@@ -238,16 +244,16 @@ export function Header() {
             })}
           </div>
 
-          <div className="mx-4 h-px bg-gray-100" />
+          <div className="mx-4 h-px bg-gray-100 dark:bg-gray-800" />
 
           <div className="p-4 flex gap-2">
-            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+            <Link href="/trending" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg active:bg-gray-200 dark:active:bg-gray-700">
               🔥 Trending
             </Link>
-            <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+            <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg active:bg-gray-200 dark:active:bg-gray-700">
               📝 Blog
             </Link>
-            <Link href="/reviews" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg active:bg-gray-200">
+            <Link href="/reviews" onClick={() => setMobileMenuOpen(false)} className="flex-1 text-center py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-lg active:bg-gray-200 dark:active:bg-gray-700">
               ⭐ Reviews
             </Link>
           </div>

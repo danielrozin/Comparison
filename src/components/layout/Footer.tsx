@@ -84,7 +84,7 @@ export function Footer() {
             </div>
 
             {/* Quick links */}
-            <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2" aria-label="Footer navigation">
               <Link href="/trending" className="text-sm text-gray-400 hover:text-white transition-colors">Trending</Link>
               <Link href="/reviews" className="text-sm text-gray-400 hover:text-white transition-colors">Reviews</Link>
               <Link href="/blog" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</Link>

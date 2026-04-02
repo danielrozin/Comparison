@@ -9,6 +9,7 @@ import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderSe
 import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -67,8 +68,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme-preference');if(t==='dark'||(t==null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
         {ADSENSE_PUB_ID && (
           <script
             async
@@ -101,16 +107,21 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
         <GoogleTagManager />
         <MetaPixel />
+        <ThemeProvider>
         <ExperimentProviderServer>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
           <FeedbackWidget />
           <StickyFooterAd />
           <ExitIntentPopup />
         </ExperimentProviderServer>
+        </ThemeProvider>
       </body>
     </html>
   );
