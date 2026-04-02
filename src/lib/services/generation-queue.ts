@@ -18,6 +18,10 @@ import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
 import { warmCacheForSlug } from "./cache-warming";
 import { checkAndAlert } from "./pipeline-alerting";
+import { scoreComparison, type ContentQualityScore } from "./content-quality";
+
+const QUALITY_THRESHOLD = 50; // Minimum score to publish (grade C or above)
+const QUALITY_SCORES_KEY = "genqueue:quality-scores";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -216,6 +220,16 @@ async function processOneJob(
     const result = await generateComparison(job.entityA, job.entityB, job.slug);
 
     if (result.success && result.comparison) {
+      // Quality gate — reject low-quality content before publishing
+      const qualityScore = scoreComparison(result.comparison);
+      await logQualityScore(redis, job.slug, qualityScore);
+
+      if (qualityScore.totalScore < QUALITY_THRESHOLD) {
+        throw new Error(
+          `Quality gate rejected (score=${qualityScore.totalScore}, grade=${qualityScore.grade}): ${qualityScore.issues.slice(0, 3).join("; ")}`
+        );
+      }
+
       // Save to database
       await saveComparison(result.comparison);
 
@@ -452,6 +466,53 @@ export async function clearQueue(status?: "pending" | "failed"): Promise<void> {
       redis.del(QUEUE_FAILED),
     ]);
   }
+}
+
+// ---------------------------------------------------------------------------
+// Utility
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Quality score logging
+// ---------------------------------------------------------------------------
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function logQualityScore(redis: any, slug: string, score: ContentQualityScore): Promise<void> {
+  try {
+    const entry = {
+      slug,
+      score: score.totalScore,
+      grade: score.grade,
+      completeness: score.completeness,
+      depth: score.depth,
+      seoReadiness: score.seoReadiness,
+      freshness: score.freshness,
+      issues: score.issues,
+      timestamp: new Date().toISOString(),
+    };
+    await redis.lpush(QUALITY_SCORES_KEY, JSON.stringify(entry));
+    await redis.ltrim(QUALITY_SCORES_KEY, 0, 499); // Keep last 500
+  } catch {
+    // Logging is non-critical
+  }
+}
+
+export async function getRecentQualityScores(limit: number = 50): Promise<{
+  slug: string;
+  score: number;
+  grade: string;
+  issues: string[];
+  timestamp: string;
+}[]> {
+  const redis = getRedis();
+  if (!redis) return [];
+  const raw = await redis.lrange(QUALITY_SCORES_KEY, 0, limit - 1);
+  return raw.map((r) => {
+    if (typeof r === "string") {
+      try { return JSON.parse(r); } catch { return r; }
+    }
+    return r;
+  });
 }
 
 // ---------------------------------------------------------------------------

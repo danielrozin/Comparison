@@ -7,7 +7,10 @@ import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-genera
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
 import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
+import { scoreComparison } from "@/lib/services/content-quality";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
+
+const QUALITY_THRESHOLD = 50; // Grade C or above
 
 export const maxDuration = 300; // 5 minutes
 
@@ -103,6 +106,7 @@ export async function GET(request: NextRequest) {
 
   // Step 3: Enqueue comparisons into the generation queue, then process with parallel workers
   let generatedCount = 0;
+  let qualityRejectedCount = 0;
   const generatedSlugs: string[] = [];
   const compLimit = 30;
 
@@ -140,6 +144,13 @@ export async function GET(request: NextRequest) {
         if (existing) continue;
         const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
         if (result.success && result.comparison) {
+          // Quality gate — reject low-quality generations
+          const qualityScore = scoreComparison(result.comparison);
+          if (qualityScore.totalScore < QUALITY_THRESHOLD) {
+            qualityRejectedCount++;
+            allErrors.push(`Quality rejected "${slug}" (score=${qualityScore.totalScore}, grade=${qualityScore.grade}): ${qualityScore.issues.slice(0, 3).join("; ")}`);
+            continue;
+          }
           try {
             await saveComparison(result.comparison);
             generatedCount++;
@@ -214,6 +225,7 @@ Discovery (multi-source):
 
 Generation:
   New comparison pages: ${generatedCount}
+  Quality-rejected: ${qualityRejectedCount} (below score ${QUALITY_THRESHOLD})
   New blog articles: ${blogArticlesCreated}
 ${newCompPages.length > 0 ? `\nNew Comparison Pages:\n${newCompPages.join("\n")}` : ""}
 ${newBlogPages.length > 0 ? `\nNew Blog Articles:\n${newBlogPages.join("\n")}` : ""}
@@ -247,6 +259,8 @@ Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
     discovered: discoveredCount,
     discoveryBySource: sourceBreakdown,
     generated: generatedCount,
+    qualityRejected: qualityRejectedCount,
+    qualityThreshold: QUALITY_THRESHOLD,
     blogArticlesCreated,
     newPages: generatedSlugs,
     newBlogArticles: blogSlugs,
