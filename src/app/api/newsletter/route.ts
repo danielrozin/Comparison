@@ -3,6 +3,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { logAdminEvent } from "@/lib/services/admin-logger";
 import { sendNotificationEmail, sendConfirmationEmail } from "@/lib/services/email";
 import { generateToken, buildConfirmUrl, buildUnsubscribeUrl } from "@/lib/services/subscriber-tokens";
+import { sanitizeText } from "@/lib/utils/sanitize";
 
 const VALID_CATEGORIES = [
   "technology", "sports", "countries", "products", "health",
@@ -14,11 +15,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, source, referrerSlug, categories } = body;
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedEmail = email.toLowerCase().trim().slice(0, 254);
+    const safeSource = typeof source === "string" ? sanitizeText(source, 100) : undefined;
+    const safeReferrerSlug = typeof referrerSlug === "string" ? referrerSlug.replace(/[^a-z0-9-]/gi, "").slice(0, 200) : undefined;
 
     // Validate categories if provided
     const validCategories: string[] = [];
@@ -64,8 +67,8 @@ export async function POST(request: NextRequest) {
             where: { email: normalizedEmail },
             data: {
               status: "pending",
-              source: source || existing.source,
-              referrerSlug: referrerSlug || existing.referrerSlug,
+              source: safeSource || existing.source,
+              referrerSlug: safeReferrerSlug || existing.referrerSlug,
               categories: validCategories.length > 0 ? validCategories : existing.categories,
               confirmToken,
               unsubscribeToken,
@@ -77,8 +80,8 @@ export async function POST(request: NextRequest) {
           await prisma.newsletterSubscriber.create({
             data: {
               email: normalizedEmail,
-              source: source || "unknown",
-              referrerSlug: referrerSlug || null,
+              source: safeSource || "unknown",
+              referrerSlug: safeReferrerSlug || null,
               categories: validCategories,
               status: "pending",
               confirmToken,
@@ -110,15 +113,15 @@ export async function POST(request: NextRequest) {
     await sendNotificationEmail({
       subject: isResubscribe ? "Newsletter Resubscribe (pending confirmation)" : "New Newsletter Subscriber (pending confirmation)",
       type: "newsletter_subscribe",
-      message: `${isResubscribe ? "Resubscribe" : "New subscriber"}: ${normalizedEmail}\nSource: ${source || "unknown"}${referrerSlug ? `\nReferrer: ${referrerSlug}` : ""}${validCategories.length > 0 ? `\nCategories: ${validCategories.join(", ")}` : ""}`,
+      message: `${isResubscribe ? "Resubscribe" : "New subscriber"}: ${normalizedEmail}\nSource: ${safeSource || "unknown"}${safeReferrerSlug ? `\nReferrer: ${safeReferrerSlug}` : ""}${validCategories.length > 0 ? `\nCategories: ${validCategories.join(", ")}` : ""}`,
       senderEmail: normalizedEmail,
     });
 
     await logAdminEvent("contact", {
       subtype: "newsletter_subscribe",
       email: normalizedEmail,
-      source,
-      referrerSlug,
+      source: safeSource,
+      referrerSlug: safeReferrerSlug,
       categories: validCategories,
       doubleOptIn: true,
     });

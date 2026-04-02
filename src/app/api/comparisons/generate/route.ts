@@ -4,6 +4,7 @@ import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { saveComparison } from "@/lib/services/comparison-service";
 import { withTiming } from "@/lib/utils/api-timing";
+import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 
 export const maxDuration = 60; // Allow up to 60s for AI generation
 
@@ -50,7 +51,7 @@ export const POST = withTiming(async function POST(request: NextRequest) {
     }
   } catch (error) {
     return NextResponse.json(
-      { status: "error", error: error instanceof Error ? error.message : "Generation failed" },
+      { status: "error", error: sanitizeErrorMessage(error, "Generation failed") },
       { status: 500 }
     );
   }

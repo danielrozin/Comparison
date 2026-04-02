@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { stripHtml } from "@/lib/utils/sanitize";
 
 const commentSchema = z.object({
-  comparisonId: z.string().min(1).max(200),
-  name: z.string().min(1).max(100).transform((s) => s.trim()),
-  text: z.string().min(1).max(2000).transform((s) => s.trim()),
+  comparisonId: z.string().min(1).max(200).transform((s) => s.replace(/[^a-zA-Z0-9_-]/g, "")),
+  name: z.string().min(1).max(100).transform((s) => stripHtml(s).trim()),
+  text: z.string().min(1).max(2000).transform((s) => stripHtml(s).trim()),
 });
 
 // In-memory store (in production, use database)

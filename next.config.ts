@@ -1,6 +1,37 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-XSS-Protection", value: "1; mode=block" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://connect.facebook.net",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "img-src 'self' data: blob: https: http:",
+      "font-src 'self' https://fonts.gstatic.com",
+      "connect-src 'self' https://www.google-analytics.com https://pagead2.googlesyndication.com https://www.facebook.com https://*.sentry.io",
+      "frame-src 'self' https://www.youtube.com https://pagead2.googlesyndication.com",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+    ].join("; "),
+  },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
@@ -15,6 +46,14 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "logo.clearbit.com" },
       { protocol: "https", hostname: "*.googleusercontent.com" },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
   },
 };
 
