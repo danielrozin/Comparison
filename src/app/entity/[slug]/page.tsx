@@ -34,10 +34,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = content
     ? content.description.slice(0, 155)
     : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(name)}&type=entity`;
   return {
     title: `${name} — All Comparisons`,
     description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
+    openGraph: {
+      title: `${name} — All Comparisons`,
+      description,
+      url: `${SITE_URL}/entity/${slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} Comparisons` }],
+    },
+    twitter: { card: "summary_large_image", images: [ogImage] },
   };
 }
 

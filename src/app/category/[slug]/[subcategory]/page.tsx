@@ -89,10 +89,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const subcat = subcategories.find((s) => s.slug === subcategory);
   if (!category || !subcat) return { title: "Not Found" };
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(subcat.name + " Comparisons")}&cat=${encodeURIComponent(category.name)}&type=category`;
   return {
     title: `${subcat.name} Comparisons — Best ${subcat.name} Compared`,
     description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`,
     alternates: { canonical: `${SITE_URL}/category/${slug}/${subcategory}` },
+    openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+    twitter: { card: "summary_large_image", images: [ogImage] },
   };
 }
 
@@ -212,6 +215,14 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
               totalPages={totalPages}
               basePath={basePath}
             />
+
+            {/* SEO rel links */}
+            {page > 1 && (
+              <link rel="prev" href={page === 2 ? basePath : `${basePath}?page=${page - 1}`} />
+            )}
+            {page < totalPages && (
+              <link rel="next" href={`${basePath}?page=${page + 1}`} />
+            )}
           </>
         ) : (
           <div className="text-center py-16">

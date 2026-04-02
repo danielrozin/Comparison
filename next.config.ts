@@ -4,6 +4,11 @@ import { withSentryConfig } from "@sentry/nextjs";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  async rewrites() {
+    return [
+      { source: "/feed.xml", destination: "/feed" },
+    ];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
