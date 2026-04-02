@@ -7,7 +7,10 @@ import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-genera
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
 import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
+import { scoreComparison } from "@/lib/services/content-quality";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
+
+const QUALITY_THRESHOLD = 50; // Minimum quality score to save (grade C)
 
 export const maxDuration = 300; // 5 minutes
 
@@ -141,6 +144,12 @@ export async function GET(request: NextRequest) {
         if (existing) continue;
         const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
         if (result.success && result.comparison) {
+          // Quality gate: reject low-quality content
+          const qualityResult = scoreComparison(result.comparison);
+          if (qualityResult.totalScore < QUALITY_THRESHOLD) {
+            allErrors.push(`Quality gate "${slug}": score ${qualityResult.totalScore}/100 (${qualityResult.grade})`);
+            continue;
+          }
           try {
             await saveComparison(result.comparison);
             generatedCount++;

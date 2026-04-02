@@ -18,6 +18,10 @@ import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
 import { warmCacheForSlug } from "./cache-warming";
 import { checkAndAlert } from "./pipeline-alerting";
+import { scoreComparison } from "./content-quality";
+
+const QUALITY_THRESHOLD = 50; // Minimum quality score (grade C) to save
+const QUALITY_SCORES_KEY = "genqueue:quality-scores";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -216,6 +220,31 @@ async function processOneJob(
     const result = await generateComparison(job.entityA, job.entityB, job.slug);
 
     if (result.success && result.comparison) {
+      // Quality gate: score the generated comparison before saving
+      const qualityResult = scoreComparison(result.comparison);
+
+      // Log quality score to Redis for pipeline metrics
+      try {
+        await redis.lpush(QUALITY_SCORES_KEY, JSON.stringify({
+          slug: job.slug,
+          score: qualityResult.totalScore,
+          grade: qualityResult.grade,
+          issues: qualityResult.issues,
+          timestamp: new Date().toISOString(),
+        }));
+        await redis.ltrim(QUALITY_SCORES_KEY, 0, 499); // Keep last 500
+      } catch {
+        // Metrics logging is non-critical
+      }
+
+      // Reject low-quality content — will be retried via normal retry logic
+      if (qualityResult.totalScore < QUALITY_THRESHOLD) {
+        throw new Error(
+          `Quality gate failed: score ${qualityResult.totalScore}/100 (grade ${qualityResult.grade}), ` +
+          `issues: ${qualityResult.issues.slice(0, 3).join("; ")}`
+        );
+      }
+
       // Save to database
       await saveComparison(result.comparison);
 
