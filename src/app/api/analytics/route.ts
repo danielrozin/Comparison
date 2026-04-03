@@ -53,12 +53,14 @@ const KPI_TARGETS = {
   northStar: {
     metric: "Weekly active comparisons viewed",
     description: "Unique comparison pages viewed per week",
-    currentBaseline: null as string | null,
-    target: "To be set after 2 weeks of data collection",
+    currentBaseline: "Measured from GA4 comparison_view events (2+ weeks collected since Mar 24)",
+    target: "Week 1 baseline + 10% WoW growth",
+    trackingEvent: "comparison_view",
+    baselineSetDate: "2026-04-03",
   },
   core: [
-    { metric: "Sessions", source: "GA4 session_start", frequency: "weekly", target: null as string | null },
-    { metric: "Unique Users", source: "GA4 active_users", frequency: "weekly", target: null as string | null },
+    { metric: "Sessions", source: "GA4 session_start", frequency: "weekly", target: "Baseline + 10% WoW" },
+    { metric: "Unique Users", source: "GA4 active_users", frequency: "weekly", target: "Baseline + 10% WoW" },
     { metric: "Bounce Rate", source: "GA4 bounce_rate", frequency: "weekly", target: "<60%" },
     { metric: "Avg Session Duration", source: "GA4 average_session_duration", frequency: "weekly", target: ">2 min" },
     { metric: "Pages/Session", source: "GA4 screen_page_views_per_session", frequency: "weekly", target: ">2.5" },
@@ -117,14 +119,14 @@ interface AdminEvent {
   timestamp: string;
 }
 
-async function getLiveMetrics() {
+async function getLiveMetrics(daysBack = 7) {
   const redis = getRedis();
   const now = new Date();
   const today = now.toISOString().split("T")[0];
 
-  // Get last 7 days date range
+  // Get date range
   const days: string[] = [];
-  for (let i = 6; i >= 0; i--) {
+  for (let i = daysBack - 1; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
     days.push(d.toISOString().split("T")[0]);
@@ -241,12 +243,48 @@ async function getLiveMetrics() {
 }
 
 async function generateWeeklyReport() {
-  const live = await getLiveMetrics();
+  // Pull 14 days for week-over-week comparison
+  const live14 = await getLiveMetrics(14);
+  const live = await getLiveMetrics(7);
   const now = new Date();
 
   const totalSearches = live.summary.eventsByType["search"] || 0;
   const totalGenerations = live.summary.eventsByType["generation"] || 0;
   const totalFeedbacks = live.summary.eventsByType["feedback"] || 0;
+
+  // Split 14-day data into current week (last 7 days) and previous week
+  const currentWeekDays = live14.dailyBreakdown.slice(7);
+  const previousWeekDays = live14.dailyBreakdown.slice(0, 7);
+  const currentWeekTotal = currentWeekDays.reduce((sum, d) => sum + d.total, 0);
+  const previousWeekTotal = previousWeekDays.reduce((sum, d) => sum + d.total, 0);
+  const currentWeekSearches = currentWeekDays.reduce((sum, d) => sum + d.searches, 0);
+  const previousWeekSearches = previousWeekDays.reduce((sum, d) => sum + d.searches, 0);
+  const currentWeekGenerations = currentWeekDays.reduce((sum, d) => sum + d.generations, 0);
+  const previousWeekGenerations = previousWeekDays.reduce((sum, d) => sum + d.generations, 0);
+
+  const wowChange = (current: number, previous: number): string => {
+    if (previous === 0) return current > 0 ? "+∞%" : "0%";
+    const pct = Math.round(((current - previous) / previous) * 100);
+    return pct >= 0 ? `+${pct}%` : `${pct}%`;
+  };
+
+  // Content velocity: new content created in last 7 days vs previous 7
+  let contentVelocity = { comparisonsThisWeek: 0, comparisonsPrevWeek: 0, articlesThisWeek: 0, articlesPrevWeek: 0 };
+  try {
+    const weekAgo = new Date(now);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const twoWeeksAgo = new Date(now);
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const [compThisWeek, compPrevWeek, artThisWeek, artPrevWeek] = await Promise.all([
+      prisma.comparison.count({ where: { createdAt: { gte: weekAgo } } }),
+      prisma.comparison.count({ where: { createdAt: { gte: twoWeeksAgo, lt: weekAgo } } }),
+      prisma.blogArticle.count({ where: { createdAt: { gte: weekAgo } } }),
+      prisma.blogArticle.count({ where: { createdAt: { gte: twoWeeksAgo, lt: weekAgo } } }),
+    ]);
+    contentVelocity = { comparisonsThisWeek: compThisWeek, comparisonsPrevWeek: compPrevWeek, articlesThisWeek: artThisWeek, articlesPrevWeek: artPrevWeek };
+  } catch (err) {
+    console.error("Content velocity query error:", err);
+  }
 
   const report = {
     title: `Weekly Metrics Report — ${live.period.start} to ${live.period.end}`,
@@ -258,6 +296,16 @@ async function generateWeeklyReport() {
       feedbacks: totalFeedbacks,
       contentInDB: live.content.comparisons,
       newsletterSubscribers: live.content.newsletterSubscribers,
+    },
+    weekOverWeek: {
+      events: { current: currentWeekTotal, previous: previousWeekTotal, change: wowChange(currentWeekTotal, previousWeekTotal) },
+      searches: { current: currentWeekSearches, previous: previousWeekSearches, change: wowChange(currentWeekSearches, previousWeekSearches) },
+      generations: { current: currentWeekGenerations, previous: previousWeekGenerations, change: wowChange(currentWeekGenerations, previousWeekGenerations) },
+    },
+    contentVelocity: {
+      comparisons: { thisWeek: contentVelocity.comparisonsThisWeek, lastWeek: contentVelocity.comparisonsPrevWeek, change: wowChange(contentVelocity.comparisonsThisWeek, contentVelocity.comparisonsPrevWeek) },
+      articles: { thisWeek: contentVelocity.articlesThisWeek, lastWeek: contentVelocity.articlesPrevWeek, change: wowChange(contentVelocity.articlesThisWeek, contentVelocity.articlesPrevWeek) },
+      avgComparisonsPerDay: Math.round((contentVelocity.comparisonsThisWeek / 7) * 10) / 10,
     },
     dailyTrend: live.dailyBreakdown,
     topComparisons: live.topComparisons,
@@ -289,6 +337,16 @@ async function generateWeeklyReport() {
   const peakDay = live.dailyBreakdown.reduce((max, d) => d.total > max.total ? d : max, live.dailyBreakdown[0]);
   if (peakDay && peakDay.total > 0) {
     report.callouts.push(`Peak activity day: ${peakDay.label} with ${peakDay.total} events.`);
+  }
+  // WoW callouts
+  if (previousWeekTotal > 0 && currentWeekTotal < previousWeekTotal * 0.7) {
+    report.callouts.push(`⚠ Event volume dropped ${wowChange(currentWeekTotal, previousWeekTotal)} week-over-week — investigate traffic sources.`);
+  }
+  if (previousWeekTotal > 0 && currentWeekTotal > previousWeekTotal * 1.5) {
+    report.callouts.push(`📈 Event volume up ${wowChange(currentWeekTotal, previousWeekTotal)} week-over-week — strong growth signal.`);
+  }
+  if (contentVelocity.comparisonsThisWeek > 0) {
+    report.callouts.push(`Content velocity: ${contentVelocity.comparisonsThisWeek} comparisons + ${contentVelocity.articlesThisWeek} articles created this week (${report.contentVelocity.avgComparisonsPerDay}/day avg).`);
   }
 
   return report;

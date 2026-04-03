@@ -57,10 +57,22 @@ interface GSCCrossRef {
   highImpressionLowCTR: Array<{ query: string; clicks: number; impressions: number; ctr: number; position: number }>;
 }
 
+interface WoWMetric {
+  current: number;
+  previous: number;
+  change: string;
+}
+
 interface WeeklyReport {
   title: string;
   generatedAt: string;
   headline: Record<string, number>;
+  weekOverWeek?: Record<string, WoWMetric>;
+  contentVelocity?: {
+    comparisons: WoWMetric & { thisWeek: number; lastWeek: number };
+    articles: WoWMetric & { thisWeek: number; lastWeek: number };
+    avgComparisonsPerDay: number;
+  };
   dailyTrend: Array<{ date: string; label: string; total: number; searches: number; generations: number }>;
   topComparisons: Array<{ slug: string; title: string; count: number }>;
   topCategories: Array<{ category: string; count: number }>;
@@ -775,6 +787,47 @@ export default function AnalyticsDashboard() {
                   />
                 ))}
               </div>
+
+              {/* Week-over-Week Comparison */}
+              {report.weekOverWeek && (
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Week-over-Week</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {Object.entries(report.weekOverWeek).map(([key, data]) => (
+                      <div key={key} className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-xs text-gray-500 uppercase tracking-wide">{key}</p>
+                        <p className="text-2xl font-bold text-gray-900 mt-1">{data.current}</p>
+                        <p className={`text-sm mt-1 font-medium ${data.change.startsWith("+") && data.change !== "+0%" ? "text-green-600" : data.change.startsWith("-") ? "text-red-600" : "text-gray-500"}`}>
+                          {data.change} vs last week ({data.previous})
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Content Velocity */}
+              {report.contentVelocity && (
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Velocity</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Comparisons Created</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1">{report.contentVelocity.comparisons.thisWeek}</p>
+                      <p className="text-sm text-gray-500 mt-1">{report.contentVelocity.comparisons.change} vs last week</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Articles Created</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1">{report.contentVelocity.articles.thisWeek}</p>
+                      <p className="text-sm text-gray-500 mt-1">{report.contentVelocity.articles.change} vs last week</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">Avg Comparisons/Day</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1">{report.contentVelocity.avgComparisonsPerDay}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Daily Trend */}
               {report.dailyTrend.some((d) => d.total > 0) && (
