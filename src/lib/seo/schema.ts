@@ -93,6 +93,26 @@ export interface ComparisonVoteData {
 }
 
 // ============================================================
+// SpeakableSpecification schema (AEO — voice assistants & LLMs)
+// ============================================================
+
+export function speakableSchema(url: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": url,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [
+        "#verdict",
+        "#key-differences",
+      ],
+    },
+    url,
+  };
+}
+
+// ============================================================
 // Comparison page schema (Article + FAQPage + BreadcrumbList + ItemList)
 // ============================================================
 
@@ -196,7 +216,10 @@ export function comparisonPageSchema(
     });
   }
 
-  // 6. AggregateRating per entity from user poll votes + review counts
+  // 6. SpeakableSpecification for voice assistants & LLMs
+  schemas.push(speakableSchema(url));
+
+  // 7. AggregateRating per entity from user poll votes + review counts
   if (voteData && voteData.total >= 10) {
     const citation = comparison.citationStats;
     for (const entity of comparison.entities) {
