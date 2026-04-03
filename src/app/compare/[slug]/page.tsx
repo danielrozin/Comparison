@@ -335,14 +335,6 @@ function VerdictFirstLayout({
         </div>
       )}
 
-      {/* Mobile: related comparisons scroll strip below verdict area */}
-      {sidebarComparisons.length > 0 && (
-        <RelatedComparisonsSidebar
-          comparisons={sidebarComparisons}
-          sourceSlug={slug}
-        />
-      )}
-
       {/* ── Below the fold ── */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
         {/* Main content column */}
@@ -384,11 +376,6 @@ function VerdictFirstLayout({
           {/* Pros & Cons */}
           <div id="pros-cons">
             <ProsConsBlock entities={comparison.entities} />
-          </div>
-
-          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
           </div>
 
           {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
