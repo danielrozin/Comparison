@@ -839,3 +839,49 @@ model FullSurveyResponse {
   @@index([createdAt])
   @@map("full_survey_responses")
 }
+
+// ============================================================
+// USER-SUBMITTED COMPARISON REQUESTS & VOTING
+// ============================================================
+
+model ComparisonRequest {
+  id           String   @id @default(cuid())
+  entityA      String   @map("entity_a")
+  entityB      String   @map("entity_b")
+  category     String?
+  reason       String?  @db.Text // why user wants this comparison
+  sessionId    String   @map("session_id")
+  email        String?  // optional contact
+
+  // Voting
+  voteCount    Int      @default(1) @map("vote_count")
+
+  // Status: pending → approved → generating → generated | rejected
+  status       String   @default("pending")
+
+  // Link to generated comparison (once created)
+  comparisonSlug String? @map("comparison_slug")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  votes        ComparisonRequestVote[]
+
+  @@unique([entityA, entityB])
+  @@index([status])
+  @@index([voteCount])
+  @@index([createdAt])
+  @@map("comparison_requests")
+}
+
+model ComparisonRequestVote {
+  id        String   @id @default(cuid())
+  requestId String   @map("request_id")
+  request   ComparisonRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  sessionId String   @map("session_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([requestId, sessionId])
+  @@index([requestId])
+  @@map("comparison_request_votes")
+}

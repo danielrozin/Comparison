@@ -329,6 +329,29 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Request a Comparison CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-200 rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex-1 text-center sm:text-left">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-text mb-2">
+              Can&apos;t find what you&apos;re looking for?
+            </h2>
+            <p className="text-text-secondary text-sm sm:text-base">
+              Suggest a comparison and vote on community requests. Top-voted ideas get built first!
+            </p>
+          </div>
+          <Link
+            href="/requests"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-full hover:bg-primary-700 transition-colors shadow-md"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Suggest a Comparison
+          </Link>
+        </div>
+      </section>
+
       {/* Newsletter Signup */}
       <NewsletterSignup source="homepage" />
 
