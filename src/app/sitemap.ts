@@ -47,6 +47,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
