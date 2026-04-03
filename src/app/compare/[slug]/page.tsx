@@ -34,6 +34,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
+import { KeyFacts } from "@/components/comparison/KeyFacts";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { InContentAd, LeaderboardAd, SidebarStickyAd } from "@/components/ads/AdUnit";
@@ -296,6 +297,7 @@ function VerdictFirstLayout({
       <TableOfContents
         items={[
           ...(comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Verdict" }] : []),
+          ...(comparison.attributes.length > 0 || comparison.keyDifferences.length > 0 ? [{ id: "key-facts", label: "Key Facts" }] : []),
           ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
@@ -316,6 +318,16 @@ function VerdictFirstLayout({
 
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Key Facts — structured factual block for LLM/AEO extraction */}
+      {comparison.entities.length >= 2 && (comparison.attributes.length > 0 || comparison.keyDifferences.length > 0) && (
+        <KeyFacts
+          attributes={comparison.attributes}
+          keyDifferences={comparison.keyDifferences}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
 
       {/* Best Deal Banner — top of page, shows pricing CTAs for product comparisons */}
       <BestDealBanner entities={comparison.entities} category={comparison.category} />
@@ -596,6 +608,16 @@ function ClassicLayout({
 
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Key Facts — structured factual block for LLM/AEO extraction */}
+      {comparison.entities.length >= 2 && (comparison.attributes.length > 0 || comparison.keyDifferences.length > 0) && (
+        <KeyFacts
+          attributes={comparison.attributes}
+          keyDifferences={comparison.keyDifferences}
+          entityA={comparison.entities[0]}
+          entityB={comparison.entities[1]}
+        />
+      )}
 
       {/* Best Deal Banner — top of page, shows pricing CTAs for product comparisons */}
       <BestDealBanner entities={comparison.entities} category={comparison.category} />
