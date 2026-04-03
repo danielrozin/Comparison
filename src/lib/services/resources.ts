@@ -167,6 +167,19 @@ const BLOG_MATCHES: Record<string, { slug: string; title: string }[]> = {
   ],
 };
 
+// YouTube video mappings for popular comparisons (videoId -> title)
+const YOUTUBE_VIDEOS: Record<string, { videoId: string; title: string }[]> = {
+  "messi-vs-ronaldo": [
+    { videoId: "search", title: "Messi vs Ronaldo - The Ultimate Comparison" },
+  ],
+  "iphone-17-vs-samsung-s26": [
+    { videoId: "search", title: "iPhone 17 vs Samsung S26 - Full Comparison" },
+  ],
+  "chatgpt-vs-claude": [
+    { videoId: "search", title: "ChatGPT vs Claude - AI Chatbot Showdown" },
+  ],
+};
+
 function entityToWikipedia(entity: ComparisonEntityData): string {
   // Check overrides first
   if (WIKIPEDIA_OVERRIDES[entity.slug]) {
@@ -222,6 +235,38 @@ export function generateResources(
         description: "In-depth analysis on our blog",
       });
     }
+  }
+
+  // 4. YouTube video resources
+  const videos = YOUTUBE_VIDEOS[slug];
+  if (videos) {
+    for (const video of videos) {
+      if (video.videoId === "search") {
+        const query = encodeURIComponent(`${entities[0]?.name || ""} vs ${entities[1]?.name || ""}`);
+        resources.push({
+          type: "video",
+          label: video.title,
+          url: `https://www.youtube.com/results?search_query=${query}`,
+          description: "Watch comparison videos on YouTube",
+        });
+      } else {
+        resources.push({
+          type: "video",
+          label: video.title,
+          url: `https://www.youtube.com/watch?v=${video.videoId}`,
+          description: "Watch on YouTube",
+        });
+      }
+    }
+  } else if (entities.length >= 2) {
+    // Generic YouTube search link for all comparisons
+    const query = encodeURIComponent(`${entities[0].name} vs ${entities[1].name}`);
+    resources.push({
+      type: "video",
+      label: `${entities[0].name} vs ${entities[1].name} videos`,
+      url: `https://www.youtube.com/results?search_query=${query}`,
+      description: "Find comparison videos on YouTube",
+    });
   }
 
   return resources;

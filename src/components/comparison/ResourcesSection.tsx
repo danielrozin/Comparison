@@ -18,6 +18,11 @@ const ICON_MAP = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
     </svg>
   ),
+  video: (
+    <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  ),
 };
 
 export function ResourcesSection({
@@ -32,6 +37,7 @@ export function ResourcesSection({
   const wikipedia = resources.filter((r) => r.type === "wikipedia");
   const blogs = resources.filter((r) => r.type === "blog");
   const external = resources.filter((r) => r.type === "external");
+  const videos = resources.filter((r) => r.type === "video");
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
@@ -120,6 +126,45 @@ export function ResourcesSection({
                     Read &rarr;
                   </span>
                 </Link>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* Videos */}
+        {videos.length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
+              {ICON_MAP.video}
+              Videos
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {videos.map((r) => (
+                <a
+                  key={r.url}
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-red-300 hover:bg-red-50/50 transition-all"
+                >
+                  <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
+                    <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-text group-hover:text-red-700 transition-colors truncate">
+                      {r.label}
+                    </p>
+                    {r.description && (
+                      <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">
+                        {r.description}
+                      </p>
+                    )}
+                  </div>
+                  <svg className="w-4 h-4 text-gray-300 group-hover:text-red-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
               ))}
             </div>
           </div>

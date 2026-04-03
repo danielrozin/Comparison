@@ -56,6 +56,10 @@ const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
 );
+const ComparisonVideoPlayer = dynamic(
+  () => import("@/components/comparison/ComparisonVideoPlayer").then((m) => ({ default: m.ComparisonVideoPlayer })),
+  { loading: () => null }
+);
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -373,6 +377,9 @@ function VerdictFirstLayout({
               entityB={comparison.entities[1]}
             />
           )}
+
+          {/* Video Comparison — lazy loaded, auto-hides if no video available */}
+          <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} />
 
           {/* Pros & Cons */}
           <div id="pros-cons">

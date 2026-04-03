@@ -46,7 +46,7 @@ export interface ComparisonPageData {
 }
 
 export interface ComparisonResource {
-  type: "wikipedia" | "blog" | "external" | "affiliate";
+  type: "wikipedia" | "blog" | "external" | "affiliate" | "video";
   label: string;
   url: string;
   description?: string;
