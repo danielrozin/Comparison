@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 
 interface AdminEvent {
   id: string;
@@ -325,6 +326,30 @@ export default function AdminPage() {
                 <p className="text-xs text-text-secondary mt-1">{stat.label}</p>
               </div>
             ))}
+          </div>
+
+          {/* Quick Links */}
+          <div className="flex gap-3 mb-8">
+            <Link
+              href="/admin/requests"
+              className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
+            >
+              <span className="text-xl">💡</span>
+              <div>
+                <p className="text-sm font-semibold text-text">Comparison Requests</p>
+                <p className="text-xs text-text-secondary">Moderate user submissions</p>
+              </div>
+            </Link>
+            <Link
+              href="/admin/analytics"
+              className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
+            >
+              <span className="text-xl">📊</span>
+              <div>
+                <p className="text-sm font-semibold text-text">Analytics</p>
+                <p className="text-xs text-text-secondary">View detailed analytics</p>
+              </div>
+            </Link>
           </div>
 
           {/* Content Pipeline */}
