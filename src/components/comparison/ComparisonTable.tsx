@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
 // Feature flag for A/B testing the redesigned table
@@ -408,10 +409,13 @@ function RedesignedTable({
                 <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityA.imageUrl && (
-                      <img
+                      <Image
                         src={entityA.imageUrl}
                         alt=""
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
+                        unoptimized
                       />
                     )}
                     <span>{entityA.name}</span>
@@ -420,10 +424,13 @@ function RedesignedTable({
                 <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityB.imageUrl && (
-                      <img
+                      <Image
                         src={entityB.imageUrl}
                         alt=""
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
+                        unoptimized
                       />
                     )}
                     <span>{entityB.name}</span>
@@ -505,7 +512,7 @@ function RedesignedTable({
           <div className="px-3 py-2.5 text-center border-r border-white/10">
             <div className="flex items-center justify-center gap-1.5">
               {entityA.imageUrl && (
-                <img src={entityA.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover border border-white/30" />
+                <Image src={entityA.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30" unoptimized />
               )}
               <span className="text-xs font-semibold truncate">{entityA.name}</span>
             </div>
@@ -513,7 +520,7 @@ function RedesignedTable({
           <div className="px-3 py-2.5 text-center">
             <div className="flex items-center justify-center gap-1.5">
               {entityB.imageUrl && (
-                <img src={entityB.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover border border-white/30" />
+                <Image src={entityB.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30" unoptimized />
               )}
               <span className="text-xs font-semibold truncate">{entityB.name}</span>
             </div>

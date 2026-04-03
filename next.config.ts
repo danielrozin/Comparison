@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -47,6 +48,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.googleusercontent.com" },
     ],
   },
+  experimental: {
+    optimizePackageImports: ["recharts", "zod", "@sentry/nextjs"],
+  },
   async headers() {
     return [
       {
@@ -57,9 +61,13 @@ const nextConfig: NextConfig = {
   },
 };
 
+const analyzeBundles = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
 const sentryEnabled = !!(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT);
 
-export default sentryEnabled
+const finalConfig = sentryEnabled
   ? withSentryConfig(nextConfig, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
@@ -67,3 +75,5 @@ export default sentryEnabled
       widenClientFileUpload: true,
     })
   : nextConfig;
+
+export default analyzeBundles(finalConfig);

@@ -20,12 +20,9 @@ const RelatedComparisonsSidebar = dynamic(
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
-import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
-import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ComparisonAlertSignup } from "@/components/engagement/ComparisonAlertSignup";
-import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
@@ -42,13 +39,35 @@ import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { InContentAd, LeaderboardAd, SidebarStickyAd } from "@/components/ads/AdUnit";
 import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
 import { BestDealBanner } from "@/components/comparison/BestDealBanner";
-import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
 import { TableOfContents } from "@/components/comparison/TableOfContents";
 import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
 import { LayoutSwitcher } from "@/components/comparison/LayoutSwitcher";
-import { MobileExitIntent } from "@/components/engagement/MobileExitIntent";
-import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
+// Lazy-load engagement components — below-fold, interaction-driven
+const CommentSection = dynamic(
+  () => import("@/components/engagement/CommentSection").then((m) => ({ default: m.CommentSection })),
+  { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-32 bg-surface-alt rounded-xl" /></div> }
+);
+const NewsletterSignup = dynamic(
+  () => import("@/components/engagement/NewsletterSignup").then((m) => ({ default: m.NewsletterSignup })),
+  { loading: () => null }
+);
+const ComparisonPoll = dynamic(
+  () => import("@/components/engagement/ComparisonPoll").then((m) => ({ default: m.ComparisonPoll })),
+  { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
+);
+const VersionHistory = dynamic(
+  () => import("@/components/comparison/VersionHistory").then((m) => ({ default: m.VersionHistory })),
+  { loading: () => null }
+);
+const MobileExitIntent = dynamic(
+  () => import("@/components/engagement/MobileExitIntent").then((m) => ({ default: m.MobileExitIntent })),
+  { loading: () => null }
+);
+const ExitIntentPopup = dynamic(
+  () => import("@/components/engagement/ExitIntentPopup").then((m) => ({ default: m.ExitIntentPopup })),
+  { loading: () => null }
+);
 import { EntityCrossLinks } from "@/components/comparison/EntityCrossLinks";
 import { CategoryPrevNext } from "@/components/comparison/CategoryPrevNext";
 
