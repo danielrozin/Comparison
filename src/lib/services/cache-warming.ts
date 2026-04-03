@@ -66,6 +66,63 @@ export async function warmCacheForPaths(paths: string[]): Promise<void> {
   }
 }
 
+/**
+ * Warm the Redis cache for the top comparisons by traffic.
+ * Fetches top N comparisons from DB and pre-populates the Redis cache.
+ * Intended to be called from a cron job or on deploy.
+ */
+export async function warmRedisCacheForTopComparisons(limit: number = 100): Promise<{ warmed: number; errors: number }> {
+  // Dynamic imports to avoid circular deps
+  const { getComparisonBySlug } = await import("./comparison-service");
+
+  let prisma;
+  try {
+    const { getPrisma } = require("@/lib/db/prisma");
+    prisma = getPrisma();
+  } catch {
+    console.warn("[cache-warming] No database connection, skipping Redis warm");
+    return { warmed: 0, errors: 0 };
+  }
+
+  if (!prisma) {
+    return { warmed: 0, errors: 0 };
+  }
+
+  let warmed = 0;
+  let errors = 0;
+
+  try {
+    const topSlugs = await prisma.comparison.findMany({
+      where: { status: "published" },
+      orderBy: { viewCount: "desc" },
+      take: limit,
+      select: { slug: true },
+    });
+
+    // Warm in batches of 10 to avoid overwhelming Redis
+    const batchSize = 10;
+    for (let i = 0; i < topSlugs.length; i += batchSize) {
+      const batch = topSlugs.slice(i, i + batchSize);
+      const results = await Promise.allSettled(
+        batch.map((row: { slug: string }) => getComparisonBySlug(row.slug))
+      );
+      for (const r of results) {
+        if (r.status === "fulfilled" && r.value) {
+          warmed++;
+        } else {
+          errors++;
+        }
+      }
+    }
+
+    console.log(`[cache-warming] Redis warm complete: ${warmed} warmed, ${errors} errors out of ${topSlugs.length} total`);
+  } catch (e) {
+    console.warn("[cache-warming] Redis warm failed:", e instanceof Error ? e.message : e);
+  }
+
+  return { warmed, errors };
+}
+
 function getBaseUrl(): string | null {
   // In production, use NEXT_PUBLIC_SITE_URL or VERCEL_URL
   if (process.env.NEXT_PUBLIC_SITE_URL) {

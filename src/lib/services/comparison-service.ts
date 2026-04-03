@@ -37,16 +37,54 @@ function getPrismaClient() {
 }
 
 // Cache TTLs in seconds
-const CACHE_TTL_COMPARISON = 300; // 5 min for individual comparisons
-const CACHE_TTL_TRENDING = 120;   // 2 min for trending lists
-const CACHE_TTL_SEARCH = 60;      // 1 min for search results
+const CACHE_TTL_COMPARISON = 3600; // 1 hour for individual comparisons
+const CACHE_TTL_TRENDING = 120;    // 2 min for trending lists
+const CACHE_TTL_SEARCH = 900;      // 15 min for search results
+const CACHE_TTL_CATEGORY = 1800;   // 30 min for category listings
+
+// ---------------------------------------------------------------------------
+// Cache hit/miss monitoring
+// ---------------------------------------------------------------------------
+
+const cacheStats = { hits: 0, misses: 0 };
+
+function logCacheAccess(key: string, hit: boolean): void {
+  if (hit) {
+    cacheStats.hits++;
+  } else {
+    cacheStats.misses++;
+  }
+  const total = cacheStats.hits + cacheStats.misses;
+  // Log every 50 accesses to avoid noise
+  if (total % 50 === 0) {
+    const rate = total > 0 ? ((cacheStats.hits / total) * 100).toFixed(1) : "0";
+    console.log(`[cache-stats] hit-rate=${rate}% hits=${cacheStats.hits} misses=${cacheStats.misses}`);
+  }
+}
+
+/** Get current cache hit/miss stats (useful for monitoring endpoints). */
+export function getCacheStats() {
+  const total = cacheStats.hits + cacheStats.misses;
+  return {
+    hits: cacheStats.hits,
+    misses: cacheStats.misses,
+    total,
+    hitRate: total > 0 ? Number(((cacheStats.hits / total) * 100).toFixed(1)) : 0,
+  };
+}
 
 async function getFromCache<T>(key: string): Promise<T | null> {
   const redis = getRedis();
-  if (!redis) return null;
+  if (!redis) {
+    logCacheAccess(key, false);
+    return null;
+  }
   try {
-    return await redis.get<T>(key);
+    const value = await redis.get<T>(key);
+    logCacheAccess(key, value !== null);
+    return value;
   } catch {
+    logCacheAccess(key, false);
     return null;
   }
 }
@@ -61,15 +99,40 @@ async function setCache(key: string, value: unknown, ttl: number): Promise<void>
   }
 }
 
-async function invalidateCache(pattern: string): Promise<void> {
+async function invalidateCache(...keys: string[]): Promise<void> {
   const redis = getRedis();
   if (!redis) return;
   try {
-    // Delete specific keys — pattern-based scan not used to keep it simple
-    await redis.del(pattern);
+    if (keys.length === 1) {
+      await redis.del(keys[0]);
+    } else if (keys.length > 1) {
+      await redis.del(...keys);
+    }
   } catch {
     // Silently fail
   }
+}
+
+/**
+ * Invalidate all caches related to a comparison slug/category.
+ * Called after a comparison is saved, updated, or regenerated.
+ */
+export async function invalidateComparisonCaches(slug: string, category?: string | null): Promise<void> {
+  const keys = [
+    `comparison:${slug}`,
+    `trending:10`,
+    `trending:20`,
+    `trending:5`,
+  ];
+  if (category) {
+    // Invalidate common category page sizes
+    for (const limit of [16, 20, 50]) {
+      for (const offset of [0, 16, 32, 48]) {
+        keys.push(`category:${category.toLowerCase()}:${limit}:${offset}`);
+      }
+    }
+  }
+  await invalidateCache(...keys);
 }
 
 // ---------------------------------------------------------------------------
@@ -559,7 +622,7 @@ export async function searchComparisons(
         take: limit,
       });
       if (rows.length > 0) {
-        return rows.map(
+        const results = rows.map(
           (r: { slug: string; title: string; category: string | null; viewCount: number }) => ({
             slug: r.slug,
             title: r.title,
@@ -567,6 +630,8 @@ export async function searchComparisons(
             viewCount: r.viewCount,
           })
         );
+        await setCache(searchCacheKey, results, CACHE_TTL_SEARCH);
+        return results;
       }
     } catch (e) {
       console.warn("Prisma query failed for searchComparisons, falling back to mock:", e);
@@ -631,6 +696,10 @@ export async function getComparisonsByCategory(
   limit: number = 20,
   offset: number = 0
 ): Promise<{ comparisons: RelatedComparison[]; total: number }> {
+  const cacheKey = `category:${category.toLowerCase()}:${limit}:${offset}`;
+  const cached = await getFromCache<{ comparisons: RelatedComparison[]; total: number }>(cacheKey);
+  if (cached) return cached;
+
   const prisma = getPrismaClient();
   if (prisma) {
     try {
@@ -647,7 +716,9 @@ export async function getComparisonsByCategory(
         }),
       ]);
       if (rows.length > 0 || total > 0) {
-        return { comparisons: rows, total };
+        const result = { comparisons: rows, total };
+        await setCache(cacheKey, result, CACHE_TTL_CATEGORY);
+        return result;
       }
     } catch (e) {
       console.warn("Prisma getComparisonsByCategory failed:", e);
@@ -660,10 +731,12 @@ export async function getComparisonsByCategory(
     title: comp.title,
     category: comp.category,
   }));
-  return {
+  const result = {
     comparisons: comparisons.slice(offset, offset + limit),
     total: comparisons.length,
   };
+  await setCache(cacheKey, result, CACHE_TTL_CATEGORY);
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -868,9 +941,8 @@ export async function saveComparison(
       },
     });
 
-    // Invalidate cached comparison and trending list
-    await invalidateCache(`comparison:${data.slug}`);
-    await invalidateCache(`trending:10`);
+    // Invalidate all related caches
+    await invalidateComparisonCaches(data.slug, data.category);
 
     return { id: comparison.id };
   } catch (e) {
