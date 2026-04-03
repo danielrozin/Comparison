@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { categoryPageSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -119,10 +119,22 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     }
   }
 
-  const schemaData = breadcrumbSchema([
-    { name: "Home", url: SITE_URL },
-    { name: category.name, url: `${SITE_URL}/category/${slug}` },
-  ]);
+  const schemaData = categoryPageSchema(
+    {
+      slug,
+      name: category.name,
+      description: `Browse the best ${category.name.toLowerCase()} comparisons side by side.`,
+      icon: category.icon,
+      comparisonCount: dbTotal,
+      topComparisons: allComparisons.slice(0, 5).map((c) => ({ slug: c.slug, title: c.title, category: slug })),
+      subcategories: activeSubcategories.map((s) => ({
+        slug: s.slug,
+        name: s.name,
+        count: getSubcategoryComparisons(allComparisons, s).length,
+      })),
+    },
+    new Date().toISOString(),
+  );
 
   const basePath = `/category/${slug}`;
 

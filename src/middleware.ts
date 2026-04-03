@@ -122,10 +122,32 @@ function getClientIp(request: NextRequest): string {
 }
 
 // ---------------------------------------------------------------------------
+// Last-Modified headers for dynamic content pages
+// ---------------------------------------------------------------------------
+const DYNAMIC_PAGE_PATTERNS = [
+  /^\/compare\/[^/]+$/,
+  /^\/entity\/[^/]+$/,
+  /^\/blog\/[^/]+$/,
+  /^\/category\/[^/]+$/,
+];
+
+function isDynamicPage(pathname: string): boolean {
+  return DYNAMIC_PAGE_PATTERNS.some((pattern) => pattern.test(pathname));
+}
+
+// ---------------------------------------------------------------------------
 // Middleware
 // ---------------------------------------------------------------------------
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Set Last-Modified header on dynamic content pages
+  if (isDynamicPage(pathname)) {
+    const response = NextResponse.next();
+    response.headers.set("Last-Modified", new Date().toUTCString());
+    response.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+    return response;
+  }
 
   if (!pathname.startsWith("/api/")) {
     return NextResponse.next();
@@ -204,5 +226,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: [
+    "/api/:path*",
+    "/compare/:slug*",
+    "/entity/:slug*",
+    "/blog/:slug*",
+    "/category/:slug*",
+  ],
 };

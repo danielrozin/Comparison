@@ -300,7 +300,7 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
 // Category page schema (CollectionPage)
 // ============================================================
 
-export function categoryPageSchema(category: CategoryData) {
+export function categoryPageSchema(category: CategoryData, dateModified?: string) {
   const url = `${SITE_URL}/category/${category.slug}`;
 
   return [
@@ -310,6 +310,7 @@ export function categoryPageSchema(category: CategoryData) {
       name: category.name,
       description: category.description,
       url,
+      ...(dateModified && { dateModified }),
       mainEntity: {
         "@type": "ItemList",
         name: `${category.name} Comparisons`,
@@ -339,6 +340,7 @@ export function entityPageSchema(entity: {
   shortDesc: string | null;
   entityType: string;
   imageUrl: string | null;
+  dateModified?: string;
 }) {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
@@ -350,6 +352,7 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
+    ...(entity.dateModified && { dateModified: entity.dateModified }),
   };
 }
 

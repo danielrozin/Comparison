@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
-import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, aggregateRatingSchema, entityPageSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 
@@ -84,6 +84,14 @@ export default async function EntityPage({ params }: PageProps) {
 
   const schemas = [
     breadcrumbSchema(breadcrumbItems),
+    entityPageSchema({
+      name,
+      slug,
+      shortDesc: entityContent?.description || `All comparisons involving ${name}`,
+      entityType: "product",
+      imageUrl: null,
+      dateModified: new Date().toISOString(),
+    }),
     aggregateRatingSchema({
       name,
       slug,
