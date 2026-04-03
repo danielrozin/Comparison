@@ -6,6 +6,15 @@
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import type { ComparisonPageData, FAQData, CategoryData, CitationStats } from "@/types";
 
+export interface BlogSchemaInput {
+  title: string;
+  description: string;
+  url: string;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  tags?: string[];
+}
+
 // ============================================================
 // Organization schema (site-wide)
 // ============================================================
@@ -373,6 +382,86 @@ export function aggregateRatingSchema(entity: {
       reviewCount: entity.reviewCount,
     },
   };
+}
+
+// ============================================================
+// NewsArticle schema (for timely/trending blog posts)
+// ============================================================
+
+export function newsArticleSchema(opts: BlogSchemaInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: opts.title,
+    description: opts.description,
+    url: opts.url,
+    ...(opts.datePublished && { datePublished: opts.datePublished }),
+    ...(opts.dateModified && { dateModified: opts.dateModified }),
+    author: {
+      "@type": "Organization",
+      name: `${SITE_NAME} Team`,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+      sameAs: [
+        "https://twitter.com/aversusb",
+        "https://www.linkedin.com/company/aversusb",
+        "https://github.com/aversusb",
+      ],
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": opts.url,
+    },
+  };
+}
+
+// ============================================================
+// Blog article schema (picks NewsArticle vs Article based on timeliness)
+// ============================================================
+
+export function blogArticleSchema(opts: BlogSchemaInput & { isTimely: boolean }) {
+  const base = {
+    "@context": "https://schema.org",
+    "@type": opts.isTimely ? "NewsArticle" : "Article",
+    headline: opts.title,
+    description: opts.description,
+    url: opts.url,
+    ...(opts.datePublished && { datePublished: opts.datePublished }),
+    ...(opts.dateModified && { dateModified: opts.dateModified }),
+    author: {
+      "@type": "Organization",
+      name: `${SITE_NAME} Team`,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+      sameAs: [
+        "https://twitter.com/aversusb",
+        "https://www.linkedin.com/company/aversusb",
+        "https://github.com/aversusb",
+      ],
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": opts.url,
+    },
+  };
+
+  return base;
 }
 
 // ============================================================

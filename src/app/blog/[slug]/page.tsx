@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, blogArticleSchema } from "@/lib/seo/schema";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -225,40 +225,30 @@ export default async function BlogPostPage({
     ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
     : {};
 
-  // JSON-LD Article schema
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
+  // Determine if blog post is timely (has timely/trending tag, or published within last 48 hours)
+  const TIMELY_TAGS = ["timely", "trending", "breaking", "news"];
+  const hasTimelyTag = article.tags?.some((tag: string) =>
+    TIMELY_TAGS.includes(tag.toLowerCase())
+  );
+  const publishedRecently = article.publishedAt
+    ? Date.now() - new Date(article.publishedAt).getTime() < 48 * 60 * 60 * 1000
+    : false;
+  const isTimely = hasTimelyTag || publishedRecently;
+
+  // JSON-LD schema: NewsArticle for timely content, Article for evergreen
+  const jsonLd = blogArticleSchema({
+    title: article.title,
     description: article.excerpt,
-    author: {
-      "@type": "Organization",
-      name: `${SITE_NAME} Team`,
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
-      },
-      sameAs: [
-        "https://twitter.com/aversusb",
-        "https://www.linkedin.com/company/aversusb",
-        "https://github.com/aversusb",
-      ],
-    },
+    url: `${SITE_URL}/blog/${slug}`,
     datePublished: article.publishedAt
       ? new Date(article.publishedAt).toISOString()
-      : undefined,
+      : null,
     dateModified: article.updatedAt
       ? new Date(article.updatedAt).toISOString()
-      : undefined,
-    mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
-    url: `${SITE_URL}/blog/${slug}`,
-  };
+      : null,
+    tags: article.tags,
+    isTimely,
+  });
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
