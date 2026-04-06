@@ -92,6 +92,7 @@ export function Footer() {
               <Link href="/changelog" className="text-sm text-gray-400 hover:text-white transition-colors">Changelog</Link>
               <Link href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">Contact</Link>
               <Link href="/partnerships" className="text-sm text-gray-400 hover:text-white transition-colors">Partnerships</Link>
+              <Link href="/who-is-this-for" className="text-sm text-gray-400 hover:text-white transition-colors">Who Is This For?</Link>
               <a href="/feed" className="text-sm text-gray-400 hover:text-white transition-colors">RSS Feed</a>
               <Link href="/site-map" className="text-sm text-gray-400 hover:text-white transition-colors">Sitemap</Link>
             </nav>
