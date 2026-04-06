@@ -33,6 +33,7 @@ export function StickyAffiliateCTA({
   const [dismissed, setDismissed] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const { variant: ctaVariant } = useExperiment("cta-button-style");
+  const { variant: placementVariant } = useExperiment("cta-placement");
   const isTreatment = ctaVariant === "treatment";
 
   const isProductCategory =
@@ -54,7 +55,13 @@ export function StickyAffiliateCTA({
       return;
     }
 
-    // Observe the verdict section — show bar after scrolling past it
+    // "inline-verdict" variant: always visible inline (no sticky behavior)
+    if (placementVariant === "inline-verdict") {
+      setVisible(true);
+      return;
+    }
+
+    // "sticky-bottom" (default) and "control": observe verdict section
     const target =
       document.getElementById("verdict-sentinel") ||
       document.querySelector("[data-verdict]");
@@ -70,7 +77,7 @@ export function StickyAffiliateCTA({
 
     observer.observe(target);
     return () => observer.disconnect();
-  }, [hasLinks, slug]);
+  }, [hasLinks, slug, placementVariant]);
 
   if (!hasLinks || dismissed) return null;
 
@@ -87,8 +94,9 @@ export function StickyAffiliateCTA({
       product: entity.name,
       position,
       page: slug,
-      source: "sticky_cta",
+      source: placementVariant === "inline-verdict" ? "inline_cta" : "sticky_cta",
       cta_variant: ctaVariant,
+      cta_placement: placementVariant,
       cta_type: isEntityGeneric ? "learn_more" : "affiliate",
     });
   };
@@ -101,12 +109,14 @@ export function StickyAffiliateCTA({
       {/* Sentinel element placed near verdict for IntersectionObserver */}
       <div ref={sentinelRef} />
 
-      {/* Sticky bar */}
+      {/* CTA bar — sticky-bottom or inline depending on experiment */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${
-          visible ? "translate-y-0" : "translate-y-full"
+        className={`${
+          placementVariant === "inline-verdict"
+            ? `relative ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300`
+            : `fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
         }`}
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        style={placementVariant !== "inline-verdict" ? { paddingBottom: "env(safe-area-inset-bottom, 0px)" } : undefined}
       >
         <div className="bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
           <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
