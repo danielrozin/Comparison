@@ -224,9 +224,14 @@ export default function AnalyticsDashboard() {
         <p className="text-xs text-gray-400 mt-1">
           Data period: {live.period.start} to {live.period.end} ({live.period.days} days)
         </p>
-        <a href="/admin/analytics/aarrr" className="inline-block mt-2 text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-          View AARRR Pirate Metrics Dashboard &rarr;
-        </a>
+        <div className="flex gap-4 mt-2">
+          <a href="/admin/analytics/aarrr" className="inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+            View AARRR Pirate Metrics Dashboard &rarr;
+          </a>
+          <a href="/admin/analytics/okr" className="inline-block text-sm text-violet-600 hover:text-violet-800 font-medium">
+            View OKR Dashboard &rarr;
+          </a>
+        </div>
       </div>
 
       {/* Tabs */}
