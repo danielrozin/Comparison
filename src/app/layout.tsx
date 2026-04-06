@@ -8,6 +8,7 @@ import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
+import { HotjarScript } from "@/components/tracking/HotjarScript";
 import "./globals.css";
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
@@ -103,6 +104,7 @@ export default function RootLayout({
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <GoogleTagManager />
         <MetaPixel />
+        <HotjarScript />
         <ExperimentProviderServer>
           <Header />
           <main className="flex-1">{children}</main>

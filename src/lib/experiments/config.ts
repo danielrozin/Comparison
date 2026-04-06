@@ -19,6 +19,24 @@ export const experiments: ExperimentConfig[] = [
     endDate: "2026-06-15",
     goalMetric: "engagement_rate",
   },
+  {
+    id: "comparison-layout",
+    name: "Comparison Layout",
+    variants: ["control", "side-by-side", "tabbed"],
+    trafficPercent: 100,
+    startDate: "2026-04-15",
+    endDate: "2026-05-15",
+    goalMetric: "engagement_rate",
+  },
+  {
+    id: "cta-placement",
+    name: "CTA Placement",
+    variants: ["control", "sticky-bottom", "inline-verdict"],
+    trafficPercent: 50,
+    startDate: "2026-04-15",
+    endDate: "2026-05-15",
+    goalMetric: "affiliate_click",
+  },
 ];
 
 export function getActiveExperiments(): ExperimentConfig[] {
