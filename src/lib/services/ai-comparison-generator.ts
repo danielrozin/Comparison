@@ -71,7 +71,7 @@ Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
 Requirements:
 - Include 5-7 key differences with specific, verifiable data points (not generic statements)
 - Include 5-8 attributes with real data — use correct units (GB, MHz, USD, cm, etc.). Never use vague values like "Good" or "Very Good"
-- Include 3-5 FAQs that answer questions users actually search for
+- Include 3-5 FAQs written as natural language queries that AI engines can parse: questions should use "If you..." scenario patterns (e.g., "If I care about battery life and portability, should I choose X or Y?") and answers should include concrete attributes (prices, specs, use cases) rather than generic language
 - Include 3-5 pros and 2-3 cons per entity — be specific (e.g., "48MP main camera with OIS" not "good camera"). Avoid generic pros like "popular" or "well-known"
 - Cons must be honest weaknesses, not hedged non-answers like "has a learning curve"
 - The shortAnswer must state the core factual difference, never just "it depends"
