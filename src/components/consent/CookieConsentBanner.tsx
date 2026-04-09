@@ -63,9 +63,15 @@ export function CookieConsentBanner() {
       marketing: state.marketing ? 1 : 0,
       functional: state.functional ? 1 : 0,
     });
-    // Reload to apply script blocking changes
-    if (state.analytics || state.marketing) {
-      window.location.reload();
+    // Update Google Consent Mode dynamically instead of reloading
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("consent", "update", {
+        analytics_storage: state.analytics ? "granted" : "denied",
+        ad_storage: state.marketing ? "granted" : "denied",
+        ad_user_data: state.marketing ? "granted" : "denied",
+        ad_personalization: state.marketing ? "granted" : "denied",
+        functionality_storage: state.functional ? "granted" : "denied",
+      });
     }
   }, []);
 

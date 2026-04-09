@@ -3,6 +3,7 @@ import { getRedis } from "@/lib/services/redis";
 import { prisma } from "@/lib/db/prisma";
 import { experiments, getActiveExperiments } from "@/lib/experiments/config";
 import { fetchGSCQueries, getGSCStats, type GSCQuery } from "@/lib/services/gsc-service";
+import { getFrustrationReport, getHeatmapData, getSessionsByTag, getClarityDashboardUrl } from "@/lib/services/clarity-service";
 
 /**
  * Analytics Dashboard API
@@ -458,6 +459,31 @@ export async function GET(request: Request) {
         "Minimum sample size: ~1,000 sessions per variant for 95% confidence on bounce_rate changes >5pp.",
         "Recommended: Wait 2+ weeks before drawing conclusions to account for day-of-week effects.",
       ],
+    });
+  }
+  if (section === "clarity") {
+    const daysBack = Number(searchParams.get("days")) || 7;
+    const page = searchParams.get("page");
+    const tagKey = searchParams.get("tagKey");
+    const tagValue = searchParams.get("tagValue");
+
+    const [frustration, heatmap, taggedSessions] = await Promise.all([
+      getFrustrationReport(daysBack),
+      page ? getHeatmapData(page, daysBack) : Promise.resolve(null),
+      tagKey && tagValue ? getSessionsByTag(tagKey, tagValue, daysBack) : Promise.resolve(null),
+    ]);
+
+    return NextResponse.json({
+      clarityProject: CLARITY_PROJECT,
+      dashboardUrl: getClarityDashboardUrl(page ? { page } : undefined),
+      daysBack,
+      frustration,
+      heatmap,
+      taggedSessions,
+      configured: !!process.env.CLARITY_API_TOKEN,
+      note: !process.env.CLARITY_API_TOKEN
+        ? "Clarity API token not configured. Set CLARITY_API_TOKEN env var with Azure AD bearer token to enable programmatic access. Session recordings are still being captured via the client-side script."
+        : undefined,
     });
   }
   if (section === "gsc-crossref") {

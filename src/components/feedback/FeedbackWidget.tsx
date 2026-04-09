@@ -50,7 +50,7 @@ export function FeedbackWidget() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? "bg-gray-600 hover:bg-gray-700 rotate-45"
             : "bg-primary-600 hover:bg-primary-700 hover:scale-105"
@@ -70,7 +70,7 @@ export function FeedbackWidget() {
 
       {/* Panel */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+        <div className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
           {/* Header */}
           <div className="bg-primary-600 text-white px-5 py-4">
             <h3 className="font-bold text-lg">Feedback & Requests</h3>

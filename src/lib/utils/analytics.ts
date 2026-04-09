@@ -1,4 +1,12 @@
-/* GA4 + Google Ads + Meta Pixel Event Tracking */
+/* GA4 + Google Ads + Meta Pixel + Clarity Event Tracking */
+
+import {
+  tagComparisonView as clarityTagComparison,
+  tagSearchQuery as clarityTagSearch,
+  tagExperimentVariant as clarityTagExperiment,
+  tagUserAction as clarityTagAction,
+  tagEngagement as clarityTagEngagement,
+} from "@/lib/services/clarity-service";
 
 declare global {
   interface Window {
@@ -62,10 +70,14 @@ export function trackMetaCustomEvent(eventName: string, params?: Record<string, 
 
 export function trackAffiliateClick(product: string, position: string, page: string) {
   trackEvent("affiliate_click", { product, position, page });
+  clarityTagAction("affiliate_click");
+  clarityTagEngagement("converted");
 }
 
 export function trackComparisonVote(entityA: string, entityB: string, choice: string) {
   trackEvent("comparison_vote", { entity_a: entityA, entity_b: entityB, choice });
+  clarityTagAction("vote");
+  clarityTagEngagement("engaged");
 }
 
 export function trackNewsletterSignup(page: string, placement: string) {
@@ -89,6 +101,7 @@ export function trackReviewSubmission(product: string, rating: number) {
 
 export function trackExperimentView(experimentId: string, experimentName: string, variant: string) {
   trackEvent("experiment_view", { experiment_id: experimentId, experiment_name: experimentName, variant });
+  clarityTagExperiment(experimentId, variant);
 }
 
 
@@ -96,14 +109,16 @@ export function trackFunnelStep(step: string, page: string, value?: number) {
   trackEvent("funnel_step", { step, page, ...(value !== undefined ? { value } : {}) });
 }
 
-export function trackComparisonSearch(query: string, resultType: string) {
+export function trackComparisonSearch(query: string, resultType: string, resultCount?: number) {
   trackEvent("comparison_search", { search_term: query, result_type: resultType });
   trackMetaEvent("Search", { search_string: query, content_category: resultType });
+  clarityTagSearch(query, resultCount ?? 0);
 }
 
 export function trackComparisonView(slug: string, category: string) {
   trackEvent("comparison_view", { comparison_slug: slug, category });
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
+  clarityTagComparison(slug, category);
 }
 
 export function trackPollEmailCapture(page: string) {
