@@ -231,6 +231,9 @@ export default function AnalyticsDashboard() {
           <a href="/admin/analytics/okr" className="inline-block text-sm text-violet-600 hover:text-violet-800 font-medium">
             View OKR Dashboard &rarr;
           </a>
+          <a href="/admin/analytics/weekly-report" className="inline-block text-sm text-emerald-600 hover:text-emerald-800 font-medium">
+            Weekly Report &rarr;
+          </a>
         </div>
       </div>
 
