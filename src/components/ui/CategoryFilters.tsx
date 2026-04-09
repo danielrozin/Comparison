@@ -3,20 +3,17 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-export type SortOption = "rating" | "alphabetical" | "trending";
-export type RatingFilter = "all" | "4+" | "3+";
+export type SortOption = "alphabetical" | "trending";
 
 interface CategoryFiltersProps {
   basePath: string;
   currentSort: SortOption;
-  currentRating: RatingFilter;
   totalResults: number;
 }
 
 export function CategoryFilters({
   basePath,
   currentSort,
-  currentRating,
   totalResults,
 }: CategoryFiltersProps) {
   const router = useRouter();
@@ -27,8 +24,6 @@ export function CategoryFilters({
       const params = new URLSearchParams(searchParams.toString());
       if (value === "trending" && key === "sort") {
         params.delete("sort");
-      } else if (value === "all" && key === "rating") {
-        params.delete("rating");
       } else {
         params.set(key, value);
       }
@@ -59,25 +54,7 @@ export function CategoryFilters({
             className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="trending">Trending</option>
-            <option value="rating">Highest Rated</option>
             <option value="alphabetical">A-Z</option>
-          </select>
-        </div>
-
-        {/* Rating filter */}
-        <div className="flex items-center gap-2">
-          <label htmlFor="rating" className="text-xs font-medium text-text-secondary uppercase tracking-wide">
-            Rating
-          </label>
-          <select
-            id="rating"
-            value={currentRating}
-            onChange={(e) => updateParams("rating", e.target.value)}
-            className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-          >
-            <option value="all">All Ratings</option>
-            <option value="4+">4+ Stars</option>
-            <option value="3+">3+ Stars</option>
           </select>
         </div>
       </div>

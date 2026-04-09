@@ -2,29 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getAllMockSlugs, getMockComparison } from "@/lib/services/mock-data";
-import { breadcrumbSchema, aggregateRatingSchema, faqSchema } from "@/lib/seo/schema";
-import { StarRating } from "@/components/ui/StarRating";
+import { breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-// Generate deterministic rating from slug
-function getEntityRating(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash * 31 + slug.charCodeAt(i)) & 0x7fffffff;
-  }
-  return 3.2 + (hash % 17) / 10;
-}
-
-function getReviewCount(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash * 37 + slug.charCodeAt(i)) & 0x7fffffff;
-  }
-  return 12 + (hash % 200);
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -52,8 +34,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function EntityPage({ params }: PageProps) {
   const { slug } = await params;
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  const rating = getEntityRating(slug);
-  const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
 
   // Find all comparisons that include this entity
@@ -92,13 +72,6 @@ export default async function EntityPage({ params }: PageProps) {
 
   const schemas = [
     breadcrumbSchema(breadcrumbItems),
-    aggregateRatingSchema({
-      name,
-      slug,
-      entityType: "product",
-      ratingValue: rating,
-      reviewCount,
-    }),
     ...(entityContent?.faqs?.length > 0 ? [faqSchema(entityContent.faqs)] : []),
   ];
 
@@ -136,9 +109,6 @@ export default async function EntityPage({ params }: PageProps) {
           </div>
           <div>
             <h1 className="text-3xl sm:text-4xl font-display font-black text-text">{name}</h1>
-            <div className="mt-2">
-              <StarRating rating={rating} size="lg" reviewCount={reviewCount} />
-            </div>
             <p className="text-text-secondary mt-2">
               {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""} available
             </p>

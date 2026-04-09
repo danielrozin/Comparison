@@ -6,16 +6,15 @@ import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/const
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
-import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
-import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
+import type { SortOption } from "@/components/ui/CategoryFilters";
 
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
   params: Promise<{ slug: string; subcategory: string }>;
-  searchParams: Promise<{ page?: string; sort?: string; rating?: string }>;
+  searchParams: Promise<{ page?: string; sort?: string }>;
 }
 
 function getSubcategoryComparisons(
@@ -28,45 +27,18 @@ function getSubcategoryComparisons(
   });
 }
 
-function getComparisonRating(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash * 31 + slug.charCodeAt(i)) & 0x7fffffff;
-  }
-  return 3.2 + (hash % 17) / 10;
-}
-
-function getReviewCount(slug: string): number {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash * 37 + slug.charCodeAt(i)) & 0x7fffffff;
-  }
-  return 12 + (hash % 200);
-}
-
 function sortComparisons<T extends { slug: string; title: string }>(
   comparisons: T[],
   sort: SortOption
 ): T[] {
   const sorted = [...comparisons];
   switch (sort) {
-    case "rating":
-      return sorted.sort((a, b) => getComparisonRating(b.slug) - getComparisonRating(a.slug));
     case "alphabetical":
       return sorted.sort((a, b) => a.title.localeCompare(b.title));
     case "trending":
     default:
       return sorted;
   }
-}
-
-function filterByRating<T extends { slug: string }>(
-  comparisons: T[],
-  ratingFilter: RatingFilter
-): T[] {
-  if (ratingFilter === "all") return comparisons;
-  const threshold = ratingFilter === "4+" ? 4 : 3;
-  return comparisons.filter((c) => getComparisonRating(c.slug) >= threshold);
 }
 
 const CATEGORIES_WITH_SUBS = ["products", "software", "sports", "countries", "technology", "companies", "entertainment", "automotive"];
@@ -110,14 +82,12 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
 
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
   const sort = (sp.sort as SortOption) || "trending";
-  const ratingFilter = (sp.rating as RatingFilter) || "all";
 
   const { comparisons } = await getComparisonsByCategory(slug, 500);
   const subcatComparisons = getSubcategoryComparisons(comparisons, subcat);
 
-  // Apply filters and sorting
-  const filtered = filterByRating(subcatComparisons, ratingFilter);
-  const sorted = sortComparisons(filtered, sort);
+  // Apply sorting
+  const sorted = sortComparisons(subcatComparisons, sort);
   const total = sorted.length;
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
   const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
@@ -167,7 +137,6 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           <CategoryFilters
             basePath={basePath}
             currentSort={sort}
-            currentRating={ratingFilter}
             totalResults={total}
           />
         </Suspense>
@@ -178,15 +147,13 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {paginated.map((comp) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
-                const rating = getComparisonRating(comp.slug);
-                const reviewCount = getReviewCount(comp.slug);
                 return (
                   <Link
                     key={comp.slug}
                     href={`/compare/${comp.slug}`}
                     className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all group"
                   >
-                    <div className="flex items-center gap-4 mb-3">
+                    <div className="flex items-center gap-4">
                       <div className="flex -space-x-3">
                         <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
                           {(parts[0] || "A").charAt(0)}
@@ -200,9 +167,6 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                           {comp.title}
                         </p>
                       </div>
-                    </div>
-                    <div className="mt-auto">
-                      <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
                     </div>
                   </Link>
                 );
