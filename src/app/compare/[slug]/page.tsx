@@ -46,6 +46,8 @@ import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunne
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
+import { getVideoMetadata } from "@/lib/services/video-service";
+import { videoObjectSchema } from "@/lib/seo/schema";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -180,6 +182,9 @@ export default async function ComparisonPage({ params }: PageProps) {
   const voteData = await getComparisonVotes(comparison.id);
   const schemas = comparisonPageSchema(comparison, voteData);
 
+  // Video metadata (YouTube upload)
+  const videoMeta = getVideoMetadata(slug);
+
   // Enrich entities with affiliate links
   const enrichedComparison = {
     ...comparison,
@@ -199,7 +204,7 @@ export default async function ComparisonPage({ params }: PageProps) {
   }
 
   return (
-    <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} />
+    <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} videoMeta={videoMeta} />
   );
 }
 
@@ -208,11 +213,13 @@ function VerdictFirstLayout({
   schemas,
   slug,
   sidebarComparisons,
+  videoMeta,
 }: {
   comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
   schemas: ReturnType<typeof comparisonPageSchema>;
   slug: string;
   sidebarComparisons: import("@/types").RelatedComparison[];
+  videoMeta: ReturnType<typeof getVideoMetadata>;
 }) {
   return (
     <>
@@ -224,6 +231,26 @@ function VerdictFirstLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
+
+      {/* Video schema (VideoObject) */}
+      {videoMeta?.youtubeVideoId && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              videoObjectSchema({
+                slug,
+                title: comparison.title,
+                description: comparison.shortAnswer || comparison.metadata.metaDescription || "",
+                youtubeVideoId: videoMeta.youtubeVideoId,
+                uploadDate: videoMeta.uploadedAt,
+                entityA: videoMeta.entityA,
+                entityB: videoMeta.entityB,
+              })
+            ),
+          }}
+        />
+      )}
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
@@ -371,7 +398,7 @@ function VerdictFirstLayout({
           )}
 
           {/* Video Comparison — lazy loaded, auto-hides if no video available */}
-          <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} />
+          <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
 
           {/* Pros & Cons */}
           <div id="pros-cons">

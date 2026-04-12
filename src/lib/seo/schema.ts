@@ -229,6 +229,45 @@ export function comparisonPageSchema(
 }
 
 // ============================================================
+// VideoObject schema for comparison videos
+// ============================================================
+
+export function videoObjectSchema(opts: {
+  slug: string;
+  title: string;
+  description: string;
+  youtubeVideoId: string;
+  uploadDate: string;
+  entityA: string;
+  entityB: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: `${opts.entityA} vs ${opts.entityB} — Full Comparison`,
+    description: opts.description,
+    thumbnailUrl: `https://img.youtube.com/vi/${opts.youtubeVideoId}/maxresdefault.jpg`,
+    uploadDate: opts.uploadDate,
+    contentUrl: `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${opts.youtubeVideoId}`,
+    duration: "PT36S",
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+    },
+    potentialAction: {
+      "@type": "WatchAction",
+      target: `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`,
+    },
+  };
+}
+
+// ============================================================
 // FAQ schema
 // ============================================================
 
