@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.3",
     "next": "^15.5.3",
     "next-sitemap": "^4.2.3",
+    "open": "^11.0.0",
     "postcss": "^8.5.8",
     "prisma": "^5.22.0",
     "react": "^19.2.4",
