@@ -14,7 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
 const DATA_DIR = path.join(ROOT_DIR, "remotion/data");
 const VIDEO_DIR = path.join(ROOT_DIR, "public/videos");
-const UPLOAD_LOG = path.join(ROOT_DIR, "Videos For Website", "upload-log.json");
+const UPLOAD_LOG = path.join(ROOT_DIR, "src/data/video-uploads.json");
 
 const slugs = process.argv.slice(2);
 if (slugs.length === 0) {

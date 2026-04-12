@@ -32,7 +32,7 @@ const REMOTION_DIR = path.join(ROOT_DIR, "remotion");
 const DATA_DIR = path.join(REMOTION_DIR, "data");
 const OUTPUT_DIR = path.join(ROOT_DIR, "Videos For Website");
 const PUBLIC_VIDEO_DIR = path.join(ROOT_DIR, "public/videos");
-const UPLOAD_LOG = path.join(ROOT_DIR, "Videos For Website", "upload-log.json");
+const UPLOAD_LOG = path.join(ROOT_DIR, "src/data/video-uploads.json");
 
 // Ensure dirs exist
 [OUTPUT_DIR, PUBLIC_VIDEO_DIR, DATA_DIR].forEach((d) => {
