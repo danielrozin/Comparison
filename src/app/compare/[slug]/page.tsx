@@ -28,6 +28,7 @@ import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
 import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
+import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
@@ -185,10 +186,21 @@ export default async function ComparisonPage({ params }: PageProps) {
   // Video metadata (YouTube upload)
   const videoMeta = getVideoMetadata(slug);
 
-  // Enrich entities with affiliate links
+  // Enrich entities with images (Wikipedia/Clearbit) + affiliate links in parallel
+  const [entitiesWithImages, entitiesWithAffiliates] = await Promise.all([
+    enrichEntitiesWithImages(comparison.entities),
+    enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
+  ]);
+
+  // Merge: affiliates as base, overlay imageUrl from image enrichment
+  const mergedEntities = entitiesWithAffiliates.map((e, i) => ({
+    ...e,
+    imageUrl: entitiesWithImages[i]?.imageUrl || e.imageUrl,
+  }));
+
   const enrichedComparison = {
     ...comparison,
-    entities: await enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
+    entities: mergedEntities,
   };
 
   // Fallback to trending if fewer than 3 related comparisons
