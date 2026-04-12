@@ -1,0 +1,27 @@
+{
+  "title": "Tesla Model 3 vs BMW i4",
+  "entityA": "Tesla Model 3",
+  "entityB": "BMW i4",
+  "category": "Automotive",
+  "shortAnswer": "The Tesla Model 3 offers superior range (358 miles), Supercharger network access, and Autopilot. The BMW i4 delivers a more luxurious interior, better ride quality, and the classic BMW driving experience in electric form.",
+  "keyDifferences": [
+    { "label": "Range", "entityAValue": "358 miles", "entityBValue": "301 miles", "winner": "a" },
+    { "label": "Starting Price", "entityAValue": "$38,990", "entityBValue": "$52,200", "winner": "a" },
+    { "label": "Interior Quality", "entityAValue": "Minimalist", "entityBValue": "Premium", "winner": "b" },
+    { "label": "Ride Comfort", "entityAValue": "Firm", "entityBValue": "Refined", "winner": "b" }
+  ],
+  "stats": [
+    { "label": "Range (miles)", "valueA": "358", "valueB": "301", "winner": "a" },
+    { "label": "Starting Price", "valueA": "$38,990", "valueB": "$52,200", "winner": "a" },
+    { "label": "0-60 mph (sec)", "valueA": "3.1", "valueB": "5.5", "winner": "a" },
+    { "label": "Interior Quality", "valueA": "Minimalist", "valueB": "Premium", "winner": "b" },
+    { "label": "Charging Network", "valueA": "Supercharger", "valueB": "CCS", "winner": "a" },
+    { "label": "Ride Comfort", "valueA": "Firm", "valueB": "Refined", "winner": "b" }
+  ],
+  "prosA": ["358 mile range", "Supercharger network", "Autopilot/FSD capability", "OTA software updates"],
+  "consA": ["Minimalist interior", "Build quality concerns", "Service network growing"],
+  "prosB": ["Premium interior quality", "BMW driving dynamics", "Better ride comfort", "Established dealer network"],
+  "consB": ["Shorter range (301 mi)", "Smaller charging network", "Higher starting price"],
+  "verdict": "Tesla Model 3 for range, tech, and value. BMW i4 for luxury and driving feel. Both are excellent EVs for different priorities.",
+  "slug": "tesla-model-3-vs-bmw-i4"
+}

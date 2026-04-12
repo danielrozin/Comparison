@@ -1,0 +1,27 @@
+{
+  "title": "Booking.com vs Airbnb",
+  "entityA": "Airbnb",
+  "entityB": "Booking.com",
+  "category": "Travel",
+  "shortAnswer": "Airbnb attracts younger travelers with unique stays and lower host pricing. Booking.com dominates business/international travel with 28M+ listings, lower cancellation rates, and professional property management tools.",
+  "keyDifferences": [
+    { "label": "Total Listings", "entityAValue": "7 Million+", "entityBValue": "28 Million+", "winner": "b" },
+    { "label": "Revenue", "entityAValue": "$8.4 Billion", "entityBValue": "$21 Billion", "winner": "b" },
+    { "label": "Guest Frequency", "entityAValue": "4.2 trips/year", "entityBValue": "Lower frequency", "winner": "a" },
+    { "label": "Cancellation Rate", "entityAValue": "Higher", "entityBValue": "Lower", "winner": "b" }
+  ],
+  "stats": [
+    { "label": "Total Listings", "valueA": "7M+", "valueB": "28M+", "winner": "b" },
+    { "label": "Revenue (USD)", "valueA": "$8.4B", "valueB": "$21B", "winner": "b" },
+    { "label": "Guest Frequency", "valueA": "4.2 trips/yr", "valueB": "Lower", "winner": "a" },
+    { "label": "Avg Stay Length", "valueA": "4.3 nights", "valueB": "Longer", "winner": "b" },
+    { "label": "Cancellation Rate", "valueA": "Higher", "valueB": "Lower", "winner": "b" },
+    { "label": "Host Pricing Need", "valueA": "Standard", "valueB": "15-20% higher", "winner": "a" }
+  ],
+  "prosA": ["Younger demographic booking frequently", "Lower pricing needed for hosts", "AI-powered travel discovery", "Higher guest engagement"],
+  "consA": ["Higher cancellation rates", "Operational complexity", "Smaller listing inventory"],
+  "prosB": ["Lower cancellation rates", "International/business travelers", "Better for managing 50+ properties", "Guests stay longer"],
+  "consB": ["15-20% higher pricing required", "Manual payment processing", "Less unique stays"],
+  "verdict": "Most successful hosts use both platforms. Airbnb for casual/social properties targeting younger travelers. Booking.com for professional properties serving business/international travelers.",
+  "slug": "booking-com-vs-airbnb-comparison-2026"
+}

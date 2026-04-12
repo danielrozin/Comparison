@@ -1,0 +1,27 @@
+{
+  "title": "Tylenol vs Advil",
+  "entityA": "Tylenol",
+  "entityB": "Advil",
+  "category": "Health",
+  "shortAnswer": "Tylenol (acetaminophen) relieves pain and fever without anti-inflammatory effects and is gentler on the stomach. Advil (ibuprofen) reduces pain, fever, AND inflammation, making it better for muscle aches and arthritis.",
+  "keyDifferences": [
+    { "label": "Anti-inflammatory", "entityAValue": "No", "entityBValue": "Yes", "winner": "b" },
+    { "label": "Stomach Safety", "entityAValue": "Gentle", "entityBValue": "Can irritate", "winner": "a" },
+    { "label": "Duration of Effect", "entityAValue": "4-6 hours", "entityBValue": "6-8 hours", "winner": "b" },
+    { "label": "Pregnancy Safety", "entityAValue": "Safer", "entityBValue": "More restricted", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Duration (hours)", "valueA": "4-6", "valueB": "6-8", "winner": "b" },
+    { "label": "Anti-inflammatory", "valueA": "No", "valueB": "Yes", "winner": "b" },
+    { "label": "Stomach Safety", "valueA": "Gentle", "valueB": "Can irritate", "winner": "a" },
+    { "label": "Pregnancy Safety", "valueA": "Safer", "valueB": "Restricted", "winner": "a" },
+    { "label": "Best For", "valueA": "Headaches, fever", "valueB": "Inflammation, muscle", "winner": "tie" },
+    { "label": "Overdose Risk", "valueA": "Liver damage", "valueB": "GI/kidney issues", "winner": "tie" }
+  ],
+  "prosA": ["Gentler on stomach", "Safe for most adults", "Effective fever reducer", "Safer during pregnancy"],
+  "consA": ["No anti-inflammatory effect", "Liver damage risk in overdose", "Should avoid with alcohol"],
+  "prosB": ["Anti-inflammatory properties", "Better for muscle/joint pain", "Great for menstrual cramps", "Longer effect (6-8 hrs)"],
+  "consB": ["Can cause stomach irritation", "Avoid with kidney disease", "Interacts with blood thinners"],
+  "verdict": "Tylenol is safer for stomach issues and blood thinners. Advil is better for inflammation-based pain. Consult a doctor for chronic use of either.",
+  "slug": "tylenol-vs-advil"
+}

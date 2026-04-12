@@ -1,44 +1,68 @@
 import React from "react";
 import { Composition, registerRoot } from "remotion";
-import { ComparisonVideo, type ComparisonVideoProps } from "./ComparisonVideo";
+import {
+  ComparisonVideo,
+  type ComparisonVideoProps,
+  FPS,
+  getTotalFrames,
+} from "./ComparisonVideo";
+import { ComparisonVideoXL, getXLTotalFrames } from "./ComparisonVideoXL";
 
-const DEMO_PROPS: ComparisonVideoProps = {
-  title: "Dyson vs Shark Vacuum",
-  entityA: "Dyson",
-  entityB: "Shark",
-  category: "Products",
-  stats: [
-    { label: "Price", valueA: "$599", valueB: "$299", winner: "b" },
-    { label: "Suction Power", valueA: "280 AW", valueB: "200 AW", winner: "a" },
-    { label: "Weight", valueA: "6.8 lbs", valueB: "4.5 lbs", winner: "b" },
-    { label: "Battery Life", valueA: "60 min", valueB: "45 min", winner: "a" },
-    { label: "Warranty", valueA: "2 years", valueB: "5 years", winner: "b" },
-    { label: "Filtration", valueA: "HEPA", valueB: "Anti-Allergen", winner: "a" },
+const DEFAULT_PROPS: ComparisonVideoProps = {
+  title: "BMW vs Mercedes-Benz",
+  entityA: "BMW",
+  entityB: "Mercedes-Benz",
+  category: "Automotive",
+  shortAnswer:
+    "BMW delivers sharper driving dynamics and sportier handling, while Mercedes-Benz leads in luxury refinement, interior comfort, and cutting-edge cabin technology.",
+  keyDifferences: [
+    { label: "Driving Feel", entityAValue: "Sport-focused", entityBValue: "Comfort-focused", winner: "a" },
+    { label: "Interior Luxury", entityAValue: "Premium", entityBValue: "Ultra-luxury", winner: "b" },
+    { label: "Starting Price", entityAValue: "$38,800", entityBValue: "$43,550", winner: "a" },
+    { label: "Tech Innovation", entityAValue: "iDrive 9", entityBValue: "MBUX Hyperscreen", winner: "b" },
+    { label: "Performance Range", entityAValue: "M Series", entityBValue: "AMG Line", winner: "tie" },
   ],
+  stats: [
+    { label: "Starting Price", valueA: "$38,800", valueB: "$43,550", winner: "a" },
+    { label: "Horsepower (Flagship)", valueA: "617 HP", valueB: "603 HP", winner: "a" },
+    { label: "0-60 mph", valueA: "3.6 sec", valueB: "3.5 sec", winner: "b" },
+    { label: "Interior Rating", valueA: "9/10", valueB: "10/10", winner: "b" },
+    { label: "Driving Dynamics", valueA: "10/10", valueB: "8/10", winner: "a" },
+    { label: "Fuel Efficiency", valueA: "28 MPG", valueB: "27 MPG", winner: "a" },
+    { label: "Warranty", valueA: "4 yr / 50K", valueB: "4 yr / 50K", winner: "tie" },
+    { label: "Global Sales (2025)", valueA: "2.25M", valueB: "2.49M", winner: "b" },
+  ],
+  prosA: ["Superior driving dynamics", "More affordable entry price", "Better fuel efficiency", "Iconic M performance line"],
+  consA: ["Less luxurious interiors", "Smaller dealer network", "Firmer ride quality"],
+  prosB: ["Best-in-class interior luxury", "MBUX Hyperscreen tech", "Smoother ride comfort", "Stronger resale value"],
+  consB: ["Higher starting price", "Heavier vehicles", "Complex infotainment learning curve"],
   verdict:
-    "Shark delivers 80% of Dyson's performance at half the cost. Dyson wins on raw power and filtration. For most homes, Shark is the smarter buy.",
-  slug: "dyson-vs-shark-vacuum",
+    "BMW edges ahead for driving enthusiasts who crave handling precision and sportiness. Mercedes-Benz wins for buyers who prioritize luxury, comfort, and cutting-edge interior tech. It's a 3-3 tie on the stats — your choice depends on what you value most.",
+  slug: "bmw-vs-mercedes-benz",
 };
 
-const FPS = 30;
-const TITLE_DURATION = 45;
-const STAT_DURATION = 45;
-const VERDICT_DURATION = 60;
-
 export const RemotionRoot: React.FC = () => {
-  const totalFrames =
-    TITLE_DURATION + DEMO_PROPS.stats.length * STAT_DURATION + VERDICT_DURATION;
-
   return (
-    <Composition
-      id="ComparisonVideo"
-      component={ComparisonVideo}
-      durationInFrames={totalFrames}
-      fps={FPS}
-      width={1080}
-      height={1920}
-      defaultProps={DEMO_PROPS}
-    />
+    <>
+      <Composition
+        id="ComparisonVideo"
+        component={ComparisonVideo}
+        durationInFrames={getTotalFrames()}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={DEFAULT_PROPS}
+      />
+      <Composition
+        id="ComparisonVideoXL"
+        component={ComparisonVideoXL}
+        durationInFrames={getXLTotalFrames()}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={DEFAULT_PROPS}
+      />
+    </>
   );
 };
 

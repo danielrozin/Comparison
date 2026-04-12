@@ -1,0 +1,28 @@
+{
+  "title": "iPhone 17 vs Samsung Galaxy S26",
+  "entityA": "iPhone 17",
+  "entityB": "Samsung Galaxy S26",
+  "category": "Technology",
+  "shortAnswer": "The iPhone 17 leads with the A19 Pro chip and Apple Intelligence. The Samsung Galaxy S26 counters with a brighter 3000-nit display, larger battery, and Galaxy AI features powered by Snapdragon 8 Gen 4.",
+  "keyDifferences": [
+    { "label": "Processor", "entityAValue": "A19 Pro", "entityBValue": "Snapdragon 8 Gen 4", "winner": "a" },
+    { "label": "Display Brightness", "entityAValue": "2200 nits", "entityBValue": "3000 nits", "winner": "b" },
+    { "label": "Battery", "entityAValue": "4,200 mAh", "entityBValue": "4,500 mAh", "winner": "b" },
+    { "label": "Fast Charging", "entityAValue": "27W", "entityBValue": "45W", "winner": "b" },
+    { "label": "Starting Price", "entityAValue": "$799", "entityBValue": "$799", "winner": "tie" }
+  ],
+  "stats": [
+    { "label": "Processor", "valueA": "A19 Pro", "valueB": "Snapdragon 8 Gen 4", "winner": "a" },
+    { "label": "Display Brightness", "valueA": "2200 nits", "valueB": "3000 nits", "winner": "b" },
+    { "label": "RAM", "valueA": "12GB", "valueB": "12GB", "winner": "tie" },
+    { "label": "Battery", "valueA": "4,200 mAh", "valueB": "4,500 mAh", "winner": "b" },
+    { "label": "Fast Charging", "valueA": "27W", "valueB": "45W", "winner": "b" },
+    { "label": "Starting Price", "valueA": "$799", "valueB": "$799", "winner": "tie" }
+  ],
+  "prosA": ["A19 Pro chip performance", "Premium titanium design", "Apple Intelligence built-in", "Best-in-class video recording"],
+  "consA": ["Slower charging (27W)", "Less customizable", "No expandable storage"],
+  "prosB": ["Brightest display (3000 nits)", "Galaxy AI 2.0 features", "Larger battery", "45W fast charging"],
+  "consB": ["One UI can feel bloated", "Slower OS updates", "Pre-installed Samsung apps"],
+  "verdict": "Choose iPhone 17 for its refined design, ecosystem, and video. Choose Samsung S26 for display brightness, customization, and Galaxy AI.",
+  "slug": "iphone-17-vs-samsung-s26"
+}

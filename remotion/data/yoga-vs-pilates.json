@@ -1,0 +1,99 @@
+{
+  "title": "Yoga vs Pilates",
+  "entityA": "Yoga",
+  "entityB": "Pilates",
+  "category": "Health & Fitness",
+  "slug": "yoga-vs-pilates",
+  "shortAnswer": "Pilates offers core-focused, dynamic workouts while Yoga connects mind, body, and spirit through controlled breathing and movement patterns.",
+  "keyDifferences": [
+    {
+      "label": "Primary Focus",
+      "entityAValue": "Mind, body, and spirit connection",
+      "entityBValue": "Core-focused dynamic workouts",
+      "winner": "tie"
+    },
+    {
+      "label": "Breathing Approach",
+      "entityAValue": "Controlled breathing as central element",
+      "entityBValue": "Breath coordination with movement",
+      "winner": "a"
+    },
+    {
+      "label": "Movement Style",
+      "entityAValue": "Flow-based movement patterns",
+      "entityBValue": "Precise, controlled dynamic exercises",
+      "winner": "tie"
+    },
+    {
+      "label": "Spiritual Component",
+      "entityAValue": "Incorporates spiritual elements",
+      "entityBValue": "Primarily physical fitness focused",
+      "winner": "a"
+    },
+    {
+      "label": "Core Emphasis",
+      "entityAValue": "Core strength as part of overall practice",
+      "entityBValue": "Primary focus on core strengthening",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Boutique Fitness Market Share",
+      "valueA": "Second most popular modality",
+      "valueB": "43% of boutique fitness studios",
+      "winner": "b"
+    },
+    {
+      "label": "Industry Position",
+      "valueA": "Second in popularity",
+      "valueB": "Primary modality leader",
+      "winner": "b"
+    },
+    {
+      "label": "Studio Prevalence",
+      "valueA": "Following Pilates in rankings",
+      "valueB": "Leading modality choice",
+      "winner": "b"
+    },
+    {
+      "label": "Market Trend",
+      "valueA": "Consistent second place",
+      "valueB": "Dominant market position",
+      "winner": "b"
+    },
+    {
+      "label": "Business Model",
+      "valueA": "Boutique fitness format",
+      "valueB": "Boutique fitness format",
+      "winner": "tie"
+    },
+    {
+      "label": "Growth Potential",
+      "valueA": "Established market presence",
+      "valueB": "Leading growth trajectory",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Combines physical, mental, and spiritual wellness",
+    "Emphasizes controlled breathing techniques",
+    "Offers holistic mind-body connection",
+    "Provides stress relief and mindfulness benefits"
+  ],
+  "consA": [
+    "Less core-specific than Pilates",
+    "May be less dynamic for fitness-focused goals"
+  ],
+  "prosB": [
+    "Highly effective for core strengthening",
+    "Dynamic workout format",
+    "Leading market position in boutique fitness",
+    "Precise, controlled movement techniques"
+  ],
+  "consB": [
+    "Less emphasis on spiritual/mindfulness aspects",
+    "May lack the holistic approach of yoga"
+  ],
+  "verdict": "Pilates dominates the boutique fitness market with 43% market share and excels in core-focused training. Yoga offers a more holistic mind-body approach with spiritual elements and breathing focus, making it ideal for those seeking overall wellness rather than purely physical fitness."
+}

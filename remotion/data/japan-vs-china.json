@@ -1,0 +1,28 @@
+{
+  "title": "Japan vs China",
+  "entityA": "Japan",
+  "entityB": "China",
+  "category": "Countries",
+  "shortAnswer": "China has a much larger economy (GDP $17.7T vs $4.2T) and population (1.4B vs 125M), while Japan leads in GDP per capita ($33,800 vs $12,500), life expectancy, technology innovation, and quality of life.",
+  "keyDifferences": [
+    { "label": "Population", "entityAValue": "125 Million", "entityBValue": "1.4 Billion", "winner": "b" },
+    { "label": "GDP (Total)", "entityAValue": "$4.2 Trillion", "entityBValue": "$17.7 Trillion", "winner": "b" },
+    { "label": "GDP per Capita", "entityAValue": "$33,800", "entityBValue": "$12,500", "winner": "a" },
+    { "label": "Life Expectancy", "entityAValue": "84.6 years", "entityBValue": "78.2 years", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Population", "valueA": "125M", "valueB": "1.4B", "winner": "b" },
+    { "label": "GDP (Total)", "valueA": "$4.2T", "valueB": "$17.7T", "winner": "b" },
+    { "label": "GDP per Capita", "valueA": "$33,800", "valueB": "$12,500", "winner": "a" },
+    { "label": "Life Expectancy", "valueA": "84.6 yrs", "valueB": "78.2 yrs", "winner": "a" },
+    { "label": "HDI Score", "valueA": "Higher", "valueB": "Lower", "winner": "a" },
+    { "label": "Military Size", "valueA": "Smaller", "valueB": "Largest", "winner": "b" },
+    { "label": "Crime Rate", "valueA": "Lower", "valueB": "Higher", "winner": "a" }
+  ],
+  "prosA": ["Higher GDP per capita", "Longer life expectancy", "Technology leader", "Lower crime rate"],
+  "consA": ["Aging population crisis", "Smaller military", "Smaller total GDP"],
+  "prosB": ["Largest population", "2nd largest GDP globally", "Massive military", "Manufacturing powerhouse"],
+  "consB": ["Lower GDP per capita", "Lower HDI score", "Lower life expectancy"],
+  "verdict": "China dominates in scale — economy, population, and military. Japan leads in quality of life, technology, and per-capita wealth. It depends on what dimension matters most.",
+  "slug": "japan-vs-china"
+}

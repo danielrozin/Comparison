@@ -166,4 +166,16 @@ export function trackConversionFunnel(step: FunnelStep, page: string, meta?: Rec
   trackEvent("conversion_funnel", { funnel_step: step, page, ...meta });
 }
 
+export function trackExitIntentShown(page: string, type?: string) {
+  trackEvent("exit_intent_shown", { page, type: type || "desktop" });
+}
+
+export function trackExitIntentDismissed(page: string, type?: string) {
+  trackEvent("exit_intent_dismissed", { page, type: type || "desktop" });
+}
+
+export function trackExitIntentMobile(page: string, type?: string) {
+  trackEvent("exit_intent_mobile", { page, type: type || "mobile" });
+}
+
 export { trackEvent };
