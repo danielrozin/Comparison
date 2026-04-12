@@ -44,6 +44,7 @@ const DEFAULT_PROPS: ComparisonVideoProps = {
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Vertical 1080x1920 — TikTok/Shorts/Reels */}
       <Composition
         id="ComparisonVideo"
         component={ComparisonVideo}
@@ -53,6 +54,17 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         defaultProps={DEFAULT_PROPS}
       />
+      {/* Landscape 1920x1080 — YouTube main feed */}
+      <Composition
+        id="ComparisonVideoLandscape"
+        component={ComparisonVideo}
+        durationInFrames={getTotalFrames()}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        defaultProps={DEFAULT_PROPS}
+      />
+      {/* Vertical XL — bigger text */}
       <Composition
         id="ComparisonVideoXL"
         component={ComparisonVideoXL}

@@ -22,10 +22,11 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 
 const args = process.argv.slice(2);
 const xlMode = args.includes("--xl");
+const landscape = args.includes("--landscape");
 const slug = args.find((a) => !a.startsWith("--"));
 if (!slug) {
-  console.error("Usage: node remotion/render-video.mjs <slug> [--xl]");
-  console.error("Example: node remotion/render-video.mjs bmw-vs-mercedes-benz --xl");
+  console.error("Usage: node remotion/render-video.mjs <slug> [--xl | --landscape]");
+  console.error("Example: node remotion/render-video.mjs bmw-vs-mercedes-benz --landscape");
   process.exit(1);
 }
 
@@ -40,7 +41,7 @@ if (fs.existsSync(dataPath)) {
   console.log(`No data file at ${dataPath}, using default props from composition.`);
 }
 
-const suffix = xlMode ? "-xl" : "";
+const suffix = xlMode ? "-xl" : landscape ? "-landscape" : "";
 const outputPath = path.join(OUTPUT_DIR, `${slug}${suffix}.mp4`);
 
 console.log(`Rendering video for: ${slug}`);
@@ -55,7 +56,11 @@ const bundled = await bundle({
 
 // Section durations (must match component files)
 const FPS = 30;
-const compositionId = xlMode ? "ComparisonVideoXL" : "ComparisonVideo";
+const compositionId = xlMode
+  ? "ComparisonVideoXL"
+  : landscape
+    ? "ComparisonVideoLandscape"
+    : "ComparisonVideo";
 
 const STANDARD_DURATIONS = {
   intro: FPS * 4, shortAnswer: FPS * 5, keyDifferences: FPS * 7,
@@ -69,7 +74,7 @@ const XL_DURATIONS = {
 const durations = xlMode ? XL_DURATIONS : STANDARD_DURATIONS;
 const totalFrames = Object.values(durations).reduce((a, b) => a + b, 0);
 
-console.log(`Mode: ${xlMode ? "XL (big text)" : "Standard"} — ${(totalFrames / FPS).toFixed(1)}s`);
+console.log(`Mode: ${xlMode ? "XL vertical" : landscape ? "Landscape 1920x1080" : "Vertical 1080x1920"} — ${(totalFrames / FPS).toFixed(1)}s`);
 
 // Get the composition with overridden duration and props
 const composition = await selectComposition({
@@ -90,6 +95,8 @@ await renderMedia({
   codec: "h264",
   outputLocation: outputPath,
   inputProps: inputProps || undefined,
+  crf: 16, // near-visually-lossless quality
+  x264Preset: "slow", // better compression efficiency
   chromiumOptions: {
     enableMultiProcessOnLinux: true,
   },
