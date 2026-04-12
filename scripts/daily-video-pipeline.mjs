@@ -69,20 +69,16 @@ function saveUploadLog(log) {
 // ---------------------------------------------------------------------------
 
 async function fetchComparisonSlugs() {
-  console.log("Fetching sitemap...");
+  console.log("Fetching available comparison slugs...");
   try {
-    const res = await fetch("https://www.aversusb.net/sitemap.xml");
-    const xml = await res.text();
-    const slugs = [];
-    const regex = /aversusb\.net\/compare\/([^<]+)/g;
-    let match;
-    while ((match = regex.exec(xml)) !== null) {
-      slugs.push(match[1]);
-    }
-    console.log(`Found ${slugs.length} comparison pages in sitemap`);
+    const res = await fetch("https://www.aversusb.net/api/video-pipeline/slugs");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const slugs = data.slugs || [];
+    console.log(`Found ${slugs.length} comparison pages`);
     return slugs;
   } catch (err) {
-    console.error("Failed to fetch sitemap:", err.message);
+    console.error("Failed to fetch slugs:", err.message);
     return [];
   }
 }
@@ -401,7 +397,10 @@ async function main() {
   console.log("========================================\n");
 
   const log = loadUploadLog();
-  const uploadedSlugs = new Set(log.uploads.map((u) => u.slug));
+  // Only count slugs with successful YouTube uploads as "already done"
+  const uploadedSlugs = new Set(
+    log.uploads.filter((u) => u.youtubeVideoId).map((u) => u.slug)
+  );
 
   // Get slugs to process
   let slugs;
