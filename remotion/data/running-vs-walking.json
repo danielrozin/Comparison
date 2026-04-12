@@ -1,0 +1,111 @@
+{
+  "title": "Running vs Walking",
+  "entityA": "Running",
+  "entityB": "Walking",
+  "category": "Health & Fitness",
+  "slug": "running-vs-walking",
+  "shortAnswer": "Running burns twice as many calories per minute as walking but both provide similar cardiovascular benefits. Walking requires longer duration to match running's benefits.",
+  "keyDifferences": [
+    {
+      "label": "Calorie burn rate",
+      "entityAValue": "Burns twice as many calories per minute",
+      "entityBValue": "Burns fewer calories per minute",
+      "winner": "a"
+    },
+    {
+      "label": "Exercise intensity",
+      "entityAValue": "Vigorous exercise",
+      "entityBValue": "Moderate intensity exercise",
+      "winner": "a"
+    },
+    {
+      "label": "Impact level",
+      "entityAValue": "High impact activity",
+      "entityBValue": "Low impact activity",
+      "winner": "b"
+    },
+    {
+      "label": "Time requirement",
+      "entityAValue": "Shorter duration needed for benefits",
+      "entityBValue": "Longer duration required for same benefits",
+      "winner": "a"
+    },
+    {
+      "label": "Health benefits",
+      "entityAValue": "Cardiovascular and metabolic benefits",
+      "entityBValue": "Equal diabetes, cholesterol, blood pressure benefits",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Calories per km (70kg person)",
+      "valueA": "100 calories",
+      "valueB": "65 calories",
+      "winner": "a"
+    },
+    {
+      "label": "Calorie burn ratio",
+      "valueA": "2x per minute",
+      "valueB": "1x per minute",
+      "winner": "a"
+    },
+    {
+      "label": "Study participants (runners)",
+      "valueA": "33,060 runners",
+      "valueB": "N/A",
+      "winner": "a"
+    },
+    {
+      "label": "Study participants (walkers)",
+      "valueA": "N/A",
+      "valueB": "15,945 walkers",
+      "winner": "b"
+    },
+    {
+      "label": "Diabetes risk reduction",
+      "valueA": "Significant reduction",
+      "valueB": "Equal reduction",
+      "winner": "tie"
+    },
+    {
+      "label": "High cholesterol prevention",
+      "valueA": "Effective",
+      "valueB": "Equally effective",
+      "winner": "tie"
+    },
+    {
+      "label": "Blood pressure benefits",
+      "valueA": "Proven benefits",
+      "valueB": "Same benefits",
+      "winner": "tie"
+    },
+    {
+      "label": "Exercise intensity classification",
+      "valueA": "Vigorous",
+      "valueB": "Moderate",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Burns twice as many calories per minute",
+    "More time-efficient for weight loss",
+    "Vigorous cardiovascular workout",
+    "Faster achievement of fitness goals"
+  ],
+  "consA": [
+    "High impact stress on joints",
+    "Higher risk of injury"
+  ],
+  "prosB": [
+    "Low impact on joints and bones",
+    "Equal health benefits for diabetes and blood pressure",
+    "More accessible for beginners",
+    "Lower injury risk"
+  ],
+  "consB": [
+    "Requires longer duration for same calorie burn",
+    "Less time-efficient for weight loss"
+  ],
+  "verdict": "Both exercises offer excellent health benefits, with walking providing equal protection against diabetes, high cholesterol, and high blood pressure. Choose running for faster calorie burn and time efficiency, or walking for lower impact and sustainability."
+}

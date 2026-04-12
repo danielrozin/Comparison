@@ -168,6 +168,19 @@
       "youtubeVideoId": "4Gqtthtc_1s",
       "youtubeUrl": "https://www.youtube.com/watch?v=4Gqtthtc_1s",
       "uploadedAt": "2026-04-12T16:33:27.353Z"
+    },
+    {
+      "slug": "running-vs-walking",
+      "title": "Running vs Walking",
+      "entityA": "Running",
+      "entityB": "Walking",
+      "category": "Health & Fitness",
+      "videoFile": "Running vs Walking.mp4",
+      "youtubeTitle": "Running vs Walking — Full Comparison 2026",
+      "youtubeDescription": "Running burns twice as many calories per minute as walking but both provide similar cardiovascular benefits. Walking requires longer duration to match running's benefits.\n\n#running #walking #health&fitness #comparison #versus",
+      "youtubeVideoId": "sUvMn1Ausns",
+      "youtubeUrl": "https://www.youtube.com/watch?v=sUvMn1Ausns",
+      "uploadedAt": "2026-04-12T18:16:13.152Z"
     }
   ]
 }
