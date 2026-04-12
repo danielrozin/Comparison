@@ -8,7 +8,6 @@ import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
-import { HotjarScript } from "@/components/tracking/HotjarScript";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
 import "./globals.css";
 
@@ -105,7 +104,6 @@ export default function RootLayout({
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <GoogleTagManager />
         <MetaPixel />
-        <HotjarScript />
         <ClarityTags />
         <ExperimentProviderServer>
           <Header />
