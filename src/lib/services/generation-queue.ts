@@ -280,11 +280,20 @@ async function isInQueue(slug: string): Promise<boolean> {
     if (job.slug === slug) return true;
   }
 
-  // Check processing queue
+  // Check processing queue — skip stale jobs older than 1 hour
   const processing = await redis.lrange(QUEUE_PROCESSING, 0, -1);
+  const oneHourAgo = Date.now() - 3600_000;
   for (const raw of processing) {
     const job = typeof raw === "string" ? JSON.parse(raw) : raw;
-    if (job.slug === slug) return true;
+    if (job.slug === slug) {
+      const startedAt = job.startedAt ? new Date(job.startedAt).getTime() : 0;
+      if (startedAt > 0 && startedAt < oneHourAgo) {
+        // Stale job — remove it so the slug can be re-queued
+        await redis.lrem(QUEUE_PROCESSING, 1, typeof raw === "string" ? raw : JSON.stringify(raw));
+        continue;
+      }
+      return true;
+    }
   }
 
   return false;

@@ -73,34 +73,58 @@ function parseComparisonFromTitle(title: string): {
 } {
   const lower = title.toLowerCase().trim();
 
-  // "A vs B" / "A versus B"
+  // "A vs B" / "A versus B" (anchored at start)
   const vsMatch = lower.match(/^(.+?)\s+(?:vs\.?|versus)\s+(.+?)(?:\?|$|\s*[-:|])/);
   if (vsMatch) {
     return { entityA: clean(vsMatch[1]), entityB: clean(vsMatch[2]), isComparison: true };
   }
 
   // "A or B" pattern (with question context)
-  const orMatch = lower.match(/(?:should\s+i|which\s+is\s+better|choose)\s+(.+?)\s+or\s+(.+?)(?:\?|$)/);
+  const orMatch = lower.match(/(?:should\s+i|which\s+is\s+better|choose|pick)\s+(.+?)\s+or\s+(.+?)(?:\?|$)/);
   if (orMatch) {
     return { entityA: clean(orMatch[1]), entityB: clean(orMatch[2]), isComparison: true };
   }
 
-  // "A compared to B"
-  const compMatch = lower.match(/(.+?)\s+compared\s+to\s+(.+?)(?:\?|$)/);
+  // "A compared to B" / "A comparison with B"
+  const compMatch = lower.match(/(.+?)\s+(?:compared\s+to|comparison\s+with)\s+(.+?)(?:\?|$)/);
   if (compMatch) {
     return { entityA: clean(compMatch[1]), entityB: clean(compMatch[2]), isComparison: true };
   }
 
-  // "difference between A and B"
-  const diffMatch = lower.match(/difference\s+between\s+(.+?)\s+and\s+(.+?)(?:\?|$)/);
+  // "difference between A and B" / "differences between A and B"
+  const diffMatch = lower.match(/differences?\s+between\s+(.+?)\s+and\s+(.+?)(?:\?|$)/);
   if (diffMatch) {
     return { entityA: clean(diffMatch[1]), entityB: clean(diffMatch[2]), isComparison: true };
   }
 
-  // Simple "X vs Y" anywhere in the title
-  const simpleVs = lower.match(/(.{2,30}?)\s+vs\.?\s+(.{2,30})/);
+  // "compare A and/to/with B"
+  const compareMatch = lower.match(/compare\s+(.+?)\s+(?:and|to|with|vs\.?)\s+(.+?)(?:\?|$)/);
+  if (compareMatch) {
+    return { entityA: clean(compareMatch[1]), entityB: clean(compareMatch[2]), isComparison: true };
+  }
+
+  // "A over B" / "A better than B"
+  const overMatch = lower.match(/(.{2,50}?)\s+(?:over|better\s+than|worse\s+than)\s+(.{2,50}?)(?:\?|$)/);
+  if (overMatch) {
+    return { entityA: clean(overMatch[1]), entityB: clean(overMatch[2]), isComparison: true };
+  }
+
+  // "A or B" without question context (looser — catches "iPhone or Samsung" style)
+  const looseOrMatch = lower.match(/^(.{2,40}?)\s+or\s+(.{2,40}?)(?:\?|$|\s*[-:|])/);
+  if (looseOrMatch) {
+    return { entityA: clean(looseOrMatch[1]), entityB: clean(looseOrMatch[2]), isComparison: true };
+  }
+
+  // Simple "X vs Y" anywhere in the title (expanded from 30 to 50 chars)
+  const simpleVs = lower.match(/(.{2,50}?)\s+vs\.?\s+(.{2,50})/);
   if (simpleVs) {
     return { entityA: clean(simpleVs[1]), entityB: clean(simpleVs[2]), isComparison: true };
+  }
+
+  // "alternative to A" / "alternatives to A" / "A alternative" — single entity
+  const altMatch = lower.match(/(?:best\s+)?alternatives?\s+(?:to|for)\s+(.{2,50}?)(?:\?|$)/);
+  if (altMatch) {
+    return { entityA: clean(altMatch[1]), entityB: null, isComparison: false };
   }
 
   return { entityA: null, entityB: null, isComparison: false };
