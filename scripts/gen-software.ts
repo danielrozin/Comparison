@@ -19,6 +19,7 @@ const COMPARISONS = [
   ["Surfshark", "NordVPN"],
   ["Norton", "McAfee"],
   ["Bitdefender", "Kaspersky"],
+  ["NordVPN", "ProtonVPN"],
   // Hosting
   ["Hostinger", "Namecheap"],
   ["Hostinger", "GoDaddy"],
@@ -29,6 +30,9 @@ const COMPARISONS = [
   ["WordPress", "Wix"],
   ["Shopify", "WooCommerce"],
   ["Webflow", "WordPress"],
+  ["Shopify", "BigCommerce"],
+  ["Squarespace", "Shopify"],
+  ["Webflow", "Framer"],
   // AI Tools
   ["ChatGPT", "Claude"],
   ["Perplexity", "ChatGPT"],
@@ -41,15 +45,34 @@ const COMPARISONS = [
   ["Asana", "Monday.com"],
   ["Jira", "Trello"],
   ["Slack", "Microsoft Teams"],
+  ["Slack", "Discord"],
+  ["Notion", "Confluence"],
+  ["Notion", "ClickUp"],
+  ["Asana", "ClickUp"],
+  ["Asana", "Jira"],
+  ["ClickUp", "Monday.com"],
+  ["Notion", "Coda"],
+  ["Jira", "Linear"],
   // Design
   ["Figma", "Sketch"],
   ["Canva", "Adobe Express"],
+  ["Canva", "Photoshop"],
+  ["Figma", "Framer"],
+  // Video & Meetings
+  ["Zoom", "Google Meet"],
+  ["Zoom", "Microsoft Teams"],
+  ["Zoom", "Webex"],
   // Email/CRM
   ["Mailchimp", "Constant Contact"],
   ["HubSpot", "Salesforce"],
+  ["Mailchimp", "Klaviyo"],
+  ["HubSpot", "Pipedrive"],
+  ["Mailchimp", "ConvertKit"],
+  ["ActiveCampaign", "HubSpot"],
   // Finance
   ["QuickBooks", "Xero"],
   ["Stripe", "Square"],
+  ["QuickBooks", "FreshBooks"],
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
