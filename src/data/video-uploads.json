@@ -311,6 +311,45 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-13T07:08:15.417Z"
+    },
+    {
+      "slug": "canva-vs-photoshop",
+      "title": "Canva vs Photoshop",
+      "entityA": "Canva",
+      "entityB": "Photoshop",
+      "category": "General",
+      "videoFile": "Canva vs Photoshop.mp4",
+      "youtubeTitle": "Canva vs Photoshop — Full Comparison 2026",
+      "youtubeDescription": "Canva excels at quick, easy design exports while Photoshop offers unparalleled flexibility and granular control for professional editing.\n\n#canva #photoshop #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-13T10:21:46.440Z"
+    },
+    {
+      "slug": "maradona-vs-pele",
+      "title": "Maradona vs Pele",
+      "entityA": "Maradona",
+      "entityB": "Pele",
+      "category": "General",
+      "videoFile": "Maradona vs Pele.mp4",
+      "youtubeTitle": "Maradona vs Pele — Full Comparison 2026",
+      "youtubeDescription": "Pele leads in goals and World Cups (3 vs 1), while Maradona dominated tournaments single-handedly. Both are legendary GOAT contenders with different strengths.\n\n#maradona #pele #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-13T10:22:40.625Z"
+    },
+    {
+      "slug": "yoga-vs-pilates",
+      "title": "Yoga vs Pilates",
+      "entityA": "Yoga",
+      "entityB": "Pilates",
+      "category": "Health & Fitness",
+      "videoFile": "Yoga vs Pilates.mp4",
+      "youtubeTitle": "Yoga vs Pilates — Full Comparison 2026",
+      "youtubeDescription": "Pilates offers core-focused, dynamic workouts while Yoga connects mind, body, and spirit through controlled breathing and movement patterns.\n\n#yoga #pilates #health&fitness #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-13T10:23:34.738Z"
     }
   ]
 }
