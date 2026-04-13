@@ -1,0 +1,113 @@
+{
+  "title": "Ww1 vs Ww2",
+  "entityA": "Ww1",
+  "entityB": "Ww2",
+  "category": "General",
+  "slug": "ww1-vs-ww2",
+  "shortAnswer": "WW2 was significantly more deadly than WW1, with 70-85 million deaths vs ~20 million. WW2 had far greater civilian casualties and expanded to the Pacific Theatre.",
+  "keyDifferences": [
+    {
+      "label": "Geographic Scope",
+      "entityAValue": "Primarily European conflict",
+      "entityBValue": "Global war including Pacific Theatre and China",
+      "winner": "b"
+    },
+    {
+      "label": "Civilian Targeting",
+      "entityAValue": "Limited civilian casualties",
+      "entityBValue": "Systematic civilian targeting including Holocaust",
+      "winner": "a"
+    },
+    {
+      "label": "Warfare Technology",
+      "entityAValue": "Trench warfare, limited air power",
+      "entityBValue": "Strategic bombing, advanced weapons",
+      "winner": "b"
+    },
+    {
+      "label": "Civilian vs Military Deaths",
+      "entityAValue": "35-40% civilian casualties",
+      "entityBValue": "55-65% civilian casualties",
+      "winner": "a"
+    },
+    {
+      "label": "Duration and Intensity",
+      "entityAValue": "4 years of attrition warfare",
+      "entityBValue": "6 years of total war",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Total Deaths",
+      "valueA": "~20 million",
+      "valueB": "70-85 million",
+      "winner": "a"
+    },
+    {
+      "label": "Civilian Deaths",
+      "valueA": "7-8 million",
+      "valueB": "40-55 million",
+      "winner": "a"
+    },
+    {
+      "label": "Civilian Death Percentage",
+      "valueA": "35-40%",
+      "valueB": "55-65%",
+      "winner": "a"
+    },
+    {
+      "label": "Pacific Theatre Deaths",
+      "valueA": "0",
+      "valueB": "15-25 million",
+      "winner": "a"
+    },
+    {
+      "label": "China-Japan War Deaths",
+      "valueA": "Not applicable",
+      "valueB": "15-20 million",
+      "winner": "a"
+    },
+    {
+      "label": "Holocaust Deaths",
+      "valueA": "0",
+      "valueB": "~11 million",
+      "winner": "a"
+    },
+    {
+      "label": "Operation Bagration German Losses",
+      "valueA": "No equivalent",
+      "valueB": "350,000-500,000",
+      "winner": "a"
+    },
+    {
+      "label": "Siege of Leningrad Deaths",
+      "valueA": "No equivalent",
+      "valueB": "~1.5 million",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Lower overall death toll with ~20 million casualties",
+    "Fewer civilian casualties (35-40% of total deaths)",
+    "Limited geographic scope reduced global devastation",
+    "No systematic genocide or Holocaust equivalent"
+  ],
+  "consA": [
+    "Contributed to conditions that led to WW2",
+    "Still caused massive loss of life and destruction",
+    "Set precedent for modern industrial warfare"
+  ],
+  "prosB": [
+    "Ended Nazi regime and Holocaust",
+    "Led to technological and medical advances",
+    "Resulted in establishment of international organizations",
+    "Defeated fascist ideologies globally"
+  ],
+  "consB": [
+    "Deadliest event in human history with 70-85 million deaths",
+    "Massive civilian casualties including deliberate targeting",
+    "Introduced unprecedented destruction through strategic bombing"
+  ],
+  "verdict": "While both wars were devastating, WW2 was significantly more deadly and destructive than WW1. WW2's expanded geographic scope, systematic targeting of civilians, and advanced warfare technology resulted in 3-4 times more casualties than WW1."
+}

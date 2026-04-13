@@ -1,0 +1,112 @@
+{
+  "title": "Mcdonalds vs Burger King",
+  "entityA": "Mcdonalds",
+  "entityB": "Burger King",
+  "category": "General",
+  "slug": "mcdonalds-vs-burger-king",
+  "shortAnswer": "McDonald's generates 2.4x more revenue per location ($3.96M vs $1.63M) but requires much higher initial investment ($1.47M vs $232K). McDonald's dominates in efficiency and brand strength.",
+  "keyDifferences": [
+    {
+      "label": "Revenue Per Location",
+      "entityAValue": "$3.96M",
+      "entityBValue": "$1.63M",
+      "winner": "a"
+    },
+    {
+      "label": "Minimum Investment Required",
+      "entityAValue": "$1.47M",
+      "entityBValue": "$232K",
+      "winner": "b"
+    },
+    {
+      "label": "Chicken Pricing Strategy",
+      "entityAValue": "Premium pricing",
+      "entityBValue": "More affordable options",
+      "winner": "b"
+    },
+    {
+      "label": "Menu Value Positioning",
+      "entityAValue": "Higher price per ounce",
+      "entityBValue": "Budget-friendly approach",
+      "winner": "b"
+    },
+    {
+      "label": "Market Performance",
+      "entityAValue": "Top tier rankings",
+      "entityBValue": "Lower market position",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Revenue Per Location",
+      "valueA": "$3.96M",
+      "valueB": "$1.63M",
+      "winner": "a"
+    },
+    {
+      "label": "Revenue Multiplier",
+      "valueA": "2.4x higher",
+      "valueB": "Base level",
+      "winner": "a"
+    },
+    {
+      "label": "Minimum Investment",
+      "valueA": "$1.47M",
+      "valueB": "$232K",
+      "winner": "b"
+    },
+    {
+      "label": "Investment Difference",
+      "valueA": "6.3x higher",
+      "valueB": "6.3x lower",
+      "winner": "b"
+    },
+    {
+      "label": "Cheeseburger Price per Ounce",
+      "valueA": "$1.91",
+      "valueB": "Not in top rankings",
+      "winner": "a"
+    },
+    {
+      "label": "Chicken Sandwich Meal",
+      "valueA": "Higher priced",
+      "valueB": "$9.99",
+      "winner": "b"
+    },
+    {
+      "label": "Market Ranking Position",
+      "valueA": "Second place",
+      "valueB": "Outside top tier",
+      "winner": "a"
+    },
+    {
+      "label": "Operational Efficiency",
+      "valueA": "Superior",
+      "valueB": "Lower",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Generates 2.4x more revenue per location",
+    "Strong market positioning with top-tier rankings",
+    "Superior operational efficiency and brand strength",
+    "Consistent premium pricing strategy execution"
+  ],
+  "consA": [
+    "Requires 6.3x higher initial investment ($1.47M)",
+    "Higher price points may limit accessibility for budget-conscious consumers"
+  ],
+  "prosB": [
+    "Much lower barrier to entry with $232K minimum investment",
+    "More affordable chicken options and competitive pricing",
+    "Budget-friendly positioning appeals to cost-conscious consumers",
+    "Lower financial risk for franchisees"
+  ],
+  "consB": [
+    "Significantly lower revenue generation per location",
+    "Weaker market position and brand performance",
+    "Lower operational efficiency compared to competitor"
+  ],
+  "verdict": "McDonald's demonstrates superior business performance with 2.4x higher revenue per location and stronger market positioning, justifying its premium investment requirements. While Burger King offers lower entry costs and more affordable menu options, McDonald's operational efficiency and brand strength provide better long-term returns for investors willing to make the higher initial investment."
+}

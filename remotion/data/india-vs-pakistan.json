@@ -1,0 +1,111 @@
+{
+  "title": "India vs Pakistan",
+  "entityA": "India",
+  "entityB": "Pakistan",
+  "category": "Countries",
+  "slug": "india-vs-pakistan",
+  "shortAnswer": "India significantly outperforms Pakistan economically with 11x larger GDP and 7% growth vs 2.5%. India leads in health, education spending, and military capabilities despite Pakistan's faster population growth.",
+  "keyDifferences": [
+    {
+      "label": "Economic Size",
+      "entityAValue": "11x larger GDP",
+      "entityBValue": "Smaller economy",
+      "winner": "a"
+    },
+    {
+      "label": "Economic Growth",
+      "entityAValue": "7.0% GDP growth",
+      "entityBValue": "2.5% GDP growth",
+      "winner": "a"
+    },
+    {
+      "label": "Population Size",
+      "entityAValue": "1.44 billion people",
+      "entityBValue": "240 million people",
+      "winner": "a"
+    },
+    {
+      "label": "Population Growth Rate",
+      "entityAValue": "2.0 fertility rate",
+      "entityBValue": "3.3 fertility rate",
+      "winner": "b"
+    },
+    {
+      "label": "Education Investment Per Capita",
+      "entityAValue": "€91 per capita",
+      "entityBValue": "€26 per capita",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Total Population",
+      "valueA": "1.44 billion",
+      "valueB": "240 million",
+      "winner": "a"
+    },
+    {
+      "label": "GDP Growth Rate",
+      "valueA": "7.0%",
+      "valueB": "2.5%",
+      "winner": "a"
+    },
+    {
+      "label": "Government Expenditure 2023",
+      "valueA": "$1,033,784.5M",
+      "valueB": "$72,330.1M",
+      "winner": "a"
+    },
+    {
+      "label": "Education Expenditure",
+      "valueA": "€130,134.2M",
+      "valueB": "€6,078.7M",
+      "winner": "a"
+    },
+    {
+      "label": "Health Expenditure",
+      "valueA": "$47,526.0M",
+      "valueB": "$2,695.2M",
+      "winner": "a"
+    },
+    {
+      "label": "Defence Expenditure",
+      "valueA": "€82,050.8M",
+      "valueB": "€9,197.5M",
+      "winner": "a"
+    },
+    {
+      "label": "Education Spending Per Capita",
+      "valueA": "€91",
+      "valueB": "€26",
+      "winner": "a"
+    },
+    {
+      "label": "Fertility Rate",
+      "valueA": "2.0",
+      "valueB": "3.3",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Massive economy with robust 7% GDP growth rate",
+    "Superior healthcare and education infrastructure investment",
+    "Stronger military capabilities and defense spending",
+    "Better health outcomes across major indicators"
+  ],
+  "consA": [
+    "Lower population growth rate may impact future workforce",
+    "Large population creates massive infrastructure challenges"
+  ],
+  "prosB": [
+    "Much higher population growth rate ensuring younger demographics",
+    "Faster growing workforce with 3.3 fertility rate",
+    "Smaller population easier to manage per capita improvements"
+  ],
+  "consB": [
+    "Significantly smaller economy with slower 2.5% growth",
+    "Much lower government spending on health and education per capita",
+    "Weaker military capabilities and defense infrastructure"
+  ],
+  "verdict": "India demonstrates clear economic and developmental superiority with an economy 11 times larger, higher growth rates, and substantially greater investment in health, education, and defense. While Pakistan benefits from faster population growth, India's massive scale advantages and better resource allocation position it as the stronger performer across most key metrics."
+}

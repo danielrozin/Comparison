@@ -1,0 +1,101 @@
+{
+  "title": "Cold War vs War On Terror",
+  "entityA": "Cold War",
+  "entityB": "War On Terror",
+  "category": "General",
+  "slug": "cold-war-vs-war-on-terror",
+  "shortAnswer": "The Cold War was a decades-long ideological standoff with the Soviet Union, while the War on Terror is a global military campaign against terrorist networks initiated after 9/11.",
+  "keyDifferences": [
+    {
+      "label": "Primary Enemy",
+      "entityAValue": "Soviet Union and communist states",
+      "entityBValue": "Terrorist networks and non-state actors",
+      "winner": "tie"
+    },
+    {
+      "label": "Geographic Scope",
+      "entityAValue": "Bipolar global divide",
+      "entityBValue": "Multiple regions including Middle East, Caribbean, Eastern Pacific",
+      "winner": "b"
+    },
+    {
+      "label": "Warfare Type",
+      "entityAValue": "Proxy wars and deterrence",
+      "entityBValue": "Direct military strikes and interventions",
+      "winner": "b"
+    },
+    {
+      "label": "Timeline",
+      "entityAValue": "1947-1991 (44 years)",
+      "entityBValue": "2001-present (22+ years)",
+      "winner": "a"
+    },
+    {
+      "label": "Catalyst Event",
+      "entityAValue": "Post-WWII tensions",
+      "entityBValue": "September 11th attacks",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Duration",
+      "valueA": "44 years",
+      "valueB": "22+ years",
+      "winner": "a"
+    },
+    {
+      "label": "Nuclear Weapons Used",
+      "valueA": "0",
+      "valueB": "0",
+      "winner": "tie"
+    },
+    {
+      "label": "Primary Theater",
+      "valueA": "Europe/Asia",
+      "valueB": "Middle East/Global",
+      "winner": "tie"
+    },
+    {
+      "label": "Direct Superpower Conflict",
+      "valueA": "None",
+      "valueB": "Multiple interventions",
+      "winner": "b"
+    },
+    {
+      "label": "Campaign Scope",
+      "valueA": "Regional proxy wars",
+      "valueB": "Nearly ubiquitous global",
+      "winner": "b"
+    },
+    {
+      "label": "Major Triggering Event",
+      "valueA": "Post-WWII division",
+      "valueB": "9/11 attacks",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Maintained nuclear deterrence without direct superpower war",
+    "Established clear ideological and geographic boundaries",
+    "Created stable bipolar world order",
+    "Avoided direct confrontation between superpowers"
+  ],
+  "consA": [
+    "Led to numerous costly proxy wars",
+    "Created decades of global tension and fear",
+    "Massive military spending and arms race"
+  ],
+  "prosB": [
+    "Direct response to attacks on American soil",
+    "Disrupted terrorist networks globally",
+    "Enhanced homeland security measures",
+    "Coordinated international counterterrorism efforts"
+  ],
+  "consB": [
+    "Ongoing with no clear end in sight",
+    "Expanded to multiple theaters without clear victory conditions",
+    "High financial and human costs over two decades"
+  ],
+  "verdict": "The Cold War was a more defined conflict with clear adversaries and eventual resolution, while the War on Terror represents a more complex, ongoing global campaign against dispersed non-state actors. Both conflicts fundamentally reshaped American foreign policy and global security architecture."
+}

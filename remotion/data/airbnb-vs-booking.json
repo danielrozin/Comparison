@@ -1,0 +1,112 @@
+{
+  "title": "Airbnb vs Booking",
+  "entityA": "Airbnb",
+  "entityB": "Booking",
+  "category": "Travel",
+  "slug": "airbnb-vs-booking",
+  "shortAnswer": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.",
+  "keyDifferences": [
+    {
+      "label": "Commission Structure",
+      "entityAValue": "Lower commission rates",
+      "entityBValue": "15-20% higher pricing needed for same profit",
+      "winner": "a"
+    },
+    {
+      "label": "Guest Screening",
+      "entityAValue": "Strict guest screening available",
+      "entityBValue": "Less guest screening control",
+      "winner": "a"
+    },
+    {
+      "label": "Management Style",
+      "entityAValue": "More hands-on required",
+      "entityBValue": "Hands-off management possible",
+      "winner": "b"
+    },
+    {
+      "label": "Multi-property Interface",
+      "entityAValue": "Less intuitive for multiple properties",
+      "entityBValue": "Better interface for multiple properties",
+      "winner": "b"
+    },
+    {
+      "label": "Transparency",
+      "entityAValue": "More transparent operations",
+      "entityBValue": "Less transparency in operations",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Dual Platform Success Rate",
+      "valueA": "67% list on both platforms",
+      "valueB": "Only 23% make more money",
+      "winner": "tie"
+    },
+    {
+      "label": "Average Guest Age",
+      "valueA": "38 years old",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Trips Per Year",
+      "valueA": "4.2 trips annually",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Average Stay Duration",
+      "valueA": "4.3 nights",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Pricing Premium Required",
+      "valueA": "Standard pricing",
+      "valueB": "15-20% higher needed",
+      "winner": "a"
+    },
+    {
+      "label": "Payment Timing",
+      "valueA": "Not specified",
+      "valueB": "Pays after guest checkout",
+      "winner": "b"
+    },
+    {
+      "label": "Cancellation Rate",
+      "valueA": "Higher cancellation rate",
+      "valueB": "Less cancellations with more notice",
+      "winner": "b"
+    },
+    {
+      "label": "VRBO Usage",
+      "valueA": "31% use alongside",
+      "valueB": "31% use instead of",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Lower commission rates for better profit margins",
+    "Strict guest screening for operational stability",
+    "Optimal for single unit management",
+    "More transparent platform operations"
+  ],
+  "consA": [
+    "Higher guest cancellation rates",
+    "Less suitable interface for multiple properties"
+  ],
+  "prosB": [
+    "Hands-off management approach",
+    "Better interface for managing multiple properties",
+    "Attracts international and business travelers",
+    "Lower cancellation rates with advance notice"
+  ],
+  "consB": [
+    "Requires 15-20% higher pricing for same profit",
+    "Less operational transparency",
+    "Limited guest screening options"
+  ],
+  "verdict": "Choose Airbnb for single properties with hands-on management and better profit margins. Choose Booking.com for multiple properties targeting professional travelers who prefer hands-off operations."
+}

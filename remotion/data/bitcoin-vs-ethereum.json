@@ -1,0 +1,113 @@
+{
+  "title": "Bitcoin vs Ethereum",
+  "entityA": "Bitcoin",
+  "entityB": "Ethereum",
+  "category": "Finance",
+  "slug": "bitcoin-vs-ethereum",
+  "shortAnswer": "Bitcoin leads as digital gold with stronger institutional adoption, while Ethereum drives Web3 innovation through smart contracts and DApps, showing recent outperformance in 2026.",
+  "keyDifferences": [
+    {
+      "label": "Primary Function",
+      "entityAValue": "Digital store of value (digital gold)",
+      "entityBValue": "Programmable network for smart contracts and dApps",
+      "winner": "tie"
+    },
+    {
+      "label": "Institutional Adoption",
+      "entityAValue": "Leads significantly in institutional adoption",
+      "entityBValue": "Technology adoption rather than asset allocation",
+      "winner": "a"
+    },
+    {
+      "label": "Staking Capabilities",
+      "entityAValue": "No staking mechanism",
+      "entityBValue": "Provides 3-4% annual staking yield",
+      "winner": "b"
+    },
+    {
+      "label": "Layer 2 Ecosystem",
+      "entityAValue": "Growing rapidly but newer",
+      "entityBValue": "More developed and diverse in 2026",
+      "winner": "b"
+    },
+    {
+      "label": "Market Position",
+      "entityAValue": "Macro-hedge and store of value",
+      "entityBValue": "Higher-leverage beta asset with Web3 focus",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "March 2026 Price Performance",
+      "valueA": "1.83% increase",
+      "valueB": "7.12% increase",
+      "winner": "b"
+    },
+    {
+      "label": "Annual Staking Yield",
+      "valueA": "0% (no staking)",
+      "valueB": "3-4% from direct staking",
+      "winner": "b"
+    },
+    {
+      "label": "Price Correlation",
+      "valueA": "0.94 correlation with ETH",
+      "valueB": "0.94 correlation with BTC",
+      "winner": "tie"
+    },
+    {
+      "label": "ETF Performance",
+      "valueA": "Strong ETF inflows",
+      "valueB": "Lagging behind Bitcoin ETFs",
+      "winner": "a"
+    },
+    {
+      "label": "Developer Ecosystem",
+      "valueA": "Smaller but growing (Ordinals)",
+      "valueB": "Larger developer count",
+      "winner": "b"
+    },
+    {
+      "label": "ETH/BTC Ratio Trend",
+      "valueA": "Declining ratio in 2024-2025",
+      "valueB": "Recent strength suggests rising confidence",
+      "winner": "b"
+    },
+    {
+      "label": "Market Volatility",
+      "valueA": "Lower volatility profile",
+      "valueB": "More pronounced price movements",
+      "winner": "a"
+    },
+    {
+      "label": "Institutional Approach",
+      "valueA": "Asset allocation focus",
+      "valueB": "Technology adoption focus",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Stronger institutional adoption and ETF performance",
+    "Established position as digital store of value and macro-hedge",
+    "Lower volatility and more stable risk-adjusted profile",
+    "Growing Layer 2 ecosystem with Ordinals bringing new developers"
+  ],
+  "consA": [
+    "No staking capabilities or yield generation",
+    "Recent underperformance compared to Ethereum in 2026",
+    "Limited programmability and smart contract functionality"
+  ],
+  "prosB": [
+    "Strong recent performance with 7.12% March 2026 gains",
+    "Mature DApp ecosystem driving Web3 adoption",
+    "Staking yields of 3-4% annually for holders",
+    "More developed and diverse Layer 2 scaling solutions"
+  ],
+  "consB": [
+    "ETF inflows lagging behind Bitcoin ETFs",
+    "Higher volatility as a beta asset",
+    "Initial ETFs launched without staking capabilities"
+  ],
+  "verdict": "Bitcoin remains the dominant store of value with superior institutional adoption, while Ethereum is gaining momentum through Web3 innovation and recent outperformance. The market appears to be rotating toward Ethereum's higher-growth potential, though Bitcoin maintains its position as the foundational crypto asset."
+}

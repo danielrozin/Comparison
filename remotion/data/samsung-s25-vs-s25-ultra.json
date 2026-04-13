@@ -1,0 +1,113 @@
+{
+  "title": "Samsung S25 vs S25 Ultra",
+  "entityA": "Samsung S25",
+  "entityB": "S25 Ultra",
+  "category": "Technology",
+  "slug": "samsung-s25-vs-s25-ultra",
+  "shortAnswer": "Both phones feature Galaxy AI, but S25 Ultra offers superior cameras, larger display, and S Pen support, while S25 is more compact and pocket-friendly.",
+  "keyDifferences": [
+    {
+      "label": "Camera System",
+      "entityAValue": "Standard camera setup",
+      "entityBValue": "Advanced photography features",
+      "winner": "b"
+    },
+    {
+      "label": "Display Size",
+      "entityAValue": "Smaller display",
+      "entityBValue": "Larger display",
+      "winner": "b"
+    },
+    {
+      "label": "S Pen Support",
+      "entityAValue": "No S Pen",
+      "entityBValue": "Built-in S Pen support",
+      "winner": "b"
+    },
+    {
+      "label": "Portability",
+      "entityAValue": "Easily fits in pocket",
+      "entityBValue": "Larger form factor",
+      "winner": "a"
+    },
+    {
+      "label": "Battery Capacity",
+      "entityAValue": "Standard battery",
+      "entityBValue": "Higher battery capacity",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Galaxy AI Features",
+      "valueA": "Available",
+      "valueB": "Available",
+      "winner": "tie"
+    },
+    {
+      "label": "Storage Options",
+      "valueA": "Limited options",
+      "valueB": "More storage options",
+      "winner": "b"
+    },
+    {
+      "label": "Photography Capabilities",
+      "valueA": "Standard",
+      "valueB": "Advanced",
+      "winner": "b"
+    },
+    {
+      "label": "Gaming Performance",
+      "valueA": "Good",
+      "valueB": "Superior",
+      "winner": "b"
+    },
+    {
+      "label": "Productivity Features",
+      "valueA": "Standard",
+      "valueB": "Enhanced with S Pen",
+      "winner": "b"
+    },
+    {
+      "label": "Form Factor",
+      "valueA": "Compact",
+      "valueB": "Large",
+      "winner": "a"
+    },
+    {
+      "label": "Display Quality",
+      "valueA": "High quality",
+      "valueB": "Larger high quality",
+      "winner": "b"
+    },
+    {
+      "label": "Everyday Usability",
+      "valueA": "Excellent",
+      "valueB": "Good",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Compact and pocket-friendly design",
+    "Same powerful Galaxy AI features as Ultra",
+    "More affordable option",
+    "Better for everyday casual use"
+  ],
+  "consA": [
+    "Limited camera capabilities compared to Ultra",
+    "Smaller display size",
+    "No S Pen support"
+  ],
+  "prosB": [
+    "Superior camera system for photography enthusiasts",
+    "Larger display for better viewing experience",
+    "Built-in S Pen for productivity",
+    "Best choice for gaming and advanced tasks"
+  ],
+  "consB": [
+    "Larger size may not fit comfortably in all pockets",
+    "Higher price point",
+    "May be overkill for basic smartphone needs"
+  ],
+  "verdict": "Choose S25 Ultra if you prioritize photography, productivity, and premium features with S Pen support. The regular S25 is better for users wanting Galaxy AI capabilities in a more compact, everyday-friendly package."
+}

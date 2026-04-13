@@ -1,0 +1,113 @@
+{
+  "title": "Canva vs Photoshop",
+  "entityA": "Canva",
+  "entityB": "Photoshop",
+  "category": "General",
+  "slug": "canva-vs-photoshop",
+  "shortAnswer": "Canva excels at quick, easy design exports while Photoshop offers unparalleled flexibility and granular control for professional editing.",
+  "keyDifferences": [
+    {
+      "label": "Ease of Use",
+      "entityAValue": "Quick and easy interface",
+      "entityBValue": "Complex professional tools",
+      "winner": "a"
+    },
+    {
+      "label": "Control Level",
+      "entityAValue": "Basic design controls",
+      "entityBValue": "Granular editing options",
+      "winner": "b"
+    },
+    {
+      "label": "Export Speed",
+      "entityAValue": "Fast export process",
+      "entityBValue": "More complex export options",
+      "winner": "a"
+    },
+    {
+      "label": "Professional Features",
+      "entityAValue": "Template-based design",
+      "entityBValue": "Advanced photo manipulation",
+      "winner": "b"
+    },
+    {
+      "label": "Learning Curve",
+      "entityAValue": "Minimal training required",
+      "entityBValue": "Steep learning curve",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "User Rating (Capterra)",
+      "valueA": "4.7/5",
+      "valueB": "4.5/5",
+      "winner": "a"
+    },
+    {
+      "label": "Price Range",
+      "valueA": "$0-15/month",
+      "valueB": "$20-53/month",
+      "winner": "a"
+    },
+    {
+      "label": "Template Library",
+      "valueA": "100,000+",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "File Format Support",
+      "valueA": "Basic formats",
+      "valueB": "100+ formats",
+      "winner": "b"
+    },
+    {
+      "label": "Team Collaboration",
+      "valueA": "Built-in sharing",
+      "valueB": "Cloud-based sharing",
+      "winner": "a"
+    },
+    {
+      "label": "Mobile App",
+      "valueA": "Full featured",
+      "valueB": "Limited mobile version",
+      "winner": "a"
+    },
+    {
+      "label": "Professional Tools",
+      "valueA": "Basic",
+      "valueB": "Industry standard",
+      "winner": "b"
+    },
+    {
+      "label": "Storage",
+      "valueA": "1TB max",
+      "valueB": "100GB-1TB",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Extremely user-friendly interface",
+    "Quick design turnaround",
+    "Extensive template library",
+    "Affordable pricing options"
+  ],
+  "consA": [
+    "Limited advanced editing capabilities",
+    "Less control over fine details",
+    "Subscription-based model"
+  ],
+  "prosB": [
+    "Unparalleled editing flexibility",
+    "Industry-standard professional tools",
+    "Extensive file format support",
+    "Granular control options"
+  ],
+  "consB": [
+    "Steep learning curve",
+    "Higher cost",
+    "Complex interface for beginners"
+  ],
+  "verdict": "Choose Canva for quick, template-based designs and easy collaboration. Select Photoshop for professional photo editing requiring precise control and advanced features."
+}

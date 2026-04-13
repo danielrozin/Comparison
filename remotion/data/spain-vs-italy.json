@@ -1,0 +1,113 @@
+{
+  "title": "Spain vs Italy",
+  "entityA": "Spain",
+  "entityB": "Italy",
+  "category": "General",
+  "slug": "spain-vs-italy",
+  "shortAnswer": "Italy has a larger economy and military but higher deficits, while Spain shows more balanced fiscal management despite smaller overall size.",
+  "keyDifferences": [
+    {
+      "label": "GDP Size",
+      "entityAValue": "$1.91T",
+      "entityBValue": "$2.55T",
+      "winner": "b"
+    },
+    {
+      "label": "GDP Per Capita",
+      "entityAValue": "€34,210",
+      "entityBValue": "€38,310",
+      "winner": "b"
+    },
+    {
+      "label": "Active Military Personnel",
+      "entityAValue": "199,000",
+      "entityBValue": "338,000",
+      "winner": "b"
+    },
+    {
+      "label": "Government Deficit",
+      "entityAValue": "€40.3B",
+      "entityBValue": "€73.9B",
+      "winner": "a"
+    },
+    {
+      "label": "Total Government Expenditure",
+      "entityAValue": "€725B",
+      "entityBValue": "€1,109B",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Defense Spending",
+      "valueA": "$25B",
+      "valueB": "$38B",
+      "winner": "b"
+    },
+    {
+      "label": "Education Expenditure",
+      "valueA": "€63.1B",
+      "valueB": "€81.3B",
+      "winner": "b"
+    },
+    {
+      "label": "Health Expenditure",
+      "valueA": "$115.1B",
+      "valueB": "$148.8B",
+      "winner": "b"
+    },
+    {
+      "label": "Education Per Capita",
+      "valueA": "€1,320",
+      "valueB": "€1,377",
+      "winner": "b"
+    },
+    {
+      "label": "Military Reserves",
+      "valueA": "14,500",
+      "valueB": "Unknown",
+      "winner": "a"
+    },
+    {
+      "label": "Paramilitary Forces",
+      "valueA": "175,750",
+      "valueB": "Unknown",
+      "winner": "a"
+    },
+    {
+      "label": "Defense Budget (€)",
+      "valueA": "€22.8B",
+      "valueB": "€35.4B",
+      "winner": "b"
+    },
+    {
+      "label": "Deficit as % of Expenditure",
+      "valueA": "5.6%",
+      "valueB": "6.7%",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Lower government deficit indicating better fiscal discipline",
+    "Strong paramilitary and reserve forces for homeland security",
+    "More efficient government spending relative to GDP",
+    "Better debt management with lower deficit ratios"
+  ],
+  "consA": [
+    "Smaller overall economy and lower GDP per capita",
+    "Significantly smaller active military forces",
+    "Lower absolute spending on key sectors like education and health"
+  ],
+  "prosB": [
+    "Larger economy with higher GDP and per capita income",
+    "Substantially larger military with more active personnel",
+    "Higher absolute investment in education, health, and defense",
+    "Greater overall government capacity and resources"
+  ],
+  "consB": [
+    "Much higher government deficit creating fiscal pressure",
+    "Less efficient fiscal management relative to size",
+    "Higher debt burden and financial obligations"
+  ],
+  "verdict": "Italy leads in economic size, military capacity, and public spending but struggles with fiscal deficits. Spain demonstrates superior fiscal discipline and efficient resource management despite being smaller overall."
+}

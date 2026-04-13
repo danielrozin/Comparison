@@ -1,0 +1,112 @@
+{
+  "title": "Maradona vs Pele",
+  "entityA": "Maradona",
+  "entityB": "Pele",
+  "category": "General",
+  "slug": "maradona-vs-pele",
+  "shortAnswer": "Pele leads in goals and World Cups (3 vs 1), while Maradona dominated tournaments single-handedly. Both are legendary GOAT contenders with different strengths.",
+  "keyDifferences": [
+    {
+      "label": "World Cup Success",
+      "entityAValue": "3 World Cup wins (1958, 1962, 1970)",
+      "entityBValue": "1 World Cup win (1986), 1 final loss (1990)",
+      "winner": "a"
+    },
+    {
+      "label": "Goal Scoring Record",
+      "entityAValue": "757 official career goals",
+      "entityBValue": "Significantly fewer career goals",
+      "winner": "a"
+    },
+    {
+      "label": "Goals Per Game",
+      "entityAValue": "0.84 goals per game",
+      "entityBValue": "0.37 goals per game",
+      "winner": "a"
+    },
+    {
+      "label": "Individual Impact",
+      "entityAValue": "Part of strong teams in multiple World Cups",
+      "entityBValue": "Carried Argentina almost single-handedly in 1986 and 1990",
+      "winner": "b"
+    },
+    {
+      "label": "World Cup Role",
+      "entityAValue": "Not the most important player in 1958 and 1962 wins",
+      "entityBValue": "Argentina's only standout player in World Cup campaigns",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Career Goals",
+      "valueA": "757 official goals",
+      "valueB": "Significantly fewer",
+      "winner": "a"
+    },
+    {
+      "label": "World Cup Titles",
+      "valueA": "3 (1958, 1962, 1970)",
+      "valueB": "1 (1986)",
+      "winner": "a"
+    },
+    {
+      "label": "World Cup Goals",
+      "valueA": "12 goals in 14 games",
+      "valueB": "Fewer goals in similar games",
+      "winner": "a"
+    },
+    {
+      "label": "World Cup Finals Goals",
+      "valueA": "Goals in 1958 and 1970 finals",
+      "valueB": "No final goals mentioned",
+      "winner": "a"
+    },
+    {
+      "label": "Goals Per Game Ratio",
+      "valueA": "0.84",
+      "valueB": "0.37",
+      "winner": "a"
+    },
+    {
+      "label": "World Cup Finals Reached",
+      "valueA": "Multiple finals",
+      "valueB": "2 finals (1986 win, 1990 loss)",
+      "winner": "a"
+    },
+    {
+      "label": "International Games",
+      "valueA": "Roughly same number",
+      "valueB": "Roughly same number",
+      "winner": "tie"
+    },
+    {
+      "label": "Individual Tournament Dominance",
+      "valueA": "Strong but part of team",
+      "valueB": "Complete individual dominance",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Superior goal scoring record with 757 career goals",
+    "Three World Cup victories spanning multiple eras",
+    "Exceptional goals per game ratio of 0.84",
+    "Scored in multiple World Cup finals"
+  ],
+  "consA": [
+    "Was not the most important player in 1958 and 1962 World Cup wins",
+    "Benefited from stronger team support throughout career"
+  ],
+  "prosB": [
+    "Single-handedly carried Argentina to World Cup glory in 1986",
+    "Demonstrated exceptional individual brilliance and leadership",
+    "Reached two consecutive World Cup finals as the key player",
+    "Showed ability to elevate team performance through individual skill"
+  ],
+  "consB": [
+    "Significantly lower goal scoring record compared to Pele",
+    "Only won one World Cup despite individual brilliance",
+    "Much lower goals per game ratio at 0.37"
+  ],
+  "verdict": "While both players are legitimate GOAT candidates, the statistics clearly favor Pele in terms of goals, trophies, and World Cup success. However, Maradona's ability to single-handedly dominate tournaments and carry his team makes him unique. Pele's consistency and team success edge out Maradona's individual brilliance in the overall comparison."
+}
