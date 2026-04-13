@@ -695,4 +695,206 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is QuickBooks good for freelancers?", answer: "QuickBooks Self-Employed ($7.50/month) is designed for freelancers with simple income/expense tracking and mileage logging for tax purposes. However, FreshBooks or Wave may be better for freelancers who need professional invoicing and client management." },
     ],
   },
+
+  // ─── Secondary SaaS Tools (Phase 3 Expansion) ──────────────────────────────
+
+  "clickup": {
+    description:
+      "ClickUp is an all-in-one productivity platform founded in 2017 by Zeb Evans. The tool aims to replace multiple apps by combining project management, docs, goals, whiteboards, time tracking, and chat into a single workspace. ClickUp supports over 15 views including list, board, timeline, Gantt, calendar, mind maps, and workload. The platform's ClickApps system allows teams to customize task behavior per space — enabling sprints for engineering, time tracking for agencies, and email integration for sales teams within the same account. ClickUp AI assists with writing, summarizing, and brainstorming across all content types. With over 800,000 teams using the platform and integrations with 1,000+ tools via native connectors and Zapier, ClickUp has positioned itself as the most feature-rich project management tool available. The free plan is one of the most generous in the category (unlimited tasks, members, and 100MB storage). Paid plans start at $7/member/month. ClickUp has raised over $537 million in funding and is valued at approximately $4 billion.",
+    highlights: ["800,000+ teams", "15+ project views", "All-in-one: tasks + docs + goals + chat", "$4B valuation"],
+    category: "software",
+    alternatives: [
+      { name: "Asana", slug: "asana", reason: "Cleaner UX, better for non-technical teams" },
+      { name: "Monday.com", slug: "monday-com", reason: "More visual, easier onboarding" },
+      { name: "Notion", slug: "notion", reason: "Better for docs and knowledge management" },
+      { name: "Jira", slug: "jira", reason: "Better for engineering teams, deeper agile features" },
+      { name: "Linear", slug: "linear", reason: "Faster, more opinionated for product teams" },
+      { name: "Basecamp", slug: "basecamp", reason: "Simpler, flat-rate pricing" },
+    ],
+    faqs: [
+      { question: "Is ClickUp free?", answer: "ClickUp's Free Forever plan includes unlimited tasks, unlimited members, 100MB storage, and most core features. Paid plans start at $7/member/month (Unlimited) with unlimited storage, integrations, and dashboards." },
+      { question: "Is ClickUp better than Asana?", answer: "ClickUp offers more features (docs, goals, whiteboards, time tracking) in a single platform at a lower price point. Asana has a cleaner interface, better stability, and is easier to learn. ClickUp is better for teams that want everything in one tool; Asana is better for teams that prefer simplicity." },
+      { question: "What makes ClickUp different?", answer: "ClickUp's key differentiator is its all-in-one approach — it combines project management, documents, goals, whiteboards, time tracking, and team chat in a single platform, eliminating the need for separate tools like Notion + Asana + Slack." },
+    ],
+  },
+
+  "linear": {
+    description:
+      "Linear is a modern project management tool designed specifically for software engineering and product teams. Founded in 2019 by Karri Saarinen (former Airbnb design lead) and Tuomas Artman (former Uber engineering manager), Linear is built around speed, keyboard shortcuts, and opinionated workflows that reduce overhead. The tool focuses on issue tracking, sprint planning, project roadmaps, and team cycles with a clean, fast interface that loads instantly and responds to every interaction. Linear's opinionated approach means less configuration and more building — it enforces best practices like triage, cycles (sprints), and project-based organization. The platform integrates tightly with GitHub, GitLab, Slack, Figma, and Sentry. Linear has gained a cult following among engineering teams at companies like Vercel, Ramp, Loom, and Cash App. The free plan supports up to 250 issues. Paid plans start at $8/user/month. Linear has raised over $52 million in funding and is widely regarded as the modern alternative to Jira for fast-moving product teams.",
+    highlights: ["Built for speed — loads instantly", "Opinionated workflows reduce overhead", "Keyboard-first interface", "Used by Vercel, Ramp, Cash App"],
+    category: "software",
+    alternatives: [
+      { name: "Jira", slug: "jira", reason: "More configurable, industry standard, better for large orgs" },
+      { name: "GitHub Issues", slug: "github-issues", reason: "Built into GitHub, free, simpler" },
+      { name: "Shortcut", slug: "shortcut", reason: "Similar modern UX, good for small teams" },
+      { name: "Asana", slug: "asana", reason: "Better for cross-functional teams beyond engineering" },
+      { name: "Height", slug: "height", reason: "AI-native project management" },
+      { name: "Plane", slug: "plane", reason: "Open-source Linear alternative" },
+    ],
+    faqs: [
+      { question: "Is Linear free?", answer: "Linear's free plan supports up to 250 issues with unlimited members. Paid plans start at $8/user/month (Standard) with unlimited issues, cycles, and advanced features." },
+      { question: "Linear vs Jira: which is better?", answer: "Linear is better for small to mid-size engineering teams that want speed, simplicity, and modern UX. Jira is better for large enterprises that need deep customization, complex workflows, and extensive plugin ecosystem. Linear is opinionated; Jira is configurable." },
+      { question: "Why do developers prefer Linear?", answer: "Developers prefer Linear for its speed (instant load times), keyboard-first design, clean UI, tight GitHub integration, and opinionated workflows that reduce project management overhead and let them focus on building." },
+    ],
+  },
+
+  "salesforce": {
+    description:
+      "Salesforce is the world's largest CRM (Customer Relationship Management) platform, founded in 1999 by Marc Benioff and Parker Harris. The company pioneered the SaaS model and cloud-based enterprise software. Salesforce's core products include Sales Cloud (pipeline management), Service Cloud (customer support), Marketing Cloud (campaign automation), Commerce Cloud (e-commerce), and the Einstein AI platform. The Salesforce ecosystem includes AppExchange (the largest enterprise app marketplace with 7,000+ apps), the Force.com development platform, and the Trailhead learning platform. Salesforce serves over 150,000 companies globally, from small businesses to Fortune 500 enterprises. The platform is highly customizable through declarative tools (flows, formula fields, page layouts) and programmatic customization (Apex, Lightning Web Components). Salesforce's acquisition strategy has expanded its capabilities: Slack ($27.7B), Tableau ($15.7B), MuleSoft ($6.5B), and Heroku. Plans start at $25/user/month (Essentials) but enterprise implementations typically run $150-300/user/month with add-ons. Salesforce's annual revenue exceeds $30 billion.",
+    highlights: ["150,000+ customers globally", "#1 CRM platform worldwide", "7,000+ AppExchange apps", "$30B+ annual revenue"],
+    category: "software",
+    alternatives: [
+      { name: "HubSpot", slug: "hubspot", reason: "Easier to use, better free tier, lower total cost" },
+      { name: "Pipedrive", slug: "pipedrive", reason: "Sales-focused, simpler, more affordable" },
+      { name: "Zoho CRM", slug: "zoho-crm", reason: "Full-featured at much lower price" },
+      { name: "Microsoft Dynamics 365", slug: "microsoft-dynamics-365", reason: "Better Microsoft ecosystem integration" },
+      { name: "Freshsales", slug: "freshsales", reason: "AI-powered CRM for SMBs" },
+      { name: "Monday CRM", slug: "monday-crm", reason: "Visual CRM built on Monday.com Work OS" },
+    ],
+    faqs: [
+      { question: "How much does Salesforce cost?", answer: "Salesforce pricing starts at $25/user/month (Essentials) for basic CRM. Professional is $80/user/month, Enterprise is $165/user/month, and Unlimited is $330/user/month. Most mid-size companies spend $150-300/user/month including add-ons and customization." },
+      { question: "Is Salesforce worth the cost?", answer: "Salesforce is worth it for companies with complex sales processes, large sales teams, and need for deep customization. For small businesses with simple needs, HubSpot or Pipedrive offer better value. Salesforce's ROI improves with scale and complexity." },
+      { question: "Why is Salesforce so dominant?", answer: "Salesforce dominates because it pioneered cloud CRM, built a massive ecosystem (AppExchange, consulting partners, Trailhead), and continuously acquires complementary products. Its deep customizability and enterprise features create high switching costs." },
+    ],
+  },
+
+  "discord": {
+    description:
+      "Discord is a free voice, video, and text communication platform originally launched in 2015 for gaming communities. Founded by Jason Citron and Stan Vishnevskiy, Discord has evolved far beyond gaming to serve communities of all types — education, music, crypto, programming, art, and professional teams. The platform is organized around servers (community spaces) with channels for text, voice, video, forums, and stages. Discord supports up to 500,000 members per server with roles and permissions for moderation. Key features include high-quality voice channels (always-on voice rooms), screen sharing, live streaming, and a rich bot ecosystem with over 500,000 bots on the platform. Discord Nitro ($9.99/month) adds higher upload limits, better streaming quality, custom profiles, and server boosts. The platform has over 200 million monthly active users and 19 million active servers weekly. Discord generates revenue through Nitro subscriptions, server boosts, and app subscriptions. The company was valued at $15 billion after its 2021 funding round and has become the default communication platform for online communities.",
+    highlights: ["200M+ monthly active users", "Always-on voice channels", "Free with generous limits", "500,000+ community bots"],
+    category: "software",
+    alternatives: [
+      { name: "Slack", slug: "slack", reason: "Better for professional work teams, deeper enterprise features" },
+      { name: "Microsoft Teams", slug: "microsoft-teams", reason: "Better for corporate environments, Office integration" },
+      { name: "Guilded", slug: "guilded", reason: "Gaming-focused alternative with more features free" },
+      { name: "Revolt", slug: "revolt", reason: "Open-source Discord alternative" },
+      { name: "Telegram", slug: "telegram", reason: "Better for large public channels and bots" },
+      { name: "Element", slug: "element", reason: "Decentralized, privacy-focused Matrix client" },
+    ],
+    faqs: [
+      { question: "Is Discord free?", answer: "Discord is free with generous limits — unlimited messaging, voice channels, video calls, and up to 500,000 members per server. Discord Nitro ($9.99/month) adds cosmetic perks, higher upload limits (500MB), and better streaming quality (4K 60fps)." },
+      { question: "Is Discord safe for kids?", answer: "Discord has safety features including age-gating, content filtering, and moderation tools. However, it is a public platform where anyone can create servers and send messages. Parental oversight is recommended for users under 16." },
+      { question: "Can Discord be used for work?", answer: "Many small teams and startups use Discord for work communication. However, it lacks enterprise features like compliance tools, SSO, and admin controls that Slack and Teams provide. Discord is better for informal, community-oriented teams." },
+    ],
+  },
+
+  "xero": {
+    description:
+      "Xero is a cloud-based accounting software platform founded in New Zealand in 2006 by Rod Drury. The platform serves over 3.95 million subscribers globally and is particularly strong in the UK, Australia, and New Zealand markets. Xero offers invoicing, bank reconciliation, expense claims, inventory tracking, payroll, project tracking, and financial reporting. A key differentiator is Xero's unlimited users on all plans — unlike QuickBooks which limits users per tier. The platform's bank reconciliation engine uses machine learning to suggest matches, making bookkeeping faster. Xero's app marketplace (Xero App Store) has over 1,000 connected apps for industry-specific needs. All plans include double-entry accounting, multi-currency support, and 1,000+ bank connections for automatic transaction import. Xero's clean, modern interface is frequently cited as more intuitive than QuickBooks. Plans start at $15/month (Starter), $42/month (Standard), and $78/month (Premium). Xero went public on the ASX and NZX and has a market cap exceeding $15 billion.",
+    highlights: ["3.95M+ subscribers", "Unlimited users on all plans", "1,000+ app integrations", "Strong in UK/AU/NZ markets"],
+    category: "software",
+    alternatives: [
+      { name: "QuickBooks", slug: "quickbooks", reason: "Dominant in US market, more US tax features" },
+      { name: "FreshBooks", slug: "freshbooks", reason: "Better for freelancers, simpler invoicing" },
+      { name: "Wave", slug: "wave", reason: "Free accounting for micro-businesses" },
+      { name: "Sage", slug: "sage", reason: "Better for mid-market and manufacturing" },
+      { name: "Zoho Books", slug: "zoho-books", reason: "More affordable, part of Zoho ecosystem" },
+      { name: "MYOB", slug: "myob", reason: "Strong competitor in AU/NZ market" },
+    ],
+    faqs: [
+      { question: "Is Xero better than QuickBooks?", answer: "Xero is better for international businesses, offers a cleaner UI, and includes unlimited users on all plans. QuickBooks is better for US-based businesses with deeper US tax compliance and wider accountant familiarity in the US." },
+      { question: "How much does Xero cost?", answer: "Xero plans start at $15/month (Starter, 20 invoices), $42/month (Standard, unlimited invoices), and $78/month (Premium, multi-currency and analytics). All plans include unlimited users." },
+      { question: "Is Xero good for small businesses?", answer: "Xero is excellent for small businesses, especially those outside the US. Its unlimited users, bank reconciliation automation, and 1,000+ app integrations make it one of the best accounting platforms for growing businesses." },
+    ],
+  },
+
+  "webflow": {
+    description:
+      "Webflow is a no-code web design and development platform founded in 2013 by Vlad Magdalin, Sergie Magdalin, and Bryant Chou. The platform allows designers to build professional, responsive websites visually without writing code, while generating clean, production-ready HTML, CSS, and JavaScript. Webflow combines a visual design canvas (similar to Figma but for live websites), a built-in CMS for dynamic content, e-commerce capabilities, and hosting — all in one platform. The tool is particularly popular among agencies, freelance designers, and marketing teams who need to build and iterate on websites quickly without developer dependencies. Webflow supports complex animations, interactions, and custom code when needed. The platform hosts over 500,000 sites and serves companies like Dell, Upwork, Lattice, and Jasper. Pricing includes a free plan (limited to 2 pages), site plans starting at $14/month for hosting, and workspace plans at $19/seat/month for team collaboration. Webflow has raised over $336 million in funding and is valued at approximately $4 billion.",
+    highlights: ["500,000+ hosted sites", "No-code visual design → clean code output", "Built-in CMS + e-commerce", "$4B valuation"],
+    category: "software",
+    alternatives: [
+      { name: "WordPress", slug: "wordpress", reason: "Largest ecosystem, more plugins, open-source" },
+      { name: "Framer", slug: "framer", reason: "Faster, more modern, React-based output" },
+      { name: "Squarespace", slug: "squarespace", reason: "Easier to use, better templates for beginners" },
+      { name: "Wix", slug: "wix", reason: "More beginner-friendly, larger template library" },
+      { name: "Bubble", slug: "bubble", reason: "Better for web apps, not just websites" },
+      { name: "Editor X", slug: "editor-x", reason: "Wix's advanced design tool for agencies" },
+    ],
+    faqs: [
+      { question: "Is Webflow free?", answer: "Webflow has a free plan for learning and prototyping (limited to 2 pages, webflow.io subdomain). Site hosting plans start at $14/month (Basic) and $23/month (CMS). Workspace plans for teams start at $19/seat/month." },
+      { question: "Do I need coding skills for Webflow?", answer: "No coding is required for most Webflow projects. The visual designer handles layout, styling, and interactions. However, understanding HTML/CSS concepts helps, and custom code can be added for advanced functionality." },
+      { question: "Webflow vs WordPress: which should I choose?", answer: "Webflow is better for designers who want visual control and clean output without plugin dependencies. WordPress is better for sites needing extensive functionality (plugins), blogging at scale, or when budget for hosting is minimal. Webflow requires less maintenance but has higher hosting costs." },
+    ],
+  },
+
+  "expressvpn": {
+    description:
+      "ExpressVPN is a premium virtual private network service founded in 2009 and operated by Kape Technologies (acquired in 2021 for $936 million). Based in the British Virgin Islands, ExpressVPN operates over 3,000 servers across 105 countries. The service is consistently rated among the top VPNs for speed, reliability, and ease of use. ExpressVPN's proprietary Lightway protocol delivers faster connection speeds and better battery life than traditional VPN protocols. The service features a verified no-logs policy (independently audited by PricewaterhouseCoopers and Cure53), TrustedServer technology (RAM-only servers that wipe data on every reboot), and a built-in speed test tool. ExpressVPN supports up to 8 simultaneous connections and works across all major platforms including routers. The service is particularly well-regarded for streaming — it reliably unblocks Netflix, Disney+, BBC iPlayer, and other geo-restricted content. Pricing starts at approximately $6.67/month on an annual plan, making it one of the more expensive VPN options but consistently rated as the most reliable.",
+    highlights: ["3,000+ servers in 105 countries", "Proprietary Lightway protocol", "Best streaming unblocking", "RAM-only TrustedServer"],
+    category: "software",
+    alternatives: [
+      { name: "NordVPN", slug: "nordvpn", reason: "More servers, lower price, similar security" },
+      { name: "Surfshark", slug: "surfshark", reason: "Unlimited devices, much cheaper" },
+      { name: "ProtonVPN", slug: "protonvpn", reason: "Open-source, Swiss privacy, free tier" },
+      { name: "Private Internet Access", slug: "private-internet-access", reason: "Open-source apps, more configurable" },
+      { name: "Mullvad", slug: "mullvad", reason: "Maximum privacy, flat $5.50/month, accepts cash" },
+      { name: "CyberGhost", slug: "cyberghost", reason: "Larger server network, cheaper long-term plans" },
+    ],
+    faqs: [
+      { question: "Is ExpressVPN worth the price?", answer: "ExpressVPN is the most expensive major VPN at ~$6.67/month (annual), but many users consider it worth it for consistently fast speeds, reliable streaming access, and excellent customer support. NordVPN offers similar features at a lower price point." },
+      { question: "ExpressVPN vs NordVPN: which is better?", answer: "ExpressVPN has slightly faster speeds and more reliable streaming. NordVPN has more servers (6,400 vs 3,000), lower pricing, and additional features like Double VPN and Threat Protection. For most users, NordVPN offers better value." },
+      { question: "Who owns ExpressVPN?", answer: "ExpressVPN was acquired by Kape Technologies in December 2021 for approximately $936 million. Kape also owns CyberGhost, Private Internet Access, and ZenMate VPNs." },
+    ],
+  },
+
+  "klaviyo": {
+    description:
+      "Klaviyo is an email and SMS marketing platform purpose-built for e-commerce businesses. Founded in 2012 by Andrew Bialecki and Ed Hallen, Klaviyo went public in 2023 and has grown to serve over 143,000 customers generating more than $800 million in annual revenue. The platform's deep integration with Shopify (Klaviyo is Shopify's recommended email marketing partner), WooCommerce, BigCommerce, and Magento enables real-time behavioral data sync — including purchase history, browsing behavior, and cart activity. This data powers highly targeted email and SMS flows: abandoned cart recovery, post-purchase sequences, win-back campaigns, browse abandonment, and price drop alerts. Klaviyo's segmentation engine allows filtering on 500+ data points with real-time updates. The platform's AI-powered predictive analytics can forecast customer lifetime value, churn risk, and next purchase date. Klaviyo's free plan includes up to 250 contacts and 500 email sends/month. Paid plans start at $20/month for 251-500 contacts with SMS available as an add-on.",
+    highlights: ["143,000+ customers", "Shopify's recommended email partner", "Predictive analytics built-in", "$800M+ annual revenue"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "Better for non-e-commerce, easier to use, wider use case" },
+      { name: "Omnisend", slug: "omnisend", reason: "E-commerce focused, more affordable, good Shopify integration" },
+      { name: "Drip", slug: "drip", reason: "E-commerce CRM with visual workflows" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "More CRM features, better for B2B + e-commerce hybrid" },
+      { name: "Postscript", slug: "postscript", reason: "SMS-only alternative for Shopify stores" },
+      { name: "Brevo", slug: "brevo", reason: "More affordable email + SMS, wider feature set" },
+    ],
+    faqs: [
+      { question: "Is Klaviyo free?", answer: "Klaviyo has a free plan for up to 250 contacts and 500 emails per month. Paid email plans start at $20/month for 251-500 contacts. SMS is available as a paid add-on starting at $15/month." },
+      { question: "Klaviyo vs Mailchimp for e-commerce?", answer: "Klaviyo is significantly better for e-commerce due to deeper Shopify integration, real-time behavioral data, abandoned cart flows, and predictive analytics. Mailchimp is better for general email marketing, newsletters, and non-e-commerce businesses." },
+      { question: "Why is Klaviyo so popular for Shopify?", answer: "Klaviyo is Shopify's recommended email marketing partner with a native integration that syncs real-time purchase, browsing, and cart data. This enables powerful automated flows (abandoned cart, post-purchase, win-back) that directly drive revenue for Shopify stores." },
+    ],
+  },
+
+  "activecampaign": {
+    description:
+      "ActiveCampaign is a customer experience automation platform combining email marketing, marketing automation, CRM, and sales automation. Founded in 2003 by Jason VandeBoom, ActiveCampaign has grown to serve over 185,000 customers in 170 countries. The platform is known for having one of the most powerful visual automation builders in the industry — users can create complex multi-step workflows triggered by email opens, link clicks, page visits, custom events, and CRM stage changes. ActiveCampaign's machine learning features include predictive sending (optimizing send times per contact), win probability scoring, and sentiment analysis. The platform supports email, SMS, site messaging, and Facebook Custom Audiences from a single automation. ActiveCampaign integrates with 900+ tools including Shopify, WordPress, Salesforce, and Zapier. Plans start at $15/month (Lite) for up to 500 contacts, with Professional plans at $79/month adding advanced features. The company has raised over $360 million and is valued at approximately $3 billion.",
+    highlights: ["185,000+ customers in 170 countries", "Best-in-class automation builder", "Built-in CRM + sales automation", "900+ integrations"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "Simpler to use, better brand recognition, wider ecosystem" },
+      { name: "HubSpot", slug: "hubspot", reason: "More comprehensive CRM, better free tier, content tools" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce, deeper Shopify integration" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Simpler, better for creators and bloggers" },
+      { name: "Brevo", slug: "brevo", reason: "More affordable, includes SMS and WhatsApp" },
+      { name: "Drip", slug: "drip", reason: "E-commerce focused automation" },
+    ],
+    faqs: [
+      { question: "How much does ActiveCampaign cost?", answer: "ActiveCampaign plans start at $15/month (Lite, 500 contacts) for email marketing and automation. Plus is $49/month (adds CRM), Professional is $79/month (adds predictive sending, split automations), and Enterprise is $145/month." },
+      { question: "ActiveCampaign vs Mailchimp?", answer: "ActiveCampaign has far more powerful automation, a built-in CRM, and better personalization. Mailchimp is easier to use, has a stronger free tier, and is better for simple email campaigns. ActiveCampaign is best for businesses that need sophisticated automation workflows." },
+      { question: "Is ActiveCampaign good for small businesses?", answer: "Yes, ActiveCampaign's Lite plan at $15/month is very affordable for small businesses. Its automation capabilities can save significant time on follow-ups, lead nurturing, and customer onboarding — making it punch above its weight for growing businesses." },
+    ],
+  },
+
+  "pipedrive": {
+    description:
+      "Pipedrive is a sales CRM platform designed with a pipeline-first approach. Founded in 2010 in Tallinn, Estonia, Pipedrive was built by salespeople for salespeople — the entire UI centers around visual deal pipelines that make it easy to track where each deal stands and what actions are needed next. The platform includes contact management, email tracking, meeting scheduling, web forms, and AI-powered sales assistant that suggests next actions and identifies at-risk deals. Pipedrive integrates with over 400 apps including Slack, Zoom, Mailchimp, and QuickBooks. The platform serves over 100,000 companies in 179 countries and is particularly popular with SMB sales teams that want a CRM they'll actually use — Pipedrive's adoption rates are consistently higher than more complex alternatives. Pipedrive was acquired by Vista Equity Partners in 2020 for approximately $1.5 billion. Plans start at $14/user/month (Essential) and scale to $99/user/month (Enterprise) with advanced customization and security features.",
+    highlights: ["100,000+ companies in 179 countries", "Pipeline-first visual CRM", "AI sales assistant", "High user adoption rates"],
+    category: "software",
+    alternatives: [
+      { name: "HubSpot", slug: "hubspot", reason: "More comprehensive (marketing + service), better free CRM" },
+      { name: "Salesforce", slug: "salesforce", reason: "More powerful for large enterprises, deeper customization" },
+      { name: "Zoho CRM", slug: "zoho-crm", reason: "More features at lower price, part of Zoho suite" },
+      { name: "Freshsales", slug: "freshsales", reason: "AI-powered, similar UX, Freshworks ecosystem" },
+      { name: "Close", slug: "close", reason: "Better for high-volume calling teams" },
+      { name: "Copper", slug: "copper", reason: "Better for Google Workspace users" },
+    ],
+    faqs: [
+      { question: "How much does Pipedrive cost?", answer: "Pipedrive plans start at $14/user/month (Essential), $34/user/month (Advanced), $49/user/month (Professional), $64/user/month (Power), and $99/user/month (Enterprise). All plans include core CRM features with a free 14-day trial." },
+      { question: "Pipedrive vs HubSpot: which CRM is better?", answer: "Pipedrive is better for sales-focused teams that want a simple, visual pipeline CRM they'll actually use. HubSpot is better for companies that need marketing automation, content management, and service tools alongside CRM. HubSpot's free CRM is more generous, but Pipedrive's paid plans are more affordable." },
+      { question: "Is Pipedrive good for small businesses?", answer: "Pipedrive is one of the best CRMs for small businesses. Its visual pipeline interface is intuitive, setup takes minutes, and the Essential plan at $14/user/month is very affordable. Small sales teams consistently rate Pipedrive higher for ease of use than Salesforce or HubSpot." },
+    ],
+  },
 };
