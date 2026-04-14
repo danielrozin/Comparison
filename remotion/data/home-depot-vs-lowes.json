@@ -1,0 +1,100 @@
+{
+  "title": "Home Depot vs Lowes",
+  "entityA": "Home Depot",
+  "entityB": "Lowes",
+  "category": "General",
+  "slug": "home-depot-vs-lowes",
+  "shortAnswer": "Both home improvement giants show strong performance, but Lowe's has delivered superior stock returns and dividend growth, while Home Depot trades at a premium valuation.",
+  "keyDifferences": [
+    {
+      "label": "Stock Performance (10-year)",
+      "entityAValue": "290% return",
+      "entityBValue": "397% return",
+      "winner": "b"
+    },
+    {
+      "label": "Stock Performance (5-year)",
+      "entityAValue": "62% return",
+      "entityBValue": "82% return",
+      "winner": "b"
+    },
+    {
+      "label": "Dividend Growth (5-year CAGR)",
+      "entityAValue": "6.9%",
+      "entityBValue": "14.9%",
+      "winner": "b"
+    },
+    {
+      "label": "Share Buyback Strategy",
+      "entityAValue": "7.7% share count decline",
+      "entityBValue": "24.9% share count decline",
+      "winner": "b"
+    },
+    {
+      "label": "Valuation Multiple",
+      "entityAValue": "26x P/E ratio",
+      "entityBValue": "22x P/E ratio",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "10-Year Stock Return",
+      "valueA": "290%",
+      "valueB": "397%",
+      "winner": "b"
+    },
+    {
+      "label": "5-Year Stock Return",
+      "valueA": "62%",
+      "valueB": "82%",
+      "winner": "b"
+    },
+    {
+      "label": "5-Year Dividend CAGR",
+      "valueA": "6.9%",
+      "valueB": "14.9%",
+      "winner": "b"
+    },
+    {
+      "label": "5-Year Share Count Decline",
+      "valueA": "7.7%",
+      "valueB": "24.9%",
+      "winner": "b"
+    },
+    {
+      "label": "Current P/E Ratio",
+      "valueA": "26x",
+      "valueB": "22x",
+      "winner": "b"
+    },
+    {
+      "label": "5-Year Dividend Yield",
+      "valueA": "3.29%",
+      "valueB": "Not specified",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Established AI integration for customer projects and Pro Xtra loyalty program",
+    "Largest home improvement retailer with strong market position",
+    "Consistent dividend payments with reliable yield",
+    "Strong brand recognition and market leadership"
+  ],
+  "consA": [
+    "Lower dividend growth rate compared to competitor",
+    "Trades at premium valuation with higher P/E ratio",
+    "Less aggressive share buyback program"
+  ],
+  "prosB": [
+    "Superior stock performance over both 5 and 10-year periods",
+    "Exceptional dividend growth rate of 14.9% CAGR",
+    "More aggressive capital return through share buybacks",
+    "Better valuation with lower P/E ratio"
+  ],
+  "consB": [
+    "Smaller market share compared to Home Depot",
+    "Less detailed information available on AI strategy implementation"
+  ],
+  "verdict": "While both companies are strong home improvement retailers, Lowe's has demonstrated superior shareholder returns through higher stock performance, better dividend growth, and more attractive valuation. Home Depot maintains market leadership but trades at a premium that may limit future returns."
+}

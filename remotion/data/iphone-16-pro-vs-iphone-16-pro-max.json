@@ -1,0 +1,112 @@
+{
+  "title": "Iphone 16 Pro vs Iphone 16 Pro Max",
+  "entityA": "Iphone 16 Pro",
+  "entityB": "Iphone 16 Pro Max",
+  "category": "Technology",
+  "slug": "iphone-16-pro-vs-iphone-16-pro-max",
+  "shortAnswer": "iPhone 16 Pro Max offers larger screen, better battery life, and higher storage capacity but is heavier and more expensive than the iPhone 16 Pro.",
+  "keyDifferences": [
+    {
+      "label": "Screen Size",
+      "entityAValue": "Smaller display",
+      "entityBValue": "Larger display",
+      "winner": "b"
+    },
+    {
+      "label": "Battery Life",
+      "entityAValue": "3,582mAh battery",
+      "entityBValue": "4,685mAh battery",
+      "winner": "b"
+    },
+    {
+      "label": "Starting Storage",
+      "entityAValue": "128GB",
+      "entityBValue": "256GB",
+      "winner": "b"
+    },
+    {
+      "label": "Weight",
+      "entityAValue": "Lighter",
+      "entityBValue": "Heavier",
+      "winner": "a"
+    },
+    {
+      "label": "Price",
+      "entityAValue": "$999",
+      "entityBValue": "Higher price",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Starting Price",
+      "valueA": "$999",
+      "valueB": "$1199+",
+      "winner": "a"
+    },
+    {
+      "label": "Battery Capacity",
+      "valueA": "3,582mAh",
+      "valueB": "4,685mAh",
+      "winner": "b"
+    },
+    {
+      "label": "Frame Material",
+      "valueA": "Titanium",
+      "valueB": "Titanium",
+      "winner": "tie"
+    },
+    {
+      "label": "Telephoto Camera",
+      "valueA": "12MP 5x optical",
+      "valueB": "12MP 5x optical",
+      "winner": "tie"
+    },
+    {
+      "label": "Display Technology",
+      "valueA": "ProMotion",
+      "valueB": "ProMotion",
+      "winner": "tie"
+    },
+    {
+      "label": "Camera System",
+      "valueA": "Triple-camera",
+      "valueB": "Triple-camera",
+      "winner": "tie"
+    },
+    {
+      "label": "Starting Storage",
+      "valueA": "128GB",
+      "valueB": "256GB",
+      "winner": "b"
+    },
+    {
+      "label": "Processor",
+      "valueA": "Advanced chip",
+      "valueB": "Advanced chip",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "More affordable at $999",
+    "Lighter and more comfortable to hold",
+    "Same advanced camera system and features",
+    "Titanium frame with premium build quality"
+  ],
+  "consA": [
+    "Smaller battery capacity",
+    "Lower starting storage capacity"
+  ],
+  "prosB": [
+    "Larger screen for better media consumption",
+    "Best battery life on iPhone ever",
+    "Higher starting storage at 256GB",
+    "Same premium features as Pro model"
+  ],
+  "consB": [
+    "More expensive than Pro model",
+    "Heavier and less portable",
+    "May be too large for some users"
+  ],
+  "verdict": "The iPhone 16 Pro Max is ideal for users who prioritize battery life, larger screen, and maximum storage. However, the iPhone 16 Pro offers the same core features at a lower price point with better portability."
+}

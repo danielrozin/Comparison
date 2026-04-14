@@ -350,6 +350,71 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-13T10:23:34.738Z"
+    },
+    {
+      "slug": "react-vs-angular",
+      "title": "React vs Angular",
+      "entityA": "React",
+      "entityB": "Angular",
+      "category": "General",
+      "videoFile": "React vs Angular.mp4",
+      "youtubeTitle": "React vs Angular — Full Comparison 2026",
+      "youtubeDescription": "React dominates with 44.7% developer usage vs Angular's 18.2%. React offers flexibility and mobile integration while Angular provides full framework structure.\n\n#react #angular #general #comparison #versus",
+      "youtubeVideoId": "zVGVIzIDjAM",
+      "youtubeUrl": "https://www.youtube.com/watch?v=zVGVIzIDjAM",
+      "uploadedAt": "2026-04-14T06:54:11.066Z"
+    },
+    {
+      "slug": "home-depot-vs-lowes",
+      "title": "Home Depot vs Lowes",
+      "entityA": "Home Depot",
+      "entityB": "Lowes",
+      "category": "General",
+      "videoFile": "Home Depot vs Lowes.mp4",
+      "youtubeTitle": "Home Depot vs Lowes — Full Comparison 2026",
+      "youtubeDescription": "Both home improvement giants show strong performance, but Lowe's has delivered superior stock returns and dividend growth, while Home Depot trades at a premium valuation.\n\n#homedepot #lowes #general #comparison #versus",
+      "youtubeVideoId": "bTvmc5wPL0c",
+      "youtubeUrl": "https://www.youtube.com/watch?v=bTvmc5wPL0c",
+      "uploadedAt": "2026-04-14T06:55:19.467Z"
+    },
+    {
+      "slug": "japan-vs-china",
+      "title": "Japan vs China",
+      "entityA": "Japan",
+      "entityB": "China",
+      "category": "Countries",
+      "videoFile": "Japan vs China.mp4",
+      "youtubeTitle": "Japan vs China — Full Comparison 2026",
+      "youtubeDescription": "China has a much larger economy (GDP $17.7T vs $4.2T) and population (1.4B vs 125M), while Japan leads in GDP per capita ($33,800 vs $12,500), life expectancy, technology innovation, and quality of life.\n\n#japan #china #countries #comparison #versus",
+      "youtubeVideoId": "vWGfOc1Ykus",
+      "youtubeUrl": "https://www.youtube.com/watch?v=vWGfOc1Ykus",
+      "uploadedAt": "2026-04-14T06:56:13.056Z"
+    },
+    {
+      "slug": "iphone-16-pro-vs-iphone-16-pro-max",
+      "title": "Iphone 16 Pro vs Iphone 16 Pro Max",
+      "entityA": "Iphone 16 Pro",
+      "entityB": "Iphone 16 Pro Max",
+      "category": "Technology",
+      "videoFile": "Iphone 16 Pro vs Iphone 16 Pro Max.mp4",
+      "youtubeTitle": "Iphone 16 Pro vs Iphone 16 Pro Max — Full Comparison 2026",
+      "youtubeDescription": "iPhone 16 Pro Max offers larger screen, better battery life, and higher storage capacity but is heavier and more expensive than the iPhone 16 Pro.\n\n#iphone16pro #iphone16promax #technology #comparison #versus",
+      "youtubeVideoId": "Xk6owkiqlCI",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Xk6owkiqlCI",
+      "uploadedAt": "2026-04-14T06:57:20.848Z"
+    },
+    {
+      "slug": "bmw-vs-mercedes",
+      "title": "Bmw vs Mercedes",
+      "entityA": "Bmw",
+      "entityB": "Mercedes",
+      "category": "Automotive",
+      "videoFile": "Bmw vs Mercedes.mp4",
+      "youtubeTitle": "Bmw vs Mercedes — Full Comparison 2026",
+      "youtubeDescription": "BMW offers better fuel economy and trunk space, while Mercedes provides higher torque and premium digital displays. Both excel in luxury and safety features.\n\n#bmw #mercedes #automotive #comparison #versus",
+      "youtubeVideoId": "AmaGg4uv3iA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=AmaGg4uv3iA",
+      "uploadedAt": "2026-04-14T06:58:29.758Z"
     }
   ]
 }

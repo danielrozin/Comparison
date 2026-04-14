@@ -1,0 +1,111 @@
+{
+  "title": "React vs Angular",
+  "entityA": "React",
+  "entityB": "Angular",
+  "category": "General",
+  "slug": "react-vs-angular",
+  "shortAnswer": "React dominates with 44.7% developer usage vs Angular's 18.2%. React offers flexibility and mobile integration while Angular provides full framework structure.",
+  "keyDifferences": [
+    {
+      "label": "Type",
+      "entityAValue": "Library",
+      "entityBValue": "Full Framework",
+      "winner": "tie"
+    },
+    {
+      "label": "Mobile Development",
+      "entityAValue": "React Native (native integration)",
+      "entityBValue": "Ionic/NativeScript (third-party)",
+      "winner": "a"
+    },
+    {
+      "label": "Architecture",
+      "entityAValue": "Flexible component-based",
+      "entityBValue": "Opinionated MVC structure",
+      "winner": "tie"
+    },
+    {
+      "label": "Data Binding",
+      "entityAValue": "One-way data flow",
+      "entityBValue": "Two-way data binding",
+      "winner": "tie"
+    },
+    {
+      "label": "Learning Curve",
+      "entityAValue": "Moderate",
+      "entityBValue": "Steep",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Stack Overflow Usage 2025",
+      "valueA": "44.7%",
+      "valueB": "18.2%",
+      "winner": "a"
+    },
+    {
+      "label": "Stack Overflow Usage 2024",
+      "valueA": "39.5%",
+      "valueB": "17.1%",
+      "winner": "a"
+    },
+    {
+      "label": "W3Techs Market Share",
+      "valueA": "6.2%",
+      "valueB": "0.2%",
+      "winner": "a"
+    },
+    {
+      "label": "Website Usage Growth",
+      "valueA": "7.9%",
+      "valueB": "0.3%",
+      "winner": "a"
+    },
+    {
+      "label": "Code Sharing with Mobile",
+      "valueA": "30-40% reduction",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Production Projects (Groovy Web)",
+      "valueA": "200+",
+      "valueB": "200+",
+      "winner": "tie"
+    },
+    {
+      "label": "Enterprise Adoption",
+      "valueA": "High",
+      "valueB": "High",
+      "winner": "tie"
+    },
+    {
+      "label": "Performance (Angular 17+)",
+      "valueA": "Competitive",
+      "valueB": "Competitive with OnPush",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Massive developer community and ecosystem",
+    "Native mobile development with React Native",
+    "Flexible architecture allows custom solutions",
+    "Easier learning curve for new developers"
+  ],
+  "consA": [
+    "Requires more decision-making for architecture",
+    "Less opinionated structure can lead to inconsistency"
+  ],
+  "prosB": [
+    "Complete framework with built-in solutions",
+    "Strong enterprise features and TypeScript integration",
+    "Opinionated structure ensures consistency",
+    "Improved performance with Angular 17+ and Signals"
+  ],
+  "consB": [
+    "Steeper learning curve and complexity",
+    "Relies on third-party solutions for mobile development"
+  ],
+  "verdict": "React leads in popularity and mobile integration, making it ideal for teams needing flexibility and cross-platform development. Angular excels in enterprise environments requiring structured, full-featured frameworks with strong TypeScript support."
+}
