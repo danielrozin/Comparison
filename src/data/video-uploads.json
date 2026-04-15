@@ -415,6 +415,71 @@
       "youtubeVideoId": "AmaGg4uv3iA",
       "youtubeUrl": "https://www.youtube.com/watch?v=AmaGg4uv3iA",
       "uploadedAt": "2026-04-14T06:58:29.758Z"
+    },
+    {
+      "slug": "canva-vs-photoshop",
+      "title": "Canva vs Photoshop",
+      "entityA": "Canva",
+      "entityB": "Photoshop",
+      "category": "General",
+      "videoFile": "Canva vs Photoshop.mp4",
+      "youtubeTitle": "Canva vs Photoshop — Full Comparison 2026",
+      "youtubeDescription": "Canva excels at quick, easy design exports while Photoshop offers unparalleled flexibility and granular control for professional editing.\n\n#canva #photoshop #general #comparison #versus",
+      "youtubeVideoId": "FATQpgt5n3Q",
+      "youtubeUrl": "https://www.youtube.com/watch?v=FATQpgt5n3Q",
+      "uploadedAt": "2026-04-15T06:56:15.559Z"
+    },
+    {
+      "slug": "democracy-vs-communism",
+      "title": "Democracy vs Communism",
+      "entityA": "Democracy",
+      "entityB": "Communism",
+      "category": "General",
+      "videoFile": "Democracy vs Communism.mp4",
+      "youtubeTitle": "Democracy vs Communism — Full Comparison 2026",
+      "youtubeDescription": "Democracy and communism are fundamentally different political systems based on opposing ideological principles regarding individual rights, economic ownership, and governance.\n\n#democracy #communism #general #comparison #versus",
+      "youtubeVideoId": "W1IhjCsSAFM",
+      "youtubeUrl": "https://www.youtube.com/watch?v=W1IhjCsSAFM",
+      "uploadedAt": "2026-04-15T06:57:26.434Z"
+    },
+    {
+      "slug": "airbnb-vs-vrbo",
+      "title": "Airbnb vs Vrbo",
+      "entityA": "Airbnb",
+      "entityB": "Vrbo",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Vrbo.mp4",
+      "youtubeTitle": "Airbnb vs Vrbo — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers broader global reach and higher booking volume, while Vrbo focuses on U.S. vacation rentals with higher-paying bookings and entire home properties.\n\n#airbnb #vrbo #travel #comparison #versus",
+      "youtubeVideoId": "ycU8fxTW5c8",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ycU8fxTW5c8",
+      "uploadedAt": "2026-04-15T06:58:32.790Z"
+    },
+    {
+      "slug": "brady-vs-manning",
+      "title": "Brady vs Manning",
+      "entityA": "Brady",
+      "entityB": "Manning",
+      "category": "General",
+      "videoFile": "Brady vs Manning.mp4",
+      "youtubeTitle": "Brady vs Manning — Full Comparison 2026",
+      "youtubeDescription": "Brady has superior regular season stats and performance rating, while Manning shows better completion percentage and reading ability. Experts favor Manning in 11 of 15 key categories.\n\n#brady #manning #general #comparison #versus",
+      "youtubeVideoId": "5G1xfCR3oFY",
+      "youtubeUrl": "https://www.youtube.com/watch?v=5G1xfCR3oFY",
+      "uploadedAt": "2026-04-15T06:59:41.502Z"
+    },
+    {
+      "slug": "almond-milk-vs-oat-milk",
+      "title": "Almond Milk vs Oat Milk",
+      "entityA": "Almond Milk",
+      "entityB": "Oat Milk",
+      "category": "General",
+      "videoFile": "Almond Milk vs Oat Milk.mp4",
+      "youtubeTitle": "Almond Milk vs Oat Milk — Full Comparison 2026",
+      "youtubeDescription": "Almond milk has fewer calories and a nutty taste, while oat milk has more carbs but keeps you full longer with a mild, sweet flavor.\n\n#almondmilk #oatmilk #general #comparison #versus",
+      "youtubeVideoId": "WOZqbKcqXo4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=WOZqbKcqXo4",
+      "uploadedAt": "2026-04-15T07:00:46.134Z"
     }
   ]
 }

@@ -1,0 +1,111 @@
+{
+  "title": "Brady vs Manning",
+  "entityA": "Brady",
+  "entityB": "Manning",
+  "category": "General",
+  "slug": "brady-vs-manning",
+  "shortAnswer": "Brady has superior regular season stats and performance rating, while Manning shows better completion percentage and reading ability. Experts favor Manning in 11 of 15 key categories.",
+  "keyDifferences": [
+    {
+      "label": "Regular Season Performance",
+      "entityAValue": "Superior overall stats",
+      "entityBValue": "Declining performance",
+      "winner": "a"
+    },
+    {
+      "label": "Completion Percentage",
+      "entityAValue": "Slightly lower",
+      "entityBValue": "Higher accuracy",
+      "winner": "b"
+    },
+    {
+      "label": "Field Reading Ability",
+      "entityAValue": "Strong",
+      "entityBValue": "Superior reading skills",
+      "winner": "b"
+    },
+    {
+      "label": "Expert Evaluation",
+      "entityAValue": "4 of 15 categories",
+      "entityBValue": "11 of 15 categories",
+      "winner": "b"
+    },
+    {
+      "label": "Career Trajectory",
+      "entityAValue": "Sustained excellence",
+      "entityBValue": "Performance declining",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Performance Rating (PER)",
+      "valueA": "~96",
+      "valueB": "~96 (declining)",
+      "winner": "a"
+    },
+    {
+      "label": "Completion Percentage",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "b"
+    },
+    {
+      "label": "Passing Yards",
+      "valueA": "Higher",
+      "valueB": "Slightly lower",
+      "winner": "a"
+    },
+    {
+      "label": "Touchdown Passes",
+      "valueA": "Higher",
+      "valueB": "Slightly lower",
+      "winner": "a"
+    },
+    {
+      "label": "Expert Category Wins",
+      "valueA": "4",
+      "valueB": "11",
+      "winner": "b"
+    },
+    {
+      "label": "Regular Season Stats",
+      "valueA": "Far superior",
+      "valueB": "Good but declining",
+      "winner": "a"
+    },
+    {
+      "label": "Field Recognition",
+      "valueA": "Good",
+      "valueB": "Superior",
+      "winner": "b"
+    },
+    {
+      "label": "Overall Performance Trend",
+      "valueA": "Consistent",
+      "valueB": "Declining",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Superior regular season statistics",
+    "Higher passing yardage totals",
+    "More touchdown passes",
+    "Consistent performance rating"
+  ],
+  "consA": [
+    "Lower completion percentage than Manning",
+    "Experts favor him in fewer categories"
+  ],
+  "prosB": [
+    "Better completion percentage",
+    "Superior field reading ability",
+    "Expert consensus favors him in 11 of 15 categories",
+    "Better accuracy and decision-making"
+  ],
+  "consB": [
+    "Performance rating declining rapidly",
+    "Lower yardage and touchdown numbers"
+  ],
+  "verdict": "While Brady demonstrates superior regular season statistics and maintains consistent performance, Manning excels in accuracy and field reading. Expert analysis heavily favors Manning, though Brady's statistical dominance cannot be ignored."
+}

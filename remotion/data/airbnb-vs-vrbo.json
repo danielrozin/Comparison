@@ -1,0 +1,111 @@
+{
+  "title": "Airbnb vs Vrbo",
+  "entityA": "Airbnb",
+  "entityB": "Vrbo",
+  "category": "Travel",
+  "slug": "airbnb-vs-vrbo",
+  "shortAnswer": "Airbnb offers broader global reach and higher booking volume, while Vrbo focuses on U.S. vacation rentals with higher-paying bookings and entire home properties.",
+  "keyDifferences": [
+    {
+      "label": "Geographic Focus",
+      "entityAValue": "Global and urban markets",
+      "entityBValue": "U.S.-heavy vacation destinations",
+      "winner": "tie"
+    },
+    {
+      "label": "Property Types",
+      "entityAValue": "Shared and entire properties",
+      "entityBValue": "Primarily entire homes",
+      "winner": "b"
+    },
+    {
+      "label": "Booking Volume",
+      "entityAValue": "Higher volume",
+      "entityBValue": "Lower volume",
+      "winner": "a"
+    },
+    {
+      "label": "Booking Value",
+      "entityAValue": "Lower average rates",
+      "entityBValue": "Higher-paying bookings",
+      "winner": "b"
+    },
+    {
+      "label": "Target Market",
+      "entityAValue": "Urban and global travelers",
+      "entityBValue": "Vacation and family travelers",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Booking Volume",
+      "valueA": "Higher",
+      "valueB": "Lower",
+      "winner": "a"
+    },
+    {
+      "label": "Average Booking Value",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "b"
+    },
+    {
+      "label": "Global Reach",
+      "valueA": "Broader international",
+      "valueB": "U.S.-focused",
+      "winner": "a"
+    },
+    {
+      "label": "Property Types",
+      "valueA": "Mixed (shared/entire)",
+      "valueB": "Entire homes only",
+      "winner": "b"
+    },
+    {
+      "label": "Market Focus",
+      "valueA": "Urban + vacation",
+      "valueB": "Vacation-focused",
+      "winner": "tie"
+    },
+    {
+      "label": "Booking Process",
+      "valueA": "Complex options",
+      "valueB": "Straightforward",
+      "winner": "b"
+    },
+    {
+      "label": "Professional Manager Preference",
+      "valueA": "Volume-focused",
+      "valueB": "Revenue-focused",
+      "winner": "tie"
+    },
+    {
+      "label": "Target Demographic",
+      "valueA": "Diverse travelers",
+      "valueB": "Family/group vacations",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Higher booking volume and frequency",
+    "Broader global and urban market reach",
+    "Diverse property types and price points",
+    "Larger customer base"
+  ],
+  "consA": [
+    "Lower average booking values",
+    "More competition and saturation"
+  ],
+  "prosB": [
+    "Higher-paying bookings and better revenue",
+    "Focus on entire homes appeals to families",
+    "Straightforward booking process",
+    "Strong vacation rental market position"
+  ],
+  "consB": [
+    "Limited to U.S.-heavy markets",
+    "Lower overall booking volume"
+  ],
+  "verdict": "Choose Airbnb for maximum exposure and booking frequency, especially in urban markets. Choose Vrbo for higher revenue per booking and vacation rental focus, particularly for entire home properties."
+}

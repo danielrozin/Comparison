@@ -1,0 +1,112 @@
+{
+  "title": "Almond Milk vs Oat Milk",
+  "entityA": "Almond Milk",
+  "entityB": "Oat Milk",
+  "category": "General",
+  "slug": "almond-milk-vs-oat-milk",
+  "shortAnswer": "Almond milk has fewer calories and a nutty taste, while oat milk has more carbs but keeps you full longer with a mild, sweet flavor.",
+  "keyDifferences": [
+    {
+      "label": "Calorie Content",
+      "entityAValue": "Fewer calories",
+      "entityBValue": "More calories",
+      "winner": "a"
+    },
+    {
+      "label": "Carbohydrate Level",
+      "entityAValue": "Lower carbs",
+      "entityBValue": "Higher carbs",
+      "winner": "a"
+    },
+    {
+      "label": "Satiety Factor",
+      "entityAValue": "Less filling",
+      "entityBValue": "Makes you feel full longer",
+      "winner": "b"
+    },
+    {
+      "label": "Taste Profile",
+      "entityAValue": "Nutty flavor",
+      "entityBValue": "Mild and slightly sweet",
+      "winner": "tie"
+    },
+    {
+      "label": "Weight Loss Suitability",
+      "entityAValue": "Better for weight loss (unsweetened)",
+      "entityBValue": "Less optimal for weight loss",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Calories per serving",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "a"
+    },
+    {
+      "label": "Carbohydrates",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "a"
+    },
+    {
+      "label": "Satiety duration",
+      "valueA": "Shorter",
+      "valueB": "Longer",
+      "winner": "b"
+    },
+    {
+      "label": "Sweetness level",
+      "valueA": "Less sweet",
+      "valueB": "Slightly sweet",
+      "winner": "b"
+    },
+    {
+      "label": "Weight loss effectiveness",
+      "valueA": "More effective",
+      "valueB": "Less effective",
+      "winner": "a"
+    },
+    {
+      "label": "Flavor intensity",
+      "valueA": "Nutty/distinct",
+      "valueB": "Mild",
+      "winner": "tie"
+    },
+    {
+      "label": "Fullness factor",
+      "valueA": "Lower",
+      "valueB": "Higher",
+      "winner": "b"
+    },
+    {
+      "label": "Caloric efficiency",
+      "valueA": "Higher",
+      "valueB": "Lower",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Fewer calories per serving",
+    "Better choice for weight loss goals",
+    "Distinctive nutty flavor",
+    "Lower carbohydrate content"
+  ],
+  "consA": [
+    "Less filling than oat milk",
+    "May not provide sustained satiety"
+  ],
+  "prosB": [
+    "Keeps you feeling full longer",
+    "Mild and pleasant taste",
+    "Naturally slightly sweet flavor",
+    "Better satiety factor"
+  ],
+  "consB": [
+    "Higher calorie content",
+    "More carbohydrates",
+    "Less suitable for weight loss"
+  ],
+  "verdict": "Almond milk wins for weight loss and calorie-conscious consumers due to its lower calorie and carb content. Oat milk excels in satiety and taste appeal with its creamy texture and natural sweetness."
+}

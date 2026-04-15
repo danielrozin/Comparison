@@ -1,0 +1,113 @@
+{
+  "title": "Democracy vs Communism",
+  "entityA": "Democracy",
+  "entityB": "Communism",
+  "category": "General",
+  "slug": "democracy-vs-communism",
+  "shortAnswer": "Democracy and communism are fundamentally different political systems based on opposing ideological principles regarding individual rights, economic ownership, and governance.",
+  "keyDifferences": [
+    {
+      "label": "Economic System",
+      "entityAValue": "Market-based with private property",
+      "entityBValue": "Collective ownership, no individual money",
+      "winner": "tie"
+    },
+    {
+      "label": "Individual Rights",
+      "entityAValue": "Personal freedoms and civil liberties",
+      "entityBValue": "Collective needs over individual rights",
+      "winner": "a"
+    },
+    {
+      "label": "Political Participation",
+      "entityAValue": "Multi-party elections and representation",
+      "entityBValue": "Single-party state control",
+      "winner": "a"
+    },
+    {
+      "label": "Resource Distribution",
+      "entityAValue": "Market mechanisms and merit",
+      "entityBValue": "State allocation based on need",
+      "winner": "tie"
+    },
+    {
+      "label": "Ideological Foundation",
+      "entityAValue": "Individual liberty and choice",
+      "entityBValue": "Collective equality and state control",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Global Democracies (2026)",
+      "valueA": "87 countries",
+      "valueB": "N/A",
+      "winner": "a"
+    },
+    {
+      "label": "Global Autocracies (2026)",
+      "valueA": "N/A",
+      "valueB": "92 countries",
+      "winner": "b"
+    },
+    {
+      "label": "Democracy Trend",
+      "valueA": "Back to 1978 levels",
+      "valueB": "N/A",
+      "winner": "b"
+    },
+    {
+      "label": "Years of Autocratization",
+      "valueA": "N/A",
+      "valueB": "25 years",
+      "winner": "b"
+    },
+    {
+      "label": "Private Property Rights",
+      "valueA": "Protected",
+      "valueB": "Abolished",
+      "winner": "a"
+    },
+    {
+      "label": "Monetary System",
+      "valueA": "Market currency",
+      "valueB": "No individual money",
+      "winner": "a"
+    },
+    {
+      "label": "Political Parties",
+      "valueA": "Multiple competing",
+      "valueB": "Single party",
+      "winner": "a"
+    },
+    {
+      "label": "Democratic Decline Period",
+      "valueA": "First time in 50+ years",
+      "valueB": "N/A",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Protects individual freedoms and civil liberties",
+    "Allows political participation through elections",
+    "Supports economic innovation through market mechanisms",
+    "Provides checks and balances on government power"
+  ],
+  "consA": [
+    "Democracy levels declining globally to 1978 standards",
+    "Vulnerable to autocratization trends over past 25 years",
+    "Currently fewer democracies (87) than autocracies (92) worldwide"
+  ],
+  "prosB": [
+    "Aims for economic equality through collective ownership",
+    "Eliminates class-based wealth disparities",
+    "Provides guaranteed basic needs through state allocation",
+    "Focuses on collective welfare over individual interests"
+  ],
+  "consB": [
+    "Eliminates individual economic freedom and private property",
+    "Restricts political participation to single-party control",
+    "Historical implementation often leads to authoritarian outcomes"
+  ],
+  "verdict": "While democracy faces current challenges with global decline to 1978 levels, it maintains advantages in protecting individual rights and political participation. Communism offers economic equality but at the cost of personal freedoms and political choice, with most implementations becoming autocratic."
+}
