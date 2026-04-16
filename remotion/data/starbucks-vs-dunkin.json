@@ -1,0 +1,113 @@
+{
+  "title": "Starbucks vs Dunkin",
+  "entityA": "Starbucks",
+  "entityB": "Dunkin",
+  "category": "General",
+  "slug": "starbucks-vs-dunkin",
+  "shortAnswer": "Starbucks dominates with premium positioning and global reach (40% US market share, 41k stores) while Dunkin' competes on value with $2 lower prices and franchise model.",
+  "keyDifferences": [
+    {
+      "label": "Business Model",
+      "entityAValue": "52% company-operated stores",
+      "entityBValue": "Franchise-dominant model",
+      "winner": "tie"
+    },
+    {
+      "label": "Market Positioning",
+      "entityAValue": "Premium coffee experience",
+      "entityBValue": "Value-focused pricing",
+      "winner": "tie"
+    },
+    {
+      "label": "Global Presence",
+      "entityAValue": "90 countries",
+      "entityBValue": "40 countries",
+      "winner": "a"
+    },
+    {
+      "label": "Average Coffee Price",
+      "entityAValue": "$2 higher than Dunkin'",
+      "entityBValue": "$2 lower than Starbucks",
+      "winner": "b"
+    },
+    {
+      "label": "Growth Strategy",
+      "entityAValue": "China expansion focus",
+      "entityBValue": "Domestic franchise expansion",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "US Market Share",
+      "valueA": "40%",
+      "valueB": "26%",
+      "winner": "a"
+    },
+    {
+      "label": "Global Store Count",
+      "valueA": "41,118 stores",
+      "valueB": "15,000+ stores",
+      "winner": "a"
+    },
+    {
+      "label": "US Locations",
+      "valueA": "13,502 locations",
+      "valueB": "9,686 locations",
+      "winner": "a"
+    },
+    {
+      "label": "Countries Present",
+      "valueA": "90 countries",
+      "valueB": "40 countries",
+      "winner": "a"
+    },
+    {
+      "label": "Comp Sales Growth",
+      "valueA": "+4% recovery",
+      "valueB": "+10.4% two-year",
+      "winner": "b"
+    },
+    {
+      "label": "Combined Market Control",
+      "valueA": "66% of $45B market",
+      "valueB": "66% of $45B market",
+      "winner": "tie"
+    },
+    {
+      "label": "California Presence",
+      "valueA": "2,500 locations",
+      "valueB": "Significantly fewer",
+      "winner": "a"
+    },
+    {
+      "label": "Overseas Reach",
+      "valueA": "10x more overseas outlets",
+      "valueB": "Limited international",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Dominant global presence with 41,118 stores across 90 countries",
+    "Premium brand positioning allows higher margins and pricing power",
+    "Strong company-operated model provides better brand control",
+    "Leading market share of 40% in lucrative US coffee market"
+  ],
+  "consA": [
+    "Higher fixed costs from company-operated store model",
+    "Premium pricing limits customer base compared to value competitors",
+    "Higher operational complexity with direct store management"
+  ],
+  "prosB": [
+    "Franchise model enables faster expansion with lower capital risk",
+    "Value pricing attracts price-conscious consumers with $2 lower costs",
+    "Strong domestic performance with +10.4% two-year comp growth",
+    "Efficient operational model with lower overhead costs"
+  ],
+  "consB": [
+    "Smaller global footprint limits growth opportunities",
+    "Less brand control due to franchise-dominant model",
+    "Lower market share at 26% despite strong value proposition"
+  ],
+  "verdict": "Starbucks wins on scale and premium positioning with superior global reach and market share, while Dunkin' succeeds in the value segment with efficient franchise operations. Both models are working effectively in their respective market segments, with Starbucks dominating premium coffee experiences and Dunkin' capturing price-conscious consumers."
+}

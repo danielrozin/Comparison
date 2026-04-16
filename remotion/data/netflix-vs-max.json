@@ -1,0 +1,111 @@
+{
+  "title": "Netflix vs Max",
+  "entityA": "Netflix",
+  "entityB": "Max",
+  "category": "General",
+  "slug": "netflix-vs-max",
+  "shortAnswer": "Netflix offers quantity with more content volume and lower entry pricing, while Max focuses on quality with premium originals and higher completion rates among viewers.",
+  "keyDifferences": [
+    {
+      "label": "Content Strategy",
+      "entityAValue": "High volume releases",
+      "entityBValue": "Fewer, premium quality releases",
+      "winner": "tie"
+    },
+    {
+      "label": "Entry Price",
+      "entityAValue": "$7.99/month (ad-supported)",
+      "entityBValue": "$10.99/month (ad-supported)",
+      "winner": "a"
+    },
+    {
+      "label": "4K Content",
+      "entityAValue": "More 4K content volume",
+      "entityBValue": "Cinematic quality focus",
+      "winner": "tie"
+    },
+    {
+      "label": "User Behavior",
+      "entityAValue": "Discovery-focused viewing",
+      "entityBValue": "Higher show completion rates",
+      "winner": "b"
+    },
+    {
+      "label": "Premium Tier",
+      "entityAValue": "$24.99/month",
+      "entityBValue": "$22.99/month (Ultimate)",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Ad-Supported Plan",
+      "valueA": "$7.99/month",
+      "valueB": "$10.99/month",
+      "winner": "a"
+    },
+    {
+      "label": "Premium Plan",
+      "valueA": "$24.99/month",
+      "valueB": "$22.99/month",
+      "winner": "b"
+    },
+    {
+      "label": "Content Volume",
+      "valueA": "Higher release volume",
+      "valueB": "Lower release volume",
+      "winner": "a"
+    },
+    {
+      "label": "4K Content Amount",
+      "valueA": "More 4K titles",
+      "valueB": "Fewer 4K titles",
+      "winner": "a"
+    },
+    {
+      "label": "Show Completion Rate",
+      "valueA": "Lower completion rate",
+      "valueB": "Higher completion rate",
+      "winner": "b"
+    },
+    {
+      "label": "Offline Downloads",
+      "valueA": "Available",
+      "valueB": "Available",
+      "winner": "tie"
+    },
+    {
+      "label": "Bundle Option",
+      "valueA": "Verizon bundle $10.99/month",
+      "valueB": "Verizon bundle $10.99/month",
+      "winner": "tie"
+    },
+    {
+      "label": "4K Quality",
+      "valueA": "Excellent quality",
+      "valueB": "Cinematic quality",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Lower entry price point with ad-supported plan",
+    "Higher volume of content releases for discovery",
+    "More 4K content available",
+    "Better for content discovery and variety"
+  ],
+  "consA": [
+    "Lower show completion rates among users",
+    "Higher premium tier pricing than Max"
+  ],
+  "prosB": [
+    "Higher quality, premium content focus",
+    "Better user engagement and completion rates",
+    "Slightly cheaper premium tier pricing"
+  ],
+  "consB": [
+    "Higher starting price for ad-supported tier",
+    "Fewer total content releases",
+    "Less 4K content volume"
+  ],
+  "verdict": "Netflix excels for users who want variety and discovery at a lower entry price, while Max is better for viewers seeking premium quality content they're more likely to finish. Many users in 2026 adopt a rotation strategy, using Netflix for discovery and Max for commitment viewing."
+}

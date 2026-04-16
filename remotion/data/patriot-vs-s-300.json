@@ -1,0 +1,111 @@
+{
+  "title": "Patriot vs S 300",
+  "entityA": "Patriot",
+  "entityB": "S 300",
+  "category": "General",
+  "slug": "patriot-vs-s-300",
+  "shortAnswer": "Patriot is a modern NATO system with 160km range for ballistic missiles, while S-300 is Soviet-era with comparable range but proven ineffective in recent conflicts like Venezuela.",
+  "keyDifferences": [
+    {
+      "label": "Target Capability",
+      "entityAValue": "Aircraft and tactical ballistic missiles",
+      "entityBValue": "Aircraft and some ballistic missiles",
+      "winner": "a"
+    },
+    {
+      "label": "Operational Effectiveness",
+      "entityAValue": "Proven effective in Ukraine",
+      "entityBValue": "Ineffective performance in Venezuela",
+      "winner": "a"
+    },
+    {
+      "label": "Technology Generation",
+      "entityAValue": "Modern NATO-aligned system",
+      "entityBValue": "Soviet-era legacy system",
+      "winner": "a"
+    },
+    {
+      "label": "Integration",
+      "entityAValue": "NATO-compatible architecture",
+      "entityBValue": "Russian/Soviet standard",
+      "winner": "a"
+    },
+    {
+      "label": "Deployment Status",
+      "entityAValue": "Widely deployed globally",
+      "entityBValue": "Limited modern deployment",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Range",
+      "valueA": "~160 km",
+      "valueB": "~150 km",
+      "winner": "a"
+    },
+    {
+      "label": "Origin",
+      "valueA": "USA",
+      "valueB": "Soviet Union/Russia",
+      "winner": "tie"
+    },
+    {
+      "label": "Target Types",
+      "valueA": "Aircraft, ballistic missiles",
+      "valueB": "Aircraft, some missiles",
+      "winner": "a"
+    },
+    {
+      "label": "Era",
+      "valueA": "Modern",
+      "valueB": "Cold War era",
+      "winner": "a"
+    },
+    {
+      "label": "Combat Proven",
+      "valueA": "Yes (Ukraine success)",
+      "valueB": "No (Venezuela failure)",
+      "winner": "a"
+    },
+    {
+      "label": "NATO Compatible",
+      "valueA": "Yes",
+      "valueB": "No",
+      "winner": "a"
+    },
+    {
+      "label": "Deployment Scale",
+      "valueA": "Widespread",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Maintenance",
+      "valueA": "NATO standards",
+      "valueB": "Russian standards",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Proven effective against ballistic missiles in Ukraine",
+    "NATO-compatible with integrated defense architecture",
+    "Modern technology with regular upgrades",
+    "Widely deployed and supported globally"
+  ],
+  "consA": [
+    "High cost per interceptor missile",
+    "Complex system requiring extensive training"
+  ],
+  "prosB": [
+    "Established technology base",
+    "Lower initial acquisition cost",
+    "Familiar to former Soviet-aligned nations"
+  ],
+  "consB": [
+    "Proven ineffective in recent conflicts like Venezuela",
+    "Outdated Soviet-era technology",
+    "Limited integration with modern NATO systems"
+  ],
+  "verdict": "Patriot demonstrates clear superiority with proven battlefield effectiveness in Ukraine and modern NATO-standard technology. S-300's ineffective performance in Venezuela highlights the limitations of Soviet-era air defense against modern threats."
+}

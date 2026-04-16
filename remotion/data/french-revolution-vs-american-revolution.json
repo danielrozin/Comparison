@@ -1,0 +1,112 @@
+{
+  "title": "French Revolution vs American Revolution",
+  "entityA": "French Revolution",
+  "entityB": "American Revolution",
+  "category": "General",
+  "slug": "french-revolution-vs-american-revolution",
+  "shortAnswer": "American Revolution was conservative colonial revolt; French Revolution was radical internal upheaval against monarchy with much greater violence and social transformation.",
+  "keyDifferences": [
+    {
+      "label": "Nature of Conflict",
+      "entityAValue": "Colonial revolution against mother country",
+      "entityBValue": "Internal revolution against domestic king",
+      "winner": "tie"
+    },
+    {
+      "label": "Violence Level",
+      "entityAValue": "Less violent, more restrained",
+      "entityBValue": "More violent and radical",
+      "winner": "a"
+    },
+    {
+      "label": "Political Approach",
+      "entityAValue": "Conservative, preserving some traditions",
+      "entityBValue": "Radical, complete system overhaul",
+      "winner": "a"
+    },
+    {
+      "label": "Social Structure Impact",
+      "entityAValue": "Limited class system changes",
+      "entityBValue": "Complete social hierarchy destruction",
+      "winner": "b"
+    },
+    {
+      "label": "Geographic Scope",
+      "entityAValue": "External colonial territories",
+      "entityBValue": "Internal homeland transformation",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Duration",
+      "valueA": "8 years (1775-1783)",
+      "valueB": "10 years (1789-1799)",
+      "winner": "a"
+    },
+    {
+      "label": "Execution Deaths",
+      "valueA": "Minimal political executions",
+      "valueB": "16,000+ guillotined",
+      "winner": "a"
+    },
+    {
+      "label": "Government Debt Crisis",
+      "valueA": "Colonial tax disputes",
+      "valueB": "Severe national bankruptcy",
+      "winner": "a"
+    },
+    {
+      "label": "Social Inequality",
+      "valueA": "Moderate colonial grievances",
+      "valueB": "Extreme wealth disparity",
+      "winner": "a"
+    },
+    {
+      "label": "International Impact",
+      "valueA": "Constitutional republic model",
+      "valueB": "Spread of radical republicanism",
+      "winner": "b"
+    },
+    {
+      "label": "Economic Transformation",
+      "valueA": "Gradual market development",
+      "valueB": "Rapid property redistribution",
+      "winner": "b"
+    },
+    {
+      "label": "Religious Changes",
+      "valueA": "Religious freedom expansion",
+      "valueB": "Anti-clerical dechristianization",
+      "winner": "a"
+    },
+    {
+      "label": "Constitutional Stability",
+      "valueA": "Lasting constitutional framework",
+      "valueB": "Multiple constitution changes",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Achieved independence with relatively low violence and bloodshed",
+    "Created stable constitutional republic that endured",
+    "Preserved beneficial social institutions while gaining freedom",
+    "Established precedent for peaceful democratic governance"
+  ],
+  "consA": [
+    "Failed to address slavery and deep social inequalities",
+    "Limited scope of social transformation and reform"
+  ],
+  "prosB": [
+    "Completely dismantled oppressive feudal social hierarchy",
+    "Addressed severe economic inequality and poverty",
+    "Spread democratic ideals across Europe rapidly",
+    "Created dramatic social mobility opportunities"
+  ],
+  "consB": [
+    "Extreme violence and mass executions destabilized society",
+    "Political instability led to Napoleon's eventual dictatorship",
+    "Economic chaos and social upheaval caused widespread suffering"
+  ],
+  "verdict": "The American Revolution succeeded through conservative, measured change while the French Revolution achieved broader social transformation through radical means. Both addressed government debt and inequality but with vastly different approaches and outcomes."
+}

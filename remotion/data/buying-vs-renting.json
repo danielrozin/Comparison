@@ -1,0 +1,113 @@
+{
+  "title": "Buying vs Renting",
+  "entityA": "Buying",
+  "entityB": "Renting",
+  "category": "General",
+  "slug": "buying-vs-renting",
+  "shortAnswer": "In 2026, buying wins over renting in 57.7% of counties analyzed, especially for stays of 7+ years, despite higher upfront costs and 6.34% mortgage rates.",
+  "keyDifferences": [
+    {
+      "label": "Monthly Payment Structure",
+      "entityAValue": "~$2,250 P&I on $400k home",
+      "entityBValue": "Lower monthly cost currently",
+      "winner": "b"
+    },
+    {
+      "label": "Equity Building",
+      "entityAValue": "Builds ownership over time",
+      "entityBValue": "No equity accumulation",
+      "winner": "a"
+    },
+    {
+      "label": "Upfront Costs",
+      "entityAValue": "High closing/moving costs",
+      "entityBValue": "Minimal upfront investment",
+      "winner": "b"
+    },
+    {
+      "label": "Long-term Financial Impact",
+      "entityAValue": "Wins significantly after 7+ years",
+      "entityBValue": "Better for short-term stays",
+      "winner": "a"
+    },
+    {
+      "label": "Price Appreciation",
+      "entityAValue": "Benefits from 1-4% home appreciation",
+      "entityBValue": "No appreciation benefit",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Counties where buying is more affordable",
+      "valueA": "57.7% (210 of 364)",
+      "valueB": "42.3% (154 of 364)",
+      "winner": "a"
+    },
+    {
+      "label": "Current mortgage rate",
+      "valueA": "6.34% (30-year fixed)",
+      "valueB": "N/A",
+      "winner": "tie"
+    },
+    {
+      "label": "Home price growth rate",
+      "valueA": "1-4% annually",
+      "valueB": "Lower in 69% of counties",
+      "winner": "a"
+    },
+    {
+      "label": "Midwest affordability advantage",
+      "valueA": "81.5% of counties favor buying",
+      "valueB": "18.5% favor renting",
+      "winner": "a"
+    },
+    {
+      "label": "South region comparison",
+      "valueA": "66.3% of counties favor buying",
+      "valueB": "33.7% favor renting",
+      "winner": "a"
+    },
+    {
+      "label": "Minimum down payment options",
+      "valueA": "3% conventional, 3.5% FHA",
+      "valueB": "Typically first month + deposit",
+      "winner": "b"
+    },
+    {
+      "label": "Monthly P&I on $400k home",
+      "valueA": "$2,250 (with 10% down)",
+      "valueB": "Varies by market",
+      "winner": "tie"
+    },
+    {
+      "label": "Price appreciation comparison",
+      "valueA": "Rose faster in 69% of counties",
+      "valueB": "Rose slower in 31% of counties",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Builds equity with each mortgage payment",
+    "More affordable than renting in 57.7% of counties",
+    "Benefits from home price appreciation (1-4% annually)",
+    "Wins significantly for stays of 7+ years"
+  ],
+  "consA": [
+    "High upfront costs (closing, moving, transaction fees)",
+    "Higher monthly payments in current market",
+    "6.34% mortgage rates increase borrowing costs"
+  ],
+  "prosB": [
+    "Lower monthly costs in many current markets",
+    "Minimal upfront investment required",
+    "Greater flexibility for short-term housing needs",
+    "No responsibility for maintenance or repairs"
+  ],
+  "consB": [
+    "No equity building or ownership benefits",
+    "No benefit from property appreciation",
+    "More expensive than buying in 57.7% of counties"
+  ],
+  "verdict": "Buying generally wins financially for long-term residents (7+ years) and is already more affordable than renting in most U.S. counties. However, renting remains better for those prioritizing lower monthly costs and flexibility in the current market."
+}
