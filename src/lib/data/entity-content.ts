@@ -897,4 +897,224 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is Pipedrive good for small businesses?", answer: "Pipedrive is one of the best CRMs for small businesses. Its visual pipeline interface is intuitive, setup takes minutes, and the Essential plan at $14/user/month is very affordable. Small sales teams consistently rate Pipedrive higher for ease of use than Salesforce or HubSpot." },
     ],
   },
+
+  "confluence": {
+    description:
+      "Confluence is Atlassian's team wiki and knowledge management platform, widely used by software development teams and enterprises to document projects, share knowledge, and collaborate on content. Launched in 2004, Confluence has grown into one of the most widely adopted documentation tools in the world with over 60,000 customers. It integrates deeply with Jira, Trello, and the broader Atlassian ecosystem, making it a natural choice for engineering and product teams. Confluence organizes content in Spaces and Pages, supports rich media, macros, templates, and inline comments. Features like page versioning, permissions management, and content hierarchy give teams full control over their documentation. The platform offers over 3,000 Marketplace apps for extending functionality. Confluence Cloud starts free for up to 10 users, with Standard at $5.75/user/month and Premium at $11/user/month. For enterprises needing self-hosted deployment, Confluence Data Center is available. While powerful, Confluence has a steeper learning curve than alternatives like Notion or Coda, and search is frequently cited as a weakness compared to newer tools.",
+    highlights: ["60,000+ customers worldwide", "Deep Jira & Atlassian integration", "Free up to 10 users", "3,000+ Marketplace apps"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "More flexible, modern UI, better for non-technical teams" },
+      { name: "Coda", slug: "coda", reason: "Combines docs + spreadsheets + apps, more dynamic" },
+      { name: "Nuclino", slug: "nuclino", reason: "Faster, cleaner, great for wikis without complexity" },
+      { name: "Slite", slug: "slite", reason: "Lightweight documentation for small teams" },
+      { name: "GitBook", slug: "gitbook", reason: "Better for developer/API documentation" },
+      { name: "Obsidian", slug: "obsidian", reason: "Local-first knowledge base for individuals" },
+    ],
+    faqs: [
+      { question: "Is Confluence free?", answer: "Confluence has a free plan for up to 10 users with unlimited spaces and pages. Paid plans start at $5.75/user/month (Standard) and $11/user/month (Premium) with advanced permissions, analytics, and admin controls." },
+      { question: "What is Confluence used for?", answer: "Confluence is used for team documentation, project wikis, meeting notes, technical specifications, onboarding materials, and knowledge bases. It's especially popular in software development teams due to its deep integration with Jira." },
+      { question: "Confluence vs Notion: which is better?", answer: "Confluence is better for large engineering organizations already using Jira and the Atlassian ecosystem. Notion is better for smaller teams, startups, and non-technical users who want a more flexible, modern tool that combines notes, databases, and wikis in one place." },
+    ],
+  },
+
+  "obsidian": {
+    description:
+      "Obsidian is a powerful, local-first knowledge management and note-taking app that uses plain Markdown files stored on your device. Launched in 2020, Obsidian quickly attracted a passionate community of knowledge workers, researchers, writers, and developers who value privacy, data ownership, and flexibility. Its defining feature is bidirectional linking — every note can link to and be linked from any other note, creating a personal knowledge graph that you can visualize in the Graph View. Obsidian's plugin ecosystem (with over 1,000 community plugins) makes it infinitely customizable, from spaced repetition flashcards to Kanban boards to daily journal templates. The core app is free and works entirely offline, syncing via your own cloud storage or Obsidian Sync. Unlike Notion or Confluence, there's no vendor lock-in — your notes are plain Markdown files that work with any text editor forever. Obsidian is particularly popular in the 'second brain' and personal knowledge management (PKM) community. Premium features like Sync ($4/month) and Publish ($8/month) are opt-in additions.",
+    highlights: ["Local-first with plain Markdown files", "1,000+ community plugins", "Bidirectional linking & graph view", "Free core app, no subscription required"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "Better for teams and project management, cloud-based" },
+      { name: "Roam Research", slug: "roam-research", reason: "Similar bidirectional linking, cloud-based alternative" },
+      { name: "Logseq", slug: "logseq", reason: "Open-source, outline-first PKM similar to Obsidian" },
+      { name: "Confluence", slug: "confluence", reason: "Better for large teams and enterprise documentation" },
+      { name: "Apple Notes", slug: "apple-notes", reason: "Simpler, built into Apple ecosystem" },
+      { name: "Evernote", slug: "evernote", reason: "Veteran note-taking app with web clipping" },
+    ],
+    faqs: [
+      { question: "Is Obsidian free?", answer: "Obsidian's core app is completely free for personal use. Optional paid add-ons include Obsidian Sync at $4/month (encrypted cloud sync) and Obsidian Publish at $8/month (publish notes as a website). Commercial licenses cost $50/year per user." },
+      { question: "Is Obsidian better than Notion?", answer: "It depends on your use case. Obsidian excels for personal knowledge management, research, and users who value privacy and data ownership — your notes are plain Markdown files you fully control. Notion is better for team collaboration, project management, and users who want databases and structured content alongside notes." },
+      { question: "Does Obsidian work offline?", answer: "Yes, Obsidian works entirely offline by default. Your vault is stored as plain Markdown files on your local device. Cloud sync is optional — you can use Obsidian Sync or any third-party cloud service like Dropbox, iCloud, or Google Drive." },
+    ],
+  },
+
+  "framer": {
+    description:
+      "Framer is a web design and prototyping tool that has evolved into a full no-code website builder, enabling designers and marketers to publish production-ready websites without writing code. Originally launched as a code-based prototyping tool in 2014, Framer pivoted in 2022 to a visual website builder that compiles designs directly into React, resulting in exceptionally fast and clean output. Framer's design canvas is similar to Figma's — familiar to designers — but every element you place directly generates a live, publishable website. It features a powerful CMS for dynamic content, localization, A/B testing, and built-in animations and interactions. Framer's AI features can generate entire website sections from text prompts. SEO controls, custom domains, and performance optimizations are built in. The platform has gained significant traction with startups, marketing teams, and SaaS companies for building landing pages and marketing sites fast. Plans start with a free tier for personal projects, with Mini at $5/month, Basic at $15/month, and Pro at $30/month for professional publishing.",
+    highlights: ["Visual design → production React code", "Built-in CMS and localization", "AI-powered content generation", "Free tier available"],
+    category: "software",
+    alternatives: [
+      { name: "Webflow", slug: "webflow", reason: "More powerful CMS and e-commerce, more established" },
+      { name: "Figma", slug: "figma", reason: "Better for UI/UX design and team collaboration" },
+      { name: "Wix", slug: "wix", reason: "Easier to use, larger template library" },
+      { name: "Squarespace", slug: "squarespace", reason: "Better for content-heavy sites and e-commerce" },
+      { name: "WordPress", slug: "wordpress", reason: "More plugins and control for complex sites" },
+      { name: "Unbounce", slug: "unbounce", reason: "Better for landing pages with A/B testing focus" },
+    ],
+    faqs: [
+      { question: "Is Framer better than Webflow?", answer: "Framer is better for designers who want to ship beautiful, animated marketing sites quickly with a familiar design canvas. Webflow is better for complex CMS-driven websites, e-commerce, and teams that need more granular control over layout and interactions. Framer is faster to get started; Webflow has a steeper learning curve but greater flexibility." },
+      { question: "Can you build a full website with Framer?", answer: "Yes, Framer is a full website builder that handles design, CMS content, hosting, custom domains, SEO, and performance out of the box. It's especially popular for marketing sites, landing pages, portfolios, and SaaS websites that need to look great and load fast." },
+      { question: "How much does Framer cost?", answer: "Framer offers a free plan for personal projects with a Framer subdomain. Paid plans include Mini ($5/month), Basic ($15/month for one custom domain), and Pro ($30/month) for professional use. Team plans are also available starting at $85/month." },
+    ],
+  },
+
+  "wix": {
+    description:
+      "Wix is one of the world's largest website building platforms, powering over 200 million websites globally. Founded in 2006 in Tel Aviv, Israel, Wix built its reputation on making website creation accessible to anyone regardless of technical skill. The platform's drag-and-drop editor gives users complete design freedom, while over 900 designer-made templates cover nearly every industry. Wix ADI (Artificial Design Intelligence) can generate a personalized website in minutes based on a few questions. Beyond website building, Wix has expanded into a full business platform with Wix Stores for e-commerce, Wix Bookings for appointments, Wix Blog, Wix Events, and Wix SEO tools. The Wix App Market offers 300+ apps for added functionality. Wix is particularly popular with small businesses, freelancers, and creatives who want professional results without hiring a developer. Plans start with a free tier (with Wix ads), and paid plans range from $17/month (Light) to $159/month (Business Elite) with full e-commerce and advanced features.",
+    highlights: ["200M+ websites created", "900+ designer templates", "Wix ADI auto-site generation", "Full e-commerce and booking tools"],
+    category: "software",
+    alternatives: [
+      { name: "Squarespace", slug: "squarespace", reason: "Cleaner templates, better for portfolios and content" },
+      { name: "WordPress", slug: "wordpress", reason: "More flexibility and control for complex sites" },
+      { name: "Webflow", slug: "webflow", reason: "Better design control and CMS for professionals" },
+      { name: "Shopify", slug: "shopify", reason: "Better for pure e-commerce businesses" },
+      { name: "Framer", slug: "framer", reason: "Better for modern, animated marketing sites" },
+      { name: "GoDaddy Website Builder", slug: "godaddy", reason: "Simpler, good for domain + website bundles" },
+    ],
+    faqs: [
+      { question: "Is Wix free?", answer: "Wix has a free plan that lets you build and publish a website on a Wix subdomain with Wix ads shown. To connect a custom domain and remove ads, paid plans start at $17/month. E-commerce features require plans starting at $29/month." },
+      { question: "Is Wix good for SEO?", answer: "Wix has significantly improved its SEO capabilities and now includes SEO wizards, customizable meta tags, structured data, sitemaps, and redirect management. While it historically lagged behind WordPress for SEO, modern Wix sites can rank well with proper optimization." },
+      { question: "Wix vs Squarespace: which is better?", answer: "Wix offers more template variety and design flexibility, making it better for users who want more creative control. Squarespace has more polished, professional templates and is often preferred by photographers, designers, and content creators. Wix is better for beginners; Squarespace tends to produce more visually consistent results." },
+    ],
+  },
+
+  "squarespace": {
+    description:
+      "Squarespace is a leading all-in-one website building platform known for its elegant, award-winning templates and seamless user experience. Founded in 2003 by Anthony Casalena, Squarespace powers millions of websites worldwide and is particularly popular with creatives, photographers, bloggers, and small businesses. The platform handles hosting, security, and updates automatically, letting users focus entirely on design and content. Squarespace's block-based editor makes it easy to arrange layouts, and all templates are mobile-responsive by default. The platform offers comprehensive e-commerce tools including inventory management, tax and shipping calculation, abandoned cart recovery, and subscription products. Squarespace Email Campaigns and Scheduling (formerly Acuity) are native add-ons that eliminate the need for third-party tools. In 2024, Squarespace went private in a $6.9 billion deal. Pricing starts at $16/month (Personal), $23/month (Business), $28/month (Basic Commerce), and $52/month (Advanced Commerce), with annual billing discounts. Squarespace Blueprint, their AI-powered website generation tool, can create a full site in minutes.",
+    highlights: ["Award-winning design templates", "Built-in e-commerce and scheduling", "AI-powered Blueprint site generator", "All-in-one with no add-ons needed"],
+    category: "software",
+    alternatives: [
+      { name: "Wix", slug: "wix", reason: "More template variety and design freedom" },
+      { name: "WordPress", slug: "wordpress", reason: "More plugins and control for complex sites" },
+      { name: "Shopify", slug: "shopify", reason: "Better for high-volume e-commerce" },
+      { name: "Webflow", slug: "webflow", reason: "Better design control for web professionals" },
+      { name: "Framer", slug: "framer", reason: "Better for modern animated marketing sites" },
+      { name: "BigCommerce", slug: "bigcommerce", reason: "More powerful for large e-commerce catalogs" },
+    ],
+    faqs: [
+      { question: "How much does Squarespace cost?", answer: "Squarespace plans start at $16/month (Personal), $23/month (Business), $28/month (Basic Commerce), and $52/month (Advanced Commerce) billed annually. All plans include custom domain, SSL, and unlimited storage." },
+      { question: "Is Squarespace good for e-commerce?", answer: "Squarespace is a solid e-commerce platform for small to medium stores. It handles physical products, digital downloads, subscriptions, and service bookings natively. However, for large catalogs or complex storefront needs, Shopify or BigCommerce offer more advanced features." },
+      { question: "Squarespace vs WordPress: which should I choose?", answer: "Squarespace is better for users who want a beautiful site without technical complexity — no plugins to manage, no updates to handle. WordPress is better for users who need complete control, custom functionality, or are running a large content-driven site. WordPress has a steeper learning curve but virtually unlimited flexibility." },
+    ],
+  },
+
+  "freshbooks": {
+    description:
+      "FreshBooks is cloud-based accounting software designed specifically for freelancers, self-employed professionals, and small service-based businesses. Founded in 2003 in Toronto, Canada, FreshBooks built its reputation on making invoicing and time tracking effortless for people who aren't accountants. The platform covers the full billing cycle: creating and sending professional invoices, tracking time and expenses, accepting online payments, and generating financial reports. FreshBooks integrates with Stripe, PayPal, and credit card processors so clients can pay invoices instantly. The mobile app is one of the best-rated in its category, letting users log expenses, track time, and send invoices from anywhere. FreshBooks also includes double-entry accounting, bank reconciliation, and accountant access for tax season. Unlike QuickBooks, FreshBooks is not designed for product-based businesses with inventory — it excels for consultants, agencies, lawyers, designers, and other service professionals. Plans start at $19/month (Lite, 5 clients) up to $55/month (Premium, unlimited clients), with a Select enterprise tier for larger teams.",
+    highlights: ["Top-rated mobile app", "Designed for freelancers & service businesses", "Online payment acceptance built-in", "Award-winning customer support"],
+    category: "software",
+    alternatives: [
+      { name: "QuickBooks", slug: "quickbooks", reason: "Better for product businesses and larger teams" },
+      { name: "Xero", slug: "xero", reason: "Better for growing businesses needing full accounting" },
+      { name: "Wave", slug: "wave", reason: "Free alternative for freelancers with basic needs" },
+      { name: "Bonsai", slug: "bonsai", reason: "Better for freelancers needing contracts + proposals" },
+      { name: "Zoho Invoice", slug: "zoho-invoice", reason: "Free invoicing tool from Zoho ecosystem" },
+      { name: "HoneyBook", slug: "honeybook", reason: "Better for creative professionals and client management" },
+    ],
+    faqs: [
+      { question: "How much does FreshBooks cost?", answer: "FreshBooks plans start at $19/month (Lite, 5 clients), $33/month (Plus, 50 clients), $55/month (Premium, unlimited clients), and custom pricing for Select. A 30-day free trial is available with no credit card required." },
+      { question: "Is FreshBooks good for small businesses?", answer: "FreshBooks is excellent for small service-based businesses, freelancers, and consultants. Its invoicing, time tracking, and expense management are among the easiest to use in the category. However, if you sell physical products or have inventory, QuickBooks or Xero would be a better fit." },
+      { question: "FreshBooks vs QuickBooks: which is better?", answer: "FreshBooks is better for service businesses and freelancers who need great invoicing, time tracking, and client management. QuickBooks is better for product-based businesses, those who need payroll, or companies with more complex accounting needs. QuickBooks has more features overall; FreshBooks is simpler and has better customer support ratings." },
+    ],
+  },
+
+  "trello": {
+    description:
+      "Trello is a visual project management tool based on Kanban boards, cards, and lists, making it one of the most intuitive ways to organize work. Launched in 2011 and acquired by Atlassian in 2017 for $425 million, Trello has grown to over 100 million registered users and is widely used by teams of all sizes. The core concept is simple: create boards for projects, lists for stages (To Do, In Progress, Done), and cards for individual tasks. Cards can hold checklists, attachments, due dates, comments, labels, and assignees. Power-Ups (Trello's integrations) connect it to Slack, Google Drive, GitHub, Jira, and hundreds of other tools. While Trello started purely as Kanban, it now supports multiple views including Timeline (Gantt), Table, Calendar, and Dashboard through Power-Ups or the higher-tier plans. Trello is particularly popular with small teams, marketing departments, and anyone who finds traditional project management tools like Jira overly complex. The free plan is generous with unlimited cards and 10 boards, while paid plans start at $5/user/month.",
+    highlights: ["100M+ registered users", "Simple Kanban-first interface", "Generous free plan", "Part of Atlassian ecosystem"],
+    category: "software",
+    alternatives: [
+      { name: "Jira", slug: "jira", reason: "More powerful for software teams with sprints and backlog" },
+      { name: "Asana", slug: "asana", reason: "More views and automation for complex project management" },
+      { name: "ClickUp", slug: "clickup", reason: "More features and views in one platform" },
+      { name: "Monday.com", slug: "monday-com", reason: "Better for cross-team visibility and reporting" },
+      { name: "Notion", slug: "notion", reason: "Combines notes, docs, and project management" },
+      { name: "Linear", slug: "linear", reason: "Better for software development teams" },
+    ],
+    faqs: [
+      { question: "Is Trello free?", answer: "Trello has a free plan that allows unlimited cards, up to 10 boards per workspace, and 1 Power-Up per board. Paid plans include Standard ($5/user/month) and Premium ($10/user/month) with unlimited boards, more Power-Ups, and additional views like Timeline and Dashboard." },
+      { question: "What is Trello best used for?", answer: "Trello is best for simple project and task management, especially for teams that prefer a visual Kanban-style workflow. It's popular for marketing campaigns, editorial calendars, product roadmaps, and personal task management. For complex software development with sprints, Jira is typically a better choice." },
+      { question: "Trello vs Asana: which is better?", answer: "Trello is simpler and better for teams that just need Kanban boards and want minimal setup. Asana offers more views (list, timeline, calendar, board), more automation, and better reporting for complex projects. Trello is ideal for small teams; Asana scales better for larger organizations with multiple interconnected projects." },
+    ],
+  },
+
+  "bitwarden": {
+    description:
+      "Bitwarden is an open-source password manager that has rapidly gained popularity as a transparent, affordable, and highly secure alternative to proprietary password managers. Founded in 2016, Bitwarden published its source code publicly, allowing independent security researchers to audit it — a major trust advantage over closed-source competitors. The platform stores encrypted passwords, notes, credit cards, and identities in a secure vault that syncs across all devices. Bitwarden supports autofill in all major browsers, mobile apps for iOS and Android, and desktop apps for Windows, Mac, and Linux. End-to-end encryption means only you can decrypt your data — Bitwarden never has access to your master password or vault contents. A unique feature is the ability to self-host Bitwarden on your own server for maximum privacy and control. The free tier is exceptionally generous, offering unlimited passwords on unlimited devices — something most competitors charge for. Premium is just $10/year, making it the most affordable paid password manager. Organizations can also use Bitwarden Teams ($4/user/month) or Enterprise ($6/user/month).",
+    highlights: ["Open-source and independently audited", "Free for unlimited devices", "Self-hosting option available", "$10/year premium — most affordable paid plan"],
+    category: "software",
+    alternatives: [
+      { name: "1Password", slug: "1password", reason: "More polished UI, better travel mode and family sharing" },
+      { name: "LastPass", slug: "lastpass", reason: "Veteran password manager, though plagued by breaches" },
+      { name: "Dashlane", slug: "dashlane", reason: "Better UI and built-in VPN, but more expensive" },
+      { name: "Keeper", slug: "keeper", reason: "Strong enterprise features, compliance focus" },
+      { name: "NordPass", slug: "nordpass", reason: "From NordVPN team, modern UI and zero-knowledge" },
+      { name: "KeePass", slug: "keepass", reason: "Fully local, free, maximum privacy but no sync" },
+    ],
+    faqs: [
+      { question: "Is Bitwarden really free?", answer: "Yes, Bitwarden's free plan includes unlimited passwords on unlimited devices, all core vault features, and secure notes — unlike most competitors that limit free users to one device or a set number of passwords. Premium is only $10/year for additional features like TOTP authentication and health reports." },
+      { question: "Is Bitwarden safe?", answer: "Bitwarden is considered very safe. It uses end-to-end AES-256 encryption, the code is fully open-source and regularly audited by independent security firms, and it has never had a major data breach. You can also self-host Bitwarden for maximum control over your data." },
+      { question: "Bitwarden vs 1Password: which is better?", answer: "Bitwarden is better if you prioritize open-source transparency, affordability, and unlimited free device sync. 1Password has a more polished, user-friendly interface and unique features like Travel Mode (hide sensitive vaults at borders) and better family sharing. Both are excellent choices — Bitwarden wins on price and transparency; 1Password wins on UX." },
+    ],
+  },
+
+  "1password": {
+    description:
+      "1Password is a premium password manager renowned for its polished design, security features, and seamless cross-platform experience. Founded in 2005 in Toronto, Canada, 1Password has become the preferred password manager for millions of individuals and the go-to choice for enterprise security teams. The platform stores passwords, secure notes, credit cards, identities, and passkeys in encrypted vaults that sync across all devices. 1Password's standout features include Travel Mode (temporarily hide sensitive vaults when crossing borders), Watchtower (monitors for breached passwords, expiring items, and weak passwords), and seamless family sharing with shared vaults. The business tier includes team vaults, admin controls, audit logs, and integrations with Okta, Azure AD, and other identity providers. 1Password was one of the first password managers to fully support passkeys, positioning it for the passwordless future. Plans include Personal at $3/month, Families at $5/month for up to 5 members, Teams at $4/user/month, and Business at $8/user/month. Unlike Bitwarden, 1Password is closed-source, but has undergone extensive third-party security audits.",
+    highlights: ["Travel Mode for border crossings", "Watchtower breach monitoring", "Full passkey support", "Best-in-class family & team sharing"],
+    category: "software",
+    alternatives: [
+      { name: "Bitwarden", slug: "bitwarden", reason: "Open-source, free unlimited devices, self-hosting option" },
+      { name: "LastPass", slug: "lastpass", reason: "Lower cost historically, though suffered major breaches" },
+      { name: "Dashlane", slug: "dashlane", reason: "Built-in VPN, similar polished UX" },
+      { name: "Keeper", slug: "keeper", reason: "Stronger compliance features for regulated industries" },
+      { name: "NordPass", slug: "nordpass", reason: "Simpler UX, from NordVPN team" },
+      { name: "Apple Keychain", slug: "apple-keychain", reason: "Free, built-in, excellent for Apple-only users" },
+    ],
+    faqs: [
+      { question: "How much does 1Password cost?", answer: "1Password Personal is $3/month billed annually. Families covers up to 5 people at $5/month. Teams Starter costs $19.95/month for up to 10 users. Business is $8/user/month with advanced SSO and Active Directory integration. A 14-day free trial is available." },
+      { question: "Is 1Password safe after the LastPass breach?", answer: "Yes, 1Password uses a different security model. Your Secret Key (a 34-character key generated locally) is required alongside your master password — it's never sent to 1Password's servers. This means even if 1Password's servers were breached, encrypted data could not be cracked without both the master password and Secret Key." },
+      { question: "Does 1Password work with passkeys?", answer: "Yes, 1Password was among the first password managers to support passkeys. You can store and use passkeys for websites that support them alongside traditional passwords. 1Password integrates with the system passkey prompts on iOS, macOS, Windows, and Android." },
+    ],
+  },
+
+  "google-meet": {
+    description:
+      "Google Meet is Google's enterprise video conferencing platform, deeply integrated with Google Workspace. Originally launched as Google Hangouts Meet in 2017 and rebranded to Google Meet in 2020, the platform saw explosive growth during the pandemic and now serves hundreds of millions of users. Google Meet stands out for its browser-based simplicity — guests can join without downloading any app — and its tight integration with Google Calendar, Gmail, and Google Chat. Meetings can be joined from any device, and Meet supports up to 1,000 participants on enterprise plans. AI features include real-time captions in multiple languages (powered by Google's speech recognition), noise cancellation, automatic meeting summaries, and Studio Look (AI-powered video enhancement). Google Meet includes breakout rooms, polling, Q&A, and recording to Google Drive. The free tier (personal Google accounts) allows 60-minute meetings for up to 100 participants. Google Workspace plans include Meet, with Business Starter at $6/user/month and Business Standard (with recording) at $12/user/month.",
+    highlights: ["No app required for guests — browser-based joining", "Deep Google Workspace integration", "Real-time AI captions in 60+ languages", "Free for up to 100 participants"],
+    category: "software",
+    alternatives: [
+      { name: "Zoom", slug: "zoom", reason: "More features, better for webinars and large events" },
+      { name: "Microsoft Teams", slug: "microsoft-teams", reason: "Better for Microsoft 365 shops and persistent chat" },
+      { name: "Webex", slug: "webex", reason: "Better for enterprise compliance and Cisco environments" },
+      { name: "Slack", slug: "slack", reason: "Better for team communication with video as secondary feature" },
+      { name: "Discord", slug: "discord", reason: "Better for informal, always-on voice channels" },
+      { name: "Whereby", slug: "whereby", reason: "Simpler permanent meeting room links" },
+    ],
+    faqs: [
+      { question: "Is Google Meet free?", answer: "Google Meet is free for personal Google accounts with up to 100 participants and 60-minute meetings. Google Workspace plans (starting at $6/user/month) include Google Meet with extended meeting durations, larger participant limits (up to 1,000), meeting recordings, and more advanced admin controls." },
+      { question: "Does Google Meet require a download?", answer: "No, Google Meet works entirely in your web browser without any download. Participants can join meetings directly from a link in Chrome, Firefox, Safari, or Edge. Mobile apps are available for iOS and Android for on-the-go use." },
+      { question: "Google Meet vs Zoom: which is better?", answer: "Google Meet is better if your team already uses Google Workspace — the Calendar and Gmail integration is seamless, setup is minimal, and the browser-based experience requires no software installs. Zoom is better for webinars, large events, advanced features like breakout room management, and organizations not tied to Google." },
+    ],
+  },
+
+  "surfshark": {
+    description:
+      "Surfshark is a fast-growing VPN provider that has quickly established itself as one of the best-value options in the market since its launch in 2018. Headquartered in the Netherlands (and previously in the British Virgin Islands), Surfshark differentiates itself with unlimited simultaneous device connections — a unique feature that allows an entire household to protect every device under one subscription. The service operates 3,200+ servers in 100+ countries and uses industry-standard AES-256 encryption with WireGuard, OpenVPN, and IKEv2 protocols. Beyond core VPN functionality, Surfshark One (the bundle) adds Surfshark Antivirus, Alert (data breach monitoring), Search (no-log search engine), and an Incogni data removal service. Surfshark has been independently audited by Cure53, confirming its no-logs policy. The platform supports all major platforms including Windows, Mac, iOS, Android, Linux, and browser extensions. Pricing is extremely competitive: $2.49/month on the 2-year plan, significantly undercutting NordVPN and ExpressVPN while delivering comparable performance. Surfshark merged with Nord Security in 2022 but continues to operate independently.",
+    highlights: ["Unlimited simultaneous devices", "3,200+ servers in 100+ countries", "Independent Cure53 audit", "$2.49/month — best price in premium VPNs"],
+    category: "software",
+    alternatives: [
+      { name: "NordVPN", slug: "nordvpn", reason: "Larger server network, more established brand" },
+      { name: "ExpressVPN", slug: "expressvpn", reason: "Faster speeds, larger server network" },
+      { name: "ProtonVPN", slug: "protonvpn", reason: "Swiss-based, strong privacy credentials, free tier" },
+      { name: "Private Internet Access", slug: "private-internet-access", reason: "Larger server network, long privacy track record" },
+      { name: "CyberGhost", slug: "cyberghost", reason: "More servers, good for streaming" },
+      { name: "Mullvad", slug: "mullvad", reason: "Maximum anonymity, accepts cash payments" },
+    ],
+    faqs: [
+      { question: "How many devices can I use with Surfshark?", answer: "Surfshark allows unlimited simultaneous device connections on a single subscription — you can protect every device in your household (phones, laptops, tablets, smart TVs, routers) without any additional cost. This is one of Surfshark's key differentiators from NordVPN and ExpressVPN, which limit to 6-8 devices." },
+      { question: "Is Surfshark safe and trustworthy?", answer: "Surfshark is considered trustworthy. It has a verified no-logs policy (independently audited by Cure53), uses RAM-only servers that wipe data on restart, and is headquartered in the Netherlands (EU privacy-friendly jurisdiction). It supports industry-standard WireGuard and OpenVPN protocols with AES-256 encryption." },
+      { question: "Surfshark vs NordVPN: which is better?", answer: "Surfshark is better if you have many devices and want to save money — it's significantly cheaper and allows unlimited connections vs NordVPN's 10-device limit. NordVPN has a larger server network (6,400+ vs 3,200+), slightly faster speeds in benchmarks, and is a more established brand. Both are excellent VPNs; the choice often comes down to price vs server network size." },
+    ],
+  },
 };
