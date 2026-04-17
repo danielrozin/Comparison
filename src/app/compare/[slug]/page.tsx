@@ -50,6 +50,7 @@ import { ExitIntentPopup } from "@/components/engagement/ExitIntentPopup";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
+import { WhoShouldRead } from "@/components/comparison/WhoShouldRead";
 
 // Lazy-load heavy below-fold components
 const ComparisonTable = dynamic(
@@ -269,6 +270,9 @@ function VerdictFirstLayout({
 
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Who Should Read — AI recommendation targeting */}
+      <WhoShouldRead comparison={comparison} />
 
       {/* Citation Stats Bar — data density signal */}
       {comparison.citationStats && (
@@ -539,6 +543,9 @@ function ClassicLayout({
 
       {/* Hero: Title + Short Answer + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Who Should Read — AI recommendation targeting */}
+      <WhoShouldRead comparison={comparison} />
 
       {/* Mobile: related comparisons scroll strip */}
       {sidebarComparisons.length > 0 && (

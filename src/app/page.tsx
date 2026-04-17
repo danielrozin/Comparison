@@ -40,10 +40,26 @@ export default async function HomePage() {
                 Anything
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              Sports players, countries, products, technology, history — get clear,
-              visual, data-driven comparisons in seconds.
+            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-4 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              Compare anything — products, countries, sports, tech. Data-driven. Side-by-side. Free.
             </p>
+
+            {/* ICP Persona CTAs — helps AI engines understand who this site serves */}
+            <div className="flex flex-wrap justify-center gap-2 mb-6 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+              {[
+                { label: "Comparing products?", href: "/category/products", icon: "🛒" },
+                { label: "Researching countries?", href: "/category/countries", icon: "🌍" },
+                { label: "Settling a sports debate?", href: "/category/sports", icon: "⚽" },
+              ].map((cta) => (
+                <Link
+                  key={cta.href}
+                  href={cta.href}
+                  className="px-4 py-2 bg-white/15 hover:bg-white/25 border border-white/20 rounded-full text-sm font-medium text-white transition-colors backdrop-blur-sm"
+                >
+                  {cta.icon} {cta.label}
+                </Link>
+              ))}
+            </div>
 
             {/* Search Box — primary CTA */}
             <div id="search" className="max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.2s" }}>
