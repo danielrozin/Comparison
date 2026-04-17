@@ -1117,4 +1117,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Surfshark vs NordVPN: which is better?", answer: "Surfshark is better if you have many devices and want to save money — it's significantly cheaper and allows unlimited connections vs NordVPN's 10-device limit. NordVPN has a larger server network (6,400+ vs 3,200+), slightly faster speeds in benchmarks, and is a more established brand. Both are excellent VPNs; the choice often comes down to price vs server network size." },
     ],
   },
+
+  "sketch": {
+    description:
+      "Sketch is a vector-based UI design tool for macOS that defined the modern workflow for designing digital interfaces before Figma arrived. Launched in 2010 by Bohemian Coding, Sketch quickly became the industry standard for iOS and web UI design, popularizing the concept of symbols (reusable components), artboards, and plugin ecosystems for design tools. The app pioneered the handoff workflow with features like Inspect and integration with tools like Zeplin and Avocode. Sketch operates on a subscription model at $12/month per editor, with unlimited free viewer seats, and remains Mac-only — a deliberate constraint that allows tight system integration and performance. While Figma's collaborative browser-based approach has taken significant market share, Sketch retains a loyal user base among Mac-focused designers, agencies, and teams that prefer desktop performance over real-time collaboration. In 2021, Sketch launched web-based collaboration features allowing non-Mac users to comment and inspect designs via browser. The platform has a robust plugin ecosystem with 800+ community plugins and integrations with Zeplin, Abstract, and InVision.",
+    highlights: ["Mac-native desktop performance", "$12/month with unlimited free viewers", "800+ community plugins", "Pioneered component/symbol workflow"],
+    category: "software",
+    alternatives: [
+      { name: "Figma", slug: "figma", reason: "Cross-platform, real-time collaboration, browser-based" },
+      { name: "Adobe XD", slug: "adobe-xd", reason: "Part of Adobe Creative Cloud ecosystem" },
+      { name: "Framer", slug: "framer", reason: "Better for interactive prototypes and website publishing" },
+      { name: "InVision Studio", slug: "invision", reason: "Better for animation and prototype handoff" },
+      { name: "Canva", slug: "canva", reason: "Much simpler, better for non-designers" },
+      { name: "Penpot", slug: "penpot", reason: "Open-source Figma alternative, web-based" },
+    ],
+    faqs: [
+      { question: "Is Sketch still worth using in 2026?", answer: "Sketch remains a strong choice for Mac-only teams who prefer desktop performance and don't need real-time multi-user editing. For teams that collaborate across platforms or need browser-based access, Figma has largely become the industry standard. Sketch's $12/month pricing with unlimited viewers is competitive." },
+      { question: "Does Sketch work on Windows?", answer: "No, Sketch is Mac-only and has no plans to release a Windows version. Non-Mac team members can view and comment on designs via the Sketch web app in a browser, but editing requires macOS." },
+      { question: "Sketch vs Figma: which should I use?", answer: "Figma is the better choice for most teams in 2026 — it works on any platform in the browser, supports real-time collaborative editing, and has a generous free tier. Sketch is better if you're a Mac-first solo designer or team that values desktop performance and prefers a native app experience." },
+    ],
+  },
+
+  "adobe-express": {
+    description:
+      "Adobe Express (formerly Adobe Spark) is Adobe's simplified graphic design tool aimed at content creators, marketers, and small businesses who need professional-looking visuals without the complexity of Photoshop or Illustrator. Relaunched as Adobe Express in 2022 with a major upgrade, the platform offers a template-based approach with thousands of professionally designed starting points for social media posts, flyers, presentations, videos, and more. Adobe Express is powered by Adobe Firefly, Adobe's AI image generation model, enabling users to generate images, remove backgrounds, and apply generative fill directly within their designs. The platform integrates natively with Adobe Creative Cloud, making it easy to bring in assets from Photoshop, Illustrator, and Lightroom. Adobe Fonts and Adobe Stock are available within the tool. Adobe Express is free with a generous feature set, and the Premium plan at $9.99/month (or included in Creative Cloud All Apps) adds unlimited templates, premium fonts, and advanced AI features. The mobile app is particularly strong, making quick content creation possible on the go.",
+    highlights: ["Adobe Firefly AI built-in", "Integrates with full Creative Cloud", "Free tier with 1,000+ templates", "Strong mobile app for on-the-go creation"],
+    category: "software",
+    alternatives: [
+      { name: "Canva", slug: "canva", reason: "Larger template library, more intuitive, better free tier" },
+      { name: "Figma", slug: "figma", reason: "Better for UI design and team collaboration" },
+      { name: "Sketch", slug: "sketch", reason: "Better for professional UI/UX design on Mac" },
+      { name: "Picsart", slug: "picsart", reason: "Stronger mobile-first design and photo editing" },
+      { name: "Visme", slug: "visme", reason: "Better for infographics and data visualizations" },
+      { name: "Crello", slug: "crello", reason: "Similar template-based approach at lower price" },
+    ],
+    faqs: [
+      { question: "Is Adobe Express free?", answer: "Yes, Adobe Express has a free plan that includes access to thousands of templates, basic AI tools, and core design features. The Premium plan at $9.99/month (or included in Creative Cloud All Apps) unlocks unlimited premium templates, advanced Adobe Firefly AI features, and priority access to new tools." },
+      { question: "What is Adobe Express used for?", answer: "Adobe Express is used for creating social media graphics, flyers, posters, short videos, email headers, presentations, and marketing materials. It's designed for non-designers who need professional results quickly using templates and AI-powered tools." },
+      { question: "Adobe Express vs Canva: which is better?", answer: "Canva has a larger template library, more intuitive UX, and a stronger free tier, making it the top choice for most users. Adobe Express is better for teams already in the Adobe Creative Cloud ecosystem — the Firefly AI integration and seamless CC asset access are significant advantages for Adobe users." },
+    ],
+  },
+
+  "webex": {
+    description:
+      "Webex (formerly Cisco Webex) is Cisco's enterprise video conferencing and collaboration platform, one of the original players in the video meeting space with a history dating to 1995. Webex is widely used by large enterprises, government agencies, and regulated industries that require advanced security, compliance, and control features. The platform supports video meetings, webinars, messaging, calling, and events in a single suite. Webex differentiates with end-to-end encryption (true E2EE for meetings, unlike many competitors), compliance with FedRAMP, HIPAA, GDPR, and SOC 2, and AI-powered features including real-time transcription, meeting summaries, noise removal, and gesture recognition. Cisco's AI Assistant for Webex can automatically generate post-meeting summaries and action items. Webex supports hybrid work with deep hardware integrations — Cisco's conference room systems are deployed in thousands of enterprise conference rooms globally. The free plan allows 40-minute meetings with up to 100 participants. Paid plans start at $14.50/user/month (Meet), with Suite plans for full collaboration at $25/user/month.",
+    highlights: ["True end-to-end encryption", "FedRAMP and HIPAA compliant", "AI-powered meeting summaries", "Deep enterprise hardware integration"],
+    category: "software",
+    alternatives: [
+      { name: "Zoom", slug: "zoom", reason: "More user-friendly, better for SMBs and webinars" },
+      { name: "Microsoft Teams", slug: "microsoft-teams", reason: "Better for Microsoft 365 environments" },
+      { name: "Google Meet", slug: "google-meet", reason: "Simpler, better for Google Workspace teams" },
+      { name: "Slack", slug: "slack", reason: "Better for team messaging with video as secondary feature" },
+      { name: "RingCentral", slug: "ringcentral", reason: "Stronger unified communications and telephony" },
+      { name: "BlueJeans", slug: "bluejeans", reason: "Simpler enterprise video with good interoperability" },
+    ],
+    faqs: [
+      { question: "Is Webex free?", answer: "Webex has a free plan that allows unlimited 40-minute meetings with up to 100 participants, 10GB cloud storage, and basic messaging. Paid plans start at $14.50/user/month for Meet (longer meetings, 200 participants) and $25/user/month for the full Suite with calling and events." },
+      { question: "Is Webex more secure than Zoom?", answer: "Webex offers more advanced security options, including true end-to-end encryption for meetings (not just in-transit encryption), FedRAMP authorization for US government use, and HIPAA compliance. Zoom has improved its security significantly but Webex remains the preferred choice for highly regulated industries." },
+      { question: "Webex vs Zoom: which is better for enterprise?", answer: "For large enterprises and regulated industries (government, healthcare, finance), Webex is often preferred due to superior compliance certifications, true E2EE, and deep Cisco hardware integration. Zoom is easier to use, has a better user experience, and is typically preferred by SMBs and organizations without strict compliance requirements." },
+    ],
+  },
+
+  "convertkit": {
+    description:
+      "ConvertKit (rebranded as Kit in 2024) is an email marketing platform built specifically for creators — bloggers, YouTubers, podcasters, course creators, and independent writers. Founded in 2013 by Nathan Barry, ConvertKit grew by focusing on one segment that mainstream email tools like Mailchimp ignored: individual creators who need powerful automation without enterprise complexity. The platform centers around subscriber-based tagging and segmentation, visual automation builders, and landing pages — all designed to help creators grow and monetize their audience. ConvertKit's commerce features let creators sell digital products, paid newsletters, and courses directly through the platform. The Creator Network enables subscribers to discover and grow across platforms. Unlike Mailchimp's campaign-centric model, ConvertKit is subscriber-centric, making it easier to send the right message to the right people at the right time. The free plan supports up to 10,000 subscribers with unlimited emails. Paid Creator plans start at $25/month (1,000 subscribers) with full automation and commerce features. ConvertKit is trusted by over 600,000 creators worldwide.",
+    highlights: ["Built specifically for content creators", "600,000+ creators worldwide", "Free up to 10,000 subscribers", "Built-in commerce for digital products"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "More general-purpose, better for e-commerce businesses" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "More powerful automation and CRM features" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce with deep Shopify integration" },
+      { name: "Beehiiv", slug: "beehiiv", reason: "Purpose-built for newsletters with built-in monetization" },
+      { name: "Substack", slug: "substack", reason: "Simpler, better for paid newsletter monetization" },
+      { name: "MailerLite", slug: "mailerlite", reason: "More affordable, similar creator focus" },
+    ],
+    faqs: [
+      { question: "Is ConvertKit free?", answer: "ConvertKit (now Kit) offers a free plan for up to 10,000 subscribers that includes unlimited emails, landing pages, and forms. The paid Creator plan starts at $25/month for 1,000 subscribers with full automation workflows, and scales with subscriber count. A Creator Pro plan adds advanced reporting and a referral system." },
+      { question: "Who is ConvertKit best for?", answer: "ConvertKit is best for content creators — bloggers, podcasters, YouTubers, newsletter writers, and course creators. Its subscriber-centric model, visual automation, and built-in digital product sales make it ideal for solo creators and small creator businesses who want a focused tool rather than a general-purpose marketing platform." },
+      { question: "ConvertKit vs Mailchimp: which is better?", answer: "ConvertKit is better for individual creators and publishers who prioritize email sequences, subscriber segmentation, and selling digital products. Mailchimp is better for small businesses, e-commerce brands, and teams that need more design flexibility in email templates and broader marketing tools including social ads and CRM features." },
+    ],
+  },
+
+  "lastpass": {
+    description:
+      "LastPass is one of the most widely recognized password managers, having introduced millions of users to the concept of centralized password management. Founded in 2008 and acquired by LogMeIn in 2015, LastPass built a large user base through its freemium model and browser extension experience. However, LastPass suffered a catastrophic security breach in 2022 in which threat actors stole encrypted password vaults along with customer metadata. Security researchers concluded the breach was severely underreported and that weak master passwords could put many vaults at risk. Following the breach, a significant portion of users migrated to alternatives like Bitwarden, 1Password, and Dashlane. LastPass has since undergone a security overhaul under new leadership (spun off from LogMeIn in 2021). The platform stores passwords, secure notes, credit cards, and identities with AES-256 encryption. A free plan exists but is limited to one device type (mobile OR desktop). Premium is $3/month. Despite its troubled recent history, LastPass retains a large installed base and has introduced improved security measures including stronger PBKDF2 iterations and enhanced monitoring.",
+    highlights: ["One of the most widely adopted password managers", "Browser extension experience", "Free plan available (one device type)", "Rebuilt security posture post-2022 breach"],
+    category: "software",
+    alternatives: [
+      { name: "Bitwarden", slug: "bitwarden", reason: "Open-source, free unlimited devices, never breached" },
+      { name: "1Password", slug: "1password", reason: "Better security model, polished UX, Travel Mode" },
+      { name: "Dashlane", slug: "dashlane", reason: "Built-in VPN, dark web monitoring, strong UX" },
+      { name: "Keeper", slug: "keeper", reason: "Zero-knowledge, strong compliance, no major breaches" },
+      { name: "NordPass", slug: "nordpass", reason: "Modern UI, zero-knowledge, from NordVPN team" },
+      { name: "Apple Keychain", slug: "apple-keychain", reason: "Free, built-in, no breach history for Apple users" },
+    ],
+    faqs: [
+      { question: "Was LastPass hacked?", answer: "Yes. In 2022, LastPass suffered a major breach where attackers stole encrypted customer password vaults and sensitive metadata. While vaults were encrypted, security experts warned that users with weak master passwords were at risk. LastPass subsequently improved its security practices, but many users migrated to alternatives as a result." },
+      { question: "Is LastPass still safe to use in 2026?", answer: "LastPass has implemented significant security improvements since the 2022 breach, including stronger PBKDF2 iterations and enhanced monitoring. It is safer than before, but many security experts still recommend alternatives like Bitwarden or 1Password given the breach's severity and the availability of strong competitors." },
+      { question: "How much does LastPass cost?", answer: "LastPass has a free plan limited to one device type (mobile or desktop). Premium is $3/month for full features across all devices. The Families plan covers up to 6 users for $4/month. Business plans start at $4/user/month with admin controls and SSO integration." },
+    ],
+  },
+
+  "protonvpn": {
+    description:
+      "ProtonVPN is a privacy-first VPN service from the team behind ProtonMail, developed by scientists and engineers from CERN in Geneva, Switzerland. Launched in 2017, ProtonVPN has built a reputation as the most trustworthy VPN for privacy-conscious users, journalists, activists, and anyone in high-risk environments. ProtonVPN is headquartered in Switzerland, outside EU and US jurisdiction, and subject to strict Swiss privacy laws. The service is fully open-source — all apps have been independently audited and source code is publicly available. ProtonVPN operates a Secure Core architecture where traffic is routed through hardened servers in privacy-friendly countries before exiting, providing an additional layer of protection against network-level attacks. ProtonVPN also offers Tor over VPN and a built-in ad and malware blocker (NetShield). Unlike most VPNs, ProtonVPN offers a genuinely free tier with no data limits, no ads, and servers in 3 countries. Paid plans start at $4.99/month (VPN Essentials) and $9.99/month (VPN Plus with 8,500+ servers in 112 countries). The Proton Bundle combines VPN, Mail, Drive, Calendar, and Pass for $12.99/month.",
+    highlights: ["Swiss jurisdiction, outside EU/US surveillance", "Fully open-source with independent audits", "Secure Core multi-hop architecture", "Free plan with no data limits"],
+    category: "software",
+    alternatives: [
+      { name: "NordVPN", slug: "nordvpn", reason: "Larger server network, faster speeds, more features" },
+      { name: "ExpressVPN", slug: "expressvpn", reason: "Faster speeds, larger server count, wider device support" },
+      { name: "Surfshark", slug: "surfshark", reason: "Cheaper, unlimited devices, good speeds" },
+      { name: "Mullvad", slug: "mullvad", reason: "Maximum anonymity, accepts cash/crypto payments" },
+      { name: "Private Internet Access", slug: "private-internet-access", reason: "Large server network, long privacy track record" },
+      { name: "Windscribe", slug: "windscribe", reason: "Strong free tier, good privacy credentials" },
+    ],
+    faqs: [
+      { question: "Is ProtonVPN really free?", answer: "Yes, ProtonVPN offers a genuinely free plan with no data limits, no ads, and no logging — unusual in the VPN industry. The free plan provides access to servers in 3 countries (US, Netherlands, Romania) with standard speeds. Paid plans starting at $4.99/month unlock faster speeds and 8,500+ servers in 112 countries." },
+      { question: "Is ProtonVPN better than NordVPN?", answer: "ProtonVPN is better for users who prioritize privacy above all else — Swiss jurisdiction, open-source code, Secure Core architecture, and a strong track record with journalists and activists. NordVPN is better for users who want more servers, faster speeds, and additional features like dedicated IP. Both are excellent VPNs." },
+      { question: "Can ProtonVPN be trusted?", answer: "ProtonVPN is widely considered one of the most trustworthy VPNs available. Its Swiss base, open-source apps, independent audits, Secure Core infrastructure, and proven commitment to user privacy (they have disclosed and resisted government requests) give it strong credibility among privacy experts." },
+    ],
+  },
+
+  "bigcommerce": {
+    description:
+      "BigCommerce is an enterprise-grade e-commerce platform that positions itself as the open SaaS alternative to Shopify, targeting mid-market and enterprise merchants who need more flexibility without the cost of custom development. Founded in 2009 in Austin, Texas, BigCommerce went public on Nasdaq in 2020. The platform supports both B2C and B2B commerce with native features like multi-currency, multi-storefront, faceted search, and advanced promotional tools included at lower price tiers than competitors. BigCommerce is built on an open API architecture, enabling deep headless commerce implementations where the front-end is decoupled from the back-end — popular for composable commerce architectures. Unlike Shopify, BigCommerce charges no transaction fees on any plan, which benefits high-volume merchants. The platform natively integrates with WordPress (through BigCommerce for WordPress plugin) and supports headless deployments with any front-end framework. Plans include Standard ($39/month), Plus ($105/month), Pro ($399/month), and Enterprise (custom). Each tier has annual sales caps beyond which merchants must upgrade.",
+    highlights: ["No transaction fees on any plan", "Native B2B and multi-storefront features", "Open API for headless/composable commerce", "Enterprise-grade features at lower price points"],
+    category: "software",
+    alternatives: [
+      { name: "Shopify", slug: "shopify", reason: "Easier to use, larger app ecosystem, better for small businesses" },
+      { name: "WooCommerce", slug: "woocommerce", reason: "Free, fully open-source, runs on WordPress" },
+      { name: "Squarespace", slug: "squarespace", reason: "Simpler all-in-one solution for smaller stores" },
+      { name: "Magento", slug: "magento", reason: "More customizable for large enterprise, open-source" },
+      { name: "Wix", slug: "wix", reason: "Easier for beginners with built-in website builder" },
+      { name: "Salesforce Commerce Cloud", slug: "salesforce", reason: "Better for enterprise with existing Salesforce ecosystem" },
+    ],
+    faqs: [
+      { question: "How much does BigCommerce cost?", answer: "BigCommerce plans start at $39/month (Standard, up to $50K annual sales), $105/month (Plus, up to $180K), and $399/month (Pro, up to $400K). Enterprise pricing is custom for high-volume merchants. Crucially, BigCommerce charges no transaction fees on any plan, unlike Shopify which charges up to 2% on non-Shopify Payments." },
+      { question: "BigCommerce vs Shopify: which is better?", answer: "Shopify is better for small businesses and beginners — it's easier to set up, has a larger app ecosystem, and its Shopify Payments simplifies payment processing. BigCommerce is better for mid-market and enterprise merchants who need built-in B2B features, multiple storefronts, no transaction fees, and a more open API for headless commerce." },
+      { question: "Does BigCommerce have transaction fees?", answer: "No, BigCommerce does not charge transaction fees on any of its plans, which is a key differentiator from Shopify (which charges 0.5–2% unless you use Shopify Payments). For high-volume merchants or those using third-party payment gateways, this can represent significant savings." },
+    ],
+  },
+
+  "woocommerce": {
+    description:
+      "WooCommerce is the world's most widely used e-commerce platform, powering over 30% of all online stores globally. Built as a WordPress plugin and launched in 2011 by WooThemes (later acquired by Automattic, the company behind WordPress.com, in 2015), WooCommerce is free and open-source — making it the default choice for anyone who already has a WordPress site and wants to sell online. The platform is infinitely extensible: thousands of free and paid extensions cover payments, shipping, subscriptions, memberships, bookings, and virtually any e-commerce use case. WooCommerce supports physical products, digital downloads, subscriptions, bookings, and affiliate products. Because it runs on WordPress, WooCommerce stores benefit from the massive WordPress ecosystem including 60,000+ plugins and full control over hosting, design, and data. The tradeoff is complexity — WooCommerce requires self-hosting, ongoing maintenance, and technical knowledge that hosted platforms like Shopify handle automatically. Costs depend heavily on hosting (typically $10–$100/month), theme ($0–$200), and extensions ($0–$500+/year) for additional functionality.",
+    highlights: ["Powers 30%+ of global online stores", "Free and open-source WordPress plugin", "Unlimited customization and data ownership", "Massive extension marketplace"],
+    category: "software",
+    alternatives: [
+      { name: "Shopify", slug: "shopify", reason: "Fully hosted, easier to manage, no maintenance required" },
+      { name: "BigCommerce", slug: "bigcommerce", reason: "Hosted SaaS with enterprise features and no transaction fees" },
+      { name: "Squarespace", slug: "squarespace", reason: "All-in-one with great design, less complexity" },
+      { name: "Wix", slug: "wix", reason: "Simpler builder, fully hosted, no WordPress needed" },
+      { name: "Magento", slug: "magento", reason: "More powerful for large enterprise catalogs" },
+      { name: "PrestaShop", slug: "prestashop", reason: "Open-source alternative with strong European adoption" },
+    ],
+    faqs: [
+      { question: "Is WooCommerce free?", answer: "WooCommerce the plugin is free to download and use. However, running a WooCommerce store has real costs: web hosting ($10–$100+/month), domain ($10–$20/year), and often paid extensions and themes ($100–$500+/year). The total cost of ownership is comparable to or exceeds Shopify for many stores once all extensions are accounted for." },
+      { question: "WooCommerce vs Shopify: which is better?", answer: "WooCommerce is better for developers and technically comfortable users who want full control over their store, own their data, and already use WordPress. Shopify is better for business owners who want a managed, maintenance-free platform where someone else handles hosting, security, and updates. Shopify is faster to launch; WooCommerce has no ceiling on customization." },
+      { question: "Is WooCommerce good for large stores?", answer: "WooCommerce can power large stores with thousands of products, but performance and scalability depend heavily on your hosting infrastructure and technical optimization. Large WooCommerce stores require managed WordPress hosting (WP Engine, Kinsta, etc.), caching, and CDN configuration. Shopify Plus or BigCommerce Enterprise may be easier to scale without dedicated technical resources." },
+    ],
+  },
 };
