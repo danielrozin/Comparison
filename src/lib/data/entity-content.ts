@@ -1437,4 +1437,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "What is Ghost used for?", answer: "Ghost is used for blogs, newsletters, paid membership sites, and independent publications. It handles content publishing, email newsletters, paid subscriptions (via Stripe), and basic analytics in one platform. It's popular with independent journalists, newsletter writers, and media brands that want a professional publishing platform without the bloat of WordPress." },
     ],
   },
+
+  "ahrefs": {
+    description:
+      "Ahrefs is a premium SEO toolset widely regarded as the most comprehensive backlink analysis and keyword research platform available. Founded in 2011 in Singapore, Ahrefs built its reputation on having one of the largest and most frequently updated backlink indexes on the internet — crawling over 8 billion pages per day. The platform covers all major areas of SEO: Site Explorer (analyze any domain's backlinks and organic traffic), Keywords Explorer (research keyword difficulty, volume, and click data), Content Explorer (find top-performing content by topic), Site Audit (technical SEO health), and Rank Tracker (monitor keyword rankings). Ahrefs is the tool of choice for professional SEOs, agencies, and in-house marketing teams at companies like Facebook, Shopify, and Adobe. The platform is known for data accuracy and depth — particularly for backlink data and traffic estimates. Pricing starts at $129/month (Lite) for freelancers and goes to $449/month (Agency) for large teams, with annual discounts available. A $29 starter plan with limited credits was introduced for smaller users.",
+    highlights: ["Largest backlink index — 8B+ pages crawled/day", "Industry benchmark for link analysis", "Used by Facebook, Shopify, Adobe", "Starter plan from $29/month"],
+    category: "software",
+    alternatives: [
+      { name: "Semrush", slug: "semrush", reason: "Better for PPC research and content marketing tools" },
+      { name: "Moz Pro", slug: "moz-pro", reason: "More beginner-friendly, Domain Authority metric widely used" },
+      { name: "Majestic", slug: "majestic", reason: "Backlink-only focus, cheaper for pure link analysis" },
+      { name: "Ubersuggest", slug: "ubersuggest", reason: "Much cheaper, good for small businesses" },
+      { name: "Mangools", slug: "mangools", reason: "Affordable alternative with KWFinder for keyword research" },
+      { name: "Serpstat", slug: "serpstat", reason: "More affordable all-in-one with competitive analysis" },
+    ],
+    faqs: [
+      { question: "How much does Ahrefs cost?", answer: "Ahrefs plans start at $29/month (Starter, limited credits), $129/month (Lite, 1 user), $249/month (Standard, 2 users), $449/month (Advanced, 3 users), and $14,990/year (Enterprise). Annual billing saves ~20%. The $129 Lite plan is sufficient for most individual SEOs and small businesses." },
+      { question: "Ahrefs vs Semrush: which is better?", answer: "Ahrefs is generally considered better for backlink analysis and competitor research — its link index is larger and more accurate. Semrush is better for PPC/advertising keyword research, content marketing tools, and has a wider range of features including social media and PR tools. Most professional SEOs use both or choose based on their primary use case." },
+      { question: "Is Ahrefs worth it for small businesses?", answer: "Ahrefs can be worth it for small businesses serious about SEO, though the $129/month Lite plan is a significant investment. The $29 Starter plan offers basic site analysis for those with limited needs. For small businesses not doing active link building or competitive analysis, cheaper alternatives like Ubersuggest or Mangools may provide better value." },
+    ],
+  },
+
+  "semrush": {
+    description:
+      "Semrush is an all-in-one digital marketing platform covering SEO, PPC, content marketing, social media, and competitive research. Founded in 2008 in Saint Petersburg, Russia (now headquartered in Boston), Semrush has grown into one of the most widely used marketing platforms globally with over 10 million users. The platform's keyword database of 25+ billion keywords and its position tracking for 300+ million domains make it the largest competitive intelligence tool available. Semrush goes beyond SEO — its Advertising Research tool analyzes competitors' Google Ads campaigns, revealing ad copy, landing pages, and estimated spend. The Content Marketing toolkit helps plan and optimize content strategy. Semrush's On-Page SEO Checker and Site Audit cover technical optimization. Social Media Poster and Brand Monitoring round out the marketing suite. Semrush is particularly strong for PPC practitioners who need to reverse-engineer competitor ad strategies. Pricing starts at $139.95/month (Pro) for freelancers, $249.95/month (Guru) for agencies, and $499.95/month (Business) for enterprises, with annual discounts and a free 7-day trial.",
+    highlights: ["25B+ keyword database", "10M+ users worldwide", "Covers SEO + PPC + content + social in one platform", "Best-in-class competitor ad intelligence"],
+    category: "software",
+    alternatives: [
+      { name: "Ahrefs", slug: "ahrefs", reason: "Better backlink analysis and link building focus" },
+      { name: "Moz Pro", slug: "moz-pro", reason: "More beginner-friendly, lower starting price" },
+      { name: "SpyFu", slug: "spyfu", reason: "Cheaper, specialized in competitor PPC research" },
+      { name: "Ubersuggest", slug: "ubersuggest", reason: "Much cheaper, good for small businesses" },
+      { name: "Serpstat", slug: "serpstat", reason: "More affordable with overlapping feature set" },
+      { name: "SE Ranking", slug: "se-ranking", reason: "Similar all-in-one at significantly lower price" },
+    ],
+    faqs: [
+      { question: "How much does Semrush cost?", answer: "Semrush plans start at $139.95/month (Pro, 5 projects), $249.95/month (Guru, 15 projects + content tools), and $499.95/month (Business, 40 projects + API). Annual billing saves ~17%. A free account with limited daily searches is available, plus a 7-day free trial of Pro or Guru." },
+      { question: "Is Semrush better than Ahrefs?", answer: "Semrush is better for comprehensive digital marketing research — especially PPC/Google Ads competitor analysis, content marketing planning, and social media tools. Ahrefs is better for deep backlink analysis and link building workflows. Professional SEOs often use both; if choosing one, Semrush suits marketers who need PPC + SEO, while Ahrefs suits pure-SEO practitioners." },
+      { question: "Is Semrush free?", answer: "Semrush has a free account with limited daily searches (10 keyword lookups, 10 domain lookups). It's enough for occasional research but not for active campaigns. A 7-day free trial of the Pro or Guru plan is available. For regular SEO work, a paid plan is necessary." },
+    ],
+  },
+
+  "zendesk": {
+    description:
+      "Zendesk is a leading customer service and support platform used by over 100,000 companies worldwide to manage customer interactions across email, chat, phone, and social media. Founded in 2007 in Copenhagen (now headquartered in San Francisco), Zendesk pioneered the modern help desk software category. The platform's ticketing system organizes all customer requests in one place with intelligent routing, SLA management, and automation rules. Zendesk Suite combines the full stack: Support (ticketing), Talk (phone), Chat (live chat), Guide (knowledge base/help center), and Explore (analytics). AI features including Zendesk AI copilot can automatically categorize tickets, suggest responses, and resolve simple queries without human intervention. The platform's marketplace has 1,500+ integrations including Salesforce, Slack, Shopify, and JIRA. Zendesk is the choice for mid-market and enterprise companies that need sophisticated support operations. Suite Team starts at $55/agent/month and Suite Professional at $115/agent/month — pricing that smaller businesses often find steep, driving interest in alternatives like Freshdesk and Intercom.",
+    highlights: ["100,000+ companies worldwide", "Omnichannel support across email, chat, phone, social", "AI copilot for automated resolution", "1,500+ marketplace integrations"],
+    category: "software",
+    alternatives: [
+      { name: "Freshdesk", slug: "freshdesk", reason: "More affordable, free plan available, similar features" },
+      { name: "Intercom", slug: "intercom", reason: "Better for proactive customer messaging and in-app support" },
+      { name: "HubSpot", slug: "hubspot", reason: "Integrated CRM + support with free Service Hub tier" },
+      { name: "Help Scout", slug: "help-scout", reason: "Simpler, team inbox focused, better for small teams" },
+      { name: "Zoho Desk", slug: "zoho-desk", reason: "More affordable, part of Zoho ecosystem" },
+      { name: "Gorgias", slug: "gorgias", reason: "Better for e-commerce with deep Shopify integration" },
+    ],
+    faqs: [
+      { question: "How much does Zendesk cost?", answer: "Zendesk Suite plans start at $55/agent/month (Team), $89/agent/month (Growth), $115/agent/month (Professional), and $169/agent/month (Enterprise). These prices make Zendesk one of the more expensive help desk options — a 10-agent team on Suite Professional costs $13,800/year. A 14-day free trial is available." },
+      { question: "Zendesk vs Freshdesk: which is better?", answer: "Zendesk is better for larger organizations that need sophisticated workflow automation, advanced analytics, and a vast integration ecosystem. Freshdesk is better for small to mid-size businesses that want similar core features at a much lower price — Freshdesk's free plan supports unlimited agents, which Zendesk doesn't offer." },
+      { question: "Is Zendesk good for small businesses?", answer: "Zendesk can be overkill and overpriced for small businesses. At $55+/agent/month, a 5-person support team costs $3,300/year minimum. Small businesses are often better served by Freshdesk (free plan available), Help Scout ($20/agent/month), or HubSpot Service Hub (free tier). Zendesk's full value is realized at mid-market scale." },
+    ],
+  },
+
+  "intercom": {
+    description:
+      "Intercom is a customer communications platform that pioneered the concept of in-app messaging and conversational support. Founded in 2011 in San Francisco by former Xtreme Labs designers, Intercom created the iconic chat bubble that now appears on millions of websites worldwide. The platform covers the full customer lifecycle: targeted messages to onboard new users, proactive outreach based on user behavior, live chat support, a help center/knowledge base, and AI-powered resolution. Intercom's Fin AI Agent, built on GPT-4, can resolve a significant percentage of support queries automatically by understanding natural language and drawing from the knowledge base. This positions Intercom as a leader in AI-first customer support. The platform is deeply product-integrated — tracking user events, attributes, and behaviors allows highly targeted messaging (e.g., message users who haven't completed onboarding after 3 days). Intercom is particularly popular with SaaS companies, product-led growth businesses, and any company where the product itself is the primary support channel. Pricing starts at $39/seat/month (Essential) and $99/seat/month (Advanced), with AI resolution fees based on usage.",
+    highlights: ["Pioneered in-app messaging for SaaS", "Fin AI Agent resolves queries automatically", "Behavioral targeting for proactive messaging", "Most popular for SaaS and product-led companies"],
+    category: "software",
+    alternatives: [
+      { name: "Zendesk", slug: "zendesk", reason: "Better for ticket-based support at enterprise scale" },
+      { name: "HubSpot", slug: "hubspot", reason: "Free CRM + support, better for sales-led companies" },
+      { name: "Freshdesk", slug: "freshdesk", reason: "More affordable, similar omnichannel support" },
+      { name: "Drift", slug: "drift", reason: "Better for sales/marketing conversations and ABM" },
+      { name: "Crisp", slug: "crisp", reason: "Much cheaper, similar live chat with good free tier" },
+      { name: "Help Scout", slug: "help-scout", reason: "Simpler email-based support, better for small teams" },
+    ],
+    faqs: [
+      { question: "How much does Intercom cost?", answer: "Intercom pricing starts at $39/seat/month (Essential) and $99/seat/month (Advanced). The Fin AI Agent charges per resolved conversation (around $0.99 per resolution). Costs scale quickly for growing teams — a 10-person support team on Advanced costs $11,880/year before AI usage fees. A 14-day free trial is available." },
+      { question: "Intercom vs Zendesk: which is better?", answer: "Intercom is better for SaaS companies that want deep product integration, behavioral messaging, and AI-first support. Zendesk is better for large enterprises and e-commerce companies with high ticket volumes that need sophisticated routing, SLA management, and a vast integration ecosystem. Intercom excels at proactive engagement; Zendesk excels at reactive ticket management." },
+      { question: "Is Intercom worth the price?", answer: "Intercom is worth the price for SaaS companies where reducing churn and improving onboarding has high LTV impact. The ability to target users with in-app messages based on behavior, combined with AI resolution reducing support costs, can generate significant ROI. For simpler support needs, cheaper alternatives like Crisp or Freshdesk provide better value." },
+    ],
+  },
+
+  "patreon": {
+    description:
+      "Patreon is a membership platform that enables content creators to earn recurring revenue from their most dedicated fans. Founded in 2013 by musician Jack Conte and Sam Yam in San Francisco, Patreon pioneered the creator subscription model before the broader creator economy concept became mainstream. The platform allows creators to offer tiered memberships with exclusive benefits — early access to content, behind-the-scenes updates, Discord community access, merchandise, and more. Patreon is widely used by podcasters, YouTubers, artists, writers, game developers, and educators. The platform handles payment processing, subscription management, and member communications. Patreon takes a percentage of creator earnings: 8% on Pro (most creators) and 12% on Premium (with advanced tools). Free membership tiers are also available. Patreon has over 8 million active patrons supporting more than 250,000 creators, with total payouts exceeding $3.5 billion to date. While it remains the most recognized membership platform, competitors like Substack (for writers), Ko-fi (lower fees), and Memberful (self-hosted) have captured market share with creator-specific features.",
+    highlights: ["8M+ active patrons", "$3.5B+ paid out to creators", "Tiered membership with exclusive content", "Works for all creator types — podcast, video, art, writing"],
+    category: "software",
+    alternatives: [
+      { name: "Substack", slug: "substack", reason: "Better for newsletter writers, lower fees for paid subs" },
+      { name: "Ko-fi", slug: "ko-fi", reason: "Lower fees (0% on memberships with Gold), one-time donations" },
+      { name: "Ghost", slug: "ghost", reason: "0% revenue share, full ownership, self-hostable" },
+      { name: "Memberful", slug: "memberful", reason: "Self-hosted memberships on your own site, lower fees" },
+      { name: "Buy Me a Coffee", slug: "buy-me-a-coffee", reason: "Simple one-time support and memberships with 5% fee" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better email control for creators selling digital products" },
+    ],
+    faqs: [
+      { question: "How much does Patreon take?", answer: "Patreon charges 8% of monthly earnings on the Pro plan (most creators) and 12% on Premium, plus Stripe payment processing fees (~2.9% + $0.30 per transaction). On $5,000/month in memberships, the Pro plan costs ~$400/month in Patreon fees plus ~$145 in payment fees, leaving roughly $4,455." },
+      { question: "Patreon vs Substack: which is better for creators?", answer: "Patreon is better for multimedia creators — YouTubers, podcasters, artists, and game developers — who want tiered memberships with diverse perks. Substack is better for writers and journalists focused specifically on newsletter publishing with a built-in discovery network. Both take similar percentages; Ghost offers 0% revenue share for creators who want full ownership." },
+      { question: "Is Patreon still the best membership platform?", answer: "Patreon remains the most recognized and widely-used membership platform, giving creators instant credibility and access to its existing patron community. However, its 8% fee and limited creator tools have led many to explore alternatives. Ko-fi (0% fees with Gold), Ghost (0% revenue share), and Memberful offer compelling alternatives depending on creator type." },
+    ],
+  },
+
+  "stripe": {
+    description:
+      "Stripe is the world's leading payment infrastructure platform, processing hundreds of billions of dollars annually for millions of businesses from early-stage startups to global enterprises like Amazon, Google, and Shopify. Founded in 2010 by Irish brothers Patrick and John Collison, Stripe revolutionized online payment acceptance by making it simple for developers to integrate payments with a few lines of code via a clean REST API. Beyond basic payment processing, Stripe has expanded into a comprehensive financial infrastructure suite: Stripe Billing (subscriptions), Stripe Connect (marketplace payments), Stripe Capital (business lending), Stripe Issuing (card issuance), Stripe Treasury (banking-as-a-service), and Stripe Tax (automated sales tax). Stripe's developer experience is widely regarded as the best in the industry — documentation, SDKs, testing tools, and API design are benchmark quality. Standard processing fees are 2.9% + $0.30 per successful card transaction for Stripe Payments. Stripe is valued at approximately $65 billion and is one of the most valuable private companies in the world. It serves businesses in 46+ countries.",
+    highlights: ["Processes hundreds of billions annually", "Best-in-class developer API and documentation", "Full financial stack: billing, capital, issuing, treasury", "Used by Amazon, Google, Shopify"],
+    category: "software",
+    alternatives: [
+      { name: "Square", slug: "square", reason: "Better for in-person payments and small retail businesses" },
+      { name: "PayPal", slug: "paypal", reason: "Larger consumer brand recognition, easier for non-technical businesses" },
+      { name: "Braintree", slug: "braintree", reason: "PayPal-owned, competitive rates, strong enterprise support" },
+      { name: "Adyen", slug: "adyen", reason: "Better for global enterprise with unified acquiring" },
+      { name: "Chargebee", slug: "chargebee", reason: "Better subscription management layer on top of gateways" },
+      { name: "Paddle", slug: "paddle", reason: "Merchant of Record model — handles global tax compliance" },
+    ],
+    faqs: [
+      { question: "How much does Stripe charge?", answer: "Stripe's standard fee is 2.9% + $0.30 per successful card transaction (online). In-person payments via Stripe Terminal are 2.7% + $0.05. International cards add 1.5%. Stripe Billing (subscriptions) adds 0.5–0.8% on top. Custom enterprise pricing is available for high-volume businesses through Stripe's negotiated rates." },
+      { question: "Stripe vs Square: which should I use?", answer: "Stripe is better for online-first businesses, developers building custom payment flows, SaaS companies, and marketplaces. Square is better for brick-and-mortar retail, restaurants, and businesses that need point-of-sale hardware alongside online payments. Both charge 2.9% + $0.30 online; Square's in-person rate is 2.6% + $0.10 vs Stripe's 2.7% + $0.05." },
+      { question: "Is Stripe safe?", answer: "Yes, Stripe is PCI DSS Level 1 compliant — the highest level of payment security certification. Card numbers are never stored on your servers (Stripe tokenizes them), and Stripe's fraud detection (Radar) uses machine learning on billions of data points. Stripe is trusted by the world's largest companies for payment processing." },
+    ],
+  },
+
+  "typeform": {
+    description:
+      "Typeform is an online form and survey builder known for its distinctive conversational interface — presenting one question at a time in a way that feels more like a dialogue than a traditional form. Founded in 2012 in Barcelona by Robert Muñoz and David Okuniev, Typeform pioneered the 'conversational form' format that has since influenced the entire category. The platform is used for surveys, lead generation, job applications, quizzes, order forms, and customer feedback. Typeform's forms are beautiful, mobile-responsive by default, and support conditional logic, calculator fields, hidden fields, file uploads, and payment collection via Stripe. The platform integrates with HubSpot, Salesforce, Google Sheets, Slack, Mailchimp, and 500+ tools via Zapier. Completion rates for Typeform forms are typically significantly higher than traditional form builders due to the engaging one-question-at-a-time format. Typeform also offers VideoAsk, a video-first form tool for collecting responses via video. The free plan allows 10 responses/month. Paid plans start at $25/month (Basic, 100 responses) up to $83/month (Business, 10,000 responses).",
+    highlights: ["Conversational one-question-at-a-time format", "Higher completion rates than traditional forms", "VideoAsk for video-first data collection", "500+ integrations via native and Zapier"],
+    category: "software",
+    alternatives: [
+      { name: "Google Forms", slug: "google-forms", reason: "Free, simple, integrates with Google Sheets natively" },
+      { name: "SurveyMonkey", slug: "surveymonkey", reason: "Better for research surveys with advanced analytics" },
+      { name: "Jotform", slug: "jotform", reason: "More form types and templates at lower price" },
+      { name: "Tally", slug: "tally", reason: "Free Typeform alternative with unlimited responses" },
+      { name: "Paperform", slug: "paperform", reason: "Similar conversational style with stronger payments" },
+      { name: "HubSpot Forms", slug: "hubspot", reason: "Free with HubSpot CRM, automatic lead capture" },
+    ],
+    faqs: [
+      { question: "Is Typeform free?", answer: "Typeform has a free plan limited to 10 responses per month — enough for light testing but not serious data collection. Paid plans start at $25/month (Basic, 100 responses), $50/month (Plus, 1,000 responses), and $83/month (Business, 10,000 responses). Annual billing provides about 16% savings." },
+      { question: "Why use Typeform instead of Google Forms?", answer: "Typeform's conversational format typically yields significantly higher completion rates than Google Forms' traditional layout, especially for longer surveys or marketing use cases. Typeform also offers better branding control, conditional logic, payment collection, and a more polished respondent experience. Google Forms is better when you need free, unlimited responses and deep Google Workspace integration." },
+      { question: "What is Typeform used for?", answer: "Typeform is used for customer feedback surveys, lead generation forms, job application forms, quizzes and assessments, order forms, NPS surveys, event registrations, and product research. Its high completion rates make it particularly effective for marketing and sales use cases where drop-off is costly." },
+    ],
+  },
+
+  "medium": {
+    description:
+      "Medium is an online publishing platform founded in 2012 by Twitter co-founder Ev Williams, designed to make long-form writing and reading accessible to anyone. Medium hosts millions of articles across topics ranging from technology and business to personal essays, politics, and fiction. The platform introduced the 'claps' engagement system and pioneered the concept of reading time estimates. Medium's Partner Program allows writers to earn money based on how much time paying Medium members spend reading their content — creating a passive income model for writers without requiring them to build their own subscription base. The platform has over 100 million readers per month and has launched specialized publications including Better Programming, Better Marketing, and Towards Data Science. Medium's SEO reach is significant — articles published on Medium can rank quickly due to the domain's authority. The free tier allows limited article reads per month; Medium membership is $5/month or $50/year for unlimited access. Writers keep most of the Partner Program earnings. Despite competition from Substack and Ghost, Medium's built-in audience and discovery remain its key advantages for writers who don't yet have their own following.",
+    highlights: ["100M+ monthly readers", "Built-in Partner Program monetization", "Strong SEO reach via high-authority domain", "Curated publications for niche topics"],
+    category: "software",
+    alternatives: [
+      { name: "Substack", slug: "substack", reason: "Better for paid newsletter subscriptions and direct revenue" },
+      { name: "Ghost", slug: "ghost", reason: "Full ownership, 0% revenue share, custom domain" },
+      { name: "WordPress", slug: "wordpress", reason: "More control, your own domain, SEO flexibility" },
+      { name: "Hashnode", slug: "hashnode", reason: "Better for developer blogging with custom domain free" },
+      { name: "Beehiiv", slug: "beehiiv", reason: "Growing newsletter platform with referral tools" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better for building an owned audience and email list" },
+    ],
+    faqs: [
+      { question: "Can you make money on Medium?", answer: "Yes, through Medium's Partner Program, writers earn based on reading time from paying members. Earnings vary widely — most writers earn a few dollars per month, while top writers earn thousands. Medium is not a reliable primary income source for most writers, but can supplement income from an owned newsletter or blog." },
+      { question: "Is Medium free to publish on?", answer: "Yes, publishing on Medium is free with no limits on articles. Readers get 3 free articles/month before hitting the paywall; a Medium membership ($5/month) gives unlimited access. The Partner Program is opt-in and free to join — writers enable it to earn from their content." },
+      { question: "Medium vs Substack: which is better for writers?", answer: "Medium is better for writers who want built-in discovery without building an audience first — your articles can reach Medium's 100M readers. Substack is better for writers who want to build a direct relationship with subscribers and earn through paid subscriptions. Medium's earnings depend on platform algorithm; Substack's depend on your own audience growth." },
+    ],
+  },
 };
