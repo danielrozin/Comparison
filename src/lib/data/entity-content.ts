@@ -1597,4 +1597,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Medium vs Substack: which is better for writers?", answer: "Medium is better for writers who want built-in discovery without building an audience first — your articles can reach Medium's 100M readers. Substack is better for writers who want to build a direct relationship with subscribers and earn through paid subscriptions. Medium's earnings depend on platform algorithm; Substack's depend on your own audience growth." },
     ],
   },
+
+  "grammarly": {
+    description:
+      "Grammarly is an AI-powered writing assistant used by over 30 million people daily to improve grammar, spelling, clarity, tone, and style across all types of writing. Founded in 2009 in Kyiv, Ukraine by Max Lytvyn, Alex Shevchenko, and Dmytro Lider, Grammarly has grown into one of the most widely installed browser extensions in the world, working across Gmail, Google Docs, Slack, LinkedIn, Twitter, and virtually every web-based text field. The platform uses advanced natural language processing to offer real-time suggestions — correcting errors, improving word choice, adjusting formality, and detecting plagiarism. Grammarly Business adds team consistency features, style guides, brand tones, and admin controls. In 2023, Grammarly launched GrammarlyGO, its generative AI tool for drafting, rewriting, and ideating content from prompts. Grammarly Free covers essential grammar and spelling. Grammarly Premium ($12/month) adds advanced clarity, engagement, and delivery suggestions. Grammarly Business starts at $15/member/month for teams. The platform is particularly popular with non-native English speakers, students, professionals, and content creators who write frequently.",
+    highlights: ["30M+ daily active users", "Works across 500,000+ apps and websites", "GrammarlyGO generative AI writing", "Plagiarism detection included in Premium"],
+    category: "software",
+    alternatives: [
+      { name: "ProWritingAid", slug: "prowritingaid", reason: "Deeper style reports, better for long-form writers" },
+      { name: "Hemingway Editor", slug: "hemingway-editor", reason: "Free, focuses on readability and brevity" },
+      { name: "QuillBot", slug: "quillbot", reason: "Better paraphrasing and summarization tools" },
+      { name: "Wordtune", slug: "wordtune", reason: "AI rewriting focused on making sentences clearer" },
+      { name: "LanguageTool", slug: "languagetool", reason: "Open-source, supports 30+ languages, self-hostable" },
+      { name: "Claude", slug: "claude", reason: "Full AI writing assistant for longer drafts and edits" },
+    ],
+    faqs: [
+      { question: "Is Grammarly free?", answer: "Grammarly has a free plan covering basic grammar and spelling corrections. Grammarly Premium at $12/month (billed annually) adds advanced style suggestions, clarity improvements, tone detection, and plagiarism checking. Grammarly Business at $15/member/month adds team features, style guides, and brand voice settings." },
+      { question: "Is Grammarly worth paying for?", answer: "For frequent writers — especially professionals, marketers, and non-native English speakers — Grammarly Premium is generally worth it. The advanced clarity and delivery suggestions catch issues the free version misses. However, for basic proofreading, the free tier handles most grammar and spelling errors adequately." },
+      { question: "Is Grammarly safe to use?", answer: "Grammarly transmits text to its servers for analysis, which raises privacy considerations for sensitive documents. Grammarly states it does not sell user data and uses encryption in transit. For highly confidential writing, offline alternatives like Hemingway Editor or a self-hosted LanguageTool are safer options." },
+    ],
+  },
+
+  "loom": {
+    description:
+      "Loom is an asynchronous video messaging tool that lets users record their screen, camera, or both and instantly share a link — eliminating unnecessary meetings and making communication more personal than text. Founded in 2015 in San Francisco, Loom popularized the concept of 'async video' for workplace communication and saw explosive growth during the pandemic as remote work became mainstream. Recording a Loom takes seconds: click record, capture what you need, and share the link — no file uploading, no manual saving. Viewers can watch at any time, leave timestamped comments and emoji reactions, and respond with their own Loom. The platform is used for code reviews, design feedback, product demos, sales outreach, and team updates. Loom was acquired by Atlassian in 2023 for $975 million, integrating with Jira and Confluence. Loom AI can automatically generate transcripts, summaries, chapters, and action items from recordings. The free plan allows 25 videos with 5-minute recording limits. Business plans start at $12.50/creator/month with unlimited videos, longer recordings, and advanced analytics.",
+    highlights: ["Acquired by Atlassian for $975M in 2023", "AI-powered transcripts and meeting summaries", "25M+ users across 400,000 companies", "Replaces meetings with async video — saves hours weekly"],
+    category: "software",
+    alternatives: [
+      { name: "Zoom", slug: "zoom", reason: "Better for live meetings and webinars" },
+      { name: "Vidyard", slug: "vidyard", reason: "Better for sales video outreach and analytics" },
+      { name: "Notion", slug: "notion", reason: "Better for async documentation with embedded videos" },
+      { name: "Slack", slug: "slack", reason: "Built-in clips feature for short async video in chat" },
+      { name: "Tella", slug: "tella", reason: "More polished video production for creator-style content" },
+      { name: "Mmhmm", slug: "mmhmm", reason: "More visual effects and presentation-style video" },
+    ],
+    faqs: [
+      { question: "Is Loom free?", answer: "Loom has a free Starter plan with up to 25 videos and 5-minute recording limits per video. Business plans start at $12.50/creator/month (billed annually) with unlimited videos, up to 6-hour recordings, custom branding, and advanced analytics. The Atlassian acquisition has kept pricing competitive." },
+      { question: "What is Loom used for?", answer: "Loom is used for async team communication, code reviews, design feedback, bug reports, product demos, sales outreach videos, onboarding training, and replacing meetings. It's popular with remote and distributed teams who want to communicate more visually without scheduling live calls." },
+      { question: "Loom vs Zoom: what's the difference?", answer: "Loom is asynchronous — you record a video and share a link for others to watch at their convenience. Zoom is synchronous — live meetings where all parties join at the same time. Loom is better when you want to eliminate scheduling overhead, allow viewers to watch at 2x speed, or communicate across time zones. Zoom is better for real-time collaboration, discussion, and interaction." },
+    ],
+  },
+
+  "calendly": {
+    description:
+      "Calendly is the leading scheduling automation platform, enabling professionals to eliminate the back-and-forth emails of finding meeting times by sharing a link where others can book available slots directly. Founded in 2013 in Atlanta by Tope Awotona, Calendly has grown to over 20 million users and 100,000+ companies. The platform integrates with Google Calendar, Outlook, iCloud, and Zoom/Teams/Meet to check availability and automatically create video conferencing links. Users set their availability preferences, buffer times between meetings, and daily limits — Calendly handles the rest. Event types can be one-on-one, group sessions, round-robin (distribute across a team), or collective (require multiple hosts). Workflows send automated reminders, follow-ups, and confirmation emails. Calendly's routing forms qualify leads and direct them to the right team member based on responses. The platform is particularly popular with sales teams, recruiters, consultants, and anyone who books many external meetings. The free plan supports one event type. Standard is $10/user/month and Teams is $16/user/month with round-robin routing and reporting.",
+    highlights: ["20M+ users, 100,000+ companies", "Eliminates meeting scheduling emails entirely", "Round-robin routing for sales teams", "AI-powered routing forms for lead qualification"],
+    category: "software",
+    alternatives: [
+      { name: "HubSpot", slug: "hubspot", reason: "Free meeting scheduler built into HubSpot CRM" },
+      { name: "Acuity Scheduling", slug: "acuity-scheduling", reason: "Better for service businesses needing payments and packages" },
+      { name: "Cal.com", slug: "cal-com", reason: "Open-source alternative, self-hostable, free core" },
+      { name: "Microsoft Bookings", slug: "microsoft-bookings", reason: "Free with Microsoft 365, deep Outlook integration" },
+      { name: "Doodle", slug: "doodle", reason: "Better for group polling to find common availability" },
+      { name: "SavvyCal", slug: "savvycal", reason: "Let invitees overlay their calendar when booking" },
+    ],
+    faqs: [
+      { question: "Is Calendly free?", answer: "Calendly has a free plan with one event type and unlimited meetings. Standard is $10/user/month with unlimited event types, workflows, and integrations. Teams is $16/user/month adding round-robin scheduling, collective events, and reporting. Enterprise pricing is custom for SSO and advanced admin controls." },
+      { question: "What is Calendly used for?", answer: "Calendly is used to schedule sales calls, discovery meetings, job interviews, consultations, demos, coaching sessions, and team meetings. It removes the back-and-forth of finding a time by letting invitees book directly from your available slots — automatically syncing with your calendar and video conferencing tools." },
+      { question: "Is Calendly better than HubSpot Meetings?", answer: "Calendly is more feature-rich for scheduling — better routing, more event types, stronger workflows, and more integrations. HubSpot Meetings is better if you're already using HubSpot CRM and want free scheduling that automatically logs meetings to contact records. For pure scheduling power, Calendly leads; for CRM integration value, HubSpot Meetings is hard to beat at $0." },
+    ],
+  },
+
+  "freshdesk": {
+    description:
+      "Freshdesk is a cloud-based customer support platform by Freshworks that provides help desk ticketing, live chat, phone, and email support capabilities at pricing significantly below Zendesk. Founded in 2010 in Chennai, India by Girish Mathrubootham (after a bad experience with Zendesk support), Freshdesk was purpose-built to be the affordable alternative in the customer support category. The platform includes an omnichannel inbox, automation rules, SLA management, knowledge base, community forums, and AI-powered chatbots (Freddy AI). Freshdesk integrates with Freshsales (CRM), Freshservice (IT helpdesk), and the broader Freshworks suite. The marketplace offers 1,000+ integrations including Slack, Shopify, Salesforce, and Jira. A key differentiator is the free plan — Freshdesk's Free tier supports unlimited agents with basic features, something Zendesk doesn't offer. Growth starts at $15/agent/month and Pro at $49/agent/month. Freshdesk is particularly popular with small to mid-size businesses, e-commerce companies, and startups that need professional customer support tools without enterprise-level pricing.",
+    highlights: ["Free plan with unlimited agents", "Freddy AI for automated resolution", "1,000+ integrations", "Part of Freshworks ecosystem (CRM, IT, sales)"],
+    category: "software",
+    alternatives: [
+      { name: "Zendesk", slug: "zendesk", reason: "More powerful for enterprise, larger ecosystem" },
+      { name: "Intercom", slug: "intercom", reason: "Better for in-app messaging and proactive SaaS support" },
+      { name: "HubSpot", slug: "hubspot", reason: "Free Service Hub with CRM integration" },
+      { name: "Zoho Desk", slug: "zoho-desk", reason: "Similar pricing, better for Zoho ecosystem users" },
+      { name: "Help Scout", slug: "help-scout", reason: "Simpler email-focused support, better for small teams" },
+      { name: "Gorgias", slug: "gorgias", reason: "Better for e-commerce with Shopify revenue data in tickets" },
+    ],
+    faqs: [
+      { question: "Is Freshdesk free?", answer: "Yes, Freshdesk has a genuinely free plan (Sprout) that supports unlimited agents with basic ticketing, email, and phone channels. This is a significant advantage over Zendesk, which has no free plan. Paid plans start at $15/agent/month (Growth) and $49/agent/month (Pro) for advanced features like custom reports and multilingual support." },
+      { question: "Freshdesk vs Zendesk: which is better?", answer: "Freshdesk is better for small to mid-size businesses that want robust features at lower cost — the free plan and affordable paid tiers make it accessible. Zendesk is better for enterprises that need more sophisticated automation, a larger integration marketplace, and advanced analytics. Freshdesk's Freddy AI is competitive with Zendesk AI for automated resolution." },
+      { question: "Is Freshdesk good for e-commerce?", answer: "Freshdesk works well for e-commerce businesses, offering Shopify integration, order-related ticket context, and multi-channel support. However, Gorgias is purpose-built for e-commerce and often preferred by Shopify merchants who want revenue data surfaced directly in support tickets and deeper automation around order management." },
+    ],
+  },
+
+  "github": {
+    description:
+      "GitHub is the world's largest software development platform, hosting over 420 million repositories and used by more than 100 million developers globally. Founded in 2008 by Tom Preston-Werner, Chris Wanstrath, PJ Hyett, and Scott Chacon, GitHub popularized the social coding model built on Git version control. Acquired by Microsoft in 2018 for $7.5 billion, GitHub has expanded from a code hosting platform into a complete developer workflow tool: Issues and Projects for project management, Actions for CI/CD automation, Packages for artifact hosting, Codespaces for cloud development environments, and GitHub Pages for static site hosting. GitHub Copilot, the AI pair programmer powered by OpenAI Codex, has become one of the most widely used AI coding tools, with over 1.8 million paid subscribers. GitHub's free tier is extremely generous — unlimited public and private repositories with Actions minutes included. Team plans are $4/user/month and Enterprise is $21/user/month. GitHub's network effects — pull request culture, open-source discovery, and contributor graphs — make it the default choice for the vast majority of open-source projects.",
+    highlights: ["420M+ repositories, 100M+ developers", "GitHub Copilot AI pair programmer", "GitHub Actions for CI/CD automation", "Free unlimited public and private repos"],
+    category: "software",
+    alternatives: [
+      { name: "GitLab", slug: "gitlab", reason: "Full DevSecOps platform, better self-hosted option" },
+      { name: "Bitbucket", slug: "bitbucket", reason: "Better for Atlassian ecosystem (Jira, Confluence) users" },
+      { name: "Gitea", slug: "gitea", reason: "Lightweight open-source self-hosted Git" },
+      { name: "Azure DevOps", slug: "azure-devops", reason: "Better for Microsoft/Azure ecosystem teams" },
+      { name: "SourceForge", slug: "sourceforge", reason: "Veteran open-source project hosting" },
+      { name: "Codeberg", slug: "codeberg", reason: "Non-profit, privacy-focused Gitea-based alternative" },
+    ],
+    faqs: [
+      { question: "Is GitHub free?", answer: "GitHub is free for unlimited public and private repositories. Free accounts get 2,000 Actions minutes/month, 500MB Packages storage, and community support. Team plans at $4/user/month add required code reviews, draft pull requests, and more Actions minutes. Enterprise at $21/user/month adds SSO, audit log, and advanced security." },
+      { question: "GitHub vs GitLab: which is better?", answer: "GitHub has the largest developer community, best open-source discovery, and GitHub Copilot. GitLab offers a more complete built-in DevSecOps platform — CI/CD, security scanning, container registry, and self-hosting on a single platform without needing to integrate multiple tools. GitHub is better for open-source and community; GitLab is better for self-hosted enterprise DevOps." },
+      { question: "What is GitHub used for?", answer: "GitHub is used for hosting Git repositories, collaborating on code via pull requests, tracking bugs and features with Issues, automating workflows with Actions (CI/CD), publishing documentation with Pages, and discovering open-source projects. GitHub Copilot makes it the most AI-augmented development environment available." },
+    ],
+  },
+
+  "hotjar": {
+    description:
+      "Hotjar is a behavior analytics platform that reveals how users interact with websites through heatmaps, session recordings, surveys, and feedback widgets. Founded in 2014 in Malta and acquired by Contentsquare in 2021, Hotjar has become the most widely adopted tool for understanding the 'why' behind website analytics — complementing quantitative data from Google Analytics with qualitative insights from actual user behavior. Heatmaps visualize where users click, move, and scroll on any page. Session recordings let teams watch individual user sessions to identify friction points, confusion, and drop-offs. Feedback widgets let visitors rate pages or leave comments in the moment. Surveys can trigger at specific moments in the user journey. Hotjar integrates with Google Analytics, Optimizely, HubSpot, and major CMS and e-commerce platforms. The free Hotjar plan supports 35 daily sessions, 3 heatmaps, and basic surveys — enough for small sites. Plus is $32/month for 100 daily sessions and Business is $80/month for 500 sessions with advanced filtering.",
+    highlights: ["Heatmaps + session recordings + surveys in one tool", "Used on 900,000+ websites", "Acquired by Contentsquare (2021)", "Free plan: 35 daily sessions and 3 heatmaps"],
+    category: "software",
+    alternatives: [
+      { name: "Microsoft Clarity", slug: "microsoft-clarity", reason: "Completely free heatmaps and session recordings from Microsoft" },
+      { name: "FullStory", slug: "fullstory", reason: "More powerful session intelligence, better for enterprise" },
+      { name: "Mouseflow", slug: "mouseflow", reason: "Competitive pricing with form analytics and funnels" },
+      { name: "Lucky Orange", slug: "lucky-orange", reason: "More affordable with live chat and conversion funnels" },
+      { name: "Crazy Egg", slug: "crazy-egg", reason: "Simpler heatmaps, A/B testing included" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Quantitative analytics — complements rather than replaces Hotjar" },
+    ],
+    faqs: [
+      { question: "Is Hotjar free?", answer: "Hotjar has a free plan with 35 daily sessions, 3 heatmaps, and unlimited surveys and feedback widgets — enough for small websites. Plus is $32/month (100 daily sessions), Business is $80/month (500 sessions), and Scale is custom. Microsoft Clarity is a completely free Hotjar alternative worth considering for basic heatmaps and recordings." },
+      { question: "What is Hotjar used for?", answer: "Hotjar is used to understand user behavior on websites and landing pages — identifying why visitors leave, where they get confused, what they click, and how far they scroll. Teams use it for CRO (conversion rate optimization), UX research, and A/B test hypothesis generation. It's commonly used alongside Google Analytics." },
+      { question: "Hotjar vs Microsoft Clarity: which is better?", answer: "Microsoft Clarity is completely free with unlimited sessions, heatmaps, and recordings — making it the obvious choice for budget-conscious teams that need basic behavior analytics. Hotjar is better if you need surveys, feedback widgets, funnel analysis, or integrations with marketing tools. For most small to mid-size sites, Clarity's free tier is sufficient." },
+    ],
+  },
+
+  "google-analytics": {
+    description:
+      "Google Analytics is the world's most widely used web analytics platform, installed on over 56% of all websites globally. The current version, Google Analytics 4 (GA4), was launched in 2020 and made mandatory in 2023 when Universal Analytics was sunset. GA4 uses an event-based data model (replacing the session-based model of UA) and is designed for the cookieless, cross-platform measurement future. Core features include traffic source attribution, user behavior flow analysis, conversion tracking, audience segments, predictive metrics (purchase probability, churn probability), and explorations for custom analysis. GA4 connects natively with Google Ads, Google Search Console, BigQuery, and the broader Google Marketing Platform. The standard version is completely free with data retention of up to 14 months. Google Analytics 360 (enterprise) starts at $150,000/year with extended data retention, SLA, and advanced features. GA4's event-based model and privacy architecture have a steeper learning curve than Universal Analytics, driving interest in alternatives like Plausible, Matomo, and Mixpanel.",
+    highlights: ["Installed on 56%+ of all websites", "Completely free standard version", "Predictive metrics powered by Google AI", "Native Google Ads and Search Console integration"],
+    category: "software",
+    alternatives: [
+      { name: "Plausible Analytics", slug: "plausible", reason: "Privacy-first, GDPR-compliant, no cookies, simple UI" },
+      { name: "Matomo", slug: "matomo", reason: "Open-source, self-hostable, GDPR-friendly with full data ownership" },
+      { name: "Mixpanel", slug: "mixpanel", reason: "Better for product analytics and user behavior tracking" },
+      { name: "Hotjar", slug: "hotjar", reason: "Qualitative behavior analytics — complements GA4" },
+      { name: "Fathom", slug: "fathom", reason: "Privacy-first, cookie-free, simple dashboard" },
+      { name: "Amplitude", slug: "amplitude", reason: "Best-in-class product analytics for SaaS" },
+    ],
+    faqs: [
+      { question: "Is Google Analytics free?", answer: "Yes, Google Analytics 4 (GA4) is completely free for standard use with up to 14 months of data retention and unlimited traffic. Google Analytics 360, the enterprise version with advanced features and SLA, starts at approximately $150,000/year and is designed for large enterprises with complex measurement needs." },
+      { question: "Is GA4 GDPR compliant?", answer: "GA4 has GDPR compliance features including IP anonymization, data deletion requests, and consent mode integration. However, using GA4 in the EU has been controversial — several EU data protection authorities have ruled that sending data to US-based Google servers violates GDPR. Privacy-first alternatives like Plausible or Matomo (self-hosted) avoid this issue entirely." },
+      { question: "Why are people switching from Google Analytics?", answer: "The main reasons to switch from GA4 include: privacy concerns (GDPR/data sovereignty), the steep learning curve compared to Universal Analytics, excessive complexity for simple traffic monitoring, cookie consent requirements, and data sampling issues. Alternatives like Plausible (privacy-first, simple) or Mixpanel (product analytics depth) each address different pain points." },
+    ],
+  },
+
+  "gitlab": {
+    description:
+      "GitLab is a complete DevSecOps platform that goes significantly beyond code hosting to provide a single application for the entire software development lifecycle — source code management, CI/CD pipelines, security scanning, container registry, package registry, infrastructure management, and project planning. Founded in 2011 by Dmitriy Zaporozhets and Sid Sijbrandij, GitLab is notable for being both an enterprise SaaS product and an open-core project that organizations can self-host. Over 30 million registered users and 50% of Fortune 100 companies use GitLab. The platform's all-in-one philosophy eliminates the need to stitch together GitHub + Jenkins + Artifactory + Snyk + Jira — everything is built in. GitLab CI/CD is widely regarded as one of the most powerful and flexible pipeline systems available, with auto DevOps capability that configures pipelines automatically based on project type. GitLab Ultimate includes DAST, SAST, container scanning, dependency scanning, and license compliance. The Free tier includes 400 CI/CD minutes/month and 5GB storage. Premium is $29/user/month and Ultimate is $99/user/month.",
+    highlights: ["Complete DevSecOps in a single application", "50% of Fortune 100 companies use GitLab", "Self-hostable open-core platform", "Built-in CI/CD, security scanning, container registry"],
+    category: "software",
+    alternatives: [
+      { name: "GitHub", slug: "github", reason: "Largest developer community, GitHub Copilot, best open-source discovery" },
+      { name: "Bitbucket", slug: "bitbucket", reason: "Better for Atlassian (Jira) users, unlimited private repos for small teams" },
+      { name: "Azure DevOps", slug: "azure-devops", reason: "Better for Microsoft/Azure cloud environments" },
+      { name: "Gitea", slug: "gitea", reason: "Lightweight self-hosted Git, free and open-source" },
+      { name: "Jira", slug: "jira", reason: "If you prefer best-of-breed PM rather than all-in-one" },
+      { name: "CircleCI", slug: "circleci", reason: "Specialized CI/CD if you prefer GitHub for code hosting" },
+    ],
+    faqs: [
+      { question: "Is GitLab free?", answer: "GitLab has a free tier on GitLab.com with unlimited private repositories, 400 CI/CD minutes/month, 5GB storage, and 5 users for private groups. Self-hosted Community Edition is completely free and open-source. Paid plans include Premium ($29/user/month) for enterprise features and Ultimate ($99/user/month) for complete DevSecOps." },
+      { question: "GitLab vs GitHub: which is better?", answer: "GitHub is better for open-source projects, community collaboration, and teams that want the best AI coding assistant (Copilot). GitLab is better for organizations that want a complete DevSecOps platform without integrating multiple tools — everything from CI/CD to security scanning is built in. GitLab's self-hosting option is also superior for air-gapped or compliance-sensitive environments." },
+      { question: "Can you self-host GitLab?", answer: "Yes, GitLab Community Edition (CE) is free, open-source, and can be self-hosted on your own servers. This is a major advantage over GitHub, which requires GitHub Enterprise (expensive) for self-hosted deployment. Self-hosted GitLab gives complete data sovereignty and is popular in enterprises with strict compliance requirements." },
+    ],
+  },
 };
