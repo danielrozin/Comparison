@@ -1,0 +1,113 @@
+{
+  "title": "Neymar vs Mbappe",
+  "entityA": "Neymar",
+  "entityB": "Mbappe",
+  "category": "General",
+  "slug": "neymar-vs-mbappe",
+  "shortAnswer": "Mbappe currently outperforms Neymar with a superior 1vs1 score of 89.42 vs 80.98, showing better individual performance this season.",
+  "keyDifferences": [
+    {
+      "label": "1vs1 Performance",
+      "entityAValue": "80.98",
+      "entityBValue": "89.42",
+      "winner": "b"
+    },
+    {
+      "label": "Current Form",
+      "entityAValue": "Declining",
+      "entityBValue": "Peak Performance",
+      "winner": "b"
+    },
+    {
+      "label": "Age Factor",
+      "entityAValue": "31 years old",
+      "entityBValue": "25 years old",
+      "winner": "b"
+    },
+    {
+      "label": "Playing Style",
+      "entityAValue": "Creative Playmaker",
+      "entityBValue": "Direct Goal Scorer",
+      "winner": "tie"
+    },
+    {
+      "label": "Career Stage",
+      "entityAValue": "Veteran",
+      "entityBValue": "Rising Star",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "1vs1 Score",
+      "valueA": "80.98",
+      "valueB": "89.42",
+      "winner": "b"
+    },
+    {
+      "label": "Speed Rating",
+      "valueA": "85",
+      "valueB": "96",
+      "winner": "b"
+    },
+    {
+      "label": "Dribbling",
+      "valueA": "92",
+      "valueB": "88",
+      "winner": "a"
+    },
+    {
+      "label": "Goals per Season",
+      "valueA": "15-20",
+      "valueB": "25-30",
+      "winner": "b"
+    },
+    {
+      "label": "Assists per Season",
+      "valueA": "10-15",
+      "valueB": "8-12",
+      "winner": "a"
+    },
+    {
+      "label": "Market Value",
+      "valueA": "€60M",
+      "valueB": "€180M",
+      "winner": "b"
+    },
+    {
+      "label": "International Goals",
+      "valueA": "77",
+      "valueB": "46",
+      "winner": "a"
+    },
+    {
+      "label": "Champions League Goals",
+      "valueA": "43",
+      "valueB": "48",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Exceptional dribbling and technical skills",
+    "Superior playmaking and creativity",
+    "Extensive international experience with Brazil",
+    "Proven track record in multiple top leagues"
+  ],
+  "consA": [
+    "Declining 1vs1 performance compared to peak",
+    "Injury-prone in recent seasons",
+    "Age factor affecting consistency"
+  ],
+  "prosB": [
+    "Outstanding current form with 89.42 1vs1 score",
+    "Exceptional pace and finishing ability",
+    "Young age with room for further improvement",
+    "Higher market value and goal-scoring rate"
+  ],
+  "consB": [
+    "Less experienced than Neymar internationally",
+    "Lower assist numbers compared to Neymar",
+    "Still developing playmaking abilities"
+  ],
+  "verdict": "Mbappe currently has the edge with superior individual performance metrics and goal-scoring ability. However, Neymar's experience and playmaking skills remain valuable assets despite his declining 1vs1 numbers."
+}

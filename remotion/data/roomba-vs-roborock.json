@@ -1,0 +1,111 @@
+{
+  "title": "Roomba vs Roborock",
+  "entityA": "Roomba",
+  "entityB": "Roborock",
+  "category": "General",
+  "slug": "roomba-vs-roborock",
+  "shortAnswer": "Roborock offers higher suction power and advanced features, while Roomba focuses on smart navigation and obstacle avoidance. Both brands excel in different areas.",
+  "keyDifferences": [
+    {
+      "label": "Suction Power",
+      "entityAValue": "Standard suction varies by model",
+      "entityBValue": "Up to 22,000Pa in latest models",
+      "winner": "b"
+    },
+    {
+      "label": "Obstacle Avoidance",
+      "entityAValue": "Advanced camera-based recognition",
+      "entityBValue": "3D ToF sensors and RGB cameras",
+      "winner": "tie"
+    },
+    {
+      "label": "Mopping System",
+      "entityAValue": "Basic mopping functionality",
+      "entityBValue": "Spinning mopheads with hot water cleaning",
+      "winner": "b"
+    },
+    {
+      "label": "Navigation Technology",
+      "entityAValue": "Smart mapping with j9+ series",
+      "entityBValue": "LDS and 3D ToF navigation systems",
+      "winner": "tie"
+    },
+    {
+      "label": "Dock Features",
+      "entityAValue": "Auto-empty dustbin",
+      "entityBValue": "Mop cleaning, drying, and hot water washing",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Maximum Suction Power",
+      "valueA": "Not specified",
+      "valueB": "22,000Pa",
+      "winner": "b"
+    },
+    {
+      "label": "Threshold Climbing",
+      "valueA": "Standard",
+      "valueB": "40mm",
+      "winner": "b"
+    },
+    {
+      "label": "Brush System",
+      "valueA": "Single rubber roller",
+      "valueB": "DuoRoller Rising Brush",
+      "winner": "b"
+    },
+    {
+      "label": "Camera Recognition",
+      "valueA": "Yes (j9+)",
+      "valueB": "RGB camera (MaxV)",
+      "winner": "tie"
+    },
+    {
+      "label": "Voice Assistant",
+      "valueA": "Basic",
+      "valueB": "Intelligent Voice Assistant",
+      "winner": "b"
+    },
+    {
+      "label": "Auto-Empty Feature",
+      "valueA": "Yes",
+      "valueB": "Yes",
+      "winner": "tie"
+    },
+    {
+      "label": "Mop Washing",
+      "valueA": "No",
+      "valueB": "Hot water washing",
+      "winner": "b"
+    },
+    {
+      "label": "Profile Design",
+      "valueA": "Standard",
+      "valueB": "Slim profile options",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Proven reliability and brand recognition",
+    "Advanced object recognition with j9+ series",
+    "Strong smart home integration",
+    "Excellent customer support network"
+  ],
+  "consA": [
+    "Limited mopping capabilities compared to competitors",
+    "Lower suction power specifications"
+  ],
+  "prosB": [
+    "Superior suction power up to 22,000Pa",
+    "Advanced mopping with hot water cleaning and drying",
+    "Multiple model variants for different needs",
+    "Innovative features like extending mopheads and anti-tangle brushes"
+  ],
+  "consB": [
+    "Complex model lineup can be confusing",
+    "Some models lack camera-based obstacle avoidance"
+  ],
+  "verdict": "Roborock leads in raw performance with superior suction power and advanced mopping features. Roomba maintains its edge in smart navigation and brand reliability, making it better for users prioritizing proven technology over cutting-edge features."
+}

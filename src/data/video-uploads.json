@@ -545,6 +545,71 @@
       "youtubeVideoId": "QZxAWmQyZfQ",
       "youtubeUrl": "https://www.youtube.com/watch?v=QZxAWmQyZfQ",
       "uploadedAt": "2026-04-16T07:02:19.010Z"
+    },
+    {
+      "slug": "roomba-vs-roborock",
+      "title": "Roomba vs Roborock",
+      "entityA": "Roomba",
+      "entityB": "Roborock",
+      "category": "General",
+      "videoFile": "Roomba vs Roborock.mp4",
+      "youtubeTitle": "Roomba vs Roborock — Full Comparison 2026",
+      "youtubeDescription": "Roborock offers higher suction power and advanced features, while Roomba focuses on smart navigation and obstacle avoidance. Both brands excel in different areas.\n\n#roomba #roborock #general #comparison #versus",
+      "youtubeVideoId": "V7YjHRtHVrE",
+      "youtubeUrl": "https://www.youtube.com/watch?v=V7YjHRtHVrE",
+      "uploadedAt": "2026-04-17T06:59:06.326Z"
+    },
+    {
+      "slug": "spain-vs-italy",
+      "title": "Spain vs Italy",
+      "entityA": "Spain",
+      "entityB": "Italy",
+      "category": "General",
+      "videoFile": "Spain vs Italy.mp4",
+      "youtubeTitle": "Spain vs Italy — Full Comparison 2026",
+      "youtubeDescription": "Italy has a larger economy and military but higher deficits, while Spain shows more balanced fiscal management despite smaller overall size.\n\n#spain #italy #general #comparison #versus",
+      "youtubeVideoId": "leVb9tyUjfQ",
+      "youtubeUrl": "https://www.youtube.com/watch?v=leVb9tyUjfQ",
+      "uploadedAt": "2026-04-17T06:59:58.320Z"
+    },
+    {
+      "slug": "iphone-17-vs-samsung-s26",
+      "title": "iPhone 17 vs Samsung Galaxy S26",
+      "entityA": "iPhone 17",
+      "entityB": "Samsung Galaxy S26",
+      "category": "Technology",
+      "videoFile": "iPhone 17 vs Samsung Galaxy S26.mp4",
+      "youtubeTitle": "iPhone 17 vs Samsung Galaxy S26 — Full Comparison 2026",
+      "youtubeDescription": "The iPhone 17 leads with the A19 Pro chip and Apple Intelligence. The Samsung Galaxy S26 counters with a brighter 3000-nit display, larger battery, and Galaxy AI features powered by Snapdragon 8 Gen 4.\n\n#iphone17 #samsunggalaxys26 #technology #comparison #versus",
+      "youtubeVideoId": "I3F0hcx0Evg",
+      "youtubeUrl": "https://www.youtube.com/watch?v=I3F0hcx0Evg",
+      "uploadedAt": "2026-04-17T07:00:49.862Z"
+    },
+    {
+      "slug": "gucci-vs-louis-vuitton",
+      "title": "Gucci vs Louis Vuitton",
+      "entityA": "Gucci",
+      "entityB": "Louis Vuitton",
+      "category": "General",
+      "videoFile": "Gucci vs Louis Vuitton.mp4",
+      "youtubeTitle": "Gucci vs Louis Vuitton — Full Comparison 2026",
+      "youtubeDescription": "Louis Vuitton leads in prestige and heritage, while Gucci excels in bold fashion-forward design. Both are luxury pinnacles with different strengths.\n\n#gucci #louisvuitton #general #comparison #versus",
+      "youtubeVideoId": "bjMiXSRDwhA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=bjMiXSRDwhA",
+      "uploadedAt": "2026-04-17T07:02:02.895Z"
+    },
+    {
+      "slug": "neymar-vs-mbappe",
+      "title": "Neymar vs Mbappe",
+      "entityA": "Neymar",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Neymar vs Mbappe.mp4",
+      "youtubeTitle": "Neymar vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappe currently outperforms Neymar with a superior 1vs1 score of 89.42 vs 80.98, showing better individual performance this season.\n\n#neymar #mbappe #general #comparison #versus",
+      "youtubeVideoId": "oC2wVDERQ6Q",
+      "youtubeUrl": "https://www.youtube.com/watch?v=oC2wVDERQ6Q",
+      "uploadedAt": "2026-04-17T07:03:08.479Z"
     }
   ]
 }
