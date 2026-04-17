@@ -1277,4 +1277,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is WooCommerce good for large stores?", answer: "WooCommerce can power large stores with thousands of products, but performance and scalability depend heavily on your hosting infrastructure and technical optimization. Large WooCommerce stores require managed WordPress hosting (WP Engine, Kinsta, etc.), caching, and CDN configuration. Shopify Plus or BigCommerce Enterprise may be easier to scale without dedicated technical resources." },
     ],
   },
+
+  "evernote": {
+    description:
+      "Evernote is one of the original note-taking and personal organization apps, launched in 2008 and once valued at over $1 billion as a pioneer in the productivity software space. Evernote's core strength is its ability to capture anything — web clips, PDFs, handwritten notes, images, audio recordings, and typed notes — and make all of it searchable, including text within images and PDFs. The app's Web Clipper browser extension remains one of the best tools for saving web content for later reference. Evernote syncs across all devices and organizes content into Notebooks and Stacks with Tags for cross-cutting organization. The platform struggled in the mid-2010s with feature bloat and leadership changes, and in 2022 was acquired by Italian software company Bending Spoons, which significantly raised prices and reduced the free tier. The free plan now limits users to 1 device and 50 notes, pushing most users toward paid tiers. Personal is $14.99/month and Professional is $17.99/month. Despite losing market share to Notion, Obsidian, and Apple Notes, Evernote retains millions of loyal long-term users who value its capture breadth and search capabilities.",
+    highlights: ["Best-in-class web clipping with Web Clipper", "OCR search inside images and PDFs", "Notebooks + Tags flexible organization", "15+ year history with millions of loyal users"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "More flexible, combines notes with databases and wikis" },
+      { name: "Obsidian", slug: "obsidian", reason: "Local-first, bidirectional linking, free core app" },
+      { name: "Apple Notes", slug: "apple-notes", reason: "Free, built-in, fast, excellent for Apple ecosystem" },
+      { name: "Notion", slug: "notion", reason: "Better team collaboration and structured content" },
+      { name: "Bear", slug: "bear", reason: "Beautiful Mac/iOS note-taking with Markdown support" },
+      { name: "Roam Research", slug: "roam-research", reason: "Better for knowledge management and bidirectional links" },
+    ],
+    faqs: [
+      { question: "Is Evernote still free?", answer: "Evernote has a free plan but it's now heavily limited to 1 device and 50 notes — a major reduction from its previous free tier. Most users need a paid plan: Personal at $14.99/month or Professional at $17.99/month. This pricing change following the Bending Spoons acquisition drove many users to alternatives." },
+      { question: "Is Evernote still worth using?", answer: "Evernote is still worth it for long-term users with large existing libraries who rely on its Web Clipper, OCR search, and PDF annotation. For new users, Notion, Obsidian, or Apple Notes offer comparable features at lower or no cost. The 2022 pricing increases made Evernote significantly less competitive." },
+      { question: "What happened to Evernote?", answer: "Evernote was acquired by Italian company Bending Spoons in 2022. Following the acquisition, Bending Spoons dramatically reduced the free tier, raised prices, and laid off most of the US team. The product continues to be actively developed with AI features being added, but many long-time users migrated to competitors." },
+    ],
+  },
+
+  "mailerlite": {
+    description:
+      "MailerLite is a budget-friendly email marketing platform that has grown rapidly by offering a powerful feature set at a fraction of competitors' prices. Founded in 2010 in Vilnius, Lithuania, MailerLite serves over 1.5 million customers worldwide. The platform covers the full email marketing workflow: drag-and-drop and HTML editors, automation workflows, landing pages, pop-ups, and detailed analytics. MailerLite's pricing is significantly lower than Mailchimp and ConvertKit for comparable features — the free plan allows 1,000 subscribers and 12,000 emails/month, and the Growing Business plan starts at just $9/month for 500 subscribers with unlimited emails. The platform has improved dramatically in recent years, adding AI writing assistance, an e-commerce integration suite, a website builder, and digital product selling capabilities. MailerLite is particularly popular with small businesses, bloggers, and nonprofits that need professional email marketing without enterprise pricing. The platform's deliverability rates are competitive, and customer support is consistently praised. In 2023, MailerLite launched MailerSend (transactional email) to serve developers and growing businesses.",
+    highlights: ["1.5M+ customers worldwide", "Free plan: 1,000 subscribers, 12,000 emails/month", "Growing Business from $9/month", "Built-in landing pages, pop-ups, and website builder"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "More brand recognition, larger app integrations ecosystem" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better for creators, stronger automation sequences" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "More powerful CRM and automation for growing businesses" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce with revenue attribution" },
+      { name: "Moosend", slug: "moosend", reason: "Similar pricing tier, strong automation features" },
+      { name: "Brevo", slug: "brevo", reason: "Adds SMS, WhatsApp, and transactional email in one platform" },
+    ],
+    faqs: [
+      { question: "Is MailerLite free?", answer: "MailerLite has a free plan for up to 1,000 subscribers and 12,000 emails/month, including automation, landing pages, and pop-ups. Paid plans start at $9/month (Growing Business, 500 subscribers, unlimited emails) and scale with subscriber count. An Advanced plan adds priority support and custom HTML editor." },
+      { question: "MailerLite vs Mailchimp: which is better?", answer: "MailerLite is better if you're price-sensitive — it's significantly cheaper than Mailchimp at most subscriber tiers and includes automation in lower plans where Mailchimp charges more. Mailchimp has more third-party integrations, more brand recognition, and slightly more advanced reporting. For most small businesses and bloggers, MailerLite offers better value." },
+      { question: "Is MailerLite good for beginners?", answer: "Yes, MailerLite is one of the most beginner-friendly email marketing platforms. The drag-and-drop editor is intuitive, setup is quick, and the free plan is generous enough to get started without a credit card. The platform also offers strong onboarding resources and responsive customer support." },
+    ],
+  },
+
+  "substack": {
+    description:
+      "Substack is a publishing platform that lets writers, journalists, and creators monetize their work through paid newsletter subscriptions. Founded in 2017 in San Francisco, Substack has become the leading home for independent journalism, opinion writing, and niche expertise — hosting notable writers like Glenn Greenwald, Heather Cox Richardson, and hundreds of journalists who left traditional media. The platform's model is simple: free to use, Substack takes 10% of paid subscription revenue plus Stripe processing fees. There are no monthly charges regardless of subscriber count. Substack handles payment processing, subscriber management, email delivery, and a built-in discovery network that helps new readers find writers. In 2023, Substack launched Notes (a Twitter-like feed) and has continued expanding into video, podcasting, and chat. The platform now hosts over 35 million active subscribers paying for content. Substack is purpose-built for subscription publishing — it's not a general email marketing tool — making it ideal for independent writers but limited for businesses needing CRM, automation, or e-commerce features.",
+    highlights: ["35M+ active paying subscribers", "Free to use — 10% revenue share only", "Built-in discovery network for audience growth", "Notes, podcast, video, and chat built-in"],
+    category: "software",
+    alternatives: [
+      { name: "ConvertKit", slug: "convertkit", reason: "More email marketing control, lower fees at scale" },
+      { name: "Beehiiv", slug: "beehiiv", reason: "Better analytics, referral program, and lower fees" },
+      { name: "Ghost", slug: "ghost", reason: "Self-hosted, no revenue share, full ownership" },
+      { name: "Mailchimp", slug: "mailchimp", reason: "More marketing features, better for non-publishers" },
+      { name: "Patreon", slug: "patreon", reason: "Better for multimedia creators, membership tiers" },
+      { name: "Medium", slug: "medium", reason: "Built-in audience but less monetization control" },
+    ],
+    faqs: [
+      { question: "How much does Substack take?", answer: "Substack charges 10% of paid subscription revenue plus Stripe's processing fee (typically 2.9% + $0.30 per transaction). There are no monthly fees — you only pay when you earn. On $10,000/month in subscription revenue, Substack would take $1,000 plus Stripe fees (~$290-320), leaving roughly $8,700." },
+      { question: "Substack vs ConvertKit: which is better for newsletters?", answer: "Substack is better for independent writers who want to focus purely on publishing and monetization with zero upfront cost. ConvertKit gives more control over email automation, subscriber segmentation, and digital product sales, with lower fees at scale. Substack's 10% cut becomes expensive as revenue grows — many large newsletters migrate to ConvertKit or Ghost." },
+      { question: "Can you make money on Substack?", answer: "Yes, many writers earn significant income on Substack. The platform reports hundreds of writers earning over $100,000/year. Success depends on building an engaged audience willing to pay for your specific expertise or perspective. The free tier lets you grow your list before launching paid subscriptions." },
+    ],
+  },
+
+  "dashlane": {
+    description:
+      "Dashlane is a premium password manager known for its polished user experience and unique built-in VPN feature that distinguishes it from competitors. Founded in 2009 in Paris and New York, Dashlane has evolved from a consumer password manager into a business-focused identity security platform. The consumer app stores passwords, secure notes, payment cards, and IDs with AES-256 encryption and zero-knowledge architecture. Dashlane's standout feature is its integrated VPN (powered by Hotspot Shield), included with Premium at no extra cost — making it a two-in-one privacy tool. Dashlane's breach monitoring continuously scans the dark web for your email addresses and alerts you when credentials are compromised. The password changer feature can automatically update weak or breached passwords on supported sites. Dashlane Business focuses on team password management with admin controls, SSO integration, and a security dashboard. The free plan is limited to 25 passwords on one device. Premium costs $4.99/month and includes unlimited passwords, VPN, dark web monitoring, and secure sharing. Business plans start at $8/user/month.",
+    highlights: ["Built-in VPN (Hotspot Shield) included with Premium", "Dark web monitoring and breach alerts", "Automatic password changer on 300+ sites", "Zero-knowledge architecture"],
+    category: "software",
+    alternatives: [
+      { name: "1Password", slug: "1password", reason: "Better UX, Travel Mode, no VPN but stronger security focus" },
+      { name: "Bitwarden", slug: "bitwarden", reason: "Open-source, free unlimited devices, no VPN" },
+      { name: "LastPass", slug: "lastpass", reason: "More affordable, though suffered 2022 breach" },
+      { name: "Keeper", slug: "keeper", reason: "Better compliance features for enterprises" },
+      { name: "NordPass", slug: "nordpass", reason: "From NordVPN team, competitive pricing" },
+      { name: "NordVPN", slug: "nordvpn", reason: "If you primarily need VPN rather than password management" },
+    ],
+    faqs: [
+      { question: "Does Dashlane include a VPN?", answer: "Yes, Dashlane Premium includes a built-in VPN powered by Hotspot Shield at no extra cost. While not as feature-rich as dedicated VPN services like NordVPN, it provides encrypted browsing on public Wi-Fi and basic privacy protection — a genuine added value over competitors like 1Password and Bitwarden." },
+      { question: "How much does Dashlane cost?", answer: "Dashlane's free plan allows 25 passwords on 1 device. Premium is $4.99/month (billed annually) with unlimited passwords, VPN, dark web monitoring, and multi-device sync. Friends & Family covers up to 10 accounts for $7.49/month. Business plans start at $8/user/month." },
+      { question: "Is Dashlane safe?", answer: "Dashlane uses AES-256 encryption with a zero-knowledge architecture — they cannot access your master password or vault contents. The platform has not suffered a major breach. For enterprise users, Dashlane Business adds SSO, SCIM provisioning, and detailed security reporting." },
+    ],
+  },
+
+  "dropbox": {
+    description:
+      "Dropbox is one of the pioneers of cloud file storage and synchronization, founded in 2007 by Drew Houston and Arash Ferdowsi and credited with popularizing the concept of seamless file sync across devices. At its peak, Dropbox was used by over 700 million registered users and became one of the fastest-growing software companies in history. Today, Dropbox has evolved beyond simple file storage into a broader collaboration platform with Dropbox Paper (collaborative documents), Dropbox Sign (e-signatures, formerly HelloSign), and AI-powered search and organization features. The desktop sync client remains class-leading — fast, reliable, and with selective sync that doesn't consume unnecessary local storage. Dropbox Business added admin controls, unlimited storage options, and team collaboration features. However, Dropbox faces intense competition from Google Drive, Microsoft OneDrive, and iCloud, all of which are bundled with popular platforms at zero marginal cost. Free plans are limited to 2GB. Plus is $11.99/month (2TB), Professional is $19.99/month (3TB), and Business plans start at $15/user/month.",
+    highlights: ["Pioneer of cloud sync — 15+ year track record", "Class-leading desktop sync client", "Dropbox Sign e-signatures built-in", "AI-powered search and organization"],
+    category: "software",
+    alternatives: [
+      { name: "Google Drive", slug: "google-drive", reason: "15GB free, deep Google Workspace integration" },
+      { name: "OneDrive", slug: "onedrive", reason: "Included with Microsoft 365, deep Windows integration" },
+      { name: "iCloud Drive", slug: "icloud", reason: "Best for Apple ecosystem users, 5GB free" },
+      { name: "Box", slug: "box", reason: "Better enterprise compliance and content management" },
+      { name: "pCloud", slug: "pcloud", reason: "Lifetime storage plans available, strong privacy" },
+      { name: "Sync.com", slug: "sync-com", reason: "End-to-end encrypted, privacy-focused" },
+    ],
+    faqs: [
+      { question: "Is Dropbox free?", answer: "Dropbox has a free Basic plan with 2GB of storage — significantly less than Google Drive (15GB) or OneDrive (5GB with Microsoft 365). For more storage, Plus is $11.99/month (2TB), Professional is $19.99/month (3TB). Business plans start at $15/user/month with 9TB+ shared storage." },
+      { question: "Is Dropbox better than Google Drive?", answer: "Dropbox has a better desktop sync client and works more smoothly across different operating systems. Google Drive offers much more free storage (15GB vs 2GB), better real-time collaboration in Google Docs, and tighter integration with Gmail and Calendar. For most users already in the Google ecosystem, Drive is the better value." },
+      { question: "Is Dropbox safe?", answer: "Dropbox encrypts files at rest (AES-256) and in transit (TLS). However, Dropbox holds the encryption keys, meaning they can theoretically access your files. For maximum privacy, services like Sync.com or pCloud offer zero-knowledge encryption where only you hold the keys." },
+    ],
+  },
+
+  "zoho-crm": {
+    description:
+      "Zoho CRM is a comprehensive customer relationship management platform that is part of the broader Zoho suite of 50+ business applications. Founded in 1996 (originally as AdventNet), Zoho has built one of the most complete business software ecosystems available, and Zoho CRM sits at its center. The CRM handles contact and lead management, sales pipeline, workflow automation, email marketing, and customer support — with deep integrations across Zoho Books, Zoho Desk, Zoho Campaigns, and other Zoho products. What makes Zoho CRM compelling is value: feature-for-feature, it undercuts Salesforce and HubSpot significantly. The free plan supports up to 3 users with core CRM features. Standard is $14/user/month, Professional $23/user/month, and Enterprise $40/user/month. Zoho's AI assistant Zia predicts deal closure probability, detects anomalies, and suggests the best time to contact prospects. Zoho CRM also supports extensive customization — custom modules, fields, layouts, and views. For companies already using Zoho Books, Zoho Mail, or Zoho Projects, the integration is seamless. Over 250,000 businesses globally use Zoho CRM.",
+    highlights: ["Part of 50+ app Zoho ecosystem", "Free plan for up to 3 users", "AI assistant Zia for deal intelligence", "250,000+ businesses worldwide"],
+    category: "software",
+    alternatives: [
+      { name: "HubSpot", slug: "hubspot", reason: "Better free CRM, stronger marketing automation" },
+      { name: "Salesforce", slug: "salesforce", reason: "More powerful for enterprise, larger ecosystem" },
+      { name: "Pipedrive", slug: "pipedrive", reason: "Simpler pipeline-focused CRM with better UX" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "Better email automation combined with CRM" },
+      { name: "Monday.com", slug: "monday-com", reason: "More visual, flexible for non-traditional sales workflows" },
+      { name: "Freshsales", slug: "freshsales", reason: "Modern UI, built-in phone, similar Freshworks ecosystem" },
+    ],
+    faqs: [
+      { question: "Is Zoho CRM free?", answer: "Zoho CRM has a free plan for up to 3 users with leads, contacts, accounts, deals, and basic workflow rules. Paid plans start at $14/user/month (Standard) with email insights and scoring rules, $23/user/month (Professional) with inventory management and Google Ads integration, and $40/user/month (Enterprise) with Zia AI and advanced customization." },
+      { question: "Zoho CRM vs HubSpot: which is better?", answer: "HubSpot's free CRM is more generous than Zoho's and its marketing automation is industry-leading. Zoho CRM is better for businesses that want more features at lower cost or are already using other Zoho apps — the ecosystem integration is a major advantage. HubSpot scales more expensively; Zoho remains affordable even at higher tiers." },
+      { question: "Is Zoho CRM good for small businesses?", answer: "Yes, Zoho CRM is excellent for small businesses. The free plan covers core needs for teams up to 3, and the Standard plan at $14/user/month is very affordable. The Zoho ecosystem integration means a small business can run CRM, accounting, email, and support from a single vendor at a fraction of best-of-breed alternatives." },
+    ],
+  },
+
+  "wave": {
+    description:
+      "Wave is a free accounting and invoicing platform designed for freelancers, consultants, and micro-businesses that need professional financial tools without a monthly subscription. Founded in 2010 in Toronto and acquired by H&R Block in 2019, Wave offers truly free core accounting — general ledger, income and expense tracking, financial reports, and unlimited invoicing — funded by optional paid add-ons. Wave's invoicing is clean and professional, supporting recurring invoices, automatic payment reminders, and online payment acceptance via Stripe and PayPal (which carry standard processing fees). The free plan has no user limits, no transaction limits, and no feature tiers for accounting. Wave Payroll is a paid add-on at $20/month base plus $6/employee/month in self-service states. Wave Advisors offers access to bookkeeping and accounting professionals. In 2023, Wave launched Wave Money, a small business bank account with a debit card. The platform's primary limitation is that it lacks inventory management, time tracking, and project-based billing — features that FreshBooks and QuickBooks handle. It's also less suited for businesses with complex needs or multiple currencies.",
+    highlights: ["Accounting and invoicing completely free", "No user limits or transaction limits", "Professional invoices with online payment", "Wave Payroll, Advisors, and Wave Money as add-ons"],
+    category: "software",
+    alternatives: [
+      { name: "FreshBooks", slug: "freshbooks", reason: "Better for service businesses with time tracking and projects" },
+      { name: "QuickBooks", slug: "quickbooks", reason: "More features, inventory, payroll, better for growing businesses" },
+      { name: "Xero", slug: "xero", reason: "Better for businesses needing full accounting with multiple users" },
+      { name: "Zoho Books", slug: "zoho-books", reason: "More features than Wave, competitive pricing" },
+      { name: "HoneyBook", slug: "honeybook", reason: "Better for creative professionals with contracts and proposals" },
+      { name: "Bonsai", slug: "bonsai", reason: "Combines contracts, invoicing, and time tracking for freelancers" },
+    ],
+    faqs: [
+      { question: "Is Wave accounting really free?", answer: "Yes, Wave's core accounting (income/expense tracking, financial reports, bank reconciliation) and invoicing (unlimited invoices, clients, and items) are completely free with no transaction limits or user caps. Wave earns revenue from payment processing fees (2.9% + $0.60 for credit cards) and optional paid products like Payroll." },
+      { question: "Wave vs QuickBooks: which is better?", answer: "Wave is better for freelancers and micro-businesses with simple finances who want zero monthly cost. QuickBooks is better for businesses that need payroll integration, inventory management, time tracking, job costing, or have more complex accounting needs. As a business grows, most outgrow Wave's limitations." },
+      { question: "Is Wave good for freelancers?", answer: "Wave is one of the best options for freelancers. It's free, professional-looking invoices are easy to create and send, automatic payment reminders save time, and online payment acceptance via credit card or bank transfer is built in. The main limitation is lack of time tracking — freelancers who bill hourly may prefer FreshBooks." },
+    ],
+  },
+
+  "ghost": {
+    description:
+      "Ghost is an open-source publishing platform built specifically for professional content creators, bloggers, and media companies. Founded in 2013 by John O'Nolan (former WordPress deputy head of UX) via a $300,000 Kickstarter campaign, Ghost was created as a focused, fast alternative to WordPress that did one thing — publishing — extremely well. Ghost is run as a non-profit foundation, ensuring the platform remains independent and mission-driven. The platform handles blogging, newsletters, paid memberships, and podcasting in a single tool. Ghost's editor is minimal and distraction-free, and the platform is built natively on Node.js for performance. Subscribers can be free or paid, with Ghost integrating directly with Stripe for subscription payments — taking 0% of revenue (unlike Substack's 10% cut). Ghost(Pro), the managed hosting service, starts at $9/month (Starter, 500 members) and scales to $199/month (Business, 10,000 members). Self-hosted Ghost is completely free. The platform is particularly popular with independent journalists, media brands, and creators who want full ownership and control without revenue sharing.",
+    highlights: ["0% revenue share — keep all subscription income", "Open-source and non-profit governed", "Native memberships, newsletters, and podcasting", "Ghost(Pro) starts at $9/month or self-host free"],
+    category: "software",
+    alternatives: [
+      { name: "Substack", slug: "substack", reason: "Larger built-in discovery network, zero setup required" },
+      { name: "WordPress", slug: "wordpress", reason: "More plugins and customization for complex sites" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better email automation and creator commerce tools" },
+      { name: "Webflow", slug: "webflow", reason: "Better for custom-designed marketing and content sites" },
+      { name: "Medium", slug: "medium", reason: "Built-in audience but limited monetization and ownership" },
+      { name: "Squarespace", slug: "squarespace", reason: "Easier to set up with more design templates" },
+    ],
+    faqs: [
+      { question: "Is Ghost free?", answer: "Ghost the open-source software is free to download and self-host — you only pay for your own server (typically $5–$20/month on DigitalOcean or similar). Ghost(Pro), the managed hosting service, starts at $9/month for 500 members. There are no transaction fees or revenue sharing on any plan." },
+      { question: "Ghost vs Substack: which is better?", answer: "Ghost is better for established creators who want full ownership, no revenue sharing (Substack takes 10%), and a custom domain. Substack is better for writers just starting out who want instant access to a built-in discovery network and zero upfront cost — you only pay when you earn. Ghost requires more setup; Substack is zero-friction." },
+      { question: "What is Ghost used for?", answer: "Ghost is used for blogs, newsletters, paid membership sites, and independent publications. It handles content publishing, email newsletters, paid subscriptions (via Stripe), and basic analytics in one platform. It's popular with independent journalists, newsletter writers, and media brands that want a professional publishing platform without the bloat of WordPress." },
+    ],
+  },
 };
