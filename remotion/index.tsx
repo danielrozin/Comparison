@@ -7,6 +7,7 @@ import {
   getTotalFrames,
 } from "./ComparisonVideo";
 import { ComparisonVideoXL, getXLTotalFrames } from "./ComparisonVideoXL";
+import { ComparisonVideoV2, getV2TotalFrames } from "./ComparisonVideoV2";
 
 const DEFAULT_PROPS: ComparisonVideoProps = {
   title: "BMW vs Mercedes-Benz",
@@ -72,6 +73,26 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={1080}
         height={1920}
+        defaultProps={DEFAULT_PROPS}
+      />
+      {/* V2 preview — upgraded visuals (vertical 1080x1920) */}
+      <Composition
+        id="ComparisonVideoV2"
+        component={ComparisonVideoV2}
+        durationInFrames={getV2TotalFrames()}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        defaultProps={DEFAULT_PROPS}
+      />
+      {/* V2 preview — landscape variant */}
+      <Composition
+        id="ComparisonVideoV2Landscape"
+        component={ComparisonVideoV2}
+        durationInFrames={getV2TotalFrames()}
+        fps={FPS}
+        width={1920}
+        height={1080}
         defaultProps={DEFAULT_PROPS}
       />
     </>

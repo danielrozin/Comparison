@@ -305,11 +305,12 @@ async function renderVideo(slug, data) {
   }
 
   const FPS = 30;
-  const totalFrames = FPS * 4 + FPS * 5 + FPS * 7 + FPS * 8 + FPS * 7 + FPS * 5; // 36s
+  // V2 durations: intro 4 + quick answer 5 + key diffs 8 + full comparison 9 + pros/cons 8 + verdict 6 = 40s
+  const totalFrames = FPS * 4 + FPS * 5 + FPS * 8 + FPS * 9 + FPS * 8 + FPS * 6;
 
   const composition = await selectComposition({
     serveUrl: bundledUrl,
-    id: "ComparisonVideo",
+    id: "ComparisonVideoV2",
     inputProps: data,
   });
   composition.durationInFrames = totalFrames;

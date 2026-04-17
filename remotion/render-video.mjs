@@ -54,27 +54,28 @@ const bundled = await bundle({
   webpackOverride: (config) => config,
 });
 
-// Section durations (must match component files)
+// Section durations (V2 is now the canonical style)
 const FPS = 30;
 const compositionId = xlMode
   ? "ComparisonVideoXL"
   : landscape
-    ? "ComparisonVideoLandscape"
-    : "ComparisonVideo";
+    ? "ComparisonVideoV2Landscape"
+    : "ComparisonVideoV2";
 
-const STANDARD_DURATIONS = {
-  intro: FPS * 4, shortAnswer: FPS * 5, keyDifferences: FPS * 7,
-  comparisonTable: FPS * 8, prosCons: FPS * 7, verdict: FPS * 5,
+// V2 durations: 4 + 5 + 8 + 9 + 8 + 6 = 40s
+const V2_DURATIONS = {
+  intro: FPS * 4, shortAnswer: FPS * 5, keyDifferences: FPS * 8,
+  comparisonTable: FPS * 9, prosCons: FPS * 8, verdict: FPS * 6,
 };
 const XL_DURATIONS = {
   intro: FPS * 5, shortAnswer: FPS * 6, keyDiff1: FPS * 6, keyDiff2: FPS * 5,
   table1: FPS * 6, table2: FPS * 6, prosCons: FPS * 8, verdict: FPS * 6,
 };
 
-const durations = xlMode ? XL_DURATIONS : STANDARD_DURATIONS;
+const durations = xlMode ? XL_DURATIONS : V2_DURATIONS;
 const totalFrames = Object.values(durations).reduce((a, b) => a + b, 0);
 
-console.log(`Mode: ${xlMode ? "XL vertical" : landscape ? "Landscape 1920x1080" : "Vertical 1080x1920"} — ${(totalFrames / FPS).toFixed(1)}s`);
+console.log(`Mode: ${xlMode ? "XL vertical" : landscape ? "V2 Landscape 1920x1080" : "V2 Vertical 1080x1920"} — ${(totalFrames / FPS).toFixed(1)}s`);
 
 // Get the composition with overridden duration and props
 const composition = await selectComposition({
