@@ -2077,4 +2077,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "What makes FullStory different from other session recording tools?", answer: "FullStory's key differentiator is that it captures and indexes every user interaction retroactively — you can search for 'sessions where users clicked the disabled button on the checkout page' even if you never set up that specific event. Other tools require you to set up recordings in advance. FullStory also offers Data Direct to send behavioral data to a data warehouse for deeper analysis." },
     ],
   },
+
+  "brevo": {
+    description:
+      "Brevo (formerly Sendinblue) is a comprehensive digital marketing platform that combines email, SMS, WhatsApp, chat, and CRM in a single tool at pricing significantly below Mailchimp and HubSpot. Rebranded from Sendinblue to Brevo in 2023, the platform serves over 500,000 businesses worldwide. Brevo's pricing model is unique — it charges by emails sent per month rather than by subscriber count, making it dramatically cheaper for businesses with large lists who don't email frequently. The free plan allows 300 emails/day to unlimited contacts, which is one of the most generous free tiers in email marketing. Paid plans start at $25/month for 20,000 emails. Brevo's feature set is broad: email campaigns, marketing automation, transactional email, SMS campaigns, WhatsApp campaigns, live chat, a CRM, and landing pages — all natively integrated. The platform is particularly popular with European businesses and non-profits due to GDPR-compliant EU data hosting. Brevo's email deliverability is strong, and the drag-and-drop builder covers professional use cases. For growing businesses that want email + SMS + CRM without paying enterprise prices, Brevo offers exceptional value.",
+    highlights: ["Priced by emails sent — not subscriber count", "Free plan: 300 emails/day to unlimited contacts", "Email + SMS + WhatsApp + CRM in one platform", "EU-hosted, GDPR-compliant"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "More templates, larger ecosystem, better for US-focused teams" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "More powerful automation and CRM for advanced users" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce revenue attribution" },
+      { name: "MailerLite", slug: "mailerlite", reason: "Similar value positioning, slightly simpler" },
+      { name: "HubSpot", slug: "hubspot", reason: "Better CRM depth, free CRM tier available" },
+      { name: "Omnisend", slug: "omnisend", reason: "Better for e-commerce with built-in product blocks" },
+    ],
+    faqs: [
+      { question: "Is Brevo free?", answer: "Brevo has a free plan with 300 emails/day (9,000/month) to unlimited contacts — significantly more generous than Mailchimp's free limit of 500 contacts. Paid plans start at $25/month for 20,000 emails/month. The Business plan adds marketing automation and advanced reporting. SMS credits are purchased separately." },
+      { question: "Why did Sendinblue rebrand to Brevo?", answer: "Sendinblue rebranded to Brevo in 2023 to reflect its evolution from an email marketing tool into a comprehensive business growth platform covering email, SMS, WhatsApp, CRM, chat, and more. The Brevo brand better communicates the platform's broader vision beyond email." },
+      { question: "Brevo vs Mailchimp: which is better?", answer: "Brevo is better for businesses with large contact lists who send infrequently — its per-email pricing model is significantly cheaper than Mailchimp's per-contact model for this use case. Mailchimp has more template variety, better integrations, and stronger brand recognition. Brevo has better built-in SMS and transactional email at lower cost." },
+    ],
+  },
+
+  "help-scout": {
+    description:
+      "Help Scout is a customer support platform designed to feel like email rather than a traditional helpdesk, making it the preferred choice for small and mid-size teams that find Zendesk too complex. Founded in 2011 in Boston, Help Scout was built on the belief that customer support should be personal — the shared inbox model means multiple team members can collaborate on customer conversations without exposing a ticket-system interface to the customer. Help Scout Docs provides a knowledge base, and Beacon is the embedded chat widget that can surface relevant articles before a visitor needs to contact support. The platform includes automated workflows, customer satisfaction ratings (CSAT), detailed reporting, and over 100 integrations. Help Scout's pricing is per-user with no per-contact charges — Standard at $22/user/month and Plus at $44/user/month. The platform serves over 12,000 businesses including Buffer, Basecamp, and GrubHub. Help Scout's focus on keeping the experience feeling like email (conversations, not tickets) reduces agent learning curves and creates warmer customer experiences, particularly valued by SaaS companies, non-profits, and B2B service businesses.",
+    highlights: ["Shared inbox that feels like email — no ticket numbers to customers", "12,000+ businesses including Buffer and Basecamp", "Docs knowledge base + Beacon chat widget included", "Standard from $22/user/month"],
+    category: "software",
+    alternatives: [
+      { name: "Zendesk", slug: "zendesk", reason: "More powerful for large teams, better automation and reporting" },
+      { name: "Freshdesk", slug: "freshdesk", reason: "Free unlimited-agent plan, similar simplicity" },
+      { name: "Intercom", slug: "intercom", reason: "Better for in-app messaging and proactive support" },
+      { name: "Front", slug: "front", reason: "Similar shared inbox for team email management" },
+      { name: "Groove", slug: "groove", reason: "Similar simplicity-focused support at lower price" },
+      { name: "HubSpot", slug: "hubspot", reason: "Free Service Hub with CRM integration" },
+    ],
+    faqs: [
+      { question: "How much does Help Scout cost?", answer: "Help Scout Standard is $22/user/month (billed annually) with 3 mailboxes, Docs, and Beacon. Plus is $44/user/month with unlimited mailboxes, advanced reporting, Salesforce integration, and custom fields. A 15-day free trial is available. Nonprofits receive a 10% discount." },
+      { question: "Help Scout vs Zendesk: which is better?", answer: "Help Scout is better for small to mid-size teams (under 50 agents) that want a simple, email-like interface with quick onboarding and a focus on personal customer relationships. Zendesk is better for large enterprises that need complex routing rules, SLA management, extensive customization, and a large integration ecosystem. Help Scout teams get up and running in hours; Zendesk implementations often take weeks." },
+      { question: "Does Help Scout show ticket numbers to customers?", answer: "No — that's by design. Help Scout conversations feel like regular email exchanges to customers, with no ticket numbers or automated responses that feel robotic. This creates a more personal support experience. Agents see all the necessary context internally, but customers experience it as a normal email conversation." },
+    ],
+  },
+
+  "beehiiv": {
+    description:
+      "Beehiiv is a newsletter platform built specifically for growth-focused publishers, offering built-in monetization, audience analytics, and a referral program that makes it the fastest-growing Substack alternative. Founded in 2021 by former Morning Brew team members Tyler Denk, Benjamin Hargett, and Jake Hurd, Beehiiv was designed from day one to help newsletters grow — not just send emails. The platform's 3D Analytics tracks opens, clicks, and subscriber growth with revenue attribution. The built-in referral program (Referral Network) lets subscribers earn rewards for bringing in new readers. Beehiiv Ad Network connects publishers with advertisers directly. Boosts allows newsletters to cross-promote each other's paid subscriptions for a revenue share. Beehiiv's free plan supports up to 2,500 subscribers with unlimited sends. The Scale plan at $99/month unlocks monetization, referrals, and advanced analytics. Unlike Substack's 10% revenue cut, Beehiiv charges a flat monthly fee with no revenue share. Publications using Beehiiv include The Milk Road, TLDR, and many Morning Brew alumni newsletters.",
+    highlights: ["No revenue share — flat monthly fee only", "Built-in referral program for organic growth", "Beehiiv Ad Network for direct monetization", "Used by Morning Brew alumni and TLDR"],
+    category: "software",
+    alternatives: [
+      { name: "Substack", slug: "substack", reason: "Larger built-in discovery network, zero upfront cost" },
+      { name: "Ghost", slug: "ghost", reason: "0% revenue share, full ownership, self-hostable" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better email automation and digital product sales" },
+      { name: "MailerLite", slug: "mailerlite", reason: "More affordable for basic newsletter sending" },
+      { name: "Mailchimp", slug: "mailchimp", reason: "More templates and integrations for general email marketing" },
+      { name: "Kajabi", slug: "kajabi", reason: "Better for courses + newsletter + community combined" },
+    ],
+    faqs: [
+      { question: "Is Beehiiv free?", answer: "Beehiiv's Launch plan is free for up to 2,500 subscribers with unlimited sends, a website, and basic analytics. The Scale plan at $99/month unlocks paid subscriptions, referral program, ad network, and advanced analytics for larger newsletters. The Max plan at $199/month adds custom domains for multiple publications and team management." },
+      { question: "Beehiiv vs Substack: which is better?", answer: "Beehiiv is better for growth-focused publishers who want to monetize without sharing revenue — Beehiiv charges flat monthly fees while Substack takes 10% of paid subscription revenue. Substack has a larger built-in discovery network and zero upfront cost, making it better for writers just starting out. Beehiiv is better for newsletters already generating revenue." },
+      { question: "Does Beehiiv take a percentage of revenue?", answer: "No — unlike Substack (10% cut) and Patreon (8%), Beehiiv charges a flat monthly subscription fee and does not take any percentage of subscription or advertising revenue. On $10,000/month in newsletter subscriptions, Beehiiv costs $99–$199/month while Substack would take $1,000." },
+    ],
+  },
+
+  "heap": {
+    description:
+      "Heap is a product analytics platform that pioneered 'auto-capture' analytics — automatically recording every user interaction (clicks, form submissions, page views, gestures) without requiring engineers to manually instrument events. Founded in 2013 in San Francisco by Matin Movassate, Heap's core insight was that product teams should be able to analyze any user behavior retroactively, even if they didn't think to track it when building the feature. This retroactive analysis capability eliminates the frustrating cycle of asking engineers to add tracking, waiting for data to accumulate, and only then being able to answer product questions. Heap was acquired by Contentsquare in 2023, the same company that owns Hotjar. The platform serves companies including Microsoft, Twilio, and Slack. Core features include Funnels, Retention, Engagement Matrix, Journey Maps, and Account-level analytics for B2B. Heap Illuminate uses machine learning to surface signals in behavioral data automatically. The free plan supports up to 10,000 sessions/month. Growth pricing is on a quote basis. The auto-capture approach significantly reduces the time-to-insight compared to manually instrumented tools like Mixpanel and Amplitude.",
+    highlights: ["Auto-capture every interaction — no manual event tracking", "Retroactive analysis of any behavior", "Acquired by Contentsquare (Hotjar's parent) in 2023", "Used by Microsoft, Twilio, and Slack"],
+    category: "software",
+    alternatives: [
+      { name: "Mixpanel", slug: "mixpanel", reason: "More mature, manual tracking gives more control" },
+      { name: "Amplitude", slug: "amplitude", reason: "Better for enterprise governance and warehouse integration" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source, combines analytics + feature flags + recordings" },
+      { name: "FullStory", slug: "fullstory", reason: "Similar retroactive capture philosophy for session intelligence" },
+      { name: "Hotjar", slug: "hotjar", reason: "Better for qualitative heatmaps and user feedback" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, better for marketing attribution" },
+    ],
+    faqs: [
+      { question: "What makes Heap different from Mixpanel?", answer: "Heap auto-captures every user interaction automatically — you don't need to add tracking code before collecting data. Mixpanel requires you to manually instrument (define) events before they're tracked. This means with Heap you can answer product questions retroactively about events that happened before you thought to track them, while Mixpanel only has data from events you instrumented in advance." },
+      { question: "Is Heap free?", answer: "Heap has a free plan supporting up to 10,000 sessions/month. Beyond that, pricing is quote-based depending on session volume and feature requirements. Heap's pricing is generally comparable to Mixpanel and Amplitude — positioned as an enterprise product with corresponding enterprise pricing." },
+      { question: "Who is Heap best for?", answer: "Heap is best for product teams at growth-stage and enterprise companies who want to analyze user behavior without relying on engineers to instrument every event. It's particularly valuable for teams that frequently discover 'we should have been tracking that' — Heap's auto-capture solves this problem by recording everything from day one." },
+    ],
+  },
+
+  "pendo": {
+    description:
+      "Pendo is a product experience platform that combines product analytics with in-app guidance — enabling product teams to understand how users engage with features and proactively guide them to value through targeted in-app messages, walkthroughs, and tooltips. Founded in 2013 in Raleigh, North Carolina by Todd Olson, Pendo serves over 10,000 customers including Salesforce, Zendesk, and Verizon. Unlike pure analytics tools (Mixpanel, Amplitude), Pendo closes the loop between insight and action — you can see that 80% of users never discover a key feature and immediately create an in-app guide to drive adoption without deploying code. Core capabilities include Feature Adoption tracking, NPS and in-app surveys, User Segmentation, Session Replay (via Pendo Adopt), and Roadmap feedback collection. Pendo Roadmap integrates user feedback directly into product planning. The platform is particularly powerful for B2B SaaS companies with complex products where user onboarding and feature adoption directly impact retention and expansion revenue. Pendo offers a free plan for up to 500 monthly active users. Paid plans scale with MAU and are enterprise-priced with custom quotes.",
+    highlights: ["10,000+ customers including Salesforce and Zendesk", "In-app guides and tooltips without code deployment", "NPS and feedback built-in to product experience", "Closes the loop from analytics to action"],
+    category: "software",
+    alternatives: [
+      { name: "Mixpanel", slug: "mixpanel", reason: "Better pure product analytics without in-app guidance" },
+      { name: "Amplitude", slug: "amplitude", reason: "More powerful analytics for enterprise data teams" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source alternative with feature flags + analytics" },
+      { name: "Appcues", slug: "appcues", reason: "Focused purely on in-app onboarding and user flows" },
+      { name: "Intercom", slug: "intercom", reason: "Better for messaging and support alongside in-app guidance" },
+      { name: "WalkMe", slug: "walkme", reason: "More powerful digital adoption platform for enterprise" },
+    ],
+    faqs: [
+      { question: "What is Pendo used for?", answer: "Pendo is used by product teams to track feature adoption, understand user behavior, deliver in-app onboarding guides and tooltips, collect NPS and feedback, and build product roadmaps based on real user data. It's particularly popular for B2B SaaS products where improving feature adoption directly reduces churn and increases expansion revenue." },
+      { question: "Is Pendo free?", answer: "Pendo offers a free plan for products with up to 500 monthly active users, including basic analytics, in-app guides, and NPS surveys. Beyond 500 MAU, Pendo requires a paid subscription with custom enterprise pricing based on MAU volume and features needed." },
+      { question: "Pendo vs Mixpanel: which is better?", answer: "Pendo is better for product teams that want both analytics and in-app action in one tool — analyzing adoption gaps and then fixing them with guides without developer involvement. Mixpanel is better for teams that need deep event analytics and funnel analysis without the in-app guidance layer. Many large companies use both." },
+    ],
+  },
+
+  "segment": {
+    description:
+      "Segment is the world's leading Customer Data Platform (CDP), enabling companies to collect user events from any source and send them to hundreds of analytics, marketing, and data tools simultaneously — eliminating the need to implement separate tracking for each tool. Founded in 2011 in San Francisco and acquired by Twilio in 2020 for $3.2 billion, Segment serves over 25,000 companies including IBM, Levi's, and DigitalOcean. The core concept is a single SDK that collects events once and routes them wherever needed — to Mixpanel for product analytics, to Salesforce for CRM, to Braze for email campaigns, and to Snowflake for data warehousing — all from one integration. This 'collect once, send anywhere' model dramatically reduces engineering overhead and ensures consistent data across all tools. Segment Unify creates unified customer profiles by resolving identities across devices and sessions. Segment Engage activates audience segments across channels. The free Developer plan allows 1,000 monthly tracked users (MTU). Team is $120/month and Business pricing is custom, scaling with MTU volume.",
+    highlights: ["Acquired by Twilio for $3.2B in 2020", "25,000+ customers including IBM and Levi's", "450+ pre-built integrations (destinations)", "Single SDK to power all your analytics and marketing tools"],
+    category: "software",
+    alternatives: [
+      { name: "Rudderstack", slug: "rudderstack", reason: "Open-source CDP alternative, lower cost at scale" },
+      { name: "Amplitude", slug: "amplitude", reason: "If you want product analytics without the CDP layer" },
+      { name: "Mixpanel", slug: "mixpanel", reason: "Direct product analytics without the data routing layer" },
+      { name: "mParticle", slug: "mparticle", reason: "Better for mobile app data collection at enterprise scale" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source analytics + CDP features in one" },
+      { name: "Google Tag Manager", slug: "google-tag-manager", reason: "Free tag management for website tracking without full CDP" },
+    ],
+    faqs: [
+      { question: "What does Segment do?", answer: "Segment collects user events (page views, clicks, purchases, signups) from your website and apps via a single SDK, then routes that data to any of 450+ integrated tools — analytics platforms, CRMs, email tools, ad networks, and data warehouses — simultaneously. Instead of implementing separate tracking for each tool, you implement Segment once." },
+      { question: "Is Segment free?", answer: "Segment's Developer plan is free for up to 1,000 monthly tracked users (MTU) with 2 data sources and access to all integrations. Team is $120/month for up to 10,000 MTU with unlimited sources. Business pricing is custom and scales with volume — enterprise contracts typically run $30,000–$150,000+/year for large organizations." },
+      { question: "Do I need Segment if I use Mixpanel?", answer: "Not necessarily. Segment is most valuable when you're sending data to 3+ tools — its 'collect once, send everywhere' model saves significant engineering time. If you only use Mixpanel (or one or two other tools), implementing Segment's SDK natively in each is often more straightforward. Segment becomes essential at scale when you need consistent data across many systems." },
+    ],
+  },
+
+  "mailgun": {
+    description:
+      "Mailgun is a developer-focused transactional email API service used by over 150,000 companies to send, receive, and track emails programmatically. Founded in 2010 and acquired by Sinch in 2021, Mailgun provides reliable email infrastructure for applications that need to send password resets, order confirmations, notifications, and other transactional messages via simple REST API calls. The platform's core strengths are its clean, well-documented API that developers can integrate in minutes, inbound email parsing (receive and parse emails to a URL), and powerful routing rules that filter and route incoming mail based on patterns. Mailgun's email validation API helps clean email lists before sending to improve deliverability. Deliverability is a key selling point — Mailgun maintains relationships with major ISPs and provides dedicated IP addresses for high-volume senders. Pricing is pay-per-email: the Flex plan is free for the first 100 emails/day (100 per month on trial, then pay-as-you-go). Foundation starts at $35/month for 50,000 emails. Scale plans go up to millions of emails monthly. Mailgun competes directly with Twilio SendGrid and Postmark.",
+    highlights: ["150,000+ companies using Mailgun", "Inbound email parsing and routing", "Email validation API to clean lists", "Pay-as-you-go pricing from $0"],
+    category: "software",
+    alternatives: [
+      { name: "SendGrid", slug: "sendgrid", reason: "More features including marketing email campaigns" },
+      { name: "Postmark", slug: "postmark", reason: "Better deliverability focus, faster delivery, simpler pricing" },
+      { name: "Amazon SES", slug: "amazon-ses", reason: "Cheapest at $0.10/1,000 emails for AWS users" },
+      { name: "Brevo", slug: "brevo", reason: "Adds SMS and marketing campaigns alongside transactional" },
+      { name: "Twilio", slug: "twilio", reason: "If you need SMS + voice alongside email in one platform" },
+      { name: "Mailchimp", slug: "mailchimp", reason: "Better for marketing campaigns rather than transactional API" },
+    ],
+    faqs: [
+      { question: "Is Mailgun free?", answer: "Mailgun's Flex plan is pay-as-you-go: 100 emails/day free during trial, then $0.80 per 1,000 emails after trial expires. Foundation is $35/month for 50,000 emails with 5-day email logs. Scale plans are $90/month (100K emails) and $250/month (500K emails) with longer log retention and dedicated IPs." },
+      { question: "Mailgun vs SendGrid: which is better?", answer: "Both are strong transactional email APIs. Mailgun is often preferred for its inbound email parsing and routing capabilities — if you need to receive and process emails programmatically, Mailgun is stronger. SendGrid is better if you need both transactional email and marketing campaigns in one platform. Pricing is similar; developer preference often comes down to API design." },
+      { question: "What is Mailgun used for?", answer: "Mailgun is used to send transactional emails from applications — password reset emails, order confirmations, shipping notifications, account alerts, and automated sequences. It's also used to receive and parse inbound emails (building email-to-ticket systems, for example) and to validate email addresses before adding them to lists." },
+    ],
+  },
+
+  "ko-fi": {
+    description:
+      "Ko-fi is a creator monetization platform that lets fans support their favorite creators through one-time 'coffees' (donations), monthly memberships, shop sales, and commissions — with the lowest fees in the creator economy. Founded in 2012 in the UK, Ko-fi operates on a 0% platform fee model for most transactions (Stripe and PayPal processing fees still apply), meaning creators keep the vast majority of what they earn. The name 'Ko-fi' comes from the idea of fans buying a creator a coffee as a small token of appreciation. Ko-fi's simplicity is its strength — a creator can set up a page and start receiving support in minutes. Beyond simple donations, Ko-fi supports monthly memberships (similar to Patreon tiers), a built-in shop for digital and physical products, commission requests for custom creative work, and stream alerts for live streaming. Ko-fi Gold, at $6/month or $72/year, removes Ko-fi branding and adds 0% fees on memberships (free tier has 5% membership fee). Ko-fi is used by over 700,000 creators worldwide — particularly popular with artists, illustrators, writers, and game developers in the independent creator community.",
+    highlights: ["0% platform fee on donations (with Gold: 0% on memberships)", "700,000+ creators worldwide", "Shop, commissions, memberships, and donations in one page", "Gold plan at $6/month — lowest cost creator platform"],
+    category: "software",
+    alternatives: [
+      { name: "Patreon", slug: "patreon", reason: "Larger platform with more discovery, 8% fee" },
+      { name: "Buy Me a Coffee", slug: "buy-me-a-coffee", reason: "Similar model, 5% fee on transactions" },
+      { name: "Substack", slug: "substack", reason: "Better for newsletter-first creators with paid subscriptions" },
+      { name: "Ghost", slug: "ghost", reason: "Better for serious publishers wanting full ownership" },
+      { name: "Gumroad", slug: "gumroad", reason: "Better for digital product sales with higher volume" },
+      { name: "Beehiiv", slug: "beehiiv", reason: "Better for newsletter growth with referral program" },
+    ],
+    faqs: [
+      { question: "Does Ko-fi take a percentage?", answer: "Ko-fi charges 0% on one-time donations and shop sales — you only pay standard Stripe (2.9% + $0.30) or PayPal processing fees. Memberships on the free Ko-fi account have a 5% Ko-fi fee; Ko-fi Gold ($6/month or $72/year) removes this to 0%. This makes Ko-fi the lowest-cost creator platform for most use cases." },
+      { question: "Ko-fi vs Patreon: which is better?", answer: "Ko-fi is better for creators who prioritize keeping more of their earnings — 0% fees vs Patreon's 8% cut makes a significant difference at scale. Patreon is better for creators who want a larger built-in discovery network and more established patron expectations. Ko-fi's simpler interface also suits creators who want a low-maintenance support page without managing complex tier structures." },
+      { question: "What is Ko-fi used for?", answer: "Ko-fi is used by artists, illustrators, writers, game developers, podcasters, and streamers to receive fan support without a middleman taking a large cut. Use cases include one-time donations, monthly memberships with exclusive content, selling digital art or prints, taking commission requests for custom work, and receiving stream tips during live broadcasts." },
+    ],
+  },
 };
