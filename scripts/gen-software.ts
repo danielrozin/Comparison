@@ -76,6 +76,57 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // Code Hosting
+  ["GitHub", "GitLab"],
+  ["GitHub", "Bitbucket"],
+  ["GitLab", "Bitbucket"],
+  // Deployment
+  ["Vercel", "Netlify"],
+  // Productivity Suites
+  ["Microsoft 365", "Google Workspace"],
+  // Analytics
+  ["Mixpanel", "Amplitude"],
+  ["Hotjar", "Microsoft Clarity"],
+  ["Google Analytics", "Plausible"],
+  ["Google Analytics", "Matomo"],
+  ["Mixpanel", "PostHog"],
+  // SEO
+  ["Ahrefs", "Semrush"],
+  // Customer Support
+  ["Zendesk", "Freshdesk"],
+  ["Intercom", "Zendesk"],
+  ["Help Scout", "Zendesk"],
+  // Publishing/Creator
+  ["Ghost", "Substack"],
+  ["Beehiiv", "Substack"],
+  ["Ghost", "WordPress"],
+  // Email Marketing
+  ["Mailchimp", "Brevo"],
+  ["MailerLite", "Mailchimp"],
+  ["SendGrid", "Mailchimp"],
+  // Scheduling
+  ["Calendly", "Acuity Scheduling"],
+  // Task Management
+  ["Todoist", "Asana"],
+  ["Todoist", "ClickUp"],
+  ["Basecamp", "Asana"],
+  ["Smartsheet", "Monday.com"],
+  // Collaboration
+  ["Miro", "FigJam"],
+  // Notes/Docs
+  ["Evernote", "Notion"],
+  // Storage
+  ["Dropbox", "Google Drive"],
+  // Payments
+  ["PayPal", "Stripe"],
+  // Automation
+  ["Zapier", "Make"],
+  // No-code DB
+  ["Airtable", "Notion"],
+  ["Airtable", "Monday.com"],
+  // Video
+  ["Loom", "Zoom"],
+  ["Descript", "Adobe Premiere"],
 ];
 
 function makeSlug(a: string, b: string): string {
