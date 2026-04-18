@@ -2397,4 +2397,213 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is Smartsheet just a spreadsheet?", answer: "Smartsheet looks like a spreadsheet but is a full work management platform. Beyond grid data, it adds Gantt chart views, Kanban boards, calendar views, automated workflows (approve, alert, lock rows), approval processes, dashboards that aggregate data across sheets, and WorkApps for building no-code applications on top of sheet data." },
     ],
   },
+
+  "bluehost": {
+    description: "Bluehost is a web hosting company founded in 2003 and headquartered in Orem, Utah, now owned by Newfold Digital. It is one of the largest web hosting providers in the world, hosting over 2 million websites and being officially recommended by WordPress.org since 2005. Bluehost specializes in WordPress hosting and offers shared hosting, VPS, dedicated servers, and managed WordPress plans. Its entry-level shared hosting starts at around $2.95/month (promotional) making it one of the most affordable hosts for beginners. Bluehost provides a free domain for the first year, free SSL certificate, one-click WordPress installation, and 24/7 phone and live chat support. Its control panel is a customized cPanel interface that simplifies site management. The company powers millions of WordPress sites and integrates deeply with the WordPress ecosystem including WooCommerce for e-commerce. Bluehost's managed WordPress plans (WP Pro) add staging environments, automatic backups, and performance optimization. Despite affordable pricing, renewal rates are significantly higher, and performance can vary on shared hosting plans during high-traffic periods.",
+    highlights: ["Officially recommended by WordPress.org since 2005", "Free domain + SSL included for first year", "24/7 phone support — rare among budget hosts", "Hosts 2M+ websites globally"],
+    category: "software",
+    alternatives: [
+      { name: "SiteGround", slug: "siteground", reason: "Better performance and managed WordPress experience" },
+      { name: "Hostinger", slug: "hostinger", reason: "Cheaper pricing with comparable features" },
+      { name: "WP Engine", slug: "wp-engine", reason: "Premium managed WordPress with best-in-class speed" },
+      { name: "GoDaddy", slug: "godaddy", reason: "Better domain management and website builder tools" },
+      { name: "Namecheap", slug: "namecheap", reason: "Lower renewal rates with solid WordPress hosting" },
+      { name: "Kinsta", slug: "kinsta", reason: "Cloud-based WordPress hosting with Google Cloud infrastructure" },
+    ],
+    faqs: [
+      { question: "Is Bluehost good for WordPress?", answer: "Bluehost is a solid choice for WordPress beginners. It's officially recommended by WordPress.org, offers one-click installation, and bundles a free domain and SSL. However, entry pricing is promotional — renewal rates jump to $10–$18/month. For performance-sensitive WordPress sites, managed hosts like SiteGround or WP Engine offer better speed and automatic updates." },
+      { question: "How much does Bluehost cost?", answer: "Bluehost Basic shared hosting starts at $2.95/month for a 36-month term (promotional). Renewal is ~$10.99/month. Choice Plus (most popular) starts at $5.45/month promotional, renews at ~$18.99/month. Managed WordPress Pro plans start at $9.95/month. All plans include a free domain for year one and free SSL." },
+      { question: "Bluehost vs SiteGround: which should I choose?", answer: "Choose Bluehost if you're a beginner on a budget who wants 24/7 phone support and a simple WordPress setup. Choose SiteGround if performance matters more — SiteGround uses Google Cloud infrastructure, offers staging, daily backups, and generally better uptime. SiteGround is pricier but delivers a noticeably faster experience for growing sites." },
+    ],
+  },
+
+  "hostinger": {
+    description: "Hostinger is a web hosting company founded in 2004 and headquartered in Kaunas, Lithuania, serving over 3 million customers in 178 countries. It has established itself as one of the most affordable web hosting providers globally, offering shared hosting plans starting at $1.99/month — among the cheapest in the industry — while maintaining above-average performance. Hostinger operates its own proprietary control panel (hPanel) instead of cPanel, which provides a clean, beginner-friendly interface for domain management, email accounts, file management, and database administration. The company offers shared hosting, WordPress hosting, VPS, cloud hosting, and a website builder (Zyro). Hostinger's LiteSpeed-powered servers with LSCWP caching deliver faster page loads than many budget competitors. Free SSL certificates, weekly backups on entry plans (daily on higher tiers), and a 30-day money-back guarantee are standard. Hostinger has grown rapidly by focusing on developer-friendly features — SSH access, Git integration, and Node.js support — at budget pricing. The main trade-offs are limited live phone support and higher renewal costs (still competitive relative to peers).",
+    highlights: ["Plans from $1.99/month — among cheapest globally", "LiteSpeed servers for above-average performance", "Proprietary hPanel with 1-click installer", "3M+ customers in 178 countries"],
+    category: "software",
+    alternatives: [
+      { name: "Bluehost", slug: "bluehost", reason: "WordPress.org recommended with 24/7 phone support" },
+      { name: "Namecheap", slug: "namecheap", reason: "Competitive pricing with solid domain + hosting bundles" },
+      { name: "SiteGround", slug: "siteground", reason: "Premium performance and WordPress management tools" },
+      { name: "GoDaddy", slug: "godaddy", reason: "Larger brand with strong domain and website builder ecosystem" },
+      { name: "WP Engine", slug: "wp-engine", reason: "Best managed WordPress performance at higher price point" },
+      { name: "Kinsta", slug: "kinsta", reason: "Google Cloud-based managed WordPress hosting" },
+    ],
+    faqs: [
+      { question: "Is Hostinger reliable enough for a business website?", answer: "Hostinger guarantees 99.9% uptime and performs well for small-to-medium websites. Its LiteSpeed servers with caching make page loads competitive even on shared plans. For high-traffic or mission-critical business sites, consider their Business shared or cloud plans. The main limitations are slower live support response times and the fact that daily backups are only included on Business plans and above." },
+      { question: "How much does Hostinger cost?", answer: "Hostinger Single shared hosting starts at $1.99/month (48-month term). Premium starts at $2.99/month supporting up to 100 websites with 100GB storage. Business is $3.99/month with daily backups and better performance. Renewal rates are higher but still competitive — typically $6.99–$9.99/month. All plans include a free SSL certificate." },
+      { question: "Hostinger vs Bluehost: which is better?", answer: "Hostinger wins on price — plans are generally cheaper even at renewal. Bluehost wins on WordPress ecosystem integration (officially recommended by WordPress.org) and 24/7 phone support. Hostinger's LiteSpeed servers often match or beat Bluehost's performance on shared hosting. Choose Hostinger for budget priority; choose Bluehost if you want phone support and a more established WordPress reputation." },
+    ],
+  },
+
+  "godaddy": {
+    description: "GoDaddy is the world's largest domain registrar and a major web hosting provider, founded in 1997 and headquartered in Tempe, Arizona. It manages over 84 million domain names and serves more than 21 million customers globally. GoDaddy is best known for domain registration — it offers the widest selection of TLDs and competitive first-year pricing. Beyond domains, GoDaddy provides web hosting, managed WordPress hosting, website builder (GoDaddy Website Builder/Stores), email hosting, SSL certificates, and online marketing tools. The company acquired Poynt in 2021 and Pagely in 2021 to expand in e-commerce and managed WordPress. GoDaddy's website builder is designed for small businesses that want an all-in-one platform with e-commerce, SEO tools, and social media integration built in. Its hosting performance on shared plans is adequate but not exceptional. GoDaddy's primary strengths are brand recognition, domain ecosystem, and the breadth of services under one account. Renewal prices can be significantly higher than the promotional first-year rates — a common criticism — and its upsell-heavy checkout process is a frequent complaint from users.",
+    highlights: ["Largest domain registrar — 84M+ domains managed", "21M+ customers worldwide across 50+ countries", "All-in-one: domains, hosting, email, website builder", "Extensive TLD selection including rare extensions"],
+    category: "software",
+    alternatives: [
+      { name: "Namecheap", slug: "namecheap", reason: "Cheaper domain renewal rates with less upselling" },
+      { name: "Bluehost", slug: "bluehost", reason: "Better WordPress hosting with more transparent pricing" },
+      { name: "Hostinger", slug: "hostinger", reason: "More affordable hosting with better server performance" },
+      { name: "Squarespace", slug: "squarespace", reason: "Better website builder for design-focused businesses" },
+      { name: "Wix", slug: "wix", reason: "More intuitive drag-and-drop site builder" },
+      { name: "Cloudflare", slug: "cloudflare", reason: "Better DNS management and domain security tools" },
+    ],
+    faqs: [
+      { question: "Is GoDaddy good for domain registration?", answer: "GoDaddy is the world's largest domain registrar and a reliable choice for domain registration. First-year pricing is often very competitive (.com from $0.99–$12.99). The key downside is renewal rates, which jump significantly (typically $18–$22/year for .com). Namecheap and Porkbun offer lower renewal rates if cost is the primary concern. GoDaddy's advantage is the largest selection of domain extensions and a mature management interface." },
+      { question: "How much does GoDaddy hosting cost?", answer: "GoDaddy shared hosting starts at $5.99/month for Economy (1 website), $7.99/month for Deluxe (unlimited websites), and $12.99/month for Ultimate with better performance. Managed WordPress starts at $9.99/month. All prices are for annual billing; renewal rates are similar but promotional first-term discounts are common. Domain registration is separate ($12–$22/year for .com at renewal)." },
+      { question: "GoDaddy vs Namecheap: which is better for domains?", answer: "Namecheap is generally better for domain registration on a budget — renewal rates are lower ($13–$15/year for .com vs $18–$22 at GoDaddy) and the checkout process has less aggressive upselling. GoDaddy is better if you want to manage everything (domains, hosting, email, website builder) under one account with extensive TLD choices and strong customer support. Both are reliable registrars with good DNS management." },
+    ],
+  },
+
+  "namecheap": {
+    description: "Namecheap is a domain registrar and web hosting company founded in 2000 and headquartered in Phoenix, Arizona. It is one of the most popular domain registrars among developers and cost-conscious users, managing over 16 million domains. Namecheap built its reputation on transparent, low-cost domain registration with competitive renewal rates — a stark contrast to GoDaddy's aggressive upselling and higher renewal prices. Domain .com registration starts at ~$9.58/year with renewals around $13.98/year. Beyond domains, Namecheap offers shared hosting, WordPress hosting, VPS, dedicated servers, managed cloud (EasyWP), and email hosting (Private Email). Namecheap includes free WhoisGuard privacy protection on all domains — a paid add-on at many registrars. Its shared hosting uses cPanel and LiteSpeed servers with solid-state drives. The company has strong customer support via live chat and a knowledge base. Namecheap has also been vocal about domain privacy rights and internet freedom, which resonates with the developer community. While not the absolute cheapest hosting option, its value proposition combining domains + privacy + hosting under one transparent-pricing account makes it a developer favorite.",
+    highlights: ["16M+ domains under management — major global registrar", "Free WhoisGuard privacy included on all domains", ".com renewals ~$13.98/year — significantly below GoDaddy", "LiteSpeed servers with cPanel on hosting plans"],
+    category: "software",
+    alternatives: [
+      { name: "GoDaddy", slug: "godaddy", reason: "Larger ecosystem with more domain extensions and services" },
+      { name: "Hostinger", slug: "hostinger", reason: "Lower hosting prices with hPanel management" },
+      { name: "Bluehost", slug: "bluehost", reason: "WordPress.org recommended with 24/7 phone support" },
+      { name: "Cloudflare", slug: "cloudflare", reason: "At-cost domain registration with free CDN/DNS" },
+      { name: "Porkbun", slug: "porkbun", reason: "Even lower domain renewal prices with free privacy" },
+      { name: "Google Domains", slug: "google-domains", reason: "Clean interface with transparent renewal pricing" },
+    ],
+    faqs: [
+      { question: "Is Namecheap reliable for domain registration?", answer: "Namecheap is one of the most reliable domain registrars available, with 20+ years of operation and 16 million domains under management. It offers transparent pricing, free WhoisGuard privacy, and a clean management interface. Uptime for DNS is excellent. The main limitation versus GoDaddy is fewer exotic TLD options, but for standard extensions (.com, .net, .org, .io) Namecheap is a top-tier choice." },
+      { question: "How much does Namecheap hosting cost?", answer: "Namecheap shared hosting Stellar starts at $1.58/month (promotional, 36-month term) and renews around $2.88/month for one website. Stellar Plus is $2.88/month promotional for unlimited websites. EasyWP managed WordPress starts at $3.88/month. VPS plans start at $6.88/month. All shared hosting plans include free SSL through Let's Encrypt and use cPanel." },
+      { question: "Namecheap vs GoDaddy: which should I use?", answer: "Namecheap is better for cost-conscious users and developers — lower renewal rates, free domain privacy, no aggressive upselling, and a developer-friendly interface. GoDaddy is better if you want the most comprehensive all-in-one platform with the widest TLD selection and 24/7 phone support. For pure domain registration, Namecheap wins on value. For an integrated website + hosting + email setup for a small business, GoDaddy's breadth may be more convenient." },
+    ],
+  },
+
+  "perplexity": {
+    description: "Perplexity AI is an AI-powered answer engine founded in 2022 and headquartered in San Francisco, California. Unlike traditional search engines that return a list of links, Perplexity synthesizes information from real-time web sources into direct, cited answers. It uses a combination of large language models (including its own models and frontier models like Claude and GPT-4) combined with live web search to answer questions with source citations inline. Perplexity Pro (subscription) offers access to more powerful models, more daily Pro searches, file uploads, and image generation. The product gained rapid traction as an alternative to Google Search for research-heavy queries, growing to over 15 million monthly active users by early 2026. Key differentiators include always-current information (not limited to training cutoffs), source transparency (every claim is linked), follow-up questions for conversation continuity, and Collections for organizing research topics. Perplexity is particularly valued by researchers, students, journalists, and knowledge workers who need fast, sourced answers rather than a list of links to browse. The company raised at a $9 billion valuation in early 2025.",
+    highlights: ["Real-time web search with cited answers — no link-browsing required", "15M+ monthly active users by 2026", "$9B valuation — fastest-growing AI search company", "Integrates frontier LLMs (Claude, GPT-4o) + live web"],
+    category: "software",
+    alternatives: [
+      { name: "ChatGPT", slug: "chatgpt", reason: "More capable for writing, coding, and complex reasoning" },
+      { name: "Google Search", slug: "google-search", reason: "Broader index with more specialized vertical search tools" },
+      { name: "Claude", slug: "claude", reason: "More nuanced long-form reasoning and document analysis" },
+      { name: "You.com", slug: "you-com", reason: "Similar AI search with more customization options" },
+      { name: "Bing AI", slug: "bing-ai", reason: "Deep Microsoft integration with Edge browser" },
+      { name: "Gemini", slug: "gemini", reason: "Google's AI with deeper integration with Google services" },
+    ],
+    faqs: [
+      { question: "Is Perplexity AI free to use?", answer: "Perplexity offers a free tier with unlimited basic searches using its standard model plus 5 Pro searches per day. Perplexity Pro costs $20/month or $200/year and unlocks unlimited Pro searches using frontier models (GPT-4o, Claude 3.5 Sonnet), file uploads, image generation (DALL-E 3, Stable Diffusion), and API access. The free tier is genuinely useful for everyday research queries." },
+      { question: "How accurate is Perplexity compared to ChatGPT?", answer: "Perplexity is generally more accurate for current-events questions because it searches the web in real time and cites sources — you can verify every claim. ChatGPT has a training cutoff (though it can browse the web with plugins) and is more prone to confabulation on recent events. For research requiring up-to-date information with source verification, Perplexity has the edge. For writing, coding, and deep reasoning tasks, ChatGPT's underlying models are more capable." },
+      { question: "What is Perplexity Pro best used for?", answer: "Perplexity Pro is best for power researchers, students, and professionals who need fast, sourced answers to complex questions daily. Key use cases include market research, academic literature review, competitive intelligence, fact-checking, technical documentation lookup, and following breaking news topics. The file upload feature lets you query against PDFs, images, and documents combined with web search — ideal for analysts and journalists." },
+    ],
+  },
+
+  "gemini": {
+    description: "Gemini is Google DeepMind's family of multimodal AI models, launched in December 2023 as the successor to Google's Bard assistant and LaMDA/PaLM models. Gemini is available in multiple sizes — Gemini Ultra (now Gemini 1.5 Ultra), Gemini Pro, and Gemini Nano for on-device use — designed to handle text, images, audio, video, and code within a single model. The Gemini app (gemini.google.com) is Google's consumer AI assistant, replacing Google Assistant on Android. Gemini Advanced (powered by Gemini 1.5 Pro) is available through Google One AI Premium at $19.99/month and integrates deeply with Gmail, Google Docs, Google Drive, and Google Meet through Gemini for Workspace. Google has embedded Gemini across its product suite — Search (AI Overviews), Android, Chrome, and Cloud — giving it an unmatched distribution advantage. Key technical strengths include industry-leading long-context processing (up to 2 million tokens in Gemini 1.5 Pro), native multimodality, and deep Google Search integration for real-time information. Gemini's main competitive advantage over ChatGPT is Google ecosystem integration and its massive context window.",
+    highlights: ["2M token context window — largest among frontier AI models", "Native multimodal: text, images, audio, video, code", "Integrated into Gmail, Docs, Drive, Chrome, Search", "Backed by Google's trillion-parameter research infrastructure"],
+    category: "software",
+    alternatives: [
+      { name: "ChatGPT", slug: "chatgpt", reason: "Larger ecosystem with more plugins and GPT Store apps" },
+      { name: "Claude", slug: "claude", reason: "Better at nuanced writing, analysis, and following complex instructions" },
+      { name: "Perplexity", slug: "perplexity", reason: "Better for real-time web research with source citations" },
+      { name: "Copilot", slug: "copilot", reason: "Deep Microsoft 365 integration for Office users" },
+      { name: "DeepSeek", slug: "deepseek", reason: "Open-source alternative with strong reasoning capabilities" },
+      { name: "Mistral", slug: "mistral", reason: "European open-source LLM with strong multilingual support" },
+    ],
+    faqs: [
+      { question: "Is Gemini better than ChatGPT?", answer: "Gemini and ChatGPT excel in different areas. Gemini is better for Google ecosystem users — it integrates natively with Gmail, Docs, Drive, and Google Search, and has a larger context window (2M tokens vs ChatGPT's 128K). ChatGPT has a larger third-party app ecosystem (GPT Store), is generally considered stronger at coding (especially with Code Interpreter), and has a more mature product with wider developer adoption. For everyday productivity within Google Workspace, Gemini wins. For versatile AI assistance and developer tools, ChatGPT remains the market leader." },
+      { question: "How much does Gemini Advanced cost?", answer: "Gemini Advanced is available through Google One AI Premium at $19.99/month, which also includes 2TB of Google Drive storage, Google Meet features, and priority access to new features. The free version of Gemini (Gemini Pro model) is available at gemini.google.com with no subscription. Gemini for Workspace (integration into Gmail, Docs, etc.) requires a Google Workspace plan plus the Gemini add-on starting at $20/user/month for Business." },
+      { question: "Can Gemini access the internet?", answer: "Yes — Gemini has real-time Google Search integration by default, making it aware of current events without a training cutoff limitation. When you ask Gemini a question requiring current information, it automatically queries Google Search and synthesizes results. This is a significant advantage over ChatGPT (which requires enabling browsing separately) and gives Gemini more accurate answers for news, prices, scores, and recently published information." },
+    ],
+  },
+
+  "deepseek": {
+    description: "DeepSeek is a Chinese AI company founded in 2023 as a subsidiary of quantitative hedge fund High-Flyer, headquartered in Hangzhou, China. It rose to global prominence in January 2025 when DeepSeek R1 — a reasoning model comparable to OpenAI's o1 — was released as open source and became the top-downloaded app on the App Store globally. DeepSeek's models are notable for being trained at a fraction of the cost of comparable Western models: DeepSeek V3 reportedly cost approximately $5.6 million to train, versus hundreds of millions for comparable GPT-4 class models, achieved through novel efficiency techniques including Mixture of Experts (MoE) architecture and FP8 training. DeepSeek R1 and V3 are fully open source (MIT license), enabling self-hosting and commercial use. The models benchmark competitively with GPT-4o and Claude 3.5 Sonnet on coding, math, and reasoning tasks. DeepSeek's release triggered significant market reaction — Nvidia's stock dropped 17% in a single day as investors questioned GPU demand assumptions. The DeepSeek app is free with no usage caps, though the app raised privacy concerns due to data storage in China under Chinese law.",
+    highlights: ["R1 became #1 App Store download globally in Jan 2025", "Trained V3 for ~$5.6M vs hundreds of millions for GPT-4", "Fully open source (MIT license) — self-hostable", "Mixture-of-Experts architecture enabling massive efficiency gains"],
+    category: "software",
+    alternatives: [
+      { name: "ChatGPT", slug: "chatgpt", reason: "More mature product with broader ecosystem and enterprise trust" },
+      { name: "Claude", slug: "claude", reason: "Better at nuanced writing and following complex instructions" },
+      { name: "Gemini", slug: "gemini", reason: "Google ecosystem integration with real-time search" },
+      { name: "Mistral", slug: "mistral", reason: "Another strong open-source LLM with European data residency" },
+      { name: "Llama", slug: "llama", reason: "Meta's open-source models with broad community support" },
+      { name: "Perplexity", slug: "perplexity", reason: "Better for research with real-time web search and citations" },
+    ],
+    faqs: [
+      { question: "Is DeepSeek safe to use?", answer: "DeepSeek's app raises legitimate privacy concerns: the company is Chinese, data is stored on servers in China, and Chinese law requires companies to share data with the government on request. Several governments (Italy, Australia, the US Navy) have restricted its use on official devices. For personal use and non-sensitive queries, the privacy risk is similar to other free AI apps. For enterprise or government use with sensitive data, avoid DeepSeek or use the open-source model self-hosted on your own infrastructure." },
+      { question: "How good is DeepSeek compared to ChatGPT?", answer: "DeepSeek R1 benchmarks very competitively with OpenAI's o1 on math, coding, and reasoning tasks — sometimes surpassing it. DeepSeek V3 is comparable to GPT-4o. The key differences: DeepSeek is free with no usage caps (via the app), open source, and extremely cost-efficient via API. ChatGPT has a larger ecosystem, better multimodal capabilities (voice, image generation), stronger enterprise trust, and US data residency. For pure reasoning quality at zero cost, DeepSeek R1 is exceptional." },
+      { question: "Can I use DeepSeek for free?", answer: "Yes — the DeepSeek app (deepseek.com and mobile apps) is free with no usage limits on DeepSeek V3 and R1 models. DeepSeek API pricing is very competitive: V3 input tokens cost $0.27/million (cache hit) and $0.07/million (cache miss for long contexts) — significantly cheaper than GPT-4o. The open-source models can be downloaded from Hugging Face and self-hosted at no cost beyond compute." },
+    ],
+  },
+
+  "midjourney": {
+    description: "Midjourney is an AI image generation service founded in 2022 by David Holz and operated by Midjourney, Inc., headquartered in San Francisco. It runs entirely through Discord (and a web interface as of 2024) and has become the leading AI art generator for creative professionals, artists, and designers. Midjourney is renowned for producing photorealistic, painterly, and stylized images of exceptional aesthetic quality — consistently outperforming competitors in artistic style, composition, and coherence. Version 6 (V6) released in late 2023 dramatically improved prompt adherence and photorealism, while V6.1 added better text rendering within images. Version 7 introduced further quality improvements in 2025. Midjourney operates on a subscription model starting at $10/month for 3.3 GPU hours, with no free tier since April 2023. The platform is particularly popular for concept art, marketing visuals, character design, architectural visualization, and editorial illustration. Midjourney has remained a private company and has not disclosed revenue, but is estimated to generate $200M+ annually with a team of fewer than 50 employees — making it one of the most capital-efficient AI companies.",
+    highlights: ["Industry-leading image quality and aesthetic coherence", "Estimated $200M+ annual revenue with <50 employees", "No free tier — fully subscription-based ($10–$120/month)", "V7 model sets new bar for photorealism and prompt adherence"],
+    category: "software",
+    alternatives: [
+      { name: "DALL-E 3", slug: "dall-e", reason: "Integrated into ChatGPT with better text rendering" },
+      { name: "Stable Diffusion", slug: "stable-diffusion", reason: "Free open-source alternative with full local control" },
+      { name: "Adobe Firefly", slug: "adobe-firefly", reason: "Commercial-safe generation integrated into Creative Cloud" },
+      { name: "Ideogram", slug: "ideogram", reason: "Better text-in-image generation with free tier" },
+      { name: "Leonardo AI", slug: "leonardo-ai", reason: "More control over styles with free daily credits" },
+      { name: "Canva", slug: "canva", reason: "All-in-one design tool with integrated AI image generation" },
+    ],
+    faqs: [
+      { question: "How much does Midjourney cost?", answer: "Midjourney has four plans: Basic ($10/month, 3.3 GPU hours/month), Standard ($30/month, 15 GPU hours + unlimited relaxed), Pro ($60/month, 30 GPU hours + stealth mode + 12 parallel jobs), and Mega ($120/month, 60 GPU hours). Relaxed mode queues are slower but don't consume GPU hours. Annual billing saves 20%. There is no free trial — a $10 subscription is required to start." },
+      { question: "Is Midjourney better than DALL-E 3?", answer: "Midjourney generally produces more aesthetically refined, artistically coherent images — it excels at cinematic lighting, complex compositions, and painterly styles. DALL-E 3 (via ChatGPT) is better at following precise prompts, rendering accurate text within images, and incorporating specific logical details. Midjourney is preferred by artists and designers for quality; DALL-E 3 is better for users who need precise control and text-in-image accuracy. Both are excellent but serve different creative priorities." },
+      { question: "Does Midjourney own the images you create?", answer: "Subscribers to paid plans own the images they generate and can use them commercially, subject to Midjourney's terms. On the Basic plan, you own output but Midjourney can use your images to train its models. Pro subscribers get stealth mode which prevents images from appearing in the public gallery. If you use the free trial (no longer available), Midjourney retains ownership. Always review the current terms of service for commercial use — they have evolved as the product has matured." },
+    ],
+  },
+
+  "figJam": {
+    description: "FigJam is Figma's collaborative online whiteboard tool, launched in 2021 as a companion to Figma's design software. It provides an infinite canvas for brainstorming, diagramming, team retrospectives, workshops, and design thinking exercises. FigJam integrates natively with Figma files, allowing designers to move between ideation and high-fidelity design without switching tools. Key features include sticky notes, shapes, connectors, drawing tools, timers, stamps/emojis for reactions, templates for retrospectives and agile ceremonies, widgets (built on the Figma plugin API), and real-time multiplayer collaboration. FigJam was designed to compete with Miro and MURAL in the digital whiteboard category, but differentiates by being deeply embedded in the Figma ecosystem. For design teams already using Figma, FigJam is included in the Professional plan, making it essentially free-for-existing-users. As of 2024, FigJam added AI-powered features including AI diagram generation, template suggestions, and content organization. Following Adobe's failed acquisition of Figma ($20B deal abandoned in 2023), Figma remains independent and continues developing FigJam as a core product.",
+    highlights: ["Included in Figma Professional — free for existing teams", "Real-time multiplayer with stamps, reactions, and timers", "Native Figma integration — move from whiteboard to design instantly", "AI-powered diagram generation and template suggestions"],
+    category: "software",
+    alternatives: [
+      { name: "Miro", slug: "miro", reason: "More powerful whiteboard with broader template library and integrations" },
+      { name: "Mural", slug: "mural", reason: "Better structured facilitation for workshops and design sprints" },
+      { name: "Notion", slug: "notion", reason: "Better for documentation alongside lightweight diagramming" },
+      { name: "Lucidchart", slug: "lucidchart", reason: "More sophisticated diagramming with enterprise controls" },
+      { name: "Canva", slug: "canva", reason: "Better for polished visual presentations and marketing assets" },
+      { name: "Whimsical", slug: "whimsical", reason: "Cleaner, faster tool for wireframes and flowcharts" },
+    ],
+    faqs: [
+      { question: "Is FigJam free?", answer: "FigJam is free for up to 3 FigJam files with 3 editors. For unlimited files and editors, you need a Figma Professional plan ($15/editor/month) which includes FigJam. Organization and Enterprise plans also include FigJam. FigJam Education is free for students and educators. Viewers (non-editors who just view and comment) can join FigJam sessions for free on any plan." },
+      { question: "FigJam vs Miro: which is better?", answer: "Miro is the more powerful whiteboard tool — it has a larger template library (2,500+ templates), better enterprise features, more integrations (Jira, Confluence, Asana, etc.), and more advanced facilitation capabilities. FigJam is better for design teams already using Figma who want seamless integration between whiteboarding and design. FigJam is simpler and faster for quick collaborative sessions; Miro is more powerful for structured workshops and recurring team rituals." },
+      { question: "Can non-designers use FigJam?", answer: "Absolutely — FigJam is designed for whole-team collaboration, not just designers. Product managers use it for roadmap planning and retrospectives, engineers for architecture diagrams, and marketing teams for campaign brainstorming. The interface is simpler than Figma (design) and closer to a physical whiteboard, so non-designers adopt it quickly. The sticky notes, voting, timer, and reaction features are particularly popular for agile ceremonies and team workshops." },
+    ],
+  },
+
+  "coda": {
+    description: "Coda is a document platform founded in 2014 by Shishir Mehrotra (former YouTube VP of Product) and Alex DeNeui, headquartered in San Francisco. It reimagines documents as programmable surfaces, combining the flexibility of a word processor with the power of a spreadsheet and the customizability of a lightweight app builder — all within a single document. Coda's core innovation is that every document can contain tables (with relational lookups, filters, and formulas), buttons (triggering automations or writing to tables), and packs (integrations that pull data from external services like Jira, GitHub, Slack, or Salesforce). This makes Coda documents function more like web apps than traditional docs. Teams use Coda for product specs that update automatically from Jira, OKR trackers synced with spreadsheets, meeting notes with embedded task management, and project hubs that consolidate multiple data sources. Coda launched Coda AI in 2023, adding AI-assisted writing, data summarization, and workflow automation. Pricing is user-based: Free for unlimited docs, Pro at $12/doc maker/month, Team at $36/doc maker/month. Coda competes primarily with Notion but differentiates with deeper relational database capabilities and more powerful formulas.",
+    highlights: ["Documents that function as lightweight apps — not just notes", "Packs ecosystem integrates 600+ external services", "Founded by former YouTube VP — $400M+ raised", "Coda AI for automated writing and data workflows"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "Larger community, better knowledge management and publishing" },
+      { name: "Airtable", slug: "airtable", reason: "More powerful relational database with better spreadsheet features" },
+      { name: "Confluence", slug: "confluence", reason: "Better for large engineering teams with Jira integration" },
+      { name: "Google Docs", slug: "google-docs", reason: "Simpler collaboration with universal adoption and free pricing" },
+      { name: "Quip", slug: "quip", reason: "Salesforce-integrated docs and spreadsheets for CRM teams" },
+      { name: "ClickUp", slug: "clickup", reason: "More complete project management with docs as one feature" },
+    ],
+    faqs: [
+      { question: "What makes Coda different from Notion?", answer: "Coda's documents are more programmable than Notion's. Coda formulas (similar to spreadsheet formulas) can reference across tables and sections, buttons can trigger automations or write data back to tables, and Packs allow pulling live data from 600+ external services directly into your doc. Notion is better for knowledge management, publishing (Notion Sites), and has a larger template community. Coda is better when you need documents that function as lightweight apps or dashboards with live data." },
+      { question: "How much does Coda cost?", answer: "Coda Free includes unlimited docs with up to 1,000 rows per table and full access to features (limits only apply to doc makers). Pro is $12/doc maker/month with unlimited rows, more automation runs, and priority support. Team is $36/doc maker/month with advanced permissions, admin tools, and more automation. Enterprise pricing is custom with SSO, audit logs, and dedicated support. Viewers are always free on all plans." },
+      { question: "Is Coda good for project management?", answer: "Coda is good for project management when combined with its document and collaboration capabilities — you can build custom project trackers, sprint boards, and roadmaps within a Coda doc. However, it's not a dedicated project management tool and lacks native Gantt charts, time tracking, and resource management. Teams that need a PM tool primarily should look at Asana, Linear, or ClickUp. Coda shines when project management is one part of a larger documentation and data workflow." },
+    ],
+  },
+
+  "constant-contact": {
+    description: "Constant Contact is an email marketing platform founded in 1995 and headquartered in Waltham, Massachusetts, making it one of the oldest email marketing companies in the industry. It serves over 600,000 small businesses and nonprofits, focusing specifically on the SMB market with a simple, guided approach to email marketing. Constant Contact offers email campaign creation, contact list management, automated email series, event management, surveys, social media marketing, and e-commerce integrations. Its drag-and-drop email editor and library of 200+ templates are designed for users with no technical or design background. Constant Contact's pricing is list-size based: Core starts at $12/month (500 contacts), Plus at $45/month (500 contacts). A key differentiator is its live phone support and human coaching — uncommon in the email marketing space — which appeals to small businesses that want guided help. While Constant Contact lacks the advanced automation and segmentation features of competitors like ActiveCampaign or Klaviyo, it compensates with simplicity and support. The company was acquired by Endurance International in 2015 and later went public in 2021 before being taken private again.",
+    highlights: ["One of the oldest email marketing platforms — founded 1995", "600K+ SMB and nonprofit customers", "Live phone support and human coaching — rare in the industry", "Includes event management and surveys alongside email"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "More generous free tier and better automation on paid plans" },
+      { name: "Brevo", slug: "brevo", reason: "More features at lower price with better automation" },
+      { name: "MailerLite", slug: "mailerlite", reason: "Simpler, cheaper with a free plan for up to 1,000 subscribers" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "Far more powerful automation and CRM features for growth" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce with advanced segmentation and flows" },
+      { name: "ConvertKit", slug: "convertkit", reason: "Better for creators and bloggers with simpler automation" },
+    ],
+    faqs: [
+      { question: "Is Constant Contact worth it compared to Mailchimp?", answer: "Constant Contact is worth it for small businesses that value phone support and simple guided email marketing. Mailchimp offers a free plan (up to 500 contacts, 1,000 emails/month) that Constant Contact lacks, and generally has more advanced automation and integrations on paid plans. Constant Contact's pricing is competitive at entry level but becomes expensive as your list grows. If you want hand-holding support and simple event marketing, Constant Contact. If you want a free start and more features, Mailchimp." },
+      { question: "How much does Constant Contact cost?", answer: "Constant Contact Core starts at $12/month for up to 500 contacts, scaling to $35/month at 2,500 contacts, $55/month at 5,000, and $95/month at 10,000. Plus plan starts at $45/month for 500 contacts. No free plan is available (only a 60-day free trial). Pricing is based on contact count, which can get expensive for large lists. Annual billing provides a discount over monthly." },
+      { question: "Is Constant Contact good for nonprofits?", answer: "Constant Contact is particularly popular with nonprofits — it offers a 30% nonprofit discount, has event management tools for fundraisers and volunteer coordination, and its simple interface works well for organizations with limited technical staff. Its email templates include nonprofit-specific designs, and the live phone support is valuable for teams without dedicated marketing staff. Mailchimp also offers nonprofit discounts (through TechSoup), so compare both for your specific list size." },
+    ],
+  },
 };
