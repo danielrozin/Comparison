@@ -1917,4 +1917,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is Microsoft Clarity GDPR compliant?", answer: "Microsoft Clarity has privacy features including IP masking and the ability to exclude sensitive pages from recording. However, as a Microsoft product, data flows to Microsoft's servers, which has GDPR implications similar to Google Analytics for EU users. For maximum compliance, self-hosted tools like Matomo are safer. Clarity's privacy settings and data processing agreement should be reviewed for your jurisdiction." },
     ],
   },
+
+  "matomo": {
+    description:
+      "Matomo (formerly Piwik) is the world's leading open-source web analytics platform, offering a privacy-first, self-hosted alternative to Google Analytics used by over 1.5 million websites globally. Founded in 2007, Matomo gives organizations complete ownership of their analytics data — no third-party data sharing, no sampling, and full compliance with GDPR, CCPA, and HIPAA when self-hosted. The platform provides all the core analytics features expected from Google Analytics — traffic sources, user behavior, conversion goals, funnels, and e-commerce tracking — with additional privacy-respecting features like IP anonymization and cookie consent management. Matomo Cloud (hosted version) starts at €19/month for 50,000 page views. The self-hosted Community Edition is completely free and open-source with no data limits. Premium plugins add heatmaps, session recordings, A/B testing, and custom reports. Matomo is particularly popular in Europe (especially Germany and France where GDPR enforcement is strict), government organizations, healthcare, and any entity that cannot legally send user data to US-based servers. The platform also offers a WordPress plugin with 2+ million active installations.",
+    highlights: ["1.5M+ websites, world's leading open-source analytics", "Self-hosted Community Edition completely free", "GDPR, HIPAA, CCPA compliant — full data ownership", "2M+ active WordPress plugin installations"],
+    category: "software",
+    alternatives: [
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, more features, larger ecosystem, AI insights" },
+      { name: "Plausible", slug: "plausible", reason: "Simpler privacy-first analytics, no self-hosting needed" },
+      { name: "Fathom Analytics", slug: "fathom", reason: "Simpler, fully managed, GDPR-compliant" },
+      { name: "Umami", slug: "umami", reason: "Open-source, lightweight, completely free" },
+      { name: "Hotjar", slug: "hotjar", reason: "Adds heatmaps and session recordings" },
+      { name: "Mixpanel", slug: "mixpanel", reason: "Better for product analytics and user behavior inside apps" },
+    ],
+    faqs: [
+      { question: "Is Matomo free?", answer: "Matomo's self-hosted Community Edition is completely free and open-source with no data limits. Matomo Cloud starts at €19/month for 50,000 page views. Premium plugins (heatmaps, A/B testing, etc.) cost extra. For most privacy-conscious teams, self-hosting is the best value — you only pay for your server costs." },
+      { question: "Is Matomo GDPR compliant?", answer: "Yes, Matomo is considered one of the most GDPR-friendly analytics platforms. When self-hosted, no data leaves your servers — eliminating third-party data transfer concerns that affect Google Analytics in the EU. Matomo also offers built-in consent management, IP anonymization, and data deletion tools. Several EU data protection authorities recommend Matomo as a GA alternative." },
+      { question: "Matomo vs Google Analytics: which is better?", answer: "Matomo is better for organizations prioritizing data privacy, full ownership, and GDPR compliance — especially in regulated industries or EU-based companies. Google Analytics is better for teams that need free analytics with advanced AI insights, Google Ads attribution, and deep ecosystem integrations. Matomo provides 100% accurate data (no sampling); GA4 samples data on large sites." },
+    ],
+  },
+
+  "posthog": {
+    description:
+      "PostHog is an open-source product analytics platform that uniquely combines product analytics, session recordings, feature flags, A/B testing, and a data warehouse in a single self-hostable tool. Founded in 2020 by James Hawkins and Tim Glaser and backed by Y Combinator, PostHog has become the fastest-growing product analytics platform in the developer community with over 50,000 companies using it. The platform's open-source nature and self-hosting option give engineering teams complete data control — critical for companies with strict data residency requirements. PostHog Cloud is generous: the free tier includes 1 million events, 5,000 recordings, and 1 million feature flag requests per month. After that, pricing is pay-per-use at competitive rates. PostHog's product philosophy is 'all your product data in one place' — replacing separate tools for analytics (Mixpanel), session recording (Hotjar), feature flags (LaunchDarkly), and A/B testing (Optimizely) with a single integrated platform. The developer experience is exceptional, with SDKs for every major language, a GraphQL API, and direct SQL access via PostHog's built-in data warehouse.",
+    highlights: ["50,000+ companies including Airbus and Y Combinator", "Open-source and fully self-hostable", "Free: 1M events + 5K recordings + 1M feature flags/month", "Replaces Mixpanel + Hotjar + LaunchDarkly in one tool"],
+    category: "software",
+    alternatives: [
+      { name: "Mixpanel", slug: "mixpanel", reason: "More mature product analytics, easier for non-technical teams" },
+      { name: "Amplitude", slug: "amplitude", reason: "Better for enterprise with advanced governance" },
+      { name: "Hotjar", slug: "hotjar", reason: "Better for qualitative research without engineering setup" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, better for marketing attribution and web traffic" },
+      { name: "Matomo", slug: "matomo", reason: "Open-source web analytics focused on privacy compliance" },
+      { name: "FullStory", slug: "fullstory", reason: "More powerful session intelligence for enterprise" },
+    ],
+    faqs: [
+      { question: "Is PostHog free?", answer: "PostHog Cloud has a generous free tier: 1 million product analytics events, 5,000 session recordings, 1 million feature flag requests, and 1 million A/B testing events per month at no cost. Beyond these limits, pay-as-you-go pricing applies. Self-hosting PostHog Community Edition is completely free with no limits beyond your server capacity." },
+      { question: "PostHog vs Mixpanel: which is better?", answer: "PostHog is better for engineering-led teams that want open-source, self-hosting, feature flags, and A/B testing alongside analytics in one platform. Mixpanel is better for product teams without strong engineering support who want an easier setup and more polished UI. PostHog's pricing is more predictable at scale; Mixpanel's interface is more accessible for non-technical users." },
+      { question: "Can you self-host PostHog?", answer: "Yes, PostHog Community Edition is open-source and can be self-hosted on any infrastructure. Deployment is supported on AWS, GCP, Azure, DigitalOcean, and Render via Docker Compose or Helm charts. Self-hosting gives complete data ownership, no event limits, and eliminates third-party data transfer — ideal for GDPR compliance and companies with strict data residency requirements." },
+    ],
+  },
+
+  "vercel": {
+    description:
+      "Vercel is the leading cloud platform for frontend developers, specializing in deployment and hosting of web applications with a focus on Next.js — the React framework Vercel created. Founded in 2015 as ZEIT and rebranded Vercel in 2020, the platform enables developers to deploy web applications from a Git push in seconds with zero configuration. Vercel's edge network automatically optimizes deployments with global CDN distribution, serverless functions, edge middleware, and image optimization. The platform integrates natively with GitHub, GitLab, and Bitbucket — creating preview deployments for every pull request so teams can review changes before merging. Vercel pioneered the modern developer workflow of preview URLs, enabling seamless collaboration between developers, designers, and stakeholders. The platform powers some of the web's largest properties including The Washington Post, HashiCorp, and Transformers. Vercel's Hobby plan is free for personal projects with unlimited deployments. Pro is $20/member/month with team collaboration, higher limits, and analytics. Enterprise pricing is custom. Vercel is particularly dominant for Next.js and React deployments, though it supports any framework.",
+    highlights: ["Created by the Next.js team — deepest framework integration", "Preview deployments for every pull request automatically", "Edge network in 70+ regions worldwide", "Free Hobby plan for personal projects"],
+    category: "software",
+    alternatives: [
+      { name: "Netlify", slug: "netlify", reason: "Similar JAMstack focus, strong form handling, similar pricing" },
+      { name: "GitHub Pages", slug: "github", reason: "Free static hosting directly from GitHub repositories" },
+      { name: "Cloudflare Pages", slug: "cloudflare-pages", reason: "Generous free tier, global edge network, unlimited bandwidth" },
+      { name: "Railway", slug: "railway", reason: "Better for full-stack apps with databases and backend services" },
+      { name: "Render", slug: "render", reason: "More flexible for non-Node backends, competitive pricing" },
+      { name: "AWS Amplify", slug: "aws-amplify", reason: "Better for AWS-centric teams needing full cloud integration" },
+    ],
+    faqs: [
+      { question: "Is Vercel free?", answer: "Vercel's Hobby plan is free for personal projects with unlimited deployments, preview URLs, serverless functions (100GB-hours/month), and 100GB bandwidth. Pro is $20/member/month for teams with higher limits, password-protected deployments, and team analytics. Enterprise pricing is custom with dedicated support and SLA." },
+      { question: "Vercel vs Netlify: which is better?", answer: "Vercel is generally better for Next.js and React applications — as Next.js creators, Vercel has first-class support for all Next.js features including Server Components, ISR, and Edge Runtime. Netlify is better for sites using Gatsby, Hugo, or other static site generators and has stronger form handling and split testing features. Both are excellent for JAMstack deployments." },
+      { question: "What frameworks does Vercel support?", answer: "Vercel supports all major web frameworks including Next.js (native), React, Vue, Svelte, Angular, Nuxt, SvelteKit, Gatsby, Remix, Astro, and static sites. While Vercel is optimized for Next.js, it uses an open build system that detects and configures any supported framework automatically." },
+    ],
+  },
+
+  "netlify": {
+    description:
+      "Netlify is a cloud platform that pioneered the JAMstack architecture and modern web deployment workflow, making it one of the most developer-beloved hosting platforms. Founded in 2014 by Mathias Biilmann and Christian Bach, Netlify introduced the concept of connecting a Git repository to automatic deployments — push code, and the site rebuilds and redeploys globally in seconds. The platform offers continuous deployment from GitHub/GitLab/Bitbucket, deploy previews for pull requests, serverless functions, form handling, split testing (A/B testing), identity management, and a powerful CDN edge network. Netlify's forms feature lets you collect form submissions without a backend — a popular feature for static sites. The platform hosts over 5 million developers and 3 million websites. Netlify's free Starter plan is generous: 100GB bandwidth, 300 build minutes, serverless function calls, and 100 form submissions per month. Pro is $19/member/month with expanded limits. Netlify is particularly popular for marketing sites, documentation, portfolios, and any JAMstack application using React, Vue, Gatsby, Hugo, Jekyll, or Eleventy.",
+    highlights: ["Pioneered JAMstack and Git-based deployments", "5M+ developers, 3M+ websites", "Built-in forms, A/B testing, and identity management", "Free Starter: 100GB bandwidth, 300 build minutes/month"],
+    category: "software",
+    alternatives: [
+      { name: "Vercel", slug: "vercel", reason: "Better for Next.js, created by the Next.js team" },
+      { name: "Cloudflare Pages", slug: "cloudflare-pages", reason: "Unlimited bandwidth on free tier, global edge" },
+      { name: "GitHub Pages", slug: "github", reason: "Free static hosting for simple projects" },
+      { name: "Render", slug: "render", reason: "More flexible for full-stack apps and backend services" },
+      { name: "AWS Amplify", slug: "aws-amplify", reason: "Better for AWS ecosystem with deeper cloud integration" },
+      { name: "Surge", slug: "surge", reason: "Simpler CLI-based static hosting, free with custom domain" },
+    ],
+    faqs: [
+      { question: "Is Netlify free?", answer: "Netlify's Starter plan is free with 100GB bandwidth, 300 build minutes/month, serverless function invocations, and 100 form submissions/month. This covers most personal projects and small sites. Pro is $19/member/month with 1TB bandwidth, 25,000 form submissions, and faster build concurrency. Teams with high traffic or many builds should evaluate Pro." },
+      { question: "Netlify vs Vercel: which should I choose?", answer: "Choose Vercel for Next.js projects — it has the deepest Next.js integration, best server-side rendering support, and edge functions designed for the framework. Choose Netlify for sites built with Gatsby, Hugo, Eleventy, or other static site generators, or when you need built-in form handling and split testing. Both have similar pricing and excellent DX." },
+      { question: "What is Netlify best used for?", answer: "Netlify is best for JAMstack websites — static sites, marketing sites, documentation sites, blogs, portfolios, and web apps that can be pre-built and served from a CDN. It's particularly strong for sites where the backend is handled by APIs rather than a traditional server, and for teams that want zero-config continuous deployment from Git." },
+    ],
+  },
+
+  "twilio": {
+    description:
+      "Twilio is the leading cloud communications platform, providing APIs that let developers add voice, video, SMS, WhatsApp, email, and authentication capabilities to any application. Founded in 2008 in San Francisco by Jeff Lawson, Evan Cooke, and John Wolthuis, Twilio pioneered the 'communications as a service' model and went public in 2016. The platform powers communications for over 300,000 active accounts including companies like Airbnb, Lyft, DoorDash, and Salesforce. Twilio Messaging enables SMS and WhatsApp programmatically — for order confirmations, delivery updates, two-factor authentication, and marketing campaigns. Twilio Voice handles phone calls, IVR systems, and call center infrastructure. Twilio Verify provides phone number verification and 2FA. Twilio SendGrid (acquired 2019) handles transactional email and marketing email delivery at scale. Twilio Segment is a customer data platform for unifying customer data. Pricing is pay-per-use — SMS in the US is approximately $0.0079 per message sent/received. Voice calls are $0.013/minute. The platform's flexibility and reliability make it the default choice for developers building communications features, though its API-first nature requires technical implementation.",
+    highlights: ["300,000+ active accounts including Airbnb and Lyft", "SMS, Voice, Video, WhatsApp, Email in one platform", "Pay-per-use — no monthly minimums", "Twilio Verify: 2FA and phone verification API"],
+    category: "software",
+    alternatives: [
+      { name: "SendGrid", slug: "sendgrid", reason: "If you only need email delivery without voice/SMS" },
+      { name: "Vonage", slug: "vonage", reason: "Similar communications APIs, competitive on voice pricing" },
+      { name: "MessageBird", slug: "messagebird", reason: "Strong in Europe, omnichannel messaging platform" },
+      { name: "Plivo", slug: "plivo", reason: "Lower pricing for voice and SMS, similar API" },
+      { name: "Bandwidth", slug: "bandwidth", reason: "Better for enterprise telephony and carrier-grade reliability" },
+      { name: "Mailchimp", slug: "mailchimp", reason: "If you need email marketing rather than transactional API" },
+    ],
+    faqs: [
+      { question: "How much does Twilio cost?", answer: "Twilio uses pay-per-use pricing with no monthly minimums. SMS in the US costs ~$0.0079/message. Voice calls are ~$0.013/minute outbound. WhatsApp messages are $0.005–$0.09 depending on country and message type. Twilio Verify (2FA) costs $0.05 per successful verification. Volume discounts are available for high-usage customers." },
+      { question: "What is Twilio used for?", answer: "Twilio is used to send SMS notifications, build two-factor authentication, create phone verification systems, set up call centers, send WhatsApp messages, handle appointment reminders, deliver order updates, and manage transactional email (via SendGrid). It's the go-to API for any application that needs to communicate with users via phone or message." },
+      { question: "Is Twilio hard to use?", answer: "Twilio requires technical implementation — it's an API platform designed for developers, not a no-code tool. However, Twilio's documentation is widely praised as industry-leading, with quickstarts in every major programming language (Python, Node.js, Java, Ruby, PHP, C#). Non-technical teams can use Twilio Studio (a visual flow builder) or tools like Zapier to trigger Twilio without code." },
+    ],
+  },
+
+  "sendgrid": {
+    description:
+      "SendGrid (now Twilio SendGrid) is the world's largest cloud email infrastructure provider, delivering over 100 billion emails per month for businesses ranging from startups to Fortune 500 companies. Founded in 2009 in Boulder, Colorado and acquired by Twilio in 2019 for $3 billion, SendGrid offers two core products: Email API for developers sending transactional email programmatically, and Email Marketing for drag-and-drop campaign creation. SendGrid's Email API is the industry standard for transactional email — powering order confirmations, password resets, account notifications, and receipts for companies like Airbnb, Spotify, and Uber. The platform's deliverability infrastructure handles ISP relationships, bounce management, unsubscribe handling, and reputation monitoring — abstracting away the complexity of email delivery at scale. The free plan includes 100 emails/day forever. The Essentials plan starts at $19.95/month for up to 50,000 emails. Pro plans scale to millions of emails with dedicated IP addresses and advanced analytics. For teams already using Twilio, SendGrid integrates naturally into the broader communications platform.",
+    highlights: ["100B+ emails/month — world's largest email infrastructure", "Used by Airbnb, Spotify, and Uber", "Free plan: 100 emails/day forever", "Email API + Email Marketing in one platform"],
+    category: "software",
+    alternatives: [
+      { name: "Mailchimp", slug: "mailchimp", reason: "Better for marketing email campaigns with template builders" },
+      { name: "Amazon SES", slug: "amazon-ses", reason: "Cheapest email API at $0.10/1,000 emails for AWS users" },
+      { name: "Postmark", slug: "postmark", reason: "Focused purely on transactional email with best deliverability" },
+      { name: "Mailgun", slug: "mailgun", reason: "Similar developer-focused email API with competitive pricing" },
+      { name: "Brevo", slug: "brevo", reason: "Email + SMS + WhatsApp marketing at lower price" },
+      { name: "Klaviyo", slug: "klaviyo", reason: "Better for e-commerce email with revenue attribution" },
+    ],
+    faqs: [
+      { question: "Is SendGrid free?", answer: "SendGrid has a free plan with 100 emails/day (3,000/month) forever with no credit card required — sufficient for testing and small projects. The Essentials plan is $19.95/month for 50,000 emails, and scales to $89.95/month for 200,000 emails. Pro plans start at $89.95/month and add dedicated IP addresses and advanced support." },
+      { question: "SendGrid vs Mailchimp: which is better?", answer: "SendGrid is better for developers sending transactional email via API — receipts, notifications, password resets, and automated sequences triggered by user actions. Mailchimp is better for marketers creating newsletter campaigns, promotional emails, and audience segmentation without coding. Many companies use both: SendGrid for transactional, Mailchimp for marketing." },
+      { question: "What is SendGrid's deliverability like?", answer: "SendGrid's deliverability is among the best in the industry, backed by 15+ years of ISP relationship management, dedicated IP pools, and proprietary delivery infrastructure. The platform provides real-time delivery analytics, bounce and spam report tracking, and tools to manage your sender reputation. Dedicated IP addresses (available on Pro) further improve deliverability for high-volume senders." },
+    ],
+  },
+
+  "acuity-scheduling": {
+    description:
+      "Acuity Scheduling (now part of Squarespace) is an online appointment scheduling platform designed for service businesses — therapists, coaches, photographers, tutors, salons, and consultants — that need clients to book appointments, pay deposits, and complete intake forms in one seamless flow. Acquired by Squarespace in 2019 for $100 million, Acuity is more business-focused than Calendly, offering features like package and subscription selling, gift certificates, multiple staff scheduling, room/resource management, and the ability to collect payment at booking via Stripe, Square, or PayPal. Acuity syncs with Google Calendar, iCloud, Outlook, and Zoom, automatically adding meeting links when clients book video sessions. The customizable client-facing booking page can be embedded on any website or linked directly. Acuity is particularly popular with health and wellness practitioners, creative professionals, and service businesses where the booking experience is client-facing and payment collection matters. Pricing starts at $16/month (Emerging, 1 calendar) to $49/month (Growing, 6 calendars) and $61/month (Powerhouse, 36 calendars).",
+    highlights: ["Designed for service businesses and client booking", "Intake forms, packages, and payment collection at booking", "Multiple staff and resource scheduling", "Part of Squarespace ecosystem"],
+    category: "software",
+    alternatives: [
+      { name: "Calendly", slug: "calendly", reason: "Better for B2B meeting scheduling and sales teams" },
+      { name: "HubSpot", slug: "hubspot", reason: "Free meeting scheduler with CRM integration" },
+      { name: "Square Appointments", slug: "square", reason: "Free for individuals, integrates with Square POS" },
+      { name: "Vagaro", slug: "vagaro", reason: "Better for salons, spas, and fitness businesses" },
+      { name: "Mindbody", slug: "mindbody", reason: "Best for gyms, yoga studios, and wellness centers" },
+      { name: "SimplyBook.me", slug: "simplybook-me", reason: "More affordable with similar business-focused features" },
+    ],
+    faqs: [
+      { question: "How much does Acuity Scheduling cost?", answer: "Acuity Scheduling plans start at $16/month (Emerging, 1 calendar), $27/month (Growing, 6 calendars), and $49/month (Powerhouse, 36 calendars). Annual billing saves ~10%. All plans include unlimited appointments, payment collection, and intake forms. A 7-day free trial is available." },
+      { question: "Acuity vs Calendly: which is better?", answer: "Acuity Scheduling is better for client-facing service businesses that need payment collection, intake forms, packages, and gift certificates at booking — therapists, coaches, photographers, and salons. Calendly is better for B2B professionals and sales teams booking internal or external meetings where the focus is eliminating scheduling friction rather than collecting payments." },
+      { question: "Does Acuity Scheduling take payments?", answer: "Yes, Acuity integrates with Stripe, Square, and PayPal to collect payment at the time of booking. You can require full payment upfront, collect deposits, or offer package deals where clients buy multiple sessions at once. This makes Acuity much more suitable for service businesses than Calendly, which treats payment as a secondary feature." },
+    ],
+  },
+
+  "fullstory": {
+    description:
+      "FullStory is an enterprise-grade digital experience intelligence platform that captures every user interaction on a website or app and makes it fully searchable and analyzable. Founded in 2012 in Atlanta by Bruce Johnson and Scott Voigt, FullStory goes beyond traditional session recording by indexing every click, scroll, input, and page view — enabling product and support teams to instantly search for any session where a specific event occurred (e.g., 'show me all sessions where users encountered the checkout error'). This 'retroactive analysis' capability is FullStory's defining differentiator over Hotjar and Microsoft Clarity, where you can only watch recordings rather than query them. FullStory's Data Direct feature sends captured behavioral data to your data warehouse (Snowflake, BigQuery, etc.) for joining with business data. The platform includes Funnels, Rage Click analysis, Journey mapping, and Heatmaps. FullStory serves enterprise customers including Forbes, Zipcar, and FanDuel. Pricing is enterprise-focused with no public pricing — typically starting at $35,000+/year, making it inaccessible for small businesses but compelling for enterprises where improving conversion by fractions of a percent delivers significant revenue.",
+    highlights: ["Every interaction indexed and fully searchable", "Data Direct: send behavioral data to your warehouse", "Retroactive session analysis — not just recording", "Used by Forbes, Zipcar, and FanDuel"],
+    category: "software",
+    alternatives: [
+      { name: "Hotjar", slug: "hotjar", reason: "More affordable, free tier, adds surveys and feedback" },
+      { name: "Microsoft Clarity", slug: "microsoft-clarity", reason: "Completely free heatmaps and recordings for basic needs" },
+      { name: "Mouseflow", slug: "mouseflow", reason: "More affordable with form analytics and funnels" },
+      { name: "Heap", slug: "heap", reason: "Similar auto-capture philosophy, better product analytics" },
+      { name: "Mixpanel", slug: "mixpanel", reason: "Better for event-based product analytics without session recording" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source, combines analytics + recordings + feature flags" },
+    ],
+    faqs: [
+      { question: "How much does FullStory cost?", answer: "FullStory does not publish public pricing. Enterprise contracts typically start around $35,000–$50,000/year depending on session volume and features. A limited free Business trial is available. FullStory's pricing targets enterprise customers — for smaller teams, Hotjar or Microsoft Clarity provide session recordings at dramatically lower cost or no cost." },
+      { question: "FullStory vs Hotjar: which is better?", answer: "FullStory is better for enterprise teams that need to search and query behavioral data at scale, integrate sessions with business analytics, and retroactively analyze events without setting up tracking upfront. Hotjar is better for small to mid-size teams that need affordable (or free) session recordings, heatmaps, and the ability to collect user feedback via surveys." },
+      { question: "What makes FullStory different from other session recording tools?", answer: "FullStory's key differentiator is that it captures and indexes every user interaction retroactively — you can search for 'sessions where users clicked the disabled button on the checkout page' even if you never set up that specific event. Other tools require you to set up recordings in advance. FullStory also offers Data Direct to send behavioral data to a data warehouse for deeper analysis." },
+    ],
+  },
 };
