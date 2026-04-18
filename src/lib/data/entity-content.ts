@@ -2237,4 +2237,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "What is Ko-fi used for?", answer: "Ko-fi is used by artists, illustrators, writers, game developers, podcasters, and streamers to receive fan support without a middleman taking a large cut. Use cases include one-time donations, monthly memberships with exclusive content, selling digital art or prints, taking commission requests for custom work, and receiving stream tips during live broadcasts." },
     ],
   },
+
+  "zapier": {
+    description:
+      "Zapier is the world's leading no-code automation platform, connecting over 7,000 apps so users can automate repetitive tasks without writing code. Founded in 2011 in Sunnyvale, California by Wade Foster, Bryan Helmig, and Mike Knoop, Zapier popularized the concept of 'Zaps' — automated workflows triggered by events in one app that perform actions in another. A simple example: when a new lead submits a HubSpot form, Zapier automatically creates a Slack notification, adds a row to Google Sheets, and sends a welcome email via Mailchimp. With over 2 million users and connections to Salesforce, Gmail, Slack, Shopify, and 7,000+ apps, Zapier is the connective tissue of the modern SaaS stack. Zapier Tables adds a native database, Zapier Interfaces adds forms and pages, and Zapier Chatbots adds conversational AI — extending Zapier from pure automation into a lightweight no-code app platform. The free plan allows 5 Zaps and 100 tasks/month. Starter is $19.99/month for 20 Zaps and 750 tasks. Professional plans scale to $49–$799/month with multi-step Zaps, filters, and paths.",
+    highlights: ["7,000+ app integrations — largest in automation", "2M+ users worldwide", "No-code automation for any workflow", "Zaps, Tables, Interfaces, and Chatbots platform"],
+    category: "software",
+    alternatives: [
+      { name: "Make", slug: "make", reason: "More powerful visual automation builder, lower price" },
+      { name: "n8n", slug: "n8n", reason: "Open-source, self-hostable automation platform" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "Better for email marketing automation specifically" },
+      { name: "HubSpot", slug: "hubspot", reason: "Built-in automation if you're already in the HubSpot ecosystem" },
+      { name: "Pipedream", slug: "pipedream", reason: "Developer-focused automation with code support" },
+      { name: "Workato", slug: "workato", reason: "Enterprise-grade integration platform" },
+    ],
+    faqs: [
+      { question: "Is Zapier free?", answer: "Zapier has a free plan with 5 Zaps (automated workflows) and 100 tasks per month — enough for light automation. Starter is $19.99/month for 20 Zaps and 750 tasks. Professional is $49/month for unlimited Zaps and 2,000 tasks with multi-step workflows, filters, and paths. Task usage is the key pricing metric." },
+      { question: "Zapier vs Make: which is better?", answer: "Zapier is better for non-technical users who want simple 'if this, then that' automations with minimal setup. Make (formerly Integromat) is better for complex multi-step automations with visual branching logic — it's more powerful and significantly cheaper per task. Technical users often prefer Make; business users who prioritize ease often prefer Zapier." },
+      { question: "What can Zapier automate?", answer: "Zapier can automate virtually any task between connected apps — lead routing from forms to CRMs, social media posting, data syncing between spreadsheets and databases, e-commerce order management, customer support ticket creation, Slack notifications for business events, invoice generation, and thousands more use cases across 7,000+ integrated apps." },
+    ],
+  },
+
+  "airtable": {
+    description:
+      "Airtable is a no-code platform that blends the familiarity of a spreadsheet with the power of a database, enabling teams to build flexible workflows, track projects, manage content pipelines, and organize virtually any type of information. Founded in 2012 in San Francisco by Howie Liu, Andrew Ofstad, and Emmett Nicholas, Airtable has grown to over 450,000 organizations including Netflix, Shopify, and The New York Times. The platform's flexible views — Grid, Calendar, Gallery, Kanban, Gantt, and Form — let teams visualize data in the most useful way for each use case without changing the underlying structure. Airtable Automations enables no-code workflow automation triggered by record changes. Airtable Interfaces lets teams build custom dashboards and apps on top of their data. Extensions connect to hundreds of third-party services. Airtable is particularly popular for content calendars, product roadmaps, marketing campaign tracking, event management, and CRM-lite use cases. The free plan supports unlimited bases with up to 1,000 records per base. Team is $20/user/month and Business is $45/user/month.",
+    highlights: ["450,000+ organizations including Netflix and Shopify", "Spreadsheet + database hybrid flexibility", "Grid, Calendar, Kanban, Gantt, Gallery views", "No-code automations and custom app interfaces"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "Better for docs + wikis alongside databases" },
+      { name: "Monday.com", slug: "monday-com", reason: "Better visual project management with more team features" },
+      { name: "ClickUp", slug: "clickup", reason: "More project management features in one platform" },
+      { name: "Coda", slug: "coda", reason: "More powerful formulas and automation in a doc format" },
+      { name: "Smartsheet", slug: "smartsheet", reason: "Better for enterprise teams familiar with spreadsheets" },
+      { name: "Google Sheets", slug: "google-sheets", reason: "Free, familiar, deep Google ecosystem integration" },
+    ],
+    faqs: [
+      { question: "Is Airtable free?", answer: "Airtable's free plan allows unlimited bases with up to 1,000 records per base, 2GB attachment storage, and 100 automation runs/month — enough for individuals and small projects. Team is $20/user/month for 50,000 records per base and 25,000 automation runs. Business is $45/user/month for 125,000 records and advanced admin." },
+      { question: "What is Airtable used for?", answer: "Airtable is used for content calendars, product roadmaps, project tracking, CRM-lite management, event planning, inventory management, employee directories, marketing campaign tracking, and any use case where spreadsheet-style data needs more structure, views, and automation than Google Sheets provides." },
+      { question: "Airtable vs Notion: which is better?", answer: "Airtable is better when your core need is a flexible, relational database with multiple views and robust automations — it handles structured data better than Notion. Notion is better when you need a mix of docs, wikis, and databases in one tool. Airtable's database is stronger; Notion's writing experience is better." },
+    ],
+  },
+
+  "todoist": {
+    description:
+      "Todoist is one of the world's most popular task management apps, with over 42 million users who rely on it to organize personal and professional to-do lists. Founded in 2007 by Amir Salihefendić in Thessaloniki, Greece, Todoist is developed by Doist — a fully remote company that also makes Twist (a calm team communication tool). Todoist's strength is its natural language input — typing 'Call dentist every other week on Tuesday' automatically creates a recurring task with the correct schedule. The app works across all platforms (iOS, Android, Mac, Windows, Linux, browser) with best-in-class sync. Features include projects, sections, labels, priority levels, filters, subtasks, comments, file attachments, and a productivity scoring system (Karma). Todoist Boards adds a Kanban view. Integrations with Gmail, Outlook, Slack, Google Calendar, and 60+ tools via Zapier make it a hub for task management. The free plan allows 5 active projects with up to 5 collaborators per project. Pro is $4/month with 300 projects, 150 filters, reminders, and file uploads. Business is $6/user/month with team workspaces.",
+    highlights: ["42M+ users worldwide", "Natural language date/time input", "Works on every platform with near-instant sync", "Karma productivity scoring system"],
+    category: "software",
+    alternatives: [
+      { name: "Notion", slug: "notion", reason: "Better for notes + docs + tasks in one tool" },
+      { name: "ClickUp", slug: "clickup", reason: "More features for team project management" },
+      { name: "Asana", slug: "asana", reason: "Better for team projects and workflow management" },
+      { name: "Microsoft To Do", slug: "microsoft-to-do", reason: "Free, integrates with Microsoft 365 and Outlook" },
+      { name: "Things 3", slug: "things-3", reason: "Best UX for Apple ecosystem, one-time purchase" },
+      { name: "Linear", slug: "linear", reason: "Better for software engineering teams" },
+    ],
+    faqs: [
+      { question: "Is Todoist free?", answer: "Todoist has a free plan with 5 active projects, up to 5 collaborators per project, and 5MB file uploads. Pro is $4/month (billed annually) adding 300 projects, 150 custom filters, reminders, 100MB uploads, and calendar layout. Business is $6/user/month with team workspaces, admin controls, and priority support." },
+      { question: "Is Todoist good for productivity?", answer: "Todoist is widely praised for its simplicity and cross-platform reliability — it gets out of your way and lets you capture tasks quickly. The natural language input (type 'meeting with John next Friday at 2pm' and it creates the task with the right date/time) makes capture fast. The Karma system gamifies productivity without being distracting." },
+      { question: "Todoist vs Notion: which is better for tasks?", answer: "Todoist is better as a pure task manager — faster input, better recurring tasks, superior mobile apps, and a dedicated focus on getting things done. Notion is better if you want tasks alongside notes, docs, databases, and wikis in one place. Many users use both: Todoist for personal tasks, Notion for project documentation." },
+    ],
+  },
+
+  "miro": {
+    description:
+      "Miro is the leading online collaborative whiteboard platform, enabling distributed teams to brainstorm, plan, design, and workshop together in real-time on an infinite visual canvas. Founded in 2011 in Perm, Russia (now headquartered in San Francisco), Miro has grown to over 60 million users across 200,000+ organizations including Netflix, Twitter, Spotify, and 99% of the Fortune 100. The platform's infinite canvas supports sticky notes, shapes, connectors, images, embedded documents, video, and over 1,000 pre-built templates for workshops, sprint planning, customer journey mapping, org charts, and more. Miro's strength is making remote collaboration feel as natural as an in-person whiteboard session — multiple users can see and interact with the same board simultaneously. Integrations with Jira, Confluence, Asana, Slack, Figma, and Microsoft Teams make Miro a central hub for team workshops. Miro AI can generate diagrams, summarize boards, and create content from prompts. The free plan allows 3 editable boards. Starter is $8/member/month and Business is $16/member/month with unlimited boards and advanced collaboration features.",
+    highlights: ["60M+ users, 200,000+ organizations", "99% of Fortune 100 companies use Miro", "1,000+ pre-built workshop templates", "Miro AI for diagram generation and board summaries"],
+    category: "software",
+    alternatives: [
+      { name: "FigJam", slug: "figma", reason: "Better if your team already uses Figma for design" },
+      { name: "Mural", slug: "mural", reason: "Similar whiteboard with stronger facilitator features" },
+      { name: "Lucidspark", slug: "lucidspark", reason: "Part of Lucid suite with Lucidchart diagramming" },
+      { name: "Whimsical", slug: "whimsical", reason: "Simpler, cleaner, better for flowcharts and wireframes" },
+      { name: "Notion", slug: "notion", reason: "If you want docs + simple boards without dedicated whiteboard" },
+      { name: "Microsoft Whiteboard", slug: "microsoft-whiteboard", reason: "Free with Microsoft 365, good for Teams meetings" },
+    ],
+    faqs: [
+      { question: "Is Miro free?", answer: "Miro has a free plan with 3 editable boards and unlimited viewers — enough for small teams or occasional use. Starter is $8/member/month for unlimited boards, Miro AI, and visitor access. Business is $16/member/month adding private boards, custom templates, and advanced security. Enterprise pricing is custom." },
+      { question: "What is Miro used for?", answer: "Miro is used for remote brainstorming, sprint planning and retrospectives, customer journey mapping, product roadmap visualization, org chart creation, design thinking workshops, mind mapping, wireframing, and any collaborative session where a visual shared space helps teams think together. It's particularly popular for agile ceremonies in distributed teams." },
+      { question: "Miro vs FigJam: which is better?", answer: "Miro is better for business teams running workshops, planning sessions, and cross-functional collaboration — its template library and structured workshop features are superior. FigJam is better for design teams already in the Figma ecosystem who want a whiteboard tightly integrated with their design files. Miro has more features; FigJam is simpler and better for design-adjacent work." },
+    ],
+  },
+
+  "basecamp": {
+    description:
+      "Basecamp is a project management and team communication tool founded in 1999 (as 37signals) by Jason Fried and David Heinemeier Hansson — the creators of Ruby on Rails and authors of 'Rework' and 'Remote'. Basecamp pioneered the all-in-one approach to project management before tools like Asana and Jira existed, bundling message boards, to-do lists, schedules, documents, file storage, and real-time chat in a single organized project space. The platform is famous for its opinionated simplicity — no custom fields, no time tracking, no complex workflows — and for its flat pricing model: $299/month for unlimited users, unlimited projects, and all features. This makes Basecamp dramatically cheaper than per-seat tools for large teams. Basecamp 4, launched in 2024, added AI-powered features including automatic meeting summaries and campfire chat enhancements. The platform serves over 75,000 businesses and is particularly popular with agencies, consultancies, and remote-first companies that align with 37signals' philosophy of calm, focused work. A free plan is available for personal use; Basecamp's flat $299/month pricing begins for business use.",
+    highlights: ["Flat $299/month — unlimited users and projects", "Created by the team behind Ruby on Rails", "All-in-one: messages, tasks, docs, chat, files", "75,000+ businesses worldwide"],
+    category: "software",
+    alternatives: [
+      { name: "Asana", slug: "asana", reason: "More flexible workflow automation and views" },
+      { name: "Monday.com", slug: "monday-com", reason: "More visual dashboards and reporting" },
+      { name: "ClickUp", slug: "clickup", reason: "More features and customization options" },
+      { name: "Notion", slug: "notion", reason: "Better for knowledge management alongside projects" },
+      { name: "Trello", slug: "trello", reason: "Simpler Kanban boards for smaller teams" },
+      { name: "Linear", slug: "linear", reason: "Better for software engineering teams" },
+    ],
+    faqs: [
+      { question: "How much does Basecamp cost?", answer: "Basecamp costs a flat $299/month (or $3,588/year billed annually) for unlimited users, unlimited projects, and all features — including 500GB storage. There's no per-seat charge. A free personal plan allows 3 projects and 20 users. This flat pricing makes Basecamp extremely cost-effective for teams of 20+ compared to per-seat tools like Asana ($10–$25/user/month)." },
+      { question: "Is Basecamp good for remote teams?", answer: "Basecamp was built for remote work long before it became mainstream — 37signals has operated remotely since the early 2000s. The async-first design (message boards rather than real-time meetings, campfire chat for casual conversation) aligns with remote work best practices. David Heinemeier Hansson and Jason Fried literally wrote the book on remote work ('Remote', 2013)." },
+      { question: "Basecamp vs Asana: which is better?", answer: "Basecamp is better for teams that want simplicity, flat pricing, and an opinionated all-in-one tool without endless configuration. Asana is better for teams that need custom workflows, complex automation, timeline views, and fine-grained task management. Basecamp's $299 flat fee beats Asana per-seat pricing at 30+ users; Asana offers more power and flexibility for complex projects." },
+    ],
+  },
+
+  "make": {
+    description:
+      "Make (formerly Integromat) is a powerful visual automation platform that lets users build complex multi-step workflows connecting hundreds of apps — without writing code. Founded in 2012 in Prague, Czech Republic and acquired by Celonis in 2020 before being spun out as an independent company, Make rebranded from Integromat to Make in 2022. The platform's visual drag-and-drop scenario builder stands out from Zapier by enabling complex logic: multiple branches, iterators, aggregators, error handlers, and data transformation — all in a visual flow diagram rather than a linear list. Make connects to 1,800+ apps including Google Workspace, Slack, Shopify, HubSpot, Airtable, and hundreds more. Pricing is based on operations (individual steps in a scenario) rather than tasks, making it significantly cheaper than Zapier for complex multi-step automations. The free plan includes 1,000 operations/month and 2 active scenarios. Core is $10.59/month for 10,000 operations. Pro is $18.82/month for 10,000 operations with advanced features. Make is particularly popular with power users, agencies, and developers who need automation capabilities beyond Zapier's linear model.",
+    highlights: ["1,800+ app integrations", "Visual branching logic — not just linear triggers", "Significantly cheaper per operation than Zapier", "Free plan: 1,000 operations/month"],
+    category: "software",
+    alternatives: [
+      { name: "Zapier", slug: "zapier", reason: "Easier to use, larger app library (7,000+), better support" },
+      { name: "n8n", slug: "n8n", reason: "Open-source, self-hostable, free core" },
+      { name: "ActiveCampaign", slug: "activecampaign", reason: "Better for email marketing automation specifically" },
+      { name: "HubSpot", slug: "hubspot", reason: "If you need CRM automation integrated natively" },
+      { name: "Workato", slug: "workato", reason: "Enterprise integration platform with governance" },
+      { name: "Pipedream", slug: "pipedream", reason: "Developer-focused with code support for complex logic" },
+    ],
+    faqs: [
+      { question: "Make vs Zapier: which is better?", answer: "Make is better for power users who need complex multi-step automations with branching logic, data transformation, and lower cost at scale. Zapier is better for non-technical users who want simple, reliable automations with the largest app library and easiest setup. Make's visual scenario builder is more powerful; Zapier's linear Zap builder is more accessible." },
+      { question: "Is Make free?", answer: "Make has a free plan with 1,000 operations/month and 2 active scenarios — suitable for light automation testing. Core is $10.59/month for 10,000 operations and 3 active scenarios. Pro is $18.82/month with 10,000 operations, 10 active scenarios, and advanced tools like custom variables and full-text execution history." },
+      { question: "What happened to Integromat?", answer: "Integromat rebranded to Make in 2022. The product is the same automation platform — all existing scenarios and integrations carried over. The rebrand accompanied a strategic shift to position the company as a broader work automation platform beyond its original integration-focused identity." },
+    ],
+  },
+
+  "descript": {
+    description:
+      "Descript is an AI-powered audio and video editing tool that takes a radically different approach — instead of traditional timeline-based editing, Descript transcribes your audio or video and lets you edit by editing the text transcript. Delete a word from the transcript and it's deleted from the video. Record over a mistake and Descript can clone your voice to fix it without re-recording. Founded in 2017 in San Francisco by Andrew Mason (founder of Groupon), Descript has become the go-to editing tool for podcasters, YouTubers, course creators, and anyone who finds traditional video editors like Premiere Pro too complex. Features include automatic transcription (powered by Whisper AI), Overdub (AI voice cloning for corrections), screen recording, Studio Sound (AI noise removal and audio enhancement), Underlord (AI-powered clip generation and highlight detection), and direct publishing to YouTube and podcast hosts. Descript's collaborative editing means multiple team members can comment on or edit the same project. The free plan allows 10 hours of transcription per month. Creator is $12/month and Pro is $24/month with advanced AI features and longer exports.",
+    highlights: ["Edit video by editing text — unique workflow", "AI voice cloning for seamless corrections", "Studio Sound AI noise removal", "Used by podcasters, YouTubers, and course creators"],
+    category: "software",
+    alternatives: [
+      { name: "Adobe Premiere Pro", slug: "adobe-premiere", reason: "More powerful timeline editing for professional video" },
+      { name: "CapCut", slug: "capcut", reason: "Free, mobile-first, popular for short-form video" },
+      { name: "Riverside.fm", slug: "riverside-fm", reason: "Better for recording remote podcast interviews" },
+      { name: "Loom", slug: "loom", reason: "Better for quick async screen recordings" },
+      { name: "Camtasia", slug: "camtasia", reason: "Better for software tutorials and screen recording" },
+      { name: "Final Cut Pro", slug: "final-cut-pro", reason: "Best Mac video editor for professionals, one-time purchase" },
+    ],
+    faqs: [
+      { question: "Is Descript free?", answer: "Descript has a free plan with 10 hours of transcription, 720p exports, and 1 hour of Overdub (AI voice) per month. Creator is $12/month for 30 hours transcription and 1080p exports. Pro is $24/month for unlimited transcription, 4K exports, and advanced Underlord AI features. Annual billing saves about 30%." },
+      { question: "What is Descript used for?", answer: "Descript is used primarily for podcast editing, YouTube video production, screen recording, online course creation, and social media clip generation. Its text-based editing workflow makes it ideal for content creators who record lots of talking-head or interview content and want to edit quickly without learning traditional video editing timelines." },
+      { question: "Is Descript better than Premiere Pro?", answer: "Descript is better for creators who primarily edit spoken-word content (podcasts, interviews, vlogs, courses) and want a faster, more intuitive workflow. Premiere Pro is better for professional video production requiring complex multi-track editing, color grading, motion graphics, and precise timeline control. Most serious video editors would use Premiere for complex productions but Descript for quick audio/podcast work." },
+    ],
+  },
+
+  "smartsheet": {
+    description:
+      "Smartsheet is a cloud-based work management platform that combines the familiarity of spreadsheets with project management, automation, and collaboration features — making it a popular choice for enterprise teams migrating from Excel-based project tracking. Founded in 2005 in Bellevue, Washington and publicly traded on NYSE since 2018, Smartsheet serves over 90% of Fortune 100 companies with over 12 million users worldwide. The platform's grid interface feels familiar to spreadsheet users while adding project management capabilities: Gantt charts, automated workflows, approval processes, resource management, and dashboards. Smartsheet excels at cross-departmental coordination — IT, marketing, finance, and operations teams can all use Smartsheet for their specific workflows without needing to learn different tools. Forms allow external stakeholders to input data directly. WorkApps enables teams to build no-code applications from Smartsheet data. Smartsheet integrates with Microsoft 365, Google Workspace, Salesforce, Jira, and Slack. Pro is $7/user/month (minimum 3 users) and Business is $25/user/month. Enterprise pricing is custom.",
+    highlights: ["90% of Fortune 100 companies use Smartsheet", "Spreadsheet familiarity with PM capabilities", "WorkApps for no-code app building", "Strong for cross-departmental enterprise coordination"],
+    category: "software",
+    alternatives: [
+      { name: "Monday.com", slug: "monday-com", reason: "More visual, better for non-Excel-native teams" },
+      { name: "Asana", slug: "asana", reason: "Better for task-centric project management" },
+      { name: "Airtable", slug: "airtable", reason: "More flexible database views, better for content teams" },
+      { name: "ClickUp", slug: "clickup", reason: "More features at lower price point" },
+      { name: "Microsoft Project", slug: "microsoft-project", reason: "Better for complex Gantt and resource scheduling" },
+      { name: "Notion", slug: "notion", reason: "Better for knowledge management alongside tracking" },
+    ],
+    faqs: [
+      { question: "How much does Smartsheet cost?", answer: "Smartsheet Pro is $7/user/month (minimum 3 users, billed annually) with unlimited sheets, views, and 250GB storage. Business is $25/user/month with unlimited automation, resource management, and advanced security. Enterprise pricing is custom with SSO, dedicated support, and compliance features." },
+      { question: "Smartsheet vs Monday.com: which is better?", answer: "Smartsheet is better for enterprise teams who are comfortable with spreadsheets and need powerful automation, complex project tracking, and enterprise-grade compliance. Monday.com is better for teams that want a more visual, colorful interface and easier onboarding without the spreadsheet heritage. Smartsheet is particularly dominant in IT, construction, and manufacturing; Monday.com in marketing and SMBs." },
+      { question: "Is Smartsheet just a spreadsheet?", answer: "Smartsheet looks like a spreadsheet but is a full work management platform. Beyond grid data, it adds Gantt chart views, Kanban boards, calendar views, automated workflows (approve, alert, lock rows), approval processes, dashboards that aggregate data across sheets, and WorkApps for building no-code applications on top of sheet data." },
+    ],
+  },
 };
