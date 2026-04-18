@@ -1757,4 +1757,164 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Can you self-host GitLab?", answer: "Yes, GitLab Community Edition (CE) is free, open-source, and can be self-hosted on your own servers. This is a major advantage over GitHub, which requires GitHub Enterprise (expensive) for self-hosted deployment. Self-hosted GitLab gives complete data sovereignty and is popular in enterprises with strict compliance requirements." },
     ],
   },
+
+  "microsoft-365": {
+    description:
+      "Microsoft 365 (formerly Office 365) is Microsoft's cloud-based productivity suite, combining the world's most widely used office applications — Word, Excel, PowerPoint, Outlook, Teams, OneDrive, and SharePoint — with cloud storage and collaboration features. With over 400 million paid seats, Microsoft 365 is the dominant productivity platform in enterprises and a major presence in SMBs, education, and homes. The suite has evolved significantly from standalone desktop software to a deeply integrated cloud platform where documents coexist with Teams meetings, OneDrive syncs files across devices, and SharePoint powers intranet sites. Copilot for Microsoft 365, powered by GPT-4, adds AI assistance across all apps — drafting emails in Outlook, summarizing meetings in Teams, generating presentations in PowerPoint, and analyzing data in Excel. Microsoft 365 Personal is $69.99/year (1 user, 1TB OneDrive). Microsoft 365 Family is $99.99/year (up to 6 users). Business Basic starts at $6/user/month and Business Premium at $22/user/month with advanced security. The platform's ubiquity in enterprise IT makes it the default choice for most large organizations, though Google Workspace has made significant inroads particularly with startups and education.",
+    highlights: ["400M+ paid seats worldwide", "Word, Excel, PowerPoint, Teams, Outlook in one suite", "Microsoft Copilot AI across all apps", "Microsoft 365 Personal from $69.99/year"],
+    category: "software",
+    alternatives: [
+      { name: "Google Workspace", slug: "google-workspace", reason: "Better for real-time collaboration, browser-native, strong for startups" },
+      { name: "Apple iWork", slug: "apple-iwork", reason: "Free for Mac/iOS users, Pages/Numbers/Keynote" },
+      { name: "LibreOffice", slug: "libreoffice", reason: "Free, open-source, works offline, no subscription" },
+      { name: "Notion", slug: "notion", reason: "Modern all-in-one workspace replacing docs + wikis + tasks" },
+      { name: "Zoho Workplace", slug: "zoho-workplace", reason: "More affordable suite with CRM and business tools" },
+      { name: "Slack", slug: "slack", reason: "If you want best-in-class messaging rather than Teams" },
+    ],
+    faqs: [
+      { question: "How much does Microsoft 365 cost?", answer: "Microsoft 365 Personal is $69.99/year (1 user, 1TB OneDrive). Family is $99.99/year for up to 6 users. Business plans start at $6/user/month (Basic, web/mobile apps only), $12.50/user/month (Standard, desktop apps), and $22/user/month (Premium, with advanced security). Education and nonprofit pricing is significantly discounted." },
+      { question: "Microsoft 365 vs Google Workspace: which is better?", answer: "Microsoft 365 is better for organizations with complex Excel/PowerPoint needs, existing Windows infrastructure, and regulated industries requiring Microsoft's compliance certifications. Google Workspace is better for startups, remote-first teams, and organizations that prioritize real-time browser-based collaboration. Both are excellent — the best choice usually depends on your existing ecosystem." },
+      { question: "What's included in Microsoft 365?", answer: "Microsoft 365 includes Word, Excel, PowerPoint, Outlook, OneNote, Teams, OneDrive cloud storage, and SharePoint (business plans). Business Standard and above add desktop app installs for up to 5 devices per user. Business Premium adds Microsoft Defender, Intune device management, and Azure AD premium security features." },
+    ],
+  },
+
+  "google-workspace": {
+    description:
+      "Google Workspace (formerly G Suite) is Google's cloud-native productivity and collaboration platform, bundling Gmail, Google Drive, Docs, Sheets, Slides, Meet, Calendar, Chat, and more into a unified suite for businesses and organizations. Used by over 10 million businesses and 3 billion people across paid and free tiers, Google Workspace was built from the ground up for the browser — making real-time multi-user collaboration a core feature rather than an afterthought. Google Workspace pioneered features now standard everywhere: multiple people editing a document simultaneously, comments and suggestions, version history, and instant sharing via link. Google Meet handles video conferencing, Google Chat handles messaging, and Drive provides the file system. Google Gemini, Google's AI, is integrated across Workspace apps for drafting emails, summarizing documents, and generating content. Business Starter is $6/user/month (30GB pooled storage), Business Standard is $12/user/month (2TB pooled), and Business Plus is $18/user/month. Google Workspace is the dominant choice for startups, education, and organizations that prioritize browser-based work and easy external collaboration.",
+    highlights: ["10M+ businesses, 3B+ users across all tiers", "Real-time multi-user collaboration built-in from day one", "Google Gemini AI across all apps", "Business Starter from $6/user/month"],
+    category: "software",
+    alternatives: [
+      { name: "Microsoft 365", slug: "microsoft-365", reason: "Better desktop apps, Excel/PowerPoint depth, enterprise dominance" },
+      { name: "Zoho Workplace", slug: "zoho-workplace", reason: "More affordable with built-in CRM and HR tools" },
+      { name: "Notion", slug: "notion", reason: "Modern flexible workspace replacing docs and wikis" },
+      { name: "Apple iWork", slug: "apple-iwork", reason: "Free for Apple users with Pages, Numbers, Keynote" },
+      { name: "Slack", slug: "slack", reason: "Better standalone messaging if you outgrow Google Chat" },
+      { name: "Dropbox", slug: "dropbox", reason: "If you need better file sync than Google Drive" },
+    ],
+    faqs: [
+      { question: "How much does Google Workspace cost?", answer: "Google Workspace Business Starter is $6/user/month (30GB pooled storage, video up to 100 participants). Business Standard is $12/user/month (2TB pooled, 150-person meetings with recordings). Business Plus is $18/user/month (5TB, 500-person meetings). Enterprise pricing is custom. Annual billing required for most plans." },
+      { question: "Is Google Workspace better than Microsoft 365?", answer: "Google Workspace is better for teams that work primarily in browsers, prioritize real-time collaboration, and prefer simplicity over feature depth. Microsoft 365 is better for organizations that need powerful desktop applications (especially Excel for complex spreadsheets or PowerPoint for polished presentations), deep Windows integration, or enterprise compliance requirements." },
+      { question: "What's the difference between Google Workspace and free Google?", answer: "Free Google accounts (gmail.com addresses) get 15GB shared storage and access to Docs/Sheets/Slides/Meet. Google Workspace adds a custom domain email address (you@yourcompany.com), more storage, admin controls, team management, longer Meet recordings, 24/7 support, and SLA guarantees — essential for professional business use." },
+    ],
+  },
+
+  "mixpanel": {
+    description:
+      "Mixpanel is a product analytics platform designed to help teams understand user behavior within digital products — tracking events, analyzing funnels, measuring retention, and segmenting users to answer questions like 'why do users churn?' and 'what features drive activation?'. Founded in 2009 in San Francisco, Mixpanel pioneered event-based product analytics as an alternative to session-based web analytics tools like Google Analytics. The platform is built for product managers, growth engineers, and data analysts who need to go beyond page views to understand what users actually do inside apps and websites. Core features include Funnels (conversion analysis), Flows (user path visualization), Retention (cohort analysis), Insights (custom metrics), and Experiments (A/B test analysis). Mixpanel's query interface is designed for non-technical users — creating analyses without SQL. The platform integrates with Segment, Amplitude, Braze, and major data warehouses. Mixpanel's free plan is generous at up to 20 million monthly tracked events. Growth starts at $28/month and Enterprise pricing scales with event volume. Over 8,000 companies including Uber, Twitter, and Spotify use Mixpanel.",
+    highlights: ["Up to 20M events/month on free plan", "Funnels, Retention, Flows, and A/B test analysis", "8,000+ customers including Uber and Spotify", "No SQL required for most analyses"],
+    category: "software",
+    alternatives: [
+      { name: "Amplitude", slug: "amplitude", reason: "More powerful for large-scale product analytics and data governance" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, broader web analytics, better for marketing attribution" },
+      { name: "Heap", slug: "heap", reason: "Auto-capture all events retroactively without instrumentation" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source, self-hostable, combines analytics + feature flags + recordings" },
+      { name: "Pendo", slug: "pendo", reason: "Better for product tours, in-app guides, and NPS surveys" },
+      { name: "FullStory", slug: "fullstory", reason: "Better session intelligence and qualitative behavior analysis" },
+    ],
+    faqs: [
+      { question: "Is Mixpanel free?", answer: "Mixpanel has a free plan that includes up to 20 million monthly tracked events — generous enough for most startups and small products. The Growth plan starts at $28/month for higher event volumes and priority support. Enterprise pricing scales with data volume and adds SSO, data governance, and advanced security." },
+      { question: "Mixpanel vs Google Analytics: what's the difference?", answer: "Mixpanel is a product analytics tool focused on user-level event tracking inside apps and websites — answering 'what do users do after login?'. Google Analytics is a web analytics tool focused on traffic sources and session-level behavior — answering 'how do people find and navigate my site?'. Most teams use both: GA for marketing attribution, Mixpanel for product behavior." },
+      { question: "Mixpanel vs Amplitude: which is better?", answer: "Mixpanel is generally faster and easier to use — its query interface is more intuitive for product teams without data engineering support. Amplitude is better for larger organizations with complex data governance requirements, data warehouse integrations, and more sophisticated behavioral cohort analysis. Both are excellent; the choice often comes down to team size and technical sophistication." },
+    ],
+  },
+
+  "amplitude": {
+    description:
+      "Amplitude is an enterprise-grade digital analytics platform specializing in product intelligence — helping companies understand user behavior, measure the impact of product changes, and make data-driven decisions. Founded in 2012 in San Francisco by Spenser Skates, Curtis Liu, and Jeffrey Wang, Amplitude went public on Nasdaq in 2021. The platform is used by over 3,000 customers including Ford, Walmart, Peloton, and Squarespace. Amplitude's core offering centers on Behavioral Cohorts (segment users by what they've done), Pathfinder (user flow visualization), Retention Analysis, Impact Analysis (measure feature impact), and Experiment (integrated A/B testing). In 2023, Amplitude launched Ask Amplitude, a natural language query interface allowing non-technical users to get product insights by asking questions in plain English. The platform integrates deeply with data warehouses (Snowflake, BigQuery, Redshift) through Amplitude's Data platform. Amplitude Starter is free for up to 10 million monthly events. Plus starts at $49/month and Growth and Enterprise tiers offer advanced governance, SSO, and dedicated support.",
+    highlights: ["3,000+ enterprise customers including Walmart and Ford", "Natural language 'Ask Amplitude' queries", "Deep data warehouse integration", "Free up to 10M events/month"],
+    category: "software",
+    alternatives: [
+      { name: "Mixpanel", slug: "mixpanel", reason: "Easier to use, faster queries, better free tier (20M events)" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, better for marketing attribution and web traffic" },
+      { name: "Heap", slug: "heap", reason: "Auto-capture events retroactively, no instrumentation needed" },
+      { name: "PostHog", slug: "posthog", reason: "Open-source self-hosted alternative with feature flags" },
+      { name: "Pendo", slug: "pendo", reason: "Better in-app guidance, NPS, and product adoption tools" },
+      { name: "Hotjar", slug: "hotjar", reason: "Qualitative behavior analytics complementing quantitative data" },
+    ],
+    faqs: [
+      { question: "Is Amplitude free?", answer: "Amplitude Starter is free for up to 10 million monthly events with core analytics features. Plus starts at $49/month for higher volume and more features. Growth and Enterprise tiers are custom-priced for large organizations needing advanced data governance, SSO, and dedicated support." },
+      { question: "Amplitude vs Mixpanel: which is better?", answer: "Amplitude is generally better for large enterprises needing sophisticated data governance, deep warehouse integrations, and complex behavioral analysis at scale. Mixpanel is faster, easier to set up, and has a more generous free tier (20M events vs Amplitude's 10M). Startups and growth-stage companies often prefer Mixpanel; enterprise analytics teams often prefer Amplitude." },
+      { question: "What is Amplitude used for?", answer: "Amplitude is used by product teams to track how users interact with digital products, measure retention and engagement, analyze feature adoption, run A/B tests, and identify conversion bottlenecks. It answers questions like 'which features lead to long-term retention?', 'where do users drop off in onboarding?', and 'what behaviors predict churn?'." },
+    ],
+  },
+
+  "plausible": {
+    description:
+      "Plausible Analytics is a lightweight, open-source, privacy-first web analytics tool built as a GDPR-compliant, cookie-free alternative to Google Analytics. Founded in 2018 by Uku Tänavgötze and Marko Saric and bootstrapped to profitability, Plausible is used by over 12,000 paying customers including companies and developers who value data privacy and simplicity over the complexity of GA4. The analytics script is under 1KB — 45x smaller than the Google Analytics script — with negligible impact on page speed. Plausible collects no personal data, uses no cookies, and requires no cookie consent banner in most jurisdictions. The dashboard is intentionally simple: traffic sources, top pages, countries, devices, and custom goal conversions — all in a single page view. There's no session recording, no heatmaps, no user-level tracking. Plausible is hosted in the EU (on EU-owned infrastructure) and is fully compliant with GDPR, CCPA, and PECR. The source code is public and self-hosting is supported. Pricing starts at $9/month for up to 10,000 monthly pageviews and scales to $69/month for 10 million pageviews. A 30-day free trial requires no credit card.",
+    highlights: ["Privacy-first, no cookies, GDPR-compliant", "Script 45x smaller than Google Analytics", "Simple one-page dashboard", "EU-hosted, open-source, self-hostable"],
+    category: "software",
+    alternatives: [
+      { name: "Google Analytics", slug: "google-analytics", reason: "Free, more features, deeper Google integration" },
+      { name: "Fathom Analytics", slug: "fathom", reason: "Similar privacy-first approach, slightly simpler" },
+      { name: "Matomo", slug: "matomo", reason: "More features, self-hostable free version" },
+      { name: "Hotjar", slug: "hotjar", reason: "Adds heatmaps and session recordings alongside basic analytics" },
+      { name: "Umami", slug: "umami", reason: "Open-source, self-hostable, completely free" },
+      { name: "Cloudflare Web Analytics", slug: "cloudflare-analytics", reason: "Free, no cookies, basic traffic stats for Cloudflare users" },
+    ],
+    faqs: [
+      { question: "How much does Plausible cost?", answer: "Plausible starts at $9/month (10,000 pageviews), $19/month (100,000), $29/month (200,000), $49/month (1M), and $69/month (10M). Annual billing saves ~33%. A 30-day free trial is available with no credit card. Self-hosting the open-source version is free but requires server setup." },
+      { question: "Is Plausible better than Google Analytics?", answer: "Plausible is better if you prioritize privacy compliance, page speed, and simplicity — it requires no cookie banner, collects no personal data, and gives you a clean single-page dashboard. Google Analytics is better if you need free analytics, advanced audience segmentation, Google Ads attribution, or predictive metrics. They serve different use cases." },
+      { question: "Does Plausible work without cookies?", answer: "Yes, Plausible uses no cookies and collects no personal data. Instead of storing a user ID in a cookie, Plausible generates a daily rotating hash from IP address + browser + domain to count unique visitors — data that cannot be traced back to an individual and is never stored. This means no cookie consent banner is required in most jurisdictions." },
+    ],
+  },
+
+  "paypal": {
+    description:
+      "PayPal is one of the world's most recognized digital payment platforms, with over 430 million active accounts spanning consumers, freelancers, and businesses in 200+ countries and 25 currencies. Founded in 1998 (merged with Confinity in 2000 and spun off from eBay in 2015), PayPal pioneered online payments and remains the default choice for peer-to-peer transfers, marketplace payouts, and small business invoicing. PayPal Checkout is installed on millions of e-commerce websites, offering consumers a familiar and trusted payment experience that can boost conversion rates. For businesses, PayPal provides payment processing, invoicing, subscriptions, buy now pay later (Pay Later), and Venmo (peer-to-peer US payments). PayPal's network effect — consumers already having saved cards and addresses — reduces checkout friction. Standard processing fees are 3.49% + $0.49 for PayPal Checkout (slightly higher than Stripe's 2.9% + $0.30). PayPal is particularly dominant in international payments, marketplaces like eBay and Etsy, and any use case where consumer trust in the payment brand matters. PayPal's brand recognition often lifts conversion rates even at higher fees.",
+    highlights: ["430M+ active accounts in 200+ countries", "Dominant in international and marketplace payments", "Consumer trust drives higher checkout conversion", "Pay Later (BNPL) built-in"],
+    category: "software",
+    alternatives: [
+      { name: "Stripe", slug: "stripe", reason: "Better developer experience, lower fees, more payment methods" },
+      { name: "Square", slug: "square", reason: "Better for in-person payments and retail businesses" },
+      { name: "Braintree", slug: "braintree", reason: "PayPal-owned developer-friendly gateway with competitive rates" },
+      { name: "Venmo", slug: "venmo", reason: "US peer-to-peer payments, popular with younger demographics" },
+      { name: "Wise", slug: "wise", reason: "Better for international transfers with real exchange rates" },
+      { name: "Adyen", slug: "adyen", reason: "Better for global enterprise with unified acquiring" },
+    ],
+    faqs: [
+      { question: "How much does PayPal charge?", answer: "PayPal charges 3.49% + $0.49 for PayPal Checkout transactions, 2.99% + $0.49 for card-only transactions, and 1.9% + $0.10 for invoices paid with PayPal balance. International transactions add a 1.5% cross-border fee. These rates are generally higher than Stripe (2.9% + $0.30) but PayPal's brand recognition can offset the cost with higher conversion." },
+      { question: "PayPal vs Stripe: which is better for businesses?", answer: "Stripe is better for developers building custom payment flows, SaaS subscriptions, and marketplaces that need a flexible API and lower fees. PayPal is better for businesses where consumer trust and brand recognition matter — PayPal's checkout button often converts better than a generic card form, especially for first-time buyers. Many businesses use both." },
+      { question: "Is PayPal safe for business?", answer: "PayPal is safe and PCI-compliant. It offers Seller Protection for eligible transactions, dispute resolution, and fraud monitoring. For businesses, the main risk is PayPal's account holds and freezes, which have affected many sellers — PayPal can hold funds for 180 days if it detects unusual activity. Having a backup payment processor is advisable." },
+    ],
+  },
+
+  "bitbucket": {
+    description:
+      "Bitbucket is Atlassian's Git code hosting platform, designed to work seamlessly within the Atlassian ecosystem alongside Jira, Confluence, and Trello. Acquired by Atlassian in 2010, Bitbucket differentiates from GitHub and GitLab by its deep native integration with Jira — linking commits, pull requests, and branches directly to Jira issues for seamless traceability between code and project management. Bitbucket Pipelines is the built-in CI/CD service allowing teams to build, test, and deploy directly from Bitbucket with YAML configuration. The platform supports both Git and Mercurial (though Mercurial support was dropped in 2020). Bitbucket Cloud is the hosted version with a free plan for teams of up to 5 users with unlimited private repositories — a key advantage over GitHub's per-seat model. Standard is $3/user/month and Premium is $6/user/month. Bitbucket Data Center is the self-hosted enterprise option. While Bitbucket has lost market share to GitHub (which made private repos free in 2019), it remains a strong choice for organizations deeply invested in the Atlassian ecosystem where the Jira integration adds significant workflow value.",
+    highlights: ["Native Jira integration for code-to-issue traceability", "Free plan for up to 5 users with unlimited private repos", "Bitbucket Pipelines built-in CI/CD", "Part of Atlassian ecosystem (Jira, Confluence, Trello)"],
+    category: "software",
+    alternatives: [
+      { name: "GitHub", slug: "github", reason: "Largest developer community, Copilot AI, best open-source ecosystem" },
+      { name: "GitLab", slug: "gitlab", reason: "More complete DevSecOps platform, better self-hosting" },
+      { name: "Azure DevOps", slug: "azure-devops", reason: "Better for Microsoft/Azure environments" },
+      { name: "Jira", slug: "jira", reason: "If you need project management beyond code hosting" },
+      { name: "Gitea", slug: "gitea", reason: "Lightweight open-source self-hosted Git" },
+      { name: "Linear", slug: "linear", reason: "If you want modern issue tracking instead of Jira" },
+    ],
+    faqs: [
+      { question: "Is Bitbucket free?", answer: "Bitbucket has a free plan for up to 5 users with unlimited private repositories, 50 build minutes/month on Pipelines, and 1GB storage. Standard is $3/user/month (unlimited build minutes, 5GB storage) and Premium is $6/user/month with advanced security and compliance features. This pricing is lower than GitHub Teams ($4/user/month)." },
+      { question: "Bitbucket vs GitHub: which is better?", answer: "GitHub is better for open-source projects, developer community, and teams that want GitHub Copilot and the largest integration ecosystem. Bitbucket is better for teams already using Jira — the native integration creates seamless links between code and project management. For non-Atlassian teams, GitHub's community and features generally make it the stronger choice." },
+      { question: "Does Bitbucket integrate with Jira?", answer: "Yes, Bitbucket's Jira integration is its primary differentiator. Commits, pull requests, and branches can be automatically linked to Jira issues by including the issue key in commit messages. This creates end-to-end traceability: from a Jira ticket, you can see the code changes, deployment status, and review history. No other Git platform matches this integration depth." },
+    ],
+  },
+
+  "microsoft-clarity": {
+    description:
+      "Microsoft Clarity is a completely free behavior analytics tool from Microsoft that provides heatmaps, session recordings, and user behavior insights with no data limits and no cost — making it the most accessible alternative to Hotjar for teams with budget constraints. Launched in 2020, Clarity reached widespread adoption quickly due to its $0 price tag covering unlimited sessions and unlimited recordings. The tool captures click heatmaps, scroll maps, and session recordings that show exactly how users interact with pages — where they click, how far they scroll, and where they encounter friction. Clarity's AI-powered dashboard automatically surfaces insights like rage clicks (frustrated repeated clicks), dead clicks (clicks that produce no response), and excessive scrolling. The JavaScript snippet is lightweight and integrates with Google Analytics to segment Clarity sessions by GA4 audiences. Clarity integrates with WordPress, Shopify, and Wix via official plugins. Data is retained for 13 months. There is no paid tier — Clarity is entirely free as Microsoft uses it to improve Bing and its advertising products. The tradeoff versus Hotjar is fewer features: no surveys, no feedback widgets, no funnel analysis, and no integrations beyond GA.",
+    highlights: ["Completely free — unlimited sessions and recordings", "Heatmaps and session recordings with zero data caps", "AI-powered rage click and dead click detection", "Google Analytics integration for audience segmentation"],
+    category: "software",
+    alternatives: [
+      { name: "Hotjar", slug: "hotjar", reason: "Adds surveys, feedback widgets, and funnel analysis" },
+      { name: "FullStory", slug: "fullstory", reason: "More powerful session intelligence for enterprises" },
+      { name: "Mouseflow", slug: "mouseflow", reason: "More analytics features including form analytics" },
+      { name: "Lucky Orange", slug: "lucky-orange", reason: "Adds live chat and conversion funnels alongside recordings" },
+      { name: "Crazy Egg", slug: "crazy-egg", reason: "Adds A/B testing alongside heatmaps" },
+      { name: "Google Analytics", slug: "google-analytics", reason: "Quantitative analytics — pairs well with Clarity's qualitative data" },
+    ],
+    faqs: [
+      { question: "Is Microsoft Clarity really free?", answer: "Yes, Microsoft Clarity is completely free with no paid tiers, no data limits, and no session caps. You get unlimited heatmaps, unlimited session recordings, and 13 months of data retention at zero cost. Microsoft funds Clarity as part of its advertising and Bing ecosystem." },
+      { question: "Microsoft Clarity vs Hotjar: which is better?", answer: "Microsoft Clarity is better if you need heatmaps and session recordings at zero cost — for basic behavior analytics, Clarity's free tier beats Hotjar's free plan (limited to 35 daily sessions). Hotjar is better if you need surveys, in-page feedback widgets, funnel analysis, or integrations with marketing tools like HubSpot. Many teams use Clarity for recordings and add Hotjar surveys on top." },
+      { question: "Is Microsoft Clarity GDPR compliant?", answer: "Microsoft Clarity has privacy features including IP masking and the ability to exclude sensitive pages from recording. However, as a Microsoft product, data flows to Microsoft's servers, which has GDPR implications similar to Google Analytics for EU users. For maximum compliance, self-hosted tools like Matomo are safer. Clarity's privacy settings and data processing agreement should be reviewed for your jurisdiction." },
+    ],
+  },
 };
