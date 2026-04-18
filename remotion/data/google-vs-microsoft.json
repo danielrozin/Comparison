@@ -1,0 +1,113 @@
+{
+  "title": "Google vs Microsoft",
+  "entityA": "Google",
+  "entityB": "Microsoft",
+  "category": "General",
+  "slug": "google-vs-microsoft",
+  "shortAnswer": "Google leads in search market share and cloud growth (48% vs 26%), while Microsoft dominates cloud revenue ($51.5B vs $17.7B) and offers competitive productivity suite pricing.",
+  "keyDifferences": [
+    {
+      "label": "AI Search Integration",
+      "entityAValue": "19% of searches use AI",
+      "entityBValue": "34% of searches use AI",
+      "winner": "b"
+    },
+    {
+      "label": "Cloud Revenue Growth",
+      "entityAValue": "48% growth",
+      "entityBValue": "26% growth",
+      "winner": "a"
+    },
+    {
+      "label": "Cloud Market Size",
+      "entityAValue": "$17.7B quarterly",
+      "entityBValue": "$51.5B quarterly",
+      "winner": "b"
+    },
+    {
+      "label": "Productivity Suite Pricing",
+      "entityAValue": "$14.00/user/month",
+      "entityBValue": "$12.50/user/month",
+      "winner": "b"
+    },
+    {
+      "label": "Overall Revenue Growth",
+      "entityAValue": "18% quarterly",
+      "entityBValue": "17% quarterly",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "AI-Powered Search Usage",
+      "valueA": "19%",
+      "valueB": "34%",
+      "winner": "b"
+    },
+    {
+      "label": "Cloud Revenue Growth Rate",
+      "valueA": "48%",
+      "valueB": "26%",
+      "winner": "a"
+    },
+    {
+      "label": "Quarterly Cloud Revenue",
+      "valueA": "$17.7B",
+      "valueB": "$51.5B",
+      "winner": "b"
+    },
+    {
+      "label": "Business Suite Monthly Cost",
+      "valueA": "$14.00",
+      "valueB": "$12.50",
+      "winner": "b"
+    },
+    {
+      "label": "Total Revenue Growth",
+      "valueA": "18%",
+      "valueB": "17%",
+      "winner": "a"
+    },
+    {
+      "label": "AI Premium Add-on Cost",
+      "valueA": "Included in base",
+      "valueB": "$30/user",
+      "winner": "a"
+    },
+    {
+      "label": "Search Market Position",
+      "valueA": "Dominant leader",
+      "valueB": "Secondary player",
+      "winner": "a"
+    },
+    {
+      "label": "Cloud Market Position",
+      "valueA": "Fast growing challenger",
+      "valueB": "Market leader",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Dominant search market share with established user base",
+    "Explosive 48% cloud revenue growth rate",
+    "AI features included in base productivity suite pricing",
+    "Accelerating overall revenue growth momentum"
+  ],
+  "consA": [
+    "Lower AI adoption in search (19% vs 34%)",
+    "Smaller cloud revenue base despite faster growth",
+    "Higher productivity suite pricing than competitor"
+  ],
+  "prosB": [
+    "Higher AI integration in search with 34% usage rate",
+    "Massive cloud revenue leadership at $51.5B quarterly",
+    "Lower productivity suite pricing at $12.50/user",
+    "Strong Windows ecosystem integration advantages"
+  ],
+  "consB": [
+    "Slower cloud growth rate at 26% vs competitor's 48%",
+    "Secondary position in search market",
+    "Expensive $30/user AI premium add-on pricing"
+  ],
+  "verdict": "Google maintains search dominance and shows impressive cloud growth momentum, while Microsoft leverages its established enterprise presence and competitive pricing. The battle centers on AI integration and cloud services, where both companies have distinct advantages in different areas."
+}

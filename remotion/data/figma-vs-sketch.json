@@ -1,0 +1,111 @@
+{
+  "title": "Figma vs Sketch",
+  "entityA": "Figma",
+  "entityB": "Sketch",
+  "category": "General",
+  "slug": "figma-vs-sketch",
+  "shortAnswer": "Figma excels in web-based collaboration and real-time teamwork, while Sketch offers superior native macOS performance and a mature plugin ecosystem.",
+  "keyDifferences": [
+    {
+      "label": "Platform",
+      "entityAValue": "Web-based, runs everywhere",
+      "entityBValue": "Native macOS application",
+      "winner": "a"
+    },
+    {
+      "label": "Collaboration",
+      "entityAValue": "Real-time collaborative-first platform",
+      "entityBValue": "More integrated for Mac users",
+      "winner": "a"
+    },
+    {
+      "label": "Performance",
+      "entityAValue": "Browser-based performance",
+      "entityBValue": "Native speed for complex files",
+      "winner": "b"
+    },
+    {
+      "label": "Plugin Ecosystem",
+      "entityAValue": "Growing plugin support",
+      "entityBValue": "Mature plugin ecosystem",
+      "winner": "b"
+    },
+    {
+      "label": "Cost Structure",
+      "entityAValue": "Higher total cost for teams",
+      "entityBValue": "Lower cost plus free handoff tools",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Overall Rating",
+      "valueA": "4.6/5",
+      "valueB": "4.2/5",
+      "winner": "a"
+    },
+    {
+      "label": "Platform Support",
+      "valueA": "All platforms",
+      "valueB": "macOS only",
+      "winner": "a"
+    },
+    {
+      "label": "Real-time Collaboration",
+      "valueA": "Built-in",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "File Import Support",
+      "valueA": "Built-in Sketch importer",
+      "valueB": "Native format",
+      "winner": "tie"
+    },
+    {
+      "label": "Branching/Version Control",
+      "valueA": "Git-like branching",
+      "valueB": "Basic versioning",
+      "winner": "a"
+    },
+    {
+      "label": "Cost for 3 designers + 5 developers",
+      "valueA": "Significantly higher",
+      "valueB": "Lower with free tools",
+      "winner": "b"
+    },
+    {
+      "label": "Design System Management",
+      "valueA": "Advanced with branching",
+      "valueB": "Standard workflows",
+      "winner": "a"
+    },
+    {
+      "label": "Developer Handoff",
+      "valueA": "Integrated",
+      "valueB": "Requires additional tools",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Industry-leading design and creative tool",
+    "Real-time collaboration with branching and merging",
+    "Web-based accessibility across all platforms",
+    "Built-in developer handoff capabilities"
+  ],
+  "consA": [
+    "Significantly higher cost for larger teams",
+    "Expanding feature set adds complexity"
+  ],
+  "prosB": [
+    "Superior native macOS performance and speed",
+    "Mature and extensive plugin ecosystem",
+    "More focused tool without feature bloat",
+    "Lower total cost with free handoff alternatives"
+  ],
+  "consB": [
+    "Limited to macOS platform only",
+    "Weaker real-time collaboration capabilities"
+  ],
+  "verdict": "Choose Figma for cross-platform teams prioritizing real-time collaboration and integrated developer handoff. Choose Sketch for Mac-only teams valuing native performance, established plugin workflows, and cost efficiency."
+}

@@ -610,6 +610,71 @@
       "youtubeVideoId": "oC2wVDERQ6Q",
       "youtubeUrl": "https://www.youtube.com/watch?v=oC2wVDERQ6Q",
       "uploadedAt": "2026-04-17T07:03:08.479Z"
+    },
+    {
+      "slug": "canada-vs-australia",
+      "title": "Canada vs Australia",
+      "entityA": "Canada",
+      "entityB": "Australia",
+      "category": "Countries",
+      "videoFile": "Canada vs Australia.mp4",
+      "youtubeTitle": "Canada vs Australia — Full Comparison 2026",
+      "youtubeDescription": "Canada offers cheaper French-language programs and spousal work permits, while Australia provides longer post-study work visas for PhD holders. Both have similar costs otherwise.\n\n#canada #australia #countries #comparison #versus",
+      "youtubeVideoId": "o9i2JqlplV0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=o9i2JqlplV0",
+      "uploadedAt": "2026-04-18T06:16:41.576Z"
+    },
+    {
+      "slug": "google-vs-microsoft",
+      "title": "Google vs Microsoft",
+      "entityA": "Google",
+      "entityB": "Microsoft",
+      "category": "General",
+      "videoFile": "Google vs Microsoft.mp4",
+      "youtubeTitle": "Google vs Microsoft — Full Comparison 2026",
+      "youtubeDescription": "Google leads in search market share and cloud growth (48% vs 26%), while Microsoft dominates cloud revenue ($51.5B vs $17.7B) and offers competitive productivity suite pricing.\n\n#google #microsoft #general #comparison #versus",
+      "youtubeVideoId": "GsOHyyhc1H8",
+      "youtubeUrl": "https://www.youtube.com/watch?v=GsOHyyhc1H8",
+      "uploadedAt": "2026-04-18T06:19:27.068Z"
+    },
+    {
+      "slug": "android-vs-ios",
+      "title": "Android vs Ios",
+      "entityA": "Android",
+      "entityB": "Ios",
+      "category": "Technology",
+      "videoFile": "Android vs Ios.mp4",
+      "youtubeTitle": "Android vs Ios — Full Comparison 2026",
+      "youtubeDescription": "Android dominates globally with 72.77% market share vs iOS's 26.82%, but the choice depends on your target market, security needs, and monetization strategy rather than pure market size.\n\n#android #ios #technology #comparison #versus",
+      "youtubeVideoId": "Wpzj1m1WZ44",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Wpzj1m1WZ44",
+      "uploadedAt": "2026-04-18T06:22:11.655Z"
+    },
+    {
+      "slug": "b-2-vs-b-52",
+      "title": "B 2 vs B 52",
+      "entityA": "B 2",
+      "entityB": "B 52",
+      "category": "General",
+      "videoFile": "B 2 vs B 52.mp4",
+      "youtubeTitle": "B 2 vs B 52 — Full Comparison 2026",
+      "youtubeDescription": "B-52 Stratofortress is faster and carries more payload, while B-2 Spirit offers superior stealth capabilities. B-52 has longer service life but more dated design.\n\n#b2 #b52 #general #comparison #versus",
+      "youtubeVideoId": "VYtOzFuK4R8",
+      "youtubeUrl": "https://www.youtube.com/watch?v=VYtOzFuK4R8",
+      "uploadedAt": "2026-04-18T06:24:57.535Z"
+    },
+    {
+      "slug": "figma-vs-sketch",
+      "title": "Figma vs Sketch",
+      "entityA": "Figma",
+      "entityB": "Sketch",
+      "category": "General",
+      "videoFile": "Figma vs Sketch.mp4",
+      "youtubeTitle": "Figma vs Sketch — Full Comparison 2026",
+      "youtubeDescription": "Figma excels in web-based collaboration and real-time teamwork, while Sketch offers superior native macOS performance and a mature plugin ecosystem.\n\n#figma #sketch #general #comparison #versus",
+      "youtubeVideoId": "SJn0dM7WwMY",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SJn0dM7WwMY",
+      "uploadedAt": "2026-04-18T06:27:44.405Z"
     }
   ]
 }

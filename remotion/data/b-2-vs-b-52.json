@@ -1,0 +1,113 @@
+{
+  "title": "B 2 vs B 52",
+  "entityA": "B 2",
+  "entityB": "B 52",
+  "category": "General",
+  "slug": "b-2-vs-b-52",
+  "shortAnswer": "B-52 Stratofortress is faster and carries more payload, while B-2 Spirit offers superior stealth capabilities. B-52 has longer service life but more dated design.",
+  "keyDifferences": [
+    {
+      "label": "Maximum Speed",
+      "entityAValue": "972 km/h",
+      "entityBValue": "1,000 km/h",
+      "winner": "b"
+    },
+    {
+      "label": "Payload Capacity",
+      "entityAValue": "Unknown",
+      "entityBValue": "70,000 pounds",
+      "winner": "b"
+    },
+    {
+      "label": "Design Era",
+      "entityAValue": "Modern stealth",
+      "entityBValue": "Dated conventional",
+      "winner": "a"
+    },
+    {
+      "label": "Service Life",
+      "entityAValue": "Shorter",
+      "entityBValue": "Longer",
+      "winner": "b"
+    },
+    {
+      "label": "Adaptability",
+      "entityAValue": "Limited",
+      "entityBValue": "High adaptability to threats",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Maximum Speed",
+      "valueA": "972 km/h",
+      "valueB": "1,000 km/h",
+      "winner": "b"
+    },
+    {
+      "label": "Speed Difference",
+      "valueA": "-28 km/h",
+      "valueB": "+28 km/h",
+      "winner": "b"
+    },
+    {
+      "label": "Payload Capacity",
+      "valueA": "Unknown",
+      "valueB": "70,000 lbs",
+      "winner": "b"
+    },
+    {
+      "label": "Ordnance Types",
+      "valueA": "Limited",
+      "valueB": "Mixed ordnance",
+      "winner": "b"
+    },
+    {
+      "label": "Cruise Missile Capability",
+      "valueA": "Yes",
+      "valueB": "Yes",
+      "winner": "tie"
+    },
+    {
+      "label": "Design Advancement",
+      "valueA": "Modern",
+      "valueB": "Dated",
+      "winner": "a"
+    },
+    {
+      "label": "Service Longevity",
+      "valueA": "Shorter",
+      "valueB": "Longer",
+      "winner": "b"
+    },
+    {
+      "label": "Threat Adaptation",
+      "valueA": "Limited",
+      "valueB": "High",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Advanced stealth technology",
+    "Modern design and systems",
+    "Superior penetration capabilities",
+    "Low radar signature"
+  ],
+  "consA": [
+    "Slower maximum speed",
+    "Shorter expected service life",
+    "Limited adaptability to changing threats"
+  ],
+  "prosB": [
+    "Higher maximum speed (1,000 km/h)",
+    "Massive payload capacity (70,000 lbs)",
+    "Excellent adaptability to changing threats",
+    "Longer service life and proven reliability"
+  ],
+  "consB": [
+    "Dated design architecture",
+    "Less advanced technology",
+    "Higher radar visibility"
+  ],
+  "verdict": "B-52 excels in payload capacity and speed with superior adaptability, making it ideal for conventional warfare. B-2 offers unmatched stealth capabilities for penetrating heavily defended airspace despite lower speed and payload limitations."
+}

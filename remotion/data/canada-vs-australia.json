@@ -1,0 +1,111 @@
+{
+  "title": "Canada vs Australia",
+  "entityA": "Canada",
+  "entityB": "Australia",
+  "category": "Countries",
+  "slug": "canada-vs-australia",
+  "shortAnswer": "Canada offers cheaper French-language programs and spousal work permits, while Australia provides longer post-study work visas for PhD holders. Both have similar costs otherwise.",
+  "keyDifferences": [
+    {
+      "label": "French-language tuition",
+      "entityAValue": "CAD $3,000-$5,000/year in Quebec",
+      "entityBValue": "No equivalent programs",
+      "winner": "a"
+    },
+    {
+      "label": "Post-study work visa for PhD",
+      "entityAValue": "3 years maximum",
+      "entityBValue": "4 years",
+      "winner": "b"
+    },
+    {
+      "label": "Post-study work visa range",
+      "entityAValue": "Up to 3 years max",
+      "entityBValue": "2-4 years depending on qualification",
+      "winner": "b"
+    },
+    {
+      "label": "Spousal work permits",
+      "entityAValue": "Open work permits for graduate students' spouses",
+      "entityBValue": "Not mentioned",
+      "winner": "a"
+    },
+    {
+      "label": "Cost savings in smaller cities",
+      "entityAValue": "20-35% rent savings in Montreal/Ottawa/Halifax",
+      "entityBValue": "Not specified",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "French program tuition",
+      "valueA": "CAD $3,000-$5,000",
+      "valueB": "N/A",
+      "winner": "a"
+    },
+    {
+      "label": "Post-study work visa (Masters)",
+      "valueA": "3 years",
+      "valueB": "3 years",
+      "winner": "tie"
+    },
+    {
+      "label": "Post-study work visa (PhD)",
+      "valueA": "3 years",
+      "valueB": "4 years",
+      "winner": "b"
+    },
+    {
+      "label": "Work during studies",
+      "valueA": "Allowed",
+      "valueB": "Allowed",
+      "winner": "tie"
+    },
+    {
+      "label": "Rent savings in smaller cities",
+      "valueA": "20-35%",
+      "valueB": "Not specified",
+      "winner": "a"
+    },
+    {
+      "label": "PGWP duration match",
+      "valueA": "Matches study length",
+      "valueB": "Based on qualification level",
+      "winner": "tie"
+    },
+    {
+      "label": "Maximum work visa duration",
+      "valueA": "3 years",
+      "valueB": "4 years",
+      "winner": "b"
+    },
+    {
+      "label": "Unemployment rate",
+      "valueA": "Low",
+      "valueB": "Low",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Extremely affordable French-language programs in Quebec",
+    "Spousal open work permits for graduate students",
+    "Significant cost savings in smaller cities like Montreal and Ottawa",
+    "Post-study work permit matches full study duration"
+  ],
+  "consA": [
+    "Shorter maximum post-study work visa compared to Australia",
+    "Limited to 3 years work permit even for PhD holders"
+  ],
+  "prosB": [
+    "Longer post-study work opportunities for PhD holders (4 years)",
+    "Flexible 2-4 year work visa range based on qualifications",
+    "Strong career opportunities with low unemployment",
+    "Work permission during studies"
+  ],
+  "consB": [
+    "No equivalent to Canada's low-cost French programs",
+    "No mention of spousal work permit benefits"
+  ],
+  "verdict": "Canada wins for students seeking affordable education through French programs and those with spouses needing work permits. Australia is better for PhD holders wanting longer post-study work opportunities and flexible visa durations."
+}
