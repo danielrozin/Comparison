@@ -76,6 +76,23 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // Antivirus
+  ["Norton", "McAfee"],
+  ["Bitdefender", "Norton"],
+  ["Bitdefender", "McAfee"],
+  ["Kaspersky", "Bitdefender"],
+  ["Norton", "Windows Defender"],
+  // More Hosting
+  ["SiteGround", "Hostinger"],
+  ["SiteGround", "GoDaddy"],
+  ["Bluehost", "Namecheap"],
+  ["Bluehost", "Hostinger"],
+  // Storage
+  ["Google Drive", "OneDrive"],
+  ["Dropbox", "OneDrive"],
+  // Payments
+  ["Square", "Stripe"],
+  ["Square", "PayPal"],
   // Code Hosting
   ["GitHub", "GitLab"],
   ["GitHub", "Bitbucket"],
