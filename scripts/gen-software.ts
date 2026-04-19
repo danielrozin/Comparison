@@ -215,6 +215,27 @@ const COMPARISONS = [
   ["Linear", "Jira"],
   ["Notion", "Confluence"],
   ["Jira", "ClickUp"],
+  // Finance & Accounting
+  ["QuickBooks", "FreshBooks"],
+  ["QuickBooks", "Xero"],
+  ["Xero", "FreshBooks"],
+  ["Wave", "QuickBooks"],
+  ["QuickBooks", "Sage"],
+  // DevOps & CI/CD
+  ["GitHub Actions", "CircleCI"],
+  ["GitHub Actions", "Jenkins"],
+  ["CircleCI", "Jenkins"],
+  ["Bitbucket Pipelines", "GitHub Actions"],
+  ["ArgoCD", "Flux"],
+  // Video Conferencing
+  ["Zoom", "Google Meet"],
+  ["Google Meet", "Microsoft Teams"],
+  ["Webex", "Zoom"],
+  ["Whereby", "Zoom"],
+  // Marketing Automation
+  ["Marketo", "HubSpot"],
+  ["Pardot", "HubSpot"],
+  ["ActiveCampaign", "HubSpot"],
 ];
 
 function makeSlug(a: string, b: string): string {
