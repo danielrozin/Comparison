@@ -190,6 +190,31 @@ const COMPARISONS = [
   // Video
   ["Loom", "Zoom"],
   ["Descript", "Adobe Premiere"],
+  // CRM
+  ["Salesforce", "HubSpot"],
+  ["HubSpot", "Pipedrive"],
+  ["Salesforce", "Zoho CRM"],
+  ["HubSpot", "Zoho CRM"],
+  ["Pipedrive", "Monday CRM"],
+  // Chat & Messaging
+  ["Slack", "Microsoft Teams"],
+  ["Slack", "Discord"],
+  ["Microsoft Teams", "Zoom"],
+  // E-Signature (extended)
+  ["PandaDoc", "HelloSign"],
+  ["Adobe Sign", "DocuSign"],
+  // BI (extended)
+  ["Looker", "Metabase"],
+  ["Looker", "Domo"],
+  // Observability (extended)
+  ["New Relic", "Dynatrace"],
+  ["Rollbar", "Bugsnag"],
+  // WordPress Builders (extended)
+  ["Divi", "Beaver Builder"],
+  // Project Management (dev-focused)
+  ["Linear", "Jira"],
+  ["Notion", "Confluence"],
+  ["Jira", "ClickUp"],
 ];
 
 function makeSlug(a: string, b: string): string {
