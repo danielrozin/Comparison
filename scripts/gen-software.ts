@@ -76,6 +76,21 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // Cloud Providers
+  ["AWS", "Google Cloud"],
+  ["AWS", "Azure"],
+  ["Azure", "Google Cloud"],
+  ["AWS", "DigitalOcean"],
+  ["DigitalOcean", "Heroku"],
+  // Social Media Management
+  ["Buffer", "Hootsuite"],
+  ["Sprout Social", "Hootsuite"],
+  ["Buffer", "Later"],
+  // HR & Payroll
+  ["Gusto", "Rippling"],
+  ["Gusto", "ADP"],
+  ["Rippling", "Workday"],
+  ["BambooHR", "Workday"],
   // Antivirus
   ["Norton", "McAfee"],
   ["Bitdefender", "Norton"],
