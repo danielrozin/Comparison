@@ -1,0 +1,113 @@
+{
+  "title": "Shopify vs Woocommerce",
+  "entityA": "Shopify",
+  "entityB": "Woocommerce",
+  "category": "General",
+  "slug": "shopify-vs-woocommerce",
+  "shortAnswer": "WooCommerce offers complete control and lower costs for high-volume stores, while Shopify provides hosted convenience with higher recurring fees but easier setup.",
+  "keyDifferences": [
+    {
+      "label": "Annual Plugin/App Costs",
+      "entityAValue": "$800-2,000 one-time",
+      "entityBValue": "$1,440-3,600 recurring",
+      "winner": "a"
+    },
+    {
+      "label": "Platform Control",
+      "entityAValue": "Complete code control",
+      "entityBValue": "Hosted SaaS limitations",
+      "winner": "a"
+    },
+    {
+      "label": "Transaction Fees",
+      "entityAValue": "No platform fees",
+      "entityBValue": "0.6-2.0% with third-party gateways",
+      "winner": "a"
+    },
+    {
+      "label": "Migration Difficulty",
+      "entityAValue": "Easy to migrate away",
+      "entityBValue": "Significantly harder migration",
+      "winner": "a"
+    },
+    {
+      "label": "Setup Complexity",
+      "entityAValue": "Requires WordPress knowledge",
+      "entityBValue": "Plug-and-play hosted solution",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Market Share",
+      "valueA": "36%",
+      "valueB": "28%",
+      "winner": "a"
+    },
+    {
+      "label": "Global Stores Powered",
+      "valueA": "2.5M+ customers",
+      "valueB": "Part of 11M combined",
+      "winner": "a"
+    },
+    {
+      "label": "Annual Savings ($2M store)",
+      "valueA": "$6,000-13,600 saved",
+      "valueB": "Higher costs",
+      "winner": "a"
+    },
+    {
+      "label": "Basic Plan Transaction Fee",
+      "valueA": "0%",
+      "valueB": "2.0% extra",
+      "winner": "a"
+    },
+    {
+      "label": "Premium Theme Cost",
+      "valueA": "Varies (ThemeForest)",
+      "valueB": "$150-400",
+      "winner": "tie"
+    },
+    {
+      "label": "Enterprise Requirement",
+      "valueA": "No minimum",
+      "valueB": "$2,300/month for Plus",
+      "winner": "a"
+    },
+    {
+      "label": "Monthly App Costs",
+      "valueA": "One-time purchases",
+      "valueB": "$120-300/month",
+      "winner": "a"
+    },
+    {
+      "label": "High-Volume Fee Impact",
+      "valueA": "$0",
+      "valueB": "$20,000/year on $1M revenue",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Complete code control and customization freedom",
+    "No platform transaction fees with any payment gateway",
+    "Deep WordPress ecosystem integration",
+    "Significant cost savings at scale ($6,000-13,600 annually for $2M stores)"
+  ],
+  "consA": [
+    "Requires WordPress technical knowledge",
+    "Self-hosted maintenance responsibility",
+    "More complex initial setup"
+  ],
+  "prosB": [
+    "Hosted SaaS convenience with no technical maintenance",
+    "Easy plug-and-play setup",
+    "Integrated payment processing with Shopify Payments",
+    "Built-in hosting and security"
+  ],
+  "consB": [
+    "High recurring app subscription costs ($1,440-3,600/year)",
+    "Transaction fee surcharges with third-party gateways",
+    "Limited customization without expensive Shopify Plus"
+  ],
+  "verdict": "Choose WooCommerce for complete control, B2B complexity, content-heavy sites, and high-volume stores where transaction fee savings justify technical overhead. Choose Shopify for quick deployment and hosted convenience, accepting higher long-term costs for operational simplicity."
+}

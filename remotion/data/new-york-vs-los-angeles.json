@@ -1,0 +1,113 @@
+{
+  "title": "New York vs Los Angeles",
+  "entityA": "New York",
+  "entityB": "Los Angeles",
+  "category": "General",
+  "slug": "new-york-vs-los-angeles",
+  "shortAnswer": "NYC offers walkable urban energy with 24/7 convenience, while LA provides relaxed car-centric living with better weather and outdoor lifestyle.",
+  "keyDifferences": [
+    {
+      "label": "Transportation",
+      "entityAValue": "Walkable, subway system",
+      "entityBValue": "Car required, freeway system",
+      "winner": "a"
+    },
+    {
+      "label": "Lifestyle Pace",
+      "entityAValue": "High energy, 24/7 activity",
+      "entityBValue": "Relaxed, outdoor-focused",
+      "winner": "tie"
+    },
+    {
+      "label": "Food Culture",
+      "entityAValue": "Pizza, diverse variety",
+      "entityBValue": "Tacos, fresh produce",
+      "winner": "tie"
+    },
+    {
+      "label": "Safety at Night",
+      "entityAValue": "Active streets",
+      "entityBValue": "Empty streets can feel unsafe",
+      "winner": "a"
+    },
+    {
+      "label": "Marriage Rate",
+      "entityAValue": "3.4% higher likelihood",
+      "entityBValue": "Lower marriage rate",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Population Density",
+      "valueA": "Same as LA",
+      "valueB": "Same as NYC",
+      "winner": "tie"
+    },
+    {
+      "label": "Median Age",
+      "valueA": "1.1 years older",
+      "valueB": "1.1 years younger",
+      "winner": "tie"
+    },
+    {
+      "label": "Marriage Rate",
+      "valueA": "3.4% higher",
+      "valueB": "3.4% lower",
+      "winner": "a"
+    },
+    {
+      "label": "Walkability",
+      "valueA": "High walkability",
+      "valueB": "Car dependent",
+      "winner": "a"
+    },
+    {
+      "label": "Late Night Food",
+      "valueA": "$1 pizza at 3 AM",
+      "valueB": "Limited options",
+      "winner": "a"
+    },
+    {
+      "label": "Weather",
+      "valueA": "Four seasons",
+      "valueB": "Year-round mild",
+      "winner": "b"
+    },
+    {
+      "label": "Transportation Cost",
+      "valueA": "Subway system",
+      "valueB": "Gas and car expenses",
+      "winner": "a"
+    },
+    {
+      "label": "Street Activity",
+      "valueA": "Always bustling",
+      "valueB": "Can be empty at night",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Highly walkable with excellent public transit",
+    "24/7 convenience and food availability",
+    "High energy urban atmosphere",
+    "No car required for daily life"
+  ],
+  "consA": [
+    "Complex subway system to navigate",
+    "Higher stress lifestyle pace",
+    "Less relaxed atmosphere"
+  ],
+  "prosB": [
+    "Relaxed, laid-back lifestyle",
+    "Excellent weather year-round",
+    "Great taco and fresh produce culture",
+    "More space and outdoor activities"
+  ],
+  "consB": [
+    "Car absolutely required for mobility",
+    "Streets can feel unsafe when empty at night",
+    "Traffic congestion on freeways"
+  ],
+  "verdict": "Choose NYC if you want walkable convenience, 24/7 energy, and don't mind a faster pace. Choose LA if you prefer driving, relaxed vibes, and consistent weather."
+}

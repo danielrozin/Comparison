@@ -1,0 +1,113 @@
+{
+  "title": "South Korea vs Japan",
+  "entityA": "South Korea",
+  "entityB": "Japan",
+  "category": "Countries",
+  "slug": "south-korea-vs-japan",
+  "shortAnswer": "Japan is larger and more populous but South Korea has superior military strength and higher population density. Both have similar economic growth and life expectancy.",
+  "keyDifferences": [
+    {
+      "label": "Military Global Ranking",
+      "entityAValue": "#12",
+      "entityBValue": "#6",
+      "winner": "b"
+    },
+    {
+      "label": "Land Area",
+      "entityAValue": "377,930 km²",
+      "entityBValue": "100,210 km²",
+      "winner": "a"
+    },
+    {
+      "label": "Active Military Personnel",
+      "entityAValue": "261,000",
+      "entityBValue": "569,000",
+      "winner": "b"
+    },
+    {
+      "label": "Main Battle Tanks",
+      "entityAValue": "521",
+      "entityBValue": "2,236",
+      "winner": "b"
+    },
+    {
+      "label": "Population Density",
+      "entityAValue": "330.1/km²",
+      "entityBValue": "523.0/km²",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "GDP Growth Rate",
+      "valueA": "1.6%",
+      "valueB": "1.5%",
+      "winner": "a"
+    },
+    {
+      "label": "Life Expectancy",
+      "valueA": "84.0 years",
+      "valueB": "83.4 years",
+      "winner": "a"
+    },
+    {
+      "label": "Total Aircraft",
+      "valueA": "1,399",
+      "valueB": "1,543",
+      "winner": "b"
+    },
+    {
+      "label": "Combat Aircraft",
+      "valueA": "331",
+      "valueB": "314",
+      "winner": "a"
+    },
+    {
+      "label": "Submarines",
+      "valueA": "25",
+      "valueB": "22",
+      "winner": "a"
+    },
+    {
+      "label": "Population",
+      "valueA": "72,224,306",
+      "valueB": "51,000,000",
+      "winner": "a"
+    },
+    {
+      "label": "Nuclear Weapons",
+      "valueA": "No",
+      "valueB": "No",
+      "winner": "tie"
+    },
+    {
+      "label": "Military Index Rank",
+      "valueA": "12",
+      "valueB": "6",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Larger land area (3.8x bigger than South Korea)",
+    "Higher total population and longer life expectancy",
+    "More combat aircraft and submarines",
+    "Slightly better GDP growth rate"
+  ],
+  "consA": [
+    "Lower military global ranking (#12 vs #6)",
+    "Significantly fewer active military personnel (2:1 disadvantage)",
+    "Much smaller tank force (521 vs 2,236)"
+  ],
+  "prosB": [
+    "Superior military strength (ranked #6 globally)",
+    "2:1 advantage in active military personnel",
+    "4x more main battle tanks than Japan",
+    "Higher population density indicating urbanization"
+  ],
+  "consB": [
+    "Much smaller land area (only 26% of Japan's size)",
+    "Smaller total population",
+    "Slightly lower life expectancy and GDP growth"
+  ],
+  "verdict": "While Japan has geographic and demographic advantages with larger territory and population, South Korea demonstrates superior military capabilities with better global ranking and ground forces. Both nations show similar economic performance and high living standards, but South Korea's strategic military position gives it a defensive edge."
+}

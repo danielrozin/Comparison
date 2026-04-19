@@ -675,6 +675,71 @@
       "youtubeVideoId": "SJn0dM7WwMY",
       "youtubeUrl": "https://www.youtube.com/watch?v=SJn0dM7WwMY",
       "uploadedAt": "2026-04-18T06:27:44.405Z"
+    },
+    {
+      "slug": "nfl-vs-nba",
+      "title": "Nfl vs Nba",
+      "entityA": "Nfl",
+      "entityB": "Nba",
+      "category": "Sports",
+      "videoFile": "Nfl vs Nba.mp4",
+      "youtubeTitle": "Nfl vs Nba — Full Comparison 2026",
+      "youtubeDescription": "NFL significantly outperforms NBA in viewership and revenue despite having fewer games. NBA players are taller while NFL players are heavier on average.\n\n#nfl #nba #sports #comparison #versus",
+      "youtubeVideoId": "WGJvFcQDfL0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=WGJvFcQDfL0",
+      "uploadedAt": "2026-04-19T06:31:41.180Z"
+    },
+    {
+      "slug": "south-korea-vs-japan",
+      "title": "South Korea vs Japan",
+      "entityA": "South Korea",
+      "entityB": "Japan",
+      "category": "Countries",
+      "videoFile": "South Korea vs Japan.mp4",
+      "youtubeTitle": "South Korea vs Japan — Full Comparison 2026",
+      "youtubeDescription": "Japan is larger and more populous but South Korea has superior military strength and higher population density. Both have similar economic growth and life expectancy.\n\n#southkorea #japan #countries #comparison #versus",
+      "youtubeVideoId": "8fj1tESzQOU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=8fj1tESzQOU",
+      "uploadedAt": "2026-04-19T06:34:22.756Z"
+    },
+    {
+      "slug": "shopify-vs-woocommerce",
+      "title": "Shopify vs Woocommerce",
+      "entityA": "Shopify",
+      "entityB": "Woocommerce",
+      "category": "General",
+      "videoFile": "Shopify vs Woocommerce.mp4",
+      "youtubeTitle": "Shopify vs Woocommerce — Full Comparison 2026",
+      "youtubeDescription": "WooCommerce offers complete control and lower costs for high-volume stores, while Shopify provides hosted convenience with higher recurring fees but easier setup.\n\n#shopify #woocommerce #general #comparison #versus",
+      "youtubeVideoId": "QM8cLPaXIc4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=QM8cLPaXIc4",
+      "uploadedAt": "2026-04-19T06:37:07.798Z"
+    },
+    {
+      "slug": "new-york-vs-los-angeles",
+      "title": "New York vs Los Angeles",
+      "entityA": "New York",
+      "entityB": "Los Angeles",
+      "category": "General",
+      "videoFile": "New York vs Los Angeles.mp4",
+      "youtubeTitle": "New York vs Los Angeles — Full Comparison 2026",
+      "youtubeDescription": "NYC offers walkable urban energy with 24/7 convenience, while LA provides relaxed car-centric living with better weather and outdoor lifestyle.\n\n#newyork #losangeles #general #comparison #versus",
+      "youtubeVideoId": "Ii4bjK-LiCc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Ii4bjK-LiCc",
+      "uploadedAt": "2026-04-19T06:39:49.385Z"
+    },
+    {
+      "slug": "germany-vs-france",
+      "title": "Germany vs France",
+      "entityA": "Germany",
+      "entityB": "France",
+      "category": "Countries",
+      "videoFile": "Germany vs France.mp4",
+      "youtubeTitle": "Germany vs France — Full Comparison 2026",
+      "youtubeDescription": "Germany has stronger economic fundamentals with higher defense spending and better fiscal health, while France maintains superior military capacity with more active troops and reserves.\n\n#germany #france #countries #comparison #versus",
+      "youtubeVideoId": "57V7TeyO9FE",
+      "youtubeUrl": "https://www.youtube.com/watch?v=57V7TeyO9FE",
+      "uploadedAt": "2026-04-19T06:42:31.189Z"
     }
   ]
 }

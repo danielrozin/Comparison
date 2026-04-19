@@ -1,0 +1,111 @@
+{
+  "title": "Nfl vs Nba",
+  "entityA": "Nfl",
+  "entityB": "Nba",
+  "category": "Sports",
+  "slug": "nfl-vs-nba",
+  "shortAnswer": "NFL significantly outperforms NBA in viewership and revenue despite having fewer games. NBA players are taller while NFL players are heavier on average.",
+  "keyDifferences": [
+    {
+      "label": "Player Physical Build",
+      "entityAValue": "29 pounds heavier on average",
+      "entityBValue": "4 inches taller on average",
+      "winner": "tie"
+    },
+    {
+      "label": "Season Length",
+      "entityAValue": "17 regular season games",
+      "entityBValue": "82 regular season games",
+      "winner": "b"
+    },
+    {
+      "label": "Revenue Generation",
+      "entityAValue": "Dwarfs all competition",
+      "entityBValue": "Lower than NFL",
+      "winner": "a"
+    },
+    {
+      "label": "Game Frequency",
+      "entityAValue": "Weekly games",
+      "entityBValue": "Multiple games per week",
+      "winner": "b"
+    },
+    {
+      "label": "Market Dominance",
+      "entityAValue": "Dominates sports landscape",
+      "entityBValue": "Strong but secondary",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Average Player Weight Difference",
+      "valueA": "+29 pounds",
+      "valueB": "Baseline",
+      "winner": "a"
+    },
+    {
+      "label": "Average Player Height Difference",
+      "valueA": "Baseline",
+      "valueB": "+4 inches",
+      "winner": "b"
+    },
+    {
+      "label": "Regular Season Games",
+      "valueA": "17",
+      "valueB": "82",
+      "winner": "b"
+    },
+    {
+      "label": "Game Duration",
+      "valueA": "3 hours",
+      "valueB": "2.5 hours",
+      "winner": "b"
+    },
+    {
+      "label": "Revenue Impact",
+      "valueA": "Industry leading",
+      "valueB": "Significant but lower",
+      "winner": "a"
+    },
+    {
+      "label": "Playoff Format",
+      "valueA": "Single elimination",
+      "valueB": "Best of 7 series",
+      "winner": "tie"
+    },
+    {
+      "label": "Team Roster Size",
+      "valueA": "53 active",
+      "valueB": "15 active",
+      "winner": "a"
+    },
+    {
+      "label": "Global Reach",
+      "valueA": "Primarily US",
+      "valueB": "More international",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Massive revenue generation that dwarfs competition",
+    "High viewership despite fewer games creates scarcity value",
+    "Stronger physical presence with heavier, more powerful athletes",
+    "Dominant market position in American sports"
+  ],
+  "consA": [
+    "Shorter season provides less content than NBA",
+    "Players are shorter on average than NBA counterparts"
+  ],
+  "prosB": [
+    "Longer season with 82 games provides more entertainment value",
+    "Players are significantly taller with 4-inch average advantage",
+    "More games per week keeps fans engaged consistently",
+    "Better international presence and global appeal"
+  ],
+  "consB": [
+    "Revenue significantly lower than NFL despite more games",
+    "Players are 29 pounds lighter on average, less physical presence"
+  ],
+  "verdict": "While NBA offers more games and taller athletes, NFL's financial dominance and market impact are undeniable. The NFL's ability to generate superior revenue with fewer games demonstrates the power of scarcity and event-driven entertainment in sports business."
+}
