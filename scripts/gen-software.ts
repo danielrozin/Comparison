@@ -76,6 +76,11 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // AI Code Editors (very high search volume 2025-2026)
+  ["Cursor", "GitHub Copilot"],
+  ["Cursor", "VS Code"],
+  ["GitHub Copilot", "ChatGPT"],
+  ["Cursor", "Windsurf"],
   // Cloud Providers
   ["AWS", "Google Cloud"],
   ["AWS", "Azure"],
