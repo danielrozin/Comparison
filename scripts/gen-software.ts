@@ -76,6 +76,21 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // Business Intelligence
+  ["Tableau", "Power BI"],
+  ["Tableau", "Looker"],
+  ["Power BI", "Looker"],
+  // Observability & Monitoring
+  ["Datadog", "New Relic"],
+  ["Datadog", "Sentry"],
+  ["Sentry", "Rollbar"],
+  ["Datadog", "Grafana"],
+  // E-Signature
+  ["DocuSign", "PandaDoc"],
+  ["DocuSign", "HelloSign"],
+  // WordPress Builders
+  ["Elementor", "Divi"],
+  ["Elementor", "Beaver Builder"],
   // Databases & Backend
   ["MongoDB", "PostgreSQL"],
   ["Supabase", "Firebase"],
