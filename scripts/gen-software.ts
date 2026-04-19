@@ -76,6 +76,17 @@ const COMPARISONS = [
   // Password/Privacy
   ["Bitwarden", "1Password"],
   ["1Password", "LastPass"],
+  // Databases & Backend
+  ["MongoDB", "PostgreSQL"],
+  ["Supabase", "Firebase"],
+  ["Supabase", "PlanetScale"],
+  ["Firebase", "Appwrite"],
+  ["MongoDB", "DynamoDB"],
+  // E-learning
+  ["Teachable", "Thinkific"],
+  ["Kajabi", "Teachable"],
+  ["Kajabi", "Podia"],
+  ["Thinkific", "Podia"],
   // AI Code Editors (very high search volume 2025-2026)
   ["Cursor", "GitHub Copilot"],
   ["Cursor", "VS Code"],
