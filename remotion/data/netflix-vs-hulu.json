@@ -1,0 +1,112 @@
+{
+  "title": "Netflix vs Hulu",
+  "entityA": "Netflix",
+  "entityB": "Hulu",
+  "category": "General",
+  "slug": "netflix-vs-hulu",
+  "shortAnswer": "Netflix dominates with global reach (190+ countries) and frequent originals, while Hulu focuses on US market with recent network TV and fan favorites.",
+  "keyDifferences": [
+    {
+      "label": "Global Availability",
+      "entityAValue": "Available in 190+ countries",
+      "entityBValue": "Only available in the US",
+      "winner": "a"
+    },
+    {
+      "label": "Original Content",
+      "entityAValue": "Emphasizes trending originals with frequent releases",
+      "entityBValue": "More limited in originals",
+      "winner": "a"
+    },
+    {
+      "label": "Content Focus",
+      "entityAValue": "Trending originals and fresh releases",
+      "entityBValue": "Recent network TV with fan favorites",
+      "winner": "tie"
+    },
+    {
+      "label": "Content Strategy",
+      "entityAValue": "Frequent fresh releases",
+      "entityBValue": "Blends network TV with popular shows",
+      "winner": "tie"
+    },
+    {
+      "label": "Geographic Market",
+      "entityAValue": "Worldwide streaming service",
+      "entityBValue": "US-focused streaming platform",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Countries Available",
+      "valueA": "190+",
+      "valueB": "1 (US only)",
+      "winner": "a"
+    },
+    {
+      "label": "Original Content Volume",
+      "valueA": "High with frequent releases",
+      "valueB": "Limited original programming",
+      "winner": "a"
+    },
+    {
+      "label": "Network TV Content",
+      "valueA": "Limited recent network shows",
+      "valueB": "Strong recent network TV catalog",
+      "winner": "b"
+    },
+    {
+      "label": "Release Schedule",
+      "valueA": "Frequent fresh content",
+      "valueB": "Regular but less frequent",
+      "winner": "a"
+    },
+    {
+      "label": "Global Reach",
+      "valueA": "Worldwide",
+      "valueB": "US market only",
+      "winner": "a"
+    },
+    {
+      "label": "Content Discovery",
+      "valueA": "Smooth navigation",
+      "valueB": "Smooth navigation",
+      "winner": "tie"
+    },
+    {
+      "label": "Fan Favorites",
+      "valueA": "Some popular titles",
+      "valueB": "Strong fan favorite collection",
+      "winner": "b"
+    },
+    {
+      "label": "Market Position",
+      "valueA": "Global leader",
+      "valueB": "US specialist",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Available in 190+ countries worldwide",
+    "Frequent release of trending original content",
+    "Smooth content discovery and navigation",
+    "Wide variety of genres and styles"
+  ],
+  "consA": [
+    "Limited recent network TV content",
+    "May lack some fan favorite shows"
+  ],
+  "prosB": [
+    "Strong collection of recent network TV shows",
+    "Good selection of fan favorite content",
+    "Blends popular network content effectively",
+    "Covers range of genres and styles"
+  ],
+  "consB": [
+    "Only available in the United States",
+    "More limited in original programming",
+    "Smaller global content library"
+  ],
+  "verdict": "Netflix wins for global users and original content lovers with its worldwide availability and frequent fresh releases. Hulu excels for US viewers wanting recent network TV and fan favorites but is limited by geographic restrictions."
+}

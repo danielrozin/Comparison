@@ -1,0 +1,111 @@
+{
+  "title": "Temu vs Shein",
+  "entityA": "Temu",
+  "entityB": "Shein",
+  "category": "General",
+  "slug": "temu-vs-shein",
+  "shortAnswer": "Temu offers ultra-low pricing and broader product range with better customer service, while Shein focuses on trendy fashion with better quality control and sizing options.",
+  "keyDifferences": [
+    {
+      "label": "Pricing Strategy",
+      "entityAValue": "Balanced affordability with trend quality",
+      "entityBValue": "Ultra-low-cost pricing leader",
+      "winner": "b"
+    },
+    {
+      "label": "Product Focus",
+      "entityAValue": "Fashion-focused with brand-driven retail",
+      "entityBValue": "Broader product range across categories",
+      "winner": "b"
+    },
+    {
+      "label": "Quality Control",
+      "entityAValue": "Controlled quality standards",
+      "entityBValue": "Direct factory connections, variable quality",
+      "winner": "a"
+    },
+    {
+      "label": "Business Model",
+      "entityAValue": "Brand-driven retail approach",
+      "entityBValue": "Direct marketplace accessibility",
+      "winner": "tie"
+    },
+    {
+      "label": "Customer Service",
+      "entityAValue": "Standard service",
+      "entityBValue": "Much better customer service",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Return Period",
+      "valueA": "Not specified",
+      "valueB": "90 days",
+      "winner": "b"
+    },
+    {
+      "label": "Return Cost",
+      "valueA": "Standard fees",
+      "valueB": "Often free (1st return)",
+      "winner": "b"
+    },
+    {
+      "label": "Shipping Speed",
+      "valueA": "Standard",
+      "valueB": "5-10 days",
+      "winner": "b"
+    },
+    {
+      "label": "Clothing Variety",
+      "valueA": "Better variety",
+      "valueB": "Limited fashion focus",
+      "winner": "a"
+    },
+    {
+      "label": "Sizing Options",
+      "valueA": "Better sizing options",
+      "valueB": "Standard options",
+      "winner": "a"
+    },
+    {
+      "label": "Standard Shipping",
+      "valueA": "Paid shipping",
+      "valueB": "Free standard shipping",
+      "winner": "b"
+    },
+    {
+      "label": "Product Categories",
+      "valueA": "Fashion-focused",
+      "valueB": "Broader range",
+      "winner": "b"
+    },
+    {
+      "label": "Factory Access",
+      "valueA": "Controlled sourcing",
+      "valueB": "Direct factory connections",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Better clothing variety and sizing options",
+    "Controlled quality standards",
+    "Strong fashion trend focus",
+    "Brand-driven retail experience"
+  ],
+  "consA": [
+    "Higher pricing than Temu",
+    "Limited product categories beyond fashion"
+  ],
+  "prosB": [
+    "Ultra-low pricing across all categories",
+    "Much better customer service and shipping",
+    "90-day return period with free first return",
+    "Broader product range beyond fashion"
+  ],
+  "consB": [
+    "Variable quality due to direct factory model",
+    "Limited fashion variety compared to Shein"
+  ],
+  "verdict": "Temu wins on pricing, customer service, and product variety, making it ideal for general shopping and dropshipping. Shein excels in fashion-specific needs with better quality control and sizing. Business buyers may benefit from using both platforms strategically."
+}

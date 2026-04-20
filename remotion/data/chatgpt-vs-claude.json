@@ -1,0 +1,112 @@
+{
+  "title": "Chatgpt vs Claude",
+  "entityA": "Chatgpt",
+  "entityB": "Claude",
+  "category": "General",
+  "slug": "chatgpt-vs-claude",
+  "shortAnswer": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.",
+  "keyDifferences": [
+    {
+      "label": "Multimodal Capabilities",
+      "entityAValue": "Text, images with DALL-E, voice, web browsing, code execution",
+      "entityBValue": "Primarily text-based with some multimodal features",
+      "winner": "a"
+    },
+    {
+      "label": "Coding Performance",
+      "entityAValue": "Strong coding abilities",
+      "entityBValue": "Superior coding and development performance",
+      "winner": "b"
+    },
+    {
+      "label": "Ecosystem Integration",
+      "entityAValue": "Extensive third-party integrations, Microsoft ecosystem, specialized GPTs",
+      "entityBValue": "Limited integrations compared to ChatGPT",
+      "winner": "a"
+    },
+    {
+      "label": "Document Analysis",
+      "entityAValue": "Good analytical capabilities",
+      "entityBValue": "Excels in research and long document analysis",
+      "winner": "b"
+    },
+    {
+      "label": "Context Window",
+      "entityAValue": "Large context window",
+      "entityBValue": "Superior context window and conversation memory",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Model Version",
+      "valueA": "GPT-5.4",
+      "valueB": "Claude 4 Opus",
+      "winner": "tie"
+    },
+    {
+      "label": "Global User Base",
+      "valueA": "Most users worldwide",
+      "valueB": "Smaller user base",
+      "winner": "a"
+    },
+    {
+      "label": "Third-party Integrations",
+      "valueA": "Thousands of specialized GPTs",
+      "valueB": "Limited integrations",
+      "winner": "a"
+    },
+    {
+      "label": "Coding Test Performance",
+      "valueA": "Good performance",
+      "valueB": "Superior performance in palindromic substring test",
+      "winner": "b"
+    },
+    {
+      "label": "Writing Quality",
+      "valueA": "High quality product descriptions",
+      "valueB": "High quality analytical writing",
+      "winner": "tie"
+    },
+    {
+      "label": "Analysis Capability",
+      "valueA": "Good analytical performance",
+      "valueB": "Excels in complex analysis tasks",
+      "winner": "b"
+    },
+    {
+      "label": "API Cost Efficiency",
+      "valueA": "Competitive pricing per million tokens",
+      "valueB": "Cost-effective for specific use cases",
+      "winner": "tie"
+    },
+    {
+      "label": "Speed Performance",
+      "valueA": "Fast response times",
+      "valueB": "Competitive speed",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Comprehensive multimodal capabilities including image generation, voice interpretation, and web browsing",
+    "Extensive ecosystem with thousands of specialized GPTs and third-party integrations",
+    "Strong Microsoft ecosystem integration for enterprise users",
+    "Largest global user base with proven scalability"
+  ],
+  "consA": [
+    "Lower performance in specialized coding tasks compared to Claude",
+    "Less effective for complex document analysis and research tasks"
+  ],
+  "prosB": [
+    "Superior coding and development performance across multiple programming tasks",
+    "Excellent research and long document analysis capabilities",
+    "Better context window and conversation memory retention",
+    "Higher quality analytical and technical writing"
+  ],
+  "consB": [
+    "Limited multimodal capabilities compared to ChatGPT's comprehensive offerings",
+    "Fewer third-party integrations and ecosystem tools",
+    "Smaller user base and less proven scalability"
+  ],
+  "verdict": "The choice depends on specific use cases: ChatGPT excels for diverse business applications requiring multimodal capabilities and extensive integrations, while Claude is superior for coding, research, and analytical tasks. For production applications, both offer competitive pricing with GuruSup supporting both engines for optimal task assignment."
+}

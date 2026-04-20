@@ -740,6 +740,71 @@
       "youtubeVideoId": "57V7TeyO9FE",
       "youtubeUrl": "https://www.youtube.com/watch?v=57V7TeyO9FE",
       "uploadedAt": "2026-04-19T06:42:31.189Z"
+    },
+    {
+      "slug": "netflix-vs-hulu",
+      "title": "Netflix vs Hulu",
+      "entityA": "Netflix",
+      "entityB": "Hulu",
+      "category": "General",
+      "videoFile": "Netflix vs Hulu.mp4",
+      "youtubeTitle": "Netflix vs Hulu — Full Comparison 2026",
+      "youtubeDescription": "Netflix dominates with global reach (190+ countries) and frequent originals, while Hulu focuses on US market with recent network TV and fan favorites.\n\n#netflix #hulu #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-20T07:19:32.581Z"
+    },
+    {
+      "slug": "korean-war-vs-vietnam-war",
+      "title": "Korean War vs Vietnam War",
+      "entityA": "Korean War",
+      "entityB": "Vietnam War",
+      "category": "Countries",
+      "videoFile": "Korean War vs Vietnam War.mp4",
+      "youtubeTitle": "Korean War vs Vietnam War — Full Comparison 2026",
+      "youtubeDescription": "Korean War (1950-1953) ended in stalemate preserving South Korea's democracy. Vietnam War (1955-1975) was longer, more controversial, ending in US withdrawal and defeat.\n\n#koreanwar #vietnamwar #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-20T07:22:15.443Z"
+    },
+    {
+      "slug": "vietnam-war-vs-korean-war",
+      "title": "Vietnam War vs Korean War",
+      "entityA": "Vietnam War",
+      "entityB": "Korean War",
+      "category": "Countries",
+      "videoFile": "Vietnam War vs Korean War.mp4",
+      "youtubeTitle": "Vietnam War vs Korean War — Full Comparison 2026",
+      "youtubeDescription": "Korean War (1950-53) ended in stalemate preserving South Korea. Vietnam War (1955-75) was longer, more controversial, ending in US withdrawal and defeat.\n\n#vietnamwar #koreanwar #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-20T07:24:59.480Z"
+    },
+    {
+      "slug": "temu-vs-shein",
+      "title": "Temu vs Shein",
+      "entityA": "Temu",
+      "entityB": "Shein",
+      "category": "General",
+      "videoFile": "Temu vs Shein.mp4",
+      "youtubeTitle": "Temu vs Shein — Full Comparison 2026",
+      "youtubeDescription": "Temu offers ultra-low pricing and broader product range with better customer service, while Shein focuses on trendy fashion with better quality control and sizing options.\n\n#temu #shein #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-20T07:27:42.975Z"
+    },
+    {
+      "slug": "chatgpt-vs-claude",
+      "title": "Chatgpt vs Claude",
+      "entityA": "Chatgpt",
+      "entityB": "Claude",
+      "category": "General",
+      "videoFile": "Chatgpt vs Claude.mp4",
+      "youtubeTitle": "Chatgpt vs Claude — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.\n\n#chatgpt #claude #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-20T07:30:32.010Z"
     }
   ]
 }

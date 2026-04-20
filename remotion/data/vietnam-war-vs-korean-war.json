@@ -1,0 +1,112 @@
+{
+  "title": "Vietnam War vs Korean War",
+  "entityA": "Vietnam War",
+  "entityB": "Korean War",
+  "category": "Countries",
+  "slug": "vietnam-war-vs-korean-war",
+  "shortAnswer": "Korean War (1950-53) ended in stalemate preserving South Korea. Vietnam War (1955-75) was longer, more controversial, ending in US withdrawal and defeat.",
+  "keyDifferences": [
+    {
+      "label": "Duration",
+      "entityAValue": "20 years",
+      "entityBValue": "3 years",
+      "winner": "b"
+    },
+    {
+      "label": "Outcome",
+      "entityAValue": "US withdrawal, North Vietnamese victory",
+      "entityBValue": "Stalemate, division at 38th parallel",
+      "winner": "b"
+    },
+    {
+      "label": "Public Support",
+      "entityAValue": "Highly controversial and divisive",
+      "entityBValue": "Less controversial domestically",
+      "winner": "b"
+    },
+    {
+      "label": "Geographic Result",
+      "entityAValue": "Unified under communist control",
+      "entityBValue": "Remains divided, South Korea democratic",
+      "winner": "b"
+    },
+    {
+      "label": "US Military Involvement",
+      "entityAValue": "Gradual escalation over decades",
+      "entityBValue": "Direct military intervention",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "US Military Deaths",
+      "valueA": "58,220",
+      "valueB": "36,574",
+      "winner": "b"
+    },
+    {
+      "label": "Total Deaths",
+      "valueA": "~3.5 million",
+      "valueB": "~2.5 million",
+      "winner": "b"
+    },
+    {
+      "label": "War Duration",
+      "valueA": "20 years",
+      "valueB": "3 years",
+      "winner": "b"
+    },
+    {
+      "label": "Start Year",
+      "valueA": "1955",
+      "valueB": "1950",
+      "winner": "tie"
+    },
+    {
+      "label": "End Year",
+      "valueA": "1975",
+      "valueB": "1953",
+      "winner": "tie"
+    },
+    {
+      "label": "Current South Korea Active Troops",
+      "valueA": "N/A",
+      "valueB": "569,000",
+      "winner": "b"
+    },
+    {
+      "label": "Current Vietnam Active Troops",
+      "valueA": "522,000",
+      "valueB": "N/A",
+      "winner": "a"
+    },
+    {
+      "label": "South Korea Defense Budget",
+      "valueA": "N/A",
+      "valueB": "$48B",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Demonstrated US commitment during Cold War",
+    "Highlighted issues with prolonged military engagement",
+    "Led to important lessons about limited warfare",
+    "Showed consequences of unclear objectives"
+  ],
+  "consA": [
+    "Ended in US defeat and withdrawal",
+    "Highly controversial and divisive domestically",
+    "Much higher casualty count"
+  ],
+  "prosB": [
+    "Preserved South Korea as a democracy",
+    "Successful containment of communist expansion",
+    "Lower US casualties relative to outcome",
+    "Maintained strategic alliance in Asia"
+  ],
+  "consB": [
+    "Ended in stalemate rather than clear victory",
+    "Korea remains divided to this day"
+  ],
+  "verdict": "The Korean War was more strategically successful, preserving South Korean democracy with fewer casualties and less domestic controversy. The Vietnam War, while demonstrating US resolve, ended in defeat after a much longer and more divisive conflict."
+}
