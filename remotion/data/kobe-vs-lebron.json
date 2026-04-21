@@ -1,0 +1,111 @@
+{
+  "title": "Kobe vs Lebron",
+  "entityA": "Kobe",
+  "entityB": "Lebron",
+  "category": "Sports",
+  "slug": "kobe-vs-lebron",
+  "shortAnswer": "LeBron leads in efficiency, MVPs, and career totals while showing superior adaptability across eras. Kobe's advantages aren't specified in the provided research.",
+  "keyDifferences": [
+    {
+      "label": "Shooting Efficiency",
+      "entityAValue": "58-59% true shooting",
+      "entityBValue": "55% true shooting",
+      "winner": "a"
+    },
+    {
+      "label": "MVP Awards",
+      "entityAValue": "4 MVPs",
+      "entityBValue": "1 MVP",
+      "winner": "a"
+    },
+    {
+      "label": "Adaptability",
+      "entityAValue": "Thrived in multiple systems and eras",
+      "entityBValue": "Less adaptable",
+      "winner": "a"
+    },
+    {
+      "label": "Career Totals",
+      "entityAValue": "Higher career totals",
+      "entityBValue": "Lower career totals",
+      "winner": "a"
+    },
+    {
+      "label": "Per Game Averages",
+      "entityAValue": "Higher PER game averages",
+      "entityBValue": "Lower PER game averages",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "True Shooting %",
+      "valueA": "58-59%",
+      "valueB": "55%",
+      "winner": "a"
+    },
+    {
+      "label": "Field Goal % (partial data)",
+      "valueA": "~50%",
+      "valueB": "Not provided",
+      "winner": "a"
+    },
+    {
+      "label": "MVP Awards",
+      "valueA": "4",
+      "valueB": "1",
+      "winner": "a"
+    },
+    {
+      "label": "Career Points",
+      "valueA": "Higher totals",
+      "valueB": "Lower totals",
+      "winner": "a"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "Higher totals",
+      "valueB": "Lower totals",
+      "winner": "a"
+    },
+    {
+      "label": "Career Rebounds",
+      "valueA": "Higher totals",
+      "valueB": "Lower totals",
+      "winner": "a"
+    },
+    {
+      "label": "Per Game Stats",
+      "valueA": "Higher averages",
+      "valueB": "Lower averages",
+      "winner": "a"
+    },
+    {
+      "label": "Shot Volume Impact",
+      "valueA": "More efficient on high volume",
+      "valueB": "Less efficient on high volume",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Superior shooting efficiency despite high volume",
+    "Four times more MVP awards than Kobe",
+    "Higher career totals across multiple categories",
+    "Exceptional adaptability across different teams and eras"
+  ],
+  "consA": [
+    "Data incomplete for comprehensive comparison",
+    "Some statistical context missing from research"
+  ],
+  "prosB": [
+    "High shot volume indicates aggressive scoring mentality",
+    "Single MVP award shows peak excellence",
+    "Consistent shooting despite lower efficiency"
+  ],
+  "consB": [
+    "Lower shooting efficiency on high volume",
+    "Significantly fewer MVP awards",
+    "Lower career totals and per-game averages"
+  ],
+  "verdict": "Based on the available research, LeBron appears superior in efficiency, individual accolades, and statistical production. His adaptability across different systems and eras further strengthens his case over Kobe."
+}

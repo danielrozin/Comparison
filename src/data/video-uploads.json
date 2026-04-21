@@ -805,6 +805,71 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-20T07:30:32.010Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-21T07:01:33.935Z"
+    },
+    {
+      "slug": "airpods-pro-vs-galaxy-buds",
+      "title": "Airpods Pro vs Galaxy Buds",
+      "entityA": "Airpods Pro",
+      "entityB": "Galaxy Buds",
+      "category": "General",
+      "videoFile": "Airpods Pro vs Galaxy Buds.mp4",
+      "youtubeTitle": "Airpods Pro vs Galaxy Buds — Full Comparison 2026",
+      "youtubeDescription": "AirPods Pro 3 offer balanced sound with Apple ecosystem integration, while Galaxy Buds 3/4 Pro provide bassier audio with more customization options.\n\n#airpodspro #galaxybuds #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-21T07:04:16.671Z"
+    },
+    {
+      "slug": "tiger-woods-vs-jack-nicklaus",
+      "title": "Tiger Woods vs Jack Nicklaus",
+      "entityA": "Tiger Woods",
+      "entityB": "Jack Nicklaus",
+      "category": "General",
+      "videoFile": "Tiger Woods vs Jack Nicklaus.mp4",
+      "youtubeTitle": "Tiger Woods vs Jack Nicklaus — Full Comparison 2026",
+      "youtubeDescription": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.\n\n#tigerwoods #jacknicklaus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-21T07:07:03.321Z"
+    },
+    {
+      "slug": "peloton-vs-nordictrack",
+      "title": "Peloton vs Nordictrack",
+      "entityA": "Peloton",
+      "entityB": "Nordictrack",
+      "category": "General",
+      "videoFile": "Peloton vs Nordictrack.mp4",
+      "youtubeTitle": "Peloton vs Nordictrack — Full Comparison 2026",
+      "youtubeDescription": "NordicTrack offers better value with lower costs, more features, and automatic adjustments. Peloton provides premium studio experience but requires expensive subscription.\n\n#peloton #nordictrack #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-21T07:09:51.769Z"
+    },
+    {
+      "slug": "kobe-vs-lebron",
+      "title": "Kobe vs Lebron",
+      "entityA": "Kobe",
+      "entityB": "Lebron",
+      "category": "Sports",
+      "videoFile": "Kobe vs Lebron.mp4",
+      "youtubeTitle": "Kobe vs Lebron — Full Comparison 2026",
+      "youtubeDescription": "LeBron leads in efficiency, MVPs, and career totals while showing superior adaptability across eras. Kobe's advantages aren't specified in the provided research.\n\n#kobe #lebron #sports #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-21T07:12:35.438Z"
     }
   ]
 }

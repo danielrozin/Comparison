@@ -1,0 +1,111 @@
+{
+  "title": "Airpods Pro vs Galaxy Buds",
+  "entityA": "Airpods Pro",
+  "entityB": "Galaxy Buds",
+  "category": "General",
+  "slug": "airpods-pro-vs-galaxy-buds",
+  "shortAnswer": "AirPods Pro 3 offer balanced sound with Apple ecosystem integration, while Galaxy Buds 3/4 Pro provide bassier audio with more customization options.",
+  "keyDifferences": [
+    {
+      "label": "Sound Profile",
+      "entityAValue": "Balanced, less exaggerated bass",
+      "entityBValue": "Bassier, more emphasized low-end",
+      "winner": "tie"
+    },
+    {
+      "label": "Customization",
+      "entityAValue": "Fewer custom tools",
+      "entityBValue": "More user control options",
+      "winner": "b"
+    },
+    {
+      "label": "Water Resistance",
+      "entityAValue": "IP54 rating",
+      "entityBValue": "Higher water resistance",
+      "winner": "b"
+    },
+    {
+      "label": "Ecosystem Integration",
+      "entityAValue": "Seamless Apple integration",
+      "entityBValue": "Android/Samsung optimization",
+      "winner": "tie"
+    },
+    {
+      "label": "Design Philosophy",
+      "entityAValue": "Minimalist approach",
+      "entityBValue": "Feature-rich with AI capabilities",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Water Resistance",
+      "valueA": "IP54",
+      "valueB": "Higher than IP54",
+      "winner": "b"
+    },
+    {
+      "label": "Bass Response",
+      "valueA": "Balanced",
+      "valueB": "Enhanced",
+      "winner": "tie"
+    },
+    {
+      "label": "Generation",
+      "valueA": "3rd Generation",
+      "valueB": "3rd/4th Generation",
+      "winner": "tie"
+    },
+    {
+      "label": "Connectivity",
+      "valueA": "Bluetooth",
+      "valueB": "AI True Wireless Bluetooth",
+      "winner": "b"
+    },
+    {
+      "label": "Custom Controls",
+      "valueA": "Limited",
+      "valueB": "Extensive",
+      "winner": "b"
+    },
+    {
+      "label": "Sound Tuning",
+      "valueA": "Apple's signature",
+      "valueB": "User customizable",
+      "winner": "b"
+    },
+    {
+      "label": "AI Features",
+      "valueA": "Standard",
+      "valueB": "Advanced AI integration",
+      "winner": "b"
+    },
+    {
+      "label": "Price Category",
+      "valueA": "Premium",
+      "valueB": "Premium",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Balanced, natural sound signature",
+    "Seamless integration with Apple devices",
+    "Reliable build quality",
+    "Consistent performance across iOS ecosystem"
+  ],
+  "consA": [
+    "Limited customization options",
+    "Lower IP54 water resistance rating"
+  ],
+  "prosB": [
+    "Enhanced bass response for music lovers",
+    "Extensive user customization controls",
+    "Superior water resistance protection",
+    "Advanced AI features and capabilities"
+  ],
+  "consB": [
+    "Potentially over-emphasized bass for some users",
+    "May require more setup for optimal performance"
+  ],
+  "verdict": "Both earbuds excel in different areas - AirPods Pro 3 for balanced audio and Apple integration, Galaxy Buds for customization and bass. The choice depends on your ecosystem preference and sound signature preference."
+}

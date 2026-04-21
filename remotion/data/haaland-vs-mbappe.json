@@ -1,0 +1,106 @@
+{
+  "title": "Haaland vs Mbappe",
+  "entityA": "Haaland",
+  "entityB": "Mbappe",
+  "category": "General",
+  "slug": "haaland-vs-mbappe",
+  "shortAnswer": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.",
+  "keyDifferences": [
+    {
+      "label": "Total Career Goals",
+      "entityAValue": "370-378 goals",
+      "entityBValue": "295-303 goals",
+      "winner": "a"
+    },
+    {
+      "label": "Playmaking Ability",
+      "entityAValue": "162 assists",
+      "entityBValue": "59-61 assists",
+      "winner": "a"
+    },
+    {
+      "label": "Goals per Game Ratio",
+      "entityAValue": "Lower conversion",
+      "entityBValue": "Higher conversion",
+      "winner": "b"
+    },
+    {
+      "label": "Current Season Performance",
+      "entityAValue": "89.42 1vs1 Score",
+      "entityBValue": "81.51 1vs1 Score",
+      "winner": "a"
+    },
+    {
+      "label": "Playing Style",
+      "entityAValue": "Complete attacker",
+      "entityBValue": "Pure striker",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Career Goals",
+      "valueA": "374 (avg)",
+      "valueB": "299 (avg)",
+      "winner": "a"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "151",
+      "valueB": "60",
+      "winner": "a"
+    },
+    {
+      "label": "1vs1 Score",
+      "valueA": "89.42",
+      "valueB": "81.51",
+      "winner": "a"
+    },
+    {
+      "label": "Goal Contribution",
+      "valueA": "525 total",
+      "valueB": "359 total",
+      "winner": "a"
+    },
+    {
+      "label": "Assist Rate",
+      "valueA": "28.8%",
+      "valueB": "16.7%",
+      "winner": "a"
+    },
+    {
+      "label": "Goals per Assist",
+      "valueA": "2.5",
+      "valueB": "5.0",
+      "winner": "b"
+    },
+    {
+      "label": "Scoring Efficiency",
+      "valueA": "71.4%",
+      "valueB": "83.3%",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Superior playmaking with 151 career assists",
+    "Higher overall goal tally (374 goals)",
+    "Better current season performance (89.42 1vs1 score)",
+    "More complete attacking threat"
+  ],
+  "consA": [
+    "Lower goal conversion rate compared to Haaland",
+    "Less specialized as pure goalscorer"
+  ],
+  "prosB": [
+    "Exceptional goal conversion efficiency",
+    "Pure striker instincts with clinical finishing",
+    "Strong goal tally despite fewer games",
+    "Consistent scoring threat in box"
+  ],
+  "consB": [
+    "Significantly fewer assists (60 vs 151)",
+    "Lower current season 1vs1 performance score",
+    "Less versatile in overall attacking play"
+  ],
+  "verdict": "Mbappé currently holds the edge with more goals, significantly more assists, and better current form. However, Haaland's superior conversion rate and pure striking ability make him extremely dangerous. Both are generational talents with different strengths."
+}

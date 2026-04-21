@@ -1,0 +1,112 @@
+{
+  "title": "Peloton vs Nordictrack",
+  "entityA": "Peloton",
+  "entityB": "Nordictrack",
+  "category": "General",
+  "slug": "peloton-vs-nordictrack",
+  "shortAnswer": "NordicTrack offers better value with lower costs, more features, and automatic adjustments. Peloton provides premium studio experience but requires expensive subscription.",
+  "keyDifferences": [
+    {
+      "label": "Subscription Dependency",
+      "entityAValue": "Very limited without £45/month subscription",
+      "entityBValue": "Full functionality with iFIT included",
+      "winner": "b"
+    },
+    {
+      "label": "Automatic Controls",
+      "entityAValue": "Only Bike+ has automatic tension",
+      "entityBValue": "All bikes include automatic tension control",
+      "winner": "b"
+    },
+    {
+      "label": "Workout Adaptation",
+      "entityAValue": "Manual adjustments required",
+      "entityBValue": "Real-time speed/incline adjustments based on fitness level",
+      "winner": "b"
+    },
+    {
+      "label": "Seat Adjustment",
+      "entityAValue": "Vertical adjustment only",
+      "entityBValue": "Both horizontal and vertical adjustment",
+      "winner": "b"
+    },
+    {
+      "label": "Equipment Included",
+      "entityAValue": "Weights available as upgrade",
+      "entityBValue": "Two 3-pound dumbbells included",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Monthly Subscription Cost",
+      "valueA": "£45",
+      "valueB": "Included with iFIT",
+      "winner": "b"
+    },
+    {
+      "label": "2-Year Total Cost Difference",
+      "valueA": "£1,400 more",
+      "valueB": "£1,400 less",
+      "winner": "b"
+    },
+    {
+      "label": "Tread Base Price Difference",
+      "valueA": "£1,000 more",
+      "valueB": "£1,000 less",
+      "winner": "b"
+    },
+    {
+      "label": "Bike Flywheel Weight",
+      "valueA": "38 pounds",
+      "valueB": "32 pounds",
+      "winner": "a"
+    },
+    {
+      "label": "Tread Motor Power",
+      "valueA": "Less powerful",
+      "valueB": "More powerful",
+      "winner": "b"
+    },
+    {
+      "label": "Running Surface Size",
+      "valueA": "Smaller",
+      "valueB": "Wider and longer",
+      "winner": "b"
+    },
+    {
+      "label": "Screen Size",
+      "valueA": "Smaller",
+      "valueB": "Bigger screen",
+      "winner": "b"
+    },
+    {
+      "label": "Decline Capability",
+      "valueA": "No",
+      "valueB": "Yes",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Premium studio cycling experience with high-quality instructors",
+    "Heavier 38-pound flywheel for smoother ride",
+    "Strong brand reputation and community",
+    "High-quality build and design"
+  ],
+  "consA": [
+    "Very limited functionality without expensive subscription",
+    "Significantly higher total cost over time",
+    "Less adjustability and fewer included features"
+  ],
+  "prosB": [
+    "Better value with lower upfront and ongoing costs",
+    "More comprehensive features (decline, folding, fan, better warranty)",
+    "Automatic workout adjustments based on fitness level",
+    "More flexibility in equipment adjustments and included accessories"
+  ],
+  "consB": [
+    "Lighter flywheel may feel less premium",
+    "Less established in premium home fitness market"
+  ],
+  "verdict": "NordicTrack provides superior value with more features, better hardware specs, and significantly lower costs. While Peloton offers a premium studio experience, its high subscription dependency and limited functionality without membership make NordicTrack the better choice for most users seeking comprehensive home fitness equipment."
+}

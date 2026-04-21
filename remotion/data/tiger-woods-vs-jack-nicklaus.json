@@ -1,0 +1,111 @@
+{
+  "title": "Tiger Woods vs Jack Nicklaus",
+  "entityA": "Tiger Woods",
+  "entityB": "Jack Nicklaus",
+  "category": "General",
+  "slug": "tiger-woods-vs-jack-nicklaus",
+  "shortAnswer": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.",
+  "keyDifferences": [
+    {
+      "label": "Major Championship Win Rate",
+      "entityAValue": "26% (15 wins in 88 starts)",
+      "entityBValue": "14% (18 wins in 164 starts)",
+      "winner": "a"
+    },
+    {
+      "label": "Net Worth 2026",
+      "entityAValue": "$1.3-1.5 billion",
+      "entityBValue": "$400 million",
+      "winner": "a"
+    },
+    {
+      "label": "Career Health",
+      "entityAValue": "Multiple surgeries (double-figures)",
+      "entityBValue": "0 injuries, 0 surgeries",
+      "winner": "b"
+    },
+    {
+      "label": "Consecutive Cuts Made",
+      "entityAValue": "111",
+      "entityBValue": "Around 100",
+      "winner": "a"
+    },
+    {
+      "label": "Endorsement Impact",
+      "entityAValue": "27-year Nike deal from age 20",
+      "entityBValue": "Traditional endorsement approach",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Major Win Percentage",
+      "valueA": "26%",
+      "valueB": "14%",
+      "winner": "a"
+    },
+    {
+      "label": "Major Championships Won",
+      "valueA": "15",
+      "valueB": "18",
+      "winner": "b"
+    },
+    {
+      "label": "Major Championship Starts",
+      "valueA": "88",
+      "valueB": "164",
+      "winner": "b"
+    },
+    {
+      "label": "Net Worth",
+      "valueA": "$1.3-1.5B",
+      "valueB": "$400M",
+      "winner": "a"
+    },
+    {
+      "label": "PGA Tour Wins",
+      "valueA": "Higher",
+      "valueB": "Lower",
+      "winner": "a"
+    },
+    {
+      "label": "Consecutive Cuts",
+      "valueA": "111",
+      "valueB": "~100",
+      "winner": "a"
+    },
+    {
+      "label": "Career Surgeries",
+      "valueA": "Double-figures",
+      "valueB": "0",
+      "winner": "b"
+    },
+    {
+      "label": "Career Injuries",
+      "valueA": "Multiple",
+      "valueB": "0",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "Superior win percentage in major championships",
+    "Significantly higher net worth and business empire",
+    "More PGA Tour victories overall",
+    "Revolutionary endorsement deals and marketability"
+  ],
+  "consA": [
+    "Fewer total major championships than Nicklaus",
+    "Extensive injury history affecting career longevity"
+  ],
+  "prosB": [
+    "More total major championships (18 vs 15)",
+    "Injury-free career demonstrating remarkable durability",
+    "Played more major championships showing consistency",
+    "Long-term career without physical setbacks"
+  ],
+  "consB": [
+    "Lower win percentage in major championships",
+    "Significantly lower net worth and business success"
+  ],
+  "verdict": "While Jack Nicklaus holds the edge in total major championships and career durability, Tiger Woods demonstrates superior efficiency with a much higher win rate and has built a far larger business empire. Tiger's 26% major win rate versus Jack's 14% shows remarkable dominance, though injuries have limited his longevity compared to Nicklaus's injury-free career."
+}
