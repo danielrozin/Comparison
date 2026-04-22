@@ -346,6 +346,45 @@ const COMPARISONS = [
   // Mobile Operating Systems
   ["iOS", "Android"],
   ["iPhone", "Samsung Galaxy"],
+  // Wearables & Fitness Trackers
+  ["Apple Watch", "Fitbit"],
+  ["Apple Watch", "Garmin"],
+  ["Garmin", "Fitbit"],
+  ["Apple Watch", "Samsung Galaxy Watch"],
+  // Travel & Accommodation
+  ["Airbnb", "Vrbo"],
+  ["Airbnb", "Booking.com"],
+  ["Booking.com", "Expedia"],
+  ["Hotels.com", "Booking.com"],
+  // Food Delivery
+  ["DoorDash", "Uber Eats"],
+  ["Grubhub", "DoorDash"],
+  ["Instacart", "DoorDash"],
+  ["Uber Eats", "Grubhub"],
+  // Ride-Sharing
+  ["Uber", "Lyft"],
+  ["Uber", "DoorDash"],
+  // Neobanks & Fintech
+  ["Chime", "Revolut"],
+  ["Robinhood", "Webull"],
+  ["Coinbase", "Binance"],
+  ["Venmo", "Cash App"],
+  ["Cash App", "Zelle"],
+  // Fitness & Wellness Apps
+  ["Peloton", "NordicTrack"],
+  ["MyFitnessPal", "Cronometer"],
+  ["Calm", "Headspace"],
+  // Password Managers (extended)
+  ["NordPass", "1Password"],
+  ["Keeper", "LastPass"],
+  // Cloud Storage
+  ["Google Drive", "Dropbox"],
+  ["OneDrive", "Google Drive"],
+  ["Dropbox", "Box"],
+  // Smart Home
+  ["Google Nest", "Amazon Echo"],
+  ["Amazon Echo", "Apple HomePod"],
+  ["Ring", "Arlo"],
 ];
 
 function makeSlug(a: string, b: string): string {
