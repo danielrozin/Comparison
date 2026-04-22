@@ -502,6 +502,35 @@ const COMPARISONS = [
   // Container Orchestration Extended
   ["Kubernetes", "Nomad"],
   ["Docker", "Podman"],
+  // Frontend Frameworks (very high search volume)
+  ["React", "Vue"],
+  ["React", "Angular"],
+  ["Vue", "Angular"],
+  ["React", "Svelte"],
+  ["Vue", "Svelte"],
+  ["Angular", "Svelte"],
+  ["Next.js", "Nuxt"],
+  ["React", "Next.js"],
+  // Programming Languages (extremely high search volume)
+  ["Python", "JavaScript"],
+  ["Python", "Java"],
+  ["Python", "Go"],
+  ["Python", "R"],
+  ["TypeScript", "JavaScript"],
+  ["TypeScript", "Python"],
+  ["Go", "Rust"],
+  ["Java", "Kotlin"],
+  ["Swift", "Kotlin"],
+  ["C++", "Rust"],
+  // Observability / Monitoring
+  ["Grafana", "Datadog"],
+  ["Grafana", "Kibana"],
+  ["Prometheus", "Datadog"],
+  ["Grafana", "New Relic"],
+  // Email Marketing Extended
+  ["Mailchimp", "Brevo"],
+  ["Klaviyo", "Mailchimp"],
+  ["ConvertKit", "Beehiiv"],
 ];
 
 function makeSlug(a: string, b: string): string {
