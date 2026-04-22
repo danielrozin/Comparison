@@ -385,6 +385,38 @@ const COMPARISONS = [
   ["Google Nest", "Amazon Echo"],
   ["Amazon Echo", "Apple HomePod"],
   ["Ring", "Arlo"],
+  // EdTech & E-Learning
+  ["Coursera", "Udemy"],
+  ["Coursera", "edX"],
+  ["Udemy", "Skillshare"],
+  ["LinkedIn Learning", "Coursera"],
+  ["Duolingo", "Babbel"],
+  ["Duolingo", "Rosetta Stone"],
+  ["Khan Academy", "Coursera"],
+  // Streaming (extended)
+  ["HBO Max", "Peacock"],
+  ["Apple TV+", "HBO Max"],
+  ["Tidal", "Apple Music"],
+  ["YouTube Music", "Apple Music"],
+  // Gaming Handhelds
+  ["Steam Deck", "Nintendo Switch"],
+  ["Steam Deck", "ASUS ROG Ally"],
+  // VPN Services
+  ["NordVPN", "ExpressVPN"],
+  ["Surfshark", "NordVPN"],
+  ["ProtonVPN", "NordVPN"],
+  // Antivirus / Security
+  ["Norton", "McAfee"],
+  ["Malwarebytes", "Norton"],
+  ["Bitdefender", "Norton"],
+  // Email Marketing
+  ["Mailchimp", "Klaviyo"],
+  ["ConvertKit", "Mailchimp"],
+  ["ActiveCampaign", "Mailchimp"],
+  // Website Builders
+  ["Squarespace", "Wix"],
+  ["Webflow", "Squarespace"],
+  ["Wix", "WordPress"],
 ];
 
 function makeSlug(a: string, b: string): string {
