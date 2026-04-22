@@ -3651,4 +3651,124 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Elementor vs Divi: which is better?", answer: "Elementor is better for beginners and those who want the largest ecosystem — more third-party widgets, templates, and developer support. Elementor's live frontend editing is more intuitive. Divi is better for those who want lifetime pricing ($249 once vs Elementor's annual $59–399) and includes everything in one purchase (no free vs pro tiers). Divi's visual builder also works in the backend. Elementor has faster innovation (AI features, more widget variety) while Divi offers better long-term cost certainty. Most WordPress professionals use Elementor; cost-conscious users lean toward Divi's lifetime deal." },
     ],
   },
+
+  "toyota": {
+    description:
+      "Toyota Motor Corporation is the world's largest automaker by production volume, headquartered in Toyota City, Japan. Founded in 1937 by Kiichiro Toyoda, Toyota has sold over 300 million vehicles globally and operates in more than 200 countries. The company is renowned for the Toyota Production System (TPS), a lean manufacturing methodology that became the blueprint for global manufacturing efficiency. Toyota's best-selling models include the Camry (best-selling car in the US for over 20 consecutive years), Corolla (world's best-selling car with over 50 million units sold), and RAV4 (America's best-selling SUV). Toyota's Lexus luxury brand competes directly with BMW and Mercedes-Benz. In hybrid vehicles, Toyota pioneered the segment with the Prius in 1997 and now sells over 2 million electrified vehicles annually. Toyota has committed $70 billion toward electrification through 2030, targeting 30 battery-electric models by 2030. As of 2024, Toyota has a market capitalization of approximately $250 billion and reported revenues of $274 billion.",
+    highlights: ["World's largest automaker", "Camry — best-selling US car 20+ years", "Hybrid pioneer since 1997", "$274B revenue (2024)"],
+    category: "automotive",
+    alternatives: [
+      { name: "Honda", slug: "honda", reason: "Closest Japanese rival, known for reliability and engineering" },
+      { name: "Hyundai", slug: "hyundai", reason: "Korean rival with aggressive pricing and warranty" },
+      { name: "Ford", slug: "ford", reason: "American rival, strong in trucks and SUVs" },
+      { name: "Chevrolet", slug: "chevrolet", reason: "GM flagship, competes across sedans and trucks" },
+      { name: "Tesla", slug: "tesla", reason: "EV disruption of traditional automakers" },
+      { name: "Kia", slug: "kia", reason: "Hyundai sibling, strong value and design" },
+    ],
+    faqs: [
+      { question: "Which Toyota model is most reliable?", answer: "The Toyota Camry and Corolla consistently rank among the most reliable cars by Consumer Reports and J.D. Power, with the 4Runner and Sequoia also noted for exceptional longevity. Toyota overall ranks #1 in reliability among major automakers in most surveys." },
+      { question: "Toyota vs Honda: which is better?", answer: "Toyota and Honda are both exceptionally reliable Japanese brands. Toyota generally has better resale value and a broader lineup (including trucks with Tacoma and Tundra). Honda is known for more engaging driving dynamics and typically lower initial prices. For most buyers, both are excellent choices and the decision comes down to specific models." },
+      { question: "Does Toyota make electric vehicles?", answer: "Yes, Toyota offers the bZ4X as its primary battery-electric vehicle, along with an extensive lineup of hybrids (Prius, RAV4 Hybrid, Camry Hybrid) and plug-in hybrids. Toyota has committed to 30 BEV models by 2030 with a $70 billion electrification investment." },
+    ],
+  },
+
+  "coinbase": {
+    description:
+      "Coinbase is the largest cryptocurrency exchange in the United States, founded in 2012 by Brian Armstrong and Fred Ehrsam. The company went public via direct listing on Nasdaq in April 2021, becoming the first major crypto company to list on a US stock exchange. Coinbase serves over 110 million verified users across 100+ countries and holds approximately $330 billion in assets on behalf of customers. The platform offers buying, selling, and custody of 260+ cryptocurrencies, including Bitcoin, Ethereum, Solana, and USDC (a stablecoin Coinbase co-founded). Coinbase Advanced Trade caters to professional traders with lower fees, while Coinbase One offers a subscription for zero trading fees. Coinbase also operates Coinbase Wallet (self-custody), Coinbase Prime (institutional services), and Base (an Ethereum Layer 2 blockchain it launched in 2023). Revenue in 2024 exceeded $6 billion, driven by transaction fees and subscription services. Coinbase is regulated by FinCEN as a Money Services Business and holds BitLicenses across multiple US states.",
+    highlights: ["110M+ verified users", "Largest US crypto exchange", "$330B+ assets held", "Publicly traded (COIN)"],
+    category: "finance",
+    alternatives: [
+      { name: "Binance", slug: "binance", reason: "Larger global exchange, lower fees, more trading pairs" },
+      { name: "Kraken", slug: "kraken", reason: "Strong security track record, good for advanced traders" },
+      { name: "Gemini", slug: "gemini", reason: "Regulated US exchange, strong institutional focus" },
+      { name: "Robinhood", slug: "robinhood", reason: "Commission-free crypto + stocks in one app" },
+      { name: "eToro", slug: "etoro", reason: "Social trading features, global reach" },
+      { name: "Crypto.com", slug: "crypto-com", reason: "Crypto.com card rewards, broader ecosystem" },
+    ],
+    faqs: [
+      { question: "Is Coinbase safe?", answer: "Coinbase is one of the most regulated crypto exchanges, publicly traded on Nasdaq with SEC oversight. It holds customer funds 1:1 with reserves and stores 98%+ of assets in cold storage. The FDIC insures USD balances up to $250,000. While no exchange is risk-free, Coinbase is among the safest options available." },
+      { question: "Coinbase vs Binance: which is better?", answer: "Coinbase is better for US beginners — fully regulated, simple interface, insured USD deposits. Binance offers lower trading fees (0.1% vs Coinbase's ~1.5%), more cryptocurrencies, and higher liquidity. Binance.US (the US-compliant version) is more limited than Coinbase. For most US retail users, Coinbase is safer and more compliant; serious traders often use Binance for lower fees." },
+      { question: "How does Coinbase make money?", answer: "Coinbase earns revenue primarily from trading fees (spread + commission), subscription services (Coinbase One at $29.99/month), institutional custody fees, staking rewards (sharing yield with users), and interest on USDC held on the platform." },
+    ],
+  },
+
+  "ozempic": {
+    description:
+      "Ozempic (semaglutide) is a once-weekly injectable medication developed by Novo Nordisk, FDA-approved in 2017 for the treatment of type 2 diabetes. Its active ingredient, semaglutide, is a GLP-1 receptor agonist that works by stimulating insulin secretion, reducing glucagon production, and significantly decreasing appetite by slowing gastric emptying and acting on brain satiety centers. While Ozempic is approved for diabetes management, it has gained massive attention for its off-label use in weight loss — clinical trials show average body weight reductions of 14-15% over 68 weeks. Novo Nordisk launched Wegovy (a higher-dose version of semaglutide, 2.4mg vs Ozempic's 1mg) specifically for chronic weight management in 2021. Ozempic also demonstrated cardiovascular benefits, reducing the risk of major adverse cardiac events by 26% in the SUSTAIN-6 trial. The medication costs approximately $900-$1,000/month without insurance. Demand for Ozempic and Wegovy led to global supply shortages that persisted through 2024. Combined, Ozempic and Wegovy generated over $21 billion in revenue for Novo Nordisk in 2024.",
+    highlights: ["GLP-1 receptor agonist", "14-15% average weight loss", "FDA-approved 2017", "$21B+ Novo Nordisk revenue (2024)"],
+    category: "health",
+    alternatives: [
+      { name: "Wegovy", slug: "wegovy", reason: "Higher-dose semaglutide specifically approved for weight loss" },
+      { name: "Mounjaro", slug: "mounjaro", reason: "Tirzepatide (dual GIP/GLP-1), Eli Lilly, potentially greater weight loss" },
+      { name: "Zepbound", slug: "zepbound", reason: "Tirzepatide approved specifically for weight loss (Eli Lilly)" },
+      { name: "Rybelsus", slug: "rybelsus", reason: "Oral semaglutide (same molecule as Ozempic, taken by mouth)" },
+      { name: "Victoza", slug: "victoza", reason: "Older GLP-1 (liraglutide), daily injection, well-established" },
+      { name: "Saxenda", slug: "saxenda", reason: "Liraglutide weight-loss version, daily injection" },
+    ],
+    faqs: [
+      { question: "What is the difference between Ozempic and Wegovy?", answer: "Ozempic and Wegovy contain the same active ingredient (semaglutide) but are FDA-approved for different purposes. Ozempic (0.5mg-1mg dose) is approved for type 2 diabetes management. Wegovy (2.4mg dose) is approved for chronic weight management in adults with obesity or overweight with a weight-related condition. Wegovy's higher dose produces greater average weight loss (~15% vs ~10-12% for Ozempic's diabetes doses)." },
+      { question: "How much does Ozempic cost?", answer: "Ozempic costs approximately $900-$1,000/month (about $11,000/year) without insurance. Most commercial insurance plans cover Ozempic for type 2 diabetes. Novo Nordisk's savings card can reduce cost to $25/month for eligible commercially insured patients. Medicare Part D typically covers Ozempic for diabetes but not for weight loss." },
+      { question: "Is Ozempic safe for weight loss?", answer: "Ozempic is FDA-approved for type 2 diabetes, not weight loss — prescribing it for weight loss is off-label. Wegovy (same molecule, higher dose) is approved for weight loss. Common side effects include nausea, vomiting, and diarrhea. Serious risks include pancreatitis, gallbladder disease, and a potential (theoretical in humans) risk of thyroid tumors. Always consult a physician before starting GLP-1 medications." },
+    ],
+  },
+
+  "apple-watch": {
+    description:
+      "Apple Watch is a line of smartwatches designed and sold by Apple Inc., first released in April 2015. It is the world's best-selling wearable device and holds approximately 35% of the global smartwatch market. The Apple Watch Ultra 2, Series 10, and SE make up the current lineup, ranging from $249 to $799. Apple Watch integrates deeply with iPhone, offering notifications, Siri, Apple Pay, and App Store access. Its health and fitness features are central to its appeal: ECG heart monitoring (detecting atrial fibrillation), blood oxygen (SpO2) measurement, sleep tracking, fall detection, crash detection, and FDA-cleared irregular heart rhythm notifications. The watch uses watchOS, updated annually, and typically receives software support for 4-5 years after release. Apple Watch Series 4 and later earned FDA clearance as a medical device for ECG capabilities. The Apple Watch Ultra series (introduced in 2022) targets extreme athletes with titanium casing, 36-hour battery life, and dual-frequency GPS. Worldwide, Apple sells approximately 40-50 million watches annually, generating estimated revenue of $20-25 billion per year.",
+    highlights: ["35% global smartwatch market share", "FDA-cleared ECG & AFib detection", "40-50M units sold annually", "watchOS deep iPhone integration"],
+    category: "technology",
+    alternatives: [
+      { name: "Fitbit", slug: "fitbit", reason: "Better battery life, Google ecosystem, simpler interface" },
+      { name: "Samsung Galaxy Watch", slug: "samsung-galaxy-watch", reason: "Best Android alternative, Wear OS, rotating bezel" },
+      { name: "Garmin", slug: "garmin", reason: "Superior GPS accuracy, 7-14 day battery, built for athletes" },
+      { name: "WHOOP", slug: "whoop", reason: "Subscription fitness tracker focused on strain and recovery" },
+      { name: "Oura Ring", slug: "oura-ring", reason: "Ring form factor, exceptional sleep tracking, discreet" },
+      { name: "Polar", slug: "polar", reason: "Elite heart rate accuracy for serious endurance athletes" },
+    ],
+    faqs: [
+      { question: "Does Apple Watch work with Android?", answer: "No — Apple Watch requires an iPhone (iPhone XS or later, iOS 17 or later). It does not function as a standalone smartwatch with Android phones. Android users should consider Samsung Galaxy Watch, Garmin, or Fitbit instead." },
+      { question: "Apple Watch vs Fitbit: which is better?", answer: "Apple Watch is better for iPhone users who want a comprehensive smartwatch with apps, Apple Pay, and deep health monitoring. Fitbit is better for users prioritizing battery life (5-7 days vs 18-36 hours), cross-platform compatibility, and simpler fitness tracking at a lower price. For Android users, Fitbit is the clear choice as Apple Watch doesn't work at all." },
+      { question: "How accurate is Apple Watch heart rate?", answer: "Apple Watch's optical heart rate sensor is clinically validated and accurate within ±5% during resting and moderate activity. For high-intensity exercise, accuracy can degrade compared to a chest strap. The ECG feature is FDA-cleared for detecting atrial fibrillation and is considered medical-grade for that specific purpose." },
+    ],
+  },
+
+  "robinhood": {
+    description:
+      "Robinhood Markets is an American financial services company founded in 2013 by Vlad Tenev and Baiju Bhatt, based in Menlo Park, California. Robinhood pioneered commission-free stock trading in the US, forcing established brokers like Charles Schwab, TD Ameritrade, and Fidelity to eliminate commissions in 2019. The platform has over 23 million funded accounts and $150 billion+ in assets under custody. Robinhood's primary product is its mobile-first brokerage app offering commission-free trading of US stocks, ETFs, options, and cryptocurrencies. Robinhood Gold ($5/month) provides access to margin trading, Morningstar research, and higher interest on uninvested cash (currently 4.5% APY). The platform came under intense scrutiny during the January 2021 GameStop short squeeze when it temporarily restricted buying of meme stocks, which became a congressional hearing topic. Robinhood generates revenue primarily through payment for order flow (PFOF), net interest (on margin loans and cash sweeps), and Gold subscriptions. In 2024, Robinhood expanded into banking products, retirement accounts (IRA with 1% match), and credit cards.",
+    highlights: ["23M+ funded accounts", "Commission-free trading pioneer", "$150B+ assets under custody", "IRA with 1% match"],
+    category: "finance",
+    alternatives: [
+      { name: "Fidelity", slug: "fidelity", reason: "No PFOF, better research tools, full banking services" },
+      { name: "Charles Schwab", slug: "charles-schwab", reason: "Full-service broker, owns TD Ameritrade, thinkorswim" },
+      { name: "Webull", slug: "webull", reason: "Commission-free with more advanced charting tools" },
+      { name: "E*TRADE", slug: "etrade", reason: "Morgan Stanley-owned, strong options platform" },
+      { name: "Public", slug: "public", reason: "Social investing features, no PFOF model" },
+      { name: "Coinbase", slug: "coinbase", reason: "Better for crypto-focused investing" },
+    ],
+    faqs: [
+      { question: "Is Robinhood safe?", answer: "Robinhood is regulated by FINRA and the SEC, and customer securities accounts are protected by SIPC up to $500,000 (including $250,000 for cash). Cash in brokerage accounts is swept to program banks and is FDIC-insured up to $2.5 million. The platform itself is legitimate, though critics point to its payment for order flow model and simplified interface that may encourage overtrading." },
+      { question: "Robinhood vs Fidelity: which is better?", answer: "Fidelity is generally better for serious investors: no payment for order flow (better trade execution), superior research tools, mutual funds, and full banking services. Robinhood is better for beginners who want a simple mobile app and commission-free crypto trading in the same account. Fidelity also offers a 2% cash management card vs Robinhood's 3% (Gold required)." },
+      { question: "How does Robinhood make money if trades are free?", answer: "Robinhood makes money primarily through payment for order flow (PFOF) — market makers pay Robinhood for routing customer orders to them. It also earns interest on cash balances and margin loans, Robinhood Gold subscription fees ($5/month), and interchange fees from its debit card. PFOF is controversial as it creates a potential conflict of interest, though Robinhood argues it still provides competitive execution prices." },
+    ],
+  },
+
+  "youtube": {
+    description:
+      "YouTube is the world's largest video-sharing platform, owned by Alphabet (Google), with over 2.5 billion monthly logged-in users and more than 500 hours of video uploaded every minute. Founded in 2005 by Chad Hurley, Steve Chen, and Jawed Karim, YouTube was acquired by Google for $1.65 billion in 2006 — one of the most successful acquisitions in tech history. YouTube generates revenue through advertising (YouTube Ads), premium subscriptions (YouTube Premium at $13.99/month removing ads and enabling background play), YouTube TV (live TV streaming at $72.99/month), channel memberships, and Super Chats during live streams. YouTube generated approximately $36 billion in ad revenue in 2024, making it the world's second-largest digital ad platform after Google Search. The platform hosts virtually every content category: music (YouTube Music), education (Khan Academy), gaming (top gaming channel MrBeast has 300M+ subscribers), news, and shorts (vertical video competing with TikTok). YouTube Shorts surpassed 70 billion daily views in 2023. The Creator Economy is central to YouTube: content creators receive 55% of ad revenue, and millions earn income through YouTube's Partner Program.",
+    highlights: ["2.5B+ monthly logged-in users", "500 hours of video uploaded per minute", "$36B+ annual ad revenue", "YouTube Shorts — 70B daily views"],
+    category: "entertainment",
+    alternatives: [
+      { name: "TikTok", slug: "tiktok", reason: "Short-form video dominance, algorithm-driven discovery" },
+      { name: "Twitch", slug: "twitch", reason: "Live streaming focus, gaming community leader" },
+      { name: "Vimeo", slug: "vimeo", reason: "Professional video hosting, no ads, filmmaker community" },
+      { name: "Rumble", slug: "rumble", reason: "Alternative platform with less content moderation" },
+      { name: "Dailymotion", slug: "dailymotion", reason: "European video platform, good for news publishers" },
+      { name: "Instagram", slug: "instagram", reason: "Reels compete with Shorts for short-form attention" },
+    ],
+    faqs: [
+      { question: "How much does YouTube pay creators?", answer: "YouTube pays creators approximately $1-$5 per 1,000 views (CPM varies by niche and geography). In the US, finance and tech channels earn $10-30 CPM while entertainment channels earn $2-5 CPM. A channel with 1 million monthly views might earn $1,000-$5,000/month from ads alone. Top creators also earn from sponsorships, channel memberships, and merchandise." },
+      { question: "YouTube vs TikTok: which is better for creators?", answer: "YouTube is better for long-form content and sustainable income — it has higher per-view payouts and loyal audiences. TikTok is better for rapid growth and discovery — its algorithm gives new creators massive reach faster. Many creators use both: TikTok for discovery, YouTube for depth and revenue. YouTube Shorts can also drive subscribers who then watch long-form content." },
+      { question: "What is YouTube Premium?", answer: "YouTube Premium is a subscription service at $13.99/month that removes all ads from YouTube, enables background play (music/podcasts while your screen is off), offline downloads, and includes YouTube Music Premium. Family plans are available at $22.99/month for up to 6 members." },
+    ],
+  },
 };

@@ -97,6 +97,58 @@ const SOFTWARE_COMPARISONS = [
   { entityA: "Google Workspace", entityB: "Microsoft 365", volume: 1600, cpc: 8.33 },
   { entityA: "Adobe Acrobat", entityB: "Foxit PDF", volume: 1000, cpc: 9.42 },
   { entityA: "Grammarly", entityB: "Hemingway Editor", volume: 880, cpc: 4.55 },
+
+  // Automotive — very high search volume, strong affiliate potential
+  { entityA: "Toyota", entityB: "Honda", volume: 40500, cpc: 3.12 },
+  { entityA: "BMW", entityB: "Mercedes-Benz", volume: 27100, cpc: 4.55 },
+  { entityA: "Tesla", entityB: "BMW", volume: 14800, cpc: 3.88 },
+  { entityA: "Ford", entityB: "Chevrolet", volume: 33100, cpc: 2.77 },
+  { entityA: "Hyundai", entityB: "Kia", volume: 22200, cpc: 3.44 },
+  { entityA: "Toyota", entityB: "Tesla", volume: 12100, cpc: 3.21 },
+  { entityA: "Subaru", entityB: "Toyota", volume: 9900, cpc: 3.05 },
+
+  // Consumer Finance — very high CPC, major decision keywords
+  { entityA: "Coinbase", entityB: "Binance", volume: 55000, cpc: 7.88 },
+  { entityA: "Robinhood", entityB: "Fidelity", volume: 40500, cpc: 12.44 },
+  { entityA: "Vanguard", entityB: "Fidelity", volume: 49500, cpc: 11.21 },
+  { entityA: "PayPal", entityB: "Venmo", volume: 27100, cpc: 5.33 },
+  { entityA: "Cash App", entityB: "Venmo", volume: 33100, cpc: 4.87 },
+  { entityA: "Charles Schwab", entityB: "Fidelity", volume: 22200, cpc: 13.92 },
+  { entityA: "Coinbase", entityB: "Kraken", volume: 18100, cpc: 6.44 },
+
+  // Health & Fitness — massive organic traffic, growing category
+  { entityA: "Ozempic", entityB: "Wegovy", volume: 150000, cpc: 8.33 },
+  { entityA: "Apple Watch", entityB: "Fitbit", volume: 40500, cpc: 3.55 },
+  { entityA: "Peloton", entityB: "NordicTrack", volume: 33100, cpc: 4.12 },
+  { entityA: "WHOOP", entityB: "Garmin", volume: 18100, cpc: 2.88 },
+  { entityA: "Oura Ring", entityB: "WHOOP", volume: 22200, cpc: 3.44 },
+  { entityA: "Mounjaro", entityB: "Ozempic", volume: 90500, cpc: 9.21 },
+  { entityA: "Apple Watch", entityB: "Samsung Galaxy Watch", volume: 27100, cpc: 3.77 },
+
+  // Food Delivery & Consumer Apps
+  { entityA: "DoorDash", entityB: "Uber Eats", volume: 49500, cpc: 3.22 },
+  { entityA: "Grubhub", entityB: "DoorDash", volume: 22200, cpc: 2.88 },
+  { entityA: "Instacart", entityB: "DoorDash", volume: 14800, cpc: 3.11 },
+
+  // Social Media & Communication
+  { entityA: "TikTok", entityB: "Instagram", volume: 49500, cpc: 2.44 },
+  { entityA: "YouTube", entityB: "TikTok", volume: 40500, cpc: 2.55 },
+  { entityA: "WhatsApp", entityB: "Telegram", volume: 40500, cpc: 1.88 },
+  { entityA: "Reddit", entityB: "Twitter", volume: 18100, cpc: 2.77 },
+  { entityA: "Discord", entityB: "Slack", volume: 14800, cpc: 4.33 },
+
+  // Gaming
+  { entityA: "Nintendo Switch", entityB: "Steam Deck", volume: 90500, cpc: 2.88 },
+  { entityA: "PlayStation 5", entityB: "Xbox Series X", volume: 74000, cpc: 2.44 },
+  { entityA: "Fortnite", entityB: "Apex Legends", volume: 49500, cpc: 1.55 },
+  { entityA: "Xbox Game Pass", entityB: "PlayStation Plus", volume: 33100, cpc: 2.11 },
+
+  // Travel & Hospitality — high CPC
+  { entityA: "Airbnb", entityB: "Vrbo", volume: 40500, cpc: 5.88 },
+  { entityA: "Booking.com", entityB: "Airbnb", volume: 22200, cpc: 4.44 },
+  { entityA: "Delta", entityB: "United Airlines", volume: 33100, cpc: 3.77 },
+  { entityA: "Marriott", entityB: "Hilton", volume: 27100, cpc: 4.22 },
+  { entityA: "Expedia", entityB: "Kayak", volume: 22200, cpc: 5.11 },
 ];
 
 // Blog article topics — informational "best X" content
@@ -116,6 +168,16 @@ const BLOG_TOPICS = [
   { topic: "Best Video Editing Software 2026: Premiere Pro vs DaVinci Resolve vs CapCut", keywords: ["best video editing software"] },
   { topic: "Best Code Editors and IDEs 2026: VS Code vs IntelliJ vs Cursor", keywords: ["best code editor", "best ide 2026"] },
   { topic: "Best AI Writing Tools 2026: ChatGPT vs Jasper vs Grammarly AI", keywords: ["best ai writing tools", "ai writing comparison"] },
+  // New verticals
+  { topic: "Best Investment Apps 2026: Robinhood vs Fidelity vs Schwab vs Webull", keywords: ["best investment app", "stock trading app comparison"] },
+  { topic: "Best Crypto Exchanges 2026: Coinbase vs Binance vs Kraken vs Gemini", keywords: ["best crypto exchange", "crypto exchange comparison 2026"] },
+  { topic: "Best Food Delivery Apps 2026: DoorDash vs Uber Eats vs Grubhub Compared", keywords: ["best food delivery app", "doordash vs uber eats"] },
+  { topic: "Best Fitness Trackers 2026: Apple Watch vs Fitbit vs Garmin vs WHOOP", keywords: ["best fitness tracker 2026", "smartwatch comparison"] },
+  { topic: "GLP-1 Drugs Compared: Ozempic vs Wegovy vs Mounjaro vs Zepbound", keywords: ["ozempic vs wegovy", "glp-1 comparison", "weight loss drug comparison"] },
+  { topic: "Best SUVs 2026: Toyota RAV4 vs Honda CR-V vs Hyundai Tucson vs Ford Escape", keywords: ["best suv 2026", "suv comparison", "family suv ranking"] },
+  { topic: "Best Electric Vehicles 2026: Tesla vs Rivian vs Ford Mustang Mach-E vs Hyundai IONIQ 6", keywords: ["best electric car 2026", "ev comparison", "best ev to buy"] },
+  { topic: "Best Travel Booking Sites 2026: Airbnb vs Vrbo vs Booking.com vs Hotels.com", keywords: ["best travel booking site", "airbnb vs vrbo", "hotel booking comparison"] },
+  { topic: "Best Gaming Consoles 2026: PS5 vs Xbox Series X vs Nintendo Switch", keywords: ["best gaming console 2026", "ps5 vs xbox", "gaming console comparison"] },
 ];
 
 // ============================================================
