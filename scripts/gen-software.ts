@@ -325,6 +325,27 @@ const COMPARISONS = [
   // Performance Management
   ["Lattice", "Culture Amp"],
   ["Lattice", "Leapsome"],
+  // Streaming Services (very high consumer search volume)
+  ["Netflix", "Disney+"],
+  ["Netflix", "Hulu"],
+  ["Disney+", "HBO Max"],
+  ["Apple TV+", "Netflix"],
+  ["Peacock", "Hulu"],
+  // Music Streaming
+  ["Spotify", "Apple Music"],
+  ["Tidal", "Spotify"],
+  ["YouTube Music", "Spotify"],
+  // Gaming Consoles
+  ["PlayStation 5", "Xbox Series X"],
+  ["Nintendo Switch", "Steam Deck"],
+  ["Xbox Series X", "Nintendo Switch"],
+  // Social Media Platforms
+  ["Instagram", "TikTok"],
+  ["LinkedIn", "X"],
+  ["Reddit", "Quora"],
+  // Mobile Operating Systems
+  ["iOS", "Android"],
+  ["iPhone", "Samsung Galaxy"],
 ];
 
 function makeSlug(a: string, b: string): string {
