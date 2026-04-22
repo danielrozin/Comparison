@@ -531,6 +531,33 @@ const COMPARISONS = [
   ["Mailchimp", "Brevo"],
   ["Klaviyo", "Mailchimp"],
   ["ConvertKit", "Beehiiv"],
+  // Programming Languages Extended
+  ["JavaScript", "TypeScript"],
+  ["JavaScript", "Python"],
+  ["Go", "Python"],
+  ["Rust", "Go"],
+  ["Rust", "C++"],
+  ["Java", "Go"],
+  ["Swift", "Kotlin"],
+  // Frontend Frameworks Extended
+  ["Svelte", "React"],
+  ["Svelte", "Vue"],
+  ["Next.js", "Remix"],
+  ["Next.js", "Astro"],
+  ["Next.js", "Gatsby"],
+  // Backend Frameworks
+  ["Django", "FastAPI"],
+  ["Django", "Flask"],
+  ["Django", "Rails"],
+  ["FastAPI", "Flask"],
+  ["Laravel", "Django"],
+  ["Spring Boot", "Django"],
+  ["Express", "FastAPI"],
+  ["NestJS", "Express"],
+  // Runtime Environments
+  ["Node.js", "Bun"],
+  ["Node.js", "Deno"],
+  ["Bun", "Deno"],
 ];
 
 function makeSlug(a: string, b: string): string {
