@@ -870,6 +870,71 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-21T07:12:35.438Z"
+    },
+    {
+      "slug": "serena-vs-venus",
+      "title": "Serena vs Venus",
+      "entityA": "Serena",
+      "entityB": "Venus",
+      "category": "General",
+      "videoFile": "Serena vs Venus.mp4",
+      "youtubeTitle": "Serena vs Venus — Full Comparison 2026",
+      "youtubeDescription": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.\n\n#serena #venus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-22T07:01:00.207Z"
+    },
+    {
+      "slug": "stock-market-vs-real-estate",
+      "title": "Stock Market vs Real Estate",
+      "entityA": "Stock Market",
+      "entityB": "Real Estate",
+      "category": "Finance",
+      "videoFile": "Stock Market vs Real Estate.mp4",
+      "youtubeTitle": "Stock Market vs Real Estate — Full Comparison 2026",
+      "youtubeDescription": "Real estate offers stability and passive income in 2026, while stocks provide higher growth potential but with increased volatility.\n\n#stockmarket #realestate #finance #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-22T07:03:45.410Z"
+    },
+    {
+      "slug": "roman-empire-vs-ottoman-empire",
+      "title": "Roman Empire vs Ottoman Empire",
+      "entityA": "Roman Empire",
+      "entityB": "Ottoman Empire",
+      "category": "General",
+      "videoFile": "Roman Empire vs Ottoman Empire.mp4",
+      "youtubeTitle": "Roman Empire vs Ottoman Empire — Full Comparison 2026",
+      "youtubeDescription": "Both empires controlled similar territories (~5 million sq km) but at different times. Roman Empire had greater economic dominance while Ottoman Empire lasted longer.\n\n#romanempire #ottomanempire #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-22T07:06:27.528Z"
+    },
+    {
+      "slug": "vegan-vs-vegetarian",
+      "title": "Vegan vs Vegetarian",
+      "entityA": "Vegan",
+      "entityB": "Vegetarian",
+      "category": "General",
+      "videoFile": "Vegan vs Vegetarian.mp4",
+      "youtubeTitle": "Vegan vs Vegetarian — Full Comparison 2026",
+      "youtubeDescription": "Vegetarians avoid meat but eat dairy and eggs, while vegans avoid all animal products. Both offer health benefits but vegans need more careful nutrient planning.\n\n#vegan #vegetarian #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-22T07:09:15.157Z"
+    },
+    {
+      "slug": "cold-war-vs-war-on-terror",
+      "title": "Cold War vs War On Terror",
+      "entityA": "Cold War",
+      "entityB": "War On Terror",
+      "category": "General",
+      "videoFile": "Cold War vs War On Terror.mp4",
+      "youtubeTitle": "Cold War vs War On Terror — Full Comparison 2026",
+      "youtubeDescription": "The Cold War was a decades-long ideological standoff with the Soviet Union, while the War on Terror is a global military campaign against terrorist networks initiated after 9/11.\n\n#coldwar #waronterror #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-22T07:11:46.975Z"
     }
   ]
 }

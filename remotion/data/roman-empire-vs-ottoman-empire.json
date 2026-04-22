@@ -1,0 +1,113 @@
+{
+  "title": "Roman Empire vs Ottoman Empire",
+  "entityA": "Roman Empire",
+  "entityB": "Ottoman Empire",
+  "category": "General",
+  "slug": "roman-empire-vs-ottoman-empire",
+  "shortAnswer": "Both empires controlled similar territories (~5 million sq km) but at different times. Roman Empire had greater economic dominance while Ottoman Empire lasted longer.",
+  "keyDifferences": [
+    {
+      "label": "Geographic Scope",
+      "entityAValue": "Mediterranean-centered",
+      "entityBValue": "Europe-Asia-Africa bridge",
+      "winner": "tie"
+    },
+    {
+      "label": "Economic Impact",
+      "entityAValue": "80% of global economy",
+      "entityBValue": "Regional economic power",
+      "winner": "a"
+    },
+    {
+      "label": "Duration",
+      "entityAValue": "~500 years (Western)",
+      "entityBValue": "~600 years",
+      "winner": "b"
+    },
+    {
+      "label": "Cultural Influence",
+      "entityAValue": "Foundation of Western civilization",
+      "entityBValue": "Islamic-Turkish cultural synthesis",
+      "winner": "tie"
+    },
+    {
+      "label": "Administrative System",
+      "entityAValue": "Roman law and bureaucracy",
+      "entityBValue": "Millet system and devshirme",
+      "winner": "tie"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Maximum Territory",
+      "valueA": "5.0 million sq km",
+      "valueB": "5.2 million sq km",
+      "winner": "b"
+    },
+    {
+      "label": "World Land Percentage",
+      "valueA": "3.71%",
+      "valueB": "~3.9%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Population Control",
+      "valueA": "40%",
+      "valueB": "~15%",
+      "winner": "a"
+    },
+    {
+      "label": "Economic Share",
+      "valueA": "80% of global economy",
+      "valueB": "~25% of global economy",
+      "winner": "a"
+    },
+    {
+      "label": "Peak Year",
+      "valueA": "117 AD",
+      "valueB": "1683 AD",
+      "winner": "tie"
+    },
+    {
+      "label": "Capital Cities",
+      "valueA": "Rome/Constantinople",
+      "valueB": "Constantinople/Istanbul",
+      "winner": "tie"
+    },
+    {
+      "label": "Military Innovation",
+      "valueA": "Legions, engineering",
+      "valueB": "Janissaries, cannons",
+      "winner": "tie"
+    },
+    {
+      "label": "Trade Network",
+      "valueA": "Mediterranean-focused",
+      "valueB": "Europe-Asia connector",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Controlled 80% of global economy at peak",
+    "Advanced legal system and infrastructure",
+    "Foundation of Western civilization and governance",
+    "Controlled 40% of world population"
+  ],
+  "consA": [
+    "Shorter duration than Ottoman Empire",
+    "More vulnerable to barbarian invasions",
+    "Internal political instability in later periods"
+  ],
+  "prosB": [
+    "Longer lasting empire (600+ years)",
+    "Slightly larger maximum territory",
+    "Effective multi-religious governance system",
+    "Strategic position controlling Europe-Asia trade"
+  ],
+  "consB": [
+    "Smaller share of global population and economy",
+    "Less technological innovation in later periods",
+    "Gradual decline from 17th century onward"
+  ],
+  "verdict": "Both empires achieved remarkable territorial control of ~5 million sq km but in different eras. The Roman Empire dominated economically with 80% of global wealth, while the Ottoman Empire showed greater longevity and religious tolerance."
+}

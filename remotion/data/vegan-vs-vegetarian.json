@@ -1,0 +1,112 @@
+{
+  "title": "Vegan vs Vegetarian",
+  "entityA": "Vegan",
+  "entityB": "Vegetarian",
+  "category": "General",
+  "slug": "vegan-vs-vegetarian",
+  "shortAnswer": "Vegetarians avoid meat but eat dairy and eggs, while vegans avoid all animal products. Both offer health benefits but vegans need more careful nutrient planning.",
+  "keyDifferences": [
+    {
+      "label": "Animal Products Allowed",
+      "entityAValue": "Dairy, eggs, and honey allowed",
+      "entityBValue": "No animal products whatsoever",
+      "winner": "tie"
+    },
+    {
+      "label": "Meat Consumption",
+      "entityAValue": "No meat consumption",
+      "entityBValue": "No meat consumption",
+      "winner": "tie"
+    },
+    {
+      "label": "B-12 Supplementation",
+      "entityAValue": "Can get B-12 from dairy and eggs",
+      "entityBValue": "Supplementation necessary",
+      "winner": "a"
+    },
+    {
+      "label": "Calcium Sources",
+      "entityAValue": "Dairy products provide calcium",
+      "entityBValue": "Plant-based foods and fortified products",
+      "winner": "a"
+    },
+    {
+      "label": "Nutritional Planning Required",
+      "entityAValue": "Less attention to supplementation needed",
+      "entityBValue": "More attention to supplementation required",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "B-12 Supplementation Requirement",
+      "valueA": "Optional (available from dairy/eggs)",
+      "valueB": "Mandatory supplementation",
+      "winner": "a"
+    },
+    {
+      "label": "Complete Protein Access",
+      "valueA": "Easier through dairy and eggs",
+      "valueB": "Requires careful attention to sources",
+      "winner": "a"
+    },
+    {
+      "label": "Calcium Access",
+      "valueA": "Direct from dairy products",
+      "valueB": "Through plant foods and fortification",
+      "winner": "a"
+    },
+    {
+      "label": "Iron Monitoring Need",
+      "valueA": "Moderate attention required",
+      "valueB": "High attention required",
+      "winner": "a"
+    },
+    {
+      "label": "Zinc Availability",
+      "valueA": "Better availability through animal products",
+      "valueB": "Requires plant-based planning",
+      "winner": "a"
+    },
+    {
+      "label": "Omega-3 Access",
+      "valueA": "Some through dairy",
+      "valueB": "Plant-based sources needed for DHA/EPA",
+      "winner": "a"
+    },
+    {
+      "label": "Vitamin D Needs",
+      "valueA": "Attention required",
+      "valueB": "Attention required",
+      "winner": "tie"
+    },
+    {
+      "label": "Children's Nutritional Complexity",
+      "valueA": "Moderate planning for growth",
+      "valueB": "Careful attention to multiple nutrients",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Easier access to B-12, calcium, and complete proteins through dairy and eggs",
+    "Less supplementation required for essential nutrients",
+    "Still provides significant health benefits when properly planned",
+    "Professional organizations endorse well-planned vegetarian diets"
+  ],
+  "consA": [
+    "Still requires attention to iron, zinc, and omega-3 fatty acids",
+    "Children need careful monitoring of calories, protein, and key vitamins"
+  ],
+  "prosB": [
+    "Eliminates all animal products for ethical consistency",
+    "Offers significant health benefits for disease prevention and management",
+    "Supported by current research for plant-based nutrition",
+    "Professional organizations endorse well-planned vegan diets"
+  ],
+  "consB": [
+    "Requires mandatory B-12 supplementation",
+    "Needs more attention to supplementation and food fortification",
+    "Requires careful planning for complete protein sources"
+  ],
+  "verdict": "Both diets offer significant health benefits when properly planned, with professional endorsement for disease prevention. Vegetarian diets provide easier access to certain nutrients through dairy and eggs, while vegan diets require more careful supplementation but offer complete elimination of animal products."
+}

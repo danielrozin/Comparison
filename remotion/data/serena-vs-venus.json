@@ -1,0 +1,112 @@
+{
+  "title": "Serena vs Venus",
+  "entityA": "Serena",
+  "entityB": "Venus",
+  "category": "General",
+  "slug": "serena-vs-venus",
+  "shortAnswer": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.",
+  "keyDifferences": [
+    {
+      "label": "Statistical Dominance",
+      "entityAValue": "Leads in 21 of 24 categories",
+      "entityBValue": "Leads in 2 of 24 categories",
+      "winner": "a"
+    },
+    {
+      "label": "Peak Season Titles",
+      "entityAValue": "11 titles in 2013",
+      "entityBValue": "6 titles in 1999",
+      "winner": "a"
+    },
+    {
+      "label": "Career Win Rate",
+      "entityAValue": "61.3%",
+      "entityBValue": "38.7%",
+      "winner": "a"
+    },
+    {
+      "label": "Peak Era",
+      "entityAValue": "2010s dominance",
+      "entityBValue": "Late 1990s peak",
+      "winner": "a"
+    },
+    {
+      "label": "Overall Legacy",
+      "entityAValue": "Raw statistical superiority",
+      "entityBValue": "Pioneering impact",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Categories Led",
+      "valueA": "21/24",
+      "valueB": "2/24",
+      "winner": "a"
+    },
+    {
+      "label": "Career Win Rate",
+      "valueA": "61.3%",
+      "valueB": "38.7%",
+      "winner": "a"
+    },
+    {
+      "label": "Peak Season Titles",
+      "valueA": "11 (2013)",
+      "valueB": "6 (1999)",
+      "winner": "a"
+    },
+    {
+      "label": "Matches Played",
+      "valueA": "31",
+      "valueB": "12",
+      "winner": "a"
+    },
+    {
+      "label": "Head-to-Head",
+      "valueA": "Unknown",
+      "valueB": "Unknown",
+      "winner": "tie"
+    },
+    {
+      "label": "Championship Titles",
+      "valueA": "Superior",
+      "valueB": "Lower",
+      "winner": "a"
+    },
+    {
+      "label": "Surface Performance",
+      "valueA": "Stronger",
+      "valueB": "Weaker",
+      "winner": "a"
+    },
+    {
+      "label": "Longevity",
+      "valueA": "Extended peak",
+      "valueB": "Shorter peak",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Leads in 21 of 24 statistical categories",
+    "Higher peak season performance with 11 titles",
+    "Superior career win rate at 61.3%",
+    "Demonstrated greater longevity and consistency"
+  ],
+  "consA": [
+    "Debate comes down to personal preference for different qualities",
+    "Not unanimous in every single category"
+  ],
+  "prosB": [
+    "Pioneering impact in tennis history",
+    "Strong peak performance in late 1990s",
+    "Part of iconic tennis rivalry",
+    "Leads in 2 statistical categories"
+  ],
+  "consB": [
+    "Lower overall win rate at 38.7%",
+    "Leads in only 2 of 24 statistical categories",
+    "Lower peak season title count"
+  ],
+  "verdict": "Based on comprehensive statistical analysis, Serena Williams emerges as the clear GOAT with dominant performance across nearly all measurable categories. While Venus Williams made significant pioneering contributions to tennis, the numbers overwhelmingly favor Serena's superior achievements and consistency throughout her career."
+}
