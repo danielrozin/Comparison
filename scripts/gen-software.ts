@@ -236,6 +236,26 @@ const COMPARISONS = [
   ["Marketo", "HubSpot"],
   ["Pardot", "HubSpot"],
   ["ActiveCampaign", "HubSpot"],
+  ["Marketo", "Pardot"],
+  // E-commerce Platforms
+  ["Shopify", "WooCommerce"],
+  ["Shopify", "Squarespace"],
+  ["WooCommerce", "Magento"],
+  ["BigCommerce", "Shopify"],
+  ["Shopify", "Wix"],
+  // Data Engineering & Pipelines
+  ["dbt", "Airflow"],
+  ["Apache Kafka", "RabbitMQ"],
+  ["Snowflake", "BigQuery"],
+  ["Snowflake", "Redshift"],
+  ["Fivetran", "Airbyte"],
+  // Password Managers
+  ["1Password", "Bitwarden"],
+  ["LastPass", "1Password"],
+  ["Dashlane", "1Password"],
+  // Endpoint Security
+  ["CrowdStrike", "SentinelOne"],
+  ["Okta", "Microsoft Entra ID"],
 ];
 
 function makeSlug(a: string, b: string): string {
