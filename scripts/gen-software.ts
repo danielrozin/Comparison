@@ -446,6 +446,37 @@ const COMPARISONS = [
   ["Yelp", "Google Maps"],
   ["OpenTable", "Resy"],
   ["DoorDash", "Grubhub"],
+  // CRM Extended
+  ["Zoho CRM", "Salesforce"],
+  ["Zoho CRM", "HubSpot"],
+  ["Zoho CRM", "Pipedrive"],
+  ["Zoho", "Freshworks"],
+  // Survey Tools
+  ["SurveyMonkey", "Typeform"],
+  ["SurveyMonkey", "Google Forms"],
+  ["Qualtrics", "SurveyMonkey"],
+  // Adobe Creative
+  ["Adobe Photoshop", "GIMP"],
+  ["Adobe Photoshop", "Affinity Photo"],
+  ["Adobe Illustrator", "Affinity Designer"],
+  ["Adobe Illustrator", "Inkscape"],
+  ["Adobe Photoshop", "Lightroom"],
+  ["Adobe Illustrator", "Figma"],
+  // Cloud Storage Extended
+  ["Box", "Dropbox"],
+  ["Box", "Google Drive"],
+  ["OneDrive", "Google Drive"],
+  ["OneDrive", "Dropbox"],
+  ["OneDrive", "Box"],
+  // Databases
+  ["PostgreSQL", "MySQL"],
+  ["MongoDB", "PostgreSQL"],
+  ["Redis", "Memcached"],
+  ["Elasticsearch", "Solr"],
+  // DevOps Monitoring
+  ["Datadog", "Splunk"],
+  ["PagerDuty", "OpsGenie"],
+  ["Grafana", "Datadog"],
 ];
 
 function makeSlug(a: string, b: string): string {
