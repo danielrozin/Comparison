@@ -256,6 +256,27 @@ const COMPARISONS = [
   // Endpoint Security
   ["CrowdStrike", "SentinelOne"],
   ["Okta", "Microsoft Entra ID"],
+  // Data Warehouses (extended)
+  ["Snowflake", "BigQuery"],
+  ["Snowflake", "Databricks"],
+  ["Redshift", "BigQuery"],
+  // Identity & Access (extended)
+  ["Okta", "Auth0"],
+  ["CrowdStrike", "Microsoft Defender"],
+  ["SentinelOne", "Microsoft Defender"],
+  // E-commerce (extended)
+  ["Magento", "Shopify"],
+  ["WooCommerce", "Magento"],
+  // Container & IaC
+  ["Docker", "Podman"],
+  ["Kubernetes", "Docker Swarm"],
+  ["Terraform", "Pulumi"],
+  // Analytics (extended)
+  ["Amplitude", "Heap"],
+  ["PostHog", "Amplitude"],
+  // Productivity Docs
+  ["Notion", "Coda"],
+  ["Coda", "Airtable"],
 ];
 
 function makeSlug(a: string, b: string): string {
