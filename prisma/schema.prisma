@@ -885,3 +885,33 @@ model ComparisonRequestVote {
   @@index([requestId])
   @@map("comparison_request_votes")
 }
+
+// Social outreach queue: Quora/Reddit answers ready to post
+// Status flow: queued -> posted | skipped
+model OutreachPost {
+  id             String    @id @default(cuid())
+  platform       String // "reddit" | "quora"
+  questionUrl    String    @unique @map("question_url")
+  questionTitle  String    @map("question_title") @db.Text
+  subreddit      String?
+  category       String?
+  entityA        String?   @map("entity_a")
+  entityB        String?   @map("entity_b")
+  comparisonSlug String    @map("comparison_slug")
+  comparisonUrl  String    @map("comparison_url")
+  answer         String    @db.Text
+
+  status         String    @default("queued") // queued | posted | skipped
+
+  postedUrl      String?   @map("posted_url") // link to the live answer after posting
+  notes          String?   @db.Text
+
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  postedAt       DateTime? @map("posted_at")
+
+  @@index([status])
+  @@index([platform, status])
+  @@index([createdAt])
+  @@map("outreach_posts")
+}

@@ -58,6 +58,7 @@ interface OutreachQuestion {
   title: string;
   url: string;
   subreddit?: string;
+  category?: string;
   upvotes?: number;
   comments?: number;
   createdAt: string;
@@ -94,6 +95,8 @@ export default function AdminPage() {
   const [outreachAnswers, setOutreachAnswers] = useState<Record<string, OutreachAnswer>>({});
   const [generatingAnswerId, setGeneratingAnswerId] = useState<string | null>(null);
   const [outreachPlatform, setOutreachPlatform] = useState<string>("all");
+  const [savedQuestionIds, setSavedQuestionIds] = useState<Set<string>>(new Set());
+  const [savingQuestionId, setSavingQuestionId] = useState<string | null>(null);
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -213,6 +216,36 @@ export default function AdminPage() {
       // ignore
     }
     setGeneratingAnswerId(null);
+  };
+
+  const saveAnswerToQueue = async (answer: OutreachAnswer) => {
+    if (!token) return;
+    setSavingQuestionId(answer.questionId);
+    try {
+      const q = answer.question;
+      const res = await fetch("/api/outreach/queue", {
+        method: "POST",
+        headers: { authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          platform: q.platform,
+          questionUrl: q.url,
+          questionTitle: q.title,
+          subreddit: q.subreddit,
+          category: q.category ?? null,
+          entityA: q.entityA,
+          entityB: q.entityB,
+          comparisonSlug: q.matchingComparisonSlug,
+          comparisonUrl: answer.comparisonUrl,
+          answer: answer.answer,
+        }),
+      });
+      if (res.ok) {
+        setSavedQuestionIds((prev) => new Set(prev).add(answer.questionId));
+      }
+    } catch {
+      // ignore
+    }
+    setSavingQuestionId(null);
   };
 
   // Auto-login from localStorage
@@ -348,6 +381,16 @@ export default function AdminPage() {
               <div>
                 <p className="text-sm font-semibold text-text">Analytics</p>
                 <p className="text-xs text-text-secondary">View detailed analytics</p>
+              </div>
+            </Link>
+            <Link
+              href="/admin/outreach"
+              className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
+            >
+              <span className="text-xl">🔗</span>
+              <div>
+                <p className="text-sm font-semibold text-text">Outreach Queue</p>
+                <p className="text-xs text-text-secondary">Quora &amp; Reddit posting workflow</p>
               </div>
             </Link>
           </div>
@@ -549,16 +592,29 @@ export default function AdminPage() {
                     {/* Generated answer */}
                     {outreachAnswers[q.id] && (
                       <div className="mt-3 bg-surface-alt rounded-lg p-3">
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center justify-between mb-2 gap-2">
                           <span className="text-xs font-semibold text-text-secondary">Generated Answer</span>
-                          <button
-                            onClick={() => {
-                              navigator.clipboard.writeText(outreachAnswers[q.id].answer);
-                            }}
-                            className="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-medium rounded hover:bg-primary-700"
-                          >
-                            Copy
-                          </button>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(outreachAnswers[q.id].answer);
+                              }}
+                              className="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-medium rounded hover:bg-primary-700"
+                            >
+                              Copy
+                            </button>
+                            <button
+                              onClick={() => saveAnswerToQueue(outreachAnswers[q.id])}
+                              disabled={savingQuestionId === q.id || savedQuestionIds.has(q.id)}
+                              className="px-2 py-0.5 bg-green-600 text-white text-[10px] font-medium rounded hover:bg-green-700 disabled:opacity-60"
+                            >
+                              {savedQuestionIds.has(q.id)
+                                ? "✓ Saved"
+                                : savingQuestionId === q.id
+                                  ? "Saving..."
+                                  : "Save to Queue"}
+                            </button>
+                          </div>
                         </div>
                         <textarea
                           readOnly
