@@ -299,6 +299,32 @@ const COMPARISONS = [
   // Infrastructure
   ["Terraform", "Pulumi"],
   ["Docker", "Kubernetes"],
+  // API Development Tools
+  ["Postman", "Insomnia"],
+  ["Postman", "Bruno"],
+  ["Swagger", "Postman"],
+  // Browsers
+  ["Chrome", "Firefox"],
+  ["Chrome", "Brave"],
+  ["Firefox", "Brave"],
+  ["Arc", "Chrome"],
+  // Email Clients
+  ["Gmail", "Outlook"],
+  ["ProtonMail", "Gmail"],
+  ["Superhuman", "Gmail"],
+  // Design Tools
+  ["Figma", "Sketch"],
+  ["Canva", "Adobe Express"],
+  ["Figma", "Adobe XD"],
+  // Customer Success
+  ["Gainsight", "ChurnZero"],
+  ["Gainsight", "Totango"],
+  // Recruiting / ATS
+  ["Greenhouse", "Lever"],
+  ["Ashby", "Greenhouse"],
+  // Performance Management
+  ["Lattice", "Culture Amp"],
+  ["Lattice", "Leapsome"],
 ];
 
 function makeSlug(a: string, b: string): string {
