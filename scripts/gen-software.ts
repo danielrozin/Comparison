@@ -417,6 +417,35 @@ const COMPARISONS = [
   ["Squarespace", "Wix"],
   ["Webflow", "Squarespace"],
   ["Wix", "WordPress"],
+  // PKM & Note-taking (extended)
+  ["Roam Research", "Obsidian"],
+  ["Roam Research", "Logseq"],
+  ["Bear", "Obsidian"],
+  ["Bear", "Notion"],
+  ["Evernote", "Notion"],
+  ["Evernote", "Obsidian"],
+  ["Evernote", "Bear"],
+  // Browser (extended)
+  ["Arc", "Chrome"],
+  ["Arc", "Firefox"],
+  ["Arc", "Brave"],
+  // AI Writing Tools
+  ["Notion AI", "ChatGPT"],
+  ["Notion AI", "Grammarly"],
+  ["Jasper", "ChatGPT"],
+  ["Copy.ai", "Jasper"],
+  // Visual Collaboration
+  ["Whimsical", "Miro"],
+  ["Whimsical", "FigJam"],
+  ["Lucidchart", "Whimsical"],
+  // Fitness Apps
+  ["Peloton", "Mirror"],
+  ["Strava", "Garmin Connect"],
+  ["MyFitnessPal", "Noom"],
+  // Food & Restaurant Discovery
+  ["Yelp", "Google Maps"],
+  ["OpenTable", "Resy"],
+  ["DoorDash", "Grubhub"],
 ];
 
 function makeSlug(a: string, b: string): string {
