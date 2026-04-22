@@ -477,6 +477,31 @@ const COMPARISONS = [
   ["Datadog", "Splunk"],
   ["PagerDuty", "OpsGenie"],
   ["Grafana", "Datadog"],
+  // Cloud Platforms Extended
+  ["GCP", "AWS"],
+  ["GCP", "Azure"],
+  ["GCP", "DigitalOcean"],
+  // Databases Extended
+  ["PostgreSQL", "MySQL"],
+  ["PostgreSQL", "MongoDB"],
+  ["MySQL", "MariaDB"],
+  ["Redis", "Memcached"],
+  ["Redis", "MongoDB"],
+  ["Elasticsearch", "Solr"],
+  ["Elasticsearch", "OpenSearch"],
+  ["Splunk", "Elasticsearch"],
+  ["Splunk", "Datadog"],
+  // Message Queues
+  ["Apache Kafka", "RabbitMQ"],
+  ["Kafka", "Redis"],
+  ["SQS", "RabbitMQ"],
+  // Infrastructure as Code Extended
+  ["Ansible", "Terraform"],
+  ["Ansible", "Chef"],
+  ["Chef", "Puppet"],
+  // Container Orchestration Extended
+  ["Kubernetes", "Nomad"],
+  ["Docker", "Podman"],
 ];
 
 function makeSlug(a: string, b: string): string {
