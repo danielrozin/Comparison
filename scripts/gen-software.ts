@@ -277,6 +277,28 @@ const COMPARISONS = [
   // Productivity Docs
   ["Notion", "Coda"],
   ["Coda", "Airtable"],
+  // LLM / AI Assistants (very high 2025-2026 search volume)
+  ["ChatGPT", "Claude"],
+  ["ChatGPT", "Gemini"],
+  ["Claude", "Gemini"],
+  ["Perplexity", "ChatGPT"],
+  ["ChatGPT", "Copilot"],
+  // HR Tech (extended)
+  ["Workday", "SAP SuccessFactors"],
+  ["BambooHR", "HiBob"],
+  ["Lattice", "Culture Amp"],
+  ["Greenhouse", "Lever"],
+  // Customer Success
+  ["Gainsight", "ChurnZero"],
+  ["Intercom", "Drift"],
+  ["Zendesk", "Intercom"],
+  // Note-taking & PKM
+  ["Obsidian", "Roam Research"],
+  ["Obsidian", "Notion"],
+  ["Bear", "Notion"],
+  // Infrastructure
+  ["Terraform", "Pulumi"],
+  ["Docker", "Kubernetes"],
 ];
 
 function makeSlug(a: string, b: string): string {
