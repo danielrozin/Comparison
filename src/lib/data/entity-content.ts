@@ -1386,26 +1386,6 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     ],
   },
 
-  "evernote": {
-    description:
-      "Evernote is one of the original note-taking and personal organization apps, launched in 2008 and once valued at over $1 billion as a pioneer in the productivity software space. Evernote's core strength is its ability to capture anything — web clips, PDFs, handwritten notes, images, audio recordings, and typed notes — and make all of it searchable, including text within images and PDFs. The app's Web Clipper browser extension remains one of the best tools for saving web content for later reference. Evernote syncs across all devices and organizes content into Notebooks and Stacks with Tags for cross-cutting organization. The platform struggled in the mid-2010s with feature bloat and leadership changes, and in 2022 was acquired by Italian software company Bending Spoons, which significantly raised prices and reduced the free tier. The free plan now limits users to 1 device and 50 notes, pushing most users toward paid tiers. Personal is $14.99/month and Professional is $17.99/month. Despite losing market share to Notion, Obsidian, and Apple Notes, Evernote retains millions of loyal long-term users who value its capture breadth and search capabilities.",
-    highlights: ["Best-in-class web clipping with Web Clipper", "OCR search inside images and PDFs", "Notebooks + Tags flexible organization", "15+ year history with millions of loyal users"],
-    category: "software",
-    alternatives: [
-      { name: "Notion", slug: "notion", reason: "More flexible, combines notes with databases and wikis" },
-      { name: "Obsidian", slug: "obsidian", reason: "Local-first, bidirectional linking, free core app" },
-      { name: "Apple Notes", slug: "apple-notes", reason: "Free, built-in, fast, excellent for Apple ecosystem" },
-      { name: "Notion", slug: "notion", reason: "Better team collaboration and structured content" },
-      { name: "Bear", slug: "bear", reason: "Beautiful Mac/iOS note-taking with Markdown support" },
-      { name: "Roam Research", slug: "roam-research", reason: "Better for knowledge management and bidirectional links" },
-    ],
-    faqs: [
-      { question: "Is Evernote still free?", answer: "Evernote has a free plan but it's now heavily limited to 1 device and 50 notes — a major reduction from its previous free tier. Most users need a paid plan: Personal at $14.99/month or Professional at $17.99/month. This pricing change following the Bending Spoons acquisition drove many users to alternatives." },
-      { question: "Is Evernote still worth using?", answer: "Evernote is still worth it for long-term users with large existing libraries who rely on its Web Clipper, OCR search, and PDF annotation. For new users, Notion, Obsidian, or Apple Notes offer comparable features at lower or no cost. The 2022 pricing increases made Evernote significantly less competitive." },
-      { question: "What happened to Evernote?", answer: "Evernote was acquired by Italian company Bending Spoons in 2022. Following the acquisition, Bending Spoons dramatically reduced the free tier, raised prices, and laid off most of the US team. The product continues to be actively developed with AI features being added, but many long-time users migrated to competitors." },
-    ],
-  },
-
   "mailerlite": {
     description:
       "MailerLite is a budget-friendly email marketing platform that has grown rapidly by offering a powerful feature set at a fraction of competitors' prices. Founded in 2010 in Vilnius, Lithuania, MailerLite serves over 1.5 million customers worldwide. The platform covers the full email marketing workflow: drag-and-drop and HTML editors, automation workflows, landing pages, pop-ups, and detailed analytics. MailerLite's pricing is significantly lower than Mailchimp and ConvertKit for comparable features — the free plan allows 1,000 subscribers and 12,000 emails/month, and the Growing Business plan starts at just $9/month for 500 subscribers with unlimited emails. The platform has improved dramatically in recent years, adding AI writing assistance, an e-commerce integration suite, a website builder, and digital product selling capabilities. MailerLite is particularly popular with small businesses, bloggers, and nonprofits that need professional email marketing without enterprise pricing. The platform's deliverability rates are competitive, and customer support is consistently praised. In 2023, MailerLite launched MailerSend (transactional email) to serve developers and growing businesses.",

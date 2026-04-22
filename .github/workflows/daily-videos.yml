@@ -10,18 +10,24 @@ on:
       count:
         description: "Number of videos to generate"
         required: false
-        default: "5"
+        default: "3"
       dry_run:
         description: "Dry run (render only, no upload)"
         required: false
         default: "false"
         type: choice
         options: ["false", "true"]
+      renderer:
+        description: "Renderer (hyperframes is the default; remotion remains as fallback)"
+        required: false
+        default: "hyperframes"
+        type: choice
+        options: ["hyperframes", "remotion"]
 
 jobs:
   generate-and-upload:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     permissions:
       contents: write # Needed to commit updated video-uploads.json
@@ -38,10 +44,11 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Install system dependencies for Remotion (Chromium)
+      - name: Install system dependencies (Chromium + ffmpeg)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            ffmpeg \
             libnss3 \
             libatk1.0-0 \
             libatk-bridge2.0-0 \
@@ -70,13 +77,23 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+          ELEVENLABS_MODEL_ID: ${{ secrets.ELEVENLABS_MODEL_ID }}
         run: |
-          COUNT="${{ github.event.inputs.count || '5' }}"
+          COUNT="${{ github.event.inputs.count || '3' }}"
           DRY_RUN_FLAG=""
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
-          node scripts/daily-video-pipeline.mjs --count $COUNT $DRY_RUN_FLAG
+          RENDERER="${{ github.event.inputs.renderer || 'hyperframes' }}"
+          if [ "$RENDERER" = "remotion" ]; then
+            echo "Using Remotion renderer (fallback)"
+            node scripts/daily-video-pipeline.mjs --count $COUNT $DRY_RUN_FLAG
+          else
+            echo "Using HyperFrames renderer (default — Data Drift style + ElevenLabs v3 narration)"
+            node scripts/daily-video-pipeline-hf.mjs --count $COUNT $DRY_RUN_FLAG
+          fi
 
       - name: Commit and push updated video upload log
         run: |
