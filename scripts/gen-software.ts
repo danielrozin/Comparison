@@ -618,6 +618,38 @@ const COMPARISONS = [
   ["Jest", "Vitest"],
   ["Cypress", "Playwright"],
   ["Selenium", "Playwright"],
+  // Node.js Frameworks Extended
+  ["Express", "Fastify"],
+  ["Express", "NestJS"],
+  ["NestJS", "Spring Boot"],
+  ["NestJS", "Django"],
+  // Mobile Frameworks Extended
+  ["Flutter", "React Native"],
+  ["Flutter", "Expo"],
+  ["React Native", "Ionic"],
+  ["Flutter", "SwiftUI"],
+  // CSS Frameworks
+  ["Tailwind CSS", "Bootstrap"],
+  ["Tailwind CSS", "CSS Modules"],
+  ["Tailwind CSS", "styled-components"],
+  ["Tailwind CSS", "UnoCSS"],
+  ["Bootstrap", "Bulma"],
+  // Build Tools
+  ["Vite", "Webpack"],
+  ["Vite", "Parcel"],
+  ["Vite", "esbuild"],
+  ["Turbopack", "Vite"],
+  ["Bun", "Vite"],
+  // Cloud Services
+  ["AWS S3", "Google Cloud Storage"],
+  ["AWS Lambda", "Google Cloud Functions"],
+  ["AWS EKS", "Google GKE"],
+  ["AWS ECS", "Kubernetes"],
+  ["Cloudflare Workers", "AWS Lambda"],
+  // Serverless Platforms
+  ["Vercel", "Netlify"],
+  ["Railway", "Render"],
+  ["Fly.io", "Railway"],
 ];
 
 function makeSlug(a: string, b: string): string {
