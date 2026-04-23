@@ -650,6 +650,41 @@ const COMPARISONS = [
   ["Vercel", "Netlify"],
   ["Railway", "Render"],
   ["Fly.io", "Railway"],
+  // Build Tools Extended
+  ["Webpack", "Vite"],
+  ["Webpack", "Parcel"],
+  ["Webpack", "esbuild"],
+  ["Rollup", "Vite"],
+  ["esbuild", "Vite"],
+  // Testing Extended
+  ["Jest", "Vitest"],
+  ["Cypress", "Playwright"],
+  ["Selenium", "Playwright"],
+  ["Jest", "Mocha"],
+  ["Playwright", "Puppeteer"],
+  // CSS Frameworks Extended
+  ["Bootstrap", "Bulma"],
+  ["Bootstrap", "Foundation"],
+  ["Bootstrap", "Materialize"],
+  // Data Engineering Extended
+  ["dbt", "Dataform"],
+  ["dbt", "SQLMesh"],
+  ["Airflow", "dbt"],
+  ["dbt", "Fivetran"],
+  // UI Component Libraries
+  ["shadcn/ui", "Chakra UI"],
+  ["Material UI", "Chakra UI"],
+  ["Ant Design", "Material UI"],
+  ["shadcn/ui", "Material UI"],
+  // State Management
+  ["Redux", "Zustand"],
+  ["Redux", "MobX"],
+  ["Zustand", "Jotai"],
+  ["React Query", "SWR"],
+  // GraphQL
+  ["GraphQL", "REST"],
+  ["Apollo", "URQL"],
+  ["Hasura", "Prisma"],
 ];
 
 function makeSlug(a: string, b: string): string {
