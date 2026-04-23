@@ -816,6 +816,31 @@ const COMPARISONS = [
   ["Terraform", "OpenTofu"],
   ["Pulumi", "CDK"],
   ["Pulumi", "Ansible"],
+  // Monitoring & Observability
+  ["Datadog", "Dynatrace"],
+  ["New Relic", "Datadog"],
+  ["New Relic", "Sentry"],
+  ["Dynatrace", "Datadog"],
+  ["Prometheus", "InfluxDB"],
+  ["Prometheus", "Thanos"],
+  ["Prometheus", "VictoriaMetrics"],
+  ["Prometheus", "OpenTelemetry"],
+  ["Grafana", "Prometheus"],
+  ["Grafana", "InfluxDB"],
+  ["Grafana", "Dynatrace"],
+  ["Sentry", "Bugsnag"],
+  ["Sentry", "LogRocket"],
+  ["Sentry", "New Relic"],
+  ["Sentry", "Datadog"],
+  // Tracing
+  ["Jaeger", "Zipkin"],
+  ["Jaeger", "Tempo"],
+  ["OpenTelemetry", "Jaeger"],
+  ["OpenTelemetry", "Datadog"],
+  // Log Management
+  ["Loki", "Elasticsearch"],
+  ["Loki", "Splunk"],
+  ["Grafana", "Loki"],
 ];
 
 function makeSlug(a: string, b: string): string {
