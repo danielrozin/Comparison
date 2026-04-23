@@ -790,6 +790,32 @@ const COMPARISONS = [
   ["Hive", "Presto"],
   ["Presto", "Trino"],
   ["Spark", "Databricks"],
+  // API Gateways
+  ["Kong", "Nginx"],
+  ["Kong", "Traefik"],
+  ["Kong", "Tyk"],
+  ["Kong", "Apigee"],
+  ["Kong", "AWS API Gateway"],
+  ["Traefik", "Kong"],
+  ["Traefik", "HAProxy"],
+  ["Traefik", "Caddy"],
+  ["Traefik", "Istio"],
+  // Service Mesh
+  ["Istio", "Linkerd"],
+  ["Istio", "Consul"],
+  ["Istio", "Cilium"],
+  ["Linkerd", "Consul"],
+  ["Linkerd", "Cilium"],
+  ["Consul", "Zookeeper"],
+  ["Consul", "etcd"],
+  // IaC
+  ["Terraform", "Ansible"],
+  ["Terraform", "CloudFormation"],
+  ["Terraform", "CDK"],
+  ["Terraform", "Crossplane"],
+  ["Terraform", "OpenTofu"],
+  ["Pulumi", "CDK"],
+  ["Pulumi", "Ansible"],
 ];
 
 function makeSlug(a: string, b: string): string {
