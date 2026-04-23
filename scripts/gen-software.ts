@@ -878,6 +878,27 @@ const COMPARISONS = [
   ["Windsurf", "Cursor"],
   ["Windsurf", "GitHub Copilot"],
   ["Windsurf", "Continue"],
+  // Modern / Serverless Databases
+  ["PlanetScale", "Neon"],
+  ["PlanetScale", "Turso"],
+  ["PlanetScale", "CockroachDB"],
+  ["PlanetScale", "MySQL"],
+  ["Neon", "Supabase"],
+  ["Neon", "Turso"],
+  ["Neon", "CockroachDB"],
+  ["Neon", "PostgreSQL"],
+  ["Neon", "Vercel Postgres"],
+  ["Turso", "Cloudflare D1"],
+  ["Turso", "SQLite"],
+  ["Turso", "Supabase"],
+  ["Supabase", "Neon"],
+  ["Supabase", "Appwrite"],
+  ["Supabase", "AWS Amplify"],
+  ["Supabase", "Turso"],
+  ["CockroachDB", "PostgreSQL"],
+  ["CockroachDB", "Spanner"],
+  ["CockroachDB", "YugabyteDB"],
+  ["CockroachDB", "Supabase"],
 ];
 
 function makeSlug(a: string, b: string): string {
