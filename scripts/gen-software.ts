@@ -685,6 +685,31 @@ const COMPARISONS = [
   ["GraphQL", "REST"],
   ["Apollo", "URQL"],
   ["Hasura", "Prisma"],
+  // Task Queues
+  ["Celery", "RQ"],
+  ["Celery", "Dramatiq"],
+  ["Celery", "Sidekiq"],
+  ["Celery", "Prefect"],
+  ["Celery", "Airflow"],
+  ["Celery", "Kafka"],
+  // Data Orchestration Extended
+  ["Prefect", "Mage"],
+  ["Prefect", "Temporal"],
+  ["Dagster", "dbt"],
+  ["Dagster", "Metaflow"],
+  // In-Process Analytics
+  ["DuckDB", "Polars"],
+  ["DuckDB", "SQLite"],
+  ["DuckDB", "Spark"],
+  ["DuckDB", "Pandas"],
+  // Druid comparisons
+  ["Druid", "Elasticsearch"],
+  ["Druid", "BigQuery"],
+  ["Druid", "Redshift"],
+  // Pinot comparisons
+  ["Pinot", "Elasticsearch"],
+  ["Pinot", "BigQuery"],
+  ["Pinot", "Redshift"],
   // Data Orchestration
   ["Prefect", "Dagster"],
   ["Airflow", "Luigi"],
