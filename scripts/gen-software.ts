@@ -860,6 +860,24 @@ const COMPARISONS = [
   ["Flux", "Jenkins"],
   ["Tekton", "Drone"],
   ["Tekton", "Jenkins"],
+  // AI Coding Assistants
+  ["Cursor", "Codeium"],
+  ["Cursor", "Continue"],
+  ["Cursor", "Tabnine"],
+  ["Cursor", "Aider"],
+  ["GitHub Copilot", "Codeium"],
+  ["GitHub Copilot", "Tabnine"],
+  ["GitHub Copilot", "Continue"],
+  ["GitHub Copilot", "Aider"],
+  ["GitHub Copilot", "Amazon CodeWhisperer"],
+  ["Codeium", "Tabnine"],
+  ["Codeium", "Continue"],
+  ["Tabnine", "Continue"],
+  ["Aider", "Continue"],
+  ["Cursor", "Zed"],
+  ["Windsurf", "Cursor"],
+  ["Windsurf", "GitHub Copilot"],
+  ["Windsurf", "Continue"],
 ];
 
 function makeSlug(a: string, b: string): string {
