@@ -841,6 +841,25 @@ const COMPARISONS = [
   ["Loki", "Elasticsearch"],
   ["Loki", "Splunk"],
   ["Grafana", "Loki"],
+  // CI/CD
+  ["GitHub Actions", "GitLab CI"],
+  ["GitHub Actions", "Tekton"],
+  ["GitHub Actions", "Buildkite"],
+  ["GitHub Actions", "Travis CI"],
+  ["CircleCI", "Buildkite"],
+  ["CircleCI", "Travis CI"],
+  ["CircleCI", "TeamCity"],
+  ["Jenkins", "GitLab CI"],
+  ["Jenkins", "TeamCity"],
+  ["Jenkins", "Buildkite"],
+  ["ArgoCD", "Tekton"],
+  ["ArgoCD", "Jenkins"],
+  ["ArgoCD", "GitHub Actions"],
+  ["ArgoCD", "Spinnaker"],
+  ["Flux", "Tekton"],
+  ["Flux", "Jenkins"],
+  ["Tekton", "Drone"],
+  ["Tekton", "Jenkins"],
 ];
 
 function makeSlug(a: string, b: string): string {
