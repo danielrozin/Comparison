@@ -18,6 +18,20 @@ function partnerLabel(partner: string): string {
     impact: "Official Store",
     shareasale: "Partner Store",
     generic: "Learn More",
+    bhphotovideo: "B&H Photo",
+    notion: "Notion",
+    canva: "Canva",
+    bigcommerce: "BigCommerce",
+    webflow: "Webflow",
+    microsoft: "Microsoft Store",
+    verizon: "Verizon",
+    nordvpn: "NordVPN",
+    surfshark: "Surfshark",
+    nike: "Nike",
+    rei: "REI",
+    kitchenaid: "KitchenAid",
+    ninja: "Ninja",
+    dyson: "Dyson",
   };
   return labels[partner] || "Shop";
 }
