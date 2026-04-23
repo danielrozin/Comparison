@@ -685,6 +685,36 @@ const COMPARISONS = [
   ["GraphQL", "REST"],
   ["Apollo", "URQL"],
   ["Hasura", "Prisma"],
+  // Data Orchestration
+  ["Prefect", "Dagster"],
+  ["Airflow", "Luigi"],
+  ["Dagster", "Mage"],
+  ["Airflow", "Oozie"],
+  // Streaming & Messaging
+  ["Kafka", "Pulsar"],
+  ["Kafka", "Kinesis"],
+  ["Flink", "Storm"],
+  ["Flink", "Kafka Streams"],
+  ["Kinesis", "SQS"],
+  // ELT & Data Integration
+  ["Airbyte", "Stitch"],
+  ["Airbyte", "Meltano"],
+  ["Fivetran", "Stitch"],
+  ["Airbyte", "Singer"],
+  ["Meltano", "Singer"],
+  // OLAP & Analytical Databases
+  ["ClickHouse", "Druid"],
+  ["ClickHouse", "Pinot"],
+  ["ClickHouse", "BigQuery"],
+  ["ClickHouse", "Redshift"],
+  ["ClickHouse", "Snowflake"],
+  ["ClickHouse", "DuckDB"],
+  ["Druid", "Pinot"],
+  // Hadoop Ecosystem
+  ["Hadoop", "Hive"],
+  ["Hive", "Presto"],
+  ["Presto", "Trino"],
+  ["Spark", "Databricks"],
 ];
 
 function makeSlug(a: string, b: string): string {
