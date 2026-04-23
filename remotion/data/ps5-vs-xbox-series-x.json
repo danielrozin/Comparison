@@ -5,23 +5,91 @@
   "category": "Gaming",
   "shortAnswer": "The PS5 has faster SSD speeds and superior exclusive games like Spider-Man and God of War. The Xbox Series X offers better backwards compatibility, Game Pass subscription value, and more raw GPU power at 12 TFLOPS.",
   "keyDifferences": [
-    { "label": "GPU Power", "entityAValue": "10.28 TFLOPS", "entityBValue": "12 TFLOPS", "winner": "b" },
-    { "label": "SSD Speed", "entityAValue": "5.5 GB/s", "entityBValue": "2.4 GB/s", "winner": "a" },
-    { "label": "Exclusive Games", "entityAValue": "Superior library", "entityBValue": "Growing library", "winner": "a" },
-    { "label": "Subscription", "entityAValue": "PS Plus", "entityBValue": "Game Pass", "winner": "b" }
+    {
+      "label": "GPU Power",
+      "entityAValue": "10.28 TFLOPS",
+      "entityBValue": "12 TFLOPS",
+      "winner": "b"
+    },
+    {
+      "label": "SSD Speed",
+      "entityAValue": "5.5 GB/s",
+      "entityBValue": "2.4 GB/s",
+      "winner": "a"
+    },
+    {
+      "label": "Exclusive Games",
+      "entityAValue": "Superior library",
+      "entityBValue": "Growing library",
+      "winner": "a"
+    },
+    {
+      "label": "Subscription",
+      "entityAValue": "PS Plus",
+      "entityBValue": "Game Pass",
+      "winner": "b"
+    }
   ],
   "stats": [
-    { "label": "GPU (TFLOPS)", "valueA": "10.28", "valueB": "12.15", "winner": "b" },
-    { "label": "SSD Speed (GB/s)", "valueA": "5.5", "valueB": "2.4", "winner": "a" },
-    { "label": "Price (USD)", "valueA": "$499", "valueB": "$499", "winner": "tie" },
-    { "label": "Exclusive Games", "valueA": "Superior", "valueB": "Growing", "winner": "a" },
-    { "label": "Backwards Compat.", "valueA": "Limited", "valueB": "Full", "winner": "b" },
-    { "label": "VR Support", "valueA": "PSVR2", "valueB": "None", "winner": "a" }
+    {
+      "label": "GPU (TFLOPS)",
+      "valueA": "10.28",
+      "valueB": "12.15",
+      "winner": "b"
+    },
+    {
+      "label": "SSD Speed (GB/s)",
+      "valueA": "5.5",
+      "valueB": "2.4",
+      "winner": "a"
+    },
+    {
+      "label": "Price (USD)",
+      "valueA": "$499",
+      "valueB": "$499",
+      "winner": "tie"
+    },
+    {
+      "label": "Exclusive Games",
+      "valueA": "Superior",
+      "valueB": "Growing",
+      "winner": "a"
+    },
+    {
+      "label": "Backwards Compat.",
+      "valueA": "Limited",
+      "valueB": "Full",
+      "winner": "b"
+    },
+    {
+      "label": "VR Support",
+      "valueA": "PSVR2",
+      "valueB": "None",
+      "winner": "a"
+    }
   ],
-  "prosA": ["Faster SSD (5.5 GB/s)", "Better exclusive games", "DualSense haptic controller", "VR support (PSVR2)"],
-  "consA": ["Larger physical size", "Fewer backwards compat. titles", "PS Plus less value than Game Pass"],
-  "prosB": ["12 TFLOPS GPU power", "Game Pass (best value)", "Full backwards compatibility", "Smaller form factor"],
-  "consB": ["Fewer exclusive titles", "Controller lacks haptics", "No VR support"],
+  "prosA": [
+    "Faster SSD (5.5 GB/s)",
+    "Better exclusive games",
+    "DualSense haptic controller",
+    "VR support (PSVR2)"
+  ],
+  "consA": [
+    "Larger physical size",
+    "Fewer backwards compat. titles",
+    "PS Plus less value than Game Pass"
+  ],
+  "prosB": [
+    "12 TFLOPS GPU power",
+    "Game Pass (best value)",
+    "Full backwards compatibility",
+    "Smaller form factor"
+  ],
+  "consB": [
+    "Fewer exclusive titles",
+    "Controller lacks haptics",
+    "No VR support"
+  ],
   "verdict": "PS5 for exclusive games and VR. Xbox for Game Pass value and backwards compatibility. Both are excellent next-gen consoles.",
   "slug": "ps5-vs-xbox-series-x"
 }

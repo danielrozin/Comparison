@@ -5,24 +5,97 @@
   "category": "Sports",
   "shortAnswer": "Messi is widely regarded as the more naturally gifted player with superior dribbling and playmaking, while Ronaldo is celebrated for his athleticism, goal-scoring consistency, and aerial dominance. Messi has won 8 Ballon d'Or awards to Ronaldo's 5.",
   "keyDifferences": [
-    { "label": "Ballon d'Or Awards", "entityAValue": "8", "entityBValue": "5", "winner": "a" },
-    { "label": "Career Goals", "entityAValue": "838", "entityBValue": "899", "winner": "b" },
-    { "label": "Career Assists", "entityAValue": "369", "entityBValue": "262", "winner": "a" },
-    { "label": "Champions League", "entityAValue": "4 titles", "entityBValue": "5 titles", "winner": "b" },
-    { "label": "World Cup Titles", "entityAValue": "1", "entityBValue": "0", "winner": "a" }
+    {
+      "label": "Ballon d'Or Awards",
+      "entityAValue": "8",
+      "entityBValue": "5",
+      "winner": "a"
+    },
+    {
+      "label": "Career Goals",
+      "entityAValue": "838",
+      "entityBValue": "899",
+      "winner": "b"
+    },
+    {
+      "label": "Career Assists",
+      "entityAValue": "369",
+      "entityBValue": "262",
+      "winner": "a"
+    },
+    {
+      "label": "Champions League",
+      "entityAValue": "4 titles",
+      "entityBValue": "5 titles",
+      "winner": "b"
+    },
+    {
+      "label": "World Cup Titles",
+      "entityAValue": "1",
+      "entityBValue": "0",
+      "winner": "a"
+    }
   ],
   "stats": [
-    { "label": "Ballon d'Or Awards", "valueA": "8", "valueB": "5", "winner": "a" },
-    { "label": "Career Goals", "valueA": "838", "valueB": "899", "winner": "b" },
-    { "label": "Career Assists", "valueA": "369", "valueB": "262", "winner": "a" },
-    { "label": "Champions League", "valueA": "4 titles", "valueB": "5 titles", "winner": "b" },
-    { "label": "World Cup Titles", "valueA": "1", "valueB": "0", "winner": "a" },
-    { "label": "International Goals", "valueA": "112", "valueB": "135", "winner": "b" }
+    {
+      "label": "Ballon d'Or Awards",
+      "valueA": "8",
+      "valueB": "5",
+      "winner": "a"
+    },
+    {
+      "label": "Career Goals",
+      "valueA": "838",
+      "valueB": "899",
+      "winner": "b"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "369",
+      "valueB": "262",
+      "winner": "a"
+    },
+    {
+      "label": "Champions League",
+      "valueA": "4 titles",
+      "valueB": "5 titles",
+      "winner": "b"
+    },
+    {
+      "label": "World Cup Titles",
+      "valueA": "1",
+      "valueB": "0",
+      "winner": "a"
+    },
+    {
+      "label": "International Goals",
+      "valueA": "112",
+      "valueB": "135",
+      "winner": "b"
+    }
   ],
-  "prosA": ["Best dribbler of all time", "Superior vision and passing", "8 Ballon d'Or awards", "2022 World Cup winner"],
-  "consA": ["Fewer Champions League titles", "Less aerial threat", "Fewer international goals"],
-  "prosB": ["All-time international scorer", "5 Champions League titles", "Incredible athleticism", "Performed across 3 top leagues"],
-  "consB": ["No World Cup title", "Fewer Ballon d'Or awards", "Less effective as playmaker"],
+  "prosA": [
+    "Best dribbler of all time",
+    "Superior vision and passing",
+    "8 Ballon d'Or awards",
+    "2022 World Cup winner"
+  ],
+  "consA": [
+    "Fewer Champions League titles",
+    "Less aerial threat",
+    "Fewer international goals"
+  ],
+  "prosB": [
+    "All-time international scorer",
+    "5 Champions League titles",
+    "Incredible athleticism",
+    "Performed across 3 top leagues"
+  ],
+  "consB": [
+    "No World Cup title",
+    "Fewer Ballon d'Or awards",
+    "Less effective as playmaker"
+  ],
   "verdict": "Both are all-time greats. Messi edges it for overall ability and the 2022 World Cup, while Ronaldo's longevity and Champions League record is unmatched.",
   "slug": "messi-vs-ronaldo"
 }

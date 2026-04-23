@@ -5,24 +5,97 @@
   "category": "Sports",
   "shortAnswer": "Michael Jordan is widely considered the greatest winner with a perfect 6-0 Finals record, while LeBron James holds superior career totals with the all-time scoring record at 40,474 points.",
   "keyDifferences": [
-    { "label": "Championships", "entityAValue": "4", "entityBValue": "6", "winner": "b" },
-    { "label": "Finals Record", "entityAValue": "4-6", "entityBValue": "6-0", "winner": "b" },
-    { "label": "Career Points", "entityAValue": "40,474", "entityBValue": "32,292", "winner": "a" },
-    { "label": "Career Assists", "entityAValue": "10,420", "entityBValue": "5,633", "winner": "a" },
-    { "label": "Career Rebounds", "entityAValue": "10,768", "entityBValue": "6,672", "winner": "a" }
+    {
+      "label": "Championships",
+      "entityAValue": "4",
+      "entityBValue": "6",
+      "winner": "b"
+    },
+    {
+      "label": "Finals Record",
+      "entityAValue": "4-6",
+      "entityBValue": "6-0",
+      "winner": "b"
+    },
+    {
+      "label": "Career Points",
+      "entityAValue": "40,474",
+      "entityBValue": "32,292",
+      "winner": "a"
+    },
+    {
+      "label": "Career Assists",
+      "entityAValue": "10,420",
+      "entityBValue": "5,633",
+      "winner": "a"
+    },
+    {
+      "label": "Career Rebounds",
+      "entityAValue": "10,768",
+      "entityBValue": "6,672",
+      "winner": "a"
+    }
   ],
   "stats": [
-    { "label": "Championships", "valueA": "4", "valueB": "6", "winner": "b" },
-    { "label": "Finals Record", "valueA": "4-6", "valueB": "6-0", "winner": "b" },
-    { "label": "Career Points", "valueA": "40,474", "valueB": "32,292", "winner": "a" },
-    { "label": "MVP Awards", "valueA": "4", "valueB": "5", "winner": "b" },
-    { "label": "Career Assists", "valueA": "10,420", "valueB": "5,633", "winner": "a" },
-    { "label": "All-Star Games", "valueA": "20", "valueB": "14", "winner": "a" }
+    {
+      "label": "Championships",
+      "valueA": "4",
+      "valueB": "6",
+      "winner": "b"
+    },
+    {
+      "label": "Finals Record",
+      "valueA": "4-6",
+      "valueB": "6-0",
+      "winner": "b"
+    },
+    {
+      "label": "Career Points",
+      "valueA": "40,474",
+      "valueB": "32,292",
+      "winner": "a"
+    },
+    {
+      "label": "MVP Awards",
+      "valueA": "4",
+      "valueB": "5",
+      "winner": "b"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "10,420",
+      "valueB": "5,633",
+      "winner": "a"
+    },
+    {
+      "label": "All-Star Games",
+      "valueA": "20",
+      "valueB": "14",
+      "winner": "a"
+    }
   ],
-  "prosA": ["All-time points leader", "4 championships with 3 teams", "Unmatched versatility", "20+ year elite career"],
-  "consA": ["4-6 Finals record", "Fewer MVP awards", "Played in weaker East"],
-  "prosB": ["6-0 in Finals (perfect)", "10 scoring titles", "Defensive Player of the Year", "Cultural icon"],
-  "consB": ["Shorter prime window", "Less career longevity", "Fewer career total stats"],
+  "prosA": [
+    "All-time points leader",
+    "4 championships with 3 teams",
+    "Unmatched versatility",
+    "20+ year elite career"
+  ],
+  "consA": [
+    "4-6 Finals record",
+    "Fewer MVP awards",
+    "Played in weaker East"
+  ],
+  "prosB": [
+    "6-0 in Finals (perfect)",
+    "10 scoring titles",
+    "Defensive Player of the Year",
+    "Cultural icon"
+  ],
+  "consB": [
+    "Shorter prime window",
+    "Less career longevity",
+    "Fewer career total stats"
+  ],
   "verdict": "Jordan has the perfect Finals record and cultural impact. LeBron has longevity and versatility. Both are undeniable GOATs of their era.",
   "slug": "lebron-vs-jordan"
 }

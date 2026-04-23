@@ -685,6 +685,36 @@ const COMPARISONS = [
   ["GraphQL", "REST"],
   ["Apollo", "URQL"],
   ["Hasura", "Prisma"],
+  // MLOps — Experiment Tracking
+  ["MLflow", "Weights & Biases"],
+  ["MLflow", "Neptune"],
+  ["MLflow", "DVC"],
+  ["MLflow", "Kubeflow"],
+  ["MLflow", "SageMaker"],
+  ["Weights & Biases", "TensorBoard"],
+  ["Weights & Biases", "Comet ML"],
+  // MLOps — Platforms
+  ["Kubeflow", "Airflow"],
+  ["Kubeflow", "Prefect"],
+  ["Kubeflow", "Ray"],
+  ["SageMaker", "Vertex AI"],
+  ["SageMaker", "Azure ML"],
+  ["SageMaker", "Databricks"],
+  // LLM Frameworks
+  ["LangChain", "LlamaIndex"],
+  ["LangChain", "Haystack"],
+  ["LangChain", "Semantic Kernel"],
+  ["LangChain", "CrewAI"],
+  ["LangChain", "AutoGen"],
+  ["LlamaIndex", "Haystack"],
+  // Open Model Ecosystem
+  ["Hugging Face", "OpenAI"],
+  ["Hugging Face", "Replicate"],
+  ["Hugging Face", "Ollama"],
+  // Vector Databases
+  ["Pinecone", "Weaviate"],
+  ["Pinecone", "Chroma"],
+  ["Weaviate", "Chroma"],
   // Task Queues
   ["Celery", "RQ"],
   ["Celery", "Dramatiq"],
