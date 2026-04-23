@@ -935,6 +935,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-22T07:11:46.975Z"
+    },
+    {
+      "slug": "israel-vs-iran-military",
+      "title": "Israel vs Iran Military",
+      "entityA": "Israel",
+      "entityB": "Iran Military",
+      "category": "General",
+      "videoFile": "Israel vs Iran Military.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Israel vs Iran Military — Full Comparison 2026",
+      "youtubeDescription": "Israel ranks #9 globally vs Iran's #13. Israel has technological superiority and nuclear weapons, while Iran has numerical advantages in personnel and equipment.\n\n#israel #iranmilitary #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-23T07:12:41.310Z"
+    },
+    {
+      "slug": "temu-vs-shein",
+      "title": "Temu vs Shein",
+      "entityA": "Temu",
+      "entityB": "Shein",
+      "category": "General",
+      "videoFile": "Temu vs Shein.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Temu vs Shein — Full Comparison 2026",
+      "youtubeDescription": "Temu offers ultra-low pricing and broader product range with better customer service, while Shein focuses on trendy fashion with better quality control and sizing options.\n\n#temu #shein #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-23T07:22:41.441Z"
+    },
+    {
+      "slug": "wordpress-vs-wix",
+      "title": "Wordpress vs Wix",
+      "entityA": "Wordpress",
+      "entityB": "Wix",
+      "category": "General",
+      "videoFile": "Wordpress vs Wix.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Wordpress vs Wix — Full Comparison 2026",
+      "youtubeDescription": "Wix is a beginner-friendly website builder with drag-and-drop simplicity, while WordPress is a flexible CMS offering unlimited customization but requiring more technical knowledge.\n\n#wordpress #wix #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-23T07:33:06.058Z"
     }
   ]
 }
