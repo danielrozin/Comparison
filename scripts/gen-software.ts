@@ -587,6 +587,37 @@ const COMPARISONS = [
   ["Snyk", "SonarQube"],
   ["Vault", "AWS Secrets Manager"],
   ["Trivy", "Snyk"],
+  // Languages Extended
+  ["Java", "Python"],
+  ["Java", "Go"],
+  ["Java", "C#"],
+  ["Kotlin", "Java"],
+  ["Kotlin", "Swift"],
+  ["PHP", "Python"],
+  ["PHP", "Node.js"],
+  ["Ruby", "Python"],
+  ["Ruby", "Go"],
+  // Runtime / Server
+  ["Node.js", "Java"],
+  ["Node.js", "Go"],
+  // Data Engineering
+  ["Apache Spark", "Apache Flink"],
+  ["Apache Spark", "dbt"],
+  ["Apache Spark", "Hadoop"],
+  ["dbt", "Dataform"],
+  ["Airflow", "Prefect"],
+  ["Airflow", "Dagster"],
+  ["Kafka", "Apache Flink"],
+  ["DuckDB", "BigQuery"],
+  // Mobile Development
+  ["React Native", "Flutter"],
+  ["Swift", "React Native"],
+  ["Kotlin", "React Native"],
+  ["Expo", "React Native"],
+  // Testing Frameworks
+  ["Jest", "Vitest"],
+  ["Cypress", "Playwright"],
+  ["Selenium", "Playwright"],
 ];
 
 function makeSlug(a: string, b: string): string {
