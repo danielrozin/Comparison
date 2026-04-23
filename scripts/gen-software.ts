@@ -899,6 +899,27 @@ const COMPARISONS = [
   ["CockroachDB", "Spanner"],
   ["CockroachDB", "YugabyteDB"],
   ["CockroachDB", "Supabase"],
+  // Developer Productivity
+  ["Linear", "Shortcut"],
+  ["Linear", "GitHub Issues"],
+  ["Linear", "Asana"],
+  ["Linear", "Height"],
+  ["Jira", "Azure DevOps"],
+  ["Jira", "GitHub Issues"],
+  ["Jira", "ClickUp"],
+  ["Confluence", "Notion"],
+  ["Confluence", "GitBook"],
+  ["Confluence", "Slab"],
+  ["Confluence", "Tettra"],
+  ["Coda", "Notion"],
+  ["Coda", "Airtable"],
+  ["Coda", "Google Docs"],
+  ["Basecamp", "Notion"],
+  ["Basecamp", "Trello"],
+  ["Basecamp", "Monday.com"],
+  ["Asana", "Monday.com"],
+  ["Asana", "ClickUp"],
+  ["Asana", "Trello"],
 ];
 
 function makeSlug(a: string, b: string): string {
