@@ -1019,6 +1019,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-22T17:58:54.726Z"
+    },
+    {
+      "slug": "peloton-vs-nordictrack",
+      "title": "Peloton vs Nordictrack",
+      "entityA": "Peloton",
+      "entityB": "Nordictrack",
+      "category": "General",
+      "videoFile": "Peloton vs Nordictrack.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Peloton vs Nordictrack — Full Comparison 2026",
+      "youtubeDescription": "NordicTrack offers better value with lower costs, more features, and automatic adjustments. Peloton provides premium studio experience but requires expensive subscription.\n\n#peloton #nordictrack #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-24T07:15:38.057Z"
+    },
+    {
+      "slug": "notion-vs-obsidian",
+      "title": "Notion vs Obsidian",
+      "entityA": "Notion",
+      "entityB": "Obsidian",
+      "category": "Software",
+      "videoFile": "Notion vs Obsidian.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Notion vs Obsidian — Full Comparison 2026",
+      "youtubeDescription": "Obsidian offers free local note-taking with 1,400+ plugins for individuals, while Notion provides team collaboration and databases starting at $10/month for 100M+ users.\n\n#notion #obsidian #software #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-24T07:25:49.155Z"
+    },
+    {
+      "slug": "london-vs-paris",
+      "title": "London vs Paris",
+      "entityA": "London",
+      "entityB": "Paris",
+      "category": "General",
+      "videoFile": "London vs Paris.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "London vs Paris — Full Comparison 2026",
+      "youtubeDescription": "London and Paris are both iconic European capitals with distinct advantages. London offers free museums and extensive size, while Paris provides more affordable transport and Disney attractions.\n\n#london #paris #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-24T07:36:09.802Z"
     }
   ]
 }
