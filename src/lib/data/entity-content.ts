@@ -6896,4 +6896,439 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Wells Fargo vs Chase: which is better?", answer: "Chase is generally the better choice — stronger credit card portfolio (Sapphire Reserve/Preferred), more branches nationwide, and no ongoing regulatory constraints. Wells Fargo competes with its mortgage products (best rates for existing customers via the Cross-Sell pricing), Active Cash 2% card, and strong Midwest/West presence. For mortgage banking specifically, Wells Fargo's rates and relationship discounts can be compelling." },
     ],
   },
+  "geico": {
+    description: "GEICO (Government Employees Insurance Company) is the second-largest auto insurer in the United States, owned by Berkshire Hathaway since 1996. GEICO insures more than 28 million vehicles and has approximately 17 million policyholders. The company is headquartered in Chevy Chase, Maryland and operates primarily as a direct-to-consumer insurer — most business is done online or by phone, cutting out agents and reducing overhead. This model lets GEICO offer highly competitive auto insurance rates that are typically 15-20% lower than the industry average. GEICO's famous gecko mascot and '15 minutes could save you 15% or more' tagline have made it one of the most recognizable insurance brands in the US. Beyond auto insurance, GEICO offers motorcycle, RV, boat, homeowners, renters, and life insurance, often through third-party underwriters. GEICO employs approximately 40,000 people and generated over $39 billion in premiums in 2023.",
+    highlights: ["2nd largest US auto insurer", "28M+ vehicles insured", "Berkshire Hathaway subsidiary", "Direct-to-consumer — no agents"],
+    category: "products",
+    alternatives: [
+      { name: "Progressive", slug: "progressive", reason: "Name Your Price tool, telematics discounts, broader coverage" },
+      { name: "State Farm", slug: "state-farm", reason: "Largest US insurer, local agents, better for bundling" },
+      { name: "Allstate", slug: "allstate", reason: "Agent network, Drivewise telematics, accident forgiveness" },
+      { name: "USAA", slug: "usaa", reason: "Best rates for military/veterans, top customer satisfaction" },
+    ],
+    faqs: [
+      { question: "Is GEICO the cheapest car insurance?", answer: "GEICO is consistently among the cheapest major auto insurers, particularly for drivers with clean records and good credit. Studies show GEICO is often 15-20% cheaper than the industry average. However, the cheapest insurer varies by state, driving history, and vehicle — always compare quotes from GEICO, Progressive, and State Farm." },
+      { question: "GEICO vs Progressive: which is better?", answer: "GEICO typically has lower base rates for standard drivers. Progressive often wins for high-risk drivers, those who benefit from Snapshot telematics discounts, or for comparing multiple quotes via the Name Your Price tool. GEICO's claims process is rated highly; Progressive offers more customization. Both are financially strong with A+ AM Best ratings." },
+    ],
+  },
+
+  "progressive": {
+    description: "Progressive Corporation is the third-largest auto insurer in the United States and the largest provider of commercial auto insurance. Progressive insures over 28 million policies and is headquartered in Mayfield Village, Ohio. Founded in 1937, Progressive pioneered several insurance innovations: the first drive-in claims office (1937), comparative rate shopping (1994 — the first insurer to show competitor rates), and usage-based insurance via the Snapshot telematics program. Progressive's Snapshot program tracks driving behavior (speed, braking, time of day) via a plug-in device or app and rewards safe drivers with discounts up to 30%. The Name Your Price tool lets customers set a target price and see matching coverage options. Progressive also offers homeowners (through third parties), motorcycle, boat, RV, and commercial insurance. Progressive generated $62.1 billion in net premiums written in 2023, making it one of the fastest-growing major insurers. CEO Tricia Griffith has led the company since 2016.",
+    highlights: ["3rd largest US auto insurer", "Snapshot telematics — up to 30% discount for safe driving", "Name Your Price tool", "$62B in net premiums (2023)"],
+    category: "products",
+    alternatives: [
+      { name: "GEICO", slug: "geico", reason: "Often cheaper base rates for standard drivers, simpler process" },
+      { name: "State Farm", slug: "state-farm", reason: "Largest US insurer, local agents, better bundling" },
+      { name: "Allstate", slug: "allstate", reason: "Agent network, accident forgiveness, Drivewise telematics" },
+    ],
+    faqs: [
+      { question: "Is Progressive good insurance?", answer: "Progressive is a financially strong, reputable insurer (A+ AM Best rating) with innovative products and competitive pricing, especially for high-risk drivers, motorcycles, and commercial vehicles. Claims handling receives average-to-above-average ratings. The Snapshot program can significantly lower premiums for safe drivers." },
+      { question: "Progressive vs GEICO: which is cheaper?", answer: "It depends on your profile. GEICO is typically cheaper for drivers with clean records and good credit. Progressive is often cheaper for drivers with accidents or violations, young drivers, and those who qualify for Snapshot safe-driving discounts. Always get quotes from both — differences of $200-500/year are common." },
+    ],
+  },
+
+  "state-farm": {
+    description: "State Farm is the largest property and casualty insurance company in the United States by premium volume, with over 83 million policies and accounts in force. Founded in 1922 in Bloomington, Illinois (where it is still headquartered), State Farm operates as a mutual company — owned by its policyholders, not shareholders — which allows it to focus on policyholder value rather than quarterly earnings. State Farm employs approximately 19,000 agents across the US and Canada, making it the insurer with the largest captive agent network. State Farm offers auto, homeowners, renters, life, health, and commercial insurance, plus banking and financial products through State Farm Bank. The company generated approximately $101 billion in total revenue in 2022. State Farm's bundling discounts are among the best in the industry — customers who bundle auto and homeowners insurance typically save 17-23%. State Farm is consistently rated highest in customer satisfaction by J.D. Power for auto insurance claims.",
+    highlights: ["Largest US property/casualty insurer", "83M+ policies in force", "19,000 local agents nationwide", "Top J.D. Power claims satisfaction"],
+    category: "products",
+    alternatives: [
+      { name: "GEICO", slug: "geico", reason: "Lower online rates, no agent required, simpler process" },
+      { name: "Progressive", slug: "progressive", reason: "Better for high-risk drivers, telematics discounts" },
+      { name: "Allstate", slug: "allstate", reason: "Similar agent model, accident forgiveness, Drivewise" },
+      { name: "USAA", slug: "usaa", reason: "Better rates/service for military and veterans" },
+    ],
+    faqs: [
+      { question: "Why is State Farm so popular?", answer: "State Farm's combination of the largest local agent network in the US, consistently high claims satisfaction ratings, strong bundling discounts, and 100+ years of financial stability make it the default choice for many households. For customers who value a local agent relationship and seamless bundling of auto and home insurance, State Farm is often the best choice." },
+      { question: "State Farm vs GEICO: which is better?", answer: "State Farm is better for customers who want a local agent, comprehensive bundling, and top claims service. GEICO is better for customers who want lower rates, prefer self-service, and don't need an agent. State Farm typically costs more but rates higher in customer satisfaction. Both have A+ AM Best financial strength ratings." },
+    ],
+  },
+
+  "allstate": {
+    description: "Allstate Corporation is the fourth-largest personal lines property and casualty insurer in the United States, covering approximately 16 million households. Founded in 1931 as a subsidiary of Sears, Roebuck and Co. (spun off as an independent company in 1993), Allstate is headquartered in Northbrook, Illinois. Allstate sells through exclusive agents, independent agents (under the Encompass brand), and directly online. Key auto insurance features include Accident Forgiveness (first accident not counted against rates), Deductible Rewards (reduces deductible by $100/year without accidents), and Drivewise telematics (up to 40% discount for safe driving). Allstate also offers home, renters, life, and commercial insurance. In 2021, Allstate acquired National General Holdings for $4 billion, significantly expanding its independent agent distribution. Allstate generated $51.9 billion in revenue in 2023. The 'You're in good hands' tagline has run since 1950.",
+    highlights: ["4th largest US personal lines insurer", "16M households covered", "Accident Forgiveness feature", "Drivewise telematics — up to 40% discount"],
+    category: "products",
+    alternatives: [
+      { name: "State Farm", slug: "state-farm", reason: "Largest US insurer, better bundling, higher claims satisfaction" },
+      { name: "GEICO", slug: "geico", reason: "Usually cheaper base rates, no-agent model" },
+      { name: "Progressive", slug: "progressive", reason: "Better for high-risk drivers, Snapshot discounts" },
+    ],
+    faqs: [
+      { question: "Is Allstate a good insurance company?", answer: "Allstate is financially solid (A+ AM Best) and offers strong features like Accident Forgiveness and Drivewise telematics. However, its premiums tend to be higher than GEICO and Progressive, and it ranks below State Farm and USAA in J.D. Power customer satisfaction. It's a good choice if you value accident forgiveness and have an existing agent relationship." },
+    ],
+  },
+
+  "ring": {
+    description: "Ring is an American home security company founded in 2013 and acquired by Amazon in 2018 for approximately $1 billion. Ring manufactures video doorbells, security cameras, alarm systems, and smart lighting. The Ring Video Doorbell (from $99) is the product that popularized the smart video doorbell category. Ring's ecosystem includes indoor/outdoor cameras ($49-$199), the Ring Alarm security system ($199-$329 for starter kits), Ring Alarm Pro (with built-in eero router), and the Ring Protect subscription ($3.99-$10/month for cloud video storage and 24/7 professional monitoring). Ring devices integrate deeply with Amazon Alexa, Amazon Echo Show, and Amazon's broader smart home ecosystem. Ring has sold over 10 million devices and has approximately 10 million active subscribers. The Neighbors app — a neighborhood watch social network — connects Ring users to share local crime alerts. Ring has faced privacy controversies around law enforcement data sharing and neighbor feed access.",
+    highlights: ["Popularized video doorbell category", "Amazon ecosystem integration", "Ring Alarm — self-installed security system", "Neighbors app for community crime alerts"],
+    category: "products",
+    alternatives: [
+      { name: "Nest", slug: "nest", reason: "Google ecosystem, superior camera quality, Nest Aware subscription" },
+      { name: "Arlo", slug: "arlo", reason: "Best video quality, 4K cameras, no ecosystem lock-in" },
+      { name: "SimpliSafe", slug: "simplisafe", reason: "Best all-in-one home security, professional monitoring" },
+      { name: "Wyze", slug: "wyze", reason: "Extremely affordable cameras, no subscription required" },
+    ],
+    faqs: [
+      { question: "Ring vs Nest: which is better?", answer: "Ring is better for Amazon/Alexa users and those who want the most comprehensive video doorbell + alarm ecosystem at a reasonable price. Nest (Google) is better for Google/Android users and those who prioritize camera quality and AI person/package/animal detection. Ring's Neighbors social app is unique; Nest integrates better with Google Home and Android phones." },
+      { question: "Does Ring require a subscription?", answer: "Ring cameras work without a subscription for live view and motion alerts, but cloud video storage and professional monitoring require Ring Protect ($3.99/month per device or $10/month for unlimited devices). Ring Alarm professional monitoring is $10/month (self-monitored free). Without a subscription, Ring is still useful but you lose recorded video history." },
+    ],
+  },
+
+  "nest": {
+    description: "Google Nest is Google's smart home brand, encompassing thermostats, security cameras, video doorbells, smart speakers, and displays. Nest was founded in 2010 (originally as Nest Labs), acquired by Google in 2014 for $3.2 billion, and merged into the Google Home division in 2018. The Google Nest product lineup includes: Nest Thermostat ($130) and Nest Learning Thermostat ($280), Nest Cam (indoor $99, outdoor $179), Nest Doorbell ($179-$229), and Nest Hub smart displays ($99-$179). The Nest Aware subscription ($6-$12/month) provides cloud video history, intelligent alerts (person, package, animal detection), and emergency calling features. Nest devices integrate seamlessly with Google Home, Android, and Google Assistant. The Nest Learning Thermostat can reduce heating/cooling bills by 10-15% through machine learning. Google Nest has approximately 75 million devices deployed worldwide.",
+    highlights: ["Google ecosystem integration", "Nest Learning Thermostat — AI-powered 10-15% energy savings", "Best-in-class person/package/vehicle detection", "75M+ devices deployed globally"],
+    category: "products",
+    alternatives: [
+      { name: "Ring", slug: "ring", reason: "Better video doorbell/alarm ecosystem, Amazon integration, Neighbors app" },
+      { name: "Arlo", slug: "arlo", reason: "Superior 4K video quality, no ecosystem lock-in" },
+      { name: "SimpliSafe", slug: "simplisafe", reason: "Comprehensive alarm system, professional monitoring" },
+      { name: "Ecobee", slug: "ecobee", reason: "Strong thermostat alternative with built-in Alexa" },
+    ],
+    faqs: [
+      { question: "Is Google Nest worth it?", answer: "Google Nest is worth it for Android/Google users who want smart home devices that integrate seamlessly with Google Home and Google Assistant. The Nest Learning Thermostat pays for itself through energy savings within 2-3 years. Nest Cam's AI detection (person, package, vehicle, animal) is among the best in the category." },
+      { question: "Nest vs Ring: which home security is better?", answer: "Nest is better for Google ecosystem users and those who prioritize camera AI quality. Ring is better for Amazon/Alexa users, those who want a comprehensive alarm system at lower cost, and anyone who values the Neighbors community crime app. Both are solid; the best choice depends on your existing smart home platform." },
+    ],
+  },
+
+  "simplisafe": {
+    description: "SimpliSafe is an American home security company founded in 2006 in Boston, Massachusetts, offering wireless DIY home security systems with optional professional monitoring. SimpliSafe's core product is a customizable alarm system starting at $249-$499 for a starter kit (base station, keypad, sensors). Key differentiators include no long-term contracts, no installation fees, fast self-installation (30-60 minutes), and optional 24/7 professional monitoring for $19.99-$29.99/month — among the lowest rates in the industry for professional monitoring. SimpliSafe uses cellular backup (not Wi-Fi dependent) for alarm transmission, making it harder to defeat by cutting the internet. The company has over 5 million customers and works with over 1,400 police departments for fast dispatch verification. SimpliSafe cameras integrate with the system and offer Smart Alarm verification to reduce false alarms. SimpliSafe was acquired by private equity firm ABRY Partners in 2018.",
+    highlights: ["No contracts, no installation fees", "Professional monitoring from $19.99/month", "Cellular backup (not Wi-Fi dependent)", "5M+ customers, 1,400+ police partnerships"],
+    category: "products",
+    alternatives: [
+      { name: "Ring", slug: "ring", reason: "Video doorbell integration, Amazon ecosystem, Neighbors app" },
+      { name: "ADT", slug: "adt", reason: "Professional installation, established monitoring brand, smart home integration" },
+      { name: "Nest", slug: "nest", reason: "Google ecosystem, superior camera AI, thermostat integration" },
+      { name: "Abode", slug: "abode", reason: "Smart home automation, no monitoring required" },
+    ],
+    faqs: [
+      { question: "SimpliSafe vs Ring Alarm: which is better?", answer: "SimpliSafe is better for comprehensive home security: more sensor types, cellular backup (less vulnerable to internet outages), and lower professional monitoring costs ($19.99 vs Ring's $10/month — but Ring Protect Plus at $10/month is more competitive). Ring Alarm wins for video integration and Amazon ecosystem tie-in. SimpliSafe has more polished alarm hardware and better false-alarm prevention." },
+      { question: "Is SimpliSafe worth it without professional monitoring?", answer: "SimpliSafe works without monitoring — the alarm siren still activates and you get app alerts. However, without monitoring, no one calls the police if you don't respond. For full protection, the $19.99/month plan is worth it for the cellular backup and professional dispatch alone." },
+    ],
+  },
+
+  "arlo": {
+    description: "Arlo Technologies is an American smart home security camera company spun off from Netgear in 2018 and headquartered in San Jose, California. Arlo is best known for its premium wire-free security cameras with industry-leading video quality, including the Arlo Ultra 2 (4K, color night vision, $199) and Arlo Pro 4 (2K, $179). Arlo cameras are 100% wireless (battery-powered), weather-resistant, and work with both Alexa and Google Home without ecosystem lock-in. The Arlo Secure subscription ($2.99/month per camera or $12.99/month for unlimited) provides cloud video storage, advanced AI object detection (person, vehicle, package, animal), e911 emergency calling, and activity zones. Arlo differentiates by offering the best video quality among major brands, true wire-free installation flexibility, and cross-platform compatibility. The company has approximately 8 million registered accounts.",
+    highlights: ["Best video quality — 4K Ultra with color night vision", "True wire-free (battery-powered)", "Cross-platform — Alexa + Google Home", "AI detection: person, vehicle, package, animal"],
+    category: "products",
+    alternatives: [
+      { name: "Ring", slug: "ring", reason: "Amazon ecosystem, video doorbell leader, alarm integration" },
+      { name: "Nest", slug: "nest", reason: "Google ecosystem, built-in AI detection, thermostat integration" },
+      { name: "Wyze", slug: "wyze", reason: "Budget cameras ($35-$50), basic features without subscription" },
+      { name: "Eufy", slug: "eufy", reason: "Local storage (no subscription needed), competitive pricing" },
+    ],
+    faqs: [
+      { question: "Is Arlo better than Ring?", answer: "Arlo has better video quality (4K vs Ring's 1080p-2K) and works with both Alexa and Google without lock-in. Ring has a better integrated ecosystem (alarm, doorbell, floodlights) and is cheaper for those already on Amazon. For pure camera quality and flexibility, Arlo wins. For a complete security ecosystem with video doorbell, Ring is often the better overall package." },
+    ],
+  },
+
+  "chewy": {
+    description: "Chewy, Inc. is an American online retailer of pet food and supplies, founded in 2011 in Dania Beach, Florida. Chewy was acquired by PetSmart for $3.35 billion in 2017 (the largest e-commerce acquisition at that time), then taken public in June 2019 at a $14.3 billion valuation. Chewy is the largest online pet products retailer in the US with over 20 million active customers and approximately $11.2 billion in annual net sales (fiscal 2024). Chewy's Autoship subscription service (5-15% discount on recurring orders) drives over 77% of its net sales. Key differentiators include 24/7 pet health telehealth consultations with licensed veterinarians, a 365-day return policy ('Chewy Promise'), and a legendary customer service reputation — including handwritten holiday cards and sympathy flowers to customers who lose pets. Chewy carries 100,000+ products across 3,000+ brands. The platform also offers Chewy Health pharmacy services for prescription pet medications.",
+    highlights: ["Largest US online pet retailer — $11.2B annual sales", "20M+ active customers", "Autoship — 5-15% discount on recurring orders", "24/7 vet telehealth + pharmacy"],
+    category: "products",
+    alternatives: [
+      { name: "Amazon", slug: "amazon", reason: "Prime shipping, Subscribe & Save, broader product selection" },
+      { name: "Petco", slug: "petco", reason: "Physical stores, grooming, vet clinics in-store" },
+      { name: "PetSmart", slug: "petsmart", reason: "Physical stores, training classes, adoption events" },
+      { name: "Walmart", slug: "walmart", reason: "Lowest prices on major brands, in-store pickup" },
+    ],
+    faqs: [
+      { question: "Chewy vs Amazon for pet supplies: which is better?", answer: "Chewy wins for pet-specific selection (100,000+ products vs Amazon's broader but less curated pet section), Autoship pricing, 24/7 vet chat, and exceptional customer service. Amazon wins on speed (Prime same-day/1-day delivery), price for non-Autoship items, and convenience of one combined order with other household items." },
+      { question: "Is Chewy Autoship worth it?", answer: "Yes — Autoship delivers 5-15% discounts on recurring orders with free shipping on orders over $49. You can pause, skip, or cancel anytime. For staples like dog food and cat litter that you buy monthly, Autoship typically saves $10-30/month vs regular purchases." },
+    ],
+  },
+
+  "petco": {
+    description: "Petco is an American pet supplies retailer and services company founded in 1965, headquartered in San Diego, California. Petco operates approximately 1,500 stores across the US, Mexico, and Puerto Rico, offering pet food, supplies, grooming services, training classes, and veterinary services through Vetco (low-cost vaccination clinics) and full-service Petco Veterinary hospitals. The company went private in 2006 and re-IPO'd in January 2021 at an $8.1 billion valuation. Petco rebranded as 'The Pet Company' (stylized as PETCO) and has pivoted toward health and wellness services. Key differentiators include in-store vet clinics (Vetco), grooming services (fully booked weeks in advance in many markets), adoption partnerships with local shelters, and the Vital Care membership ($20/month) covering unlimited vet checkups, grooming discounts, and Pals Rewards. Petco generates approximately $6.1 billion in annual revenue, with services representing a growing share.",
+    highlights: ["1,500+ stores across US, Mexico, Puerto Rico", "In-store Vetco vet clinics", "Grooming + training services", "Vital Care membership — $20/month"],
+    category: "products",
+    alternatives: [
+      { name: "PetSmart", slug: "petsmart", reason: "Largest pet retailer, more adoption events, PetsHotel boarding" },
+      { name: "Chewy", slug: "chewy", reason: "Better online prices, Autoship discounts, 24/7 vet telehealth" },
+      { name: "Amazon", slug: "amazon", reason: "Fastest shipping, Subscribe & Save, price competition" },
+    ],
+    faqs: [
+      { question: "Petco vs PetSmart: which is better?", answer: "Both are comparable big-box pet retailers with similar product selection. PetSmart is generally considered to have more store locations and a slightly stronger adoption program. Petco has invested more heavily in health services (Vetco clinics) and its Vital Care membership. The best choice often comes down to which is more conveniently located and which has better local grooming availability." },
+    ],
+  },
+
+  "petsmart": {
+    description: "PetSmart is the largest pet specialty retail chain in North America, operating approximately 1,650 stores in the US, Canada, and Puerto Rico. Founded in 1986 in Phoenix, Arizona, PetSmart was acquired by private equity firm BC Partners for $8.7 billion in 2015 (the largest leveraged buyout in retail history). PetSmart owns Chewy (acquired for $3.35 billion in 2017, then taken public in 2019). PetSmart stores offer pet food, supplies, grooming (PetSmart Salon), veterinary services (Banfield Pet Hospital partnerships in most stores), obedience training, self-serve dog washes, and adoption events with local shelters (through PetSmart Charities — 10 million+ pets adopted since 1994). PetSmart's PetsHotel offers pet boarding and doggy day camp. PetSmart generates approximately $7 billion in annual revenue. The Treats rewards program has 65 million members.",
+    highlights: ["Largest pet retailer in North America — 1,650 stores", "Banfield Pet Hospital in-store vet partnerships", "PetsHotel boarding and day camp", "65M Treats rewards members"],
+    category: "products",
+    alternatives: [
+      { name: "Petco", slug: "petco", reason: "In-house Vetco clinics, Vital Care membership, similar footprint" },
+      { name: "Chewy", slug: "chewy", reason: "Better online prices, Autoship, 24/7 vet chat" },
+      { name: "Amazon", slug: "amazon", reason: "Fastest delivery, Subscribe & Save, competitive pricing" },
+    ],
+    faqs: [
+      { question: "Does PetSmart or Petco have better prices?", answer: "Prices are generally similar between PetSmart and Petco for major brands. Both frequently run overlapping promotions and loyalty rewards programs. The best deal varies week-to-week and brand-to-brand. For the lowest prices overall, Chewy (owned by PetSmart's parent) and Amazon consistently beat brick-and-mortar pet stores on food and consumables." },
+    ],
+  },
+
+  "nespresso": {
+    description: "Nespresso is a brand of Nestlé that manufactures espresso machines and single-use coffee pods (capsules). Founded in 1986, Nespresso pioneered the single-serve premium espresso capsule system. Nespresso operates two systems: Original Line (espresso only, 19-bar pump) and Vertuo Line (centrifusion technology, brews espresso and regular coffee). Machines range from $99 (Essenza Mini) to $799 (Creatista Plus with steam wand). Original Line capsules cost $0.75-1.25 each; Vertuo capsules are $1.10-1.35 each. Nespresso sells through its own boutiques, website, and selected retailers. A key differentiator is quality — barista-grade espresso at home without grinders, tamping, or technique. The Nespresso Club provides rapid capsule delivery. Nespresso has over 14 million customers and generates approximately CHF 6 billion annually. Compatible third-party capsules are widely available for Original Line, reducing operating costs.",
+    highlights: ["Pioneer of premium single-serve espresso", "Original Line + Vertuo systems", "14M+ customers globally", "From $0.75/capsule"],
+    category: "products",
+    alternatives: [
+      { name: "Keurig", slug: "keurig", reason: "Wider coffee variety, cheaper pods, regular coffee (not espresso)" },
+      { name: "De'Longhi", slug: "delonghi", reason: "Full bean-to-cup machines for true espresso enthusiasts" },
+      { name: "Breville", slug: "breville", reason: "Premium espresso machines for home baristas" },
+      { name: "Ninja", slug: "ninja", reason: "Versatile coffee systems at lower price points" },
+    ],
+    faqs: [
+      { question: "Nespresso vs Keurig: which is better?", answer: "Nespresso is better for espresso lovers — it produces genuine high-pressure espresso with rich crema, better quality than Keurig's coffee pod equivalent. Keurig is better for regular coffee drinkers who want variety: thousands of K-Cup flavors across hundreds of brands, including hot chocolate, tea, and flavored coffees. Nespresso pods are more expensive per cup but the espresso quality is significantly higher." },
+      { question: "Are Nespresso pods worth the cost?", answer: "At $0.75-1.35/capsule ($0.75-1.35/shot), Nespresso is significantly cheaper than cafe espresso ($3-6/shot) while delivering comparable quality. For espresso drinkers, it's excellent value. For regular coffee drinkers, a drip machine or French press costs far less ($0.20-0.40/cup) — Nespresso's value proposition is specifically for espresso lovers who want café quality at home." },
+    ],
+  },
+
+  "keurig": {
+    description: "Keurig Dr Pepper is an American beverage company that manufactures single-serve coffee brewers and K-Cup pods. Keurig (acquired by Keurig Dr Pepper in 2018) pioneered the single-serve coffee machine category in the US. The Keurig K-Classic starts at $79; K-Supreme Plus at $149; K-Café (with milk frother) at $199. K-Cup pods are available from hundreds of brands including Starbucks, Dunkin', Green Mountain, and Folgers — over 400 varieties. K-Cups cost approximately $0.40-0.75 per cup when bought in multi-packs, or $0.80-1.00 each. Keurig machines are the most widely used single-serve coffee system in North America, with over 35 million brewers in US households. A significant sustainability concern is K-Cup waste — billions of non-recyclable pods per year — though Keurig has introduced recyclable K-Cup pods. The My K-Cup Universal Reusable Coffee Filter allows use of ground coffee.",
+    highlights: ["35M+ brewers in US households", "400+ K-Cup varieties from top brands", "K-Café with milk frother for lattes", "Recyclable K-Cup pods now available"],
+    category: "products",
+    alternatives: [
+      { name: "Nespresso", slug: "nespresso", reason: "True high-pressure espresso, superior coffee quality" },
+      { name: "Ninja", slug: "ninja", reason: "Multi-brew system, carafe + single-serve, lower pod cost" },
+      { name: "Breville", slug: "breville", reason: "Premium espresso machines for serious coffee enthusiasts" },
+    ],
+    faqs: [
+      { question: "Keurig vs drip coffee maker: which is better?", answer: "Keurig is better for convenience and variety — one cup at a time, many flavors, no measuring. A drip coffee maker costs significantly less per cup ($0.20-0.40 vs $0.40-0.80 for K-Cups) and produces larger batches. Keurig wins on speed and variety; drip wins on cost and coffee volume. For households that drink multiple pots per day, drip is more economical." },
+      { question: "Are K-Cups bad for the environment?", answer: "Traditional K-Cups generated significant plastic waste — billions per year in landfills. Keurig has transitioned to recyclable K-Cups (check local recycling programs) and sells the My K-Cup reusable filter for ground coffee. The environmental impact has improved but remains a concern compared to pour-over or drip brewing with compostable filters." },
+    ],
+  },
+
+  "starbucks": {
+    description: "Starbucks Corporation is the world's largest coffeehouse chain, headquartered in Seattle, Washington, with over 36,000 stores in 80+ countries. Founded in 1971 by Jerry Baldwin, Zev Siegl, and Gordon Bowker, Starbucks was transformed under Howard Schultz (CEO 1987-2000, 2008-2017, 2022-2023) into the global premium coffee brand it is today. Starbucks generates approximately $36 billion in annual revenue and serves approximately 10 million customers per day worldwide. The Starbucks Rewards loyalty program has 34 million active US members and drives 57% of US sales. Key menu items include the Frappuccino (created by a Boston manager in 1994), seasonal specials (Pumpkin Spice Latte since 2003), and a customization system supporting thousands of combinations. Starbucks' mobile app and mobile ordering have been widely praised; it's consistently one of the top-grossing apps in retail. The company also sells packaged coffee, instant Via packets, and Starbucks at Home products.",
+    highlights: ["36,000+ stores in 80+ countries", "34M Starbucks Rewards members", "Mobile ordering — #1 retail app", "$36B annual revenue"],
+    category: "products",
+    alternatives: [
+      { name: "Dunkin", slug: "dunkin", reason: "Cheaper coffee, stronger focus on donuts, loyal East Coast fan base" },
+      { name: "Peet's Coffee", slug: "peets", reason: "Premium roasts, West Coast heritage, deeper coffee culture" },
+      { name: "Dutch Bros", slug: "dutch-bros", reason: "Drive-through only, extremely loyal following, competitive prices" },
+      { name: "McDonald's McCafé", slug: "mcdonalds", reason: "Significantly cheaper, widespread locations, quality has improved" },
+    ],
+    faqs: [
+      { question: "Starbucks vs Dunkin: which is better?", answer: "Starbucks is better for espresso-based drinks, customization, and the premium café experience. Dunkin wins on price (typically 30-50% cheaper), speed (drive-through efficiency), and if you prefer regular drip coffee or donuts. Dunkin has a loyal fan base on the East Coast; Starbucks dominates the West Coast and globally. For daily coffee on a budget, Dunkin delivers better value." },
+      { question: "Why is Starbucks so expensive?", answer: "Starbucks charges premium prices for labor-intensive customization, premium ingredients (real dairy, real syrups), high-rent urban locations, and the 'third place' café experience. Barista wages, real estate costs in major metros, and extensive training programs contribute to higher prices. Competitors like Dunkin operate on a faster, simpler model with lower costs." },
+    ],
+  },
+
+  "dunkin": {
+    description: "Dunkin' (formerly Dunkin' Donuts until 2019 rebranding) is an American multinational coffee and donut company founded in 1950 in Quincy, Massachusetts. Dunkin' is one of the largest coffee and baked goods chains in the world with approximately 13,200 locations in 42 countries, of which about 9,400 are in the US. Dunkin' is wholly owned by Inspire Brands (which also owns Arby's, Buffalo Wild Wings, Sonic, and Baskin-Robbins) since 2020, taken private for $11.3 billion. Dunkin' generates approximately $1.4 billion in annual system revenue. The menu focuses on espresso and brewed coffee drinks, cold brew, energy drinks, and a simplified food menu (donuts, sandwiches, muffins). Dunkin's DD Perks (now Dunkin' Rewards) loyalty program has 30+ million members. Dunkin' coffee is priced significantly below Starbucks — a medium hot coffee runs $2.49-3.49 vs Starbucks' $3.65-5.25 for comparable sizes. Dunkin' has a particularly strong presence in New England and the Northeast US.",
+    highlights: ["13,200 locations in 42 countries", "30M+ Dunkin' Rewards members", "Coffee from $2.49 — significantly cheaper than Starbucks", "Strong Northeast US presence"],
+    category: "products",
+    alternatives: [
+      { name: "Starbucks", slug: "starbucks", reason: "Premium espresso, better customization, 36,000+ global locations" },
+      { name: "McDonald's McCafé", slug: "mcdonalds", reason: "Even cheaper coffee, more food options, fastest service" },
+      { name: "Tim Hortons", slug: "tim-hortons", reason: "Canadian equivalent, strong brand loyalty in Canada" },
+    ],
+    faqs: [
+      { question: "Is Dunkin better than Starbucks?", answer: "Dunkin is better if you want affordable drip coffee or a quick donut — prices are 30-50% lower than Starbucks. Starbucks is better for espresso drinks, seasonal specials, and the café-sit-down experience. Dunkin's coffee quality is solid for the price; Starbucks offers more customization and premium ingredients. It's less about quality and more about use case: quick and affordable vs premium and customized." },
+    ],
+  },
+
+  "mcdonalds": {
+    description: "McDonald's Corporation is the world's largest fast food restaurant chain by revenue, with approximately 40,000 locations in 100+ countries serving 69 million customers daily. Founded in 1940 in San Bernardino, California by brothers Richard and Maurice McDonald, the company was franchised and scaled by Ray Kroc starting in 1954. McDonald's is now headquartered in Chicago, Illinois. McDonald's generates approximately $23 billion in annual revenue (company-owned + franchise royalties), with 93% of restaurants operated by franchisees. The Big Mac (introduced 1967), Chicken McNuggets (1983), McFlurry, and McDonald's fries are global icons. McDonald's has aggressively expanded into McCafé (coffee and bakery) to compete with Starbucks and Dunkin. The MyMcDonald's Rewards loyalty program has 150 million members globally. McDonald's average US ticket is approximately $9-12. Key competitive advantages: fastest service, most consistent global execution, and superior real estate portfolio (McDonald's owns many of the locations franchisees operate).",
+    highlights: ["40,000+ locations in 100+ countries", "69M customers daily", "150M MyMcDonald's Rewards members", "93% franchised model"],
+    category: "products",
+    alternatives: [
+      { name: "Burger King", slug: "burger-king", reason: "Flame-grilled burgers, Whopper, similar price point" },
+      { name: "Wendy's", slug: "wendys", reason: "Fresh (never frozen) beef, Frosty, $5 Biggie Bag value" },
+      { name: "Chick-fil-A", slug: "chick-fil-a", reason: "Best chicken fast food, superior customer service" },
+      { name: "Taco Bell", slug: "taco-bell", reason: "Mexican-style, strong value, late-night availability" },
+    ],
+    faqs: [
+      { question: "McDonald's vs Burger King: which is better?", answer: "McDonald's wins on consistency, speed, fries, and breakfast. Burger King wins on burger size/value (Whopper is larger than Big Mac), flame-grilling method, and plant-based options (Impossible Whopper). McDonald's has better locations and more consistent quality globally; Burger King often has better deals. For chicken, neither beats Chick-fil-A." },
+      { question: "Why are McDonald's fries so good?", answer: "McDonald's fries are iconic for their thin cut, specific potato blend (mostly Russet Burbank potatoes), double-frying process, and a proprietary coating that creates the signature crispy exterior. Until 1992, natural beef flavoring (tallow) contributed to their distinct taste; they now use vegetable oil but add 'natural beef flavor' to the coating. The fries are also standardized globally for maximum consistency." },
+    ],
+  },
+
+  "burger-king": {
+    description: "Burger King is an American multinational hamburger fast food chain, founded in 1953 in Jacksonville, Florida (originally as Insta-Burger King). It is the second-largest hamburger chain globally with approximately 19,000 locations in 100+ countries. Burger King is owned by Restaurant Brands International (RBI), which also owns Tim Hortons and Popeyes. The Whopper (introduced 1957) — a quarter-pound beef patty flame-grilled and topped with lettuce, tomato, mayo, ketchup, pickles, and onion — is Burger King's signature product and a genuine competitor to the Big Mac. Key differentiators: flame-grilling (not flat-top griddle like McDonald's), larger portion sizes at comparable prices, the Impossible Whopper (plant-based since 2019), and Have It Your Way customization. BK generates approximately $2 billion in system revenue. The chain has struggled with inconsistent quality and service speeds compared to McDonald's, leading to franchisee and customer complaints.",
+    highlights: ["2nd largest hamburger chain globally", "Whopper — the original quarter-pounder (1957)", "Flame-grilled cooking method", "Impossible Whopper since 2019"],
+    category: "products",
+    alternatives: [
+      { name: "McDonald's", slug: "mcdonalds", reason: "More consistent quality, better fries, larger global footprint" },
+      { name: "Wendy's", slug: "wendys", reason: "Fresh beef, better value menu, superior chicken sandwiches" },
+      { name: "Five Guys", slug: "five-guys", reason: "Premium fast casual burgers, cooked-to-order, peanuts" },
+    ],
+    faqs: [
+      { question: "Is Burger King better than McDonald's?", answer: "It depends on what you order. Burger King wins on burger size/value (Whopper vs Big Mac), the flame-grilled taste that some strongly prefer, and often better value deals. McDonald's wins on fries, breakfast, speed of service, location density, and global consistency. Most taste surveys are split — both are fast food staples with dedicated fan bases." },
+    ],
+  },
+
+  "wendys": {
+    description: "Wendy's is an American fast food restaurant chain founded in 1969 by Dave Thomas in Columbus, Ohio, the third-largest hamburger chain in the world with approximately 7,000 locations globally. Wendy's is best known for its 'fresh, never frozen' beef patties — a long-standing differentiator from McDonald's and Burger King — and square hamburger patties. Key products include the Baconator, Dave's Single/Double/Triple, Frosty (frozen dairy dessert), and a strong chicken sandwich lineup. Wendy's pioneered the value menu in 1989. The Biggie Bag ($5, includes a Jr. Cheeseburger, 4-piece nuggets, fries, and small drink) is among the best fast food value deals. Wendy's is also known for its social media presence — particularly its Twitter/X account, famous for sharp, humorous roasts of competitors. Wendy's generates approximately $2.2 billion in annual revenue (including franchise royalties), with 95%+ of locations franchised.",
+    highlights: ["'Fresh, never frozen' beef patties", "Square hamburger patties", "Frosty — iconic frozen dairy treat", "Famous for Twitter/X social media roasts"],
+    category: "products",
+    alternatives: [
+      { name: "McDonald's", slug: "mcdonalds", reason: "More locations, faster service, better breakfast" },
+      { name: "Burger King", slug: "burger-king", reason: "Flame-grilled burgers, Whopper, plant-based option" },
+      { name: "Five Guys", slug: "five-guys", reason: "Premium fast casual, cooked-to-order, best fries" },
+    ],
+    faqs: [
+      { question: "Is Wendy's beef really fresh?", answer: "Yes — Wendy's has used fresh, never-frozen beef since its founding in 1969. The beef is ground and formed into patties fresh at each restaurant and cooked to order. This is a genuine differentiator from McDonald's and Burger King, both of which use frozen patties. Fresh beef provides better texture and juiciness, particularly noticeable in the higher-quality Dave's burgers." },
+    ],
+  },
+
+  "chick-fil-a": {
+    description: "Chick-fil-A is an American fast food restaurant chain specializing in chicken sandwiches, founded in 1967 in College Park, Georgia by S. Truett Cathy. It is the largest chicken fast food chain in the US and the third-largest fast food chain overall by sales. Despite being closed on Sundays (due to the founder's Christian faith — a practice maintained since 1946), Chick-fil-A generates more revenue per restaurant than any other US fast food chain — approximately $9.3 million per location annually, compared to McDonald's ~$3.8 million. Chick-fil-A operates approximately 3,000 locations, all in the US and Canada. The Original Chicken Sandwich, Chicken Nuggets, Waffle Fries, and Chick-fil-A Sauce are its most iconic products. Chick-fil-A consistently ranks #1 in the American Customer Satisfaction Index for fast food. It remains privately held by the Cathy family and has no plans to go public. The chain has faced controversy over charitable donations to anti-LGBTQ+ organizations.",
+    highlights: ["Highest revenue per location of any US fast food chain ($9.3M)", "Closed Sundays — by design", "Consistent #1 in customer satisfaction (ACSI)", "3,000 US/Canada locations — privately held"],
+    category: "products",
+    alternatives: [
+      { name: "Popeyes", slug: "popeyes", reason: "Cajun-spiced chicken, viral chicken sandwich competitor" },
+      { name: "KFC", slug: "kfc", reason: "Original fried chicken, global reach, bucket meals" },
+      { name: "McDonald's", slug: "mcdonalds", reason: "McChicken and McCrispy for budget chicken options" },
+    ],
+    faqs: [
+      { question: "Why is Chick-fil-A so popular?", answer: "Chick-fil-A's popularity comes from consistently better food quality and service than competitors, a focused menu (chicken only — not burgers, pizza, or tacos), and a customer service culture that's trained into every employee. The famous 'my pleasure' response, always-clean restaurants, and remarkably efficient drive-throughs create a noticeably better experience. The food quality — particularly the Original Chicken Sandwich with seasoned, pressure-cooked chicken — genuinely stands out against competitors." },
+      { question: "Chick-fil-A vs Popeyes chicken sandwich: which is better?", answer: "Both are genuinely excellent. Chick-fil-A's Original has a lighter, crispier batter and a milder flavor profile; it comes on a buttered toasted bun and is more customizable. Popeyes' sandwich has thicker, spicier batter with more intense seasoning and brioche bun. Most chicken sandwich rankings call it extremely close — Chick-fil-A wins on consistency and sauce; Popeyes wins on bold flavor and price." },
+    ],
+  },
+
+  "popeyes": {
+    description: "Popeyes Louisiana Kitchen is an American multinational chain of fried chicken fast food restaurants, founded in 1972 in New Orleans, Louisiana. Popeyes is owned by Restaurant Brands International (RBI), which acquired it for $1.8 billion in 2017 (alongside Burger King and Tim Hortons). Popeyes operates approximately 3,700 locations in 30+ countries. The chain is known for its Louisiana-style spiced fried chicken, Cajun biscuits, and red beans and rice — a menu inspired by New Orleans Creole cuisine. Popeyes experienced explosive viral growth in 2019 when its Chicken Sandwich launched, causing nationwide sellouts, long drive-through lines, and a heated social media battle with Chick-fil-A and McDonald's. The Popeyes Chicken Sandwich became one of the most talked-about product launches in fast food history. Popeyes chicken is marinated for 12 hours before cooking, which contributors to its distinctive flavor depth compared to competitors.",
+    highlights: ["Viral 2019 Chicken Sandwich launch", "12-hour marinated chicken", "Louisiana Cajun seasoning", "3,700 locations in 30+ countries"],
+    category: "products",
+    alternatives: [
+      { name: "Chick-fil-A", slug: "chick-fil-a", reason: "Better customer service, more locations, consistent quality" },
+      { name: "KFC", slug: "kfc", reason: "Original recipe fried chicken, broader global availability" },
+      { name: "Raising Cane's", slug: "raising-canes", reason: "Chicken tenders only, cult following, exceptional sauce" },
+    ],
+    faqs: [
+      { question: "Is Popeyes chicken better than Chick-fil-A?", answer: "A very close call — most food critics rate both extremely highly. Popeyes wins on bold Louisiana Cajun flavor and the spicy chicken sandwich for heat lovers. Chick-fil-A wins on consistency, service, sides (Waffle Fries), and the overall dining experience. Popeyes offers better value at comparable prices. Both are significantly better than KFC for chicken sandwiches." },
+    ],
+  },
+
+  "costco": {
+    description: "Costco Wholesale Corporation is an American multinational corporation that operates a chain of membership-only retail/warehouse clubs, the third-largest retailer in the world by revenue. Founded in 1983 and headquartered in Issaquah, Washington, Costco operates approximately 890 warehouses globally (600+ in the US) and serves 130 million members. Membership costs $65/year (Gold Star) or $130/year (Executive, with 2% reward on purchases). Costco's model sells a curated selection of bulk items at low margins, relying on membership fees for profitability — $4.6 billion in membership fees in fiscal 2023 out of $238 billion in total revenue. Costco is famous for its Kirkland Signature private label (among the best-rated store brands), a $1.50 hot dog + soda combo (price unchanged since 1985), $4.99 rotisserie chicken, and food court. Costco consistently ranks highest in customer satisfaction among large retailers. The company processes approximately $500 million in transactions daily.",
+    highlights: ["3rd largest retailer globally — $238B revenue", "130M members across 890 warehouses", "Kirkland Signature — top-rated store brand", "$1.50 hot dog + soda since 1985"],
+    category: "products",
+    alternatives: [
+      { name: "Sam's Club", slug: "sams-club", reason: "Walmart-owned, more convenient scan-and-go app, lower membership fee" },
+      { name: "BJ's Wholesale", slug: "bjs", reason: "East Coast warehouse club, accepts manufacturer coupons" },
+      { name: "Walmart", slug: "walmart", reason: "No membership required, more store locations, grocery delivery" },
+    ],
+    faqs: [
+      { question: "Is Costco membership worth it?", answer: "Costco membership is worth it for most households spending $150+/month on groceries and household items. The $65/year membership typically pays for itself on 2-3 bulk purchases. Executive membership ($130/year) includes a 2% reward (capped at $1,250) — it pays for itself if you spend $6,500+/year at Costco. Gas savings alone often justify membership for high-mileage drivers (Costco gas is typically $0.10-0.20/gallon cheaper)." },
+      { question: "Costco vs Sam's Club: which is better?", answer: "Costco is generally considered superior on product quality, Kirkland Signature, and overall experience. Sam's Club is better for scan-and-go convenience (skip the checkout line), lower membership cost ($50/year vs $65), and more locations in rural/suburban areas. Sam's Club is owned by Walmart and has more consistent integration with Walmart+. For food quality and the full warehouse experience, Costco is the clear winner." },
+    ],
+  },
+
+  "sams-club": {
+    description: "Sam's Club is an American chain of membership-only retail warehouse clubs owned and operated by Walmart Inc. Founded in 1983 in Midwest City, Oklahoma (named after Walmart founder Sam Walton), Sam's Club operates approximately 600 warehouse locations in the US and Puerto Rico and serves over 50 million members. Membership costs $50/year (Club) or $110/year (Plus, with free shipping and 2% cash back). Sam's Club competes directly with Costco. Key differentiators include the Scan & Go app (members scan items while shopping and pay via phone, bypassing checkout lines entirely), Sam's Club Plus members get free shipping on most orders, and a strong private label (Member's Mark) that rivals Kirkland. Walmart's backing provides supply chain advantages and integration with Walmart Grocery for delivery. Sam's Club generates approximately $84 billion in annual revenue.",
+    highlights: ["Scan & Go app — skip checkout lines", "$50/year membership (vs Costco's $65)", "Member's Mark private label", "50M+ members across 600 US locations"],
+    category: "products",
+    alternatives: [
+      { name: "Costco", slug: "costco", reason: "Superior product quality, Kirkland brand, better overall experience" },
+      { name: "BJ's Wholesale", slug: "bjs", reason: "Accepts manufacturer coupons, East Coast alternative" },
+      { name: "Walmart", slug: "walmart", reason: "No membership, more locations, Walmart+ for delivery" },
+    ],
+    faqs: [
+      { question: "Sam's Club vs Costco: which is better for families?", answer: "Costco generally edges Sam's Club for product quality, especially the Kirkland Signature brand. Sam's Club wins on technology (Scan & Go is genuinely faster), slightly lower membership cost, and if you're already a Walmart shopper (the Plus membership integrates with Walmart delivery). Both offer strong values on bulk groceries; the right choice often comes down to which is closer to you and which carries the specific brands you prefer." },
+    ],
+  },
+
+  "trader-joes": {
+    description: "Trader Joe's is an American chain of supermarkets founded in 1967 in Pasadena, California by Joe Coulombe. It is owned by Aldi Nord (the German discount supermarket chain) since 1979. Trader Joe's operates approximately 560 stores in 42 US states and employs about 50,000 people. Trader Joe's is renowned for its unique private-label products (80%+ of its inventory), adventurous food selections, low prices relative to quality, and a nautical theme with friendly, knowledgeable staff (called 'Crew Members'). The chain carries approximately 4,000 SKUs — vastly fewer than traditional supermarkets (30,000-50,000) — focusing on exclusive, curated products. Iconic items include Mandarin Orange Chicken, Everything But the Bagel Seasoning, Two Buck Chuck (Charles Shaw wine), and seasonal specialties. Trader Joe's generates approximately $16-17 billion in annual revenue. The chain does not accept coupons, has no loyalty card, and does not offer delivery — shopping is in-store only.",
+    highlights: ["80%+ private label products", "560 stores, ~4,000 SKUs (highly curated)", "No coupons, no loyalty card, no delivery", "Aldi Nord-owned since 1979"],
+    category: "products",
+    alternatives: [
+      { name: "Whole Foods", slug: "whole-foods", reason: "Organic/natural focus, Amazon Prime integration, more variety" },
+      { name: "Aldi", slug: "aldi", reason: "Similar private-label model, even lower prices, no frills" },
+      { name: "Sprouts", slug: "sprouts", reason: "Natural/organic with more conventional selection" },
+    ],
+    faqs: [
+      { question: "Why is Trader Joe's so popular?", answer: "Trader Joe's has built a cult following through consistently high-quality private label products at low prices, a curated selection that avoids decision fatigue, adventurous seasonal items, and genuinely friendly staff. Products like Mandarin Orange Chicken, the peanut butter cups, and seasonal favorites create a sense of discovery. The no-frills store experience — no delivery, no loyalty card, no self-checkout in most locations — creates a human, community-oriented shopping experience many customers love." },
+      { question: "Trader Joe's vs Whole Foods: which is better?", answer: "Trader Joe's is better for value — its private-label products are often high quality at significantly lower prices. Whole Foods is better for organic/specialty selection, brand variety, produce quality, and Amazon Prime integration (5% back for Prime members, free grocery delivery). For everyday grocery shopping on a budget, Trader Joe's usually wins. For one-stop premium organic shopping, Whole Foods is more complete." },
+    ],
+  },
+
+  "whole-foods": {
+    description: "Whole Foods Market is an American multinational supermarket chain that specializes in natural and organic foods, founded in 1980 in Austin, Texas. Whole Foods was acquired by Amazon in August 2017 for $13.7 billion — a landmark deal that significantly disrupted the grocery industry. Whole Foods operates approximately 530 stores in the US, UK, and Canada with approximately $18 billion in annual revenue (included in Amazon's physical stores segment). The chain carries 30,000+ products with strict quality standards (no artificial preservatives, colors, flavors, sweeteners, or hydrogenated fats). Whole Foods is closely integrated with Amazon: Amazon Prime members receive 10% off sale items and exclusive Prime-only deals, Prime delivery from Whole Foods via Amazon Fresh, and in-store Amazon Lockers. Whole Foods' '365 Everyday Value' private label offers organic items at more accessible prices. The store is nicknamed 'Whole Paycheck' for its historically high prices, though Amazon has worked to lower prices since the acquisition.",
+    highlights: ["Amazon-owned — Prime integration and discounts", "530 stores with strict no-artificial-additives standards", "Amazon Fresh delivery from Whole Foods", "365 Everyday Value private label"],
+    category: "products",
+    alternatives: [
+      { name: "Trader Joe's", slug: "trader-joes", reason: "Better value, curated private-label selection, cult following" },
+      { name: "Sprouts", slug: "sprouts", reason: "Natural/organic with lower prices, strong produce section" },
+      { name: "Target", slug: "target", reason: "Good on store brand organics, more affordable, same-day delivery" },
+    ],
+    faqs: [
+      { question: "Is Whole Foods worth the higher prices?", answer: "Whole Foods is worth it if you prioritize organic/natural products, want the Amazon Prime integration (10% off sales + 5% Prime Rewards card back), or value the strict quality standards (no artificial additives across the store). For everyday staples, Whole Foods is expensive — budget-conscious organic shoppers often do better at Trader Joe's, Aldi, or Target's Good & Gather line." },
+    ],
+  },
+
+  "target": {
+    description: "Target Corporation is an American retail corporation and the eighth-largest retailer in the United States, headquartered in Minneapolis, Minnesota. Founded in 1962 as a division of Dayton's department stores, Target operates approximately 1,950 stores across all 50 US states and generates approximately $109 billion in annual revenue. Target positions itself as 'expect more, pay less' — a middle ground between Walmart's lowest-price positioning and department store quality. Target is renowned for its exclusive designer collaborations, in-house brands (Good & Gather for food, Up & Up for basics, Threshold for home, All in Motion for activewear), and strong seasonal/holiday merchandising. Target Circle loyalty program has 100+ million members. Target's drive-up service and same-day delivery via Shipt are consistently rated best-in-class for convenience. Target stores often anchor shopping centers and are considered more pleasant to shop in than Walmart.",
+    highlights: ["1,950 US stores — all 50 states", "$109B annual revenue", "100M+ Target Circle members", "Drive-up and same-day delivery via Shipt"],
+    category: "products",
+    alternatives: [
+      { name: "Walmart", slug: "walmart", reason: "Lower prices, more locations including rural areas, Walmart+" },
+      { name: "Amazon", slug: "amazon", reason: "Largest online retailer, Prime delivery, wider selection" },
+      { name: "Costco", slug: "costco", reason: "Bulk value, Kirkland quality, membership model" },
+      { name: "Kohl's", slug: "kohls", reason: "Better apparel deals, Kohl's Cash loyalty rewards" },
+    ],
+    faqs: [
+      { question: "Target vs Walmart: which is better?", answer: "Target is better for shoppers who value store experience, in-house brands (Good & Gather food is excellent), designer collaborations, and a more curated selection. Walmart is better for the absolute lowest prices, more product categories (auto parts, firearms, larger grocery sections), and more rural locations. Target's Circle program and Shipt delivery are top-notch; Walmart+ competes with Amazon Prime." },
+      { question: "Is Target more expensive than Walmart?", answer: "Generally yes — Target is typically 5-15% more expensive than Walmart on comparable branded items. However, Target's store brands (Good & Gather, Up & Up) compete well on quality per dollar. For organic foods and quality basics, Target's in-house brands often deliver better value than Walmart's Great Value. Walmart wins on commodity pricing; Target wins on brand quality and experience." },
+    ],
+  },
+
+  "kroger": {
+    description: "The Kroger Co. is the largest US supermarket chain by revenue, headquartered in Cincinnati, Ohio. Founded in 1883 by Barney Kroger, it operates approximately 2,750 stores under 26 banner brands including Kroger, Ralphs, King Soopers, Smith's, Fry's, Fred Meyer, Dillons, QFC, and Harris Teeter. Kroger generates approximately $148 billion in annual revenue. Kroger's Simple Truth organic and natural brand has grown to over $4 billion in annual sales — one of the largest organic brands in the US. Kroger's loyalty program (Kroger Plus Card) is ubiquitous — nearly every regular shopper has one and uses it for fuel points (redeemable for discounts at Kroger Gas stations), digital coupons, and personalized offers via its Boost membership ($99/year). Kroger's pharmacy division is the second largest pharmacy chain in the US. Kroger attempted to acquire Albertsons for $24.6 billion in 2022, but the merger was blocked by the FTC in late 2024.",
+    highlights: ["Largest US supermarket chain — $148B revenue", "2,750 stores under 26 banner brands", "Simple Truth organic brand — $4B+ in sales", "Kroger Plus fuel points program"],
+    category: "products",
+    alternatives: [
+      { name: "Safeway", slug: "safeway", reason: "Albertsons-owned, strong on West Coast/Mountain West" },
+      { name: "Publix", slug: "publix", reason: "Best Southeast US grocery, employee-owned, exceptional service" },
+      { name: "Whole Foods", slug: "whole-foods", reason: "Premium organic selection, Amazon integration" },
+      { name: "Trader Joe's", slug: "trader-joes", reason: "Curated private label, lower prices, cult following" },
+    ],
+    faqs: [
+      { question: "Is Kroger cheaper than Safeway?", answer: "Kroger is typically cheaper than Safeway for most items, especially with the Kroger Plus card and digital coupons. Both have loyalty programs with fuel rewards. Kroger's Simple Truth private label is often better priced than Safeway's Open Nature organic line. In markets where both operate, Kroger usually wins on everyday value; Safeway often wins on prepared foods and deli sections." },
+    ],
+  },
+
+  "verizon": {
+    description: "Verizon Communications is the largest wireless carrier in the United States by subscribers, with approximately 143 million wireless connections and approximately $134 billion in annual revenue. Headquartered in New York City, Verizon is widely regarded as having the largest and most reliable wireless network in the US, consistently winning network quality awards from J.D. Power, RootMetrics, and PCMag. Verizon operates on CDMA/LTE/5G networks and has invested heavily in 5G — both nationwide 5G (lower speeds, wide coverage) and C-Band/mmWave 5G Ultra Wideband (very fast, limited coverage in select cities). Plans start at $35/line for Basic Unlimited (with 4+ lines) and go to $90/line for Ultimate. Verizon also offers home internet via Verizon Fios (fiber) in the Northeast and 5G Home Internet for fixed wireless. Verizon is publicly traded and one of the most widely held dividend stocks in the US.",
+    highlights: ["Largest US wireless carrier — 143M connections", "#1 rated network reliability (RootMetrics, J.D. Power)", "$134B annual revenue", "5G Ultra Wideband in major cities"],
+    category: "products",
+    alternatives: [
+      { name: "AT&T", slug: "att", reason: "Comparable nationwide coverage, strong FirstNet first responder network" },
+      { name: "T-Mobile", slug: "t-mobile", reason: "Best 5G coverage, lower prices, most price-competitive" },
+      { name: "Mint Mobile", slug: "mint-mobile", reason: "T-Mobile network reseller, dramatically cheaper ($15-30/month)" },
+    ],
+    faqs: [
+      { question: "Verizon vs T-Mobile vs AT&T: which is best?", answer: "Verizon has the most reliable network overall, particularly in rural areas and for business users. T-Mobile has the fastest 5G network and best prices. AT&T is competitive in coverage and has the strongest network for first responders (FirstNet) and in some urban markets. For most consumers prioritizing network reliability: Verizon. For price: T-Mobile. AT&T is a strong second in both categories." },
+      { question: "Is Verizon worth the higher price?", answer: "Verizon costs $15-30/month more per line than T-Mobile for comparable plans. Whether it's worth it depends on your coverage needs. In dense urban areas, T-Mobile's 5G is often faster than Verizon. In rural areas or when traveling, Verizon's network often has better coverage. Business users, frequent rural travelers, and those in Verizon-strong markets get clear value from the premium." },
+    ],
+  },
+
+  "att": {
+    description: "AT&T Inc. is the second-largest wireless carrier in the United States and one of the world's largest telecommunications companies, with approximately 117 million wireless subscribers and approximately $122 billion in annual revenue. Headquartered in Dallas, Texas, AT&T operates on GSM/LTE/5G networks with nationwide coverage comparable to Verizon. AT&T's 5G network covers 290+ million people. AT&T is also the nation's largest provider of fiber internet (AT&T Fiber), available in 21+ states with 1 Gbps plans starting at $55/month. AT&T FirstNet is a dedicated first-responder network used by 5.4 million first responders — a major differentiator for public safety use cases. Consumer plans range from $35/line (Value Plus Unlimited with 4+ lines) to $85/line (AT&T Unlimited Premium). AT&T divested WarnerMedia (HBO, CNN, Warner Bros.) in 2022 to create Warner Bros. Discovery, refocusing on its core telecom business.",
+    highlights: ["2nd largest US wireless carrier — 117M subscribers", "AT&T Fiber — 1 Gbps in 21+ states", "FirstNet — dedicated first-responder network", "$122B annual revenue"],
+    category: "products",
+    alternatives: [
+      { name: "Verizon", slug: "verizon", reason: "Better rural coverage, #1 rated reliability" },
+      { name: "T-Mobile", slug: "t-mobile", reason: "Fastest 5G, lower prices, best value" },
+      { name: "Cricket Wireless", slug: "cricket", reason: "AT&T network reseller, plans from $25/month" },
+    ],
+    faqs: [
+      { question: "AT&T vs Verizon: which is better?", answer: "Both offer comparable nationwide coverage. Verizon edges AT&T in overall network reliability and rural coverage per most independent tests (RootMetrics, J.D. Power). AT&T is competitive in urban areas and has strengths in fiber home internet bundling and FirstNet for first responders. For most consumers, the difference is marginal — the deciding factor is often which has better coverage in your specific area." },
+      { question: "Is AT&T Fiber good?", answer: "AT&T Fiber is consistently rated among the best fiber internet providers in areas where it's available — offering 1 Gbps symmetrical upload and download speeds, reliable performance, and competitive pricing ($55-$180/month). Fiber is significantly better than AT&T's older DSL service. If you're in an AT&T Fiber service area, it's a top-tier option." },
+    ],
+  },
+
+  "t-mobile": {
+    description: "T-Mobile US is the second-largest wireless carrier in the United States by subscribers after Verizon, with approximately 120 million wireless connections and approximately $79 billion in annual revenue. Headquartered in Bellevue, Washington, T-Mobile is majority-owned by Deutsche Telekom. T-Mobile operates on GSM/LTE/5G networks and has led the US in 5G deployment — its standalone 5G network covers 320+ million people (the largest 5G coverage in the US). The 2020 merger with Sprint ($26.5 billion) dramatically expanded T-Mobile's capacity and customer base. T-Mobile is consistently rated fastest for 5G download speeds by PCMag, Ookla, and Opensignal. Plans start at $25/line (Essentials Saver with 4+ lines) and go to $65/line (Go5G Next). T-Mobile's 'Un-carrier' marketing positions it as consumer-friendly vs AT&T and Verizon — perks include Netflix, Apple TV+, or Hulu on premium plans, international texting/data in 215+ countries, and no annual contracts.",
+    highlights: ["Fastest 5G network in the US (PCMag, Ookla)", "320M+ people covered by standalone 5G", "120M subscribers — 2nd largest US carrier", "Un-carrier perks: Netflix, travel, no annual contracts"],
+    category: "products",
+    alternatives: [
+      { name: "Verizon", slug: "verizon", reason: "Better rural coverage, more reliable network in remote areas" },
+      { name: "AT&T", slug: "att", reason: "Competitive in coverage, AT&T Fiber bundling, FirstNet" },
+      { name: "Mint Mobile", slug: "mint-mobile", reason: "T-Mobile network, plans from $15/month, no contract" },
+    ],
+    faqs: [
+      { question: "Is T-Mobile as good as Verizon?", answer: "In major cities and suburban areas, T-Mobile is as good as or faster than Verizon, especially on 5G. In rural areas, Verizon typically has better coverage. T-Mobile is significantly cheaper — often $15-25/month cheaper per line for comparable plans. For urban and suburban users, T-Mobile offers the best combination of speed and value. For rural coverage, Verizon is still superior." },
+      { question: "T-Mobile vs AT&T: which is better?", answer: "T-Mobile is generally better for 5G speed and value — it's the fastest 5G network in the US and has more competitive pricing. AT&T matches T-Mobile in overall coverage and wins in specific areas (rural Southeast, FirstNet for first responders, fiber home internet bundling). T-Mobile has better international coverage and is typically $10-20/month cheaper for equivalent plans." },
+    ],
+  },
 };

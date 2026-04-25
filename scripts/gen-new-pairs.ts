@@ -13,9 +13,33 @@ const prisma = new PrismaClient();
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 const NEW_PAIRS: [string, string][] = [
-  ["Google Pixel", "iPhone"],
-  ["OnePlus", "Samsung"],
-  ["Chase", "Bank of America"],
+  // Insurance (extremely high search volume)
+  ["Geico", "Progressive"],
+  ["State Farm", "Geico"],
+  ["State Farm", "Allstate"],
+  ["Progressive", "Allstate"],
+  ["Geico", "Allstate"],
+  // Home Security
+  ["Ring", "Nest"],
+  ["SimpliSafe", "Ring"],
+  ["Ring", "Arlo"],
+  // Pets
+  ["Chewy", "Amazon"],
+  ["Petco", "Petsmart"],
+  // Coffee & Fast Food
+  ["Nespresso", "Keurig"],
+  ["Starbucks", "Dunkin"],
+  ["McDonald's", "Burger King"],
+  ["McDonald's", "Wendy's"],
+  ["Chick-fil-A", "Popeyes"],
+  // Grocery/Retail
+  ["Costco", "Sam's Club"],
+  ["Trader Joe's", "Whole Foods"],
+  ["Target", "Walmart"],
+  ["Kroger", "Safeway"],
+  // Telecom
+  ["Verizon", "AT&T"],
+  ["T-Mobile", "Verizon"],
 ];
 
 function makeSlug(a: string, b: string): string {
@@ -64,7 +88,12 @@ async function generateOne(entityA: string, entityB: string): Promise<boolean> {
   const categoryHint = (() => {
     const both = (entityA + entityB).toLowerCase();
     if (/facebook|instagram|twitter|tiktok|linkedin|reddit|youtube|netflix|pinterest|snapchat/.test(both)) return "entertainment";
-    if (/iphone|samsung|macbook|windows|surface|chromebook|ipad|airpods|android|pixel|oneplus/.test(both)) return "technology";
+    if (/iphone|samsung|macbook|windows|surface|chromebook|ipad|airpods|android|pixel|oneplus|nespresso|keurig/.test(both)) return "technology";
+    if (/geico|progressive|state.farm|allstate/.test(both)) return "products";
+    if (/ring|nest|simplisafe|arlo/.test(both)) return "products";
+    if (/starbucks|dunkin|mcdonald|burger.king|wendy|chick.fil|popeyes/.test(both)) return "products";
+    if (/costco|sam.s.club|kroger|safeway|trader.joe|whole.foods|petco|petsmart|chewy/.test(both)) return "products";
+    if (/verizon|t-mobile|tmobile|at.t/.test(both)) return "products";
     if (/steam|epic|nintendo|switch|playstation|xbox/.test(both)) return "entertainment";
     if (/amazon|walmart|ebay|etsy|target|shopify|wayfair|ikea/.test(both)) return "products";
     if (/airbnb|hotel|expedia|booking|kayak|vrbo|google.flights/.test(both)) return "products";
@@ -241,7 +270,7 @@ async function main() {
       console.log(`  ✗ Error: ${err.message?.slice(0, 100)}`);
       fail++;
     }
-    if (i < NEW_PAIRS.length - 1) await new Promise(r => setTimeout(r, 5000));
+    if (i < NEW_PAIRS.length - 1) await new Promise(r => setTimeout(r, 2000));
   }
 
   const total = await prisma.comparison.count();
