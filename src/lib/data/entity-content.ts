@@ -7631,4 +7631,379 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Does Apple Music have a free tier?", answer: "No. Apple Music is subscription-only ($10.99/month individual, $5.99/month student, $16.99/month family). Apple offers a 3-month free trial for new subscribers. Apple Music is included in Apple One (bundle with iCloud+, Apple TV+, Apple Arcade starting at $19.95/month). Unlike Spotify, there is no ad-supported free tier — you must pay to listen after the trial ends." },
     ],
   },
+
+  "paramount-plus": {
+    description: "Paramount+ (formerly CBS All Access) is a streaming service owned by Paramount Global, launched under its current name in March 2021. Paramount+ offers content from CBS, MTV, Nickelodeon, Comedy Central, BET, the Paramount Network, and Paramount Pictures — one of Hollywood's oldest studios. The Essential plan costs $5.99/month (with ads); Paramount+ with Showtime costs $11.99/month (with Showtime content included). Paramount+ has approximately 67 million global subscribers (as of early 2024). Key content includes live CBS broadcasts (news, sports, NFL), Star Trek franchise, Yellowstone, Tulsa King, NFL on CBS, UEFA Champions League, and Nickelodeon originals. Paramount+ is also part of the bundle offered with Showtime and Apple One. Despite strong sports content (NFL, Champions League, Masters golf), Paramount+ trails Netflix, Disney+, and Max in original programming prestige.",
+    highlights: ["Live CBS — NFL, news, March Madness", "Star Trek franchise — 10+ Trek series", "UEFA Champions League + NFL on CBS", "67M global subscribers; $5.99/month Essential"],
+    category: "entertainment",
+    alternatives: [
+      { name: "Peacock", slug: "peacock", reason: "NBC content, Premier League, WWE, free tier available" },
+      { name: "Hulu", slug: "hulu", reason: "Next-day TV episodes, larger content library, live TV option" },
+      { name: "Disney+", slug: "disney-plus", reason: "Marvel, Star Wars, Pixar — premium family and blockbuster content" },
+    ],
+    faqs: [
+      { question: "Is Paramount+ worth it?", answer: "Paramount+ is worth it for: NFL fans (live CBS games), Star Trek fans (10+ series), UEFA Champions League fans, and households with young kids (Nickelodeon content). At $5.99/month Essential, it's one of the cheaper major streamers. The Paramount+ with Showtime bundle at $11.99/month adds significant prestige drama. If you watch a lot of CBS and love Trek or sports, it's excellent value. For general entertainment, Netflix or Disney+ likely have more to offer." },
+      { question: "What's the difference between Paramount+ Essential and with Showtime?", answer: "Essential ($5.99/month) includes ad-supported Paramount+ content. With Showtime ($11.99/month) adds: Showtime originals (Billions, Yellowjackets, The Affair), no ads on Paramount+ content, and Showtime's film library. If you watch Showtime originals, the combined bundle at $11.99 is a better value than subscribing separately ($10.99 for Showtime alone)." },
+    ],
+  },
+
+  "whatsapp": {
+    description: "WhatsApp is the world's most popular messaging application with over 2 billion monthly active users in 180+ countries, owned by Meta (formerly Facebook) since 2014 ($19 billion acquisition). WhatsApp offers free text messaging, voice and video calls, group chats (up to 1,024 members), file sharing, status updates, and end-to-end encryption for all messages and calls. The app is particularly dominant in Europe, Latin America, India, and Africa — in many countries it is the primary communication channel. WhatsApp Business allows businesses to interact with customers via verified accounts. WhatsApp is free for consumers; WhatsApp Business API charges per conversation for enterprise use. In the US, WhatsApp has lower penetration (~75 million users) compared to iMessage and SMS. WhatsApp's end-to-end encryption (using the Signal Protocol) is considered robust, though Meta's collection of metadata (who you talk to, when, how often) raises privacy concerns.",
+    highlights: ["2B+ monthly active users — world's most popular messaging app", "End-to-end encrypted (Signal Protocol) for all messages and calls", "Dominant in Europe, Latin America, India, Africa", "Free voice and video calls internationally"],
+    category: "technology",
+    alternatives: [
+      { name: "Signal", slug: "signal", reason: "More privacy-focused, minimal metadata collection, open source" },
+      { name: "Telegram", slug: "telegram", reason: "Larger groups, channels, bots, more features — less encryption by default" },
+      { name: "iMessage", slug: "imessage", reason: "Default on Apple devices, seamless for Apple users in the US" },
+    ],
+    faqs: [
+      { question: "Is WhatsApp safe and private?", answer: "WhatsApp uses the Signal Protocol for end-to-end encryption, which is strong. However, Meta collects extensive metadata — who you message, how often, your IP address, device info, and usage patterns. This metadata is valuable for advertising and can be shared with law enforcement. For message content privacy: WhatsApp is good. For overall privacy including metadata: Signal is significantly better. For most casual users, WhatsApp's encryption provides adequate message privacy." },
+      { question: "WhatsApp vs iMessage: which is better?", answer: "iMessage is the best option for Apple-to-Apple communication in the US — it's built-in, seamlessly switches between SMS and iMessage, and supports high-quality media. WhatsApp is essential for international communication and is the standard in many countries. If you communicate with people outside the US or on Android, WhatsApp is more universally accessible. For US-only Apple users, iMessage is typically preferred for its native integration." },
+    ],
+  },
+
+  "signal": {
+    description: "Signal is a privacy-focused messaging application developed by the Signal Foundation, a nonprofit organization founded by cryptographer Moxie Marlinspike and WhatsApp co-founder Brian Acton (who contributed $50 million). Signal is widely regarded as the gold standard for private communication — it uses the Signal Protocol for end-to-end encryption, collects virtually no metadata (only your phone number and last connection date), and is fully open source. Signal offers text messaging, voice/video calls, group chats, disappearing messages, note-to-self, and Stories. The app is free and has approximately 40-50 million monthly active users — significantly smaller than WhatsApp (2B+) or Telegram (900M+) but favored by privacy advocates, journalists, activists, and security professionals. Signal generates no revenue from ads and is funded by donations and grants. The Signal Protocol is used by WhatsApp, Facebook Messenger, and Google Messages for their encrypted modes.",
+    highlights: ["Most privacy-preserving major messaging app — minimal metadata", "Open source — audited by security researchers worldwide", "Signal Protocol — adopted by WhatsApp, Messenger, Google Messages", "Nonprofit — no ads, no data monetization"],
+    category: "technology",
+    alternatives: [
+      { name: "WhatsApp", slug: "whatsapp", reason: "2B+ users, more widely adopted internationally" },
+      { name: "Telegram", slug: "telegram", reason: "More features (channels, bots, larger groups) — but less private" },
+      { name: "iMessage", slug: "imessage", reason: "Seamless on Apple devices, end-to-end encrypted for Apple-to-Apple" },
+    ],
+    faqs: [
+      { question: "Is Signal really more private than WhatsApp?", answer: "Yes, significantly. Both use the Signal Protocol for message encryption. The critical difference is metadata: Signal collects only your phone number and last connection date. WhatsApp collects who you message, how often, your IP, device info, location, and more — this metadata is shared with Meta. For investigators and law enforcement, metadata can reveal patterns even without message content. Signal is the clear winner for true privacy." },
+      { question: "Why doesn't everyone use Signal?", answer: "Network effects — messaging apps are only useful if your contacts use them. WhatsApp has 2 billion users; Signal has ~40-50 million. Most people use WhatsApp because their family and friends do. Signal is gaining adoption among privacy-conscious users, journalists, and tech workers, but the mainstream shift requires critical mass that hasn't happened in the US/Europe. In the US, iMessage dominates Apple users and SMS fills the gap." },
+    ],
+  },
+
+  "telegram": {
+    description: "Telegram is a cloud-based messaging application founded by Pavel Durov and his brother Nikolai Durov in 2013 and headquartered in Dubai. Telegram has approximately 900 million monthly active users globally and is especially popular in Russia, Iran, Eastern Europe, and Southeast Asia. Telegram differentiates itself through scale and features: groups of up to 200,000 members, channels (one-to-many broadcast to unlimited subscribers), bots, file sharing up to 4 GB, and a rich API for developers. Telegram offers free messaging, voice/video calls, and Stories. Telegram Premium ($4.99/month) adds larger uploads, exclusive stickers, and faster downloads. Telegram launched paid channels and monetization for creators in 2024. Privacy-wise, Telegram is not end-to-end encrypted by default — only its 'Secret Chats' are E2E encrypted; regular chats are encrypted server-to-client and stored on Telegram's servers. Pavel Durov was arrested in France in August 2024 related to content moderation issues.",
+    highlights: ["900M monthly active users — 3rd largest messaging platform", "Groups up to 200,000 members, channels to unlimited subscribers", "4 GB file transfers, rich bot API", "Default chats NOT end-to-end encrypted — stored on Telegram servers"],
+    category: "technology",
+    alternatives: [
+      { name: "WhatsApp", slug: "whatsapp", reason: "E2E encrypted by default, 2B users, simpler interface" },
+      { name: "Signal", slug: "signal", reason: "Strongest privacy, fully open source, minimal metadata" },
+      { name: "Discord", slug: "discord", reason: "Community servers, gaming focus, similar channel/group model" },
+    ],
+    faqs: [
+      { question: "Is Telegram safe?", answer: "Telegram is not as private as Signal or even WhatsApp. Regular chats are stored on Telegram's servers (encrypted, but Telegram can theoretically access them). Only 'Secret Chats' are end-to-end encrypted. Telegram has faced criticism for enabling extremist content and criminal activity on its platform, and founder Pavel Durov was arrested in France in 2024. For secure communications: use Signal. Telegram is better thought of as a feature-rich social messaging platform than a privacy tool." },
+      { question: "Telegram vs WhatsApp: what's the difference?", answer: "WhatsApp: E2E encrypted by default, simpler, better for private 1:1 and small group conversations, 2B users. Telegram: not E2E encrypted by default, massive groups/channels, advanced features (bots, 4GB files), popular for communities and broadcasts. If privacy matters: WhatsApp is better. If you want feature-rich communities, channels, or large groups: Telegram wins. Both are free; Telegram has a premium tier for power users." },
+    ],
+  },
+
+  "imessage": {
+    description: "iMessage is Apple's proprietary messaging service built into iOS, macOS, iPadOS, and watchOS. Launched in 2011, iMessage automatically activates when messaging between Apple devices — messages appear in blue bubbles vs green SMS bubbles. iMessage supports text, photos, videos, GIFs, audio messages, stickers, Tapbacks (reactions), SharePlay (watch/listen together), and high-quality FaceTime integration. All iMessages are end-to-end encrypted. iMessage is deeply integrated into Apple's ecosystem — it syncs across all Apple devices via iCloud, works with Siri, and supports Apple Pay links and App Store integrations within conversations. iMessage does not work on Android or Windows (Apple has rejected cross-platform support). In the US, the 'blue bubble vs green bubble' distinction is culturally significant — being on Android means you lose iMessage features when texting with iPhone users. Apple has approximately 57% US smartphone market share, making iMessage the dominant messaging platform for US consumers.",
+    highlights: ["Default messaging on all Apple devices — 57% US smartphone market share", "End-to-end encrypted between Apple devices", "Blue bubble status — cultural significance in US social communication", "Deep Apple ecosystem: syncs via iCloud, FaceTime, SharePlay, Apple Pay"],
+    category: "technology",
+    alternatives: [
+      { name: "WhatsApp", slug: "whatsapp", reason: "Cross-platform, E2E encrypted, essential for international communication" },
+      { name: "Signal", slug: "signal", reason: "Best privacy, cross-platform, same encryption quality" },
+      { name: "Google Messages", slug: "google-messages", reason: "RCS standard on Android — similar features for Android users" },
+    ],
+    faqs: [
+      { question: "Why can't Android users use iMessage?", answer: "Apple has deliberately kept iMessage exclusive to Apple devices. When an iPhone user texts an Android user, it falls back to SMS/MMS (green bubbles) — losing encryption, read receipts, typing indicators, high-quality media, and reactions. Apple argues iMessage exclusivity encourages Android users to switch to iPhone. The EU's Digital Markets Act may eventually force Apple to open iMessage as a 'gatekeeper' service, but as of 2026 this has not been enforced." },
+      { question: "Is iMessage end-to-end encrypted?", answer: "Yes, but only for Apple-to-Apple iMessage (blue bubbles). When a message falls back to SMS/MMS (green bubbles, sent to Android), it is not encrypted. iMessage encryption uses Apple's proprietary protocol, which independent security researchers cannot fully audit (unlike Signal's open-source protocol). For the highest privacy, Signal is preferred. For everyday Apple-to-Apple communication, iMessage's encryption is adequate." },
+    ],
+  },
+
+  "icloud": {
+    description: "iCloud is Apple's cloud storage and cloud computing service, launched in 2011 and deeply integrated into all Apple devices (iPhone, iPad, Mac, Apple Watch, Apple TV). iCloud provides automatic backup of iPhone/iPad, sync of Photos, Contacts, Calendar, Notes, Reminders, Messages, Health data, and Keychain (passwords) across all Apple devices. Every Apple ID includes 5 GB free iCloud storage. Paid plans: 50 GB ($0.99/month), 200 GB ($2.99/month, shareable), 2 TB ($9.99/month, shareable). iCloud+ adds Hide My Email, Private Relay (VPN-like), and Custom Domain for email. Apple holds the encryption keys for most iCloud data (except iMessage, Health, Keychain in Advanced Data Protection mode) — meaning Apple can access your data. Advanced Data Protection (opt-in) extends end-to-end encryption to almost all iCloud data, giving Apple no access. iCloud is estimated to serve 850 million+ Apple device users.",
+    highlights: ["850M+ Apple users — seamless ecosystem integration", "5 GB free; paid plans from $0.99/month (50 GB) to $9.99/month (2 TB)", "iCloud+ includes Private Relay, Hide My Email", "Advanced Data Protection — opt-in end-to-end encryption for maximum privacy"],
+    category: "technology",
+    alternatives: [
+      { name: "Google Drive", slug: "google-drive", reason: "15 GB free, works on all platforms, strong collaboration tools" },
+      { name: "Dropbox", slug: "dropbox", reason: "Excellent file sync and sharing, cross-platform" },
+      { name: "OneDrive", slug: "onedrive", reason: "Microsoft ecosystem integration, 1 TB with Microsoft 365" },
+    ],
+    faqs: [
+      { question: "Is iCloud worth paying for?", answer: "For iPhone users, iCloud is almost necessary — without paid storage, the 5 GB free fills up quickly with backups and photos. 50 GB at $0.99/month is excellent value for keeping your iPhone backed up. For document storage and collaboration, Google Drive offers 15 GB free and stronger cross-platform tools. iCloud is best for the Apple ecosystem; for cross-platform use, Google Drive or Dropbox are more flexible." },
+      { question: "Is iCloud private and secure?", answer: "By default, iCloud security is moderate — Apple holds encryption keys for most data (Photos, iCloud Drive, Mail, etc.), meaning Apple can access your data if compelled by law enforcement. However, enabling Advanced Data Protection (iOS 16.2+) extends end-to-end encryption to nearly all iCloud data, giving Apple no access. iMessage, Health, and Keychain are always end-to-end encrypted. For maximum privacy, enable Advanced Data Protection in iCloud settings." },
+    ],
+  },
+
+  "chrome": {
+    description: "Google Chrome is the world's dominant web browser with approximately 65% global market share across desktop and mobile, developed by Google and first released in 2008. Built on the open-source Chromium project, Chrome is known for its speed (V8 JavaScript engine), extensive extension ecosystem (Chrome Web Store with 100,000+ extensions), and tight integration with Google services (Gmail, Drive, Search, Google Account sync). Chrome is available on Windows, macOS, Linux, iOS, and Android. Despite its performance, Chrome is frequently criticized for high memory (RAM) usage, battery drain on laptops, and aggressive data collection for Google's advertising business. Chrome's developer tools (DevTools) are industry-standard for web development. Google controls web standards through its dominance of Chrome — it is the primary driver of new web platform features. Chrome syncs browsing history, bookmarks, passwords, and settings across devices via Google Account.",
+    highlights: ["~65% global browser market share — dominant across desktop + mobile", "100,000+ extensions on Chrome Web Store", "V8 JavaScript engine — industry-standard performance", "Tight Google ecosystem integration — Sync, Google Account, DevTools"],
+    category: "technology",
+    alternatives: [
+      { name: "Firefox", slug: "firefox", reason: "More privacy-focused, open source, not Google-controlled" },
+      { name: "Safari", slug: "safari", reason: "Best battery life on Mac/iPhone, Apple ecosystem integration" },
+      { name: "Edge", slug: "edge", reason: "Chromium-based, lower memory than Chrome, Microsoft integration" },
+    ],
+    faqs: [
+      { question: "Is Chrome bad for privacy?", answer: "Chrome collects significant data for Google's advertising business: browsing history, search queries, location, and sync data. Google is an advertising company — Chrome is a product that feeds its data ecosystem. Better privacy alternatives: Firefox (with uBlock Origin) or Brave (Chromium-based, ad-blocking by default). If you're in the Google ecosystem and don't mind the tradeoff, Chrome is convenient. For privacy-conscious users, Firefox or Brave are meaningfully better." },
+      { question: "Why does Chrome use so much RAM?", answer: "Chrome's multi-process architecture runs each tab and extension in a separate process for security (a crashed tab doesn't crash the browser). This isolation costs memory — each process has overhead. Chrome also preloads pages, keeps tabs in memory for instant switching, and runs extension background scripts. Solutions: limit extensions, enable memory saver mode (puts inactive tabs to sleep), or use Edge/Safari which handle memory more efficiently." },
+    ],
+  },
+
+  "firefox": {
+    description: "Mozilla Firefox is an open-source web browser developed by Mozilla Foundation and Mozilla Corporation, with approximately 3-4% global market share. Despite declining market share from its 2008-2012 peak (when it held 30%+), Firefox remains the primary browser for privacy-conscious users and developers who want an alternative to Chromium-based browsers. Firefox uses its own Gecko rendering engine (not Chromium/Blink), making it the only major browser independent of Google's browser infrastructure. Firefox's privacy features are strong: Total Cookie Protection (cross-site tracking isolation), Enhanced Tracking Protection, Facebook Container extension, and Firefox Relay (email masking). Firefox Sync enables cross-device password, bookmark, and history sync without Google. The Firefox ecosystem includes the Firefox Browser, Firefox Focus (mobile privacy browser), and Mozilla VPN. Mozilla is a nonprofit-guided company funded primarily by a search revenue deal with Google (~$500 million/year).",
+    highlights: ["Only major browser not based on Google's Chromium", "Strong privacy by default — Total Cookie Protection, Enhanced Tracking Protection", "Open source — fully auditable code", "Nonprofit mission — focused on open web, not advertising"],
+    category: "technology",
+    alternatives: [
+      { name: "Chrome", slug: "chrome", reason: "65% market share, largest extension ecosystem, Google integration" },
+      { name: "Brave", slug: "brave", reason: "Chromium-based, built-in ad blocker, better performance than Firefox" },
+      { name: "Safari", slug: "safari", reason: "Best battery life on Apple devices, native macOS/iOS integration" },
+    ],
+    faqs: [
+      { question: "Is Firefox better than Chrome?", answer: "Firefox is better for: privacy (no Google data collection, strong tracking protection), open web ideals, and being independent of Google's browser monoculture. Chrome is better for: ecosystem integration with Google services, extension variety, slightly faster page rendering in some benchmarks, and DevTools for web development. For most users who value privacy and don't need bleeding-edge performance, Firefox is excellent. For developers deeply in the Google ecosystem, Chrome remains the standard." },
+      { question: "Does Firefox have the best privacy among browsers?", answer: "Firefox is strong for privacy, but Brave (Chromium-based) is often cited as better out-of-the-box privacy because it blocks ads and trackers by default at a network level. Firefox with uBlock Origin extension installed is comparable to Brave. Tor Browser (built on Firefox) offers maximum anonymity. For everyday privacy: Firefox or Brave. For anonymity: Tor Browser. Firefox is the best mainstream browser that balances privacy with usability." },
+    ],
+  },
+
+  "safari": {
+    description: "Safari is Apple's web browser, developed and maintained by Apple, pre-installed on all Apple devices (Mac, iPhone, iPad, Apple Watch, Apple TV). Safari uses the WebKit rendering engine (which Blink/Chromium was originally forked from). Safari holds approximately 20% global browser market share, driven largely by iOS dominance — it is the only browser engine allowed on iPhone and iPad (third-party browsers like Chrome and Firefox on iOS are required to use WebKit). On macOS, Safari is renowned for exceptional battery life (typically 50-100% better than Chrome on MacBooks) and deep macOS/iOS integration: iCloud Keychain password sync, Handoff (continue browsing on another device), Apple Pay, and Privacy Report. Safari's Intelligent Tracking Prevention (ITP) is among the strongest anti-tracking systems in any browser. Safari is closed-source and Apple-only — there is no Windows or Android version.",
+    highlights: ["Best battery life on Mac/iPhone — 50-100% longer than Chrome", "Intelligent Tracking Prevention — strong anti-tracking built-in", "Apple Keychain, Handoff, Apple Pay — seamless ecosystem integration", "~20% global market share, dominant on iOS (required WebKit)"],
+    category: "technology",
+    alternatives: [
+      { name: "Chrome", slug: "chrome", reason: "Most extensions, best Google integration, cross-platform" },
+      { name: "Firefox", slug: "firefox", reason: "Better privacy on Android/Windows, open source" },
+      { name: "Edge", slug: "edge", reason: "Better Windows integration, Chromium compatibility, lower RAM than Chrome" },
+    ],
+    faqs: [
+      { question: "Should I use Safari or Chrome on Mac?", answer: "For MacBook users on battery, Safari is significantly better — typically 2-5 hours more battery life vs Chrome. Safari is also faster on macOS (tightly optimized by Apple), has strong privacy defaults, and integrates natively with iCloud Keychain. Chrome is better if you need extensive extensions (Safari's extension library is smaller), Google service integration, or cross-platform sync across Windows/Android. For most Mac users who stay in the Apple ecosystem, Safari is the smart default." },
+      { question: "Why can't you use real Chrome on iPhone?", answer: "Apple requires all browsers on iOS to use the WebKit rendering engine (App Store rule). This means Chrome, Firefox, and Edge on iPhone are effectively wrappers around WebKit with their own UI — they cannot use Blink (Chrome's engine) or Gecko (Firefox's engine). The EU's Digital Markets Act may eventually force Apple to allow alternative browser engines on iOS in Europe, but as of 2026 this restriction remains in most markets." },
+    ],
+  },
+
+  "edge": {
+    description: "Microsoft Edge is a web browser developed by Microsoft, released in its current Chromium-based form in January 2020 (replacing the original EdgeHTML-based Edge). Built on Chromium, Edge is compatible with Chrome extensions and has inherited Chrome's web standards support. Edge holds approximately 5% global market share but is notably higher on Windows (where it's the default browser), with an estimated 13-15% share on desktop. Edge differentiates from Chrome through: lower memory usage (Memory Saver is more aggressive), better Windows integration, Copilot AI sidebar (Microsoft's AI assistant built in), vertical tabs, immersive reader, PDF tools, and Collections (visual bookmarking). Edge includes built-in tracking prevention and a free VPN (5 GB/month). Edge syncs via Microsoft account. On Windows 11, Edge is deeply integrated — it's used for Windows Search previews, PDF viewer, and Microsoft 365 web apps.",
+    highlights: ["Built on Chromium — Chrome extension compatibility", "Lower RAM usage than Chrome — more aggressive Memory Saver", "Copilot AI sidebar — Microsoft's AI assistant built-in", "5% global share; default Windows browser — 13-15% desktop share"],
+    category: "technology",
+    alternatives: [
+      { name: "Chrome", slug: "chrome", reason: "65% market share, largest extension ecosystem, Google integration" },
+      { name: "Firefox", slug: "firefox", reason: "Best privacy, open source, not controlled by big tech" },
+      { name: "Safari", slug: "safari", reason: "Best battery on Mac/iPhone, Apple ecosystem native" },
+    ],
+    faqs: [
+      { question: "Is Microsoft Edge better than Chrome?", answer: "Edge is a legitimate Chrome alternative that many users prefer, particularly on Windows. Edge uses significantly less memory than Chrome (important for lower-RAM machines), includes Copilot AI built-in, has excellent PDF tools, and syncs with Microsoft account. It's compatible with all Chrome extensions. For Windows users in the Microsoft ecosystem, Edge is worth trying — it's often faster and lighter than Chrome for everyday browsing. Chrome remains better for Google services integration and larger extension ecosystem." },
+      { question: "Is Edge safe and private?", answer: "Edge's default tracking prevention is moderate — three levels (Basic, Balanced, Strict). Balanced mode is the default and blocks trackers from sites you haven't visited. Edge does collect some telemetry for Microsoft. It's more private than Chrome's defaults but less private than Firefox with uBlock Origin. Edge also includes a free VPN (5 GB/month via Microsoft's network). For serious privacy needs, Firefox or Brave are better options." },
+    ],
+  },
+
+  "google-docs": {
+    description: "Google Docs is a free online word processor developed by Google, part of Google Workspace (formerly G Suite). Launched publicly in 2006 (based on the acquired Writely), Google Docs operates entirely in the web browser with no software installation required. All documents are automatically saved to Google Drive and synced in real-time. Google Docs' defining feature is real-time collaborative editing — multiple users can edit the same document simultaneously, with changes visible to all collaborators instantly. Google Docs is free for personal use (Google Account); Google Workspace for Business starts at $6/user/month. Google Docs supports import/export of Microsoft Word (.docx) format and integrates with Google Meet, Gmail, and Google Forms. With AI (Gemini integration in 2024), Google Docs offers AI writing assistance, summarization, and drafting. Google Docs is used by millions of students, professionals, and businesses globally and has become the standard for collaborative document creation.",
+    highlights: ["Real-time multi-user collaboration — industry-defining feature", "Free for personal use — no software installation", "Auto-save to Google Drive, version history", "Gemini AI writing assistance built-in (2024+)"],
+    category: "technology",
+    alternatives: [
+      { name: "Microsoft Word", slug: "microsoft-word", reason: "More powerful formatting, better offline support, industry standard in enterprise" },
+      { name: "Notion", slug: "notion", reason: "Better for notes + docs + databases combined, more flexible structure" },
+      { name: "Dropbox Paper", slug: "dropbox", reason: "Clean interface, good collaboration, integrates with Dropbox storage" },
+    ],
+    faqs: [
+      { question: "Google Docs vs Word: which is better?", answer: "Google Docs wins for: real-time collaboration, free access, web-based (no installation), version history, and sharing links. Microsoft Word wins for: advanced formatting (complex tables, styles, templates), mail merge, better offline mode, track changes (still industry standard in legal/publishing), and enterprise integration. For student projects, team collaboration, and day-to-day documents: Google Docs is superior. For complex professional documents, legal/publishing workflows, or corporate environments: Word is often required." },
+      { question: "Can Google Docs open Word files?", answer: "Yes. Google Docs can open, edit, and export Microsoft Word .docx and .doc files. Most formatting is preserved, but complex Word features (some macros, advanced formatting, embedded objects) may not render correctly. You can also edit Word files natively in Google Docs without converting them. For round-trip compatibility (opening in both applications), simple documents work seamlessly; complex formatted documents may lose some fidelity." },
+    ],
+  },
+
+  "microsoft-word": {
+    description: "Microsoft Word is the world's most widely used word processing software, first released in 1983 and part of the Microsoft Office (now Microsoft 365) suite. Word has approximately 1.2 billion users globally across Windows, macOS, iOS, Android, and web versions. Word is the industry standard for document creation in legal, publishing, academic, and corporate environments — its .docx format is the de facto standard for text documents. Word 2024 features: advanced styles and templates, mail merge, table of contents generation, track changes with legal redline support, reference management, accessibility checker, and Copilot AI (Microsoft's AI assistant for drafting and summarization). Microsoft 365 Personal ($69.99/year) and Family ($99.99/year) include Word alongside Excel, PowerPoint, Outlook, and 1 TB OneDrive. The free Word Online version has reduced features but enables web-based editing similar to Google Docs.",
+    highlights: ["1.2B users globally — world's most used word processor", "Industry standard .docx format — universal compatibility", "Advanced formatting — styles, mail merge, TOC, redline tracking", "Copilot AI integration — drafting, summarization, editing assistance"],
+    category: "technology",
+    alternatives: [
+      { name: "Google Docs", slug: "google-docs", reason: "Free, real-time collaboration, web-based with no installation" },
+      { name: "LibreOffice Writer", slug: "libreoffice", reason: "Free and open-source, offline-first, .docx compatible" },
+      { name: "Pages", slug: "pages", reason: "Free on Apple devices, elegant design, iCloud sync" },
+    ],
+    faqs: [
+      { question: "Is Microsoft Word free?", answer: "Word Online (web version) is free at office.com with a Microsoft account, with reduced features. The full-featured desktop Word requires a Microsoft 365 subscription: $69.99/year (Personal, 1 user) or $99.99/year (Family, up to 6 users). Both include 1 TB OneDrive storage. A one-time purchase version (Microsoft Office Home 2024) costs $149.99 but doesn't include updates. For light use, Word Online or Google Docs free tier are good alternatives." },
+      { question: "Should businesses use Word or Google Docs?", answer: "Most enterprises use both: Word for finalized, complex documents (legal contracts, RFPs, formatted reports) and Google Docs for collaborative drafting and internal documents. Microsoft 365 is dominant in enterprise environments with Outlook integration, SharePoint, and Teams. Google Workspace is popular with startups and tech companies. The choice often comes down to ecosystem — Microsoft 365 if you use Outlook/Teams, Google Workspace if you use Gmail/Meet." },
+    ],
+  },
+
+  "google-sheets": {
+    description: "Google Sheets is a free online spreadsheet application developed by Google, part of Google Workspace. Available since 2006, Google Sheets offers real-time collaborative editing, cloud storage via Google Drive, and web-based access from any device without software installation. Google Sheets supports formulas, pivot tables, charts, conditional formatting, data validation, Google Apps Script (macro/automation), and API integrations. The collaboration features — multiple simultaneous editors, comment threads, revision history — made Sheets a standard for teams. Google Sheets integrates natively with Google Forms (data collection), Google Data Studio/Looker Studio (visualization), BigQuery (large dataset analysis), and Gemini AI for formula suggestions and data analysis. Sheets is free for personal use; Google Workspace for Business starts at $6/user/month with enhanced admin controls and storage.",
+    highlights: ["Real-time collaboration — multiple simultaneous editors", "Free for personal use, no installation", "Google Apps Script — custom macros and automation", "Native integrations: Google Forms, BigQuery, Looker Studio, Gemini AI"],
+    category: "technology",
+    alternatives: [
+      { name: "Excel", slug: "excel", reason: "More powerful analytics (Power Query, Power Pivot), better for complex financial models" },
+      { name: "Airtable", slug: "airtable", reason: "Database + spreadsheet hybrid, better for non-technical teams" },
+      { name: "Notion", slug: "notion", reason: "Docs + tables + databases combined, better for project tracking" },
+    ],
+    faqs: [
+      { question: "Google Sheets vs Excel: which is better?", answer: "Google Sheets wins for: real-time collaboration, free access, web-based access from any device, easy sharing via link. Excel wins for: advanced data analysis (Power Query, Power Pivot, DAX), larger dataset performance, complex financial modeling, VBA macros, and pivot table capabilities. For everyday spreadsheets and team collaboration: Google Sheets is excellent. For complex financial analysis, data modeling, or enterprise reporting: Excel is significantly more powerful." },
+      { question: "Can Google Sheets replace Excel?", answer: "For most everyday use cases (budgets, project tracking, simple data analysis, team collaboration), yes — Google Sheets handles these well. For advanced use cases (large datasets 1M+ rows, complex financial models, Power BI integration, sophisticated macros/VBA), Excel cannot be fully replaced by Sheets. Many finance and accounting professionals specifically require Excel due to its industry-standard models and formulas." },
+    ],
+  },
+
+  "excel": {
+    description: "Microsoft Excel is the world's most widely used spreadsheet application, first released in 1985 and part of Microsoft Office/Microsoft 365. Excel has over 1 billion users and is the industry standard for financial modeling, data analysis, and business reporting. Excel's power comes from its deep analytical capabilities: Power Query (data transformation), Power Pivot (relational data modeling), DAX (data analysis expressions), complex pivot tables, 500+ functions, VBA macros, and Excel Add-ins. Excel 2024 features Copilot AI integration for formula assistance, data analysis, and chart creation. For large datasets, Excel handles up to 1,048,576 rows x 16,384 columns. Excel is the lingua franca of business and finance — investment banking, accounting, and consulting firms rely on it for complex financial models. Microsoft 365 (which includes Excel) has 400+ million commercial subscribers.",
+    highlights: ["Industry standard for financial modeling and data analysis", "Power Query + Power Pivot — enterprise-grade data transformation", "1B+ users; 400M+ Microsoft 365 commercial subscribers", "Copilot AI — formula assistance, data analysis, chart generation"],
+    category: "technology",
+    alternatives: [
+      { name: "Google Sheets", slug: "google-sheets", reason: "Free, real-time collaboration, better for team sharing" },
+      { name: "Airtable", slug: "airtable", reason: "Database functionality, non-technical friendly, API-first" },
+      { name: "Tableau", slug: "tableau", reason: "Superior visualization and BI dashboards for data analysis" },
+    ],
+    faqs: [
+      { question: "Why do investment banks still use Excel?", answer: "Excel remains dominant in finance because: (1) Financial models require extreme formula flexibility and custom calculations that database tools don't match; (2) Decades of model templates and institutional knowledge are built in Excel; (3) Auditability — auditors and clients can inspect every formula in an Excel model; (4) VBA macros automate complex workflows; (5) Excel's one-time-purchase accessibility vs database software costs. Despite alternatives, the financial industry's deep Excel lock-in means it remains the standard." },
+      { question: "Is Excel free?", answer: "Excel Online (web version) is free at office.com with a Microsoft account, with limited features. Full Excel requires Microsoft 365 ($69.99/year Personal, $99.99/year Family) or the one-time Microsoft Office Home 2024 ($149.99). Free alternatives include Google Sheets (full-featured online) and LibreOffice Calc (full-featured offline). For most personal use, Google Sheets handles standard spreadsheet tasks for free." },
+    ],
+  },
+
+  "playstation-5": {
+    description: "PlayStation 5 (PS5) is Sony's ninth-generation gaming console, released in November 2020. The PS5 features a custom AMD Zen 2 CPU (3.5 GHz, 8 cores), AMD RDNA 2 GPU (10.28 TFLOPS), 16 GB GDDR6 RAM, and a custom 825 GB NVMe SSD with speeds up to 5.5 GB/s — dramatically faster than mechanical drives, enabling near-instant load times. The PS5 DualSense controller introduced haptic feedback and adaptive triggers that simulate physical sensations (drawing a bowstring, rain, ground texture). The PS5 comes in a disc version ($499.99) and a Digital Edition ($449.99, now $449). PlayStation 5 has sold 50+ million units as of early 2024. PlayStation exclusives — God of War Ragnarök, Spider-Man 2, Horizon Forbidden West, Demon's Souls Remake — are consistently among gaming's highest-rated titles. PlayStation Plus (Essential $59.99/year, Extra $99.99/year, Premium $119.99/year) enables online multiplayer and a game catalog.",
+    highlights: ["50M+ units sold — most popular 9th gen console", "DualSense haptic feedback + adaptive triggers — industry-leading controller", "Custom SSD 5.5 GB/s — near-instant load times", "Industry-leading exclusives: God of War, Spider-Man, Horizon"],
+    category: "entertainment",
+    alternatives: [
+      { name: "Xbox Series X", slug: "xbox-series-x", reason: "Game Pass value, better backward compatibility, PC crossplay" },
+      { name: "Nintendo Switch", slug: "nintendo-switch", reason: "Portable handheld, unique Nintendo franchises, family-friendly" },
+      { name: "PC Gaming", slug: "steam", reason: "More power, mods, better prices on games, open ecosystem" },
+    ],
+    faqs: [
+      { question: "PS5 vs Xbox Series X: which is better?", answer: "PS5 wins on exclusive games (Spider-Man, God of War, Demon's Souls are PS5-only), controller innovation (DualSense haptics), and pure sales/popularity. Xbox Series X wins on value (Game Pass Ultimate at $14.99/month gives 100+ games including day-one releases), backward compatibility (Xbox One, 360 games), and PC integration (play Xbox games on PC too). If you care about exclusives and most friends are on PlayStation: PS5. If you value game catalog value and play on PC too: Xbox+Game Pass." },
+      { question: "Is it worth buying a PS5 in 2026?", answer: "Yes. The PS5 library is mature with 5+ years of excellent exclusive titles. Prices have stabilized and availability is no longer constrained. PlayStation 6 is likely still 2-3 years away. Mid-generation, the PS5 Pro (released late 2024) offers enhanced 4K performance for $699. For new console buyers in 2026, a PS5 Slim disc edition at $499 is a strong choice for the best exclusives in gaming." },
+    ],
+  },
+
+  "duolingo": {
+    description: "Duolingo is the world's most popular language learning app with over 500 million registered users and 37+ million daily active users, founded in 2011 by Luis von Ahn (inventor of CAPTCHA) and Severin Hacker. Duolingo offers courses in 40+ languages via gamified bite-sized lessons — streaks, XP, leaderboards, and hearts (lives system) make learning addictive and habit-forming. The app uses spaced repetition and adaptive algorithms to optimize vocabulary retention. Duolingo is free with ads; Duolingo Plus (Super Duolingo) at $6.99/month removes ads, provides unlimited hearts, and offline access. Duolingo went public in 2021 (NASDAQ: DUOL) and has a market cap of ~$7 billion. Duolingo's effectiveness for conversational fluency is debated — studies show it is excellent for vocabulary and basic grammar but may not develop deeper conversational proficiency without supplementation. Duolingo has expanded into math (Duolingo Math) and music learning.",
+    highlights: ["500M+ registered users — world's most popular language app", "37M+ daily active users; NASDAQ: DUOL — $7B market cap", "40+ languages, gamified learning with streaks and leaderboards", "Spaced repetition algorithm for vocabulary retention"],
+    category: "technology",
+    alternatives: [
+      { name: "Rosetta Stone", slug: "rosetta-stone", reason: "More immersive, no translation method, better for deep fluency" },
+      { name: "Babbel", slug: "babbel", reason: "More conversational focus, real-world dialogue scenarios" },
+      { name: "Pimsleur", slug: "pimsleur", reason: "Audio-first, strong for speaking and pronunciation" },
+    ],
+    faqs: [
+      { question: "Does Duolingo actually work?", answer: "Studies show Duolingo is effective for building vocabulary and reading comprehension. A 2020 study found that 34 hours of Duolingo Spanish is equivalent to one semester of university Spanish for vocabulary/grammar. However, Duolingo alone is unlikely to make you conversationally fluent — it lacks structured conversation practice, cultural context, and deep grammar explanation. Best practice: use Duolingo for daily habit formation and vocabulary, supplement with Pimsleur (speaking) or a tutor for conversations." },
+      { question: "Duolingo vs Rosetta Stone: which is better?", answer: "Duolingo is better for: free access, habit formation, gamified motivation, wide language selection, and casual learning. Rosetta Stone is better for: immersive learning (no translation — learn like a child), structured curriculum, and potentially deeper fluency (studies show better speaking outcomes). Duolingo is the right choice for casual/curiosity learners. Rosetta Stone ($179/year for 24 languages) is better for serious learners willing to invest time and money." },
+    ],
+  },
+
+  "coursera": {
+    description: "Coursera is one of the world's largest online learning platforms, founded in 2012 by Stanford professors Andrew Ng and Daphne Koller and publicly traded on NYSE (COUR) since 2021. Coursera offers 7,000+ courses, 600+ specializations, 30+ degree programs, and professional certificates from 300+ universities and companies including Stanford, Yale, Princeton, Google, IBM, and Meta. Coursera's professional certificates — Google Data Analytics ($49/month), Meta Front-End Development, IBM Data Science — are widely recognized by employers. Individual courses can often be audited free; full access with certificates costs $49/month or is included in Coursera Plus ($399/year — unlimited access to 7,000+ courses). Enterprise tier (Coursera for Business) serves 150+ companies for employee upskilling. Coursera has 148 million registered learners. The platform focuses on professional development, data science, AI, programming, business, and university credit.",
+    highlights: ["148M registered learners — one of the world's largest MOOC platforms", "7,000+ courses from 300+ universities (Stanford, Yale, Google, IBM)", "Accredited degrees online — 30+ bachelor's and master's programs", "Coursera Plus — unlimited access for $399/year"],
+    category: "technology",
+    alternatives: [
+      { name: "Udemy", slug: "udemy", reason: "More practical/vocational courses, one-time purchase pricing, massive catalog" },
+      { name: "edX", slug: "edx", reason: "Similar university partnerships (MIT, Harvard), MicroMasters programs" },
+      { name: "LinkedIn Learning", slug: "linkedin-learning", reason: "Strong business/professional skills, LinkedIn profile integration" },
+    ],
+    faqs: [
+      { question: "Are Coursera certificates worth it?", answer: "Google, IBM, and Meta professional certificates on Coursera have strong employer recognition for entry-level tech roles — particularly Google's Data Analytics and IT Support certificates, which Google actively promotes to hiring partners. University certificates (from Stanford, Yale, etc.) are respected for professional development but not equivalent to degrees. For career switching into data science, UX design, or IT: Coursera certificates are among the best available. The value is highest for career changers entering tech without traditional credentials." },
+      { question: "Coursera vs Udemy: which is better?", answer: "Coursera is better for: university-backed credentials, structured academic programs, professional certificates from major tech companies, and degree programs. Udemy is better for: practical how-to skills (web dev, video editing, photography), one-time course purchases ($15-25 on sale), massive course variety (200,000+), and learning specific tools without a curriculum. Use Coursera for credentials and career advancement; Udemy for specific skills and tools." },
+    ],
+  },
+
+  "udemy": {
+    description: "Udemy is the world's largest online learning marketplace with 250,000+ courses and 62+ million students, founded in 2010 and headquartered in San Francisco. Unlike subscription platforms, Udemy operates a marketplace model — individual instructors create and sell courses, and Udemy takes a revenue share (37-63% depending on whether traffic comes from Udemy or the instructor). Courses cover virtually every skill: web development, photography, music, business, language learning, personal development, and more. Course prices range from $10.99-$199.99, with frequent sales that bring most courses to $10-15. Udemy is not accredited — there is no formal certification from universities or employers, though Udemy certificates are issued by instructors. Udemy Business ($19.99-$23.99/user/month) provides enterprises with curated course collections for employee training. The platform has 75,000+ instructors globally. Notable for software/tech learning: Full-Stack Development (Colt Steele), JavaScript, Python, and AWS courses are consistently top-rated.",
+    highlights: ["250,000+ courses — world's largest course marketplace", "62M+ students; 75,000+ instructors globally", "One-time purchase model — own courses forever", "Frequent sales bring most courses to $10-15"],
+    category: "technology",
+    alternatives: [
+      { name: "Coursera", slug: "coursera", reason: "University credentials, professional certificates from Google/IBM, more structured" },
+      { name: "Skillshare", slug: "skillshare", reason: "Subscription model, strong for creative skills, shorter lessons" },
+      { name: "LinkedIn Learning", slug: "linkedin-learning", reason: "Business/professional focus, LinkedIn profile integration" },
+    ],
+    faqs: [
+      { question: "Is Udemy worth it?", answer: "Udemy is excellent value when purchased on sale ($10-15 per course vs the listed $100-200). For practical, tool-specific skills — learning React, Python, Adobe Premiere, guitar — Udemy's practical courses are often the best available. The caveat is quality varies widely between instructors; always check reviews and preview before buying. Udemy certificates have limited employer recognition but the skills themselves are highly valued. For career credentials: supplement with Coursera or official certifications." },
+      { question: "Are Udemy courses updated?", answer: "Quality varies by instructor. Top instructors (Colt Steele, Angela Yu, Jose Portilla) actively update their courses as technology changes. Others may become outdated. Check the 'Last Updated' date on any course you're considering — for fast-moving tech (JavaScript frameworks, cloud services), courses older than 12-18 months may teach outdated practices. Read reviews mentioning 'outdated' to spot stale content before purchasing." },
+    ],
+  },
+
+  "calm": {
+    description: "Calm is a leading meditation and mental wellness app, founded in 2012 by Alex Tew and Michael Acton Smith and headquartered in San Francisco. Calm offers guided meditations, sleep stories narrated by celebrities (Matthew McConaughey, Harry Styles, LeBron James), breathing exercises, masterclasses by mental health experts, and daily mindfulness programs. Calm has approximately 100 million downloads and 4 million premium subscribers. Calm Premium costs $69.99/year or $14.99/month. Calm has been consistently ranked as one of the App Store's highest-grossing apps. The app is particularly known for its Sleep Stories — narrated bedtime stories for adults that help users fall asleep. Calm was valued at $2 billion in 2020, making it the first 'unicorn' mental wellness company. It partners with corporations (Calm for Business) and has health insurance coverage through some plans. Calm's aesthetic — nature sounds, peaceful imagery, Bob Ross-narrated bedtime stories — is highly regarded.",
+    highlights: ["100M+ downloads; 4M premium subscribers", "$69.99/year — Sleep Stories, guided meditations, masterclasses", "Celebrity narrators — Matthew McConaughey, Harry Styles, LeBron James", "Valued at $2B — first mental wellness 'unicorn'"],
+    category: "technology",
+    alternatives: [
+      { name: "Headspace", slug: "headspace", reason: "More structured beginner courses, clinical research backing, fun animations" },
+      { name: "Insight Timer", slug: "insight-timer", reason: "Free tier with 100,000+ meditations, large community" },
+      { name: "Ten Percent Happier", slug: "ten-percent-happier", reason: "More secular, science-based approach, expert-taught" },
+    ],
+    faqs: [
+      { question: "Calm vs Headspace: which is better?", answer: "Both are excellent meditation apps. Calm is better for: Sleep Stories (unique feature), nature soundscapes, celebrity narrators, and users who want variety in content type (sleep, music, masterclasses). Headspace is better for: structured beginner meditation courses, animated explainers that make concepts approachable, and clinical research backing. Calm skews toward relaxation; Headspace skews toward structured meditation practice. Both offer free trials — try both and choose based on what resonates." },
+      { question: "Is Calm covered by insurance?", answer: "Some health insurance plans and employee benefit programs cover Calm Premium. Check with your employer's HR/benefits team — many large employers (AT&T, Price Waterhouse, etc.) offer Calm as an employee wellness benefit at no cost. Some HSA/FSA accounts may be used for Calm subscriptions as a mental health expense (varies by provider). It's worth checking before paying out-of-pocket." },
+    ],
+  },
+
+  "headspace": {
+    description: "Headspace is a leading meditation and mindfulness app co-founded in 2010 by Andy Puddicombe (a former Buddhist monk) and Rich Pierson, headquartered in Santa Monica, California. Headspace is known for its structured 'foundations' courses that teach meditation from scratch using animated explainers and a progressive curriculum — making it particularly accessible for beginners. Headspace offers guided meditations, sleepcasts (narrated sleep content), focus music, exercise mindfulness, and SOS meditations for acute anxiety. Headspace has published multiple peer-reviewed clinical studies demonstrating its effectiveness in reducing stress, anxiety, and burnout. Headspace merged with Ginger (mental health coaching) in 2021 to form Headspace Health. The combined entity serves 100+ million users and 2,500+ enterprise clients. Headspace Premium costs $69.99/year or $12.99/month. Headspace for Work (enterprise) includes coaching and therapy referrals alongside guided meditation.",
+    highlights: ["Founded by a Buddhist monk — authentic meditation curriculum", "Clinical research backing — peer-reviewed studies on effectiveness", "Beginner-friendly — animated courses with structured progression", "Headspace Health — includes mental health coaching (post-Ginger merger)"],
+    category: "technology",
+    alternatives: [
+      { name: "Calm", slug: "calm", reason: "Better sleep content, celebrity narrators, more content variety" },
+      { name: "Insight Timer", slug: "insight-timer", reason: "Free 100,000+ meditations, live daily sessions, large community" },
+      { name: "Ten Percent Happier", slug: "ten-percent-happier", reason: "More secular/scientific approach, expert teacher variety" },
+    ],
+    faqs: [
+      { question: "Is Headspace good for beginners?", answer: "Yes — Headspace is specifically designed for beginners. The 'Basics' course (10-30 sessions) walks you through meditation fundamentals with animated explainers that make abstract concepts concrete. Andy Puddicombe's calm voice and approachable teaching style make it one of the most accessible introductions to meditation available. After Basics, structured courses for specific goals (stress, sleep, focus, relationships) build progressively. If you're new to meditation, Headspace's structure is one of its greatest strengths." },
+      { question: "Does Headspace actually work?", answer: "Headspace has published multiple peer-reviewed studies (in collaboration with Oxford, Carnegie Mellon, and Kaiser Permanente) showing statistically significant reductions in stress (14%), burnout (46%), and anxiety after 30 days of use. Mindfulness meditation's effectiveness is well-established in clinical literature. Apps make it more accessible, but consistency matters — daily practice of 10 minutes shows better outcomes than sporadic longer sessions. Headspace's gamification and streaks help with habit formation." },
+    ],
+  },
+
+  "myfitnesspal": {
+    description: "MyFitnessPal is the world's most popular calorie tracking and nutrition app, founded in 2005 and now owned by Francisco Partners (acquired from Under Armour in 2020 for $345 million). MyFitnessPal has over 200 million registered users globally and features the world's largest food database with 14 million+ foods including restaurant items, branded products, and user-submitted entries. The app allows users to log meals via barcode scanning, track macronutrients (protein, carbs, fat), log exercise, connect wearables (Apple Watch, Fitbit, Garmin), and set calorie/weight goals. MyFitnessPal Free includes the full food database and basic logging; MyFitnessPal Premium ($19.99/month or $79.99/year) adds food analysis, meal planning, exercise analytics, and net calories goal. MyFitnessPal's large community, comprehensive food database, and integrations make it the default choice for calorie counting — used by millions of dieters and athletes. Critics note the free app has ads and limits analysis features.",
+    highlights: ["200M+ registered users — world's most popular nutrition app", "14M+ food database — largest in any calorie tracking app", "Barcode scanner — instant nutrition lookup", "Integrates with Apple Watch, Fitbit, Garmin, and 50+ apps"],
+    category: "technology",
+    alternatives: [
+      { name: "Cronometer", slug: "cronometer", reason: "More accurate micronutrient tracking, ideal for precision nutrition" },
+      { name: "Lose It!", slug: "lose-it", reason: "Cleaner interface, visual meal photo logging, simpler experience" },
+      { name: "Noom", slug: "noom", reason: "Psychology-based weight loss coaching, not just calorie counting" },
+    ],
+    faqs: [
+      { question: "MyFitnessPal vs Cronometer: which is more accurate?", answer: "Cronometer is generally considered more accurate for micronutrient tracking — it uses verified nutritional databases (NCCDB, USDA) rather than user-submitted data. MyFitnessPal's user-submitted database has more entries but with variable accuracy — some foods have incorrect data. For tracking macros (protein, carbs, fat) and calories, both are adequate. For precise micronutrient tracking (vitamins, minerals) or medical/clinical purposes: Cronometer is significantly more reliable." },
+      { question: "Is MyFitnessPal free?", answer: "MyFitnessPal has a functional free tier: full food database access, barcode scanning, calorie tracking, macro breakdown, and basic exercise logging. Premium ($19.99/month or $79.99/year) adds: food analysis dashboard, calorie density charts, guided goals, priority support, and an ad-free experience. For most users, the free tier is sufficient for calorie tracking. Premium is worth it if you want detailed nutritional analysis or the cleaner ad-free experience." },
+    ],
+  },
+
+  "cronometer": {
+    description: "Cronometer is a nutrition tracking application founded in 2006 by Aaron Davidson and headquartered in Revelstoke, British Columbia. Cronometer differentiates itself from MyFitnessPal through its emphasis on micronutrient accuracy — it uses verified nutritional databases (USDA, NCCDB, Canadian Nutrient File) rather than primarily user-submitted data, making it more reliable for tracking vitamins, minerals, and micronutrients. Cronometer tracks 84 nutrients compared to MyFitnessPal's focus on basic macros. The app is popular among biohackers, people following special diets (keto, vegan, carnivore), those with medical dietary needs, and athletes monitoring detailed nutrition. Cronometer Free includes full micronutrient tracking; Cronometer Gold ($7.99/month or $39.99/year) adds detailed analysis, diary summaries, and fasting timer. Cronometer has approximately 5 million registered users — far fewer than MyFitnessPal (200M+), reflecting its niche positioning for precision nutrition.",
+    highlights: ["Tracks 84 nutrients — most comprehensive micronutrient tracking", "Verified databases (USDA, NCCDB) — more accurate than crowdsourced data", "Popular with biohackers, medical diets, precision nutrition", "$7.99/month Gold tier — affordable compared to premium alternatives"],
+    category: "technology",
+    alternatives: [
+      { name: "MyFitnessPal", slug: "myfitnesspal", reason: "Larger food database (14M+ items), larger user community" },
+      { name: "Lose It!", slug: "lose-it", reason: "Simpler interface, meal photo recognition, better for beginners" },
+      { name: "Noom", slug: "noom", reason: "Psychology coaching + tracking, better for behavioral weight loss" },
+    ],
+    faqs: [
+      { question: "Who should use Cronometer instead of MyFitnessPal?", answer: "Cronometer is best for: people following specific medical diets (kidney disease, metabolic conditions) where micronutrient accuracy matters; biohackers and health optimizers who want to track vitamins and minerals precisely; those on keto, carnivore, or vegan diets who need detailed nutritional analysis; and anyone who finds MyFitnessPal's crowdsourced food data unreliable. For everyday calorie counting, MyFitnessPal's larger database and community are more convenient." },
+      { question: "Is Cronometer's data more accurate than MyFitnessPal?", answer: "Yes, generally. Cronometer uses primarily verified databases (USDA, NCCDB) with strict data standards. MyFitnessPal's database is larger but heavily user-submitted, with known issues: calorie errors in user entries, duplicate foods, and missing micronutrient data. Studies have found significant inaccuracies in crowdsourced nutrition databases. For micronutrient tracking (vitamins, minerals), Cronometer is substantially more reliable. For basic macro/calorie tracking, the difference is less significant." },
+    ],
+  },
+
+  "google-maps": {
+    description: "Google Maps is the world's most widely used digital mapping and navigation service, developed by Google since 2004 and available on web, iOS, and Android. Google Maps has approximately 1 billion monthly active users globally. Features include turn-by-turn navigation, real-time traffic updates, Street View (360° imagery of 220+ countries), public transit directions, satellite imagery, indoor maps, Live View AR navigation, restaurant/business discovery, and Google Local Guides (community reviews with 150 million+ contributors). Google Maps integrates with Google Search for business discovery and Google Reviews for ratings. The Maps API is used by thousands of third-party apps and websites. Google has invested billions in Maps data, with 10 million miles of Street View imagery and continuous updates from driving vehicles, satellite imagery, and user contributions. Navigation uses machine learning for ETA prediction, incident detection, and route optimization.",
+    highlights: ["1B+ monthly active users — world's most used mapping service", "Street View — 360° imagery in 220+ countries, 10M+ miles", "150M+ Local Guides — community review platform", "Integrated with Google Search and Google Reviews"],
+    category: "technology",
+    alternatives: [
+      { name: "Apple Maps", slug: "apple-maps", reason: "Better privacy (no Google data collection), improved quality since 2020" },
+      { name: "Waze", slug: "waze", reason: "Best real-time crowd-sourced traffic and hazard alerts (owned by Google)" },
+      { name: "HERE Maps", slug: "here-maps", reason: "Offline maps, better in Europe, used by automakers" },
+    ],
+    faqs: [
+      { question: "Google Maps vs Apple Maps: which is more accurate?", answer: "Google Maps generally has more accurate and up-to-date data globally — more businesses, better transit data internationally, and superior coverage in developing countries. Apple Maps has dramatically improved since its troubled 2012 launch and is now competitive in the US, UK, and major markets. Apple Maps is better for: privacy (Apple doesn't sell your location data), Siri integration, cleaner iOS look and feel. Google Maps is better for: international travel, business discovery, Street View, and transit in less-covered regions." },
+      { question: "Is Google Maps tracking my location?", answer: "Google Maps collects extensive location data when in use and, if Location History is enabled, continuously logs your location to your Google account. This data is used to improve traffic predictions and is part of Google's advertising data ecosystem. To reduce tracking: disable Location History in Google Account settings, use Maps without signing in, or switch to Apple Maps (which collects minimal location data). Google Maps' Timeline feature shows exactly how much data has been collected about your movements." },
+    ],
+  },
+
+  "apple-maps": {
+    description: "Apple Maps is Apple's digital mapping and navigation service, built into iOS, iPadOS, macOS, and watchOS. Launched in 2012 as a replacement for Google Maps on Apple devices, Apple Maps had a notoriously troubled launch (incorrect data, missing landmarks, poor routing) but has been significantly rebuilt since 2018 with Apple-collected data. As of 2024, Apple Maps is competitive with Google Maps in the US, UK, and major European cities, though it still lags in international coverage and business data completeness. Apple Maps differentiates through privacy: Apple does not sell location data, does not profile users for advertising, and uses randomized identifiers for map queries. Key features include Flyover (3D city views), Look Around (street-level imagery built from Apple vehicles), detailed indoor maps for airports and malls, Siri voice navigation, and CarPlay integration. Apple Maps now includes Guides (curated city recommendations) and transit in 500+ cities.",
+    highlights: ["Built-in on all Apple devices — seamless Siri + CarPlay integration", "Privacy-focused — no location data sold or used for advertising", "Look Around — street-level imagery from Apple vehicles", "Significantly improved since 2018 — competitive in US and major markets"],
+    category: "technology",
+    alternatives: [
+      { name: "Google Maps", slug: "google-maps", reason: "Superior global coverage, more business data, Street View in 220+ countries" },
+      { name: "Waze", slug: "waze", reason: "Best real-time traffic and hazard alerts for drivers" },
+      { name: "HERE Maps", slug: "here-maps", reason: "Better offline maps, trusted by automakers" },
+    ],
+    faqs: [
+      { question: "Is Apple Maps good enough to replace Google Maps?", answer: "In the US and major European cities, Apple Maps is now a viable replacement for most use cases — navigation, business search, transit. It excels at privacy, Apple ecosystem integration, and visual quality. Google Maps still wins for: international travel (far better global coverage and business data), complex transit routing, Street View globally, and restaurant/business discovery via Google Reviews. For everyday US navigation on iPhone: Apple Maps is excellent. For international travel or deep business discovery: keep Google Maps." },
+      { question: "Does Apple Maps collect my location data?", answer: "Apple Maps uses fuzzy/randomized location data — queries are associated with a random identifier, not your Apple ID, and change frequently so Apple cannot build a persistent location profile. Apple Maps does not sell your location data to advertisers. This is a significant privacy advantage over Google Maps. However, Apple does use aggregate anonymized data to improve routing and traffic. For maximum privacy in navigation, Apple Maps is the clear choice among major mapping apps." },
+    ],
+  },
+
+  "waze": {
+    description: "Waze is a community-driven navigation app founded in Israel in 2008 and acquired by Google in 2013 for $1.15 billion. Despite being owned by Google, Waze operates as a separate app with its own unique features. Waze's defining feature is real-time crowd-sourced traffic data — millions of Wazers report accidents, police traps, road closures, construction, and hazards in real time, giving other users advance warning. Waze is available on iOS and Android with 150+ million registered users, primarily drivers. Waze offers turn-by-turn navigation, fuel price comparison at nearby stations, Carpool feature (connecting drivers and passengers for cost-sharing), and fun avatar customization. Waze operates separately from Google Maps but shares some traffic data. Waze calculates routes based on real-time community data, often taking unusual routes to avoid congestion. Its strength is in urban areas with high user density; in low-density areas, community data is sparse.",
+    highlights: ["Crowd-sourced real-time hazard and police reporting", "150M+ registered users; owned by Google since 2013", "Fuel price comparison at nearby stations", "Carpool feature — connect drivers and passengers for cost-sharing"],
+    category: "technology",
+    alternatives: [
+      { name: "Google Maps", slug: "google-maps", reason: "Better global coverage, business search, satellite view, transit" },
+      { name: "Apple Maps", slug: "apple-maps", reason: "Better privacy, seamless iPhone integration, no Google data collection" },
+      { name: "HERE Maps", slug: "here-maps", reason: "Better offline maps, trusted by automakers, broader international data" },
+    ],
+    faqs: [
+      { question: "Is Waze or Google Maps better for driving?", answer: "Waze is often better for commuting in congested urban areas — its crowd-sourced police, accident, and hazard alerts are uniquely valuable for avoiding slowdowns and speed traps. Waze is more aggressive about finding alternate routes to save time. Google Maps is better for: first-time navigation to unfamiliar places (richer POI data, Street View), long road trips (fewer quirky alternate routes), walking/transit/cycling navigation, and international use. Many drivers use Waze for familiar urban commutes and Google Maps for unfamiliar destinations." },
+      { question: "Does Waze drain more battery than Google Maps?", answer: "Yes. Waze requires continuous GPS, screen-on navigation, and active community data uploading — it's one of the more battery-intensive navigation apps. On a 1-2 hour drive, Waze can consume 15-30% of iPhone/Android battery. Google Maps is somewhat more efficient. Both apps benefit from a car mount (keeping screen on less) and a car charger during long trips. If battery is a concern, consider downloading offline maps in Google Maps and using it without active data upload." },
+    ],
+  },
 };
