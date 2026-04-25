@@ -8584,4 +8584,109 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Roomba vs Roborock: which is better?", answer: "Roborock is often rated higher than Roomba in 2024-2026: better suction (4,000-7,000 Pa vs Roomba's typically lower published numbers), better mopping (vibrating mops with auto-rinse), and lower prices for comparable features. Roomba wins on: brand recognition, US/Canada customer service, smarter PrecisionVision obstacle detection, and Clean Base reliability. For value and pure performance: Roborock often edges Roomba. For brand trust and ecosystem: Roomba remains dominant in North America." },
     ],
   },
+
+  "lululemon": {
+    description: "Lululemon Athletica is a Canadian athletic apparel retailer founded in 1998 in Vancouver and headquartered in Vancouver, BC. Originally focused on yoga apparel, Lululemon has expanded into running, training, golf, tennis, and lifestyle wear. Lululemon is publicly traded (NASDAQ: LULU) with a $35-50 billion market cap. The company generates approximately $9.6 billion in annual revenue across 700+ stores in 25+ countries. Lululemon's signature products include Align leggings (women's, $98-128), ABC pants (men's, $128), Define Jacket, and Wunder Train shorts. The brand is known for premium quality (4-way stretch fabrics like Luon, Everlux, Nulu), longer product lifecycles (3-5 years for premium pieces), and a distinctive marketing approach that emphasizes lifestyle and community (yoga ambassadors, run clubs). Lululemon's prices are 2-3x mass-market competitors but customer loyalty is exceptional with strong repeat purchase rates.",
+    highlights: ["$9.6B annual revenue, 700+ stores in 25+ countries", "Premium athleisure — Align leggings are category-defining", "Proprietary fabrics — Luon, Everlux, Nulu, Nulux", "Strong community: yoga ambassadors, run clubs"],
+    category: "products",
+    alternatives: [
+      { name: "Athleta", slug: "athleta", reason: "Gap Inc.'s women's athletic brand, similar quality at slightly lower prices" },
+      { name: "Vuori", slug: "vuori", reason: "California athleisure rival, especially strong men's offering" },
+      { name: "Alo Yoga", slug: "alo-yoga", reason: "Premium yoga focus, fashion-forward, celebrity following" },
+    ],
+    faqs: [
+      { question: "Are Lululemon leggings worth $98-128?", answer: "For most regular athleisure users: yes. Align leggings use proprietary Nulu fabric (4-way stretch, buttery soft, virtually no resistance) that lasts 3-5 years with regular wear vs 6-18 months for cheaper alternatives. The cost-per-wear math often favors Lululemon. For occasional/light use: cheaper alternatives ($30-60) are sufficient. Lululemon's hemming service is free and lifetime, the 'We Made Too Much' clearance section offers 30-50% discounts, and quality complaints are rare." },
+      { question: "Lululemon vs Athleta: which is better?", answer: "Lululemon: premium quality, more design innovation, broader range (men's/women's/kids), and stronger lifestyle brand. Pricing 10-30% higher. Athleta (Gap Inc. brand): slightly lower prices, more inclusive sizing (XXS-3X across more styles), women-only, B Corp certified (sustainability focus). Quality is comparable, with Lululemon edging on premium fabrics. For style and innovation: Lululemon. For inclusive sizing and ethics-focused buying: Athleta." },
+    ],
+  },
+
+  "yeti": {
+    description: "YETI Holdings, Inc. is a premium outdoor products company founded in 2006 in Austin, Texas by Roy and Ryan Seiders. YETI is publicly traded (NYSE: YETI) with $1.8 billion in 2023 revenue and a $3-5 billion market cap. YETI started with rotomolded coolers (the Tundra, $250-1,500) marketed to fishermen and hunters who needed coolers durable enough to last decades — they pioneered the premium cooler category. YETI expanded into drinkware (Rambler tumblers, mugs, bottles, $25-65), bags, chairs, dog bowls, and outdoor accessories. YETI's products use proprietary technologies: PermaFrost insulation in coolers, double-wall vacuum insulation in Ramblers (keeps drinks cold 24+ hours or hot 12+ hours), and 18/8 stainless steel construction. YETI's marketing emphasizes durability and authenticity (sponsored anglers, hunters, ranchers). The brand commands premium prices but has built fierce loyalty in outdoor and lifestyle segments.",
+    highlights: ["Pioneered premium cooler market — 2006 founding", "$1.8B revenue (2023), NYSE: YETI", "Rambler tumblers — class-leading temperature retention", "Lifetime warranty mindset — products built to last decades"],
+    category: "products",
+    alternatives: [
+      { name: "Hydro Flask", slug: "hydro-flask", reason: "Lighter, more colorful, often cheaper for water bottles" },
+      { name: "Stanley", slug: "stanley", reason: "Heritage brand, viral Quencher tumbler, lower prices" },
+      { name: "Coleman", slug: "coleman", reason: "Mass-market value, much cheaper coolers, less durability" },
+    ],
+    faqs: [
+      { question: "Are YETI coolers worth the price?", answer: "Worth it for: hunters/fishermen who need 5-7+ days of ice retention, those who use coolers in extreme conditions, and people who keep coolers for 10+ years (cost-per-use favors YETI). Not worth it for: occasional weekend campers, beach/picnic use where cheaper coolers are equivalent, and those who replace coolers every 2-3 years anyway. RTIC and other YETI 'clones' offer 80-90% of YETI's performance for 50-60% of the price — viable alternatives unless brand matters." },
+      { question: "YETI Rambler vs Hydro Flask: which is better?", answer: "Both are excellent. YETI Rambler: heavier, more durable (less denting), better for hot drinks (12+ hours), proprietary MagSlider lid, slightly more premium feel. Hydro Flask: lighter, more colors and sizes, slightly better for cold drinks (24+ hours), Flex Cap is industry-standard, often cheaper. For everyday water bottle: Hydro Flask. For coffee/tea or rough-and-tumble use: YETI Rambler. Both honor lifetime/long warranties and have devoted fan bases." },
+    ],
+  },
+
+  "stanley": {
+    description: "Stanley (Stanley 1913) is a heritage outdoor brand founded in 1913 by William Stanley Jr., who invented the all-steel vacuum bottle. Stanley is owned by PMI Worldwide and has been making thermoses and food jars for 110+ years. In 2024, Stanley experienced a viral cultural moment driven by its Quencher H2.0 FlowState tumbler — the 40 oz handle-grip tumbler became a TikTok phenomenon, particularly among women, with limited-edition colors selling out instantly and the brand generating $750+ million in 2023 (up from $73M in 2019). Stanley sells classic vacuum thermoses (Classic Bottle $40-100), travel mugs, growler-style bottles, food jars, and the Quencher line ($40-50). Stanley products feature double-wall vacuum insulation, BPA-free plastic, and a strong lifetime warranty. The brand's heritage and price point ($40 for the Quencher vs YETI's $50+ Rambler) make it accessible to broader markets.",
+    highlights: ["Founded 1913 — invented the all-steel vacuum bottle", "$750M+ revenue (2023), 10x growth in 4 years", "Quencher H2.0 — 2024 viral cultural phenomenon", "Lifetime warranty — built to last"],
+    category: "products",
+    alternatives: [
+      { name: "YETI", slug: "yeti", reason: "More premium, better durability, broader outdoor product line" },
+      { name: "Hydro Flask", slug: "hydro-flask", reason: "More color/size options, lighter, similar price" },
+      { name: "Owala", slug: "owala", reason: "Innovative dual-spout FreeSip lid, strong gym/everyday use" },
+    ],
+    faqs: [
+      { question: "Why did Stanley Quencher go viral?", answer: "The Stanley Quencher became a TikTok and Instagram sensation in 2023-2024, especially among women. Drivers: (1) 40 oz capacity encourages hydration without constant refills; (2) handle and tapered base fit cup holders perfectly; (3) limited-edition colors (Cosmo Pink, Camelia, Watercolor) created collector demand and FOMO; (4) car-fire video where a Stanley survived the heat and kept ice intact went viral; (5) the brand became a status symbol/lifestyle accessory. Sales went from $73M (2019) to $750M+ (2023) — 10x growth driven primarily by Quencher." },
+      { question: "Stanley vs Hydro Flask: which is better?", answer: "Both are excellent. Stanley wins on: handle (Quencher line — easier carrying), heritage brand cachet, limited-edition collectibility, slightly cheaper. Hydro Flask wins on: more sizes/colors at any time, lighter weight, slightly better cold retention (24+ hours), Flex Cap design. For viral 40 oz tumbler with handle: Stanley Quencher. For everyday water bottle in colorful options: Hydro Flask. For coffee/hot drinks: Stanley Classic Vacuum Bottle is iconic and excellent." },
+    ],
+  },
+
+  "coca-cola": {
+    description: "The Coca-Cola Company is the world's largest beverage company, founded in 1886 in Atlanta, Georgia and headquartered there today. Coca-Cola is publicly traded (NYSE: KO) with a $260+ billion market cap. The company sells 500+ brands in 200+ countries through a global bottler network. Beyond Coca-Cola Classic (the world's most recognizable trademark), the company owns Diet Coke, Coca-Cola Zero Sugar, Sprite, Fanta, Minute Maid, Powerade, Dasani, smartwater, vitaminwater, Monster Energy (significant ownership), Costa Coffee, Innocent Drinks, and Topo Chico. Coca-Cola generates approximately $46 billion in annual revenue. The Coca-Cola formula remains a closely guarded secret — only 2 executives reportedly know the full recipe at any time. Coca-Cola Classic has 39g sugar and 140 calories per 12 oz can. Coca-Cola dominates US carbonated soft drinks with approximately 45% market share (vs PepsiCo at 25-30%).",
+    highlights: ["World's largest beverage company — 500+ brands, 200+ countries", "$46B annual revenue, NYSE: KO ($260B+ market cap)", "World's most valuable brand by some rankings", "Owns Sprite, Fanta, Powerade, Dasani, Costa Coffee, more"],
+    category: "products",
+    alternatives: [
+      { name: "Pepsi", slug: "pepsi", reason: "Direct competitor, sweeter taste, broader food portfolio (Frito-Lay, Quaker)" },
+      { name: "Dr Pepper", slug: "dr-pepper", reason: "Distinctive 23-flavor blend, Keurig Dr Pepper brand" },
+      { name: "Sparkling water (LaCroix, Bubly)", slug: "lacroix", reason: "Healthier alternative, no sugar, no calories" },
+    ],
+    faqs: [
+      { question: "Coca-Cola vs Pepsi: which tastes better?", answer: "Subjective and culturally defined. Pepsi tends to win in blind taste tests (the 1970s 'Pepsi Challenge' famously demonstrated this) — Pepsi is sweeter and slightly more citrusy, which makes a stronger first sip impression. Coca-Cola has a more complex flavor profile that pairs better with food and full meals (which is why fast-food chains predominantly serve Coke). Cultural factors heavily influence preference — most consumers strongly prefer the brand they grew up with. Both are excellent products with passionate fans." },
+      { question: "Why is Coca-Cola so dominant?", answer: "Coca-Cola's 138-year head start (founded 1886 vs Pepsi 1893), the original 'Coke' nickname becoming generic for cola, masterful global marketing (Santa Claus iconography, 'Hilltop' commercial, ubiquity), and an enormous global bottling network (independent bottlers in nearly every country). Coca-Cola's brand value is consistently estimated at $80+ billion — among the top 10 most valuable brands globally. The company's marketing emphasizes happiness, togetherness, and shared moments — emotional positioning that competitors have struggled to match." },
+    ],
+  },
+
+  "pepsi": {
+    description: "PepsiCo, Inc. is the world's second-largest beverage company and one of the largest food and beverage companies overall, founded in 1898 (as 'Pepsi-Cola') in New Bern, North Carolina. Headquartered in Purchase, New York, PepsiCo is publicly traded (NASDAQ: PEP) with a $230+ billion market cap and approximately $91 billion in annual revenue. Unlike Coca-Cola which focuses on beverages, PepsiCo is also one of the world's largest food companies through Frito-Lay (Lay's, Doritos, Cheetos, Tostitos, Ruffles), Quaker Oats, and Tropicana. Beverage brands include Pepsi, Mountain Dew, Gatorade, Lipton (partnership), Aquafina, 7UP (international), and SodaStream. Pepsi has a sweeter, more citrusy flavor than Coca-Cola due to its formula (1898) using more lemon and lime essence. Pepsi holds approximately 25-30% of the US carbonated soft drink market — second to Coca-Cola's 45%. PepsiCo's diversified food + beverage model has made it slightly more recession-resistant than Coca-Cola.",
+    highlights: ["$91B revenue — diversified food + beverage giant", "Owns Frito-Lay, Quaker Oats, Tropicana, Gatorade", "NASDAQ: PEP ($230B+ market cap)", "Sweeter, more citrusy formula vs Coca-Cola"],
+    category: "products",
+    alternatives: [
+      { name: "Coca-Cola", slug: "coca-cola", reason: "Direct competitor, more iconic brand, dominant in 100+ countries" },
+      { name: "Mountain Dew", slug: "mountain-dew", reason: "PepsiCo's high-caffeine citrus brand, popular with younger demographic" },
+      { name: "Dr Pepper", slug: "dr-pepper", reason: "Distinctive 23-flavor cola alternative" },
+    ],
+    faqs: [
+      { question: "Pepsi vs Coca-Cola: who wins blind taste tests?", answer: "Historically, Pepsi wins blind taste tests with first-sip preferences — Pepsi is sweeter and gives a stronger immediate impression. The famous 'Pepsi Challenge' marketing campaigns of the 1970s-1980s were built on this. However, when consumers drink full beverages (not just sips), Coca-Cola often performs better — its more complex, less sweet flavor pairs better with food and doesn't fatigue the palate. This 'less is more' phenomenon is one reason fast-food chains overwhelmingly serve Coca-Cola products." },
+      { question: "Is Pepsi better than Coca-Cola for cooking/baking?", answer: "Different uses favor different colas: Coca-Cola is preferred for traditional recipes (Coca-Cola cake, ham glaze, beef brisket) — its caramel notes and cola complexity work well in slow-cooked dishes. Pepsi's sweeter and more citrusy profile works better in lighter recipes (pulled pork, marinades, cocktails). Both work as substitutes in most recipes, with subtle flavor differences. Mexican Coke (made with cane sugar instead of HFCS) is often preferred by chefs for cooking due to cleaner flavor." },
+    ],
+  },
+
+  "patagonia": {
+    description: "Patagonia, Inc. is a privately held outdoor clothing company founded in 1973 by climber Yvon Chouinard and headquartered in Ventura, California. Patagonia is the most environmentally and socially conscious major outdoor brand, with $1.5+ billion in annual revenue. Patagonia products include technical outerwear (Houdini Jacket, Down Sweater, Nano Puff), fleece (R1, Better Sweater), mountaineering equipment, surf wear, and sustainable fashion (Worn Wear program — repair, resale, recycle). In September 2022, founder Yvon Chouinard transferred ownership of Patagonia (valued at $3 billion) to a trust and nonprofit (Holdfast Collective) — making 'Earth our only shareholder.' All future profits beyond reinvestment go to environmental causes, generating approximately $100 million/year. Patagonia is famous for: '1% for the Planet' (donates 1% of sales to environmental groups), the Common Threads Initiative, lifetime repairs through Worn Wear, and refusing to make apparel for industries it views as harmful (oil/gas, military). Patagonia's customer loyalty is among the strongest in apparel.",
+    highlights: ["$1.5B+ revenue, privately held, environmental nonprofit ownership", "Worn Wear — lifetime repair + resale program", "1% for the Planet — $100M+/year to environment", "Iconic technical outerwear: Houdini, Down Sweater, R1 fleece"],
+    category: "products",
+    alternatives: [
+      { name: "The North Face", slug: "the-north-face", reason: "Larger brand reach, more affordable, owned by VF Corporation" },
+      { name: "Arc'teryx", slug: "arcteryx", reason: "More technical/premium, alpine-focused, higher price point" },
+      { name: "REI Co-op", slug: "rei", reason: "Member-owned co-op, broader outdoor offering, more accessible" },
+    ],
+    faqs: [
+      { question: "Is Patagonia really sustainable?", answer: "Yes, more than most major apparel companies. Patagonia uses recycled materials extensively, organic cotton, Fair Trade Certified factories, and operates Worn Wear (the largest used outdoor gear marketplace). The 2022 ownership transfer (all profits → environment) is unprecedented in major retail. Critics note Patagonia still produces synthetic petroleum-based fabrics and ships globally, generating emissions. But within the constraints of running a profitable apparel business, Patagonia is among the most sustainable major brands. The company is transparent about its impact in annual reports." },
+      { question: "Is Patagonia worth the price?", answer: "Yes for outdoor enthusiasts and consumers prioritizing sustainability. Patagonia's quality is exceptional — products typically last 10+ years with minimal wear, and the Worn Wear program offers free or cheap repairs to extend lifespan further. Cost-per-wear math heavily favors Patagonia for active users. Compared to The North Face at similar tier: Patagonia is 20-40% more expensive but generally outlasts North Face by years. For occasional/casual outdoor use, cheaper alternatives suffice." },
+    ],
+  },
+
+  "the-north-face": {
+    description: "The North Face is a leading American outdoor recreation product company, founded in 1966 in San Francisco and headquartered in Denver, Colorado. Owned by VF Corporation (NYSE: VFC), The North Face generates approximately $3.5 billion in annual revenue — making it significantly larger than Patagonia by sales. The brand specializes in outerwear, fleece, gear, and footwear for hiking, climbing, skiing, and active lifestyles. Iconic products include the Denali fleece (1980s classic), Nuptse 700 puffy jacket (1990s collectible), Summit Series (premium mountaineering), and Thermoball (synthetic insulation). The North Face has expanded significantly into streetwear and lifestyle through collaborations (Supreme, Gucci, MM6 Maison Margiela) and the lifestyle-focused 'The North Face Black' line. The brand is more accessible than Patagonia ($150-400 most jackets vs $200-600) and dominant in urban/lifestyle wear in addition to performance use.",
+    highlights: ["$3.5B annual revenue — largest US outdoor apparel brand", "Owned by VF Corporation (NYSE: VFC)", "Iconic products: Denali fleece, Nuptse puffy, Thermoball", "Strong streetwear crossover — Supreme, Gucci collabs"],
+    category: "products",
+    alternatives: [
+      { name: "Patagonia", slug: "patagonia", reason: "More sustainable, slightly higher quality, premium positioning" },
+      { name: "Columbia", slug: "columbia", reason: "Lower prices, similar function, less premium feel" },
+      { name: "Arc'teryx", slug: "arcteryx", reason: "More technical/premium for serious mountaineering" },
+    ],
+    faqs: [
+      { question: "The North Face vs Patagonia: which is better?", answer: "The North Face: bigger brand, more streetwear cred, more accessible pricing, broader product range including more fashion/lifestyle items. Patagonia: more sustainable (Worn Wear, environmental nonprofit ownership), often higher quality on premium pieces, better lifetime durability, cleaner ethical reputation. For technical hiking/climbing gear: roughly equivalent quality. For sustainable buying: Patagonia wins clearly. For lifestyle/streetwear and value: The North Face. Both have iconic products with strong followings." },
+      { question: "Is The North Face good quality?", answer: "Yes for entry-to-mid-tier products. The Denali fleece, Nuptse jacket, and Apex line are well-regarded. The Summit Series (premium mountaineering, $400-1,000+) competes with Arc'teryx and Patagonia at the highest level. Mid-tier products may not last as long as Patagonia equivalents. The brand has lifetime warranty against manufacturing defects (not normal wear). For casual outdoor + urban use, The North Face offers excellent quality at accessible prices." },
+    ],
+  },
 };
