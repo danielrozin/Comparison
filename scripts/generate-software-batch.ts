@@ -149,6 +149,24 @@ const SOFTWARE_COMPARISONS = [
   { entityA: "Delta", entityB: "United Airlines", volume: 33100, cpc: 3.77 },
   { entityA: "Marriott", entityB: "Hilton", volume: 27100, cpc: 4.22 },
   { entityA: "Expedia", entityB: "Kayak", volume: 22200, cpc: 5.11 },
+
+  // Mega-brands — massive head-term traffic
+  { entityA: "Amazon", entityB: "Walmart", volume: 55000, cpc: 3.44 },
+  { entityA: "Amazon", entityB: "eBay", volume: 40500, cpc: 2.88 },
+  { entityA: "Google", entityB: "Bing", volume: 40500, cpc: 3.12 },
+  { entityA: "Windows", entityB: "macOS", volume: 33100, cpc: 2.55 },
+  { entityA: "Google", entityB: "Microsoft", volume: 22200, cpc: 3.77 },
+  { entityA: "Amazon", entityB: "Target", volume: 18100, cpc: 3.22 },
+  { entityA: "Walmart", entityB: "Costco", volume: 33100, cpc: 2.77 },
+
+  // Automotive brand-level (complements model-level pairs)
+  { entityA: "Honda", entityB: "Toyota", volume: 40500, cpc: 3.12 },
+  { entityA: "BMW", entityB: "Mercedes-Benz", volume: 27100, cpc: 4.55 },
+  { entityA: "BMW", entityB: "Audi", volume: 22200, cpc: 4.33 },
+  { entityA: "Ford", entityB: "Chevrolet", volume: 33100, cpc: 2.77 },
+  { entityA: "Tesla", entityB: "BMW", volume: 14800, cpc: 3.88 },
+  { entityA: "Honda", entityB: "Hyundai", volume: 18100, cpc: 3.21 },
+  { entityA: "Lexus", entityB: "BMW", volume: 22200, cpc: 4.44 },
 ];
 
 // Blog article topics — informational "best X" content

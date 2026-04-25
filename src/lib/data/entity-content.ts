@@ -8006,4 +8006,124 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Does Waze drain more battery than Google Maps?", answer: "Yes. Waze requires continuous GPS, screen-on navigation, and active community data uploading — it's one of the more battery-intensive navigation apps. On a 1-2 hour drive, Waze can consume 15-30% of iPhone/Android battery. Google Maps is somewhat more efficient. Both apps benefit from a car mount (keeping screen on less) and a car charger during long trips. If battery is a concern, consider downloading offline maps in Google Maps and using it without active data upload." },
     ],
   },
+
+  "amazon": {
+    description:
+      "Amazon is the world's largest e-commerce company and cloud computing provider, founded by Jeff Bezos in 1994 and headquartered in Seattle, Washington. What started as an online bookstore has become a global technology conglomerate with three primary business segments: Amazon.com (e-commerce marketplace), Amazon Web Services (cloud computing), and Amazon Prime (subscription ecosystem). Amazon.com serves over 300 million active customers globally and hosts more than 9.5 million third-party sellers on its marketplace. Amazon Web Services (AWS) generates the majority of Amazon's operating income, holding approximately 31% of the global cloud infrastructure market — ahead of Microsoft Azure (25%) and Google Cloud (11%). Amazon Prime has over 200 million subscribers worldwide, offering two-day shipping, Prime Video streaming, Prime Music, Prime Reading, and exclusive deals. Amazon's other ventures include Alexa (voice AI), Ring (home security), Twitch (live streaming), Whole Foods (grocery), Kindle (e-readers), and Amazon Fresh (grocery delivery). In 2024, Amazon reported annual revenue of $620 billion, making it the world's second-largest company by revenue.",
+    highlights: ["300M+ active customers", "31% global cloud market share (AWS)", "200M+ Prime subscribers", "$620B annual revenue (2024)"],
+    category: "companies",
+    alternatives: [
+      { name: "Walmart", slug: "walmart", reason: "Largest physical retailer, growing eCommerce, lower prices on groceries" },
+      { name: "eBay", slug: "ebay", reason: "Better for used/collectible items, seller-friendly fees" },
+      { name: "Etsy", slug: "etsy", reason: "Handmade and vintage goods, independent sellers" },
+      { name: "Shopify", slug: "shopify", reason: "Own your store, no Amazon fees, build your brand" },
+      { name: "Target", slug: "target", reason: "Better in-store experience, same-day delivery, curated products" },
+      { name: "Costco", slug: "costco", reason: "Better for bulk buying, superior quality and pricing on select items" },
+    ],
+    faqs: [
+      { question: "Is Amazon Prime worth it?", answer: "Amazon Prime at $139/year ($14.99/month) is worth it for most households that order from Amazon at least 1-2 times per month. The core value is free two-day shipping on millions of items. Additional included benefits — Prime Video (with originals like The Boys, Rings of Power), Prime Music (100M+ songs), Prime Reading, Prime Gaming, and exclusive deals — add significant value. For a single person spending $50+/month on Amazon orders, Prime typically pays for itself in shipping savings alone." },
+      { question: "Amazon vs Walmart: which is better for shopping?", answer: "Amazon is better for: selection (hundreds of millions of products), tech/electronics, Prime 2-day shipping, Prime Video bundled, and sellers without physical stores. Walmart is better for: groceries and everyday household items (typically lower prices), fresh produce and perishables, same-day pickup via existing stores, and avoiding Amazon marketplace seller issues. For most households, both are useful — Walmart for groceries and consumables, Amazon for electronics, specialty items, and anything where selection matters." },
+      { question: "What is Amazon Web Services (AWS)?", answer: "Amazon Web Services (AWS) is Amazon's cloud computing division that provides on-demand computing infrastructure and services to businesses, governments, and developers. AWS offers 200+ services including EC2 (virtual servers), S3 (storage), RDS (databases), Lambda (serverless), and SageMaker (machine learning). AWS generated $107 billion in revenue in 2024 and holds 31% of the global cloud market. Notable AWS customers include Netflix, NASA, Airbnb, and the US government." },
+    ],
+  },
+
+  "google": {
+    description:
+      "Google LLC is a multinational technology company founded in 1998 by Larry Page and Sergey Brin while they were PhD students at Stanford University. Google's parent company, Alphabet Inc., is one of the world's most valuable companies with a market capitalization exceeding $2 trillion. Google Search processes over 8.5 billion queries per day and holds approximately 91% of the global search engine market share, making it one of the most dominant products in technology history. Beyond search, Google operates the world's most popular video platform (YouTube, 2.5B users), the world's most used mobile OS (Android, 72% market share), the world's most used browser (Chrome, 65% market share), and the world's most used email service (Gmail, 1.8B users). Google Cloud Platform (GCP) generates $43 billion annually and is the third-largest cloud provider globally. Google Workspace (formerly G Suite) serves 10 million+ businesses. Google's advertising business — the primary revenue driver — generated $237 billion in 2024. Alphabet's total 2024 revenue was $350 billion. Google DeepMind, the company's AI research division, created AlphaGo, AlphaFold, and Gemini (Google's multimodal AI model).",
+    highlights: ["91% global search market share", "8.5B search queries/day", "$350B Alphabet revenue (2024)", "Android powers 72% of smartphones"],
+    category: "technology",
+    alternatives: [
+      { name: "Microsoft", slug: "microsoft", reason: "Competing across search (Bing), cloud (Azure), office (Microsoft 365)" },
+      { name: "Apple", slug: "apple", reason: "Privacy-focused competitor, Safari/Siri ecosystem" },
+      { name: "Meta", slug: "meta", reason: "Social advertising competitor, different audience targeting model" },
+      { name: "Amazon", slug: "amazon", reason: "Cloud (AWS) and product search competitor" },
+      { name: "DuckDuckGo", slug: "duckduckgo", reason: "Privacy-first search alternative, no tracking" },
+      { name: "Bing", slug: "bing", reason: "Microsoft's AI-enhanced search with ChatGPT integration" },
+    ],
+    faqs: [
+      { question: "How does Google make money?", answer: "Google generates approximately 77% of its revenue from advertising — Search ads (when you click sponsored results), YouTube ads, and Google Display Network ads. The remaining revenue comes from Google Cloud ($43B), Google Play, hardware (Pixel phones, Nest), and YouTube Premium/TV subscriptions. In 2024, Google's ad revenue was ~$265B while Alphabet's total revenue was ~$350B." },
+      { question: "Google vs Bing: which is the better search engine?", answer: "Google dominates with 91% market share for good reason — its search results are generally more relevant, its index is larger, and its local/maps integration is superior. Bing has closed the gap significantly with AI-powered search (ChatGPT/Copilot integration), and rewards users with Microsoft Rewards points. For general web search, Google remains the gold standard; Bing is worth trying for AI-powered answers and image search." },
+      { question: "What is Google Workspace?", answer: "Google Workspace (formerly G Suite) is Google's productivity suite for businesses, including Gmail, Drive, Docs, Sheets, Slides, Meet, Calendar, and Chat. Plans start at $6/user/month (Business Starter) up to $18/user/month (Business Plus). Over 10 million businesses use Google Workspace, and it's a direct competitor to Microsoft 365." },
+    ],
+  },
+
+  "microsoft": {
+    description:
+      "Microsoft Corporation is a multinational technology company founded in 1975 by Bill Gates and Paul Allen, headquartered in Redmond, Washington. It is one of the world's most valuable companies with a market capitalization of approximately $3 trillion (2024-2025). Microsoft's business spans three segments: Productivity & Business Processes (Microsoft 365, Teams, LinkedIn, Dynamics), Intelligent Cloud (Azure, GitHub, SQL Server), and More Personal Computing (Windows, Xbox, Surface, Bing). Microsoft Azure is the world's second-largest cloud platform with approximately 25% market share. Windows OS runs on roughly 72% of desktop and laptop computers globally. Microsoft 365 has over 400 million paid seats across consumer and commercial plans. GitHub, acquired in 2018 for $7.5 billion, hosts over 100 million developers. LinkedIn, acquired in 2016 for $26 billion, has over 1 billion members. Microsoft's $68.7 billion acquisition of Activision Blizzard in 2023 made it the world's third-largest gaming company by revenue. Microsoft's OpenAI partnership (multi-billion dollar investment) brought ChatGPT capabilities to Bing, Copilot, and Microsoft 365. In fiscal year 2024, Microsoft reported revenue of $245 billion.",
+    highlights: ["$3T+ market cap", "Azure — 25% cloud market share", "400M+ Microsoft 365 paid seats", "$245B revenue (FY2024)"],
+    category: "technology",
+    alternatives: [
+      { name: "Google", slug: "google", reason: "Workspace vs Microsoft 365, Chrome vs Edge, Android vs Windows" },
+      { name: "Apple", slug: "apple", reason: "macOS vs Windows, iWork vs Office, ecosystem competition" },
+      { name: "Amazon", slug: "amazon", reason: "AWS vs Azure, primary cloud rival" },
+      { name: "Salesforce", slug: "salesforce", reason: "CRM and business apps competitor, Dynamics vs Salesforce" },
+      { name: "Linux", slug: "linux", reason: "Open-source OS alternative to Windows for servers and developers" },
+      { name: "Zoom", slug: "zoom", reason: "Teams vs Zoom for video conferencing" },
+    ],
+    faqs: [
+      { question: "Is Microsoft 365 worth it?", answer: "Microsoft 365 Personal ($69.99/year) gives you Word, Excel, PowerPoint, Outlook, OneNote, Teams, and 1TB OneDrive for one person. Microsoft 365 Family ($99.99/year) extends that to 6 people. For anyone who regularly uses Office applications or needs 1TB of cloud storage, it's excellent value. For light users, Google Workspace's free tier (Google Docs, Sheets, Slides, Gmail, 15GB Drive) is a strong free alternative." },
+      { question: "Windows vs Mac: which is better?", answer: "Windows is better for: gaming (far more game titles), business software compatibility, price-to-performance ratio, hardware variety (budget to enthusiast), and enterprise IT environments. Mac is better for: creative professionals (Final Cut Pro, Logic Pro integration), Unix-based development, longer software support cycles, build quality at the premium tier, and seamless Apple ecosystem integration (iPhone, iPad, AirPods). Most users should choose based on ecosystem needs and specific software requirements." },
+      { question: "What is Microsoft Azure?", answer: "Microsoft Azure is the company's cloud computing platform, offering 200+ services including virtual machines, databases, AI/ML tools, Kubernetes (AKS), serverless functions, and IoT solutions. Azure is particularly strong in hybrid cloud (connecting on-premises data centers with cloud), enterprise Microsoft stack integration (Active Directory, SQL Server, Windows Server), and compliance/government workloads. Azure generated $75+ billion in annualized revenue in 2024 and holds 25% of the cloud infrastructure market." },
+    ],
+  },
+
+  "walmart": {
+    description:
+      "Walmart Inc. is the world's largest company by revenue and the world's largest private employer, founded by Sam Walton in 1962 in Rogers, Arkansas. With over $680 billion in annual revenue (FY2024), Walmart operates more than 10,600 stores across 20 countries, serving approximately 240 million customers weekly. In the United States, Walmart's 4,600+ stores reach 90% of Americans within 10 miles, making it the dominant grocery retailer with roughly 25% of the US grocery market. Walmart's business model is built on everyday low prices (EDLP) through supply chain efficiency — its distribution network is the largest private fleet in the US. Walmart.com has grown into the second-largest US eCommerce retailer (after Amazon), with $82 billion in global eCommerce sales in FY2024. Walmart+ (the membership program at $12.95/month or $98/year) competes directly with Amazon Prime, offering free delivery, fuel discounts, Paramount+ streaming, and early access to deals. Walmart owns Sam's Club (warehouse clubs), Asda (UK), Flipkart (India's largest eCommerce), and PhonePe (India's largest payments platform). In healthcare, Walmart operates 4,600 pharmacies and has piloted Walmart Health clinics.",
+    highlights: ["World's largest company by revenue ($680B)", "10,600+ stores in 20 countries", "240M customers/week", "25% of US grocery market"],
+    category: "companies",
+    alternatives: [
+      { name: "Amazon", slug: "amazon", reason: "Larger online selection, Prime ecosystem, faster shipping for non-grocery" },
+      { name: "Target", slug: "target", reason: "Better store experience, curated brands, stronger fashion/home sections" },
+      { name: "Costco", slug: "costco", reason: "Bulk savings, membership model, superior product quality" },
+      { name: "Kroger", slug: "kroger", reason: "Grocery-focused rival with loyalty program and fuel rewards" },
+      { name: "Dollar General", slug: "dollar-general", reason: "Serves rural markets, smaller format, everyday low prices" },
+      { name: "Sam's Club", slug: "sams-club", reason: "Walmart's own warehouse club, competes with Costco" },
+    ],
+    faqs: [
+      { question: "Walmart vs Amazon: which is cheaper?", answer: "It depends on the category. Walmart is consistently cheaper for groceries, household consumables, and everyday staples — its physical store prices are often 10-20% lower than Amazon on comparable items. Amazon wins on electronics, specialty products, selection depth, and anything not stocked in Walmart stores. For the best prices: use Walmart for grocery and household basics, Amazon for electronics, books, and hard-to-find items." },
+      { question: "Is Walmart+ worth it?", answer: "Walmart+ at $98/year ($12.95/month) makes sense if you: shop at Walmart for groceries regularly (free delivery on orders $35+ from store), drive frequently (Walmart and Murphy fuel discounts of $0.10/gallon), and would otherwise pay for delivery fees. The included Paramount+ with SHOWTIME ($11.99/month value) alone is worth $144/year, making Walmart+ mathematically favorable for existing Paramount+ subscribers. It's a weaker value proposition than Amazon Prime for non-grocery shoppers." },
+      { question: "Does Walmart have online shopping?", answer: "Yes — Walmart.com is the second-largest US eCommerce retailer after Amazon. Walmart offers free two-day shipping on orders $35+ (no membership required), free next-day/same-day delivery with Walmart+, grocery pickup (free, often ready in 2 hours), and marketplace sellers alongside Walmart's own inventory. Walmart has invested heavily in eCommerce, closing the gap with Amazon in grocery delivery and click-and-collect." },
+    ],
+  },
+
+  "honda": {
+    description:
+      "Honda Motor Co., Ltd. is a Japanese multinational conglomerate manufacturer of automobiles, motorcycles, and power equipment, founded in 1948 by Soichiro Honda and Takeo Fujisawa. Honda is the world's largest motorcycle manufacturer and the second-largest Japanese automaker after Toyota. In the United States, Honda is perennially among the top-selling automakers with over 1.3 million vehicles sold annually. Honda's most popular US models include the CR-V (America's best-selling SUV), Accord (one of the best-selling sedans in US history), Civic (the best-selling car in Canada for 26 consecutive years), and Pilot (3-row family SUV). Honda is renowned for its engineering precision — its VTEC (Variable Valve Timing and Lift Electronic Control) technology and naturally aspirated engines became benchmarks for reliability and driver engagement. Honda's powertrain expertise extends to aviation (HondaJet), motorsport (Formula 1 engine supplier), and marine engines. Honda's reliability record is exceptional: the Accord and Civic consistently rank among the longest-lasting cars in US surveys, with over 25% of Honda vehicles sold in the past 25 years still on the road. Honda began transitioning to electrification, with its Prologue EV launched in 2024 in partnership with General Motors.",
+    highlights: ["World's largest motorcycle manufacturer", "#2 Japanese automaker", "1.3M+ US vehicles/year", "Honda CR-V — America's best-selling SUV"],
+    category: "automotive",
+    alternatives: [
+      { name: "Toyota", slug: "toyota", reason: "Stronger truck lineup (Tacoma/Tundra), slightly higher resale value" },
+      { name: "Hyundai", slug: "hyundai", reason: "More aggressive pricing, longer warranty (10yr/100K), fresh designs" },
+      { name: "Mazda", slug: "mazda", reason: "More engaging driving dynamics, premium interior feel" },
+      { name: "Subaru", slug: "subaru", reason: "Standard AWD across most models, strong in snowy climates" },
+      { name: "Nissan", slug: "nissan", reason: "Competitive pricing, strong crossover lineup with Rogue/Pathfinder" },
+      { name: "Ford", slug: "ford", reason: "Strong truck/SUV alternatives, American brand heritage" },
+    ],
+    faqs: [
+      { question: "Honda vs Toyota: which is more reliable?", answer: "Both Honda and Toyota are among the most reliable brands in the world. Toyota slightly edges Honda in most long-term reliability surveys (J.D. Power, Consumer Reports), particularly for trucks and SUVs. Honda's Civic and Accord are among the most reliable sedans ever made. The real-world difference in reliability between the two brands is minimal — either is an excellent, long-lasting choice. Toyota wins in resale value; Honda tends to be less expensive to purchase." },
+      { question: "What is Honda's most reliable car?", answer: "The Honda Accord and Civic are consistently Honda's most reliable models according to Consumer Reports and J.D. Power surveys. The Accord has been sold in the US since 1976 and represents one of the most successful nameplate histories in automotive history. The CR-V is Honda's most popular model by sales volume and also ranks highly for reliability." },
+      { question: "Does Honda make electric vehicles?", answer: "Honda's primary EV in the US is the Honda Prologue (2024), a midsize SUV developed in partnership with General Motors using GM's Ultium platform. Honda has committed to selling only zero-emission vehicles in North America by 2040 and plans to launch a new EV lineup under the Honda 0 Series brand starting in 2026. Honda's hybrid lineup (CR-V Hybrid, Accord Hybrid) is also strong." },
+    ],
+  },
+
+  "bmw": {
+    description:
+      "BMW (Bayerische Motoren Werke AG) is a German multinational manufacturer of luxury vehicles, motorcycles, and engines, founded in 1916 and headquartered in Munich, Germany. BMW Group also owns the MINI and Rolls-Royce Motor Cars brands. BMW is the world's best-selling luxury car brand, with over 2.5 million BMW, MINI, and Rolls-Royce vehicles sold globally in 2024 and revenue of €142 billion. BMW's core identity is performance and driver engagement — its 'Ultimate Driving Machine' positioning has defined the luxury performance sedan segment for decades. The iconic BMW M division produces performance variants (M3, M5, M8, X5M) that are benchmarks in their segments. BMW's lineup spans from the 2 Series compact to the 7 Series flagship, with X-series SUVs, i-series electrics (iX, i4, i7, i5), and M performance cars. BMW has been an early mover in electric vehicles: the BMW i3 launched in 2013 was one of the first premium EVs, and BMW's current iX SUV and i4 sedan have received strong reviews. BMW competes directly with Mercedes-Benz, Audi, Lexus, Cadillac, and Genesis in the global luxury market. In the US, BMW and Mercedes-Benz trade the #1 luxury brand position annually.",
+    highlights: ["World's best-selling luxury brand", "2.5M vehicles sold globally (2024)", "€142B revenue", "BMW M — performance benchmark"],
+    category: "automotive",
+    alternatives: [
+      { name: "Mercedes-Benz", slug: "mercedes-benz", reason: "More luxury-focused, S-Class prestige, better for comfort over sport" },
+      { name: "Audi", slug: "audi", reason: "Quattro AWD standard, more technology-forward, different design language" },
+      { name: "Tesla", slug: "tesla", reason: "EV-first alternative, software-centric, lower running costs" },
+      { name: "Lexus", slug: "lexus", reason: "Toyota reliability in a luxury package, better long-term ownership costs" },
+      { name: "Genesis", slug: "genesis", reason: "Hyundai's luxury brand, comparable features at significantly lower price" },
+      { name: "Cadillac", slug: "cadillac", reason: "American luxury alternative with CT5-V Blackwing performance" },
+    ],
+    faqs: [
+      { question: "BMW vs Mercedes-Benz: which is better?", answer: "BMW vs Mercedes-Benz is one of the most famous rivalries in automotive history. BMW is generally better for driving dynamics — its rear-wheel-drive bias, precise steering, and sporty suspension tuning prioritize the driver experience. BMW M cars are particularly celebrated. Mercedes-Benz is generally better for luxury, comfort, and prestige — the S-Class is the benchmark luxury sedan, and Mercedes interiors are typically more opulent. For the driver: BMW. For the passenger: Mercedes. Reliability is similar for both (mediocre vs Japanese competitors, but improving)." },
+      { question: "Are BMWs expensive to maintain?", answer: "Yes — BMW maintenance is significantly more expensive than non-luxury brands. Annual maintenance costs average $968/year (RepairPal estimate), compared to Honda's $428/year or Toyota's $441/year. BMW no longer includes complimentary maintenance (it was free for the first 3 years/36K miles historically). Common expensive repairs include water pumps, control arm bushings, and cooling system components. Certified Pre-Owned BMWs with extended warranties, or 3-5 year old models within warranty, reduce this risk significantly." },
+      { question: "Which BMW model is most reliable?", answer: "The BMW 3 Series and X5 are generally BMW's most reliable models for their respective segments. Within BMW's lineup, the naturally-aspirated inline-6 engines (pre-2007 era especially) are legendary for longevity. Modern BMWs with turbocharged engines have improved but still trail Japanese competitors. The X3 and 3 Series are typically recommended as the most reliable modern BMWs. Avoid high-mileage (100K+) examples without documented maintenance history." },
+    ],
+  },
 };
