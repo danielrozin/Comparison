@@ -1117,6 +1117,20 @@
       "youtubeVideoId": "BR_7CnKDTHY",
       "youtubeUrl": "https://www.youtube.com/watch?v=BR_7CnKDTHY",
       "uploadedAt": "2026-04-25T07:50:16.535Z"
+    },
+    {
+      "slug": "amazon-vs-walmart",
+      "title": "Amazon vs Walmart",
+      "entityA": "Amazon",
+      "entityB": "Walmart",
+      "category": "General",
+      "videoFile": "Amazon vs Walmart.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Amazon vs Walmart — Full Comparison 2026",
+      "youtubeDescription": "Amazon and Walmart are nearly tied in revenue (~$716B vs $713B), but Amazon dominates e-commerce while Walmart leads in physical retail growth.\n\n#amazon #walmart #general #comparison #versus",
+      "youtubeVideoId": "o4q2Stnt1cU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=o4q2Stnt1cU",
+      "uploadedAt": "2026-04-25T11:25:49.512Z"
     }
   ]
 }
