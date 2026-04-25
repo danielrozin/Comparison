@@ -8344,4 +8344,139 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Sony WH-1000XM5 vs Bose QuietComfort Ultra: which is better?", answer: "Sony WH-1000XM5 wins on: noise cancellation in most environments (better at cancelling complex noise like cafes), battery life (30 vs 24 hours), and audio quality (more detailed, neutral signature). Bose QuietComfort Ultra wins on: comfort (Bose's clamp force is gentler), Immersive Audio (Bose's spatial audio implementation), and call quality. Both are excellent. Sony for ANC purists and audiophiles; Bose for comfort during long sessions." },
     ],
   },
+
+  "grok": {
+    description: "Grok is an AI chatbot developed by xAI, the AI company founded by Elon Musk in 2023. Grok is integrated directly into the X (formerly Twitter) platform — Premium and Premium+ subscribers ($16-40/month) get Grok included, with API access available separately. Grok is positioned as a 'truthful' and 'edgy' AI without the safety filters of ChatGPT, Claude, and Gemini — willing to engage with sensitive topics and use humor more freely. Grok has access to real-time X data, giving it a unique advantage for breaking news and trending topics that other LLMs (with knowledge cutoffs) lack. Grok 3 (launched February 2025) and Grok 4 (mid-2025) achieved competitive benchmark scores against GPT-4 and Claude. xAI raised $12 billion at a $50+ billion valuation by mid-2025, making it one of the highest-valued private AI companies. Grok's image generation (Aurora) and X's Live Search integration extend its capabilities beyond text.",
+    highlights: ["Integrated in X (Twitter) for Premium subscribers", "Real-time access to X posts — unique among major LLMs", "Less restrictive safety filters than ChatGPT/Claude/Gemini", "Backed by xAI, valued $50B+, founded by Elon Musk"],
+    category: "technology",
+    alternatives: [
+      { name: "ChatGPT", slug: "chatgpt", reason: "Most polished AI assistant, broadest tool ecosystem, GPT-5" },
+      { name: "Claude", slug: "claude", reason: "Best for nuanced reasoning, longest context window, agentic skills" },
+      { name: "Gemini", slug: "gemini", reason: "Free tier with Google Workspace integration, multimodal" },
+    ],
+    faqs: [
+      { question: "Is Grok worth the X Premium subscription?", answer: "Worth it for: heavy X users who want AI integrated where they already spend time, those who want a less restricted AI assistant, and users who value real-time X data access (breaking news, trending topics). Not worth it for: most general AI use cases where ChatGPT, Claude, or Gemini have more polished interfaces, broader integrations, and more developed reasoning. If you're already paying X Premium, Grok is a useful bonus. As a primary AI tool, alternatives are typically better." },
+      { question: "Grok vs ChatGPT: which is more capable?", answer: "ChatGPT (GPT-5) is generally more capable for complex reasoning, coding, and nuanced writing. Grok 4 has closed the gap significantly in raw benchmarks but lags in tool integration, plugin ecosystem, and reliability. Grok wins in: real-time X data access, less restrictive content policies, and X platform integration. ChatGPT wins in: advanced reasoning, coding ability, voice mode, image/video generation quality, and ecosystem breadth (custom GPTs, projects, file uploads)." },
+    ],
+  },
+
+  "windsurf": {
+    description: "Windsurf is an AI-powered code editor developed by Codeium (now Windsurf), launched in 2024 as a competitor to Cursor. Windsurf is built on a fork of VS Code with deep AI agent capabilities — its 'Cascade' agent can autonomously plan, edit, and run code across multiple files in a single conversation, going beyond Cursor's autocomplete and chat. Windsurf launched as free (Codeium's free tier was generous) and added paid tiers in late 2024 ($15/month Pro, $30/month Pro Ultimate). The editor became one of the fastest-growing developer tools in early 2025. In April-May 2025, OpenAI explored acquiring Windsurf for $3 billion, though the deal ultimately fell through and Windsurf remained independent — but a portion of its team eventually joined Google. Windsurf is particularly known for excellent multi-file refactors, agent-driven implementations of features, and a less interruptive UX than Cursor.",
+    highlights: ["Cascade agent — autonomous multi-file code edits", "Free tier — most generous among AI code editors", "Built on VS Code fork — familiar UX", "Top alternative to Cursor in AI code editor space"],
+    category: "technology",
+    alternatives: [
+      { name: "Cursor", slug: "cursor", reason: "Most popular AI code editor, larger user base, more refined UX" },
+      { name: "GitHub Copilot", slug: "github-copilot", reason: "Built into VS Code/JetBrains, Microsoft-backed, enterprise-friendly" },
+      { name: "Cline", slug: "cline", reason: "Open-source agentic coding extension for VS Code" },
+    ],
+    faqs: [
+      { question: "Windsurf vs Cursor: which is better?", answer: "Both are excellent AI code editors. Windsurf's Cascade agent is generally rated stronger for autonomous multi-file edits — it 'thinks longer' before acting and produces more cohesive changes. Cursor has a larger user base, more refined chat/composer UX, and faster autocomplete. Cursor pricing ($20/month Pro) vs Windsurf ($15/month Pro). For agentic workflows: Windsurf often wins. For day-to-day coding with chat assistance: Cursor wins. Many developers use both and pick whichever performs better for the specific task." },
+      { question: "Is Windsurf still free?", answer: "Windsurf has a free tier with limited Cascade Plus actions per month. Pro tier ($15/month) provides unlimited use of the standard models and a generous allotment of premium model actions. Pro Ultimate ($30/month) provides the highest premium quota. The free tier is functional for casual use but power users typically need Pro. Codeium's original free autocomplete remains very generous and is sufficient for many developers who don't need full agent capabilities." },
+    ],
+  },
+
+  "stable-diffusion": {
+    description: "Stable Diffusion is the most popular open-source image generation AI, originally released in August 2022 by Stability AI. Unlike DALL-E and Midjourney (proprietary, hosted services), Stable Diffusion is fully open source — users can run it on their own computers (with a capable GPU) or on hosted services. This open nature has led to thousands of community fine-tunes, LoRA models for specific styles, and integrations into countless tools. Stable Diffusion 3.5 (released October 2024) and Stable Diffusion 4 / FLUX models (from Black Forest Labs, founded by Stable Diffusion's original creators) represent the latest generations. SDXL Lightning, SDXL Turbo, and FLUX schnell models offer near-instant generation. Popular tools built on Stable Diffusion include Automatic1111, ComfyUI, Fooocus, and Forge. Stable Diffusion is the foundation of much of the open AI art ecosystem and is freely usable for commercial purposes.",
+    highlights: ["Fully open source — runnable on personal hardware", "Largest community ecosystem — thousands of fine-tunes", "Free to use commercially (subject to model license)", "Foundation of countless AI art tools and workflows"],
+    category: "technology",
+    alternatives: [
+      { name: "Midjourney", slug: "midjourney", reason: "Best aesthetic quality out-of-box, no setup required, $10-60/month" },
+      { name: "DALL-E", slug: "dall-e", reason: "Built into ChatGPT, easiest UX, OpenAI-backed" },
+      { name: "Flux", slug: "flux", reason: "Stable Diffusion's spiritual successor from original team" },
+    ],
+    faqs: [
+      { question: "Is Stable Diffusion free?", answer: "Yes — the models are free and open source. You can run Stable Diffusion locally on a PC with a 6+ GB VRAM GPU (Nvidia RTX 3060 or better is recommended). The models themselves cost nothing. Hosted services that use Stable Diffusion (RunDiffusion, Replicate, Mage.space, Civitai) typically charge per generation or per month. For local use, the only cost is electricity and the upfront GPU cost. Commercial use is permitted under the SAI permissive license." },
+      { question: "Stable Diffusion vs Midjourney: which is better?", answer: "Midjourney wins for: best out-of-box aesthetic quality, no technical setup, simpler workflow (Discord-based UX). Stable Diffusion wins for: cost (free vs $10-60/month), control (custom models, LoRAs, ControlNet for precise composition), local privacy (your prompts and images stay on your machine), and commercial flexibility. For artists who want quick beautiful images: Midjourney. For technical users, professionals needing precise control, or those who care about local/free operation: Stable Diffusion." },
+    ],
+  },
+
+  "elevenlabs": {
+    description: "ElevenLabs is the leading AI voice generation platform, founded in 2022 and headquartered in New York and London. ElevenLabs offers text-to-speech with the most realistic AI voices in the industry — capable of cloning any voice from a 1-3 minute audio sample (Voice Cloning) or instantly mimicking a voice from 30 seconds (Instant Voice Cloning). ElevenLabs supports 70+ languages with native-quality output, real-time conversational AI agents, and dubbing (translating videos while preserving voice and emotion). Pricing ranges from free (10 minutes/month) to Pro ($99/month, 500K characters) and Enterprise. ElevenLabs is widely used in audiobooks, podcasts, video games, advertising, and accessibility (screen readers). The company was valued at $3.3 billion in early 2025. ElevenLabs has faced controversy over voice cloning misuse (deepfakes, impersonation scams) but has implemented voice authentication and traceability measures.",
+    highlights: ["Most realistic AI voices in the industry", "Voice cloning from 1-3 minute audio samples", "70+ languages with native quality", "$3.3B valuation; widely used in media production"],
+    category: "technology",
+    alternatives: [
+      { name: "OpenAI Voice", slug: "openai-voice", reason: "Built into ChatGPT and API, cheaper, but less expressive than ElevenLabs" },
+      { name: "Murf", slug: "murf", reason: "Lower-cost alternative, more business focused, simpler UX" },
+      { name: "PlayHT", slug: "playht", reason: "Strong audiobook focus, voice cloning, similar quality" },
+    ],
+    faqs: [
+      { question: "Is ElevenLabs the best AI voice tool?", answer: "Yes for most use cases. ElevenLabs consistently rates first in independent comparisons for voice quality, expressiveness, language support, and voice cloning fidelity. Competitors like OpenAI Voice (Advanced Voice Mode, TTS API) are cheaper but less expressive. Murf is simpler but lower quality. For professional content creators (audiobooks, podcasts, ads, dubbing), ElevenLabs is the industry standard. Pricing starts at $5/month (Starter) and scales for higher usage." },
+      { question: "Can ElevenLabs clone my voice?", answer: "Yes. ElevenLabs offers two voice cloning options: Instant Voice Cloning (30 seconds of audio, faster but slightly less accurate) and Professional Voice Cloning (3+ minutes of high-quality audio, near-indistinguishable results). You must verify ownership/consent for any voice you clone — uploading voices without consent violates ElevenLabs' terms and may be illegal in some jurisdictions. ElevenLabs also offers voice authentication features to detect AI-generated voices for combatting deepfake misuse." },
+    ],
+  },
+
+  "sora": {
+    description: "Sora is OpenAI's text-to-video AI model, first announced in February 2024 and made available to ChatGPT Plus and Pro subscribers in December 2024. Sora generates videos up to 20 seconds long at up to 1080p resolution from text prompts, with capabilities including: realistic motion, consistent characters across scenes, scene-to-scene transitions (Sora's 'Storyboard' feature), and remix/extend existing videos. Sora 2 (launched October 2025) added physics simulation, lip-sync, and audio generation. Sora is included in ChatGPT Plus ($20/month, limited videos) and Pro ($200/month, more generations and higher resolution). Sora generated significant public attention upon its initial demos but faced critique for hallucinations (objects vanishing, physics violations) and limitations vs marketing claims. As of 2026, Sora competes primarily with Runway Gen-3, Google Veo, Kling AI, and Hailuo AI.",
+    highlights: ["OpenAI's flagship text-to-video model", "Up to 20 seconds, 1080p resolution", "Storyboard feature — scene-to-scene composition", "Included in ChatGPT Plus ($20/month)"],
+    category: "technology",
+    alternatives: [
+      { name: "Runway", slug: "runway", reason: "Pioneer of text-to-video, Gen-3/Gen-4 models, professional features" },
+      { name: "Google Veo", slug: "google-veo", reason: "Up to 1080p, longer videos, integrated with Google ecosystem" },
+      { name: "Kling AI", slug: "kling-ai", reason: "Chinese rival, often rated highest quality output for complex motion" },
+    ],
+    faqs: [
+      { question: "Is Sora the best AI video generator?", answer: "Sora was the most-hyped at launch, but as of 2026 it's not consistently the highest quality. Runway Gen-4, Google Veo 3, and Kling AI 2 are often rated higher in independent comparisons for specific aspects (realism, motion coherence, longer videos). Sora's strengths: included in ChatGPT subscriptions, intuitive Storyboard UX, OpenAI brand polish. Sora's weaknesses: shorter clip lengths, more hallucinations on complex prompts, less control than Runway. For professional video work, Runway or Veo are typically preferred." },
+      { question: "How much does Sora cost?", answer: "Sora is included in ChatGPT Plus ($20/month) with limited video generations per month at 720p. ChatGPT Pro ($200/month) provides significantly more generations and 1080p resolution. There is no separate Sora-only subscription. For comparison, Runway Standard is $15/month and Pro is $35/month with comparable monthly generation quotas. If you already pay for ChatGPT, Sora is a useful bonus. For dedicated video work, Runway Pro often offers better value." },
+    ],
+  },
+
+  "runway": {
+    description: "Runway (Runway ML) is the pioneer of consumer-accessible AI video generation, founded in 2018 and headquartered in New York. Runway Gen-3 (mid-2024) and Gen-4 (late 2025) are widely used by filmmakers, advertisers, and content creators. Runway differentiates itself from competitors (Sora, Veo, Kling) through its focus on professional creative workflows: Motion Brush (paint motion onto specific image regions), Camera Controls (precise camera moves), Lip Sync (sync video to audio), Director Mode (natural language video editing), and seamless extending of existing clips. Runway powered visual effects in Oscar-winning films like 'Everything Everywhere All At Once' (2023). Pricing: Free (limited), Standard $15/month, Pro $35/month, Unlimited $95/month, Enterprise. Runway raised $308 million in 2024 at a $3 billion valuation. Runway is the AI video tool of choice for many professional creators.",
+    highlights: ["Pioneer of AI video — Gen-3 and Gen-4 models", "Used in Oscar-winning film effects", "Motion Brush, Camera Controls — precise creative tools", "$15-95/month plans for professionals"],
+    category: "technology",
+    alternatives: [
+      { name: "Sora", slug: "sora", reason: "OpenAI's video model, included in ChatGPT subscriptions" },
+      { name: "Google Veo", slug: "google-veo", reason: "Strong competitor, up to 1080p, longer videos" },
+      { name: "Kling AI", slug: "kling-ai", reason: "Often rated highest for complex motion realism" },
+    ],
+    faqs: [
+      { question: "Runway vs Sora: which is better?", answer: "Runway is generally preferred by professional creators for: more granular control (Motion Brush, Camera Controls, Director Mode), longer video clips (up to 30+ seconds vs Sora's 20), more refined creative workflows, and better extending of existing clips. Sora wins for: included in ChatGPT subscription (no separate cost for ChatGPT Plus users), simpler Storyboard UX. For professional creative work: Runway. For casual use bundled with ChatGPT: Sora is a good starting point." },
+      { question: "Is Runway worth $35/month?", answer: "Yes if you create video content regularly. Runway Pro at $35/month offers significant monthly credit allotments, 1080p generation, faster queue times, and access to Gen-4 (the latest model). For casual users, Standard at $15/month or the free tier may suffice. For professional video creators, the value is clear — generating equivalent footage with traditional methods would cost orders of magnitude more. Runway Unlimited ($95/month) is for power users generating dozens of videos weekly." },
+    ],
+  },
+
+  "best-buy": {
+    description: "Best Buy Co., Inc. is the largest consumer electronics retailer in the United States with approximately 1,000 stores, founded in 1966 as 'Sound of Music' and renamed Best Buy in 1983. Headquartered in Richfield, Minnesota, Best Buy generates approximately $43 billion in annual revenue and has 85,000+ employees. Best Buy specializes in consumer electronics: TVs, laptops, smartphones, appliances, gaming, and accessories. The Geek Squad, Best Buy's tech support division, is one of the largest tech services providers in North America with 20,000+ agents. Best Buy's Totaltech (now My Best Buy Plus and Total) loyalty programs offer free tech support, free shipping, and exclusive prices. Despite Amazon's e-commerce dominance, Best Buy has remained relevant through: physical store experiences (in-person shopping for high-consideration purchases like TVs and laptops), strong customer service, price matching, and Geek Squad services. Best Buy's rewards program has 30+ million members.",
+    highlights: ["Largest US consumer electronics retailer — 1,000+ stores", "$43B annual revenue", "Geek Squad — 20,000+ tech support agents", "30M+ My Best Buy rewards members"],
+    category: "products",
+    alternatives: [
+      { name: "Amazon", slug: "amazon", reason: "Larger selection, often lower prices, faster shipping" },
+      { name: "Costco", slug: "costco", reason: "Strong electronics deals for members, longer return windows" },
+      { name: "Walmart", slug: "walmart", reason: "Lower prices, broader retail focus, good electronics selection" },
+    ],
+    faqs: [
+      { question: "Is Best Buy still relevant in the Amazon era?", answer: "Yes for specific use cases. Best Buy is best for: high-consideration purchases where you want to see the product (TVs, laptops, headphones), immediate availability (no shipping wait), Geek Squad services (installation, tech support, repair), and trade-ins. Amazon is better for: lower prices on most items, broader selection, faster shipping for Prime members. Many shoppers use Best Buy for showrooming and same-day pickup, then Amazon for accessories and convenience purchases." },
+      { question: "Does Best Buy price match Amazon?", answer: "Yes, Best Buy price matches Amazon and other major online retailers (Crutchfield, B&H, Target, Walmart) for identical products. To use price match: bring evidence of the lower price (Amazon listing on phone) at checkout or contact Best Buy after purchase within 15 days. Some exclusions apply (Black Friday/Cyber Monday, certain marketplace sellers on Amazon). Price matching makes Best Buy competitive with Amazon while offering the in-store experience and pickup options Amazon can't match." },
+    ],
+  },
+
+  "aldi": {
+    description: "Aldi is a German-headquartered global discount supermarket chain, with approximately 12,000 stores in 20+ countries — making it one of the world's largest grocery retailers. In the US, Aldi operates 2,400+ stores across 38 states (as of 2024). Aldi's defining feature is its no-frills, ultra-efficient operating model: stores are smaller than traditional supermarkets, 90% of products are private-label brands (vs 25% at conventional grocers), shopping carts require a quarter deposit (returned when cart is reattached), and shoppers bag their own groceries. This model enables prices 30-40% lower than traditional supermarkets. Aldi's private-label products (LiveGfree, Simply Nature, Specially Selected, Friendly Farms) are known for high quality at low prices — frequently winning blind taste tests against name brands. Aldi acquired Winn-Dixie and Harveys in 2024, expanding its US footprint. Aldi is privately held by the Albrecht family.",
+    highlights: ["12,000+ stores globally — one of world's largest grocers", "30-40% lower prices than traditional supermarkets", "90% private-label products — high quality, low cost", "2,400+ US stores in 38 states"],
+    category: "products",
+    alternatives: [
+      { name: "Lidl", slug: "lidl", reason: "Direct German discount competitor, similar model, smaller US presence" },
+      { name: "Trader Joe's", slug: "trader-joes", reason: "Aldi's sister brand (same Albrecht family), more curated/specialty" },
+      { name: "Walmart", slug: "walmart", reason: "Larger selection and brand-name products, similar low prices" },
+    ],
+    faqs: [
+      { question: "Why is Aldi so much cheaper?", answer: "Aldi's low prices come from operational efficiency, not lower quality: (1) 90% private-label products avoid wholesaler markups; (2) limited SKU count (1,400 vs 30,000+ at conventional stores) reduces complexity; (3) self-bagging and quarter-deposit carts eliminate labor costs; (4) smaller store footprints reduce real estate costs; (5) no music, minimal advertising, no in-store butcher/bakery counters; (6) products displayed in shipping cartons rather than restocked individually. The savings are passed to customers." },
+      { question: "Is Aldi quality good?", answer: "Yes. Aldi's private-label products consistently win blind taste tests against major name brands and have won numerous industry awards. The company partners with major manufacturers who also produce name-brand products, giving Aldi private labels manufactured to high quality standards at lower cost. Aldi has a 'Twice as Nice Guarantee' — they'll replace AND refund any product you're unsatisfied with. The combination of price, quality, and guarantee makes Aldi one of the highest-rated grocery chains by Consumer Reports." },
+    ],
+  },
+
+  "lidl": {
+    description: "Lidl is a German global discount supermarket chain, founded in 1973 and headquartered in Neckarsulm, Germany. Lidl operates approximately 12,000 stores in 30+ countries, making it Aldi's primary global rival. Lidl entered the US market in 2017 and operates 180+ US stores as of 2024, primarily on the East Coast (Virginia, Pennsylvania, New Jersey, North Carolina, South Carolina). Lidl's operating model is similar to Aldi's: smaller store footprints, 80%+ private-label products, weekly 'Lidl Surprises' selling non-grocery items at deep discounts. However, Lidl differentiates from Aldi with: larger stores (10,000-15,000 sq ft vs Aldi's 12,000 sq ft), more name-brand products, in-store bakeries (a Lidl signature), and slightly broader fresh produce selection. Lidl is owned by Schwarz Gruppe, one of the world's largest privately held companies. Lidl's growth in the US has been slower than projected but remains a meaningful competitor in markets where it operates.",
+    highlights: ["12,000+ stores in 30+ countries — Aldi's main rival", "Owned by Schwarz Gruppe, world's largest grocer by revenue", "In-store bakery — signature feature vs Aldi", "180+ US stores, expanding in East Coast markets"],
+    category: "products",
+    alternatives: [
+      { name: "Aldi", slug: "aldi", reason: "Direct competitor, larger US footprint, slightly cheaper prices" },
+      { name: "Trader Joe's", slug: "trader-joes", reason: "More specialty/curated, owned by Aldi Nord (related to Aldi)" },
+      { name: "Walmart", slug: "walmart", reason: "Larger selection and US presence, competitive low prices" },
+    ],
+    faqs: [
+      { question: "Lidl vs Aldi: which is better?", answer: "Both are excellent German discount grocers offering 30-40% savings vs traditional supermarkets. Lidl wins on: in-store bakery (fresh bread daily), slightly larger stores with more variety, more name-brand products mixed with private label, and weekly 'Lidl Surprises' non-grocery deals. Aldi wins on: lower prices on most overlapping products, much larger US footprint (2,400 vs 180 stores), more efficient checkout, and broader selection in some categories. If both are available, comparison shop — most shoppers prefer one based on specific product preferences." },
+      { question: "Is Lidl available in the US?", answer: "Yes, but limited geographic presence. As of 2024, Lidl operates approximately 180+ US stores primarily in: Virginia, North Carolina, South Carolina, New Jersey, Pennsylvania, Maryland, Delaware, New York (Long Island), and Georgia. Lidl planned aggressive US expansion when entering in 2017 but has grown slower than expected. If you don't live in an East Coast market, Aldi is more likely accessible (38 states). Lidl announced renewed US expansion plans for 2025-2027 focusing on the Northeast and Mid-Atlantic." },
+    ],
+  },
 };
