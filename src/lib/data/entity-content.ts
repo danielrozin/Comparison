@@ -8209,4 +8209,139 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "iPhone 16 Pro vs Samsung Galaxy S25 Ultra: which is better?", answer: "iPhone 16 Pro is better for: iOS users, those in the Apple ecosystem, smoother software experience, better video quality, and on-device privacy for AI features. Samsung Galaxy S25 Ultra is better for: Android users, note-takers (built-in S Pen, no case needed), photography enthusiasts wanting 200MP versatility, multitaskers (better split-screen and pop-up apps in Android), and those who prefer more hardware customization. Camera quality is competitive — iPhone wins for video, Samsung for telephoto zoom reach." },
     ],
   },
+
+  "iphone-16": {
+    description: "Apple iPhone 16 is the standard 2024 iPhone, released September 2024 with the A18 chip — the same generation chip family as iPhone 16 Pro (vs prior years where Pro got the new chip and standard got prior-year). The iPhone 16 features a 6.1-inch Super Retina XDR display, 48MP Fusion main camera, 12MP ultrawide, Camera Control button (new tactile button for camera), Action Button (replacing the mute switch from 15 Pro/Pro Max line), and 8 GB RAM (up from 6 GB) — required for Apple Intelligence on-device AI. iPhone 16 supports the full Apple Intelligence suite (writing tools, image generation, ChatGPT integration). Battery life is 22 hours video playback. Starting at $799, the iPhone 16 is the most affordable Apple Intelligence-capable iPhone — making it the new sweet spot for most buyers who don't need ProMotion or telephoto camera. Available in pink, teal, ultramarine, white, and black.",
+    highlights: ["A18 chip — same generation as Pro models", "Camera Control button + 48MP Fusion camera", "Apple Intelligence ready — 8 GB RAM", "$799 starting — most affordable AI-capable iPhone"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16 Pro", slug: "iphone-16-pro", reason: "ProMotion 120 Hz display, telephoto camera, A18 Pro for heavier compute" },
+      { name: "iPhone 15", slug: "iphone-15", reason: "$100 cheaper at $699, same Dynamic Island, no Apple Intelligence" },
+      { name: "Google Pixel 9", slug: "google-pixel-9", reason: "Best Android AI, Tensor G4 chip, more affordable starting at $799" },
+    ],
+    faqs: [
+      { question: "iPhone 16 vs iPhone 15: should I upgrade?", answer: "Worth upgrading from iPhone 15 if you want: Apple Intelligence (15 doesn't support it — RAM and chip limits), Camera Control button for photography, Action Button (programmable shortcut), and 5x faster A18 chip. If you don't care about AI and the iPhone 15's 48MP camera is enough, save $100 and stick with 15. For new buyers in 2026, iPhone 16 is the better choice — Apple Intelligence will only become more important." },
+      { question: "Is iPhone 16 worth the upgrade from iPhone 14?", answer: "Yes, significantly. iPhone 16 vs iPhone 14: 2-3x faster chip, Dynamic Island (15 introduced), USB-C, Camera Control, Apple Intelligence support, larger battery, and 48MP main camera (vs 12MP). iPhone 14 still works but feels noticeably dated next to iPhone 16. If you're on iPhone 14 or older, iPhone 16 is a worthwhile upgrade. iPhone 13 to 16 is even more dramatic." },
+    ],
+  },
+
+  "iphone-15": {
+    description: "Apple iPhone 15 is the standard 2023 iPhone, released September 2023 with the A16 Bionic chip (same chip as the 14 Pro from 2022). The iPhone 15 introduced major design changes: USB-C port (replacing Lightning, mandated by EU regulation), Dynamic Island (the pill-shaped notch from 14 Pro line), 48MP main camera (up from 12MP), and the new color-infused back glass. Display is 6.1-inch Super Retina XDR (60Hz, no ProMotion). Battery life is 20 hours video playback. iPhone 15 starts at $699 (after iPhone 16 release; was $799 originally). Critically, iPhone 15 does NOT support Apple Intelligence — its 6 GB RAM is below the 8 GB threshold required. For users who don't need AI features, iPhone 15 remains an excellent value. Apple sells iPhone 15 alongside iPhone 16 with a $100 price gap.",
+    highlights: ["USB-C port — first iPhone with USB-C", "Dynamic Island — inherited from iPhone 14 Pro", "$699 — $100 cheaper than iPhone 16", "No Apple Intelligence support — 6 GB RAM"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16", slug: "iphone-16", reason: "$100 more — Apple Intelligence, A18 chip, Camera Control button" },
+      { name: "iPhone 14", slug: "iphone-14", reason: "Still sold at $599 — Lightning port, smaller notch, lacks Dynamic Island" },
+      { name: "iPhone SE", slug: "iphone-se", reason: "Cheapest iPhone — Touch ID, smaller screen, $429" },
+    ],
+    faqs: [
+      { question: "Is iPhone 15 still worth buying in 2026?", answer: "Yes for budget-conscious buyers. At $699, iPhone 15 offers most of what 99% of users need: 48MP camera, USB-C, Dynamic Island, all-day battery, and 5+ years of iOS updates ahead. The major sacrifice is Apple Intelligence — if AI features (writing tools, image generation, smarter Siri) matter to you, pay $100 more for iPhone 16. If you primarily use your phone for messaging, photography, and apps, iPhone 15 remains an excellent value." },
+      { question: "Will iPhone 15 get iOS 19?", answer: "Yes, iPhone 15 will receive iOS 19 (and likely iOS 20-22 too based on Apple's typical 5-6 year support window). Apple supports iPhones with software updates for at least 5-6 years from release. iPhone 15 (2023) should receive updates through approximately iOS 23 (2028-2029). The only feature gap will continue to be Apple Intelligence — those AI features are RAM-limited and require iPhone 15 Pro or iPhone 16+." },
+    ],
+  },
+
+  "iphone-15-pro": {
+    description: "Apple iPhone 15 Pro was Apple's flagship phone in 2023 — the first iPhone with USB-C, the A17 Pro chip (3nm process, first 3nm chip in any phone), and the titanium frame replacing stainless steel. Launched at $999, the iPhone 15 Pro features a 6.1-inch ProMotion 120 Hz display, 48MP main + 12MP ultra-wide + 12MP 3x telephoto, Action Button (customizable, replacing mute switch), and was the first iPhone capable of running Apple Intelligence (8 GB RAM threshold). The iPhone 15 Pro Max introduced 5x optical zoom (tetraprism design). Battery life is 23 hours video. Apple discontinued iPhone 15 Pro and 15 Pro Max from new sales in September 2024, but they remain widely available refurbished and through carriers. The 15 Pro Max can still be purchased used or refurbished for $700-900, offering significant savings vs iPhone 16 Pro Max.",
+    highlights: ["First 3nm chip — A17 Pro", "First iPhone with titanium frame", "First iPhone supporting Apple Intelligence", "USB-C 3.0 with 10 Gbps speeds (Pro models only)"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16 Pro", slug: "iphone-16-pro", reason: "Newer A18 Pro, Camera Control, 4K 120fps video, larger 6.3-inch display" },
+      { name: "iPhone 15", slug: "iphone-15", reason: "$300 cheaper, lacks ProMotion and telephoto, no Apple Intelligence" },
+      { name: "iPhone 14 Pro", slug: "iphone-14-pro", reason: "Lightning, stainless steel — discontinued but heavily discounted" },
+    ],
+    faqs: [
+      { question: "Is iPhone 15 Pro still worth buying in 2026?", answer: "Yes, especially refurbished or used. iPhone 15 Pro supports Apple Intelligence, has ProMotion 120Hz, telephoto camera, and the titanium frame. Refurbished prices ($700-850) offer significant savings vs iPhone 16 Pro ($999+). Trade-offs vs iPhone 16 Pro: no Camera Control button, no 4K 120fps video, smaller 6.1-inch display, slightly older chip. For most users, the differences are subtle and a refurbished 15 Pro is excellent value." },
+      { question: "iPhone 15 Pro vs iPhone 16 Pro: what's the upgrade?", answer: "iPhone 16 Pro improvements over 15 Pro: Camera Control button (new tactile camera control), 4K 120fps video (huge for video creators), larger displays (6.3 vs 6.1 / 6.9 vs 6.7), 48MP ultra-wide (up from 12MP), A18 Pro chip (~15% faster CPU), and longer battery. If you shoot lots of video or use ultra-wide photos, the upgrade is worthwhile. For typical users, 15 Pro remains excellent — wait for iPhone 17 if 16 Pro doesn't excite you." },
+    ],
+  },
+
+  "samsung-galaxy-s25": {
+    description: "Samsung Galaxy S25 is Samsung's standard 2025 flagship, launched January 2025 with the Snapdragon 8 Elite for Galaxy chip globally (no more Exynos split for S series). The S25 features a 6.2-inch Dynamic AMOLED 2X display (120Hz), triple camera (50MP main + 12MP ultra-wide + 10MP 3x telephoto), 12 GB RAM (up from 8 GB on S24), and 4,000 mAh battery. Galaxy S25 starts at $799. The headline feature is Galaxy AI 2.0 — deeper integration with Google Gemini, agentic AI capabilities (cross-app actions like 'find me a restaurant near my next meeting and book a table'), and improved Now Brief (proactive AI updates). Samsung committed to 7 years of software updates (matching Apple's iPhone support). Galaxy S25 is the direct competitor to iPhone 16 in the standard flagship tier.",
+    highlights: ["Snapdragon 8 Elite for Galaxy globally — no more Exynos", "Galaxy AI 2.0 — deeper Gemini integration, agentic AI", "12 GB RAM, 7 years of updates", "$799 — direct iPhone 16 competitor"],
+    category: "technology",
+    alternatives: [
+      { name: "Samsung Galaxy S25 Ultra", slug: "samsung-galaxy-s25-ultra", reason: "200MP camera, S Pen, larger 6.9-inch display, $1,299" },
+      { name: "iPhone 16", slug: "iphone-16", reason: "Apple Intelligence, iOS ecosystem, Camera Control button" },
+      { name: "Google Pixel 9", slug: "google-pixel-9", reason: "Best Android AI, more affordable, cleaner Android experience" },
+    ],
+    faqs: [
+      { question: "Samsung Galaxy S25 vs iPhone 16: which is better?", answer: "iPhone 16 is better for: ecosystem (Mac, AirPods, Apple Watch integration), software updates timeliness, video quality, and on-device privacy for AI. Samsung Galaxy S25 is better for: hardware customization, multitasking (split-screen, pop-up apps), faster charging, more RAM (12 GB vs 8 GB), and better integration with Google services. Both flagships are excellent — the choice depends on your ecosystem preference (Apple vs Google/Samsung)." },
+      { question: "Is Galaxy S25 worth upgrading from S24?", answer: "Modest upgrade. Galaxy S25 vs S24: same display, similar cameras, same design language. Improvements: Snapdragon 8 Elite chip (~15-20% faster), 12 GB RAM (up from 8 GB), Galaxy AI 2.0 (more agentic features), and longer battery. For S24 users, wait for S26 unless you really want the new AI features. For S22 or older users, the upgrade is much more meaningful." },
+    ],
+  },
+
+  "samsung-galaxy-s25-ultra": {
+    description: "Samsung Galaxy S25 Ultra is Samsung's flagship for 2025, launched January 2025 at $1,299 (256 GB). The S25 Ultra features a 6.9-inch Dynamic AMOLED 2X display (3120×1440, 120 Hz, anti-reflective coating), Snapdragon 8 Elite for Galaxy, 12 GB RAM, and a quad-camera system: 200MP main, 50MP 5x optical zoom (periscope), 12MP ultra-wide, 10MP 3x telephoto. The S25 Ultra retains the built-in S Pen (Galaxy Note legacy) — the only flagship with an integrated stylus. Battery is 5,000 mAh with 45W charging. Galaxy AI 2.0 includes circle-to-search, live translation, generative photo editing, and agentic AI workflows. The titanium frame (introduced on S24 Ultra) returns. Samsung promised 7 years of OS and security updates. Galaxy S25 Ultra is the direct competitor to iPhone 16 Pro Max ($1,199).",
+    highlights: ["6.9-inch display — largest mainstream flagship", "200MP main + 5x periscope telephoto camera", "Built-in S Pen — no other flagship has integrated stylus", "Galaxy AI 2.0 + 7 years of updates"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16 Pro Max", slug: "iphone-16-pro-max", reason: "Smaller at 6.9-inch, A18 Pro chip, iOS ecosystem" },
+      { name: "Samsung Galaxy S25", slug: "samsung-galaxy-s25", reason: "$500 cheaper, no S Pen, smaller 6.2-inch display" },
+      { name: "Google Pixel 9 Pro XL", slug: "google-pixel-9-pro", reason: "Best Android AI, cleaner Android, $1,099" },
+    ],
+    faqs: [
+      { question: "S25 Ultra vs iPhone 16 Pro Max: which is better?", answer: "Galaxy S25 Ultra wins for: photography versatility (200MP main, 5x optical zoom), built-in S Pen (huge for note-takers and artists), customization (Android), multitasking, and better display anti-reflective coating. iPhone 16 Pro Max wins for: ecosystem (Apple Watch, AirPods, MacBook integration), video quality (industry-leading), software update consistency, and resale value. Both phones are top-tier flagships — choose based on ecosystem preference and whether you value the S Pen." },
+      { question: "Why does Galaxy S25 Ultra cost so much?", answer: "Galaxy S25 Ultra at $1,299 is positioned as Samsung's top flagship — comparable to iPhone 16 Pro Max ($1,199) and the most premium Android phone available. The price reflects: 200MP camera system, 5x periscope telephoto, 6.9-inch QHD display, S Pen, titanium frame, 12 GB RAM, and 7 years of updates. Samsung offers strong trade-in deals ($500-800+ for older flagships) that bring the effective price down significantly. Carriers also offer aggressive promo pricing." },
+    ],
+  },
+
+  "google-pixel-9-pro": {
+    description: "Google Pixel 9 Pro is Google's flagship for 2024-2025, launched August 2024 at $999 (128 GB) for the 6.3-inch model and $1,099 for the 6.8-inch Pixel 9 Pro XL. Built around the Tensor G4 chip (Google's 4th-generation custom SoC), Pixel 9 Pro features 16 GB RAM, a 50MP main camera, 48MP ultra-wide, and 48MP 5x telephoto. The Pixel 9 Pro is positioned as the best Android phone for AI — it has Gemini Nano running on-device for features unavailable on most Android phones: Add Me (AI photo composition for group photos including the photographer), Magic Editor with reimagine, Pixel Studio (image generation), Call Notes (AI summaries of phone calls), Pixel Screenshots (AI-searchable screenshots). Google committed to 7 years of OS, security, and feature drops. The 9 Pro and Pro XL share specs except for size and battery. Pixel 9 Pro is widely regarded as having the best computational photography in the smartphone market.",
+    highlights: ["Tensor G4 + 16 GB RAM — best Android AI experience", "Gemini Nano on-device — exclusive Pixel-only AI features", "50MP + 48MP ultrawide + 48MP 5x telephoto", "7 years of OS + Pixel Drops"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16 Pro", slug: "iphone-16-pro", reason: "Apple Intelligence, A18 Pro, Camera Control button, iOS ecosystem" },
+      { name: "Samsung Galaxy S25 Ultra", slug: "samsung-galaxy-s25-ultra", reason: "200MP camera, S Pen, larger 6.9-inch display" },
+      { name: "Google Pixel 9", slug: "google-pixel-9", reason: "Standard Pixel 9, $799, no telephoto camera" },
+    ],
+    faqs: [
+      { question: "Pixel 9 Pro vs iPhone 16 Pro: which is better?", answer: "Pixel 9 Pro is better for: AI features (more advanced and inventive than Apple Intelligence currently), computational photography (especially low-light and portrait), customization (Android), and Google services integration. iPhone 16 Pro is better for: ecosystem integration (AirPods, Apple Watch, MacBook), video quality (industry-leading), software update timeliness, and resale value. For Android users who value AI: Pixel 9 Pro is the best choice. For Apple ecosystem users: iPhone 16 Pro." },
+      { question: "Is Pixel 9 Pro worth $999?", answer: "Yes for AI-focused buyers. Pixel 9 Pro offers genuinely unique AI features (Add Me, Magic Editor with reimagine, Call Notes) that no other phone has. Photography is exceptional. The 7-year update commitment matches Apple. Trade-offs vs Samsung S25 Ultra: smaller 6.3-inch display, no S Pen, smaller battery. Trade-offs vs iPhone 16 Pro: less polished software stability, weaker ecosystem integration. For Android purists who want cutting-edge AI, Pixel 9 Pro is the clear top choice." },
+    ],
+  },
+
+  "ipad-air": {
+    description: "Apple iPad Air is the mid-range iPad, refreshed May 2024 with the M2 chip and now available in 11-inch ($599) and 13-inch ($799) sizes — the first time iPad Air offered a 13-inch option. iPad Air features Liquid Retina display (no ProMotion 120Hz, that's iPad Pro), 8 GB RAM (M2 enables Apple Intelligence), Touch ID in the power button, USB-C with fast charging, and full Apple Pencil Pro support (the new top-tier stylus, also works with iPad Pro). iPad Air supports Magic Keyboard ($299 for 11-inch, $349 for 13-inch). The iPad Air is positioned as the sweet spot between iPad ($349) and iPad Pro ($999) — offering most of the iPad Pro's productivity capabilities at significantly lower cost. iPad Air is excellent for students, content creators, and casual creative work.",
+    highlights: ["M2 chip — supports Apple Intelligence", "11-inch ($599) and 13-inch ($799) options", "Apple Pencil Pro support — top-tier stylus", "8 GB RAM, Liquid Retina display"],
+    category: "technology",
+    alternatives: [
+      { name: "iPad Pro", slug: "ipad-pro", reason: "M4 chip, ProMotion 120Hz, OLED Tandem display, more powerful for pros" },
+      { name: "iPad", slug: "ipad", reason: "$349 starting — most affordable iPad, A16 chip, no Apple Intelligence" },
+      { name: "iPad mini", slug: "ipad-mini", reason: "Smaller 8.3-inch portable size, A17 Pro chip" },
+    ],
+    faqs: [
+      { question: "iPad Air vs iPad Pro: which should I buy?", answer: "iPad Pro is better if you: need ProMotion 120Hz (huge for Apple Pencil note-taking), want the OLED Tandem display (best display in any tablet), use M4 chip-intensive apps, need maximum performance. iPad Air is better if you: want the iPad experience for work, school, content consumption, and casual creative work without paying the Pro premium. For most users, iPad Air at $599-799 is the smart choice. iPad Pro is justified for professional creatives and demanding users." },
+      { question: "iPad Air vs iPad: what's the difference?", answer: "iPad Air ($599-799) vs iPad ($349-499): M2 chip vs A16 (significantly more powerful, supports Apple Intelligence), Liquid Retina display vs Retina (better quality, slightly larger pixel density), Apple Pencil Pro support vs USB-C Apple Pencil only, more RAM (8 vs 6 GB), and better front camera position (landscape on Air). For students and casual users, iPad ($349) is excellent. For productivity users wanting longevity, iPad Air's M2 chip and AI support justify the price." },
+    ],
+  },
+
+  "airpods-pro-2": {
+    description: "Apple AirPods Pro 2 is Apple's flagship in-ear wireless earbud, launched September 2022 and updated October 2024 with USB-C charging case (replacing Lightning). At $249, AirPods Pro 2 features: H2 chip (2x more compute, 1.5x better noise cancellation than original AirPods Pro), MagSafe wireless charging, Adaptive Audio (smart blend of ANC and transparency), Conversation Awareness (auto-pauses when you speak), Personalized Spatial Audio with head tracking, IP54 dust/sweat resistance, up to 6 hours playback (30 hours with case), and the world's first hearing aid functionality (FDA-approved September 2024) — the major 2024 software upgrade. AirPods Pro 2's clinical-grade hearing test and hearing aid mode make it a transformative product for the 30+ million Americans with mild-to-moderate hearing loss. AirPods Pro 2 dominate the premium TWS earbud market.",
+    highlights: ["FDA-approved hearing aid functionality (2024)", "H2 chip — best-in-class ANC for in-ear", "Personalized Spatial Audio + Adaptive Audio", "$249 — MagSafe + USB-C case (2024)"],
+    category: "technology",
+    alternatives: [
+      { name: "Sony WF-1000XM5", slug: "sony-wf-1000xm5", reason: "Best ANC of any earbud, more EQ control, multipoint pairing" },
+      { name: "AirPods 4", slug: "airpods-4", reason: "$179 with ANC, no silicone tips, less ANC vs Pro 2" },
+      { name: "Bose QuietComfort Earbuds II", slug: "bose-qc-earbuds", reason: "Excellent ANC, comfortable fit, less ecosystem integration" },
+    ],
+    faqs: [
+      { question: "AirPods Pro 2 vs Sony WF-1000XM5: which is better?", answer: "Sony WF-1000XM5 wins on: ANC (slightly better), audio quality (richer, more detailed), customizable EQ, and multipoint Bluetooth (connect to phone + laptop simultaneously). AirPods Pro 2 wins on: Apple ecosystem integration (instant pairing with all Apple devices, hand-off, Find My), hearing aid mode (FDA-approved), Conversation Awareness, and Personalized Spatial Audio. For Apple users: AirPods Pro 2 is the obvious choice. For audiophiles or non-Apple users: Sony WF-1000XM5." },
+      { question: "Is AirPods Pro 2 hearing aid mode any good?", answer: "Yes — and this is a paradigm-shifting feature. AirPods Pro 2 with iOS 18.1+ can perform a clinical-grade hearing test and use the results to customize amplification for users with mild-to-moderate hearing loss. The FDA approved this feature in September 2024. While not a replacement for medical-grade hearing aids ($2,000-6,000), at $249 AirPods Pro 2 democratize hearing assistance for tens of millions who couldn't afford traditional hearing aids. Audiologists and the hearing aid industry have called this transformative." },
+    ],
+  },
+
+  "sony-wh-1000xm5": {
+    description: "Sony WH-1000XM5 is Sony's flagship over-ear noise-cancelling headphones, launched May 2022 at $399. The XM5 are widely considered the best noise-cancellation headphones available — outperforming Bose QuietComfort 45 and AirPods Max in most independent testing (RTINGS, The Verge, Wirecutter). Features include: 8 microphones for ANC (vs 4 on XM4), 30mm carbon fiber composite drivers, 30 hours battery (40 with ANC off), 3-minute quick charge for 3 hours of playback, multipoint Bluetooth (2 devices), LDAC for hi-res audio, AI-powered call noise reduction, Speak-to-Chat (auto-pause when you talk), and Quick Attention (cup hand over right earcup to lower volume and let in sound). Critics noted the redesigned XM5 is less foldable than XM4 — a deliberate trade-off for improved acoustic design. Sony WH-1000XM5 is the gold standard for travelers and frequent flyers.",
+    highlights: ["Best-in-class ANC — 8 microphones, outperforms competitors", "30 hours battery (40 hours with ANC off)", "Multipoint Bluetooth + LDAC hi-res audio", "$399 (often $329-349 on sale)"],
+    category: "technology",
+    alternatives: [
+      { name: "Bose QuietComfort Ultra Headphones", slug: "bose-quietcomfort-ultra", reason: "Comparable ANC, better comfort, immersive audio" },
+      { name: "AirPods Max", slug: "airpods-max", reason: "Best Apple ecosystem, premium materials, $549" },
+      { name: "Apple AirPods Pro 2", slug: "airpods-pro-2", reason: "$249 in-ear alternative, hearing aid mode, Apple integration" },
+    ],
+    faqs: [
+      { question: "Are Sony WH-1000XM5 worth $399?", answer: "For frequent travelers, commuters, and ANC enthusiasts: absolutely. Sony WH-1000XM5 has the best noise cancellation of any consumer headphone, outperforming Bose and Apple in independent testing. The 30-hour battery is class-leading. For occasional ANC users, Sony WH-1000XM4 (the previous gen, often $200-250 on sale) is 95% as good for half the price. Wait for sales — XM5 frequently drops to $329-349, especially around Black Friday and Prime Day." },
+      { question: "Sony WH-1000XM5 vs Bose QuietComfort Ultra: which is better?", answer: "Sony WH-1000XM5 wins on: noise cancellation in most environments (better at cancelling complex noise like cafes), battery life (30 vs 24 hours), and audio quality (more detailed, neutral signature). Bose QuietComfort Ultra wins on: comfort (Bose's clamp force is gentler), Immersive Audio (Bose's spatial audio implementation), and call quality. Both are excellent. Sony for ANC purists and audiophiles; Bose for comfort during long sessions." },
+    ],
+  },
 };
