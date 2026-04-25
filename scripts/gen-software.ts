@@ -920,6 +920,26 @@ const COMPARISONS = [
   ["Asana", "Monday.com"],
   ["Asana", "ClickUp"],
   ["Asana", "Trello"],
+  // Social Media Platforms (very high consumer search volume)
+  ["Facebook", "Twitter"],
+  ["Facebook", "Instagram"],
+  ["Instagram", "TikTok"],
+  ["LinkedIn", "Twitter"],
+  ["LinkedIn", "Facebook"],
+  ["Facebook", "Reddit"],
+  ["YouTube", "TikTok"],
+  ["Netflix", "YouTube"],
+  // Consumer Tech (extremely high search volume)
+  ["iPhone", "Samsung Galaxy"],
+  ["MacBook", "Windows"],
+  ["MacBook", "Surface"],
+  ["MacBook", "Chromebook"],
+  // Gaming
+  ["Epic Games", "Steam"],
+  ["Nintendo Switch", "Steam Deck"],
+  // Security & Infrastructure
+  ["Cloudflare", "Fastly"],
+  ["Cloudflare", "Cloudfront"],
 ];
 
 function makeSlug(a: string, b: string): string {
