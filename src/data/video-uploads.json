@@ -1103,6 +1103,20 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-25T06:52:26.225Z"
+    },
+    {
+      "slug": "jail-vs-prison",
+      "title": "Jail vs Prison",
+      "entityA": "Jail",
+      "entityB": "Prison",
+      "category": "General",
+      "videoFile": "Jail vs Prison.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Jail vs Prison — Full Comparison 2026",
+      "youtubeDescription": "Jails are local facilities for short-term holds (under 1 year) and pre-trial detention, while prisons are state/federal facilities for longer sentences over 1 year.\n\n#jail #prison #general #comparison #versus",
+      "youtubeVideoId": "BR_7CnKDTHY",
+      "youtubeUrl": "https://www.youtube.com/watch?v=BR_7CnKDTHY",
+      "uploadedAt": "2026-04-25T07:50:16.535Z"
     }
   ]
 }
