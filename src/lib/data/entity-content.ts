@@ -7331,4 +7331,304 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "T-Mobile vs AT&T: which is better?", answer: "T-Mobile is generally better for 5G speed and value — it's the fastest 5G network in the US and has more competitive pricing. AT&T matches T-Mobile in overall coverage and wins in specific areas (rural Southeast, FirstNet for first responders, fiber home internet bundling). T-Mobile has better international coverage and is typically $10-20/month cheaper for equivalent plans." },
     ],
   },
+
+  "venmo": {
+    description: "Venmo is a mobile payment service owned by PayPal, launched in 2009 and now one of the most widely used peer-to-peer payment apps in the United States with over 90 million active accounts. Venmo allows users to send and receive money instantly between friends and family using linked bank accounts, debit cards, or Venmo balances. The app is particularly popular among millennials and Gen Z for splitting bills, paying rent, and reimbursing friends. Standard transfers are free; instant transfers to a bank cost 1.75% (min $0.25, max $25). Venmo's social feed, where transactions appear with emoji and captions, differentiates it from competitors. The Venmo Debit Card and Venmo Credit Card (issued by Synchrony Bank) allow spending Venmo balance anywhere Visa is accepted. Venmo also supports cryptocurrency buying/selling (Bitcoin, Ethereum, Litecoin, Bitcoin Cash) and business payments (3% fee). Monthly payment volume exceeds $230 billion annually.",
+    highlights: ["90M+ active users in the US", "Social feed — unique among payment apps", "Owned by PayPal — backed by major fintech infrastructure", "$230B+ annual payment volume"],
+    category: "products",
+    alternatives: [
+      { name: "Cash App", slug: "cash-app", reason: "More features: stocks, Bitcoin, Cash Card debit card" },
+      { name: "Zelle", slug: "zelle", reason: "Direct bank-to-bank transfers, no app balance needed" },
+      { name: "PayPal", slug: "paypal", reason: "More established, better for business and international transfers" },
+    ],
+    faqs: [
+      { question: "Is Venmo safe to use?", answer: "Venmo is generally safe for trusted contacts but has some risks. Transactions are instant and difficult to reverse — if you send money to the wrong person, recovery is not guaranteed. Venmo uses encryption and fraud monitoring, but the social feed has raised privacy concerns. Best practices: make transactions private in settings, only transact with people you know, enable two-factor authentication, and never send money to strangers for goods/services (no buyer protection)." },
+      { question: "Venmo vs Zelle: which is better?", answer: "Zelle transfers go directly to bank accounts (no app balance) and are completely free, making it ideal for bank-to-bank transfers. Venmo holds balances in-app, has a social feed, and charges for instant bank transfers. Zelle is better for large transfers directly between bank accounts. Venmo is better for frequent friend-to-friend payments with its social experience." },
+    ],
+  },
+
+  "cash-app": {
+    description: "Cash App is a financial services platform developed by Block (formerly Square), launched in 2013 and now with over 56 million monthly active users in the US and UK. Originally a peer-to-peer payment app, Cash App has expanded into a broader financial ecosystem: users can send/receive money, invest in stocks and ETFs with fractional shares (no commissions), buy and sell Bitcoin, and use the Cash Card — a customizable Visa debit card linked to the Cash App balance. The app also offers direct deposit, paycheck advances (Borrow feature), and tax filing (Cash App Taxes, free federal + state). Cash App generates revenue through instant transfer fees (1.5%, min $0.25), Bitcoin exchange spreads, and business account fees. Cash App is particularly popular for Bitcoin — it's one of the easiest ways to buy BTC in the US. Parent company Block generated $4.6 billion in gross profit in 2023, with Cash App driving the majority.",
+    highlights: ["56M monthly active users", "Free stock investing — fractional shares, no commissions", "Bitcoin buying/selling — one of the easiest in the US", "Cash Card — customizable Visa debit card"],
+    category: "products",
+    alternatives: [
+      { name: "Venmo", slug: "venmo", reason: "More popular for social P2P payments, larger US user base" },
+      { name: "Zelle", slug: "zelle", reason: "Free bank-to-bank transfers, no app balance required" },
+      { name: "PayPal", slug: "paypal", reason: "Better for international transfers, buyer protection" },
+    ],
+    faqs: [
+      { question: "Cash App vs Venmo: which is better?", answer: "Cash App offers more financial features — stocks, Bitcoin, Cash Card debit card, and tax filing. Venmo has a larger social network effect and is more widely used for splitting bills among friends. If you want a simple P2P app for friend payments, Venmo is more popular. If you want an all-in-one financial app with investing and crypto, Cash App wins." },
+      { question: "Is Cash App safe?", answer: "Cash App is generally safe but has risks. Like Venmo, payments are instant and hard to reverse. Cash App has been targeted by scams — never send money to strangers or 'Cash App Friday' impersonators. Enable security lock and notifications. For bank-level protection, note that Cash App balance is not FDIC insured unless you have direct deposit enabled, which activates FDIC pass-through insurance up to $250,000." },
+    ],
+  },
+
+  "zelle": {
+    description: "Zelle is a digital payments network owned by Early Warning Services, a consortium of seven major US banks (Bank of America, Capital One, JPMorgan Chase, PNC, Truist, U.S. Bank, and Wells Fargo). Launched in 2017, Zelle is integrated directly into most major US banking apps, allowing users to send money directly from one bank account to another in minutes — no separate app balance is held. Over 2,200 financial institutions offer Zelle, and it processed $806 billion in payments in 2023 across 3 billion transactions, making it the largest P2P payment network in the US by volume. Zelle is completely free — no fees for sending or receiving. Unlike Venmo or Cash App, Zelle doesn't hold money in-app; funds go directly to the recipient's bank account. This makes it ideal for larger transfers (rent, car purchases, business payments). However, Zelle offers no buyer/seller protection — once sent, money is very difficult to recover.",
+    highlights: ["$806B in payments processed (2023)", "3B+ transactions annually — largest US P2P network by volume", "Built into 2,200+ banking apps — no separate download needed", "Completely free — no fees for any transfer"],
+    category: "products",
+    alternatives: [
+      { name: "Venmo", slug: "venmo", reason: "Social feed, app balance, more popular with younger users" },
+      { name: "Cash App", slug: "cash-app", reason: "More features — stocks, Bitcoin, Cash Card" },
+      { name: "PayPal", slug: "paypal", reason: "Better buyer protection, works internationally" },
+    ],
+    faqs: [
+      { question: "Is Zelle safe?", answer: "Zelle is safe for trusted contacts but has no fraud protection for authorized payments — if you willingly send money to a scammer, banks are not required to reimburse you. The FTC and CFPB have received thousands of fraud complaints. Use Zelle only for people you personally know. Never use Zelle for marketplace transactions (Facebook Marketplace, Craigslist) — there's no buyer/seller protection unlike PayPal." },
+      { question: "Zelle vs Venmo: what's the difference?", answer: "Zelle transfers go directly between bank accounts (no app balance held) and are completely free. Venmo holds money in an app balance and charges 1.75% for instant bank withdrawals. Zelle is embedded in most banking apps (no separate download needed). Venmo has a social feed and is more popular among younger users. Zelle is better for direct bank-to-bank transfers; Venmo is better for casual friend payments with a social experience." },
+    ],
+  },
+
+  "american-express": {
+    description: "American Express (Amex) is a multinational financial services corporation headquartered in New York City, founded in 1850 and publicly traded on NYSE (AXP). Unlike Visa and Mastercard (which are payment networks), American Express is both a payment network and a card issuer — it issues cards directly to consumers and manages the entire transaction. Amex is known for premium credit cards targeting affluent consumers and businesses, with the Platinum Card ($695 annual fee) and Gold Card ($250 annual fee) being flagship products offering extensive travel, dining, and lifestyle benefits. Amex processed approximately $1.7 trillion in purchase volume in 2023 with 140+ million cards in force globally. Amex cards are accepted at 90%+ of US merchant locations and expanding internationally. The Membership Rewards points program is widely regarded as one of the most valuable, with 1,700+ airline and hotel transfer partners. Amex generates revenue through card fees, merchant fees (higher discount rates), and interest.",
+    highlights: ["Founded 1850 — one of the oldest financial brands", "$1.7T purchase volume (2023) — 140M+ cards globally", "Premium rewards — Membership Rewards with 1,700+ transfer partners", "Closed-loop network — Amex is both issuer and network"],
+    category: "products",
+    alternatives: [
+      { name: "Visa", slug: "visa", reason: "More widely accepted globally, lower merchant fees" },
+      { name: "Mastercard", slug: "mastercard", reason: "Similar global acceptance to Visa, strong World Elite tier" },
+      { name: "Chase Sapphire", slug: "chase", reason: "Competitive rewards, issued on Visa network with wide acceptance" },
+    ],
+    faqs: [
+      { question: "Is American Express accepted everywhere?", answer: "Amex is accepted at 90%+ of US locations that take credit cards, up dramatically from 10 years ago. Internationally, acceptance varies — Western Europe and major tourist destinations generally accept Amex, but rural areas and smaller countries may not. The main gap vs Visa/Mastercard is smaller merchants who prefer lower-fee networks. Always carry a Visa/Mastercard backup when traveling internationally." },
+      { question: "Are Amex cards worth the annual fee?", answer: "For the right user, yes. The Platinum Card's $695 fee is offset by $200 airline credit, $200 Uber Cash, $240 digital entertainment credits, $200 hotel credit, Priority Pass lounge access, and more — worth $1,500+ in benefits if fully utilized. The Gold Card's $250 fee is offset by $120 dining credit and $120 Uber Cash alone. If you won't use the credits, a no-fee card is better." },
+    ],
+  },
+
+  "visa": {
+    description: "Visa Inc. is the world's largest payment network by transaction volume, processing approximately $15 trillion in payments annually across 4.3 billion cards in over 200 countries and territories. Founded in 1958 (as BankAmericard) and headquartered in San Francisco, Visa went public in 2008 in one of the largest US IPOs. Visa operates as a payment network — it does not issue cards or extend credit; instead, it licenses its network to banks and financial institutions that issue Visa-branded cards. This asset-light model makes Visa one of the most profitable companies in the world (50%+ net margins). Visa is accepted at 130 million+ merchant locations worldwide. Key products include Visa Classic, Visa Signature, Visa Infinite, and Visa Business. In fiscal 2023, Visa generated $32.7 billion in revenue and $17.3 billion in net income. Visa and Mastercard together process approximately 80% of all credit card transactions in the US.",
+    highlights: ["Largest payment network globally — $15T annual volume", "4.3B cards, 200+ countries, 130M+ merchant locations", "50%+ net margins — one of world's most profitable companies", "$32.7B revenue, $17.3B net income (fiscal 2023)"],
+    category: "products",
+    alternatives: [
+      { name: "Mastercard", slug: "mastercard", reason: "Near-identical global acceptance, similar network model" },
+      { name: "American Express", slug: "american-express", reason: "Premium rewards, closed-loop model, affluent cardholder base" },
+      { name: "Discover", slug: "discover", reason: "Accepted in US/major markets, no foreign transaction fees, cashback focus" },
+    ],
+    faqs: [
+      { question: "Visa vs Mastercard: what's the difference?", answer: "For consumers, the difference is minimal — both are accepted at virtually the same locations worldwide. The card benefits (rewards, lounge access, insurance) are set by the issuing bank, not the network. Visa is slightly larger by transaction volume. Some travel cards have small advantages on one network — e.g., some Visa Infinite cards offer better travel insurance than equivalent Mastercard World Elite. The issuing bank matters far more than the network." },
+      { question: "Is Visa or Mastercard more widely accepted?", answer: "Both are accepted at virtually identical locations — 130+ million merchant locations for Visa vs 100+ million for Mastercard. The practical difference in acceptance is negligible in the US and most developed countries. In a few specific locations (Costco in the US only accepts Visa; some international markets favor one over the other), there can be minor differences." },
+    ],
+  },
+
+  "mastercard": {
+    description: "Mastercard Incorporated is the world's second-largest payment network, processing approximately $9 trillion in payments annually across 3.3 billion cards in 210+ countries and territories. Headquartered in Purchase, New York, Mastercard went public in 2006 and has grown into one of the S&P 500's best-performing stocks. Like Visa, Mastercard operates as a payment network — it does not issue cards or extend credit; banks license the Mastercard network for their cards. Mastercard is accepted at 100+ million merchant locations worldwide. Key tiers include Mastercard Standard, World Mastercard, and World Elite Mastercard (flagship). Mastercard has made significant investments in cybersecurity (NuData), open banking (Finicity acquisition), and digital identity. In fiscal 2023, Mastercard generated $25.1 billion in revenue with 46%+ net margins. The Mastercard Priceless Cities program offers cardholders exclusive experiences in 40+ cities globally.",
+    highlights: ["2nd largest payment network — $9T annual volume", "3.3B cards in 210+ countries and territories", "World Elite Mastercard — premium travel and lifestyle benefits", "$25.1B revenue (2023), 46%+ net margins"],
+    category: "products",
+    alternatives: [
+      { name: "Visa", slug: "visa", reason: "Slightly larger network, near-identical global acceptance" },
+      { name: "American Express", slug: "american-express", reason: "Better rewards for premium spenders, closed-loop benefits" },
+      { name: "Discover", slug: "discover", reason: "No foreign transaction fees, cashback focus, US acceptance on par with Mastercard" },
+    ],
+    faqs: [
+      { question: "Is Mastercard better than Visa?", answer: "For everyday consumers, there's no meaningful difference — both networks are accepted at virtually identical locations. The rewards, interest rates, and benefits on your specific card are set by your bank, not by Mastercard or Visa. Choice of Visa vs Mastercard should not drive your card decision; instead, focus on the issuing bank, APR, rewards rate, and annual fee." },
+      { question: "What is World Elite Mastercard?", answer: "World Elite Mastercard is Mastercard's premium tier for high-spend credit cards. Benefits vary by issuing bank but typically include: Mastercard Travel & Lifestyle Services (luxury travel booking), Lyft credits ($5/month), ShopRunner membership (free 2-day shipping), Priceless Cities experiences, and enhanced travel insurance. Compare to Visa Infinite at the same premium tier — both offer strong travel benefits, and the specific perks depend on the issuing bank's card." },
+    ],
+  },
+
+  "fidelity": {
+    description: "Fidelity Investments is one of the largest privately held financial services companies in the world, founded in 1946 and headquartered in Boston, Massachusetts. Fidelity manages over $11.5 trillion in customer assets across mutual funds, brokerage accounts, retirement accounts (401k, IRA), and managed portfolios. With 43+ million individual investors and 23,000+ employees, Fidelity is a dominant force in retirement savings — it administers 401(k) plans for 24,000+ companies serving 23 million participants. Fidelity offers commission-free stock and ETF trading (since 2019), no-minimum brokerage accounts, and industry-leading index funds including four zero-expense-ratio funds (FZROX, FZILX, FZESX, FZIPX). The Fidelity Bloom app and Youth Account (for teenagers) expand its reach to younger investors. Fidelity's research tools, customer service, and fund selection are consistently top-rated by Barron's, NerdWallet, and Bankrate.",
+    highlights: ["$11.5T in customer assets under administration", "43M+ individual investor accounts", "Zero expense ratio index funds — FZROX, FZILX", "Privately held — no shareholder pressure unlike public competitors"],
+    category: "products",
+    alternatives: [
+      { name: "Charles Schwab", slug: "charles-schwab", reason: "Larger branch network, thinkorswim platform, strong banking" },
+      { name: "Vanguard", slug: "vanguard", reason: "Pioneer of low-cost index investing, client-owned structure" },
+      { name: "Robinhood", slug: "robinhood", reason: "Simpler app, fractional shares, better for beginners" },
+    ],
+    faqs: [
+      { question: "Is Fidelity a good broker for beginners?", answer: "Fidelity is an excellent choice for beginners. It has no account minimums, commission-free trades, a user-friendly mobile app, and strong educational resources. The zero-expense-ratio index funds (like FZROX for US stocks) let beginners invest with essentially no cost. Fidelity's customer service is highly rated, with phone support available 24/7 and 200+ investor centers for in-person help." },
+      { question: "Fidelity vs Vanguard: which is better?", answer: "For passive index investors, both are excellent. Fidelity has lower expense ratios (zero funds vs Vanguard's 0.03-0.04%), better website/app experience, no account minimums, and stronger active trading tools. Vanguard has a unique client-owned structure (no outside shareholders), pioneered index investing, and is the largest mutual fund company. For most investors: Fidelity wins on technology and costs; Vanguard wins on structural alignment with investor interests." },
+    ],
+  },
+
+  "charles-schwab": {
+    description: "Charles Schwab Corporation is one of the largest brokerage and banking companies in the United States, with approximately $9.4 trillion in client assets and 35+ million active brokerage accounts. Founded in 1971 by Charles R. Schwab and headquartered in Westlake, Texas (moved from San Francisco in 2020), Schwab pioneered discount brokerage in the 1970s and has grown into a full-service financial powerhouse. The 2020 acquisition of TD Ameritrade ($26 billion) dramatically expanded Schwab's client base and brought in the thinkorswim trading platform — one of the most powerful active trading platforms available. Schwab offers commission-free stock/ETF trading, a wide selection of mutual funds, robo-advisory (Schwab Intelligent Portfolios), banking services (Schwab Bank with no-fee checking and unlimited ATM fee rebates internationally), and retirement solutions. Schwab has 400+ branch offices across the US, one of the largest physical presences among brokerages.",
+    highlights: ["$9.4T in client assets — one of the largest US brokerages", "35M+ active brokerage accounts", "thinkorswim — industry-leading active trading platform (from TD Ameritrade)", "400+ branch offices + Schwab Bank with no-fee global ATM access"],
+    category: "products",
+    alternatives: [
+      { name: "Fidelity", slug: "fidelity", reason: "Zero expense ratio funds, stronger retirement administration, privately held" },
+      { name: "Vanguard", slug: "vanguard", reason: "Client-owned structure, pioneer of low-cost index investing" },
+      { name: "Robinhood", slug: "robinhood", reason: "Simpler app for casual investors, fractional shares, crypto" },
+    ],
+    faqs: [
+      { question: "Schwab vs Fidelity: which is better?", answer: "Both are top-tier brokerages for most investors. Schwab edges Fidelity for active traders (thinkorswim is the best desktop trading platform), banking integration (Schwab Bank's fee-free global ATM access is unmatched), and branch access (400+ locations). Fidelity edges Schwab for passive investors (zero expense ratio funds), retirement plan administration, and mobile app experience. For most investors, either is excellent — choose based on which features matter most to you." },
+      { question: "Does Schwab charge trading fees?", answer: "No. Schwab charges $0 commission for US stock and ETF trades (online). Options trades are $0.65 per contract with no base commission. Mutual fund trades are free for Schwab funds and no-transaction-fee (NTF) funds; other mutual funds charge $49.95. There are no account maintenance fees and no minimums for standard brokerage accounts." },
+    ],
+  },
+
+  "tinder": {
+    description: "Tinder is the world's most downloaded dating app, launched in 2012 and owned by Match Group (MTCH). With approximately 75 million monthly active users globally and operations in 190+ countries, Tinder pioneered the 'swipe right/left' paradigm that defined mobile dating. Users create profiles with photos and a short bio; the core mechanic is swiping right (like) or left (pass) on potential matches — mutual right swipes create a match and open a chat. The free tier allows limited daily swipes; Tinder Gold ($29.99/month) and Tinder Platinum ($39.99/month) unlock unlimited likes, Rewind, Boost, and Super Likes. Tinder generates approximately $1.8 billion in annual revenue, making it the highest-grossing dating app globally. The app is particularly popular among 18-35 year olds and known for casual dating, though many users also find serious relationships. Tinder's algorithm uses a proprietary 'Elo-like' desirability score to rank profiles in the discovery feed.",
+    highlights: ["75M+ monthly active users — world's most downloaded dating app", "Operations in 190+ countries", "$1.8B annual revenue — highest-grossing dating app", "Pioneered swipe-based matching in 2012"],
+    category: "products",
+    alternatives: [
+      { name: "Bumble", slug: "bumble", reason: "Women message first — safer, more intentional conversations" },
+      { name: "Hinge", slug: "hinge", reason: "Profile prompts, designed for relationships not hookups" },
+      { name: "OkCupid", slug: "okcupid", reason: "Detailed questionnaires, better compatibility matching" },
+    ],
+    faqs: [
+      { question: "Is Tinder good for relationships?", answer: "Tinder works for all types of connections — casual to serious — but its design leans toward volume over depth. The swipe mechanic and large user base make it easy to meet many people quickly. Studies show 30% of Tinder users are in committed relationships already, but many users do find serious partners. Hinge is designed explicitly for relationships (its tagline: 'designed to be deleted'). If a long-term relationship is the primary goal, Hinge or OkCupid may be better optimized for that intent." },
+      { question: "Is Tinder free?", answer: "Tinder has a functional free tier with limited daily swipes, the ability to match and message, and basic discovery. Paid tiers add: unlimited likes (Gold/Platinum), seeing who liked you (Gold/Platinum), Boost (appearing near the top for 30 min), Super Likes, and Rewind (undo a swipe). Prices vary by age and location — younger users and those in lower-income countries pay less. Tinder Plus: ~$9.99/month, Gold: ~$29.99/month, Platinum: ~$39.99/month." },
+    ],
+  },
+
+  "bumble": {
+    description: "Bumble is a dating and social networking app founded in 2014 by Whitney Wolfe Herd (a co-founder of Tinder) and headquartered in Austin, Texas. Bumble's defining feature is that women must initiate conversations after a match — a design choice made to reduce harassment and create a safer environment for women. The app went public in February 2021 (NASDAQ: BMBL) in one of the most high-profile tech IPOs of the year. Bumble has approximately 42 million monthly active users and operates in 150+ countries. Beyond dating (Bumble Date), the platform expanded into networking (Bumble Bizz) and friendship (Bumble BFF). Bumble Premium ($16.99-$32.99/month) offers SuperSwipes, Spotlight, Snooze mode, and profile visibility boosts. Bumble generated approximately $1.1 billion in revenue in 2023. The app is particularly popular among women, college-educated users, and those seeking intentional connections.",
+    highlights: ["Women message first — unique safety-focused design", "42M+ monthly active users in 150+ countries", "Publicly traded — NASDAQ: BMBL", "Date + BFF + Bizz — three modes in one app"],
+    category: "products",
+    alternatives: [
+      { name: "Tinder", slug: "tinder", reason: "Larger user base, more casual, swipe-first approach" },
+      { name: "Hinge", slug: "hinge", reason: "Relationship-focused, deeper profiles with prompts" },
+      { name: "OkCupid", slug: "okcupid", reason: "More detailed compatibility matching, questionnaire-based" },
+    ],
+    faqs: [
+      { question: "Is Bumble better than Tinder for women?", answer: "Many women prefer Bumble for its safer environment — since women initiate, there's significantly less unsolicited explicit messages. The quality of conversations tends to be higher since both parties are more intentional. However, Tinder's larger user base means more matches. Bumble is generally considered better for women seeking more respectful interactions; Tinder is better for maximum volume of matches." },
+      { question: "How does Bumble work for men?", answer: "Men on Bumble match with women but cannot initiate conversation — they must wait for the woman to send the first message within 24 hours, or the match expires. Men can extend a match once per day before the expiration. This means male users need patience and may see fewer conversations initiated than on Tinder. In same-sex matches, either person can message first. Bumble BFF and Bizz modes allow anyone to initiate." },
+    ],
+  },
+
+  "hinge": {
+    description: "Hinge is a relationship-focused dating app founded in 2012 and owned by Match Group since 2019. Originally a Facebook-connected app, Hinge relaunched in 2016 with its current model emphasizing deeper connections through profile 'prompts' rather than photos alone. Users complete prompts ('My simple pleasures...', 'A life goal of mine...') and comment on specific parts of others' profiles — creating more meaningful first messages than a simple swipe. Hinge's tagline is 'Designed to be deleted,' emphasizing its relationship-oriented approach. The app has grown rapidly — from 4 million users in 2018 to 23+ million in 2023 — and is particularly popular among millennials and young professionals. Hinge Free allows 8 likes per day; Hinge+ ($14.99-$19.99/month) unlocks unlimited likes, filters, and seeing who liked you; HingeX ($34.99-$39.99/month) adds premium features and priority likes. Hinge generated approximately $400 million in revenue in 2023.",
+    highlights: ["'Designed to be deleted' — explicitly relationship-focused", "23M+ users, fastest-growing major dating app", "Profile prompts — deeper first impressions than photos alone", "Owned by Match Group (same as Tinder, OkCupid, Match.com)"],
+    category: "products",
+    alternatives: [
+      { name: "Tinder", slug: "tinder", reason: "Larger user base, faster matching for casual connections" },
+      { name: "Bumble", slug: "bumble", reason: "Women initiate, safer environment, also relationship-focused" },
+      { name: "OkCupid", slug: "okcupid", reason: "Most detailed questionnaire-based compatibility matching" },
+    ],
+    faqs: [
+      { question: "Is Hinge better than Tinder for serious relationships?", answer: "Hinge is generally considered better for serious relationships. Its profile prompts encourage more meaningful interactions, and the 'designed to be deleted' ethos attracts users intentionally seeking relationships. Match Group data shows Hinge users are more likely to go on dates than Tinder users. Tinder is more optimized for volume of matches; Hinge is optimized for quality of connections. If you're specifically looking for a long-term partner, Hinge's design aligns better with that goal." },
+      { question: "How is Hinge different from Bumble?", answer: "Both are relationship-focused alternatives to Tinder. Key differences: Hinge uses profile prompts for deeper profiles; Bumble has women message first. Hinge's algorithm learns from your preferences; Bumble emphasizes gender safety. Hinge is better for: thoughtful profiles and conversation starters. Bumble is better for: women who want to control first contact. Both are worth trying — many users run both simultaneously." },
+    ],
+  },
+
+  "match": {
+    description: "Match.com is one of the longest-running and most established online dating platforms, launched in 1995 and owned by Match Group. As one of the first internet dating sites, Match.com pioneered the online dating industry and maintains a significant user base of approximately 8 million paid subscribers globally. Unlike swipe-based apps, Match.com uses detailed profiles, compatibility questions, and search filters to help users find compatible partners. The platform targets adults 30+ seeking serious relationships, with a subscription model requiring payment to communicate (unlike Tinder's free matching). Match.com subscriptions range from $20.99-$44.99/month. Match.com has generated over 30 million+ connections and millions of marriages over its 28+ year history. The algorithm combines profile data, behavior patterns, and stated preferences to suggest compatible matches daily ('Daily Matches'). Match Group's portfolio also includes Tinder, Hinge, OkCupid, and Plenty of Fish.",
+    highlights: ["Founded 1995 — the original online dating site", "8M+ paid subscribers globally", "30M+ connections facilitated over 28+ years", "Targets serious relationships — subscription required to communicate"],
+    category: "products",
+    alternatives: [
+      { name: "eHarmony", slug: "eharmony", reason: "More scientific compatibility matching, higher relationship success rates" },
+      { name: "Hinge", slug: "hinge", reason: "App-first, faster connections, younger demographic" },
+      { name: "Bumble", slug: "bumble", reason: "Modern dating app, women message first, no subscription required to match" },
+    ],
+    faqs: [
+      { question: "Is Match.com worth it in 2026?", answer: "Match.com is worth it for adults 30+ seriously seeking relationships who prefer a website/desktop experience and detailed profiles over swipe apps. Its subscription requirement (to message) filters out casual browsers, creating a more intentional user base. However, its user base skews older and is smaller than Tinder/Hinge/Bumble among younger users. If you're 25-35 and app-native, Hinge may give you better results; if 35+ and serious about relationships, Match.com is still a strong choice." },
+      { question: "Match.com vs eHarmony: which is better?", answer: "eHarmony has higher reported relationship success rates and a more scientific compatibility approach (questionnaire-based, not search-based). Match.com offers more user control — you can search and initiate contact. eHarmony is more expensive ($34.95-$65.90/month vs Match's $20.99-$44.99/month). For finding a serious relationship, eHarmony's data suggests slightly better outcomes. For those who prefer control over their dating experience, Match.com gives more autonomy." },
+    ],
+  },
+
+  "cvs": {
+    description: "CVS Health Corporation is the largest pharmacy chain in the United States by number of locations, with approximately 9,000 retail pharmacy locations in 49 states plus Washington D.C. and Puerto Rico. Founded in 1963 in Lowell, Massachusetts as Consumer Value Stores, CVS is now a healthcare behemoth with approximately $357 billion in annual revenue across its integrated businesses: CVS Pharmacy (retail), CVS Caremark (pharmacy benefit management — largest PBM in the US), Aetna (health insurance, acquired 2018 for $69 billion), and MinuteClinic (walk-in clinics in 1,100+ locations). CVS ExtraCare is one of the largest retail loyalty programs with 74 million active members. The company has expanded beyond retail pharmacy into healthcare delivery with HealthHUBs (larger stores with enhanced health services) and Signify Health (home health). CVS removed tobacco products from its stores in 2014, a landmark decision signaling its healthcare-first identity.",
+    highlights: ["Largest US pharmacy chain — 9,000+ locations", "$357B annual revenue — among largest US companies", "Owns Aetna (health insurance) + Caremark (largest PBM in US)", "74M ExtraCare loyalty members"],
+    category: "products",
+    alternatives: [
+      { name: "Walgreens", slug: "walgreens", reason: "2nd largest pharmacy chain, strong beauty section, Boots international brand" },
+      { name: "Rite Aid", slug: "rite-aid", reason: "Regional pharmacy, competitive pricing in markets it serves" },
+      { name: "Costco Pharmacy", slug: "costco", reason: "Dramatically cheaper prescription prices, available to non-members for Rx" },
+    ],
+    faqs: [
+      { question: "CVS vs Walgreens: which is better for prescriptions?", answer: "Both chains offer similar prescription services and accept most insurance plans. Prices with insurance are typically comparable. Without insurance, use GoodRx or the chain's own savings programs to compare actual prices — they vary significantly by drug. CVS has MinuteClinic walk-in clinics in many stores, which can be convenient. Walgreens has a strong loyalty program with Balance Rewards points that convert to cash. Compare prices for your specific medications and pick the most convenient option." },
+      { question: "What is CVS ExtraCare?", answer: "CVS ExtraCare is CVS's free loyalty program with 74 million active members. Members earn 2% back as ExtraBucks Rewards on most CVS purchases (up to $50/year), receive exclusive sale prices and digital coupons, earn $3 ExtraBucks for every 10 prescriptions filled, and get quarterly ExtraBucks mailers. The CVS app allows digital coupons that can stack with sale prices for significant savings, especially on health and beauty products." },
+    ],
+  },
+
+  "walgreens": {
+    description: "Walgreens Boots Alliance is the second-largest pharmacy chain in the United States, with approximately 8,500 locations in the US and the parent company of Boots, the UK's largest pharmacy chain. Founded in 1901 in Chicago, Walgreens has approximately $147 billion in annual revenue across its US pharmacy business and international operations. In 2024, Walgreens faced significant financial difficulties — closing 1,200+ underperforming US stores, suspending its dividend, and exploring potential privatization. Despite challenges, Walgreens remains a dominant healthcare retailer with its Walgreens Rewards loyalty program, strong beauty and personal care selection (Boots No7, owned brand), and convenient urban locations. Walgreens offers pharmacy services, immunizations, health clinics (VillageMD partnership), and extensive front-end retail. The company has also expanded into healthcare services through its VillageMD primary care clinics co-located in Walgreens stores in 21+ states.",
+    highlights: ["2nd largest US pharmacy chain — 8,500+ US locations", "Owns Boots — largest UK pharmacy chain", "$147B annual revenue globally", "VillageMD clinics co-located in stores — primary care expansion"],
+    category: "products",
+    alternatives: [
+      { name: "CVS", slug: "cvs", reason: "Largest US pharmacy, MinuteClinic walk-ins, owns Aetna insurance" },
+      { name: "Rite Aid", slug: "rite-aid", reason: "Regional alternative with competitive pricing" },
+      { name: "Costco Pharmacy", slug: "costco", reason: "Lowest prescription prices for many drugs, available without membership for Rx" },
+    ],
+    faqs: [
+      { question: "Is Walgreens or CVS better?", answer: "For most consumers, the answer is whichever is more conveniently located. Both accept the same insurance plans, offer similar prescription prices, and have comparable loyalty programs. CVS has an edge in integrated healthcare (owns Aetna, Caremark PBM, MinuteClinic). Walgreens has an edge in beauty/personal care (Boots No7, strong cosmetics section). CVS has more locations (9,000 vs 8,500). Either is a good choice — compare prices on your specific medications and pick the most convenient." },
+      { question: "Is Walgreens closing stores?", answer: "Yes. Walgreens announced plans to close approximately 1,200 US stores between 2024-2027 due to profitability challenges including high competition from Amazon, online pharmacies, and Costco, plus reimbursement pressures. The closures are concentrated in underperforming urban markets and areas with overlapping locations. Despite the closures, Walgreens remains a major pharmacy chain with 7,000+ locations after restructuring." },
+    ],
+  },
+
+  "zillow": {
+    description: "Zillow Group is the largest online real estate marketplace in the United States, founded in 2006 by Rich Barton and Lloyd Frink (co-founders of Expedia) and headquartered in Seattle, Washington. Zillow's website and app attract approximately 226 million monthly unique visitors, making it the most visited real estate platform in the US. Zillow is best known for its 'Zestimate' — an AI-powered home value estimate available for 100+ million US properties, which has become a ubiquitous reference for homeowners and buyers. Zillow's core business is generating leads for real estate agents (Zillow Premier Agent). The company briefly operated an iBuying business (Zillow Offers) from 2018-2021 before shutting it down after losing $881 million due to algorithmic pricing errors. Zillow's current strategy focuses on 'Housing Super App' integrating search, financing (Zillow Home Loans), and rentals. Publicly traded on NASDAQ (Z/ZG), Zillow had approximately $2.1 billion in revenue in 2023.",
+    highlights: ["226M monthly unique visitors — largest real estate site in the US", "Zestimate — AI home values for 100M+ properties", "Founded by Expedia co-founders (Rich Barton, Lloyd Frink)", "$2.1B revenue (2023); publicly traded NASDAQ: Z/ZG"],
+    category: "products",
+    alternatives: [
+      { name: "Redfin", slug: "redfin", reason: "Lower agent commissions (1-1.5% listing fee vs standard 2.5-3%)" },
+      { name: "Realtor.com", slug: "realtor-com", reason: "Official NAR partner — often most up-to-date MLS listings" },
+      { name: "Opendoor", slug: "opendoor", reason: "iBuyer — instant cash offer to skip traditional listing process" },
+    ],
+    faqs: [
+      { question: "How accurate is Zillow's Zestimate?", answer: "The Zestimate has a nationwide median error rate of approximately 2.4% for on-market homes and 6.9% for off-market homes. In practice, accuracy varies widely by market — in areas with dense, recent comparable sales, Zestimates are quite accurate. In rural areas or unique properties, errors of 15-20% are not uncommon. Use the Zestimate as a rough starting point, not a definitive value — a licensed appraiser's opinion is far more reliable for buying/selling decisions." },
+      { question: "Is Zillow or Redfin better for home search?", answer: "Both pull from the same MLS (Multiple Listing Service) data, so listing inventory is similar. Zillow has more traffic and is better for casual browsing with richer neighborhood data and Zestimates. Redfin is better for serious buyers — its agents charge lower commissions (1-1.5% listing fee vs standard 2.5-3%), and it has more accurate listing status updates (Redfin agents are employees, not contractors). If saving on commission is a priority, Redfin is the clear choice." },
+    ],
+  },
+
+  "redfin": {
+    description: "Redfin Corporation is a technology-powered real estate brokerage founded in 2004 and headquartered in Seattle, Washington (NASDAQ: RDFN). Unlike traditional real estate brokerages, Redfin employs its agents directly (they are salaried employees with bonuses, not commission-only contractors) and charges lower seller commissions — typically 1-1.5% listing fee vs the standard 2.5-3%, potentially saving sellers thousands of dollars. Redfin's website and app attract approximately 48 million monthly unique visitors. Key features include real-time MLS data (Redfin updates listings more frequently than competitors), self-scheduled tours, and instant offers (Redfin Now, available in select markets). Redfin also operates Rent.com, Bay Equity Home Loans (mortgage), and Title Forward (title/escrow). Revenue in 2023 was approximately $979 million. In challenging housing markets, Redfin has faced profitability pressure and underwent significant layoffs in 2022-2023, but remains a major player in tech-enabled real estate.",
+    highlights: ["1-1.5% listing commission — significantly lower than standard 2.5-3%", "48M monthly visitors — 2nd most visited real estate site", "Agent employees (salaried) — not commission-only contractors", "Real-time MLS updates — faster listing accuracy than most competitors"],
+    category: "products",
+    alternatives: [
+      { name: "Zillow", slug: "zillow", reason: "Larger audience, Zestimate tool, broader brand recognition" },
+      { name: "Realtor.com", slug: "realtor-com", reason: "Official NAR partner, comprehensive MLS coverage" },
+      { name: "Opendoor", slug: "opendoor", reason: "Instant cash offer — skip listing process entirely" },
+    ],
+    faqs: [
+      { question: "Is Redfin worth using to sell a home?", answer: "Redfin's 1-1.5% listing commission can save significant money — on a $500,000 home, you save $7,500-$12,500 vs a traditional 2.5-3% commission agent. Redfin agents are salaried employees with strong knowledge of local markets. The tradeoff: Redfin agents handle more clients simultaneously than traditional agents. Reviews are mixed — many sellers have great experiences, but others feel less personalized attention than a traditional agent. The savings are real and substantial; weigh that against your need for dedicated service." },
+      { question: "How does Redfin make money if commission is lower?", answer: "Redfin charges sellers 1-1.5% (vs traditional 2.5-3%), but still charges buyers' agents the standard 2.5-3% (paid by the seller). Redfin's lower-cost model works because its agents handle more transactions per year (enabled by technology) — it's a volume model rather than a high-touch model. Additional revenue comes from Rent.com (rental platform), Bay Equity mortgage referrals, title services, and Redfin Now iBuying." },
+    ],
+  },
+
+  "realtor-com": {
+    description: "Realtor.com is an online real estate marketplace operated by News Corp subsidiary Move, Inc., and the official website of the National Association of Realtors (NAR). Founded in 1996, Realtor.com was the first major online real estate listing site and maintains one of the most comprehensive and up-to-date MLS database connections — updating listings every 15 minutes from 800+ MLSs nationwide. Realtor.com attracts approximately 75 million monthly unique visitors and has inventory of 1 million+ for-sale listings and 9 million+ rental listings. As the NAR's official partner, Realtor.com has deep relationships with the real estate agent community (1.5 million+ REALTOR members). The platform offers home search, market trends, mortgage calculator, school data, and agent matching. Move, Inc./Realtor.com generates revenue primarily through agent lead generation and advertising. In 2024, News Corp explored a sale of Realtor.com amid competitive pressures from Zillow and Redfin.",
+    highlights: ["Official NAR website — deep MLS relationships", "75M monthly unique visitors", "Listings updated every 15 minutes — most current data among major portals", "1.5M+ REALTOR members connected to the platform"],
+    category: "products",
+    alternatives: [
+      { name: "Zillow", slug: "zillow", reason: "Larger audience, Zestimate home values, broader consumer brand" },
+      { name: "Redfin", slug: "redfin", reason: "Lower commissions, employed agents, tech-first approach" },
+      { name: "Trulia", slug: "trulia", reason: "Zillow subsidiary, strong neighborhood data and crime maps" },
+    ],
+    faqs: [
+      { question: "Is Realtor.com or Zillow more accurate?", answer: "Realtor.com generally has more accurate and up-to-date listing status — as the official NAR partner with 800+ direct MLS feeds updated every 15 minutes, it's less likely to show sold or under-contract homes as still active. Zillow's Zestimate home value tool is unique and widely used. For the most current listing data, Realtor.com has an edge. For home value estimates and neighborhood data, Zillow's Zestimate is a useful (if imperfect) tool. Both are worth checking when searching for homes." },
+      { question: "Can buyers find a Realtor through Realtor.com?", answer: "Yes. Realtor.com's agent directory includes 1.5 million+ NAR member agents searchable by location, specialty, and experience. The site shows agent sales history, ratings, and reviews. However, featured agents pay for placement, so ranking doesn't purely reflect quality. As with any platform, interview multiple agents before choosing. Realtor.com also allows buyers to request agent matching through its concierge service." },
+    ],
+  },
+
+  "airbnb": {
+    description: "Airbnb Inc. is a global online marketplace for short-term rentals, homestays, and unique accommodations, founded in 2008 by Brian Chesky, Joe Gebbia, and Nathan Blecharczyk and headquartered in San Francisco. Airbnb lists 7.7 million+ active listings across 220+ countries and regions — from city apartments to treehouses, castles, and yurts — providing more variety than any hotel chain. Airbnb went public in December 2020 (NASDAQ: ABNB) in one of the largest tech IPOs of the year. In 2023, Airbnb hosted 448 million guest arrivals and generated $9.9 billion in revenue with $4.8 billion in net income (51% net margin). The platform charges guests a service fee (typically 14-16%) and hosts a commission (3%). Airbnb Rooms (shared spaces) and Airbnb Experiences (local activities hosted by locals) diversify the product. The company recovered strongly from the COVID-19 pandemic, driven by 'work-from-anywhere' and longer-stay trends.",
+    highlights: ["7.7M+ active listings in 220+ countries", "448M guest arrivals (2023)", "$9.9B revenue, $4.8B net income (51% margin) in 2023", "NASDAQ: ABNB — public since December 2020"],
+    category: "products",
+    alternatives: [
+      { name: "VRBO", slug: "vrbo", reason: "Entire homes only (no shared spaces), stronger in US vacation markets" },
+      { name: "Booking.com", slug: "booking", reason: "More hotel inventory, often better prices in Europe" },
+      { name: "Hotels.com", slug: "hotels", reason: "Traditional hotel booking with loyalty rewards program" },
+    ],
+    faqs: [
+      { question: "Is Airbnb cheaper than hotels?", answer: "It depends heavily on destination, travel group size, and length of stay. Airbnb is often cheaper for groups of 4+ and longer stays (the per-night cost drops). Cleaning fees ($50-$200+) and service fees (14-16%) inflate short stays — a 1-night Airbnb can be more expensive than a hotel. For solo travelers or 1-2 nights, hotels often win on price and convenience. For families, groups, or stays of 4+ nights, Airbnb's larger spaces and kitchen facilities often provide better value." },
+      { question: "Airbnb vs VRBO: what's the difference?", answer: "VRBO (Vacation Rental By Owner) lists only entire homes — no shared spaces, no room rentals. Airbnb lists everything: entire homes, private rooms, shared rooms. VRBO is better for traditional vacation rental homes (beach houses, cabins, ski chalets) and skews toward families. Airbnb has more urban inventory and unique stays. VRBO's guest fee (~12%) is comparable to Airbnb's (~14-16%). For urban trips: Airbnb wins on selection. For vacation home rentals: VRBO is often comparable or better." },
+    ],
+  },
+
+  "vrbo": {
+    description: "VRBO (Vacation Rental By Owner) is an online marketplace for whole-home vacation rentals, founded in 1995 and owned by Expedia Group since 2015. One of the oldest vacation rental platforms, VRBO lists 2 million+ properties across 190+ countries, exclusively focusing on entire homes — unlike Airbnb, which also lists private rooms and shared spaces. VRBO's model emphasizes whole-property rentals suitable for families and groups, with inventory strong in beach destinations (Florida, Outer Banks, Gulf Coast), ski resorts, mountain cabins, and lake houses. VRBO charges guests a service fee of approximately 6-12% and hosts either a 5% commission (subscription model) or 8% (pay-per-booking model). VRBO and HomeAway (sister brand) together generate significant revenue within Expedia Group's vacation rental segment. In 2019, Expedia consolidated all vacation rental brands under the VRBO brand. Reviews and host verification are key trust signals on the platform.",
+    highlights: ["Founded 1995 — one of the oldest vacation rental platforms", "2M+ whole-home listings in 190+ countries", "Entire homes only — no shared spaces or private rooms", "Owned by Expedia Group — integrated with broader travel ecosystem"],
+    category: "products",
+    alternatives: [
+      { name: "Airbnb", slug: "airbnb", reason: "Larger inventory including rooms, more urban options, unique stays" },
+      { name: "Booking.com", slug: "booking", reason: "Larger hotel + vacation rental inventory, often strong in Europe" },
+      { name: "Hipcamp", slug: "hipcamp", reason: "Unique outdoor/camping stays on private land" },
+    ],
+    faqs: [
+      { question: "Is VRBO owned by Airbnb?", answer: "No. VRBO is owned by Expedia Group, one of the world's largest online travel companies. Airbnb and VRBO are direct competitors. Expedia acquired HomeAway (VRBO's parent company) for $3.9 billion in 2015 and later consolidated all vacation rental brands under the VRBO name in 2019. Airbnb is independently publicly traded (NASDAQ: ABNB)." },
+      { question: "VRBO vs Airbnb: which is better for families?", answer: "Both are good for families, but VRBO has a slight edge for traditional vacation home rentals (beach houses, ski chalets, lake cabins). VRBO's entire-home-only model means no surprises about shared spaces. VRBO's inventory in classic family vacation destinations (Florida beaches, mountain resorts) is strong. Airbnb has more urban inventory and unique/boutique properties. For a beach week or mountain cabin trip: compare both — you'll often find the same properties listed on both platforms, sometimes at different prices." },
+    ],
+  },
+
+  "apple-music": {
+    description: "Apple Music is a subscription music streaming service launched by Apple in June 2015, available on all Apple devices, Android, Windows, and web. Apple Music offers a catalog of 100 million+ songs, lossless audio (Apple Lossless/ALAC up to 24-bit/192 kHz), Spatial Audio with Dolby Atmos, music videos, live radio (Apple Music 1, 2, 3), and exclusive content. The service integrates deeply with Apple's ecosystem — Siri voice control, HomePod, Apple Watch, CarPlay, and iCloud Music Library. Apple Music costs $10.99/month for individuals, $16.99/month for families (up to 6 members), and $5.99/month for students. It's included in the Apple One subscription bundle ($19.95-$37.95/month). Apple Music does not offer a free tier — it's subscription-only with a 3-month free trial. Apple has not disclosed exact subscriber counts, but estimates place Apple Music at 88-100 million subscribers, making it the #2 music streaming service globally behind Spotify (252 million premium subscribers).",
+    highlights: ["100M+ song catalog with lossless + Spatial Audio/Dolby Atmos", "Deep Apple ecosystem integration — Siri, HomePod, CarPlay, Apple Watch", "Included in Apple One bundle ($19.95-$37.95/month)", "88-100M estimated subscribers — #2 globally behind Spotify"],
+    category: "entertainment",
+    alternatives: [
+      { name: "Spotify", slug: "spotify", reason: "Larger catalog discovery, free tier, cross-platform superior" },
+      { name: "Tidal", slug: "tidal", reason: "Similar hi-fi audio quality, strong artist-support focus" },
+      { name: "YouTube Music", slug: "youtube-music", reason: "Includes music videos, better for discovering live/rare versions" },
+    ],
+    faqs: [
+      { question: "Is Apple Music or Spotify better?", answer: "Apple Music wins on audio quality (lossless and Spatial Audio), deep Apple ecosystem integration, and value within the Apple One bundle. Spotify wins on music discovery (algorithm/playlists), free tier availability, cross-platform experience (especially on Android and Windows), podcast integration, and social features. For Apple-ecosystem users who prioritize audio quality: Apple Music. For everyone else or those on Android: Spotify's broader ecosystem and free tier make it the default choice." },
+      { question: "Does Apple Music have a free tier?", answer: "No. Apple Music is subscription-only ($10.99/month individual, $5.99/month student, $16.99/month family). Apple offers a 3-month free trial for new subscribers. Apple Music is included in Apple One (bundle with iCloud+, Apple TV+, Apple Arcade starting at $19.95/month). Unlike Spotify, there is no ad-supported free tier — you must pay to listen after the trial ends." },
+    ],
+  },
 };
