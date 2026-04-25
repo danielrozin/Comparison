@@ -8126,4 +8126,87 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Which BMW model is most reliable?", answer: "The BMW 3 Series and X5 are generally BMW's most reliable models for their respective segments. Within BMW's lineup, the naturally-aspirated inline-6 engines (pre-2007 era especially) are legendary for longevity. Modern BMWs with turbocharged engines have improved but still trail Japanese competitors. The X3 and 3 Series are typically recommended as the most reliable modern BMWs. Avoid high-mileage (100K+) examples without documented maintenance history." },
     ],
   },
+
+  // ─── Consumer Tech: Product Model Entities ────────────────────────────────
+
+  "macbook-air": {
+    description:
+      "MacBook Air is Apple's best-selling laptop line, designed for everyday use with an emphasis on portability, battery life, and value. The MacBook Air M4 (2025) starts at $1,099 and features Apple's M4 chip with a 10-core CPU and 10-core GPU, up to 32GB unified memory, a 13.6-inch Liquid Retina display (2560×1664), and up to 18 hours of battery life. The MacBook Air uses a fanless design — completely silent under all but the most sustained workloads — making it ideal for students, writers, and professionals who prioritize quiet operation. Apple Silicon's efficiency means the Air outperforms most Intel-based Windows laptops at a fraction of the power draw. The MacBook Air M3 (2024) introduced the first-ever dual external monitor support for a fanless MacBook and remains available at $999. MacBook Air is the world's best-selling laptop priced above $1,000 and has defined the thin-and-light laptop category since 2008. Key limitations include no fan (throttles on sustained pro workloads), no mini-LED display (unlike MacBook Pro), and only two Thunderbolt ports on base models.",
+    highlights: ["Fanless, completely silent", "18+ hour battery life", "Starts at $1,099 (M4)", "Best-selling premium laptop globally"],
+    category: "technology",
+    alternatives: [
+      { name: "MacBook Pro", slug: "macbook-pro", reason: "Active cooling, ProMotion display, M4 Pro/Max chips for demanding workloads" },
+      { name: "Dell XPS 13", slug: "dell-xps-13", reason: "Windows alternative, comparable portability, OLED display option" },
+      { name: "Microsoft Surface Laptop", slug: "microsoft-surface-laptop", reason: "Windows, touchscreen, sleek design" },
+      { name: "iPad Pro", slug: "ipad-pro", reason: "More portable, touchscreen, similar M-chip performance" },
+      { name: "ASUS ZenBook 14", slug: "asus-zenbook-14", reason: "Windows alternative at lower price" },
+      { name: "LG Gram 14", slug: "lg-gram-14", reason: "Ultra-light Windows laptop, long battery" },
+    ],
+    faqs: [
+      { question: "MacBook Air vs MacBook Pro: which should I buy?", answer: "MacBook Air is right for: students, writers, email/web/Office users, and anyone prioritizing silence, portability, and battery life over raw sustained performance. MacBook Pro is right for: video editors, music producers, developers compiling large codebases, and anyone who runs GPU-intensive or sustained CPU workloads (the fan prevents throttling). If you're not sure which camp you're in, the Air handles 95% of everyday tasks without breaking a sweat — start there." },
+      { question: "Is MacBook Air M4 worth it over M3?", answer: "MacBook Air M4 (2025) offers: 30% faster CPU performance, 40% faster GPU, support for two external monitors (vs one on M3), and a center-stage front camera. The M3 Air is $999 — a $100 discount from the M4's $1,099 starting price. For most buyers, the M4 is worth the $100 premium. If you rarely use external monitors or push the GPU hard, the M3 Air is still an exceptional machine." },
+      { question: "Can MacBook Air handle video editing?", answer: "Yes — MacBook Air M4 handles 4K video editing in Final Cut Pro and DaVinci Resolve remarkably well for a fanless laptop. It can edit multi-stream 4K ProRes footage without throttling on short timelines. For heavy 8K editing, long-duration exports, or real-time effects, the MacBook Pro 14 (with active cooling and M4 Pro chip) will sustain higher performance without thermal throttling." },
+    ],
+  },
+
+  "macbook-pro": {
+    description:
+      "MacBook Pro is Apple's professional laptop line, available in 14-inch (from $1,599) and 16-inch (from $2,499) configurations with Apple's M4 chip series. MacBook Pro uses active cooling (fan) to sustain peak performance indefinitely, a ProMotion Liquid Retina XDR display (up to 120Hz adaptive refresh, 1,000 nits sustained/1,600 nits peak), and up to an M4 Max chip with 32-core GPU and 128GB unified memory. The M4 Pro (standard in higher-end configurations) features a 14-core CPU with hardware ray tracing, support for up to three external displays simultaneously, and Thunderbolt 5 ports. MacBook Pro is the tool of choice for professional video editors (Final Cut Pro, DaVinci Resolve), music producers, 3D artists, developers, and researchers. Battery life is 22 hours (14-inch M4 Pro) — the longest of any laptop. The MacBook Pro also offers HDMI, SD card slot, and MagSafe charging — ports removed in the MacBook Air's design. The display includes ProMotion adaptive refresh, nano-texture glass option, and accurate color across the P3 wide color gamut.",
+    highlights: ["M4 Pro/Max chips — industry-leading pro performance", "ProMotion 120Hz Liquid Retina XDR display", "22-hour battery (14-inch M4 Pro)", "Thunderbolt 5, HDMI, SD card"],
+    category: "technology",
+    alternatives: [
+      { name: "MacBook Air", slug: "macbook-air", reason: "Lighter, cheaper, fanless — sufficient for most users" },
+      { name: "Dell XPS 15", slug: "dell-xps-15", reason: "Windows professional laptop, OLED display, discrete GPU option" },
+      { name: "Lenovo ThinkPad X1 Carbon", slug: "lenovo-thinkpad-x1-carbon", reason: "Windows business laptop, enterprise features, MIL-SPEC durability" },
+      { name: "ASUS ProArt Studiobook", slug: "asus-proart-studiobook", reason: "Creative pro Windows laptop, OLED, discrete GPU" },
+      { name: "Razer Blade 16", slug: "razer-blade-16", reason: "Gaming-capable Windows pro laptop, RTX GPU" },
+      { name: "iPad Pro", slug: "ipad-pro", reason: "Ultra-portable tablet with M4 chip, optional keyboard cover" },
+    ],
+    faqs: [
+      { question: "Is MacBook Pro worth the price over MacBook Air?", answer: "MacBook Pro is worth it if you: regularly export video, render 3D scenes, compile large codebases for extended periods, need three external monitors simultaneously, or work with ProRAW/ProRes video. For everyone else — students, office workers, writers, and casual creators — MacBook Air at $1,099 does 95% of what the Pro does at 60% of the price. The Pro's key advantage is sustained performance under load (no thermal throttling) and the exceptional ProMotion display." },
+      { question: "Which MacBook Pro should I buy: 14-inch or 16-inch?", answer: "The 14-inch MacBook Pro is better if portability matters: it's 1.55kg vs 2.14kg (16-inch), fits in smaller bags, and is available with the same chip options as the 16-inch. The 16-inch is better if you: primarily use it deskside, want more screen real estate, do audio production (larger speaker grilles), or want the maximum thermal headroom for sustained workloads. Battery life is similar on both sizes." },
+      { question: "MacBook Pro M4 Pro vs M4 Max: is the upgrade worth it?", answer: "M4 Pro (standard in base 14-inch Pro at $1,999) is sufficient for video editing, software development, music production, and most pro workloads. M4 Max (16-core CPU, 40-core GPU, up to 128GB memory) is worth it for: 3D rendering, machine learning model training, massive video projects with complex effects, or memory-intensive data science workloads. The M4 Max adds $400-600 but doubles GPU performance and memory ceiling — only pay for it if you'll actually use those cores." },
+    ],
+  },
+
+  "ipad-pro": {
+    description:
+      "iPad Pro is Apple's flagship tablet, featuring the M4 chip (2024) — the same silicon found in MacBook Pro. The 2024 iPad Pro is Apple's thinnest product ever at 5.1mm (11-inch) and 5.3mm (13-inch), weighing just 579g and 582g respectively. The 11-inch starts at $999; the 13-inch starts at $1,299. iPad Pro uses Apple's Ultra Retina XDR display with nano-texture glass option, 1,000 nits sustained brightness, P3 wide color, and ProMotion 120Hz. The M4 chip delivers up to 40-core neural engine performance (more than MacBook Pro M3), enabling real-time 4K ProRes video editing, professional photo editing in Lightroom, 3D modeling in Shapr3D, and machine learning tasks. iPad Pro supports Apple Pencil Pro (spatial audio, barrel roll, squeeze input) and the Magic Keyboard for iPad Pro (trackpad, function keys, aluminum build). With Stage Manager (iPadOS 17+), iPad Pro can drive an external monitor and run multiple apps simultaneously. iPad Pro is the choice for digital artists, architects, musicians using GarageBand/Logic for iPad, and creative professionals who need the most powerful tablet available.",
+    highlights: ["M4 chip — same as MacBook Pro", "5.1mm thin (2024) — thinnest Apple product ever", "ProMotion 120Hz Ultra Retina XDR", "Apple Pencil Pro + Magic Keyboard support"],
+    category: "technology",
+    alternatives: [
+      { name: "MacBook Air", slug: "macbook-air", reason: "Laptop form factor, full macOS, better for typing and traditional work" },
+      { name: "iPad Air", slug: "ipad-air", reason: "Same M2 chip, lighter, $599 — iPad Pro value if you skip the pencil" },
+      { name: "Samsung Galaxy Tab S10 Ultra", slug: "samsung-galaxy-tab-s10-ultra", reason: "Android alternative, S Pen included, larger 14.6-inch display" },
+      { name: "Microsoft Surface Pro", slug: "microsoft-surface-pro", reason: "Full Windows experience on a tablet, better for Office and Windows apps" },
+      { name: "iPad", slug: "ipad", reason: "Half the price, same basic experience for casual users" },
+      { name: "Google Pixel Tablet", slug: "google-pixel-tablet", reason: "Android tablet with hub dock, affordable, Google ecosystem" },
+    ],
+    faqs: [
+      { question: "iPad Pro vs MacBook Air: which should I choose?", answer: "iPad Pro is better for: digital artists (Procreate, Apple Pencil), musicians (GarageBand for iPad), reading and watching content on the go, and tasks where touch and pen input are essential. MacBook Air is better for: typing-heavy work (coding, writing, spreadsheets), running macOS apps not available on iPadOS, managing files in a traditional folder structure, and connecting multiple peripherals. Many people own both — iPad Pro as a portable creative companion, MacBook Air for laptop tasks. If you can only have one, macOS's flexibility usually wins for productivity." },
+      { question: "Is iPad Pro worth it over iPad Air?", answer: "iPad Pro is worth it over iPad Air if you need: the ProMotion 120Hz display (critical for Apple Pencil artists), nano-texture glass, M4 chip's extra GPU performance, Thunderbolt connectivity (faster data transfer, external 6K display), or the Ultra Retina XDR screen for color-accurate creative work. iPad Air at $599 (11-inch) uses M2 chip — still exceptionally fast for most tasks, including video editing and Procreate. For casual users and students, iPad Air is better value." },
+      { question: "Can iPad Pro replace a laptop?", answer: "iPad Pro can replace a laptop for specific workflows: digital artists, photo editors (Lightroom, Photoshop for iPad), musicians (GarageBand/Logic for iPad), video watchers, presenters, and people who primarily consume content rather than create complex documents. It struggles to replace a laptop for: professional coding (no Xcode, limited IDEs), complex spreadsheet work, multi-window file management, and running Windows/Mac-specific software. Most users who try iPad Pro as a laptop replacement eventually keep both." },
+    ],
+  },
+
+
+  "iphone-16-pro": {
+    description:
+      "iPhone 16 Pro is Apple's premium smartphone released September 2024, starting at $999 (6.3-inch) with a titanium chassis, Apple's A18 Pro chip, and a triple-camera system with a 48MP main, 48MP ultra-wide (new for 2024, significant upgrade), and 12MP 5x tetraprism telephoto. The A18 Pro chip is the first Apple Silicon designed specifically for on-device AI, powering Apple Intelligence features: Writing Tools, Clean Up in Photos, Image Playground, and enhanced Siri with ChatGPT integration. iPhone 16 Pro features a 6.3-inch Super Retina XDR display (Always-On, ProMotion 120Hz), Camera Control physical button for photo/video control, 4K 120fps video at Dolby Vision (an iPhone first), and the Action Button. The battery lasts up to 27 hours of video playback. iPhone 16 Pro Max (6.9-inch, $1,199) offers the same core specs with a larger display, 33-hour battery, and the same 5x telephoto. Both models support iOS 18 with full Apple Intelligence features.",
+    highlights: ["A18 Pro chip — on-device AI processor", "Camera Control button", "4K 120fps Dolby Vision video", "48MP ultra-wide (2024 upgrade)"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone 16 Pro Max", slug: "iphone-16-pro-max", reason: "Larger 6.9-inch display, 33-hour battery, same camera system" },
+      { name: "iPhone 16", slug: "iphone-16", reason: "Standard model, A18 chip, $799 — skip Pro for casual users" },
+      { name: "Samsung Galaxy S25 Ultra", slug: "samsung-galaxy-s25-ultra", reason: "Android alternative, S Pen, 200MP camera, Galaxy AI" },
+      { name: "Google Pixel 9 Pro", slug: "google-pixel-9-pro", reason: "Best Android camera AI, pure Android experience, $999" },
+      { name: "iPhone 15 Pro", slug: "iphone-15-pro", reason: "Previous generation, discounted, still highly capable" },
+      { name: "OnePlus 13", slug: "oneplus-13", reason: "Flagship Android at lower price, Hasselblad camera, fast charging" },
+    ],
+    faqs: [
+      { question: "iPhone 16 Pro vs iPhone 16 Pro Max: which should I choose?", answer: "iPhone 16 Pro (6.3-inch, $999) is better for: one-handed use, people with smaller hands or pockets, and those who don't need maximum battery life. iPhone 16 Pro Max (6.9-inch, $1,199) is better for: content consumption (larger display), heavy phone users who need all-day battery (33 hours vs 27 hours), and those who use their phone as a primary screen for work or media. Camera systems are identical — the size and battery are the only meaningful differences." },
+      { question: "Is iPhone 16 Pro worth upgrading from iPhone 15 Pro?", answer: "iPhone 16 Pro is worth upgrading from 15 Pro for: the new Camera Control button (physical shutter/zoom control), 4K 120fps video (major video creator upgrade), 48MP ultra-wide (doubles resolution from 12MP), Apple Intelligence features, and the larger 6.3-inch screen (up from 6.1-inch). For most 15 Pro users, it's a meaningful upgrade — especially if you shoot video or use the ultra-wide frequently. If you primarily use the main camera for photos, 15 Pro remains excellent." },
+      { question: "iPhone 16 Pro vs Samsung Galaxy S25 Ultra: which is better?", answer: "iPhone 16 Pro is better for: iOS users, those in the Apple ecosystem, smoother software experience, better video quality, and on-device privacy for AI features. Samsung Galaxy S25 Ultra is better for: Android users, note-takers (built-in S Pen, no case needed), photography enthusiasts wanting 200MP versatility, multitaskers (better split-screen and pop-up apps in Android), and those who prefer more hardware customization. Camera quality is competitive — iPhone wins for video, Samsung for telephoto zoom reach." },
+    ],
+  },
 };
