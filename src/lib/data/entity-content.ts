@@ -6468,4 +6468,432 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "How much does PagerDuty cost?", answer: "PagerDuty offers: Free (up to 5 users, basic features), Professional ($21/user/month — core on-call and alerting), Business ($41/user/month — advanced analytics, runbooks), and Enterprise (custom pricing with AIOps and Operations Cloud). For a 10-person engineering team using Professional, that's $210/month. Most growing startups start with Free then move to Professional once on-call complexity justifies the cost." },
     ],
   },
+  "casper": {
+    description: "Casper Sleep is an American sleep products company founded in 2014 in New York City, credited with pioneering the direct-to-consumer online mattress industry. Casper's flagship product is its foam mattress, engineered with a four-layer design (top comfort foam, memory foam, transition foam, and support foam) to offer pressure relief and motion isolation. The company has since expanded into pillows, bed frames, duvets, and dog beds, and operates retail locations across the US and Canada. Casper mattresses come with a 100-night free trial and a 10-year warranty. Prices range from $695 to $3,495 depending on size and model (Original, Nova Hybrid, Wave Hybrid). Casper was acquired by Durational Capital Management in 2022 after going public in 2020. The brand is known for its minimalist branding, celebrity endorsements, and role in legitimizing the 'mattress-in-a-box' category that spawned competitors like Purple, Tuft & Needle, Leesa, and Saatva.",
+    highlights: ["100-night free trial", "10-year warranty", "Foam + hybrid options", "Retail locations in US/Canada"],
+    category: "products",
+    alternatives: [
+      { name: "Purple", slug: "purple", reason: "Unique polymer grid design, better cooling for hot sleepers" },
+      { name: "Saatva", slug: "saatva", reason: "Luxury innerspring, white-glove delivery and setup" },
+      { name: "Tuft & Needle", slug: "tuft-needle", reason: "Budget-friendly foam alternative with strong reviews" },
+      { name: "Leesa", slug: "leesa", reason: "Comparable foam construction, strong social mission" },
+      { name: "Nectar", slug: "nectar", reason: "365-night trial, more affordable memory foam" },
+    ],
+    faqs: [
+      { question: "Is Casper a good mattress?", answer: "Casper receives consistently good reviews for medium-firm support, pressure relief, and motion isolation. It's particularly suited to side and back sleepers. However, hot sleepers may prefer the Purple grid mattress or a hybrid model for better airflow." },
+      { question: "Casper vs Purple: which is better?", answer: "Casper is better for traditional foam feel, ease of purchase, and value. Purple's proprietary polymer grid offers superior cooling and a unique pressure-relief feel that some sleepers strongly prefer. Purple tends to score higher for hot sleepers; Casper wins on price point and wider availability." },
+      { question: "How long does a Casper mattress last?", answer: "Casper mattresses typically last 7-10 years with normal use. Casper backs this with a 10-year limited warranty. Like all foam mattresses, performance may decline after 7+ years as materials soften and lose support." },
+    ],
+  },
+
+  "purple": {
+    description: "Purple Innovation is an American comfort technology company founded in 2015 in Alpine, Utah, known for its patented GelFlex Grid — a hyper-elastic polymer grid that provides simultaneous pressure relief and support. Unlike traditional foam mattresses, Purple's grid collapses under pressure points (hips, shoulders) while supporting neutral areas (lower back), creating a floating sensation. The Purple grid is also highly breathable, making it a top choice for hot sleepers. Purple offers four mattress tiers: Purple (entry), Purple Plus, Purple Hybrid Premier, and Purple Restore, with prices from $1,099 to $4,299 for queen sizes. All mattresses come with a 100-night trial and 10-year warranty. Purple went public via SPAC in 2018 and has grown into a multi-product brand including pillows, seat cushions, and pet beds. Purple's grid technology was originally developed by the founders — Tony and Terry Pearce — for wheelchair cushions before being adapted for consumer mattresses.",
+    highlights: ["Patented GelFlex Grid technology", "Best-in-class cooling", "Simultaneous pressure relief + support", "100-night trial, 10-year warranty"],
+    category: "products",
+    alternatives: [
+      { name: "Casper", slug: "casper", reason: "Traditional foam, more affordable, widely available" },
+      { name: "Saatva", slug: "saatva", reason: "Luxury innerspring with in-home setup" },
+      { name: "Tempur-Pedic", slug: "tempur-pedic", reason: "Premium memory foam, exceptional pressure relief" },
+      { name: "Nectar", slug: "nectar", reason: "Budget memory foam with 365-night trial" },
+    ],
+    faqs: [
+      { question: "Is Purple worth the price?", answer: "Purple is worth considering for hot sleepers, combination sleepers, and those who've found traditional foam mattresses too warm or too conforming. The grid's unique feel isn't for everyone — those who prefer a classic memory foam hug may prefer Casper or Tempur-Pedic — but for the right sleeper, Purple's pressure relief is unmatched." },
+      { question: "How is Purple different from memory foam?", answer: "Traditional memory foam conforms closely to your body and retains heat. Purple's GelFlex Grid collapses under pressure points but stays neutral elsewhere — more like sleeping 'on' than 'in' the mattress. The grid channels allow airflow, keeping the sleep surface significantly cooler than most foam mattresses." },
+    ],
+  },
+
+  "wayfair": {
+    description: "Wayfair Inc. is an American e-commerce company specializing in home furnishings and décor, founded in 2002 as CSN Stores and rebranded in 2011. Headquartered in Boston, Massachusetts, Wayfair is the largest online-only furniture retailer in the US with over $12 billion in annual net revenue and 22 million active customers. The platform carries over 40 million products from 23,000+ suppliers across five brands: Wayfair, Joss & Main, AllModern, Birch Lane, and Perigold. Wayfair's core value proposition is vast selection, competitive pricing, and fast 'two-day delivery' on many items via its CastleGate fulfillment network. The company operates primarily in the US, Canada, UK, and Germany. Wayfair has struggled with profitability since its 2014 IPO, though it has made multiple rounds of cost cuts (including significant layoffs in 2023-2024) in pursuit of profitability. Key competitors include Amazon (home category), IKEA, Target, HomeGoods, and specialty retailers like Williams-Sonoma.",
+    highlights: ["40M+ products", "22M active customers", "$12B+ annual revenue", "5 retail brands (Wayfair, Joss & Main, AllModern, Birch Lane, Perigold)"],
+    category: "products",
+    alternatives: [
+      { name: "IKEA", slug: "ikea", reason: "Flat-pack furniture, physical showrooms, lower price points" },
+      { name: "Amazon", slug: "amazon", reason: "Broader catalog, Prime shipping, competitive pricing" },
+      { name: "Target", slug: "target", reason: "In-store pickup, affordable home goods, Threshold brand" },
+      { name: "West Elm", slug: "west-elm", reason: "Premium modern design, physical stores" },
+      { name: "HomeGoods", slug: "homegoods", reason: "Deeply discounted in-store finds" },
+    ],
+    faqs: [
+      { question: "Is Wayfair reliable?", answer: "Wayfair has mixed reviews — selection and pricing are generally strong, but delivery damage, assembly difficulties, and customer service can be inconsistent. It's best used for items you've researched in reviews, particularly furniture with 4+ stars and 500+ reviews. Check return policies before purchasing large furniture." },
+      { question: "Wayfair vs IKEA: which is better?", answer: "IKEA wins on price consistency, build quality for the price, and the showroom experience. Wayfair wins on variety, delivery convenience, and price during sales events (Way Day). IKEA is better for functional flat-pack basics; Wayfair is better when you want specific styles or hard-to-find pieces without visiting a store." },
+    ],
+  },
+
+  "ikea": {
+    description: "IKEA is a Swedish multinational home furnishing retailer founded in 1943 by Ingvar Kamprad. It is the world's largest furniture retailer with approximately 460 stores in 63 countries, generating €47 billion in annual revenue. IKEA's business model is built around flat-pack, self-assembled furniture sold at low prices, achieved through standardized design, high-volume production, and customers handling their own transport and assembly. The company is known for its warehouse-format showrooms, Swedish meatballs (sold in in-store restaurants), and iconic product lines like BILLY bookcases, KALLAX shelving, POÄNG chairs, and MALM bed frames. IKEA products are sold exclusively through IKEA stores and its website. The company has invested heavily in sustainability, with goals to use only renewable or recycled materials by 2030. IKEA has also launched buy-back programs, rental services, and digital design tools as part of its transformation strategy. It remains privately owned by the Interogo Foundation (the Kamprad family foundation).",
+    highlights: ["World's largest furniture retailer", "460+ stores in 63 countries", "€47B annual revenue", "Flat-pack self-assembly model"],
+    category: "products",
+    alternatives: [
+      { name: "Wayfair", slug: "wayfair", reason: "Online-only, vastly more product variety, no assembly required" },
+      { name: "West Elm", slug: "west-elm", reason: "Premium modern design, ready-assembled options" },
+      { name: "Target", slug: "target", reason: "Affordable home goods, no-assembly options, in-store pickup" },
+      { name: "Amazon", slug: "amazon", reason: "Huge selection, fast delivery, competitive pricing" },
+    ],
+    faqs: [
+      { question: "Is IKEA furniture good quality?", answer: "IKEA furniture quality is generally good for the price but not premium. Solid wood products (HEMNES, IVAR) are notably durable. Particleboard items (KALLAX, BILLY) are functional but susceptible to moisture and heavy loads. For the price point, IKEA is excellent value — many pieces last 10+ years with proper care." },
+      { question: "Does IKEA deliver to your home?", answer: "Yes — IKEA offers home delivery in most markets, typically for $5-$99 depending on order size and location. Large/heavy items may require a separate delivery fee. IKEA also offers an assembly service through TaskRabbit. In-store pick-up remains free." },
+    ],
+  },
+
+  "whoop": {
+    description: "WHOOP is an American fitness technology company founded in 2012 by Will Ahmed in Boston, Massachusetts. WHOOP makes a subscription-based wearable fitness tracker that continuously monitors strain, recovery, and sleep without a screen or buttons. Unlike competitors, WHOOP uses a subscription model ($239/year or $30/month) that includes the hardware. The WHOOP 4.0 band tracks heart rate variability (HRV), resting heart rate, respiratory rate, blood oxygen, and skin temperature. The core output is a daily Recovery Score (0-100%) and Strain score that guides training intensity. WHOOP is popular with elite athletes, military personnel, and serious fitness enthusiasts. The company has official partnerships with the NFL, NBA, PGA Tour, and CrossFit. WHOOP raised $200M in 2021 at a $3.6B valuation. A key differentiator is its focus on recovery — not just activity tracking — and its ability to wear in the shower, pool, and sleep without needing to charge daily (battery life ~4-5 days).",
+    highlights: ["Continuous HRV + recovery monitoring", "Subscription model (hardware included)", "No screen — data-first design", "Popular with elite athletes and military"],
+    category: "health",
+    alternatives: [
+      { name: "Garmin", slug: "garmin", reason: "GPS watches with longer battery, no subscription required" },
+      { name: "Apple Watch", slug: "apple-watch", reason: "Full smartwatch features, ECG, broader app ecosystem" },
+      { name: "Fitbit", slug: "fitbit", reason: "More affordable, cross-platform, Google ecosystem" },
+      { name: "Oura Ring", slug: "oura-ring", reason: "Ring form factor, excellent sleep tracking, less obtrusive" },
+    ],
+    faqs: [
+      { question: "Is WHOOP worth it?", answer: "WHOOP is worth it for serious athletes and fitness enthusiasts who want deep recovery and HRV data to optimize training. It's less useful for casual exercisers who don't need granular recovery metrics. The subscription model means you pay ~$239/year ongoing — factor that into the decision versus a one-time device purchase from Garmin or Apple." },
+      { question: "WHOOP vs Garmin: which is better?", answer: "WHOOP is better for recovery-focused athletes who want continuous HRV monitoring and daily readiness scores without display distraction. Garmin is better for multi-sport athletes who need GPS route tracking, heart rate zones, and advanced sports metrics without a subscription fee. Most serious endurance athletes use both or choose Garmin for the GPS features WHOOP lacks." },
+    ],
+  },
+
+  "peloton": {
+    description: "Peloton Interactive is an American fitness technology company founded in 2012, best known for its connected stationary bikes and treadmills with large touchscreen displays and live/on-demand studio classes. At its 2020-2021 pandemic peak, Peloton had 6.7 million subscribers and a market cap of $50 billion. The Peloton Bike starts at $1,445 and the Bike+ at $2,495; both require an All-Access Membership at $44/month for unlimited classes. Peloton's content library includes cycling, running, strength, yoga, meditation, and bootcamp classes taught by celebrity instructors. A major differentiator is its social/competitive features: live leaderboards, high-fives, and class challenges that build community. Peloton has faced significant challenges post-pandemic: a recall of its Tread+ treadmill, leadership changes, mass layoffs, and share price decline of 95%+ from its peak. The company refocused on its digital membership ($12.99/month) that works with any bike or treadmill. As of 2026, Peloton has ~3 million connected fitness subscribers.",
+    highlights: ["3M+ connected fitness subscribers", "Live + on-demand studio classes", "Strong community and leaderboard features", "Bike from $1,445 + $44/month membership"],
+    category: "health",
+    alternatives: [
+      { name: "NordicTrack", slug: "nordictrack", reason: "iFit-connected treadmills and bikes, often more affordable" },
+      { name: "Echelon", slug: "echelon", reason: "Budget Peloton alternative with similar connected classes" },
+      { name: "SoulCycle", slug: "soulcycle", reason: "In-studio spin classes, community-focused" },
+      { name: "Apple Fitness Plus", slug: "apple-fitness-plus", reason: "$9.99/month streaming workouts, no hardware lock-in" },
+    ],
+    faqs: [
+      { question: "Is Peloton worth it in 2026?", answer: "Peloton is worth it if you'll use it consistently — the bike quality and class library are genuinely excellent. The all-in cost (bike + 2 years of membership) runs ~$2,500-3,500, which is competitive with gym memberships over time. For casual exercisers, the $12.99/month digital-only membership with your own equipment is a more flexible option." },
+      { question: "Peloton vs NordicTrack/iFit: which is better?", answer: "Peloton wins on class quality, instructor celebrity, and community features. NordicTrack/iFit often wins on hardware price, variety of equipment (incline trainers, rowers), and the unique Google Maps scenic rides feature. For cycling specifically, most reviewers prefer Peloton's instruction and metrics; for treadmills, the competition is closer." },
+    ],
+  },
+
+  "fitbit": {
+    description: "Fitbit is an American consumer electronics and fitness company founded in 2007, acquired by Google in January 2021 for $2.1 billion. Fitbit pioneered the consumer fitness tracker market with its clip-on and wristband devices. Current products include the Fitbit Inspire 3 ($99), Charge 6 ($159), and Versa 4 ($229). Google has integrated Fitbit devices with Google services (Google Maps on Charge 6, Google Wallet, Google Assistant) and merged fitness tracking with Google Health. Fitbit tracks steps, heart rate, sleep stages, calories, Active Zone Minutes, and stress via EDA. The Fitbit Sense 2 ($249) includes an ECG app. A key differentiator is the Fitbit Premium subscription ($9.99/month) offering guided programs, advanced sleep analysis, and nutrition tracking via MyFitnessPal integration. Fitbit devices are fully cross-platform (iOS and Android), unlike Apple Watch which requires iPhone. Fitbit has over 30 million active users. The brand faces increasing competition from Apple Watch, Samsung Galaxy Watch, and Garmin.",
+    highlights: ["Google-owned, deep Google services integration", "Cross-platform iOS and Android", "6+ day battery life on trackers", "Fitbit Premium health coaching platform"],
+    category: "health",
+    alternatives: [
+      { name: "Apple Watch", slug: "apple-watch", reason: "Full smartwatch, FDA-cleared ECG, iPhone-only" },
+      { name: "Garmin", slug: "garmin", reason: "Superior GPS, sports metrics, 7-14 day battery" },
+      { name: "WHOOP", slug: "whoop", reason: "Recovery-first, subscription model, elite athlete focus" },
+      { name: "Samsung Galaxy Watch", slug: "samsung-galaxy-watch", reason: "Best Android alternative, rotating bezel, Wear OS" },
+    ],
+    faqs: [
+      { question: "Does Fitbit work with iPhone?", answer: "Yes — Fitbit devices work with both iPhone (iOS 16+) and Android phones. This cross-platform compatibility is a major advantage over Apple Watch, which requires an iPhone, making Fitbit a better choice for Android users who want a capable fitness tracker." },
+      { question: "Fitbit vs Apple Watch: which is better?", answer: "Apple Watch is better for iPhone users wanting a full smartwatch with apps, Apple Pay, cellular, and deep iOS integration. Fitbit is better for Android users, those prioritizing battery life (6+ days vs ~36 hours), simplicity, and value. Fitbit Premium adds health coaching features for $9.99/month; Apple Fitness+ costs $9.99/month separately." },
+    ],
+  },
+
+  "ifit": {
+    description: "iFIT Health & Fitness is an American interactive fitness platform and hardware company founded in 1977 (originally ICON Health & Fitness). iFIT makes NordicTrack and ProForm connected fitness equipment — treadmills, bikes, ellipticals, and rowers — with integrated iFIT membership. The iFIT subscription ($39/month for a family plan) provides access to thousands of on-demand and live workouts, including globally-filmed outdoor routes where instructors guide you through real-world locations and the machine auto-adjusts incline/resistance to match the terrain. The company went public on Nasdaq in 2021 at a $7 billion valuation. iFIT's key differentiator is Google Maps integration for outdoor route workouts: run in Patagonia, cycle through Tuscany, row in Norway, with the machine physically simulating the terrain. NordicTrack treadmills with iFIT range from $999 to $4,500. iFIT competes directly with Peloton but generally offers more equipment variety and lower entry prices.",
+    highlights: ["Google Maps outdoor route workouts", "Auto-adjusting incline/resistance", "40,000+ on-demand workouts", "NordicTrack + ProForm hardware brands"],
+    category: "health",
+    alternatives: [
+      { name: "Peloton", slug: "peloton", reason: "Better studio cycling classes, stronger community features" },
+      { name: "Apple Fitness Plus", slug: "apple-fitness-plus", reason: "$9.99/month streaming, works with any Apple Watch" },
+      { name: "Tonal", slug: "tonal", reason: "AI-powered strength training, wall-mounted cable machine" },
+    ],
+    faqs: [
+      { question: "iFIT vs Peloton: which is better?", answer: "iFIT (NordicTrack) is generally better for variety — more equipment types, outdoor route workouts, and lower hardware cost. Peloton is better for studio cycling specifically, with superior instructor quality and live class community. Both require ongoing subscriptions ($39/month iFIT family vs $44/month Peloton household)." },
+      { question: "Can you use NordicTrack without iFIT?", answer: "Yes — NordicTrack machines function as standard treadmills/bikes without iFIT. You lose the interactive features (auto-adjust, classes, routes) but the equipment itself works normally. After a promotional iFIT trial period, the screen may be locked out unless you subscribe — check the terms for your specific model." },
+    ],
+  },
+
+  "harvard": {
+    description: "Harvard University is a private Ivy League research university in Cambridge, Massachusetts, established in 1636 — the oldest institution of higher education in the United States. Harvard has an endowment of $50.7 billion (2023), the largest of any university in the world. Harvard is consistently ranked #1-3 globally and is associated with 162 Nobel laureates, 32 heads of state (including 8 US presidents), and 188 billionaires (more than any other university). It comprises 12 degree-granting schools including Harvard College, Harvard Business School (HBS), Harvard Law School, Harvard Medical School, and Harvard Kennedy School. Undergraduate acceptance rate has fallen below 3.4% (class of 2027), making it the most selective university in the US. The undergraduate tuition is ~$59,950/year, though Harvard's generous financial aid program means students from families earning under $85,000 pay nothing. Harvard's alumni network is considered the most powerful in the world.",
+    highlights: ["$50.7B endowment — largest in the world", "162 Nobel laureates", "8 US presidents", "<3.4% acceptance rate"],
+    category: "education",
+    alternatives: [
+      { name: "MIT", slug: "mit", reason: "Better for STEM, engineering, and applied sciences" },
+      { name: "Yale", slug: "yale", reason: "Strong law, drama, and liberal arts; smaller campus culture" },
+      { name: "Princeton", slug: "princeton", reason: "Best undergraduate teaching focus among Ivies" },
+      { name: "Stanford", slug: "stanford", reason: "Silicon Valley location, entrepreneurship culture, tech ties" },
+    ],
+    faqs: [
+      { question: "How hard is it to get into Harvard?", answer: "Harvard's acceptance rate was 3.4% for the class of 2027 (down from 5.2% in 2018). Most admitted students have near-perfect GPAs and test scores — the middle 50% SAT range is 1580-1600. Academic excellence is necessary but not sufficient; demonstrated leadership, unique accomplishments, and compelling essays matter significantly." },
+      { question: "Is Harvard worth the cost?", answer: "For most students, Harvard costs less than state schools due to its generous financial aid. Families earning under $85,000/year pay nothing; those up to $150,000 pay at most 10% of their income. Harvard's network, brand, and education opportunities offer exceptional lifetime ROI — graduates earn a median early career salary of ~$65,000-$85,000 and gain access to one of the most powerful alumni networks globally." },
+    ],
+  },
+
+  "mit": {
+    description: "Massachusetts Institute of Technology (MIT) is a private research university in Cambridge, Massachusetts, founded in 1861. MIT is the world's premier science and technology university, consistently ranked #1 globally in engineering, computer science, and applied sciences. MIT has an endowment of $24.6 billion and is associated with 97 Nobel laureates (many in Physics, Chemistry, and Economics), 26 Turing Award winners, and 8 Fields Medalists. It comprises 5 schools and 1 college, offering degrees in engineering, science, architecture, management (Sloan), and humanities. MIT's acceptance rate is approximately 3.9% (class of 2027). The university is the birthplace of major technologies including RSA encryption, the World Wide Web standards, and numerous biotech companies. MIT graduates co-founded companies like Intel, McDonnell Douglas, Dropbox, and HubSpot. MIT's campus culture emphasizes problem-solving, hands-on learning, and the motto 'Mens et Manus' (mind and hand).",
+    highlights: ["#1 globally in engineering and CS", "97 Nobel laureates", "~3.9% acceptance rate", "$24.6B endowment"],
+    category: "education",
+    alternatives: [
+      { name: "Harvard", slug: "harvard", reason: "Better for law, business, medicine, political careers" },
+      { name: "Stanford", slug: "stanford", reason: "Similar STEM prestige, Silicon Valley location, broader programs" },
+      { name: "Caltech", slug: "caltech", reason: "Smaller, more research-intensive, pure science focus" },
+      { name: "Carnegie Mellon", slug: "carnegie-mellon", reason: "Best CS program outside MIT/Stanford, strong robotics and AI" },
+    ],
+    faqs: [
+      { question: "MIT vs Harvard: which is better?", answer: "It depends on your field. MIT is unambiguously better for engineering, computer science, physics, and applied sciences. Harvard is better for law, business (MBA), medicine, political science, and humanities. For STEM careers in tech and research, MIT's faculty, labs, and alumni network are unmatched. Both are in Cambridge and have many cross-registration opportunities." },
+      { question: "Is MIT only for geniuses?", answer: "MIT admits exceptional students, but success there requires intellectual curiosity and resilience more than raw IQ. MIT is famous for its challenging coursework and a culture of collaborative problem-solving. Students with strong math/science backgrounds who enjoy working through difficult problems thrive at MIT, regardless of whether they would be labeled 'geniuses.'" },
+    ],
+  },
+
+  "yale": {
+    description: "Yale University is a private Ivy League research university in New Haven, Connecticut, founded in 1701 — the third-oldest institution of higher education in the US. Yale has an endowment of $40.7 billion (2023), the second-largest in the US after Harvard. Yale is renowned for its law school (consistently #1 nationally), drama school, music school, art gallery, and undergraduate liberal arts education. Yale has been associated with 65 Nobel laureates, 5 US presidents (including George H.W. Bush, Bill Clinton, and George W. Bush), and is the training ground for a disproportionate share of US Supreme Court justices (historically 5-6 of 9 at any time). Yale's acceptance rate is approximately 3.7% (class of 2027). Yale College is known for its residential college system — 14 residential colleges that create a tight-knit community within the larger university. Yale's campus in New Haven is considered one of the most architecturally beautiful in the US.",
+    highlights: ["Yale Law School — #1 nationally", "$40.7B endowment", "5 US presidents", "Residential college system"],
+    category: "education",
+    alternatives: [
+      { name: "Harvard", slug: "harvard", reason: "Larger endowment, stronger business/medical schools" },
+      { name: "Princeton", slug: "princeton", reason: "Best undergraduate experience, no professional schools" },
+      { name: "Columbia", slug: "columbia", reason: "NYC location, strong journalism and pre-med programs" },
+      { name: "Penn", slug: "penn", reason: "Wharton business school, strong interdisciplinary programs" },
+    ],
+    faqs: [
+      { question: "Is Yale better than Harvard?", answer: "Yale and Harvard are essentially equal in prestige for most purposes. Yale has the #1 law school in the US and is often considered superior for liberal arts, drama, and music. Harvard has stronger business (HBS) and medical schools. For pure name recognition, Harvard edges Yale globally, but both open essentially the same doors." },
+      { question: "What is Yale known for academically?", answer: "Yale is best known for its law school (#1 in the US), drama school (alumni include Meryl Streep, Paul Newman, and Angela Bassett), music school, art history, and political science. In the hard sciences, Yale is strong but trails MIT and some other research universities. Yale's undergraduate liberal arts program is consistently ranked among the top 5 in the US." },
+    ],
+  },
+
+  "rivian": {
+    description: "Rivian Automotive is an American electric vehicle manufacturer founded in 2009 by Robert 'RJ' Scaringe in Plymouth, Michigan. Rivian produces the R1T electric pickup truck (starting at $69,900) and R1S electric SUV (starting at $75,900) from its Normal, Illinois factory, targeting outdoor adventure enthusiasts. Rivian's key differentiators include a quad-motor system delivering 835 hp, 'quad-motor torque split' for off-road capability, a frunk (front trunk), gear tunnel storage, and Camp Mode. Rivian also operates a commercial van business for Amazon (100,000 van order), which provides revenue stability while consumer ramp continues. The company went public in November 2021 at a $66.5 billion valuation — one of the largest IPOs in US history — and has since seen significant share price volatility. Production hit 57,232 vehicles in 2023. Rivian's main challenge is scaling production profitably; it targets EBITDA break-even by late 2024. Volkswagen invested $5 billion in Rivian in 2024 to develop a joint electrical architecture platform.",
+    highlights: ["R1T + R1S — purpose-built adventure EVs", "Quad-motor system, 835 hp", "100,000-van Amazon EDV contract", "$5B Volkswagen partnership (2024)"],
+    category: "automotive",
+    alternatives: [
+      { name: "Tesla", slug: "tesla", reason: "Cybertruck and Model Y, larger charging network (Supercharger)" },
+      { name: "Ford F-150 Lightning", slug: "ford-f-150", reason: "Established truck brand, Pro Power Onboard, better dealer network" },
+      { name: "GMC Hummer EV", slug: "gmc-hummer-ev", reason: "Off-road capability, established GM dealer network" },
+      { name: "Lucid Motors", slug: "lucid-motors", reason: "Luxury EV sedans, superior range (516 miles)" },
+    ],
+    faqs: [
+      { question: "Is Rivian a good company to invest in?", answer: "Rivian is a high-risk, high-potential investment. It has strong product-market fit in the adventure EV segment, the Amazon van contract provides commercial revenue, and the VW partnership validates its technology. However, it faces intense competition, production scaling challenges, and has yet to achieve profitability. It's better suited for growth investors with long time horizons." },
+      { question: "Rivian vs Tesla: which electric truck is better?", answer: "Rivian R1T beats Tesla Cybertruck for traditional off-road adventure use: better conventional proportions, gear tunnel storage, more established service network, and proven off-road performance. Tesla Cybertruck has more polarizing design, superior on-road performance, and the Supercharger network advantage. Both offer excellent range (300+ miles) and fast charging." },
+    ],
+  },
+
+  "ford-f-150": {
+    description: "The Ford F-150 is a full-size pickup truck produced by Ford Motor Company, the best-selling vehicle in the United States for over 47 consecutive years. The F-Series (which includes F-150, F-250, and F-350) generates approximately $65 billion in annual revenue for Ford — more than most Fortune 500 companies. The F-150 is available with six engine options including a 3.5L PowerBoost hybrid (430 hp, 570 lb-ft torque), a turbodiesel, and V6/V8 gasoline engines. Key features include Pro Power Onboard (up to 7.2 kW of available power for job sites), Max Recline seats, a fully flat cargo bed, and towing capacity up to 14,000 lbs. The F-150 Lightning is Ford's all-electric variant (starting at $49,995) with 300+ miles of range and a powered frunk. The F-150 is manufactured in Dearborn and Kansas City, Michigan. It remains the #1 selling vehicle in the US despite competition from the Chevy Silverado, Ram 1500, and Toyota Tundra.",
+    highlights: ["#1 selling vehicle in the US for 47+ years", "Up to 14,000 lb towing capacity", "Pro Power Onboard (7.2 kW)", "F-150 Lightning EV from $49,995"],
+    category: "automotive",
+    alternatives: [
+      { name: "Chevy Silverado", slug: "chevy-silverado", reason: "Comparable capability, strong GM dealer network" },
+      { name: "Ram 1500", slug: "ram-1500", reason: "Best interior, RamBox storage, air suspension option" },
+      { name: "Toyota Tundra", slug: "toyota-tundra", reason: "Excellent reliability, twin-turbo V6 hybrid option" },
+      { name: "Rivian R1T", slug: "rivian", reason: "All-electric, adventure-focused, unique storage solutions" },
+    ],
+    faqs: [
+      { question: "Ford F-150 vs Chevy Silverado: which is better?", answer: "Both are excellent trucks with similar capability specs. F-150 edges Silverado on technology (Pro Power Onboard, SYNC 4 infotainment, CarbonFiber-Reinforced Military-Grade Aluminum body saving 700 lbs). Silverado offers more cab/bed configurations and traditional steel body construction preferred by buyers who use trucks for heavy work. Brand loyalty is strong for both." },
+      { question: "How reliable is the F-150?", answer: "The F-150's reliability varies by engine and model year. The 5.0L V8 and 3.5L EcoBoost are generally reliable over 200K+ miles with proper maintenance. The 3.5L PowerBoost hybrid is newer with less long-term data. Consumer Reports rates F-150 as average reliability; J.D. Power ranks it high in dependability among full-size trucks." },
+    ],
+  },
+
+  "chevy-silverado": {
+    description: "The Chevrolet Silverado 1500 is a full-size pickup truck produced by General Motors, the second best-selling vehicle in the United States. The Silverado competes directly with the Ford F-150 and Ram 1500. The 2024 Silverado offers three engine options: a 2.7L turbocharged four-cylinder (310 hp), 5.3L V8 (355 hp), and 6.2L V8 (420 hp), plus the Silverado EV (all-electric, starting at $39,900 for fleet). Maximum towing capacity is 13,300 lbs. The Silverado is built at multiple GM plants including Flint, Michigan and Fort Wayne, Indiana. Key variants include the Work Truck (WT), Custom, LT, RST, LTZ, and High Country. The Silverado ZR2 is the high-performance off-road variant competing with the F-150 Raptor. GM sold approximately 530,000 Silverado 1500s in 2023, trailing only the F-150. The Silverado EV received EPA-estimated 450-mile range for certain configurations, one of the highest of any electric pickup.",
+    highlights: ["2nd best-selling vehicle in US", "Up to 13,300 lb towing", "Silverado EV with 450-mile range", "ZR2 off-road performance variant"],
+    category: "automotive",
+    alternatives: [
+      { name: "Ford F-150", slug: "ford-f-150", reason: "#1 best-seller, Pro Power Onboard, aluminum body" },
+      { name: "Ram 1500", slug: "ram-1500", reason: "Best interior quality, coil spring suspension, RamBox" },
+      { name: "Toyota Tundra", slug: "toyota-tundra", reason: "Best reliability, twin-turbo hybrid powertrain" },
+      { name: "GMC Sierra", slug: "gmc-sierra", reason: "Premium version of Silverado platform, MultiPro tailgate" },
+    ],
+    faqs: [
+      { question: "Silverado vs F-150: which is better?", answer: "Both are excellent, and choice often comes down to brand loyalty and dealer relationships. F-150 has a slight edge in tech features and its military-grade aluminum body reduces weight significantly. Silverado offers a traditional steel body (preferred by some commercial buyers), a wider range of bed/cab configurations, and strong resale value. Silverado EV has the longest range of any electric pickup at 450 miles." },
+    ],
+  },
+
+  "toyota-camry": {
+    description: "The Toyota Camry is a mid-size sedan produced by Toyota, consistently the best-selling car in the United States for over 20 years. The Camry is available as a traditional gasoline-powered vehicle (2.5L 4-cylinder, 203 hp) and as a hybrid (Camry Hybrid, 220 hp combined). For the 2025 model year, Toyota made the Camry hybrid-only in the US — a landmark transition reflecting the shift toward electrification. The Camry is manufactured in Georgetown, Kentucky (the US Camry plant since 1988). Pricing starts at approximately $28,400 for the LE trim and goes to $38,000+ for the XSE V6 Sport. Key trims include L, LE, SE, TRD, XLE, and XSE. The Camry's key strengths are legendary reliability, strong resale value, comfortable ride, and low total cost of ownership. Toyota sold approximately 313,000 Camrys in the US in 2023, maintaining its #1 car position despite sedan segment decline.",
+    highlights: ["Best-selling car in the US for 20+ years", "2025 US models are hybrid-only", "Built in Georgetown, Kentucky", "Exceptional reliability and resale value"],
+    category: "automotive",
+    alternatives: [
+      { name: "Honda Accord", slug: "honda-accord", reason: "More engaging to drive, spacious rear seat, strong hybrid" },
+      { name: "Nissan Altima", slug: "nissan-altima", reason: "Available AWD, aggressive pricing" },
+      { name: "Hyundai Sonata", slug: "hyundai-sonata", reason: "Modern design, strong value, longer warranty" },
+      { name: "Mazda 6", slug: "mazda-6", reason: "Premium feel at lower price, driver-focused" },
+    ],
+    faqs: [
+      { question: "Toyota Camry vs Honda Accord: which is better?", answer: "Both are excellent choices. Camry wins on reliability reputation, lower starting price (historically), and a more conservative drive feel preferred by many buyers. Accord wins on interior roominess, more engaging driving dynamics, and a more modern design. The Accord Hybrid is slightly more efficient; the Camry Hybrid is now standard on US models from 2025. For pure reliability and value retention, most surveys favor Camry slightly." },
+      { question: "Is the Toyota Camry still worth buying?", answer: "Yes — the Camry remains one of the best value propositions in the mid-size sedan segment. The transition to hybrid-only in 2025 improves fuel economy to approximately 46-51 mpg combined while keeping the proven Camry platform. For buyers who want a reliable, efficient, hassle-free sedan with excellent resale value, the Camry remains the benchmark." },
+    ],
+  },
+
+  "honda-accord": {
+    description: "The Honda Accord is a mid-size sedan produced by Honda, one of the best-selling cars in the United States since its introduction in 1976. The Accord is now in its 11th generation (2023-present) and competes primarily with the Toyota Camry, Nissan Altima, and Hyundai Sonata. The 2024 Accord starts at $30,090 and is available with a 1.5L turbocharged four-cylinder (192 hp) or Accord Hybrid with a 2.0L Atkinson-cycle engine producing 204 hp combined (48 MPG combined). The Accord is manufactured in Marysville, Ohio since 1982. Key features of the 11th gen include a large 12.3-inch infotainment screen, a heads-up display, Google built-in (Android Auto/CarPlay), and Honda Sensing safety suite standard on all trims. The Accord is known for its best-in-class rear passenger space, strong resale value, and engaging driving dynamics relative to competitors. Honda sold approximately 237,000 Accords in the US in 2023.",
+    highlights: ["Best-in-class rear passenger space", "11th generation (2023-present)", "Accord Hybrid: 48 MPG combined", "Google built-in + Honda Sensing standard"],
+    category: "automotive",
+    alternatives: [
+      { name: "Toyota Camry", slug: "toyota-camry", reason: "Stronger reliability reputation, slightly lower starting price" },
+      { name: "Mazda 6", slug: "mazda-6", reason: "More premium interior, driver-focused, smaller but sportier" },
+      { name: "Hyundai Sonata", slug: "hyundai-sonata", reason: "Longer warranty, aggressive pricing, distinct design" },
+      { name: "Nissan Altima", slug: "nissan-altima", reason: "AWD availability, value pricing" },
+    ],
+    faqs: [
+      { question: "Honda Accord vs Toyota Camry: which should I buy?", answer: "Both are excellent. Accord wins on interior space (especially rear legroom), driving dynamics, and a more modern/tech-forward interior. Camry wins on reliability reputation (Consumer Reports gives Camry a slight edge historically) and resale value. For drivers who prioritize the driving experience and interior space, Accord is the better choice; for pure pragmatism and lowest 5-year cost of ownership, Camry edges it out." },
+      { question: "Is the Honda Accord reliable?", answer: "The Honda Accord has an excellent reliability record. J.D. Power consistently ranks it above average for initial quality, and Consumer Reports recommends it. The 1.5L turbo and hybrid powertrains have proven reliable over time. Honda's CVT transmission in some models has occasionally received mixed reviews, but overall reliability is strong for this segment." },
+    ],
+  },
+
+  "google-pixel": {
+    description: "Google Pixel is a line of consumer electronics manufactured by Google, best known for its smartphones. The Pixel lineup includes Pixel 8, Pixel 8 Pro, Pixel 8a, and Pixel Fold — all running stock Android directly from Google with 7 years of OS and security updates. Pixel phones are distinguished by their computational photography (often ranking first in blind photo tests), Google AI integration (Google Assistant, Magic Eraser, Photo Unblur, Best Take), and Google Tensor G3 chip optimized for on-device AI tasks. The Pixel 8 starts at $699, Pixel 8 Pro at $999. A key differentiator is the first access to new Android features and the Pixel-exclusive AI features powered by Gemini. Pixel has approximately 2-3% US smartphone market share — small but with an intensely loyal premium user base. Pixel phones are the reference implementation of Android, making them popular with developers and privacy-conscious users.",
+    highlights: ["7 years of OS + security updates", "Industry-leading computational photography", "Google Tensor AI chip", "First to get new Android features"],
+    category: "technology",
+    alternatives: [
+      { name: "iPhone", slug: "iphone", reason: "iOS ecosystem, better app optimization, stronger resale value" },
+      { name: "Samsung Galaxy", slug: "samsung-galaxy", reason: "More Android variety, hardware choices, foldables, One UI" },
+      { name: "OnePlus", slug: "oneplus", reason: "OxygenOS, fast charging, strong value proposition" },
+      { name: "Nothing Phone", slug: "nothing-phone", reason: "Unique transparent design, clean software, mid-range value" },
+    ],
+    faqs: [
+      { question: "Is Google Pixel better than iPhone?", answer: "Pixel is better for Android users who want the best camera, clean software, fast updates, and AI-powered features at a lower price than iPhone Pro. iPhone is better for those in the Apple ecosystem (Mac, iPad, AirPods), prioritizing app quality/optimization, and long-term resale value. Pixel's AI photography often beats iPhone in low-light; iPhone's video recording generally remains superior." },
+      { question: "Why is Pixel market share so small?", answer: "Pixel's small market share (~2-3% in the US) reflects limited carrier promotion, lower international availability, and competition from Samsung's massive marketing budget and established Android brand. Despite this, Pixel punches well above its weight in critical reception, with camera rankings and software experience often rated best-in-class." },
+    ],
+  },
+
+  "oneplus": {
+    description: "OnePlus is a Chinese smartphone manufacturer founded in December 2013 as a subsidiary of BBK Electronics (which also owns Oppo, Vivo, and Realme). OnePlus built its early reputation on 'flagship killer' phones — near-premium specs at significantly lower prices — and a cult following through its invite-only sales system. Current flagship phones include the OnePlus 12 ($799) with Snapdragon 8 Gen 3, 100W SUPERVOOC charging (0-100% in ~30 minutes), and Hasselblad camera partnership. OnePlus runs OxygenOS on top of Android, praised for its clean interface and gaming optimizations. The company merged more closely with Oppo's ColorOS in 2021, which divided some longtime fans who preferred the cleaner OxygenOS. OnePlus has approximately 1-2% global smartphone market share. Key differentiators are fast charging speeds (industry-leading SUPERVOOC), smooth OxygenOS experience, and premium specs at $100-200 below comparable Samsung or Apple flagships.",
+    highlights: ["100W SUPERVOOC charging", "Hasselblad camera collaboration", "Snapdragon 8 Gen 3 flagship chip", "OxygenOS — clean Android experience"],
+    category: "technology",
+    alternatives: [
+      { name: "Samsung Galaxy", slug: "samsung-galaxy", reason: "More established brand, wider product range, better trade-in value" },
+      { name: "Google Pixel", slug: "google-pixel", reason: "Better camera AI, pure Android, 7-year updates" },
+      { name: "iPhone", slug: "iphone", reason: "iOS ecosystem, better resale value, broader app support" },
+      { name: "Nothing Phone", slug: "nothing-phone", reason: "Unique glyph design, similar clean-Android philosophy" },
+    ],
+    faqs: [
+      { question: "Is OnePlus better than Samsung?", answer: "OnePlus is a great value alternative to Samsung. OnePlus often delivers comparable performance with faster charging at a lower price point. However, Samsung has superior camera versatility (especially on the S Ultra), broader global availability, longer software support (recently extended to 7 years), and stronger resale value. OnePlus is best for buyers who prioritize fast charging, clean software, and getting near-flagship specs for less." },
+    ],
+  },
+
+  "ipad": {
+    description: "The iPad is Apple's line of tablet computers, first introduced in April 2010. The iPad is the best-selling tablet globally with approximately 40% of the tablet market. Apple sells four lines: iPad (10th gen, from $349), iPad mini (7th gen, from $499), iPad Air (M2, from $599), and iPad Pro (M4, from $999). All models run iPadOS 17, which supports multitasking, desktop-class apps, Apple Pencil, and Magic Keyboard accessories. The M4-powered iPad Pro features a tandem OLED display, thin 5.1mm chassis (the thinnest Apple product ever), and desktop-class performance that rivals MacBook Pro for many tasks. iPad is the dominant tablet in education (K-12), creative work (digital art, music production), and business. Apple sells approximately 50 million iPads annually. Key differentiators include the A/M chip series (industry-best tablet performance), the Apple Pencil ecosystem for creative work, and tightly integrated iCloud and iOS ecosystem.",
+    highlights: ["#1 tablet globally — ~40% market share", "M4 chip in iPad Pro (MacBook-class performance)", "Apple Pencil + Magic Keyboard ecosystem", "50M+ units sold annually"],
+    category: "technology",
+    alternatives: [
+      { name: "Surface", slug: "surface", reason: "Full Windows OS, better for enterprise software compatibility" },
+      { name: "Samsung Galaxy Tab", slug: "samsung-galaxy-tab", reason: "Best Android tablet, DeX desktop mode, AMOLED display" },
+      { name: "Amazon Fire", slug: "amazon-fire", reason: "Budget tablet starting at $99, good for media consumption" },
+      { name: "Lenovo Tab", slug: "lenovo-tab", reason: "Business Android tablets with more affordable pricing" },
+    ],
+    faqs: [
+      { question: "iPad vs Surface: which is better?", answer: "iPad is better for creative work (Apple Pencil, art apps), education, portability, and battery life. Surface is better when you need full Windows desktop apps for work — Excel, Visual Studio, Adobe Premiere — without compromises. Surface Pro with keyboard essentially becomes a laptop; iPad Pro with Magic Keyboard is close but iPadOS still limits some power workflows. For most non-enterprise consumers, iPad Pro at similar prices delivers a better-optimized tablet experience." },
+      { question: "Can the iPad replace a laptop?", answer: "For many people, yes — iPad Pro with Magic Keyboard handles email, web browsing, video calls, content creation, and light productivity without needing a laptop. The limitations are: no full desktop browser (though Safari is near-desktop-class), some professional apps remain Mac-only, and file management is more limited than macOS. Heavy Excel users, developers, and video editors typically still prefer a laptop." },
+    ],
+  },
+
+  "airpods-pro": {
+    description: "AirPods Pro are Apple's premium noise-cancelling wireless earbuds, first introduced in October 2019 with the second generation releasing in September 2022. AirPods Pro 2 feature Active Noise Cancellation (rated best-in-class by Wirecutter and RTINGS.com), Adaptive Transparency mode, Personalized Spatial Audio with head tracking, and an H2 chip. They use Apple's proprietary W2/H2 chips for seamless pairing with Apple devices. Key specs: up to 6 hours battery (earbuds), 30 hours total with case, IP54 water resistance, USB-C or Lightning charging case (MagSafe compatible). AirPods Pro 2 cost $249. Apple has approximately 30% of the global TWS (true wireless stereo) earbuds market and over 50% of the US premium earbuds market. AirPods' key advantages are one-tap pairing with all Apple devices, automatic device switching, and the tightest integration with iPhone, iPad, Mac, and Apple Watch.",
+    highlights: ["Best-in-class ANC (Wirecutter rated)", "Seamless Apple ecosystem integration", "Personalized Spatial Audio", "H2 chip — 2x ANC improvement over gen 1"],
+    category: "technology",
+    alternatives: [
+      { name: "Samsung Galaxy Buds Pro", slug: "samsung-galaxy-buds", reason: "Best ANC for Android/Galaxy users, 360° audio" },
+      { name: "Sony WF-1000XM5", slug: "sony-wf-1000xm5", reason: "Industry-leading ANC, superior for audiophiles, cross-platform" },
+      { name: "Bose QuietComfort Earbuds", slug: "bose-qc-earbuds", reason: "Excellent ANC, comfortable fit, no ecosystem lock-in" },
+      { name: "Google Pixel Buds Pro", slug: "pixel-buds-pro", reason: "Best for Android/Pixel users, Google ecosystem integration" },
+    ],
+    faqs: [
+      { question: "AirPods Pro vs Samsung Galaxy Buds: which is better?", answer: "AirPods Pro are better for iPhone users — the seamless pairing, automatic device switching, and Siri integration are genuinely superior within the Apple ecosystem. Samsung Galaxy Buds are better for Android/Galaxy phone users. For cross-platform use, Sony WF-1000XM5 or Bose QC Earbuds offer better sound and comparable ANC without ecosystem lock-in." },
+      { question: "Are AirPods Pro worth $249?", answer: "Yes, for iPhone users. AirPods Pro 2 deliver best-in-class ANC, exceptional spatial audio, and effortless Apple device integration. The H2 chip offers 2x better ANC than the first generation. For Android users, the same $249 buys better cross-platform earbuds (Sony XM5, Bose QC) with no ecosystem restrictions." },
+    ],
+  },
+
+  "samsung-galaxy-buds": {
+    description: "Samsung Galaxy Buds are Samsung's line of true wireless stereo (TWS) earbuds, launched in 2019. The current flagship is the Galaxy Buds3 Pro (released 2024), priced at $249. Galaxy Buds3 Pro feature 360° Audio with head tracking, AI-powered Active Noise Cancellation, and a new 'blade' design inspired by Galaxy AI. They include a 10mm + 5.1mm dual driver setup for balanced audio. Key specs: up to 6 hours battery (earbuds), 30 hours with case, IPX7 water resistance, blade-tip design for better ear seal. Galaxy Buds connect seamlessly with Samsung Galaxy phones and tablets via Galaxy Wearable app, with auto device switching. Buds3 Pro support Galaxy AI features including Interpreter mode (real-time translation) and Live Translate for calls. Samsung sells approximately 60 million Galaxy Buds annually across all price tiers, making it the #2 TWS brand globally behind Apple.",
+    highlights: ["Galaxy AI integration (Interpreter, Live Translate)", "360° Audio with head tracking", "#2 TWS brand globally", "IPX7 water resistance"],
+    category: "technology",
+    alternatives: [
+      { name: "AirPods Pro", slug: "airpods-pro", reason: "Better for Apple ecosystem, superior ANC, H2 chip" },
+      { name: "Sony WF-1000XM5", slug: "sony-wf-1000xm5", reason: "Best audiophile earbuds, superior ANC, cross-platform" },
+      { name: "Jabra Evolve2", slug: "jabra-evolve2", reason: "Best for work/calls, enterprise focus" },
+    ],
+    faqs: [
+      { question: "Samsung Galaxy Buds vs AirPods Pro: which is better?", answer: "Galaxy Buds are better for Samsung Galaxy phone users — deeper Galaxy ecosystem integration, Galaxy AI features, and auto-switch with Galaxy devices. AirPods Pro are better for iPhone users. For cross-platform use or audiophile listening, Sony WF-1000XM5 typically ranks above both. The choice largely comes down to your phone ecosystem." },
+    ],
+  },
+
+  "hellofresh": {
+    description: "HelloFresh is a German-founded meal kit delivery company (founded in Berlin in 2011), now the world's largest meal kit provider with operations in 18 countries and approximately 6.5 million active customers. HelloFresh operates several brands: HelloFresh, Green Chef (organic, specialty diets), EveryPlate (budget), Factor (pre-cooked meals), and Chefs Plate (Canada). The core HelloFresh product delivers weekly boxes of pre-portioned ingredients with recipe cards for home cooking. Plans start at approximately $8-12 per serving depending on box size, with a typical 2-person, 3-recipe box running $69-79/week. HelloFresh generated €7.6 billion in revenue in 2022 before experiencing growth headwinds post-pandemic. The company IPO'd on the Frankfurt Stock Exchange in 2017. HelloFresh's key advantages are global infrastructure, brand recognition, the widest variety of meal plans (Classic, Veggie, Family, Quick & Easy, Fit & Wholesome), and strong promotional offers for new subscribers.",
+    highlights: ["World's largest meal kit company", "6.5M active customers in 18 countries", "Multiple brands (HelloFresh, Green Chef, EveryPlate, Factor)", "From $8/serving"],
+    category: "products",
+    alternatives: [
+      { name: "Blue Apron", slug: "blue-apron", reason: "US pioneer of meal kits, premium recipes, wine add-on" },
+      { name: "EveryPlate", slug: "everyplate", reason: "Budget HelloFresh brand, ~$4.99/serving" },
+      { name: "Green Chef", slug: "green-chef", reason: "USDA-certified organic, specialty diet plans" },
+      { name: "Factor", slug: "factor", reason: "Pre-cooked meals (no cooking required), high-protein focus" },
+      { name: "Dinnerly", slug: "dinnerly", reason: "Cheapest meal kit service, ~$4.69/serving" },
+    ],
+    faqs: [
+      { question: "Is HelloFresh worth it?", answer: "HelloFresh is worth it for people who want to cook at home with pre-measured ingredients and reduce food waste without extensive meal planning. The convenience comes at a premium ($8-12/serving vs $3-5/serving cooking from scratch). New subscribers typically get significant introductory discounts. It's best evaluated after the promotional period to assess whether the regular price fits your budget." },
+      { question: "HelloFresh vs Blue Apron: which is better?", answer: "HelloFresh has more meal variety, more plan options, and is available in more regions. Blue Apron focuses on premium culinary recipes and offers a wine subscription add-on. HelloFresh is typically cheaper at similar serving counts. Blue Apron has slightly better recipe quality per most reviews; HelloFresh wins on variety, reliability, and value. HelloFresh also owns EveryPlate for budget shoppers." },
+    ],
+  },
+
+  "blue-apron": {
+    description: "Blue Apron is an American meal kit company founded in 2012 in New York City, the pioneer of the US meal kit delivery industry. Blue Apron went public in June 2017 but has faced intense competition from HelloFresh, which surpassed it as the US market leader by 2018. Blue Apron offers weekly boxes of chef-designed recipes with pre-portioned, fresh ingredients delivered to the door. Plans include the 2-serving plan ($9.99-11.99/serving) and 4-serving plan, with options for 2, 3, or 4 recipes per week. Blue Apron differentiates on recipe quality — its culinary team creates seasonally-inspired, restaurant-quality meals with unique specialty ingredients. The Blue Apron Wine subscription ($65.99/6 bottles) pairs wines with weekly recipes, a unique feature no major competitor offers. Blue Apron also sells premium kitchen tools and pantry items. Revenue has declined significantly from a $1 billion peak as the company struggled with churn, unit economics, and HelloFresh competition.",
+    highlights: ["US meal kit pioneer (founded 2012)", "Wine subscription pairing ($65.99/6 bottles)", "Chef-designed seasonal recipes", "Restaurant-quality ingredients"],
+    category: "products",
+    alternatives: [
+      { name: "HelloFresh", slug: "hellofresh", reason: "More variety, more plan options, typically cheaper" },
+      { name: "EveryPlate", slug: "everyplate", reason: "Budget-friendly at ~$4.99/serving" },
+      { name: "Sunbasket", slug: "sunbasket", reason: "Organic and clean ingredients, specialty diets" },
+      { name: "Home Chef", slug: "home-chef", reason: "Easy recipes, customizable proteins, Kroger partnership" },
+    ],
+    faqs: [
+      { question: "Blue Apron vs HelloFresh: which is better?", answer: "HelloFresh wins on value, variety, and reliability — it's the world's largest meal kit for a reason. Blue Apron wins if you prioritize culinary quality and creative, restaurant-inspired recipes, and if the wine subscription appeals to you. Blue Apron recipes are generally considered slightly more sophisticated; HelloFresh recipes are more approachable for everyday cooking." },
+    ],
+  },
+
+  "everyplate": {
+    description: "EveryPlate is a budget meal kit delivery service owned by HelloFresh Group, launched in the US in 2018. EveryPlate is the most affordable major meal kit service, starting at approximately $4.99 per serving — roughly 50% less than HelloFresh or Blue Apron. The simplified business model focuses on fewer weekly recipe choices (5-7 options vs 30+ on HelloFresh), simpler packaging to reduce waste and cost, and straightforward home-cooking recipes without exotic specialty ingredients. Boxes include 2-4 servings, 3-5 recipes per week. EveryPlate has a flat weekly shipping fee of $10.99. Despite the budget positioning, EveryPlate recipes are complete, nutritionally balanced, and designed for everyday family cooking — not gourmet meals. The connection to HelloFresh's supply chain ensures consistent ingredient quality. EveryPlate is ideal for families or individuals looking to try meal kits without the premium price tag.",
+    highlights: ["Most affordable meal kit — from $4.99/serving", "Owned by HelloFresh Group", "Simplified menu (5-7 recipes/week)", "No specialty packaging — reduced waste"],
+    category: "products",
+    alternatives: [
+      { name: "HelloFresh", slug: "hellofresh", reason: "More variety, premium plans, better for dietary restrictions" },
+      { name: "Dinnerly", slug: "dinnerly", reason: "Similar budget positioning, slightly fewer options" },
+      { name: "Blue Apron", slug: "blue-apron", reason: "Premium recipes, wine add-on, more culinary ambition" },
+    ],
+    faqs: [
+      { question: "Is EveryPlate worth it?", answer: "EveryPlate is the best budget meal kit option. At $4.99/serving with a flat $10.99 shipping, it's meaningfully cheaper than HelloFresh ($8-10/serving) while using the same HelloFresh supply chain. The trade-off is fewer menu options and simpler recipes — but for families who want easy weeknight meals without grocery store trips, EveryPlate delivers strong value." },
+    ],
+  },
+
+  "chase": {
+    description: "JPMorgan Chase & Co. is the largest bank in the United States by assets ($3.9 trillion in assets as of 2024) and one of the world's largest financial institutions. Chase operates over 4,700 branches and 15,000 ATMs across the US, making it the most accessible major bank by physical footprint. Chase offers a comprehensive range of consumer and business banking products: Chase Total Checking ($12/month, waivable), Chase Sapphire (checking and the flagship Sapphire Reserve and Preferred credit cards), savings accounts, mortgage products, auto loans, and investment accounts via J.P. Morgan. The Chase Ultimate Rewards program is considered one of the most valuable credit card rewards ecosystems. Chase's mobile app and online banking are consistently rated highly. Chase is well-suited to consumers who want a full-service bank with premium credit card products, but it's less competitive than online banks on savings account rates.",
+    highlights: ["Largest US bank — $3.9T in assets", "4,700+ branches, 15,000 ATMs", "Chase Ultimate Rewards — top rewards ecosystem", "Chase Sapphire Reserve — flagship travel card"],
+    category: "finance",
+    alternatives: [
+      { name: "Bank of America", slug: "bank-of-america", reason: "Comparable size, Preferred Rewards program, Merrill Lynch investment" },
+      { name: "Wells Fargo", slug: "wells-fargo", reason: "Large branch network, competitive mortgage products" },
+      { name: "Citibank", slug: "citibank", reason: "Global banking, strong credit card offers" },
+      { name: "Marcus by Goldman Sachs", slug: "marcus", reason: "Online-only, higher savings APY, no fees" },
+      { name: "Ally Bank", slug: "ally-bank", reason: "Best online-only bank, 4.5%+ APY savings, no fees" },
+    ],
+    faqs: [
+      { question: "Chase vs Bank of America: which is better?", answer: "Both are full-service megabanks with similar branch coverage. Chase wins on credit card rewards (Sapphire Reserve/Preferred are best-in-class travel cards) and overall app experience. Bank of America's Preferred Rewards program is better for customers with large balances who invest through Merrill Lynch. For day-to-day banking, both are comparable — the better choice depends on which credit cards you want and where your nearest branches are." },
+      { question: "Is Chase a good bank?", answer: "Chase is an excellent bank for customers who want premium credit cards (Sapphire Reserve is the gold standard for travel rewards), a large physical branch network, and a reliable full-service bank. The savings rates are uncompetitive (0.01-0.5% vs 4-5% at online banks), which is a significant drawback for savers. For checking + credit card rewards, Chase is excellent. For savings, pair it with a high-yield online savings account." },
+    ],
+  },
+
+  "bank-of-america": {
+    description: "Bank of America Corporation is the second-largest bank in the United States by total assets ($3.3 trillion) and serves approximately 69 million consumer and small business clients. Bank of America operates nearly 3,900 financial centers and 15,000+ ATMs, second only to Chase in US retail banking coverage. Its flagship consumer products include Bank of America Advantage Banking (checking), Merrill Edge (online investment brokerage), Merrill Lynch (wealth management), and a suite of credit cards including the Cash Rewards and Travel Rewards cards. Bank of America's Preferred Rewards program is a standout feature: customers with $20,000-$1 million+ in combined balances earn significant rewards boosts (up to 75% more on credit cards, fee waivers, and mortgage rate discounts). The bank has invested heavily in digital banking — its mobile app serves 57 million digital users. BofA is headquartered in Charlotte, North Carolina.",
+    highlights: ["2nd largest US bank — $3.3T assets", "69M consumer clients", "Preferred Rewards — best bank loyalty program", "Merrill Edge + Merrill Lynch investment integration"],
+    category: "finance",
+    alternatives: [
+      { name: "Chase", slug: "chase", reason: "Better credit card rewards (Sapphire), largest US bank" },
+      { name: "Wells Fargo", slug: "wells-fargo", reason: "Strong mortgage products, widespread ATM network" },
+      { name: "Fidelity", slug: "fidelity", reason: "Better investment products, no ATM fees globally" },
+      { name: "Ally Bank", slug: "ally-bank", reason: "Online-only, 4.5%+ APY savings, no fees" },
+    ],
+    faqs: [
+      { question: "What is Preferred Rewards at Bank of America?", answer: "Preferred Rewards is Bank of America's loyalty program that rewards customers with higher combined balances across checking, savings, and Merrill investment accounts. At Gold ($20K), Platinum ($50K), and Platinum Honors ($100K) tiers, you get credit card rewards boosts of 25-75%, reduced/eliminated fees, and mortgage rate discounts. It's one of the best bank loyalty programs for customers who keep significant assets at one institution." },
+      { question: "Bank of America vs Chase: which is better?", answer: "Chase has better credit card rewards overall (Sapphire Reserve is superior to BofA's travel cards for most users). BofA's Preferred Rewards program wins for customers with $50K+ in combined balances — it provides outsized rewards that can exceed Chase's offerings. For most consumers without large balances, Chase's Sapphire cards edge out BofA. For investors who also want to bank, BofA's Merrill integration is a significant advantage." },
+    ],
+  },
+
+  "wells-fargo": {
+    description: "Wells Fargo & Company is the fourth-largest bank in the United States by total assets ($1.9 trillion), serving approximately 70 million customers with 4,900+ branches and 12,000 ATMs across 36 states. Founded in 1852 in San Francisco (originally as an express and banking company serving Gold Rush territory), Wells Fargo is headquartered in San Francisco with major operations in Des Moines, Charlotte, and New York. Wells Fargo offers retail checking/savings, credit cards, mortgages, auto loans, and wealth management. It is the #1 mortgage originator in the US. Key consumer products include Wells Fargo Active Cash (2% flat cash back — one of the best no-annual-fee cards), Wells Fargo Autograph (travel rewards), and Wells Fargo Reflect (0% APR balance transfer). Wells Fargo's reputation was significantly damaged by its 2016 fake accounts scandal, in which employees opened millions of unauthorized accounts. The bank operates under a Federal Reserve asset cap imposed in 2018 (limiting assets to ~$1.95 trillion) until remediation is complete.",
+    highlights: ["#1 mortgage originator in the US", "4,900+ branches, 12,000 ATMs", "Wells Fargo Active Cash — 2% flat cash back", "Founded 1852 — historic Wells Fargo brand"],
+    category: "finance",
+    alternatives: [
+      { name: "Chase", slug: "chase", reason: "Better credit card rewards, larger branch network, no asset cap" },
+      { name: "Bank of America", slug: "bank-of-america", reason: "Better rewards program (Preferred Rewards), Merrill Lynch" },
+      { name: "US Bank", slug: "us-bank", reason: "Strong Midwest presence, good customer service ratings" },
+      { name: "Ally Bank", slug: "ally-bank", reason: "Online-only, 4.5%+ APY savings, no monthly fees" },
+    ],
+    faqs: [
+      { question: "Is Wells Fargo trustworthy after the scandal?", answer: "Wells Fargo has made significant remediation efforts since the 2016 fake accounts scandal — paying $3B+ in settlements, rebuilding leadership, and overhauling sales practices. The bank remains under Federal Reserve oversight. For day-to-day banking, Wells Fargo is safe (FDIC-insured) and has improved. The scandal is a historical concern, not an ongoing operational risk for regular account holders." },
+      { question: "Wells Fargo vs Chase: which is better?", answer: "Chase is generally the better choice — stronger credit card portfolio (Sapphire Reserve/Preferred), more branches nationwide, and no ongoing regulatory constraints. Wells Fargo competes with its mortgage products (best rates for existing customers via the Cross-Sell pricing), Active Cash 2% card, and strong Midwest/West presence. For mortgage banking specifically, Wells Fargo's rates and relationship discounts can be compelling." },
+    ],
+  },
 };

@@ -13,31 +13,9 @@ const prisma = new PrismaClient();
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 const NEW_PAIRS: [string, string][] = [
-  // E-commerce (very high volume)
-  ["Amazon", "eBay"],
-  ["Etsy", "eBay"],
-  ["Amazon", "Target"],
-  // Social Media
-  ["Pinterest", "Instagram"],
-  ["Snapchat", "Instagram"],
-  ["Twitter", "Reddit"],
-  // Travel
-  ["Airbnb", "Hotels.com"],
-  ["Expedia", "Booking.com"],
-  ["Kayak", "Google Flights"],
-  // Automotive
-  ["Tesla", "BMW"],
-  ["Tesla", "Ford"],
-  ["Toyota", "Honda"],
-  ["Toyota", "Ford"],
-  // Consumer Tech
-  ["iPhone 15", "Samsung Galaxy S24"],
-  ["iPad", "Surface"],
-  ["AirPods Pro", "Samsung Galaxy Buds"],
-  // Streaming/Music
-  ["Spotify", "YouTube Music"],
-  ["Paramount Plus", "Disney Plus"],
-  ["Apple TV Plus", "Amazon Prime Video"],
+  ["Google Pixel", "iPhone"],
+  ["OnePlus", "Samsung"],
+  ["Chase", "Bank of America"],
 ];
 
 function makeSlug(a: string, b: string): string {
@@ -86,12 +64,18 @@ async function generateOne(entityA: string, entityB: string): Promise<boolean> {
   const categoryHint = (() => {
     const both = (entityA + entityB).toLowerCase();
     if (/facebook|instagram|twitter|tiktok|linkedin|reddit|youtube|netflix|pinterest|snapchat/.test(both)) return "entertainment";
-    if (/iphone|samsung|macbook|windows|surface|chromebook|ipad|airpods/.test(both)) return "technology";
+    if (/iphone|samsung|macbook|windows|surface|chromebook|ipad|airpods|android|pixel|oneplus/.test(both)) return "technology";
     if (/steam|epic|nintendo|switch|playstation|xbox/.test(both)) return "entertainment";
-    if (/amazon|walmart|ebay|etsy|target|shopify/.test(both)) return "products";
+    if (/amazon|walmart|ebay|etsy|target|shopify|wayfair|ikea/.test(both)) return "products";
     if (/airbnb|hotel|expedia|booking|kayak|vrbo|google.flights/.test(both)) return "products";
-    if (/tesla|bmw|toyota|honda|ford|chevrolet|audi/.test(both)) return "automotive";
-    if (/spotify|apple.music|tidal|youtube.music|paramount|disney|prime.video/.test(both)) return "entertainment";
+    if (/tesla|bmw|toyota|honda|ford|chevy|silverado|camry|accord|rivian|audi/.test(both)) return "automotive";
+    if (/spotify|apple.music|tidal|youtube.music|paramount|disney|prime.video|hulu|hbo|peacock/.test(both)) return "entertainment";
+    if (/harvard|mit|yale|stanford|princeton/.test(both)) return "education";
+    if (/casper|purple|mattress|sleep/.test(both)) return "products";
+    if (/whoop|garmin|fitbit|peloton|ifit|fitness/.test(both)) return "health";
+    if (/chase|bank|wells.fargo|citi|fidelity/.test(both)) return "finance";
+    if (/hellofresh|blue.apron|everyplate|meal.kit/.test(both)) return "products";
+    if (/doordash|grubhub|ubereats|instacart/.test(both)) return "products";
     if (/cloudflare|fastly|cloudfront/.test(both)) return "software";
     return "software";
   })();
@@ -257,7 +241,7 @@ async function main() {
       console.log(`  ✗ Error: ${err.message?.slice(0, 100)}`);
       fail++;
     }
-    if (i < NEW_PAIRS.length - 1) await new Promise(r => setTimeout(r, 700));
+    if (i < NEW_PAIRS.length - 1) await new Promise(r => setTimeout(r, 5000));
   }
 
   const total = await prisma.comparison.count();
