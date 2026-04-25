@@ -1061,6 +1061,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-04-24T07:36:09.802Z"
+    },
+    {
+      "slug": "nvidia-vs-amd",
+      "title": "Nvidia vs Amd",
+      "entityA": "Nvidia",
+      "entityB": "Amd",
+      "category": "General",
+      "videoFile": "Nvidia vs Amd.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Nvidia vs Amd — Full Comparison 2026",
+      "youtubeDescription": "NVIDIA leads in ray tracing and AI with DLSS 4, while AMD offers better value with strong rasterization performance and higher VRAM at similar price points.\n\n#nvidia #amd #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-25T06:31:48.489Z"
+    },
+    {
+      "slug": "chrome-vs-firefox",
+      "title": "Chrome vs Firefox",
+      "entityA": "Chrome",
+      "entityB": "Firefox",
+      "category": "General",
+      "videoFile": "Chrome vs Firefox.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chrome vs Firefox — Full Comparison 2026",
+      "youtubeDescription": "Firefox leads in privacy and RAM efficiency with 18% better memory usage, while Chrome maintains performance advantages but faces privacy concerns after 2025 Privacy Sandbox changes.\n\n#chrome #firefox #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-25T06:42:08.196Z"
+    },
+    {
+      "slug": "dyson-vs-shark-vacuum",
+      "title": "Dyson vs Shark Vacuum",
+      "entityA": "Dyson",
+      "entityB": "Shark Vacuum",
+      "category": "General",
+      "videoFile": "Dyson vs Shark Vacuum.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Dyson vs Shark Vacuum — Full Comparison 2026",
+      "youtubeDescription": "Shark offers better value with lower prices and more features, while Dyson excels in advanced technology and suction power. Both deliver solid cordless performance.\n\n#dyson #sharkvacuum #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-04-25T06:52:26.225Z"
     }
   ]
 }
