@@ -13,22 +13,31 @@ const prisma = new PrismaClient();
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
 const NEW_PAIRS: [string, string][] = [
-  ["Facebook", "Twitter"],
-  ["Facebook", "Instagram"],
-  ["Instagram", "TikTok"],
-  ["LinkedIn", "Twitter"],
-  ["LinkedIn", "Facebook"],
-  ["Facebook", "Reddit"],
-  ["YouTube", "TikTok"],
-  ["Netflix", "YouTube"],
-  ["iPhone", "Samsung Galaxy"],
-  ["MacBook", "Windows"],
-  ["MacBook", "Surface"],
-  ["MacBook", "Chromebook"],
-  ["Epic Games", "Steam"],
-  ["Nintendo Switch", "Steam Deck"],
-  ["Cloudflare", "Fastly"],
-  ["Cloudflare", "Cloudfront"],
+  // E-commerce (very high volume)
+  ["Amazon", "eBay"],
+  ["Etsy", "eBay"],
+  ["Amazon", "Target"],
+  // Social Media
+  ["Pinterest", "Instagram"],
+  ["Snapchat", "Instagram"],
+  ["Twitter", "Reddit"],
+  // Travel
+  ["Airbnb", "Hotels.com"],
+  ["Expedia", "Booking.com"],
+  ["Kayak", "Google Flights"],
+  // Automotive
+  ["Tesla", "BMW"],
+  ["Tesla", "Ford"],
+  ["Toyota", "Honda"],
+  ["Toyota", "Ford"],
+  // Consumer Tech
+  ["iPhone 15", "Samsung Galaxy S24"],
+  ["iPad", "Surface"],
+  ["AirPods Pro", "Samsung Galaxy Buds"],
+  // Streaming/Music
+  ["Spotify", "YouTube Music"],
+  ["Paramount Plus", "Disney Plus"],
+  ["Apple TV Plus", "Amazon Prime Video"],
 ];
 
 function makeSlug(a: string, b: string): string {
@@ -76,9 +85,13 @@ async function generateOne(entityA: string, entityB: string): Promise<boolean> {
 
   const categoryHint = (() => {
     const both = (entityA + entityB).toLowerCase();
-    if (/facebook|instagram|twitter|tiktok|linkedin|reddit|youtube|netflix/.test(both)) return "entertainment";
-    if (/iphone|samsung|macbook|windows|surface|chromebook/.test(both)) return "technology";
-    if (/steam|epic|nintendo|switch/.test(both)) return "entertainment";
+    if (/facebook|instagram|twitter|tiktok|linkedin|reddit|youtube|netflix|pinterest|snapchat/.test(both)) return "entertainment";
+    if (/iphone|samsung|macbook|windows|surface|chromebook|ipad|airpods/.test(both)) return "technology";
+    if (/steam|epic|nintendo|switch|playstation|xbox/.test(both)) return "entertainment";
+    if (/amazon|walmart|ebay|etsy|target|shopify/.test(both)) return "products";
+    if (/airbnb|hotel|expedia|booking|kayak|vrbo|google.flights/.test(both)) return "products";
+    if (/tesla|bmw|toyota|honda|ford|chevrolet|audi/.test(both)) return "automotive";
+    if (/spotify|apple.music|tidal|youtube.music|paramount|disney|prime.video/.test(both)) return "entertainment";
     if (/cloudflare|fastly|cloudfront/.test(both)) return "software";
     return "software";
   })();
