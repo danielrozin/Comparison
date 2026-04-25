@@ -8479,4 +8479,109 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is Lidl available in the US?", answer: "Yes, but limited geographic presence. As of 2024, Lidl operates approximately 180+ US stores primarily in: Virginia, North Carolina, South Carolina, New Jersey, Pennsylvania, Maryland, Delaware, New York (Long Island), and Georgia. Lidl planned aggressive US expansion when entering in 2017 but has grown slower than expected. If you don't live in an East Coast market, Aldi is more likely accessible (38 states). Lidl announced renewed US expansion plans for 2025-2027 focusing on the Northeast and Mid-Atlantic." },
     ],
   },
+
+  "booking-com": {
+    description: "Booking.com is the world's largest online travel agency by revenue, founded in 1996 and headquartered in Amsterdam. Owned by Booking Holdings (NASDAQ: BKNG, parent of Priceline, Kayak, Agoda, OpenTable, and Rentalcars), Booking.com lists 28+ million accommodation properties (hotels, apartments, vacation rentals, hostels, B&Bs) across 220+ countries and territories. Booking.com is particularly dominant in Europe, where it holds approximately 65% of the online hotel booking market. The platform offers free cancellation on most bookings, no booking fees for travelers, and the Genius loyalty program (10-20% discounts after 2-5 stays). Booking.com generated $21.4 billion in revenue in 2023 with operating income of $7.3 billion. The platform is known for granular search filters, transparent pricing, and a pay-at-property option that lets travelers reserve without immediate payment. Critics note that hotels typically pay 15-25% commission to Booking.com.",
+    highlights: ["28M+ properties in 220+ countries", "World's largest OTA by revenue ($21.4B in 2023)", "65% of European online hotel market", "Free cancellation + Genius loyalty discounts"],
+    category: "products",
+    alternatives: [
+      { name: "Expedia", slug: "expedia", reason: "Better US presence, Expedia Rewards program, package deals" },
+      { name: "Hotels.com", slug: "hotels-com", reason: "Same parent (Expedia Group), strong loyalty program (free night every 10)" },
+      { name: "Airbnb", slug: "airbnb", reason: "Better for whole homes and unique stays vs traditional hotels" },
+    ],
+    faqs: [
+      { question: "Is Booking.com or Expedia better?", answer: "Booking.com is better for: international hotels (especially Europe), broader inventory, free cancellation defaults, and pay-at-property options. Expedia is better for: US travelers, package deals (flight + hotel + car bundles), and Expedia Rewards loyalty (more flexible than Genius). Both source from the same hotel partners but show different prices based on commission deals. Always compare both on important bookings — pricing differences of 5-15% are common, and you can save by booking on whichever is cheaper for that specific stay." },
+      { question: "Does Booking.com charge fees?", answer: "Booking.com does not charge a separate booking fee to travelers — the price you see is the price you pay (with taxes shown clearly before final confirmation). Hotels typically pay Booking.com 15-25% commission, which is built into the room price. Some specific properties may charge resort fees, city taxes, or cleaning fees that are clearly disclosed before booking. Book direct with the hotel sometimes saves a small amount or unlocks loyalty benefits, but Booking.com's price match guarantee usually applies if you find a lower price elsewhere." },
+    ],
+  },
+
+  "expedia": {
+    description: "Expedia is one of the world's largest online travel companies, founded in 1996 (originally as a Microsoft division) and headquartered in Seattle, Washington. Expedia Group (NASDAQ: EXPE) operates Expedia.com, Hotels.com, Vrbo, Travelocity, Orbitz, Trivago (majority stake), CarRentals.com, and Hotwire. Expedia Group generated $13.7 billion in 2023 revenue and is publicly traded with a $20+ billion market cap. Expedia.com, the flagship brand, focuses on the US market — it is the largest US OTA by direct bookings. Expedia offers package deals (flights + hotels + car rentals at discounted bundle prices) and the Expedia Rewards/One Key loyalty program (3% back on all Expedia Group bookings, redeemable across Expedia, Hotels.com, and Vrbo). Expedia is particularly strong for US domestic travel, package deals, and travelers who want to consolidate hotel + flight bookings.",
+    highlights: ["$13.7B revenue (2023) — major Expedia Group flagship", "Owns Hotels.com, Vrbo, Trivago, Travelocity, Orbitz", "Largest US OTA by direct bookings", "One Key rewards across Expedia, Hotels.com, Vrbo"],
+    category: "products",
+    alternatives: [
+      { name: "Booking.com", slug: "booking-com", reason: "Larger global inventory, dominant in Europe, free cancellation" },
+      { name: "Hotels.com", slug: "hotels-com", reason: "Same parent, simpler hotel-only focus, generous loyalty (free night per 10 stays)" },
+      { name: "Kayak", slug: "kayak", reason: "Meta-search across many sites, often finds lowest prices" },
+    ],
+    faqs: [
+      { question: "Are Expedia package deals worth it?", answer: "Yes, often. Expedia's flight + hotel package deals frequently save 15-25% vs booking each component separately because hotels offer 'opaque' rates only visible in bundles. Best for: typical leisure trips with standard hotel chains and major airlines. Worse for: trips with niche airlines or unique accommodations (Airbnb-style), where unbundled booking is more flexible. Always compare the bundled price to the unbundled equivalent — sometimes the savings are small (under 5%), but for major chain hotels and standard flights, savings are often substantial." },
+      { question: "Expedia vs Booking.com: which has better prices?", answer: "Neither is consistently cheaper — both source rooms from the same hotel partners but receive different commission deals on specific dates and properties. Studies show that for any given booking, prices differ by 5-15% between major OTAs. Always compare both (and Hotels.com, which is owned by Expedia). Expedia tends to win on US package deals; Booking.com tends to win on European hotels and last-minute bookings. Both honor price match guarantees if you find lower elsewhere." },
+    ],
+  },
+
+  "hotels-com": {
+    description: "Hotels.com is a major online travel agency specializing in hotel bookings, founded in 1991 and acquired by Expedia in 2001. Now part of Expedia Group, Hotels.com operates as a hotel-focused brand alongside Expedia.com (broader travel) and Vrbo (vacation rentals). Hotels.com has historically been famous for its Rewards program: stay 10 nights, get 1 free (the free night is the average price of your previous 10 stays, capped at certain levels). In 2023, Expedia Group migrated Hotels.com Rewards into the unified One Key program, which spans Expedia, Hotels.com, and Vrbo — earning 3% back as OneKeyCash on bookings, with bonus rates for Silver/Gold/Platinum tiers. Hotels.com lists 1+ million properties globally and is particularly popular among loyal travelers who want hotel-focused booking with the Rewards loyalty advantage.",
+    highlights: ["Founded 1991 — among oldest online travel platforms", "Owned by Expedia Group", "Famous Rewards program (1 free night per 10 stays) — now One Key", "1M+ properties globally"],
+    category: "products",
+    alternatives: [
+      { name: "Booking.com", slug: "booking-com", reason: "Larger global inventory, dominant in Europe" },
+      { name: "Expedia", slug: "expedia", reason: "Same parent, broader travel (flights, packages), shared rewards" },
+      { name: "Marriott Bonvoy / Hilton Honors", slug: "hotel-loyalty", reason: "Direct hotel loyalty programs often more rewarding for chain loyalty" },
+    ],
+    faqs: [
+      { question: "Is Hotels.com Rewards still good?", answer: "The legacy 'stay 10 nights, get 1 free' Rewards program migrated to Expedia's One Key in 2023. Under One Key: you earn 3% OneKeyCash on Hotels.com stays (more on premium properties), redeemable across Expedia, Hotels.com, and Vrbo. Whether One Key is 'better' depends — frequent Hotels.com-only travelers may prefer the old simpler rewards math, but One Key's flexibility (redeem on flights, vacation rentals) is a real upgrade. For occasional travelers, the differences are minor." },
+      { question: "Hotels.com vs Booking.com: which is better?", answer: "Hotels.com is better for: travelers loyal to the One Key/Hotels.com Rewards program, those who want the simpler 'hotel-only' interface, and US-focused travelers. Booking.com is better for: international travel (especially Europe), broader inventory (28M+ properties vs 1M+), and travelers who value Genius discounts. Pricing is comparable on overlapping properties — always compare both before booking. For US chain hotels, Hotels.com Rewards may give better long-term value if you stay frequently." },
+    ],
+  },
+
+  "kayak": {
+    description: "Kayak is a meta-search engine for travel, founded in 2004 and acquired by Booking Holdings (parent of Booking.com, Priceline) in 2013 for $1.8 billion. Unlike Expedia or Booking.com (which are OTAs that book travel directly), Kayak aggregates results from hundreds of OTAs, airlines, and hotels in a single search — then redirects users to the booking partner of their choice. Kayak's strength is finding the lowest price across multiple sources without users needing to check each one individually. Features include: Price Forecast (predicts whether prices will rise or fall), Price Alerts, Hacker Fares (combine flights from different airlines for a one-way each direction), Explore (find destinations within budget from your departure city), and Trip Planning. Kayak doesn't book travel itself — final booking happens on the partner site (Expedia, Booking.com, Priceline, airline direct, etc.).",
+    highlights: ["Meta-search across 100s of travel sites", "Owned by Booking Holdings (since 2013)", "Hacker Fares — mix-and-match airline tickets for savings", "Price Forecast and Price Alerts — buy at the right time"],
+    category: "products",
+    alternatives: [
+      { name: "Google Flights", slug: "google-flights", reason: "Faster, simpler interface, direct airline booking, no ads" },
+      { name: "Skyscanner", slug: "skyscanner", reason: "Better for international flights, Whole Month flexible search" },
+      { name: "Expedia", slug: "expedia", reason: "Direct booking platform with package deals (vs meta-search redirect)" },
+    ],
+    faqs: [
+      { question: "Is Kayak or Google Flights better?", answer: "Google Flights is faster, has a cleaner interface, no ads, and excellent flexible date/destination tools. Kayak has more comprehensive coverage of OTAs (Expedia, Priceline, Booking.com), Hacker Fares (mix one-way flights from different airlines), Price Forecast predictions, and hotel/car/package search alongside flights. For pure flight search: Google Flights is more efficient. For cross-OTA price comparison and trip planning: Kayak is more thorough. Many travelers use both — Google Flights to identify the best option, then Kayak to verify or find OTA discounts." },
+      { question: "Does Kayak charge fees?", answer: "Kayak itself charges no fees — it's free to use. When you book through Kayak, you're redirected to a partner (airline, OTA, hotel) and pay them directly. Some partner sites have booking fees, but Kayak displays the all-in price clearly so you can compare apples-to-apples. Kayak earns revenue through advertising and small commissions from booking partners. The user-facing service remains free with no booking fees added by Kayak." },
+    ],
+  },
+
+  "capital-one": {
+    description: "Capital One Financial Corporation is a major US bank and credit card issuer, founded in 1994 and headquartered in McLean, Virginia. Capital One is the third-largest credit card issuer in the US (behind Chase and American Express) and one of the largest online banks. Capital One has approximately $480 billion in assets and 100+ million customers across credit cards, banking, and auto loans. The company is publicly traded (NYSE: COF) with a $50+ billion market cap. Capital One's flagship credit cards include the Venture Rewards (2x miles on everything, $95 annual fee), Venture X (premium travel card), Quicksilver (1.5% cash back, no annual fee), and Savor (4% on dining, entertainment, streaming). Capital One 360 banking offers no-fee checking, high-yield savings, and a network of 70,000+ free ATMs. In 2024, Capital One announced an acquisition of Discover Financial for $35.3 billion (pending regulatory approval through 2025).",
+    highlights: ["3rd-largest US credit card issuer", "$480B in assets, 100M+ customers", "Venture X — premium travel card (Chase Sapphire Reserve competitor)", "Capital One 360 — leading no-fee online bank"],
+    category: "products",
+    alternatives: [
+      { name: "Chase", slug: "chase", reason: "Largest US bank, premium Sapphire Reserve travel card, larger branch network" },
+      { name: "American Express", slug: "american-express", reason: "Premium rewards, Membership Rewards transfers, more travel partner network" },
+      { name: "Discover", slug: "discover", reason: "Cashback focus, no foreign transaction fees, Capital One acquisition pending" },
+    ],
+    faqs: [
+      { question: "Is Capital One a good bank?", answer: "Capital One is consistently rated among the best online banks: no monthly fees on checking and savings, competitive savings yields (typically among the top 10 nationwide), 70,000+ free ATMs in the Allpoint network, and strong mobile app. Capital One 360 Checking has no minimum balance. Capital One's Cafe branches in major cities offer in-person service. Cons: branch network is smaller than Chase/Bank of America (only 250 branches), so cash deposits and certain services require online or partner ATMs." },
+      { question: "Capital One Venture X vs Chase Sapphire Reserve: which is better?", answer: "Both are top premium travel cards. Venture X ($395 annual fee) wins on: lower annual fee than Sapphire Reserve ($550), simpler 2x miles on everything, $300 annual travel credit, lounges (Capital One Lounges + Priority Pass), and authorized users free. Sapphire Reserve wins on: more transfer partners (15+ airlines), better travel insurance, more flexible point redemption (1.5x via Pay Yourself Back), and stronger luxury hotel benefits. For value: Venture X edges Sapphire Reserve. For premium travel features: Sapphire Reserve still wins for power users." },
+    ],
+  },
+
+  "ally-bank": {
+    description: "Ally Bank is one of the largest online-only banks in the United States, originally founded as GMAC (General Motors Acceptance Corporation) in 1919 and rebranded as Ally Financial in 2010. Headquartered in Detroit, Michigan, Ally is publicly traded (NYSE: ALLY) with $190+ billion in assets and 11+ million customers. Ally pioneered no-fee online banking with high-yield savings — for years offering significantly higher interest rates than traditional brick-and-mortar banks. Ally Bank's products include: high-yield savings (around 4-5% APY in 2024-2026), no-minimum checking, CDs (with no early withdrawal penalty option), money market accounts, and mortgages. Ally also offers investing (Ally Invest, formerly TradeKing) with $0 commission stock trades, options trading, and managed portfolios. Ally has no physical branches — all banking is online or via mobile app.",
+    highlights: ["$190B+ in assets — top 5 US online bank", "No monthly fees, no minimum balance", "High-yield savings — historically among highest APYs", "Pioneer of online-only banking with strong customer service"],
+    category: "products",
+    alternatives: [
+      { name: "Marcus by Goldman Sachs", slug: "marcus", reason: "Comparable savings rates, simpler product line, Goldman backing" },
+      { name: "Capital One 360", slug: "capital-one", reason: "Online banking + credit cards, has limited Cafe branches" },
+      { name: "Discover Bank", slug: "discover-bank", reason: "Strong cashback debit card, similar online-only model" },
+    ],
+    faqs: [
+      { question: "Is Ally Bank safe?", answer: "Yes. Ally Bank is FDIC-insured up to $250,000 per depositor, per account category — the same protection as any major US bank. Ally Financial is publicly traded with strong capital ratios and consistent profitability. The bank has been operating since 1919 (originally as GMAC) and has $190+ billion in assets. Ally consistently ranks high in customer satisfaction surveys and J.D. Power online banking rankings. Online-only banks are not less safe than traditional banks — the FDIC protection is identical." },
+      { question: "Ally Bank vs Marcus by Goldman Sachs: which is better?", answer: "Both are excellent online-only high-yield banks. Ally wins on: broader product line (checking, mortgages, auto loans, investing), more sophisticated checking features, 24/7 customer service, and strong mobile app. Marcus wins on: slightly higher savings APY at times, simpler product line (mostly savings + CDs), Goldman Sachs brand backing, and no checking account complexity if you just want savings. For an all-in-one online bank: Ally. For pure high-yield savings or CDs: Marcus is competitive — compare current APYs at the time of opening." },
+    ],
+  },
+
+  "roomba": {
+    description: "Roomba is iRobot's flagship line of robotic vacuum cleaners, launched in 2002 and the dominant brand in the consumer robotic vacuum market with 80+ million units sold globally. iRobot pioneered the consumer robotic vacuum category and remains the technology leader, particularly in mapping and obstacle avoidance. The 2024-2025 lineup includes: Roomba i5/i5+ (entry $349-549), Roomba j7+ (mid-tier $599-799 with poop avoidance), Roomba s9+ (premium $999), Roomba Combo j9+ (vacuum + mop, $1,199), and Roomba Combo j5+ (vacuum + mop entry, $799). Premium Roomba features include: vSLAM mapping (precise room layouts), Imprint Smart Mapping (room-specific cleaning), Clean Base auto-empty (60-day dust capacity), Genius 4.0 OS (smart home automation), and PrecisionVision navigation (avoids cords, pet waste, shoes). iRobot was founded in 1990 and went public in 2005 (NASDAQ: IRBT). After Amazon's $1.7B acquisition was abandoned in 2024 due to EU regulators, iRobot remains independent.",
+    highlights: ["80M+ units sold — pioneer of robotic vacuums", "PrecisionVision — avoids cords, pet waste, obstacles", "Clean Base auto-empty — 60-day dust capacity", "Imprint Smart Mapping — room-specific cleaning routines"],
+    category: "products",
+    alternatives: [
+      { name: "Eufy RoboVac", slug: "eufy-robovac", reason: "Cheaper alternatives ($150-700), strong value at lower price tiers" },
+      { name: "Shark IQ", slug: "shark-iq", reason: "Comparable performance, often cheaper, strong US brand recognition" },
+      { name: "Roborock", slug: "roborock", reason: "Premium Chinese alternative, strong vacuum + mop, often top-rated" },
+    ],
+    faqs: [
+      { question: "Is a Roomba worth it?", answer: "Worth it for: hardwood floor and short-pile carpet households, busy people who want hands-free cleaning, pet owners (j7+ models avoid pet waste), and homes with consistent layouts the robot can learn. Less worth it for: deep-pile carpets (less effective than uprights), homes with many obstacles requiring frequent rescues, and budget-conscious shoppers (mid-tier Eufy and Shark deliver 80% of Roomba performance at 50-70% of the price). Roomba excels at maintenance cleaning between deeper traditional vacuum sessions." },
+      { question: "Roomba vs Roborock: which is better?", answer: "Roborock is often rated higher than Roomba in 2024-2026: better suction (4,000-7,000 Pa vs Roomba's typically lower published numbers), better mopping (vibrating mops with auto-rinse), and lower prices for comparable features. Roomba wins on: brand recognition, US/Canada customer service, smarter PrecisionVision obstacle detection, and Clean Base reliability. For value and pure performance: Roborock often edges Roomba. For brand trust and ecosystem: Roomba remains dominant in North America." },
+    ],
+  },
 };
