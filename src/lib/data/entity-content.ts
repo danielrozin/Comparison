@@ -8689,4 +8689,124 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
       { question: "Is The North Face good quality?", answer: "Yes for entry-to-mid-tier products. The Denali fleece, Nuptse jacket, and Apex line are well-regarded. The Summit Series (premium mountaineering, $400-1,000+) competes with Arc'teryx and Patagonia at the highest level. Mid-tier products may not last as long as Patagonia equivalents. The brand has lifetime warranty against manufacturing defects (not normal wear). For casual outdoor + urban use, The North Face offers excellent quality at accessible prices." },
     ],
   },
+
+  "tesla-model-y": {
+    description: "Tesla Model Y is Tesla's mid-size electric crossover, launched March 2020 and rapidly becoming the world's best-selling vehicle (any powertrain) in 2023 with 1.2 million units sold globally. Built on the Model 3 platform, the Model Y offers more interior space, higher seating position, and optional 7-passenger third row. The Long Range AWD ($46,990) offers 320-mile EPA range and 4.8s 0-60. The Performance trim ($53,990) offers 285-mile range and 3.5s 0-60. The Standard Range RWD (re-introduced 2024 at $44,990) offers 260-mile range. All trims include Tesla's Autopilot (lane keep + adaptive cruise) standard, with Enhanced Autopilot ($6,000) and Full Self-Driving ($8,000) optional. Tesla updated the Model Y with the 'Juniper' refresh in early 2025 — exterior restyling, light bar, improved suspension, faster charging, and refined interior. Model Y access to Tesla's Supercharger network (over 6,500 stations globally) is a major advantage over EV competitors.",
+    highlights: ["World's best-selling car (any powertrain) in 2023 — 1.2M units", "320-mile range Long Range AWD", "Tesla Supercharger network — 6,500+ stations", "$44,990-$53,990 trim range; Juniper refresh (2025)"],
+    category: "automotive",
+    alternatives: [
+      { name: "BMW iX", slug: "bmw-ix", reason: "More luxurious interior, 305-mile range, $87K+ — premium EV SUV" },
+      { name: "Hyundai Ioniq 5", slug: "hyundai-ioniq-5", reason: "Faster charging (350 kW), retro design, often $5-10K cheaper" },
+      { name: "Ford Mustang Mach-E", slug: "ford-mustang-mach-e", reason: "Closer to Model Y price, traditional dealer experience" },
+    ],
+    faqs: [
+      { question: "Is the Tesla Model Y worth it?", answer: "Yes for most EV buyers. The Model Y combines: industry-leading Supercharger network access (no other EV has this advantage), strong range/performance, over-the-air software updates (your car gets better over time), and Tesla's vertically integrated software/charging/service. Trade-offs: build quality complaints (panel gaps, paint inconsistency vs traditional luxury brands), no traditional dashboard (everything on the center screen), and FSD value is debated. For most buyers prioritizing usability and range: Model Y is a top choice." },
+      { question: "Tesla Model Y vs Tesla Model 3: which should I get?", answer: "Model Y if you: need cargo space (76 cu ft vs Model 3's 23 cu ft), prefer SUV-style seating, occasionally need the 3rd row, or have kids/dogs. Model 3 if you: prioritize handling and lower price ($38,990 vs $44,990 starting), don't need cargo space, prefer sedan styling, or want maximum efficiency. Both share the same drivetrain options. Model 3 is sportier; Model Y is more practical. Most families choose Model Y; performance-focused buyers choose Model 3." },
+    ],
+  },
+
+  "tesla-model-3": {
+    description: "Tesla Model 3 is Tesla's compact electric sedan, launched in 2017 and Tesla's first mass-market vehicle. The Model 3 has sold over 2 million units globally, making it one of the best-selling electric vehicles ever. The 'Highland' refresh launched October 2023 brought significant updates: smoother exterior styling (no chrome), redesigned interior with ambient lighting, rear touchscreen for back passengers, removal of stalks (turn signals on steering wheel, gear selection on touchscreen), better acoustic glass, and improved range. The 2025 Model 3 lineup: Long Range RWD ($42,490, 363-mile range), Long Range AWD ($47,490, 341-mile range, 4.2s 0-60), Performance ($54,990, 296-mile range, 2.9s 0-60). Standard trims include Autopilot; FSD is $8,000. Model 3 retains Tesla's Supercharger network access and over-the-air updates. The Model 3 is the entry point to the Tesla ecosystem and consistently ranks as one of the best electric sedans by Consumer Reports, Edmunds, and Car and Driver.",
+    highlights: ["2M+ units sold — among best-selling EVs ever", "363-mile range Long Range RWD", "Highland refresh (2023) — restyled inside and out", "$42,490-$54,990 trim range; 2.9s Performance"],
+    category: "automotive",
+    alternatives: [
+      { name: "BMW i4", slug: "bmw-i4", reason: "More luxurious, traditional BMW driving feel, $52,000+" },
+      { name: "Polestar 2", slug: "polestar-2", reason: "Volvo styling, Google built-in, distinctive Scandinavian design" },
+      { name: "Hyundai Ioniq 6", slug: "hyundai-ioniq-6", reason: "More efficient (361-mile range), futuristic design, Hyundai dealer network" },
+    ],
+    faqs: [
+      { question: "Is the Tesla Model 3 still worth buying in 2026?", answer: "Yes. After the 2023 Highland refresh, the Model 3 is more competitive than ever. Strengths: best-in-class Supercharger network access, strong range (363 miles RWD), excellent 0-60 (2.9s Performance), over-the-air updates, and proven 7+ year ownership track record. Weaknesses: build quality variability, no traditional gauges (everything on the screen takes adjustment), removed stalks (controversial), and FSD remains expensive ($8K) without unanimous reviews. Best entry to the EV world for driving enthusiasts and tech-forward buyers." },
+      { question: "Should I buy the Highland Model 3 or used pre-Highland?", answer: "Highland (2024+): better suspension (more comfortable ride), quieter cabin (acoustic glass), more efficient (longer range), redesigned interior, improved touchscreen. Pre-Highland (2017-2023): more affordable used ($25-35K for nice ones), traditional turn signal stalks, slightly easier service network. For new car buyers: Highland is meaningfully improved and worth the premium. For used buyers: pre-Highland Model 3s are excellent value, especially the LR AWD or Performance from 2021-2023." },
+    ],
+  },
+
+  "honda-civic": {
+    description: "The Honda Civic is one of the best-selling and longest-running compact cars in the world, with over 27 million units sold globally since its 1972 debut. The 11th generation Civic (2022+) is Honda's most refined to date, featuring a clean exterior design, premium interior materials (no more rolling cabin like 10th gen), and excellent driving dynamics. 2026 Civic trims: LX ($24,250, 158 hp 2.0L), Sport ($26,250), EX ($28,250 with 1.5L turbo), Touring ($31,250), and Civic Si ($30,250 — 200 hp manual sport sedan). The Civic Type R ($45,000) is the high-performance variant — 315 hp turbo, 6-speed manual, FWD performance benchmark. The Civic Hybrid (revived for 2025 in Sport Hybrid and Touring Hybrid trims, $29,000-$33,000) offers 49 mpg combined. Civic has won numerous awards including 'North American Car of the Year' (2022) and consistent Consumer Reports recommendations.",
+    highlights: ["27M+ units sold globally since 1972", "11th gen (2022+) — best Civic ever made", "Civic Type R 315 hp — FWD performance benchmark", "49 mpg combined — Civic Hybrid"],
+    category: "automotive",
+    alternatives: [
+      { name: "Toyota Corolla", slug: "toyota-corolla", reason: "Direct rival, slightly less refined but more reliable reputation" },
+      { name: "Mazda 3", slug: "mazda-3", reason: "Premium feel, more upscale interior, available AWD" },
+      { name: "Hyundai Elantra", slug: "hyundai-elantra", reason: "Lower price, longer warranty (10 yr/100k powertrain)" },
+    ],
+    faqs: [
+      { question: "Honda Civic vs Toyota Corolla: which is better?", answer: "Civic wins on: driving dynamics (more engaging steering and handling), interior quality (especially 11th gen), available turbo engine and manual transmission, more powerful trims (Si, Type R). Corolla wins on: reliability reputation (slight edge in Consumer Reports), available AWD (Civic is FWD only), Hybrid powertrain availability across more trims, slightly lower base price. For driving enthusiasts: Civic. For maximum reliability and AWD: Corolla. Both are class-leading compact sedans." },
+      { question: "Is the Honda Civic Type R worth $45,000?", answer: "Yes for performance enthusiasts. The 11th gen Civic Type R is the front-wheel-drive performance benchmark globally — 315 hp 2.0L turbo, 6-speed manual only, near-magical chassis tuning, and seats good enough for lap day at the track. Compared to AWD competitors (WRX STI legacy, Golf R, GR Corolla), the Type R wins on chassis sophistication and steering feel. For daily-drivable performance car: among the best at any price. Manufacturer markups have eased — $45-50K is now realistic." },
+    ],
+  },
+
+  "toyota-rav4": {
+    description: "The Toyota RAV4 is the world's best-selling SUV (any size) by global sales since 2019, with over 11 million units sold since launching in 1994. The 5th generation RAV4 (2019-current, refreshed for 2026) is built on Toyota's TNGA-K platform and offers gas, hybrid, and plug-in hybrid (PHEV/Prime) powertrains. 2026 RAV4 trims: LE ($28,475 gas), XLE, Adventure, TRD Off-Road, Limited, and Hybrid trims (LE, XLE, Limited, Hybrid Woodland Edition $35K, XSE, Limited Hybrid). RAV4 Hybrid offers 41 mpg combined (best in non-luxury segment). The RAV4 Prime PHEV ($43,890) is exceptional: 42 miles all-electric range, 0-60 in 5.7s (faster than non-Prime by significant margin), 302 combined hp. Standard Toyota Safety Sense 3.0 (forward collision, lane keep, adaptive cruise, road sign assist). Reliability is class-leading — RAV4 Hybrid is consistently a Consumer Reports Recommended Buy.",
+    highlights: ["World's best-selling SUV — 11M+ units since 1994", "RAV4 Hybrid: 41 mpg combined (class-leading)", "RAV4 Prime PHEV: 42-mile EV range + 302 hp + 5.7s 0-60", "Toyota Safety Sense 3.0 standard"],
+    category: "automotive",
+    alternatives: [
+      { name: "Honda CR-V", slug: "honda-cr-v", reason: "Direct rival, more spacious interior, slightly more upscale feel" },
+      { name: "Mazda CX-5", slug: "mazda-cx-5", reason: "More premium driving feel, better interior, available AWD" },
+      { name: "Subaru Forester", slug: "subaru-forester", reason: "Standard AWD, excellent visibility, off-road capability" },
+    ],
+    faqs: [
+      { question: "Toyota RAV4 vs Honda CR-V: which is better?", answer: "Both excel; choice depends on priorities. RAV4 wins on: hybrid availability across more trims, RAV4 Prime PHEV (no CR-V equivalent), better off-road trims (Adventure, TRD Off-Road), longer-running reliability data. CR-V wins on: more spacious interior (especially rear seats and cargo), slightly more upscale interior materials, smoother ride, available 1.5T turbo on non-hybrid trims. For hybrid/PHEV: RAV4 wins. For comfort and space: CR-V. Both are class-leading compact SUVs with excellent reliability." },
+      { question: "Is the RAV4 Prime worth the higher price?", answer: "Yes for many buyers. RAV4 Prime ($43,890 base) costs about $5-7K more than RAV4 Hybrid Limited but offers: 42-mile pure-electric range (covers most daily commutes without gas), 302 combined hp (faster than even most luxury crossovers), $7,500 federal tax credit (income/sourcing dependent), and identical reliability/utility to standard RAV4. For households with home charging and 30-40 mile commutes: outstanding value. Wait lists have eased; new ones are now available without long delays." },
+    ],
+  },
+
+  "home-depot": {
+    description: "The Home Depot is the world's largest home improvement retailer, founded in 1978 and headquartered in Atlanta, Georgia. Home Depot operates 2,300+ stores across the US, Canada, and Mexico, with approximately $152 billion in annual revenue and 465,000+ employees. Home Depot is publicly traded (NYSE: HD) with a $400+ billion market cap. The company sells building materials, tools, lumber, hardware, plumbing, electrical, paint, garden, appliances, and decor. Home Depot's pro contractor business is approximately half of revenue — Pro Xtra loyalty serves contractors with bulk discounts, free delivery, and dedicated lanes. Consumer-facing innovations include the Home Depot mobile app (top-rated retail app), in-aisle product locators, Curbside Pickup, and Same-Day Delivery via partnerships. Home Depot's brand strategy emphasizes 'doers' — DIYers and pros — through orange-aproned associate culture and authoritative product knowledge.",
+    highlights: ["World's largest home improvement retailer", "2,300+ stores; $152B revenue", "Pro contractor business — ~50% of revenue", "Top-rated mobile app and digital experience"],
+    category: "products",
+    alternatives: [
+      { name: "Lowe's", slug: "lowes", reason: "Direct competitor, slightly more DIY/home-decor focus, similar inventory" },
+      { name: "Menards", slug: "menards", reason: "Midwest regional alternative, often lower prices, larger SKU count" },
+      { name: "Ace Hardware", slug: "ace-hardware", reason: "Smaller neighborhood stores, better service, pricier" },
+    ],
+    faqs: [
+      { question: "Home Depot vs Lowe's: which is better?", answer: "Home Depot edges Lowe's on: pro contractor business strength, larger overall scale, slightly better-stocked lumber and hardware sections, and better mobile app/digital ordering. Lowe's edges Home Depot on: appliances (better selection and showroom experience), home decor and furnishings, and slightly better-organized stores in some markets. For pros and serious DIYers: Home Depot. For appliances and home decor: Lowe's. For everyday home improvement, both are comparable — choose based on which is closer or has the specific product in stock." },
+      { question: "Does Home Depot price match?", answer: "Yes. Home Depot price matches identical in-stock items from major competitors (Lowe's, Menards, online retailers like Amazon for identical SKUs). Bring evidence (advertisement, screenshot, or printout) to the customer service desk. Home Depot also offers a 'Lower Price Guarantee' beating competitor prices by 10% on identical items in some categories. Their 'No-Questions-Asked' return policy (90 days for most items, 365 days for select Home Depot brands like Husky tools) is among the best in retail." },
+    ],
+  },
+
+  "sephora": {
+    description: "Sephora is a French multinational beauty retailer founded in 1969 and owned by LVMH (Louis Vuitton Moët Hennessy) since 1997. Sephora operates 3,000+ stores in 35+ countries plus 700+ shop-in-shops within Kohl's stores in the US (a partnership launched in 2020). Sephora's revenue is estimated at $10+ billion globally. Sephora differentiates from drugstores and department store cosmetic counters through: open-sell layout (test before buying without commission pressure), broad brand range (300+ brands from prestige to indie), Sephora Collection (private label), Beauty Insider loyalty program (200M+ members worldwide, 3 tiers: Insider, VIB, Rouge), and product education from non-commissioned beauty advisors. Sephora is particularly strong in skincare, makeup, fragrance, and haircare. The brand is the destination for luxury beauty in North America and Europe and has significantly outperformed traditional department store beauty counters.",
+    highlights: ["3,000+ stores in 35+ countries + 700+ Kohl's shop-in-shops", "$10B+ revenue; owned by LVMH", "300+ brands from prestige to indie", "Beauty Insider — 200M+ members worldwide"],
+    category: "products",
+    alternatives: [
+      { name: "Ulta", slug: "ulta", reason: "Wider price range (drugstore + prestige), full-service salon" },
+      { name: "Macy's", slug: "macys", reason: "Department store with traditional beauty counters" },
+      { name: "Amazon Premium Beauty", slug: "amazon", reason: "Convenience, Prime shipping, but counterfeit risks" },
+    ],
+    faqs: [
+      { question: "Sephora vs Ulta: which is better?", answer: "Sephora wins on: prestige brand selection (Tom Ford, Charlotte Tilbury, Pat McGrath, Drunk Elephant), more curated experience, slightly more knowledgeable beauty advisors, and Beauty Insider point redemption flexibility. Ulta wins on: drugstore brands alongside prestige (Maybelline, L'Oréal, NYX), full-service salon services, more loyalty tiers and rewards, and broader haircare. For prestige skincare/makeup: Sephora. For one-stop shopping including drugstore brands and salon services: Ulta. Many beauty enthusiasts use both." },
+      { question: "Is Sephora Beauty Insider worth it?", answer: "Yes. Beauty Insider is free (no purchase required to join) and provides: 1 point per $1, redeemable for Rewards Bazaar items (samples, deluxe sizes, full-size products at significant discount), birthday gift, free shipping at Rouge tier ($1,000+ annual spend), and exclusive events/early access. The free tier alone offers solid samples and birthday gifts. For beauty regulars spending $500+/year, Beauty Insider materially reduces costs through points and seasonal bonuses." },
+    ],
+  },
+
+  "ulta": {
+    description: "Ulta Beauty is the largest US-based specialty beauty retailer with 1,400+ stores across all 50 states. Founded in 1990 in Bolingbrook, Illinois, Ulta is publicly traded (NASDAQ: ULTA) with $11.2 billion in 2023 revenue and a $20-25 billion market cap. Ulta's competitive positioning combines drugstore beauty (Maybelline, L'Oréal, NYX, e.l.f., Wet n Wild — accessibly priced) with prestige beauty (Estée Lauder, Clinique, Lancôme, MAC, Charlotte Tilbury), making it a one-stop shop unlike Sephora's prestige-only focus. Ulta also offers full-service salon services in most stores (haircuts, color, brow services). The Ultamate Rewards loyalty program has 41 million+ members with 4 tiers (Member, Platinum $500+, Diamond $1,200+, Diamond DDX $5,000+). Ulta partners with Target through 'Ulta Beauty at Target' shop-in-shops (200+ as of 2024), the rival to Sephora's Kohl's partnership.",
+    highlights: ["1,400+ US stores; $11.2B revenue (2023)", "Drugstore + prestige under one roof — unique vs Sephora", "Full-service salon services", "41M+ Ultamate Rewards members"],
+    category: "products",
+    alternatives: [
+      { name: "Sephora", slug: "sephora", reason: "Prestige-only focus, more curated experience, larger international footprint" },
+      { name: "Target Beauty", slug: "target", reason: "Convenience for combined retail trips, Ulta shop-in-shops" },
+      { name: "Drugstore (CVS, Walgreens)", slug: "cvs", reason: "Most accessible for drugstore beauty, often on sale" },
+    ],
+    faqs: [
+      { question: "Ulta vs Sephora: which has better deals?", answer: "Ulta tends to have more frequent and aggressive deals: 21 Days of Beauty (rotating 50% off prestige items twice yearly), Gorgeous Hair Event, Love Your Skin event, and weekly Ultamate Rewards bonus events. Sephora's deals are less frequent but include Beauty Insider Sale (15-20% off site-wide twice yearly). For sample-heavy promotions: Sephora's Beauty Insider point redemption is more diverse. For percentage-off discounts: Ulta has more events. For overall savings on prestige beauty: Ulta typically offers more discount opportunities." },
+      { question: "Does Ulta offer good salon services?", answer: "Yes — most Ulta stores have full-service salons offering haircuts ($30-100), color ($65-200+), highlights, blowouts, brow services (waxing, tinting, threading), and skin services in select markets. Stylists are licensed cosmetologists. Quality varies by location and stylist; reviews on individual stylists are available in the Ulta app. Pricing is competitive with mid-tier salons. Booking 5-7 days in advance is recommended for popular stylists. The Ultamate Rewards program earns points on services too." },
+    ],
+  },
+
+  "kraken": {
+    description: "Kraken is a US-based cryptocurrency exchange founded in 2011 by Jesse Powell and headquartered in San Francisco. Kraken is one of the longest-running cryptocurrency exchanges and one of the most respected for security — it has never been hacked since launch, a notable claim given the industry's history of major breaches. Kraken serves 13+ million users across 190+ countries, supporting 200+ cryptocurrencies for spot trading, margin trading (up to 5x leverage), staking (8-20% APY on supported assets), and futures (Kraken Futures, formerly Crypto Facilities). Kraken's spot trading fees range from 0.16-0.26% maker/taker, lower than Coinbase's 0.4-0.6% retail fees. Kraken Pro (free upgrade) offers advanced charting, lower fees, and more order types. Kraken cooperated extensively with US regulators and was one of the first major exchanges to comply with state-by-state US regulations. Kraken's institutional offerings serve hedge funds, family offices, and corporations. Kraken has been actively pursuing an IPO since 2024.",
+    highlights: ["Never hacked since 2011 launch — exemplary security record", "13M+ users, 200+ cryptocurrencies", "0.16-0.26% maker/taker fees (lower than Coinbase)", "Strong staking rewards 8-20% APY"],
+    category: "products",
+    alternatives: [
+      { name: "Coinbase", slug: "coinbase", reason: "Most popular US exchange, easier UX for beginners, publicly traded" },
+      { name: "Gemini", slug: "gemini", reason: "Strong regulatory compliance, founded by Winklevoss twins" },
+      { name: "Crypto.com", slug: "crypto-com", reason: "Aggressive marketing, Visa debit card, more features" },
+    ],
+    faqs: [
+      { question: "Is Kraken safer than Coinbase?", answer: "Both are highly secure US-regulated exchanges; both have never lost user funds to hacks (Coinbase has had account-level breaches but no exchange-wide hack). Kraken has the cleanest security record over the longest period (2011+). Both maintain industry-standard security: cold storage for the majority of assets, two-factor authentication, regulatory compliance. For US users, both are top-tier safe choices. Kraken edges slightly on security pedigree; Coinbase edges on UX and is publicly traded (greater regulatory scrutiny). Either is significantly safer than smaller exchanges." },
+      { question: "Kraken vs Coinbase: which has lower fees?", answer: "Kraken has significantly lower fees: 0.16-0.26% maker/taker on Kraken Pro vs Coinbase's 0.4-0.6% on Advanced Trade (and even higher on the standard Coinbase retail interface). For frequent traders, the fee difference adds up quickly. Coinbase Pro/Advanced Trade has narrowed the gap somewhat. For minimizing trading costs: Kraken wins. For simplicity and brand trust: Coinbase wins. Kraken Pro requires a slight learning curve but isn't overwhelming." },
+    ],
+  },
 };
