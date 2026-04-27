@@ -1131,6 +1131,48 @@
       "youtubeVideoId": "o4q2Stnt1cU",
       "youtubeUrl": "https://www.youtube.com/watch?v=o4q2Stnt1cU",
       "uploadedAt": "2026-04-25T11:25:49.512Z"
+    },
+    {
+      "slug": "doordash-vs-uber-eats",
+      "title": "Doordash vs Uber Eats",
+      "entityA": "Doordash",
+      "entityB": "Uber Eats",
+      "category": "General",
+      "videoFile": "Doordash vs Uber Eats.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Doordash vs Uber Eats — Full Comparison 2026",
+      "youtubeDescription": "Uber Eats pays significantly more at $17.72/hour vs DoorDash's $13.03/hour, but DoorDash has higher order volume and less idle time during shifts.\n\n#doordash #ubereats #general #comparison #versus",
+      "youtubeVideoId": "95s7241w4fs",
+      "youtubeUrl": "https://www.youtube.com/watch?v=95s7241w4fs",
+      "uploadedAt": "2026-04-27T07:44:57.661Z"
+    },
+    {
+      "slug": "roman-empire-vs-ottoman-empire",
+      "title": "Roman Empire vs Ottoman Empire",
+      "entityA": "Roman Empire",
+      "entityB": "Ottoman Empire",
+      "category": "General",
+      "videoFile": "Roman Empire vs Ottoman Empire.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Roman Empire vs Ottoman Empire — Full Comparison 2026",
+      "youtubeDescription": "Both empires controlled similar territories (~5 million sq km) but at different times. Roman Empire had greater economic dominance while Ottoman Empire lasted longer.\n\n#romanempire #ottomanempire #general #comparison #versus",
+      "youtubeVideoId": "25j1wK9Vkuc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=25j1wK9Vkuc",
+      "uploadedAt": "2026-04-27T07:54:39.788Z"
+    },
+    {
+      "slug": "dyson-airwrap-vs-shark-flexstyle",
+      "title": "Dyson Airwrap vs Shark Flexstyle",
+      "entityA": "Dyson Airwrap",
+      "entityB": "Shark Flexstyle",
+      "category": "General",
+      "videoFile": "Dyson Airwrap vs Shark Flexstyle.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Dyson Airwrap vs Shark Flexstyle — Full Comparison 2026",
+      "youtubeDescription": "Dyson Airwrap is quieter and slightly lighter than Shark FlexStyle, but costs twice as much. Both deliver similar styling results with minimal weight difference.\n\n#dysonairwrap #sharkflexstyle #general #comparison #versus",
+      "youtubeVideoId": "WQHTSmwjKGk",
+      "youtubeUrl": "https://www.youtube.com/watch?v=WQHTSmwjKGk",
+      "uploadedAt": "2026-04-27T08:04:21.669Z"
     }
   ]
 }
