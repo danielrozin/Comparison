@@ -1173,6 +1173,48 @@
       "youtubeVideoId": "WQHTSmwjKGk",
       "youtubeUrl": "https://www.youtube.com/watch?v=WQHTSmwjKGk",
       "uploadedAt": "2026-04-27T08:04:21.669Z"
+    },
+    {
+      "slug": "slack-vs-microsoft-teams",
+      "title": "Slack vs Microsoft Teams",
+      "entityA": "Slack",
+      "entityB": "Microsoft Teams",
+      "category": "Software",
+      "videoFile": "Slack vs Microsoft Teams.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Slack vs Microsoft Teams — Full Comparison 2026",
+      "youtubeDescription": "Teams wins on user base and Office integration, while Slack excels at chat focus and third-party integrations. Choice depends on your Microsoft ecosystem usage.\n\n#slack #microsoftteams #software #comparison #versus",
+      "youtubeVideoId": "je8PfW4WZ0Y",
+      "youtubeUrl": "https://www.youtube.com/watch?v=je8PfW4WZ0Y",
+      "uploadedAt": "2026-04-28T07:42:31.935Z"
+    },
+    {
+      "slug": "north-korea-vs-south-korea",
+      "title": "North Korea vs South Korea",
+      "entityA": "North Korea",
+      "entityB": "South Korea",
+      "category": "General",
+      "videoFile": "North Korea vs South Korea.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "North Korea vs South Korea — Full Comparison 2026",
+      "youtubeDescription": "North Korea has a larger military but weaker economy, while South Korea is economically developed with higher living standards and greater economic freedom.\n\n#northkorea #southkorea #general #comparison #versus",
+      "youtubeVideoId": "ne4rc5iUfT4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=ne4rc5iUfT4",
+      "uploadedAt": "2026-04-28T07:52:42.614Z"
+    },
+    {
+      "slug": "yoga-vs-pilates",
+      "title": "Yoga vs Pilates",
+      "entityA": "Yoga",
+      "entityB": "Pilates",
+      "category": "Health & Fitness",
+      "videoFile": "Yoga vs Pilates.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Yoga vs Pilates — Full Comparison 2026",
+      "youtubeDescription": "Pilates offers core-focused, dynamic workouts while Yoga connects mind, body, and spirit through controlled breathing and movement patterns.\n\n#yoga #pilates #health&fitness #comparison #versus",
+      "youtubeVideoId": "pt5XhB48IJ0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=pt5XhB48IJ0",
+      "uploadedAt": "2026-04-28T08:02:50.659Z"
     }
   ]
 }
