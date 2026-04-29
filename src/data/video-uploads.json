@@ -1215,6 +1215,48 @@
       "youtubeVideoId": "pt5XhB48IJ0",
       "youtubeUrl": "https://www.youtube.com/watch?v=pt5XhB48IJ0",
       "uploadedAt": "2026-04-28T08:02:50.659Z"
+    },
+    {
+      "slug": "federer-vs-nadal",
+      "title": "Federer vs Nadal",
+      "entityA": "Federer",
+      "entityB": "Nadal",
+      "category": "General",
+      "videoFile": "Federer vs Nadal.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Federer vs Nadal — Full Comparison 2026",
+      "youtubeDescription": "Federer holds more career titles and wins but Nadal dominates head-to-head 24-16. Both legends excel in different areas with contrasting playing styles.\n\n#federer #nadal #general #comparison #versus",
+      "youtubeVideoId": "5qD_Yg4ss4E",
+      "youtubeUrl": "https://www.youtube.com/watch?v=5qD_Yg4ss4E",
+      "uploadedAt": "2026-04-29T07:35:44.201Z"
+    },
+    {
+      "slug": "barrett-m82-vs-dragunov",
+      "title": "Barrett M82 vs Dragunov",
+      "entityA": "Barrett M82",
+      "entityB": "Dragunov",
+      "category": "General",
+      "videoFile": "Barrett M82 vs Dragunov.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Barrett M82 vs Dragunov — Full Comparison 2026",
+      "youtubeDescription": "Barrett M82 is a heavy anti-materiel rifle for vehicle/equipment destruction, while Dragunov SVD is a lightweight designated marksman rifle for personnel targets.\n\n#barrettm82 #dragunov #general #comparison #versus",
+      "youtubeVideoId": "emyCqHaWRCE",
+      "youtubeUrl": "https://www.youtube.com/watch?v=emyCqHaWRCE",
+      "uploadedAt": "2026-04-29T07:46:32.941Z"
+    },
+    {
+      "slug": "macbook-air-vs-macbook-pro",
+      "title": "Macbook Air vs Macbook Pro",
+      "entityA": "Macbook Air",
+      "entityB": "Macbook Pro",
+      "category": "Technology",
+      "videoFile": "Macbook Air vs Macbook Pro.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Macbook Air vs Macbook Pro — Full Comparison 2026",
+      "youtubeDescription": "MacBook Air is the mid-range option with M5 chip, while MacBook Pro offers higher performance with M5 Pro/Max chips, better displays, and more ports for professionals.\n\n#macbookair #macbookpro #technology #comparison #versus",
+      "youtubeVideoId": "SIPXd4IUg8I",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SIPXd4IUg8I",
+      "uploadedAt": "2026-04-29T07:57:21.928Z"
     }
   ]
 }
