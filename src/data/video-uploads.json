@@ -1257,6 +1257,48 @@
       "youtubeVideoId": "SIPXd4IUg8I",
       "youtubeUrl": "https://www.youtube.com/watch?v=SIPXd4IUg8I",
       "uploadedAt": "2026-04-29T07:57:21.928Z"
+    },
+    {
+      "slug": "djokovic-vs-nadal",
+      "title": "Djokovic vs Nadal",
+      "entityA": "Djokovic",
+      "entityB": "Nadal",
+      "category": "General",
+      "videoFile": "Djokovic vs Nadal.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Djokovic vs Nadal — Full Comparison 2026",
+      "youtubeDescription": "Djokovic leads overall finals 15-13, but Nadal dominates majors 11-7 including 5-4 in major finals. Nadal owns French Open 8-2, while they're even on hard court slams.\n\n#djokovic #nadal #general #comparison #versus",
+      "youtubeVideoId": "dpZ0injjGFc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=dpZ0injjGFc",
+      "uploadedAt": "2026-04-30T07:36:35.482Z"
+    },
+    {
+      "slug": "cold-war-vs-war-on-terror",
+      "title": "Cold War vs War On Terror",
+      "entityA": "Cold War",
+      "entityB": "War On Terror",
+      "category": "General",
+      "videoFile": "Cold War vs War On Terror.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Cold War vs War On Terror — Full Comparison 2026",
+      "youtubeDescription": "The Cold War was a decades-long ideological standoff with the Soviet Union, while the War on Terror is a global military campaign against terrorist networks initiated after 9/11.\n\n#coldwar #waronterror #general #comparison #versus",
+      "youtubeVideoId": "V5YRiygGRps",
+      "youtubeUrl": "https://www.youtube.com/watch?v=V5YRiygGRps",
+      "uploadedAt": "2026-04-30T07:44:32.154Z"
+    },
+    {
+      "slug": "bitcoin-vs-ethereum",
+      "title": "Bitcoin vs Ethereum",
+      "entityA": "Bitcoin",
+      "entityB": "Ethereum",
+      "category": "Finance",
+      "videoFile": "Bitcoin vs Ethereum.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Bitcoin vs Ethereum — Full Comparison 2026",
+      "youtubeDescription": "Bitcoin leads as digital gold with stronger institutional adoption, while Ethereum drives Web3 innovation through smart contracts and DApps, showing recent outperformance in 2026.\n\n#bitcoin #ethereum #finance #comparison #versus",
+      "youtubeVideoId": "q_SNW_og3pE",
+      "youtubeUrl": "https://www.youtube.com/watch?v=q_SNW_og3pE",
+      "uploadedAt": "2026-04-30T07:52:29.908Z"
     }
   ]
 }
