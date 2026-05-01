@@ -886,6 +886,29 @@ model ComparisonRequestVote {
   @@map("comparison_request_votes")
 }
 
+// ============================================================
+// VERDICT FEEDBACK — Per-comparison thumbs up/down on the AI verdict
+// ============================================================
+
+model VerdictFeedback {
+  id             String   @id @default(cuid())
+  comparisonSlug String   @map("comparison_slug")
+  vote           String   // "up" | "down"
+  reason         String?  @db.Text
+  anonId         String?  @map("anon_id")
+  userId         String?  @map("user_id")
+
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([comparisonSlug, anonId], name: "uniq_anon_per_slug")
+  @@unique([comparisonSlug, userId], name: "uniq_user_per_slug")
+  @@index([comparisonSlug])
+  @@index([vote])
+  @@index([createdAt])
+  @@map("verdict_feedback")
+}
+
 // Social outreach queue: Quora/Reddit answers ready to post
 // Status flow: queued -> posted | skipped
 model OutreachPost {

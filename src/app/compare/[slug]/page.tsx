@@ -338,6 +338,7 @@ function VerdictFirstLayout({
           shortAnswer={comparison.shortAnswer}
           entities={comparison.entities}
           attributes={comparison.attributes}
+          comparisonSlug={comparison.slug}
         />
       )}
 
