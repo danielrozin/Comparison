@@ -15,6 +15,7 @@ export interface ConsentState {
 }
 
 const CONSENT_COOKIE = "cookie_consent";
+const VISITOR_ID_COOKIE = "visitor_id";
 const CONSENT_VERSION = 1;
 const CONSENT_MAX_AGE_DAYS = 365;
 
@@ -102,13 +103,29 @@ export function updateGoogleConsent(state: ConsentState): void {
   });
 }
 
+/**
+ * Read the existing visitor UUID, or mint+persist a fresh one. The id is
+ * stable across consent changes so the server-side audit trail can correlate
+ * grant/revoke events for a single visitor (DAN-376).
+ */
+export function getOrCreateVisitorId(): string {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(new RegExp(`(?:^|; )${VISITOR_ID_COOKIE}=([^;]*)`));
+  if (match) return decodeURIComponent(match[1]);
+  const id = crypto.randomUUID();
+  const expires = new Date(Date.now() + CONSENT_MAX_AGE_DAYS * 864e5).toUTCString();
+  document.cookie = `${VISITOR_ID_COOKIE}=${encodeURIComponent(id)}; expires=${expires}; path=/; SameSite=Lax`;
+  return id;
+}
+
 /** Persist consent to backend */
 export async function persistConsentToBackend(state: ConsentState): Promise<void> {
   try {
+    const visitorId = getOrCreateVisitorId();
     await fetch("/api/consent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
+      body: JSON.stringify({ ...state, visitorId }),
     });
   } catch {
     // Consent should work even if backend is unavailable
