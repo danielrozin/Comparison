@@ -19,17 +19,31 @@ export type { ComparisonVideoProps } from "./ComparisonVideo";
 // ---------------------------------------------------------------------------
 
 export const V2_FPS = 30;
-export const V2_SECTION_DURATIONS = {
-  intro: V2_FPS * 4,
-  shortAnswer: V2_FPS * 5,
-  keyDifferences: V2_FPS * 8,
-  comparisonTable: V2_FPS * 9,
-  prosCons: V2_FPS * 8,
-  verdict: V2_FPS * 6,
-};
 
-export function getV2TotalFrames() {
-  return Object.values(V2_SECTION_DURATIONS).reduce((a, b) => a + b, 0);
+// Comparison table needs enough frames for the staggered row reveal
+// (`14 + i * 7` per row in ComparisonTableSection) plus a hold for the score row.
+// Floor at 8s so 5-stat videos still breathe; +0.5s per stat above 5.
+function comparisonTableFrames(statsCount: number): number {
+  const baseSeconds = 8;
+  const extraSeconds = Math.max(0, statsCount - 5) * 0.5;
+  return Math.round((baseSeconds + extraSeconds) * V2_FPS);
+}
+
+export function getV2SectionDurations(statsCount = 5) {
+  return {
+    intro: V2_FPS * 4,
+    shortAnswer: V2_FPS * 5,
+    keyDifferences: V2_FPS * 8,
+    comparisonTable: comparisonTableFrames(statsCount),
+    prosCons: V2_FPS * 8,
+    verdict: V2_FPS * 6,
+  };
+}
+
+export const V2_SECTION_DURATIONS = getV2SectionDurations(5);
+
+export function getV2TotalFrames(statsCount = 5) {
+  return Object.values(getV2SectionDurations(statsCount)).reduce((a, b) => a + b, 0);
 }
 
 // ---------------------------------------------------------------------------
@@ -133,10 +147,9 @@ const MeshBackground: React.FC = () => {
   );
 };
 
-const ProgressBar: React.FC = () => {
+const ProgressBar: React.FC<{ totalFrames: number }> = ({ totalFrames }) => {
   const frame = useCurrentFrame();
-  const total = getV2TotalFrames();
-  const pct = Math.min(100, (frame / total) * 100);
+  const pct = Math.min(100, (frame / totalFrames) * 100);
   return (
     <div
       style={{
@@ -562,7 +575,12 @@ const KDCell: React.FC<{ value: string; won: boolean; glow: number }> = ({ value
 // 4. FULL COMPARISON — big rows with count-up
 // ---------------------------------------------------------------------------
 
-const ComparisonTableSection: React.FC<{ stats: VideoStat[]; entityA: string; entityB: string }> = ({ stats, entityA, entityB }) => {
+const ComparisonTableSection: React.FC<{
+  stats: VideoStat[];
+  entityA: string;
+  entityB: string;
+  totalDur: number;
+}> = ({ stats, entityA, entityB, totalDur }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -572,7 +590,7 @@ const ComparisonTableSection: React.FC<{ stats: VideoStat[]; entityA: string; en
   let scoreB = 0;
 
   return (
-    <SectionShell totalDur={V2_SECTION_DURATIONS.comparisonTable}>
+    <SectionShell totalDur={totalDur}>
       <SectionHeader label="Full Comparison" fps={fps} frame={frame} />
 
       {/* Entity header */}
@@ -1057,7 +1075,8 @@ const VerdictSection: React.FC<{
 // ---------------------------------------------------------------------------
 
 export const ComparisonVideoV2: React.FC<ComparisonVideoProps> = (props) => {
-  const D = V2_SECTION_DURATIONS;
+  const D = getV2SectionDurations(props.stats.length);
+  const totalFrames = Object.values(D).reduce((a, b) => a + b, 0);
   let offset = 0;
 
   const sections = [
@@ -1087,7 +1106,12 @@ export const ComparisonVideoV2: React.FC<ComparisonVideoProps> = (props) => {
       </Sequence>
 
       <Sequence from={sections[3].from} durationInFrames={sections[3].dur}>
-        <ComparisonTableSection stats={props.stats} entityA={props.entityA} entityB={props.entityB} />
+        <ComparisonTableSection
+          stats={props.stats}
+          entityA={props.entityA}
+          entityB={props.entityB}
+          totalDur={sections[3].dur}
+        />
       </Sequence>
 
       <Sequence from={sections[4].from} durationInFrames={sections[4].dur}>
@@ -1105,7 +1129,7 @@ export const ComparisonVideoV2: React.FC<ComparisonVideoProps> = (props) => {
         <VerdictSection entityA={props.entityA} entityB={props.entityB} stats={props.stats} verdict={props.verdict} />
       </Sequence>
 
-      <ProgressBar />
+      <ProgressBar totalFrames={totalFrames} />
     </AbsoluteFill>
   );
 };
