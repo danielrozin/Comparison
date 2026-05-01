@@ -23,6 +23,7 @@ import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
+import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -344,6 +345,12 @@ function VerdictFirstLayout({
           attributes={comparison.attributes}
         />
       )}
+
+      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
+      <TrackComparisonCard
+        comparisonSlug={comparison.slug}
+        comparisonTitle={comparison.title}
+      />
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
