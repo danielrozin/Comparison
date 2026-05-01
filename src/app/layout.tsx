@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,6 +10,15 @@ import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
 import "./globals.css";
+
+// Self-host Inter via next/font so the stylesheet inline-links the woff2 directly:
+// no third-party round-trip to fonts.googleapis.com, no render-blocking <link>,
+// and adjustFontFallback reduces the FOUT layout shift that was hurting mobile CLS.
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
@@ -66,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <head>
         {ADSENSE_PUB_ID && (
           <script
@@ -75,12 +85,6 @@ export default function RootLayout({
             crossOrigin="anonymous"
           />
         )}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
         {/* Clarity — only loads if analytics consent granted or non-EU without prior choice */}
         <script
           dangerouslySetInnerHTML={{

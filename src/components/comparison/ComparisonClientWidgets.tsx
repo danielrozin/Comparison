@@ -14,12 +14,23 @@ export const TrackRecentView = dynamic(
 
 export const EmbedButton = dynamic(
   () => import("@/components/comparison/EmbedButton").then((m) => ({ default: m.EmbedButton })),
-  { ssr: false, loading: () => null }
+  // Reserve the 32px button square so the share/like row above the hero
+  // doesn't grow when this hydrates — was a top CLS contributor on mobile.
+  { ssr: false, loading: () => <div className="w-8 h-8" aria-hidden="true" /> }
 );
 
 export const ComparisonPoll = dynamic(
   () => import("@/components/engagement/ComparisonPoll").then((m) => ({ default: m.ComparisonPoll })),
-  { ssr: false, loading: () => null }
+  // The poll renders just below the verdict and is usually still above the
+  // fold on mobile — reserve its mounted height so it doesn't cause a shift.
+  {
+    ssr: false,
+    loading: () => (
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-hidden="true">
+        <div className="min-h-[208px]" />
+      </section>
+    ),
+  }
 );
 
 export const NewsletterSignup = dynamic(
@@ -49,12 +60,14 @@ export const ConversionFunnelTracker = dynamic(
 
 export const ShareBar = dynamic(
   () => import("@/components/engagement/ShareBar").then((m) => ({ default: m.ShareBar })),
-  { ssr: false, loading: () => null }
+  // Reserve a 32px tall row matching the icon buttons — prevents the hero
+  // sliding down when the share row hydrates.
+  { ssr: false, loading: () => <div className="h-8" aria-hidden="true" /> }
 );
 
 export const LikeButton = dynamic(
   () => import("@/components/engagement/LikeButton").then((m) => ({ default: m.LikeButton })),
-  { ssr: false, loading: () => null }
+  { ssr: false, loading: () => <div className="w-8 h-8" aria-hidden="true" /> }
 );
 
 export const BackToResults = dynamic(
@@ -64,5 +77,15 @@ export const BackToResults = dynamic(
 
 export const TableOfContents = dynamic(
   () => import("@/components/comparison/TableOfContents").then((m) => ({ default: m.TableOfContents })),
-  { ssr: false, loading: () => null }
+  // The mobile/tablet TOC is a 48px collapsible bar wrapped in `mb-4` (16px)
+  // and placed above the hero — without a placeholder, mounting it pushed the
+  // LCP element down by ~64px. Reserve that space upfront.
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-[1700px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4" aria-hidden="true">
+        <div className="h-12" />
+      </div>
+    ),
+  }
 );

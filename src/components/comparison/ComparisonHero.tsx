@@ -25,6 +25,9 @@ function EntityAvatar({
       : "shadow-[0_0_30px_rgba(168,85,247,0.3)]";
 
   if (hasImage) {
+    // The first hero image is a strong LCP candidate on mobile — eager-load it,
+    // serve AVIF/WebP through Next's optimizer, and cap delivered width to 2x display (224px).
+    const isPrimary = variant === "a";
     return (
       <div className={`w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden mx-auto mb-3 sm:mb-4 ring-2 ring-white ${glowClass}`}>
         <Image
@@ -32,8 +35,10 @@ function EntityAvatar({
           alt={entity.name}
           width={112}
           height={112}
+          sizes="(min-width: 640px) 112px, 80px"
+          priority={isPrimary}
+          fetchPriority={isPrimary ? "high" : "auto"}
           className="w-full h-full object-cover"
-          unoptimized
         />
       </div>
     );
