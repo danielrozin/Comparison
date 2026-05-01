@@ -10,19 +10,8 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
-// Lazy-load sidebar to avoid LCP regression
-const RelatedComparisonsSidebar = dynamic(
-  () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
-  { loading: () => null }
-);
-import { ShareBar } from "@/components/engagement/ShareBar";
-import { LikeButton } from "@/components/engagement/LikeButton";
-import { EmbedButton } from "@/components/comparison/EmbedButton";
-import { CommentSection } from "@/components/engagement/CommentSection";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
-import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { VersionHistory } from "@/components/comparison/VersionHistory";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { PartnerReviews } from "@/components/comparison/PartnerReviews";
 import { generateResources } from "@/lib/services/resources";
@@ -32,25 +21,19 @@ import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
-import { BackToResults } from "@/components/comparison/BackToResults";
-import { TrackRecentView } from "@/components/comparison/TrackRecentView";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
-import { StickyAffiliateCTA } from "@/components/comparison/StickyAffiliateCTA";
-import { ComparisonPoll } from "@/components/engagement/ComparisonPoll";
 import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
-import { TableOfContents } from "@/components/comparison/TableOfContents";
-import { ConversionFunnelTracker } from "@/components/engagement/ConversionFunnelTracker";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
 import { videoObjectSchema } from "@/lib/seo/schema";
 
-// Lazy-load heavy below-fold components
+// Lazy-load heavy below-fold SEO content (kept SSR'd for crawlers via dynamic + ssr default)
 const ComparisonTable = dynamic(
   () => import("@/components/comparison/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
@@ -63,6 +46,27 @@ const ComparisonVideoPlayer = dynamic(
   () => import("@/components/comparison/ComparisonVideoPlayer").then((m) => ({ default: m.ComparisonVideoPlayer })),
   { loading: () => null }
 );
+const RelatedComparisonsSidebar = dynamic(
+  () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
+  { loading: () => null }
+);
+
+// Interactive/tracking widgets — kept out of SSR HTML and the RSC stream
+// via a client-side dynamic-import shim (ssr:false is forbidden in server components).
+import {
+  TrackRecentView,
+  EmbedButton,
+  ComparisonPoll,
+  NewsletterSignup,
+  CommentSection,
+  VersionHistory,
+  StickyAffiliateCTA,
+  ConversionFunnelTracker,
+  ShareBar,
+  LikeButton,
+  BackToResults,
+  TableOfContents,
+} from "@/components/comparison/ComparisonClientWidgets";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -374,6 +378,16 @@ function VerdictFirstLayout({
         </div>
       )}
 
+      {/* Mobile: related comparisons scroll strip below verdict area */}
+      {sidebarComparisons.length > 0 && (
+        <RelatedComparisonsSidebar
+          comparisons={sidebarComparisons}
+          sourceSlug={slug}
+          variant="mobile"
+        />
+      )}
+
+
       {/* ── Below the fold ── */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
         {/* Main content column */}
@@ -417,6 +431,12 @@ function VerdictFirstLayout({
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
+          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
+          </div>
+
+
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
             <div id="faq">
@@ -438,6 +458,7 @@ function VerdictFirstLayout({
           <RelatedComparisonsSidebar
             comparisons={sidebarComparisons}
             sourceSlug={slug}
+            variant="desktop"
           />
         )}
       </div>

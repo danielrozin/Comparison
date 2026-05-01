@@ -1,8 +1,7 @@
-"use client";
-
 import Link from "next/link";
-import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
+import { SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { CookiePreferencesButton } from "./CookiePreferencesButton";
 
 const FOOTER_CATEGORIES = [
   { slug: "software", name: "Software" },
@@ -20,46 +19,18 @@ export function Footer() {
     <footer className="bg-surface-dark text-white mt-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
 
-        {/* ─── Category sections with subcategories ─── */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8 lg:gap-10">
-          {FOOTER_CATEGORIES.map((cat) => {
-            const subs = CATEGORY_SUBCATEGORIES[cat.slug] || [];
-            return (
-              <div key={cat.slug}>
-                <h3 className="mb-3">
-                  <Link
-                    href={`/category/${cat.slug}`}
-                    className="font-semibold text-sm uppercase tracking-wider text-gray-300 hover:text-white transition-colors"
-                  >
-                    {cat.name}
-                  </Link>
-                </h3>
-                <ul className="space-y-2">
-                  {subs.slice(0, 5).map((sub) => (
-                    <li key={sub.slug}>
-                      <Link
-                        href={`/category/${cat.slug}/${sub.slug}`}
-                        className="text-sm text-gray-400 hover:text-white transition-colors"
-                      >
-                        {sub.name}
-                      </Link>
-                    </li>
-                  ))}
-                  {subs.length > 5 && (
-                    <li>
-                      <Link
-                        href={`/category/${cat.slug}`}
-                        className="text-sm text-primary-400 hover:text-primary-300 font-medium transition-colors"
-                      >
-                        View all →
-                      </Link>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
+        {/* ─── Category links — top-level only; full subcategory tree was ~7.7 KB and is reachable via /category/{slug} ─── */}
+        <nav aria-label="Browse categories" className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-3">
+          {FOOTER_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/category/${cat.slug}`}
+              className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </nav>
 
         {/* ─── Newsletter ─── */}
         <div className="border-t border-gray-800 mt-10 pt-8 pb-8">
@@ -106,17 +77,7 @@ export function Footer() {
             <Link href="/cookie-policy" className="text-sm text-gray-400 hover:text-white transition-colors">Cookie Policy</Link>
             <Link href="/acceptable-use" className="text-sm text-gray-400 hover:text-white transition-colors">Acceptable Use</Link>
             <Link href="/disclaimer" className="text-sm text-gray-400 hover:text-white transition-colors">Disclaimer</Link>
-            <button
-              type="button"
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
-                }
-              }}
-              className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
-            >
-              Cookie Preferences
-            </button>
+            <CookiePreferencesButton />
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-6">

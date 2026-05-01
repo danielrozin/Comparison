@@ -97,11 +97,11 @@ export function Header() {
                     )}
                   </Link>
 
-                  {/* Dropdown */}
-                  {hasSubs && (
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-gray-200 transition-all duration-150 ${
+                  {/* Dropdown — only mounted when this dropdown is open, removes ~16KB of eager-rendered subcategory HTML from SSR */}
+                  {hasSubs && isOpen && (
+                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-gray-200 ${
                       subs.length > 6 ? "w-[480px]" : "w-[260px]"
-                    } ${isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-1 pointer-events-none"}`}>
+                    }`}>
                       <div className={`p-2 ${subs.length > 6 ? "grid grid-cols-2 gap-0.5" : ""}`}>
                         {subs.map((sub) => (
                           <Link
@@ -178,8 +178,9 @@ export function Header() {
         </div>
       </div>
 
-      {/* ─── Mobile menu ─── */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? "max-h-[85vh]" : "max-h-0"}`}>
+      {/* ─── Mobile menu — only mounted when open, removes ~18KB of subcategory HTML from initial SSR ─── */}
+      {mobileMenuOpen && (
+      <div className="lg:hidden">
         <div className="bg-white border-t border-gray-200 overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
@@ -263,6 +264,7 @@ export function Header() {
           </div>
         </div>
       </div>
+      )}
     </header>
   );
 }

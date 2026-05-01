@@ -53,48 +53,57 @@ function ComparisonCard({
   );
 }
 
+type RelatedSidebarProps = {
+  comparisons: RelatedComparison[];
+  sourceSlug: string;
+  /** "mobile" renders only the horizontal scroll strip; "desktop" renders only the sticky aside; default renders both (legacy). */
+  variant?: "mobile" | "desktop";
+};
+
 export function RelatedComparisonsSidebar({
   comparisons,
   sourceSlug,
-}: {
-  comparisons: RelatedComparison[];
-  sourceSlug: string;
-}) {
+  variant,
+}: RelatedSidebarProps) {
   if (comparisons.length === 0) return null;
 
   const items = comparisons.slice(0, 6);
+  const showMobile = variant !== "desktop";
+  const showDesktop = variant !== "mobile";
 
   return (
     <>
-      {/* Mobile: horizontal scroll strip */}
-      <div className="lg:hidden px-4 sm:px-6 py-4">
-        <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-          Related Comparisons
-        </h3>
-        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6">
-          {items.map((comp) => (
-            <div key={comp.slug} className="snap-start min-w-[260px] max-w-[300px]">
-              <ComparisonCard comp={comp} sourceSlug={sourceSlug} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Desktop: sticky sidebar */}
-      <aside className="hidden lg:block w-[320px] shrink-0">
-        <div className="sticky top-24 space-y-3">
-          <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">
+      {showMobile && (
+        <div className="lg:hidden px-4 sm:px-6 py-4">
+          <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
             Related Comparisons
           </h3>
-          {items.map((comp) => (
-            <ComparisonCard
-              key={comp.slug}
-              comp={comp}
-              sourceSlug={sourceSlug}
-            />
-          ))}
+          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6">
+            {items.map((comp) => (
+              <div key={comp.slug} className="snap-start min-w-[260px] max-w-[300px]">
+                <ComparisonCard comp={comp} sourceSlug={sourceSlug} />
+              </div>
+            ))}
+          </div>
         </div>
-      </aside>
+      )}
+
+      {showDesktop && (
+        <aside className="hidden lg:block w-[320px] shrink-0">
+          <div className="sticky top-24 space-y-3">
+            <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider">
+              Related Comparisons
+            </h3>
+            {items.map((comp) => (
+              <ComparisonCard
+                key={comp.slug}
+                comp={comp}
+                sourceSlug={sourceSlug}
+              />
+            ))}
+          </div>
+        </aside>
+      )}
     </>
   );
 }
