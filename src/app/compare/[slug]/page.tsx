@@ -417,11 +417,6 @@ function VerdictFirstLayout({
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
-          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
-          </div>
-
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
             <div id="faq">
