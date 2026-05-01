@@ -1299,6 +1299,48 @@
       "youtubeVideoId": "q_SNW_og3pE",
       "youtubeUrl": "https://www.youtube.com/watch?v=q_SNW_og3pE",
       "uploadedAt": "2026-04-30T07:52:29.908Z"
+    },
+    {
+      "slug": "target-vs-walmart",
+      "title": "Target vs Walmart",
+      "entityA": "Target",
+      "entityB": "Walmart",
+      "category": "General",
+      "videoFile": "Target vs Walmart.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Target vs Walmart — Full Comparison 2026",
+      "youtubeDescription": "Walmart offers significantly lower prices with potential annual savings of $426, while Target provides a cleaner, more modern shopping experience with higher-quality store environments.\n\n#target #walmart #general #comparison #versus",
+      "youtubeVideoId": "SA2KZafuDt0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SA2KZafuDt0",
+      "uploadedAt": "2026-05-01T07:34:28.188Z"
+    },
+    {
+      "slug": "stock-market-vs-real-estate",
+      "title": "Stock Market vs Real Estate",
+      "entityA": "Stock Market",
+      "entityB": "Real Estate",
+      "category": "Finance",
+      "videoFile": "Stock Market vs Real Estate.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Stock Market vs Real Estate — Full Comparison 2026",
+      "youtubeDescription": "Real estate offers stability and passive income in 2026, while stocks provide higher growth potential but with increased volatility.\n\n#stockmarket #realestate #finance #comparison #versus",
+      "youtubeVideoId": "XC8jMb0IpJ0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=XC8jMb0IpJ0",
+      "uploadedAt": "2026-05-01T07:43:06.839Z"
+    },
+    {
+      "slug": "maradona-vs-pele",
+      "title": "Maradona vs Pele",
+      "entityA": "Maradona",
+      "entityB": "Pele",
+      "category": "General",
+      "videoFile": "Maradona vs Pele.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Maradona vs Pele — Full Comparison 2026",
+      "youtubeDescription": "Pele leads in goals and World Cups (3 vs 1), while Maradona dominated tournaments single-handedly. Both are legendary GOAT contenders with different strengths.\n\n#maradona #pele #general #comparison #versus",
+      "youtubeVideoId": "eCF59qOlXxQ",
+      "youtubeUrl": "https://www.youtube.com/watch?v=eCF59qOlXxQ",
+      "uploadedAt": "2026-05-01T07:51:38.310Z"
     }
   ]
 }
