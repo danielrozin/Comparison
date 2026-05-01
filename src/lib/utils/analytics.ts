@@ -178,4 +178,26 @@ export function trackExitIntentMobile(page: string, type?: string) {
   trackEvent("exit_intent_mobile", { page, type: type || "mobile" });
 }
 
+export function trackComparisonTrackerImpression(slug: string) {
+  trackEvent("track_comparison_impression", { comparison_slug: slug });
+}
+
+export function trackComparisonTrackerClick(slug: string, mode: "logged_in" | "logged_out") {
+  trackEvent("track_comparison_click_track", { comparison_slug: slug, mode });
+}
+
+export function trackComparisonTrackerSubmit(slug: string, mode: "logged_in" | "logged_out") {
+  trackEvent("track_comparison_submit", { comparison_slug: slug, mode });
+  trackEvent("generate_lead", { lead_source: "comparison_tracker", comparison_slug: slug });
+  trackMetaEvent("Lead", { content_name: "comparison_tracker", content_category: slug });
+}
+
+export function trackComparisonTrackerConfirmed(slug: string) {
+  trackEvent("track_comparison_confirmed", { comparison_slug: slug });
+  trackMetaEvent("CompleteRegistration", {
+    content_name: "comparison_tracker",
+    content_category: slug,
+  });
+}
+
 export { trackEvent };
