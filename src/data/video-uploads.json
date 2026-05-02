@@ -1341,6 +1341,48 @@
       "youtubeVideoId": "eCF59qOlXxQ",
       "youtubeUrl": "https://www.youtube.com/watch?v=eCF59qOlXxQ",
       "uploadedAt": "2026-05-01T07:51:38.310Z"
+    },
+    {
+      "slug": "california-vs-texas",
+      "title": "California vs Texas",
+      "entityA": "California",
+      "entityB": "Texas",
+      "category": "General",
+      "videoFile": "California vs Texas.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "California vs Texas — Full Comparison 2026",
+      "youtubeDescription": "California leads in GDP per capita ($98,737 vs $84,089) but Texas has no state income tax and faster growth (7.4% vs 2.0% GDP growth).\n\n#california #texas #general #comparison #versus",
+      "youtubeVideoId": "Xle7_9_okx8",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Xle7_9_okx8",
+      "uploadedAt": "2026-05-02T07:09:33.955Z"
+    },
+    {
+      "slug": "delta-vs-united",
+      "title": "Delta vs United",
+      "entityA": "Delta",
+      "entityB": "United",
+      "category": "General",
+      "videoFile": "Delta vs United.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Delta vs United — Full Comparison 2026",
+      "youtubeDescription": "Delta excels in reliability with better on-time performance and baggage handling, while United offers a slightly larger fleet. Delta provides more consistent service overall.\n\n#delta #united #general #comparison #versus",
+      "youtubeVideoId": "tTGSJDeXCJU",
+      "youtubeUrl": "https://www.youtube.com/watch?v=tTGSJDeXCJU",
+      "uploadedAt": "2026-05-02T07:17:15.651Z"
+    },
+    {
+      "slug": "mercedes-vs-audi",
+      "title": "Mercedes vs Audi",
+      "entityA": "Mercedes",
+      "entityB": "Audi",
+      "category": "Automotive",
+      "videoFile": "Mercedes vs Audi.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mercedes vs Audi — Full Comparison 2026",
+      "youtubeDescription": "Mercedes E-Class scores higher overall (3.75 vs 3.60) with better power and cargo, while Audi A6 excels in safety with 5-star rating and more airbags.\n\n#mercedes #audi #automotive #comparison #versus",
+      "youtubeVideoId": "uDpzXqOmLjQ",
+      "youtubeUrl": "https://www.youtube.com/watch?v=uDpzXqOmLjQ",
+      "uploadedAt": "2026-05-02T07:25:03.424Z"
     }
   ]
 }
