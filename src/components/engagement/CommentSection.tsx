@@ -23,6 +23,9 @@ export function CommentSection({
   const [text, setText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  const MIN_COMMENT_LENGTH = 5;
 
   // Load comments from API, fall back to localStorage
   useEffect(() => {
@@ -48,8 +51,22 @@ export function CommentSection({
 
   const submitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !text.trim()) return;
 
+    const trimmedName = name.trim();
+    const trimmedText = text.trim();
+
+    if (!trimmedName) {
+      setValidationError("Add your name to post.");
+      return;
+    }
+    if (trimmedText.length < MIN_COMMENT_LENGTH) {
+      setValidationError(
+        `Write something to post — at least ${MIN_COMMENT_LENGTH} characters.`,
+      );
+      return;
+    }
+
+    setValidationError(null);
     setIsSubmitting(true);
 
     try {
@@ -116,9 +133,11 @@ export function CommentSection({
               id="comment-name"
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (validationError) setValidationError(null);
+              }}
               placeholder="Your name"
-              required
               className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none transition-colors"
             />
           </div>
@@ -135,16 +154,29 @@ export function CommentSection({
           <textarea
             id="comment-text"
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => {
+              setText(e.target.value);
+              if (validationError) setValidationError(null);
+            }}
             placeholder="What do you think? Who wins this comparison?"
-            required
             rows={3}
+            aria-invalid={validationError ? true : undefined}
+            aria-describedby={validationError ? "comment-validation" : undefined}
             className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none transition-colors resize-none"
           />
+          {validationError ? (
+            <p
+              id="comment-validation"
+              role="alert"
+              className="mt-2 text-xs text-red-600"
+            >
+              {validationError}
+            </p>
+          ) : null}
         </div>
         <button
           type="submit"
-          disabled={isSubmitting || !name.trim() || !text.trim()}
+          disabled={isSubmitting}
           className="px-5 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isSubmitting ? "Posting..." : "Post Comment"}
