@@ -1383,6 +1383,48 @@
       "youtubeVideoId": "uDpzXqOmLjQ",
       "youtubeUrl": "https://www.youtube.com/watch?v=uDpzXqOmLjQ",
       "uploadedAt": "2026-05-02T07:25:03.424Z"
+    },
+    {
+      "slug": "mac-vs-windows",
+      "title": "Mac vs Windows",
+      "entityA": "Mac",
+      "entityB": "Windows",
+      "category": "General",
+      "videoFile": "Mac vs Windows.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mac vs Windows — Full Comparison 2026",
+      "youtubeDescription": "MacBooks excel in battery life, build quality, and Apple ecosystem integration, while Windows laptops offer more choice, better gaming, and budget options.\n\n#mac #windows #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-03T07:27:56.063Z"
+    },
+    {
+      "slug": "costco-vs-sams-club",
+      "title": "Costco vs Sams Club",
+      "entityA": "Costco",
+      "entityB": "Sams Club",
+      "category": "General",
+      "videoFile": "Costco vs Sams Club.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Costco vs Sams Club — Full Comparison 2026",
+      "youtubeDescription": "Sam's Club recently raised membership fees to $60, still $5 less than Costco's $65. Costco offers better product quality and selection, while Sam's Club has slightly more locations.\n\n#costco #samsclub #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-03T07:35:38.656Z"
+    },
+    {
+      "slug": "capitalism-vs-socialism",
+      "title": "Capitalism vs Socialism",
+      "entityA": "Capitalism",
+      "entityB": "Socialism",
+      "category": "General",
+      "videoFile": "Capitalism vs Socialism.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Capitalism vs Socialism — Full Comparison 2026",
+      "youtubeDescription": "Capitalism emphasizes private ownership and market freedom, while socialism focuses on state ownership and equality. Countries transitioning to capitalism showed improved economic well-being.\n\n#capitalism #socialism #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-03T07:43:20.497Z"
     }
   ]
 }
