@@ -57,6 +57,16 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://www.aversusb.net/sitemap.xml",
+    // List both the index and every shard. The index alone is enough for
+    // well-behaved crawlers, but advertising the shards is a fallback in case
+    // the index handler ever regresses (see DAN-382).
+    sitemap: [
+      "https://www.aversusb.net/sitemap.xml",
+      "https://www.aversusb.net/sitemap/0.xml",
+      "https://www.aversusb.net/sitemap/1.xml",
+      "https://www.aversusb.net/sitemap/2.xml",
+      "https://www.aversusb.net/sitemap/3.xml",
+      "https://www.aversusb.net/sitemap/4.xml",
+    ],
   };
 }
