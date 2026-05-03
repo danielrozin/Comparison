@@ -10,6 +10,25 @@ import type { ComparisonPageData, FAQData, CategoryData, CitationStats } from "@
 // Organization schema (site-wide)
 // ============================================================
 
+// Centralized social profile URLs for Organization sameAs entity-graph signals.
+// Each slot is overridable via NEXT_PUBLIC_SOCIAL_* env vars so URL list updates
+// (DAN-422 / DAN-419 social activation) ship as a config change, not a code deploy.
+// Empty/unset slots are filtered out so unverified handles don't leak into JSON-LD.
+export function socialSameAs(): string[] {
+  const slots = [
+    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "https://twitter.com/aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "https://www.linkedin.com/company/aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_GITHUB ?? "https://github.com/aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK ?? "https://www.facebook.com/aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "https://www.youtube.com/@aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_PINTEREST ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_REDDIT ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_QUORA ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM ?? "",
+  ];
+  return slots.filter((url) => url.trim().length > 0);
+}
+
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
@@ -17,13 +36,7 @@ export function organizationSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/images/logo.png`,
-    sameAs: [
-      "https://twitter.com/aversusb",
-      "https://www.linkedin.com/company/aversusb",
-      "https://github.com/aversusb",
-      "https://www.facebook.com/aversusb",
-      "https://www.youtube.com/@aversusb",
-    ],
+    sameAs: socialSameAs(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     foundingDate: "2024",
     knowsAbout: [
@@ -125,11 +138,7 @@ export function comparisonPageSchema(
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
       },
-      sameAs: [
-        "https://twitter.com/aversusb",
-        "https://www.linkedin.com/company/aversusb",
-        "https://github.com/aversusb",
-      ],
+      sameAs: socialSameAs(),
     },
     mainEntityOfPage: {
       "@type": "WebPage",
