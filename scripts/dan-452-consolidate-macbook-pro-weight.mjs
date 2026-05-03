@@ -1,9 +1,12 @@
-// DAN-452 — Consolidate macbook-pro-weight blog cluster.
+// DAN-452 / DAN-453 — Consolidate macbook-pro-weight blog cluster.
 //
 // Idempotent script:
 //   1) Enhances the canonical post (metaTitle, metaDescription, content top + FAQ).
-//   2) Archives all other macbook-pro-weight / macbook-pro-14 / macbook-pro-2024
-//      near-duplicates by setting status='archived'.
+//   2) Archives all macbook-pro-weight / macbook-pro-14 / macbook-pro-2024 /
+//      macbook-pro-models-weight / macbook-weight near-duplicates by setting
+//      status='archived'. The macbook-weight prefix was added under DAN-453
+//      to capture a second cluster of 16 auto-generated dupes that bypassed
+//      the original DAN-452 prefix net (no "-pro-" segment).
 //
 // Companion redirects live in src/lib/redirects/blog-redirects.ts and are
 // applied via next.config.ts redirects() at the edge — independent of this DB
@@ -15,10 +18,24 @@ const CANONICAL_SLUG =
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide";
 
 const NEW_META_TITLE =
-  "MacBook Pro Weight 2025-2026: All Models Compared (lbs & kg)";
+  "MacBook Weight 2026: Air, Pro 14, Pro 16 — All Models Compared (lbs & kg)";
 
 const NEW_META_DESCRIPTION =
-  "MacBook Pro 14-inch weighs 3.5 lbs (1.60 kg); 16-inch is 4.7 lbs (2.13 kg). Full weight table for M5 / M5 Pro / M5 Max, plus a 14 vs 16 buyer's guide and FAQ.";
+  "MacBook Air starts at 2.7 lbs (1.22 kg); Pro 14-inch is 3.5 lbs (1.60 kg); Pro 16-inch is 4.7 lbs (2.13 kg). Full 2026 weight table for every M5 / M5 Pro / M5 Max model, plus a buyer's guide and FAQ.";
+
+const AIR_BLOCK = `## MacBook Air Weight (2026, M5)
+
+If you came here searching "MacBook weight" rather than specifically "MacBook Pro weight," the **MacBook Air** is the lightest current Apple laptop:
+
+| Air Model | Weight (lbs) | Weight (kg) | Best For |
+|---|---|---|---|
+| MacBook Air 13" (M5) | 2.7 | 1.22 | Students, frequent travelers, daily commuters |
+| MacBook Air 15" (M5) | 3.3 | 1.50 | Larger screen without much added weight |
+
+The Air is fanless, silent, and starts at $1,099. If your workload is browsing, office, light photo editing, and code, the Air saves you 0.7–1.0 lbs vs the lightest 14-inch Pro. Need help choosing? See [MacBook Air vs MacBook Pro](/compare/macbook-air-vs-macbook-pro).
+
+`;
+
 
 const TLDR_BLOCK = `## TL;DR — MacBook Pro Weight at a Glance
 
@@ -92,6 +109,26 @@ async function main() {
     lines.splice(insertAt, 0, "", TLDR_BLOCK.trim(), "");
     content = lines.join("\n");
   }
+  // Insert Air section after the TL;DR table if not already present.
+  if (!content.includes("## MacBook Air Weight (2026, M5)")) {
+    const tldrEnd = content.indexOf("## TL;DR — MacBook Pro Weight at a Glance");
+    if (tldrEnd >= 0) {
+      // Find the next H2 after the TL;DR block to anchor insertion.
+      const afterTldr = content.indexOf("\n## ", tldrEnd + 1);
+      if (afterTldr >= 0) {
+        content =
+          content.slice(0, afterTldr + 1) +
+          AIR_BLOCK.trim() +
+          "\n\n" +
+          content.slice(afterTldr + 1);
+      } else {
+        content = content + "\n\n" + AIR_BLOCK;
+      }
+    } else {
+      content = content + "\n\n" + AIR_BLOCK;
+    }
+  }
+
   if (!content.includes("## Frequently Asked Questions")) {
     // Append FAQ before the final "## Conclusion" section if present, else end.
     const idx = content.indexOf("## Conclusion");
@@ -135,6 +172,9 @@ async function main() {
             { slug: { startsWith: "macbook-pro-14" } },
             { slug: { startsWith: "macbook-pro-2024" } },
             { slug: { startsWith: "macbook-pro-models-weight" } },
+            // DAN-453: second cluster missed by original prefix net.
+            { slug: { startsWith: "macbook-weight" } },
+            { slug: { startsWith: "macbook-models-weight" } },
           ],
         },
         { status: { not: "archived" } },
@@ -160,10 +200,11 @@ async function main() {
       OR: [
         { slug: { startsWith: "macbook-pro-weight" } },
         { slug: { startsWith: "macbook-pro-14" } },
+        { slug: { startsWith: "macbook-weight" } },
       ],
     },
   });
-  console.log(`published macbook-pro weight/14 articles remaining: ${publishedAfter}`);
+  console.log(`published macbook weight/14 articles remaining: ${publishedAfter}`);
 }
 
 main()
