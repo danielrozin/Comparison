@@ -6,9 +6,11 @@
  * function so Next.js handles them server-side before route resolution.
  *
  * Origin: DAN-452 — consolidating 91 macbook-pro-weight near-duplicates
- * (cannibalization fix) into a single canonical post. Future consolidations
- * append entries here; the dedup gate that prevents new dupes is tracked
- * separately on the engineering side.
+ * (cannibalization fix) into a single canonical post. Extended under DAN-453
+ * to absorb a second cluster of 16 macbook-weight (no "-pro-") near-duplicates
+ * that bypassed the original prefix net. Future consolidations append entries
+ * here; the dedup gate that prevents new dupes is tracked separately on the
+ * engineering side.
  */
 
 export type BlogRedirect = {
@@ -114,10 +116,32 @@ const MACBOOK_PRO_WEIGHT_DUPES: string[] = [
   "macbook-pro-weight-2026-all-models-compared-in-pounds",
 ];
 
-export const BLOG_REDIRECTS: BlogRedirect[] = MACBOOK_PRO_WEIGHT_DUPES.map(
-  (slug) => ({
-    source: `/blog/${slug}`,
-    destination: MACBOOK_PRO_WEIGHT_CANONICAL,
-    permanent: true,
-  })
-);
+// DAN-453: second cluster — macbook-weight-* (no "-pro-" segment) auto-generated
+// after DAN-452 ran. Same intent as the canonical, redirected accordingly.
+const MACBOOK_WEIGHT_DUPES: string[] = [
+  "macbook-weight-2026-complete-comparison-of-all-models",
+  "macbook-weight-2026-complete-comparison-of-m5-pro-max-air-models",
+  "macbook-weight-2026-complete-guide-to-all-models",
+  "macbook-weight-2026-complete-guide-to-m5-models",
+  "macbook-weight-2026-complete-guide-to-m5-pro-air-models",
+  "macbook-weight-2026-complete-guide-to-new-model-specs-comparisons",
+  "macbook-weight-2026-complete-guide-to-new-models",
+  "macbook-weight-2026-complete-specs-comparison-guide-for-all-models",
+  "macbook-weight-2026-complete-specs-for-all-models",
+  "macbook-weight-2026-complete-specs-for-m5-models",
+  "macbook-weight-2026-complete-specs-for-m5-pro-m5-max-air-models",
+  "macbook-weight-2026-full-specs-comparison-of-all-new-models",
+  "macbook-weight-2026-how-heavy-are-the-new-m5-models",
+  "macbook-weight-2026-how-light-are-apples-new-m5-models",
+  "macbook-weight-2026-how-light-are-the-new-m5-models",
+  "macbook-weight-2026-m5-models-compared-specs-guide",
+];
+
+export const BLOG_REDIRECTS: BlogRedirect[] = [
+  ...MACBOOK_PRO_WEIGHT_DUPES,
+  ...MACBOOK_WEIGHT_DUPES,
+].map((slug) => ({
+  source: `/blog/${slug}`,
+  destination: MACBOOK_PRO_WEIGHT_CANONICAL,
+  permanent: true,
+}));
