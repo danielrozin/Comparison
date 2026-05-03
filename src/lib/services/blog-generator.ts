@@ -7,6 +7,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
+import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
 
 export interface BlogArticle {
   id?: string;
@@ -135,11 +136,32 @@ Remember to respond with ONLY valid JSON in the exact format specified.`;
   };
 }
 
+export interface SaveBlogArticleOptions {
+  /** Bypass the DAN-520 dedup gate. For admin overrides only. */
+  skipDedup?: boolean;
+  /** Tag added to rejection log entries; helps trace which caller triggered the gate. */
+  source?: string;
+}
+
 export async function saveBlogArticle(
-  article: BlogArticle
+  article: BlogArticle,
+  options: SaveBlogArticleOptions = {}
 ): Promise<{ id: string } | null> {
   const prisma = getPrismaClient();
   if (!prisma) return null;
+
+  // DAN-520: refuse near-duplicate publishes (slug-prefix collision or topic
+  // signature match) before the DB write. Rejections logged to Redis.
+  if (!options.skipDedup) {
+    const dedup = await checkBlogDedup(article.title, article.slug);
+    if (!dedup.ok) {
+      await recordDedupRejection(article.title, article.slug, dedup, options.source);
+      console.warn(
+        `[blog-dedup] Refused "${article.slug}" — ${dedup.reason} vs "${dedup.conflictingSlug}": ${dedup.details}`
+      );
+      return null;
+    }
+  }
 
   try {
     const result = await prisma.blogArticle.upsert({
