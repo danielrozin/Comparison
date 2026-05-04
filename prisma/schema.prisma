@@ -370,6 +370,29 @@ model RefreshJob {
   @@map("refresh_jobs")
 }
 
+// Tracks each on-demand AI comparison generation attempt for the
+// /api/comparisons/generate user-facing path. Lets us deduplicate
+// concurrent visits to the same slug, surface persistent failures
+// to the UI, and detect generations stuck in_progress past a
+// reasonable threshold (>2h → admin alert).
+model GenerationAttempt {
+  id            String   @id @default(cuid())
+  slug          String
+  status        String   @default("in_progress") // in_progress, succeeded, failed
+  attempt       Int      @default(1) // 1-based attempt counter for this slug
+  errorStage    String?  @map("error_stage") // "tavily" | "anthropic" | "parse" | "save" | "timeout" | "quality"
+  errorMessage  String?  @map("error_message") @db.Text
+  durationMs    Int?     @map("duration_ms")
+  source        String   @default("user") // "user" | "cron" | "admin_backfill"
+  startedAt     DateTime @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+
+  @@index([slug])
+  @@index([status])
+  @@index([startedAt])
+  @@map("generation_attempts")
+}
+
 // ============================================================
 // INTERNAL LINKING
 // ============================================================
