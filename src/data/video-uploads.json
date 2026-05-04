@@ -1425,6 +1425,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-03T07:43:20.497Z"
+    },
+    {
+      "slug": "medicaid-vs-medicare",
+      "title": "Medicaid vs Medicare",
+      "entityA": "Medicaid",
+      "entityB": "Medicare",
+      "category": "General",
+      "videoFile": "Medicaid vs Medicare.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Medicaid vs Medicare — Full Comparison 2026",
+      "youtubeDescription": "Medicare serves 68.9 million Americans primarily 65+, while Medicaid covers 70.8 million low-income individuals. Medicare has higher costs but consistent benefits nationwide.\n\n#medicaid #medicare #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-04T07:55:41.759Z"
+    },
+    {
+      "slug": "us-military-vs-china-military",
+      "title": "Us Military vs China Military",
+      "entityA": "Us Military",
+      "entityB": "China Military",
+      "category": "Countries",
+      "videoFile": "Us Military vs China Military.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Us Military vs China Military — Full Comparison 2026",
+      "youtubeDescription": "US ranks #1 globally vs China's #3. US has superior budget ($997B vs $314B) and air power, while China leads in personnel (2.5M vs 1.4M) and naval ships.\n\n#usmilitary #chinamilitary #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-04T08:02:58.153Z"
+    },
+    {
+      "slug": "nvidia-vs-amd",
+      "title": "Nvidia vs Amd",
+      "entityA": "Nvidia",
+      "entityB": "Amd",
+      "category": "General",
+      "videoFile": "Nvidia vs Amd.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Nvidia vs Amd — Full Comparison 2026",
+      "youtubeDescription": "NVIDIA focuses on specialized closed ecosystem with advanced features, while AMD leads in open standards and raw rasterization power with better price efficiency.\n\n#nvidia #amd #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-04T08:10:23.134Z"
     }
   ]
 }
