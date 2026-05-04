@@ -173,7 +173,7 @@ export async function GET(request: NextRequest) {
   for (const blogTopic of blogTopics.slice(0, blogLimit)) {
     try {
       const article = await generateBlogArticle(blogTopic.topic);
-      const saved = await saveBlogArticle(article);
+      const saved = await saveBlogArticle(article, { source: `cron:auto-generate:${blogTopic.source}` });
       if (saved) {
         blogArticlesCreated++;
         blogSlugs.push(article.slug);
