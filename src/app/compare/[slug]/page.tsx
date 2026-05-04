@@ -378,15 +378,9 @@ function VerdictFirstLayout({
         </div>
       )}
 
-      {/* Mobile: related comparisons scroll strip below verdict area */}
-      {sidebarComparisons.length > 0 && (
-        <RelatedComparisonsSidebar
-          comparisons={sidebarComparisons}
-          sourceSlug={slug}
-          variant="mobile"
-        />
-      )}
-
+      {/* Mobile RC strip dropped (DAN-410): mobile users still get related
+          comparisons via the bottom <RelatedComparisons /> SEO grid below.
+          Desktop sticky aside + bottom grid retain crawler internal-link surface. */}
 
       {/* ── Below the fold ── */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">

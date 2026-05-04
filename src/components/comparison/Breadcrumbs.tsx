@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { SITE_URL, PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { PRODUCT_SUBCATEGORIES } from "@/lib/utils/constants";
 
 interface BreadcrumbsProps {
   title: string;
@@ -17,29 +16,10 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
         )
       : undefined;
 
-  const crumbs = [{ name: "Home", url: SITE_URL }];
-  if (category) {
-    crumbs.push({
-      name: category.charAt(0).toUpperCase() + category.slice(1),
-      url: `${SITE_URL}/category/${category}`,
-    });
-  }
-  if (subcat) {
-    crumbs.push({
-      name: subcat.name,
-      url: `${SITE_URL}/category/${category}/${subcat.slug}`,
-    });
-  }
-  crumbs.push({ name: title, url: `${SITE_URL}/compare/${slug}` });
-
+  // BreadcrumbList JSON-LD is emitted from comparisonPageSchema() in lib/seo/schema.ts
+  // — do not duplicate it here. (DAN-410)
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema(crumbs)),
-        }}
-      />
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
           <li>
