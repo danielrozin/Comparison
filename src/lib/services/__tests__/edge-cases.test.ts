@@ -116,8 +116,12 @@ describe('Edge Cases', () => {
       const slugs = getAllMockSlugs()
       for (const slug of slugs) {
         const comp = getMockComparison(slug)
-        expect(typeof comp!.category).toBe('string')
-        expect(comp!.category.length).toBeGreaterThan(0)
+        expect(comp).toBeTruthy()
+        expect(comp?.category).not.toBeNull()
+        const category = comp?.category
+        if (category == null) continue
+        expect(typeof category).toBe('string')
+        expect(category.length).toBeGreaterThan(0)
       }
     })
 
