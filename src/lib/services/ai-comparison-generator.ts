@@ -10,12 +10,18 @@ import { enrichComparisonData, type TavilyResult } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 
+// Cap each Claude call at 45s so a slow upstream can't blow past the
+// 60s Vercel function budget and leave the user-facing route hanging
+// (DAN-596). The SDK's default is 10 minutes, which is wildly larger
+// than our serverless budget.
+const ANTHROPIC_TIMEOUT_MS = 45000;
+
 function getClient(): Anthropic {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error("ANTHROPIC_API_KEY not configured");
   }
-  return new Anthropic({ apiKey });
+  return new Anthropic({ apiKey, timeout: ANTHROPIC_TIMEOUT_MS, maxRetries: 1 });
 }
 
 const GENERATION_PROMPT = `You are a comparison data expert. Generate a structured comparison between the two entities provided.
@@ -97,10 +103,20 @@ Requirements:
 - Use real statistics and data where possible — every claim should cite a number
 - Keep the year current (2026)`;
 
+export type GenerationErrorStage =
+  | "tavily"
+  | "anthropic"
+  | "parse"
+  | "save"
+  | "timeout"
+  | "quality"
+  | "unknown";
+
 export interface GenerationResult {
   success: boolean;
   comparison: ComparisonPageData | null;
   error?: string;
+  errorStage?: GenerationErrorStage;
 }
 
 export async function generateComparison(
@@ -136,20 +152,34 @@ export async function generateComparison(
       userMessage += `\n\nHere is current real-world data to incorporate into your comparison:\n${tavilyContext}`;
     }
 
-    const message = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 3000,
-      messages: [
-        {
-          role: "user",
-          content: userMessage,
-        },
-      ],
-    });
+    let message;
+    try {
+      message = await client.messages.create({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 3000,
+        messages: [
+          {
+            role: "user",
+            content: userMessage,
+          },
+        ],
+      });
+    } catch (err) {
+      const isTimeout =
+        err instanceof Error &&
+        (err.name === "APIConnectionTimeoutError" ||
+          /timeout|timed out/i.test(err.message));
+      return {
+        success: false,
+        comparison: null,
+        error: err instanceof Error ? err.message : "Anthropic call failed",
+        errorStage: isTimeout ? "timeout" : "anthropic",
+      };
+    }
 
     const content = message.content[0];
     if (content.type !== "text") {
-      return { success: false, comparison: null, error: "Unexpected response type" };
+      return { success: false, comparison: null, error: "Unexpected response type", errorStage: "anthropic" };
     }
 
     // Parse the JSON response
@@ -163,7 +193,7 @@ export async function generateComparison(
       }
       data = JSON.parse(jsonText);
     } catch {
-      return { success: false, comparison: null, error: "Failed to parse AI response as JSON" };
+      return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
     }
 
     // Transform into ComparisonPageData
@@ -260,6 +290,7 @@ export async function generateComparison(
       success: false,
       comparison: null,
       error: error instanceof Error ? error.message : "Generation failed",
+      errorStage: "unknown",
     };
   }
 }

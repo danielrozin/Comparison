@@ -49,13 +49,19 @@ export function DynamicComparison({ slug }: { slug: string }) {
     return () => clearInterval(interval);
   }, [status]);
 
+  // Match the server's 60s `maxDuration` budget so the client doesn't
+  // abort before the server can finish (DAN-596 — the previous 30s
+  // client timeout meant any generation taking 30-60s appeared
+  // "stuck" to the user even when it eventually succeeded server-side).
+  const CLIENT_TIMEOUT_MS = 65000;
+
   const startGeneration = useCallback(async () => {
     setStatus("generating");
     setError(null);
     setProgress(5);
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
+    const timeout = setTimeout(() => controller.abort(), CLIENT_TIMEOUT_MS);
 
     try {
       const res = await fetch("/api/comparisons/generate", {
@@ -66,6 +72,27 @@ export function DynamicComparison({ slug }: { slug: string }) {
       });
 
       clearTimeout(timeout);
+
+      // 202 = a concurrent visitor is already generating this slug.
+      // Wait briefly and retry — they'll finish first and we'll hit
+      // the cached row.
+      if (res.status === 202) {
+        setError(null);
+        setTimeout(() => {
+          setStatus("idle");
+        }, 4000);
+        return;
+      }
+
+      // 503 + blocked = the slug has failed repeatedly; don't auto-retry.
+      // Surface a clear actionable error and let the user click "Try Again"
+      // explicitly if they want to.
+      if (res.status === 503) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "This comparison is temporarily unavailable. Our team has been notified.");
+        setStatus("error");
+        return;
+      }
 
       if (!res.ok) {
         const text = await res.text();

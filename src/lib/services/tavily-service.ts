@@ -15,19 +15,29 @@ interface TavilyResponse {
   results: TavilyResult[];
 }
 
+// Hard timeout for any single Tavily request. Tavily has been the most
+// common silent-stall culprit in the on-demand generation pipeline
+// (DAN-596) — without this bound, a slow upstream search would hang
+// the entire 60s server budget and leave the page stuck loading.
+const TAVILY_REQUEST_TIMEOUT_MS = 8000;
+
 /**
  * Direct Tavily search wrapper.
  * Returns an empty array if the API key is not set or the request fails.
  */
 export async function searchTavily(
   query: string,
-  maxResults: number = 5
+  maxResults: number = 5,
+  timeoutMs: number = TAVILY_REQUEST_TIMEOUT_MS
 ): Promise<TavilyResult[]> {
   const apiKey = process.env.TAVILY_API_KEY;
   if (!apiKey) {
     console.warn("Tavily: TAVILY_API_KEY not configured, skipping search");
     return [];
   }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch("https://api.tavily.com/search", {
@@ -38,6 +48,7 @@ export async function searchTavily(
         query,
         max_results: maxResults,
       }),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -48,8 +59,14 @@ export async function searchTavily(
     const data: TavilyResponse = await response.json();
     return data.results || [];
   } catch (error) {
-    console.warn("Tavily: search failed:", error);
+    if (error instanceof DOMException && error.name === "AbortError") {
+      console.warn(`Tavily: search timed out after ${timeoutMs}ms for query: ${query.slice(0, 80)}`);
+    } else {
+      console.warn("Tavily: search failed:", error);
+    }
     return [];
+  } finally {
+    clearTimeout(timer);
   }
 }
 
