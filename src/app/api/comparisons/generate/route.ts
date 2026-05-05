@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
@@ -12,7 +13,7 @@ const generateSchema = z.object({
 
 /**
  * POST /api/comparisons/generate
- * Generate a comparison synchronously and return the result
+ * Generate a comparison synchronously, persist it, revalidate ISR, and return the result.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -35,18 +36,62 @@ export async function POST(request: NextRequest) {
     // Generate synchronously — wait for the result
     const result = await generateComparison(entityA, entityB, slug);
 
-    if (result.success && result.comparison) {
-      // Persist to database (non-blocking, don't fail the response if DB save fails)
-      saveComparison(result.comparison).catch((err) =>
-        console.error("Failed to save generated comparison to DB:", err)
-      );
-      return NextResponse.json({ status: "ready", comparison: result.comparison });
-    } else {
+    if (!result.success || !result.comparison) {
+      console.error(JSON.stringify({
+        event: "generate.failed",
+        stage: "ai_generation",
+        slug,
+        error: result.error || "Generation failed",
+      }));
       return NextResponse.json(
         { status: "error", error: result.error || "Generation failed" },
         { status: 500 }
       );
     }
+
+    // DAN-605: Persist synchronously. Fire-and-forget meant on Vercel the function
+    // could tear down before the DB write finished, so the row was missing on
+    // the next visit and crawlers saw the placeholder render until ISR ticked.
+    const saveResult = await saveComparison(result.comparison);
+
+    if (!saveResult) {
+      // saveComparison returns null on no-DB-connection or caught exception
+      // (see comparison-service.ts:877). We surface error to the caller rather
+      // than silently report `ready` so the same failure mode is visible.
+      console.error(JSON.stringify({
+        event: "generate.save_failed",
+        slug,
+        title: result.comparison.title,
+      }));
+      return NextResponse.json(
+        { status: "error", error: "Failed to persist comparison to database" },
+        { status: 500 }
+      );
+    }
+
+    // Bust ISR for the page so the next visitor (and crawlers) get the real
+    // SSR'd comparison instead of the cached DynamicComparison placeholder.
+    // Matches the queue worker's warmCacheForSlug behavior.
+    try {
+      revalidatePath(`/compare/${slug}`);
+      revalidatePath("/sitemap.xml");
+    } catch (err) {
+      // Don't fail the response if revalidation fails — log and continue.
+      console.warn(JSON.stringify({
+        event: "generate.revalidate_failed",
+        slug,
+        error: err instanceof Error ? err.message : String(err),
+      }));
+    }
+
+    console.log(JSON.stringify({
+      event: "generate.persisted",
+      slug,
+      comparisonId: saveResult.id,
+      title: result.comparison.title,
+    }));
+
+    return NextResponse.json({ status: "ready", comparison: result.comparison });
   } catch (error) {
     return NextResponse.json(
       { status: "error", error: error instanceof Error ? error.message : "Generation failed" },

@@ -13,6 +13,7 @@ import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
+import { formatSlugToTitle } from "@/lib/utils/brand-names";
 
 const FUN_FACTS = [
   "Did you know? We\u2019ve compared 107+ topics!",
@@ -20,14 +21,6 @@ const FUN_FACTS = [
   "Every comparison is unique and generated in real-time.",
   "We compare everything from tech to food to travel destinations.",
 ];
-
-function formatSlugToTitle(slug: string): string {
-  const parts = slug.split("-vs-");
-  if (parts.length !== 2) return slug.replace(/-/g, " ");
-  const a = parts[0].replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  const b = parts[1].replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  return `${a} vs ${b}`;
-}
 
 export function DynamicComparison({ slug }: { slug: string }) {
   const [status, setStatus] = useState<"idle" | "generating" | "ready" | "error">("idle");

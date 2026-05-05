@@ -20,6 +20,7 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { normalizeBrandName } from "@/lib/utils/brand-names";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -92,13 +93,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!comparison) {
     const parts = slug.split("-vs-");
-    const a = parts[0]?.replace(/-/g, " ") || "";
-    const b = parts[1]?.replace(/-/g, " ") || "";
-    const title = `${capitalize(a)} vs ${capitalize(b)}`;
-    const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(capitalize(a))}&b=${encodeURIComponent(capitalize(b))}&type=comparison`;
+    const rawA = parts[0]?.replace(/-/g, " ") || "";
+    const rawB = parts[1]?.replace(/-/g, " ") || "";
+    const a = normalizeBrandName(rawA);
+    const b = normalizeBrandName(rawB);
+    const title = `${a} vs ${b}`;
+    const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}&type=comparison`;
     return {
       title: `${title} | A Versus B`,
-      description: `Compare ${capitalize(a)} and ${capitalize(b)} — key differences, pros & cons, and verdict.`,
+      description: `Compare ${a} and ${b} — key differences, pros & cons, and verdict.`,
       alternates: { canonical: `${SITE_URL}/compare/${slug}` },
       openGraph: { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
       twitter: { card: "summary_large_image", images: [ogImage] },
@@ -133,10 +136,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: `${SITE_URL}/compare/${slug}`,
     },
   };
-}
-
-function capitalize(s: string): string {
-  return s.replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
