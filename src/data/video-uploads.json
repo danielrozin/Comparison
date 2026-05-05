@@ -1467,6 +1467,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-04T08:10:23.134Z"
+    },
+    {
+      "slug": "f-35-vs-su-57",
+      "title": "F 35 vs Su 57",
+      "entityA": "F 35",
+      "entityB": "Su 57",
+      "category": "General",
+      "videoFile": "F 35 vs Su 57.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "F 35 vs Su 57 — Full Comparison 2026",
+      "youtubeDescription": "F-35 leads in stealth, global deployment (18+ nations), and operational maturity. Su-57 offers superior speed, agility, and payload but limited production/combat experience.\n\n#f35 #su57 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-05T07:27:39.023Z"
+    },
+    {
+      "slug": "serena-vs-venus",
+      "title": "Serena vs Venus",
+      "entityA": "Serena",
+      "entityB": "Venus",
+      "category": "General",
+      "videoFile": "Serena vs Venus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Serena vs Venus — Full Comparison 2026",
+      "youtubeDescription": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.\n\n#serena #venus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-05T07:35:38.759Z"
+    },
+    {
+      "slug": "ww1-vs-ww2",
+      "title": "Ww1 vs Ww2",
+      "entityA": "Ww1",
+      "entityB": "Ww2",
+      "category": "General",
+      "videoFile": "Ww1 vs Ww2.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ww1 vs Ww2 — Full Comparison 2026",
+      "youtubeDescription": "WW2 was significantly more deadly than WW1, with 70-85 million deaths vs ~20 million. WW2 had far greater civilian casualties and expanded to the Pacific Theatre.\n\n#ww1 #ww2 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-05T07:44:02.522Z"
     }
   ]
 }
