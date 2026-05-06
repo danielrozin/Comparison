@@ -1509,6 +1509,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-05T07:44:02.522Z"
+    },
+    {
+      "slug": "ancient-greece-vs-ancient-rome",
+      "title": "Ancient Greece vs Ancient Rome",
+      "entityA": "Ancient Greece",
+      "entityB": "Ancient Rome",
+      "category": "General",
+      "videoFile": "Ancient Greece vs Ancient Rome.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ancient Greece vs Ancient Rome — Full Comparison 2026",
+      "youtubeDescription": "Ancient Greece pioneered democracy and philosophy while Rome built the largest ancient empire. Greece consisted of independent city-states; Rome became a unified empire.\n\n#ancientgreece #ancientrome #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-06T07:44:19.800Z"
+    },
+    {
+      "slug": "apple-vs-samsung",
+      "title": "Apple vs Samsung",
+      "entityA": "Apple",
+      "entityB": "Samsung",
+      "category": "Technology",
+      "videoFile": "Apple vs Samsung.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Apple vs Samsung — Full Comparison 2026",
+      "youtubeDescription": "Samsung dominates globally with Android's 72.77% market share and competitive pricing, while Apple leads the US market with 58.13% share and superior chip performance.\n\n#apple #samsung #technology #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-06T07:52:19.365Z"
+    },
+    {
+      "slug": "brazil-vs-argentina",
+      "title": "Brazil vs Argentina",
+      "entityA": "Brazil",
+      "entityB": "Argentina",
+      "category": "Countries",
+      "videoFile": "Brazil vs Argentina.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Brazil vs Argentina — Full Comparison 2026",
+      "youtubeDescription": "Brazil dominates economically with 3x larger GDP and superior military capabilities in most areas, while Argentina has higher GDP per capita and geographic advantages.\n\n#brazil #argentina #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-06T08:00:08.083Z"
     }
   ]
 }
