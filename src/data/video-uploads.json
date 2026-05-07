@@ -1551,6 +1551,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-06T08:00:08.083Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Booking.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airbnb vs Booking — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.\n\n#airbnb #booking #travel #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-07T07:51:13.573Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-07T07:58:18.358Z"
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "Chatgpt vs Gemini",
+      "entityA": "Chatgpt",
+      "entityB": "Gemini",
+      "category": "General",
+      "videoFile": "Chatgpt vs Gemini.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Gemini — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT excels in creative reasoning and structured writing, while Gemini leads in real-time search and multimodal capabilities. Both are competitive with different strengths.\n\n#chatgpt #gemini #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-07T08:05:55.618Z"
     }
   ]
 }
