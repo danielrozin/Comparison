@@ -1593,6 +1593,34 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-07T08:05:55.618Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-08T07:14:38.223Z"
+    },
+    {
+      "slug": "vanguard-vs-fidelity",
+      "title": "Vanguard vs Fidelity",
+      "entityA": "Vanguard",
+      "entityB": "Fidelity",
+      "category": "General",
+      "videoFile": "Vanguard vs Fidelity.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Vanguard vs Fidelity — Full Comparison 2026",
+      "youtubeDescription": "Both Vanguard and Fidelity are low-cost brokerage giants. Vanguard is more conservative, while Fidelity offers broader investment options and active trading tools.\n\n#vanguard #fidelity #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-08T07:24:59.254Z"
     }
   ]
 }
