@@ -1621,6 +1621,34 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-08T07:24:59.254Z"
+    },
+    {
+      "slug": "costco-vs-sams-club",
+      "title": "Costco vs Sams Club",
+      "entityA": "Costco",
+      "entityB": "Sams Club",
+      "category": "General",
+      "videoFile": "Costco vs Sams Club.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Costco vs Sams Club — Full Comparison 2026",
+      "youtubeDescription": "Sam's Club offers lower membership fees and better convenience, while Costco provides superior product quality and higher reward caps for heavy spenders.\n\n#costco #samsclub #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-11T08:35:11.433Z"
+    },
+    {
+      "slug": "uk-vs-usa",
+      "title": "Uk vs Usa",
+      "entityA": "Uk",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Uk vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uk vs Usa — Full Comparison 2026",
+      "youtubeDescription": "USA is significantly larger with higher government spending and defense budget, while UK has more stable governance and faster university degrees.\n\n#uk #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-11T08:55:38.940Z"
     }
   ]
 }
