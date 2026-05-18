@@ -7,6 +7,10 @@ import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
 
+// Revalidate at most every hour so freshly auto-generated content reaches
+// crawlers within ~60 minutes without needing a redeploy.
+export const revalidate = 3600;
+
 /**
  * Sitemap index generator — Next.js calls this to build a sitemap index
  * that splits URLs across multiple sub-sitemaps.
@@ -27,12 +31,15 @@ export async function generateSitemaps() {
 export default async function sitemap({
   id,
 }: {
-  id: number;
+  // Next.js passes id as a number from generateSitemaps but as a string when
+  // resolving the URL segment (`/sitemap/0.xml`), so accept both and coerce.
+  id: number | string;
 }): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
+  const shard = Number(id);
 
   // ── Sitemap 0: Static + Category pages ──
-  if (id === 0) {
+  if (shard === 0) {
     const staticPages: MetadataRoute.Sitemap = [
       { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
       { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
@@ -71,7 +78,7 @@ export default async function sitemap({
   }
 
   // ── Sitemap 1: Comparison pages ──
-  if (id === 1) {
+  if (shard === 1) {
     const { comparisons } = await getAllSitemapData();
     return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
       url: `${SITE_URL}/compare/${comp.slug}`,
@@ -82,7 +89,7 @@ export default async function sitemap({
   }
 
   // ── Sitemap 2: Entity + Alternatives pages ──
-  if (id === 2) {
+  if (shard === 2) {
     const { entities: entityData } = await getAllSitemapData();
     const entries = Array.from(entityData.entries());
 
@@ -104,7 +111,7 @@ export default async function sitemap({
   }
 
   // ── Sitemap 3: Blog pages ──
-  if (id === 3) {
+  if (shard === 3) {
     const blogListPage: MetadataRoute.Sitemap = [
       { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     ];
@@ -126,7 +133,7 @@ export default async function sitemap({
   }
 
   // ── Sitemap 4: Review pages ──
-  if (id === 4) {
+  if (shard === 4) {
     let reviewCategoryPages: MetadataRoute.Sitemap = [];
     try {
       const reviewCats = await getReviewCategories();
