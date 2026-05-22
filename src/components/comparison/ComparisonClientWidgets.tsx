@@ -58,6 +58,11 @@ export const ConversionFunnelTracker = dynamic(
   { ssr: false, loading: () => null }
 );
 
+export const InterceptSurvey = dynamic(
+  () => import("@/components/engagement/InterceptSurvey").then((m) => ({ default: m.InterceptSurvey })),
+  { ssr: false, loading: () => null }
+);
+
 export const ShareBar = dynamic(
   () => import("@/components/engagement/ShareBar").then((m) => ({ default: m.ShareBar })),
   // Reserve a 32px tall row matching the icon buttons — prevents the hero
