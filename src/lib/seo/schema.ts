@@ -10,6 +10,28 @@ import type { ComparisonPageData, FAQData, CategoryData, CitationStats } from "@
 // Organization schema (site-wide)
 // ============================================================
 
+// Centralized social profile URLs for Organization sameAs entity-graph signals.
+// Each slot is overridable via NEXT_PUBLIC_SOCIAL_* env vars so URL list updates
+// (DAN-422 / DAN-419 social activation) ship as a config change, not a code deploy.
+// All defaults are empty: per DAN-419 default-fired 2026-05-04, no social accounts
+// are claimed yet, so any hardcoded URL would 404 and act as a negative entity-graph
+// signal. SMM (4f3bd1c8) sets the env vars once accounts are claimed and verified.
+// Empty/unset slots are filtered out so unverified handles don't leak into JSON-LD.
+export function socialSameAs(): string[] {
+  const slots = [
+    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_GITHUB ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_PINTEREST ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_REDDIT ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_QUORA ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM ?? "",
+  ];
+  return slots.filter((url) => url.trim().length > 0);
+}
+
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
@@ -17,13 +39,7 @@ export function organizationSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/images/logo.png`,
-    sameAs: [
-      "https://twitter.com/aversusb",
-      "https://www.linkedin.com/company/aversusb",
-      "https://github.com/aversusb",
-      "https://www.facebook.com/aversusb",
-      "https://www.youtube.com/@aversusb",
-    ],
+    sameAs: socialSameAs(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     foundingDate: "2024",
     knowsAbout: [
@@ -125,11 +141,7 @@ export function comparisonPageSchema(
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
       },
-      sameAs: [
-        "https://twitter.com/aversusb",
-        "https://www.linkedin.com/company/aversusb",
-        "https://github.com/aversusb",
-      ],
+      sameAs: socialSameAs(),
     },
     mainEntityOfPage: {
       "@type": "WebPage",
