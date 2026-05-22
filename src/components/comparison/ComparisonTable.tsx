@@ -9,6 +9,11 @@ const TABLE_REDESIGN =
     ? process.env.NEXT_PUBLIC_TABLE_REDESIGN !== "false"
     : process.env.NEXT_PUBLIC_TABLE_REDESIGN !== "false";
 
+// Cap rendered rows per category. Overflow goes into a real <details>
+// element so the content stays in the SSR HTML for SEO crawl, but the
+// browser skips painting it until opened (CWV-positive). (DAN-410)
+const VISIBLE_ATTRS_PER_CATEGORY = 5;
+
 // --- Icons ---
 
 function TrophyIcon() {
@@ -203,6 +208,90 @@ function GroupHeader({
       </div>
       <ChevronIcon open={isOpen} />
     </button>
+  );
+}
+
+// --- Overflow renderer for capped rows (DAN-410) ---
+// Renders attrs past the visible cap in stripped markup inside <details>.
+// No winner highlighting, no icons — just attribute name + the two values,
+// kept in the SSR HTML so Google still indexes them.
+
+function OverflowRowsDesktop({
+  attrs,
+}: {
+  attrs: ComparisonAttribute[];
+}) {
+  if (attrs.length === 0) return null;
+  return (
+    <tr>
+      <td colSpan={3} className="p-0">
+        <details className="border-t border-border/30">
+          <summary className="px-5 py-2.5 text-xs font-medium text-primary-600 hover:bg-primary-50/40 cursor-pointer select-none">
+            Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
+          </summary>
+          <div role="rowgroup">
+            {attrs.map((attr) => (
+              <div
+                key={attr.id}
+                className="grid grid-cols-[40%_30%_30%] border-t border-border/20 text-sm"
+              >
+                <div className="px-5 py-2 text-text">
+                  {attr.name}
+                  {attr.unit && (
+                    <span className="ml-1 text-xs text-text-secondary">
+                      ({attr.unit})
+                    </span>
+                  )}
+                </div>
+                <div className="px-5 py-2 text-center text-text">
+                  {attr.values[0]?.valueText || "—"}
+                </div>
+                <div className="px-5 py-2 text-center text-text">
+                  {attr.values[1]?.valueText || "—"}
+                </div>
+              </div>
+            ))}
+          </div>
+        </details>
+      </td>
+    </tr>
+  );
+}
+
+function OverflowRowsMobile({
+  attrs,
+}: {
+  attrs: ComparisonAttribute[];
+}) {
+  if (attrs.length === 0) return null;
+  return (
+    <details className="border-t border-border/30">
+      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-gray-50/80">
+        Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
+      </summary>
+      <div className="divide-y divide-border/30">
+        {attrs.map((attr) => (
+          <div key={attr.id} className="bg-white">
+            <div className="px-3 py-1.5 bg-gray-50/40">
+              <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                {attr.name}
+                {attr.unit && (
+                  <span className="font-normal ml-0.5">({attr.unit})</span>
+                )}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border/30 text-sm">
+              <div className="px-3 py-2 text-center text-text">
+                {attr.values[0]?.valueText || "—"}
+              </div>
+              <div className="px-3 py-2 text-center text-text">
+                {attr.values[1]?.valueText || "—"}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }
 
@@ -452,44 +541,54 @@ function RedesignedTable({
                         />
                       </td>
                     </tr>
-                    {isOpen &&
-                      attrs.map((attr, i) => {
-                        const valA = attr.values[0];
-                        const valB = attr.values[1];
-                        const winner = getWinner(attr);
+                    {isOpen && (() => {
+                      const visible = attrs.slice(0, VISIBLE_ATTRS_PER_CATEGORY);
+                      const overflow = attrs.slice(VISIBLE_ATTRS_PER_CATEGORY);
+                      return (
+                        <>
+                          {visible.map((attr, i) => {
+                            const valA = attr.values[0];
+                            const valB = attr.values[1];
+                            const winner = getWinner(attr);
+                            const isLastVisible =
+                              i === visible.length - 1 && overflow.length === 0;
 
-                        return (
-                          <tr
-                            key={attr.id}
-                            className={`${
-                              i !== attrs.length - 1
-                                ? "border-b border-border/30"
-                                : "border-b border-border"
-                            } hover:bg-primary-50/30 transition-colors`}
-                          >
-                            <td className="px-5 py-3 text-sm font-medium text-text">
-                              {attr.name}
-                              {attr.unit && (
-                                <span className="ml-1 text-xs text-text-secondary">
-                                  ({attr.unit})
-                                </span>
-                              )}
-                            </td>
-                            <ValueCell
-                              value={valA}
-                              isWinner={winner === "a"}
-                              isLoser={winner === "b"}
-                              isTie={winner === "tie"}
-                            />
-                            <ValueCell
-                              value={valB}
-                              isWinner={winner === "b"}
-                              isLoser={winner === "a"}
-                              isTie={winner === "tie"}
-                            />
-                          </tr>
-                        );
-                      })}
+                            return (
+                              <tr
+                                key={attr.id}
+                                className={`${
+                                  isLastVisible
+                                    ? "border-b border-border"
+                                    : "border-b border-border/30"
+                                } hover:bg-primary-50/30 transition-colors`}
+                              >
+                                <td className="px-5 py-3 text-sm font-medium text-text">
+                                  {attr.name}
+                                  {attr.unit && (
+                                    <span className="ml-1 text-xs text-text-secondary">
+                                      ({attr.unit})
+                                    </span>
+                                  )}
+                                </td>
+                                <ValueCell
+                                  value={valA}
+                                  isWinner={winner === "a"}
+                                  isLoser={winner === "b"}
+                                  isTie={winner === "tie"}
+                                />
+                                <ValueCell
+                                  value={valB}
+                                  isWinner={winner === "b"}
+                                  isLoser={winner === "a"}
+                                  isTie={winner === "tie"}
+                                />
+                              </tr>
+                            );
+                          })}
+                          <OverflowRowsDesktop attrs={overflow} />
+                        </>
+                      );
+                    })()}
                   </Fragment>
                 );
               })}
@@ -538,9 +637,13 @@ function RedesignedTable({
                   isOpen={isOpen}
                   onToggle={() => toggleGroup(categoryName)}
                 />
-                {isOpen && (
+                {isOpen && (() => {
+                  const visible = attrs.slice(0, VISIBLE_ATTRS_PER_CATEGORY);
+                  const overflow = attrs.slice(VISIBLE_ATTRS_PER_CATEGORY);
+                  return (
+                  <>
                   <div className="divide-y divide-border/40">
-                    {attrs.map((attr) => {
+                    {visible.map((attr) => {
                       const valA = attr.values[0];
                       const valB = attr.values[1];
                       const winner = getWinner(attr);
@@ -594,7 +697,10 @@ function RedesignedTable({
                       );
                     })}
                   </div>
-                )}
+                  <OverflowRowsMobile attrs={overflow} />
+                  </>
+                  );
+                })()}
               </div>
             );
           })}

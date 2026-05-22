@@ -915,3 +915,53 @@ model OutreachPost {
   @@index([createdAt])
   @@map("outreach_posts")
 }
+
+// ============================================================
+// GDPR CONSENT MANAGEMENT
+// ============================================================
+// Server-side audit trail for GDPR Article 7(1) — controller must
+// be able to demonstrate that consent was given.
+model ConsentRecord {
+  id                String    @id @default(cuid())
+  visitorId         String    @map("visitor_id")
+  consentCategories Json      @map("consent_categories")
+  ipHash            String?   @map("ip_hash")
+  policyVersion     String    @map("policy_version")
+  userAgent         String?   @map("user_agent") @db.Text
+  geoCountry        String?   @map("geo_country")
+  grantedAt         DateTime  @default(now()) @map("granted_at")
+  revokedAt         DateTime? @map("revoked_at")
+  revokedReason     String?   @map("revoked_reason")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@index([visitorId])
+  @@index([grantedAt])
+  @@index([geoCountry])
+  @@map("consent_records")
+}
+
+// ============================================================
+// COMPARISON TRACKERS — DAN-406
+// Users subscribe to a single comparison's updates (price, spec, verdict).
+// Status flow: pending (awaiting confirmation) -> active -> stopped
+// ============================================================
+model ComparisonTracker {
+  id                String    @id @default(cuid())
+  email             String
+  comparisonSlug    String    @map("comparison_slug")
+  triggers          String[]  // ["price_change", "new_spec", "verdict_update"]
+  status            String    @default("pending") // pending | active | stopped
+  confirmationToken String?   @unique @map("confirmation_token") // single-use magic-link token
+  confirmedAt       DateTime? @map("confirmed_at")
+  source            String?   // "card" | "logged_in_oneclick"
+  lastNotifiedAt    DateTime? @map("last_notified_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@unique([email, comparisonSlug], name: "uniq_email_slug")
+  @@index([comparisonSlug])
+  @@index([status])
+  @@index([email])
+  @@map("comparison_trackers")
+}

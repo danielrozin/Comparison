@@ -6,11 +6,13 @@ interface QuickAnswerTLDRProps {
   entityB: ComparisonEntityData;
 }
 
-export function QuickAnswerTLDR({ quickAnswer, entityA, entityB }: QuickAnswerTLDRProps) {
+export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _entityB }: QuickAnswerTLDRProps) {
   if (!quickAnswer.tldr) return null;
 
-  const question = `What is the difference between ${entityA.name} and ${entityB.name}?`;
-
+  // FAQPage JSON-LD for the TL;DR Q&A is intentionally NOT emitted here.
+  // The canonical FAQPage is built by comparisonPageSchema() in lib/seo/schema.ts
+  // from the full comparison.faqs list — Google allows only one FAQPage per URL,
+  // and the TL;DR question is already covered there. (DAN-410)
   return (
     <>
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-3">
@@ -55,27 +57,6 @@ export function QuickAnswerTLDR({ quickAnswer, entityA, entityB }: QuickAnswerTL
           </div>
         </div>
       </section>
-
-      {/* FAQ JSON-LD for the TL;DR — targets featured snippets */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: quickAnswer.tldr,
-                },
-              },
-            ],
-          }),
-        }}
-      />
     </>
   );
 }

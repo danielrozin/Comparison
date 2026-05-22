@@ -23,6 +23,7 @@ import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
+import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -62,6 +63,7 @@ import {
   VersionHistory,
   StickyAffiliateCTA,
   ConversionFunnelTracker,
+  InterceptSurvey,
   ShareBar,
   LikeButton,
   BackToResults,
@@ -345,6 +347,12 @@ function VerdictFirstLayout({
         />
       )}
 
+      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
+      <TrackComparisonCard
+        comparisonSlug={comparison.slug}
+        comparisonTitle={comparison.title}
+      />
+
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
         <ComparisonPoll
@@ -378,15 +386,9 @@ function VerdictFirstLayout({
         </div>
       )}
 
-      {/* Mobile: related comparisons scroll strip below verdict area */}
-      {sidebarComparisons.length > 0 && (
-        <RelatedComparisonsSidebar
-          comparisons={sidebarComparisons}
-          sourceSlug={slug}
-          variant="mobile"
-        />
-      )}
-
+      {/* Mobile RC strip dropped (DAN-410): mobile users still get related
+          comparisons via the bottom <RelatedComparisons /> SEO grid below.
+          Desktop sticky aside + bottom grid retain crawler internal-link surface. */}
 
       {/* ── Below the fold ── */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
@@ -524,6 +526,9 @@ function VerdictFirstLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
     </>
   );
 }

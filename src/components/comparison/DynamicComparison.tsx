@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 import type { ComparisonPageData } from "@/types";
 import { ComparisonHero } from "./ComparisonHero";
@@ -13,6 +14,7 @@ import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
+import { InterceptSurvey } from "@/components/engagement/InterceptSurvey";
 
 const FUN_FACTS = [
   "Did you know? We\u2019ve compared 107+ topics!",
@@ -213,14 +215,14 @@ export function DynamicComparison({ slug }: { slug: string }) {
       {/* Breadcrumbs */}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li><a href="/" className="hover:text-primary-600 transition-colors">Home</a></li>
+          <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
           {comparison.category && (
             <>
               <li>/</li>
               <li>
-                <a href={`/category/${comparison.category}`} className="hover:text-primary-600 transition-colors capitalize">
+                <Link href={`/category/${comparison.category}`} className="hover:text-primary-600 transition-colors capitalize">
                   {comparison.category}
-                </a>
+                </Link>
               </li>
             </>
           )}
@@ -275,6 +277,9 @@ export function DynamicComparison({ slug }: { slug: string }) {
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
 
       <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
     </>
   );
 }

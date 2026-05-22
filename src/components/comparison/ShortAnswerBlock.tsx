@@ -15,15 +15,17 @@ interface ShortAnswerBlockProps {
 export function ShortAnswerBlock({
   shortAnswer,
   verdict,
-  entityA,
-  entityB,
+  entityA: _entityA,
+  entityB: _entityB,
 }: ShortAnswerBlockProps) {
   // Primary: shortAnswer field. Fallback: first 2 sentences of verdict.
   const text = shortAnswer || extractFirstSentences(verdict, 2);
   if (!text) return null;
 
-  const question = `What is the difference between ${entityA.name} and ${entityB.name}?`;
-
+  // FAQPage JSON-LD for the implicit "What is the difference" Q&A is intentionally
+  // NOT emitted here. The canonical FAQPage is built by comparisonPageSchema()
+  // in lib/seo/schema.ts from comparison.faqs — Google allows only one FAQPage
+  // per URL, and a near-duplicate single-Q schema can dilute the indexed one. (DAN-410)
   return (
     <>
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
@@ -50,27 +52,6 @@ export function ShortAnswerBlock({
           </div>
         </div>
       </section>
-
-      {/* FAQ JSON-LD for implicit question — targets featured snippets */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: [
-              {
-                "@type": "Question",
-                name: question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: text,
-                },
-              },
-            ],
-          }),
-        }}
-      />
     </>
   );
 }
