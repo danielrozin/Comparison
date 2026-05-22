@@ -1,0 +1,42 @@
+{
+  "title": "Delta vs United",
+  "entityA": "Delta",
+  "entityB": "United",
+  "category": "AIRLINES",
+  "shortAnswer": "Delta wins on punctuality, Skytrax service rating, and revenue, while United offers wider global reach with more destinations and international routes — their fleets are the same size.",
+  "keyDifferences": [
+    { "label": "Destinations", "entityAValue": "290", "entityBValue": "350", "winner": "b" },
+    { "label": "Int'l routes", "entityAValue": "~150", "entityBValue": "~200", "winner": "b" },
+    { "label": "On-time", "entityAValue": "84.3%", "entityBValue": "80.4%", "winner": "a" },
+    { "label": "Skytrax", "entityAValue": "4★", "entityBValue": "3★", "winner": "a" },
+    { "label": "Revenue", "entityAValue": "$59.0B", "entityBValue": "$57.1B", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Fleet size", "valueA": "982", "valueB": "982", "winner": "tie" },
+    { "label": "Destinations", "valueA": "290", "valueB": "350", "winner": "b" },
+    { "label": "Int'l routes", "valueA": "~150", "valueB": "~200", "winner": "b" },
+    { "label": "On-time", "valueA": "84.3%", "valueB": "80.4%", "winner": "a" },
+    { "label": "Skytrax", "valueA": "4★", "valueB": "3★", "winner": "a" },
+    { "label": "Revenue", "valueA": "$59.0B", "valueB": "$57.1B", "winner": "a" }
+  ],
+  "prosA": [
+    "84.3% on-time rate",
+    "4★ Skytrax rating",
+    "$59.0B revenue"
+  ],
+  "consA": [
+    "290 destinations vs 350",
+    "~150 international routes vs ~200"
+  ],
+  "prosB": [
+    "350 destinations",
+    "~200 international routes"
+  ],
+  "consB": [
+    "80.4% on-time rate",
+    "3★ Skytrax rating",
+    "$57.1B revenue"
+  ],
+  "verdict": "Delta wins on punctuality, on-board service rating, and revenue. United wins on global reach with more destinations and international routes. Pick by route map.",
+  "slug": "delta-vs-united"
+}

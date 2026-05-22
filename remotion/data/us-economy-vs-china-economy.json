@@ -1,0 +1,44 @@
+{
+  "title": "US Economy vs China Economy",
+  "entityA": "USA",
+  "entityB": "China",
+  "category": "ECONOMIES",
+  "shortAnswer": "The US leads on nominal GDP, per-capita output, and R&D investment, while China leads on manufacturing scale, total exports, and foreign-exchange reserves — two complementary economic giants.",
+  "keyDifferences": [
+    { "label": "GDP nominal", "entityAValue": "$27.4T", "entityBValue": "$17.7T", "winner": "a" },
+    { "label": "GDP per cap", "entityAValue": "$82,720", "entityBValue": "$12,720", "winner": "a" },
+    { "label": "Manufacturing", "entityAValue": "$2.5T", "entityBValue": "$4.6T", "winner": "b" },
+    { "label": "Exports", "entityAValue": "$2.0T", "entityBValue": "$3.6T", "winner": "b" },
+    { "label": "FX reserves", "entityAValue": "$37B", "entityBValue": "$3.2T", "winner": "b" }
+  ],
+  "stats": [
+    { "label": "GDP nominal", "valueA": "$27.4T", "valueB": "$17.7T", "winner": "a" },
+    { "label": "GDP per cap", "valueA": "$82,720", "valueB": "$12,720", "winner": "a" },
+    { "label": "Manufacturing", "valueA": "$2.5T", "valueB": "$4.6T", "winner": "b" },
+    { "label": "Exports", "valueA": "$2.0T", "valueB": "$3.6T", "winner": "b" },
+    { "label": "R&D spending", "valueA": "$806B", "valueB": "$458B", "winner": "a" },
+    { "label": "FX reserves", "valueA": "$37B", "valueB": "$3.2T", "winner": "b" }
+  ],
+  "prosA": [
+    "$27.4T nominal GDP",
+    "$82,720 GDP per capita",
+    "$806B R&D spending"
+  ],
+  "consA": [
+    "$2.5T manufacturing vs $4.6T",
+    "$2.0T exports vs $3.6T",
+    "Just $37B FX reserves"
+  ],
+  "prosB": [
+    "$4.6T manufacturing output",
+    "$3.6T in exports",
+    "$3.2T FX reserves"
+  ],
+  "consB": [
+    "$17.7T nominal GDP",
+    "$12,720 GDP per capita",
+    "$458B R&D spending"
+  ],
+  "verdict": "US has bigger nominal GDP, higher per-capita output, and deeper R&D. China leads manufacturing scale, exports, and FX reserves. Two complementary giants.",
+  "slug": "us-economy-vs-china-economy"
+}

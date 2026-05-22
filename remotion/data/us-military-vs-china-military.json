@@ -1,0 +1,44 @@
+{
+  "title": "US Military vs PLA",
+  "entityA": "US Military",
+  "entityB": "PLA",
+  "category": "MILITARY",
+  "shortAnswer": "China's PLA leads on personnel and warship count, while the US military leads on defense budget, total aircraft, and aircraft carriers — reflecting two very different military doctrines.",
+  "keyDifferences": [
+    { "label": "Active troops", "entityAValue": "1.39 M", "entityBValue": "2.04 M", "winner": "b" },
+    { "label": "Defense bud", "entityAValue": "$886B", "entityBValue": "$292B", "winner": "a" },
+    { "label": "Aircraft", "entityAValue": "13,200", "entityBValue": "3,300", "winner": "a" },
+    { "label": "Warships", "entityAValue": "290", "entityBValue": "370", "winner": "b" },
+    { "label": "Carriers", "entityAValue": "11", "entityBValue": "3", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Active troops", "valueA": "1.39 M", "valueB": "2.04 M", "winner": "b" },
+    { "label": "Defense bud", "valueA": "$886B", "valueB": "$292B", "winner": "a" },
+    { "label": "Aircraft", "valueA": "13,200", "valueB": "3,300", "winner": "a" },
+    { "label": "Warships", "valueA": "290", "valueB": "370", "winner": "b" },
+    { "label": "Carriers", "valueA": "11", "valueB": "3", "winner": "a" },
+    { "label": "Ground troops", "valueA": "480 K", "valueB": "975 K", "winner": "b" }
+  ],
+  "prosA": [
+    "$886B defense budget",
+    "13,200 aircraft",
+    "11 aircraft carriers"
+  ],
+  "consA": [
+    "1.39 M active troops vs 2.04 M",
+    "290 warships vs 370",
+    "480 K ground troops vs 975 K"
+  ],
+  "prosB": [
+    "2.04 M active troops",
+    "370 warships",
+    "975 K ground troops"
+  ],
+  "consB": [
+    "$292B defense budget",
+    "Only 3,300 aircraft",
+    "Just 3 aircraft carriers"
+  ],
+  "verdict": "China leads on personnel, navy ship count, and ground troops. US leads on defense budget, airpower, and aircraft carriers. Two top militaries — different doctrines.",
+  "slug": "us-military-vs-china-military"
+}
