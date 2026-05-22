@@ -41,6 +41,10 @@ export default function GlobalError({
               >
                 Try again
               </button>
+              {/* Hard navigation is intentional here: global-error replaces the
+                  root layout when the app tree has crashed, so a full page reload
+                  is more reliable than client-side routing via next/link. */}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
               <a
                 href="/"
                 style={{ padding: "0.75rem 1.5rem", backgroundColor: "#f3f4f6", color: "#111827", fontWeight: 600, borderRadius: "0.75rem", textDecoration: "none", fontSize: "1rem" }}

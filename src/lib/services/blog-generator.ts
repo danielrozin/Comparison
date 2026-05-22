@@ -5,6 +5,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
+import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 
@@ -30,7 +31,6 @@ export interface BlogArticle {
 
 function getPrismaClient() {
   try {
-    const { getPrisma } = require("@/lib/db/prisma");
     return getPrisma();
   } catch {
     return null;
