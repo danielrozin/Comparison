@@ -62,6 +62,7 @@ import {
   VersionHistory,
   StickyAffiliateCTA,
   ConversionFunnelTracker,
+  InterceptSurvey,
   ShareBar,
   LikeButton,
   BackToResults,
@@ -518,6 +519,9 @@ function VerdictFirstLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
     </>
   );
 }

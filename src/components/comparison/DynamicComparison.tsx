@@ -13,6 +13,7 @@ import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
+import { InterceptSurvey } from "@/components/engagement/InterceptSurvey";
 
 const FUN_FACTS = [
   "Did you know? We\u2019ve compared 107+ topics!",
@@ -275,6 +276,9 @@ export function DynamicComparison({ slug }: { slug: string }) {
       {comparison.faqs.length > 0 && <FAQBlock faqs={comparison.faqs} />}
 
       <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
     </>
   );
 }
