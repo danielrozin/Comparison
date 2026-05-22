@@ -1,0 +1,263 @@
+{
+  "slug": "cursor-vs-claude-code",
+  "title": "Cursor vs Claude Code",
+  "category": "software",
+  "shortAnswer": "Cursor and Claude Code are best understood as complementary tools rather than direct rivals: Cursor is an AI-native IDE (a fork of VS Code) built for interactive, in-editor coding, while Claude Code is a terminal-based agentic assistant designed to run multi-file tasks, automation, and scripted workflows from the command line. If you want a familiar visual editor with inline completions, AI chat, and tab-to-accept edits, Cursor wins. If you want to delegate larger agentic jobs, run AI in tmux/CI, or script repeatable code transformations, Claude Code is the better fit. Many serious developers run both, using Cursor as their daily editing surface and Claude Code for headless, automated, or large-scope work.",
+  "verdict": "Choose Cursor if you live inside an IDE, value visual diffs and inline completions, and want a single multi-model environment for everyday feature work and quick edits. Choose Claude Code if your work skews toward agentic, multi-file, or automated tasks — large refactors, batch transformations, CI pipelines, or anything you'd rather kick off from a terminal and let run. The most common honest answer is 'use both': Cursor for interactive, hands-on building, and Claude Code for headless automation and heavy agentic lifting. Because both are roughly $20/month at the entry tier, the decision is rarely about cost and almost always about which workflow matches how you actually code. Pick one to start, but expect daily developers to converge on a hybrid setup.",
+  "metaTitle": "Cursor vs Claude Code: IDE vs CLI Compared (2026)",
+  "metaDescription": "Cursor (AI IDE) vs Claude Code (terminal agent): interface, pricing, rate limits, automation, and why serious developers often use both. 2026 comparison.",
+  "keyDifferences": [
+    {
+      "label": "Interface",
+      "entityAValue": "Full graphical IDE — a fork of VS Code with AI chat, inline edits, and visual diffs",
+      "entityBValue": "Terminal/CLI tool that runs in your shell; no GUI of its own",
+      "winner": "tie"
+    },
+    {
+      "label": "Primary use mode",
+      "entityAValue": "Interactive, in-editor coding: autocomplete, tab-to-accept, chat-driven edits while you watch",
+      "entityBValue": "Agentic automation: delegate multi-step, multi-file tasks and let the agent execute",
+      "winner": "tie"
+    },
+    {
+      "label": "Underlying models",
+      "entityAValue": "Multi-model — choose between Anthropic Claude, OpenAI GPT, Google Gemini and others",
+      "entityBValue": "Anthropic Claude models only (Opus / Sonnet family)",
+      "winner": "a"
+    },
+    {
+      "label": "Pricing structure",
+      "entityAValue": "Pro plan around $20/mo flat with request quotas; usage-based add-ons above the quota",
+      "entityBValue": "Available via Claude Pro/Max (~$20/mo and up) with usage limits, plus pay-as-you-go API billing",
+      "winner": "tie"
+    },
+    {
+      "label": "Rate limits",
+      "entityAValue": "Monthly fast-request quota on Pro; predictable until you exhaust it, then slower or metered",
+      "entityBValue": "Rolling usage limits with roughly 5-hour session windows on subscription tiers; API tier is metered by tokens",
+      "winner": "tie"
+    },
+    {
+      "label": "Codebase context handling",
+      "entityAValue": "Indexes the open workspace for semantic retrieval; @-mention files, symbols, and docs in chat",
+      "entityBValue": "Reads the repo from the working directory on demand; strong at exploring and editing across many files agentically",
+      "winner": "tie"
+    },
+    {
+      "label": "Automation & scripting",
+      "entityBValue": "Excellent — scriptable, runs headless in tmux/zellij, CI pipelines, and non-interactive batch jobs",
+      "entityAValue": "Limited — built around an interactive GUI session, not designed for headless scripting",
+      "winner": "b"
+    },
+    {
+      "label": "Learning curve",
+      "entityAValue": "Gentle for anyone who knows VS Code; familiar editor with AI layered on top",
+      "entityBValue": "Steeper — comfort with the terminal and agentic prompting required",
+      "winner": "a"
+    },
+    {
+      "label": "Extensibility",
+      "entityAValue": "Inherits the VS Code extension ecosystem plus AI features; rules files and settings",
+      "entityBValue": "Composable in shell pipelines, MCP servers, hooks, and CI; integrates with existing terminal tooling",
+      "winner": "tie"
+    },
+    {
+      "label": "Best fit",
+      "entityAValue": "Interactive feature building, quick edits, and developers who prefer a visual editor",
+      "entityBValue": "Large automated refactors, agentic multi-file tasks, and command-line / CI workflows",
+      "winner": "tie"
+    }
+  ],
+  "entities": [
+    {
+      "name": "Cursor",
+      "slug": "cursor",
+      "shortDesc": "An AI-native code editor (VS Code fork) built for interactive, in-editor coding with multi-model AI.",
+      "entityType": "software",
+      "pros": [
+        "Familiar VS Code interface with a near-zero learning curve for existing users",
+        "Excellent inline completions and tab-to-accept editing flow",
+        "Multi-model choice — Claude, GPT, Gemini and more in one place",
+        "Visual diffs make reviewing and accepting AI changes easy",
+        "Workspace indexing with @-mentions for files, symbols, and docs"
+      ],
+      "cons": [
+        "Not designed for headless or scripted automation",
+        "Fast-request quotas can be exhausted on heavy Pro usage",
+        "Tied to its own editor — less natural inside terminal-centric workflows"
+      ],
+      "bestFor": "Developers who want a visual, IDE-first AI experience for interactive feature work and everyday edits."
+    },
+    {
+      "name": "Claude Code",
+      "slug": "claude-code",
+      "shortDesc": "Anthropic's terminal-based agentic coding assistant for multi-file tasks, automation, and CI.",
+      "entityType": "software",
+      "pros": [
+        "Strong agentic execution across many files in a single delegated task",
+        "Runs headless in tmux/zellij, CI pipelines, and non-interactive scripts",
+        "Editor-agnostic — works with any toolchain from the terminal",
+        "Composes cleanly with shell pipelines, MCP servers, and hooks",
+        "Backed directly by Anthropic's latest Claude models"
+      ],
+      "cons": [
+        "Steeper learning curve for developers not comfortable in the terminal",
+        "Anthropic models only — no GPT or Gemini option",
+        "Subscription tiers carry rolling usage limits and session windows"
+      ],
+      "bestFor": "Developers automating large refactors, agentic multi-file tasks, and command-line or CI-driven workflows."
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Interface type",
+      "unit": null,
+      "category": "Interface",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Graphical IDE (VS Code fork)",
+      "entityANumber": null,
+      "entityBValue": "Terminal / CLI",
+      "entityBNumber": null
+    },
+    {
+      "name": "Primary workflow",
+      "unit": null,
+      "category": "Workflow",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Interactive in-editor coding",
+      "entityANumber": null,
+      "entityBValue": "Agentic automation & scripting",
+      "entityBNumber": null
+    },
+    {
+      "name": "Entry price",
+      "unit": "USD/month",
+      "category": "Pricing",
+      "dataType": "number",
+      "higherIsBetter": false,
+      "entityAValue": "~$20/mo (Pro)",
+      "entityANumber": 20,
+      "entityBValue": "~$20/mo (via Claude Pro)",
+      "entityBNumber": 20
+    },
+    {
+      "name": "Pricing model",
+      "unit": null,
+      "category": "Pricing",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Flat plan with request quota + usage add-ons",
+      "entityANumber": null,
+      "entityBValue": "Subscription with usage limits, or pay-as-you-go API",
+      "entityBNumber": null
+    },
+    {
+      "name": "Rate limit style",
+      "unit": null,
+      "category": "Pricing",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Monthly fast-request quota",
+      "entityANumber": null,
+      "entityBValue": "Rolling usage limits (~5-hour windows) or token metering",
+      "entityBNumber": null
+    },
+    {
+      "name": "Model choice",
+      "unit": null,
+      "category": "Models",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Multi-model (Claude, GPT, Gemini, etc.)",
+      "entityANumber": null,
+      "entityBValue": "Anthropic Claude only",
+      "entityBNumber": null
+    },
+    {
+      "name": "Headless / CI automation",
+      "unit": null,
+      "category": "Workflow",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Not designed for it",
+      "entityANumber": null,
+      "entityBValue": "Yes — tmux/zellij, CI, scripts",
+      "entityBNumber": null
+    },
+    {
+      "name": "Codebase context",
+      "unit": null,
+      "category": "Workflow",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Workspace indexing + @-mentions",
+      "entityANumber": null,
+      "entityBValue": "On-demand repo reading, agentic exploration",
+      "entityBNumber": null
+    },
+    {
+      "name": "Learning curve",
+      "unit": null,
+      "category": "Workflow",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Low (VS Code familiarity)",
+      "entityANumber": null,
+      "entityBValue": "Moderate (terminal + agentic prompting)",
+      "entityBNumber": null
+    },
+    {
+      "name": "Best for",
+      "unit": null,
+      "category": "Workflow",
+      "dataType": "text",
+      "higherIsBetter": null,
+      "entityAValue": "Interactive feature building & quick edits",
+      "entityANumber": null,
+      "entityBValue": "Large refactors, agentic & CI automation",
+      "entityBNumber": null
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Is Cursor or Claude Code better?",
+      "answer": "Neither is universally better — they're built for different jobs, so the right choice depends on how you work. Cursor is better if you want a visual IDE with inline completions and you do most of your coding interactively inside an editor. Claude Code is better if you want to delegate larger agentic tasks, run AI from the terminal, or automate code changes in scripts and CI. For many professional developers the honest answer is 'both': Cursor as the daily editing surface and Claude Code for headless or heavy multi-file automation. Treat them as complementary tools, not competitors, and pick based on the workflow you spend the most time in."
+    },
+    {
+      "question": "Can I use Cursor and Claude Code together?",
+      "answer": "Yes, and this is one of the most popular setups among serious developers. Because Cursor is a GUI editor and Claude Code is a terminal tool, they don't conflict — you can run Claude Code inside Cursor's built-in terminal, or in a separate tmux/zellij pane next to your editor. A common pattern is to build features interactively in Cursor, then hand off large or repetitive tasks (mass refactors, codemods, multi-file migrations) to Claude Code running in the background. Since they operate on the same files on disk, changes from one are immediately visible in the other. Many teams standardize on Cursor for editing and Claude Code for agentic and CI work."
+    },
+    {
+      "question": "Cursor vs Claude Code pricing — which is cheaper?",
+      "answer": "Both start near $20/month, so the sticker price is effectively a tie — the real difference is in how limits are structured. Cursor's Pro plan gives you a monthly quota of fast requests at a flat fee; once you exhaust it you slow down or pay usage-based overage. Claude Code is available through Claude Pro/Max subscriptions (around $20/mo and up) with rolling usage limits and roughly 5-hour session windows, or via pay-as-you-go API billing metered by tokens. Light users find both comparable. Heavy automated workloads can get expensive on Claude Code's API tier, while Cursor's flat quota can feel more predictable. Pricing models shift frequently, so verify current terms before deciding."
+    },
+    {
+      "question": "Which is better for large automated refactors?",
+      "answer": "Claude Code is generally the stronger choice for large automated refactors. It's built for agentic, multi-file execution: you describe the transformation, and it explores the repo, makes coordinated edits across many files, and runs tests or scripts as part of the loop. Crucially, it can run headless — in tmux, a background process, or a CI pipeline — so you can kick off a big refactor and let it work without babysitting an editor. Cursor can do multi-file edits too, but it's optimized for interactive, in-editor review where you watch and accept changes. For repeatable, scriptable, or unattended transformations at scale, Claude Code's command-line and automation model fits better."
+    },
+    {
+      "question": "Do I need an IDE to use Claude Code?",
+      "answer": "No — Claude Code runs entirely in the terminal and does not require any IDE. You install it, point it at a project directory, and interact with it through your shell, which makes it editor-agnostic: it works the same whether you use Vim, Neovim, VS Code, JetBrains, or no editor at all. Many developers run it in a dedicated terminal pane (often via tmux or zellij) alongside whatever editor they prefer. That said, you can absolutely use Claude Code from inside an IDE's integrated terminal — including Cursor's — if you like having both surfaces in one window. The key point is that Claude Code's interface is the command line, not a graphical editor."
+    },
+    {
+      "question": "Cursor vs Claude Code for beginners?",
+      "answer": "For most beginners, Cursor is the gentler starting point. It's a fork of VS Code, so the interface is familiar and visual: you see your files, get inline suggestions, accept edits with a keystroke, and review changes as clear diffs. That visual feedback loop helps newcomers understand what the AI is doing. Claude Code is powerful but assumes comfort with the terminal and with delegating tasks to an agent, which is a steeper jump for someone new to development. A reasonable path is to learn the fundamentals in Cursor first, then add Claude Code later once you're comfortable on the command line and want to automate bigger or repetitive tasks."
+    },
+    {
+      "question": "How does codebase context differ between Cursor and Claude Code?",
+      "answer": "Cursor indexes your open workspace so it can do semantic retrieval, and it lets you explicitly pull in context by @-mentioning files, symbols, or documentation in chat — useful for targeted, interactive edits where you know what's relevant. Claude Code instead reads the repository on demand from the working directory, exploring files agentically as it reasons through a task; this suits open-ended, multi-file jobs where the agent figures out what to touch. In practice, Cursor's model rewards you for steering context precisely, while Claude Code is comfortable discovering context on its own across a large codebase. Both can handle big repositories, but they get there with different philosophies."
+    },
+    {
+      "question": "Does Cursor use Claude models?",
+      "answer": "Yes. Cursor is multi-model and lets you select from several providers, including Anthropic's Claude models as well as OpenAI's GPT and Google's Gemini families. This means you can get Claude's coding ability inside Cursor's IDE while still switching to another model when a task calls for it. Claude Code, by contrast, runs exclusively on Anthropic's Claude models with no third-party options. So if model flexibility matters to you, Cursor offers more choice; if you specifically want a Claude-native, Anthropic-built agent experience, Claude Code is purpose-built for that. Note that available models in Cursor change over time as providers release new versions."
+    }
+  ],
+  "relatedSlugs": [
+    "cursor-vs-copilot",
+    "chatgpt-vs-claude",
+    "anthropic-vs-openai",
+    "windsurf-vs-cursor"
+  ]
+}
