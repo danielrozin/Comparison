@@ -8276,12 +8276,27 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     category: "technology",
     alternatives: [
       { name: "iPhone 16 Pro Max", slug: "iphone-16-pro-max", reason: "Smaller at 6.9-inch, A18 Pro chip, iOS ecosystem" },
+      { name: "Samsung Galaxy S25+", slug: "samsung-galaxy-s25-plus", reason: "$300 cheaper, same chip, no S Pen, 6.7-inch display" },
       { name: "Samsung Galaxy S25", slug: "samsung-galaxy-s25", reason: "$500 cheaper, no S Pen, smaller 6.2-inch display" },
-      { name: "Google Pixel 9 Pro XL", slug: "google-pixel-9-pro", reason: "Best Android AI, cleaner Android, $1,099" },
     ],
     faqs: [
       { question: "S25 Ultra vs iPhone 16 Pro Max: which is better?", answer: "Galaxy S25 Ultra wins for: photography versatility (200MP main, 5x optical zoom), built-in S Pen (huge for note-takers and artists), customization (Android), multitasking, and better display anti-reflective coating. iPhone 16 Pro Max wins for: ecosystem (Apple Watch, AirPods, MacBook integration), video quality (industry-leading), software update consistency, and resale value. Both phones are top-tier flagships — choose based on ecosystem preference and whether you value the S Pen." },
       { question: "Why does Galaxy S25 Ultra cost so much?", answer: "Galaxy S25 Ultra at $1,299 is positioned as Samsung's top flagship — comparable to iPhone 16 Pro Max ($1,199) and the most premium Android phone available. The price reflects: 200MP camera system, 5x periscope telephoto, 6.9-inch QHD display, S Pen, titanium frame, 12 GB RAM, and 7 years of updates. Samsung offers strong trade-in deals ($500-800+ for older flagships) that bring the effective price down significantly. Carriers also offer aggressive promo pricing." },
+    ],
+  },
+
+  "samsung-galaxy-s25-plus": {
+    description: "Samsung Galaxy S25+ is the mid-tier flagship in Samsung's 2025 Galaxy S25 lineup, launched January 2025 at $999 (256 GB). The S25+ features a 6.7-inch Dynamic AMOLED 2X display (3088×1440, 120Hz adaptive, 2600 nits peak), Snapdragon 8 Elite for Galaxy, 12 GB RAM, and a triple camera: 50MP f/1.7 main, 12MP ultra-wide, 10MP 3x telephoto. Battery is 4,900 mAh with 45W wired and 15W wireless charging. The S25+ shares the same Snapdragon 8 Elite chip as the Ultra but skips the S Pen, 200MP camera, and titanium frame (uses Armor Aluminum instead). At $999, it sits $300 below the Ultra and $200 above the standard S25, offering a larger screen and bigger battery than the S25 without the Ultra's price premium. Galaxy AI 2.0 (Gemini-powered), 7 years of OS updates, and Samsung's One UI 7 on Android 15 apply to all S25 models.",
+    highlights: ["6.7-inch QHD+ AMOLED, 120Hz — large flagship display at non-Ultra price", "Snapdragon 8 Elite for Galaxy — same chip as S25 Ultra", "4,900 mAh battery — largest in the non-Ultra S25 lineup", "$999 — value flagship tier; no S Pen vs Ultra"],
+    category: "technology",
+    alternatives: [
+      { name: "Samsung Galaxy S25 Ultra", slug: "samsung-galaxy-s25-ultra", reason: "200MP camera, S Pen, 6.9-inch display, titanium frame — $1,299" },
+      { name: "Samsung Galaxy S25", slug: "samsung-galaxy-s25", reason: "$799, smaller 6.2-inch display, same chip — $200 savings" },
+      { name: "iPhone 16 Plus", slug: "iphone-16-plus", reason: "Large-screen Apple flagship, A18 chip, iOS ecosystem, $899" },
+    ],
+    faqs: [
+      { question: "Samsung Galaxy S25+ vs S25 Ultra: which should I buy?", answer: "S25 Ultra ($1,299) is the clear pick if you: use the S Pen for notes/art, need the 200MP camera or 5x periscope zoom, or want the biggest 6.9-inch screen. S25+ ($999) is the better value if: the S Pen doesn't matter to you, you want a large screen without the Ultra price, and triple cameras covering wide/ultra-wide/3x are enough. The $300 savings on S25+ is substantial — the Ultra's main extras are S Pen + 200MP camera + 0.2-inch more screen." },
+      { question: "Is Samsung Galaxy S25+ worth it over the standard S25?", answer: "S25+ adds: larger 6.7-inch vs 6.2-inch display (a significant size jump), larger 4,900 vs 4,000 mAh battery (meaningful for heavy users), and a wider 6.3mm shorter profile that some find more comfortable for large-handed users. The $200 premium for S25+ is justified if you prioritize screen real estate and battery life. The cameras and chip are nearly identical across S25 and S25+, so you're paying mainly for the bigger screen and battery." },
     ],
   },
 
