@@ -74,35 +74,43 @@ export default async function sitemap({
 
   // ── Sitemap 1: Comparison pages ──
   if (numId === 1) {
-    const { comparisons } = await getAllSitemapData();
-    return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
-      url: `${SITE_URL}/compare/${comp.slug}`,
-      lastModified: comp.updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    }));
+    try {
+      const { comparisons } = await getAllSitemapData();
+      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
+        url: `${SITE_URL}/compare/${comp.slug}`,
+        lastModified: comp.updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.9,
+      }));
+    } catch {
+      return [];
+    }
   }
 
   // ── Sitemap 2: Entity + Alternatives pages ──
   if (numId === 2) {
-    const { entities: entityData } = await getAllSitemapData();
-    const entries = Array.from(entityData.entries());
+    try {
+      const { entities: entityData } = await getAllSitemapData();
+      const entries = Array.from(entityData.entries());
 
-    const entityPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-      url: `${SITE_URL}/entity/${slug}`,
-      lastModified: updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    }));
+      const entityPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
+        url: `${SITE_URL}/entity/${slug}`,
+        lastModified: updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
 
-    const alternativesPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-      url: `${SITE_URL}/alternatives/${slug}`,
-      lastModified: updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    }));
+      const alternativesPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
+        url: `${SITE_URL}/alternatives/${slug}`,
+        lastModified: updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      }));
 
-    return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
+      return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
+    } catch {
+      return [];
+    }
   }
 
   // ── Sitemap 3: Blog pages ──
