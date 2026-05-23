@@ -24,6 +24,7 @@ import { normalizeBrandName } from "@/lib/utils/brand-names";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
+import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -63,6 +64,7 @@ import {
   VersionHistory,
   StickyAffiliateCTA,
   ConversionFunnelTracker,
+  InterceptSurvey,
   ShareBar,
   LikeButton,
   BackToResults,
@@ -238,14 +240,21 @@ function VerdictFirstLayout({
 }) {
   return (
     <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
+      {/* Schema markup — use validated editorial @graph when present, else auto-generated */}
+      {comparison.schemaMarkup ? (
         <script
-          key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
         />
-      ))}
+      ) : (
+        schemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))
+      )}
 
       {/* Video schema (VideoObject) */}
       {videoMeta?.youtubeVideoId && (
@@ -343,6 +352,12 @@ function VerdictFirstLayout({
           attributes={comparison.attributes}
         />
       )}
+
+      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
+      <TrackComparisonCard
+        comparisonSlug={comparison.slug}
+        comparisonTitle={comparison.title}
+      />
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
@@ -517,6 +532,9 @@ function VerdictFirstLayout({
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
     </>
   );
 }

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, socialSameAs } from "@/lib/seo/schema";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -237,11 +237,7 @@ export default async function BlogPostPage({
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
       },
-      sameAs: [
-        "https://twitter.com/aversusb",
-        "https://www.linkedin.com/company/aversusb",
-        "https://github.com/aversusb",
-      ],
+      sameAs: socialSameAs(),
     },
     datePublished: article.publishedAt
       ? new Date(article.publishedAt).toISOString()
