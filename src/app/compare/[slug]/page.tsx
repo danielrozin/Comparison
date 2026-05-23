@@ -241,14 +241,21 @@ function VerdictFirstLayout({
 }) {
   return (
     <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
+      {/* Schema markup — use validated editorial @graph when present, else auto-generated */}
+      {comparison.schemaMarkup ? (
         <script
-          key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
         />
-      ))}
+      ) : (
+        schemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))
+      )}
 
       {/* Video schema (VideoObject) */}
       {videoMeta?.youtubeVideoId && (

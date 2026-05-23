@@ -43,6 +43,7 @@ export interface ComparisonPageData {
   resources?: ComparisonResource[];
   citationStats?: CitationStats;
   quickAnswer?: QuickAnswerTLDR;
+  schemaMarkup?: Record<string, unknown>;
 }
 
 export interface ComparisonResource {
