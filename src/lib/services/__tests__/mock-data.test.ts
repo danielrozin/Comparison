@@ -81,13 +81,13 @@ describe('Mock Data Module', () => {
 
   describe('getMockTrending', () => {
     it('returns an array of trending comparisons', () => {
-      const trending = getMockTrending()
+      const trending = getMockTrending(10)
       expect(Array.isArray(trending)).toBe(true)
       expect(trending.length).toBeGreaterThan(0)
     })
 
     it('trending items have slug and title', () => {
-      const trending = getMockTrending()
+      const trending = getMockTrending(10)
       for (const item of trending) {
         expect(item).toHaveProperty('slug')
         expect(item).toHaveProperty('title')
@@ -97,12 +97,12 @@ describe('Mock Data Module', () => {
 
   describe('getMockRelated', () => {
     it('returns related comparisons for a known slug', () => {
-      const related = getMockRelated('messi-vs-ronaldo')
+      const related = getMockRelated('messi-vs-ronaldo', 10)
       expect(Array.isArray(related)).toBe(true)
     })
 
     it('returns empty array for unknown slug', () => {
-      const related = getMockRelated('nonexistent-slug')
+      const related = getMockRelated('nonexistent-slug', 10)
       expect(Array.isArray(related)).toBe(true)
     })
   })
