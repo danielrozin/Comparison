@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "cleanup:consent": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/cleanup-consent-records.ts"
+    "cleanup:consent": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/cleanup-consent-records.ts",
+    "audit:blog-dupes": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/audit-blog-dupes.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
