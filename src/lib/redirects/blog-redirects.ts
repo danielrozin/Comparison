@@ -168,6 +168,21 @@ const MACBOOK_WEIGHT_DUPES: string[] = [
   "macbook-weight-comparison-2026-air-vs-pro-models",
   "macbook-weight-comparison-2026-all-current-models-ranked-by-portability",
   "macbook-weight-comparison-2026-every-apple-model-ranked",
+  // Drift sweep 2026-05-23: 14 additional slugs archived by consolidation script
+  "macbook-models-weight-comparison-2025-2026-which-apple-laptop-is-lightest",
+  "macbook-pro-weight-2024-2026-complete-guide-to-all-current-models",
+  "macbook-pro-weight-2024-2026-complete-guide-to-all-models-in-pounds",
+  "macbook-pro-weight-2025-2026-all-models-compared",
+  "macbook-pro-weight-2026-all-models-compared-specs",
+  "macbook-pro-weight-comparison-2024-2025-and-2026-models-guide",
+  "macbook-pro-weight-comparison-2024-2026-all-current-models",
+  "macbook-pro-weight-comparison-2024-2026-all-current-models-specs",
+  "macbook-pro-weight-comparison-2024-2026-every-model-explained",
+  "macbook-pro-weight-comparison-2025-2026-all-models-specs",
+  "macbook-weight-comparison-2025-2026-air-vs-pro-models-detailed",
+  "macbook-weight-comparison-2025-2026-find-your-perfect-model",
+  "macbook-weight-comparison-2025-2026-which-apple-laptop-is-lightest",
+  "macbook-weight-comparison-2026-all-models-ranked-by-portability",
 ];
 
 export const BLOG_REDIRECTS: BlogRedirect[] = [
