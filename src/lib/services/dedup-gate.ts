@@ -1,28 +1,23 @@
 /**
- * Blog Generation Dedup Gate (DAN-520)
+ * Blog Generation Dedup Gate (DAN-520 + DAN-591)
  *
  * Refuses to publish a new blog article when a near-duplicate already exists
- * in the published BlogArticle table. Two cheap, deterministic gates run
- * before the DB write inside saveBlogArticle().
+ * in the published BlogArticle table. Three deterministic gates run before
+ * the DB write inside saveBlogArticle().
  *
  * Gate #1 — Slug-prefix collision (year-stripped):
  *   After stripping 4-digit year tokens (1900-2099) from both the proposed
  *   slug and every existing slug, a collision is declared when the proposed
- *   slug shares a 5+ token leading prefix with an existing slug. This catches
- *   the "macbook-pro-weight-2024-2025-by-model-and-..." vs
- *   "macbook-pro-weight-2024-2026-by-model-..." pattern that escaped the
- *   built-in `BlogArticle.slug @unique` constraint because the year segments
- *   differed.
+ *   slug shares a 5+ token leading prefix with an existing slug.
  *
- * Gate #3 — Topic signature match:
+ * Gate #2 — Topic signature match:
  *   Builds a normalized topic key from the first 3 content tokens of the
  *   title (lowercased, year/stop/SEO-modifier filtered, deduped, sorted).
- *   For all 8 of the macbook-pro-weight clones the signature collapses to
- *   "macbook|pro|weight" regardless of which trailing modifiers
- *   ("comparison", "guide", "complete specs", etc.) the AI tacked on.
  *
- * Gate #2 from the issue (title cosine similarity > 0.85 via embeddings) is
- * intentionally deferred to a follow-up PR.
+ * Gate #3 — Word-level cosine similarity > 0.85 (DAN-591):
+ *   Bag-of-words cosine similarity over the full title. Catches semantically
+ *   near-identical titles that differ only in word order or minor phrasing.
+ *   No external API required — computed fully in memory using DB title data.
  */
 
 import { getPrisma } from "@/lib/db/prisma";
@@ -30,7 +25,8 @@ import { getRedis } from "./redis";
 
 export type DedupReason =
   | "slug_prefix_collision"
-  | "topic_signature_match";
+  | "topic_signature_match"
+  | "high_similarity";
 
 export interface DedupCheckResult {
   ok: boolean;
@@ -41,6 +37,7 @@ export interface DedupCheckResult {
 
 const PREFIX_TOKEN_THRESHOLD = 5;
 const SIGNATURE_TOKEN_COUNT = 3;
+const SIMILARITY_THRESHOLD = 0.85;
 const REJECTION_LOG_KEY = "pipeline:rejections";
 const REJECTION_LOG_MAX = 1000;
 const YEAR_RE = /^(?:19|20)\d{2}$/;
@@ -135,6 +132,34 @@ export function topicSignature(title: string): string {
   return [...tokens].sort().join("|");
 }
 
+// ============================================================
+// Gate #3 — Word-level bag-of-words cosine similarity (DAN-591)
+// ============================================================
+
+function titleBagOfWords(title: string): Map<string, number> {
+  const tokens = tokenizeTitle(title);
+  const vec = new Map<string, number>();
+  for (const t of tokens) {
+    vec.set(t, (vec.get(t) ?? 0) + 1);
+  }
+  return vec;
+}
+
+export function cosineSimilarity(a: Map<string, number>, b: Map<string, number>): number {
+  let dot = 0;
+  let magA = 0;
+  let magB = 0;
+  for (const [term, countA] of a) {
+    magA += countA * countA;
+    dot += countA * (b.get(term) ?? 0);
+  }
+  for (const [, countB] of b) {
+    magB += countB * countB;
+  }
+  if (magA === 0 || magB === 0) return 0;
+  return dot / (Math.sqrt(magA) * Math.sqrt(magB));
+}
+
 export interface DedupCandidate {
   slug: string;
   title: string;
@@ -152,11 +177,13 @@ export function decideDedup(
 ): DedupCheckResult {
   const proposedPrefix = slugPrefixKey(proposedSlug);
   const proposedSig = topicSignature(proposedTitle);
+  const proposedVec = titleBagOfWords(proposedTitle);
 
   for (const candidate of existing) {
     // Same slug = upsert/update path; not a collision.
     if (candidate.slug === proposedSlug) continue;
 
+    // Gate #1 — slug prefix collision
     if (proposedPrefix) {
       const candidatePrefix = slugPrefixKey(candidate.slug);
       if (candidatePrefix && candidatePrefix === proposedPrefix) {
@@ -169,6 +196,7 @@ export function decideDedup(
       }
     }
 
+    // Gate #2 — topic signature match
     if (proposedSig) {
       const candidateSig = topicSignature(candidate.title);
       if (candidateSig && candidateSig === proposedSig) {
@@ -179,6 +207,17 @@ export function decideDedup(
           details: `Proposed title shares topic signature "${proposedSig}" with existing article "${candidate.title}" (${candidate.slug}).`,
         };
       }
+    }
+
+    // Gate #3 — word-level cosine similarity (DAN-591)
+    const similarity = cosineSimilarity(proposedVec, titleBagOfWords(candidate.title));
+    if (similarity > SIMILARITY_THRESHOLD) {
+      return {
+        ok: false,
+        reason: "high_similarity",
+        conflictingSlug: candidate.slug,
+        details: `Title cosine similarity ${similarity.toFixed(3)} > ${SIMILARITY_THRESHOLD} vs "${candidate.title}" (${candidate.slug}).`,
+      };
     }
   }
 
@@ -259,5 +298,6 @@ export async function recordDedupRejection(
 export const __TESTING__ = {
   PREFIX_TOKEN_THRESHOLD,
   SIGNATURE_TOKEN_COUNT,
+  SIMILARITY_THRESHOLD,
   REJECTION_LOG_KEY,
 };
