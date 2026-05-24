@@ -1649,6 +1649,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-11T08:55:38.940Z"
+    },
+    {
+      "slug": "mcdonalds-vs-burger-king",
+      "title": "Mcdonalds vs Burger King",
+      "entityA": "Mcdonalds",
+      "entityB": "Burger King",
+      "category": "General",
+      "videoFile": "Mcdonalds vs Burger King.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mcdonalds vs Burger King — Full Comparison 2026",
+      "youtubeDescription": "McDonald's generates 2.4x more revenue per location ($3.96M vs $1.63M) but requires much higher initial investment ($1.47M vs $232K). McDonald's dominates in efficiency and brand strength.\n\n#mcdonalds #burgerking #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-24T08:02:10.703Z"
+    },
+    {
+      "slug": "mercedes-vs-bmw",
+      "title": "Mercedes vs Bmw",
+      "entityA": "Mercedes",
+      "entityB": "Bmw",
+      "category": "Automotive",
+      "videoFile": "Mercedes vs Bmw.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mercedes vs Bmw — Full Comparison 2026",
+      "youtubeDescription": "Mercedes focuses on luxury comfort while BMW emphasizes sporty driving dynamics. Both offer premium quality but with different philosophies.\n\n#mercedes #bmw #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-24T08:14:44.446Z"
+    },
+    {
+      "slug": "london-vs-paris",
+      "title": "London vs Paris",
+      "entityA": "London",
+      "entityB": "Paris",
+      "category": "General",
+      "videoFile": "London vs Paris.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "London vs Paris — Full Comparison 2026",
+      "youtubeDescription": "London is significantly larger with 9M people vs Paris' 2.2M, covering 15x more area. Paris offers warmer weather and lower costs, while London provides more space and diversity.\n\n#london #paris #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-24T08:27:13.962Z"
     }
   ]
 }
