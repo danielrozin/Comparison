@@ -1691,6 +1691,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-24T08:27:13.962Z"
+    },
+    {
+      "slug": "toyota-vs-honda",
+      "title": "Toyota vs Honda",
+      "entityA": "Toyota",
+      "entityB": "Honda",
+      "category": "Automotive",
+      "videoFile": "Toyota vs Honda.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Toyota vs Honda — Full Comparison 2026",
+      "youtubeDescription": "The 2026 Toyota Corolla Hybrid and Honda Civic Sedan are closely matched compact sedans, with the Corolla focusing on efficiency and the Civic offering better safety ratings.\n\n#toyota #honda #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-25T09:10:51.571Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-25T09:23:42.878Z"
+    },
+    {
+      "slug": "mcgregor-vs-khabib",
+      "title": "Mcgregor vs Khabib",
+      "entityA": "Mcgregor",
+      "entityB": "Khabib",
+      "category": "General",
+      "videoFile": "Mcgregor vs Khabib.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mcgregor vs Khabib — Full Comparison 2026",
+      "youtubeDescription": "Khabib dominated McGregor with superior grappling and control time, while McGregor showed better finishing power and early striking accuracy but couldn't maintain momentum.\n\n#mcgregor #khabib #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-25T09:36:49.820Z"
     }
   ]
 }
