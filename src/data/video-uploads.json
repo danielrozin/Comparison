@@ -1733,6 +1733,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-25T09:36:49.820Z"
+    },
+    {
+      "slug": "serena-vs-venus",
+      "title": "Serena vs Venus",
+      "entityA": "Serena",
+      "entityB": "Venus",
+      "category": "General",
+      "videoFile": "Serena vs Venus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Serena vs Venus — Full Comparison 2026",
+      "youtubeDescription": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.\n\n#serena #venus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-26T08:44:32.014Z"
+    },
+    {
+      "slug": "marvel-vs-dc",
+      "title": "Marvel vs Dc",
+      "entityA": "Marvel",
+      "entityB": "Dc",
+      "category": "General",
+      "videoFile": "Marvel vs Dc.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Marvel vs Dc — Full Comparison 2026",
+      "youtubeDescription": "Marvel dominates box office with higher grosses and wider reach, while DC excels in character diversity with more high-powered superheroes.\n\n#marvel #dc #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-26T08:57:27.877Z"
+    },
+    {
+      "slug": "china-vs-us-gdp",
+      "title": "China vs Us Gdp",
+      "entityA": "China",
+      "entityB": "Us Gdp",
+      "category": "Countries",
+      "videoFile": "China vs Us Gdp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "China vs Us Gdp — Full Comparison 2026",
+      "youtubeDescription": "US GDP ($30.5T) leads China ($19.2T) by 1.59x in 2025, but China's growth (4.6-4.8%) outpaces US. Gap expected to narrow by 2026 with US at $31.8T vs China's $20.7T.\n\n#china #usgdp #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-26T09:10:17.122Z"
     }
   ]
 }
