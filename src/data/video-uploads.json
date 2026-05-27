@@ -1775,6 +1775,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-26T09:10:17.122Z"
+    },
+    {
+      "slug": "m1-abrams-vs-t-90",
+      "title": "M1 Abrams vs T 90",
+      "entityA": "M1 Abrams",
+      "entityB": "T 90",
+      "category": "General",
+      "videoFile": "M1 Abrams vs T 90.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "M1 Abrams vs T 90 — Full Comparison 2026",
+      "youtubeDescription": "The M1A1 Abrams is heavier but faster with better crew protection, while the T-90 is lighter and more fuel-efficient with superior armor protection against certain threats.\n\n#m1abrams #t90 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-27T08:52:15.040Z"
+    },
+    {
+      "slug": "roth-ira-vs-401k",
+      "title": "Roth Ira vs 401k",
+      "entityA": "Roth Ira",
+      "entityB": "401k",
+      "category": "General",
+      "videoFile": "Roth Ira vs 401k.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Roth Ira vs 401k — Full Comparison 2026",
+      "youtubeDescription": "Roth IRA offers tax-free growth and flexible withdrawals but has lower contribution limits. 401(k) allows higher contributions and may include employer matching but has stricter withdrawal rules.\n\n#rothira #401k #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-27T09:05:25.407Z"
+    },
+    {
+      "slug": "airpods-pro-vs-galaxy-buds",
+      "title": "Airpods Pro vs Galaxy Buds",
+      "entityA": "Airpods Pro",
+      "entityB": "Galaxy Buds",
+      "category": "General",
+      "videoFile": "Airpods Pro vs Galaxy Buds.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airpods Pro vs Galaxy Buds — Full Comparison 2026",
+      "youtubeDescription": "AirPods Pro 3 offer balanced sound with Apple ecosystem integration, while Galaxy Buds 3/4 Pro provide bassier audio with more customization options.\n\n#airpodspro #galaxybuds #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-27T09:18:18.429Z"
     }
   ]
 }
