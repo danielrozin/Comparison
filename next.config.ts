@@ -4,6 +4,15 @@ import { withSentryConfig } from "@sentry/nextjs";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  async redirects() {
+    return [
+      {
+        source: "/blog/best-cloud-platforms-2026",
+        destination: "/best/cloud-platforms-2026",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
