@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, socialSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs } from "@/lib/seo/schema";
+import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -218,17 +219,25 @@ export default async function BlogPostPage({
     ? await getComparisonTitlesBySlugs(article.relatedComparisonSlugs)
     : {};
 
+  const articleUrl = `${SITE_URL}/blog/${slug}`;
+  const extras = getBlogSchemaExtras(slug);
+
   // JSON-LD Article schema
-  const jsonLd = {
-    "@context": "https://schema.org",
+  const articleSchema = {
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
-    author: {
-      "@type": "Organization",
-      name: `${SITE_NAME} Team`,
-      url: SITE_URL,
-    },
+    author: extras?.author
+      ? {
+          "@type": "Person",
+          name: extras.author.name,
+          ...(extras.author.url && { url: extras.author.url }),
+        }
+      : {
+          "@type": "Organization",
+          name: `${SITE_NAME} Team`,
+          url: SITE_URL,
+        },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -245,25 +254,43 @@ export default async function BlogPostPage({
     dateModified: article.updatedAt
       ? new Date(article.updatedAt).toISOString()
       : undefined,
-    mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
-    url: `${SITE_URL}/blog/${slug}`,
+    mainEntityOfPage: articleUrl,
+    url: articleUrl,
   };
 
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
     { name: "Blog", url: `${SITE_URL}/blog` },
-    { name: article.title, url: `${SITE_URL}/blog/${slug}` },
+    { name: article.title, url: articleUrl },
   ];
+
+  // Build @graph: Article + BreadcrumbList + optional FAQPage + optional ItemList
+  // Slug-keyed extras live in src/lib/data/blog-schema-extras.ts.
+  const graph: Record<string, unknown>[] = [articleSchema, breadcrumbSchema(breadcrumbs)];
+  if (extras?.faqs?.length) {
+    graph.push(faqSchema(extras.faqs));
+  }
+  if (extras?.itemList?.items?.length) {
+    graph.push({
+      "@type": "ItemList",
+      name: extras.itemList.name,
+      ...(extras.itemList.description && { description: extras.itemList.description }),
+      numberOfItems: extras.itemList.items.length,
+      itemListElement: extras.itemList.items.map((it) => ({
+        "@type": "ListItem",
+        position: it.position,
+        name: it.name,
+        url: `${articleUrl}#${it.anchor}`,
+      })),
+    });
+  }
+  const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
       />
 
       <main className="min-h-screen bg-surface">
