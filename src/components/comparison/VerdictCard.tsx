@@ -1,10 +1,13 @@
 import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
+import { AiAssistedBadge } from "./AiAssistedBadge";
+import { VerdictFeedbackWidget } from "./VerdictFeedbackWidget";
 
 interface VerdictCardProps {
   verdict: string;
   shortAnswer: string | null;
   entities: ComparisonEntityData[];
   attributes: ComparisonAttribute[];
+  comparisonSlug: string;
 }
 
 function TrophyIcon({ className }: { className?: string }) {
@@ -45,7 +48,7 @@ function computeScores(
   return { scoreA, scoreB };
 }
 
-export function VerdictCard({ verdict, shortAnswer, entities, attributes }: VerdictCardProps) {
+export function VerdictCard({ verdict, shortAnswer, entities, attributes, comparisonSlug }: VerdictCardProps) {
   const entityA = entities[0];
   const entityB = entities[1];
   if (!entityA || !entityB) return null;
@@ -64,17 +67,23 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes }: Verd
 
         <div className="relative z-10">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center ring-2 ring-yellow-400/30">
               <TrophyIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
             </div>
             <h2 className="text-lg sm:text-2xl font-display font-bold tracking-tight">Our Verdict</h2>
+            <AiAssistedBadge />
           </div>
 
           {/* Verdict text */}
-          <p className="text-gray-200 leading-relaxed text-base sm:text-lg mb-6">
+          <p className="text-gray-200 leading-relaxed text-base sm:text-lg mb-4">
             {verdictText}
           </p>
+
+          {/* Feedback widget */}
+          <div className="mb-6">
+            <VerdictFeedbackWidget comparisonSlug={comparisonSlug} />
+          </div>
 
           {/* Score bar */}
           {scores && (

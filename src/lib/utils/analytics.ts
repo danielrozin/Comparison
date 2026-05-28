@@ -200,4 +200,19 @@ export function trackComparisonTrackerConfirmed(slug: string) {
   });
 }
 
+
+export function trackVerdictFeedbackImpression(slug: string) {
+  trackEvent("verdict_feedback_impression", { comparison_slug: slug });
+}
+
+export function trackVerdictFeedbackVote(slug: string, vote: "up" | "down") {
+  const eventName = vote === "up" ? "verdict_feedback_vote_up" : "verdict_feedback_vote_down";
+  trackEvent(eventName, { comparison_slug: slug });
+  clarityTagAction(eventName);
+  clarityTagEngagement("engaged");
+}
+
+export function trackVerdictFeedbackReasonSubmit(slug: string, vote: "up" | "down") {
+  trackEvent("verdict_feedback_reason_submit", { comparison_slug: slug, vote });
+}
 export { trackEvent };
