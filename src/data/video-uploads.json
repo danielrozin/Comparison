@@ -1817,6 +1817,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-27T09:18:18.429Z"
+    },
+    {
+      "slug": "aws-vs-azure",
+      "title": "Aws vs Azure",
+      "entityA": "Aws",
+      "entityB": "Azure",
+      "category": "General",
+      "videoFile": "Aws vs Azure.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Aws vs Azure — Full Comparison 2026",
+      "youtubeDescription": "AWS leads in market share and global reach, while Azure excels in enterprise integration and Microsoft ecosystem benefits. Both platforms offer similar pricing with performance differences.\n\n#aws #azure #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-28T08:54:46.118Z"
+    },
+    {
+      "slug": "ancient-greece-vs-ancient-rome",
+      "title": "Ancient Greece vs Ancient Rome",
+      "entityA": "Ancient Greece",
+      "entityB": "Ancient Rome",
+      "category": "General",
+      "videoFile": "Ancient Greece vs Ancient Rome.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ancient Greece vs Ancient Rome — Full Comparison 2026",
+      "youtubeDescription": "Ancient Greece was a collection of independent city-states known for idealistic art and philosophy, while Rome was a unified empire focused on practical governance and realistic art.\n\n#ancientgreece #ancientrome #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-28T09:05:58.169Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-28T09:16:48.801Z"
     }
   ]
 }
