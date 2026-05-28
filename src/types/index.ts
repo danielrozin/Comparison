@@ -96,6 +96,10 @@ export interface KeyDifference {
   entityAValue: string;
   entityBValue: string;
   winner?: "a" | "b" | "tie";
+  /** N-entity values, position-indexed to comparison.entities. Optional — only populated for N>2 comparisons. */
+  values?: string[];
+  /** N-entity winner index (0-based) or "tie". Used when N>2 alongside values[]. */
+  winnerIndex?: number | "tie";
 }
 
 export interface FAQData {

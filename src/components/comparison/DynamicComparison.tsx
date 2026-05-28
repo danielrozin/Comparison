@@ -25,10 +25,10 @@ const FUN_FACTS = [
 
 function formatSlugToTitle(slug: string): string {
   const parts = slug.split("-vs-");
-  if (parts.length !== 2) return slug.replace(/-/g, " ");
-  const a = parts[0].replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  const b = parts[1].replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  return `${a} vs ${b}`;
+  if (parts.length < 2) return slug.replace(/-/g, " ");
+  return parts
+    .map((p) => p.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()))
+    .join(" vs ");
 }
 
 export function DynamicComparison({ slug }: { slug: string }) {
