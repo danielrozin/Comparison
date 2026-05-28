@@ -185,7 +185,7 @@ const MACBOOK_WEIGHT_DUPES: string[] = [
   "macbook-weight-comparison-2026-all-models-ranked-by-portability",
 ];
 
-export const BLOG_REDIRECTS: BlogRedirect[] = [
+const MACBOOK_REDIRECTS: BlogRedirect[] = [
   ...MACBOOK_PRO_WEIGHT_DUPES,
   ...MACBOOK_WEIGHT_DUPES,
 ].map((slug) => ({
@@ -193,3 +193,19 @@ export const BLOG_REDIRECTS: BlogRedirect[] = [
   destination: MACBOOK_PRO_WEIGHT_CANONICAL,
   permanent: true,
 }));
+
+// DAN-828: Path A (DAN-827) shipped this roundup at /blog/best-cloud-platforms-2026
+// as an interim measure. Path B canonical is /best/cloud-platforms-2026. CMO pre-
+// authorized the migration in DAN-426 #7c2e6be8 — same PR as the /best route stand-up.
+const BEST_ROUTE_MIGRATIONS: BlogRedirect[] = [
+  {
+    source: "/blog/best-cloud-platforms-2026",
+    destination: "/best/cloud-platforms-2026",
+    permanent: true,
+  },
+];
+
+export const BLOG_REDIRECTS: BlogRedirect[] = [
+  ...MACBOOK_REDIRECTS,
+  ...BEST_ROUTE_MIGRATIONS,
+];

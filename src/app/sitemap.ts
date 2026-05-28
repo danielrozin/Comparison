@@ -4,6 +4,7 @@ import { getAllSitemapData } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
+import { BEST_CONFIG } from "@/lib/data/best";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -77,7 +78,14 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
-    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages];
+    const bestPages: MetadataRoute.Sitemap = Object.values(BEST_CONFIG).map((entry) => ({
+      url: `${SITE_URL}/best/${entry.slug}`,
+      lastModified: entry.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
+
+    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
   }
 
   // ── Sitemap 1: Comparison pages ──
