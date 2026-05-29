@@ -39,6 +39,10 @@ const ComparisonTable = dynamic(
   () => import("@/components/comparison/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
 );
+const MultiComparisonTable = dynamic(
+  () => import("@/components/comparison/MultiComparisonTable").then((m) => ({ default: m.MultiComparisonTable })),
+  { loading: () => <div className="max-w-6xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
+);
 const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
@@ -93,25 +97,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   if (!comparison) {
-    const parts = slug.split("-vs-");
-    const a = parts[0]?.replace(/-/g, " ") || "";
-    const b = parts[1]?.replace(/-/g, " ") || "";
-    const title = `${capitalize(a)} vs ${capitalize(b)}`;
-    const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(capitalize(a))}&b=${encodeURIComponent(capitalize(b))}&type=comparison`;
+    const parts = slug.split("-vs-").map((p) => p.replace(/-/g, " ").trim()).filter(Boolean);
+    const nameParts = parts.map(capitalize);
+    const title = nameParts.join(" vs ");
+    const isMulti = nameParts.length > 2;
+    const ogImage = isMulti
+      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
+      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
     return {
       title: `${title} | A Versus B`,
-      description: `Compare ${capitalize(a)} and ${capitalize(b)} — key differences, pros & cons, and verdict.`,
+      description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
       alternates: { canonical: `${SITE_URL}/compare/${slug}` },
       openGraph: { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
       twitter: { card: "summary_large_image", images: [ogImage] },
     };
   }
 
+  const isMultiEntity = comparison.entities.length > 2;
   const entityA = comparison.entities[0]?.name || "";
   const entityB = comparison.entities[1]?.name || "";
-  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(comparison.category || "")}&type=comparison`;
+  const ogImage = isMultiEntity
+    ? `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&entities=${encodeURIComponent(comparison.entities.map((e) => e.name).join("|"))}&cat=${encodeURIComponent(comparison.category || "")}&type=multi`
+    : `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(comparison.category || "")}&type=comparison`;
   const fallbackDescription = comparison.shortAnswer
-    || `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`;
+    || (isMultiEntity
+      ? `${comparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
+      : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
   return {
     title: comparison.metadata.metaTitle || comparison.title,
@@ -168,9 +179,9 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
 export default async function ComparisonPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // Validate slug format — must be "entity-a-vs-entity-b"
+  // Validate slug format — must be "entity-a-vs-entity-b" (or N-way: "a-vs-b-vs-c-...")
   const slugParts = parseComparisonSlug(slug);
-  if (!slugParts || !slugParts.entityA || !slugParts.entityB) {
+  if (!slugParts || slugParts.entities.length < 2) {
     notFound();
   }
 
@@ -219,6 +230,19 @@ export default async function ComparisonPage({ params }: PageProps) {
     const existingSlugs = new Set(sidebarComparisons.map((c) => c.slug));
     const additional = trendingAsRelated.filter((t) => !existingSlugs.has(t.slug));
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
+  }
+
+  // N-entity (3+): render the multi-entity layout. Most 2-entity-only components
+  // (verdict card, key-differences summary, comparison charts) are skipped in v1.
+  if (enrichedComparison.entities.length > 2) {
+    return (
+      <MultiEntityLayout
+        comparison={enrichedComparison}
+        schemas={schemas}
+        slug={slug}
+        sidebarComparisons={sidebarComparisons}
+      />
+    );
   }
 
   return (
@@ -566,5 +590,211 @@ function FreshnessFooter({ metadata }: { metadata: { updatedAt: string; isHumanR
         </span>
       )}
     </div>
+  );
+}
+
+/**
+ * MultiEntityLayout — Phase 1 v1 N-entity (3+) renderer.
+ * Renders only components that already iterate entities[] safely:
+ * Hero (custom inline), MultiComparisonTable, ProsCons, FAQ, Resources, Related.
+ * 2-entity-only widgets (VerdictCard, KeyDifferencesSummary, ComparisonCharts,
+ * QuickAnswerTLDR, etc.) are intentionally skipped for v1 per DAN-387 Phase 1.
+ */
+function MultiEntityLayout({
+  comparison,
+  schemas,
+  slug,
+  sidebarComparisons,
+}: {
+  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
+  schemas: ReturnType<typeof comparisonPageSchema>;
+  slug: string;
+  sidebarComparisons: import("@/types").RelatedComparison[];
+}) {
+  const n = comparison.entities.length;
+  return (
+    <>
+      {/* Schema markup */}
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+
+      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
+      <BackToResults />
+
+      <Breadcrumbs
+        title={comparison.title}
+        slug={comparison.slug}
+        category={comparison.category}
+      />
+
+      <TableOfContents
+        items={[
+          ...(comparison.shortAnswer || comparison.verdict ? [{ id: "verdict", label: "Quick Answer" }] : []),
+          ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
+          { id: "pros-cons", label: "Pros & Cons" },
+          ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          { id: "resources", label: "Resources" },
+          { id: "comments", label: "Comments" },
+        ]}
+      />
+
+      {/* Share bar */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+        <ShareBar title={comparison.title} slug={comparison.slug} />
+        <div className="flex items-center gap-2">
+          <EmbedButton slug={comparison.slug} title={comparison.title} />
+          <LikeButton comparisonId={comparison.id} />
+        </div>
+      </div>
+
+      {/* Multi-entity hero: title + N entity cards in a grid */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
+          {comparison.title}
+        </h1>
+        {comparison.metadata?.updatedAt && (
+          <p className="text-center text-xs sm:text-sm text-text-secondary mb-6 flex items-center justify-center gap-1.5">
+            <time dateTime={comparison.metadata.updatedAt}>
+              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </time>
+          </p>
+        )}
+        <div
+          className="grid gap-3 sm:gap-4"
+          style={{ gridTemplateColumns: `repeat(${Math.min(n, 3)}, minmax(0, 1fr))` }}
+        >
+          {comparison.entities.map((ent, idx) => (
+            <div
+              key={ent.id}
+              className={`bg-white border border-border rounded-xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow ${n > 3 && idx >= 3 ? "" : ""}`}
+            >
+              {ent.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={ent.imageUrl}
+                  alt={ent.name}
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-white shadow"
+                />
+              ) : (
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 bg-gradient-to-br from-primary-100 to-accent-100 text-primary-700 flex items-center justify-center font-bold text-2xl">
+                  {ent.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <h3 className="text-sm sm:text-base font-bold text-text mb-1">{ent.name}</h3>
+              {ent.shortDesc && (
+                <p className="text-xs text-text-secondary leading-snug line-clamp-2">{ent.shortDesc}</p>
+              )}
+              {ent.bestFor && (
+                <p className="mt-3 text-[11px] sm:text-xs font-semibold text-primary-700 bg-gradient-to-r from-primary-50 to-primary-100 px-3 py-1.5 rounded-full inline-block border border-primary-200/50">
+                  {ent.bestFor}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Quick answer (uses array-friendly TLDR text only) */}
+      {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
+        <section id="verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-xl p-5">
+            <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-2">Quick Answer</p>
+            <p className="text-base sm:text-lg text-text font-medium leading-relaxed">
+              {comparison.quickAnswer?.tldr || comparison.shortAnswer}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
+
+      {/* Below the fold */}
+      <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
+        <div className="flex-1 min-w-0">
+          {/* MultiComparisonTable — main N-entity attribute grid */}
+          {comparison.attributes.length > 0 && (
+            <div id="comparison-table">
+              <MultiComparisonTable
+                attributes={comparison.attributes}
+                entities={comparison.entities}
+              />
+            </div>
+          )}
+
+          {/* Pros & Cons (already array-friendly, renders all N entities) */}
+          <div id="pros-cons">
+            <ProsConsBlock entities={comparison.entities} />
+          </div>
+
+          {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
+          {comparison.verdict && (
+            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <h2 className="text-2xl font-display font-bold text-text mb-3">Verdict</h2>
+              <p className="text-base text-text leading-relaxed whitespace-pre-line">{comparison.verdict}</p>
+            </section>
+          )}
+
+          {/* Newsletter */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
+          </div>
+
+          {comparison.faqs.length > 0 && (
+            <div id="faq">
+              <FAQBlock faqs={comparison.faqs} />
+            </div>
+          )}
+
+          <div id="resources">
+            <ResourcesSection
+              resources={generateResources(comparison.slug, comparison.entities)}
+              entities={comparison.entities}
+            />
+          </div>
+        </div>
+
+        {sidebarComparisons.length > 0 && (
+          <RelatedComparisonsSidebar
+            comparisons={sidebarComparisons}
+            sourceSlug={slug}
+            variant="desktop"
+          />
+        )}
+      </div>
+
+      <InContentAd />
+
+      <SmartReviewLinks
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+      />
+
+      {comparison.relatedComparisons.length > 0 && (
+        <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
+      )}
+
+      <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
+
+      <InternalLinks
+        currentSlug={comparison.slug}
+        category={comparison.category}
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        relatedComparisons={comparison.relatedComparisons}
+      />
+
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
+
+      <div id="comments">
+        <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+      </div>
+
+      <FreshnessFooter metadata={comparison.metadata} />
+
+      <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+    </>
   );
 }

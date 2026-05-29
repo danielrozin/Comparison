@@ -328,3 +328,282 @@ function buildQuickAnswer(data: Record<string, unknown>): QuickAnswerTLDR {
     keyFact: typeof qa.keyFact === "string" ? qa.keyFact : "",
   };
 }
+
+// ============================================================
+// N-entity (3+) comparison generation — DAN-387 Phase 1
+// ============================================================
+
+function buildMultiPrompt(names: string[]): string {
+  const n = names.length;
+  return `You are a comparison data expert. Generate a structured comparison between the ${n} entities provided: ${names.map((s) => `"${s}"`).join(", ")}.
+
+Return ONLY valid JSON (no markdown, no code blocks) with this exact structure:
+{
+  "title": "${names.join(" vs ")}",
+  "shortAnswer": "2-3 sentence factual summary of the key differences across all ${n} options",
+  "keyDifferences": [
+    {"label": "Attribute Name", "values": [${names.map(() => '"value"').join(", ")}], "winnerIndex": 0_to_${n - 1}_or_"tie"}
+  ],
+  "verdict": "3-4 sentence balanced conclusion that includes 'Choose X if... Choose Y if... Choose Z if...' guidance covering every option",
+  "category": "one of: ${COMPARISON_CATEGORIES.join(", ")}. Use 'software' for SaaS/apps/AI tools/cloud/dev tools. Use 'automotive' for cars/EVs.",
+  "entities": [
+${names
+  .map(
+    (entityName) => `    {
+      "name": "${entityName} Full Name",
+      "shortDesc": "One-line description",
+      "entityType": "person/country/product/team/company/brand/technology/event/software/place",
+      "pros": ["pro1", "pro2", "pro3"],
+      "cons": ["con1", "con2"],
+      "bestFor": "Who should choose this option"
+    }`
+  )
+  .join(",\n")}
+  ],
+  "attributes": [
+    {
+      "name": "Attribute Name",
+      "unit": "unit or null",
+      "category": "Category Group",
+      "dataType": "number or text",
+      "higherIsBetter": true/false/null,
+      "values": [${names.map(() => '"display value"').join(", ")}],
+      "numbers": [${names.map(() => "number_or_null").join(", ")}],
+      "winnerIndex": 0_to_${n - 1}_or_"tie"
+    }
+  ],
+  "faqs": [
+    {"question": "Common question?", "answer": "Detailed answer."}
+  ],
+  "quickAnswer": {
+    "tldr": "Single decisive sentence naming the overall winner across all ${n} options and the deciding factor",
+    "winnerName": "One of the ${n} entity names or null if truly tied",
+    "winnerReason": "Single most decisive factor",
+    "keyFact": "Most compelling statistic"
+  },
+  "citationStats": {
+    "dataPointCount": 20,
+    "reviewsAnalyzed": null_or_number,
+    "preferencePercent": null_or_number,
+    "preferenceEntity": null_or_winning_entity_name
+  },
+  "metaTitle": "SEO title under 60 chars with 2026",
+  "metaDescription": "SEO description under 155 chars"
+}
+
+Critical requirements:
+- entities[], and every values[] / numbers[] array, MUST have exactly ${n} entries in the same order as listed above.
+- Include 5-7 key differences and 6-10 attributes with specific, real data — never vague values like "Good".
+- 3-5 pros and 2-3 cons per entity. Be specific and honest.
+- Verdict must give a per-entity recommendation covering all ${n} options.
+- Keep the year current (2026).`;
+}
+
+/**
+ * Generate a comparison for N entities (N >= 2). For N=2 this delegates to
+ * the legacy generateComparison() to preserve exact behavior on existing 2-way pages.
+ * For N>2 it uses a multi-entity prompt that returns position-indexed values[].
+ */
+export async function generateMultiComparison(
+  entityNames: string[],
+  slug: string,
+  options?: { skipEnrichment?: boolean }
+): Promise<GenerationResult> {
+  const names = entityNames.map((n) => n.trim()).filter((n) => n.length > 0);
+  if (names.length < 2) {
+    return { success: false, comparison: null, error: "At least 2 entities required", errorStage: "unknown" };
+  }
+  if (names.length === 2) {
+    return generateComparison(names[0], names[1], slug, options);
+  }
+
+  try {
+    const client = getClient();
+
+    // Enrich with the first 2 entities (Tavily helper is 2-arg). Better than nothing.
+    let tavilyContext = "";
+    let tavilySources: { name: string; url?: string }[] = [];
+    if (!options?.skipEnrichment) {
+      try {
+        const enrichment = await enrichComparisonData(names[0], names[1], true);
+        tavilyContext = enrichment.context;
+        tavilySources = enrichment.sources.map((s) => {
+          try {
+            return { name: new URL(s.url).hostname.replace(/^www\./, ""), url: s.url };
+          } catch {
+            return { name: s.title || "web source", url: s.url };
+          }
+        });
+      } catch (err) {
+        console.warn("Tavily enrichment failed, proceeding without:", err);
+      }
+    }
+
+    const promptText = buildMultiPrompt(names);
+    let userMessage = `${promptText}\n\nGenerate a comparison for: ${names.map((n) => `"${n}"`).join(" vs ")}`;
+    if (tavilyContext) {
+      userMessage += `\n\nHere is current real-world data to incorporate into your comparison:\n${tavilyContext}`;
+    }
+
+    let message;
+    try {
+      message = await client.messages.create({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 4500,
+        messages: [{ role: "user", content: userMessage }],
+      });
+    } catch (err) {
+      const isTimeout =
+        err instanceof Error &&
+        (err.name === "APIConnectionTimeoutError" || /timeout|timed out/i.test(err.message));
+      return {
+        success: false,
+        comparison: null,
+        error: err instanceof Error ? err.message : "Anthropic call failed",
+        errorStage: isTimeout ? "timeout" : "anthropic",
+      };
+    }
+
+    const content = message.content[0];
+    if (content.type !== "text") {
+      return { success: false, comparison: null, error: "Unexpected response type", errorStage: "anthropic" };
+    }
+
+    let data;
+    try {
+      let jsonText = content.text.trim();
+      const jsonMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)```/);
+      if (jsonMatch) jsonText = jsonMatch[1].trim();
+      data = JSON.parse(jsonText);
+    } catch {
+      return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
+    }
+
+    const ts = Date.now();
+    const fallbackTitle = names.join(" vs ");
+
+    const transformedEntities = (data.entities || []).slice(0, names.length).map(
+      (e: Record<string, unknown>, idx: number) => ({
+        id: `gen-ent-${idx}-${ts}`,
+        slug: String(e.name || names[idx] || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/-+$/g, ""),
+        name: String(e.name || names[idx] || ""),
+        shortDesc: String(e.shortDesc || ""),
+        imageUrl: null as string | null,
+        entityType: String(e.entityType || "general"),
+        position: idx,
+        pros: Array.isArray(e.pros) ? e.pros.map(String) : [],
+        cons: Array.isArray(e.cons) ? e.cons.map(String) : [],
+        bestFor: e.bestFor ? String(e.bestFor) : null,
+      })
+    );
+
+    const transformedAttributes = (data.attributes || []).map(
+      (attr: Record<string, unknown>, idx: number) => {
+        const valuesArr = Array.isArray(attr.values) ? (attr.values as unknown[]) : [];
+        const numbersArr = Array.isArray(attr.numbers) ? (attr.numbers as unknown[]) : [];
+        const winnerIndex = attr.winnerIndex;
+        const perEntityValues = transformedEntities.map((ent: { id: string }, eIdx: number) => ({
+          entityId: ent.id,
+          valueText: valuesArr[eIdx] != null ? String(valuesArr[eIdx]) : null,
+          valueNumber:
+            typeof numbersArr[eIdx] === "number" ? (numbersArr[eIdx] as number) : null,
+          valueBoolean: null,
+          winner:
+            typeof winnerIndex === "number" && winnerIndex === eIdx
+              ? true
+              : typeof winnerIndex === "number"
+                ? false
+                : undefined,
+        }));
+        return {
+          id: `gen-attr-${idx}-${ts}`,
+          slug: String(attr.name || "").toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          name: String(attr.name || ""),
+          unit: attr.unit ? String(attr.unit) : null,
+          category: attr.category ? String(attr.category) : null,
+          dataType: String(attr.dataType || "text"),
+          higherIsBetter:
+            typeof attr.higherIsBetter === "boolean" ? attr.higherIsBetter : null,
+          values: perEntityValues,
+        };
+      }
+    );
+
+    const transformedKeyDifferences = (data.keyDifferences || []).map(
+      (kd: Record<string, unknown>) => {
+        const valuesArr = Array.isArray(kd.values) ? (kd.values as unknown[]) : [];
+        const rawW = kd.winnerIndex;
+        const wIdx: number | "tie" | undefined =
+          typeof rawW === "number" ? rawW : rawW === "tie" ? "tie" : undefined;
+        return {
+          label: String(kd.label || ""),
+          entityAValue: valuesArr[0] != null ? String(valuesArr[0]) : "",
+          entityBValue: valuesArr[1] != null ? String(valuesArr[1]) : "",
+          values: valuesArr.map((v) => (v != null ? String(v) : "")),
+          winnerIndex: wIdx,
+          winner: wIdx === 0 ? "a" : wIdx === 1 ? "b" : wIdx === "tie" ? "tie" : undefined,
+        };
+      }
+    );
+
+    const comparison: ComparisonPageData = {
+      id: `gen-${ts}`,
+      slug,
+      title: data.title || fallbackTitle,
+      shortAnswer: data.shortAnswer || null,
+      keyDifferences: transformedKeyDifferences,
+      verdict: data.verdict || null,
+      category: validateComparisonCategory(
+        data.category || "",
+        data.title || fallbackTitle,
+        names[0],
+        names[1] || ""
+      ),
+      entities: transformedEntities,
+      attributes: transformedAttributes,
+      faqs: (data.faqs || []).map((faq: Record<string, string>) => ({
+        question: faq.question,
+        answer: faq.answer,
+      })),
+      relatedComparisons: [],
+      relatedBlogPosts: [],
+      metadata: {
+        metaTitle: data.metaTitle || `${fallbackTitle} | Comparison`,
+        metaDescription:
+          data.metaDescription || `Compare ${names.join(", ")} across key attributes.`,
+        publishedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isAutoGenerated: true,
+        isHumanReviewed: false,
+        viewCount: 0,
+      },
+      citationStats: buildCitationStats(data, tavilySources),
+      quickAnswer: buildQuickAnswer(data),
+    };
+
+    try {
+      const images = await fetchEntityImages(
+        comparison.entities.map((e) => ({ name: e.name, type: e.entityType, slug: e.slug }))
+      );
+      comparison.entities.forEach((e) => {
+        const img = images.get(e.slug);
+        if (img) e.imageUrl = img;
+      });
+    } catch {
+      // Images are non-critical
+    }
+
+    return { success: true, comparison };
+  } catch (error) {
+    console.error("AI multi-comparison generation failed:", error);
+    return {
+      success: false,
+      comparison: null,
+      error: error instanceof Error ? error.message : "Generation failed",
+      errorStage: "unknown",
+    };
+  }
+}

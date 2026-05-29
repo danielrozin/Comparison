@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { generateComparison, type GenerationErrorStage } from "@/lib/services/ai-comparison-generator";
+import {
+  generateComparison,
+  generateMultiComparison,
+  type GenerationErrorStage,
+} from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
@@ -77,15 +81,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const entityA = slugParts.entityA.replace(/-/g, " ");
-    const entityB = slugParts.entityB.replace(/-/g, " ");
+    const entityNames = slugParts.entities.map((p) => p.replace(/-/g, " "));
+    const entityA = entityNames[0];
+    const entityB = entityNames[1];
+    const isMulti = entityNames.length > 2;
 
     const attempt = await startAttempt(slug, "user");
     const startedAt = Date.now();
 
     let result;
     try {
-      result = await generateComparison(entityA, entityB, slug);
+      result = isMulti
+        ? await generateMultiComparison(entityNames, slug)
+        : await generateComparison(entityA, entityB, slug);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation crashed";
       if (attempt) {
