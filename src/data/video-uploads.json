@@ -1859,6 +1859,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-28T09:16:48.801Z"
+    },
+    {
+      "slug": "costco-vs-sams-club",
+      "title": "Costco vs Sams Club",
+      "entityA": "Costco",
+      "entityB": "Sams Club",
+      "category": "General",
+      "videoFile": "Costco vs Sams Club.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Costco vs Sams Club — Full Comparison 2026",
+      "youtubeDescription": "Costco excels at premium products and higher rewards caps, while Sam's Club offers competitive pricing. Both provide quality warehouse shopping with different strengths for different shopper types.\n\n#costco #samsclub #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-29T08:56:01.140Z"
+    },
+    {
+      "slug": "usa-vs-china",
+      "title": "Usa vs China",
+      "entityA": "Usa",
+      "entityB": "China",
+      "category": "Countries",
+      "videoFile": "Usa vs China.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Usa vs China — Full Comparison 2026",
+      "youtubeDescription": "USA leads with 1.59x larger GDP ($30.5T vs $19.2T) and dominates space launches (90% share), while China shows higher growth potential (4.6-4.8% vs lower US growth).\n\n#usa #china #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-29T09:08:50.742Z"
+    },
+    {
+      "slug": "chatgpt-vs-claude",
+      "title": "Chatgpt vs Claude",
+      "entityA": "Chatgpt",
+      "entityB": "Claude",
+      "category": "General",
+      "videoFile": "Chatgpt vs Claude.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Claude — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.\n\n#chatgpt #claude #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-29T09:21:55.895Z"
     }
   ]
 }
