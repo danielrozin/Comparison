@@ -1901,6 +1901,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-29T09:21:55.895Z"
+    },
+    {
+      "slug": "mac-vs-windows",
+      "title": "Mac vs Windows",
+      "entityA": "Mac",
+      "entityB": "Windows",
+      "category": "General",
+      "videoFile": "Mac vs Windows.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mac vs Windows — Full Comparison 2026",
+      "youtubeDescription": "macOS excels in battery life and efficiency, Windows dominates raw performance and market share. Choose based on software ecosystem needs and budget.\n\n#mac #windows #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-30T07:55:13.000Z"
+    },
+    {
+      "slug": "korean-war-vs-vietnam-war",
+      "title": "Korean War vs Vietnam War",
+      "entityA": "Korean War",
+      "entityB": "Vietnam War",
+      "category": "Countries",
+      "videoFile": "Korean War vs Vietnam War.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Korean War vs Vietnam War — Full Comparison 2026",
+      "youtubeDescription": "Korean War (1950-1953) ended in stalemate preserving South Korea's democracy. Vietnam War (1955-1975) was longer, more controversial, ending in US withdrawal and defeat.\n\n#koreanwar #vietnamwar #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-30T08:08:07.072Z"
+    },
+    {
+      "slug": "tiger-woods-vs-jack-nicklaus",
+      "title": "Tiger Woods vs Jack Nicklaus",
+      "entityA": "Tiger Woods",
+      "entityB": "Jack Nicklaus",
+      "category": "General",
+      "videoFile": "Tiger Woods vs Jack Nicklaus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Tiger Woods vs Jack Nicklaus — Full Comparison 2026",
+      "youtubeDescription": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.\n\n#tigerwoods #jacknicklaus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-30T08:20:58.617Z"
     }
   ]
 }
