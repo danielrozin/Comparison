@@ -12,6 +12,12 @@
  * after the cron produced 29 more dupes between merge-gate (DAN-438) and
  * dedup-gate (DAN-520) deploys; the arrays below mirror the current archived
  * state in the DB.
+ *
+ * Extended under DAN-871 to absorb the "US vs China GDP 2026" thin blog
+ * cluster (DAN-347 audit P1 #7 — audit said "GDP comparisons", reality
+ * = 44 dupes, all 0 views). Canonical target for this cluster is the
+ * existing published Comparison row at `/vs/us-vs-china-gdp-comparison-2026`
+ * (DAN-608 2-way schema), not a blog post.
  */
 
 export type BlogRedirect = {
@@ -185,7 +191,7 @@ const MACBOOK_WEIGHT_DUPES: string[] = [
   "macbook-weight-comparison-2026-all-models-ranked-by-portability",
 ];
 
-export const BLOG_REDIRECTS: BlogRedirect[] = [
+const macbookRedirects: BlogRedirect[] = [
   ...MACBOOK_PRO_WEIGHT_DUPES,
   ...MACBOOK_WEIGHT_DUPES,
 ].map((slug) => ({
@@ -193,3 +199,66 @@ export const BLOG_REDIRECTS: BlogRedirect[] = [
   destination: MACBOOK_PRO_WEIGHT_CANONICAL,
   permanent: true,
 }));
+
+// DAN-871: "US vs China GDP 2026" thin cluster collapsed onto the
+// existing Comparison row (/vs/...), not a blog post — these dupes are
+// spammy narrative cron output, the /vs page is the structured canonical.
+const GDP_US_CHINA_CANONICAL = "/vs/us-vs-china-gdp-comparison-2026";
+
+const GDP_US_CHINA_DUPES: string[] = [
+  "us-vs-china-gdp-comparison-2026-economic-leaders-face-off",
+  "us-vs-china-gdp-comparison-2026-economic-powerhouses-face-off",
+  "us-vs-china-gdp-comparison-2026-economic-outlook-and-growth-projections",
+  "us-vs-china-gdp-comparison-2026-economic-power-growth-and-global-impact",
+  "us-vs-china-gdp-comparison-2026-economic-growth-rankings-analysis",
+  "us-vs-china-gdp-comparison-2026-latest-economic-data",
+  "us-vs-china-gdp-comparison-2026-economic-powerhouses-head-to-head",
+  "us-vs-china-gdp-comparison-2026-whos-leading-the-global-economy",
+  "us-vs-china-gdp-comparison-2026-latest-economic-data-and-analysis",
+  "us-vs-china-gdp-comparison-2026-which-economy-leads",
+  "us-vs-china-gdp-2026-latest-economic-comparison-analysis",
+  "us-vs-china-gdp-comparison-2026-who-has-the-larger-economy",
+  "us-vs-china-gdp-comparison-2026-the-latest-economic-data",
+  "us-vs-china-gdp-comparison-2026-economic-powers-face-off",
+  "us-vs-china-gdp-comparison-2026-economic-powers-explained",
+  "us-vs-china-gdp-comparison-2026-economic-power-showdown",
+  "us-vs-china-gdp-comparison-2026-economic-power-in-the-modern-era",
+  "us-vs-china-gdp-comparison-2026-whos-ahead",
+  "us-vs-china-gdp-comparison-2026-latest-economic-data-analysis",
+  "us-vs-china-gdp-2026-economic-power-comparison-projections",
+  "us-vs-china-gdp-comparison-2026-economic-breakdown-and-outlook",
+  "us-vs-china-gdp-comparison-2026-whos-really-ahead",
+  "us-vs-china-gdp-comparison-2026-economic-powers-in-focus",
+  "us-vs-china-gdp-comparison-2026-economic-superpowers-face-off",
+  "us-vs-china-gdp-comparison-2026-nominal-vs-ppp-analysis",
+  "us-vs-china-gdp-comparison-2026-economic-powers-ranked",
+  "us-vs-china-gdp-comparison-2026-economic-superpowers-head-to-head",
+  "us-vs-china-gdp-comparison-2026-latest-economic-figures",
+  "us-vs-china-gdp-2026-economic-powerhouses-compared",
+  "us-vs-china-gdp-comparison-2026-economic-powerhouses-ranked",
+  "us-vs-china-gdp-comparison-2026-economic-power-face-off",
+  "us-vs-china-gdp-comparison-2026-economic-power-and-projections",
+  "us-vs-china-gdp-comparison-2026-economic-power-growth-outlook",
+  "us-vs-china-gdp-comparison-2026-economic-outlook-key-metrics",
+  "us-vs-china-gdp-comparison-2026-economic-power-and-growth-trends",
+  "us-vs-china-nominal-gdp-2026-economic-comparison-projections",
+  "us-vs-china-nominal-gdp-2026-economic-comparison-analysis",
+  "us-vs-china-nominal-gdp-2026-who-has-the-larger-economy",
+  "us-vs-china-nominal-gdp-2026-economic-comparison",
+  "us-vs-china-nominal-gdp-2026-which-economy-is-larger",
+  "us-vs-china-nominal-gdp-2026-economic-comparison-outlook",
+  "us-vs-china-nominal-gdp-2026-latest-economic-comparison",
+  "china-vs-usa-gdp-comparison-2026-economic-powerhouses-face-off",
+  "china-vs-us-gdp-comparison-2026-economic-power-face-off",
+];
+
+const gdpRedirects: BlogRedirect[] = GDP_US_CHINA_DUPES.map((slug) => ({
+  source: `/blog/${slug}`,
+  destination: GDP_US_CHINA_CANONICAL,
+  permanent: true,
+}));
+
+export const BLOG_REDIRECTS: BlogRedirect[] = [
+  ...macbookRedirects,
+  ...gdpRedirects,
+];
