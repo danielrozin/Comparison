@@ -1943,6 +1943,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-30T08:20:58.617Z"
+    },
+    {
+      "slug": "nvidia-vs-amd",
+      "title": "Nvidia vs Amd",
+      "entityA": "Nvidia",
+      "entityB": "Amd",
+      "category": "General",
+      "videoFile": "Nvidia vs Amd.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Nvidia vs Amd — Full Comparison 2026",
+      "youtubeDescription": "NVIDIA dominates AI GPU market with 80% share vs AMD's 5-7%. NVIDIA shows superior revenue growth (62.5% vs 34.1%) and larger scale ($193.7B data center vs ~$8B AMD Instinct).\n\n#nvidia #amd #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-31T08:28:26.253Z"
+    },
+    {
+      "slug": "ancient-greece-vs-ancient-rome",
+      "title": "Ancient Greece vs Ancient Rome",
+      "entityA": "Ancient Greece",
+      "entityB": "Ancient Rome",
+      "category": "General",
+      "videoFile": "Ancient Greece vs Ancient Rome.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ancient Greece vs Ancient Rome — Full Comparison 2026",
+      "youtubeDescription": "Ancient Greece pioneered democracy and philosophy, while Ancient Rome built the largest ancient empire with superior engineering and governance systems.\n\n#ancientgreece #ancientrome #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-31T08:41:11.778Z"
+    },
+    {
+      "slug": "london-vs-paris",
+      "title": "London vs Paris",
+      "entityA": "London",
+      "entityB": "Paris",
+      "category": "General",
+      "videoFile": "London vs Paris.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "London vs Paris — Full Comparison 2026",
+      "youtubeDescription": "Paris is 29% cheaper than London overall, with significantly lower housing and transportation costs. London has more spread-out attractions while Paris is more compact and walkable.\n\n#london #paris #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-05-31T08:53:53.229Z"
     }
   ]
 }
