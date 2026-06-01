@@ -1985,6 +1985,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-05-31T08:53:53.229Z"
+    },
+    {
+      "slug": "netflix-vs-disney-plus",
+      "title": "Netflix vs Disney Plus",
+      "entityA": "Netflix",
+      "entityB": "Disney Plus",
+      "category": "General",
+      "videoFile": "Netflix vs Disney Plus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Netflix vs Disney Plus — Full Comparison 2026",
+      "youtubeDescription": "Netflix offers broader content variety at higher prices, while Disney+ focuses on family-friendly franchises at lower cost with superior 4K quality.\n\n#netflix #disneyplus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-01T10:33:52.499Z"
+    },
+    {
+      "slug": "us-military-vs-iran-military",
+      "title": "Us Military vs Iran Military",
+      "entityA": "Us Military",
+      "entityB": "Iran Military",
+      "category": "General",
+      "videoFile": "Us Military vs Iran Military.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Us Military vs Iran Military — Full Comparison 2026",
+      "youtubeDescription": "The US military significantly outmatches Iran across most conventional metrics, with superior numbers, technology, and global reach capabilities.\n\n#usmilitary #iranmilitary #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-01T10:46:45.195Z"
+    },
+    {
+      "slug": "star-wars-vs-star-trek",
+      "title": "Star Wars vs Star Trek",
+      "entityA": "Star Wars",
+      "entityB": "Star Trek",
+      "category": "General",
+      "videoFile": "Star Wars vs Star Trek.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Star Wars vs Star Trek — Full Comparison 2026",
+      "youtubeDescription": "Star Trek focuses on philosophical exploration and humanity's future, while Star Wars emphasizes epic space battles and good vs evil conflicts.\n\n#starwars #startrek #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-01T10:59:34.194Z"
     }
   ]
 }
