@@ -2027,6 +2027,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-01T10:59:34.194Z"
+    },
+    {
+      "slug": "vietnam-war-vs-korean-war",
+      "title": "Vietnam War vs Korean War",
+      "entityA": "Vietnam War",
+      "entityB": "Korean War",
+      "category": "Countries",
+      "videoFile": "Vietnam War vs Korean War.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Vietnam War vs Korean War — Full Comparison 2026",
+      "youtubeDescription": "Korean War (1950-53) ended in stalemate preserving South Korea. Vietnam War (1955-75) was longer, more controversial, ending in US withdrawal and defeat.\n\n#vietnamwar #koreanwar #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-02T09:19:13.041Z"
+    },
+    {
+      "slug": "mcdonalds-vs-burger-king",
+      "title": "Mcdonalds vs Burger King",
+      "entityA": "Mcdonalds",
+      "entityB": "Burger King",
+      "category": "General",
+      "videoFile": "Mcdonalds vs Burger King.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mcdonalds vs Burger King — Full Comparison 2026",
+      "youtubeDescription": "McDonald's generates 2.4x more revenue per location ($3.96M vs $1.63M) but requires much higher initial investment ($1.47M vs $232K). McDonald's dominates in efficiency and brand strength.\n\n#mcdonalds #burgerking #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-02T09:31:40.184Z"
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "Chatgpt vs Gemini",
+      "entityA": "Chatgpt",
+      "entityB": "Gemini",
+      "category": "General",
+      "videoFile": "Chatgpt vs Gemini.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Gemini — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT and Gemini achieved near-parity with 57 intelligence scores in April 2026. ChatGPT leads with 5.8B visits vs Gemini's 2B, but Gemini shows 200% growth.\n\n#chatgpt #gemini #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-02T09:44:38.577Z"
     }
   ]
 }
