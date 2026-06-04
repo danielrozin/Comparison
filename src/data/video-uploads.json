@@ -2111,6 +2111,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-03T10:05:44.360Z"
+    },
+    {
+      "slug": "llc-vs-s-corp",
+      "title": "Llc vs S Corp",
+      "entityA": "Llc",
+      "entityB": "S Corp",
+      "category": "General",
+      "videoFile": "Llc vs S Corp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Llc vs S Corp — Full Comparison 2026",
+      "youtubeDescription": "LLCs are business entities with flexible management, while S Corps are tax elections offering potential self-employment tax savings but with stricter compliance requirements.\n\n#llc #scorp #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-04T09:04:36.388Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "General",
+      "videoFile": "Uber vs Lyft.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uber vs Lyft — Full Comparison 2026",
+      "youtubeDescription": "Uber dominates in off-peak hours and high-density areas, while Lyft often provides cheaper rides during moderate surge periods. Smart drivers use both apps strategically in 2026.\n\n#uber #lyft #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-04T09:20:04.432Z"
+    },
+    {
+      "slug": "spotify-vs-apple-music",
+      "title": "Spotify vs Apple Music",
+      "entityA": "Spotify",
+      "entityB": "Apple Music",
+      "category": "General",
+      "videoFile": "Spotify vs Apple Music.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Spotify vs Apple Music — Full Comparison 2026",
+      "youtubeDescription": "Apple Music pays double per stream but Spotify has 3x larger user base. Best strategy is using both platforms for maximum reach and revenue.\n\n#spotify #applemusic #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-04T09:35:21.402Z"
     }
   ]
 }
