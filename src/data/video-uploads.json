@@ -2153,6 +2153,34 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-04T09:35:21.402Z"
+    },
+    {
+      "slug": "uk-vs-usa",
+      "title": "Uk vs Usa",
+      "entityA": "Uk",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Uk vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uk vs Usa — Full Comparison 2026",
+      "youtubeDescription": "The US has a larger economy and higher wages but the UK offers better worker protections and lower debt levels. Both have similar unemployment rates around 4-5%.\n\n#uk #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-05T08:57:10.791Z"
+    },
+    {
+      "slug": "oura-ring-vs-whoop",
+      "title": "Oura Ring vs Whoop",
+      "entityA": "Oura Ring",
+      "entityB": "Whoop",
+      "category": "General",
+      "videoFile": "Oura Ring vs Whoop.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Oura Ring vs Whoop — Full Comparison 2026",
+      "youtubeDescription": "Whoop offers 24/7 continuous tracking with coach-like strain/recovery focus, while Oura Ring provides spontaneous tracking with step counting in a discreet ring form factor.\n\n#ouraring #whoop #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-05T09:10:05.936Z"
     }
   ]
 }
