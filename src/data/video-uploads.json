@@ -2181,6 +2181,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-05T09:10:05.936Z"
+    },
+    {
+      "slug": "china-vs-us-gdp",
+      "title": "China vs Us Gdp",
+      "entityA": "China",
+      "entityB": "Us Gdp",
+      "category": "Countries",
+      "videoFile": "China vs Us Gdp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "China vs Us Gdp — Full Comparison 2026",
+      "youtubeDescription": "USA leads with $30.5T GDP vs China's $19.2T, but China has 4x the population and higher growth rates at 4.6-4.8% annually.\n\n#china #usgdp #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-06T07:59:53.869Z"
+    },
+    {
+      "slug": "us-military-vs-china-military",
+      "title": "Us Military vs China Military",
+      "entityA": "Us Military",
+      "entityB": "China Military",
+      "category": "Countries",
+      "videoFile": "Us Military vs China Military.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Us Military vs China Military — Full Comparison 2026",
+      "youtubeDescription": "US ranks #1 globally vs China's #3, with 3.2x larger defense budget ($997B vs $314B) but China has 1.8x more active troops and larger navy.\n\n#usmilitary #chinamilitary #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-06T08:12:34.740Z"
+    },
+    {
+      "slug": "kobe-vs-lebron",
+      "title": "Kobe vs Lebron",
+      "entityA": "Kobe",
+      "entityB": "Lebron",
+      "category": "Sports",
+      "videoFile": "Kobe vs Lebron.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Kobe vs Lebron — Full Comparison 2026",
+      "youtubeDescription": "LeBron leads in efficiency, MVPs, and career totals while showing superior adaptability across eras. Kobe's advantages aren't specified in the provided research.\n\n#kobe #lebron #sports #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-06T08:25:10.853Z"
     }
   ]
 }
