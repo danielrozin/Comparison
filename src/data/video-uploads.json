@@ -2223,6 +2223,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-06T08:25:10.853Z"
+    },
+    {
+      "slug": "china-vs-us-gdp",
+      "title": "China vs Us Gdp",
+      "entityA": "China",
+      "entityB": "Us Gdp",
+      "category": "Countries",
+      "videoFile": "China vs Us Gdp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "China vs Us Gdp — Full Comparison 2026",
+      "youtubeDescription": "US leads with $30.5T GDP vs China's $19.2T, but China grows faster at 4.6-4.8% annually. US dominates space and innovation while China excels in manufacturing and population scale.\n\n#china #usgdp #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-07T08:37:23.367Z"
+    },
+    {
+      "slug": "usa-vs-china",
+      "title": "Usa vs China",
+      "entityA": "Usa",
+      "entityB": "China",
+      "category": "Countries",
+      "videoFile": "Usa vs China.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Usa vs China — Full Comparison 2026",
+      "youtubeDescription": "USA leads in GDP ($28.8T vs $17.8T) and per capita income, while China dominates in population (1.41B vs 340M) and trade volume.\n\n#usa #china #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-07T08:50:30.553Z"
+    },
+    {
+      "slug": "tiger-woods-vs-jack-nicklaus",
+      "title": "Tiger Woods vs Jack Nicklaus",
+      "entityA": "Tiger Woods",
+      "entityB": "Jack Nicklaus",
+      "category": "General",
+      "videoFile": "Tiger Woods vs Jack Nicklaus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Tiger Woods vs Jack Nicklaus — Full Comparison 2026",
+      "youtubeDescription": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.\n\n#tigerwoods #jacknicklaus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-07T09:03:22.550Z"
     }
   ]
 }
