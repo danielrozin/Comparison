@@ -2265,6 +2265,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-07T09:03:22.550Z"
+    },
+    {
+      "slug": "llc-vs-s-corp",
+      "title": "Llc vs S Corp",
+      "entityA": "Llc",
+      "entityB": "S Corp",
+      "category": "General",
+      "videoFile": "Llc vs S Corp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Llc vs S Corp — Full Comparison 2026",
+      "youtubeDescription": "LLCs offer simpler administration while S-Corps can reduce self-employment taxes through reasonable salary requirements, making S-Corps better for higher-income businesses.\n\n#llc #scorp #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-08T09:36:30.702Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Booking.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airbnb vs Booking — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.\n\n#airbnb #booking #travel #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-08T09:49:35.733Z"
+    },
+    {
+      "slug": "curry-vs-lebron",
+      "title": "Curry vs Lebron",
+      "entityA": "Curry",
+      "entityB": "Lebron",
+      "category": "Sports",
+      "videoFile": "Curry vs Lebron.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Curry vs Lebron — Full Comparison 2026",
+      "youtubeDescription": "LeBron dominates in overall impact metrics and longevity, while Curry excels in revolutionary shooting and efficiency from beyond the arc.\n\n#curry #lebron #sports #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-08T10:02:40.316Z"
     }
   ]
 }
