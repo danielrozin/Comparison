@@ -2307,6 +2307,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-08T10:02:40.316Z"
+    },
+    {
+      "slug": "mac-vs-windows",
+      "title": "Mac vs Windows",
+      "entityA": "Mac",
+      "entityB": "Windows",
+      "category": "General",
+      "videoFile": "Mac vs Windows.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mac vs Windows — Full Comparison 2026",
+      "youtubeDescription": "Windows dominates business and gaming with better value, while Mac excels in creative work with superior integration. Choice depends on your specific needs and budget.\n\n#mac #windows #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-09T08:46:59.441Z"
+    },
+    {
+      "slug": "f-35-vs-j-20",
+      "title": "F 35 vs J 20",
+      "entityA": "F 35",
+      "entityB": "J 20",
+      "category": "General",
+      "videoFile": "F 35 vs J 20.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "F 35 vs J 20 — Full Comparison 2026",
+      "youtubeDescription": "J-20 is a larger, faster air superiority fighter with longer range, while F-35 is a smaller, stealthier multi-role fighter with better avionics.\n\n#f35 #j20 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-09T09:02:13.528Z"
+    },
+    {
+      "slug": "vanguard-vs-fidelity",
+      "title": "Vanguard vs Fidelity",
+      "entityA": "Vanguard",
+      "entityB": "Fidelity",
+      "category": "General",
+      "videoFile": "Vanguard vs Fidelity.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Vanguard vs Fidelity — Full Comparison 2026",
+      "youtubeDescription": "Both Vanguard and Fidelity are investment giants offering $0 stock trades. Fidelity provides broader services while Vanguard focuses on low-cost investing.\n\n#vanguard #fidelity #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-09T09:17:46.353Z"
     }
   ]
 }
