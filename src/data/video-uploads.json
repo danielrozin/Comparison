@@ -2349,6 +2349,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-09T09:17:46.353Z"
+    },
+    {
+      "slug": "chatgpt-vs-claude",
+      "title": "Chatgpt vs Claude",
+      "entityA": "Chatgpt",
+      "entityB": "Claude",
+      "category": "General",
+      "videoFile": "Chatgpt vs Claude.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Claude — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.\n\n#chatgpt #claude #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-10T09:01:42.430Z"
+    },
+    {
+      "slug": "iron-dome-vs-s-400",
+      "title": "Iron Dome vs S 400",
+      "entityA": "Iron Dome",
+      "entityB": "S 400",
+      "category": "General",
+      "videoFile": "Iron Dome vs S 400.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Iron Dome vs S 400 — Full Comparison 2026",
+      "youtubeDescription": "S-400 is a long-range strategic system with 400km reach, while Iron Dome is a tactical short-range defense with 70km coverage designed for different threat types.\n\n#irondome #s400 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-10T09:12:39.983Z"
+    },
+    {
+      "slug": "ensure-vs-insure",
+      "title": "Ensure vs Insure",
+      "entityA": "Ensure",
+      "entityB": "Insure",
+      "category": "General",
+      "videoFile": "Ensure vs Insure.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ensure vs Insure — Full Comparison 2026",
+      "youtubeDescription": "Ensure means to make certain something happens, while insure means to protect financially against loss. They are not interchangeable despite common confusion.\n\n#ensure #insure #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-10T09:24:02.495Z"
     }
   ]
 }
