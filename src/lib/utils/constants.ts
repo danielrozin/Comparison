@@ -1,4 +1,9 @@
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B";
+// Normalize: trim and collapse any internal whitespace so a misconfigured
+// NEXT_PUBLIC_SITE_NAME env var (e.g. with trailing spaces) can't leak stray
+// whitespace into <title>/og:title/twitter:title. See DAN-966.
+export const SITE_NAME = (process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B")
+  .replace(/\s+/g, " ")
+  .trim();
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
 
 export const COMPARISON_PATTERNS = [
