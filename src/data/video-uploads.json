@@ -2391,6 +2391,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-10T09:24:02.495Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "General",
+      "videoFile": "Uber vs Lyft.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uber vs Lyft — Full Comparison 2026",
+      "youtubeDescription": "Neither Uber nor Lyft is consistently cheaper - prices vary by city, time, and surge demand with gaps of 20-40%. Uber typically pays drivers more for premium rides.\n\n#uber #lyft #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-11T09:23:56.356Z"
+    },
+    {
+      "slug": "f-35-vs-j-20",
+      "title": "F 35 vs J 20",
+      "entityA": "F 35",
+      "entityB": "J 20",
+      "category": "General",
+      "videoFile": "F 35 vs J 20.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "F 35 vs J 20 — Full Comparison 2026",
+      "youtubeDescription": "F-35 offers superior stealth and advanced sensors, while J-20 provides larger size and longer range. F-35 is more proven and widely adopted.\n\n#f35 #j20 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-11T09:34:22.822Z"
+    },
+    {
+      "slug": "equity-vs-equality",
+      "title": "Equity vs Equality",
+      "entityA": "Equity",
+      "entityB": "Equality",
+      "category": "General",
+      "videoFile": "Equity vs Equality.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Equity vs Equality — Full Comparison 2026",
+      "youtubeDescription": "Equality treats everyone the same regardless of circumstances, while equity provides different levels of support based on individual needs to achieve fair outcomes.\n\n#equity #equality #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-11T09:44:50.377Z"
     }
   ]
 }
