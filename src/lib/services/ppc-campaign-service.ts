@@ -7,7 +7,10 @@
 import { getPrisma } from "@/lib/db/prisma";
 import { comparisonSlug } from "@/lib/utils/slugify";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+// Strip stray whitespace/trailing slash from a misconfigured env var (DAN-904).
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+  .replace(/\s+/g, "")
+  .replace(/\/+$/, "");
 
 export interface PPCKeyword {
   keyword: string;

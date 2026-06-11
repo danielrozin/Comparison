@@ -9,7 +9,10 @@ import { getTrendingComparisons } from "./comparison-service";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || "A Versus B <digest@aversusb.net>";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+// Strip stray whitespace/trailing slash from a misconfigured env var (DAN-904).
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+  .replace(/\s+/g, "")
+  .replace(/\/+$/, "");
 
 interface DigestComparison {
   title: string;

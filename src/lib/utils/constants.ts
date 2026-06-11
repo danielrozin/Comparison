@@ -4,7 +4,14 @@
 export const SITE_NAME = (process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B")
   .replace(/\s+/g, " ")
   .trim();
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+// Normalize: strip all whitespace and any trailing slash so a misconfigured
+// NEXT_PUBLIC_SITE_URL env var (e.g. a trailing space) can't break canonical/
+// og:image URLs sitewide. A stray space makes Next.js treat the absolute URL as
+// relative and prepend metadataBase, producing
+// https://www.aversusb.net/https:/www.aversusb.net%20/... See DAN-904.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+  .replace(/\s+/g, "")
+  .replace(/\/+$/, "");
 
 export const COMPARISON_PATTERNS = [
   "vs",

@@ -164,7 +164,9 @@ export async function sendPartnerKeyEmail(opts: {
   partnerKey: string;
   tier: string;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+    .replace(/\s+/g, "")
+    .replace(/\/+$/, "");
   const embedSnippet = `<iframe src="${siteUrl}/embed/YOUR-COMPARISON-SLUG?partner=${opts.partnerKey}" width="100%" height="400" frameborder="0" style="border-radius: 12px; border: 1px solid #e2e8f0;"></iframe>`;
   const scriptSnippet = `<script src="${siteUrl}/api/v1/widget?slug=YOUR-COMPARISON-SLUG&partner=${opts.partnerKey}"></script>`;
 
