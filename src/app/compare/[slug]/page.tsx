@@ -614,14 +614,22 @@ function MultiEntityLayout({
   const n = comparison.entities.length;
   return (
     <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
+      {/* Schema markup — use validated editorial @graph when present (e.g. the
+          schema-3way v1 graph with PKM-cluster Offers), else auto-generated */}
+      {comparison.schemaMarkup ? (
         <script
-          key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
         />
-      ))}
+      ) : (
+        schemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))
+      )}
 
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
       <BackToResults />
