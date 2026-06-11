@@ -32,14 +32,25 @@ export function socialSameAs(): string[] {
   return slots.filter((url) => url.trim().length > 0);
 }
 
+// Spread-helper that emits a `sameAs` key ONLY when at least one verified social
+// URL is configured. While DAN-422 / DAN-419 social activation is blocked (no env
+// vars set), this yields `{}` so the key is ABSENT rather than an empty `sameAs: []`
+// array — absent is valid schema and avoids any empty-array noise (DAN-988). When
+// SMM (4f3bd1c8) populates NEXT_PUBLIC_SOCIAL_* the key reappears automatically with
+// no code change, preserving the non-destructive DAN-422 bolt-on design.
+export function sameAsField(): { sameAs?: string[] } {
+  const urls = socialSameAs();
+  return urls.length > 0 ? { sameAs: urls } : {};
+}
+
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo.png`,
-    sameAs: socialSameAs(),
+    logo: `${SITE_URL}/logo.png`,
+    ...sameAsField(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     foundingDate: "2024",
     knowsAbout: [
@@ -146,9 +157,9 @@ export function comparisonPageSchema(
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
+        url: `${SITE_URL}/logo.png`,
       },
-      sameAs: socialSameAs(),
+      ...sameAsField(),
     },
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -340,8 +351,8 @@ function buildMultiEntityGraph(
       "@type": "Organization",
       name: SITE_NAME,
       url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
-      sameAs: socialSameAs(),
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+      ...sameAsField(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     mainEntity: { "@id": itemListId },
@@ -417,7 +428,7 @@ export function videoObjectSchema(opts: {
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
+        url: `${SITE_URL}/logo.png`,
       },
     },
     potentialAction: {

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, sameAsField } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -244,9 +244,9 @@ export default async function BlogPostPage({
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
+        url: `${SITE_URL}/logo.png`,
       },
-      sameAs: socialSameAs(),
+      ...sameAsField(),
     },
     datePublished: article.publishedAt
       ? new Date(article.publishedAt).toISOString()
