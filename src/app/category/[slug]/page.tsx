@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
+import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
@@ -100,6 +101,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const ratingFilter = (sp.rating as RatingFilter) || "all";
 
   const { comparisons: allComparisons, total: dbTotal } = await getComparisonsByCategory(slug, 500);
+  const featured = getFeaturedForCategory(slug);
   const activeSubcategories = getSubcategoriesForSlug(slug);
   const hasSubcategories = activeSubcategories.length > 0;
 
@@ -188,6 +190,42 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             </p>
           </div>
         </div>
+
+        {/* Featured / pinned — curated, independent of viewCount sort (DAN-1020) */}
+        {featured.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
+              <span aria-hidden="true">⭐</span> Featured Comparisons
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {featured.map((item) => {
+                const parts = item.anchor.split(/\s+vs\.?\s+/i);
+                return (
+                  <Link
+                    key={item.slug}
+                    href={`/compare/${item.slug}`}
+                    className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="flex -space-x-2">
+                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                          {(parts[0] || "A").charAt(0)}
+                        </div>
+                        <div className="w-8 h-8 bg-accent-100 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                          {(parts[1] || "B").charAt(0)}
+                        </div>
+                      </div>
+                      <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors">
+                        {item.anchor}
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-secondary leading-relaxed">{item.blurb}</p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Top 5 Comparisons — highlighted for quick discovery */}
         {allComparisons.length >= 5 && (
