@@ -581,3 +581,241 @@ export async function getGSCStats(): Promise<GSCStats> {
     avgPosition: Math.round(avgPosition * 100) / 100,
   };
 }
+
+// ---------------------------------------------------------------------------
+// /compare/* weekly organic traffic (gate metric for H6 — DAN-1014 / DAN-1008)
+// ---------------------------------------------------------------------------
+//
+// Read path: Google Search Console page-level search analytics, filtered to
+// URLs containing "/compare/". This uses the SAME service-account auth that
+// already powers the GSC opportunity pipeline (GOOGLE_SERVICE_ACCOUNT_KEY +
+// webmasters.readonly on the Search Console property), so it does NOT depend on
+// the stalled GA4 Data API property grant (DAN-710).
+//
+// NOTE ON THE METRIC: GSC reports organic-search *clicks*, which is a subset of
+// GA4 *sessions* (organic Google only; clicks, not all sessions). It is the
+// directly-relevant signal for an organic-SEO push and needs no human grant.
+// The DAN-1008 gate threshold (≥250/wk, 2 consecutive weeks) is surfaced here
+// against GSC clicks and labelled `metric: "gsc_clicks"`; whether GSC clicks is
+// the accepted read path for the gate is a VP-Product (gate owner) decision.
+
+export interface GSCComparePageRow {
+  date: string; // YYYY-MM-DD
+  page: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+export interface GSCCompareWeek {
+  weekStart: string; // Monday, YYYY-MM-DD
+  weekEnd: string; // Sunday, YYYY-MM-DD
+  complete: boolean; // true once the week's Sunday is fully elapsed (accounting for GSC's ~2-day lag)
+  clicks: number;
+  impressions: number;
+  pages: number; // distinct /compare/* pages with traffic
+  topPages: Array<{ page: string; clicks: number; impressions: number }>;
+}
+
+export interface GSCCompareWeeklyReport {
+  available: boolean; // false when no GSC credentials / no data
+  metric: "gsc_clicks";
+  thresholdPerWeek: number;
+  weeks: GSCCompareWeek[]; // chronological, oldest → newest
+  latestCompleteWeek: GSCCompareWeek | null;
+  priorCompleteWeek: GSCCompareWeek | null;
+  wowClicksChange: string;
+  consecutiveCompleteWeeksAtThreshold: number; // counted backward from latest complete week
+  gateClear: boolean; // ≥2 consecutive complete weeks at/above threshold
+  note: string;
+}
+
+/** Monday (UTC) of the ISO week containing `d`. */
+function mondayOfWeekUTC(d: Date): Date {
+  const x = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const dow = (x.getUTCDay() + 6) % 7; // 0 = Monday
+  x.setUTCDate(x.getUTCDate() - dow);
+  return x;
+}
+
+function fmtDateUTC(d: Date): string {
+  return d.toISOString().split("T")[0];
+}
+
+/**
+ * Fetch per-day, per-page GSC rows for URLs containing "/compare/".
+ */
+export async function fetchGSCComparePageRows(days = 35): Promise<GSCComparePageRow[]> {
+  const token = await getAccessToken();
+  if (!token) {
+    console.warn("GSC: No access token — returning empty /compare/* rows");
+    return [];
+  }
+
+  const siteUrl = getSiteUrl();
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - days);
+
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: fmtDateUTC(startDate),
+          endDate: fmtDateUTC(endDate),
+          dimensions: ["date", "page"],
+          dimensionFilterGroups: [
+            { filters: [{ dimension: "page", operator: "contains", expression: "/compare/" }] },
+          ],
+          rowLimit: 25000,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error("GSC: /compare/* page fetch failed:", res.status, errText);
+      return [];
+    }
+
+    const data = await res.json();
+    if (!data.rows) return [];
+
+    return data.rows.map(
+      (row: {
+        keys: string[];
+        clicks: number;
+        impressions: number;
+        ctr: number;
+        position: number;
+      }) => ({
+        date: row.keys[0],
+        page: row.keys[1],
+        clicks: row.clicks,
+        impressions: row.impressions,
+        ctr: row.ctr,
+        position: row.position,
+      })
+    );
+  } catch (err) {
+    console.error("GSC: /compare/* page fetch error:", err);
+    return [];
+  }
+}
+
+/**
+ * Build the weekly /compare/* organic-traffic report (Mon–Sun buckets) used as
+ * the H6 gate metric. Aggregates GSC click/impression data by week and
+ * evaluates the ≥`threshold`/week, 2-consecutive-weeks gate condition.
+ */
+export async function getGSCCompareWeekly(
+  weeksBack = 6,
+  threshold = 250
+): Promise<GSCCompareWeeklyReport> {
+  const baseNote =
+    "GSC organic clicks to /compare/* pages. Subset of GA4 sessions (Google organic clicks only). Read path independent of the GA4 grant (DAN-710).";
+
+  const rows = await fetchGSCComparePageRows(weeksBack * 7 + 7);
+  if (rows.length === 0) {
+    return {
+      available: false,
+      metric: "gsc_clicks",
+      thresholdPerWeek: threshold,
+      weeks: [],
+      latestCompleteWeek: null,
+      priorCompleteWeek: null,
+      wowClicksChange: "n/a",
+      consecutiveCompleteWeeksAtThreshold: 0,
+      gateClear: false,
+      note: `${baseNote} No data — GSC credentials missing or no /compare/* clicks in window.`,
+    };
+  }
+
+  // GSC data lags ~2 days; treat a week as "complete" only once its Sunday is
+  // at least 2 days in the past so we don't read a partial final week as a dip.
+  const now = new Date();
+  const completeCutoff = new Date(now);
+  completeCutoff.setUTCDate(completeCutoff.getUTCDate() - 2);
+
+  const buckets = new Map<
+    string,
+    { weekStart: Date; clicks: number; impressions: number; pages: Map<string, { clicks: number; impressions: number }> }
+  >();
+
+  for (const r of rows) {
+    const d = new Date(`${r.date}T00:00:00Z`);
+    const monday = mondayOfWeekUTC(d);
+    const key = fmtDateUTC(monday);
+    let b = buckets.get(key);
+    if (!b) {
+      b = { weekStart: monday, clicks: 0, impressions: 0, pages: new Map() };
+      buckets.set(key, b);
+    }
+    b.clicks += r.clicks;
+    b.impressions += r.impressions;
+    const p = b.pages.get(r.page) || { clicks: 0, impressions: 0 };
+    p.clicks += r.clicks;
+    p.impressions += r.impressions;
+    b.pages.set(r.page, p);
+  }
+
+  const weeks: GSCCompareWeek[] = Array.from(buckets.values())
+    .sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime())
+    .map((b) => {
+      const weekEnd = new Date(b.weekStart);
+      weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
+      const topPages = Array.from(b.pages.entries())
+        .map(([page, v]) => ({ page, clicks: v.clicks, impressions: v.impressions }))
+        .sort((x, y) => y.clicks - x.clicks)
+        .slice(0, 20);
+      return {
+        weekStart: fmtDateUTC(b.weekStart),
+        weekEnd: fmtDateUTC(weekEnd),
+        complete: weekEnd.getTime() <= completeCutoff.getTime(),
+        clicks: b.clicks,
+        impressions: b.impressions,
+        pages: b.pages.size,
+        topPages,
+      };
+    });
+
+  const completeWeeks = weeks.filter((w) => w.complete);
+  const latestCompleteWeek = completeWeeks[completeWeeks.length - 1] || null;
+  const priorCompleteWeek = completeWeeks[completeWeeks.length - 2] || null;
+
+  // Consecutive complete weeks (counting backward) at or above threshold.
+  let consecutive = 0;
+  for (let i = completeWeeks.length - 1; i >= 0; i--) {
+    if (completeWeeks[i].clicks >= threshold) consecutive++;
+    else break;
+  }
+
+  return {
+    available: true,
+    metric: "gsc_clicks",
+    thresholdPerWeek: threshold,
+    weeks,
+    latestCompleteWeek,
+    priorCompleteWeek,
+    wowClicksChange:
+      latestCompleteWeek && priorCompleteWeek
+        ? (() => {
+            const c = latestCompleteWeek.clicks;
+            const p = priorCompleteWeek.clicks;
+            if (p === 0) return c > 0 ? "+new" : "flat";
+            const pct = Math.round(((c - p) / p) * 100);
+            return pct >= 0 ? `+${pct}%` : `${pct}%`;
+          })()
+        : "n/a",
+    consecutiveCompleteWeeksAtThreshold: consecutive,
+    gateClear: consecutive >= 2,
+    note: baseNote,
+  };
+}

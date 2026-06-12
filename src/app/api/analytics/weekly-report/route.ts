@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { getPrisma } from "@/lib/db/prisma";
+import { getGSCCompareWeekly, type GSCCompareWeeklyReport } from "@/lib/services/gsc-service";
 
 /**
  * Weekly Metrics Report API for AversusB
@@ -61,6 +62,28 @@ export async function GET() {
     getRedisEvents(7),
     getRedisEvents(14),
   ]);
+
+  // /compare/* weekly organic traffic — H6 gate metric (DAN-1014 / DAN-1008).
+  // GSC read path (already-authenticated service account); independent of the
+  // stalled GA4 grant (DAN-710). Degrades to available:false when no creds.
+  let compareWeekly: GSCCompareWeeklyReport;
+  try {
+    compareWeekly = await getGSCCompareWeekly();
+  } catch (err) {
+    console.error("Weekly report GSC /compare/* error:", err);
+    compareWeekly = {
+      available: false,
+      metric: "gsc_clicks",
+      thresholdPerWeek: 250,
+      weeks: [],
+      latestCompleteWeek: null,
+      priorCompleteWeek: null,
+      wowClicksChange: "n/a",
+      consecutiveCompleteWeeksAtThreshold: 0,
+      gateClear: false,
+      note: "GSC /compare/* fetch threw — see logs.",
+    };
+  }
 
   const countEvents = (events: AdminEvent[], type: string) => events.filter((e) => e.type === type).length;
   const eventsPrevWeek = events14d.filter((e) => {
@@ -214,6 +237,34 @@ export async function GET() {
     { stage: "Signups", value: signups7d, rate: searches7d > 0 ? Math.round((signups7d / searches7d) * 100) : 0 },
   ];
 
+  // /compare/* gate-metric markdown section
+  const cw = compareWeekly;
+  const compareSection = !cw.available
+    ? `## /compare/* Organic Traffic (Gate Metric — GSC)
+
+_No GSC data available. ${cw.note}_
+
+**Gate (DAN-1008):** ≥${cw.thresholdPerWeek} ${cw.metric} to \`/compare/*\` per week, 2 consecutive weeks.`
+    : `## /compare/* Organic Traffic (Gate Metric — GSC)
+
+**Read path:** ${cw.metric} (${cw.note})
+**Gate (DAN-1008):** ≥${cw.thresholdPerWeek}/week for 2 consecutive complete weeks.
+**Gate status:** ${cw.gateClear ? "✅ CLEAR" : "❌ not yet"} — ${cw.consecutiveCompleteWeeksAtThreshold} consecutive complete week(s) at/above threshold.
+**Latest complete week:** ${cw.latestCompleteWeek ? `${cw.latestCompleteWeek.weekStart} → ${cw.latestCompleteWeek.weekEnd}: ${cw.latestCompleteWeek.clicks} clicks / ${cw.latestCompleteWeek.impressions} impressions (${cw.wowClicksChange} WoW)` : "none complete yet"}
+
+| Week (Mon–Sun) | Clicks | Impressions | Pages | Complete |
+|----------------|--------|-------------|-------|----------|
+${cw.weeks.map((w) => `| ${w.weekStart} → ${w.weekEnd} | ${w.clicks} | ${w.impressions} | ${w.pages} | ${w.complete ? "yes" : "partial"} |`).join("\n")}
+
+**Top /compare/* pages (latest complete week):**
+
+${cw.latestCompleteWeek && cw.latestCompleteWeek.topPages.length > 0
+        ? cw.latestCompleteWeek.topPages.slice(0, 20).map((p, i) => `${i + 1}. ${p.page} — ${p.clicks} clicks`).join("\n")
+        : "_none_"}
+
+---
+`;
+
   // Generate markdown report
   const markdown = `# AversusB Weekly Metrics Report — W${weekNum} 2026
 **Period:** ${periodStart} to ${periodEnd}
@@ -234,6 +285,7 @@ export async function GET() {
 
 ---
 
+${compareSection}
 ## Content Inventory
 
 | Asset | Count |
@@ -338,6 +390,7 @@ ${searches7d === 0 && views7d === 0 ? "- **Low traffic alert:** No searches or v
       totalViewCount: db.totalViewCount,
     },
     funnel,
+    comparePages: compareWeekly,
     dailyBreakdown,
     topComparisons: db.topComparisons,
     topCategories: db.topCategories,
