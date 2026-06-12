@@ -32,6 +32,7 @@ import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
 import { videoObjectSchema } from "@/lib/seo/schema";
+import { getStaticRenderer } from "@/lib/seo/static-island";
 
 // Lazy-load heavy below-fold SEO content (kept SSR'd for crawlers via dynamic + ssr default)
 const ComparisonTable = dynamic(
@@ -224,7 +225,7 @@ export default async function ComparisonPage({ params }: PageProps) {
   );
 }
 
-function VerdictFirstLayout({
+async function VerdictFirstLayout({
   comparison,
   schemas,
   slug,
@@ -237,6 +238,10 @@ function VerdictFirstLayout({
   sidebarComparisons: import("@/types").RelatedComparison[];
   videoMeta: ReturnType<typeof getVideoMetadata>;
 }) {
+  // DAN-432 Phase A: pre-render large static SEO sections to inert HTML islands.
+  // One renderer for the whole tree; each island() call is synchronous.
+  const island = await getStaticRenderer();
+
   return (
     <>
       {/* Schema markup — all page schemas (+ optional VideoObject) consolidated
@@ -308,36 +313,48 @@ function VerdictFirstLayout({
         <CitationStatsBar stats={comparison.citationStats} />
       )}
 
-      {/* Quick Answer TL;DR — above the fold, GEO-optimized */}
+      {/* Quick Answer TL;DR — above the fold, GEO-optimized.
+          Pre-rendered to an inert HTML island (DAN-432 Phase A): static markup,
+          byte-identical DOM, but collapses its RSC flight encoding. */}
       {comparison.quickAnswer?.tldr && (
-        <div id="verdict">
-          <QuickAnswerTLDR
-            quickAnswer={comparison.quickAnswer}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
-          />
-        </div>
+        <div
+          id="verdict"
+          dangerouslySetInnerHTML={island(
+            <QuickAnswerTLDR
+              quickAnswer={comparison.quickAnswer}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+        />
       )}
 
       {/* Short Answer Block — AEO/featured snippet target (fallback when no quickAnswer) */}
       {!comparison.quickAnswer?.tldr && (comparison.shortAnswer || comparison.verdict) && (
-        <div id="verdict">
-          <ShortAnswerBlock
-            shortAnswer={comparison.shortAnswer || ""}
-            verdict={comparison.verdict}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
-          />
-        </div>
+        <div
+          id="verdict"
+          dangerouslySetInnerHTML={island(
+            <ShortAnswerBlock
+              shortAnswer={comparison.shortAnswer || ""}
+              verdict={comparison.verdict}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+        />
       )}
 
-      {/* VERDICT CARD — above the fold */}
+      {/* VERDICT CARD — above the fold. Inert HTML island (DAN-432 Phase A). */}
       {(comparison.verdict || comparison.shortAnswer) && (
-        <VerdictCard
-          verdict={comparison.verdict || ""}
-          shortAnswer={comparison.shortAnswer}
-          entities={comparison.entities}
-          attributes={comparison.attributes}
+        <div
+          dangerouslySetInnerHTML={island(
+            <VerdictCard
+              verdict={comparison.verdict || ""}
+              shortAnswer={comparison.shortAnswer}
+              entities={comparison.entities}
+              attributes={comparison.attributes}
+            />
+          )}
         />
       )}
 
@@ -354,24 +371,31 @@ function VerdictFirstLayout({
         />
       )}
 
-      {/* Key Differences Summary — top 3, above the fold */}
+      {/* Key Differences Summary — top 3, above the fold. Inert HTML island (DAN-432 Phase A). */}
       {comparison.keyDifferences.length > 0 && (
-        <KeyDifferencesSummary
-          differences={comparison.keyDifferences}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
+        <div
+          dangerouslySetInnerHTML={island(
+            <KeyDifferencesSummary
+              differences={comparison.keyDifferences}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
         />
       )}
 
-      {/* Key Facts & Figures table — exact numbers alongside prose */}
+      {/* Key Facts & Figures table — exact numbers alongside prose. Inert HTML island (DAN-432 Phase A). */}
       {comparison.attributes.length > 0 && (
-        <div id="key-facts">
-          <DataFactsTable
-            attributes={comparison.attributes}
-            entityA={comparison.entities[0]}
-            entityB={comparison.entities[1]}
-          />
-        </div>
+        <div
+          id="key-facts"
+          dangerouslySetInnerHTML={island(
+            <DataFactsTable
+              attributes={comparison.attributes}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
+          )}
+        />
       )}
 
       {/* Mobile RC strip dropped (DAN-410): mobile users still get related
@@ -382,15 +406,18 @@ function VerdictFirstLayout({
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
         {/* Main content column */}
         <div className="flex-1 min-w-0">
-          {/* Full Key Differences Table */}
+          {/* Full Key Differences Table. Inert HTML island (DAN-432 Phase A). */}
           {comparison.keyDifferences.length > 0 && (
-            <div id="key-differences">
-              <KeyDifferencesBlock
-                differences={comparison.keyDifferences}
-                entityA={comparison.entities[0]}
-                entityB={comparison.entities[1]}
-              />
-            </div>
+            <div
+              id="key-differences"
+              dangerouslySetInnerHTML={island(
+                <KeyDifferencesBlock
+                  differences={comparison.keyDifferences}
+                  entityA={comparison.entities[0]}
+                  entityB={comparison.entities[1]}
+                />
+              )}
+            />
           )}
 
           {/* Comparison Table (lazy loaded) */}
@@ -416,10 +443,13 @@ function VerdictFirstLayout({
           {/* Video Comparison — lazy loaded, auto-hides if no video available */}
           <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
 
-          {/* Pros & Cons */}
-          <div id="pros-cons">
-            <ProsConsBlock entities={comparison.entities} />
-          </div>
+          {/* Pros & Cons. Inert HTML island (DAN-432 Phase A). */}
+          <div
+            id="pros-cons"
+            dangerouslySetInnerHTML={island(
+              <ProsConsBlock entities={comparison.entities} />
+            )}
+          />
 
           {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
