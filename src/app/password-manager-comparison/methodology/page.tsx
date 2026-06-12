@@ -36,6 +36,7 @@ const schema = {
     url: SITE_URL,
   },
   isPartOf: { "@type": "WebPage", url: `${SITE_URL}/password-manager-comparison` },
+  license: "https://creativecommons.org/licenses/by/4.0/",
 };
 
 export default function PasswordManagerMethodologyPage() {
@@ -122,6 +123,7 @@ export default function PasswordManagerMethodologyPage() {
           <li><strong className="text-text">Tier 2 (acceptable):</strong> CVE database (cve.mitre.org) for breach history; vendor incident disclosure blog post for context.</li>
           <li><strong className="text-text">Tier 3 (crosscheck only):</strong> Methodology-disclosed independent reviews (e.g., Wirecutter, PCMag) used to flag discrepancies, not as primary citations.</li>
           <li><strong className="text-text">Disallowed:</strong> User-review aggregators (G2, Trustpilot, Capterra), anonymous blog posts, our own pages, AI-generated summaries.</li>
+          <li><strong className="text-text">Wikipedia and any Wikipedia mirror/fork</strong> — never a cite-worthy source for a cell value. The <code className="text-sm bg-surface-alt px-1 rounded">about.sameAs</code> Wikipedia link (schema §1) is an entity reference only, never a citation. This prevents circular sourcing (WP:CIRCULAR).</li>
         </ol>
       </section>
 
@@ -159,6 +161,9 @@ export default function PasswordManagerMethodologyPage() {
       </section>
 
       <div className="mt-10 pt-6 border-t border-border">
+        <p className="text-xs text-text-secondary mb-4">
+          CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
+        </p>
         <Link href="/password-manager-comparison" className="text-primary-600 hover:underline font-medium">
           ← Back to password manager comparison
         </Link>
