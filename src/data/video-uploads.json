@@ -2433,6 +2433,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-11T09:44:50.377Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "General",
+      "videoFile": "Uber vs Lyft.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uber vs Lyft — Full Comparison 2026",
+      "youtubeDescription": "Neither Uber nor Lyft is consistently cheaper, with prices varying by city and time. Lyft offers better driver compensation while Uber dominates market share.\n\n#uber #lyft #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-12T09:06:28.992Z"
+    },
+    {
+      "slug": "llc-vs-s-corp",
+      "title": "Llc vs S Corp",
+      "entityA": "Llc",
+      "entityB": "S Corp",
+      "category": "General",
+      "videoFile": "Llc vs S Corp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Llc vs S Corp — Full Comparison 2026",
+      "youtubeDescription": "LLC offers more flexibility and simplicity, while S Corp provides potential self-employment tax savings through salary structure.\n\n#llc #scorp #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-12T09:15:37.991Z"
+    },
+    {
+      "slug": "netflix-vs-disney-plus",
+      "title": "Netflix vs Disney Plus",
+      "entityA": "Netflix",
+      "entityB": "Disney Plus",
+      "category": "General",
+      "videoFile": "Netflix vs Disney Plus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Netflix vs Disney Plus — Full Comparison 2026",
+      "youtubeDescription": "Netflix offers broad general entertainment with global content variety, while Disney+ focuses on premium franchises and curated family content from iconic brands.\n\n#netflix #disneyplus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-12T09:24:34.815Z"
     }
   ]
 }
