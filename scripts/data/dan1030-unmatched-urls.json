@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "mercedes-vs-audi",
+    "bestPosition": 58,
+    "impressions": 2,
+    "topKeyword": "audi and mercedes",
+    "topVolume": 260
+  },
+  {
+    "slug": "xbox-series-x-vs-nintendo-switch-2",
+    "bestPosition": 42,
+    "impressions": 1,
+    "topKeyword": "nintendo switch 2 vs xbox series x",
+    "topVolume": 110
+  },
+  {
+    "slug": "macbook-pro-14-vs-16",
+    "bestPosition": 38,
+    "impressions": 0,
+    "topKeyword": "16 vs 14 macbook pro",
+    "topVolume": 70
+  },
+  {
+    "slug": "b-2-vs-b-52",
+    "bestPosition": 41,
+    "impressions": 0,
+    "topKeyword": "b-52 bomber vs b2",
+    "topVolume": 70
+  },
+  {
+    "slug": "paramount-plus-vs-hulu",
+    "bestPosition": 65,
+    "impressions": 0,
+    "topKeyword": "paramount plus versus hulu",
+    "topVolume": 90
+  }
+]
