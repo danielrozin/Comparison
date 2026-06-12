@@ -5,6 +5,8 @@ import { CATEGORIES } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SearchBox } from "@/components/home/SearchBox";
+import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
+import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
@@ -88,6 +90,9 @@ export default async function HomePage() {
 
       {/* Recent Searches */}
       <RecentSearches />
+
+      {/* Featured Comparisons — curated editor's picks, independent of viewCount (DAN-1020) */}
+      <FeaturedComparisons items={FEATURED_COMPARISONS} />
 
       {/* Trending Comparisons */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
