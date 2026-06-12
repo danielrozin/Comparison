@@ -7,6 +7,9 @@
  */
 
 import { Resend } from "resend";
+// Whitespace-hardened base URL (DAN-1033) — the env var has shipped with a
+// trailing space; importing the normalized constant keeps embed snippets clean.
+import { SITE_URL } from "@/lib/utils/constants";
 
 const NOTIFICATION_EMAIL = "Daniarozin@gmail.com";
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
@@ -164,7 +167,7 @@ export async function sendPartnerKeyEmail(opts: {
   partnerKey: string;
   tier: string;
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+  const siteUrl = SITE_URL;
   const embedSnippet = `<iframe src="${siteUrl}/embed/YOUR-COMPARISON-SLUG?partner=${opts.partnerKey}" width="100%" height="400" frameborder="0" style="border-radius: 12px; border: 1px solid #e2e8f0;"></iframe>`;
   const scriptSnippet = `<script src="${siteUrl}/api/v1/widget?slug=YOUR-COMPARISON-SLUG&partner=${opts.partnerKey}"></script>`;
 

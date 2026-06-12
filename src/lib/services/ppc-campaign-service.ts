@@ -6,8 +6,9 @@
 
 import { getPrisma } from "@/lib/db/prisma";
 import { comparisonSlug } from "@/lib/utils/slugify";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+// Use the whitespace-hardened constant (DAN-1033) instead of re-reading the env
+// var, which has shipped with a trailing space and broke absolute URLs sitewide.
+import { SITE_URL } from "@/lib/utils/constants";
 
 export interface PPCKeyword {
   keyword: string;
