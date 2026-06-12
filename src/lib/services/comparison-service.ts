@@ -271,8 +271,11 @@ const COMPARISON_INCLUDE = {
       },
     },
   },
-  faqs: true,
-};
+  // Order by sortOrder so curated lead FAQs (e.g. exact-match intent answers
+  // with negative sortOrder) surface first; createdAt keeps existing
+  // sortOrder=0 FAQs in stable insertion order.
+  faqs: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] },
+} as const;
 
 // ---------------------------------------------------------------------------
 // Public API
