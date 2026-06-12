@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/schema/JsonLd";
 const AUTHOR_NAME = "Daniel Rozin";
 const AUTHOR_TITLE = "Founder & Editor-in-Chief";
 const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
-const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE} | ${SITE_NAME}`;
+const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
 
 export const metadata: Metadata = {
