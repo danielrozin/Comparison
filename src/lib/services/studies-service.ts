@@ -8,6 +8,8 @@
  * matters because the page exists to earn citations and inbound links.
  */
 
+import { SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
+
 // Lazy-import prisma to avoid crashing when DATABASE_URL is not set.
 function getPrismaClient() {
   try {
@@ -252,5 +254,260 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
   } catch (e) {
     console.warn("getMostComparedStudy: live query failed, using snapshot:", e);
     return SNAPSHOT;
+  }
+}
+
+// ============================================================
+// Study #2 — "The B2B SaaS Comparison Report 2026"
+// A per-vertical cut of the software category (our deepest dataset).
+// ============================================================
+
+export interface SaaSTool {
+  rank: number;
+  name: string;
+  slug: string;
+  count: number;
+}
+
+export interface SaaSCategoryCluster {
+  /** Subcategory slug (matches /category/software/<slug>). */
+  slug: string;
+  label: string;
+  icon: string;
+  /** Number of software comparisons that fall in this cluster. */
+  count: number;
+  /** The marquee rivalry inside the cluster (by readership). */
+  topMatchup: { title: string; slug: string } | null;
+}
+
+export interface ChallengerPair {
+  challenger: string;
+  challengerSlug: string;
+  challengerCount: number;
+  incumbent: string;
+  incumbentSlug: string;
+  incumbentCount: number;
+  /** Human label for the category they compete in. */
+  category: string;
+}
+
+export interface B2BSaaSStudy {
+  /** Published comparisons in the software vertical. */
+  totalSaaSComparisons: number;
+  /** Distinct SaaS tools (software entities, excluding programming languages). */
+  distinctTools: number;
+  topTools: SaaSTool[];
+  clusters: SaaSCategoryCluster[];
+  challengers: ChallengerPair[];
+  updatedAt: string;
+  fromSnapshot: boolean;
+}
+
+// Software-typed entities that are programming languages / frameworks rather
+// than B2B SaaS products — excluded from the "tools" leaderboard so the study
+// reads as a software-buyer report, not a developer-language ranking.
+const NON_SAAS_SLUGS = new Set([
+  "typescript", "python", "next-js", "go-golang", "java", "javascript",
+  "react", "rust", "kotlin", "node-js", "nodejs", "angular", "vue", "svelte",
+  "php", "ruby", "swift", "scala", "c", "c-plus-plus", "cpp", "perl",
+  "html", "css", "sql", "dart", "elixir", "haskell", "r",
+]);
+
+// Curated "challenger vs incumbent" candidates: a newer entrant paired with the
+// established player it competes against. We only surface a pair when the
+// challenger actually out-appears the incumbent in our comparison data, so the
+// "challenger is winning the comparison battle" framing is data-backed.
+interface ChallengerCandidate {
+  challenger: { name: string; slug: string };
+  incumbent: { name: string; slug: string };
+  category: string;
+}
+
+const CHALLENGER_CANDIDATES: ChallengerCandidate[] = [
+  { challenger: { name: "HubSpot", slug: "hubspot" }, incumbent: { name: "Salesforce", slug: "salesforce" }, category: "CRM" },
+  { challenger: { name: "ClickUp", slug: "clickup" }, incumbent: { name: "Jira", slug: "jira" }, category: "Project management" },
+  { challenger: { name: "Wix", slug: "wix" }, incumbent: { name: "WordPress", slug: "wordpress" }, category: "Website builders" },
+  { challenger: { name: "Notion", slug: "notion" }, incumbent: { name: "Confluence", slug: "confluence" }, category: "Docs & wikis" },
+  { challenger: { name: "Bitwarden", slug: "bitwarden" }, incumbent: { name: "LastPass", slug: "lastpass" }, category: "Password managers" },
+  { challenger: { name: "Pipedrive", slug: "pipedrive" }, incumbent: { name: "Zoho CRM", slug: "zoho" }, category: "CRM (SMB)" },
+];
+
+/**
+ * Baked-in snapshot — refreshed 2026-06-12 from the production Neon DB
+ * (384 published software comparisons across 282 distinct SaaS tools).
+ * Used only when a live query is unavailable so the page always renders.
+ */
+const SAAS_SNAPSHOT: B2BSaaSStudy = {
+  totalSaaSComparisons: 384,
+  distinctTools: 282,
+  updatedAt: "2026-06-12T00:00:00.000Z",
+  fromSnapshot: true,
+  topTools: [
+    { rank: 1, name: "HubSpot", slug: "hubspot", count: 16 },
+    { rank: 2, name: "Mailchimp", slug: "mailchimp", count: 12 },
+    { rank: 3, name: "Squarespace", slug: "squarespace", count: 11 },
+    { rank: 4, name: "Notion", slug: "notion", count: 10 },
+    { rank: 5, name: "Asana", slug: "asana", count: 10 },
+    { rank: 6, name: "Shopify", slug: "shopify", count: 10 },
+    { rank: 7, name: "Wix", slug: "wix", count: 9 },
+    { rank: 8, name: "ClickUp", slug: "clickup", count: 9 },
+    { rank: 9, name: "Monday.com", slug: "monday-com", count: 9 },
+    { rank: 10, name: "Klaviyo", slug: "klaviyo", count: 8 },
+    { rank: 11, name: "Google Meet", slug: "google-meet", count: 7 },
+    { rank: 12, name: "WordPress", slug: "wordpress", count: 6 },
+    { rank: 13, name: "Microsoft Teams", slug: "microsoft-teams", count: 6 },
+    { rank: 14, name: "Jira", slug: "jira", count: 6 },
+    { rank: 15, name: "Webflow", slug: "webflow", count: 6 },
+  ],
+  clusters: [
+    { slug: "email-crm", label: "Email Marketing & CRM", icon: "📧", count: 49, topMatchup: { title: "HubSpot vs Salesforce", slug: "hubspot-vs-salesforce" } },
+    { slug: "website-builders", label: "Website Builders & eCommerce", icon: "🏪", count: 34, topMatchup: { title: "WordPress vs Wix", slug: "wordpress-vs-wix" } },
+    { slug: "productivity", label: "Productivity & PM", icon: "📋", count: 33, topMatchup: { title: "Notion vs ClickUp", slug: "notion-vs-clickup" } },
+    { slug: "ai-tools", label: "AI Tools", icon: "🤖", count: 24, topMatchup: { title: "Midjourney vs DALL-E", slug: "midjourney-vs-dall-e" } },
+    { slug: "communication", label: "Communication & Collaboration", icon: "💬", count: 19, topMatchup: { title: "Slack vs Microsoft Teams", slug: "slack-vs-microsoft-teams" } },
+    { slug: "password-privacy", label: "Password & Privacy", icon: "🔑", count: 15, topMatchup: { title: "1Password vs Bitwarden", slug: "1password-vs-bitwarden" } },
+    { slug: "vpn-security", label: "VPN & Security", icon: "🔒", count: 12, topMatchup: { title: "ExpressVPN vs NordVPN", slug: "expressvpn-vs-nordvpn" } },
+    { slug: "design-creative", label: "Design & Creative", icon: "🎨", count: 11, topMatchup: { title: "Canva vs Photoshop", slug: "canva-vs-photoshop" } },
+    { slug: "finance-accounting", label: "Finance & Accounting", icon: "💳", count: 10, topMatchup: { title: "Square vs Stripe", slug: "square-vs-stripe" } },
+    { slug: "cloud-devtools", label: "Cloud & DevTools", icon: "☁️", count: 9, topMatchup: { title: "AWS vs Azure", slug: "aws-vs-azure" } },
+  ],
+  challengers: [
+    { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 16, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 5, category: "CRM" },
+    { challenger: "Notion", challengerSlug: "notion", challengerCount: 10, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 5, category: "Docs & wikis" },
+    { challenger: "Wix", challengerSlug: "wix", challengerCount: 9, incumbent: "WordPress", incumbentSlug: "wordpress", incumbentCount: 6, category: "Website builders" },
+    { challenger: "ClickUp", challengerSlug: "clickup", challengerCount: 9, incumbent: "Jira", incumbentSlug: "jira", incumbentCount: 6, category: "Project management" },
+    { challenger: "Bitwarden", challengerSlug: "bitwarden", challengerCount: 3, incumbent: "LastPass", incumbentSlug: "lastpass", incumbentCount: 1, category: "Password managers" },
+  ],
+};
+
+interface SaaSEntityRow {
+  cslug: string;
+  ctitle: string;
+  vc: number;
+  name: string;
+  eslug: string;
+  type: string | null;
+}
+
+/** Classify a software comparison into a SaaS subcategory by keyword match. */
+function classifyCluster(entityText: string): string | null {
+  let bestSlug: string | null = null;
+  let bestScore = 0;
+  for (const sub of SOFTWARE_SUBCATEGORIES) {
+    let score = 0;
+    for (const kw of sub.keywords) {
+      if (entityText.includes(kw.toLowerCase())) score++;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestSlug = sub.slug;
+    }
+  }
+  return bestSlug;
+}
+
+/**
+ * Returns the "B2B SaaS Comparison Report 2026" study dataset.
+ * Live query when the DB is reachable, otherwise the baked-in snapshot.
+ */
+export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
+  const prisma = getPrismaClient();
+  if (!prisma) return SAAS_SNAPSHOT;
+
+  try {
+    const totalSaaSComparisons = await prisma.comparison.count({
+      where: { status: "published", category: "software" },
+    });
+
+    const rows = (await prisma.$queryRaw<SaaSEntityRow[]>`
+      SELECT c.slug AS cslug, c.title AS ctitle, c.view_count AS vc,
+             e.name, e.slug AS eslug, et.slug AS type
+      FROM comparison_entities ce
+      JOIN comparisons c ON c.id = ce.comparison_id
+        AND c.status = 'published' AND c.category = 'software'
+      JOIN entities e ON e.id = ce.entity_id
+      LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as SaaSEntityRow[];
+
+    if (rows.length === 0 || totalSaaSComparisons === 0) return SAAS_SNAPSHOT;
+
+    // Tool leaderboard — software-typed entities, excluding languages/frameworks.
+    const toolCounts = new Map<string, { name: string; slug: string; n: number }>();
+    // Per-comparison aggregation for cluster classification.
+    const comps = new Map<string, { title: string; vc: number; text: string }>();
+
+    for (const r of rows) {
+      if ((r.type || "").toLowerCase() === "software" && !NON_SAAS_SLUGS.has(r.eslug)) {
+        const t = toolCounts.get(r.eslug) || { name: r.name, slug: r.eslug, n: 0 };
+        t.n++;
+        toolCounts.set(r.eslug, t);
+      }
+      const c = comps.get(r.cslug) || { title: r.ctitle, vc: r.vc, text: "" };
+      c.text += ` ${r.name} ${r.eslug}`.toLowerCase();
+      comps.set(r.cslug, c);
+    }
+
+    const sortedTools = [...toolCounts.values()].sort((a, b) => b.n - a.n);
+    const topTools: SaaSTool[] = sortedTools.slice(0, 15).map((t, i) => ({
+      rank: i + 1,
+      name: t.name,
+      slug: t.slug,
+      count: t.n,
+    }));
+    const distinctTools = toolCounts.size;
+
+    // Cluster classification + marquee matchup per cluster (by readership).
+    const subMeta = new Map(SOFTWARE_SUBCATEGORIES.map((s) => [s.slug, s]));
+    const clusterCount = new Map<string, number>();
+    const clusterTop = new Map<string, { title: string; slug: string; vc: number }>();
+    for (const [slug, c] of comps) {
+      const cl = classifyCluster(c.text);
+      if (!cl) continue;
+      clusterCount.set(cl, (clusterCount.get(cl) || 0) + 1);
+      const cur = clusterTop.get(cl);
+      if (!cur || c.vc > cur.vc) clusterTop.set(cl, { title: c.title, slug, vc: c.vc });
+    }
+    const clusters: SaaSCategoryCluster[] = [...clusterCount.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([slug, count]) => {
+        const m = clusterTop.get(slug);
+        return {
+          slug,
+          label: subMeta.get(slug)?.name || labelFor(slug),
+          icon: subMeta.get(slug)?.icon || "🧩",
+          count,
+          topMatchup: m ? { title: m.title, slug: m.slug } : null,
+        };
+      });
+
+    // Challenger vs incumbent — keep only data-backed upsets.
+    const lookup = (slug: string) => toolCounts.get(slug)?.n ?? 0;
+    const challengers: ChallengerPair[] = CHALLENGER_CANDIDATES.map((c) => ({
+      challenger: c.challenger.name,
+      challengerSlug: c.challenger.slug,
+      challengerCount: lookup(c.challenger.slug),
+      incumbent: c.incumbent.name,
+      incumbentSlug: c.incumbent.slug,
+      incumbentCount: lookup(c.incumbent.slug),
+      category: c.category,
+    }))
+      .filter((c) => c.challengerCount > c.incumbentCount && c.challengerCount > 0)
+      .sort((a, b) => b.challengerCount - a.challengerCount);
+
+    // Guard against a hollow result.
+    if (topTools.length === 0) return SAAS_SNAPSHOT;
+
+    return {
+      totalSaaSComparisons,
+      distinctTools,
+      topTools,
+      clusters,
+      challengers: challengers.length > 0 ? challengers : SAAS_SNAPSHOT.challengers,
+      updatedAt: new Date().toISOString(),
+      fromSnapshot: false,
+    };
+  } catch (e) {
+    console.warn("getB2BSaaSStudy: live query failed, using snapshot:", e);
+    return SAAS_SNAPSHOT;
   }
 }

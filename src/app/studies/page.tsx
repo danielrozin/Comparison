@@ -32,6 +32,13 @@ interface StudyEntry {
 // Published studies. Add new entries here as the program scales.
 const STUDIES: StudyEntry[] = [
   {
+    slug: "b2b-saas-comparison-report-2026",
+    title: "The B2B SaaS Comparison Report 2026",
+    blurb:
+      "384 head-to-head SaaS comparisons analyzed: the most-compared software tools, the hottest category rivalries, and where challengers are out-pacing incumbents.",
+    badge: "Data Study",
+  },
+  {
     slug: "most-compared-brands-2026",
     title: "The Most-Compared Brands of 2026",
     blurb:
