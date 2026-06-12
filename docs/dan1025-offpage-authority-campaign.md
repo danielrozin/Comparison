@@ -67,6 +67,11 @@ Baseline problem (2026-06-12 `ranked_keywords`): 0 keywords in top 10, 3 on page
 - **Embed widget:** EmbedPartner infra live (`/embed`, `/api/v1/embed`, `/partnerships`).
 - **Now pitchable:** Studies #1 and #2 are concrete assets to pitch for roundup inclusion,
   unlinked-mention reclamation, and journalist/blogger citation.
+- **✅ Execution pack written (2026-06-12):** `docs/dan1025-outreach-pack.md` — 8 final-draft
+  PR pitch emails (per target, citing the best-fit study) + 6 ready-to-paste Quora/Reddit
+  answers (each citing a real `/compare/*` page + a study) + a send/tracking table. Top 3 PR
+  pitches (phonexa, influencermarketinghub, narrato) staged as Gmail drafts in the campaign
+  mailbox for one-click review. Remaining step is human posting (authenticated mailbox/accounts).
 - **Next actions (manual posting required by a human):**
   1. Submit Study #1 to Tier-3 roundup blogs as a "comparison data study" resource.
   2. Queue Quora/Reddit answers that cite the study where a "most compared / most popular"
