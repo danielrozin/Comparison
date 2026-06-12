@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
@@ -239,34 +239,30 @@ function VerdictFirstLayout({
 }) {
   return (
     <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-
-      {/* Video schema (VideoObject) */}
-      {videoMeta?.youtubeVideoId && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              videoObjectSchema({
-                slug,
-                title: comparison.title,
-                description: comparison.shortAnswer || comparison.metadata.metaDescription || "",
-                youtubeVideoId: videoMeta.youtubeVideoId,
-                uploadDate: videoMeta.uploadedAt,
-                entityA: videoMeta.entityA,
-                entityB: videoMeta.entityB,
-              })
-            ),
-          }}
-        />
-      )}
+      {/* Schema markup — all page schemas (+ optional VideoObject) consolidated
+          into a single @graph block. SEO-neutral vs. emitting N separate
+          <script> tags, but smaller HTML (one wrapper, one @context). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            jsonLdGraph([
+              ...schemas,
+              videoMeta?.youtubeVideoId
+                ? videoObjectSchema({
+                    slug,
+                    title: comparison.title,
+                    description: comparison.shortAnswer || comparison.metadata.metaDescription || "",
+                    youtubeVideoId: videoMeta.youtubeVideoId,
+                    uploadDate: videoMeta.uploadedAt,
+                    entityA: videoMeta.entityA,
+                    entityB: videoMeta.entityB,
+                  })
+                : null,
+            ])
+          ),
+        }}
+      />
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
