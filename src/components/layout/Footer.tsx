@@ -57,6 +57,7 @@ export function Footer() {
             {/* Quick links */}
             <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2">
               <Link href="/trending" className="text-sm text-gray-400 hover:text-white transition-colors">Trending</Link>
+              <Link href="/studies" className="text-sm text-gray-400 hover:text-white transition-colors">Data Studies</Link>
               <Link href="/reviews" className="text-sm text-gray-400 hover:text-white transition-colors">Reviews</Link>
               <Link href="/blog" className="text-sm text-gray-400 hover:text-white transition-colors">Blog</Link>
               <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
