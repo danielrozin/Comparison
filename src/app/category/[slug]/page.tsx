@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
+import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
+import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
@@ -188,6 +190,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             </p>
           </div>
         </div>
+
+        {/* Featured Comparisons (curated — DAN-1013 internal-link sculpting) */}
+        <FeaturedComparisons
+          items={getFeaturedForCategory(slug)}
+          heading={`Featured ${category.name} Comparisons`}
+          subheading="Editor-picked head-to-head guides in this category"
+          containerClassName="mb-10"
+        />
 
         {/* Top 5 Comparisons — highlighted for quick discovery */}
         {allComparisons.length >= 5 && (
