@@ -27,6 +27,7 @@ const schema = {
   author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebPage", url: `${SITE_URL}/llm-comparisons` },
+  license: "https://creativecommons.org/licenses/by/4.0/",
 };
 
 export default function LLMMethodologyPage() {
@@ -108,6 +109,7 @@ export default function LLMMethodologyPage() {
           <li><strong className="text-text">Tier 1 (required):</strong> arXiv technical report authored by the vendor research team — used for parameter counts and architecture details.</li>
           <li><strong className="text-text">Tier 2 (acceptable for benchmarks):</strong> LMSYS Chatbot Arena leaderboard (chat.lmsys.org) — public, community-run, cited with snapshot date. HuggingFace Open LLM Leaderboard for open-weight models.</li>
           <li><strong className="text-text">Disallowed:</strong> Vendor self-reported benchmark numbers without independent reproduction, Twitter/X announcements as sole source, leaked parameter estimates, AI-generated summaries.</li>
+          <li><strong className="text-text">Wikipedia and any Wikipedia mirror/fork</strong> — never a cite-worthy source for a cell value. The <code className="text-sm bg-surface-alt px-1 rounded">about.sameAs</code> Wikipedia link (schema §1) is an entity reference only, never a citation. This prevents circular sourcing (WP:CIRCULAR).</li>
         </ol>
         <p className="text-text-secondary text-sm">
           <strong>Undisclosed values:</strong> When a vendor (e.g., OpenAI for GPT-4 parameters, Anthropic for Claude 3 parameters)
@@ -148,6 +150,9 @@ export default function LLMMethodologyPage() {
       </section>
 
       <div className="mt-10 pt-6 border-t border-border">
+        <p className="text-xs text-text-secondary mb-4">
+          CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
+        </p>
         <Link href="/llm-comparisons" className="text-primary-600 hover:underline font-medium">
           ← Back to LLM comparisons
         </Link>

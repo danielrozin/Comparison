@@ -27,6 +27,7 @@ const schema = {
   author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebPage", url: `${SITE_URL}/browser-comparison-2026` },
+  license: "https://creativecommons.org/licenses/by/4.0/",
 };
 
 export default function BrowserMethodologyPage() {
@@ -106,6 +107,7 @@ export default function BrowserMethodologyPage() {
           <li><strong className="text-text">Tier 1:</strong> web-platform-tests.org (wpt.fyi) for standards compliance — open public dataset.</li>
           <li><strong className="text-text">Tier 2:</strong> Methodology-disclosed benchmark publications (Tom&apos;s Hardware, PCMag) for memory/performance data.</li>
           <li><strong className="text-text">Disallowed:</strong> SimilarWeb (panel bias, methodology undisclosed), G2/Capterra user scores, our own pages.</li>
+          <li><strong className="text-text">Wikipedia and any Wikipedia mirror/fork</strong> — never a cite-worthy source for a cell value. The <code className="text-sm bg-surface-alt px-1 rounded">about.sameAs</code> Wikipedia link (schema §1) is an entity reference only, never a citation. This prevents circular sourcing (WP:CIRCULAR).</li>
         </ol>
       </section>
 
@@ -139,6 +141,9 @@ export default function BrowserMethodologyPage() {
       </section>
 
       <div className="mt-10 pt-6 border-t border-border">
+        <p className="text-xs text-text-secondary mb-4">
+          CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
+        </p>
         <Link href="/browser-comparison-2026" className="text-primary-600 hover:underline font-medium">
           ← Back to browser comparison
         </Link>
