@@ -1,0 +1,16 @@
+{
+  "date": "2026-06-12",
+  "domain": "aversusb.net",
+  "totalRanked": 871,
+  "page1": 0,
+  "buckets": {
+    "top3 (1-3)": 0,
+    "rest_page1 (4-10)": 0,
+    "page2 (11-20)": 10,
+    "parked (21-50)": 307,
+    "deep (51-100)": 554
+  },
+  "keywordsWithVolume": 871,
+  "totalTrackedVolume": 224130,
+  "note": "Authority proxy: as referring domains accrue, expect parked(21-50) -> page2(11-20) -> page1 migration."
+}
