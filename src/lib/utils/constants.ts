@@ -1,5 +1,12 @@
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B";
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+export const SITE_NAME = (process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B").trim();
+// DAN-1033 base-URL guard: trim + strip any trailing slash so SITE_URL is always a
+// clean, parseable absolute origin. A stray trailing space in NEXT_PUBLIC_SITE_URL
+// (regressed in .env) made `new URL(SITE_URL)` / `${SITE_URL}/path` un-parseable,
+// causing canonical/og:url/breadcrumb to render as a double-host `%20` artifact.
+// Hardening here fixes it site-wide and is immune to future env drift.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+  .trim()
+  .replace(/\/+$/, "");
 
 export const COMPARISON_PATTERNS = [
   "vs",
