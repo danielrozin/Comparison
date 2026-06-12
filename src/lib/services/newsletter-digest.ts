@@ -6,10 +6,12 @@
 
 import { getPrisma } from "@/lib/db/prisma";
 import { getTrendingComparisons } from "./comparison-service";
+// Use the whitespace-hardened constant (DAN-1033) instead of re-reading the env
+// var, which has shipped with a trailing space and broke absolute URLs.
+import { SITE_URL } from "@/lib/utils/constants";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 const RESEND_FROM = process.env.RESEND_FROM_EMAIL || "A Versus B <digest@aversusb.net>";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
 
 interface DigestComparison {
   title: string;
