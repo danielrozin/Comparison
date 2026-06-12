@@ -104,7 +104,7 @@ export default function BrowserMethodologyPage() {
           <li><strong className="text-text">Tier 1:</strong> Vendor official documentation, release notes, or privacy whitepaper — cited with URL and access date.</li>
           <li><strong className="text-text">Tier 1:</strong> StatCounter GlobalStats for market share — monthly CSV download, methodology publicly disclosed at <a href="https://gs.statcounter.com/methodology" rel="nofollow" className="text-primary-600 hover:underline">gs.statcounter.com/methodology</a>.</li>
           <li><strong className="text-text">Tier 1:</strong> web-platform-tests.org (wpt.fyi) for standards compliance — open public dataset.</li>
-          <li><strong className="text-text">Tier 2:</strong> Methodology-disclosed benchmark publications (Tom's Hardware, PCMag) for memory/performance data.</li>
+          <li><strong className="text-text">Tier 2:</strong> Methodology-disclosed benchmark publications (Tom&apos;s Hardware, PCMag) for memory/performance data.</li>
           <li><strong className="text-text">Disallowed:</strong> SimilarWeb (panel bias, methodology undisclosed), G2/Capterra user scores, our own pages.</li>
         </ol>
       </section>
