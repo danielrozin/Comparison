@@ -49,6 +49,8 @@ export default async function sitemap({
       { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
+      { url: `${SITE_URL}/studies`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
