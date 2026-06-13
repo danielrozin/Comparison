@@ -45,6 +45,13 @@ const STUDIES: StudyEntry[] = [
       "1,600+ head-to-head comparisons analyzed to rank the brands, SaaS tools, and matchups people research most this year.",
     badge: "Data Study",
   },
+  {
+    slug: "investing-comparison-report-2026",
+    title: "The Investing & Finance Comparison Report 2026",
+    blurb:
+      "247 head-to-head finance comparisons analyzed: the most-researched brokerages, retirement accounts, credit cards, and investment products of 2026.",
+    badge: "Data Study",
+  },
 ];
 
 export default function StudiesIndexPage() {

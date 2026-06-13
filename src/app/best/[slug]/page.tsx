@@ -1,0 +1,283 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { BEST_CONFIG } from "@/lib/data/best-entries";
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export const revalidate = 3600;
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return Object.keys(BEST_CONFIG).map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const entry = BEST_CONFIG[slug];
+  if (!entry) return { title: "Not Found" };
+
+  const canonicalUrl = `${SITE_URL}/best/${slug}`;
+  return {
+    title: entry.title,
+    description: entry.description,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: entry.title,
+      description: entry.description,
+      url: canonicalUrl,
+      type: "article",
+      siteName: SITE_NAME,
+      publishedTime: entry.publishedAt,
+      modifiedTime: entry.updatedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: entry.title,
+      description: entry.description,
+    },
+  };
+}
+
+// ── Markdown renderer (extends blog renderer with anchor IDs and ordered lists) ──
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function renderMarkdown(md: string): string {
+  let html = md;
+
+  // Code blocks
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, _lang, code) =>
+    `<pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-4 text-sm leading-relaxed"><code>${escapeHtml(code.trim())}</code></pre>`
+  );
+
+  // Tables
+  html = html.replace(/((?:\|.+\|\n)+)/g, (block) => {
+    const rows = block.trim().split("\n");
+    if (rows.length < 2) return block;
+    let t = '<div class="overflow-x-auto my-6"><table class="w-full border-collapse rounded-lg overflow-hidden">';
+    rows.forEach((row, idx) => {
+      if (/^\|[\s-:|]+\|$/.test(row)) return;
+      const cells = row.split("|").filter((c) => c.trim() !== "");
+      if (idx === 0) {
+        t += "<thead><tr>" + cells.map((c) =>
+          `<th class="bg-primary-50 px-4 py-3 text-left text-sm font-semibold text-text border-b border-border">${c.trim()}</th>`
+        ).join("") + "</tr></thead><tbody>";
+      } else {
+        t += `<tr class="${idx % 2 === 0 ? "bg-surface-alt" : "bg-white"}">` +
+          cells.map((c) =>
+            `<td class="px-4 py-3 text-sm text-text-secondary border-b border-border">${c.trim()}</td>`
+          ).join("") + "</tr>";
+      }
+    });
+    t += "</tbody></table></div>";
+    return t;
+  });
+
+  // Horizontal rule
+  html = html.replace(/^---\s*$/gm, '<hr class="my-8 border-border" />');
+
+  const lines = html.split("\n");
+  const processed: string[] = [];
+  let inUl = false;
+  let inOl = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Extract optional {#anchor} from heading
+    const anchorMatch = line.match(/\{#([\w-]+)\}\s*$/);
+    const anchorId = anchorMatch ? ` id="${anchorMatch[1]}"` : "";
+    const cleanLine = anchorMatch ? line.replace(/\s*\{#[\w-]+\}\s*$/, "") : line;
+
+    if (cleanLine.startsWith("### ")) {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+      processed.push(`<h3${anchorId} class="text-xl font-bold text-text mt-8 mb-3">${cleanLine.slice(4)}</h3>`);
+      continue;
+    }
+    if (cleanLine.startsWith("## ")) {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+      processed.push(`<h2${anchorId} class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border">${cleanLine.slice(3)}</h2>`);
+      continue;
+    }
+    if (cleanLine.startsWith("# ")) {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+      processed.push(`<h1${anchorId} class="text-3xl font-bold text-text mt-4 mb-6">${cleanLine.slice(2)}</h1>`);
+      continue;
+    }
+
+    // Unordered list
+    if (/^[-*]\s/.test(line)) {
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+      if (!inUl) { processed.push('<ul class="list-disc list-inside space-y-2 my-4 text-text-secondary">'); inUl = true; }
+      processed.push(`<li>${line.replace(/^[-*]\s/, "")}</li>`);
+      continue;
+    }
+
+    // Ordered list
+    if (/^\d+\.\s/.test(line)) {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (!inOl) { processed.push('<ol class="list-decimal list-inside space-y-2 my-4 text-text-secondary">'); inOl = true; }
+      processed.push(`<li>${line.replace(/^\d+\.\s/, "")}</li>`);
+      continue;
+    }
+
+    // End lists on blank line
+    if (line.trim() === "") {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+    }
+
+    if (line.trim() !== "" && !line.startsWith("<")) {
+      if (inUl) { processed.push("</ul>"); inUl = false; }
+      if (inOl) { processed.push("</ol>"); inOl = false; }
+      processed.push(`<p class="text-text-secondary leading-relaxed my-4">${line}</p>`);
+    } else {
+      processed.push(line);
+    }
+  }
+  if (inUl) processed.push("</ul>");
+  if (inOl) processed.push("</ol>");
+
+  html = processed.join("\n");
+
+  // Inline formatting
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="text-text font-semibold">$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+
+  // Links
+  html = html.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" class="text-primary-600 hover:text-primary-700 underline underline-offset-2">$1</a>'
+  );
+
+  return html;
+}
+
+// ── JSON-LD schema ──
+
+function bestPageSchema(entry: (typeof BEST_CONFIG)[string]) {
+  const url = `${SITE_URL}/best/${entry.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Best lists", item: `${SITE_URL}/best` },
+          { "@type": "ListItem", position: 3, name: entry.h1, item: url },
+        ],
+      },
+      {
+        "@type": "CollectionPage",
+        name: entry.h1,
+        description: entry.description,
+        url,
+        datePublished: entry.publishedAt,
+        dateModified: entry.updatedAt,
+        author: {
+          "@type": "Person",
+          name: entry.authorName,
+          ...(entry.authorUrl ? { url: `${SITE_URL}${entry.authorUrl}` } : {}),
+        },
+        publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListOrder: "https://schema.org/ItemListOrderDescending",
+          numberOfItems: entry.listItems.length,
+          itemListElement: entry.listItems.map((item) => ({
+            "@type": "ListItem",
+            position: item.position,
+            name: item.name,
+            url: `${url}#${item.anchor}`,
+          })),
+        },
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: entry.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.q,
+          acceptedAnswer: { "@type": "Answer", text: faq.a },
+        })),
+      },
+    ],
+  };
+}
+
+export default async function BestPage({ params }: PageProps) {
+  const { slug } = await params;
+  const entry = BEST_CONFIG[slug];
+  if (!entry) notFound();
+
+  const schema = bestPageSchema(entry);
+  const bodyHtml = renderMarkdown(entry.bodyMarkdown);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Breadcrumbs */}
+        <nav aria-label="breadcrumb" className="text-sm text-gray-500 mb-6">
+          <ol className="flex items-center gap-1 flex-wrap">
+            <li><Link href="/" className="hover:underline">Home</Link></li>
+            <li aria-hidden="true">/</li>
+            <li><Link href="/best" className="hover:underline">Best lists</Link></li>
+            <li aria-hidden="true">/</li>
+            <li><span className="text-gray-700">{entry.h1}</span></li>
+          </ol>
+        </nav>
+
+        {/* Header */}
+        <header className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+            {entry.h1}
+          </h1>
+          <div className="flex items-center gap-3 text-sm text-gray-500">
+            {entry.authorName && (
+              <span>
+                By{" "}
+                {entry.authorUrl ? (
+                  <Link href={entry.authorUrl} className="text-blue-600 hover:underline">
+                    {entry.authorName}
+                  </Link>
+                ) : (
+                  <span>{entry.authorName}</span>
+                )}
+              </span>
+            )}
+            {entry.updatedAt && (
+              <span>
+                Last updated{" "}
+                {new Date(entry.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            )}
+          </div>
+        </header>
+
+        {/* Article body */}
+        <article
+          className="prose-custom"
+          dangerouslySetInnerHTML={{ __html: bodyHtml }}
+        />
+      </main>
+    </>
+  );
+}
