@@ -20,7 +20,7 @@ export function ClarityTags() {
   const pathname = usePathname();
 
   useEffect(() => {
-    tagPageType(detectPageType(pathname));
+    tagPageType(detectPageType(pathname ?? ""));
     tagViewport();
   }, [pathname]);
 

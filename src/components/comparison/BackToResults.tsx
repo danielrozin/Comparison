@@ -7,7 +7,7 @@ import { getSearchContext } from "@/lib/utils/recently-viewed";
 
 export function BackToResults() {
   const searchParams = useSearchParams();
-  const fromParam = searchParams.get("from");
+  const fromParam = searchParams?.get("from") ?? null;
   const [fallbackQuery, setFallbackQuery] = useState<string | null>(null);
 
   useEffect(() => {

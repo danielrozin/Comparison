@@ -24,7 +24,7 @@ export function CategoryFilters({
 
   const updateParams = useCallback(
     (key: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams?.toString() ?? "");
       if (value === "trending" && key === "sort") {
         params.delete("sort");
       } else if (value === "all" && key === "rating") {
