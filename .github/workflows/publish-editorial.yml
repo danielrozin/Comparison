@@ -1,0 +1,73 @@
+name: Publish Editorial Comparison (prod ingest)
+
+# Agent-owned prod-DB ingestion path for reviewed editorial publish scripts
+# (DAN-993 / DAN-1001). No prod creds live in any agent workspace, but prod
+# DATABASE_URL can be provisioned as a repo Actions secret; this workflow then
+# runs the reviewed, idempotent publisher against prod entirely inside CI.
+#
+# Required secret:  DATABASE_URL            (prod Postgres connection string)
+# Optional secrets: KV_REST_API_URL / KV_REST_API_TOKEN  (Upstash cache-bust;
+#                   omit and the script no-ops cache invalidation — ISR still
+#                   re-renders SSR from the DB on next revalidate.)
+#
+# Trigger:  gh workflow run publish-editorial.yml -f script=scripts/publish-notion-vs-obsidian-vs-logseq.ts
+
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: "Path to the publish script to run"
+        required: true
+        default: "scripts/publish-notion-vs-obsidian-vs-logseq.ts"
+
+concurrency:
+  group: publish-editorial
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Run publisher against prod DB
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx prisma generate
+
+      - name: Guard — DATABASE_URL must be a real prod connection string
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::DATABASE_URL secret is not set. Provision the prod Postgres URL as a repo/environment Actions secret before dispatching."
+            exit 1
+          fi
+          case "$DATABASE_URL" in
+            *user:password@*|*placeholder*) echo "::error::DATABASE_URL looks like a placeholder."; exit 1 ;;
+          esac
+          echo "DATABASE_URL present (value masked)."
+
+      - name: Run editorial publisher (idempotent upsert)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          KV_REST_API_URL: ${{ secrets.KV_REST_API_URL }}
+          KV_REST_API_TOKEN: ${{ secrets.KV_REST_API_TOKEN }}
+        run: |
+          echo "Running: ${{ github.event.inputs.script }}"
+          npx tsx "${{ github.event.inputs.script }}"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Editorial publish" >> $GITHUB_STEP_SUMMARY
+          echo "- **Script:** \`${{ github.event.inputs.script }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Result:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify SSR: \`curl -s https://www.aversusb.net/compare/notion-vs-obsidian-vs-logseq\`" >> $GITHUB_STEP_SUMMARY

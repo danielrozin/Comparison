@@ -1,5 +1,17 @@
-export const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B";
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net";
+// Normalize: trim and collapse any internal whitespace so a misconfigured
+// NEXT_PUBLIC_SITE_NAME env var (e.g. with trailing spaces) can't leak stray
+// whitespace into <title>/og:title/twitter:title. See DAN-966.
+export const SITE_NAME = (process.env.NEXT_PUBLIC_SITE_NAME || "A Versus B")
+  .replace(/\s+/g, " ")
+  .trim();
+// Normalize the same way as SITE_NAME (DAN-966): a misconfigured
+// NEXT_PUBLIC_SITE_URL env var with a trailing/internal space produced
+// malformed canonical/og:url/breadcrumb URLs sitewide (DAN-1033). A URL can
+// never contain raw whitespace, so strip ALL whitespace, then drop any
+// trailing slash so `${SITE_URL}/path` never double-slashes.
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversusb.net")
+  .replace(/\s+/g, "")
+  .replace(/\/+$/, "");
 
 export const COMPARISON_PATTERNS = [
   "vs",

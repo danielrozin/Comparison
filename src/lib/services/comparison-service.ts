@@ -92,6 +92,7 @@ interface PrismaComparisonRow {
   isHumanReviewed: boolean;
   viewCount: number;
   relatedComparisonIds: string[];
+  schemaMarkup: unknown;
   entities: {
     id: string;
     position: number;
@@ -253,6 +254,7 @@ function transformToPageData(
       isHumanReviewed: row.isHumanReviewed,
       viewCount: row.viewCount,
     },
+    ...(row.schemaMarkup ? { schemaMarkup: row.schemaMarkup as Record<string, unknown> } : {}),
   };
 }
 

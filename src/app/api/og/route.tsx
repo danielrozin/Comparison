@@ -9,7 +9,16 @@ export async function GET(request: NextRequest) {
   const entityA = searchParams.get("a") || "";
   const entityB = searchParams.get("b") || "";
   const category = searchParams.get("cat") || "";
-  const type = searchParams.get("type") || "comparison"; // comparison, category, home
+  const type = searchParams.get("type") || "comparison"; // comparison, multi, category, home
+  // entities param: pipe-separated names for type=multi (e.g. "ChatGPT|Claude|Gemini")
+  const entitiesParam = searchParams.get("entities") || "";
+  const multiEntities = entitiesParam
+    ? entitiesParam
+        .split("|")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+        .slice(0, 5) // cap at 5 for layout
+    : [];
 
   return new ImageResponse(
     (
@@ -63,7 +72,9 @@ export async function GET(request: NextRequest) {
           )}
         </div>
 
-        {type === "comparison" && entityA && entityB ? (
+        {type === "multi" && multiEntities.length >= 3 ? (
+          <MultiEntityLayout entities={multiEntities} />
+        ) : type === "comparison" && entityA && entityB ? (
           /* VS Layout */
           <div
             style={{
@@ -201,5 +212,69 @@ export async function GET(request: NextRequest) {
       width: 1200,
       height: 630,
     }
+  );
+}
+
+function MultiEntityLayout({ entities }: { entities: string[] }) {
+  const n = entities.length;
+  // 3 entities → big cards. 4 → medium. 5 → small.
+  const cardSize = n === 3 ? 140 : n === 4 ? 110 : 90;
+  const fontInitial = n === 3 ? 56 : n === 4 ? 44 : 36;
+  const fontName = n === 3 ? 26 : n === 4 ? 20 : 17;
+  const maxNameWidth = n === 3 ? 240 : n === 4 ? 180 : 140;
+
+  return (
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: n === 3 ? "32px" : "20px",
+      }}
+    >
+      {entities.map((name, idx) => (
+        <div
+          key={`${idx}-${name}`}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <div
+            style={{
+              width: `${cardSize}px`,
+              height: `${cardSize}px`,
+              borderRadius: `${cardSize / 2}px`,
+              background: idx === 0 ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.1)",
+              border: "3px solid rgba(255,255,255,0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: `${fontInitial}px`,
+              fontWeight: 800,
+              color: "white",
+              marginBottom: "14px",
+            }}
+          >
+            {(name.charAt(0) || "?").toUpperCase()}
+          </div>
+          <span
+            style={{
+              color: "white",
+              fontSize: `${fontName}px`,
+              fontWeight: 700,
+              textAlign: "center",
+              maxWidth: `${maxNameWidth}px`,
+              lineHeight: 1.15,
+            }}
+          >
+            {name}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }

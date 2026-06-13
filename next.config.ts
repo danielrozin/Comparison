@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
+import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -15,6 +17,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "logo.clearbit.com" },
       { protocol: "https", hostname: "*.googleusercontent.com" },
     ],
+  },
+  async redirects() {
+    return [...BLOG_REDIRECTS, ...VS_REDIRECTS];
   },
 };
 

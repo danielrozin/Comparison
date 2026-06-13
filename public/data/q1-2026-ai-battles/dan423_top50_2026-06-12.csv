@@ -1,0 +1,52 @@
+rank,keyword,q1_2026_searches,q4_2025_searches,q1_2025_searches,qoq_pct,yoy_pct,avg_monthly_vol
+1,claude code vs cursor,39000,15200,2620,156.6,1388.5,8100
+2,chatgpt vs claude,38700,8900,7700,334.8,402.6,6600
+3,chatgpt vs gemini,30100,32800,13200,-8.2,128.0,9900
+4,claude vs gemini,23800,5300,1550,349.1,1435.5,2900
+5,iphone vs samsung,10100,10800,12400,-6.5,-18.5,3600
+6,chrome vs firefox,8700,9400,9400,-7.4,-7.4,2900
+7,chatgpt vs copilot,8200,10100,7700,-18.8,6.5,3600
+8,chrome vs safari,8200,8200,22800,0.0,-64.0,2900
+9,chrome vs edge,7700,7200,10200,6.9,-24.5,2400
+10,notion vs obsidian,7700,5400,6700,42.6,14.9,2400
+11,slack vs teams,6200,5100,7200,21.6,-13.9,1900
+12,claude vs perplexity,5680,1900,1260,198.9,350.8,1000
+13,iphone 15 vs iphone 16,4400,4800,10100,-8.3,-56.4,1900
+14,1password vs bitwarden,4200,3000,3600,40.0,16.7,1300
+15,chatgpt vs perplexity,3900,5600,1000,-30.4,290.0,1600
+16,cursor vs windsurf,3900,4500,9900,-13.3,-60.6,2400
+17,cursor vs copilot,3600,4800,12700,-25.0,-71.7,1900
+18,slack vs discord,3360,1900,3000,76.8,12.0,880
+19,brave vs chrome,3000,2640,3180,13.6,-5.7,880
+20,pixel vs iphone,2760,4500,3900,-38.7,-29.2,1300
+21,firefox vs safari,2320,2320,3300,0.0,-29.7,720
+22,zoom vs google meet,2320,1660,2640,39.8,-12.1,720
+23,1password vs lastpass,2160,2190,2880,-1.4,-25.0,720
+24,onedrive vs google drive,2160,2190,3060,-1.4,-29.4,720
+25,proton pass vs bitwarden,2160,2030,1770,6.4,22.0,720
+26,icloud vs google drive,1900,2030,2760,-6.4,-31.2,720
+27,nordpass vs 1password,1900,2160,2320,-12.0,-18.1,720
+28,google drive vs dropbox,1770,1770,2640,0.0,-33.0,590
+29,zoom vs teams,1770,1570,2640,12.7,-33.0,590
+30,bitwarden vs lastpass,1550,1550,2310,0.0,-32.9,480
+31,dropbox vs onedrive,1260,1260,1900,0.0,-33.7,480
+32,gemini vs perplexity,1170,1040,510,12.5,129.4,320
+33,dashlane vs 1password,1170,1700,1550,-31.2,-24.5,480
+34,notion vs evernote,1170,1100,1950,6.4,-40.0,390
+35,airpods vs galaxy buds,550,630,550,-12.7,0.0,210
+36,perplexity vs google,490,640,1120,-23.4,-56.2,260
+37,bear vs obsidian,450,450,640,0.0,-29.7,170
+38,cursor vs cline,420,640,2110,-34.4,-80.1,320
+39,midjourney vs stable diffusion,370,450,1460,-17.8,-74.7,210
+40,arc vs chrome,310,370,780,-16.2,-60.3,140
+41,apple notes vs notion,160,140,190,14.3,-15.8,50
+42,bard vs chatgpt,140,110,560,27.3,-75.0,70
+43,midjourney vs dall-e,110,120,750,-8.3,-85.3,70
+44,ideogram vs midjourney,80,150,490,-46.7,-83.7,90
+45,dall-e vs stable diffusion,70,80,230,-12.5,-69.6,40
+46,midjourney vs flux,70,50,420,40.0,-83.3,40
+47,obsidian vs roam,60,40,150,50.0,-60.0,20
+48,chatgpt search vs perplexity,30,30,190,0.0,-84.2,10
+49,copilot vs codeium,30,30,90,0.0,-66.7,10
+50,copilot vs tabnine,30,40,140,-25.0,-78.6,20
+51,perplexity vs you.com,30,30,60,0.0,-50.0,10

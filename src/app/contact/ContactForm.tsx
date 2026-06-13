@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { trackContactFormSubmit } from "@/lib/utils/analytics";
 
 const SUBJECTS = [
   "General Inquiry",
@@ -42,6 +43,7 @@ export function ContactForm() {
           url: window.location.href,
         }),
       });
+      trackContactFormSubmit(form.subject || "Unknown");
       setStatus("success");
     } catch {
       setStatus("error");

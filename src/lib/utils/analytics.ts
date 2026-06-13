@@ -86,6 +86,24 @@ export function trackNewsletterSignup(page: string, placement: string) {
   trackMetaEvent("Lead", { content_name: "newsletter", content_category: placement });
 }
 
+/**
+ * Highest-intent lead event — contact form submission.
+ * Fires GA4 `generate_lead` (importable as a Google Ads conversion) and Meta `Lead`.
+ * Also fires a dedicated Google Ads conversion when a conversion label is configured;
+ * no-ops until NEXT_PUBLIC_GOOGLE_ADS_CONTACT_LABEL is set (e.g. 'AW-XXXXXXXXX/abc123'),
+ * so this is fully credential-free until the ad account goes live.
+ */
+export function trackContactFormSubmit(subject: string) {
+  trackEvent("contact_form_submit", { subject });
+  trackEvent("generate_lead", { lead_source: "contact_form", subject });
+  trackMetaEvent("Lead", { content_name: "contact_form", content_category: subject });
+
+  const adsLabel = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONTACT_LABEL;
+  if (adsLabel) {
+    trackGoogleAdsConversion(adsLabel);
+  }
+}
+
 export function trackShareClick(platform: string, page: string) {
   trackEvent("share_click", { platform, page });
 }
@@ -178,4 +196,41 @@ export function trackExitIntentMobile(page: string, type?: string) {
   trackEvent("exit_intent_mobile", { page, type: type || "mobile" });
 }
 
+export function trackComparisonTrackerImpression(slug: string) {
+  trackEvent("track_comparison_impression", { comparison_slug: slug });
+}
+
+export function trackComparisonTrackerClick(slug: string, mode: "logged_in" | "logged_out") {
+  trackEvent("track_comparison_click_track", { comparison_slug: slug, mode });
+}
+
+export function trackComparisonTrackerSubmit(slug: string, mode: "logged_in" | "logged_out") {
+  trackEvent("track_comparison_submit", { comparison_slug: slug, mode });
+  trackEvent("generate_lead", { lead_source: "comparison_tracker", comparison_slug: slug });
+  trackMetaEvent("Lead", { content_name: "comparison_tracker", content_category: slug });
+}
+
+export function trackComparisonTrackerConfirmed(slug: string) {
+  trackEvent("track_comparison_confirmed", { comparison_slug: slug });
+  trackMetaEvent("CompleteRegistration", {
+    content_name: "comparison_tracker",
+    content_category: slug,
+  });
+}
+
+
+export function trackVerdictFeedbackImpression(slug: string) {
+  trackEvent("verdict_feedback_impression", { comparison_slug: slug });
+}
+
+export function trackVerdictFeedbackVote(slug: string, vote: "up" | "down") {
+  const eventName = vote === "up" ? "verdict_feedback_vote_up" : "verdict_feedback_vote_down";
+  trackEvent(eventName, { comparison_slug: slug });
+  clarityTagAction(eventName);
+  clarityTagEngagement("engaged");
+}
+
+export function trackVerdictFeedbackReasonSubmit(slug: string, vote: "up" | "down") {
+  trackEvent("verdict_feedback_reason_submit", { comparison_slug: slug, vote });
+}
 export { trackEvent };

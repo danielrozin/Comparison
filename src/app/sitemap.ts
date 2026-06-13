@@ -3,6 +3,7 @@ import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { getAllSitemapData } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
+import { HUB_CONFIG } from "@/lib/data/hubs";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -27,12 +28,14 @@ export async function generateSitemaps() {
 export default async function sitemap({
   id,
 }: {
-  id: number;
+  id: number | string;
 }): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
+  // Next.js 15 may pass id as a string from URL params; normalize to number
+  const numId = Number(id);
 
   // ── Sitemap 0: Static + Category pages ──
-  if (id === 0) {
+  if (numId === 0) {
     const staticPages: MetadataRoute.Sitemap = [
       { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
       { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
@@ -48,6 +51,9 @@ export default async function sitemap({
       { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
+      { url: `${SITE_URL}/studies`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
@@ -67,44 +73,59 @@ export default async function sitemap({
         }))
     );
 
-    return [...staticPages, ...categoryPages, ...subcategoryPages];
+    const hubPages: MetadataRoute.Sitemap = Object.keys(HUB_CONFIG).map((slug) => ({
+      url: `${SITE_URL}/hub/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
+
+    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages];
   }
 
   // ── Sitemap 1: Comparison pages ──
-  if (id === 1) {
-    const { comparisons } = await getAllSitemapData();
-    return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
-      url: `${SITE_URL}/compare/${comp.slug}`,
-      lastModified: comp.updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.9,
-    }));
+  if (numId === 1) {
+    try {
+      const { comparisons } = await getAllSitemapData();
+      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
+        url: `${SITE_URL}/compare/${comp.slug}`,
+        lastModified: comp.updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.9,
+      }));
+    } catch {
+      return [];
+    }
   }
 
   // ── Sitemap 2: Entity + Alternatives pages ──
-  if (id === 2) {
-    const { entities: entityData } = await getAllSitemapData();
-    const entries = Array.from(entityData.entries());
+  if (numId === 2) {
+    try {
+      const { entities: entityData } = await getAllSitemapData();
+      const entries = Array.from(entityData.entries());
 
-    const entityPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-      url: `${SITE_URL}/entity/${slug}`,
-      lastModified: updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
-    }));
+      const entityPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
+        url: `${SITE_URL}/entity/${slug}`,
+        lastModified: updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
 
-    const alternativesPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-      url: `${SITE_URL}/alternatives/${slug}`,
-      lastModified: updatedAt,
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    }));
+      const alternativesPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
+        url: `${SITE_URL}/alternatives/${slug}`,
+        lastModified: updatedAt,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      }));
 
-    return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
+      return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
+    } catch {
+      return [];
+    }
   }
 
   // ── Sitemap 3: Blog pages ──
-  if (id === 3) {
+  if (numId === 3) {
     const blogListPage: MetadataRoute.Sitemap = [
       { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     ];
@@ -126,7 +147,7 @@ export default async function sitemap({
   }
 
   // ── Sitemap 4: Review pages ──
-  if (id === 4) {
+  if (numId === 4) {
     let reviewCategoryPages: MetadataRoute.Sitemap = [];
     try {
       const reviewCats = await getReviewCategories();

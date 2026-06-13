@@ -23,6 +23,7 @@ import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
+import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
@@ -40,19 +41,24 @@ import type { RelatedComparison } from "@/types";
 // ~103 KB). Phase A's inert HTML islands collapsed each section's flight
 // *encoding* but the HTML strings still appeared in both the DOM and the flight,
 // so the duplication remained. Pages Router renders the SSR DOM once and ships a
-// single compact `__NEXT_DATA__` props blob (the ~4 KB comparison data object)
-// for hydration — no streamed RSC, no second copy of the rendered tree.
+// single compact `__NEXT_DATA__` props blob for hydration — no streamed RSC, no
+// second copy of the rendered tree.
 //
-// The rendered DOM is intentionally kept identical to the verified Phase A
+// The rendered DOM is intentionally kept identical to the verified App Router
 // output: the former island sections are now plain SSR'd components (same markup,
 // they were never interactive), below-fold heavy sections stay SSR'd via
 // `dynamic()` (default ssr:true), and the interactive/analytics widgets stay out
-// of SSR via the shared `ComparisonClientWidgets` shim (ssr:false).
+// of SSR via the shared `ComparisonClientWidgets` shim (ssr:false). Multi-entity
+// (3+) pages keep the same MultiEntityLayout main shipped under App Router.
 
 // Below-fold heavy sections — code-split but kept in SSR DOM (crawlable).
 const ComparisonTable = dynamic(
   () => import("@/components/comparison/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
+);
+const MultiComparisonTable = dynamic(
+  () => import("@/components/comparison/MultiComparisonTable").then((m) => ({ default: m.MultiComparisonTable })),
+  { loading: () => <div className="max-w-6xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
 );
 const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
@@ -78,6 +84,7 @@ import {
   VersionHistory,
   StickyAffiliateCTA,
   ConversionFunnelTracker,
+  InterceptSurvey,
   ShareBar,
   LikeButton,
   BackToResults,
@@ -151,9 +158,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
 
-  // Validate slug format — must be "entity-a-vs-entity-b"
+  // Validate slug format — must be "entity-a-vs-entity-b" (or N-way: "a-vs-b-vs-c-...")
   const slugParts = parseComparisonSlug(slug);
-  if (!slugParts || !slugParts.entityA || !slugParts.entityB) {
+  if (!slugParts || slugParts.entities.length < 2) {
     return { notFound: true };
   }
 
@@ -166,18 +173,20 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
   if (!comparison) {
-    const parts = slug.split("-vs-");
-    const a = parts[0]?.replace(/-/g, " ") || "";
-    const b = parts[1]?.replace(/-/g, " ") || "";
-    const title = `${capitalize(a)} vs ${capitalize(b)}`;
-    const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(capitalize(a))}&b=${encodeURIComponent(capitalize(b))}&type=comparison`;
+    const parts = slug.split("-vs-").map((p) => p.replace(/-/g, " ").trim()).filter(Boolean);
+    const nameParts = parts.map(capitalize);
+    const title = nameParts.join(" vs ");
+    const isMulti = nameParts.length > 2;
+    const ogImage = isMulti
+      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
+      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
     return {
       props: {
         kind: "dynamic",
         slug,
         meta: {
           title: `${title} | A Versus B`,
-          description: `Compare ${capitalize(a)} and ${capitalize(b)} — key differences, pros & cons, and verdict.`,
+          description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
           canonical: `${SITE_URL}/compare/${slug}`,
           ogImage,
           ogType: "website",
@@ -216,28 +225,44 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
+  const isMultiEntity = enrichedComparison.entities.length > 2;
   const entityA = enrichedComparison.entities[0]?.name || "";
   const entityB = enrichedComparison.entities[1]?.name || "";
-  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=comparison`;
+  const ogImage = isMultiEntity
+    ? `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&entities=${encodeURIComponent(enrichedComparison.entities.map((e) => e.name).join("|"))}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=multi`
+    : `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=comparison`;
   const fallbackDescription = enrichedComparison.shortAnswer
-    || `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`;
+    || (isMultiEntity
+      ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
+      : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
-  const jsonLd = JSON.stringify(
-    jsonLdGraph([
-      ...schemas,
-      videoMeta?.youtubeVideoId
-        ? videoObjectSchema({
-            slug,
-            title: enrichedComparison.title,
-            description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
-            youtubeVideoId: videoMeta.youtubeVideoId,
-            uploadDate: videoMeta.uploadedAt,
-            entityA: videoMeta.entityA,
-            entityB: videoMeta.entityB,
-          })
-        : null,
-    ])
-  );
+  // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
+  // present. Otherwise: N>=3 pages already get a single consolidated @graph from
+  // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
+  // the DAN-432 jsonLdGraph consolidation (+ optional VideoObject).
+  let jsonLd: string;
+  if (enrichedComparison.schemaMarkup) {
+    jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
+  } else if (isMultiEntity) {
+    jsonLd = JSON.stringify(schemas[0]);
+  } else {
+    jsonLd = JSON.stringify(
+      jsonLdGraph([
+        ...schemas,
+        videoMeta?.youtubeVideoId
+          ? videoObjectSchema({
+              slug,
+              title: enrichedComparison.title,
+              description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
+              youtubeVideoId: videoMeta.youtubeVideoId,
+              uploadDate: videoMeta.uploadedAt,
+              entityA: videoMeta.entityA,
+              entityB: videoMeta.entityB,
+            })
+          : null,
+      ])
+    );
+  }
 
   const meta: PageMeta = {
     title: enrichedComparison.metadata.metaTitle || enrichedComparison.title,
@@ -299,14 +324,23 @@ export default function ComparisonPage(props: Props) {
     );
   }
 
+  // N-entity (3+): multi-entity layout (parity with the App Router version).
+  if (props.comparison.entities.length > 2) {
+    return (
+      <>
+        <MetaHead meta={props.meta} />
+        <MultiEntityLayout {...props} />
+      </>
+    );
+  }
+
   const { comparison, slug, sidebarComparisons, videoMeta, jsonLd } = props;
 
   return (
     <>
       <MetaHead meta={props.meta} />
 
-      {/* Schema markup — all page schemas (+ optional VideoObject) consolidated
-          into a single @graph block. */}
+      {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       {/* Track recently viewed */}
@@ -377,8 +411,12 @@ export default function ComparisonPage(props: Props) {
           shortAnswer={comparison.shortAnswer}
           entities={comparison.entities}
           attributes={comparison.attributes}
+          comparisonSlug={comparison.slug}
         />
       )}
+
+      {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
+      <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
@@ -532,6 +570,193 @@ export default function ComparisonPage(props: Props) {
       <StickyAffiliateCTA entities={comparison.entities} category={comparison.category} slug={slug} />
 
       {/* Conversion Funnel Tracking */}
+      <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
+
+      {/* Intercept Survey — 30s dwell OR 60% scroll, 14-day cap (DAN-697) */}
+      <InterceptSurvey comparisonSlug={comparison.slug} category={comparison.category || undefined} />
+    </>
+  );
+}
+
+/**
+ * MultiEntityLayout — N-entity (3+) renderer (parity with the App Router version,
+ * DAN-387 Phase 1). Renders only components that iterate entities[] safely.
+ */
+function MultiEntityLayout({
+  comparison,
+  slug,
+  sidebarComparisons,
+  jsonLd,
+}: {
+  comparison: Comparison;
+  slug: string;
+  sidebarComparisons: RelatedComparison[];
+  jsonLd: string;
+}) {
+  const n = comparison.entities.length;
+  return (
+    <>
+      {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
+
+      <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
+      <BackToResults />
+
+      <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
+
+      <TableOfContents
+        items={[
+          ...(comparison.shortAnswer || comparison.verdict ? [{ id: "verdict", label: "Quick Answer" }] : []),
+          ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
+          { id: "pros-cons", label: "Pros & Cons" },
+          ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          { id: "resources", label: "Resources" },
+          { id: "comments", label: "Comments" },
+        ]}
+      />
+
+      {/* Share bar */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+        <ShareBar title={comparison.title} slug={comparison.slug} />
+        <div className="flex items-center gap-2">
+          <EmbedButton slug={comparison.slug} title={comparison.title} />
+          <LikeButton comparisonId={comparison.id} />
+        </div>
+      </div>
+
+      {/* Multi-entity hero: title + N entity cards in a grid */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
+          {comparison.title}
+        </h1>
+        {comparison.metadata?.updatedAt && (
+          <p className="text-center text-xs sm:text-sm text-text-secondary mb-6 flex items-center justify-center gap-1.5">
+            <time dateTime={comparison.metadata.updatedAt}>
+              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </time>
+          </p>
+        )}
+        <div
+          className="grid gap-3 sm:gap-4"
+          style={{ gridTemplateColumns: `repeat(${Math.min(n, 3)}, minmax(0, 1fr))` }}
+        >
+          {comparison.entities.map((ent) => (
+            <div
+              key={ent.id}
+              className="bg-white border border-border rounded-xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow"
+            >
+              {ent.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={ent.imageUrl}
+                  alt={ent.name}
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-white shadow"
+                />
+              ) : (
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 bg-gradient-to-br from-primary-100 to-accent-100 text-primary-700 flex items-center justify-center font-bold text-2xl">
+                  {ent.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <h3 className="text-sm sm:text-base font-bold text-text mb-1">{ent.name}</h3>
+              {ent.shortDesc && (
+                <p className="text-xs text-text-secondary leading-snug line-clamp-2">{ent.shortDesc}</p>
+              )}
+              {ent.bestFor && (
+                <p className="mt-3 text-[11px] sm:text-xs font-semibold text-primary-700 bg-gradient-to-r from-primary-50 to-primary-100 px-3 py-1.5 rounded-full inline-block border border-primary-200/50">
+                  {ent.bestFor}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Quick answer (uses array-friendly TLDR text only) */}
+      {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
+        <section id="verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-xl p-5">
+            <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-2">Quick Answer</p>
+            <p className="text-base sm:text-lg text-text font-medium leading-relaxed">
+              {comparison.quickAnswer?.tldr || comparison.shortAnswer}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
+
+      {/* Below the fold */}
+      <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
+        <div className="flex-1 min-w-0">
+          {/* MultiComparisonTable — main N-entity attribute grid */}
+          {comparison.attributes.length > 0 && (
+            <div id="comparison-table">
+              <MultiComparisonTable attributes={comparison.attributes} entities={comparison.entities} />
+            </div>
+          )}
+
+          {/* Pros & Cons (already array-friendly, renders all N entities) */}
+          <div id="pros-cons">
+            <ProsConsBlock entities={comparison.entities} />
+          </div>
+
+          {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
+          {comparison.verdict && (
+            <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <h2 className="text-2xl font-display font-bold text-text mb-3">Verdict</h2>
+              <p className="text-base text-text leading-relaxed whitespace-pre-line">{comparison.verdict}</p>
+            </section>
+          )}
+
+          {/* Newsletter */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
+          </div>
+
+          {comparison.faqs.length > 0 && (
+            <div id="faq">
+              <FAQBlock faqs={comparison.faqs} />
+            </div>
+          )}
+
+          <div id="resources">
+            <ResourcesSection
+              resources={generateResources(comparison.slug, comparison.entities)}
+              entities={comparison.entities}
+            />
+          </div>
+        </div>
+
+        {sidebarComparisons.length > 0 && (
+          <RelatedComparisonsSidebar comparisons={sidebarComparisons} sourceSlug={slug} variant="desktop" />
+        )}
+      </div>
+
+      <InContentAd />
+
+      <SmartReviewLinks entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))} />
+
+      {comparison.relatedComparisons.length > 0 && (
+        <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
+      )}
+
+      <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
+
+      <InternalLinks
+        currentSlug={comparison.slug}
+        category={comparison.category}
+        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
+        relatedComparisons={comparison.relatedComparisons}
+      />
+
+      <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
+
+      <div id="comments">
+        <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
+      </div>
+
+      <FreshnessFooter metadata={comparison.metadata} />
+
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
     </>
   );

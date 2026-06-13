@@ -370,6 +370,29 @@ model RefreshJob {
   @@map("refresh_jobs")
 }
 
+// Tracks each on-demand AI comparison generation attempt for the
+// /api/comparisons/generate user-facing path. Lets us deduplicate
+// concurrent visits to the same slug, surface persistent failures
+// to the UI, and detect generations stuck in_progress past a
+// reasonable threshold (>2h → admin alert).
+model GenerationAttempt {
+  id            String   @id @default(cuid())
+  slug          String
+  status        String   @default("in_progress") // in_progress, succeeded, failed
+  attempt       Int      @default(1) // 1-based attempt counter for this slug
+  errorStage    String?  @map("error_stage") // "tavily" | "anthropic" | "parse" | "save" | "timeout" | "quality"
+  errorMessage  String?  @map("error_message") @db.Text
+  durationMs    Int?     @map("duration_ms")
+  source        String   @default("user") // "user" | "cron" | "admin_backfill"
+  startedAt     DateTime @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+
+  @@index([slug])
+  @@index([status])
+  @@index([startedAt])
+  @@map("generation_attempts")
+}
+
 // ============================================================
 // INTERNAL LINKING
 // ============================================================
@@ -886,6 +909,29 @@ model ComparisonRequestVote {
   @@map("comparison_request_votes")
 }
 
+// ============================================================
+// VERDICT FEEDBACK — Per-comparison thumbs up/down on the AI verdict
+// ============================================================
+
+model VerdictFeedback {
+  id             String   @id @default(cuid())
+  comparisonSlug String   @map("comparison_slug")
+  vote           String   // "up" | "down"
+  reason         String?  @db.Text
+  anonId         String?  @map("anon_id")
+  userId         String?  @map("user_id")
+
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([comparisonSlug, anonId], name: "uniq_anon_per_slug")
+  @@unique([comparisonSlug, userId], name: "uniq_user_per_slug")
+  @@index([comparisonSlug])
+  @@index([vote])
+  @@index([createdAt])
+  @@map("verdict_feedback")
+}
+
 // Social outreach queue: Quora/Reddit answers ready to post
 // Status flow: queued -> posted | skipped
 model OutreachPost {
@@ -939,4 +985,29 @@ model ConsentRecord {
   @@index([grantedAt])
   @@index([geoCountry])
   @@map("consent_records")
+}
+
+// ============================================================
+// COMPARISON TRACKERS — DAN-406
+// Users subscribe to a single comparison's updates (price, spec, verdict).
+// Status flow: pending (awaiting confirmation) -> active -> stopped
+// ============================================================
+model ComparisonTracker {
+  id                String    @id @default(cuid())
+  email             String
+  comparisonSlug    String    @map("comparison_slug")
+  triggers          String[]  // ["price_change", "new_spec", "verdict_update"]
+  status            String    @default("pending") // pending | active | stopped
+  confirmationToken String?   @unique @map("confirmation_token") // single-use magic-link token
+  confirmedAt       DateTime? @map("confirmed_at")
+  source            String?   // "card" | "logged_in_oneclick"
+  lastNotifiedAt    DateTime? @map("last_notified_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@unique([email, comparisonSlug], name: "uniq_email_slug")
+  @@index([comparisonSlug])
+  @@index([status])
+  @@index([email])
+  @@map("comparison_trackers")
 }
