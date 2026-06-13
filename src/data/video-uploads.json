@@ -2475,6 +2475,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-12T09:24:34.815Z"
+    },
+    {
+      "slug": "marvel-vs-dc",
+      "title": "Marvel vs Dc",
+      "entityA": "Marvel",
+      "entityB": "Dc",
+      "category": "General",
+      "videoFile": "Marvel vs Dc.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Marvel vs Dc — Full Comparison 2026",
+      "youtubeDescription": "Marvel dominates box office with $31B+ worldwide and higher statistical centers, while DC leads comic sales with stronger market share and the successful Absolute Universe.\n\n#marvel #dc #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-13T08:33:44.858Z"
+    },
+    {
+      "slug": "virat-kohli-vs-sachin-tendulkar",
+      "title": "Virat Kohli vs Sachin Tendulkar",
+      "entityA": "Virat Kohli",
+      "entityB": "Sachin Tendulkar",
+      "category": "General",
+      "videoFile": "Virat Kohli vs Sachin Tendulkar.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Virat Kohli vs Sachin Tendulkar — Full Comparison 2026",
+      "youtubeDescription": "Both legends excel differently: Kohli achieved 49 ODI hundreds faster (15 vs 22 years) with better win rate, while Tendulkar's longer career shows remarkable consistency across eras.\n\n#viratkohli #sachintendulkar #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-13T08:45:46.128Z"
+    },
+    {
+      "slug": "mba-vs-masters",
+      "title": "Mba vs Masters",
+      "entityA": "Mba",
+      "entityB": "Masters",
+      "category": "General",
+      "videoFile": "Mba vs Masters.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mba vs Masters — Full Comparison 2026",
+      "youtubeDescription": "MBAs build broad business leadership skills for strategic roles, while Master's degrees develop deep technical expertise in specialized fields. MBAs target experienced professionals; Master's welcome recent graduates.\n\n#mba #masters #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-13T08:58:07.773Z"
     }
   ]
 }
