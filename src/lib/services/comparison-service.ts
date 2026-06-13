@@ -1277,3 +1277,111 @@ export async function listAllComparisons(
   }).filter(Boolean) as { slug: string; title: string; category: string }[];
   return { comparisons: all.slice(offset, offset + limit), total: all.length };
 }
+
+// ---------------------------------------------------------------------------
+// Content refresh / depth (DAN-1027)
+// ---------------------------------------------------------------------------
+
+export interface RefreshCandidate {
+  slug: string;
+  title: string;
+  entityA: string;
+  entityB: string;
+  searchImpressions: number;
+  viewCount: number;
+  lastRefreshedAt: string | null;
+}
+
+/**
+ * Select published comparisons that are worth refreshing for depth (DAN-1027).
+ *
+ * Prioritizes pages that already have ranking signal (search impressions or
+ * views) and are the stalest (oldest lastRefreshedAt — never-refreshed pages
+ * first). Respects an explicit nextRefreshAt gate so we don't churn the same
+ * page repeatedly. An optional `onlySlugs` list lets the SEO Specialist pin the
+ * exact ranking-page set (e.g. the 174 already-ranking pages) for refresh.
+ */
+export async function getComparisonsForRefresh(
+  limit: number = 15,
+  opts: { onlySlugs?: string[]; minImpressions?: number } = {}
+): Promise<RefreshCandidate[]> {
+  const prisma = getPrismaClient();
+  if (!prisma) return [];
+
+  const { onlySlugs, minImpressions = 0 } = opts;
+  const now = new Date();
+
+  try {
+    const rows = await prisma.comparison.findMany({
+      where: {
+        status: "published",
+        ...(onlySlugs && onlySlugs.length > 0 ? { slug: { in: onlySlugs } } : {}),
+        // Only refresh pages whose cooldown has elapsed (or was never set)
+        OR: [{ nextRefreshAt: null }, { nextRefreshAt: { lte: now } }],
+        ...(minImpressions > 0 ? { searchImpressions: { gte: minImpressions } } : {}),
+      },
+      select: {
+        slug: true,
+        title: true,
+        searchImpressions: true,
+        viewCount: true,
+        lastRefreshedAt: true,
+        entities: {
+          select: { entity: { select: { name: true } } },
+          orderBy: { position: "asc" },
+        },
+      },
+      // Ranking signal first, then stalest (never-refreshed nulls sort first)
+      orderBy: [
+        { searchImpressions: "desc" },
+        { lastRefreshedAt: { sort: "asc", nulls: "first" } },
+      ],
+      take: limit * 3, // over-fetch; we drop any without two entities below
+    });
+
+    const candidates: RefreshCandidate[] = [];
+    for (const r of rows) {
+      const names = r.entities
+        .map((e: { entity: { name: string | null } | null }) => e.entity?.name)
+        .filter(Boolean) as string[];
+      if (names.length < 2) continue; // need a real pair to regenerate
+      candidates.push({
+        slug: r.slug,
+        title: r.title,
+        entityA: names[0],
+        entityB: names[1],
+        searchImpressions: r.searchImpressions || 0,
+        viewCount: r.viewCount || 0,
+        lastRefreshedAt: r.lastRefreshedAt ? r.lastRefreshedAt.toISOString() : null,
+      });
+      if (candidates.length >= limit) break;
+    }
+    return candidates;
+  } catch (e) {
+    console.warn("getComparisonsForRefresh failed:", e);
+    return [];
+  }
+}
+
+/**
+ * Stamp a comparison as freshly refreshed and schedule its next refresh.
+ * Default cooldown is 90 days so the depth pipeline rotates through the
+ * ranking-page set rather than re-touching the same handful each run.
+ */
+export async function markComparisonRefreshed(
+  slug: string,
+  cooldownDays: number = 90
+): Promise<void> {
+  const prisma = getPrismaClient();
+  if (!prisma) return;
+  try {
+    const now = new Date();
+    const next = new Date(now.getTime() + cooldownDays * 24 * 60 * 60 * 1000);
+    await prisma.comparison.update({
+      where: { slug },
+      data: { lastRefreshedAt: now, nextRefreshAt: next },
+    });
+  } catch (e) {
+    console.warn(`markComparisonRefreshed failed for ${slug}:`, e);
+  }
+}

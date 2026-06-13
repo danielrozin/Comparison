@@ -8,9 +8,25 @@ import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
 import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
 import { storeKeywordOpportunities } from "@/lib/services/keyword-service";
+import { refreshStaleComparisons } from "@/lib/services/content-refresh";
 import type { DiscoveredOpportunity } from "@/lib/dataforseo/keyword-discovery";
 
 export const maxDuration = 300; // 5 minutes
+
+// --- DAN-1027: re-aim the pipeline from net-new generic pairs to depth/refresh.
+// The generic "X vs Y" seam is mined out (live-site dedup: 55/55 top-CPC pairs
+// already published), so new generic pages land in positions 21–50 with no
+// incremental value. We throttle net-new generation to genuine high-volume gaps
+// and redirect the freed capacity to refreshing pages that already rank.
+//
+// All three knobs are env-overridable so the throttle can be tuned/reverted
+// without a deploy.
+const PAUSE_GENERIC_GENERATION =
+  (process.env.PAUSE_GENERIC_GENERATION ?? "true").toLowerCase() !== "false";
+const MIN_NEW_COMPARISON_VOLUME = Number(
+  process.env.MIN_NEW_COMPARISON_VOLUME ?? 1000
+);
+const REFRESH_PER_RUN = Number(process.env.REFRESH_PER_RUN ?? 15);
 
 /**
  * GET /api/cron/auto-generate
@@ -115,8 +131,22 @@ export async function GET(request: NextRequest) {
   const generatedSlugs: string[] = [];
   const compLimit = 30;
 
+  // DAN-1027: throttle net-new generic generation. Keep a topic ONLY when it is
+  // a genuine gap with proven demand (search volume > MIN_NEW_COMPARISON_VOLUME).
+  // The "not already covered" half of the gate is enforced downstream by the
+  // queue (enqueueJob skips slugs that already exist). Topics with unknown/low
+  // volume — most social/Quora/Reddit discoveries — no longer spawn pages.
+  let throttledCount = 0;
+  let eligibleComparisonTopics = comparisonTopics;
+  if (PAUSE_GENERIC_GENERATION) {
+    eligibleComparisonTopics = comparisonTopics.filter(
+      (t) => (t.searchVolume ?? 0) >= MIN_NEW_COMPARISON_VOLUME
+    );
+    throttledCount = comparisonTopics.length - eligibleComparisonTopics.length;
+  }
+
   // Enqueue all discovered comparison topics
-  const queueItems = comparisonTopics.slice(0, compLimit).map((topic) => ({
+  const queueItems = eligibleComparisonTopics.slice(0, compLimit).map((topic) => ({
     entityA: topic.entityA!,
     entityB: topic.entityB!,
     category,
@@ -140,7 +170,7 @@ export async function GET(request: NextRequest) {
   } catch (err) {
     // Fallback to sequential generation if queue fails
     allErrors.push(`Queue failed, falling back to sequential: ${err instanceof Error ? err.message : "Unknown"}`);
-    for (const topic of comparisonTopics.slice(0, compLimit)) {
+    for (const topic of eligibleComparisonTopics.slice(0, compLimit)) {
       try {
         const a = slugify(topic.entityA!);
         const b = slugify(topic.entityB!);
@@ -183,6 +213,22 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  // Step 4.5: DAN-1027 — depth pass. Redirect freed capacity to refreshing the
+  // pages that already rank (richer attributes/FAQs, updated 2026 data, verdicts).
+  // Affiliate CTAs (DAN-365) are render-time so they survive the refresh intact.
+  let refreshedCount = 0;
+  const refreshedSlugs: string[] = [];
+  if (REFRESH_PER_RUN > 0) {
+    try {
+      const refresh = await refreshStaleComparisons(REFRESH_PER_RUN);
+      refreshedCount = refresh.refreshed.length;
+      refreshedSlugs.push(...refresh.refreshed);
+      allErrors.push(...refresh.errors);
+    } catch (err) {
+      allErrors.push(`Refresh phase failed: ${err instanceof Error ? err.message : "Unknown"}`);
+    }
+  }
+
   const duration = Date.now() - startTime;
 
   // Step 5: Record the pipeline run (if Redis is available)
@@ -193,7 +239,7 @@ export async function GET(request: NextRequest) {
       startedAt: new Date(startTime).toISOString(),
       completedAt: new Date().toISOString(),
       discovered: discoveredCount,
-      generated: generatedCount + blogArticlesCreated,
+      generated: generatedCount + blogArticlesCreated + refreshedCount,
       errors: allErrors,
     });
   } catch {
@@ -207,6 +253,9 @@ export async function GET(request: NextRequest) {
   const newBlogPages = blogSlugs.map(
     (slug) => `  - https://www.aversusb.net/blog/${slug}`
   );
+  const refreshedPages = refreshedSlugs.map(
+    (slug) => `  - https://www.aversusb.net/compare/${slug}`
+  );
 
   const report = `Auto-Generation Pipeline Report
 ========================================
@@ -215,16 +264,21 @@ Time: ${new Date().toISOString().split("T")[1].split(".")[0]} UTC
 Duration: ${(duration / 1000).toFixed(1)}s
 Category focus: ${category}
 
+Mode: ${PAUSE_GENERIC_GENERATION ? `depth-first (net-new throttled to volume ≥ ${MIN_NEW_COMPARISON_VOLUME})` : "generation (unthrottled)"}
+
 Discovery (multi-source):
   Total topics found: ${discoveredCount}
   Sources: ${Object.entries(sourceBreakdown).map(([k, v]) => `${k}=${v}`).join(", ") || "none"}
   Comparison topics: ${comparisonTopics.length}
+  Throttled (below volume gate): ${throttledCount}
   Blog topics: ${blogTopics.length}
 
 Generation:
   New comparison pages: ${generatedCount}
   New blog articles: ${blogArticlesCreated}
+  Refreshed (depth) pages: ${refreshedCount}
 ${newCompPages.length > 0 ? `\nNew Comparison Pages:\n${newCompPages.join("\n")}` : ""}
+${refreshedPages.length > 0 ? `\nRefreshed Pages:\n${refreshedPages.join("\n")}` : ""}
 ${newBlogPages.length > 0 ? `\nNew Blog Articles:\n${newBlogPages.join("\n")}` : ""}
 ${allErrors.length > 0 ? `\nErrors (${allErrors.length}):\n${allErrors.map((e) => `  - ${e}`).join("\n")}` : "\nNo errors!"}
 
@@ -233,7 +287,7 @@ Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
 
   try {
     await sendNotificationEmail({
-      subject: `Auto-Gen: ${generatedCount} comparisons + ${blogArticlesCreated} blogs (${category})`,
+      subject: `Auto-Gen: ${refreshedCount} refreshed + ${generatedCount} new + ${blogArticlesCreated} blogs (${category})`,
       type: "cron-report",
       message: report,
       pageUrl: "https://www.aversusb.net/admin",
@@ -253,9 +307,14 @@ Next run: ${hourOfDay < 12 ? "6pm" : "6am"} UTC
     runId,
     category,
     duration: `${(duration / 1000).toFixed(1)}s`,
+    mode: PAUSE_GENERIC_GENERATION ? "depth-first" : "generation",
     discovered: discoveredCount,
     discoveryBySource: sourceBreakdown,
     generated: generatedCount,
+    throttled: throttledCount,
+    minNewComparisonVolume: MIN_NEW_COMPARISON_VOLUME,
+    refreshed: refreshedCount,
+    refreshedPages: refreshedSlugs,
     blogArticlesCreated,
     newPages: generatedSlugs,
     newBlogArticles: blogSlugs,
