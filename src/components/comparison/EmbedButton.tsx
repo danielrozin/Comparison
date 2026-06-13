@@ -13,7 +13,7 @@ type TabType = "script" | "iframe" | "badge";
 
 export function EmbedButton({ slug, title }: EmbedButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabType>("iframe");
+  const [activeTab, setActiveTab] = useState<TabType>("script");
   const [copiedTab, setCopiedTab] = useState<TabType | null>(null);
 
   const encodedTitle = encodeURIComponent(title);
@@ -21,17 +21,17 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   const embedCodes: Record<TabType, { label: string; description: string; code: string }> = {
     script: {
       label: "Script Tag",
-      description: "Easiest option. Paste this script tag and the comparison renders automatically.",
+      description: "Recommended. Easiest option — renders the comparison automatically and adds a small credit link back to the full page.",
       code: `<script src="${SITE_URL}/api/v1/widget?slug=${slug}"></script>`,
     },
     iframe: {
       label: "iFrame",
-      description: "Embed as an iframe. Works on any platform that supports HTML embeds.",
+      description: "Display-only embed. Works anywhere HTML embeds are allowed, but search engines attribute iframe content to the source — use the Script Tag or Link Badge if you want to credit us with a real link.",
       code: `<iframe src="${SITE_URL}/embed/${slug}" width="100%" height="400" frameborder="0" style="border-radius: 12px; border: 1px solid #e2e8f0;"></iframe>`,
     },
     badge: {
       label: "Link Badge",
-      description: "A clickable image badge that links to the full comparison.",
+      description: "A clickable image badge that links straight to the full comparison.",
       code: `<a href="${SITE_URL}/compare/${slug}" target="_blank" rel="noopener">\n  <img src="${SITE_URL}/api/og?title=${encodedTitle}&type=badge" alt="${title}" width="300" />\n</a>`,
     },
   };
