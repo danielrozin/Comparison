@@ -115,7 +115,7 @@ const itemListSchema = {
         name: "Zoom Team Chat",
         applicationCategory: "Team Chat / Video-first",
         operatingSystem: "Web, Windows, macOS, iOS, Android, Linux",
-        offers: { "@type": "Offer", price: "14.99", priceCurrency: "USD" },
+        offers: { "@type": "Offer", price: "13.32", priceCurrency: "USD" },
         url: "https://www.zoom.com/en/products/team-chat/",
       },
     },
@@ -274,7 +274,7 @@ const TABLE_ROWS: AlternativeRow[] = [
     name: "Zoom Team Chat",
     bestFor: "Zoom-first orgs",
     freeTier: "Yes (with any Zoom plan)",
-    paidEntry: "Bundled in Zoom Pro $14.99/u/mo",
+    paidEntry: "Bundled in Zoom Pro $13.32/u/mo",
     advantage: "Video-first; tightest meeting↔chat handoff",
   },
   {
@@ -700,7 +700,7 @@ export default function SlackAlternativesPage() {
             <li>Your stack is Microsoft 365 or Google Workspace (Teams/Chat dominate there)</li>
           </ul>
           <p className="text-text leading-relaxed mb-3">
-            <strong>Pricing:</strong> Free (Basic Zoom) · Bundled in Zoom Pro $14.99/u/mo ·
+            <strong>Pricing:</strong> Free (Basic Zoom) · Bundled in Zoom Pro $13.32/u/mo ·
             Business $21.99/u/mo · Enterprise custom · Zoom One $19.99–35/u/mo bundles
           </p>
           <p className="text-text">
