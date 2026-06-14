@@ -7,8 +7,9 @@
 // and DAN-868 (Mercedes, 75 dupes).
 //
 // Canonical target is NOT a BlogArticle — it is the existing published
-// Comparison row at `/vs/us-vs-china-gdp-comparison-2026` (DAN-608
-// 2-way schema). This script therefore only archives the 44 dupes; no
+// Comparison row at `/compare/us-vs-china-gdp-comparison-2026` (DAN-608
+// 2-way schema; /vs/ is not a route, see blog-redirects.ts DAN-1154 note).
+// This script therefore only archives the 44 dupes; no
 // canonical body enhancement is applied (per DAN-871 plan v1, CMO
 // endorsed 2026-05-30 — TL;DR/FAQ on the /vs row is parked as
 // out-of-scope follow-up).
@@ -22,7 +23,7 @@
 
 import { PrismaClient } from "@prisma/client";
 
-const CANONICAL_VS_PATH = "/vs/us-vs-china-gdp-comparison-2026";
+const CANONICAL_VS_PATH = "/compare/us-vs-china-gdp-comparison-2026";
 
 // Exact slugs from the 2026-05-30 audit (scripts/dan-871-gdp-audit.ts).
 // Static list — the DAN-520 dedup-gate prevents the cron from minting

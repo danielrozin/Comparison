@@ -18,7 +18,7 @@
  * Extended under DAN-871 to absorb the "US vs China GDP 2026" thin blog
  * cluster (DAN-347 audit P1 #7 — audit said "GDP comparisons", reality
  * = 44 dupes, all 0 views). Canonical target for this cluster is the
- * existing published Comparison row at `/vs/us-vs-china-gdp-comparison-2026`
+ * existing published Comparison row at `/compare/us-vs-china-gdp-comparison-2026`
  * (DAN-608 2-way schema), not a blog post.
  */
 
@@ -287,9 +287,14 @@ const macbookRedirects: BlogRedirect[] = [
 }));
 
 // DAN-871: "US vs China GDP 2026" thin cluster collapsed onto the
-// existing Comparison row (/vs/...), not a blog post — these dupes are
-// spammy narrative cron output, the /vs page is the structured canonical.
-const GDP_US_CHINA_CANONICAL = "/vs/us-vs-china-gdp-comparison-2026";
+// existing Comparison row, not a blog post — these dupes are spammy
+// narrative cron output, the structured comparison page is the canonical.
+// NOTE (DAN-1154): the canonical route is /compare/{slug}, NOT /vs/{slug}.
+// There is no /vs route — /vs/* only 301-aliases a hardcoded handful of
+// slugs in vs-redirects.ts, and this GDP slug is not among them, so a
+// /vs/ destination would 404. The live page is /compare/... (HTTP 200,
+// self-canonical = /compare/...), so we redirect there single-hop.
+const GDP_US_CHINA_CANONICAL = "/compare/us-vs-china-gdp-comparison-2026";
 
 const GDP_US_CHINA_DUPES: string[] = [
   "us-vs-china-gdp-comparison-2026-economic-leaders-face-off",
