@@ -88,8 +88,32 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+// Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
+// These slugs had weak/auto-generated titles+descriptions; the copy here is
+// pre-optimized. Still piped through buildPageTitle/clampDescription so the
+// single-brand and length invariants hold (buildPageTitle is a no-op on the
+// already-clean brand suffix).
+const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "figma-vs-canva": {
+    title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
+    description:
+      "Figma vs Canva compared: design power vs ease of use, pricing, templates and collaboration. See which design tool fits your team in 2026.",
+  },
+  "slack-vs-teams": {
+    title: "Slack vs Teams 2026: Features, Price & Verdict | A Versus B",
+    description:
+      "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
+  },
+  "iphone-15-vs-16": {
+    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
+    description:
+      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  },
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const override = META_OVERRIDES[slug];
 
   let comparison;
   try {
@@ -111,9 +135,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
     // Absolute title bypasses the root layout title.template ("%s | A Versus B"),
     // so the brand is appended exactly once by buildPageTitle (DAN-1145 Bug 1).
-    const pageTitle = buildPageTitle(title);
+    const pageTitle = buildPageTitle(override?.title ?? title);
     const description = clampDescription(
-      `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+      override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
     );
     return {
       title: { absolute: pageTitle },
@@ -140,8 +164,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // in the brand → would double) and a redundant "| Comparison" segment, then
   // appends the brand once (DAN-1145 Bug 1 + Bug 2). clampDescription clamps at a
   // word boundary instead of mid-word (Bug 3).
-  const pageTitle = buildPageTitle(comparison.metadata.metaTitle || comparison.title);
-  const description = clampDescription(comparison.metadata.metaDescription || fallbackDescription);
+  const pageTitle = buildPageTitle(override?.title ?? comparison.metadata.metaTitle ?? comparison.title);
+  const description = clampDescription(override?.description ?? comparison.metadata.metaDescription ?? fallbackDescription);
 
   return {
     title: { absolute: pageTitle },
