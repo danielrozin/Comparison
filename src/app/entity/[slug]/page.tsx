@@ -5,6 +5,7 @@ import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -29,7 +30,7 @@ function getReviewCount(slug: string): number {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const name = humanizeEntityName(slug);
   const content = ENTITY_CONTENT[slug];
   const description = content
     ? content.description.slice(0, 155)
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function EntityPage({ params }: PageProps) {
   const { slug } = await params;
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const name = humanizeEntityName(slug);
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
