@@ -15,6 +15,7 @@ import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { InterceptSurvey } from "@/components/engagement/InterceptSurvey";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 
 const FUN_FACTS = [
   "Did you know? We\u2019ve compared 107+ topics!",
@@ -24,11 +25,9 @@ const FUN_FACTS = [
 ];
 
 function formatSlugToTitle(slug: string): string {
-  const parts = slug.split("-vs-");
-  if (parts.length < 2) return slug.replace(/-/g, " ");
-  return parts
-    .map((p) => p.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()))
-    .join(" vs ");
+  const parts = slug.split("-vs-").map((p) => p.trim()).filter(Boolean);
+  if (parts.length < 2) return humanizeEntityName(slug);
+  return parts.map(humanizeEntityName).join(" vs ");
 }
 
 export function DynamicComparison({ slug }: { slug: string }) {
@@ -121,8 +120,8 @@ export function DynamicComparison({ slug }: { slug: string }) {
           body: JSON.stringify({
             slug,
             title: data.comparison.title,
-            entityA: parts[0]?.replace(/-/g, " ") || "",
-            entityB: parts[1]?.replace(/-/g, " ") || "",
+            entityA: parts[0] ? humanizeEntityName(parts[0]) : "",
+            entityB: parts[1] ? humanizeEntityName(parts[1]) : "",
             generated: true,
           }),
         }).catch(() => {});
