@@ -83,3 +83,30 @@ export function clampDescription(
 
   return `${clamped}…`;
 }
+
+/**
+ * Resolve a comparison's meta description, healing legacy DB rows whose
+ * `metaDescription` was persisted as a raw `shortAnswer.slice(0, ~155)` — a
+ * mid-word truncation with NO ellipsis (DAN-1152). Routing such a stored value
+ * through clampDescription() alone does NOT fix it: at ≤160 chars the clamp is a
+ * no-op, so the mid-word cut survives. Here we detect the legacy truncation
+ * (stored value is a prefix of a longer shortAnswer and lacks the ellipsis) and
+ * re-derive from shortAnswer; otherwise we keep the explicit stored value. The
+ * result is always clamped to a word boundary ≤ META_DESCRIPTION_LIMIT.
+ */
+export function resolveComparisonDescription(
+  storedMetaDescription: string | null | undefined,
+  shortAnswer: string | null | undefined,
+): string {
+  const stored = (storedMetaDescription || "").replace(/\s+/g, " ").trim();
+  const answer = (shortAnswer || "").replace(/\s+/g, " ").trim();
+
+  const looksRawTruncation =
+    stored.length > 0 &&
+    !stored.endsWith("…") &&
+    answer.length > stored.length &&
+    answer.startsWith(stored);
+
+  if (!stored || looksRawTruncation) return clampDescription(answer);
+  return clampDescription(stored);
+}

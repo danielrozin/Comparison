@@ -3,7 +3,12 @@
  * Creative Director CTR audit (DAN-1145, 2026-06-14).
  */
 import { describe, it, expect } from "vitest";
-import { buildPageTitle, clampDescription, META_DESCRIPTION_LIMIT } from "../metadata";
+import {
+  buildPageTitle,
+  clampDescription,
+  resolveComparisonDescription,
+  META_DESCRIPTION_LIMIT,
+} from "../metadata";
 import { SITE_NAME } from "@/lib/utils/constants";
 
 const BRAND = SITE_NAME; // "A Versus B"
@@ -91,6 +96,48 @@ describe("clampDescription — Bug 3: word-boundary clamp", () => {
   it("respects a custom limit", () => {
     const out = clampDescription("one two three four five six seven eight", 20);
     expect(out.length).toBeLessThanOrEqual(20);
+    expect(out.endsWith("…")).toBe(true);
+  });
+});
+
+describe("resolveComparisonDescription — Bug 3: heal persisted raw truncations", () => {
+  // Verbatim prod failure: DB stored metaDescription = shortAnswer.slice(0,155).
+  const SHORT_ANSWER =
+    "The PS5 has faster SSD speeds and superior exclusive games (Spider-Man, God of War). " +
+    "The Xbox Series X offers better backwards compatibility, Game Pass subscription value, " +
+    "and slightly more raw GPU power (12 vs 10.28 TFLOPS).";
+  const STORED_TRUNCATION = SHORT_ANSWER.slice(0, 155); // 155 chars, ends "…Game Pass sub", no ellipsis
+
+  it("re-derives from shortAnswer when the stored value is a raw mid-word slice (the prod defect)", () => {
+    const out = resolveComparisonDescription(STORED_TRUNCATION, SHORT_ANSWER);
+    expect(out).not.toBe(STORED_TRUNCATION);
+    expect(out.endsWith("Game Pass sub")).toBe(false);
+    expect(out.endsWith("…")).toBe(true);
+    expect(out.length).toBeLessThanOrEqual(META_DESCRIPTION_LIMIT);
+  });
+
+  it("derives from shortAnswer when stored metaDescription is null/empty", () => {
+    expect(resolveComparisonDescription(null, SHORT_ANSWER).endsWith("…")).toBe(true);
+    expect(resolveComparisonDescription("", SHORT_ANSWER).endsWith("…")).toBe(true);
+  });
+
+  it("keeps a genuine hand-written metaDescription (not a prefix of shortAnswer)", () => {
+    const handWritten =
+      "Compare PlayStation 5 and Xbox Series X across performance, exclusives, value, and Game Pass.";
+    expect(resolveComparisonDescription(handWritten, SHORT_ANSWER)).toBe(handWritten);
+  });
+
+  it("keeps a stored value that is already a proper clamp (ends with an ellipsis)", () => {
+    const alreadyClamped = clampDescription(SHORT_ANSWER);
+    expect(resolveComparisonDescription(alreadyClamped, SHORT_ANSWER)).toBe(alreadyClamped);
+  });
+
+  it("clamps an over-long hand-written metaDescription to the limit", () => {
+    const longHand =
+      "Compare these two platforms across an exhaustive list of dimensions including pricing, " +
+      "features, integrations, support, security, and a great many other considerations beyond the limit.";
+    const out = resolveComparisonDescription(longHand, "Short canonical answer.");
+    expect(out.length).toBeLessThanOrEqual(META_DESCRIPTION_LIMIT);
     expect(out.endsWith("…")).toBe(true);
   });
 });
