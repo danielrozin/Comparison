@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { submitToIndexNow, INDEXNOW_KEY } from "@/lib/seo/indexnow";
-import sitemap from "@/app/sitemap";
+import sitemap, { generateSitemaps } from "@/app/sitemap";
 
 export const maxDuration = 60;
+
+/**
+ * sitemap() is a sharded index generator (one shard per id from
+ * generateSitemaps()). Gather every shard's URLs into one flat list.
+ */
+async function collectAllSitemapUrls(): Promise<string[]> {
+  const shards = await generateSitemaps();
+  const perShard = await Promise.all(shards.map((s) => sitemap({ id: s.id })));
+  return perShard.flat().map((e) => (typeof e.url === "string" ? e.url : String(e.url)));
+}
 
 /**
  * POST /api/indexnow
@@ -36,8 +46,7 @@ export async function POST(request: NextRequest) {
 
   if (body.all) {
     try {
-      const entries = await sitemap();
-      urls = entries.map((e) => (typeof e.url === "string" ? e.url : String(e.url)));
+      urls = await collectAllSitemapUrls();
     } catch (e) {
       return NextResponse.json(
         { error: "Failed to build sitemap URL list", detail: String(e) },
@@ -71,8 +80,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     try {
-      const entries = await sitemap();
-      const urls = entries.map((e) => (typeof e.url === "string" ? e.url : String(e.url)));
+      const urls = await collectAllSitemapUrls();
       const result = await submitToIndexNow(urls);
       return NextResponse.json({ keyLocation: `/${INDEXNOW_KEY}.txt`, ...result });
     } catch (e) {
