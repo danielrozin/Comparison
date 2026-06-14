@@ -117,6 +117,13 @@ export function comparisonPageSchema(
   voteData?: ComparisonVoteData | null,
 ) {
   const url = `${SITE_URL}/compare/${comparison.slug}`;
+
+  // 3+ entity pages follow the locked schema-3way v1 contract (DAN-841 rev 1a540eda):
+  // a single @graph with top-level item nodes + ItemList container, cross-referenced by @id.
+  if (comparison.entities.length >= 3) {
+    return [buildMultiEntityGraph(comparison, voteData, url)];
+  }
+
   const schemas: Record<string, unknown>[] = [];
 
   // 1. Article schema
@@ -238,6 +245,147 @@ export function comparisonPageSchema(
   }
 
   return schemas;
+}
+
+// ============================================================
+// Multi-entity (N≥3) @graph emitter — schema-3way v1 (DAN-841)
+// ============================================================
+//
+// Locked contract (rev 1a540eda, sign-off DAN-844 2026-05-28):
+// - Single @graph document with cross-referenced @id nodes.
+// - 3 (or more) top-level SoftwareApplication/typed-item nodes, NOT nested in Article.about.
+// - ItemList container @id="{url}#comparison" with ListItem.item.@id pointers to the item nodes.
+// - Article.mainEntity → #comparison.
+// - AI-chatbots cluster baseline: applicationCategory="BusinessApplication", operatingSystem="Web, iOS, Android".
+// - Offer omitted for chatbots (deferred to other clusters per §2.3 deferral note).
+// - aggregateRating field stays vote-gated (real on-site data only, DAN-608 §6 inheritance), but its
+//   absence does not suppress the parent item node — items always emit.
+
+function buildMultiEntityGraph(
+  comparison: ComparisonPageData,
+  voteData: ComparisonVoteData | null | undefined,
+  url: string,
+): Record<string, unknown> {
+  const itemListId = `${url}#comparison`;
+  const itemIds = comparison.entities.map(
+    (_, i) => `${url}#item-${String.fromCharCode(97 + i)}`,
+  );
+  const citation = comparison.citationStats;
+  const realVotes = voteData && voteData.total >= 10 ? voteData : null;
+
+  const itemNodes = comparison.entities.map((entity, i) => {
+    const schemaType = entitySchemaType(entity.entityType);
+    const node: Record<string, unknown> = {
+      "@type": schemaType,
+      "@id": itemIds[i],
+      name: entity.name,
+      url: `${SITE_URL}/entity/${entity.slug}`,
+    };
+    if (entity.shortDesc) node.description = entity.shortDesc;
+    if (entity.imageUrl) node.image = entity.imageUrl;
+
+    if (schemaType === "SoftwareApplication") {
+      node.applicationCategory = "BusinessApplication";
+      node.operatingSystem = "Web, iOS, Android";
+      // publisher name defaults to the entity's own brand name; real-data backfill
+      // from Entity.metadata is tracked separately and is out of scope here.
+      node.publisher = {
+        "@type": "Organization",
+        name: entity.name,
+      };
+    }
+
+    if (realVotes) {
+      const entityVotes = realVotes.votes[entity.name] ?? 0;
+      if (entityVotes > 0) {
+        const voteShare = entityVotes / realVotes.total;
+        const ratingValue = 1 + voteShare * 4;
+        node.aggregateRating = {
+          "@type": "AggregateRating",
+          ratingValue: ratingValue.toFixed(1),
+          bestRating: 5,
+          worstRating: 1,
+          ratingCount: entityVotes,
+          ...(citation?.reviewsAnalyzed && { reviewCount: citation.reviewsAnalyzed }),
+        };
+      }
+    }
+
+    return node;
+  });
+
+  const itemList: Record<string, unknown> = {
+    "@type": "ItemList",
+    "@id": itemListId,
+    name: comparison.title,
+    description: `Comparison between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    numberOfItems: comparison.entities.length,
+    itemListOrder: "https://schema.org/ItemListUnordered",
+    itemListElement: comparison.entities.map((_, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: { "@id": itemIds[i] },
+    })),
+  };
+
+  const article: Record<string, unknown> = {
+    "@type": "Article",
+    headline: comparison.title,
+    description: comparison.shortAnswer || comparison.metadata.metaDescription,
+    url,
+    datePublished: comparison.metadata.publishedAt,
+    dateModified: comparison.metadata.updatedAt,
+    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
+      sameAs: socialSameAs(),
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    mainEntity: { "@id": itemListId },
+  };
+
+  const breadcrumbs = [
+    { name: "Home", url: SITE_URL },
+    ...(comparison.category
+      ? [{ name: comparison.category, url: `${SITE_URL}/category/${comparison.category}` }]
+      : []),
+    { name: comparison.title, url },
+  ];
+  const breadcrumbList = {
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+
+  const graph: Record<string, unknown>[] = [
+    article,
+    itemList,
+    ...itemNodes,
+    breadcrumbList,
+  ];
+
+  if (comparison.faqs.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      mainEntity: comparison.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
 }
 
 // ============================================================

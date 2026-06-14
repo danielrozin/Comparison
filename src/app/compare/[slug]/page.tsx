@@ -4,6 +4,7 @@ import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comp
 import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
@@ -20,6 +21,7 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -86,8 +88,32 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+// Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
+// These slugs had weak/auto-generated titles+descriptions; the copy here is
+// pre-optimized. Still piped through buildPageTitle/clampDescription so the
+// single-brand and length invariants hold (buildPageTitle is a no-op on the
+// already-clean brand suffix).
+const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "figma-vs-canva": {
+    title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
+    description:
+      "Figma vs Canva compared: design power vs ease of use, pricing, templates and collaboration. See which design tool fits your team in 2026.",
+  },
+  "slack-vs-teams": {
+    title: "Slack vs Teams 2026: Features, Price & Verdict | A Versus B",
+    description:
+      "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
+  },
+  "iphone-15-vs-16": {
+    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
+    description:
+      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  },
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const override = META_OVERRIDES[slug];
 
   let comparison;
   try {
@@ -97,19 +123,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   if (!comparison) {
-    const parts = slug.split("-vs-").map((p) => p.replace(/-/g, " ").trim()).filter(Boolean);
-    const nameParts = parts.map(capitalize);
+    const nameParts = slug
+      .split("-vs-")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map(humanizeEntityName);
     const title = nameParts.join(" vs ");
     const isMulti = nameParts.length > 2;
     const ogImage = isMulti
       ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
       : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
+    // Absolute title bypasses the root layout title.template ("%s | A Versus B"),
+    // so the brand is appended exactly once by buildPageTitle (DAN-1145 Bug 1).
+    const pageTitle = buildPageTitle(override?.title ?? title);
+    const description = clampDescription(
+      override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+    );
     return {
-      title: `${title} | A Versus B`,
-      description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+      title: { absolute: pageTitle },
+      description,
       alternates: { canonical: `${SITE_URL}/compare/${slug}` },
-      openGraph: { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
-      twitter: { card: "summary_large_image", images: [ogImage] },
+      openGraph: { title: pageTitle, description, images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
+      twitter: { card: "summary_large_image", title: pageTitle, description, images: [ogImage] },
     };
   }
 
@@ -124,12 +159,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${comparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
+  // Absolute title bypasses the root layout title.template ("%s | A Versus B").
+  // buildPageTitle strips any pre-existing brand suffix (legacy stubs already end
+  // in the brand → would double) and a redundant "| Comparison" segment, then
+  // appends the brand once (DAN-1145 Bug 1 + Bug 2). clampDescription clamps at a
+  // word boundary instead of mid-word (Bug 3).
+  const pageTitle = buildPageTitle(override?.title ?? comparison.metadata.metaTitle ?? comparison.title);
+  const description = clampDescription(override?.description ?? comparison.metadata.metaDescription ?? fallbackDescription);
+
   return {
-    title: comparison.metadata.metaTitle || comparison.title,
-    description: comparison.metadata.metaDescription || fallbackDescription,
+    title: { absolute: pageTitle },
+    description,
     openGraph: {
-      title: comparison.metadata.metaTitle || comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: pageTitle,
+      description,
       url: `${SITE_URL}/compare/${slug}`,
       type: "article",
       publishedTime: comparison.metadata.publishedAt || undefined,
@@ -138,18 +181,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: pageTitle,
+      description,
       images: [ogImage],
     },
     alternates: {
       canonical: `${SITE_URL}/compare/${slug}`,
     },
   };
-}
-
-function capitalize(s: string): string {
-  return s.replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
@@ -614,14 +653,22 @@ function MultiEntityLayout({
   const n = comparison.entities.length;
   return (
     <>
-      {/* Schema markup */}
-      {schemas.map((schema, i) => (
+      {/* Schema markup — use validated editorial @graph when present (e.g. the
+          schema-3way v1 graph with PKM-cluster Offers), else auto-generated */}
+      {comparison.schemaMarkup ? (
         <script
-          key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
         />
-      ))}
+      ) : (
+        schemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))
+      )}
 
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
       <BackToResults />

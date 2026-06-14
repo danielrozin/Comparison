@@ -1,0 +1,17 @@
+{
+  "date": "2026-06-14",
+  "tPlus": 2,
+  "measuredBuckets": {
+    "top10": 0,
+    "p11_20": 10,
+    "p21_50": 344
+  },
+  "baseline": {
+    "top10": 0,
+    "p11_20": 10,
+    "p21_50": 307
+  },
+  "movers": [],
+  "total": 354,
+  "upwardMigration": false
+}

@@ -69,7 +69,9 @@ export async function warmCacheForPaths(paths: string[]): Promise<void> {
 function getBaseUrl(): string | null {
   // In production, use NEXT_PUBLIC_SITE_URL or VERCEL_URL
   if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+    // Strip whitespace first (DAN-1033: env var has shipped with a trailing
+    // space), then any trailing slash.
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\s+/g, "").replace(/\/+$/, "");
   }
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;

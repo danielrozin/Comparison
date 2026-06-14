@@ -4,6 +4,7 @@ import { getAllSitemapData } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
+import { BEST_CONFIG } from "@/lib/data/best-entries";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -51,6 +52,10 @@ export default async function sitemap({
       { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
+      { url: `${SITE_URL}/studies`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies/investing-comparison-report-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
@@ -77,7 +82,14 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
-    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages];
+    const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
+      url: `${SITE_URL}/best/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    }));
+
+    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
   }
 
   // ── Sitemap 1: Comparison pages ──
