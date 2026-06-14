@@ -4,6 +4,7 @@ import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comp
 import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildMetaTitle, clampDescription } from "@/lib/seo/meta";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
@@ -87,8 +88,30 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+// Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
+// Title/description are pre-optimized; buildMetaTitle/clampDescription still run
+// over them so brand-suffix and length invariants hold.
+const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "figma-vs-canva": {
+    title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
+    description:
+      "Figma vs Canva compared: design power vs ease of use, pricing, templates and collaboration. See which design tool fits your team in 2026.",
+  },
+  "slack-vs-teams": {
+    title: "Slack vs Teams 2026: Features, Price & Verdict | A Versus B",
+    description:
+      "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
+  },
+  "iphone-15-vs-16": {
+    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
+    description:
+      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  },
+};
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const override = META_OVERRIDES[slug];
 
   let comparison;
   try {
@@ -108,12 +131,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const ogImage = isMulti
       ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
       : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
+    const fallbackTitle = buildMetaTitle(override?.title ?? title);
+    const fallbackDesc = clampDescription(
+      override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+    );
     return {
-      title: `${title} | A Versus B`,
-      description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+      title: { absolute: fallbackTitle },
+      description: fallbackDesc,
       alternates: { canonical: `${SITE_URL}/compare/${slug}` },
-      openGraph: { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
-      twitter: { card: "summary_large_image", images: [ogImage] },
+      openGraph: { title: fallbackTitle, description: fallbackDesc, images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
+      twitter: { card: "summary_large_image", title: fallbackTitle, description: fallbackDesc, images: [ogImage] },
     };
   }
 
@@ -128,12 +155,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${comparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
+  const finalTitle = buildMetaTitle(override?.title ?? comparison.metadata.metaTitle ?? comparison.title);
+  const finalDescription = clampDescription(
+    override?.description ?? comparison.metadata.metaDescription ?? fallbackDescription,
+  );
+
   return {
-    title: comparison.metadata.metaTitle || comparison.title,
-    description: comparison.metadata.metaDescription || fallbackDescription,
+    title: { absolute: finalTitle },
+    description: finalDescription,
     openGraph: {
-      title: comparison.metadata.metaTitle || comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: finalTitle,
+      description: finalDescription,
       url: `${SITE_URL}/compare/${slug}`,
       type: "article",
       publishedTime: comparison.metadata.publishedAt || undefined,
@@ -142,8 +174,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: finalTitle,
+      description: finalDescription,
       images: [ogImage],
     },
     alternates: {
