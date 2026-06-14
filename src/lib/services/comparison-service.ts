@@ -22,6 +22,7 @@ import {
   getMockLatest,
 } from "./mock-data";
 import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
+import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 
 import { getRedis } from "./redis";
 
@@ -873,6 +874,10 @@ export async function saveComparison(
     // Invalidate cached comparison and trending list
     await invalidateCache(`comparison:${data.slug}`);
     await invalidateCache(`trending:10`);
+
+    // Notify search engines (Bing/Yandex/etc.) instantly via IndexNow.
+    // Fire-and-forget: never block or fail the save on this.
+    void submitComparisonToIndexNow(data.slug).catch(() => {});
 
     return { id: comparison.id };
   } catch (e) {
