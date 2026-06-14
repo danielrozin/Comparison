@@ -4,6 +4,7 @@ import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comp
 import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
@@ -108,12 +109,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const ogImage = isMulti
       ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
       : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
+    // Absolute title bypasses the root layout title.template ("%s | A Versus B"),
+    // so the brand is appended exactly once by buildPageTitle (DAN-1145 Bug 1).
+    const pageTitle = buildPageTitle(title);
+    const description = clampDescription(
+      `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+    );
     return {
-      title: `${title} | A Versus B`,
-      description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+      title: { absolute: pageTitle },
+      description,
       alternates: { canonical: `${SITE_URL}/compare/${slug}` },
-      openGraph: { images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
-      twitter: { card: "summary_large_image", images: [ogImage] },
+      openGraph: { title: pageTitle, description, images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
+      twitter: { card: "summary_large_image", title: pageTitle, description, images: [ogImage] },
     };
   }
 
@@ -128,12 +135,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `${comparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
+  // Absolute title bypasses the root layout title.template ("%s | A Versus B").
+  // buildPageTitle strips any pre-existing brand suffix (legacy stubs already end
+  // in the brand → would double) and a redundant "| Comparison" segment, then
+  // appends the brand once (DAN-1145 Bug 1 + Bug 2). clampDescription clamps at a
+  // word boundary instead of mid-word (Bug 3).
+  const pageTitle = buildPageTitle(comparison.metadata.metaTitle || comparison.title);
+  const description = clampDescription(comparison.metadata.metaDescription || fallbackDescription);
+
   return {
-    title: comparison.metadata.metaTitle || comparison.title,
-    description: comparison.metadata.metaDescription || fallbackDescription,
+    title: { absolute: pageTitle },
+    description,
     openGraph: {
-      title: comparison.metadata.metaTitle || comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: pageTitle,
+      description,
       url: `${SITE_URL}/compare/${slug}`,
       type: "article",
       publishedTime: comparison.metadata.publishedAt || undefined,
@@ -142,8 +157,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      title: comparison.title,
-      description: comparison.metadata.metaDescription || fallbackDescription,
+      title: pageTitle,
+      description,
       images: [ogImage],
     },
     alternates: {
