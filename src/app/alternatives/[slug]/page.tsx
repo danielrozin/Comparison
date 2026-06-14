@@ -6,6 +6,7 @@ import { getAlternativesForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -13,7 +14,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const name = humanizeEntityName(slug);
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
   const content = ENTITY_CONTENT[slug];
   const altNames = content?.alternatives.slice(0, 3).map((a) => a.name).join(", ");
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function AlternativesPage({ params }: PageProps) {
   const { slug } = await params;
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  const name = humanizeEntityName(slug);
 
   // Find all comparisons that include this entity (DB + mock)
   const alternatives = await getAlternativesForEntity(slug);

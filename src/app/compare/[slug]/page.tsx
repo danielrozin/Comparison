@@ -20,6 +20,7 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -97,8 +98,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   if (!comparison) {
-    const parts = slug.split("-vs-").map((p) => p.replace(/-/g, " ").trim()).filter(Boolean);
-    const nameParts = parts.map(capitalize);
+    const nameParts = slug
+      .split("-vs-")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map(humanizeEntityName);
     const title = nameParts.join(" vs ");
     const isMulti = nameParts.length > 2;
     const ogImage = isMulti
@@ -146,10 +150,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: `${SITE_URL}/compare/${slug}`,
     },
   };
-}
-
-function capitalize(s: string): string {
-  return s.replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
