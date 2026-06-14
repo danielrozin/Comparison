@@ -4,7 +4,7 @@
  * Physical products must keep their Amazon eligibility (no regression).
  */
 import { describe, it, expect } from 'vitest'
-import { isDigitalEntity } from '../affiliate'
+import { isDigitalEntity, resolveBrandHomepage } from '../affiliate'
 import type { ComparisonEntityData } from '@/types'
 
 function entity(name: string, entityType = 'product'): ComparisonEntityData {
@@ -84,5 +84,43 @@ describe('isDigitalEntity — physical products keep eligibility (no regression)
 
   it.each(physical)('classifies "%s" as NOT digital', (name) => {
     expect(isDigitalEntity(entity(name))).toBe(false)
+  })
+})
+
+/**
+ * DAN-1140: the non-Amazon fallback CTA for high-value digital brands
+ * (VPN/SaaS/streaming/AI) must point at the brand's official homepage, NOT
+ * leak the click to a Google SERP for $0.
+ */
+describe('resolveBrandHomepage — digital brands resolve to their homepage (DAN-1140)', () => {
+  const cases: Array<[string, string]> = [
+    ['NordVPN', 'https://nordvpn.com'],
+    ['ExpressVPN', 'https://www.expressvpn.com'],
+    ['Surfshark', 'https://surfshark.com'],
+    ['ChatGPT', 'https://chatgpt.com'],
+    ['Claude', 'https://claude.ai'],
+    ['Notion', 'https://www.notion.so'],
+    ['Evernote', 'https://evernote.com'],
+    ['Spotify', 'https://www.spotify.com'],
+    ['Apple Music', 'https://music.apple.com'],
+    ['YouTube Music', 'https://music.youtube.com'],
+    ['Netflix', 'https://www.netflix.com'],
+    ['1Password', 'https://1password.com'],
+  ]
+
+  it.each(cases)('resolves "%s" → %s', (name, url) => {
+    expect(resolveBrandHomepage(name)).toBe(url)
+  })
+
+  it('never returns a google.com/search URL for a known brand', () => {
+    for (const [name] of cases) {
+      const url = resolveBrandHomepage(name)
+      expect(url).not.toBeNull()
+      expect(url).not.toContain('google.com/search')
+    }
+  })
+
+  it('returns null for entities with no canonical homepage (Google-search last resort)', () => {
+    expect(resolveBrandHomepage('Some Obscure Widget 9000')).toBeNull()
   })
 })
