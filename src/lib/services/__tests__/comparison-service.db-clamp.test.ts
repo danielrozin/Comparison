@@ -52,7 +52,7 @@ describe('DAN-1152 — shortAnswer-derived meta description is word-boundary cla
       expect(desc.length).toBeLessThanOrEqual(META_DESCRIPTION_LIMIT)
       // A raw slice(0,155) of a long shortAnswer would be exactly 155 chars with
       // no ellipsis. The clamped output is < 155 here and ends with "…".
-      if (comp.shortAnswer.length > META_DESCRIPTION_LIMIT) {
+      if (comp.shortAnswer && comp.shortAnswer.length > META_DESCRIPTION_LIMIT) {
         expect(desc.endsWith('…')).toBe(true)
         expect(desc).not.toBe(comp.shortAnswer.slice(0, 155))
       }
