@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
 import { aggregateRatingSchema, breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -14,7 +15,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const agg = await getEntityAggregation(slug);
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const name = humanizeEntityName(slug);
 
   return {
     title: agg
@@ -87,7 +88,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
   if (!aggregation && total === 0) notFound();
 
-  const name = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const name = humanizeEntityName(slug);
 
   // Schema.org structured data
   const schemas: Record<string, unknown>[] = [
