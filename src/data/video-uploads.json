@@ -2517,6 +2517,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-13T08:58:07.773Z"
+    },
+    {
+      "slug": "curry-vs-lebron",
+      "title": "Curry vs Lebron",
+      "entityA": "Curry",
+      "entityB": "Lebron",
+      "category": "Sports",
+      "videoFile": "Curry vs Lebron.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Curry vs Lebron — Full Comparison 2026",
+      "youtubeDescription": "LeBron dominates advanced metrics with 260+ win shares vs Curry's 130+, but both are elite players with different strengths and career longevity differences.\n\n#curry #lebron #sports #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-15T11:05:58.922Z"
+    },
+    {
+      "slug": "ali-vs-tyson",
+      "title": "Ali vs Tyson",
+      "entityA": "Ali",
+      "entityB": "Tyson",
+      "category": "General",
+      "videoFile": "Ali vs Tyson.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ali vs Tyson — Full Comparison 2026",
+      "youtubeDescription": "Ali had a superior record with 92% win rate vs Tyson's 88%. Ali fought more total bouts and had fewer losses, demonstrating greater consistency over his career.\n\n#ali #tyson #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-15T11:16:12.692Z"
+    },
+    {
+      "slug": "marvel-vs-dc",
+      "title": "Marvel vs Dc",
+      "entityA": "Marvel",
+      "entityB": "Dc",
+      "category": "General",
+      "videoFile": "Marvel vs Dc.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Marvel vs Dc — Full Comparison 2026",
+      "youtubeDescription": "Marvel dominates box office with higher grosses and broader appeal, while DC focuses on iconic legacy characters and darker storytelling themes.\n\n#marvel #dc #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-15T11:26:53.283Z"
     }
   ]
 }
