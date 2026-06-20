@@ -1,0 +1,51 @@
+{
+  "issue": "DAN-1176",
+  "verifies": "DAN-1169",
+  "method": "Semrush live, US db, domain_organic for aversusb.net (faithful to DAN-1169 source). Filter +|Po|Lt|21, sort po_asc.",
+  "semrushCall": "execute_report(report='domain_organic', params={database:'us', domain:'aversusb.net', display_limit:80, display_sort:'po_asc', display_filter:'+|Po|Lt|21', export_columns:['Ph','Po','Pp','Nq','Ur','Tr','Kd']})",
+  "capturedAt": "2026-06-20",
+  "deployDay": true,
+  "successCriterion": "10+ of the DAN-1169 cohort in positions 1-10 by 2026-07-12",
+  "topInTop10": 0,
+  "pr72Deployed": false,
+  "pr72DeployEvidence": {
+    "brownsEntityTitleLive": "Cleveland Browns — All Comparisons | A Versus B (OLD hardcoded — new metaTitle NOT live)",
+    "ps5OldUrlStatus": 200,
+    "note": "Browns generateMetadata fix and PS5 301 require the PR #72 code deploy; as of 2026-06-20 only DB-only levers (CTR title/meta rewrites via ISR, +5 affiliate internal links to /compare/bose-vs-jbl) are live."
+  },
+  "watchKeywords": [
+    {"keyword": "versus browns", "pos": 18, "vol": 6600, "url": "/entity/cleveland-browns", "lever": "title+schema (DEPLOY-GATED)"},
+    {"keyword": "xbox series x vs ps5 pro specs", "pos": 14, "vol": 110, "url": "/compare/ps5-pro-vs-xbox-series-x-performance-comparison-2026", "lever": "301 consolidation (DEPLOY-GATED)"},
+    {"keyword": "jbl versus bose", "pos": 18, "vol": 260, "url": "/compare/bose-vs-jbl", "lever": "affiliate internal links (LIVE)"},
+    {"keyword": "amazon music vs youtube music", "pos": 20, "vol": 260, "url": "/compare/youtube-music-vs-amazon-music", "lever": "CTR title/meta (LIVE)"},
+    {"keyword": "bloomberg vs wsj", "pos": 18, "vol": 110, "url": "/compare/bloomberg-vs-the-wall-street-journal", "lever": "CTR title/meta (LIVE)"},
+    {"keyword": "bloomberg vs wall street journal", "pos": 17, "vol": 110, "url": "/compare/bloomberg-vs-the-wall-street-journal", "lever": "CTR title/meta (LIVE)"},
+    {"keyword": "chick-fil-a versus popeyes", "pos": 18, "vol": 110, "url": "/compare/chick-fil-a-vs-popeyes", "lever": "CTR title/meta (LIVE)"},
+    {"keyword": "audi competitors luxury cars 2026", "pos": 15, "vol": 320, "url": "/blog/top-mercedes-benz-alternatives-in-2026-luxury-sedans-suvs-compared", "lever": "consolidated under DAN-868"}
+  ],
+  "fullPos1to20Cohort": [
+    {"keyword": "ps5 pro vs xbox series x fps", "pos": 11, "pp": 11, "vol": 40},
+    {"keyword": "xbox series x vs ps5 pro specs", "pos": 14, "pp": 0, "vol": 110},
+    {"keyword": "audi competitors luxury cars 2026", "pos": 15, "pp": 15, "vol": 320},
+    {"keyword": "ps5 pro specs vs xbox series x", "pos": 16, "pp": 0, "vol": 90},
+    {"keyword": "macbook pro vs air weight", "pos": 17, "pp": 17, "vol": 170},
+    {"keyword": "peacock versus paramount plus", "pos": 17, "pp": 17, "vol": 70},
+    {"keyword": "bloomberg vs wall street journal", "pos": 17, "pp": 17, "vol": 110},
+    {"keyword": "kobe vs lebron comparison", "pos": 17, "pp": 17, "vol": 70},
+    {"keyword": "bloomberg vs wsj", "pos": 18, "pp": 18, "vol": 110},
+    {"keyword": "versus browns", "pos": 18, "pp": 18, "vol": 6600},
+    {"keyword": "macbook air vs macbook pro weight", "pos": 18, "pp": 18, "vol": 170},
+    {"keyword": "chick-fil-a versus popeyes", "pos": 18, "pp": 18, "vol": 110},
+    {"keyword": "jbl versus bose", "pos": 18, "pp": 18, "vol": 260},
+    {"keyword": "macbook pro vs air weight", "pos": 19, "pp": 19, "vol": 170},
+    {"keyword": "virat kohli and sachin tendulkar", "pos": 20, "pp": 20, "vol": 40},
+    {"keyword": "amazon music vs youtube music", "pos": 20, "pp": 20, "vol": 260},
+    {"keyword": "marshall vs jbl", "pos": 20, "pp": 20, "vol": 70},
+    {"keyword": "ally vs marcus hysa", "pos": 20, "pp": 20, "vol": 50}
+  ],
+  "remeasureSchedule": {
+    "routineId": "e83199ee-3b8f-47d3-8e8e-f4d9dd330784",
+    "dates": ["2026-06-27T09:00:00Z", "2026-07-11T09:00:00Z"],
+    "note": "Paperclip routine spawns a child issue under DAN-1176 on each date, assigned to the SEO Specialist, with the Semrush method + this baseline embedded."
+  }
+}
