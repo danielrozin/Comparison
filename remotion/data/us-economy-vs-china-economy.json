@@ -1,0 +1,107 @@
+{
+  "title": "US Economy vs China Economy",
+  "entityA": "US Economy",
+  "entityB": "China Economy",
+  "category": "economy",
+  "slug": "us-economy-vs-china-economy",
+  "shortAnswer": "The US has the world's largest nominal GDP ($25.5T) and leads in technology, finance, and innovation. China ($17.7T) is the world's largest manufacturer and may surpass the US in total GDP by PPP. The US has 6x higher GDP per capita.",
+  "keyDifferences": [
+    {
+      "label": "Nominal GDP",
+      "entityAValue": "$25.5T",
+      "entityBValue": "$17.7T",
+      "winner": "a"
+    },
+    {
+      "label": "GDP per Capita",
+      "entityAValue": "$76,300",
+      "entityBValue": "$12,500",
+      "winner": "a"
+    },
+    {
+      "label": "Manufacturing Share",
+      "entityAValue": "16%",
+      "entityBValue": "30%",
+      "winner": "b"
+    },
+    {
+      "label": "GDP Growth Rate",
+      "entityAValue": "2.5%",
+      "entityBValue": "4.5%",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "GDP Per Capita (USD)",
+      "valueA": "$89,000",
+      "valueB": "$12,720",
+      "winner": "a"
+    },
+    {
+      "label": "GDP Growth Rate 2026 (%)",
+      "valueA": "1.9%",
+      "valueB": "3-4%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Solar Panel Production (%)",
+      "valueA": "8%",
+      "valueB": "~80%",
+      "winner": "b"
+    },
+    {
+      "label": "Total GDP 2026 (USD Trillions)",
+      "valueA": "$30+ trillion",
+      "valueB": "$17.9",
+      "winner": "a"
+    },
+    {
+      "label": "Per Capita GDP (USD)",
+      "valueA": "$89,500",
+      "valueB": "$14,750",
+      "winner": "a"
+    },
+    {
+      "label": "Global EV Market Share (%)",
+      "valueA": "15%",
+      "valueB": "70%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Manufacturing Output (%)",
+      "valueA": "12%",
+      "valueB": "35%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Manufacturing Share (Percent)",
+      "valueA": "15-17%",
+      "valueB": "28%",
+      "winner": "b"
+    }
+  ],
+  "prosA": [
+    "$25.5T GDP",
+    "$76,300 GDP per capita",
+    "Tech/innovation leader",
+    "Reserve currency (USD)"
+  ],
+  "consA": [
+    "$34T national debt",
+    "Trade deficit",
+    "Inequality"
+  ],
+  "prosB": [
+    "Fastest-growing major economy",
+    "World's largest manufacturer",
+    "Massive infrastructure investment",
+    "Growing middle class"
+  ],
+  "consB": [
+    "$12,500 GDP per capita",
+    "Real estate crisis",
+    "Aging population"
+  ],
+  "verdict": "The US leads in total GDP, per-capita wealth, and innovation. China leads in manufacturing and growth rate. The gap is narrowing."
+}

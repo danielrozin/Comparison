@@ -20,6 +20,21 @@ function isGenericLink(entity: ComparisonEntityData): boolean {
   return entity.affiliateLinks?.[0]?.partner === "generic";
 }
 
+// Brand-homepage CTA for a digital product with no affiliate program yet — a
+// real, sponsored destination, not a Google "Learn more". (DAN-1140)
+function isBrandLink(entity: ComparisonEntityData): boolean {
+  return entity.affiliateLinks?.[0]?.partner === "brand";
+}
+
+function ctaLabel(
+  entity: ComparisonEntityData,
+  isTreatment: boolean,
+): string {
+  if (isGenericLink(entity)) return `Learn about ${entity.name}`;
+  if (isBrandLink(entity)) return `Get ${entity.name}`;
+  return `${isTreatment ? "Get" : "Buy"} ${entity.name}`;
+}
+
 export function StickyAffiliateCTA({
   entities,
   category,
@@ -146,7 +161,7 @@ export function StickyAffiliateCTA({
                     </svg>
                   )}
                   <span className="truncate">
-                    {isGenericLink(entityA) ? `Learn about ${entityA.name}` : `${isTreatment ? "Get" : "Buy"} ${entityA.name}`}
+                    {ctaLabel(entityA, isTreatment)}
                   </span>
                 </a>
               )}
@@ -174,7 +189,7 @@ export function StickyAffiliateCTA({
                     </svg>
                   )}
                   <span className="truncate">
-                    {isGenericLink(entityB) ? `Learn about ${entityB.name}` : `${isTreatment ? "Get" : "Buy"} ${entityB.name}`}
+                    {ctaLabel(entityB, isTreatment)}
                   </span>
                 </a>
               )}
