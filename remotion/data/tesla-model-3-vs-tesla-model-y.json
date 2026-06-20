@@ -1,0 +1,133 @@
+{
+  "title": "Tesla Model 3 vs Tesla Model Y",
+  "entityA": "Tesla Model 3",
+  "entityB": "Tesla Model Y",
+  "category": "Automotive",
+  "shortAnswer": "The Model 3 is the better choice for budget-conscious buyers seeking a nimble sedan with lower costs, while the Model Y suits those needing more space and versatility with SUV practicality. Both excel in performance and efficiency, but the Model Y's larger interior and cargo capacity justify its higher price for families.",
+  "keyDifferences": [
+    {
+      "label": "Body Type",
+      "entityAValue": "Sedan",
+      "entityBValue": "SUV/Crossover",
+      "winner": "b"
+    },
+    {
+      "label": "Starting Price",
+      "entityAValue": "$38,630",
+      "entityBValue": "$43,990",
+      "winner": "a"
+    },
+    {
+      "label": "Cargo Space",
+      "entityAValue": "28 cu ft",
+      "entityBValue": "76 cu ft",
+      "winner": "b"
+    },
+    {
+      "label": "0-60 mph (Performance)",
+      "entityAValue": "3.1 seconds",
+      "entityBValue": "3.5 seconds",
+      "winner": "a"
+    },
+    {
+      "label": "Seating Capacity",
+      "entityAValue": "5 passengers",
+      "entityBValue": "7 passengers (optional)",
+      "winner": "b"
+    },
+    {
+      "label": "EPA Range (Long Range RWD)",
+      "entityAValue": "341 miles",
+      "entityBValue": "330 miles",
+      "winner": "a"
+    },
+    {
+      "label": "Interior Comfort",
+      "entityAValue": "Sporty, compact",
+      "entityBValue": "Spacious, premium",
+      "winner": "b"
+    },
+    {
+      "label": "Handling & Agility",
+      "entityAValue": "Superior (0.97g lateral)",
+      "entityBValue": "Good (0.95g lateral)",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Body Type",
+      "valueA": "Sedan",
+      "valueB": "SUV/Crossover",
+      "winner": "b"
+    },
+    {
+      "label": "Starting Price",
+      "valueA": "$38,630",
+      "valueB": "$43,990",
+      "winner": "a"
+    },
+    {
+      "label": "Cargo Space",
+      "valueA": "28 cu ft",
+      "valueB": "76 cu ft",
+      "winner": "b"
+    },
+    {
+      "label": "0-60 mph (Performance)",
+      "valueA": "3.1 seconds",
+      "valueB": "3.5 seconds",
+      "winner": "a"
+    },
+    {
+      "label": "Seating Capacity",
+      "valueA": "5 passengers",
+      "valueB": "7 passengers (optional)",
+      "winner": "b"
+    },
+    {
+      "label": "EPA Range (Long Range RWD)",
+      "valueA": "341 miles",
+      "valueB": "330 miles",
+      "winner": "a"
+    },
+    {
+      "label": "Interior Comfort",
+      "valueA": "Sporty, compact",
+      "valueB": "Spacious, premium",
+      "winner": "b"
+    },
+    {
+      "label": "Handling & Agility",
+      "valueA": "Superior (0.97g lateral)",
+      "valueB": "Good (0.95g lateral)",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "Lowest starting price at $38,630",
+    "Superior acceleration and handling dynamics (0.97g cornering)",
+    "Excellent EPA range up to 341 miles",
+    "Lower depreciation and cost-to-own ($66,731 over 5 years)",
+    "Sleek aerodynamic design with minimal drag"
+  ],
+  "consA": [
+    "Limited cargo space (28 cu ft) not ideal for families",
+    "Cramped rear legroom compared to competitors",
+    "Smaller touchscreen and less interior tech features"
+  ],
+  "prosB": [
+    "Massive cargo space (76 cu ft) with optional 7-seat configuration",
+    "2026 refresh with redesigned interior and more comfortable seats",
+    "Excellent all-weather capability with AWD options",
+    "Higher seating capacity for families and group travel",
+    "New exterior styling with updated fascias and lighting elements"
+  ],
+  "consB": [
+    "Higher starting price ($43,990+) adds $5,000-$12,000 cost",
+    "Slightly slower 0-60 performance (3.5 sec vs 3.1 sec)",
+    "Worse EPA range in comparable trims vs Model 3"
+  ],
+  "verdict": "Choose the Model 3 if you prioritize affordability, driving dynamics, and efficiency in a sedan format—it's perfect for single drivers or couples. Choose the Model Y if you need SUV practicality, more interior space, and don't mind spending extra for versatility and comfort. Both offer excellent Tesla technology and performance; your decision hinges on lifestyle needs and budget.",
+  "slug": "tesla-model-3-vs-tesla-model-y"
+}
