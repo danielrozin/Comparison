@@ -130,6 +130,7 @@ export function comparisonPageSchema(
   schemas.push({
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -166,6 +167,7 @@ export function comparisonPageSchema(
   schemas.push({
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${url}#list`,
     name: comparison.title,
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     numberOfItems: comparison.entities.length,
@@ -180,7 +182,7 @@ export function comparisonPageSchema(
 
   // 3. FAQPage if FAQs exist
   if (comparison.faqs.length > 0) {
-    schemas.push(faqSchema(comparison.faqs));
+    schemas.push(faqSchema(comparison.faqs, `${url}#faq`));
   }
 
   // 4. BreadcrumbList
@@ -191,7 +193,7 @@ export function comparisonPageSchema(
       : []),
     { name: comparison.title, url },
   ];
-  schemas.push(breadcrumbSchema(breadcrumbs));
+  schemas.push(breadcrumbSchema(breadcrumbs, `${url}#breadcrumbs`));
 
   // 5. Dataset for structured comparison data (enriched with citation stats)
   if (comparison.attributes.length > 0) {
@@ -199,6 +201,7 @@ export function comparisonPageSchema(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "Dataset",
+      "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
         ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}.`
@@ -229,6 +232,7 @@ export function comparisonPageSchema(
       schemas.push({
         "@context": "https://schema.org",
         "@type": schemaType,
+        "@id": `${url}#rating-${entity.slug}`,
         name: entity.name,
         url: `${SITE_URL}/entity/${entity.slug}`,
         ...(entity.imageUrl && { image: entity.imageUrl }),
@@ -354,6 +358,7 @@ function buildMultiEntityGraph(
 
   const article: Record<string, unknown> = {
     "@type": "Article",
+    "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -380,6 +385,7 @@ function buildMultiEntityGraph(
   ];
   const breadcrumbList = {
     "@type": "BreadcrumbList",
+    "@id": `${url}#breadcrumbs`,
     itemListElement: breadcrumbs.map((item, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -398,6 +404,7 @@ function buildMultiEntityGraph(
   if (comparison.faqs.length > 0) {
     graph.push({
       "@type": "FAQPage",
+      "@id": `${url}#faq`,
       mainEntity: comparison.faqs.map((faq) => ({
         "@type": "Question",
         name: faq.question,
@@ -455,10 +462,11 @@ export function videoObjectSchema(opts: {
 // FAQ schema
 // ============================================================
 
-export function faqSchema(faqs: FAQData[]) {
+export function faqSchema(faqs: FAQData[], id?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    ...(id && { "@id": id }),
     mainEntity: faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -474,10 +482,11 @@ export function faqSchema(faqs: FAQData[]) {
 // Breadcrumb schema
 // ============================================================
 
-export function breadcrumbSchema(items: { name: string; url: string }[]) {
+export function breadcrumbSchema(items: { name: string; url: string }[], id?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    ...(id && { "@id": id }),
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
