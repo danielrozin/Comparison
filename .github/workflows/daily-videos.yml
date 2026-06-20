@@ -88,7 +88,18 @@ jobs:
           COUNT="${{ github.event.inputs.count || '3' }}"
           SLUGS="${{ github.event.inputs.slugs || '' }}"
           DRY_RUN_FLAG=""
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          # DAN-1198 (interim brand-quality gate): force dry-run on the daily
+          # scheduled cron until ELEVENLABS_API_KEY is provisioned (DAN-1197).
+          # Without narration the renders are silent + caption-less, which we
+          # must not auto-upload to the brand's public YouTube channel.
+          # Manual workflow_dispatch still honors the dry_run input so operators
+          # can test-render (or test-upload once the secret lands).
+          # REVERT when DAN-1197 lands: delete this schedule branch so cron
+          # uploads again (or simply leave it and re-render slugs manually).
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            DRY_RUN_FLAG="--dry-run"
+            echo "::notice::DAN-1198 — scheduled run forced to dry-run (no YouTube upload) until ELEVENLABS_API_KEY is provisioned (DAN-1197)."
+          elif [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
           RENDERER="${{ github.event.inputs.renderer || 'hyperframes' }}"
