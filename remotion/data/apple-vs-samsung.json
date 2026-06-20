@@ -1,0 +1,71 @@
+{
+  "title": "Apple vs Samsung",
+  "entityA": "Apple",
+  "entityB": "Samsung",
+  "category": "brands",
+  "slug": "apple-vs-samsung",
+  "shortAnswer": "Apple leads in brand value, revenue per device, and ecosystem lock-in. Samsung sells more phones globally and offers products at every price point from budget to premium. Apple leads in the US; Samsung leads globally.",
+  "keyDifferences": [
+    {
+      "label": "Global Phone Share",
+      "entityAValue": "20%",
+      "entityBValue": "21%",
+      "winner": "b"
+    },
+    {
+      "label": "Brand Value",
+      "entityAValue": "#1",
+      "entityBValue": "#5",
+      "winner": "a"
+    },
+    {
+      "label": "Revenue per Device",
+      "entityAValue": "Highest",
+      "entityBValue": "Lower",
+      "winner": "a"
+    },
+    {
+      "label": "Price Range",
+      "entityAValue": "$429-$1,599",
+      "entityBValue": "$100-$1,899",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Global Phone Market Share",
+      "valueA": "20%",
+      "valueB": "21%",
+      "winner": "b"
+    },
+    {
+      "label": "Brand Value (USD)",
+      "valueA": "#1 ($502B)",
+      "valueB": "#5 ($100B)",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Most valuable brand globally",
+    "Highest revenue per device",
+    "Strongest ecosystem lock-in",
+    "Superior customer retention"
+  ],
+  "consA": [
+    "Premium pricing only",
+    "Less customizable",
+    "Closed ecosystem"
+  ],
+  "prosB": [
+    "#1 global smartphone share",
+    "All price points",
+    "Semiconductor leader",
+    "Display technology leader"
+  ],
+  "consB": [
+    "Lower brand loyalty",
+    "Bloatware reputation",
+    "Less unified ecosystem"
+  ],
+  "verdict": "Apple for ecosystem and premium experience. Samsung for variety and global market leadership."
+}

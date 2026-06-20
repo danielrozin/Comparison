@@ -1,0 +1,113 @@
+{
+  "title": "USA vs China",
+  "entityA": "United States",
+  "entityB": "China",
+  "category": "countries",
+  "slug": "usa-vs-china",
+  "shortAnswer": "The USA has the world's largest economy ($25.5T GDP), highest military spending, and leads in technology innovation. China has the largest population (1.4B), second largest economy ($17.7T), and is the world's manufacturing hub.",
+  "keyDifferences": [
+    {
+      "label": "GDP",
+      "entityAValue": "$25.5T",
+      "entityBValue": "$17.7T",
+      "winner": "a"
+    },
+    {
+      "label": "Population",
+      "entityAValue": "333M",
+      "entityBValue": "1.4B",
+      "winner": "b"
+    },
+    {
+      "label": "Military Spending",
+      "entityAValue": "$877B",
+      "entityBValue": "$292B",
+      "winner": "a"
+    },
+    {
+      "label": "GDP per Capita",
+      "entityAValue": "$76,300",
+      "entityBValue": "$12,500",
+      "winner": "a"
+    },
+    {
+      "label": "Manufacturing Output",
+      "entityAValue": "#2",
+      "entityBValue": "#1",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "GDP (USD trillions)",
+      "valueA": "$25.5 Trillion",
+      "valueB": "$17.7 Trillion",
+      "winner": "a"
+    },
+    {
+      "label": "Military Budget (USD)",
+      "valueA": "$877 Billion",
+      "valueB": "$292 Billion",
+      "winner": "a"
+    },
+    {
+      "label": "Life Expectancy (Years)",
+      "valueA": "77.5",
+      "valueB": "78.2",
+      "winner": "b"
+    },
+    {
+      "label": "Total GDP (2026 Projection) (Trillion USD)",
+      "valueA": "$30+ trillion",
+      "valueB": "$33-34 trillion",
+      "winner": "b"
+    },
+    {
+      "label": "Per Capita GDP (USD)",
+      "valueA": "$89,000+",
+      "valueB": "$~12,000-13,000",
+      "winner": "a"
+    },
+    {
+      "label": "Global EV Production Share (%)",
+      "valueA": "~15%",
+      "valueB": "70%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Manufacturing Output (%)",
+      "valueA": "~18%",
+      "valueB": "35% of global output",
+      "winner": "b"
+    },
+    {
+      "label": "Advanced Semiconductor Market Share (%)",
+      "valueA": "Global leader (Intel, NVIDIA, TSMC partners)",
+      "valueB": "Limited by export controls",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Largest economy ($25.5T)",
+    "Strongest military",
+    "Technology leader",
+    "Highest GDP per capita among large nations"
+  ],
+  "consA": [
+    "High inequality",
+    "Political polarization",
+    "High healthcare costs"
+  ],
+  "prosB": [
+    "1.4 billion population",
+    "Manufacturing superpower",
+    "Rapid infrastructure growth",
+    "Growing tech sector"
+  ],
+  "consB": [
+    "Lower GDP per capita",
+    "Environmental challenges",
+    "Human rights concerns"
+  ],
+  "verdict": "The USA leads in per-capita wealth, military, and tech. China leads in manufacturing, population, and growth rate. The rivalry defines the 21st century."
+}
