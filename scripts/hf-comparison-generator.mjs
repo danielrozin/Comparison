@@ -254,9 +254,9 @@ export function buildIndexHtml(data, opts = {}) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1080, height=1920" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Fonts: Inter (body) + Montserrat (display) are both in HyperFrames' auto-resolved
+         font list, so the renderer supplies them locally. No external Google Fonts <link>
+         — that fails the sandboxed render (hyperframes lint: google_fonts_import). -->
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -316,13 +316,13 @@ export function buildIndexHtml(data, opts = {}) {
       }
       .hook-vs-row { display: flex; flex-direction: column; align-items: center; gap: 14px; }
       .hook-entity {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 100px; line-height: 1.05; text-align: center; max-width: 940px;
       }
       .hook-entity.a { color: #c4b5fd; text-shadow: 0 0 50px rgba(124,58,237,0.7); }
       .hook-entity.b { color: #67e8f9; text-shadow: 0 0 50px rgba(6,182,212,0.7); }
       .hook-vs {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 90px; line-height: 1;
         background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
         -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
@@ -336,7 +336,7 @@ export function buildIndexHtml(data, opts = {}) {
         margin-bottom: 40px;
       }
       .quick-text {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 70px; line-height: 1.2; text-align: center; max-width: 940px;
         color: #f5f5fa;
       }
@@ -359,12 +359,12 @@ export function buildIndexHtml(data, opts = {}) {
         letter-spacing: 0.2em; text-transform: uppercase; color: #94a3b8; text-align: center;
       }
       .h2h-value {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 60px;
+        font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 60px;
         line-height: 1.1; font-variant-numeric: tabular-nums; text-align: center; color: #f5f5fa;
       }
       .h2h-value.a-winner { color: #c4b5fd; text-shadow: 0 0 30px rgba(124,58,237,0.6); }
       .h2h-value.b-winner { color: #67e8f9; text-shadow: 0 0 30px rgba(6,182,212,0.6); }
-      .h2h-vs { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 32px; color: #94a3b8; }
+      .h2h-vs { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 32px; color: #94a3b8; }
 
       /* STATS GRID */
       .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; width: 100%; max-width: 940px; }
@@ -381,7 +381,7 @@ export function buildIndexHtml(data, opts = {}) {
       .stat-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
       .stat-name { font-family: 'Inter'; font-weight: 500; font-size: 20px; color: #94a3b8; }
       .stat-val {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 38px;
+        font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 38px;
         font-variant-numeric: tabular-nums; color: #f5f5fa;
       }
       .stat-val.a-glow { color: #c4b5fd; }
@@ -396,7 +396,7 @@ export function buildIndexHtml(data, opts = {}) {
       .pros-col.a { border-color: rgba(124,58,237,0.45); }
       .pros-col.b { border-color: rgba(6,182,212,0.45); }
       .pros-entity {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 38px; line-height: 1.1; margin-bottom: 26px; text-align: center;
       }
       .pros-col.a .pros-entity { color: #c4b5fd; text-shadow: 0 0 24px rgba(124,58,237,0.5); }
@@ -418,7 +418,7 @@ export function buildIndexHtml(data, opts = {}) {
         margin-bottom: 24px;
       }
       .verdict-winner {
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 130px; line-height: 1; text-align: center;
         max-width: 940px; margin-bottom: 30px;
         text-shadow: 0 0 80px ${winnerColorHex}cc; color: ${winnerColorHex};
@@ -426,7 +426,7 @@ export function buildIndexHtml(data, opts = {}) {
       .verdict-tally {
         display: flex; gap: 50px; justify-content: center; align-items: center;
         margin-bottom: 30px;
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 56px;
+        font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 56px;
       }
       .tally-side { display: flex; flex-direction: column; align-items: center; gap: 6px; }
       .tally-name {
@@ -464,7 +464,7 @@ export function buildIndexHtml(data, opts = {}) {
         display: inline-block; padding: 16px 36px;
         background: rgba(10,10,10,0.84); border-radius: 20px;
         border: 1px solid rgba(124,58,237,0.4);
-        font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+        font-family: 'Montserrat', sans-serif; font-weight: 700;
         font-size: 48px; line-height: 1.2; max-width: 920px; opacity: 0;
         backdrop-filter: blur(8px); box-shadow: 0 12px 40px rgba(0,0,0,0.5);
       }
