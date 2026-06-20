@@ -7,6 +7,7 @@ import {
 } from "@/lib/services/ai-comparison-generator";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
+import { warmCacheForSlug } from "@/lib/services/cache-warming";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 import {
   startAttempt,
@@ -115,6 +116,10 @@ export async function POST(request: NextRequest) {
         if (attempt) {
           await finishAttemptSuccess(attempt.id, Date.now() - startedAt);
         }
+        // Warm the ISR cache so crawlers get the full SSR page immediately
+        // instead of the client-only <DynamicComparison> shell until the next
+        // 3600s ISR window (DAN-1201). Best-effort — never block the response.
+        void warmCacheForSlug(slug);
       } catch (saveErr) {
         console.error("Failed to save generated comparison to DB:", saveErr);
         if (attempt) {
