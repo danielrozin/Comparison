@@ -4,7 +4,7 @@
  * Physical products must keep their Amazon eligibility (no regression).
  */
 import { describe, it, expect } from 'vitest'
-import { isDigitalEntity } from '../affiliate'
+import { isDigitalEntity, resolveBrandHomepage } from '../affiliate'
 import type { ComparisonEntityData } from '@/types'
 
 function entity(name: string, entityType = 'product'): ComparisonEntityData {
@@ -54,6 +54,12 @@ describe('isDigitalEntity — digital entities are suppressed (DAN-1053)', () =>
     'VS Code',
     'ChatGPT',
     'NordVPN',
+    // DAN-1140 spot-check additions: previously slipped through to Amazon/Google
+    'Claude',
+    'Evernote',
+    'ExpressVPN',
+    'Surfshark',
+    'Microsoft Teams',
   ]
 
   it.each(digital)('classifies "%s" as digital', (name) => {
@@ -84,5 +90,34 @@ describe('isDigitalEntity — physical products keep eligibility (no regression)
 
   it.each(physical)('classifies "%s" as NOT digital', (name) => {
     expect(isDigitalEntity(entity(name))).toBe(false)
+  })
+})
+
+describe('resolveBrandHomepage — fallback CTA points to brand homepage, never Google (DAN-1140)', () => {
+  const known: Array<[string, string]> = [
+    ['NordVPN', 'https://nordvpn.com'],
+    ['ExpressVPN', 'https://www.expressvpn.com'],
+    ['Surfshark', 'https://surfshark.com'],
+    ['ChatGPT', 'https://chatgpt.com'],
+    ['Claude', 'https://claude.ai'],
+    ['Notion', 'https://www.notion.so'],
+    ['Evernote', 'https://evernote.com'],
+    ['Microsoft Teams', 'https://www.microsoft.com/microsoft-teams'],
+    ['Slack', 'https://slack.com'],
+  ]
+
+  it.each(known)('resolves "%s" to its official homepage', (name, url) => {
+    expect(resolveBrandHomepage(name)).toBe(url)
+  })
+
+  it('never resolves a known brand to a Google search URL', () => {
+    for (const [name] of known) {
+      expect(resolveBrandHomepage(name)).not.toContain('google.com/search')
+    }
+  })
+
+  it('falls back to a best-effort {brand}.com for unmapped digital brands', () => {
+    expect(resolveBrandHomepage('Acme Cloud App')).toBe('https://www.acmecloudapp.com')
+    expect(resolveBrandHomepage('Acme Cloud App')).not.toContain('google.com/search')
   })
 })

@@ -135,7 +135,9 @@ const DIGITAL_ENTITY_PATTERNS: RegExp = new RegExp(
     "\\bcursor\\b",
     "gmail",
     "outlook",
+    "evernote",
     "\\bchatgpt\\b",
+    "\\bclaude\\b",
     "\\bgemini\\b",
     "perplexity",
     "midjourney",
@@ -201,6 +203,126 @@ function generateGenericLink(entityName: string): AffiliateLink {
 }
 
 /**
+ * Official brand homepages for digital / SaaS / VPN / software entities that
+ * cannot be bought on Amazon. When no tracked affiliate URL is configured yet
+ * (network approvals tracked in DAN-638/639/654), the CTA points at the brand's
+ * real homepage instead of a Google SERP — which leaks high-intent, sponsored
+ * clicks to competitors' ads — or an irrelevant Amazon search (the "Claude on
+ * Amazon" class of bug). Swapping in a tracked affiliate URL later is a pure
+ * data change with zero template edits. See DAN-1140.
+ *
+ * Patterns are matched in order against the entity name; first match wins, so
+ * keep more-specific patterns above broader ones. Aligned with
+ * DIGITAL_ENTITY_PATTERNS above.
+ */
+const BRAND_HOMEPAGES: ReadonlyArray<readonly [RegExp, string]> = [
+  // VPNs — highest affiliate value ($30–100/sale)
+  [/nordvpn/i, "https://nordvpn.com"],
+  [/surfshark/i, "https://surfshark.com"],
+  [/expressvpn/i, "https://www.expressvpn.com"],
+  // AI assistants / tools
+  [/\bchatgpt\b/i, "https://chatgpt.com"],
+  [/\bclaude\b/i, "https://claude.ai"],
+  [/\bgemini\b/i, "https://gemini.google.com"],
+  [/perplexity/i, "https://www.perplexity.ai"],
+  [/midjourney/i, "https://www.midjourney.com"],
+  // Productivity / SaaS / web apps
+  [/notion/i, "https://www.notion.so"],
+  [/evernote/i, "https://evernote.com"],
+  [/obsidian/i, "https://obsidian.md"],
+  [/\bslack\b/i, "https://slack.com"],
+  [/microsoft\s*teams|^teams$/i, "https://www.microsoft.com/microsoft-teams"],
+  [/\bzoom\b/i, "https://zoom.us"],
+  [/figma/i, "https://www.figma.com"],
+  [/sketch\b/i, "https://www.sketch.com"],
+  [/canva/i, "https://www.canva.com"],
+  [/photoshop/i, "https://www.adobe.com/products/photoshop.html"],
+  [/wordpress/i, "https://wordpress.org"],
+  [/\bwix\b/i, "https://www.wix.com"],
+  [/squarespace/i, "https://www.squarespace.com"],
+  [/webflow/i, "https://webflow.com"],
+  [/vs\s*code|vscode|visual\s*studio\s*code/i, "https://code.visualstudio.com"],
+  [/\bcursor\b/i, "https://cursor.com"],
+  [/dropbox/i, "https://www.dropbox.com"],
+  [/google\s*drive/i, "https://drive.google.com"],
+  [/onedrive/i, "https://onedrive.live.com"],
+  [/gmail/i, "https://www.google.com/gmail/about/"],
+  [/outlook/i, "https://outlook.com"],
+  // Password managers
+  [/\b1password\b/i, "https://1password.com"],
+  [/lastpass/i, "https://www.lastpass.com"],
+  [/bitwarden/i, "https://bitwarden.com"],
+  // Streaming video
+  [/netflix/i, "https://www.netflix.com"],
+  [/\bhulu\b/i, "https://www.hulu.com"],
+  [/disney\s*\+|disney\s*plus/i, "https://www.disneyplus.com"],
+  [/hbo\s*max|^max$|\bmax\b\s*\(formerly/i, "https://www.max.com"],
+  [/peacock/i, "https://www.peacocktv.com"],
+  [/paramount\s*\+|paramount\s*plus/i, "https://www.paramountplus.com"],
+  [/prime\s*video/i, "https://www.primevideo.com"],
+  [/crunchyroll/i, "https://www.crunchyroll.com"],
+  [/youtube\s*tv/i, "https://tv.youtube.com"],
+  [/apple\s*tv\s*\+|apple\s*tv\s*plus/i, "https://tv.apple.com"],
+  // Streaming music
+  [/spotify/i, "https://www.spotify.com"],
+  [/apple\s*music/i, "https://music.apple.com"],
+  [/\btidal\b/i, "https://tidal.com"],
+  [/deezer/i, "https://www.deezer.com"],
+  [/soundcloud/i, "https://soundcloud.com"],
+  [/pandora/i, "https://www.pandora.com"],
+  [/youtube\s*music/i, "https://music.youtube.com"],
+  // Browsers
+  [/google\s*chrome|\bchrome\b/i, "https://www.google.com/chrome/"],
+  [/firefox/i, "https://www.mozilla.org/firefox/"],
+  [/\bsafari\b/i, "https://www.apple.com/safari/"],
+  [/microsoft\s*edge|\bedge\b/i, "https://www.microsoft.com/edge"],
+  [/brave\s*browser|\bbrave\b/i, "https://brave.com"],
+  [/\bopera\b/i, "https://www.opera.com"],
+  [/vivaldi/i, "https://vivaldi.com"],
+  [/tor\s*browser/i, "https://www.torproject.org"],
+  // Operating systems
+  [/windows\s*\d|microsoft\s*windows|\bwindows\b/i, "https://www.microsoft.com/windows"],
+  [/macos|mac\s*os/i, "https://www.apple.com/macos/"],
+  [/ubuntu/i, "https://ubuntu.com"],
+  [/fedora/i, "https://fedoraproject.org"],
+  [/debian/i, "https://www.debian.org"],
+  [/chrome\s*os|chromeos/i, "https://www.google.com/chromebook/chrome-os/"],
+  [/\blinux\b/i, "https://www.linux.org"],
+  [/\bandroid\b/i, "https://www.android.com"],
+  [/\bios\b/i, "https://www.apple.com/ios/"],
+];
+
+/**
+ * Resolve an entity name to its official brand homepage. Returns a curated URL
+ * for known digital brands, otherwise a best-effort {brand}.com guess for the
+ * long tail — still strictly better than a Google SERP (captures direct-referral
+ * intent, no competitor ads) and trivially swappable for a tracked affiliate
+ * URL once approved. See DAN-1140.
+ */
+export function resolveBrandHomepage(entityName: string): string {
+  for (const [pattern, url] of BRAND_HOMEPAGES) {
+    if (pattern.test(entityName)) return url;
+  }
+  const slug = entityName.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return slug ? `https://www.${slug}.com` : "";
+}
+
+/**
+ * Generate a brand-homepage CTA for a digital / SaaS / VPN / software entity
+ * that has no configured affiliate URL. Tagged partner "brand" so the UI renders
+ * it as a sponsored, real-destination CTA (not a Google "Learn more"). DAN-1140.
+ */
+function generateBrandHomepageLink(entityName: string): AffiliateLink | null {
+  const url = resolveBrandHomepage(entityName);
+  if (!url) return null;
+  return {
+    url,
+    partner: "brand",
+    label: `Get ${entityName}`,
+  };
+}
+
+/**
  * Fetch DB-stored affiliate links for an entity.
  * Returns null if DB is unavailable or no links found.
  */
@@ -246,12 +368,19 @@ export function generateAffiliateLinks(
 
   const links: AffiliateLink[] = [];
 
-  if (isAffiliateEligible(entity, category)) {
+  if (isDigitalEntity(entity)) {
+    // Software / SaaS / VPN / streaming: not buyable on Amazon. Point at the
+    // brand's official homepage instead of leaking a sponsored click to a
+    // Google SERP or emitting an irrelevant Amazon search. DAN-1140.
+    const brand = generateBrandHomepageLink(entity.name);
+    if (brand) links.push(brand);
+  } else if (isAffiliateEligible(entity, category)) {
     const amazon = generateAmazonLink(entity.name);
     if (amazon) links.push(amazon);
   }
 
-  // If no affiliate links, add a generic "Learn More" CTA
+  // Non-product, non-digital entities (countries, people, concepts) fall back
+  // to a plain "Learn More" Google search — informational, never sponsored.
   if (links.length === 0) {
     links.push(generateGenericLink(entity.name));
   }
