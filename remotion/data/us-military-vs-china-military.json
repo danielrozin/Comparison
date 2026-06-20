@@ -1,0 +1,75 @@
+{
+  "title": "US Military vs China Military",
+  "entityA": "US Military",
+  "entityB": "China Military",
+  "category": "military",
+  "slug": "us-military-vs-china-military",
+  "shortAnswer": "The US has the world's most powerful military with $877B budget, 11 aircraft carriers, and global force projection. China has the largest military by personnel (2M active), is rapidly modernizing, and has the second largest budget ($292B).",
+  "keyDifferences": [
+    {
+      "label": "Budget",
+      "entityAValue": "$877B",
+      "entityBValue": "$292B",
+      "winner": "a"
+    },
+    {
+      "label": "Active Personnel",
+      "entityAValue": "1.4M",
+      "entityBValue": "2.0M",
+      "winner": "b"
+    },
+    {
+      "label": "Aircraft Carriers",
+      "entityAValue": "11",
+      "entityBValue": "3",
+      "winner": "a"
+    },
+    {
+      "label": "Nuclear Warheads",
+      "entityAValue": "5,550",
+      "entityBValue": "350",
+      "winner": "a"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Defense Budget (USD)",
+      "valueA": "$877 Billion",
+      "valueB": "$292 Billion",
+      "winner": "a"
+    },
+    {
+      "label": "Active Personnel",
+      "valueA": "1.4 Million",
+      "valueB": "2.0 Million",
+      "winner": "b"
+    },
+    {
+      "label": "Aircraft Carriers (Count)",
+      "valueA": "11",
+      "valueB": "3",
+      "winner": "a"
+    }
+  ],
+  "prosA": [
+    "$877B budget",
+    "11 aircraft carriers",
+    "Global bases (750+)",
+    "Most advanced technology"
+  ],
+  "consA": [
+    "Expensive to maintain",
+    "Overextended globally"
+  ],
+  "prosB": [
+    "2M active personnel",
+    "Largest navy by ship count",
+    "Rapid modernization",
+    "Regional dominance"
+  ],
+  "consB": [
+    "Limited global reach",
+    "Less combat experience"
+  ],
+  "verdict": "The US military is still the most capable globally. China is closing the gap rapidly, especially in naval power and missile technology."
+}
