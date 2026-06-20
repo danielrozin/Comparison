@@ -5,6 +5,7 @@ import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comp
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
 import { ComparisonHero } from "@/components/comparison/ComparisonHero";
 import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
@@ -21,6 +22,7 @@ import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
@@ -119,9 +121,28 @@ type Props =
       meta: PageMeta;
     };
 
-function capitalize(s: string): string {
-  return s.replace(/\b\w/g, (l) => l.toUpperCase());
-}
+// Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
+// These slugs had weak/auto-generated titles+descriptions; the copy here is
+// pre-optimized. Still piped through buildPageTitle/clampDescription so the
+// single-brand and length invariants hold (buildPageTitle is a no-op on the
+// already-clean brand suffix).
+const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  "figma-vs-canva": {
+    title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
+    description:
+      "Figma vs Canva compared: design power vs ease of use, pricing, templates and collaboration. See which design tool fits your team in 2026.",
+  },
+  "slack-vs-teams": {
+    title: "Slack vs Teams 2026: Features, Price & Verdict | A Versus B",
+    description:
+      "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
+  },
+  "iphone-15-vs-16": {
+    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
+    description:
+      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  },
+};
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
   try {
@@ -173,20 +194,28 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
   if (!comparison) {
-    const parts = slug.split("-vs-").map((p) => p.replace(/-/g, " ").trim()).filter(Boolean);
-    const nameParts = parts.map(capitalize);
+    const override = META_OVERRIDES[slug];
+    const nameParts = slug
+      .split("-vs-")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map(humanizeEntityName);
     const title = nameParts.join(" vs ");
     const isMulti = nameParts.length > 2;
     const ogImage = isMulti
       ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
       : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
+    // buildPageTitle appends the brand suffix exactly once (DAN-1145 Bug 1);
+    // clampDescription enforces the meta-length / word-boundary invariant (Bug 3).
     return {
       props: {
         kind: "dynamic",
         slug,
         meta: {
-          title: `${title} | A Versus B`,
-          description: `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+          title: buildPageTitle(override?.title ?? title),
+          description: clampDescription(
+            override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+          ),
           canonical: `${SITE_URL}/compare/${slug}`,
           ogImage,
           ogType: "website",
@@ -264,9 +293,16 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     );
   }
 
+  // buildPageTitle strips any pre-existing brand suffix / redundant "| Comparison"
+  // segment, then appends the brand once (DAN-1145 Bug 1 + Bug 2); clampDescription
+  // clamps at a word boundary instead of mid-word (Bug 3). META_OVERRIDES supplies
+  // hand-written CTR copy for known-defective high-volume pages (DAN-1144 Bug 4).
+  const override = META_OVERRIDES[slug];
   const meta: PageMeta = {
-    title: enrichedComparison.metadata.metaTitle || enrichedComparison.title,
-    description: enrichedComparison.metadata.metaDescription || fallbackDescription,
+    title: buildPageTitle(override?.title ?? enrichedComparison.metadata.metaTitle ?? enrichedComparison.title),
+    description: clampDescription(
+      override?.description ?? enrichedComparison.metadata.metaDescription ?? fallbackDescription,
+    ),
     canonical: `${SITE_URL}/compare/${slug}`,
     ogImage,
     ogType: "article",

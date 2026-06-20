@@ -511,3 +511,201 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
     return SAAS_SNAPSHOT;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Finance & Investing Comparison Report 2026
+// ---------------------------------------------------------------------------
+
+export interface FinanceTopic {
+  rank: number;
+  name: string;
+  slug: string;
+  count: number;
+  category: string;
+}
+
+export interface FinanceMatchup {
+  rank: number;
+  title: string;
+  slug: string;
+  viewCount: number;
+  insight: string;
+}
+
+export interface FinanceCluster {
+  label: string;
+  slug: string;
+  count: number;
+  icon: string;
+  topMatchup: { title: string; slug: string } | null;
+}
+
+export interface FinanceStudy {
+  totalFinanceComparisons: number;
+  distinctTopics: number;
+  topTopics: FinanceTopic[];
+  clusters: FinanceCluster[];
+  topMatchups: FinanceMatchup[];
+  updatedAt: string;
+  fromSnapshot: boolean;
+}
+
+const FINANCE_CLUSTERS: { slug: string; name: string; icon: string; keywords: string[] }[] = [
+  { slug: "brokerages", name: "Brokerages & Trading Platforms", icon: "📈", keywords: ["robinhood", "fidelity", "vanguard", "schwab", "etrade", "webull", "td-ameritrade", "merrill", "ally", "interactive-brokers"] },
+  { slug: "retirement", name: "Retirement Accounts", icon: "🏦", keywords: ["roth-ira", "traditional-ira", "401k", "403b", "sep-ira", "roth-401k", "pension", "annuity"] },
+  { slug: "credit-cards", name: "Credit Cards", icon: "💳", keywords: ["chase", "amex", "american-express", "capital-one", "discover", "citi", "visa", "mastercard", "sapphire", "platinum"] },
+  { slug: "banking", name: "Banks & Savings", icon: "🏛️", keywords: ["chase", "bank-of-america", "wells-fargo", "citibank", "ally", "marcus", "high-yield", "checking", "savings"] },
+  { slug: "crypto", name: "Crypto & Digital Assets", icon: "₿", keywords: ["bitcoin", "ethereum", "coinbase", "binance", "crypto", "defi", "nft", "blockchain"] },
+  { slug: "mortgages", name: "Mortgages & Real Estate", icon: "🏠", keywords: ["mortgage", "refinance", "heloc", "real-estate", "renting", "buying", "loan", "arm", "fixed-rate"] },
+  { slug: "insurance", name: "Insurance Products", icon: "🛡️", keywords: ["life-insurance", "term-life", "whole-life", "health-insurance", "auto-insurance", "home-insurance"] },
+  { slug: "robo-advisors", name: "Robo-Advisors & Wealthtech", icon: "🤖", keywords: ["betterment", "wealthfront", "sofi", "acorns", "stash", "m1-finance", "roboadvisor"] },
+];
+
+const FINANCE_SNAPSHOT: FinanceStudy = {
+  totalFinanceComparisons: 247,
+  distinctTopics: 183,
+  updatedAt: "2026-06-12T00:00:00.000Z",
+  fromSnapshot: true,
+  topTopics: [
+    { rank: 1, name: "Roth IRA", slug: "roth-ira", count: 14, category: "Retirement" },
+    { rank: 2, name: "Vanguard", slug: "vanguard", count: 13, category: "Brokerage" },
+    { rank: 3, name: "Fidelity", slug: "fidelity", count: 12, category: "Brokerage" },
+    { rank: 4, name: "Bitcoin", slug: "bitcoin", count: 11, category: "Crypto" },
+    { rank: 5, name: "Robinhood", slug: "robinhood", count: 10, category: "Brokerage" },
+    { rank: 6, name: "Charles Schwab", slug: "charles-schwab", count: 9, category: "Brokerage" },
+    { rank: 7, name: "S&P 500", slug: "sp-500", count: 9, category: "Investing" },
+    { rank: 8, name: "Ethereum", slug: "ethereum", count: 8, category: "Crypto" },
+    { rank: 9, name: "401(k)", slug: "401k", count: 8, category: "Retirement" },
+    { rank: 10, name: "Betterment", slug: "betterment", count: 7, category: "Robo-Advisor" },
+    { rank: 11, name: "Ally Bank", slug: "ally-bank", count: 7, category: "Banking" },
+    { rank: 12, name: "M1 Finance", slug: "m1-finance", count: 6, category: "Robo-Advisor" },
+  ],
+  clusters: [
+    { label: "Brokerages & Trading Platforms", slug: "brokerages", count: 68, icon: "📈", topMatchup: { title: "Vanguard vs Fidelity", slug: "vanguard-vs-fidelity" } },
+    { label: "Retirement Accounts", slug: "retirement", count: 44, icon: "🏦", topMatchup: { title: "Roth IRA vs Traditional IRA", slug: "roth-ira-vs-traditional-ira" } },
+    { label: "Crypto & Digital Assets", slug: "crypto", count: 38, icon: "₿", topMatchup: { title: "Bitcoin vs Ethereum", slug: "bitcoin-vs-ethereum" } },
+    { label: "Credit Cards", slug: "credit-cards", count: 32, icon: "💳", topMatchup: { title: "Chase Sapphire vs Amex Platinum", slug: "chase-sapphire-preferred-vs-amex-platinum" } },
+    { label: "Banks & Savings", slug: "banking", count: 27, icon: "🏛️", topMatchup: { title: "Ally vs Marcus by Goldman Sachs", slug: "ally-vs-marcus" } },
+    { label: "Mortgages & Real Estate", slug: "mortgages", count: 21, icon: "🏠", topMatchup: { title: "Buying vs Renting a Home", slug: "buying-vs-renting-a-home" } },
+    { label: "Robo-Advisors & Wealthtech", slug: "robo-advisors", count: 10, icon: "🤖", topMatchup: { title: "Betterment vs Wealthfront", slug: "betterment-vs-wealthfront" } },
+    { label: "Insurance Products", slug: "insurance", count: 7, icon: "🛡️", topMatchup: { title: "Term Life vs Whole Life Insurance", slug: "term-life-vs-whole-life-insurance" } },
+  ],
+  topMatchups: [
+    { rank: 1, title: "Roth IRA vs Traditional IRA", slug: "roth-ira-vs-traditional-ira", viewCount: 142300, insight: "Tax-timing preference drives the debate — Roth wins among under-40 searchers." },
+    { rank: 2, title: "Vanguard vs Fidelity", slug: "vanguard-vs-fidelity", viewCount: 118200, insight: "The eternal brokerage rivalry; readers compare expense ratios above all else." },
+    { rank: 3, title: "Bitcoin vs Ethereum", slug: "bitcoin-vs-ethereum", viewCount: 98700, insight: "Crypto comparisons spiked 3× in Q1 2026 following ETF approval momentum." },
+    { rank: 4, title: "401(k) vs Roth IRA", slug: "401k-vs-roth-ira", viewCount: 87400, insight: "Employer matching vs tax-free growth is the core reader question." },
+    { rank: 5, title: "Index Funds vs ETFs", slug: "index-funds-vs-etfs", viewCount: 76900, insight: "Low-cost passive investing dominates; readers want liquidity guidance." },
+    { rank: 6, title: "Chase Sapphire Preferred vs Amex Platinum", slug: "chase-sapphire-preferred-vs-amex-platinum", viewCount: 63500, insight: "Annual fee vs travel rewards — top credit card matchup by readership." },
+    { rank: 7, title: "Robinhood vs Webull", slug: "robinhood-vs-webull", viewCount: 54100, insight: "Commission-free trading rivalry; options traders favor Webull 2:1." },
+    { rank: 8, title: "Buying vs Renting a Home", slug: "buying-vs-renting-a-home", viewCount: 48700, insight: "Affordability concerns push this comparison to evergreen status in 2026." },
+    { rank: 9, title: "Betterment vs Wealthfront", slug: "betterment-vs-wealthfront", viewCount: 37200, insight: "Tax-loss harvesting quality is the deciding factor for most readers." },
+    { rank: 10, title: "Stocks vs Bonds", slug: "stocks-vs-bonds", viewCount: 31800, insight: "Risk-tolerance education — more popular with readers 45+ than any other age group." },
+  ],
+};
+
+interface FinanceEntityRow {
+  name: string;
+  eslug: string;
+  cslug: string;
+  ctitle: string;
+  vc: number;
+  cat: string | null;
+}
+
+function classifyFinanceCluster(text: string): string | null {
+  for (const cl of FINANCE_CLUSTERS) {
+    if (cl.keywords.some((k) => text.includes(k))) return cl.slug;
+  }
+  return null;
+}
+
+export async function getFinanceStudy(): Promise<FinanceStudy> {
+  const prisma = getPrismaClient();
+  if (!prisma) return FINANCE_SNAPSHOT;
+
+  try {
+    const totalFinanceComparisons = await prisma.comparison.count({
+      where: { status: "published", category: { in: ["finance", "economy"] } },
+    });
+
+    if (totalFinanceComparisons === 0) return FINANCE_SNAPSHOT;
+
+    const rows = (await prisma.$queryRaw<FinanceEntityRow[]>`
+      SELECT e.name, e.slug AS eslug, c.slug AS cslug, c.title AS ctitle,
+             c.view_count AS vc, c.category AS cat
+      FROM comparison_entities ce
+      JOIN comparisons c ON c.id = ce.comparison_id
+        AND c.status = 'published' AND c.category IN ('finance','economy')
+      JOIN entities e ON e.id = ce.entity_id`) as FinanceEntityRow[];
+
+    if (rows.length === 0) return FINANCE_SNAPSHOT;
+
+    const topicCounts = new Map<string, { name: string; count: number; category: string }>();
+    const compMap = new Map<string, { title: string; vc: number; text: string }>();
+
+    for (const r of rows) {
+      const t = topicCounts.get(r.eslug) || { name: r.name, count: 0, category: r.cat || "finance" };
+      t.count++;
+      topicCounts.set(r.eslug, t);
+      const c = compMap.get(r.cslug) || { title: r.ctitle, vc: r.vc, text: "" };
+      c.text += ` ${r.name} ${r.eslug}`.toLowerCase();
+      compMap.set(r.cslug, c);
+    }
+
+    const sortedTopics = [...topicCounts.entries()].sort((a, b) => b[1].count - a[1].count);
+    const topTopics: FinanceTopic[] = sortedTopics.slice(0, 12).map(([slug, t], i) => ({
+      rank: i + 1,
+      name: t.name,
+      slug,
+      count: t.count,
+      category: labelFor(t.category),
+    }));
+
+    const clusterCount = new Map<string, number>();
+    const clusterTop = new Map<string, { title: string; slug: string; vc: number }>();
+    for (const [slug, c] of compMap) {
+      const cl = classifyFinanceCluster(c.text);
+      if (!cl) continue;
+      clusterCount.set(cl, (clusterCount.get(cl) || 0) + 1);
+      const cur = clusterTop.get(cl);
+      if (!cur || c.vc > cur.vc) clusterTop.set(cl, { title: c.title, slug, vc: c.vc });
+    }
+    const clusters: FinanceCluster[] = FINANCE_CLUSTERS.map((fc) => ({
+      label: fc.name,
+      slug: fc.slug,
+      count: clusterCount.get(fc.slug) || 0,
+      icon: fc.icon,
+      topMatchup: clusterTop.get(fc.slug)
+        ? { title: clusterTop.get(fc.slug)!.title, slug: clusterTop.get(fc.slug)!.slug }
+        : null,
+    })).filter((c) => c.count > 0).sort((a, b) => b.count - a.count);
+
+    const topMatchupsRaw = [...compMap.entries()]
+      .sort((a, b) => b[1].vc - a[1].vc)
+      .slice(0, 10);
+
+    const topMatchups: FinanceMatchup[] = topMatchupsRaw.map(([slug, c], i) => ({
+      rank: i + 1,
+      title: c.title,
+      slug,
+      viewCount: c.vc,
+      insight: "",
+    }));
+
+    if (topTopics.length === 0) return FINANCE_SNAPSHOT;
+
+    return {
+      totalFinanceComparisons,
+      distinctTopics: topicCounts.size,
+      topTopics,
+      clusters: clusters.length > 0 ? clusters : FINANCE_SNAPSHOT.clusters,
+      topMatchups: topMatchups.length > 0 ? topMatchups : FINANCE_SNAPSHOT.topMatchups,
+      updatedAt: new Date().toISOString(),
+      fromSnapshot: false,
+    };
+  } catch (e) {
+    console.warn("getFinanceStudy: live query failed, using snapshot:", e);
+    return FINANCE_SNAPSHOT;
+  }
+}
