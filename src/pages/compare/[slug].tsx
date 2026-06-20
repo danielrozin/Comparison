@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -22,7 +23,6 @@ import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
 import { parseComparisonSlug } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
-import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
@@ -34,9 +34,26 @@ import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
-import { videoObjectSchema } from "@/lib/seo/schema";
+import type { RelatedComparison } from "@/types";
 
-// Lazy-load heavy below-fold SEO content (kept SSR'd for crawlers via dynamic + ssr default)
+// DAN-432 Phase C: /compare/[slug] served by the Pages Router.
+//
+// WHY: under App Router every crawlable byte was serialized twice — once as the
+// SSR DOM and again into the inline RSC flight (`self.__next_f.push(...)`,
+// ~103 KB). Phase A's inert HTML islands collapsed each section's flight
+// *encoding* but the HTML strings still appeared in both the DOM and the flight,
+// so the duplication remained. Pages Router renders the SSR DOM once and ships a
+// single compact `__NEXT_DATA__` props blob for hydration — no streamed RSC, no
+// second copy of the rendered tree.
+//
+// The rendered DOM is intentionally kept identical to the verified App Router
+// output: the former island sections are now plain SSR'd components (same markup,
+// they were never interactive), below-fold heavy sections stay SSR'd via
+// `dynamic()` (default ssr:true), and the interactive/analytics widgets stay out
+// of SSR via the shared `ComparisonClientWidgets` shim (ssr:false). Multi-entity
+// (3+) pages keep the same MultiEntityLayout main shipped under App Router.
+
+// Below-fold heavy sections — code-split but kept in SSR DOM (crawlable).
 const ComparisonTable = dynamic(
   () => import("@/components/comparison/ComparisonTable").then((m) => ({ default: m.ComparisonTable })),
   { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
@@ -58,8 +75,8 @@ const RelatedComparisonsSidebar = dynamic(
   { loading: () => null }
 );
 
-// Interactive/tracking widgets — kept out of SSR HTML and the RSC stream
-// via a client-side dynamic-import shim (ssr:false is forbidden in server components).
+// Interactive/tracking widgets — kept out of SSR HTML (ssr:false shim, shared
+// verbatim with the former App Router route).
 import {
   TrackRecentView,
   EmbedButton,
@@ -76,17 +93,33 @@ import {
   TableOfContents,
 } from "@/components/comparison/ComparisonClientWidgets";
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
+type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
+
+interface PageMeta {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage: string;
+  ogType: "article" | "website";
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
-export const dynamicParams = true;
-export const revalidate = 3600; // ISR: revalidate comparison pages every 1 hour
-
-export async function generateStaticParams() {
-  const slugs = getAllMockSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+type Props =
+  | {
+      kind: "comparison";
+      slug: string;
+      comparison: Comparison;
+      sidebarComparisons: RelatedComparison[];
+      videoMeta: ReturnType<typeof getVideoMetadata>;
+      jsonLd: string;
+      meta: PageMeta;
+    }
+  | {
+      kind: "dynamic";
+      slug: string;
+      meta: PageMeta;
+    };
 
 // Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
 // These slugs had weak/auto-generated titles+descriptions; the copy here is
@@ -110,86 +143,6 @@ const META_OVERRIDES: Record<string, { title: string; description: string }> = {
       "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
   },
 };
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const override = META_OVERRIDES[slug];
-
-  let comparison;
-  try {
-    comparison = await getComparisonBySlug(slug);
-  } catch {
-    comparison = null;
-  }
-
-  if (!comparison) {
-    const nameParts = slug
-      .split("-vs-")
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map(humanizeEntityName);
-    const title = nameParts.join(" vs ");
-    const isMulti = nameParts.length > 2;
-    const ogImage = isMulti
-      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
-      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
-    // Absolute title bypasses the root layout title.template ("%s | A Versus B"),
-    // so the brand is appended exactly once by buildPageTitle (DAN-1145 Bug 1).
-    const pageTitle = buildPageTitle(override?.title ?? title);
-    const description = clampDescription(
-      override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
-    );
-    return {
-      title: { absolute: pageTitle },
-      description,
-      alternates: { canonical: `${SITE_URL}/compare/${slug}` },
-      openGraph: { title: pageTitle, description, images: [{ url: ogImage, width: 1200, height: 630, alt: title }] },
-      twitter: { card: "summary_large_image", title: pageTitle, description, images: [ogImage] },
-    };
-  }
-
-  const isMultiEntity = comparison.entities.length > 2;
-  const entityA = comparison.entities[0]?.name || "";
-  const entityB = comparison.entities[1]?.name || "";
-  const ogImage = isMultiEntity
-    ? `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&entities=${encodeURIComponent(comparison.entities.map((e) => e.name).join("|"))}&cat=${encodeURIComponent(comparison.category || "")}&type=multi`
-    : `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(comparison.category || "")}&type=comparison`;
-  const fallbackDescription = comparison.shortAnswer
-    || (isMultiEntity
-      ? `${comparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
-      : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
-
-  // Absolute title bypasses the root layout title.template ("%s | A Versus B").
-  // buildPageTitle strips any pre-existing brand suffix (legacy stubs already end
-  // in the brand → would double) and a redundant "| Comparison" segment, then
-  // appends the brand once (DAN-1145 Bug 1 + Bug 2). clampDescription clamps at a
-  // word boundary instead of mid-word (Bug 3).
-  const pageTitle = buildPageTitle(override?.title ?? comparison.metadata.metaTitle ?? comparison.title);
-  const description = clampDescription(override?.description ?? comparison.metadata.metaDescription ?? fallbackDescription);
-
-  return {
-    title: { absolute: pageTitle },
-    description,
-    openGraph: {
-      title: pageTitle,
-      description,
-      url: `${SITE_URL}/compare/${slug}`,
-      type: "article",
-      publishedTime: comparison.metadata.publishedAt || undefined,
-      modifiedTime: comparison.metadata.updatedAt,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: comparison.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description,
-      images: [ogImage],
-    },
-    alternates: {
-      canonical: `${SITE_URL}/compare/${slug}`,
-    },
-  };
-}
 
 async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteData | null> {
   try {
@@ -215,31 +168,65 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
-export default async function ComparisonPage({ params }: PageProps) {
-  const { slug } = await params;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = getAllMockSlugs();
+  return {
+    paths: slugs.map((slug) => ({ params: { slug } })),
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  const slug = String(params?.slug || "");
 
   // Validate slug format — must be "entity-a-vs-entity-b" (or N-way: "a-vs-b-vs-c-...")
   const slugParts = parseComparisonSlug(slug);
   if (!slugParts || slugParts.entities.length < 2) {
-    notFound();
+    return { notFound: true };
   }
 
-  let comparison;
+  let comparison: Comparison | null = null;
   try {
-    comparison = await getComparisonBySlug(slug);
+    comparison = (await getComparisonBySlug(slug)) as Comparison | null;
   } catch {
-    // DB/cache error — fall through to dynamic generation
     comparison = null;
   }
 
+  // Unknown slug → client-side dynamic generation (same fallback as before).
   if (!comparison) {
-    return <DynamicComparison slug={slug} />;
+    const override = META_OVERRIDES[slug];
+    const nameParts = slug
+      .split("-vs-")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map(humanizeEntityName);
+    const title = nameParts.join(" vs ");
+    const isMulti = nameParts.length > 2;
+    const ogImage = isMulti
+      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
+      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
+    // buildPageTitle appends the brand suffix exactly once (DAN-1145 Bug 1);
+    // clampDescription enforces the meta-length / word-boundary invariant (Bug 3).
+    return {
+      props: {
+        kind: "dynamic",
+        slug,
+        meta: {
+          title: buildPageTitle(override?.title ?? title),
+          description: clampDescription(
+            override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
+          ),
+          canonical: `${SITE_URL}/compare/${slug}`,
+          ogImage,
+          ogType: "website",
+        },
+      },
+      revalidate: 3600,
+    };
   }
 
   const voteData = await getComparisonVotes(comparison.id);
   const schemas = comparisonPageSchema(comparison, voteData);
-
-  // Video metadata (YouTube upload)
   const videoMeta = getVideoMetadata(slug);
 
   // Enrich entities with images (Wikipedia/Clearbit) + affiliate links in parallel
@@ -248,16 +235,12 @@ export default async function ComparisonPage({ params }: PageProps) {
     enrichEntitiesWithAffiliateLinks(comparison.entities, comparison.category),
   ]);
 
-  // Merge: affiliates as base, overlay imageUrl from image enrichment
   const mergedEntities = entitiesWithAffiliates.map((e, i) => ({
     ...e,
     imageUrl: entitiesWithImages[i]?.imageUrl || e.imageUrl,
   }));
 
-  const enrichedComparison = {
-    ...comparison,
-    entities: mergedEntities,
-  };
+  const enrichedComparison = { ...comparison, entities: mergedEntities } as Comparison;
 
   // Fallback to trending if fewer than 3 related comparisons
   let sidebarComparisons = enrichedComparison.relatedComparisons;
@@ -271,74 +254,130 @@ export default async function ComparisonPage({ params }: PageProps) {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
-  // N-entity (3+): render the multi-entity layout. Most 2-entity-only components
-  // (verdict card, key-differences summary, comparison charts) are skipped in v1.
-  if (enrichedComparison.entities.length > 2) {
-    return (
-      <MultiEntityLayout
-        comparison={enrichedComparison}
-        schemas={schemas}
-        slug={slug}
-        sidebarComparisons={sidebarComparisons}
-      />
+  const isMultiEntity = enrichedComparison.entities.length > 2;
+  const entityA = enrichedComparison.entities[0]?.name || "";
+  const entityB = enrichedComparison.entities[1]?.name || "";
+  const ogImage = isMultiEntity
+    ? `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&entities=${encodeURIComponent(enrichedComparison.entities.map((e) => e.name).join("|"))}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=multi`
+    : `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=comparison`;
+  const fallbackDescription = enrichedComparison.shortAnswer
+    || (isMultiEntity
+      ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
+      : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
+
+  // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
+  // present. Otherwise: N>=3 pages already get a single consolidated @graph from
+  // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
+  // the DAN-432 jsonLdGraph consolidation (+ optional VideoObject).
+  let jsonLd: string;
+  if (enrichedComparison.schemaMarkup) {
+    jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
+  } else if (isMultiEntity) {
+    jsonLd = JSON.stringify(schemas[0]);
+  } else {
+    jsonLd = JSON.stringify(
+      jsonLdGraph([
+        ...schemas,
+        videoMeta?.youtubeVideoId
+          ? videoObjectSchema({
+              slug,
+              title: enrichedComparison.title,
+              description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
+              youtubeVideoId: videoMeta.youtubeVideoId,
+              uploadDate: videoMeta.uploadedAt,
+              entityA: videoMeta.entityA,
+              entityB: videoMeta.entityB,
+            })
+          : null,
+      ])
     );
   }
 
+  // buildPageTitle strips any pre-existing brand suffix / redundant "| Comparison"
+  // segment, then appends the brand once (DAN-1145 Bug 1 + Bug 2); clampDescription
+  // clamps at a word boundary instead of mid-word (Bug 3). META_OVERRIDES supplies
+  // hand-written CTR copy for known-defective high-volume pages (DAN-1144 Bug 4).
+  const override = META_OVERRIDES[slug];
+  const meta: PageMeta = {
+    title: buildPageTitle(override?.title ?? enrichedComparison.metadata.metaTitle ?? enrichedComparison.title),
+    description: clampDescription(
+      override?.description ?? enrichedComparison.metadata.metaDescription ?? fallbackDescription,
+    ),
+    canonical: `${SITE_URL}/compare/${slug}`,
+    ogImage,
+    ogType: "article",
+    publishedTime: enrichedComparison.metadata.publishedAt || undefined,
+    modifiedTime: enrichedComparison.metadata.updatedAt,
+  };
+
+  // JSON-sanitize: getStaticProps forbids `undefined` in props.
+  const props: Props = JSON.parse(
+    JSON.stringify({
+      kind: "comparison",
+      slug,
+      comparison: enrichedComparison,
+      sidebarComparisons,
+      videoMeta,
+      jsonLd,
+      meta,
+    })
+  );
+
+  return { props, revalidate: 3600 };
+};
+
+function MetaHead({ meta }: { meta: PageMeta }) {
   return (
-    <VerdictFirstLayout comparison={enrichedComparison} schemas={schemas} slug={slug} sidebarComparisons={sidebarComparisons} videoMeta={videoMeta} />
+    <Head>
+      <title>{meta.title}</title>
+      <meta name="description" content={meta.description} />
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <link rel="canonical" href={meta.canonical} />
+      <meta property="og:title" content={meta.title} />
+      <meta property="og:description" content={meta.description} />
+      <meta property="og:url" content={meta.canonical} />
+      <meta property="og:type" content={meta.ogType} />
+      <meta property="og:image" content={meta.ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      {meta.publishedTime && <meta property="article:published_time" content={meta.publishedTime} />}
+      {meta.modifiedTime && <meta property="article:modified_time" content={meta.modifiedTime} />}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={meta.title} />
+      <meta name="twitter:description" content={meta.description} />
+      <meta name="twitter:image" content={meta.ogImage} />
+    </Head>
   );
 }
 
-function VerdictFirstLayout({
-  comparison,
-  schemas,
-  slug,
-  sidebarComparisons,
-  videoMeta,
-}: {
-  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
-  schemas: ReturnType<typeof comparisonPageSchema>;
-  slug: string;
-  sidebarComparisons: import("@/types").RelatedComparison[];
-  videoMeta: ReturnType<typeof getVideoMetadata>;
-}) {
+export default function ComparisonPage(props: Props) {
+  if (props.kind === "dynamic") {
+    return (
+      <>
+        <MetaHead meta={props.meta} />
+        <DynamicComparison slug={props.slug} />
+      </>
+    );
+  }
+
+  // N-entity (3+): multi-entity layout (parity with the App Router version).
+  if (props.comparison.entities.length > 2) {
+    return (
+      <>
+        <MetaHead meta={props.meta} />
+        <MultiEntityLayout {...props} />
+      </>
+    );
+  }
+
+  const { comparison, slug, sidebarComparisons, videoMeta, jsonLd } = props;
+
   return (
     <>
-      {/* Schema markup — use validated editorial @graph when present, else auto-generated */}
-      {comparison.schemaMarkup ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
-        />
-      ) : (
-        schemas.map((schema, i) => (
-          <script
-            key={i}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))
-      )}
+      <MetaHead meta={props.meta} />
 
-      {/* Video schema (VideoObject) */}
-      {videoMeta?.youtubeVideoId && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              videoObjectSchema({
-                slug,
-                title: comparison.title,
-                description: comparison.shortAnswer || comparison.metadata.metaDescription || "",
-                youtubeVideoId: videoMeta.youtubeVideoId,
-                uploadDate: videoMeta.uploadedAt,
-                entityA: videoMeta.entityA,
-                entityB: videoMeta.entityB,
-              })
-            ),
-          }}
-        />
-      )}
+      {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
@@ -347,11 +386,7 @@ function VerdictFirstLayout({
       <BackToResults />
 
       {/* Breadcrumbs */}
-      <Breadcrumbs
-        title={comparison.title}
-        slug={comparison.slug}
-        category={comparison.category}
-      />
+      <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
       {/* Table of Contents */}
       <TableOfContents
@@ -379,12 +414,10 @@ function VerdictFirstLayout({
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
-      {/* Citation Stats Bar — data density signal */}
-      {comparison.citationStats && (
-        <CitationStatsBar stats={comparison.citationStats} />
-      )}
+      {/* Citation Stats Bar */}
+      {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
 
-      {/* Quick Answer TL;DR — above the fold, GEO-optimized */}
+      {/* Quick Answer TL;DR — above the fold, GEO-optimized. */}
       {comparison.quickAnswer?.tldr && (
         <div id="verdict">
           <QuickAnswerTLDR
@@ -395,7 +428,7 @@ function VerdictFirstLayout({
         </div>
       )}
 
-      {/* Short Answer Block — AEO/featured snippet target (fallback when no quickAnswer) */}
+      {/* Short Answer Block — fallback when no quickAnswer */}
       {!comparison.quickAnswer?.tldr && (comparison.shortAnswer || comparison.verdict) && (
         <div id="verdict">
           <ShortAnswerBlock
@@ -419,21 +452,14 @@ function VerdictFirstLayout({
       )}
 
       {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
-      <TrackComparisonCard
-        comparisonSlug={comparison.slug}
-        comparisonTitle={comparison.title}
-      />
+      <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
         <ComparisonPoll
           comparisonId={comparison.id}
           comparisonSlug={comparison.slug}
-          entities={comparison.entities.map((e) => ({
-            name: e.name,
-            imageUrl: e.imageUrl,
-            position: e.position,
-          }))}
+          entities={comparison.entities.map((e) => ({ name: e.name, imageUrl: e.imageUrl, position: e.position }))}
         />
       )}
 
@@ -446,7 +472,7 @@ function VerdictFirstLayout({
         />
       )}
 
-      {/* Key Facts & Figures table — exact numbers alongside prose */}
+      {/* Key Facts & Figures table */}
       {comparison.attributes.length > 0 && (
         <div id="key-facts">
           <DataFactsTable
@@ -456,10 +482,6 @@ function VerdictFirstLayout({
           />
         </div>
       )}
-
-      {/* Mobile RC strip dropped (DAN-410): mobile users still get related
-          comparisons via the bottom <RelatedComparisons /> SEO grid below.
-          Desktop sticky aside + bottom grid retain crawler internal-link surface. */}
 
       {/* ── Below the fold ── */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
@@ -476,7 +498,7 @@ function VerdictFirstLayout({
             </div>
           )}
 
-          {/* Comparison Table (lazy loaded) */}
+          {/* Comparison Table (code-split, SSR'd) */}
           {comparison.attributes.length > 0 && (
             <div id="comparison-table">
               <ComparisonTable
@@ -487,8 +509,8 @@ function VerdictFirstLayout({
             </div>
           )}
 
-          {/* Visual Comparison Charts (lazy loaded) */}
-          {comparison.attributes.some(a => a.values.some(v => v.valueNumber != null)) && (
+          {/* Visual Comparison Charts (code-split, SSR'd) */}
+          {comparison.attributes.some((a) => a.values.some((v) => v.valueNumber != null)) && (
             <ComparisonCharts
               attributes={comparison.attributes}
               entityA={comparison.entities[0]}
@@ -496,7 +518,7 @@ function VerdictFirstLayout({
             />
           )}
 
-          {/* Video Comparison — lazy loaded, auto-hides if no video available */}
+          {/* Video Comparison */}
           <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
 
           {/* Pros & Cons */}
@@ -504,11 +526,10 @@ function VerdictFirstLayout({
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
-          {/* Inline Newsletter Signup — after pros/cons, high engagement zone */}
+          {/* Inline Newsletter Signup */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
           </div>
-
 
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
@@ -528,11 +549,7 @@ function VerdictFirstLayout({
 
         {/* Desktop: sticky related comparisons sidebar */}
         {sidebarComparisons.length > 0 && (
-          <RelatedComparisonsSidebar
-            comparisons={sidebarComparisons}
-            sourceSlug={slug}
-            variant="desktop"
-          />
+          <RelatedComparisonsSidebar comparisons={sidebarComparisons} sourceSlug={slug} variant="desktop" />
         )}
       </div>
 
@@ -546,17 +563,14 @@ function VerdictFirstLayout({
       })()}
 
       {/* SmartReview Cross-Links */}
-      <SmartReviewLinks
-        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
-      />
+      <SmartReviewLinks entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))} />
 
-      {/* Full-width sections below sidebar area */}
       {/* Related Comparisons (bottom grid, kept for SEO internal links) */}
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
       )}
 
-      {/* Related Blog Posts (reciprocal blog-comparison linking) */}
+      {/* Related Blog Posts */}
       <RelatedBlogPosts posts={comparison.relatedBlogPosts} />
 
       {/* Internal Links */}
@@ -589,11 +603,7 @@ function VerdictFirstLayout({
       <FreshnessFooter metadata={comparison.metadata} />
 
       {/* Sticky Affiliate CTA Bar */}
-      <StickyAffiliateCTA
-        entities={comparison.entities}
-        category={comparison.category}
-        slug={slug}
-      />
+      <StickyAffiliateCTA entities={comparison.entities} category={comparison.category} slug={slug} />
 
       {/* Conversion Funnel Tracking */}
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
@@ -604,80 +614,31 @@ function VerdictFirstLayout({
   );
 }
 
-function FreshnessFooter({ metadata }: { metadata: { updatedAt: string; isHumanReviewed: boolean; isAutoGenerated: boolean } }) {
-  return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-text-secondary">
-      Last updated: {new Date(metadata.updatedAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })}
-      {metadata.isHumanReviewed && (
-        <span className="ml-2 inline-flex items-center gap-1 text-green-600">
-          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-          Human reviewed
-        </span>
-      )}
-      {metadata.isAutoGenerated && (
-        <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
-          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-          </svg>
-          AI generated
-        </span>
-      )}
-    </div>
-  );
-}
-
 /**
- * MultiEntityLayout — Phase 1 v1 N-entity (3+) renderer.
- * Renders only components that already iterate entities[] safely:
- * Hero (custom inline), MultiComparisonTable, ProsCons, FAQ, Resources, Related.
- * 2-entity-only widgets (VerdictCard, KeyDifferencesSummary, ComparisonCharts,
- * QuickAnswerTLDR, etc.) are intentionally skipped for v1 per DAN-387 Phase 1.
+ * MultiEntityLayout — N-entity (3+) renderer (parity with the App Router version,
+ * DAN-387 Phase 1). Renders only components that iterate entities[] safely.
  */
 function MultiEntityLayout({
   comparison,
-  schemas,
   slug,
   sidebarComparisons,
+  jsonLd,
 }: {
-  comparison: Awaited<ReturnType<typeof getComparisonBySlug>> & {};
-  schemas: ReturnType<typeof comparisonPageSchema>;
+  comparison: Comparison;
   slug: string;
-  sidebarComparisons: import("@/types").RelatedComparison[];
+  sidebarComparisons: RelatedComparison[];
+  jsonLd: string;
 }) {
   const n = comparison.entities.length;
   return (
     <>
-      {/* Schema markup — use validated editorial @graph when present (e.g. the
-          schema-3way v1 graph with PKM-cluster Offers), else auto-generated */}
-      {comparison.schemaMarkup ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(comparison.schemaMarkup) }}
-        />
-      ) : (
-        schemas.map((schema, i) => (
-          <script
-            key={i}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))
-      )}
+      {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
       <BackToResults />
 
-      <Breadcrumbs
-        title={comparison.title}
-        slug={comparison.slug}
-        category={comparison.category}
-      />
+      <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
       <TableOfContents
         items={[
@@ -715,10 +676,10 @@ function MultiEntityLayout({
           className="grid gap-3 sm:gap-4"
           style={{ gridTemplateColumns: `repeat(${Math.min(n, 3)}, minmax(0, 1fr))` }}
         >
-          {comparison.entities.map((ent, idx) => (
+          {comparison.entities.map((ent) => (
             <div
               key={ent.id}
-              className={`bg-white border border-border rounded-xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow ${n > 3 && idx >= 3 ? "" : ""}`}
+              className="bg-white border border-border rounded-xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow"
             >
               {ent.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -766,10 +727,7 @@ function MultiEntityLayout({
           {/* MultiComparisonTable — main N-entity attribute grid */}
           {comparison.attributes.length > 0 && (
             <div id="comparison-table">
-              <MultiComparisonTable
-                attributes={comparison.attributes}
-                entities={comparison.entities}
-              />
+              <MultiComparisonTable attributes={comparison.attributes} entities={comparison.entities} />
             </div>
           )}
 
@@ -806,19 +764,13 @@ function MultiEntityLayout({
         </div>
 
         {sidebarComparisons.length > 0 && (
-          <RelatedComparisonsSidebar
-            comparisons={sidebarComparisons}
-            sourceSlug={slug}
-            variant="desktop"
-          />
+          <RelatedComparisonsSidebar comparisons={sidebarComparisons} sourceSlug={slug} variant="desktop" />
         )}
       </div>
 
       <InContentAd />
 
-      <SmartReviewLinks
-        entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))}
-      />
+      <SmartReviewLinks entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))} />
 
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
@@ -843,5 +795,29 @@ function MultiEntityLayout({
 
       <ConversionFunnelTracker slug={slug} category={comparison.category || "general"} />
     </>
+  );
+}
+
+function FreshnessFooter({ metadata }: { metadata: { updatedAt: string; isHumanReviewed: boolean; isAutoGenerated: boolean } }) {
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-text-secondary">
+      Last updated: {new Date(metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+      {metadata.isHumanReviewed && (
+        <span className="ml-2 inline-flex items-center gap-1 text-green-600">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Human reviewed
+        </span>
+      )}
+      {metadata.isAutoGenerated && (
+        <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+          </svg>
+          AI generated
+        </span>
+      )}
+    </div>
   );
 }

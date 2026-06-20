@@ -11,7 +11,7 @@ import { Suspense } from "react";
 function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get("q") || "";
+  const query = searchParams?.get("q") || "";
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);

@@ -247,6 +247,30 @@ export function comparisonPageSchema(
   return schemas;
 }
 
+/**
+ * Consolidate multiple top-level JSON-LD schema objects into a single
+ * `@graph` document. Google (and other crawlers) treat a single
+ * `{ "@context": ..., "@graph": [...] }` block as equivalent to N separate
+ * `<script type="application/ld+json">` blocks, so this is SEO-neutral while
+ * shrinking the emitted HTML: one script wrapper instead of N, and the
+ * repeated per-item `"@context"` string is hoisted out exactly once.
+ *
+ * Items are accepted with or without their own `@context`; it is stripped so
+ * the graph-level context applies uniformly.
+ */
+export function jsonLdGraph(
+  schemas: Array<Record<string, unknown> | null | undefined>,
+) {
+  const graph = schemas
+    .filter((s): s is Record<string, unknown> => Boolean(s))
+    .map(({ ["@context"]: _ctx, ...rest }) => rest);
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+}
+
 // ============================================================
 // Multi-entity (N≥3) @graph emitter — schema-3way v1 (DAN-841)
 // ============================================================
