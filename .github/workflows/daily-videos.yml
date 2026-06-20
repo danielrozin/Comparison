@@ -14,7 +14,9 @@ on:
       dry_run:
         description: "Dry run (render only, no upload)"
         required: false
-        default: "false"
+        # INTERIM (DAN-1198): default true until ELEVENLABS_API_KEY lands (DAN-1197).
+        # Revert to "false" once narration secret is provisioned.
+        default: "true"
         type: choice
         options: ["false", "true"]
       renderer:
@@ -83,7 +85,12 @@ jobs:
         run: |
           COUNT="${{ github.event.inputs.count || '3' }}"
           DRY_RUN_FLAG=""
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          # INTERIM GUARD (DAN-1198): ELEVENLABS_API_KEY is unset (DAN-1197), so every
+          # render is silent + caption-less. Force dry-run on scheduled runs so we never
+          # publish narrated-less videos to the brand's public YouTube channel.
+          # Manual workflow_dispatch defaults to dry_run=true but can still opt into a
+          # real upload by setting dry_run=false. Revert this block when DAN-1197 lands.
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ] || [ "${{ github.event_name }}" = "schedule" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
           RENDERER="${{ github.event.inputs.renderer || 'hyperframes' }}"
