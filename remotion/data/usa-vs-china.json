@@ -1,0 +1,42 @@
+{
+  "title": "USA vs China",
+  "entityA": "USA",
+  "entityB": "China",
+  "category": "POWERS",
+  "shortAnswer": "China leads on raw scale with a 1.41 B population and 2.04 M active troops, while the US leads on economic output, defense spending, and per-capita prosperity — with Olympic gold counts tied.",
+  "keyDifferences": [
+    { "label": "Population", "entityAValue": "333 M", "entityBValue": "1.41 B", "winner": "b" },
+    { "label": "GDP nominal", "entityAValue": "$27.4T", "entityBValue": "$17.7T", "winner": "a" },
+    { "label": "Military spend", "entityAValue": "$886B", "entityBValue": "$292B", "winner": "a" },
+    { "label": "Active troops", "entityAValue": "1.39 M", "entityBValue": "2.04 M", "winner": "b" },
+    { "label": "GDP/capita", "entityAValue": "$82,720", "entityBValue": "$12,720", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Population", "valueA": "333 M", "valueB": "1.41 B", "winner": "b" },
+    { "label": "GDP nominal", "valueA": "$27.4T", "valueB": "$17.7T", "winner": "a" },
+    { "label": "Military spend", "valueA": "$886B", "valueB": "$292B", "winner": "a" },
+    { "label": "Active troops", "valueA": "1.39 M", "valueB": "2.04 M", "winner": "b" },
+    { "label": "GDP/capita", "valueA": "$82,720", "valueB": "$12,720", "winner": "a" },
+    { "label": "Olympic gold", "valueA": "40", "valueB": "40", "winner": "tie" }
+  ],
+  "prosA": [
+    "$27.4T nominal GDP",
+    "$886B military spending",
+    "$82,720 GDP per capita"
+  ],
+  "consA": [
+    "333 M population vs 1.41 B",
+    "1.39 M active troops vs 2.04 M"
+  ],
+  "prosB": [
+    "1.41 B population",
+    "2.04 M active troops"
+  ],
+  "consB": [
+    "$17.7T nominal GDP",
+    "$292B military spending",
+    "$12,720 GDP per capita"
+  ],
+  "verdict": "China leads on population and military headcount. US leads on GDP nominal, defense spend, and per-capita prosperity. Olympic golds tied. Two superpowers, different shapes.",
+  "slug": "usa-vs-china"
+}

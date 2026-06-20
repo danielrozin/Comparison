@@ -1,0 +1,77 @@
+{
+  "title": "Mac (macOS) vs Windows",
+  "entityA": "Mac (macOS)",
+  "entityB": "Windows",
+  "category": "technology",
+  "slug": "mac-vs-windows",
+  "shortAnswer": "Mac (macOS) excels in creative workflows, build quality, and security. Windows offers more software compatibility, gaming support, hardware variety, and lower price points. Mac runs on Apple Silicon which is very power-efficient.",
+  "keyDifferences": [
+    {
+      "label": "Gaming Support",
+      "entityAValue": "Limited",
+      "entityBValue": "Excellent",
+      "winner": "b"
+    },
+    {
+      "label": "Security",
+      "entityAValue": "Excellent",
+      "entityBValue": "Good",
+      "winner": "a"
+    },
+    {
+      "label": "Hardware Variety",
+      "entityAValue": "Apple only",
+      "entityBValue": "Thousands of options",
+      "winner": "b"
+    },
+    {
+      "label": "Price Range",
+      "entityAValue": "$999-$6,999",
+      "entityBValue": "$300-$5,000+",
+      "winner": "b"
+    }
+  ],
+  "stats": [
+    {
+      "label": "Market Share (Desktop)",
+      "valueA": "16%",
+      "valueB": "72%",
+      "winner": "b"
+    },
+    {
+      "label": "Malware Risk",
+      "valueA": "Very Low",
+      "valueB": "Higher",
+      "winner": "tie"
+    },
+    {
+      "label": "Gaming Library",
+      "valueA": "Limited",
+      "valueB": "Largest",
+      "winner": "tie"
+    }
+  ],
+  "prosA": [
+    "Apple Silicon performance/efficiency",
+    "Superior build quality",
+    "Better security",
+    "Creative workflow tools"
+  ],
+  "consA": [
+    "Higher price",
+    "Limited gaming",
+    "Less customizable"
+  ],
+  "prosB": [
+    "Massive software library",
+    "Best for gaming",
+    "Hardware variety at all prices",
+    "Enterprise dominance"
+  ],
+  "consB": [
+    "More malware targets",
+    "Inconsistent hardware quality",
+    "More bloatware"
+  ],
+  "verdict": "Mac for creative professionals and Apple ecosystem users. Windows for gamers, enterprise, and budget-conscious buyers."
+}

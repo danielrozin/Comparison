@@ -1,0 +1,44 @@
+{
+  "title": "Tesla Model Y vs Model 3",
+  "entityA": "Model Y",
+  "entityB": "Model 3",
+  "category": "EVs",
+  "shortAnswer": "The Model 3 is the cheaper, longer-range, quicker sedan, while the Model Y is the more practical SUV with far more cargo room, an optional third row, and 3,500 lb towing capacity.",
+  "keyDifferences": [
+    { "label": "Price", "entityAValue": "$44,990", "entityBValue": "$38,990", "winner": "b" },
+    { "label": "Range", "entityAValue": "330 mi", "entityBValue": "363 mi", "winner": "b" },
+    { "label": "0–60 mph", "entityAValue": "4.8s", "entityBValue": "4.2s", "winner": "b" },
+    { "label": "Cargo", "entityAValue": "76 cu ft", "entityBValue": "23 cu ft", "winner": "a" },
+    { "label": "Towing", "entityAValue": "3,500 lbs", "entityBValue": "None", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Price", "valueA": "$44,990", "valueB": "$38,990", "winner": "b" },
+    { "label": "Range", "valueA": "330 mi", "valueB": "363 mi", "winner": "b" },
+    { "label": "0–60 mph", "valueA": "4.8s", "valueB": "4.2s", "winner": "b" },
+    { "label": "Cargo", "valueA": "76 cu ft", "valueB": "23 cu ft", "winner": "a" },
+    { "label": "Seating", "valueA": "5 (7 opt)", "valueB": "5", "winner": "a" },
+    { "label": "Towing", "valueA": "3,500 lbs", "valueB": "None", "winner": "a" }
+  ],
+  "prosA": [
+    "76 cu ft of cargo space",
+    "Up to 7 seats",
+    "3,500 lb towing capacity"
+  ],
+  "consA": [
+    "Higher price at $44,990",
+    "Shorter 330 mi range",
+    "Slower 4.8s 0–60 mph"
+  ],
+  "prosB": [
+    "Lower price at $38,990",
+    "Longer 363 mi range",
+    "Quicker 4.2s 0–60 mph"
+  ],
+  "consB": [
+    "Only 23 cu ft cargo",
+    "5 seats, no third row",
+    "No towing capacity"
+  ],
+  "verdict": "Model 3 wins on price, range, and acceleration. Model Y wins on cargo, seating, and towing. Same tech — pick sedan for solo, SUV for family.",
+  "slug": "tesla-model-y-vs-model-3"
+}

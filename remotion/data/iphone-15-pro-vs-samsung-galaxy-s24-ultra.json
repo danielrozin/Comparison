@@ -1,0 +1,44 @@
+{
+  "title": "iPhone 15 Pro vs S24 Ultra",
+  "entityA": "iPhone 15 Pro",
+  "entityB": "S24 Ultra",
+  "category": "FLAGSHIPS",
+  "shortAnswer": "The iPhone 15 Pro is cheaper, lighter, and runs Apple's faster A17 Pro chip, while the Galaxy S24 Ultra counters with a bigger 6.8\" display, a 200 MP camera, and longer 30-hour video battery life.",
+  "keyDifferences": [
+    { "label": "Price", "entityAValue": "$999", "entityBValue": "$1,299", "winner": "a" },
+    { "label": "Camera", "entityAValue": "48 MP", "entityBValue": "200 MP", "winner": "b" },
+    { "label": "Chip", "entityAValue": "A17 Pro", "entityBValue": "SD 8 Gen 3", "winner": "a" },
+    { "label": "Battery", "entityAValue": "23h video", "entityBValue": "30h video", "winner": "b" },
+    { "label": "Weight", "entityAValue": "187 g", "entityBValue": "233 g", "winner": "a" }
+  ],
+  "stats": [
+    { "label": "Price", "valueA": "$999", "valueB": "$1,299", "winner": "a" },
+    { "label": "Display", "valueA": "6.1\" OLED", "valueB": "6.8\" OLED", "winner": "b" },
+    { "label": "Camera", "valueA": "48 MP", "valueB": "200 MP", "winner": "b" },
+    { "label": "Chip", "valueA": "A17 Pro", "valueB": "SD 8 Gen 3", "winner": "a" },
+    { "label": "Battery", "valueA": "23h video", "valueB": "30h video", "winner": "b" },
+    { "label": "Weight", "valueA": "187 g", "valueB": "233 g", "winner": "a" }
+  ],
+  "prosA": [
+    "Lower price at $999",
+    "Faster A17 Pro chip",
+    "Lighter at 187 g"
+  ],
+  "consA": [
+    "Smaller 6.1\" OLED display",
+    "48 MP camera vs 200 MP",
+    "Shorter 23h video battery"
+  ],
+  "prosB": [
+    "Bigger 6.8\" OLED display",
+    "200 MP main camera",
+    "Longer 30h video battery"
+  ],
+  "consB": [
+    "Higher price at $1,299",
+    "Snapdragon 8 Gen 3 trails A17 Pro",
+    "Heavier at 233 g"
+  ],
+  "verdict": "S24 Ultra is the spec king — bigger screen, longer battery, 200MP camera. iPhone 15 Pro wins on price, weight, and chip. Pick by ecosystem.",
+  "slug": "iphone-15-pro-vs-samsung-galaxy-s24-ultra"
+}
