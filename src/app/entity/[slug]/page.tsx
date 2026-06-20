@@ -6,6 +6,7 @@ import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { prisma } from "@/lib/db/prisma";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -32,11 +33,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const name = humanizeEntityName(slug);
   const content = ENTITY_CONTENT[slug];
-  const description = content
-    ? content.description.slice(0, 155)
-    : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`;
+
+  // DAN-1169: prefer curated SEO meta from the DB when present (CTR tuning for
+  // striking-distance entity pages). Falls back to the generated defaults below
+  // for the long tail of entities that have no curated meta.
+  let dbMetaTitle: string | null = null;
+  let dbMetaDescription: string | null = null;
+  try {
+    const entity = await prisma.entity.findUnique({
+      where: { slug },
+      select: { metaTitle: true, metaDescription: true },
+    });
+    dbMetaTitle = entity?.metaTitle ?? null;
+    dbMetaDescription = entity?.metaDescription ?? null;
+  } catch {
+    // DB unavailable (build-time / offline) — fall through to generated defaults.
+  }
+
+  const description =
+    dbMetaDescription ||
+    (content
+      ? content.description.slice(0, 155)
+      : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`);
   return {
-    title: `${name} — All Comparisons`,
+    title: dbMetaTitle || `${name} — All Comparisons`,
     description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
   };
