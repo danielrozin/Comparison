@@ -46,6 +46,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Also revalidate sitemaps when content pages change
+    if (revalidated.length > 0) {
+      revalidatePath("/sitemap.xml");
+    }
+
     return NextResponse.json({
       revalidated,
       count: revalidated.length,

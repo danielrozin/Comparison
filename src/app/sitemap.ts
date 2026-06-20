@@ -6,10 +6,40 @@ import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-
 
 const SITE_URL = "https://www.aversusb.net";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+/**
+ * Sitemap index IDs:
+ *   0 = static + category pages
+ *   1 = comparison pages
+ *   2 = entity + alternatives pages
+ *   3 = blog pages
+ *   4 = review pages
+ */
+const SITEMAP_IDS = [0, 1, 2, 3, 4];
+
+export async function generateSitemaps() {
+  return SITEMAP_IDS.map((id) => ({ id }));
+}
+
+export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
-  // Static pages
+  switch (id) {
+    case 0:
+      return buildStaticAndCategoryPages(now);
+    case 1:
+      return buildComparisonPages(now);
+    case 2:
+      return buildEntityAndAlternativesPages(now);
+    case 3:
+      return buildBlogPages(now);
+    case 4:
+      return buildReviewPages(now);
+    default:
+      return [];
+  }
+}
+
+function buildStaticAndCategoryPages(now: string): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
     { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
@@ -26,7 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 
-  // Category pages (both /category/ and /compare/ routes)
   const categoryPages: MetadataRoute.Sitemap = CATEGORIES.flatMap((cat) => [
     {
       url: `${SITE_URL}/category/${cat.slug}`,
@@ -42,7 +71,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]);
 
-  // Subcategory pages (all categories with subcategories)
   const subcategoryPages: MetadataRoute.Sitemap = Object.entries(CATEGORY_SUBCATEGORIES).flatMap(
     ([catSlug, subs]) =>
       subs.map((sub) => ({
@@ -53,9 +81,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
   );
 
-  // Comparison pages (highest value)
+  return [...staticPages, ...categoryPages, ...subcategoryPages];
+}
+
+function buildComparisonPages(now: string): MetadataRoute.Sitemap {
   const slugs = getAllMockSlugs();
-  const comparisonPages: MetadataRoute.Sitemap = slugs.map((slug) => {
+  return slugs.map((slug) => {
     const comp = getMockComparison(slug);
     return {
       url: `${SITE_URL}/compare/${slug}`,
@@ -64,9 +95,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     };
   });
+}
 
-  // Entity pages — use the latest comparison updatedAt for each entity
-  const entityData = new Map<string, string>(); // slug → latest updatedAt
+function buildEntityAndAlternativesPages(now: string): MetadataRoute.Sitemap {
+  const slugs = getAllMockSlugs();
+  const entityData = new Map<string, string>();
   for (const slug of slugs) {
     const comp = getMockComparison(slug);
     if (comp) {
@@ -79,22 +112,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   }
-  const entityPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
-    url: `${SITE_URL}/entity/${slug}`,
-    lastModified: updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
 
-  // Alternatives pages
-  const alternativesPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(([slug, updatedAt]) => ({
-    url: `${SITE_URL}/alternatives/${slug}`,
-    lastModified: updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
+  const entityPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(
+    ([slug, updatedAt]) => ({
+      url: `${SITE_URL}/entity/${slug}`,
+      lastModified: updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    })
+  );
 
-  // Blog pages
+  const alternativesPages: MetadataRoute.Sitemap = Array.from(entityData.entries()).map(
+    ([slug, updatedAt]) => ({
+      url: `${SITE_URL}/alternatives/${slug}`,
+      lastModified: updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })
+  );
+
+  return [...entityPages, ...alternativesPages];
+}
+
+async function buildBlogPages(now: string): Promise<MetadataRoute.Sitemap> {
   const blogListPage: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
   ];
@@ -112,7 +152,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog articles unavailable — skip
   }
 
-  // Review category pages
+  return [...blogListPage, ...blogArticlePages];
+}
+
+async function buildReviewPages(now: string): Promise<MetadataRoute.Sitemap> {
   let reviewCategoryPages: MetadataRoute.Sitemap = [];
   try {
     const reviewCats = await getReviewCategories();
@@ -126,7 +169,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Review categories unavailable — skip
   }
 
-  // Individual review pages (/reviews/{entitySlug})
   let reviewEntityPages: MetadataRoute.Sitemap = [];
   try {
     const { entities: reviewedEntities } = await getReviewedEntities({ limit: 1000 });
@@ -142,16 +184,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Review entities unavailable — skip
   }
 
-  return [
-    ...staticPages,
-    ...categoryPages,
-    ...subcategoryPages,
-    ...comparisonPages,
-    ...entityPages,
-    ...alternativesPages,
-    ...blogListPage,
-    ...blogArticlePages,
-    ...reviewCategoryPages,
-    ...reviewEntityPages,
-  ];
+  return [...reviewCategoryPages, ...reviewEntityPages];
 }
