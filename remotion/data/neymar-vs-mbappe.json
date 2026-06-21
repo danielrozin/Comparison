@@ -1,100 +1,113 @@
 {
-  "title": "Neymar vs Mbappé",
+  "title": "Neymar vs Mbappe",
   "entityA": "Neymar",
-  "entityB": "Mbappé",
-  "category": "Sports",
+  "entityB": "Mbappe",
+  "category": "General",
   "slug": "neymar-vs-mbappe",
-  "shortAnswer": "Mbappé edges it for consistency and longevity — he is faster, more clinical, already a World Cup winner, younger, and far more durable. Neymar is the more skilled dribbler with elite flair and a higher career goal tally, but a frequent injury record holds him back.",
+  "shortAnswer": "Mbappe currently outperforms Neymar with a superior 1vs1 score of 89.42 vs 80.98, showing better individual performance this season.",
   "keyDifferences": [
     {
-      "label": "World Cup Titles",
-      "entityAValue": "0",
-      "entityBValue": "1",
+      "label": "1vs1 Performance",
+      "entityAValue": "80.98",
+      "entityBValue": "89.42",
       "winner": "b"
     },
     {
-      "label": "Career Goals",
-      "entityAValue": "450+",
-      "entityBValue": "300+",
-      "winner": "a"
-    },
-    {
-      "label": "Top-End Pace",
-      "entityAValue": "Fast",
-      "entityBValue": "Elite",
+      "label": "Current Form",
+      "entityAValue": "Declining",
+      "entityBValue": "Peak Performance",
       "winner": "b"
     },
     {
-      "label": "Durability",
-      "entityAValue": "Injury-prone",
-      "entityBValue": "Rarely injured",
+      "label": "Age Factor",
+      "entityAValue": "31 years old",
+      "entityBValue": "25 years old",
+      "winner": "b"
+    },
+    {
+      "label": "Playing Style",
+      "entityAValue": "Creative Playmaker",
+      "entityBValue": "Direct Goal Scorer",
+      "winner": "tie"
+    },
+    {
+      "label": "Career Stage",
+      "entityAValue": "Veteran",
+      "entityBValue": "Rising Star",
       "winner": "b"
     }
   ],
   "stats": [
     {
-      "label": "World Cup Titles",
-      "valueA": "0",
-      "valueB": "1",
+      "label": "1vs1 Score",
+      "valueA": "80.98",
+      "valueB": "89.42",
       "winner": "b"
     },
     {
-      "label": "Career Goals",
-      "valueA": "450+",
-      "valueB": "300+",
-      "winner": "a"
-    },
-    {
-      "label": "Pace",
-      "valueA": "Fast",
-      "valueB": "Elite",
+      "label": "Speed Rating",
+      "valueA": "85",
+      "valueB": "96",
       "winner": "b"
     },
     {
       "label": "Dribbling",
-      "valueA": "Elite",
-      "valueB": "Very Good",
+      "valueA": "92",
+      "valueB": "88",
       "winner": "a"
     },
     {
-      "label": "Injury Record",
-      "valueA": "Frequent",
-      "valueB": "Rare",
+      "label": "Goals per Season",
+      "valueA": "15-20",
+      "valueB": "25-30",
       "winner": "b"
     },
     {
-      "label": "Age",
-      "valueA": "34",
-      "valueB": "27",
+      "label": "Assists per Season",
+      "valueA": "10-15",
+      "valueB": "8-12",
+      "winner": "a"
+    },
+    {
+      "label": "Market Value",
+      "valueA": "€60M",
+      "valueB": "€180M",
+      "winner": "b"
+    },
+    {
+      "label": "International Goals",
+      "valueA": "77",
+      "valueB": "46",
+      "winner": "a"
+    },
+    {
+      "label": "Champions League Goals",
+      "valueA": "43",
+      "valueB": "48",
       "winner": "b"
     }
   ],
   "prosA": [
-    "Elite dribbling and close control",
-    "Higher career goal tally (450+)",
-    "Exceptional flair and creativity",
-    "Proven match-winner on the biggest stages"
+    "Exceptional dribbling and technical skills",
+    "Superior playmaking and creativity",
+    "Extensive international experience with Brazil",
+    "Proven track record in multiple top leagues"
   ],
   "consA": [
-    "Frequent injuries disrupt his seasons",
-    "No World Cup title",
-    "Form and durability decline with age"
+    "Declining 1vs1 performance compared to peak",
+    "Injury-prone in recent seasons",
+    "Age factor affecting consistency"
   ],
   "prosB": [
-    "World Cup winner (2018)",
-    "Elite top-end pace",
-    "Clinical, high-volume finisher",
-    "Young and remarkably durable"
+    "Outstanding current form with 89.42 1vs1 score",
+    "Exceptional pace and finishing ability",
+    "Young age with room for further improvement",
+    "Higher market value and goal-scoring rate"
   ],
   "consB": [
-    "Lower career goal total so far",
-    "Less of a pure dribbler than Neymar",
-    "Still building his trophy legacy"
+    "Less experienced than Neymar internationally",
+    "Lower assist numbers compared to Neymar",
+    "Still developing playmaking abilities"
   ],
-  "verdict": "Mbappé is faster, more clinical, and already a World Cup winner — younger and far more durable. Neymar is the more skilled dribbler with elite flair and a higher career goal tally, but a frequent injury record holds him back. Mbappé edges it for consistency and longevity.",
-  "_youtube": {
-    "shortsTitle": "Neymar vs Mbappé — who wins by the numbers?",
-    "endScreenLinkUrl": "https://www.aversusb.net/compare/neymar-vs-mbappe",
-    "hashtags": ["#neymar", "#mbappe", "#football", "#soccer"]
-  }
+  "verdict": "Mbappe currently has the edge with superior individual performance metrics and goal-scoring ability. However, Neymar's experience and playmaking skills remain valuable assets despite his declining 1vs1 numbers."
 }
