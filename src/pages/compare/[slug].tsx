@@ -193,13 +193,19 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
-  if (!comparison) {
-    // DAN-1265: a brand-new reverse ordering (B-vs-A) that has no page yet must
-    // never be generated/indexed as its own URL. Send it to the canonical
-    // alphabetically-sorted ordering so only one page per comparison can exist.
-    // (Known retired duplicates are already 301'd at the edge by next.config
-    // redirects(); this catches orderings not yet in that map.) Survivors that
-    // already have a page were resolved above and never reach this branch.
+  // A record that exists but is empty/corrupt (fewer than 2 entities) is treated
+  // the same as missing: the full SSR layout assumes entityA/entityB exist and
+  // throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up — 25 such
+  // records were live in prod). Degrading to the crawlable dynamic fallback both
+  // avoids the 500 and lets the client re-generation path heal the record.
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
+    // DAN-1265: a non-canonical ordering (B-vs-A) — whether brand-new or backed
+    // by an empty/corrupt record — must never be generated/indexed as its own
+    // URL. Send it to the canonical alphabetically-sorted ordering so only one
+    // page per comparison can exist. (Known retired duplicates are already 301'd
+    // at the edge by next.config redirects(); this catches orderings not yet in
+    // that map.) Survivors with a valid page were resolved above and never reach
+    // this branch.
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug) {
       return {
