@@ -138,13 +138,18 @@ async function getLinksFromDb(
     category: string | null,
     signal: string,
     weight: number,
-    viewCount: number = 0
+    viewCount: number = 0,
+    // Curated explicit links carry an exact-match anchor (e.g. "jbl versus
+    // bose") that must win over the target's generic title even when entity
+    // overlap already added this candidate. Only explicit links pass true.
+    overrideTitle: boolean = false
   ) => {
     if (slug === input.slug) return; // exclude self
     const existing = scored.get(slug);
     const viewBoost = viewCount > 0 ? Math.min(Math.log10(viewCount + 1) * 5, WEIGHT_VIEW_BOOST_MAX) : 0;
     if (existing) {
       existing.score += weight;
+      if (overrideTitle && title) existing.title = title;
       if (!existing.signals.includes(signal)) existing.signals.push(signal);
     } else {
       scored.set(slug, {
@@ -208,7 +213,9 @@ async function getLinksFromDb(
           link.anchorText || match[1].replace(/-/g, " "),
           null,
           `explicit_${link.linkType}`,
-          WEIGHT_EXPLICIT_LINK * (link.score || 1)
+          WEIGHT_EXPLICIT_LINK * (link.score || 1),
+          0,
+          true // curated anchor wins over a title set by entity-overlap
         );
       }
     }
