@@ -193,7 +193,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   }
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
-  if (!comparison) {
+  // A record that exists but is empty/corrupt (fewer than 2 entities) is treated
+  // the same as missing: the full SSR layout assumes entityA/entityB exist and
+  // throws a hard 500 on an empty record (DAN-1201 follow-up — 25 such records
+  // were live in prod). Degrading to the crawlable dynamic fallback both avoids
+  // the 500 and lets the client re-generation path heal the record.
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
     const override = META_OVERRIDES[slug];
     const nameParts = slug
       .split("-vs-")

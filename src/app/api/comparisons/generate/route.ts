@@ -56,9 +56,12 @@ export async function POST(request: NextRequest) {
 
     // If the comparison was generated and saved while this request was
     // queueing (common for popular slugs), short-circuit and serve it
-    // instead of regenerating.
+    // instead of regenerating — but ONLY when the existing record is valid.
+    // An empty/corrupt record (fewer than 2 entities) must fall through and
+    // regenerate, otherwise the broken row is served forever and the compare
+    // page 500s on it (DAN-1201 follow-up). saveComparison upserts by slug.
     const existing = await getComparisonBySlug(slug).catch(() => null);
-    if (existing) {
+    if (existing && Array.isArray(existing.entities) && existing.entities.length >= 2) {
       return NextResponse.json({ status: "ready", comparison: existing });
     }
 
