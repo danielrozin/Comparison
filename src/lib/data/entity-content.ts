@@ -12,6 +12,39 @@ export interface EntityContent {
   faqs: { question: string; answer: string }[];
 }
 
+/**
+ * DAN-1289: hand-authored intro/lede (+ optional <title>) overrides for
+ * striking-distance entity pages. /entity/* pages were thin — H1 was just the
+ * entity name with zero intro prose, so Google had no on-page text to
+ * intent-match queries like "versus browns" (6,600 vol/mo, /entity/cleveland-browns
+ * ranked pos 18). The template now renders a templated fallback intro for EVERY
+ * entity page (see entityIntroFallback), so this map only needs entries where
+ * curated copy meaningfully lifts intent-match for a high-value keyword.
+ */
+export interface EntityLede {
+  /** Optional <title> override. The `| A Versus B` suffix is appended by layout. */
+  title?: string;
+  /** Intro <p> rendered directly under the H1 / lede H2. */
+  intro: string;
+}
+
+export const ENTITY_LEDE: Record<string, EntityLede> = {
+  "cleveland-browns": {
+    title: "Cleveland Browns vs Every NFL Rival: Matchups & Stats 2026",
+    intro:
+      "Looking for Cleveland Browns matchups? Compare the Browns versus every AFC North rival and NFL opponent — head-to-head records, rosters, and team stats side by side. See the Browns versus the Steelers, Ravens, and Bengals, plus every other matchup, all in one place and updated for the 2026 season.",
+  },
+};
+
+/**
+ * Templated fallback intro so every /entity/* page renders real prose even
+ * without a curated ENTITY_LEDE entry. Includes the "versus" token + the entity
+ * name so the page has intent-matched on-page text out of the box.
+ */
+export function entityIntroFallback(name: string): string {
+  return `Compare ${name} versus every rival — head-to-head records, stats, and matchup breakdowns side by side, updated for 2026.`;
+}
+
 export const ENTITY_CONTENT: Record<string, EntityContent> = {
   "lionel-messi": {
     description:
