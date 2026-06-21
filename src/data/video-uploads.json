@@ -2601,6 +2601,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-16T10:37:16.903Z"
+    },
+    {
+      "slug": "ali-vs-tyson",
+      "title": "Ali vs Tyson",
+      "entityA": "Ali",
+      "entityB": "Tyson",
+      "category": "General",
+      "videoFile": "Ali vs Tyson.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ali vs Tyson — Full Comparison 2026",
+      "youtubeDescription": "Muhammad Ali is considered the greatest boxer of all time with 56 wins, legendary charisma, and victories over every top heavyweight of his era. Mike Tyson…\n\n#ali #tyson #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-21T09:05:57.009Z"
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "Chatgpt vs Gemini",
+      "entityA": "Chatgpt",
+      "entityB": "Gemini",
+      "category": "General",
+      "videoFile": "Chatgpt vs Gemini.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Gemini — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Chatgpt vs Gemini.\n\n#chatgpt #gemini #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-21T09:13:51.331Z"
+    },
+    {
+      "slug": "brazil-vs-argentina",
+      "title": "Brazil vs Argentina",
+      "entityA": "Brazil",
+      "entityB": "Argentina",
+      "category": "Countries",
+      "videoFile": "Brazil vs Argentina.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Brazil vs Argentina — Full Comparison 2026",
+      "youtubeDescription": "Brazil has the larger economy ($2.1T vs $0.6T) and population (215M vs 46M). Argentina has higher GDP per capita and better social indicators. In football…\n\n#brazil #argentina #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-21T09:21:52.190Z"
     }
   ]
 }
