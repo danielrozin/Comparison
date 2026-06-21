@@ -22,7 +22,7 @@ import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
-import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { parseComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -255,15 +255,35 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // Unknown slug → attempt server-side generation so crawlers get a full SSR
-  // body + affiliate CTAs (DAN-1146). On success we fall through to the normal
-  // comparison render path below; on failure we degrade to the client shell.
-  if (!comparison) {
+  // A record that's missing OR exists but is empty/corrupt (fewer than 2
+  // entities) is treated the same: the full SSR layout assumes entityA/entityB
+  // exist and throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up
+  // — 25 such records were live in prod).
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
+    // DAN-1265: a non-canonical ordering (B-vs-A) — whether brand-new or backed
+    // by an empty/corrupt record — must never be generated/indexed as its own
+    // URL. Send it to the canonical alphabetically-sorted ordering BEFORE any
+    // generation so only one page per comparison can exist. (Known retired
+    // duplicates are already 301'd at the edge by next.config redirects(); this
+    // catches orderings not yet in that map.)
+    const sortedSlug = sortComparisonSlug(slug);
+    if (sortedSlug !== slug) {
+      return {
+        redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+      };
+    }
+
+    // Canonical ordering but unknown/empty → attempt server-side generation so
+    // crawlers get a full SSR body + affiliate CTAs (DAN-1146). On success we
+    // fall through to the normal comparison render path below; on failure we
+    // degrade to the crawlable client shell, which also lets the client
+    // re-generation path heal the record.
     comparison = await generateComparisonForSSR(slug, slugParts.entities);
   }
 
-  // Still no comparison → client-side dynamic generation (same fallback as before).
-  if (!comparison) {
+  // Still no usable comparison → client-side dynamic generation (same fallback
+  // as before).
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
     const override = META_OVERRIDES[slug];
     const nameParts = slug
       .split("-vs-")
