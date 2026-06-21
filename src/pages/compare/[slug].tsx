@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -34,6 +34,7 @@ import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
+import { selfHostedVideoExists, selfHostedVideoUploadDate } from "@/lib/services/self-hosted-video";
 import type { RelatedComparison } from "@/types";
 
 // DAN-432 Phase C: /compare/[slug] served by the Pages Router.
@@ -191,6 +192,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+// DAN-1285: append a VideoObject node into an existing @graph JSON-LD document
+// (editorial schemaMarkup or the multi-entity @graph) without disturbing its
+// other nodes. The node's @context is stripped since it lives inside @graph.
+function appendVideoToGraph(
+  doc: Record<string, unknown>,
+  video: Record<string, unknown> | null,
+): Record<string, unknown> {
+  if (!video) return doc;
+  const { ["@context"]: _ctx, ...videoNode } = video;
+  if (Array.isArray(doc["@graph"])) {
+    return { ...doc, "@graph": [...(doc["@graph"] as unknown[]), videoNode] };
+  }
+  // Not a @graph document — wrap the existing doc and the video into one.
+  return jsonLdGraph([doc, video]);
+}
+
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
 
@@ -318,15 +335,41 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
+  // DAN-1285: self-hosted VideoObject. When there's no YouTube upload but a
+  // public/videos/<slug>.mp4 exists (ComparisonVideoPlayer HEAD-checks and
+  // self-hosts it client-side, so the URL never appears in static HTML), emit a
+  // VideoObject whose contentUrl → the already-served mp4 so Google Video / AI
+  // Overviews can index it. Credential-independent of the YouTube path
+  // (DAN-1197). Only emitted when the file is present so contentUrl never 404s.
+  const selfHostedVideo =
+    !videoMeta?.youtubeVideoId && selfHostedVideoExists(slug)
+      ? selfHostedVideoObjectSchema({
+          slug,
+          title: enrichedComparison.title,
+          description:
+            enrichedComparison.shortAnswer ||
+            enrichedComparison.verdict ||
+            enrichedComparison.metadata.metaDescription ||
+            fallbackDescription,
+          // thumbnailUrl is REQUIRED by Google — reuse the per-page OG image.
+          thumbnailUrl: ogImage,
+          uploadDate:
+            selfHostedVideoUploadDate(slug) ||
+            enrichedComparison.metadata.publishedAt ||
+            enrichedComparison.metadata.updatedAt,
+        })
+      : null;
+
   // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
   // present. Otherwise: N>=3 pages already get a single consolidated @graph from
   // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
-  // the DAN-432 jsonLdGraph consolidation (+ optional VideoObject).
+  // the DAN-432 jsonLdGraph consolidation. The self-hosted VideoObject (DAN-1285)
+  // is folded into whichever document the page emits.
   let jsonLd: string;
   if (enrichedComparison.schemaMarkup) {
-    jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
+    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, selfHostedVideo));
   } else if (isMultiEntity) {
-    jsonLd = JSON.stringify(schemas[0]);
+    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], selfHostedVideo));
   } else {
     jsonLd = JSON.stringify(
       jsonLdGraph([
@@ -341,7 +384,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
               entityA: videoMeta.entityA,
               entityB: videoMeta.entityB,
             })
-          : null,
+          : selfHostedVideo,
       ])
     );
   }

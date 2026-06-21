@@ -452,6 +452,51 @@ export function videoObjectSchema(opts: {
 }
 
 // ============================================================
+// Self-hosted VideoObject schema (DAN-1285)
+// ============================================================
+//
+// For /compare/<slug> pages that play a self-hosted `public/videos/<slug>.mp4`
+// (no YouTube upload yet), emit a VideoObject whose contentUrl points at the
+// already-served mp4 so Google Video / AI Overviews can index it. Independent
+// of the credential-gated narrated-YouTube path (DAN-1197). `thumbnailUrl` is
+// REQUIRED by Google for video rich results — we reuse the per-page OG image.
+
+export function selfHostedVideoObjectSchema(opts: {
+  slug: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  /** ISO 8601 duration; data files are ~6 stats ≈ 12.5s → PT13S. */
+  duration?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: `${opts.title} — Quick Comparison`,
+    description: opts.description,
+    thumbnailUrl: [opts.thumbnailUrl],
+    uploadDate: opts.uploadDate,
+    contentUrl: `${SITE_URL}/videos/${opts.slug}.mp4`,
+    duration: opts.duration || "PT13S",
+    isFamilyFriendly: true,
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+    },
+    potentialAction: {
+      "@type": "WatchAction",
+      target: `${SITE_URL}/compare/${opts.slug}`,
+    },
+  };
+}
+
+// ============================================================
 // FAQ schema
 // ============================================================
 
