@@ -1,7 +1,8 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
+import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
+import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
@@ -190,6 +191,39 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
   } catch {
     comparison = null;
+  }
+
+  // DAN-1201: before degrading to the client-only <DynamicComparison> shell
+  // (which ships NO SSR body — crawlers/LLMs/curl saw only a ~19KB <h1> +
+  // newsletter, i.e. thin content + $0 SSR affiliate body on the highest-value
+  // VPN/SaaS slugs), generate the comparison SERVER-SIDE so getStaticProps can
+  // emit the full SSR layout. This is the same generation the client previously
+  // triggered via POST /api/comparisons/generate, just hoisted to build/ISR time.
+  // Only for canonical 2-entity slugs: non-canonical orderings must 301 (handled
+  // below) and N-way generation isn't supported by generateComparison(). On
+  // success the record is persisted and control falls through to the full
+  // comparison-props path; on any failure we keep the existing client fallback.
+  if (
+    (!comparison || !comparison.entities || comparison.entities.length < 2) &&
+    slugParts.entities.length === 2 &&
+    sortComparisonSlug(slug) === slug
+  ) {
+    try {
+      const gen = await generateComparison(
+        slugParts.entityA.replace(/-/g, " "),
+        slugParts.entityB.replace(/-/g, " "),
+        slug,
+      );
+      if (gen.success && gen.comparison && gen.comparison.entities && gen.comparison.entities.length >= 2) {
+        comparison = gen.comparison as Comparison;
+        // Persist non-blocking — don't fail the render if the DB save errors.
+        saveComparison(comparison).catch((err) =>
+          console.error("DAN-1201: failed to save SSR-generated comparison:", err),
+        );
+      }
+    } catch (err) {
+      console.error("DAN-1201: SSR comparison generation failed, using client fallback:", err);
+    }
   }
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
