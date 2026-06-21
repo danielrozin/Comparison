@@ -14,6 +14,11 @@
  *   3. ORDERING_CONSOLIDATIONS — generated A-vs-B / B-vs-A ordering duplicates
  *      (DAN-1265, 166 clusters). See compare-ordering-redirects.generated.ts.
  *
+ * DAN-1269 — DAN-1169 (PR #72) redirected only the xbox-first short slug and
+ * missed the mirror ps5-first short slug, leaving `ps5-pro-vs-xbox-series-x` as
+ * a thin, self-canonicalizing 200 duplicate competing for the same cluster.
+ * Fold that short slug into the same canonical so both orderings 308 to it.
+ *
  * Add new entries as more compare-route cannibalization clusters are found:
  * map each retired slug to the canonical slug it should consolidate into.
  */
@@ -25,6 +30,8 @@ import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated"
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
 const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-pro":
+    "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+  "ps5-pro-vs-xbox-series-x":
     "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
 };
 
