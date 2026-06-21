@@ -12,6 +12,11 @@
  * positions 14–20. We keep the keyword-aligned page as canonical (it is the one
  * Semrush/DataForSEO show ranking) and fold the short duplicate into it.
  *
+ * DAN-1269 — DAN-1169 (PR #72) redirected only the xbox-first short slug and
+ * missed the mirror ps5-first short slug, leaving `ps5-pro-vs-xbox-series-x` as
+ * a thin, self-canonicalizing 200 duplicate competing for the same cluster.
+ * Fold that short slug into the same canonical so both orderings 308 to it.
+ *
  * Add new entries as more compare-route cannibalization clusters are found:
  * map each retired slug to the canonical slug it should consolidate into.
  */
@@ -21,6 +26,8 @@ import type { BlogRedirect } from "./blog-redirects";
 // retired comparison slug -> canonical comparison slug
 const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-pro":
+    "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+  "ps5-pro-vs-xbox-series-x":
     "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
 };
 
