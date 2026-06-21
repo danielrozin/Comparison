@@ -21,7 +21,7 @@ import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
-import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { parseComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -194,6 +194,18 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
   // Unknown slug → client-side dynamic generation (same fallback as before).
   if (!comparison) {
+    // DAN-1265: a brand-new reverse ordering (B-vs-A) that has no page yet must
+    // never be generated/indexed as its own URL. Send it to the canonical
+    // alphabetically-sorted ordering so only one page per comparison can exist.
+    // (Known retired duplicates are already 301'd at the edge by next.config
+    // redirects(); this catches orderings not yet in that map.) Survivors that
+    // already have a page were resolved above and never reach this branch.
+    const sortedSlug = sortComparisonSlug(slug);
+    if (sortedSlug !== slug) {
+      return {
+        redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+      };
+    }
     const override = META_OVERRIDES[slug];
     const nameParts = slug
       .split("-vs-")
