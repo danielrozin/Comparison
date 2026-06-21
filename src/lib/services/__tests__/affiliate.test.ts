@@ -60,6 +60,13 @@ describe('isDigitalEntity — digital entities are suppressed (DAN-1053)', () =>
     'ExpressVPN',
     'Surfshark',
     'Microsoft Teams',
+    // DAN-1140: chat/messaging apps that previously leaked to a Google SERP CTA
+    'Discord',
+    'Discord Inc.', // exact live entity name from /compare/slack-vs-discord
+    'Telegram',
+    'WhatsApp',
+    'Signal',
+    'Skype',
   ]
 
   it.each(digital)('classifies "%s" as digital', (name) => {
@@ -104,6 +111,12 @@ describe('resolveBrandHomepage — fallback CTA points to brand homepage, never 
     ['Evernote', 'https://evernote.com'],
     ['Microsoft Teams', 'https://www.microsoft.com/microsoft-teams'],
     ['Slack', 'https://slack.com'],
+    ['Discord', 'https://discord.com'],
+    ['Discord Inc.', 'https://discord.com'],
+    ['Telegram', 'https://telegram.org'],
+    ['WhatsApp', 'https://www.whatsapp.com'],
+    ['Signal', 'https://signal.org'],
+    ['Skype', 'https://www.skype.com'],
   ]
 
   it.each(known)('resolves "%s" to its official homepage', (name, url) => {

@@ -36,8 +36,11 @@ export async function POST(request: NextRequest) {
 
     const selectedTier = (tier as EmbedTier) || "free";
 
-    // Send confirmation email to partner and notification to admin (non-blocking)
-    Promise.all([
+    // Send confirmation email to partner and notification to admin.
+    // Must be AWAITED (DAN-1204): on serverless the function can freeze right
+    // after the response is returned, before a fire-and-forget fetch flushes —
+    // dropping the partner-key email and the admin notification silently.
+    await Promise.all([
       sendPartnerKeyEmail({
         partnerEmail: email,
         partnerName: name,

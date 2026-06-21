@@ -3,7 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -35,6 +35,7 @@ import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
+import { selfHostedVideoExists, selfHostedVideoUploadDate } from "@/lib/services/self-hosted-video";
 import type { RelatedComparison } from "@/types";
 
 // DAN-432 Phase C: /compare/[slug] served by the Pages Router.
@@ -123,11 +124,12 @@ type Props =
     };
 
 // Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
-// These slugs had weak/auto-generated titles+descriptions; the copy here is
-// pre-optimized. Still piped through buildPageTitle/clampDescription so the
-// single-brand and length invariants hold (buildPageTitle is a no-op on the
-// already-clean brand suffix).
-const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+// These slugs had weak/auto-generated titles (and sometimes descriptions); the
+// copy here is pre-optimized. Still piped through buildPageTitle/clampDescription
+// so the single-brand and length invariants hold (buildPageTitle is a no-op on
+// the already-clean brand suffix). `description` is optional — omit it to keep an
+// already-good stored metaDescription and only swap the weak <title> (DAN-1281).
+const META_OVERRIDES: Record<string, { title: string; description?: string }> = {
   "figma-vs-canva": {
     title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
     description:
@@ -138,10 +140,24 @@ const META_OVERRIDES: Record<string, { title: string; description: string }> = {
     description:
       "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
   },
-  "iphone-15-vs-16": {
-    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
-    description:
-      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  // DAN-1281: title-only CTR swaps (year + verdict hook). Descriptions audited as
+  // already good — left untouched. The legacy `iphone-15-vs-16` override was
+  // removed: that slug now 308s at the edge to the canonical iphone-15-vs-iphone-16
+  // (compare-redirects.ts), so this page never renders.
+  "ansible-vs-chef": {
+    title: "Ansible vs Chef 2026: Which Config Tool Wins? | A Versus B",
+  },
+  "cold-war-vs-world-war-ii": {
+    title: "Cold War vs WWII: Causes, Deaths & Impact | A Versus B",
+  },
+  "figma-vs-invision": {
+    title: "InVision vs Figma 2026: Prototyping & Price | A Versus B",
+  },
+  "metlife-vs-state-farm": {
+    title: "MetLife vs State Farm 2026: Which Insurer Wins? | A Versus B",
+  },
+  "miro-vs-mural": {
+    title: "Miro vs Mural 2026: Pricing, AI & Features | A Versus B",
   },
 };
 
@@ -176,6 +192,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: "blocking",
   };
 };
+
+// DAN-1285: append a VideoObject node into an existing @graph JSON-LD document
+// (editorial schemaMarkup or the multi-entity @graph) without disturbing its
+// other nodes. The node's @context is stripped since it lives inside @graph.
+function appendVideoToGraph(
+  doc: Record<string, unknown>,
+  video: Record<string, unknown> | null,
+): Record<string, unknown> {
+  if (!video) return doc;
+  const { ["@context"]: _ctx, ...videoNode } = video;
+  if (Array.isArray(doc["@graph"])) {
+    return { ...doc, "@graph": [...(doc["@graph"] as unknown[]), videoNode] };
+  }
+  // Not a @graph document — wrap the existing doc and the video into one.
+  return jsonLdGraph([doc, video]);
+}
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
@@ -242,9 +274,29 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     // this branch.
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug) {
-      return {
-        redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
-      };
+      // DAN-1265 regression guard: only consolidate into the sorted ordering
+      // when that ordering is a REAL comparison. sortComparisonSlug() sorts the
+      // raw "-vs-" tokens, so a slug whose last entity carries a keyword suffix
+      // (e.g. "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the
+      // suffix into the middle and yields a non-existent slug
+      // ("ps5-pro-performance-comparison-2026-vs-xbox-series-x"). 308-ing there
+      // mints a self-canonicalizing thin-shell dead-end and permanently strands
+      // the variant's link equity instead of folding it into the canonical. If
+      // the sorted target has no valid record, fall through to the dynamic
+      // fallback (which self-canonicals at the requested URL) rather than 308 to
+      // a slug that does not exist. Genuine B-vs-A reorderings still redirect,
+      // because their sorted target resolves to a real page here.
+      let canonical: Comparison | null = null;
+      try {
+        canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
+      } catch {
+        canonical = null;
+      }
+      if (canonical && canonical.entities && canonical.entities.length >= 2) {
+        return {
+          redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+        };
+      }
     }
     const override = META_OVERRIDES[slug];
     const nameParts = slug
@@ -317,15 +369,41 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
+  // DAN-1285: self-hosted VideoObject. When there's no YouTube upload but a
+  // public/videos/<slug>.mp4 exists (ComparisonVideoPlayer HEAD-checks and
+  // self-hosts it client-side, so the URL never appears in static HTML), emit a
+  // VideoObject whose contentUrl → the already-served mp4 so Google Video / AI
+  // Overviews can index it. Credential-independent of the YouTube path
+  // (DAN-1197). Only emitted when the file is present so contentUrl never 404s.
+  const selfHostedVideo =
+    !videoMeta?.youtubeVideoId && selfHostedVideoExists(slug)
+      ? selfHostedVideoObjectSchema({
+          slug,
+          title: enrichedComparison.title,
+          description:
+            enrichedComparison.shortAnswer ||
+            enrichedComparison.verdict ||
+            enrichedComparison.metadata.metaDescription ||
+            fallbackDescription,
+          // thumbnailUrl is REQUIRED by Google — reuse the per-page OG image.
+          thumbnailUrl: ogImage,
+          uploadDate:
+            selfHostedVideoUploadDate(slug) ||
+            enrichedComparison.metadata.publishedAt ||
+            enrichedComparison.metadata.updatedAt,
+        })
+      : null;
+
   // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
   // present. Otherwise: N>=3 pages already get a single consolidated @graph from
   // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
-  // the DAN-432 jsonLdGraph consolidation (+ optional VideoObject).
+  // the DAN-432 jsonLdGraph consolidation. The self-hosted VideoObject (DAN-1285)
+  // is folded into whichever document the page emits.
   let jsonLd: string;
   if (enrichedComparison.schemaMarkup) {
-    jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
+    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, selfHostedVideo));
   } else if (isMultiEntity) {
-    jsonLd = JSON.stringify(schemas[0]);
+    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], selfHostedVideo));
   } else {
     jsonLd = JSON.stringify(
       jsonLdGraph([
@@ -340,7 +418,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
               entityA: videoMeta.entityA,
               entityB: videoMeta.entityB,
             })
-          : null,
+          : selfHostedVideo,
       ])
     );
   }
