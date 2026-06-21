@@ -28,11 +28,21 @@ import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated"
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
+//
+// DAN-1281: shared-model-number legacy stub. The bare-number entity "16" sorts
+// before "iphone-15" alphabetically, so the runtime ordering-canonicalizer
+// (sortComparisonSlug in [slug].tsx) folds the legacy slug `iphone-15-vs-16`
+// into the mangled, non-sitemapped thin page `16-vs-iphone-15`. Pin it here so it
+// 308s in ONE hop straight to the real sitemap canonical
+// `iphone-15-vs-iphone-16` ("iPhone 16 vs iPhone 15") at the edge, before the
+// runtime sort ever runs. (Only known shared-model-number stub in the 1,964-slug
+// sitemap sweep — explicit pin keeps blast radius at one URL.)
 const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-pro":
     "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
   "ps5-pro-vs-xbox-series-x":
     "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+  "iphone-15-vs-16": "iphone-15-vs-iphone-16",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
