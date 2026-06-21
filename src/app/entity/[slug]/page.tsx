@@ -4,7 +4,7 @@ import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
-import { ENTITY_CONTENT } from "@/lib/data/entity-content";
+import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
 
@@ -55,8 +55,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     (content
       ? content.description.slice(0, 155)
       : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`);
+  // DAN-1289: title priority — hand-authored ENTITY_LEDE override (intent-matched,
+  // e.g. Browns) wins outright; then curated DB metaTitle (DAN-1169); then a
+  // generated "vs Every Rival" pattern that gives the long tail a "vs" token +
+  // 2026 freshness instead of the old thin "— All Comparisons".
+  const title =
+    ENTITY_LEDE[slug]?.title ||
+    dbMetaTitle ||
+    `${name} vs Every Rival: Comparisons & Stats 2026`;
   return {
-    title: dbMetaTitle || `${name} — All Comparisons`,
+    title,
     description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
   };
@@ -68,6 +76,11 @@ export default async function EntityPage({ params }: PageProps) {
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
+
+  // DAN-1289: every entity page gets a real intro <p> + a "vs" lede H2. Curated
+  // copy (ENTITY_LEDE) wins; otherwise a templated fallback keeps the 200+
+  // long-tail entity pages from being intro-less thin content.
+  const intro = ENTITY_LEDE[slug]?.intro ?? entityIntroFallback(name);
 
   // Find all comparisons that include this entity (DB + mock fallback)
   const relatedComparisons = await getComparisonsForEntity(slug);
@@ -140,6 +153,16 @@ export default async function EntityPage({ params }: PageProps) {
             </p>
           </div>
         </div>
+
+        {/* Intro / lede (DAN-1289) — intent-match prose under the H1 for every
+            entity page. The H2 carries the exact "vs" token + entity name; the
+            <p> carries the "versus {name}" prose Google had no on-page text for. */}
+        <section className="mb-8">
+          <h2 className="text-xl font-bold text-text mb-2">{name} vs Every Rival</h2>
+          <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
+            {intro}
+          </p>
+        </section>
 
         {/* Rich Content Section */}
         {entityContent && (
