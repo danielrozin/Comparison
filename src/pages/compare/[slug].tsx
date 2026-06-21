@@ -1,7 +1,8 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
+import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
+import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
@@ -168,6 +169,68 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
+// Budget for on-demand server-side generation inside getStaticProps. Kept under
+// Vercel's function ceiling; on timeout we fall back to the client-only shell so
+// the request never hangs. Matches the route's 60s `maxDuration` headroom.
+const SSR_GENERATION_BUDGET_MS = 45000;
+
+/**
+ * DAN-1146 — Defense-in-depth SSR for un-ingested `/compare/*` slugs.
+ *
+ * When `getComparisonBySlug` returns null (no DB row), the page previously
+ * shipped a `"use client"` shell with an empty SSR DOM — crawler-invisible thin
+ * content and $0 SSR monetization on the highest-affiliate-value category.
+ *
+ * Here we generate the comparison server-side (same generator the client
+ * `/api/comparisons/generate` route uses), persist it best-effort so the next
+ * crawl is DB-backed and fully linked, and return a `ComparisonPageData` so the
+ * full SSR layout (incl. the DAN-1140 brand-homepage affiliate CTAs) renders in
+ * raw HTML. Any failure (missing API key, timeout, generation error) returns
+ * null and the caller falls back to the existing client shell — so this strictly
+ * improves on the prior behavior and never regresses it.
+ *
+ * Runs only at request time: `getStaticPaths` uses `fallback: "blocking"`, so
+ * un-ingested slugs are never generated during `next build`.
+ */
+async function generateComparisonForSSR(
+  slug: string,
+  entitySlugParts: string[]
+): Promise<Comparison | null> {
+  if (process.env.DISABLE_SSR_FALLBACK_GENERATION === "1") return null;
+
+  const entityNames = entitySlugParts.map((p) => p.replace(/-/g, " "));
+  const isMulti = entityNames.length > 2;
+
+  try {
+    const result = await Promise.race([
+      isMulti
+        ? generateMultiComparison(entityNames, slug)
+        : generateComparison(entityNames[0], entityNames[1], slug),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), SSR_GENERATION_BUDGET_MS)),
+    ]);
+
+    if (!result || !result.success || !result.comparison) return null;
+
+    // Persist best-effort so the next request is DB-backed (self-healing
+    // ingestion). A save failure (e.g. read-only clone DB) is non-fatal — we
+    // still return the generated comparison for a one-shot full SSR render.
+    try {
+      await saveComparison(result.comparison);
+      // Re-fetch so the comparison carries linking-engine relatedComparisons +
+      // relatedBlogPosts, identical to the natively DB-backed path.
+      const refetched = (await getComparisonBySlug(slug)) as Comparison | null;
+      if (refetched) return refetched;
+    } catch (saveErr) {
+      console.warn("SSR-fallback: saveComparison failed, serving generated copy:", saveErr);
+    }
+
+    return result.comparison as Comparison;
+  } catch (err) {
+    console.warn("SSR-fallback generation failed, using client shell:", err);
+    return null;
+  }
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = getAllMockSlugs();
   return {
@@ -192,7 +255,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // Unknown slug → client-side dynamic generation (same fallback as before).
+  // Unknown slug → attempt server-side generation so crawlers get a full SSR
+  // body + affiliate CTAs (DAN-1146). On success we fall through to the normal
+  // comparison render path below; on failure we degrade to the client shell.
+  if (!comparison) {
+    comparison = await generateComparisonForSSR(slug, slugParts.entities);
+  }
+
+  // Still no comparison → client-side dynamic generation (same fallback as before).
   if (!comparison) {
     const override = META_OVERRIDES[slug];
     const nameParts = slug
