@@ -208,9 +208,29 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     // this branch.
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug) {
-      return {
-        redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
-      };
+      // DAN-1265 regression guard: only consolidate into the sorted ordering
+      // when that ordering is a REAL comparison. sortComparisonSlug() sorts the
+      // raw "-vs-" tokens, so a slug whose last entity carries a keyword suffix
+      // (e.g. "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the
+      // suffix into the middle and yields a non-existent slug
+      // ("ps5-pro-performance-comparison-2026-vs-xbox-series-x"). 308-ing there
+      // mints a self-canonicalizing thin-shell dead-end and permanently strands
+      // the variant's link equity instead of folding it into the canonical. If
+      // the sorted target has no valid record, fall through to the dynamic
+      // fallback (which self-canonicals at the requested URL) rather than 308 to
+      // a slug that does not exist. Genuine B-vs-A reorderings still redirect,
+      // because their sorted target resolves to a real page here.
+      let canonical: Comparison | null = null;
+      try {
+        canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
+      } catch {
+        canonical = null;
+      }
+      if (canonical && canonical.entities && canonical.entities.length >= 2) {
+        return {
+          redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+        };
+      }
     }
     const override = META_OVERRIDES[slug];
     const nameParts = slug
