@@ -5,7 +5,8 @@ import {
   generateMultiComparison,
   type GenerationErrorStage,
 } from "@/lib/services/ai-comparison-generator";
-import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { parseComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
+import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
 import { warmCacheForSlug } from "@/lib/services/cache-warming";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
@@ -55,15 +56,44 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid comparison slug format. Use: entity-a-vs-entity-b" }, { status: 400 });
     }
 
+    // DAN-1265 source prevention: never (re)generate a known duplicate slug.
+    // If the requested slug is a retired A-vs-B/B-vs-A or alias duplicate, serve
+    // the surviving canonical page instead of persisting the duplicate again.
+    const consolidated = getConsolidatedCompareSlug(slug);
+    if (consolidated) {
+      const survivor = await getComparisonBySlug(consolidated).catch(() => null);
+      if (survivor) {
+        return NextResponse.json({ status: "ready", comparison: survivor, canonicalSlug: consolidated });
+      }
+    }
+
     // If the comparison was generated and saved while this request was
     // queueing (common for popular slugs), short-circuit and serve it
-    // instead of regenerating.
+    // instead of regenerating — but ONLY when the existing record is valid.
+    // An empty/corrupt record (fewer than 2 entities) must fall through and
+    // regenerate, otherwise the broken row is served forever and the compare
+    // page 500s on it (DAN-1201 follow-up). saveComparison upserts by slug.
     const existing = await getComparisonBySlug(slug).catch(() => null);
-    if (existing) {
+    if (existing && Array.isArray(existing.entities) && existing.entities.length >= 2) {
       return NextResponse.json({ status: "ready", comparison: existing });
     }
 
-    const guard = await evaluateAttemptGuard(slug);
+    // DAN-1265 source prevention for *new* comparisons: force a single canonical
+    // ordering so we can never create both A-vs-B and B-vs-A. If the slug is a
+    // reverse ordering, normalize to the alphabetically-sorted slug — and if that
+    // canonical page already exists, serve it rather than minting the reverse.
+    const canonicalSlug = consolidated ?? sortComparisonSlug(slug);
+    if (canonicalSlug !== slug) {
+      const canonicalExisting = await getComparisonBySlug(canonicalSlug).catch(() => null);
+      if (canonicalExisting) {
+        return NextResponse.json({ status: "ready", comparison: canonicalExisting, canonicalSlug });
+      }
+    }
+    // From here on, generate and persist under the canonical ordering only.
+    const genSlug = canonicalSlug;
+    const genSlugParts = parseComparisonSlug(genSlug) ?? slugParts;
+
+    const guard = await evaluateAttemptGuard(genSlug);
     if (guard.action === "dedupe_inflight") {
       return NextResponse.json(
         { status: "in_progress", error: guard.reason },
@@ -82,19 +112,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const entityNames = slugParts.entities.map((p) => p.replace(/-/g, " "));
+    const entityNames = genSlugParts.entities.map((p) => p.replace(/-/g, " "));
     const entityA = entityNames[0];
     const entityB = entityNames[1];
     const isMulti = entityNames.length > 2;
 
-    const attempt = await startAttempt(slug, "user");
+    const attempt = await startAttempt(genSlug, "user");
     const startedAt = Date.now();
 
     let result;
     try {
       result = isMulti
-        ? await generateMultiComparison(entityNames, slug)
-        : await generateComparison(entityA, entityB, slug);
+        ? await generateMultiComparison(entityNames, genSlug)
+        : await generateComparison(entityA, entityB, genSlug);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation crashed";
       if (attempt) {
