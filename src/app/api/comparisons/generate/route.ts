@@ -5,8 +5,12 @@ import {
   generateMultiComparison,
   type GenerationErrorStage,
 } from "@/lib/services/ai-comparison-generator";
-import { parseComparisonSlug } from "@/lib/utils/slugify";
+import { parseComparisonSlug, comparisonSlugN } from "@/lib/utils/slugify";
 import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
+import {
+  resolveCanonicalCompareSlug,
+  isCanonicalCompareSurvivor,
+} from "@/lib/redirects/compare-redirects";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 import {
   startAttempt,
@@ -62,7 +66,42 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ status: "ready", comparison: existing });
     }
 
-    const guard = await evaluateAttemptGuard(slug);
+    // Source-prevention for A-vs-B / B-vs-A cannibalization (Semrush 2026-06-21):
+    // before generating a NEW comparison, fold the requested ordering to its
+    // canonical survivor so we never persist a fresh duplicate row.
+    //   1. Known retired ordering → its mapped survivor (covers footprint/health
+    //      exceptions where the survivor is intentionally non-alphabetical).
+    //   2. Brand-new pair (neither ordering known) → enforce the alphabetical
+    //      ordering, matching comparisonSlug()/comparisonSlugN() so the only row
+    //      ever created is the one the redirect table would canonicalize to.
+    // Existing pages already short-circuited above, so this never re-alphabetizes
+    // a legitimately non-alphabetical page that already exists.
+    let canonicalSlug = resolveCanonicalCompareSlug(slug);
+    if (canonicalSlug === slug && !isCanonicalCompareSurvivor(slug)) {
+      const alpha = comparisonSlugN(
+        slugParts.entities.map((p) => p.replace(/-/g, " ")),
+      );
+      if (alpha && alpha !== slug) canonicalSlug = alpha;
+    }
+    if (canonicalSlug !== slug) {
+      const canonicalExisting = await getComparisonBySlug(canonicalSlug).catch(
+        () => null,
+      );
+      if (canonicalExisting) {
+        return NextResponse.json({
+          status: "ready",
+          comparison: canonicalExisting,
+          canonicalSlug,
+        });
+      }
+    }
+
+    // From here on generate and persist under the canonical ordering only.
+    const slugForGeneration = canonicalSlug;
+    const partsForGeneration =
+      parseComparisonSlug(slugForGeneration) ?? slugParts;
+
+    const guard = await evaluateAttemptGuard(slugForGeneration);
     if (guard.action === "dedupe_inflight") {
       return NextResponse.json(
         { status: "in_progress", error: guard.reason },
@@ -81,19 +120,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const entityNames = slugParts.entities.map((p) => p.replace(/-/g, " "));
+    const entityNames = partsForGeneration.entities.map((p) =>
+      p.replace(/-/g, " "),
+    );
     const entityA = entityNames[0];
     const entityB = entityNames[1];
     const isMulti = entityNames.length > 2;
 
-    const attempt = await startAttempt(slug, "user");
+    const attempt = await startAttempt(slugForGeneration, "user");
     const startedAt = Date.now();
 
     let result;
     try {
       result = isMulti
-        ? await generateMultiComparison(entityNames, slug)
-        : await generateComparison(entityA, entityB, slug);
+        ? await generateMultiComparison(entityNames, slugForGeneration)
+        : await generateComparison(entityA, entityB, slugForGeneration);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation crashed";
       if (attempt) {

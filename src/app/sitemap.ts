@@ -5,6 +5,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
+import { RETIRED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -96,7 +97,12 @@ export default async function sitemap({
   if (numId === 1) {
     try {
       const { comparisons } = await getAllSitemapData();
-      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
+      // Drop retired dual-ordering slugs — they 301 to a canonical survivor, so
+      // listing them would point crawlers at redirecting URLs (cannibalization).
+      return comparisons
+        .filter((comp) => !RETIRED_COMPARE_SLUGS.has(comp.slug))
+        .slice(0, MAX_URLS_PER_SITEMAP)
+        .map((comp) => ({
         url: `${SITE_URL}/compare/${comp.slug}`,
         lastModified: comp.updatedAt,
         changeFrequency: "weekly" as const,
