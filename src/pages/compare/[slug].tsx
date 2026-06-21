@@ -122,11 +122,12 @@ type Props =
     };
 
 // Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
-// These slugs had weak/auto-generated titles+descriptions; the copy here is
-// pre-optimized. Still piped through buildPageTitle/clampDescription so the
-// single-brand and length invariants hold (buildPageTitle is a no-op on the
-// already-clean brand suffix).
-const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+// These slugs had weak/auto-generated titles (and sometimes descriptions); the
+// copy here is pre-optimized. Still piped through buildPageTitle/clampDescription
+// so the single-brand and length invariants hold (buildPageTitle is a no-op on
+// the already-clean brand suffix). `description` is optional — omit it to keep an
+// already-good stored metaDescription and only swap the weak <title> (DAN-1281).
+const META_OVERRIDES: Record<string, { title: string; description?: string }> = {
   "figma-vs-canva": {
     title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
     description:
@@ -137,10 +138,24 @@ const META_OVERRIDES: Record<string, { title: string; description: string }> = {
     description:
       "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
   },
-  "iphone-15-vs-16": {
-    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
-    description:
-      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  // DAN-1281: title-only CTR swaps (year + verdict hook). Descriptions audited as
+  // already good — left untouched. The legacy `iphone-15-vs-16` override was
+  // removed: that slug now 308s at the edge to the canonical iphone-15-vs-iphone-16
+  // (compare-redirects.ts), so this page never renders.
+  "ansible-vs-chef": {
+    title: "Ansible vs Chef 2026: Which Config Tool Wins? | A Versus B",
+  },
+  "cold-war-vs-world-war-ii": {
+    title: "Cold War vs WWII: Causes, Deaths & Impact | A Versus B",
+  },
+  "figma-vs-invision": {
+    title: "InVision vs Figma 2026: Prototyping & Price | A Versus B",
+  },
+  "metlife-vs-state-farm": {
+    title: "MetLife vs State Farm 2026: Which Insurer Wins? | A Versus B",
+  },
+  "miro-vs-mural": {
+    title: "Miro vs Mural 2026: Pricing, AI & Features | A Versus B",
   },
 };
 
