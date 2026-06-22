@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
-import { generateComparison } from "@/lib/services/ai-comparison-generator";
+import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
@@ -185,6 +185,68 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
+// Budget for on-demand server-side generation inside getStaticProps. Kept under
+// Vercel's function ceiling; on timeout we fall back to the client-only shell so
+// the request never hangs. Matches the route's 60s `maxDuration` headroom.
+const SSR_GENERATION_BUDGET_MS = 45000;
+
+/**
+ * DAN-1146 — Defense-in-depth SSR for un-ingested `/compare/*` slugs.
+ *
+ * When `getComparisonBySlug` returns null (no DB row), the page previously
+ * shipped a `"use client"` shell with an empty SSR DOM — crawler-invisible thin
+ * content and $0 SSR monetization on the highest-affiliate-value category.
+ *
+ * Here we generate the comparison server-side (same generator the client
+ * `/api/comparisons/generate` route uses), persist it best-effort so the next
+ * crawl is DB-backed and fully linked, and return a `ComparisonPageData` so the
+ * full SSR layout (incl. the DAN-1140 brand-homepage affiliate CTAs) renders in
+ * raw HTML. Any failure (missing API key, timeout, generation error) returns
+ * null and the caller falls back to the existing client shell — so this strictly
+ * improves on the prior behavior and never regresses it.
+ *
+ * Runs only at request time: `getStaticPaths` uses `fallback: "blocking"`, so
+ * un-ingested slugs are never generated during `next build`.
+ */
+async function generateComparisonForSSR(
+  slug: string,
+  entitySlugParts: string[]
+): Promise<Comparison | null> {
+  if (process.env.DISABLE_SSR_FALLBACK_GENERATION === "1") return null;
+
+  const entityNames = entitySlugParts.map((p) => p.replace(/-/g, " "));
+  const isMulti = entityNames.length > 2;
+
+  try {
+    const result = await Promise.race([
+      isMulti
+        ? generateMultiComparison(entityNames, slug)
+        : generateComparison(entityNames[0], entityNames[1], slug),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), SSR_GENERATION_BUDGET_MS)),
+    ]);
+
+    if (!result || !result.success || !result.comparison) return null;
+
+    // Persist best-effort so the next request is DB-backed (self-healing
+    // ingestion). A save failure (e.g. read-only clone DB) is non-fatal — we
+    // still return the generated comparison for a one-shot full SSR render.
+    try {
+      await saveComparison(result.comparison);
+      // Re-fetch so the comparison carries linking-engine relatedComparisons +
+      // relatedBlogPosts, identical to the natively DB-backed path.
+      const refetched = (await getComparisonBySlug(slug)) as Comparison | null;
+      if (refetched) return refetched;
+    } catch (saveErr) {
+      console.warn("SSR-fallback: saveComparison failed, serving generated copy:", saveErr);
+    }
+
+    return result.comparison as Comparison;
+  } catch (err) {
+    console.warn("SSR-fallback generation failed, using client shell:", err);
+    return null;
+  }
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = getAllMockSlugs();
   return {
@@ -225,53 +287,21 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // DAN-1201: before degrading to the client-only <DynamicComparison> shell
-  // (which ships NO SSR body — crawlers/LLMs/curl saw only a ~19KB <h1> +
-  // newsletter, i.e. thin content + $0 SSR affiliate body on the highest-value
-  // VPN/SaaS slugs), generate the comparison SERVER-SIDE so getStaticProps can
-  // emit the full SSR layout. This is the same generation the client previously
-  // triggered via POST /api/comparisons/generate, just hoisted to build/ISR time.
-  // Only for canonical 2-entity slugs: non-canonical orderings must 301 (handled
-  // below) and N-way generation isn't supported by generateComparison(). On
-  // success the record is persisted and control falls through to the full
-  // comparison-props path; on any failure we keep the existing client fallback.
-  if (
-    (!comparison || !comparison.entities || comparison.entities.length < 2) &&
-    slugParts.entities.length === 2 &&
-    sortComparisonSlug(slug) === slug
-  ) {
-    try {
-      const gen = await generateComparison(
-        slugParts.entityA.replace(/-/g, " "),
-        slugParts.entityB.replace(/-/g, " "),
-        slug,
-      );
-      if (gen.success && gen.comparison && gen.comparison.entities && gen.comparison.entities.length >= 2) {
-        comparison = gen.comparison as Comparison;
-        // Persist non-blocking — don't fail the render if the DB save errors.
-        saveComparison(comparison).catch((err) =>
-          console.error("DAN-1201: failed to save SSR-generated comparison:", err),
-        );
-      }
-    } catch (err) {
-      console.error("DAN-1201: SSR comparison generation failed, using client fallback:", err);
-    }
-  }
-
-  // Unknown slug → client-side dynamic generation (same fallback as before).
-  // A record that exists but is empty/corrupt (fewer than 2 entities) is treated
-  // the same as missing: the full SSR layout assumes entityA/entityB exist and
-  // throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up — 25 such
-  // records were live in prod). Degrading to the crawlable dynamic fallback both
-  // avoids the 500 and lets the client re-generation path heal the record.
+  // A record that's missing OR exists but is empty/corrupt (fewer than 2
+  // entities) is treated the same: the full SSR layout assumes entityA/entityB
+  // exist and throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up
+  // — 25 such records were live in prod). Server-side generation for these slugs
+  // is hoisted into the generateComparisonForSSR() helper, invoked below AFTER
+  // the DAN-1265 canonical-ordering redirect so non-canonical orderings aren't
+  // minted as their own URL. The helper supersedes the older inline DAN-1201
+  // block (it adds N-way support, a timeout budget, and the env kill-switch).
   if (!comparison || !comparison.entities || comparison.entities.length < 2) {
     // DAN-1265: a non-canonical ordering (B-vs-A) — whether brand-new or backed
     // by an empty/corrupt record — must never be generated/indexed as its own
-    // URL. Send it to the canonical alphabetically-sorted ordering so only one
-    // page per comparison can exist. (Known retired duplicates are already 301'd
-    // at the edge by next.config redirects(); this catches orderings not yet in
-    // that map.) Survivors with a valid page were resolved above and never reach
-    // this branch.
+    // URL. Send it to the canonical alphabetically-sorted ordering BEFORE any
+    // generation so only one page per comparison can exist. (Known retired
+    // duplicates are already 301'd at the edge by next.config redirects(); this
+    // catches orderings not yet in that map.)
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug) {
       // DAN-1265 regression guard: only consolidate into the sorted ordering
@@ -298,6 +328,18 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         };
       }
     }
+
+    // Canonical ordering but unknown/empty → attempt server-side generation so
+    // crawlers get a full SSR body + affiliate CTAs (DAN-1146). On success we
+    // fall through to the normal comparison render path below; on failure we
+    // degrade to the crawlable client shell, which also lets the client
+    // re-generation path heal the record.
+    comparison = await generateComparisonForSSR(slug, slugParts.entities);
+  }
+
+  // Still no usable comparison → client-side dynamic generation (same fallback
+  // as before).
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
     const override = META_OVERRIDES[slug];
     const nameParts = slug
       .split("-vs-")
