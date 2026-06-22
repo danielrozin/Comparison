@@ -2643,6 +2643,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-21T09:21:52.190Z"
+    },
+    {
+      "slug": "spotify-vs-apple-music",
+      "title": "Spotify vs Apple Music",
+      "entityA": "Spotify",
+      "entityB": "Apple Music",
+      "category": "General",
+      "videoFile": "Spotify vs Apple Music.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Spotify vs Apple Music — Full Comparison 2026",
+      "youtubeDescription": "Compare Apple Music vs Spotify. Apple Music pays artists 2-3x more; Spotify has 713M users. Audio quality, pricing, features compared.\n\n#spotify #applemusic #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-22T10:49:50.079Z"
+    },
+    {
+      "slug": "india-vs-china",
+      "title": "India vs China",
+      "entityA": "India",
+      "entityB": "China",
+      "category": "Countries",
+      "videoFile": "India vs China.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "India vs China — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of India vs China.\n\n#india #china #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-22T11:01:00.548Z"
+    },
+    {
+      "slug": "uk-vs-usa",
+      "title": "Uk vs Usa",
+      "entityA": "Uk",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Uk vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uk vs Usa — Full Comparison 2026",
+      "youtubeDescription": "Compare United Kingdom vs United States: GDP, healthcare, safety, population. US economy 8.8x larger; UK healthcare universal at half the cost.\n\n#uk #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-22T11:12:14.679Z"
     }
   ]
 }
