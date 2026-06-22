@@ -43,6 +43,12 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "ps5-pro-vs-xbox-series-x":
     "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
   "iphone-15-vs-16": "iphone-15-vs-iphone-16",
+  // DAN-1365 §A: Kobe/LeBron cannibalization. Two self-canonical live pages with
+  // an identical "Kobe Bryant vs LeBron James" H1 split authority. The survivor is
+  // `kobe-vs-lebron` — its slug token-matches the dominant short query
+  // ("kobe vs lebron", 1,600 vol, pos 27), 4× the dup's keyword. Fold the
+  // full-name slug in; its full-name query stays covered by the survivor's H1.
+  "kobe-bryant-vs-lebron-james": "kobe-vs-lebron",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
