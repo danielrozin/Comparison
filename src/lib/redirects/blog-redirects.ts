@@ -197,6 +197,22 @@ const MACBOOK_WEIGHT_DUPES: string[] = [
 // #7). Canonical retained = the most descriptive published slug at the time
 // of consolidation. Slugs listed mirror the DB rows archived by
 // scripts/dan-868-consolidate-mercedes.mjs.
+//
+// DAN-1370 (child of DAN-1365 §B) — VERIFIED no redirect change needed.
+// The recs doc for "audi competitors luxury cars 2026" (320 vol) endorsed a
+// pos-15 `top-mercedes-benz-alternatives-in-2026-*` page as a NEW canonical and
+// asked to 301 four `mercedes-benz-competitors-*` / `top-alternatives-*` /
+// `best-alternatives-*` near-dups into it. But this is stale Semrush data:
+// every one of those slugs — including each `top-mercedes-benz-alternatives-
+// in-2026-*` variant (lines below) — is ALREADY a 308 dupe folded into
+// MERCEDES_CANONICAL by DAN-868. Live checks 2026-06-22: the canonical is 200;
+// the proposed survivor and all four near-dups are 308 → canonical. Recs
+// caveat resolved exactly like DAN-1369 #1: the established canonical holds all
+// inbound equity (75 dupes point at it; a 308 source has none), so repointing
+// to the pos-15 slug would only create a redirect chain. §B's redirect
+// consolidation is therefore complete; the only DAN-1370 change is the
+// survivor retitle to cover "competitors" (scripts/dan-1370-retitle-mercedes-
+// survivor.ts, shipped via publish-editorial.yml — same path as §C/DAN-1369).
 const MERCEDES_CANONICAL =
   "/blog/mercedes-benz-alternatives-in-2026-best-luxury-cars-brands-to-consider";
 
