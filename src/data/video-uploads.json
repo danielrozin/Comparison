@@ -2685,6 +2685,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-22T11:12:14.679Z"
+    },
+    {
+      "slug": "virat-kohli-vs-sachin-tendulkar",
+      "title": "Virat Kohli vs Sachin Tendulkar",
+      "entityA": "Virat Kohli",
+      "entityB": "Sachin Tendulkar",
+      "category": "General",
+      "videoFile": "Virat Kohli vs Sachin Tendulkar.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Virat Kohli vs Sachin Tendulkar — Full Comparison 2026",
+      "youtubeDescription": "Compare Virat Kohli vs Sachin Tendulkar: 15,921 Test runs, centuries, averages, and career stats analysis\n\n#viratkohli #sachintendulkar #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-23T08:39:11.802Z"
+    },
+    {
+      "slug": "ali-vs-tyson",
+      "title": "Ali vs Tyson",
+      "entityA": "Ali",
+      "entityB": "Tyson",
+      "category": "General",
+      "videoFile": "Ali vs Tyson.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ali vs Tyson — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Ali vs Tyson.\n\n#ali #tyson #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-23T08:48:48.546Z"
+    },
+    {
+      "slug": "russia-vs-usa",
+      "title": "Russia vs Usa",
+      "entityA": "Russia",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Russia vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Russia vs Usa — Full Comparison 2026",
+      "youtubeDescription": "Compare Russia vs US: GDP $27.4T vs $2.1T, military spending, nuclear capabilities, and living standards. Detailed country comparison 2026.\n\n#russia #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-23T08:58:25.704Z"
     }
   ]
 }
