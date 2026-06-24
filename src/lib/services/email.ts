@@ -1,9 +1,11 @@
 /**
  * Email service
  *
- * Primary transport: Resend (verified + warm domain aversusb.net — the same key
- * the weekly-digest cron uses). Resend delivers to ANY recipient, so it is the
- * correct transport for admin notifications, transactional, and outreach mail.
+ * Primary transport: Resend. Resend delivers to ANY recipient, so it is the
+ * correct transport for admin notifications, transactional, and outreach mail —
+ * but ONLY from a domain that is VERIFIED on the Resend key. aversusb.net is NOT
+ * verified on the production key (only revieweriq.com is), so notifications send
+ * from NOTIFICATION_FROM (revieweriq.com) — see DAN-323.
  *
  * Fallback transport: Web3Forms. NOTE — Web3Forms' API ignores the `to` field and
  * always delivers to the access-key owner's mailbox, so it is only a best-effort
@@ -37,6 +39,17 @@ function getResend(): Resend | null {
 
 const RESEND_FROM =
   process.env.RESEND_FROM_EMAIL || "A Versus B <noreply@aversusb.net>";
+
+// Admin/transactional notifications MUST send from a domain that is VERIFIED on
+// the Resend key, or Resend rejects the send with a 403 ("domain is not
+// verified") and the founder silently receives nothing (DAN-323). aversusb.net
+// is NOT yet verified on the production Resend key — only revieweriq.com is — so
+// notifications default to the verified revieweriq.com sender. Once aversusb.net
+// is added + verified at https://resend.com/domains, set RESEND_NOTIFICATION_FROM
+// to "A Versus B <noreply@aversusb.net>" to restore brand-consistent alerts.
+const NOTIFICATION_FROM =
+  process.env.RESEND_NOTIFICATION_FROM ||
+  "A Versus B Alerts <notifications@revieweriq.com>";
 
 // ─── Outreach email (Resend only) ───────────────────────────────────
 
@@ -137,12 +150,14 @@ export async function sendNotificationEmail(opts: {
   ].join("\n");
   const context = `notification:${opts.type}`;
 
-  // 1) Primary: Resend — reliably delivers to the admin mailbox.
+  // 1) Primary: Resend — reliably delivers to the admin mailbox. Sent from the
+  //    VERIFIED notification domain (NOTIFICATION_FROM); using an unverified
+  //    from-domain returns a 403 and drops the alert silently (DAN-323).
   const resend = getResend();
   if (resend) {
     try {
       const { data, error } = await resend.emails.send({
-        from: RESEND_FROM,
+        from: NOTIFICATION_FROM,
         to: NOTIFICATION_EMAIL,
         subject,
         text,
