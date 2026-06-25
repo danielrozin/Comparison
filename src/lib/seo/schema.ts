@@ -155,6 +155,10 @@ export function comparisonPageSchema(
       "@type": "WebPage",
       "@id": url,
     },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict"],
+    },
     about: comparison.entities.map((e) => ({
       "@type": entitySchemaType(e.entityType),
       name: e.name,
@@ -373,6 +377,10 @@ function buildMultiEntityGraph(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict"],
+    },
     mainEntity: { "@id": itemListId },
   };
 
@@ -405,7 +413,7 @@ function buildMultiEntityGraph(
     graph.push({
       "@type": "FAQPage",
       "@id": `${url}#faq`,
-      mainEntity: comparison.faqs.map((faq) => ({
+      mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: { "@type": "Answer", text: faq.answer },
@@ -512,7 +520,7 @@ export function faqSchema(faqs: FAQData[], id?: string) {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     ...(id && { "@id": id }),
-    mainEntity: faqs.map((faq) => ({
+    mainEntity: faqs.slice(0, 10).map((faq) => ({
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
