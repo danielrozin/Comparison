@@ -2769,6 +2769,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-24T08:51:26.212Z"
+    },
+    {
+      "slug": "roth-ira-vs-401k",
+      "title": "Roth Ira vs 401k",
+      "entityA": "Roth Ira",
+      "entityB": "401k",
+      "category": "General",
+      "videoFile": "Roth Ira vs 401k.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Roth Ira vs 401k — Full Comparison 2026",
+      "youtubeDescription": "Compare Roth IRA vs 401(k) contribution limits, tax treatment, and employer matching to find the best retirement savings strategy.\n\n#rothira #401k #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-25T08:33:06.476Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "videoFile": "Haaland vs Mbappe.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Haaland vs Mbappe — Full Comparison 2026",
+      "youtubeDescription": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.\n\n#haaland #mbappe #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-25T08:42:57.534Z"
+    },
+    {
+      "slug": "ancient-greece-vs-ancient-rome",
+      "title": "Ancient Greece vs Ancient Rome",
+      "entityA": "Ancient Greece",
+      "entityB": "Ancient Rome",
+      "category": "General",
+      "videoFile": "Ancient Greece vs Ancient Rome.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ancient Greece vs Ancient Rome — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Ancient Greece vs Ancient Rome.\n\n#ancientgreece #ancientrome #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-25T08:52:15.318Z"
     }
   ]
 }
