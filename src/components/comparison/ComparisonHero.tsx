@@ -59,6 +59,34 @@ function EntityAvatar({
   );
 }
 
+function ScoreBar({
+  entity,
+  variant,
+}: {
+  entity: ComparisonEntityData;
+  variant: "a" | "b";
+}) {
+  const total = (entity.pros?.length ?? 0) + (entity.cons?.length ?? 0);
+  if (total === 0) return null;
+  const pct = Math.round(((entity.pros?.length ?? 0) / total) * 100);
+  const barColor = variant === "a" ? "from-primary-400 to-primary-300" : "from-accent-400 to-purple-300";
+
+  return (
+    <div className="mt-3 px-1">
+      <div className="flex justify-between items-center mb-1">
+        <span className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">Score</span>
+        <span className="text-[11px] font-bold text-white/80">{pct}%</span>
+      </div>
+      <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+        <div
+          className={`h-full bg-gradient-to-r ${barColor} rounded-full`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 function EntityCard({
   entity,
   variant,
@@ -89,6 +117,7 @@ function EntityCard({
           {entity.bestFor}
         </p>
       )}
+      <ScoreBar entity={entity} variant={variant} />
       {entity.affiliateLinks && entity.affiliateLinks.length > 0 && (
         <div className="mt-3">
           <AffiliateButton link={entity.affiliateLinks[0]} size="sm" />
