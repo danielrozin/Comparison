@@ -15,27 +15,27 @@ export default async function NotFound() {
   }
 
   return (
-    <div className="min-h-[60vh] px-4 py-16">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-3xl font-bold text-primary-600">?</span>
+    <div className="min-h-screen bg-surface">
+      {/* Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative text-center">
+          {/* 404 display */}
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 mb-6 mx-auto">
+            <span className="text-3xl font-black text-white">404</span>
           </div>
-          <h1 className="text-3xl font-display font-bold text-text mb-3">
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
             Comparison Not Found
           </h1>
-          <p className="text-text-secondary mb-6 max-w-md mx-auto">
-            We couldn&apos;t find that comparison. Try searching below or browse
-            our popular comparisons.
+          <p className="text-primary-200 text-base sm:text-lg mb-8 max-w-md mx-auto">
+            We couldn&apos;t find that comparison. Search below or browse popular ones.
           </p>
 
-          {/* Search box */}
-          <form
-            action="/search"
-            method="GET"
-            className="max-w-lg mx-auto mb-8"
-          >
+          {/* Search form */}
+          <form action="/search" method="GET" className="max-w-lg mx-auto">
             <div className="relative">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -43,48 +43,51 @@ export default async function NotFound() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
                 type="text"
                 name="q"
                 placeholder='Try "iPhone vs Samsung" or "Tesla vs BMW"...'
-                className="w-full pl-12 pr-28 py-3.5 border border-border rounded-xl text-base focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
+                className="w-full pl-12 pr-28 py-4 rounded-xl text-base bg-white text-gray-900 placeholder:text-gray-400 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors text-sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors text-sm"
               >
                 Search
               </button>
             </div>
           </form>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <Link
               href="/"
-              className="px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+              className="px-6 py-2.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors"
             >
-              Go Home
+              ← Go Home
             </Link>
             <Link
               href="/trending"
-              className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-border"
+              className="px-6 py-2.5 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm ring-1 ring-white/20"
             >
               Browse Trending
             </Link>
           </div>
         </div>
 
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Trending comparisons */}
         {trending.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-lg font-display font-bold text-text mb-4 text-center">
+          <div className="mb-10">
+            <h2 className="text-xl font-display font-bold text-text mb-4">
               Popular Comparisons
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -120,17 +123,18 @@ export default async function NotFound() {
         )}
 
         {/* Browse categories */}
-        <div className="text-center">
-          <h2 className="text-lg font-display font-bold text-text mb-4">
+        <div>
+          <h2 className="text-xl font-display font-bold text-text mb-4">
             Browse by Category
           </h2>
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap gap-2">
             {CATEGORIES.slice(0, 10).map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                className="px-4 py-2 bg-surface-alt hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors capitalize"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors"
               >
+                <span>{cat.icon}</span>
                 {cat.name}
               </Link>
             ))}
