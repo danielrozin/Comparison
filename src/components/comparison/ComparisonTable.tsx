@@ -313,9 +313,10 @@ function LegacyTable({
       <h2 className="text-2xl font-display font-bold text-text mb-6">
         Full Comparison
       </h2>
-      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-x-auto">
+      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
+        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
         <table className="w-full border-collapse">
-          <thead>
+          <thead className="sticky top-0 z-10">
             <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
               <th className="px-5 py-3.5 text-left text-sm font-semibold w-[40%]">Attribute</th>
               <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">{entityA.name}</th>
@@ -377,6 +378,7 @@ function LegacyTable({
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <div className="sm:hidden space-y-2">
@@ -470,13 +472,18 @@ function RedesignedTable({
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-display font-bold text-text">
-          Full Comparison
-        </h2>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18M10 3v18M14 3v18" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Full Comparison</h2>
+        </div>
         <button
           type="button"
           onClick={allOpen ? collapseAll : expandAll}
-          className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+          className="text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-lg"
         >
           {allOpen ? "Collapse all" : "Expand all"}
         </button>
