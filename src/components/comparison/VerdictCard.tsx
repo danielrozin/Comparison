@@ -90,23 +90,33 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-primary-200">{entityA.name}</span>
+                  {entityA.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={entityA.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover ring-1 ring-white/20" />
+                  )}
+                  <span className="text-sm font-semibold text-blue-200">{entityA.name}</span>
                   <span className="text-lg font-bold text-white">{scores.scoreA}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-white">{scores.scoreB}</span>
-                  <span className="text-sm font-semibold text-accent-200">{entityB.name}</span>
+                  <span className="text-sm font-semibold text-purple-200">{entityB.name}</span>
+                  {entityB.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={entityB.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover ring-1 ring-white/20" />
+                  )}
                 </div>
               </div>
               <div className="h-3 bg-white/10 rounded-full overflow-hidden flex">
                 <div
-                  className="bg-gradient-to-r from-blue-400 to-blue-500 rounded-l-full transition-all duration-700"
+                  className="bg-gradient-to-r from-blue-400 to-blue-300 transition-all duration-700"
                   style={{ width: `${(scores.scoreA / (scores.scoreA + scores.scoreB)) * 100}%` }}
                 />
-                <div className="w-px bg-white/30" />
-                <div
-                  className="bg-gradient-to-r from-purple-400 to-purple-500 rounded-r-full transition-all duration-700 flex-1"
-                />
+                <div className="w-0.5 bg-white/40" />
+                <div className="bg-gradient-to-r from-purple-400 to-purple-300 transition-all duration-700 flex-1" />
+              </div>
+              <div className="flex justify-between mt-1">
+                <span className="text-[10px] text-blue-300/70">{scores.scoreA}/10</span>
+                <span className="text-[10px] text-purple-300/70">{scores.scoreB}/10</span>
               </div>
             </div>
           )}
@@ -118,28 +128,25 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                 entity.bestFor ? (
                   <div
                     key={entity.id}
-                    className={`rounded-xl p-4 backdrop-blur-sm transition-transform hover:scale-[1.02] ${
+                    className={`rounded-xl p-4 backdrop-blur-sm transition-all hover:scale-[1.02] hover:brightness-110 ${
                       idx === 0
                         ? "bg-blue-500/15 border border-blue-400/30"
                         : "bg-purple-500/15 border border-purple-400/30"
                     }`}
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div
-                        className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          idx === 0 ? "bg-blue-500/30" : "bg-purple-500/30"
-                        }`}
-                      >
-                        <svg
-                          className="w-3.5 h-3.5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
+                    <div className="flex items-center gap-2.5 mb-2.5">
+                      {entity.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={entity.imageUrl}
+                          alt={entity.name}
+                          className="w-7 h-7 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0"
+                        />
+                      ) : (
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs ${idx === 0 ? "bg-blue-500/30 text-blue-200" : "bg-purple-500/30 text-purple-200"}`}>
+                          {entity.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
                       <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
                         Choose {entity.name} if
                       </p>
