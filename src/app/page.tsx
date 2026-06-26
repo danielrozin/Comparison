@@ -137,34 +137,61 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {latest.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/compare/${item.slug}`}
-                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 p-5 flex flex-col"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 capitalize">
-                    {item.category}
-                  </span>
-                  {item.updatedAt && (
-                    <span className="text-xs text-text-secondary">
-                      {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-semibold text-text group-hover:text-primary-600 transition-colors mb-2">
-                  {item.title}
-                </h3>
-                <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  {item.viewCount.toLocaleString()} views
-                </div>
-              </Link>
-            ))}
+            {latest.map((item) => {
+              const vsParts = item.title.split(/\s+vs\.?\s+/i);
+              const latestEntityA = vsParts[0] || item.title;
+              const latestEntityB = vsParts[1] || "";
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/compare/${item.slug}`}
+                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden"
+                >
+                  {/* Mini gradient header */}
+                  <div className="h-1.5 w-full bg-gradient-to-r from-primary-500 to-accent-500" />
+
+                  <div className="p-5 flex flex-col flex-1">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 capitalize">
+                        {item.category}
+                      </span>
+                      {item.updatedAt && (
+                        <span className="text-xs text-text-secondary">
+                          {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Entity A vs B visual */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
+                          <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityA}</span>
+                        </div>
+                        {latestEntityB && (
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-accent-500 flex-shrink-0" />
+                            <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityB}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center">
+                        <span className="text-[8px] font-black text-white">VS</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      {item.viewCount.toLocaleString()} views
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
