@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "cleanup:consent": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/cleanup-consent-records.ts",
-    "audit:blog-dupes": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/audit-blog-dupes.ts"
+    "audit:blog-dupes": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/audit-blog-dupes.ts",
+    "backfill:blog-embeddings": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/backfill-blog-embeddings.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

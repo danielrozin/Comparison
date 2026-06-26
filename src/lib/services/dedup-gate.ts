@@ -18,26 +18,42 @@
  *   Bag-of-words cosine similarity over the full title. Catches semantically
  *   near-identical titles that differ only in word order or minor phrasing.
  *   No external API required — computed fully in memory using DB title data.
+ *
+ * Gate #4 — Embedding (semantic) cosine similarity >= 0.85 (DAN-520 gate #2):
+ *   Dense small-embedding cosine over the full title. Catches semantic
+ *   near-dups whose *surface tokens differ* (e.g. "Apple Notebook Mass
+ *   Reference 2026" vs an existing "macbook-pro-weight" article) — the one
+ *   class gates #1-#3 structurally cannot see. Runs LAST: it is the only
+ *   gate that costs an external API call, so the cheap deterministic gates
+ *   short-circuit before we spend it. Fails open when no embedding provider
+ *   is configured.
  */
 
 import { getPrisma } from "@/lib/db/prisma";
 import { getRedis } from "./redis";
+import { embedText, cosineSimilarityVec, embeddingsEnabled } from "./embeddings";
 
 export type DedupReason =
   | "slug_prefix_collision"
   | "topic_signature_match"
-  | "high_similarity";
+  | "high_similarity"
+  | "title_cosine_similarity";
 
 export interface DedupCheckResult {
   ok: boolean;
   reason?: DedupReason;
   conflictingSlug?: string;
   details?: string;
+  /** Similarity score for the matched gate (set for the embedding gate). */
+  score?: number;
 }
 
 const PREFIX_TOKEN_THRESHOLD = 5;
 const SIGNATURE_TOKEN_COUNT = 3;
 const SIMILARITY_THRESHOLD = 0.85;
+// DAN-520 gate #2 — embedding cosine. >= (not >) so an exact-paraphrase that
+// lands precisely on the threshold is still caught.
+const EMBEDDING_SIMILARITY_THRESHOLD = 0.85;
 const REJECTION_LOG_KEY = "pipeline:rejections";
 const REJECTION_LOG_MAX = 1000;
 const YEAR_RE = /^(?:19|20)\d{2}$/;
@@ -224,13 +240,73 @@ export function decideDedup(
   return { ok: true };
 }
 
+// ============================================================
+// Gate #4 — Embedding (semantic) cosine similarity (DAN-520 gate #2)
+// ============================================================
+
+export interface SemanticCandidate {
+  slug: string;
+  title: string;
+  /** Stored title embedding. Empty/absent = skip this candidate. */
+  embedding: number[];
+}
+
 /**
- * Loads published BlogArticle candidates from the DB and runs decideDedup.
+ * Pure semantic-decision function — given the proposed title's embedding and
+ * candidate embeddings, returns a rejection when the max cosine similarity
+ * meets the threshold. Separated from I/O so it is unit-testable with
+ * hand-crafted vectors. Candidates without an embedding are skipped (they
+ * are still covered by the deterministic gates in decideDedup).
+ */
+export function decideSemanticDedup(
+  proposedSlug: string,
+  proposedEmbedding: number[],
+  candidates: SemanticCandidate[],
+): DedupCheckResult {
+  if (!proposedEmbedding || proposedEmbedding.length === 0) return { ok: true };
+
+  let best: { slug: string; title: string; score: number } | null = null;
+  for (const candidate of candidates) {
+    if (candidate.slug === proposedSlug) continue; // upsert/update path
+    if (!candidate.embedding || candidate.embedding.length === 0) continue;
+    const score = cosineSimilarityVec(proposedEmbedding, candidate.embedding);
+    if (!best || score > best.score) {
+      best = { slug: candidate.slug, title: candidate.title, score };
+    }
+  }
+
+  if (best && best.score >= EMBEDDING_SIMILARITY_THRESHOLD) {
+    return {
+      ok: false,
+      reason: "title_cosine_similarity",
+      conflictingSlug: best.slug,
+      score: best.score,
+      details: `Title embedding cosine similarity ${best.score.toFixed(3)} >= ${EMBEDDING_SIMILARITY_THRESHOLD} vs "${best.title}" (${best.slug}).`,
+    };
+  }
+
+  return { ok: true };
+}
+
+export interface CheckBlogDedupOptions {
+  /** Scope the embedding gate's candidate pool to a single category (cheap). */
+  category?: string | null;
+  /** Precomputed proposed-title embedding to avoid a duplicate API call. */
+  proposedEmbedding?: number[] | null;
+}
+
+/**
+ * Loads published BlogArticle candidates from the DB and runs the gates.
  * Returns { ok: true } when no DB is configured (no-op in mock mode).
+ *
+ * Order: deterministic gates (#1 slug-prefix → #2 topic-signature → #3
+ * word-cosine) run first and short-circuit. Only if they all pass do we
+ * spend the embedding gate (#4) — the single arm that costs an API call.
  */
 export async function checkBlogDedup(
   proposedTitle: string,
   proposedSlug: string,
+  options: CheckBlogDedupOptions = {},
 ): Promise<DedupCheckResult> {
   if (!proposedSlug || !proposedTitle) return { ok: true };
 
@@ -250,7 +326,41 @@ export async function checkBlogDedup(
     return { ok: true };
   }
 
-  return decideDedup(proposedTitle, proposedSlug, candidates);
+  // Deterministic gates first — cheap, no external call.
+  const deterministic = decideDedup(proposedTitle, proposedSlug, candidates);
+  if (!deterministic.ok) return deterministic;
+
+  // Gate #4 — embedding cosine. Skip entirely when no provider is configured
+  // (fail-open) so the pipeline never hard-depends on the embeddings API.
+  if (!embeddingsEnabled()) return { ok: true };
+
+  const proposedEmbedding =
+    options.proposedEmbedding ?? (await embedText(proposedTitle));
+  if (!proposedEmbedding || proposedEmbedding.length === 0) return { ok: true };
+
+  let semanticCandidates: SemanticCandidate[] = [];
+  try {
+    semanticCandidates = await prisma.blogArticle.findMany({
+      where: {
+        status: "published",
+        // Category-scope to bound the candidate set as the corpus grows.
+        // Articles with no category fall back to a global comparison.
+        ...(options.category ? { category: options.category } : {}),
+      },
+      select: { slug: true, title: true, titleEmbedding: true },
+    }).then((rows) =>
+      rows.map((r) => ({
+        slug: r.slug,
+        title: r.title,
+        embedding: (r.titleEmbedding as number[]) ?? [],
+      })),
+    );
+  } catch (err) {
+    console.warn("[blog-dedup] Failed to load embeddings, skipping semantic gate:", err);
+    return { ok: true };
+  }
+
+  return decideSemanticDedup(proposedSlug, proposedEmbedding, semanticCandidates);
 }
 
 export interface DedupRejectionEntry {
@@ -259,6 +369,8 @@ export interface DedupRejectionEntry {
   conflictingSlug?: string;
   reason?: DedupReason;
   details?: string;
+  /** Similarity score, present for the embedding gate (title_cosine_similarity). */
+  score?: number;
   rejectedAt: string;
   source?: string;
 }
@@ -283,6 +395,7 @@ export async function recordDedupRejection(
     conflictingSlug: result.conflictingSlug,
     reason: result.reason,
     details: result.details,
+    ...(result.score !== undefined ? { score: result.score } : {}),
     rejectedAt: new Date().toISOString(),
     source,
   };
@@ -299,5 +412,6 @@ export const __TESTING__ = {
   PREFIX_TOKEN_THRESHOLD,
   SIGNATURE_TOKEN_COUNT,
   SIMILARITY_THRESHOLD,
+  EMBEDDING_SIMILARITY_THRESHOLD,
   REJECTION_LOG_KEY,
 };
