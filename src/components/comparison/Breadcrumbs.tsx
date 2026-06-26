@@ -28,7 +28,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
   // — do not duplicate it here. (DAN-410)
   return (
     <nav aria-label="Breadcrumb" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-      <ol className="flex items-center gap-1.5 text-sm flex-wrap">
+      <ol className="flex items-center gap-1.5 text-sm overflow-x-auto scrollbar-none whitespace-nowrap pb-0.5 [-webkit-overflow-scrolling:touch] [mask-image:linear-gradient(to_right,transparent_0,black_16px,black_calc(100%-32px),transparent_100%)]">
         <li>
           <Link
             href="/"
@@ -71,7 +71,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
         )}
 
         <li aria-hidden><ChevronSep /></li>
-        <li className="text-text font-medium truncate max-w-[200px] sm:max-w-xs" aria-current="page">
+        <li className="text-text font-medium" aria-current="page">
           {title}
         </li>
       </ol>

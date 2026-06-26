@@ -197,9 +197,9 @@ export function SearchBox() {
     <div ref={wrapperRef} className="relative">
       <form onSubmit={handleSearch} role="search">
         <div
-          className={`relative rounded-2xl transition-all duration-300 ${
+          className={`relative rounded-2xl transition-all duration-200 ${
             isFocused
-              ? "ring-4 ring-primary-400/30 shadow-2xl shadow-primary-500/20"
+              ? "ring-4 ring-primary-400/50 ring-offset-1 ring-offset-transparent shadow-2xl shadow-primary-500/30"
               : "shadow-2xl shadow-black/20"
           }`}
         >
@@ -234,13 +234,13 @@ export function SearchBox() {
             onBlur={() => setIsFocused(false)}
             onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
-            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 border-2 border-transparent focus:border-primary-400/50 outline-none transition-all duration-300"
+            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 border-2 border-transparent focus:border-primary-300 outline-none transition-all duration-200"
             autoComplete="off"
             spellCheck={false}
           />
           <button
             type="submit"
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold rounded-xl transition-all text-sm sm:text-base"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 active:from-primary-800 active:to-primary-700 text-white font-semibold rounded-xl transition-all duration-150 text-sm sm:text-base shadow-md hover:shadow-lg"
           >
             Compare
           </button>

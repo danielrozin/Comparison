@@ -66,7 +66,8 @@ export function RelatedComparisons({
               key={comp.slug}
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
-              className="group relative flex flex-col gap-3 p-4 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md transition-all duration-200 overflow-hidden"
+              style={{ animationDelay: `${cardIdx * 40}ms` }}
+              className="group relative flex flex-col gap-3 p-4 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in"
             >
               {/* Subtle hover gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
