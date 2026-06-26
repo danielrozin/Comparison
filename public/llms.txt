@@ -126,10 +126,26 @@ A Versus B provides a public REST API for accessing comparison data programmatic
 - [Full comparison catalog](https://www.aversusb.net/llms-full.txt): Categorized list of top comparisons with short answers
 - [Sitemap](https://www.aversusb.net/sitemap.xml): Complete URL list for all 2,939+ pages
 
+## Founders
+
+A Versus B was built by two founders who share a passion for making information clear and accessible.
+
+**Daniel Rozin** — Founder & Editor-in-Chief
+Daniel started this project out of a lifelong curiosity about comparing everything — economics, history, sports, trends, products, and software. When he couldn't find a single tool that answered all those questions, he built one.
+- Author page: https://www.aversusb.net/authors/daniel-rozin
+- LinkedIn: https://www.linkedin.com/in/daniel-rozin-56a066b0/
+- Email: Daniarozin@gmail.com
+
+**Shai And** — Co-Founder & CTO
+Shai is the technical co-founder and engineering lead. He designed and built the platform's infrastructure, data pipeline, and AI integration layer.
+- Facebook: https://www.facebook.com/shai.and1
+- Email: Shai.and1@gmail.com
+
 ## Contact
 
 - [Website](https://www.aversusb.net)
 - [Contact page](https://www.aversusb.net/contact)
+- [About page](https://www.aversusb.net/about)
 - Email: daniel@adgpt.com
 - [Terms of Use](https://www.aversusb.net/terms)
 - [Privacy Policy](https://www.aversusb.net/privacy)

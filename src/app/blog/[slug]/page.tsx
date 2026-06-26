@@ -247,9 +247,13 @@ export default async function BlogPostPage({
           ...(extras.author.url && { url: extras.author.url }),
         }
       : {
-          "@type": "Organization",
-          name: `${SITE_NAME} Editorial Team`,
-          url: SITE_URL,
+          "@type": "Person",
+          name: "Daniel Rozin",
+          url: `${SITE_URL}/authors/daniel-rozin`,
+          sameAs: [
+            "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+            "https://www.facebook.com/daniel.rozin.94",
+          ],
         },
     publisher: {
       "@type": "Organization",

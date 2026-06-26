@@ -79,6 +79,26 @@ export function organizationSchema() {
       url: `${SITE_URL}/contact`,
       availableLanguage: "English",
     },
+    // founder[] — E-E-A-T signal: lets Google/LLMs attribute the platform to real people.
+    // sameAs on each Person links to verified social profiles for Knowledge Graph entity matching.
+    founder: [
+      {
+        "@type": "Person",
+        name: "Daniel Rozin",
+        url: `${SITE_URL}/authors/daniel-rozin`,
+        jobTitle: "Founder & Editor-in-Chief",
+        sameAs: [
+          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+          "https://www.facebook.com/daniel.rozin.94",
+        ],
+      },
+      {
+        "@type": "Person",
+        name: "Shai And",
+        jobTitle: "Co-Founder & CTO",
+        sameAs: ["https://www.facebook.com/shai.and1"],
+      },
+    ],
   };
 }
 
