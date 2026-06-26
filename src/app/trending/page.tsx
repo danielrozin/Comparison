@@ -48,16 +48,38 @@ export default async function TrendingPage({ searchParams }: PageProps) {
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
   const trending = allTrending.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
-  const schema = breadcrumbSchema([
+  const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: "Trending", url: `${SITE_URL}/trending` },
   ]);
+
+  // ItemList schema — lets AI answer engines enumerate the trending comparisons
+  // directly from structured data, without parsing the rendered HTML.
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Trending Comparisons on A Versus B",
+    description: trendingDescription,
+    url: `${SITE_URL}/trending`,
+    numberOfItems: trending.length,
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: trending.map((item, index) => ({
+      "@type": "ListItem",
+      position: startIdx + index + 1,
+      name: item.title,
+      url: `${SITE_URL}/compare/${item.slug}`,
+    })),
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

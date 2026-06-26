@@ -199,6 +199,31 @@ export function comparisonPageSchema(
     // destinations from this comparison. Strengthens the internal link graph and
     // improves crawl budget routing to high-value entity pages.
     significantLink: comparison.entities.map((e) => `${SITE_URL}/entity/${e.slug}`),
+    // abstract — concise one-paragraph summary; AI answer engines (ChatGPT, Perplexity,
+    // Claude) prefer `abstract` over `description` for citation snippets because it is
+    // semantically scoped to "scholarly/article summary" rather than SEO blurb.
+    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
+    // keywords — entity names + category make the article discoverable via entity-search
+    // in LLM training pipelines and Bing/Google entity recognition.
+    keywords: [
+      ...comparison.entities.map((e) => e.name),
+      ...(comparison.category ? [comparison.category] : []),
+      "comparison",
+      "vs",
+    ].join(", "),
+    // wordCount — positive freshness/depth signal; LLMs use it to gauge content density.
+    wordCount: comparison.attributes.length > 0
+      ? Math.max(500, comparison.attributes.length * 80 + comparison.faqs.length * 120)
+      : undefined,
+    // interactionStatistic — exposes real page view counts so search engines and LLMs
+    // can rank content by engagement. Uses schema.org/InteractionCounter.
+    ...(comparison.metadata.viewCount > 0 && {
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: { "@type": "WatchAction" },
+        userInteractionCount: comparison.metadata.viewCount,
+      },
+    }),
   });
 
   // 2. ItemList for the compared entities
@@ -431,6 +456,23 @@ function buildMultiEntityGraph(
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     mainEntity: { "@id": itemListId },
+    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
+    keywords: [
+      ...comparison.entities.map((e) => e.name),
+      ...(comparison.category ? [comparison.category] : []),
+      "comparison",
+      "vs",
+    ].join(", "),
+    wordCount: comparison.attributes.length > 0
+      ? Math.max(500, comparison.attributes.length * 80 + comparison.faqs.length * 120)
+      : undefined,
+    ...(comparison.metadata.viewCount > 0 && {
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: { "@type": "WatchAction" },
+        userInteractionCount: comparison.metadata.viewCount,
+      },
+    }),
   };
 
   const breadcrumbs = [
