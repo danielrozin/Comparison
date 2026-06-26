@@ -21,17 +21,30 @@ function EntityAvatar({ entity, variant }: { entity: ComparisonEntityData; varia
 }
 
 export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }) {
+  const totalPros = entities.reduce((s, e) => s + e.pros.length, 0);
+  const totalCons = entities.reduce((s, e) => s + e.cons.length, 0);
+
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-display font-bold text-text">Pros &amp; Cons</h2>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-display font-bold text-text">Pros &amp; Cons</h2>
+          {(totalPros + totalCons) > 0 && (
+            <p className="text-xs text-text-secondary mt-0.5">
+              <span className="text-green-600 font-semibold">{totalPros} pros</span>
+              <span className="mx-1 text-text-secondary/50">·</span>
+              <span className="text-red-500 font-semibold">{totalCons} cons</span>
+              <span className="text-text-secondary/50"> across both</span>
+            </p>
+          )}
+        </div>
         {entities.length >= 2 && (
-          <div className="ml-auto flex -space-x-2">
+          <div className="flex -space-x-2 flex-shrink-0">
             <EntityAvatar entity={entities[0]} variant="a" />
             <EntityAvatar entity={entities[1]} variant="b" />
           </div>
@@ -56,14 +69,17 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                 }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3
-                    className={`font-bold text-lg leading-tight ${
-                      idx === 0 ? "text-primary-800" : "text-accent-700"
-                    }`}
-                  >
-                    {entity.name}
-                  </h3>
-                  <div className="flex gap-1.5 ml-2 mt-0.5">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <EntityAvatar entity={entity} variant={idx === 0 ? "a" : "b"} />
+                    <h3
+                      className={`font-bold text-lg leading-tight truncate ${
+                        idx === 0 ? "text-primary-800" : "text-accent-700"
+                      }`}
+                    >
+                      {entity.name}
+                    </h3>
+                  </div>
+                  <div className="flex gap-1.5 ml-2 mt-0.5 flex-shrink-0">
                     {entity.pros.length > 0 && (
                       <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
                         +{entity.pros.length}
