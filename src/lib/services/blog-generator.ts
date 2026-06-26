@@ -9,6 +9,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
+import { submitToIndexNow } from "@/lib/seo/indexnow";
 
 export interface BlogArticle {
   id?: string;
@@ -195,6 +196,8 @@ export async function saveBlogArticle(
         sourceImpressions: article.sourceImpressions,
       },
     });
+    // Notify search engines instantly via IndexNow (fire-and-forget, never throws).
+    void submitToIndexNow([`/blog/${article.slug}`]).catch(() => {});
     return { id: result.id };
   } catch (e) {
     console.error("Failed to save blog article:", e);

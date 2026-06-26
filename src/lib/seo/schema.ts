@@ -177,6 +177,11 @@ export function comparisonPageSchema(
       url: `${SITE_URL}/entity/${e.slug}`,
       ...(e.shortDesc && { description: e.shortDesc }),
       ...(e.imageUrl && { image: e.imageUrl }),
+      // Country entities: add containedInPlace so search engines understand geographic context.
+      ...(e.entityType === "country" && {
+        "@type": "Country",
+        containedInPlace: { "@type": "Place", name: "Earth" },
+      }),
     })),
     author: {
       "@type": "Organization",
@@ -306,7 +311,9 @@ export function comparisonPageSchema(
     });
   }
 
-  // 6. AggregateRating per entity from user poll votes + review counts
+  // 6. AggregateRating + individual Review per entity from user poll votes + review counts.
+  // Individual Review objects make entities eligible for Google rich-result star snippets;
+  // AggregateRating alone does not qualify without at least one Review present.
   if (voteData && voteData.total >= 10) {
     const citation = comparison.citationStats;
     for (const entity of comparison.entities) {
@@ -331,8 +338,49 @@ export function comparisonPageSchema(
           ratingCount: entityVotes,
           ...(citation?.reviewsAnalyzed && { reviewCount: citation.reviewsAnalyzed }),
         },
+        // Individual Review — required alongside AggregateRating for Google rich-result eligibility.
+        // Uses the comparison page itself as the review body; author is the platform.
+        review: {
+          "@type": "Review",
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: ratingValue.toFixed(1),
+            bestRating: 5,
+            worstRating: 1,
+          },
+          author: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+          },
+          reviewBody:
+            comparison.shortAnswer ||
+            `Comparison of ${entity.name} based on ${comparison.attributes.length} attributes across ${comparison.entities.map((e) => e.name).join(" vs ")}.`,
+          url,
+        },
       });
     }
+  }
+
+  // 7. DefinedTermSet for key differences — AEO signal: marks each attribute
+  // as a defined term so LLMs (ChatGPT, Perplexity, Google AI Overviews) can
+  // extract structured Q&A pairs directly from schema, not just from prose.
+  if (comparison.keyDifferences.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "DefinedTermSet",
+      name: `Key Differences: ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      url,
+      hasDefinedTerm: comparison.keyDifferences.map((kd) => ({
+        "@type": "DefinedTerm",
+        name: kd.label,
+        description:
+          comparison.entities.length >= 2
+            ? `${comparison.entities[0]?.name}: ${kd.entityAValue} | ${comparison.entities[1]?.name}: ${kd.entityBValue}`
+            : kd.entityAValue,
+        inDefinedTermSet: url,
+      })),
+    });
   }
 
   return schemas;
