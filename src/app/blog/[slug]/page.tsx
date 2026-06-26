@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -288,9 +288,20 @@ export default async function BlogPostPage({
     { name: article.title, url: articleUrl },
   ];
 
-  // Build @graph: Article + BreadcrumbList + optional FAQPage + optional ItemList
+  // Build @graph: Article + BreadcrumbList + optional FAQPage + optional ItemList + optional HowTo
   // Slug-keyed extras live in src/lib/data/blog-schema-extras.ts.
   const graph: Record<string, unknown>[] = [articleSchema, breadcrumbSchema(breadcrumbs)];
+
+  // HowTo schema for step-by-step articles (auto-detected from "How to …" title).
+  const howTo = article.content
+    ? howToSchemaFromBlog({
+        title: article.title,
+        description: article.excerpt ?? "",
+        url: articleUrl,
+        content: article.content,
+      })
+    : null;
+  if (howTo) graph.push(howTo);
   if (extras?.faqs?.length) {
     graph.push(faqSchema(extras.faqs));
   }

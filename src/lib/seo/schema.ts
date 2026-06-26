@@ -192,16 +192,7 @@ export function comparisonPageSchema(
     dateModified: comparison.metadata.updatedAt,
     // `mentions` signals to Google/LLMs which entities this article discusses — key GEO signal.
     mentions: comparison.entities.map((e) => ({
-      "@type": entitySchemaType(e.entityType),
-      name: e.name,
-      url: `${SITE_URL}/entity/${e.slug}`,
-      ...(e.shortDesc && { description: e.shortDesc }),
-      ...(e.imageUrl && { image: e.imageUrl }),
-      // Country entities: add containedInPlace so search engines understand geographic context.
-      ...(e.entityType === "country" && {
-        "@type": "Country",
-        containedInPlace: { "@type": "Place", name: "Earth" },
-      }),
+      ...buildEntityMention(e),
     })),
     author: {
       "@type": "Organization",
@@ -520,13 +511,7 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
     // `mentions` — entity graph signals for GEO (same pattern as 2-entity layout)
-    mentions: comparison.entities.map((e) => ({
-      "@type": entitySchemaType(e.entityType),
-      name: e.name,
-      url: `${SITE_URL}/entity/${e.slug}`,
-      ...(e.shortDesc && { description: e.shortDesc }),
-      ...(e.imageUrl && { image: e.imageUrl }),
-    })),
+    mentions: comparison.entities.map((e) => buildEntityMention(e)),
     author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     publisher: {
       "@type": "Organization",
@@ -589,6 +574,23 @@ function buildMultiEntityGraph(
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    });
+  }
+
+  // DefinedTermSet for multi-entity key differences — mirrors the 2-entity path.
+  if (comparison.keyDifferences.length > 0) {
+    graph.push({
+      "@type": "DefinedTermSet",
+      name: `Key Differences: ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      url,
+      hasDefinedTerm: comparison.keyDifferences.map((kd) => ({
+        "@type": "DefinedTerm",
+        name: kd.label,
+        description: kd.values
+          ? kd.values.map((v, i) => `${comparison.entities[i]?.name ?? i}: ${v}`).join(" | ")
+          : `${comparison.entities[0]?.name}: ${kd.entityAValue} | ${comparison.entities[1]?.name}: ${kd.entityBValue}`,
+        inDefinedTermSet: url,
       })),
     });
   }
@@ -881,8 +883,82 @@ export function aggregateRatingSchema(entity: {
 }
 
 // ============================================================
+// HowTo schema for step-by-step blog articles (AEO)
+// ============================================================
+
+/**
+ * Generates HowTo JSON-LD for blog articles whose title starts with "How to".
+ * AI answer engines extract HowTo steps directly from schema — higher citation
+ * rate than prose extraction. Steps are derived from heading structure via simple
+ * regex on markdown content (h2 headings become steps).
+ */
+export function howToSchemaFromBlog(opts: {
+  title: string;
+  description: string;
+  url: string;
+  content: string;
+}) {
+  if (!/^how to /i.test(opts.title)) return null;
+
+  // Extract h2 headings from markdown content as step names.
+  const headingMatches = opts.content.match(/^##\s+(.+)$/gm) ?? [];
+  const steps = headingMatches
+    .map((h) => h.replace(/^##\s+/, "").trim())
+    .filter((s) => s.length > 0 && !/introduction|conclusion|summary|overview/i.test(s))
+    .slice(0, 10);
+
+  if (steps.length < 2) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: opts.title,
+    description: opts.description,
+    url: opts.url,
+    step: steps.map((name, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name,
+      url: `${opts.url}#step-${i + 1}`,
+    })),
+  };
+}
+
+// ============================================================
 // Helpers
 // ============================================================
+
+/**
+ * Builds a rich entity mention object for use in Article `mentions` arrays.
+ * Adds type-specific enrichments: Country gets containedInPlace, Event/War gets
+ * `@type: "Event"` override so Google can link to KG event records.
+ */
+function buildEntityMention(e: {
+  entityType: string;
+  name: string;
+  slug: string;
+  shortDesc?: string | null;
+  imageUrl?: string | null;
+}): Record<string, unknown> {
+  const base: Record<string, unknown> = {
+    "@type": entitySchemaType(e.entityType),
+    name: e.name,
+    url: `${SITE_URL}/entity/${e.slug}`,
+    ...(e.shortDesc && { description: e.shortDesc }),
+    ...(e.imageUrl && { image: e.imageUrl }),
+  };
+
+  if (e.entityType === "country") {
+    base["containedInPlace"] = { "@type": "Place", name: "Earth" };
+  }
+
+  if (e.entityType === "war" || e.entityType === "event") {
+    // Event entities get superEvent for hierarchy context — helps KG entity matching.
+    base["superEvent"] = { "@type": "Event", name: "World History" };
+  }
+
+  return base;
+}
 
 function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
