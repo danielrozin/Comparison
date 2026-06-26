@@ -78,40 +78,45 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                 const aWins = aVal?.winner === true;
                 const bWins = bVal?.winner === true;
 
+                const rowIdx = numericAttrs.indexOf(attr);
                 return (
-                  <tr key={attr.id} className="hover:bg-gray-50/50">
-                    <td className="px-3 py-2 text-gray-700 font-medium">
+                  <tr key={attr.id} className={`hover:bg-primary-50/30 transition-colors ${rowIdx % 2 === 1 ? "bg-gray-50/40" : ""}`}>
+                    <td className="px-4 py-3 text-gray-700 font-medium">
                       {attr.name}
                       {attr.unit && (
                         <span className="text-gray-400 text-xs ml-1">({attr.unit})</span>
                       )}
                     </td>
-                    <td className={`px-3 py-2 text-center tabular-nums ${aWins ? "font-semibold text-green-700" : "text-gray-600"}`}>
-                      {aVal?.valueText || (numA != null ? formatNumber(numA) : "—")}
-                      {aWins && <WinnerBadge />}
+                    <td className={`px-4 py-3 text-center tabular-nums ${aWins ? "font-bold text-green-700 bg-green-50/60" : "text-gray-600"}`}>
+                      <span className="inline-flex items-center gap-1">
+                        {aVal?.valueText || (numA != null ? formatNumber(numA) : "—")}
+                        {aWins && <WinnerBadge />}
+                      </span>
                     </td>
-                    <td className={`px-3 py-2 text-center tabular-nums ${bWins ? "font-semibold text-green-700" : "text-gray-600"}`}>
-                      {bVal?.valueText || (numB != null ? formatNumber(numB) : "—")}
-                      {bWins && <WinnerBadge />}
+                    <td className={`px-4 py-3 text-center tabular-nums ${bWins ? "font-bold text-green-700 bg-green-50/60" : "text-gray-600"}`}>
+                      <span className="inline-flex items-center gap-1">
+                        {bVal?.valueText || (numB != null ? formatNumber(numB) : "—")}
+                        {bWins && <WinnerBadge />}
+                      </span>
                     </td>
-                    <td className="px-3 py-2 w-20">
+                    <td className="px-4 py-3 w-24">
                       {numA != null && numB != null ? (
-                        <div className="flex flex-col items-center gap-0.5">
-                          <div className="w-full h-1.5 rounded-full overflow-hidden bg-gray-100 flex">
+                        <div className="flex flex-col items-center gap-1">
+                          <div className="w-full h-2 rounded-full overflow-hidden bg-gray-100 flex">
                             {(() => {
                               const sum = numA + numB;
                               if (sum === 0) return <div className="w-full h-full bg-gray-200" />;
                               const aW = Math.round((numA / sum) * 100);
                               return (
                                 <>
-                                  <div className="h-full bg-primary-400 transition-all" style={{ width: `${aW}%` }} />
-                                  <div className="h-full bg-accent-400 transition-all" style={{ width: `${100 - aW}%` }} />
+                                  <div className={`h-full transition-all ${aWins ? "bg-green-400" : "bg-primary-400"}`} style={{ width: `${aW}%` }} />
+                                  <div className={`h-full transition-all ${bWins ? "bg-green-400" : "bg-accent-400"}`} style={{ width: `${100 - aW}%` }} />
                                 </>
                               );
                             })()}
                           </div>
                           {diff && (
-                            <span className={`text-[10px] font-medium ${diffColor}`}>{diff}</span>
+                            <span className={`text-[10px] font-semibold tabular-nums ${diffColor}`}>{diff}</span>
                           )}
                         </div>
                       ) : (
