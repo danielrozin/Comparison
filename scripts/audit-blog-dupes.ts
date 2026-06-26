@@ -18,15 +18,22 @@ import { PrismaClient } from "@prisma/client";
 import {
   slugPrefixKey,
   topicSignature,
+  __TESTING__,
 } from "../src/lib/services/dedup-gate";
+import { cosineSimilarityVec } from "../src/lib/services/embeddings";
 
 const CLUSTER_MIN_SIZE = 3;
+const COSINE_THRESHOLD = __TESTING__.EMBEDDING_SIMILARITY_THRESHOLD; // 0.85
 
 interface Row {
   slug: string;
   title: string;
   publishedAt: Date | null;
   viewCount: number;
+}
+
+interface EmbRow extends Row {
+  embedding: number[];
 }
 
 function pickCanonical(rows: Row[]): Row {
@@ -43,7 +50,13 @@ async function main() {
   try {
     const articles = await prisma.blogArticle.findMany({
       where: { status: "published" },
-      select: { slug: true, title: true, publishedAt: true, viewCount: true },
+      select: {
+        slug: true,
+        title: true,
+        publishedAt: true,
+        viewCount: true,
+        titleEmbedding: true,
+      },
     });
 
     console.log(`Loaded ${articles.length} published BlogArticle rows.\n`);
@@ -106,12 +119,78 @@ async function main() {
       console.log("");
     }
 
+    // === Embedding cosine clusters (DAN-520 gate #2) =========================
+    // Connected components over the pairwise cosine >= threshold graph. O(n^2)
+    // — fine for a few hundred rows; this is a one-off ad-hoc audit. Catches
+    // semantic near-dups the deterministic gates above structurally miss.
+    const embRows: EmbRow[] = articles
+      .map((a) => ({ ...a, embedding: (a.titleEmbedding as number[]) ?? [] }))
+      .filter((a) => a.embedding.length > 0);
+
+    const missingEmbeddings = articles.length - embRows.length;
+
+    // Union-Find for connected components.
+    const parent = embRows.map((_, i) => i);
+    const find = (i: number): number => {
+      while (parent[i] !== i) {
+        parent[i] = parent[parent[i]];
+        i = parent[i];
+      }
+      return i;
+    };
+    const union = (a: number, b: number) => {
+      const ra = find(a);
+      const rb = find(b);
+      if (ra !== rb) parent[ra] = rb;
+    };
+
+    for (let i = 0; i < embRows.length; i++) {
+      for (let j = i + 1; j < embRows.length; j++) {
+        const sim = cosineSimilarityVec(embRows[i].embedding, embRows[j].embedding);
+        if (sim >= COSINE_THRESHOLD) union(i, j);
+      }
+    }
+
+    const compMap = new Map<number, EmbRow[]>();
+    for (let i = 0; i < embRows.length; i++) {
+      const root = find(i);
+      if (!compMap.has(root)) compMap.set(root, []);
+      compMap.get(root)!.push(embRows[i]);
+    }
+    const cosineClusters = [...compMap.values()]
+      .filter((v) => v.length >= 2) // 2+ = at least one near-dup pair
+      .sort((a, b) => b.length - a.length);
+
+    console.log(
+      `=== Embedding cosine clusters (title similarity >=${COSINE_THRESHOLD}, >=2 members) ===\n`
+    );
+    if (missingEmbeddings > 0) {
+      console.log(
+        `(note: ${missingEmbeddings} published rows have no titleEmbedding yet — run npm run backfill:blog-embeddings)\n`
+      );
+    }
+    if (cosineClusters.length === 0) {
+      console.log("(none)\n");
+    }
+    for (const rows of cosineClusters) {
+      const canonical = pickCanonical(rows);
+      console.log(`Cosine cluster  (${rows.length} articles)`);
+      console.log(`  Canonical: ${canonical.slug}`);
+      for (const r of rows) {
+        const tag = r.slug === canonical.slug ? "  ✓" : "  -";
+        console.log(`${tag} ${r.slug}  [${r.viewCount} views]  "${r.title}"`);
+      }
+      console.log("");
+    }
+
     const totalDupesPrefix = prefixClusters.reduce((s, [, v]) => s + v.length - 1, 0);
     const totalDupesSig = sigClusters.reduce((s, [, v]) => s + v.length - 1, 0);
+    const totalDupesCosine = cosineClusters.reduce((s, v) => s + v.length - 1, 0);
 
     console.log("=== Summary ===");
     console.log(`Slug-prefix dup clusters: ${prefixClusters.length}  (${totalDupesPrefix} dupe rows that should be consolidated)`);
     console.log(`Topic-signature dup clusters: ${sigClusters.length}  (${totalDupesSig} dupe rows that should be consolidated)`);
+    console.log(`Embedding cosine dup clusters: ${cosineClusters.length}  (${totalDupesCosine} dupe rows; ${missingEmbeddings} rows unembedded)`);
   } finally {
     await prisma.$disconnect();
   }
