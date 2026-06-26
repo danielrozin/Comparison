@@ -2811,6 +2811,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-25T08:52:15.318Z"
+    },
+    {
+      "slug": "f-35-vs-j-20",
+      "title": "F 35 vs J 20",
+      "entityA": "F 35",
+      "entityB": "J 20",
+      "category": "General",
+      "videoFile": "F 35 vs J 20.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "F 35 vs J 20 — Full Comparison 2026",
+      "youtubeDescription": "The F-35 Lightning II is the world&#x27;s most advanced multi-role stealth fighter with 1,000+ delivered across 18 nations. China&#x27;s J-20 Mighty Dragon is a large…\n\n#f35 #j20 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-26T08:40:14.110Z"
+    },
+    {
+      "slug": "python-vs-javascript",
+      "title": "Python vs Javascript",
+      "entityA": "Python",
+      "entityB": "Javascript",
+      "category": "General",
+      "videoFile": "Python vs Javascript.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Python vs Javascript — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Python vs Javascript.\n\n#python #javascript #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-26T08:49:33.906Z"
+    },
+    {
+      "slug": "us-economy-vs-china-economy",
+      "title": "US Economy vs China Economy",
+      "entityA": "US Economy",
+      "entityB": "China Economy",
+      "category": "economy",
+      "videoFile": "US Economy vs China Economy.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "US Economy vs China Economy — Full Comparison 2026",
+      "youtubeDescription": "The US has the world's largest nominal GDP ($25.5T) and leads in technology, finance, and innovation. China ($17.7T) is the world's largest manufacturer and may surpass the US in total GDP by PPP. The US has 6x higher GDP per capita.\n\n#useconomy #chinaeconomy #economy #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-26T08:59:21.695Z"
     }
   ]
 }
