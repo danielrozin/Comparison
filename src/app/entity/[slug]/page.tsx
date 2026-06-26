@@ -118,41 +118,51 @@ export default async function EntityPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumbs */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            {categoryDef && (
-              <>
-                <li>/</li>
-                <li>
-                  <Link href={`/category/${categoryDef.slug}`} className="hover:text-primary-600">
-                    {categoryDef.name}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li>/</li>
-            <li className="text-text font-medium">{name}</li>
-          </ol>
-        </nav>
-
-        {/* Hero with Star Rating */}
-        <div className="flex items-start gap-4 mb-8 p-6 bg-white border border-border rounded-2xl">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-3xl font-bold text-primary-700">{name.charAt(0)}</span>
-          </div>
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-display font-black text-text">{name}</h1>
-            <div className="mt-2">
-              <StarRating rating={rating} size="lg" reviewCount={reviewCount} />
+      {/* Entity Hero Banner */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200 flex-wrap">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              {categoryDef && (
+                <>
+                  <li aria-hidden="true" className="text-primary-400">/</li>
+                  <li>
+                    <Link href={`/category/${categoryDef.slug}`} className="hover:text-white transition-colors">
+                      {categoryDef.name}
+                    </Link>
+                  </li>
+                </>
+              )}
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{name}</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <span className="text-3xl sm:text-4xl font-bold text-white" aria-hidden="true">{name.charAt(0)}</span>
             </div>
-            <p className="text-text-secondary mt-2">
-              {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""} available
-            </p>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">{name}</h1>
+              <div className="mt-2 flex items-center gap-3 flex-wrap">
+                <StarRating rating={rating} size="lg" reviewCount={reviewCount} inverted />
+                <span className="text-primary-200 text-sm">
+                  · {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
         {/* Intro / lede (DAN-1289) — intent-match prose under the H1 for every
             entity page. The H2 carries the exact "vs" token + entity name; the

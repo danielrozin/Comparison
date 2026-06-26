@@ -6,6 +6,7 @@ interface StarRatingProps {
   size?: "sm" | "md" | "lg";
   showValue?: boolean;
   reviewCount?: number;
+  inverted?: boolean; // true = white text for dark backgrounds
 }
 
 const SIZES = {
@@ -26,6 +27,7 @@ export function StarRating({
   size = "md",
   showValue = true,
   reviewCount,
+  inverted = false,
 }: StarRatingProps) {
   const clampedRating = Math.min(Math.max(rating, 0), maxStars);
   const fullStars = Math.floor(clampedRating);
@@ -49,12 +51,12 @@ export function StarRating({
         ))}
       </div>
       {showValue && (
-        <span className={`font-semibold text-text ${TEXT_SIZES[size]}`}>
+        <span className={`font-semibold ${TEXT_SIZES[size]} ${inverted ? "text-white" : "text-text"}`}>
           {clampedRating.toFixed(1)}
         </span>
       )}
       {reviewCount !== undefined && (
-        <span className={`text-text-secondary ${TEXT_SIZES[size]}`}>
+        <span className={`${TEXT_SIZES[size]} ${inverted ? "text-white/70" : "text-text-secondary"}`}>
           ({reviewCount.toLocaleString()} review{reviewCount !== 1 ? "s" : ""})
         </span>
       )}
