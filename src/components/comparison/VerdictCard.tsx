@@ -75,10 +75,13 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
             <AiAssistedBadge />
           </div>
 
-          {/* Verdict text */}
-          <p className="text-gray-200 leading-relaxed text-base sm:text-lg mb-4">
-            {verdictText}
-          </p>
+          {/* Verdict text — styled as a readable quote */}
+          <div className="relative mb-5">
+            <div className="absolute -left-1 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-400/60 via-yellow-400/30 to-transparent rounded-full" />
+            <p className="pl-4 text-gray-200 leading-relaxed text-base sm:text-lg">
+              {verdictText}
+            </p>
+          </div>
 
           {/* Feedback widget */}
           <div className="mb-6">
@@ -87,36 +90,47 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
 
           {/* Score bar */}
           {scores && (
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
+            <div className="mb-6 bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
+              <div className="flex items-center justify-between mb-3 gap-2">
+                {/* Entity A score */}
+                <div className="flex items-center gap-2 min-w-0">
                   {entityA.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityA.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover ring-1 ring-white/20" />
+                    <img src={entityA.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
                   )}
-                  <span className="text-sm font-semibold text-blue-200">{entityA.name}</span>
-                  <span className="text-lg font-bold text-white">{scores.scoreA}</span>
+                  <div className="min-w-0">
+                    <span className="block text-xs text-blue-300/80 truncate">{entityA.name}</span>
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-2xl font-black text-white tabular-nums">{scores.scoreA}</span>
+                      <span className="text-xs text-white/40 font-medium">/10</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-white">{scores.scoreB}</span>
-                  <span className="text-sm font-semibold text-purple-200">{entityB.name}</span>
+
+                <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest">vs</div>
+
+                {/* Entity B score */}
+                <div className="flex items-center gap-2 min-w-0 text-right">
+                  <div className="min-w-0">
+                    <span className="block text-xs text-purple-300/80 truncate text-right">{entityB.name}</span>
+                    <div className="flex items-baseline gap-0.5 justify-end">
+                      <span className="text-2xl font-black text-white tabular-nums">{scores.scoreB}</span>
+                      <span className="text-xs text-white/40 font-medium">/10</span>
+                    </div>
+                  </div>
                   {entityB.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityB.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover ring-1 ring-white/20" />
+                    <img src={entityB.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
                   )}
                 </div>
               </div>
-              <div className="h-3 bg-white/10 rounded-full overflow-hidden flex">
+              <div className="h-2.5 bg-white/10 rounded-full overflow-hidden flex">
                 <div
                   className="bg-gradient-to-r from-blue-400 to-blue-300 transition-all duration-700"
                   style={{ width: `${(scores.scoreA / (scores.scoreA + scores.scoreB)) * 100}%` }}
                 />
-                <div className="w-0.5 bg-white/40" />
+                <div className="w-px bg-white/30" />
                 <div className="bg-gradient-to-r from-purple-400 to-purple-300 transition-all duration-700 flex-1" />
-              </div>
-              <div className="flex justify-between mt-1">
-                <span className="text-[10px] text-blue-300/70">{scores.scoreA}/10</span>
-                <span className="text-[10px] text-purple-300/70">{scores.scoreB}/10</span>
               </div>
             </div>
           )}

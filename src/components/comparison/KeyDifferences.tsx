@@ -1,4 +1,24 @@
+import Image from "next/image";
 import type { KeyDifference, ComparisonEntityData } from "@/types";
+
+function EntityMiniAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
+  const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
+  const initials = entity.name.split(/\s+/).slice(0, 2).map((w) => w.charAt(0)).join("").toUpperCase();
+  const gradientClass = variant === "a" ? "from-primary-400 to-primary-600" : "from-accent-400 to-accent-600";
+
+  if (hasImage) {
+    return (
+      <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white shadow-sm flex-shrink-0">
+        <Image src={entity.imageUrl!} alt={entity.name} width={32} height={32} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
+  return (
+    <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white text-xs font-bold ring-2 ring-white shadow-sm flex-shrink-0`}>
+      {initials || entity.name.charAt(0)}
+    </div>
+  );
+}
 
 function ScorecardHeader({
   differences,
@@ -29,10 +49,14 @@ function ScorecardHeader({
   return (
     <div className="mb-5 bg-gradient-to-r from-primary-50 via-white to-accent-50 border border-border rounded-xl p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3 mb-3">
-        <div className="text-center min-w-0">
+        {/* Entity A */}
+        <div className="flex flex-col items-center gap-1.5 min-w-0">
+          <EntityMiniAvatar entity={entityA} variant="a" />
           <span className="block text-xl sm:text-2xl font-black text-primary-700">{aWins}</span>
-          <span className="text-xs text-text-secondary truncate max-w-[80px] sm:max-w-none block">{entityA.name}</span>
+          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityA.name}</span>
         </div>
+
+        {/* Center: leader badge */}
         <div className="flex-1 min-w-0 text-center">
           {leader ? (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-win/10 text-win border border-win/20">
@@ -50,14 +74,17 @@ function ScorecardHeader({
             <span className="block mt-1 text-[10px] text-text-secondary">{ties} tie{ties !== 1 ? "s" : ""}</span>
           )}
         </div>
-        <div className="text-center min-w-0">
+
+        {/* Entity B */}
+        <div className="flex flex-col items-center gap-1.5 min-w-0">
+          <EntityMiniAvatar entity={entityB} variant="b" />
           <span className="block text-xl sm:text-2xl font-black text-accent-600">{bWins}</span>
-          <span className="text-xs text-text-secondary truncate max-w-[80px] sm:max-w-none block">{entityB.name}</span>
+          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityB.name}</span>
         </div>
       </div>
 
       {/* Win ratio bar */}
-      <div className="h-2 rounded-full overflow-hidden bg-gray-100 flex">
+      <div className="h-2.5 rounded-full overflow-hidden bg-gray-100 flex">
         <div
           className="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-500"
           style={{ width: `${aPercent}%` }}
@@ -92,25 +119,25 @@ export function KeyDifferencesBlock({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-display font-bold text-text">Key Differences</h2>
-        <span className="ml-auto text-xs font-semibold text-text-secondary bg-surface-alt border border-border rounded-full px-2.5 py-0.5">
-          {differences.length} attributes
-        </span>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-2xl font-display font-bold text-text">Key Differences</h2>
+          <p className="text-xs text-text-secondary mt-0.5">{differences.length} attribute{differences.length !== 1 ? "s" : ""} compared head-to-head</p>
+        </div>
       </div>
 
       <ScorecardHeader differences={differences} entityA={entityA} entityB={entityB} />
 
       {/* Desktop: 3-column grid layout */}
-      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
+      <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden shadow-sm">
         {/* Header */}
-        <div className="grid grid-cols-[1fr_auto_1fr] bg-surface-alt border-b border-border">
-          <div className="px-4 py-3 text-sm font-semibold text-primary-700 text-center">
+        <div className="grid grid-cols-[1fr_auto_1fr] bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900">
+          <div className="px-4 py-3 text-sm font-semibold text-blue-200 text-center">
             {entityA.name}
           </div>
-          <div className="px-4 py-3 text-xs font-medium text-text-secondary self-center">
+          <div className="px-4 py-3 text-xs font-medium text-white/50 self-center text-center">
             Attribute
           </div>
-          <div className="px-4 py-3 text-sm font-semibold text-accent-600 text-center">
+          <div className="px-4 py-3 text-sm font-semibold text-purple-200 text-center">
             {entityB.name}
           </div>
         </div>
