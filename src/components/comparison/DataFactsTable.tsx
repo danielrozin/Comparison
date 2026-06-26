@@ -88,8 +88,29 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                       {bVal?.valueText || (numB != null ? formatNumber(numB) : "—")}
                       {bWins && <WinnerBadge />}
                     </td>
-                    <td className={`px-3 py-2 text-center text-xs font-medium ${diffColor}`}>
-                      {diff || "—"}
+                    <td className="px-3 py-2 w-20">
+                      {numA != null && numB != null ? (
+                        <div className="flex flex-col items-center gap-0.5">
+                          <div className="w-full h-1.5 rounded-full overflow-hidden bg-gray-100 flex">
+                            {(() => {
+                              const sum = numA + numB;
+                              if (sum === 0) return <div className="w-full h-full bg-gray-200" />;
+                              const aW = Math.round((numA / sum) * 100);
+                              return (
+                                <>
+                                  <div className="h-full bg-primary-400 transition-all" style={{ width: `${aW}%` }} />
+                                  <div className="h-full bg-accent-400 transition-all" style={{ width: `${100 - aW}%` }} />
+                                </>
+                              );
+                            })()}
+                          </div>
+                          {diff && (
+                            <span className={`text-[10px] font-medium ${diffColor}`}>{diff}</span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-400 text-center block">—</span>
+                      )}
                     </td>
                   </tr>
                 );
