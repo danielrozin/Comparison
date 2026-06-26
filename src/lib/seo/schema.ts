@@ -44,6 +44,14 @@ export function organizationSchema() {
       width: 200,
       height: 60,
     },
+    // image — separate from logo; required for Google Knowledge Panel eligibility.
+    // The OG image serves as the brand's representative image in entity cards.
+    image: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
+      width: 1200,
+      height: 630,
+    },
     sameAs: socialSameAs(),
     description: "A Versus B is the internet's most comprehensive comparison platform — 2,900+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more. Every page includes structured data (Schema.org), expert verdicts, community voting, and source citations.",
     foundingDate: "2024",
@@ -224,6 +232,11 @@ export function comparisonPageSchema(
         userInteractionCount: comparison.metadata.viewCount,
       },
     }),
+    // isAccessibleForFree — signals to Google that content is not paywalled.
+    // Required for "Flexible Sampling" eligibility and broader rich-result coverage.
+    isAccessibleForFree: true,
+    // license — public declaration of content license for AI training transparency.
+    license: `${SITE_URL}/terms`,
   });
 
   // 2. ItemList for the compared entities
@@ -473,6 +486,8 @@ function buildMultiEntityGraph(
         userInteractionCount: comparison.metadata.viewCount,
       },
     }),
+    isAccessibleForFree: true,
+    license: `${SITE_URL}/terms`,
   };
 
   const breadcrumbs = [
@@ -616,6 +631,7 @@ export function categoryPageSchema(category: CategoryData) {
       name: category.name,
       description: category.description,
       url,
+      inLanguage: "en-US",
       mainEntity: {
         "@type": "ItemList",
         name: `${category.name} Comparisons`,
@@ -626,6 +642,20 @@ export function categoryPageSchema(category: CategoryData) {
           name: comp.title,
           url: `${SITE_URL}/compare/${comp.slug}`,
         })),
+      },
+      // hasPart — explicit article membership for each top comparison in this category.
+      // Reinforces the category→comparison hierarchy in the knowledge graph so AI
+      // engines correctly attribute comparison content to its parent category topic.
+      hasPart: category.topComparisons.slice(0, 10).map((comp) => ({
+        "@type": "Article",
+        name: comp.title,
+        url: `${SITE_URL}/compare/${comp.slug}`,
+        isPartOf: { "@type": "CollectionPage", url },
+      })),
+      // speakable — marks the category name/description for voice assistants.
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".category-description"],
       },
     },
     breadcrumbSchema([

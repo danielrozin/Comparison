@@ -227,8 +227,15 @@ export default async function BlogPostPage({
     ? article.content.split(/\s+/).filter(Boolean).length
     : undefined;
 
+  // Use NewsArticle for posts published within 30 days — Google treats NewsArticle
+  // as time-sensitive content and fast-tracks it for freshness ranking signals.
+  const publishedDate = article.publishedAt ? new Date(article.publishedAt) : null;
+  const isRecent = publishedDate
+    ? Date.now() - publishedDate.getTime() < 30 * 24 * 60 * 60 * 1000
+    : false;
+
   const articleSchema = {
-    "@type": "Article",
+    "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
     headline: article.title,
     description: article.excerpt,
     ...(wordCount && { wordCount }),
@@ -265,6 +272,10 @@ export default async function BlogPostPage({
     mainEntityOfPage: articleUrl,
     url: articleUrl,
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    // abstract — concise summary for LLM citation snippets (preferred over description)
+    ...(article.excerpt && { abstract: article.excerpt }),
+    // keywords — tags + category for entity/topic recognition in LLM training crawls
+    ...(article.tags?.length && { keywords: article.tags.join(", ") }),
   };
 
   const breadcrumbs = [

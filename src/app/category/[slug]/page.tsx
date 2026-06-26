@@ -211,7 +211,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
               {category.name} Comparisons
             </h1>
-            <p className="text-text-secondary mt-1">
+            <p className="category-description text-text-secondary mt-1">
               {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
               {hasSubcategories && subcategoryData.length > 0 && ` across ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
             </p>

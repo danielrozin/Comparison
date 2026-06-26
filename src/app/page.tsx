@@ -47,6 +47,13 @@ export default async function HomePage() {
       name: t.title,
       url: `${SITE_URL}/compare/${t.slug}`,
     })),
+    // speakable — marks the hero headline and description for voice assistants and AEO.
+    // Google Assistant and AI answer engines read these CSS selectors to extract the
+    // page's primary answer when responding to conversational queries.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".hero-description"],
+    },
   };
 
   return (
@@ -72,7 +79,7 @@ export default async function HomePage() {
                 Anything
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            <p className="hero-description text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
               Sports players, countries, products, technology, history — get clear,
               visual, data-driven comparisons in seconds.
             </p>
