@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -100,6 +100,14 @@ export default async function EntityPage({ params }: PageProps) {
       entityType: inferredEntityType,
       ratingValue: rating,
       reviewCount,
+    }),
+    profilePageSchema({
+      name,
+      slug,
+      shortDesc: entityContent?.description?.slice(0, 200) ?? null,
+      entityType: inferredEntityType,
+      imageUrl: null,
+      comparisonCount: relatedComparisons.length,
     }),
   ];
 

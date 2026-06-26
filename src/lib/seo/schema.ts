@@ -195,6 +195,10 @@ export function comparisonPageSchema(
       description: e.shortDesc,
       ...(e.imageUrl && { image: e.imageUrl }),
     })),
+    // significantLink — tells crawlers which entity profile pages are the authoritative
+    // destinations from this comparison. Strengthens the internal link graph and
+    // improves crawl budget routing to high-value entity pages.
+    significantLink: comparison.entities.map((e) => `${SITE_URL}/entity/${e.slug}`),
   });
 
   // 2. ItemList for the compared entities
@@ -610,6 +614,87 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
+  };
+}
+
+// ============================================================
+// ProfilePage schema — wraps entity pages for Knowledge Panel signals.
+// Google uses ProfilePage to understand that a URL is "about" a named entity.
+// Emitting this alongside the entity schema strengthens entity disambiguation
+// and increases the chance of our entity pages appearing in AI Overview citations.
+// ============================================================
+
+export function profilePageSchema(entity: {
+  name: string;
+  slug: string;
+  shortDesc: string | null;
+  entityType: string;
+  imageUrl: string | null;
+  comparisonCount?: number;
+}) {
+  const url = `${SITE_URL}/entity/${entity.slug}`;
+  const schemaType = entitySchemaType(entity.entityType);
+
+  const mainEntity: Record<string, unknown> = {
+    "@type": schemaType,
+    "@id": url,
+    name: entity.name,
+    url,
+    ...(entity.shortDesc && { description: entity.shortDesc }),
+    ...(entity.imageUrl && { image: entity.imageUrl }),
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: `${entity.name} — Comparisons & Profile`,
+    url,
+    dateModified: new Date().toISOString().slice(0, 10),
+    inLanguage: "en-US",
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: entity.name, item: url },
+      ],
+    },
+    mainEntity,
+    ...(entity.comparisonCount && entity.comparisonCount > 0 && {
+      about: {
+        "@type": "ItemList",
+        name: `Comparisons involving ${entity.name}`,
+        numberOfItems: entity.comparisonCount,
+        url: `${SITE_URL}/entity/${entity.slug}`,
+      },
+    }),
+  };
+}
+
+// ============================================================
+// SiteNavigation schema — emitted in the global layout.
+// Tells crawlers (Googlebot, LLM bots) the primary navigation structure,
+// improving crawl budget allocation to high-value category pages.
+// ============================================================
+
+export function siteNavigationSchema(categories: { name: string; slug: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SiteLinksSearchBox",
+    url: SITE_URL,
+    potentialAction: [
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={query}` },
+        "query-input": "required name=query",
+      },
+    ],
+    hasPart: categories.map((cat) => ({
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/category/${cat.slug}`,
+      name: `${cat.name} Comparisons`,
+      url: `${SITE_URL}/category/${cat.slug}`,
+    })),
   };
 }
 
