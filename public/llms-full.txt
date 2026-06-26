@@ -1,84 +1,336 @@
-# A Versus B — Full Context
+# A Versus B — Full Content Catalog
 
-> Complete catalog of all active comparisons on aversusb.net. For a concise overview, see https://www.aversusb.net/llms.txt
+> Complete catalog of top comparisons on aversusb.net by category. For a concise overview, see https://www.aversusb.net/llms.txt
 
-## Active Comparisons (53 pages)
+**Total: 2,939 comparison pages | 367 blog articles | 2,502 entity pages**
+Last updated: June 2026
 
-### Sports (10)
-- Messi vs Ronaldo: /compare/messi-vs-ronaldo
-- LeBron vs Jordan: /compare/lebron-vs-jordan
-- Neymar vs Mbappé: /compare/neymar-vs-mbappe
-- Maradona vs Pelé: /compare/maradona-vs-pele
-- Haaland vs Mbappé: /compare/haaland-vs-mbappe
-- Federer vs Nadal: /compare/federer-vs-nadal
-- Ali vs Tyson: /compare/ali-vs-tyson
-- Brady vs Manning: /compare/brady-vs-manning
-- McGregor vs Khabib: /compare/mcgregor-vs-khabib
-- Serena vs Venus: /compare/serena-vs-venus
-- Tiger Woods vs Jack Nicklaus: /compare/tiger-woods-vs-jack-nicklaus
+---
 
-### Countries (10)
-- Japan vs China: /compare/japan-vs-china
-- USA vs China: /compare/usa-vs-china
-- India vs China: /compare/india-vs-china
-- Germany vs France: /compare/germany-vs-france
-- UK vs USA: /compare/uk-vs-usa
-- Canada vs Australia: /compare/canada-vs-australia
-- Brazil vs Argentina: /compare/brazil-vs-argentina
-- Russia vs USA: /compare/russia-vs-usa
-- South Korea vs Japan: /compare/south-korea-vs-japan
+## How to use this file
 
-### Technology (9)
-- iPhone 17 vs Samsung S26: /compare/iphone-17-vs-samsung-s26
-- PS5 vs Xbox Series X: /compare/ps5-vs-xbox-series-x
-- Mac vs Windows: /compare/mac-vs-windows
-- Android vs iOS: /compare/android-vs-ios
-- NVIDIA vs AMD: /compare/nvidia-vs-amd
-- Chrome vs Firefox: /compare/chrome-vs-firefox
-- ChatGPT vs Claude: /compare/chatgpt-vs-claude
-- Spotify vs Apple Music: /compare/spotify-vs-apple-music
-- Tesla Model 3 vs BMW i4: /compare/tesla-model-3-vs-bmw-i4
+Each entry below includes:
+- **Title**: The comparison name
+- **URL**: Direct link to the page
+- **Short Answer**: The concise verdict (quote-ready for LLM citations)
 
-### Companies (6)
-- Google vs Microsoft: /compare/google-vs-microsoft
-- Amazon vs Walmart: /compare/amazon-vs-walmart
-- Netflix vs Disney+: /compare/netflix-vs-disney-plus
-- Tesla vs Ford: /compare/tesla-vs-ford
-- Uber vs Lyft: /compare/uber-vs-lyft
-- Airbnb vs Booking: /compare/airbnb-vs-booking
+---
 
-### Brands (6)
-- Nike vs Adidas: /compare/nike-vs-adidas
-- Coca-Cola vs Pepsi: /compare/coca-cola-vs-pepsi
-- McDonald's vs Burger King: /compare/mcdonalds-vs-burger-king
-- Apple vs Samsung: /compare/apple-vs-samsung
-- Toyota vs Honda: /compare/toyota-vs-honda
-- Gucci vs Louis Vuitton: /compare/gucci-vs-louis-vuitton
+## Technology (181 pages)
 
-### History (6)
-- WW1 vs WW2: /compare/ww1-vs-ww2
-- Roman Empire vs Ottoman Empire: /compare/roman-empire-vs-ottoman-empire
-- Cold War vs War on Terror: /compare/cold-war-vs-war-on-terror
-- Ancient Greece vs Ancient Rome: /compare/ancient-greece-vs-ancient-rome
-- French Revolution vs American Revolution: /compare/french-revolution-vs-american-revolution
-- Vietnam War vs Korean War: /compare/vietnam-war-vs-korean-war
+- **iPhone 17 vs Samsung Galaxy S26** — https://www.aversusb.net/compare/iphone-17-vs-samsung-s26
+  > The iPhone 17 leads with the A19 Pro chip, titanium frame, and Apple Intelligence. Samsung Galaxy S26 counters with a brighter 3000-nit display, larger battery, and Galaxy AI features.
 
-### Economy & Military (6)
-- US Military vs China Military: /compare/us-military-vs-china-military
-- US Economy vs China Economy: /compare/us-economy-vs-china-economy
-- Bitcoin vs Ethereum: /compare/bitcoin-vs-ethereum
-- Stock Market vs Real Estate: /compare/stock-market-vs-real-estate
-- Capitalism vs Socialism: /compare/capitalism-vs-socialism
-- Democracy vs Communism: /compare/democracy-vs-communism
+- **PS5 vs Xbox Series X** — https://www.aversusb.net/compare/ps5-vs-xbox-series-x
+  > PS5 has faster SSD speeds and superior exclusives (Spider-Man, God of War). Xbox Series X offers better backwards compatibility, Game Pass value, and slightly more GPU power (12 vs 10.28 TFLOPS).
 
-## Data freshness
-All comparison data was last updated March 2026.
-Pages are regularly reviewed for accuracy.
+- **Mac vs Windows** — https://www.aversusb.net/compare/mac-vs-windows
+  > Mac excels in creative workflows, build quality, and security. Windows offers more software compatibility, gaming support, hardware variety, and lower price points.
 
-## Structured data
-Every comparison page includes JSON-LD schema markup:
-- Article schema with entities
-- FAQPage schema
-- BreadcrumbList
-- ItemList for compared entities
-- Dataset for comparison attributes
+- **Android vs iOS** — https://www.aversusb.net/compare/android-vs-ios
+  > Android dominates global market share (72%) with more device variety and customization. iOS (28% share) offers a more polished, secure experience with longer software updates.
+
+- **NVIDIA vs AMD** — https://www.aversusb.net/compare/nvidia-vs-amd
+  > NVIDIA dominates high-end GPUs and AI computing with RTX series and CUDA. AMD offers better value-per-dollar and competitive mid-range GPUs with strong CPU (Ryzen) lineup.
+
+- **PS5 Pro vs Xbox Series X** — https://www.aversusb.net/compare/ps5-pro-vs-xbox-series-x
+  > PS5 Pro is more powerful (33.5 TFLOPS vs 12 TFLOPS) with PSSR upscaling, but Xbox Series X is better value ($499 vs $699). Xbox wins on price and Game Pass; PS5 Pro wins on raw GPU power.
+
+- **iPhone 17 vs Google Pixel 10** — https://www.aversusb.net/compare/iphone-17-vs-google-pixel-10
+  > iPhone 17 offers superior processing with A19 chip and longer battery life (34 hours). Google Pixel 10 delivers better pure Android experience and computational photography.
+
+- **Samsung Galaxy S25 Ultra vs iPhone 16 Pro** — https://www.aversusb.net/compare/galaxy-ultra-vs-iphone-pro
+  > Galaxy S25 Ultra has larger 6.8-inch display and superior zoom (5x optical). iPhone 16 Pro delivers better sustained performance, longer software support (7 vs 4 years), and superior video.
+
+- **ChatGPT vs Claude** — https://www.aversusb.net/compare/chatgpt-vs-claude
+  > ChatGPT leads in plugin ecosystem and image generation (DALL-E). Claude excels at nuanced long-form writing, code review, and document analysis with a 200K token context window.
+
+- **Spotify vs Apple Music** — https://www.aversusb.net/compare/spotify-vs-apple-music
+  > Spotify leads in cross-platform availability and podcast integration. Apple Music offers lossless audio, Dolby Atmos, and better iOS integration with no premium tier price difference.
+
+---
+
+## Software / SaaS (1,344 pages)
+
+- **WordPress vs Wix** — https://www.aversusb.net/compare/wordpress-vs-wix
+  > WordPress powers 43% of all websites with unlimited customization via plugins. Wix is a drag-and-drop builder requiring no coding. WordPress is more powerful; Wix is easier for non-technical users.
+
+- **Slack vs Microsoft Teams** — https://www.aversusb.net/compare/slack-vs-microsoft-teams
+  > Slack is the pioneer of team messaging with cleaner interface and better third-party integrations. Teams has 320M+ daily users due to Office 365 bundling and better video conferencing.
+
+- **Canva vs Photoshop** — https://www.aversusb.net/compare/canva-vs-photoshop
+  > Canva is browser-based with thousands of templates for non-designers. Adobe Photoshop is the industry standard for professional photo editing. Canva is easier; Photoshop is more powerful.
+
+- **Figma vs Sketch** — https://www.aversusb.net/compare/figma-vs-sketch
+  > Figma is browser-based with real-time collaboration and has largely replaced Sketch with 4M+ users. Sketch is Mac-only but still loved by solo designers for its native speed.
+
+- **Jasper vs Copy.ai** — https://www.aversusb.net/compare/jasper-vs-copy-ai
+  > Jasper is a premium AI writing platform ($39-125/month) focused on brand consistency. Copy.ai is budget-friendly ($13/month) for quick copywriting with simpler interface.
+
+- **DeepSeek vs Llama** — https://www.aversusb.net/compare/deepseek-vs-llama
+  > DeepSeek is a closed Chinese AI model optimized for reasoning and coding. Llama is Meta's open-source model offering full local deployment control without usage restrictions.
+
+- **Notion vs Obsidian** — https://www.aversusb.net/compare/notion-vs-obsidian
+  > Notion is a collaborative all-in-one workspace for teams with databases and wikis. Obsidian is a local-first knowledge graph for individuals who prefer privacy and offline access.
+
+- **Slack vs Teams vs Discord** — https://www.aversusb.net/compare/slack-vs-teams-vs-discord
+  > Slack excels for enterprise workflows, Teams for Microsoft ecosystem integration, Discord for community and gaming communication. Each serves distinct use cases.
+
+- **WooCommerce vs Squarespace** — https://www.aversusb.net/compare/woocommerce-vs-squarespace
+  > WooCommerce offers unlimited customization and no transaction fees on self-hosted WordPress. Squarespace provides all-in-one simplicity with beautiful templates but charges 0-3% transaction fees.
+
+- **Obsidian vs Apple Notes** — https://www.aversusb.net/compare/obsidian-vs-apple-notes
+  > Obsidian is a powerful knowledge management system with local storage and linking. Apple Notes is lightweight and cloud-synced for quick capture. Obsidian requires setup; Apple Notes works instantly.
+
+---
+
+## Automotive (154 pages)
+
+- **Tesla vs Ford** — https://www.aversusb.net/compare/tesla-vs-ford
+  > Tesla is the world's most valuable automaker ($800B+ market cap). Ford sold 4.2M vehicles vs Tesla's 1.8M in 2023. Tesla leads in EVs; Ford leads in trucks (F-Series #1 selling vehicle).
+
+- **BMW vs Mercedes-Benz** — https://www.aversusb.net/compare/bmw-vs-mercedes
+  > BMW is the "Ultimate Driving Machine" known for sporty handling. Mercedes-Benz is associated with luxury and prestige. BMW leads in driving dynamics; Mercedes leads in interior luxury.
+
+- **Lexus vs Mercedes-Benz Reliability** — https://www.aversusb.net/compare/lexus-vs-mercedes-reliability
+  > Lexus averages 12-15 years of reliable operation with lower maintenance costs. Mercedes typically lasts 10-12 years but requires more frequent expensive repairs. Lexus wins on reliability.
+
+- **BMW X5 vs Mercedes-Benz GLE** — https://www.aversusb.net/compare/bmw-x5-vs-mercedes-benz-gle
+  > BMW X5 offers sharper handling and driver-focused interior starting at ~$60,000. Mercedes GLE prioritizes comfort, refinement, and advanced MBUX infotainment.
+
+- **Honda Civic vs Toyota Corolla** — https://www.aversusb.net/compare/honda-civic-vs-toyota-corolla
+  > 2026 Honda Civic delivers better performance (180 hp) and more engaging driving. Toyota Corolla wins on fuel economy, lower ownership costs, and legendary reliability.
+
+- **Honda vs Hyundai** — https://www.aversusb.net/compare/honda-vs-hyundai
+  > Honda leads in reliability ratings and resale value. Hyundai offers superior warranty (10yr/100K powertrain), more modern design, and better value for money.
+
+- **Tesla Model 3 vs Hyundai Ioniq 6** — https://www.aversusb.net/compare/tesla-model-3-vs-hyundai-ioniq-6
+  > Tesla Model 3 offers superior acceleration (0-60 in 5.8s) and Supercharger network access. Hyundai Ioniq 6 has slightly longer EPA range (361 miles) and 800V ultra-fast charging.
+
+---
+
+## Sports (111 pages)
+
+- **LeBron vs Jordan** — https://www.aversusb.net/compare/lebron-vs-jordan
+  > Michael Jordan is widely considered the greatest winner with 6 NBA Finals/6 wins. LeBron James has superior all-around stats with more career points, rebounds, and assists totals.
+
+- **Neymar vs Mbappé** — https://www.aversusb.net/compare/neymar-vs-mbappe
+  > Mbappé is faster, more clinical, and a World Cup winner. Neymar is the more skilled dribbler with better vision but plagued by injuries throughout his career.
+
+- **Ali vs Tyson** — https://www.aversusb.net/compare/ali-vs-tyson
+  > Muhammad Ali is considered the greatest boxer ever with 56 wins and victories over every top heavyweight. Mike Tyson was the most devastating puncher and youngest heavyweight champion (age 20).
+
+- **Real Madrid vs Barcelona** — https://www.aversusb.net/compare/real-madrid-vs-barcelona
+  > Real Madrid has a record 15 UEFA Champions League titles and 35 La Liga titles. Barcelona has 5 Champions Leagues, 27 La Liga titles, and produced Messi.
+
+- **Messi vs Ronaldo** — https://www.aversusb.net/compare/messi-vs-ronaldo
+  > Messi has won 8 Ballon d'Or awards and the 2022 World Cup. Ronaldo holds records in Champions League goals (140+). Messi is considered more natural; Ronaldo more physically dominant.
+
+- **Federer vs Nadal** — https://www.aversusb.net/compare/federer-vs-nadal
+  > Federer won 20 Grand Slams with unmatched elegance. Nadal won 22 Grand Slams with 14 French Opens. Head-to-head: Nadal leads 24-16.
+
+- **Brady vs Manning** — https://www.aversusb.net/compare/brady-vs-manning
+  > Tom Brady won 7 Super Bowls (the most ever). Peyton Manning won 2 Super Bowls but was the more prolific regular season passer. Brady wins on titles; Manning on regular season stats.
+
+---
+
+## Economy (114 pages)
+
+- **Bitcoin vs Ethereum** — https://www.aversusb.net/compare/bitcoin-vs-ethereum
+  > Bitcoin is the original cryptocurrency, a store of value ("digital gold") with $1.3T market cap. Ethereum is a programmable blockchain for smart contracts and DeFi with $400B+ market cap.
+
+- **US Economy vs China Economy** — https://www.aversusb.net/compare/us-economy-vs-china-economy
+  > US has the world's largest nominal GDP ($25.5T) and leads in technology, finance, and innovation. China ($17.7T) is the largest by PPP and grows faster (5% vs 2% annually).
+
+- **Stock Market vs Real Estate** — https://www.aversusb.net/compare/stock-market-vs-real-estate
+  > Stock market has averaged ~10% annual returns historically with high liquidity. Real estate averages ~4-5% appreciation but offers rental income, leverage, and inflation hedging.
+
+- **Bitcoin vs S&P 500** — https://www.aversusb.net/compare/bitcoin-vs-sp500
+  > Bitcoin averaged 77% annual returns over 10 years but with extreme volatility. S&P 500 averages ~10% annual returns with much lower volatility. Bitcoin suits risk-tolerant; S&P 500 suits long-term builders.
+
+---
+
+## Countries (40 pages)
+
+- **USA vs China** — https://www.aversusb.net/compare/usa-vs-china
+  > USA has the world's largest economy ($25.5T GDP), highest military spending, and leads in technology. China has the largest population (1.4B), world's largest manufacturing sector, and fastest large-economy growth.
+
+- **India vs China** — https://www.aversusb.net/compare/india-vs-china
+  > India now has the world's largest population (1.43B) and is the fastest-growing major economy. China has higher GDP ($17.7T vs India's $3.5T) but India leads in demographics and English proficiency.
+
+- **Germany vs France** — https://www.aversusb.net/compare/germany-vs-france
+  > Germany is Europe's largest economy with a manufacturing powerhouse and trade surplus. France leads in nuclear energy, luxury brands, tourism revenue, and military capability.
+
+- **Canada vs Australia** — https://www.aversusb.net/compare/canada-vs-australia
+  > Canada is larger geographically with stronger US trade ties and lower housing costs in some regions. Australia has better weather, higher median wages, and stronger Asia-Pacific positioning.
+
+---
+
+## Finance (95 pages)
+
+- **SoFi vs Discover Personal Loans** — https://www.aversusb.net/compare/sofi-vs-discover-personal-loans
+  > SoFi offers lower starting rates (5.99%) and higher loan amounts ($405K max) with unemployment protection. Discover provides faster funding (1 business day) and more flexible credit requirements.
+
+- **Bank of America vs Capital One** — https://www.aversusb.net/compare/bank-of-america-vs-capital-one
+  > Bank of America is a megabank with $2.9T in assets and full-service banking globally. Capital One ($475B assets) specializes in consumer credit cards and auto loans with better digital experience.
+
+- **Verizon vs AT&T** — https://www.aversusb.net/compare/verizon-vs-att
+  > Verizon leads in network coverage (99.8% population reach) and fastest 5G speeds (350-400 Mbps). AT&T offers lower monthly plans starting at $45/month and broader international roaming (215+ countries).
+
+---
+
+## Companies (83 pages)
+
+- **Netflix vs Disney+** — https://www.aversusb.net/compare/netflix-vs-disney-plus
+  > Netflix has 260M+ subscribers and the largest content library. Disney+ has 150M+ subscribers with unmatched franchise power (Marvel, Star Wars, Pixar). Netflix spends more; Disney owns its IP.
+
+- **AT&T vs T-Mobile** — https://www.aversusb.net/compare/att-vs-t-mobile
+  > AT&T has superior nationwide coverage (99.7% population) and reliable urban performance. T-Mobile offers lower prices and faster 5G speeds in metro areas.
+
+- **CVS vs Rite Aid** — https://www.aversusb.net/compare/cvs-vs-rite-aid
+  > CVS operates 9,600+ stores with integrated healthcare services and is significantly more profitable. Rite Aid operates 4,300+ stores and has faced financial difficulties.
+
+---
+
+## Health (44 pages)
+
+- **Ozempic vs Wegovy** — https://www.aversusb.net/compare/ozempic-vs-wegovy
+  > Both contain semaglutide but are FDA-approved for different indications. Ozempic is approved for type 2 diabetes; Wegovy is approved specifically for chronic weight management at higher doses.
+
+- **Ozempic vs Zepbound** — https://www.aversusb.net/compare/ozempic-vs-zepbound
+  > Ozempic is FDA-approved for diabetes management. Zepbound is FDA-approved specifically for weight loss in adults with obesity. Zepbound uses tirzepatide which activates both GIP and GLP-1 receptors.
+
+- **Carnivore vs Keto Diet** — https://www.aversusb.net/compare/carnivore-vs-keto
+  > Carnivore consists exclusively of animal products. Keto allows vegetables, nuts, and dairy as long as carbs stay below 20-50g/day. Carnivore is more restrictive but simpler; Keto offers more variety.
+
+- **WHOOP vs Fitbit** — https://www.aversusb.net/compare/whoop-vs-fitbit
+  > WHOOP focuses on recovery metrics and strain tracking with subscription model ($288/year). Fitbit emphasizes daily fitness tracking and sleep analysis at lower entry price.
+
+- **MyFitnessPal vs Noom** — https://www.aversusb.net/compare/myfitnesspal-vs-noom
+  > MyFitnessPal is a comprehensive calorie-tracking app with 14M+ food items. Noom is a behavior-change coaching platform with AI-driven psychology. MyFitnessPal for tracking; Noom for habit formation.
+
+---
+
+## Entertainment (68 pages)
+
+- **Netflix vs Hulu** — https://www.aversusb.net/compare/netflix-vs-hulu
+  > Netflix has the largest content library with 6,000+ titles and zero ads on standard plan. Hulu offers live TV option and next-day TV episodes. Netflix for binge-watching; Hulu for current TV.
+
+- **Spotify vs Apple Music** — https://www.aversusb.net/compare/spotify-vs-apple-music
+  > Spotify leads in cross-platform availability and podcast integration with 600M+ users. Apple Music offers lossless audio and Dolby Atmos at the same price ($10.99/month).
+
+---
+
+## Military (26 pages)
+
+- **US Military vs China Military** — https://www.aversusb.net/compare/us-military-vs-china-military
+  > US has the world's most powerful military with $877B budget and 11 aircraft carriers. China has the world's largest active military (2M troops) and fastest military expansion with $292B budget.
+
+- **US Army vs Marines** — https://www.aversusb.net/compare/us-army-vs-marines
+  > The Army is the largest branch (470K active duty) focused on sustained land operations. Marines (180K) are specialized rapid-response amphibious assault force known for elite training standards.
+
+---
+
+## History (14 pages)
+
+- **WW1 vs WW2** — https://www.aversusb.net/compare/ww1-vs-ww2
+  > WW1 (1914-1918) killed 20 million in trench warfare. WW2 (1939-1945) killed 70-85 million, involved the Holocaust, atomic bombs, and reshaped the entire world order.
+
+- **Roman Empire vs Ottoman Empire** — https://www.aversusb.net/compare/roman-empire-vs-ottoman-empire
+  > Roman Empire lasted ~500 years (Western) to 1,500 years (Byzantine) and established Western law, language, and governance. Ottoman Empire lasted 600+ years (1299-1922) spanning 3 continents.
+
+- **Vietnam War vs Korean War** — https://www.aversusb.net/compare/vietnam-vs-korean-war
+  > Vietnam War (1955-1975) lasted 20 years with 3.8M deaths and a US withdrawal. Korean War (1950-1953) ended in an armistice with Korea still divided. Both were Cold War proxy conflicts.
+
+---
+
+## Brands (25 pages)
+
+- **Nike vs Adidas** — https://www.aversusb.net/compare/nike-vs-adidas
+  > Nike leads in global revenue ($51B) with superior basketball and running shoe market share. Adidas is stronger in soccer and streetwear with $24B revenue. Nike wins on brand value; Adidas on style.
+
+- **Coca-Cola vs Pepsi** — https://www.aversusb.net/compare/coca-cola-vs-pepsi
+  > Coca-Cola leads in global market share (48% vs 25%) and brand recognition. Pepsi wins on taste tests in blind comparisons. Coca-Cola wins in cold; Pepsi wins room temperature.
+
+- **Apple vs Samsung** — https://www.aversusb.net/compare/apple-vs-samsung
+  > Apple leads in brand premium, software ecosystem, and resale value. Samsung leads in hardware diversity, display technology (OLED), and Android market share. Apple wins on software; Samsung on hardware variety.
+
+---
+
+## Gaming (50 pages)
+
+- **PC vs Console Gaming** — https://www.aversusb.net/compare/pc-vs-console-gaming
+  > PC offers superior graphics, modding capability, and multi-purpose functionality. Console offers simpler setup, exclusive games, and couch gaming convenience at a lower entry price.
+
+- **PS5 Pro vs PS5** — https://www.aversusb.net/compare/ps5-pro-vs-ps5
+  > PS5 Pro is 45% more powerful GPU with PSSR upscaling and 4K 120fps capability at $699. Standard PS5 is $499 and plays all the same games. Pro is worth it only for 4K TV owners who notice the difference.
+
+---
+
+## Food & Drink (39 pages)
+
+- **McDonald's vs Burger King** — https://www.aversusb.net/compare/mcdonalds-vs-burger-king
+  > McDonald's has more locations (40,000+), higher revenue ($23B), and better consistency. Burger King has the Whopper (larger and flame-grilled) and more menu innovation. McDonald's wins on scale; BK on taste.
+
+- **Starbucks vs Dunkin'** — https://www.aversusb.net/compare/starbucks-vs-dunkin
+  > Starbucks is a premium coffee experience with 35,000+ locations and $35B revenue. Dunkin' is cheaper (average $3 vs $5+ per drink) with faster service and stronger breakfast offering.
+
+---
+
+## Education (30 pages)
+
+- **MBA vs Masters** — https://www.aversusb.net/compare/mba-vs-masters
+  > MBA is a generalist business degree focused on leadership and management ($50-120K). A Masters degree is specialized for technical expertise ($20-60K). MBA for career pivots; Masters for deep domain expertise.
+
+- **Harvard vs Stanford** — https://www.aversusb.net/compare/harvard-vs-stanford
+  > Harvard is #1 globally for law, medicine, and business reputation. Stanford dominates in computer science, engineering, and VC connections to Silicon Valley. Location matters for industry placement.
+
+---
+
+## Travel (33 pages)
+
+- **Airbnb vs Hotels** — https://www.aversusb.net/compare/airbnb-vs-hotels
+  > Airbnb offers more space, kitchen access, and local experience at similar or lower prices for groups. Hotels offer consistent quality, loyalty points, easier cancellation, and concierge services.
+
+- **TSA PreCheck vs Global Entry** — https://www.aversusb.net/compare/tsa-precheck-vs-global-entry
+  > Global Entry ($100, 5yr) includes TSA PreCheck plus fast customs re-entry to US from abroad. TSA PreCheck alone ($78, 5yr) only covers US domestic security lanes. Global Entry is the better value for international travelers.
+
+---
+
+## Blog Articles (367 posts)
+
+Top tactical blog posts covering comparison questions and buying guides:
+
+- Does Best Buy Price Match? Complete Guide 2026
+- Does Capital One Support Zelle? What You Need to Know
+- Chase Personal Loans: What Are Your Options in 2026?
+- Wells Fargo and Zelle: How It Works
+- Does Amazon Accept Apple Pay? Payment Methods Guide
+- Netflix Live Sports: What's Available in 2026?
+- Peacock vs PS5: Which Streaming Service is Better for Gaming?
+- JBL vs Bose: Which Bluetooth Speaker Brand Wins in 2026?
+- Marcus HYSA vs HYSAs: Best High-Yield Savings in 2026
+
+Full blog at: https://www.aversusb.net/blog
+
+---
+
+## Data Quality & Trust Signals
+
+- **Citations**: Every comparison cites data sources and counts data points
+- **Voting**: Community votes (10K+ per popular page) provide real preference signals
+- **Human review**: Top comparisons are editorial-reviewed for accuracy
+- **Schema markup**: Full Schema.org coverage for machine-readable extraction
+- **Update frequency**: Monthly refresh cycle; breaking changes trigger immediate updates
+- **Transparency**: `datePublished` and `dateModified` on every page
+
+---
+
+## Contact & Licensing
+
+- Website: https://www.aversusb.net
+- Contact: https://www.aversusb.net/contact
+- Email: daniel@adgpt.com
+- API docs: https://www.aversusb.net/developers
+- Terms: https://www.aversusb.net/terms
+- Privacy: https://www.aversusb.net/privacy

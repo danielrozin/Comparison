@@ -28,7 +28,17 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "The internet's best destination for comparisons. Compare sports players, countries, products, technology, and anything else — fast, visual, and data-driven.",
+    "The internet's most comprehensive comparison platform — 2,900+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more. Data-driven verdicts, community votes, and expert analysis.",
+  keywords: [
+    "comparison",
+    "vs",
+    "versus",
+    "compare",
+    "best",
+    "review",
+    "difference between",
+    "which is better",
+  ],
   metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
@@ -37,7 +47,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Compare Anything`,
     description:
-      "Compare sports players, countries, products, technology, and anything else — fast, visual, and data-driven.",
+      "2,900+ data-driven comparisons across sports, technology, products, software, automotive, health, finance, and more. Expert verdicts, community votes, structured data.",
     images: [{
       url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
       width: 1200,
@@ -48,7 +58,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Compare Anything`,
-    description: "The internet's best destination for comparisons.",
+    description: "2,900+ data-driven comparisons. Find the best: technology, sports, software, health, automotive, and more.",
     images: [`${SITE_URL}/api/og?title=Compare+Anything&type=home`],
   },
   robots: {
@@ -78,6 +88,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* LLMs.txt discovery — helps AI crawlers locate the machine-readable site manifest */}
+        <link rel="alternate" type="text/plain" href={`${SITE_URL}/llms.txt`} title="LLM Site Manifest" />
         {ADSENSE_PUB_ID && (
           <script
             async

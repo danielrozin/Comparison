@@ -38,15 +38,39 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/images/logo.png`,
+      width: 200,
+      height: 60,
+    },
     sameAs: socialSameAs(),
-    description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
+    description: "A Versus B is the internet's most comprehensive comparison platform — 2,900+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more. Every page includes structured data (Schema.org), expert verdicts, community voting, and source citations.",
     foundingDate: "2024",
     knowsAbout: [
       "Product Comparisons",
       "Technology Reviews",
       "Data-Driven Analysis",
+      "Sports Statistics",
+      "Country Comparisons",
+      "Software Reviews",
+      "Automotive Comparisons",
+      "Health and Wellness Comparisons",
+      "Financial Product Comparisons",
+      "Consumer Electronics Reviews",
     ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Comparison API",
+      url: `${SITE_URL}/developers`,
+      description: "REST API for accessing structured comparison data, entity profiles, and trending topics.",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      url: `${SITE_URL}/contact`,
+      availableLanguage: "English",
+    },
   };
 }
 
@@ -60,6 +84,8 @@ export function webSiteSchema() {
     "@type": "WebSite",
     name: SITE_NAME,
     url: SITE_URL,
+    description: "Compare anything side-by-side — 2,900+ data-driven comparisons across technology, sports, software, automotive, health, finance, and more.",
+    inLanguage: "en-US",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -182,6 +208,20 @@ export function comparisonPageSchema(
   if (comparison.faqs.length > 0) {
     schemas.push(faqSchema(comparison.faqs));
   }
+
+  // 3b. SpeakableSpecification — marks verdict + key-differences sections for
+  // voice assistants and AEO (Answer Engine Optimization). These CSS selectors
+  // target the rendered DOM IDs on the /compare/[slug] page.
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": url,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict", "#key-differences", "#pros-cons"],
+    },
+    url,
+  });
 
   // 4. BreadcrumbList
   const breadcrumbs = [
@@ -405,6 +445,17 @@ function buildMultiEntityGraph(
       })),
     });
   }
+
+  // SpeakableSpecification for multi-entity pages — same DOM IDs as 2-entity layout.
+  graph.push({
+    "@type": "WebPage",
+    "@id": url,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict", "#key-differences", "#pros-cons"],
+    },
+    url,
+  });
 
   return {
     "@context": "https://schema.org",
