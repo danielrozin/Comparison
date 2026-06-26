@@ -631,9 +631,19 @@ export function profilePageSchema(entity: {
   entityType: string;
   imageUrl: string | null;
   comparisonCount?: number;
+  topComparisons?: { slug: string; title: string }[];
 }) {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
+
+  // subjectOf — bidirectional knowledge graph edge: entity → comparisons.
+  // This tells Google/LLMs that the entity is the subject of multiple comparison
+  // articles, creating a rich entity graph that improves AI Overview citation quality.
+  const subjectOf = (entity.topComparisons ?? []).slice(0, 10).map((c) => ({
+    "@type": "Article",
+    headline: c.title,
+    url: `${SITE_URL}/compare/${c.slug}`,
+  }));
 
   const mainEntity: Record<string, unknown> = {
     "@type": schemaType,
@@ -642,6 +652,7 @@ export function profilePageSchema(entity: {
     url,
     ...(entity.shortDesc && { description: entity.shortDesc }),
     ...(entity.imageUrl && { image: entity.imageUrl }),
+    ...(subjectOf.length > 0 && { subjectOf }),
   };
 
   return {

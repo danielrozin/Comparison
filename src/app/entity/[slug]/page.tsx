@@ -108,6 +108,7 @@ export default async function EntityPage({ params }: PageProps) {
       entityType: inferredEntityType,
       imageUrl: null,
       comparisonCount: relatedComparisons.length,
+      topComparisons: relatedComparisons.slice(0, 10),
     }),
   ];
 

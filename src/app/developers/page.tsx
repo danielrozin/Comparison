@@ -2,6 +2,54 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 
+// WebAPI + DataFeed schema for GEO: AI answer engines like Perplexity and
+// ChatGPT browse structured schema to discover machine-readable data sources.
+// Declaring our API as a WebAPI with DataFeed surfaces it in "data source"
+// citations and improves entity-graph signals for our comparison dataset.
+const apiSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebAPI",
+  name: `${SITE_NAME} Comparison API`,
+  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 2,900+ comparisons in 17+ categories.",
+  url: `${SITE_URL}/developers`,
+  documentation: `${SITE_URL}/developers`,
+  provider: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+  license: `${SITE_URL}/terms`,
+  offers: [
+    {
+      "@type": "Offer",
+      name: "Free Tier",
+      price: "0",
+      priceCurrency: "USD",
+      description: "100 API requests per day",
+    },
+    {
+      "@type": "Offer",
+      name: "Pro",
+      price: "29",
+      priceCurrency: "USD",
+      description: "Unlimited requests, priority support",
+    },
+  ],
+  hasPart: {
+    "@type": "DataFeed",
+    name: "A Versus B Comparison Dataset",
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 2,900+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    url: `${SITE_URL}/api/llms?format=txt`,
+    encodingFormat: "text/plain",
+    inLanguage: "en-US",
+    provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    about: {
+      "@type": "Thing",
+      name: "Product and entity comparisons",
+    },
+  },
+};
+
 export const metadata: Metadata = {
   title: "Developer API — A Versus B",
   description: `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available.`,
@@ -31,6 +79,10 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
 export default function DevelopersPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
+      />
       {/* Breadcrumb */}
       <nav className="mb-8">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
