@@ -5,24 +5,41 @@ import type { FAQData } from "@/types";
 
 export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const allOpen = openIndex === -1;
+
+  const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Section header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center flex-shrink-0">
-          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl font-display font-bold text-text">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs text-text-secondary mt-0.5">{faqs.length} question{faqs.length !== 1 ? "s" : ""}</p>
+          </div>
         </div>
-        <h2 className="text-2xl font-display font-bold text-text">
-          Frequently Asked Questions
-        </h2>
+        {faqs.length > 2 && (
+          <button
+            type="button"
+            onClick={handleExpandAll}
+            className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+          >
+            {allOpen ? "Collapse all" : "Expand all"}
+          </button>
+        )}
       </div>
 
       <div className="space-y-2">
         {faqs.map((faq, i) => {
-          const isOpen = openIndex === i;
+          const isOpen = openIndex === i || openIndex === -1;
           return (
             <div
               key={i}
@@ -33,7 +50,14 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
               }`}
             >
               <button
-                onClick={() => setOpenIndex(isOpen ? null : i)}
+                onClick={() => {
+                  if (openIndex === -1) {
+                    // Was "all open" — collapse this one, keep others tracked as specific index
+                    setOpenIndex(null);
+                  } else {
+                    setOpenIndex(isOpen ? null : i);
+                  }
+                }}
                 className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-colors ${isOpen ? "bg-primary-50/40" : ""}`}
                 aria-expanded={isOpen}
               >

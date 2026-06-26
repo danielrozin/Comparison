@@ -31,8 +31,12 @@ export function TrendingCard({
       href={`/compare/${comparison.slug}`}
       className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-lg transition-all duration-200"
     >
-      {/* Top color strip */}
-      <div className="h-1 w-full bg-gradient-to-r from-primary-500 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+      {/* Top color strip — subtle at rest, vivid on hover */}
+      <div className={`h-1 w-full transition-opacity duration-200 ${
+        isTopThree
+          ? "bg-gradient-to-r from-amber-400 to-orange-500 opacity-70 group-hover:opacity-100"
+          : "bg-gradient-to-r from-primary-500 to-accent-500 opacity-20 group-hover:opacity-100"
+      }`} />
 
       <div className="p-5 flex flex-col flex-1">
         {/* Rank badge + category */}
@@ -46,6 +50,9 @@ export function TrendingCard({
           >
             {rank}
           </div>
+          {isTopThree && (
+            <span className="text-base leading-none" aria-hidden="true">🔥</span>
+          )}
           <span className="text-[11px] font-medium text-primary-600 uppercase tracking-wider truncate">
             {comparison.category}
           </span>
