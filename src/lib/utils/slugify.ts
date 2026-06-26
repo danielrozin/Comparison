@@ -66,3 +66,23 @@ export function parseComparisonSlug(
   if (parts.length < 2) return null;
   return { entityA: parts[0], entityB: parts[1], entities: parts };
 }
+
+/**
+ * A degenerate comparison is one that pits an entity against itself
+ * (e.g. `grubhub-vs-grubhub`, or an N-way slug with a repeated entity).
+ * These are thin/duplicate-content dead-ends that waste crawl budget and
+ * dilute quality signals, so they must never be rendered or sitemapped
+ * (DAN: self-comparison crawl-quality guard). Comparison is case-insensitive
+ * since the slug is already lowercased upstream but callers may pass raw input.
+ */
+export function isDegenerateComparisonSlug(slug: string): boolean {
+  const parsed = parseComparisonSlug(slug);
+  if (!parsed) return false;
+  const seen = new Set<string>();
+  for (const entity of parsed.entities) {
+    const key = entity.toLowerCase();
+    if (seen.has(key)) return true;
+    seen.add(key);
+  }
+  return false;
+}
