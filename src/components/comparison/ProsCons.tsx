@@ -1,4 +1,24 @@
+import Image from "next/image";
 import type { ComparisonEntityData } from "@/types";
+
+function EntityAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
+  const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
+  const initials = entity.name.split(/\s+/).slice(0, 2).map((w) => w.charAt(0)).join("").toUpperCase();
+  const gradientClass = variant === "a" ? "from-primary-400 to-primary-600" : "from-accent-400 to-accent-600";
+
+  if (hasImage) {
+    return (
+      <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-white shadow-sm flex-shrink-0">
+        <Image src={entity.imageUrl!} alt={entity.name} width={40} height={40} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
+  return (
+    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${gradientClass} flex items-center justify-center text-white text-sm font-bold ring-2 ring-white shadow-sm flex-shrink-0`}>
+      {initials || entity.name.charAt(0)}
+    </div>
+  );
+}
 
 export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }) {
   return (
@@ -10,6 +30,12 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
           </svg>
         </div>
         <h2 className="text-2xl font-display font-bold text-text">Pros &amp; Cons</h2>
+        {entities.length >= 2 && (
+          <div className="ml-auto flex -space-x-2">
+            <EntityAvatar entity={entities[0]} variant="a" />
+            <EntityAvatar entity={entities[1]} variant="b" />
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
