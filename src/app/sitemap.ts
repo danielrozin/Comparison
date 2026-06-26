@@ -5,6 +5,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
+import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -96,12 +97,18 @@ export default async function sitemap({
   if (numId === 1) {
     try {
       const { comparisons } = await getAllSitemapData();
-      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
-        url: `${SITE_URL}/compare/${comp.slug}`,
-        lastModified: comp.updatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.9,
-      }));
+      return comparisons
+        // Drop self-comparisons (e.g. `grubhub-vs-grubhub`) — they 404 at the
+        // route (DAN: self-comparison crawl-quality guard), so submitting them
+        // would advertise a dead URL to crawlers.
+        .filter((comp) => !isDegenerateComparisonSlug(comp.slug))
+        .slice(0, MAX_URLS_PER_SITEMAP)
+        .map((comp) => ({
+          url: `${SITE_URL}/compare/${comp.slug}`,
+          lastModified: comp.updatedAt,
+          changeFrequency: "weekly" as const,
+          priority: 0.9,
+        }));
     } catch {
       return [];
     }

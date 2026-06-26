@@ -22,7 +22,11 @@ import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
-import { parseComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
+import {
+  parseComparisonSlug,
+  sortComparisonSlug,
+  isDegenerateComparisonSlug,
+} from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -277,6 +281,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // Validate slug format — must be "entity-a-vs-entity-b" (or N-way: "a-vs-b-vs-c-...")
   const slugParts = parseComparisonSlug(slug);
   if (!slugParts || slugParts.entities.length < 2) {
+    return { notFound: true };
+  }
+
+  // A self-comparison (e.g. `grubhub-vs-grubhub`) is a thin/duplicate-content
+  // dead-end — comparing an entity against itself yields no useful page and
+  // wastes crawl budget. 404 it so it leaves the index; it is also excluded
+  // from the sitemap (DAN: self-comparison crawl-quality guard).
+  if (isDegenerateComparisonSlug(slug)) {
     return { notFound: true };
   }
 
