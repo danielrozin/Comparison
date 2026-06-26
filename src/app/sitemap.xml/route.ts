@@ -23,7 +23,12 @@ export async function GET() {
     )
     .join("\n");
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</sitemapindex>\n`;
+  // Dedicated video sitemap (DAN-1367). Lives at a named route (not a numeric
+  // shard) because Next.js `MetadataRoute.Sitemap` cannot emit `video:video`
+  // extension tags, so `generateSitemaps` intentionally does not list it.
+  const videoEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/video.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n${videoEntry}\n</sitemapindex>\n`;
 
   return new Response(xml, {
     status: 200,
