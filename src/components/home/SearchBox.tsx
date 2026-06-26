@@ -12,6 +12,12 @@ interface PopularComparison {
   category: string;
 }
 
+interface SearchResult {
+  slug: string;
+  title: string;
+  category: string;
+}
+
 const CATEGORY_ICONS: Record<string, string> = {
   sports: "⚽",
   countries: "🌍",
@@ -27,6 +33,8 @@ const CATEGORY_ICONS: Record<string, string> = {
   companies: "🏢",
   brands: "🏷️",
   celebrities: "⭐",
+  software: "🖥️",
+  automotive: "🚗",
 };
 
 const TYPING_SUGGESTIONS = [
@@ -37,44 +45,45 @@ const TYPING_SUGGESTIONS = [
   "Tesla vs BMW",
 ];
 
-// Parse user input into two entities, supporting many formats
 function parseComparison(input: string): [string, string] | null {
   const trimmed = input.trim();
-
-  // Pattern priority order — most specific first
   const patterns = [
-    // "compare A to/and/with/vs B"
     /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
-    // "difference(s) between A and B"
     /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
-    // "A compared to/with B"
     /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
-    // "A vs/versus/vs./or/against B"
     /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
-    // "A - B" or "A – B" or "A — B" (dash separators)
     /^(.+?)\s+[-–—]\s+(.+)$/,
-    // "A or B" (only if both sides are short — likely a comparison)
     /^(.{2,40}?)\s+or\s+(.{2,40})$/i,
   ];
-
   for (const pattern of patterns) {
     const match = trimmed.match(pattern);
     if (match && match[1].trim() && match[2].trim()) {
       return [match[1].trim(), match[2].trim()];
     }
   }
+  return null;
+}
 
+function formatTitle(title: string): { a: string; b: string } | null {
+  const match = title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
+  if (match) return { a: match[1], b: match[2] };
   return null;
 }
 
 export function SearchBox() {
   const [query, setQuery] = useState("");
   const [popular, setPopular] = useState<PopularComparison[]>([]);
-  const [showPopular, setShowPopular] = useState(false);
+  const [liveResults, setLiveResults] = useState<SearchResult[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listboxId = "search-listbox";
   const router = useRouter();
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Cycle typing suggestions
   useEffect(() => {
@@ -92,11 +101,39 @@ export function SearchBox() {
       .catch(() => {});
   }, []);
 
+  // Live search with debounce
+  useEffect(() => {
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    if (!query.trim() || query.trim().length < 2) {
+      setLiveResults([]);
+      setIsSearching(false);
+      return;
+    }
+    setIsSearching(true);
+    searchTimeout.current = setTimeout(() => {
+      fetch(`/api/search?q=${encodeURIComponent(query.trim())}&limit=8`)
+        .then((r) => r.json())
+        .then((data) => {
+          setLiveResults(data.results || []);
+          setIsSearching(false);
+        })
+        .catch(() => setIsSearching(false));
+    }, 280);
+    return () => {
+      if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    };
+  }, [query]);
+
+  // Reset active index when results change
+  useEffect(() => {
+    setActiveIndex(-1);
+  }, [liveResults, query]);
+
   // Close dropdown on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setShowPopular(false);
+        setShowDropdown(false);
         setIsFocused(false);
       }
     }
@@ -104,11 +141,21 @@ export function SearchBox() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  const allItems: (PopularComparison | SearchResult)[] = query.trim().length >= 2
+    ? liveResults
+    : popular.slice(0, 8);
+
   const handleSearch = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
       if (!query.trim()) return;
-      setShowPopular(false);
+      setShowDropdown(false);
+
+      // If an item is keyboard-selected, navigate to it
+      if (activeIndex >= 0 && allItems[activeIndex]) {
+        router.push(`/compare/${allItems[activeIndex].slug}`);
+        return;
+      }
 
       const parsed = parseComparison(query);
       if (parsed) {
@@ -118,16 +165,37 @@ export function SearchBox() {
         return;
       }
 
-      // Otherwise, go to search
       trackComparisonSearch(query.trim(), "general");
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     },
-    [query, router]
+    [query, router, activeIndex, allItems]
   );
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!showDropdown || allItems.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((prev) => Math.min(prev + 1, allItems.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) => Math.max(prev - 1, -1));
+    } else if (e.key === "Escape") {
+      setShowDropdown(false);
+      setActiveIndex(-1);
+    } else if (e.key === "Enter" && activeIndex >= 0 && allItems[activeIndex]) {
+      e.preventDefault();
+      router.push(`/compare/${allItems[activeIndex].slug}`);
+      setShowDropdown(false);
+    }
+  }
+
+  const showingLive = query.trim().length >= 2;
+  const hasResults = allItems.length > 0;
 
   return (
     <div ref={wrapperRef} className="relative">
-      <form onSubmit={handleSearch} className="relative">
+      <form onSubmit={handleSearch} role="search">
         <div
           className={`relative rounded-2xl transition-all duration-300 ${
             isFocused
@@ -135,76 +203,154 @@ export function SearchBox() {
               : "shadow-2xl shadow-black/20"
           }`}
         >
-          <svg
-            className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+          {/* Search icon or loading spinner */}
+          <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none">
+            {isSearching ? (
+              <svg className="animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            ) : (
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            )}
+          </div>
+
           <input
+            ref={inputRef}
             type="text"
+            role="combobox"
+            aria-expanded={showDropdown && hasResults}
+            aria-autocomplete="list"
+            aria-controls={listboxId}
+            aria-activedescendant={activeIndex >= 0 ? `search-option-${activeIndex}` : undefined}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => {
-              setShowPopular(true);
+              setShowDropdown(true);
               setIsFocused(true);
             }}
             onBlur={() => setIsFocused(false)}
+            onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
             className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 border-2 border-transparent focus:border-primary-400/50 outline-none transition-all duration-300"
             autoComplete="off"
+            spellCheck={false}
           />
           <button
             type="submit"
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all text-sm sm:text-base animate-pulse-subtle hover:animate-none"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold rounded-xl transition-all text-sm sm:text-base"
           >
             Compare
           </button>
         </div>
       </form>
 
-      {/* Ghost text suggestion */}
-      {!query && !showPopular && (
+      {/* Ghost text suggestion — only when closed and empty */}
+      {!query && !showDropdown && (
         <p className="absolute -bottom-7 left-0 right-0 text-center text-xs text-white/50 animate-fade-in">
           Type anything — e.g. &quot;{TYPING_SUGGESTIONS[suggestionIndex]}&quot;
         </p>
       )}
 
-      {/* Popular comparisons dropdown */}
-      {showPopular && popular.length > 0 && !query && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-slide-up">
-          <div className="px-4 py-2.5 border-b border-gray-100">
+      {/* Dropdown */}
+      {showDropdown && hasResults && (
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label="Search suggestions"
+          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-slide-up"
+        >
+          {/* Header */}
+          <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
-              </svg>
-              Popular right now
+              {showingLive ? (
+                <>
+                  <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  Results for &ldquo;{query}&rdquo;
+                </>
+              ) : (
+                <>
+                  <svg className="w-3.5 h-3.5 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+                  </svg>
+                  Popular right now
+                </>
+              )}
             </p>
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-gray-400 bg-gray-100 rounded px-1.5 py-0.5">
+              <span>↑↓</span> to navigate
+            </kbd>
           </div>
+
           <div className="max-h-64 overflow-y-auto">
-            {popular.slice(0, 8).map((item) => (
-              <Link
-                key={item.slug}
-                href={`/compare/${item.slug}`}
-                onClick={() => setShowPopular(false)}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+            {allItems.map((item, idx) => {
+              const parts = formatTitle(item.title);
+              const isActive = idx === activeIndex;
+              return (
+                <Link
+                  key={item.slug}
+                  id={`search-option-${idx}`}
+                  role="option"
+                  aria-selected={isActive}
+                  href={`/compare/${item.slug}`}
+                  onClick={() => setShowDropdown(false)}
+                  className={`flex items-center gap-3 px-4 py-3 transition-colors ${
+                    isActive ? "bg-primary-50" : "hover:bg-gray-50"
+                  }`}
+                >
+                  <span className="text-base flex-shrink-0 w-5 text-center">
+                    {CATEGORY_ICONS[item.category.toLowerCase()] || "📊"}
+                  </span>
+                  {parts ? (
+                    <span className="text-sm text-gray-700 flex-1 min-w-0 flex items-center gap-1.5">
+                      <span className="font-medium truncate max-w-[calc(50%-16px)]">{parts.a}</span>
+                      <span className="flex-shrink-0 text-[9px] font-bold text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded leading-none">VS</span>
+                      <span className="font-medium truncate max-w-[calc(50%-16px)]">{parts.b}</span>
+                    </span>
+                  ) : (
+                    <span className="text-sm text-gray-700 flex-1 truncate">{item.title}</span>
+                  )}
+                  <span className="text-[10px] text-gray-400 capitalize flex-shrink-0 bg-gray-100 px-2 py-0.5 rounded-full">
+                    {item.category}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Footer hint for live search */}
+          {showingLive && (
+            <div className="border-t border-gray-100 px-4 py-2 flex items-center justify-between">
+              <span className="text-xs text-gray-400">
+                {liveResults.length} result{liveResults.length !== 1 ? "s" : ""}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDropdown(false);
+                  router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+                }}
+                className="text-xs font-medium text-primary-600 hover:text-primary-700"
               >
-                <span className="text-base flex-shrink-0">
-                  {CATEGORY_ICONS[item.category.toLowerCase()] || "📊"}
-                </span>
-                <span className="text-sm text-gray-700 flex-1 truncate">{item.title}</span>
-                <span className="text-[10px] text-gray-400 capitalize flex-shrink-0 bg-gray-100 px-2 py-0.5 rounded-full">
-                  {item.category}
-                </span>
-              </Link>
-            ))}
+                See all results →
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Empty state when typing but no results yet */}
+      {showDropdown && showingLive && !isSearching && liveResults.length === 0 && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-slide-up">
+          <div className="px-4 py-6 text-center">
+            <p className="text-sm text-gray-500 mb-1">No results for &ldquo;{query}&rdquo;</p>
+            <p className="text-xs text-gray-400">
+              Press Enter to search, or try &ldquo;{query} vs ...&rdquo;
+            </p>
           </div>
         </div>
       )}

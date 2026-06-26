@@ -111,8 +111,10 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* VS Badge */}
         <div className="flex items-center justify-center self-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-600 to-accent-500 text-white rounded-full flex items-center justify-center shadow-lg animate-pulse">
-            <span className="font-display font-black text-base sm:text-xl">VS</span>
+          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 shadow-lg" />
+            <div className="absolute inset-0 rounded-full ring-2 ring-white/20" />
+            <span className="relative font-display font-black text-base sm:text-xl text-white">VS</span>
           </div>
         </div>
 

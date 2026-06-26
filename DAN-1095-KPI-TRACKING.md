@@ -8,3 +8,4 @@ Harness: `node scripts/dan1026-remeasure.mjs` (weekly). Re-crawl + backlink-disc
 | 2026-06-13 | T+1 | 0 | 10 | 307 | 0 | pre-crawl, no movement expected |
 | 2026-06-14 | T+2 | 0 | 10 | 344 | 0 | pre-crawl, no movement expected |
 | 2026-06-20 | T+8 | 0 | 10 | 344 | 0 | zero upward migration; gating lever = authority/backlinks |
+| 2026-06-26 | T+14 | 0 | 18 | 439 | 1 | 1 keyword(s) gained ≥3 |

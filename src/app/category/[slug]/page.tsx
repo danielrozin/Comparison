@@ -167,29 +167,41 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">{category.name}</li>
-          </ol>
-        </nav>
-
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <span className="text-4xl">{category.icon}</span>
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
-              {category.name} Comparisons
-            </h1>
-            <p className="text-text-secondary mt-1">
-              {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
-              {hasSubcategories && subcategoryData.length > 0 && ` across ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
-            </p>
+      {/* Category Hero Banner */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{category.name}</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <span className="text-3xl sm:text-4xl" role="img" aria-label={category.name}>{category.icon}</span>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                {category.name} Comparisons
+              </h1>
+              <p className="text-primary-200 mt-1.5 text-sm sm:text-base">
+                {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
+                {hasSubcategories && subcategoryData.filter(s => s.items.length > 0).length > 0 && ` · ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
+              </p>
+            </div>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
         {/* Featured / pinned — curated, independent of viewCount sort (DAN-1020) */}
         {featured.length > 0 && (
