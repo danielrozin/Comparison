@@ -560,7 +560,7 @@ function RedesignedTable({
                                   isLastVisible
                                     ? "border-b border-border"
                                     : "border-b border-border/30"
-                                } hover:bg-primary-50/30 transition-colors`}
+                                } ${i % 2 === 0 ? "bg-gray-50/40" : "bg-white"} hover:bg-primary-50/40 transition-colors`}
                               >
                                 <td className="px-5 py-3 text-sm font-medium text-text">
                                   {attr.name}
