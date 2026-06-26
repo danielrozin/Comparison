@@ -121,10 +121,37 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     }
   }
 
-  const schemaData = breadcrumbSchema([
-    { name: "Home", url: SITE_URL },
-    { name: category.name, url: `${SITE_URL}/category/${slug}` },
-  ]);
+  const categoryUrl = `${SITE_URL}/category/${slug}`;
+  const schemaData = [
+    breadcrumbSchema([
+      { name: "Home", url: SITE_URL },
+      { name: category.name, url: categoryUrl },
+    ]),
+    // CollectionPage + ItemList for AI parsers (GEO/AEO signal)
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: `${category.name} Comparisons`,
+      description: `Browse ${paginatedComparisons.length + (page - 1) * ITEMS_PER_PAGE}+ ${category.name.toLowerCase()} comparisons. Side-by-side analysis with expert verdicts and community votes.`,
+      url: categoryUrl,
+      isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".category-description"],
+      },
+      mainEntity: {
+        "@type": "ItemList",
+        name: `Top ${category.name} Comparisons`,
+        numberOfItems: paginatedComparisons.length,
+        itemListElement: paginatedComparisons.slice(0, 10).map((comp, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: comp.title,
+          url: `${SITE_URL}/compare/${comp.slug}`,
+        })),
+      },
+    },
+  ];
 
   const basePath = `/category/${slug}`;
 

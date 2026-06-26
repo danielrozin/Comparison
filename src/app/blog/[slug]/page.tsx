@@ -222,11 +222,17 @@ export default async function BlogPostPage({
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
 
-  // JSON-LD Article schema
+  // JSON-LD Article schema — enriched with wordCount and speakable for AEO
+  const wordCount = article.content
+    ? article.content.split(/\s+/).filter(Boolean).length
+    : undefined;
+
   const articleSchema = {
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
+    ...(wordCount && { wordCount }),
+    inLanguage: "en-US",
     author: extras?.author
       ? {
           "@type": "Person",
@@ -235,7 +241,7 @@ export default async function BlogPostPage({
         }
       : {
           "@type": "Organization",
-          name: `${SITE_NAME} Team`,
+          name: `${SITE_NAME} Editorial Team`,
           url: SITE_URL,
         },
     publisher: {
@@ -245,6 +251,8 @@ export default async function BlogPostPage({
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
+        width: 200,
+        height: 60,
       },
       sameAs: socialSameAs(),
     },
@@ -256,6 +264,7 @@ export default async function BlogPostPage({
       : undefined,
     mainEntityOfPage: articleUrl,
     url: articleUrl,
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
   };
 
   const breadcrumbs = [
@@ -284,6 +293,19 @@ export default async function BlogPostPage({
       })),
     });
   }
+
+  // SpeakableSpecification — marks the article headline and first section for
+  // voice assistants and AEO. h1 and first h2 are the most answer-dense elements.
+  graph.push({
+    "@type": "WebPage",
+    "@id": articleUrl,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
+    },
+    url: articleUrl,
+  });
+
   const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 
   return (

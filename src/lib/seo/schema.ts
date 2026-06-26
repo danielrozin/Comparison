@@ -159,8 +159,17 @@ export function comparisonPageSchema(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    inLanguage: "en-US",
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
+    // `mentions` signals to Google/LLMs which entities this article discusses — key GEO signal.
+    mentions: comparison.entities.map((e) => ({
+      "@type": entitySchemaType(e.entityType),
+      name: e.name,
+      url: `${SITE_URL}/entity/${e.slug}`,
+      ...(e.shortDesc && { description: e.shortDesc }),
+      ...(e.imageUrl && { image: e.imageUrl }),
+    })),
     author: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -397,8 +406,17 @@ function buildMultiEntityGraph(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    inLanguage: "en-US",
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
+    // `mentions` — entity graph signals for GEO (same pattern as 2-entity layout)
+    mentions: comparison.entities.map((e) => ({
+      "@type": entitySchemaType(e.entityType),
+      name: e.name,
+      url: `${SITE_URL}/entity/${e.slug}`,
+      ...(e.shortDesc && { description: e.shortDesc }),
+      ...(e.imageUrl && { image: e.imageUrl }),
+    })),
     author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     publisher: {
       "@type": "Organization",

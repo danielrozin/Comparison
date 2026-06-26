@@ -58,6 +58,31 @@ export default async function EntityPage({ params }: PageProps) {
     ? CATEGORIES.find((c) => c.slug === primaryCategory)
     : null;
 
+  // Map category → Schema.org entity type for correct structured data
+  const CATEGORY_TO_ENTITY_TYPE: Record<string, string> = {
+    sports: "person",
+    countries: "country",
+    technology: "product",
+    products: "product",
+    software: "software",
+    automotive: "product",
+    companies: "company",
+    brands: "brand",
+    health: "product",
+    finance: "company",
+    economy: "product",
+    entertainment: "company",
+    gaming: "product",
+    military: "event",
+    history: "event",
+    education: "company",
+    travel: "place",
+    food_and_drink: "product",
+  };
+  const inferredEntityType = primaryCategory
+    ? (CATEGORY_TO_ENTITY_TYPE[primaryCategory] ?? "product")
+    : "product";
+
   // Breadcrumb items
   const breadcrumbItems = [
     { name: "Home", url: SITE_URL },
@@ -72,7 +97,7 @@ export default async function EntityPage({ params }: PageProps) {
     aggregateRatingSchema({
       name,
       slug,
-      entityType: "product",
+      entityType: inferredEntityType,
       ratingValue: rating,
       reviewCount,
     }),
