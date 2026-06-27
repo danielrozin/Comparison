@@ -260,11 +260,11 @@ export function SearchBox() {
           id={listboxId}
           role="listbox"
           aria-label="Search suggestions"
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-slide-up"
+          className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-gray-200/80 overflow-hidden z-50 animate-slide-up"
         >
           {/* Header */}
-          <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between bg-gray-50/60">
+            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
               {showingLive ? (
                 <>
                   <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -281,15 +281,27 @@ export function SearchBox() {
                 </>
               )}
             </p>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-gray-400 bg-gray-100 rounded px-1.5 py-0.5">
-              <span>↑↓</span> to navigate
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-gray-400 bg-white border border-gray-200 rounded-md px-1.5 py-0.5 font-mono">
+              ↑↓ navigate
             </kbd>
           </div>
 
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-72 overflow-y-auto">
             {allItems.map((item, idx) => {
               const parts = formatTitle(item.title);
               const isActive = idx === activeIndex;
+              const catKey = item.category.toLowerCase();
+              const catColors: Record<string, string> = {
+                sports: "bg-green-50 text-green-700 border-green-200",
+                technology: "bg-blue-50 text-blue-700 border-blue-200",
+                countries: "bg-orange-50 text-orange-700 border-orange-200",
+                finance: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                entertainment: "bg-purple-50 text-purple-700 border-purple-200",
+                health: "bg-rose-50 text-rose-700 border-rose-200",
+                companies: "bg-indigo-50 text-indigo-700 border-indigo-200",
+                automotive: "bg-yellow-50 text-yellow-700 border-yellow-200",
+              };
+              const catStyle = catColors[catKey] || "bg-gray-100 text-gray-500 border-gray-200";
               return (
                 <Link
                   key={item.slug}
@@ -298,23 +310,25 @@ export function SearchBox() {
                   aria-selected={isActive}
                   href={`/compare/${item.slug}`}
                   onClick={() => setShowDropdown(false)}
-                  className={`flex items-center gap-3 px-4 py-3 transition-colors ${
-                    isActive ? "bg-primary-50" : "hover:bg-gray-50"
+                  className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 ${
+                    isActive
+                      ? "bg-primary-50/80 border-l-primary-500"
+                      : "hover:bg-gray-50/80 border-l-transparent"
                   }`}
                 >
-                  <span className="text-base flex-shrink-0 w-5 text-center">
-                    {CATEGORY_ICONS[item.category.toLowerCase()] || "📊"}
+                  <span className="text-base flex-shrink-0 w-5 text-center leading-none">
+                    {CATEGORY_ICONS[catKey] || "📊"}
                   </span>
                   {parts ? (
                     <span className="text-sm text-gray-700 flex-1 min-w-0 flex items-center gap-1.5">
-                      <span className="font-medium truncate max-w-[calc(50%-16px)]">{parts.a}</span>
-                      <span className="flex-shrink-0 text-[9px] font-bold text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded leading-none">VS</span>
-                      <span className="font-medium truncate max-w-[calc(50%-16px)]">{parts.b}</span>
+                      <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.a}</span>
+                      <span className="flex-shrink-0 text-[9px] font-black text-white bg-gray-400 px-1.5 py-0.5 rounded leading-none">VS</span>
+                      <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.b}</span>
                     </span>
                   ) : (
-                    <span className="text-sm text-gray-700 flex-1 truncate">{item.title}</span>
+                    <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-gray-700"}`}>{item.title}</span>
                   )}
-                  <span className="text-[10px] text-gray-400 capitalize flex-shrink-0 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                     {item.category}
                   </span>
                 </Link>
@@ -322,24 +336,31 @@ export function SearchBox() {
             })}
           </div>
 
-          {/* Footer hint for live search */}
-          {showingLive && (
-            <div className="border-t border-gray-100 px-4 py-2 flex items-center justify-between">
-              <span className="text-xs text-gray-400">
-                {liveResults.length} result{liveResults.length !== 1 ? "s" : ""}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowDropdown(false);
-                  router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-                }}
-                className="text-xs font-medium text-primary-600 hover:text-primary-700"
-              >
-                See all results →
-              </button>
-            </div>
-          )}
+          {/* Footer */}
+          <div className="border-t border-gray-100 bg-gray-50/60 px-4 py-2 flex items-center justify-between">
+            {showingLive ? (
+              <>
+                <span className="text-[11px] text-gray-400 font-medium">
+                  {liveResults.length} result{liveResults.length !== 1 ? "s" : ""}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDropdown(false);
+                    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+                  }}
+                  className="text-[11px] font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                >
+                  See all results
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </button>
+              </>
+            ) : (
+              <span className="text-[11px] text-gray-400">Press Enter to search</span>
+            )}
+          </div>
         </div>
       )}
 
