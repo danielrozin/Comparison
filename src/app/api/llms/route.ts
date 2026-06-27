@@ -70,9 +70,9 @@ export async function GET(request: Request) {
     }),
     prisma.blogArticle.findMany({
       where: { status: "published" },
-      select: { slug: true, title: true, category: true },
+      select: { slug: true, title: true, category: true, excerpt: true },
       orderBy: { publishedAt: "desc" },
-      take: 60,
+      take: 100,
     }),
   ]);
 
@@ -115,10 +115,26 @@ export async function GET(request: Request) {
       lines.push("");
     }
 
+    // Group blog articles by category for easier LLM navigation
+    const blogByCategory: Record<string, typeof blogs> = {};
+    for (const b of blogs) {
+      const cat = b.category ?? "general";
+      if (!blogByCategory[cat]) blogByCategory[cat] = [];
+      blogByCategory[cat].push(b);
+    }
     lines.push("## Blog Articles");
     lines.push("");
-    for (const b of blogs) {
-      lines.push(`- ${b.title}: ${SITE_URL}/blog/${b.slug}`);
+    for (const [cat, items] of Object.entries(blogByCategory)) {
+      const label = cat.charAt(0).toUpperCase() + cat.slice(1);
+      lines.push(`### ${label}`);
+      lines.push("");
+      for (const b of items) {
+        lines.push(`- **${b.title}** — ${SITE_URL}/blog/${b.slug}`);
+        if (b.excerpt) {
+          lines.push(`  > ${b.excerpt.slice(0, 200).replace(/\n/g, " ")}`);
+        }
+      }
+      lines.push("");
     }
     lines.push("");
     lines.push(`## Full catalog: ${SITE_URL}/llms-full.txt`);
@@ -145,7 +161,7 @@ export async function GET(request: Request) {
         entities: totalEntities,
       },
       comparisons: byCategory,
-      blogs: blogs.map((b) => ({ slug: b.slug, title: b.title, category: b.category, url: `${SITE_URL}/blog/${b.slug}` })),
+      blogs: blogs.map((b) => ({ slug: b.slug, title: b.title, category: b.category, excerpt: b.excerpt ?? undefined, url: `${SITE_URL}/blog/${b.slug}` })),
       llmsTxt: `${SITE_URL}/llms.txt`,
       llmsFullTxt: `${SITE_URL}/llms-full.txt`,
       sitemap: `${SITE_URL}/sitemap.xml`,
