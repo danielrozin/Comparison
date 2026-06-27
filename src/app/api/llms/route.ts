@@ -137,8 +137,10 @@ export async function GET(request: Request) {
       lines.push("");
     }
     lines.push("");
-    lines.push(`## Full catalog: ${SITE_URL}/llms-full.txt`);
+    lines.push(`## Full catalog (dynamic, DB-fresh): ${SITE_URL}/api/llms-full`);
+    lines.push(`## Full catalog (static snapshot): ${SITE_URL}/llms-full.txt`);
     lines.push(`## Sitemap: ${SITE_URL}/sitemap.xml`);
+    lines.push(`## AI plugin manifest: ${SITE_URL}/.well-known/ai-plugin.json`);
 
     return new NextResponse(lines.join("\n"), {
       headers: {

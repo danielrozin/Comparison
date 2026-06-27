@@ -123,8 +123,11 @@ A Versus B provides a public REST API for accessing comparison data programmatic
 
 ## Full Content Index
 
-- [Full comparison catalog](https://www.aversusb.net/llms-full.txt): Categorized list of top comparisons with short answers
-- [Sitemap](https://www.aversusb.net/sitemap.xml): Complete URL list for all 2,939+ pages
+- [Full comparison catalog — dynamic, DB-fresh](https://www.aversusb.net/api/llms-full): Comprehensive categorized list with short answers, entity pages, and blog articles (updated every 6h)
+- [Full comparison catalog — static snapshot](https://www.aversusb.net/llms-full.txt): Last-generated static version
+- [Live LLM manifest — dynamic](https://www.aversusb.net/api/llms?format=txt): This file served fresh from DB (updated every hour)
+- [AI Plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json): OpenAI-compatible site descriptor
+- [Sitemap](https://www.aversusb.net/sitemap.xml): Complete URL list for all 3,000+ pages
 
 ## Founders
 
