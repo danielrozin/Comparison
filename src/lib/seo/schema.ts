@@ -239,6 +239,15 @@ export function comparisonPageSchema(
     wordCount: comparison.attributes.length > 0
       ? Math.max(500, comparison.attributes.length * 80 + comparison.faqs.length * 120)
       : undefined,
+    // lastReviewed / reviewedBy — explicit freshness signal. AI answer engines
+    // (Perplexity, ChatGPT) prefer pages that declare a review date, as it signals
+    // the data is actively maintained rather than stale or abandoned.
+    lastReviewed: comparison.metadata.updatedAt,
+    reviewedBy: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
     // interactionStatistic — exposes real page view counts so search engines and LLMs
     // can rank content by engagement. Uses schema.org/InteractionCounter.
     ...(comparison.metadata.viewCount > 0 && {
@@ -756,6 +765,13 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
+    // potentialAction ReadAction — tells AI crawlers this page is designed to be
+    // read and understood, distinguishing it from interactive/transactional pages.
+    // Increases citation probability in AI Overviews for entity queries.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
   };
 }
 
@@ -975,4 +991,72 @@ function entitySchemaType(entityType: string): string {
     place: "Place",
   };
   return map[entityType] || "Thing";
+}
+
+// ============================================================
+// ClaimReview schema — AEO / Google Fact Check signal
+//
+// When a comparison has a clear verdict (A is better), emitting ClaimReview
+// tells Google Fact Check Lab and AI answer engines that we've evaluated the
+// claim. This increases citation likelihood in AI Overviews and Perplexity.
+// ============================================================
+
+export function claimReviewSchema(opts: {
+  slug: string;
+  verdict: string;
+  entityA: string;
+  entityB: string;
+  publishedAt?: string | null;
+  updatedAt?: string | null;
+}): Record<string, unknown> | null {
+  if (!opts.verdict || !opts.entityA || !opts.entityB) return null;
+
+  const url = `${SITE_URL}/compare/${opts.slug}`;
+  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
+
+  // Map verdict text to a normalised rating value Google Fact Check understands.
+  const verdictLower = opts.verdict.toLowerCase();
+  let ratingValue: string;
+  let ratingExplanation: string;
+
+  if (verdictLower.includes(opts.entityA.toLowerCase())) {
+    ratingValue = "TRUE";
+    ratingExplanation = opts.verdict;
+  } else if (verdictLower.includes(opts.entityB.toLowerCase())) {
+    ratingValue = "FALSE";
+    ratingExplanation = `${opts.entityB} is better. ${opts.verdict}`;
+  } else if (verdictLower.includes("tie") || verdictLower.includes("draw") || verdictLower.includes("depends")) {
+    ratingValue = "MIXTURE";
+    ratingExplanation = opts.verdict;
+  } else {
+    ratingValue = "MIXTURE";
+    ratingExplanation = opts.verdict;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ClaimReview",
+    url,
+    claimReviewed: claimText,
+    datePublished: opts.publishedAt ?? undefined,
+    dateModified: opts.updatedAt ?? undefined,
+    author: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    itemReviewed: {
+      "@type": "Claim",
+      author: { "@type": "Organization", name: "Public Opinion" },
+      datePublished: opts.publishedAt ?? undefined,
+      claimInterpreter: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      alternateName: ratingExplanation,
+      bestRating: "TRUE",
+      worstRating: "FALSE",
+    },
+  };
 }

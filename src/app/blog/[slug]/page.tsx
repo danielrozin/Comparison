@@ -306,6 +306,21 @@ export default async function BlogPostPage({
     ...(article.excerpt && { abstract: article.excerpt }),
     // keywords — tags + category for entity/topic recognition in LLM training crawls
     ...(article.tags?.length && { keywords: article.tags.join(", ") }),
+    // about — links this blog article to the comparison pages it discusses.
+    // AI answer engines use `about` to understand the article's subject matter
+    // and connect it to entity knowledge graphs, increasing citation coverage.
+    ...(article.relatedComparisonSlugs?.length && {
+      about: article.relatedComparisonSlugs.map((s) => ({
+        "@type": "Article",
+        headline: comparisonTitles?.[s] ?? s,
+        url: `${SITE_URL}/compare/${s}`,
+      })),
+    }),
+    // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
+    lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+    reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    isAccessibleForFree: true,
+    license: `${SITE_URL}/terms`,
   };
 
   const breadcrumbs = [

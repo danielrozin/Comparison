@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, claimReviewSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -297,8 +297,20 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       jsonLd = JSON.stringify(schemas[0]);
     }
   } else {
+    // Inject ClaimReview for 2-entity pages that have a verdict — major AEO signal
+    // for Google Fact Check Lab and AI answer engines (Perplexity, ChatGPT).
+    const claimReview = !isMultiEntity && enrichedComparison.verdict
+      ? claimReviewSchema({
+          slug,
+          verdict: enrichedComparison.verdict,
+          entityA,
+          entityB,
+          publishedAt: enrichedComparison.metadata.publishedAt,
+          updatedAt: enrichedComparison.metadata.updatedAt,
+        })
+      : null;
     jsonLd = JSON.stringify(
-      jsonLdGraph([...schemas, videoSchemaNode])
+      jsonLdGraph([...schemas, videoSchemaNode, claimReview])
     );
   }
 

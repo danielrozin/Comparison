@@ -103,12 +103,28 @@ export default async function sitemap({
   if (numId === 1) {
     try {
       const { comparisons } = await getAllSitemapData();
-      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => ({
-        url: `${SITE_URL}/compare/${comp.slug}`,
-        lastModified: comp.updatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.9,
-      }));
+      return comparisons.slice(0, MAX_URLS_PER_SITEMAP).map((comp) => {
+        // Derive entity names from the slug (format: "entity-a-vs-entity-b").
+        // Slug parts use hyphens; humanize by replacing with spaces and title-casing.
+        const humanize = (s: string) =>
+          s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        const vsParts = comp.slug.split("-vs-");
+        const entityA = vsParts[0] ? humanize(vsParts[0]) : comp.slug;
+        const entityB = vsParts[1] ? humanize(vsParts[1]) : "";
+        const ogImageUrl = entityB
+          ? `${SITE_URL}/api/og?a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&type=comparison`
+          : `${SITE_URL}/api/og?title=${encodeURIComponent(entityA)}&type=home`;
+        return {
+          url: `${SITE_URL}/compare/${comp.slug}`,
+          lastModified: comp.updatedAt,
+          changeFrequency: "weekly" as const,
+          priority: 0.9,
+          // images — explicitly declares OG images in the sitemap.
+          // Google Image Search and AI crawlers use sitemap image entries to
+          // discover and index images faster without re-crawling all pages.
+          images: [ogImageUrl],
+        };
+      });
     } catch {
       return [];
     }
