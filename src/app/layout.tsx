@@ -90,6 +90,8 @@ export default function RootLayout({
       <head>
         {/* LLMs.txt discovery — static manifest; dynamic version at /api/llms?format=txt */}
         <link rel="alternate" type="text/plain" href={`${SITE_URL}/llms.txt`} title="LLM Site Manifest" />
+        {/* Well-known LLM discovery (llmstxt.org spec) */}
+        <link rel="alternate" type="text/plain" href={`${SITE_URL}/.well-known/llms.txt`} title="LLM Discovery" />
         {/* Full catalog for AI crawlers (DB-fresh, updated every 6h) */}
         <link rel="alternate" type="text/plain" href={`${SITE_URL}/api/llms-full`} title="LLM Full Catalog" />
         {/* AI plugin manifest — OpenAI-compatible site descriptor */}

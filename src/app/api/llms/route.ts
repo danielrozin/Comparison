@@ -51,6 +51,8 @@ export async function GET(request: Request) {
     totalEntities,
     topComparisons,
     blogs,
+    topEntities,
+    topAlternatives,
   ] = await Promise.all([
     prisma.comparison.count(),
     prisma.blogArticle.count(),
@@ -73,6 +75,18 @@ export async function GET(request: Request) {
       select: { slug: true, title: true, category: true, excerpt: true },
       orderBy: { publishedAt: "desc" },
       take: 100,
+    }),
+    // Top entities by comparison count for LLM entity recognition
+    prisma.entity.findMany({
+      select: { slug: true, name: true, shortDesc: true },
+      orderBy: { id: "asc" },
+      take: 50,
+    }),
+    // Top alternatives pages (derived from entities)
+    prisma.entity.findMany({
+      select: { slug: true, name: true },
+      orderBy: { id: "asc" },
+      take: 30,
     }),
   ]);
 
@@ -136,6 +150,33 @@ export async function GET(request: Request) {
       }
       lines.push("");
     }
+    // Entity profiles section — top entities for LLM entity disambiguation
+    if (topEntities.length > 0) {
+      lines.push("## Entity Profiles");
+      lines.push("");
+      lines.push("Each entity page lists all comparisons involving that entity.");
+      lines.push("");
+      for (const e of topEntities) {
+        lines.push(`- **${e.name}** — ${SITE_URL}/entity/${e.slug}`);
+        if (e.shortDesc) {
+          lines.push(`  > ${e.shortDesc.slice(0, 150).replace(/\n/g, " ")}`);
+        }
+      }
+      lines.push("");
+    }
+
+    // Alternatives section — "best alternatives to X" pages
+    if (topAlternatives.length > 0) {
+      lines.push("## Alternatives Pages");
+      lines.push("");
+      lines.push("Pages listing the best alternatives to popular products and services.");
+      lines.push("");
+      for (const e of topAlternatives) {
+        lines.push(`- **Best alternatives to ${e.name}** — ${SITE_URL}/alternatives/${e.slug}`);
+      }
+      lines.push("");
+    }
+
     lines.push("");
     lines.push(`## Full catalog (dynamic, DB-fresh): ${SITE_URL}/api/llms-full`);
     lines.push(`## Full catalog (static snapshot): ${SITE_URL}/llms-full.txt`);
@@ -164,8 +205,10 @@ export async function GET(request: Request) {
       },
       comparisons: byCategory,
       blogs: blogs.map((b) => ({ slug: b.slug, title: b.title, category: b.category, excerpt: b.excerpt ?? undefined, url: `${SITE_URL}/blog/${b.slug}` })),
+      entities: topEntities.map((e) => ({ slug: e.slug, name: e.name, shortDesc: e.shortDesc ?? undefined, url: `${SITE_URL}/entity/${e.slug}` })),
       llmsTxt: `${SITE_URL}/llms.txt`,
-      llmsFullTxt: `${SITE_URL}/llms-full.txt`,
+      llmsFullTxt: `${SITE_URL}/api/llms-full`,
+      aiPlugin: `${SITE_URL}/.well-known/ai-plugin.json`,
       sitemap: `${SITE_URL}/sitemap.xml`,
     },
     {

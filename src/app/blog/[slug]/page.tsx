@@ -194,6 +194,32 @@ export async function generateMetadata({
       description: article.metaDescription || article.excerpt,
       images: [ogImage],
     },
+    // Academic / AI citation meta tags (Dublin Core + citation_ namespace).
+    // Semantic Scholar, Google Scholar, and AI crawlers use these to extract
+    // citable metadata and attribute content to the correct source.
+    other: {
+      "citation_title": article.metaTitle || article.title,
+      "citation_author": "Daniel Rozin",
+      "citation_publication_date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "citation_journal_title": "A Versus B",
+      "citation_abstract": (article.metaDescription || article.excerpt || "").slice(0, 300),
+      "citation_language": "en",
+      "citation_online_date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "DC.title": article.metaTitle || article.title,
+      "DC.creator": "Daniel Rozin",
+      "DC.date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/blog/${slug}`,
+    },
   };
 }
 

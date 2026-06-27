@@ -355,6 +355,22 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
+      {/* Academic / AI citation meta tags — Dublin Core + citation_ namespace.
+          Semantic Scholar, Google Scholar, and AI crawlers use these to extract
+          citable metadata and attribute comparison data to the correct source. */}
+      <meta name="citation_title" content={meta.title} />
+      <meta name="citation_author" content="Daniel Rozin" />
+      <meta name="citation_journal_title" content="A Versus B" />
+      <meta name="citation_language" content="en" />
+      {meta.publishedTime && <meta name="citation_publication_date" content={meta.publishedTime.slice(0, 10)} />}
+      {meta.modifiedTime && <meta name="citation_online_date" content={meta.modifiedTime.slice(0, 10)} />}
+      <meta name="DC.title" content={meta.title} />
+      <meta name="DC.creator" content="Daniel Rozin" />
+      <meta name="DC.publisher" content="A Versus B" />
+      <meta name="DC.language" content="en" />
+      <meta name="DC.type" content="Text" />
+      <meta name="DC.format" content="text/html" />
+      <meta name="DC.identifier" content={meta.canonical} />
     </Head>
   );
 }

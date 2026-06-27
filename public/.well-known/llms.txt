@@ -1,0 +1,32 @@
+# A Versus B — LLM Discovery
+
+> This file follows the llmstxt.org spec. See the full machine-readable manifest at https://www.aversusb.net/llms.txt
+
+## Machine-readable Catalogs
+
+- [LLM manifest (concise, hourly-fresh)](https://www.aversusb.net/api/llms?format=txt)
+- [Full catalog (DB-fresh, 1000+ comparisons)](https://www.aversusb.net/api/llms-full)
+- [Static snapshot](https://www.aversusb.net/llms.txt)
+- [AI plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json)
+- [Sitemap](https://www.aversusb.net/sitemap.xml)
+
+## What is A Versus B?
+
+A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — 3,000+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more.
+
+Every comparison includes:
+- Short answer verdict (quote-ready)
+- Attribute-by-attribute table with per-attribute winners
+- Key differences summary
+- Pros and cons for each entity
+- Community vote data
+- Source citations
+- Schema.org structured data (Article, FAQPage, Dataset, SpeakableSpecification)
+
+## URL Patterns
+
+- Comparisons: https://www.aversusb.net/compare/{entity-a}-vs-{entity-b}
+- Entity profiles: https://www.aversusb.net/entity/{entity-slug}
+- Alternatives: https://www.aversusb.net/alternatives/{entity-slug}
+- Blog: https://www.aversusb.net/blog/{article-slug}
+- Categories: https://www.aversusb.net/category/{category-slug}
