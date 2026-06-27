@@ -180,10 +180,16 @@ export function comparisonPageSchema(
 
   const schemas: Record<string, unknown>[] = [];
 
-  // 1. Article schema
+  // 1. Article schema — use TechArticle for tech/software comparisons.
+  // TechArticle gets Google's "Technical Article" rich result type and is preferred
+  // by AI Overviews when surfacing technical comparisons (software, SaaS, hardware).
+  const techCategories = new Set(["technology", "software", "automotive", "gaming"]);
+  const articleType = techCategories.has(comparison.category ?? "")
+    ? ["Article", "TechArticle"]
+    : "Article";
   schemas.push({
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": articleType,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -511,8 +517,11 @@ function buildMultiEntityGraph(
     })),
   };
 
+  const techCategoriesMulti = new Set(["technology", "software", "automotive", "gaming"]);
   const article: Record<string, unknown> = {
-    "@type": "Article",
+    "@type": techCategoriesMulti.has(comparison.category ?? "")
+      ? ["Article", "TechArticle"]
+      : "Article",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -550,6 +559,8 @@ function buildMultiEntityGraph(
     }),
     isAccessibleForFree: true,
     license: `${SITE_URL}/terms`,
+    lastReviewed: comparison.metadata.updatedAt,
+    reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   };
 
   const breadcrumbs = [
@@ -811,6 +822,12 @@ export function profilePageSchema(entity: {
     ...(entity.shortDesc && { description: entity.shortDesc }),
     ...(entity.imageUrl && { image: entity.imageUrl }),
     ...(subjectOf.length > 0 && { subjectOf }),
+    // potentialAction ReadAction — tells AI crawlers this is an informational
+    // resource about the named entity, not a transactional page.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
   };
 
   return {
@@ -821,6 +838,11 @@ export function profilePageSchema(entity: {
     dateModified: new Date().toISOString().slice(0, 10),
     inLanguage: "en-US",
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    // speakable — marks the entity name/description for voice assistants + AEO.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".entity-description", ".entity-short-desc"],
+    },
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
