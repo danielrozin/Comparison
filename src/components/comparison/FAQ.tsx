@@ -30,8 +30,11 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
           <button
             type="button"
             onClick={handleExpandAll}
-            className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200"
           >
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
             {allOpen ? "Collapse all" : "Expand all"}
           </button>
         )}
@@ -43,63 +46,66 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
           return (
             <div
               key={i}
-              className={`bg-white border rounded-xl overflow-hidden transition-all duration-200 ${
+              style={{ animationDelay: `${i * 40}ms` }}
+              className={`bg-white border rounded-xl overflow-hidden transition-all duration-250 animate-fade-in ${
                 isOpen
-                  ? "border-primary-300 shadow-sm shadow-primary-100/60 border-l-[3px] border-l-primary-500"
-                  : "border-border hover:border-gray-300"
+                  ? "border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500"
+                  : "border-border hover:border-primary-200 hover:shadow-sm"
               }`}
             >
               <button
                 onClick={() => {
                   if (openIndex === -1) {
-                    // Was "all open" — collapse this one, keep others tracked as specific index
                     setOpenIndex(null);
                   } else {
                     setOpenIndex(isOpen ? null : i);
                   }
                 }}
-                className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-colors ${isOpen ? "bg-primary-50/40" : ""}`}
+                className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-gray-50/70"}`}
                 aria-expanded={isOpen}
               >
                 {/* Number badge */}
                 <span
                   className={`flex-shrink-0 w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center transition-all duration-200 ${
                     isOpen
-                      ? "bg-primary-600 text-white scale-110"
-                      : "bg-gray-100 text-gray-500"
+                      ? "bg-primary-600 text-white shadow-sm shadow-primary-300/40"
+                      : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
                   }`}
                 >
                   {i + 1}
                 </span>
 
-                <span className={`flex-1 font-medium text-sm sm:text-base pr-2 transition-colors ${isOpen ? "text-primary-800" : "text-text"}`}>
+                <span className={`flex-1 font-medium text-sm sm:text-base pr-2 transition-colors duration-200 ${isOpen ? "text-primary-900" : "text-text"}`}>
                   {faq.question}
                 </span>
 
-                <svg
-                  className={`w-4 h-4 flex-shrink-0 transition-all duration-200 ${
-                    isOpen ? "rotate-180 text-primary-600" : "text-text-secondary"
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
+                {/* Animated chevron in a subtle circle */}
+                <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 ${isOpen ? "bg-primary-100 text-primary-600" : "text-text-secondary"}`}>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
               </button>
 
-              {/* Answer — CSS max-height transition for smooth open/close */}
+              {/* Answer — CSS grid-rows trick for smooth natural height animation */}
               <div
-                className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                  isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+                className={`grid transition-all duration-300 ease-in-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                 }`}
               >
-                <div className="px-5 pb-5 ml-9">
-                  <div className="h-px bg-primary-100 mb-4" />
-                  <p className="text-sm text-text-secondary leading-relaxed">
-                    {faq.answer}
-                  </p>
+                <div className="overflow-hidden">
+                  <div className="px-5 pb-5 ml-9">
+                    <div className="h-px bg-gradient-to-r from-primary-200 to-transparent mb-4" />
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -2,6 +2,20 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import { AffiliateButton } from "./AffiliateButton";
 
+const AVATAR_PALETTES = [
+  { bg: "from-indigo-500 to-blue-400", ring: "ring-indigo-400/50", shadow: "shadow-[0_0_40px_rgba(99,102,241,0.5)]" },
+  { bg: "from-violet-500 to-purple-400", ring: "ring-violet-400/50", shadow: "shadow-[0_0_40px_rgba(167,139,250,0.5)]" },
+  { bg: "from-emerald-500 to-teal-400", ring: "ring-emerald-400/50", shadow: "shadow-[0_0_40px_rgba(52,211,153,0.5)]" },
+  { bg: "from-amber-500 to-orange-400", ring: "ring-amber-400/50", shadow: "shadow-[0_0_40px_rgba(251,191,36,0.5)]" },
+  { bg: "from-rose-500 to-pink-400", ring: "ring-rose-400/50", shadow: "shadow-[0_0_40px_rgba(251,113,133,0.5)]" },
+];
+
+function pickPalette(name: string, forceIdx?: number) {
+  if (forceIdx !== undefined) return AVATAR_PALETTES[forceIdx % AVATAR_PALETTES.length];
+  const code = name.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  return AVATAR_PALETTES[code % AVATAR_PALETTES.length];
+}
+
 function EntityAvatar({
   entity,
   variant,
@@ -13,30 +27,25 @@ function EntityAvatar({
     entity.imageUrl &&
     !entity.imageUrl.includes("ui-avatars.com");
 
-  const gradientClass =
-    variant === "a"
-      ? "from-primary-400/30 to-primary-300/20"
-      : "from-accent-400/30 to-purple-300/20";
-  const textClass = "text-white";
-  const glowClass =
-    variant === "a"
-      ? "shadow-[0_0_40px_rgba(99,102,241,0.5)] ring-2 ring-primary-400/40"
-      : "shadow-[0_0_40px_rgba(168,85,247,0.5)] ring-2 ring-accent-400/40";
+  const palette = pickPalette(entity.name, variant === "a" ? 0 : 1);
+  const isPrimary = variant === "a";
 
   if (hasImage) {
-    const isPrimary = variant === "a";
     return (
-      <div className={`w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden mx-auto mb-3 sm:mb-4 ring-2 ring-white/30 ${glowClass.split(" ").slice(0, 1).join(" ")}`}>
-        <Image
-          src={entity.imageUrl!}
-          alt={entity.name}
-          width={112}
-          height={112}
-          sizes="(min-width: 640px) 112px, 80px"
-          priority={isPrimary}
-          fetchPriority={isPrimary ? "high" : "auto"}
-          className="w-full h-full object-cover"
-        />
+      <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
+        <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-50`} />
+        <div className={`relative w-full h-full rounded-full overflow-hidden ring-2 ${palette.ring} ${palette.shadow}`}>
+          <Image
+            src={entity.imageUrl!}
+            alt={entity.name}
+            width={112}
+            height={112}
+            sizes="(min-width: 640px) 112px, 80px"
+            priority={isPrimary}
+            fetchPriority={isPrimary ? "high" : "auto"}
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
     );
   }
@@ -49,12 +58,15 @@ function EntityAvatar({
     .toUpperCase();
 
   return (
-    <div
-      className={`w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-br ${gradientClass} backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 ${glowClass}`}
-    >
-      <span className={`text-2xl sm:text-4xl font-bold ${textClass}`}>
-        {initials || entity.name.charAt(0)}
-      </span>
+    <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
+      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-60`} />
+      <div
+        className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
+      >
+        <span className="text-2xl sm:text-4xl font-black text-white drop-shadow">
+          {initials || entity.name.charAt(0)}
+        </span>
+      </div>
     </div>
   );
 }
@@ -192,9 +204,10 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           {/* VS Badge */}
           <div className="flex items-center justify-center self-center">
             <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/30" />
-              <div className="absolute inset-0 rounded-full ring-2 ring-white/20" />
-              <span className="relative font-display font-black text-base sm:text-xl text-white">VS</span>
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 animate-pulse opacity-40 scale-125" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
+              <div className="absolute inset-0 rounded-full ring-2 ring-white/30" />
+              <span className="relative font-display font-black text-base sm:text-xl text-white tracking-tight">VS</span>
             </div>
           </div>
 
