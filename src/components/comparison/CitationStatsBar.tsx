@@ -64,65 +64,72 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-      <div className="bg-gradient-to-r from-indigo-50 via-blue-50 to-indigo-50 border border-indigo-100 rounded-xl px-4 py-3">
-        <div className="flex flex-wrap items-center gap-x-1 gap-y-2">
-          {/* Shield icon — trust signal */}
-          <div className="flex items-center gap-1.5 text-indigo-600 mr-2">
-            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-            <span className="text-[10px] font-bold text-indigo-700 uppercase tracking-wider hidden sm:inline">Research-backed</span>
+      <div className="relative bg-gradient-to-r from-indigo-50/80 via-blue-50/60 to-indigo-50/80 border border-indigo-100 rounded-xl overflow-hidden">
+        {/* Left accent stripe */}
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 to-blue-500" />
+
+        <div className="pl-4 pr-4 py-3">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+            {/* Shield badge */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <div className="w-6 h-6 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
+                <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <span className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider hidden sm:inline">Research-backed</span>
+            </div>
+
+            {/* Divider */}
+            <div className="w-px h-4 bg-indigo-200 hidden sm:block" />
+
+            {/* Stat pills */}
+            {items.map((item, i) => (
+              <div key={i} className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 bg-white/90 border border-indigo-100 rounded-full px-3 py-1 text-xs shadow-sm hover:shadow-md transition-shadow">
+                  <span className="text-indigo-500 flex-shrink-0">{item.icon}</span>
+                  <span className="font-bold text-indigo-900">{item.value}</span>
+                  <span className="text-gray-500">{item.label}</span>
+                </div>
+                {i < items.length - 1 && (
+                  <span className="text-indigo-200 text-xs hidden sm:inline" aria-hidden="true">·</span>
+                )}
+              </div>
+            ))}
+
+            {/* Research date */}
+            <span className="text-[10px] text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
+              Updated {researchDate}
+            </span>
           </div>
 
-          {/* Divider */}
-          <div className="w-px h-4 bg-indigo-200 hidden sm:block mr-2" />
-
-          {/* Stat pills */}
-          {items.map((item, i) => (
-            <div key={i} className="flex items-center gap-1.5">
-              <div className="flex items-center gap-1 bg-white border border-indigo-100 rounded-full px-2.5 py-1 text-xs shadow-sm">
-                <span className="text-indigo-500">{item.icon}</span>
-                <span className="font-bold text-indigo-900">{item.value}</span>
-                <span className="text-gray-500">{item.label}</span>
-              </div>
-              {i < items.length - 1 && (
-                <span className="text-indigo-200 text-xs hidden sm:inline" aria-hidden="true">·</span>
+          {/* Source attribution row */}
+          {stats.sources.length > 0 && (
+            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-[10px] text-indigo-400 border-t border-indigo-100/80 pt-2">
+              <span className="font-semibold text-indigo-500 mr-0.5">Sources:</span>
+              {stats.sources.slice(0, 5).map((source, i) => (
+                <span key={i}>
+                  {source.url ? (
+                    <a
+                      href={source.url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="underline decoration-indigo-200 hover:text-indigo-600 hover:decoration-indigo-400 transition-colors"
+                    >
+                      {source.name}
+                    </a>
+                  ) : (
+                    source.name
+                  )}
+                  {i < Math.min(stats.sources.length, 5) - 1 && <span className="mx-0.5 text-indigo-200">·</span>}
+                </span>
+              ))}
+              {stats.sources.length > 5 && (
+                <span className="text-indigo-300">+{stats.sources.length - 5} more</span>
               )}
             </div>
-          ))}
-
-          {/* Research date */}
-          <span className="text-[10px] text-indigo-400 ml-auto hidden sm:block">
-            Researched {researchDate}
-          </span>
+          )}
         </div>
-
-        {/* Source attribution row */}
-        {stats.sources.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1 mt-2 text-[10px] text-indigo-400 border-t border-indigo-100 pt-2">
-            <span className="font-medium">Sources:</span>
-            {stats.sources.slice(0, 5).map((source, i) => (
-              <span key={i}>
-                {source.url ? (
-                  <a
-                    href={source.url}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="underline hover:text-indigo-600 transition-colors"
-                  >
-                    {source.name}
-                  </a>
-                ) : (
-                  source.name
-                )}
-                {i < Math.min(stats.sources.length, 5) - 1 && ", "}
-              </span>
-            ))}
-            {stats.sources.length > 5 && (
-              <span>+{stats.sources.length - 5} more</span>
-            )}
-          </div>
-        )}
       </div>
     </section>
   );
