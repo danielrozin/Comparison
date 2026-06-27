@@ -206,9 +206,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Featured / pinned — curated, independent of viewCount sort (DAN-1020) */}
         {featured.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
-              <span aria-hidden="true">⭐</span> Featured Comparisons
-            </h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Featured Comparisons</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {featured.map((item) => {
                 const parts = item.anchor.split(/\s+vs\.?\s+/i);
@@ -242,9 +250,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Top 5 Comparisons — highlighted for quick discovery */}
         {allComparisons.length >= 5 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4">
-              Top {category.name} Comparisons
-            </h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Top {category.name} Comparisons</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               {allComparisons.slice(0, 5).map((comp, idx) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
@@ -278,7 +294,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Subcategory Navigation (if applicable) */}
         {hasSubcategories && subcategoryData.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4">Browse by Subcategory</h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Browse by Subcategory</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
                 <Link

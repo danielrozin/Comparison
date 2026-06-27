@@ -327,62 +327,106 @@ export default async function HomePage() {
       {blogArticles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
-                From the Blog
-              </h2>
-              <p className="text-text-secondary mt-1">Expert guides and in-depth analyses</p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">From the Blog</h2>
+                <p className="text-text-secondary text-sm mt-0.5">Expert guides and in-depth analyses</p>
+              </div>
             </div>
             <Link
               href="/blog"
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
-              View all articles &rarr;
+              View all articles
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {blogArticles.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col"
-              >
-                <div className="h-2 bg-gradient-to-r from-primary-500 to-indigo-500" />
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
-                    {article.category && (
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 capitalize">
-                        {article.category}
+            {blogArticles.map((article, idx) => {
+              const gradients = [
+                "from-violet-500 to-purple-600",
+                "from-primary-500 to-indigo-600",
+                "from-rose-500 to-pink-600",
+              ];
+              const grad = gradients[idx % gradients.length];
+              const readMins = Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200));
+              return (
+                <Link
+                  key={article.slug}
+                  href={`/blog/${article.slug}`}
+                  className="group bg-white rounded-2xl border border-border hover:border-primary-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                >
+                  {/* Colour-accent header block */}
+                  <div className={`h-28 bg-gradient-to-br ${grad} relative overflow-hidden flex-shrink-0`}>
+                    <div className="absolute inset-0 opacity-10">
+                      <svg viewBox="0 0 200 80" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                        <circle cx="160" cy="10" r="60" fill="white" />
+                        <circle cx="30" cy="70" r="40" fill="white" />
+                      </svg>
+                    </div>
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                      {article.category && (
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20 capitalize">
+                          {article.category}
+                        </span>
+                      )}
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-black/20 text-white/90 backdrop-blur-sm flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {readMins} min
                       </span>
-                    )}
-                    <span className="text-xs text-text-secondary">
-                      {Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200))} min read
-                    </span>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-text group-hover:text-primary-600 transition-colors mb-2 line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-text-secondary flex-1 line-clamp-3 mb-4">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
-                    <span>
-                      {article.publishedAt
-                        ? new Date(article.publishedAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : ""}
-                    </span>
-                    <span className="text-primary-600 font-medium group-hover:underline">
-                      Read more &rarr;
-                    </span>
+
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="font-bold text-text group-hover:text-primary-600 transition-colors mb-2 line-clamp-2 text-base leading-snug">
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-text-secondary flex-1 line-clamp-3 mb-4 leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
+                      <span>
+                        {article.publishedAt
+                          ? new Date(article.publishedAt).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })
+                          : ""}
+                      </span>
+                      <span className="flex items-center gap-1 text-primary-600 font-semibold group-hover:gap-2 transition-all duration-200">
+                        Read more
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center mt-8 sm:hidden">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              View all articles
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </section>
       )}
