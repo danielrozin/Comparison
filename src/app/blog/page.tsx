@@ -97,7 +97,41 @@ export default async function BlogPage({
   const totalPages = Math.ceil(total / limit);
   const activeCategory = params.category || "all";
 
+  // CollectionPage + ItemList schema for the blog index.
+  // Gives AI crawlers (ChatGPT, Perplexity, Claude) a machine-readable article
+  // index so they can cite individual posts in answers about comparison topics.
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/blog`,
+    name: `Blog — ${SITE_NAME}`,
+    description: blogDescription,
+    url: `${SITE_URL}/blog`,
+    inLanguage: "en-US",
+    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".blog-hero-description"],
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Latest Articles",
+      numberOfItems: total,
+      itemListElement: articles.slice(0, 10).map((article, i) => ({
+        "@type": "ListItem",
+        position: offset + i + 1,
+        url: `${SITE_URL}/blog/${article.slug}`,
+        name: article.title,
+      })),
+    },
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
     <main className="min-h-screen bg-surface">
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-16">
@@ -244,5 +278,6 @@ export default async function BlogPage({
         )}
       </div>
     </main>
+    </>
   );
 }

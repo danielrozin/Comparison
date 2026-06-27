@@ -81,6 +81,12 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
+  // All /api/ responses: X-Robots-Tag: noindex prevents search engines from
+  // spending crawl budget on JSON endpoints that are already blocked in robots.txt.
+  // Belt-and-suspenders: bots that ignore robots.txt will still respect this header.
+  const apiResponse = NextResponse.next();
+  apiResponse.headers.set("X-Robots-Tag", "noindex");
+
   // Rate limiting
   const limit = getRateLimit(pathname);
   if (limit) {
@@ -98,18 +104,18 @@ export function middleware(request: NextRequest) {
             "Retry-After": String(Math.ceil((result.resetAt - Date.now()) / 1000)),
             "X-RateLimit-Limit": String(limit.maxRequests),
             "X-RateLimit-Remaining": "0",
+            "X-Robots-Tag": "noindex",
           },
         }
       );
     }
 
-    const response = NextResponse.next();
-    response.headers.set("X-RateLimit-Limit", String(limit.maxRequests));
-    response.headers.set("X-RateLimit-Remaining", String(result.remaining));
-    return response;
+    apiResponse.headers.set("X-RateLimit-Limit", String(limit.maxRequests));
+    apiResponse.headers.set("X-RateLimit-Remaining", String(result.remaining));
+    return apiResponse;
   }
 
-  return NextResponse.next();
+  return apiResponse;
 }
 
 export const config = {

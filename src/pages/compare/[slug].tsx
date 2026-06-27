@@ -266,30 +266,39 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
   // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
-  // present. Otherwise: N>=3 pages already get a single consolidated @graph from
-  // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
-  // the DAN-432 jsonLdGraph consolidation (+ optional VideoObject).
+  // present. Otherwise: N>=3 pages get the consolidated @graph from
+  // comparisonPageSchema (schema-3way v1) with VideoObject injected into the
+  // existing @graph when a video exists; 2-entity pages get the DAN-432
+  // jsonLdGraph consolidation (+ optional VideoObject).
+  const videoSchemaNode = videoMeta?.youtubeVideoId
+    ? videoObjectSchema({
+        slug,
+        title: enrichedComparison.title,
+        description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
+        youtubeVideoId: videoMeta.youtubeVideoId,
+        uploadDate: videoMeta.uploadedAt,
+        entityA: videoMeta.entityA,
+        entityB: videoMeta.entityB,
+      })
+    : null;
+
   let jsonLd: string;
   if (enrichedComparison.schemaMarkup) {
     jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
   } else if (isMultiEntity) {
-    jsonLd = JSON.stringify(schemas[0]);
+    if (videoSchemaNode) {
+      // Inject VideoObject into the existing multi-entity @graph so crawlers
+      // surface both the comparison and the associated YouTube video in results.
+      const graphDoc = schemas[0] as { "@context": string; "@graph": Record<string, unknown>[] };
+      const { "@context": ctx, "@graph": nodes } = graphDoc;
+      const { "@context": _c, ...videoNode } = videoSchemaNode;
+      jsonLd = JSON.stringify({ "@context": ctx, "@graph": [...nodes, videoNode] });
+    } else {
+      jsonLd = JSON.stringify(schemas[0]);
+    }
   } else {
     jsonLd = JSON.stringify(
-      jsonLdGraph([
-        ...schemas,
-        videoMeta?.youtubeVideoId
-          ? videoObjectSchema({
-              slug,
-              title: enrichedComparison.title,
-              description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
-              youtubeVideoId: videoMeta.youtubeVideoId,
-              uploadDate: videoMeta.uploadedAt,
-              entityA: videoMeta.entityA,
-              entityB: videoMeta.entityB,
-            })
-          : null,
-      ])
+      jsonLdGraph([...schemas, videoSchemaNode])
     );
   }
 
