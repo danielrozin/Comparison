@@ -63,6 +63,12 @@ export async function GET(request: NextRequest) {
     "harvard vs", "coursera vs", "online vs",
     "delta vs", "airbnb vs", "bali vs",
     "robinhood vs", "credit card vs", "etf vs",
+    // July/August LBS clusters (DAN-1507) — seed design tools, LLMs, video conf, VPN, fitness
+    "cursor vs", "copilot vs", "figma vs", "webflow vs", "framer vs",
+    "gemini vs", "perplexity vs", "deepseek vs", "grok vs",
+    "zoom vs", "microsoft teams vs", "google meet vs", "slack vs",
+    "nordvpn vs", "expressvpn vs", "surfshark vs", "best vpn",
+    "garmin vs", "apple watch vs", "fitbit vs", "whoop vs", "peloton vs",
   ];
 
   // Query DataForSEO for each seed
