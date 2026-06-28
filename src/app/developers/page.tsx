@@ -50,14 +50,32 @@ const apiSchema = {
   },
 };
 
+const DEV_TITLE = `${SITE_NAME} Developer API — Comparison Data REST API`;
+const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 3,000+ comparisons, entity profiles, and search.`;
+const DEV_URL = `${SITE_URL}/developers`;
+
 export const metadata: Metadata = {
-  title: "Developer API — A Versus B",
-  description: `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available.`,
-  alternates: { canonical: `${SITE_URL}/developers` },
+  title: DEV_TITLE,
+  description: DEV_DESC,
+  alternates: { canonical: DEV_URL },
   openGraph: {
-    title: `${SITE_NAME} Developer API`,
-    description: `Integrate comparison data into your apps with our REST API.`,
-    url: `${SITE_URL}/developers`,
+    title: DEV_TITLE,
+    description: DEV_DESC,
+    url: DEV_URL,
+  },
+  other: {
+    "citation_title": DEV_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": DEV_DESC,
+    "DC.title": DEV_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": DEV_URL,
   },
 };
 

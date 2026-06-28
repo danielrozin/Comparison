@@ -2,14 +2,33 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 
+const CHANGELOG_TITLE = `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`;
+const CHANGELOG_DESC = `See what's new on ${SITE_NAME}. Complete history of updates, new comparisons, features, and improvements — updated continuously.`;
+const CHANGELOG_URL = `${SITE_URL}/changelog`;
+
 export const metadata: Metadata = {
-  title: "Changelog",
-  description: `See what's new on ${SITE_NAME}. Complete history of updates, new comparisons, features, and improvements.`,
-  alternates: { canonical: `${SITE_URL}/changelog` },
+  title: CHANGELOG_TITLE,
+  description: CHANGELOG_DESC,
+  alternates: { canonical: CHANGELOG_URL },
   openGraph: {
-    title: `Changelog | ${SITE_NAME}`,
-    description: "Complete history of updates, new comparisons, features, and improvements.",
-    url: `${SITE_URL}/changelog`,
+    title: CHANGELOG_TITLE,
+    description: CHANGELOG_DESC,
+    url: CHANGELOG_URL,
+    type: "article",
+  },
+  other: {
+    "citation_title": CHANGELOG_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": CHANGELOG_DESC,
+    "DC.title": CHANGELOG_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": CHANGELOG_URL,
   },
 };
 
@@ -103,9 +122,34 @@ const TYPE_BADGES: Record<string, { label: string; className: string }> = {
   improvement: { label: "Improvement", className: "bg-amber-100 text-amber-800" },
 };
 
+const changelogSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Article", "TechArticle"],
+  headline: CHANGELOG_TITLE,
+  description: CHANGELOG_DESC,
+  abstract: CHANGELOG_DESC,
+  url: CHANGELOG_URL,
+  inLanguage: "en-US",
+  creativeWorkStatus: "Published",
+  isAccessibleForFree: true,
+  alternativeHeadline: `${SITE_NAME} Release Notes & Update History`,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  accessMode: ["textual"],
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+};
+
 export default function ChangelogPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(changelogSchema) }}
+      />
       {/* Breadcrumbs */}
       <nav className="mb-6">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
