@@ -28,12 +28,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!category) return { title: "Category Not Found" };
 
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(category.name + " Comparisons")}&cat=${encodeURIComponent(category.name)}&type=category`;
+  const desc = `Browse the best ${category.name.toLowerCase()} comparisons. Compare products, brands, and more side by side with expert analysis.`;
   return {
     title: `${category.name} Comparisons`,
-    description: `Browse the best ${category.name.toLowerCase()} comparisons. Compare products, brands, and more side by side with expert analysis.`,
+    description: desc,
     alternates: { canonical: `${SITE_URL}/category/${slug}` },
-    openGraph: { images: [{ url: ogImage, width: 1200, height: 630 }] },
+    openGraph: {
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} Comparisons on A Versus B` }],
+    },
     twitter: { card: "summary_large_image", images: [ogImage] },
+    other: {
+      "citation_title": `${category.name} Comparisons — A Versus B`,
+      "citation_author": "A Versus B",
+      "citation_journal_title": "A Versus B",
+      "citation_language": "en",
+      "citation_abstract": desc,
+      "DC.title": `${category.name} Comparisons`,
+      "DC.creator": "A Versus B",
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/category/${slug}`,
+    },
   };
 }
 
