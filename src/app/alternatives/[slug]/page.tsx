@@ -120,7 +120,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}` },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".alternatives-intro"],
+      cssSelector: ["h1"],
     },
     accessMode: ["textual"],
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

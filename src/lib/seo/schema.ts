@@ -985,7 +985,7 @@ export function profilePageSchema(entity: {
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".entity-description", ".entity-short-desc"],
+      cssSelector: ["h1"],
     },
     breadcrumb: {
       "@type": "BreadcrumbList",

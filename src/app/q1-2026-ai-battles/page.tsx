@@ -46,7 +46,7 @@ export default function Q1AiBattlesPage() {
     dateModified: PUBLICATION_DATE,
     lastReviewed: PUBLICATION_DATE,
     keywords: "AI tool comparison 2026, ChatGPT vs Claude, AI battles data, Q1 2026 search trends",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -105,7 +105,7 @@ export default function Q1AiBattlesPage() {
         <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-4">
           The most-compared AI and software tools on US Google Search, Q1 2026
         </h1>
-        <p className="text-lg text-text-secondary leading-relaxed">
+        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed">
           We measured{" "}
           <strong className="text-text">
             {nf.format(HEADLINE_TOTAL)} US comparison searches across the {BATTLE_COUNT} battles

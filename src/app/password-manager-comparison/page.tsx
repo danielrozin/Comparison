@@ -40,7 +40,7 @@ const articleSchema = {
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   keywords: "password manager comparison, best password managers, 1Password vs Bitwarden, Dashlane, LastPass 2026",
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".verdict-section"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
   about: { "@type": "Thing", name: "Password managers", sameAs: "https://en.wikipedia.org/wiki/Password_manager" },
   mentions: [
     { "@type": "SoftwareApplication", name: "1Password", url: "https://1password.com" },
@@ -278,7 +278,7 @@ export default function PasswordManagerComparisonPage() {
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text mb-4">
           Best Password Managers Compared (2026)
         </h1>
-        <p className="text-lg text-text-secondary leading-relaxed mb-4">
+        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed mb-4">
           An independent, citation-backed comparison of 10 leading password managers — covering
           encryption standards, zero-knowledge architecture, third-party security audits, pricing,
           and platform support. Every figure is linked to its primary source.

@@ -89,7 +89,7 @@ export default async function B2BSaaSStudyPage() {
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,
     keywords: "B2B SaaS comparison, software comparison report 2026, SaaS benchmarks, data study",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -122,7 +122,7 @@ export default async function B2BSaaSStudyPage() {
           <h1 className="text-3xl sm:text-5xl font-display font-black text-text mb-4 leading-tight">
             The B2B SaaS Comparison Report 2026
           </h1>
-          <p className="text-lg text-text-secondary">
+          <p id="page-intro" className="text-lg text-text-secondary">
             Software buyers comparison-shop harder than anyone. We analyzed{" "}
             <strong>{fmt(study.totalSaaSComparisons)}</strong> published head-to-head SaaS comparisons
             across <strong>{fmt(study.distinctTools)}</strong> distinct tools to find the products

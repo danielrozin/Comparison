@@ -33,7 +33,7 @@ const articleSchema = {
   author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".verdict-section"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
   about: { "@type": "Thing", name: "Web browsers", sameAs: "https://en.wikipedia.org/wiki/Web_browser" },
   mentions: [
     { "@type": "SoftwareApplication", name: "Google Chrome", url: "https://www.google.com/chrome/" },
@@ -247,7 +247,7 @@ export default function BrowserComparison2026Page() {
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text mb-4">
           Best Web Browsers Compared (2026)
         </h1>
-        <p className="text-lg text-text-secondary leading-relaxed mb-4">
+        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed mb-4">
           An independent, citation-backed comparison of 10 major browsers — covering rendering engine,
           global market share, privacy defaults, extension support, and open-source status.
           Every figure is linked to its primary source.

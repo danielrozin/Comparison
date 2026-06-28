@@ -259,7 +259,7 @@ function bestPageSchema(entry: BestEntry) {
         },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
         reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-        speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".best-intro"] },
+        speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
         mainEntity: {
           "@type": "ItemList",
           itemListOrder: "https://schema.org/ItemListOrderDescending",

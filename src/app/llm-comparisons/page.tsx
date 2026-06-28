@@ -33,7 +33,7 @@ const articleSchema = {
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   keywords: "LLM comparison, large language models, GPT-4o, Claude, Gemini, AI models 2026",
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".llm-summary", "table caption"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
   about: { "@type": "Thing", name: "Large language models", sameAs: "https://en.wikipedia.org/wiki/Large_language_model" },
   mentions: [
     { "@type": "SoftwareApplication", name: "GPT-4o", url: "https://openai.com" },
@@ -257,7 +257,7 @@ export default function LLMComparisonsPage() {
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text mb-4">
           LLM Comparison 2026
         </h1>
-        <p className="text-lg text-text-secondary leading-relaxed mb-4">
+        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed mb-4">
           An independent, citation-backed comparison of 12 leading large language models — covering
           parameter count, context window, input/output modalities, license, and knowledge cutoff.
           Column structure mirrors Wikipedia&apos;s{" "}

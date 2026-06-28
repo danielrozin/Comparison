@@ -95,7 +95,7 @@ export default async function MostComparedStudyPage() {
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,
     keywords: "most compared brands 2026, brand comparison data, popular comparisons, data study, top brands",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -128,7 +128,7 @@ export default async function MostComparedStudyPage() {
           <h1 className="text-3xl sm:text-5xl font-display font-black text-text mb-4 leading-tight">
             The Most-Compared Brands of 2026
           </h1>
-          <p className="text-lg text-text-secondary">
+          <p id="page-intro" className="text-lg text-text-secondary">
             Which brands does the internet argue about most? We analyzed{" "}
             <strong>{fmt(study.totalComparisons)}</strong> published head-to-head comparisons across{" "}
             <strong>{fmt(study.distinctBrands)}</strong> distinct entities to find the brands, SaaS

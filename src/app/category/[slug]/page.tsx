@@ -169,7 +169,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".category-description"],
+      cssSelector: ["h1"],
     },
     keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} 2026`,
   };

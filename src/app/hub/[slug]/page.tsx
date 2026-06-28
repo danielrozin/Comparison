@@ -83,7 +83,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".hub-description"],
+      cssSelector: ["h1", "#page-intro"],
     },
     accessMode: ["textual"],
     mainEntity: {
@@ -165,7 +165,7 @@ export default async function HubPage({ params }: PageProps) {
         {/* Header */}
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{hub.h1}</h1>
-          <p className="text-lg text-gray-600 leading-relaxed">{hub.intro}</p>
+          <p id="page-intro" className="text-lg text-gray-600 leading-relaxed">{hub.intro}</p>
         </header>
 
         {/* Spoke comparison cards */}

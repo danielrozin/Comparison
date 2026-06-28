@@ -86,7 +86,7 @@ export default async function InvestingStudyPage() {
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,
     keywords: "investing comparison, finance comparison report 2026, stock vs ETF, investment benchmarks, data study",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -119,7 +119,7 @@ export default async function InvestingStudyPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
             The Investing &amp; Finance Comparison Report 2026
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed">
+          <p id="page-intro" className="text-lg text-gray-600 leading-relaxed">
             We analyzed <strong>{fmt(study.totalFinanceComparisons)} head-to-head finance comparisons</strong> published
             on A Versus B to rank the most-researched brokerages, retirement accounts, credit cards, and investment
             products. {study.fromSnapshot ? "" : "Data is live-queried daily and refreshed automatically."}

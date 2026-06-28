@@ -67,7 +67,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     isAccessibleForFree: true,
     lastReviewed: new Date().toISOString().slice(0, 10),
     keywords: "product reviews, software reviews, SmartScore, review aggregator, best software 2026",
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".reviews-intro"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     ...(total > 0 && {
       numberOfItems: total,
