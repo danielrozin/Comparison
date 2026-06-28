@@ -42,7 +42,7 @@ export function TrendingCard({
       <div className={`h-1 w-full ${
         isTopThree
           ? `bg-gradient-to-r ${rankGradient}`
-          : "bg-gradient-to-r from-primary-400 to-accent-400 opacity-40 group-hover:opacity-100 transition-opacity"
+          : "bg-gradient-to-r from-primary-400 to-accent-400"
       }`} />
 
       <div className="p-4 sm:p-5 flex flex-col flex-1">

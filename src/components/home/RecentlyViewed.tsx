@@ -35,13 +35,13 @@ export function RecentlyViewed() {
             <Link
               key={item.slug}
               href={`/compare/${item.slug}`}
-              className="group flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all min-w-[260px] sm:min-w-0 sm:flex-1 sm:basis-[calc(33.333%-0.75rem)] sm:max-w-[calc(33.333%-0.5rem)]"
+              className="group flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-[260px] sm:min-w-0 sm:flex-1 sm:basis-[calc(33.333%-0.75rem)] sm:max-w-[calc(33.333%-0.5rem)]"
             >
               <div className="flex -space-x-2 flex-shrink-0">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                   {(parts[0] || "A").charAt(0).toUpperCase()}
                 </div>
-                <div className="w-8 h-8 bg-gradient-to-br from-accent-50 to-accent-400/30 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                   {(parts[1] || "B").charAt(0).toUpperCase()}
                 </div>
               </div>

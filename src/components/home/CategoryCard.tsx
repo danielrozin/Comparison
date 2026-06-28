@@ -54,6 +54,15 @@ export function CategoryCard({
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">
         {category.name}
       </span>
+      <svg
+        className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+      </svg>
     </Link>
   );
 }
