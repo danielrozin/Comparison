@@ -40,11 +40,29 @@ export function organizationSchema() {
     // Crawlers merge nodes with matching @id, building a unified entity graph.
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
+    legalName: "A Versus B",
+    alternateName: ["AversusB", "A vs B", "aversusb.net"],
     url: SITE_URL,
-    logo: `${SITE_URL}/images/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/images/logo.png`,
+      width: 200,
+      height: 60,
+      caption: SITE_NAME,
+    },
+    image: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
     sameAs: socialSameAs(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     foundingDate: "2024",
+    areaServed: { "@type": "Place", name: "Worldwide" },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        email: "daniel@adgpt.com",
+        contactType: "editorial",
+        availableLanguage: "English",
+      },
+    ],
     knowsAbout: [
       "Product Comparisons",
       "Technology Reviews",
@@ -80,8 +98,10 @@ export function dataCatalogSchema() {
     description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
     url: SITE_URL,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    temporalCoverage: "2024/..",
     dataset: {
       "@type": "Dataset",
+      "@id": `${SITE_URL}/#dataset`,
       name: "Comparison Pages",
       description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
       url: `${SITE_URL}/sitemap.xml`,
@@ -89,6 +109,14 @@ export function dataCatalogSchema() {
       license: `${SITE_URL}/terms`,
       isAccessibleForFree: true,
       inLanguage: "en-US",
+      temporalCoverage: "2024/..",
+      measurementTechnique: "Expert editorial research, benchmark aggregation, community voting",
+      variableMeasured: [
+        { "@type": "PropertyValue", name: "Attribute winner", description: "Per-attribute winner between compared entities" },
+        { "@type": "PropertyValue", name: "Community preference", description: "Percentage of users preferring each entity" },
+        { "@type": "PropertyValue", name: "Verdict", description: "Overall recommended winner with reasoning" },
+      ],
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     },
   };
 }
