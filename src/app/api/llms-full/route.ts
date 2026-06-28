@@ -131,7 +131,10 @@ export async function GET() {
     lines.push("");
 
     for (const c of items) {
-      lines.push(`- **${c.title}** — ${SITE_URL}/compare/${c.slug}`);
+      const dateTag = c.updatedAt
+        ? ` (updated: ${new Date(c.updatedAt).toISOString().slice(0, 10)})`
+        : "";
+      lines.push(`- **${c.title}** — ${SITE_URL}/compare/${c.slug}${dateTag}`);
       if (c.shortAnswer) {
         const snippet = c.shortAnswer.slice(0, 300).replace(/\n/g, " ");
         lines.push(`  > ${snippet}`);

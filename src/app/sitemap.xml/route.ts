@@ -27,8 +27,10 @@ export async function GET() {
   // shard) because Next.js `MetadataRoute.Sitemap` cannot emit `video:video`
   // extension tags, so `generateSitemaps` intentionally does not list it.
   const videoEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/video.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
+  // Image sitemap for Google Images + AI visual indexing (3,000+ comparison OG images).
+  const imagesEntry = `  <sitemap>\n    <loc>${SITE_URL}/sitemap/images.xml</loc>\n    <lastmod>${lastmod}</lastmod>\n  </sitemap>`;
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n${videoEntry}\n</sitemapindex>\n`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n${videoEntry}\n${imagesEntry}\n</sitemapindex>\n`;
 
   return new Response(xml, {
     status: 200,
