@@ -115,6 +115,10 @@ export default async function BlogPage({
     keywords: "comparison articles, product analysis, decision guides, technology reviews, software comparisons blog",
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    alternativeHeadline: "Comparison Articles, Data Studies & Decision Guides — A Versus B Blog",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
+    accessMode: ["textual"],
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".blog-hero-description"],

@@ -980,18 +980,27 @@ export function profilePageSchema(entity: {
   };
 
   const today = new Date().toISOString().slice(0, 10);
+  const significantLinks = [
+    `${SITE_URL}/alternatives/${entity.slug}`,
+    ...(entity.topComparisons ?? []).slice(0, 5).map((c) => `${SITE_URL}/compare/${c.slug}`),
+  ];
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     name: `${entity.name} — Comparisons & Profile`,
+    alternativeHeadline: `${entity.name} Comparisons, Profile & Alternatives`,
     url,
     dateModified: today,
     lastReviewed: today,
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
+    accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    significantLink: significantLinks,
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1"],

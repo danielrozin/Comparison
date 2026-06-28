@@ -58,6 +58,10 @@ export default async function HomePage() {
     // speakable — marks the hero headline and description for voice assistants and AEO.
     // Google Assistant and AI answer engines read these CSS selectors to extract the
     // page's primary answer when responding to conversational queries.
+    alternativeHeadline: "Side-by-Side Comparisons for Sports, Tech, Products, Countries & More",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
+    accessMode: ["textual"],
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".hero-description"],

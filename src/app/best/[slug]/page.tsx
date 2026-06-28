@@ -259,6 +259,10 @@ function bestPageSchema(entry: BestEntry) {
         },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
         reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+        alternativeHeadline: `Top ${entry.h1} — Expert Picks 2026`,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        usageInfo: `${SITE_URL}/legal`,
+        accessMode: ["textual"],
         speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
         mainEntity: {
           "@type": "ItemList",
