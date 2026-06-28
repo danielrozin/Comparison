@@ -3,8 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Migrations (prisma migrate deploy) MUST run against the direct, non-pooled
+  // Neon endpoint. PgBouncer strands migration sessions and leaks Prisma's
+  // advisory lock (72707369), blocking all subsequent prod deploys with P1002.
+  // DIRECT_URL = DATABASE_URL with `-pooler` removed from the host. See DAN-1512.
+  directUrl = env("DIRECT_URL")
 }
 
 // ============================================================
