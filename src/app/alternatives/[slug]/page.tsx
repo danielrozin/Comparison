@@ -99,6 +99,8 @@ export default async function AlternativesPage({ params }: PageProps) {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".alternatives-intro"],
     },
+    accessMode: ["textual"],
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
     about: {
       "@type": "Thing",
       name,

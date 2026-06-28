@@ -121,10 +121,35 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     }
   }
 
-  const schemaData = breadcrumbSchema([
+  const breadcrumbData = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: category.name, url: `${SITE_URL}/category/${slug}` },
   ]);
+
+  const categorySchemaObj = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${category.name} Comparisons`,
+    description: `Compare ${category.name} side-by-side — data-driven comparisons with structured attributes, verdicts, and community votes.`,
+    url: `${SITE_URL}/category/${slug}`,
+    isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
+    mainEntity: {
+      "@type": "ItemList",
+      name: `${category.name} Comparisons`,
+      numberOfItems: allComparisons.length,
+      itemListElement: allComparisons.slice(0, 20).map((c, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: c.title,
+        url: `${SITE_URL}/compare/${c.slug}`,
+      })),
+    },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".category-description"],
+    },
+  };
+  const schemaData = [breadcrumbData, categorySchemaObj];
 
   const basePath = `/category/${slug}`;
 

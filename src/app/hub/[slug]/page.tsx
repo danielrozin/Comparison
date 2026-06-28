@@ -57,6 +57,12 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     name: hub.h1,
     description: hub.description,
     url: hubUrl,
+    isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".hub-description"],
+    },
+    accessMode: ["textual"],
     mainEntity: {
       "@type": "ItemList",
       name: `${hub.h1} Comparisons`,
