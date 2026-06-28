@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
@@ -89,10 +89,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const subcat = subcategories.find((s) => s.slug === subcategory);
   if (!category || !subcat) return { title: "Not Found" };
 
+  const title = `${subcat.name} Comparisons — Best ${subcat.name} Compared`;
+  const description = `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(subcat.name + " Comparisons")}&cat=${encodeURIComponent(subcat.name)}&type=category`;
   return {
-    title: `${subcat.name} Comparisons — Best ${subcat.name} Compared`,
-    description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`,
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/category/${slug}/${subcategory}` },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/category/${slug}/${subcategory}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${subcat.name} comparisons — A Versus B` }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [ogImage] },
+    other: {
+      "citation_title": title,
+      "citation_author": SITE_NAME,
+      "citation_journal_title": SITE_NAME,
+      "citation_language": "en",
+      "citation_abstract": description,
+      "DC.title": title,
+      "DC.creator": SITE_NAME,
+      "DC.publisher": SITE_NAME,
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/category/${slug}/${subcategory}`,
+    },
   };
 }
 
@@ -119,13 +143,43 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
   const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
-  const schemaData = breadcrumbSchema([
+  const subcatUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
+  const breadcrumbs = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: category.name, url: `${SITE_URL}/category/${slug}` },
-    { name: subcat.name, url: `${SITE_URL}/category/${slug}/${subcategory}` },
+    { name: subcat.name, url: subcatUrl },
   ]);
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${subcat.name} Comparisons`,
+    description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts.`,
+    abstract: `Data-driven ${subcat.name} comparisons with structured attributes, verdicts, and community votes.`,
+    url: subcatUrl,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    keywords: `${subcat.name} comparison, best ${subcat.name.toLowerCase()} 2026, ${subcat.name.toLowerCase()} vs`,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+    mainEntity: {
+      "@type": "ItemList",
+      name: `${subcat.name} Comparisons`,
+      numberOfItems: subcatComparisons.length,
+      itemListElement: subcatComparisons.slice(0, 10).map((c, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: c.title,
+        url: `${SITE_URL}/compare/${c.slug}`,
+      })),
+    },
+  };
+  const schemaData = [breadcrumbs, collectionSchema];
 
   const basePath = `/category/${slug}/${subcategory}`;
+  // schemaData is now used below
 
   return (
     <>
