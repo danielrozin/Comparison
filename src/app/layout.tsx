@@ -4,7 +4,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget, CookieConsentBanner, BackToTop } from "@/components/layout/GlobalClientWidgets";
-import { organizationSchema, webSiteSchema, dataCatalogSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -107,6 +107,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(dataCatalogSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(siteNavigationSchema()),
           }}
         />
       </head>

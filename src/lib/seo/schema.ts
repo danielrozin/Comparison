@@ -115,6 +115,47 @@ export function webSiteSchema() {
 }
 
 // ============================================================
+// SiteNavigationElement schema — site-wide nav for AI/crawlers
+// ============================================================
+
+/**
+ * Emits SiteNavigationElement schema for the main navigation links.
+ * AI crawlers use this to understand site structure and category hierarchy,
+ * improving internal-link equity distribution signals.
+ */
+export function siteNavigationSchema() {
+  const navLinks = [
+    { name: "Trending Comparisons", url: `${SITE_URL}/trending` },
+    { name: "Technology Comparisons", url: `${SITE_URL}/category/technology` },
+    { name: "Sports Comparisons", url: `${SITE_URL}/category/sports` },
+    { name: "Countries Comparisons", url: `${SITE_URL}/category/countries` },
+    { name: "Products Comparisons", url: `${SITE_URL}/category/products` },
+    { name: "Software Comparisons", url: `${SITE_URL}/category/software` },
+    { name: "Blog", url: `${SITE_URL}/blog` },
+    { name: "Search", url: `${SITE_URL}/search` },
+    { name: "Data Studies", url: `${SITE_URL}/studies` },
+    { name: "Developer API", url: `${SITE_URL}/developers` },
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SiteLinksSearchBox",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+      "query-input": "required name=search_term_string",
+    },
+    // SiteNavigationElement items let AI understand the nav hierarchy
+    hasPart: navLinks.map((link) => ({
+      "@type": "SiteNavigationElement",
+      name: link.name,
+      url: link.url,
+    })),
+  };
+}
+
+// ============================================================
 // Wikipedia sameAs helper for entity knowledge-graph disambiguation
 // ============================================================
 
@@ -216,13 +257,20 @@ export function comparisonPageSchema(
 
   const schemas: Record<string, unknown>[] = [];
 
+  // Upgrade Article to TechArticle for technology/software/gaming/automotive categories
+  // so Google's Technical Article rich result and AI tech-query citations apply.
+  const TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
+  const articleType = comparison.category && TECH_CATEGORIES.has(comparison.category)
+    ? ["Article", "TechArticle"]
+    : "Article";
+
   // 1. Article schema
   const hasFaqs = comparison.faqs.length > 0;
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`;
   const viewCount = comparison.metadata.viewCount;
   schemas.push({
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": articleType,
     "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
@@ -242,6 +290,10 @@ export function comparisonPageSchema(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    // abstract is the AI-preferred citation snippet field (more specific than description)
+    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
       // Include verdict, key-differences, and key-facts so voice assistants and
@@ -486,8 +538,13 @@ function buildMultiEntityGraph(
     })),
   };
 
+  const MULTI_TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
+  const multiArticleType = comparison.category && MULTI_TECH_CATEGORIES.has(comparison.category)
+    ? ["Article", "TechArticle"]
+    : "Article";
+
   const article: Record<string, unknown> = {
-    "@type": "Article",
+    "@type": multiArticleType,
     "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
@@ -505,6 +562,9 @@ function buildMultiEntityGraph(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["#verdict", "#key-differences", "#key-facts"],
