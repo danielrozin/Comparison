@@ -18,17 +18,39 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "profile",
+    images: [{ url: `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`, width: 1200, height: 630, alt: `${AUTHOR_NAME} — Founder of A Versus B` }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  },
+  other: {
+    "citation_author": AUTHOR_NAME,
+    "citation_title": PAGE_TITLE,
+    "citation_journal_title": SITE_NAME,
+    "citation_language": "en",
+    "DC.creator": AUTHOR_NAME,
+    "DC.title": PAGE_TITLE,
+    "DC.publisher": SITE_NAME,
+    "DC.language": "en",
+    "DC.identifier": PAGE_URL,
   },
 };
 
 const schema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${PAGE_URL}#person`,
   name: AUTHOR_NAME,
+  givenName: "Daniel",
+  familyName: "Rozin",
   url: PAGE_URL,
+  email: "daniarozin@gmail.com",
   jobTitle: AUTHOR_TITLE,
   worksFor: {
     "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
   },
@@ -39,8 +61,19 @@ const schema = {
     "password managers",
     "technology comparisons",
     "data-driven journalism",
+    "SEO",
+    "SaaS",
+    "consumer electronics",
   ],
-  sameAs: [SITE_URL],
+  sameAs: [
+    SITE_URL,
+    "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+    "https://www.facebook.com/daniel.rozin.94",
+  ],
+  mainEntityOfPage: {
+    "@type": "ProfilePage",
+    "@id": PAGE_URL,
+  },
 };
 
 const ARTICLES = [
