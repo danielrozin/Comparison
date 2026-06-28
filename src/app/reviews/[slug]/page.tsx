@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
 import { aggregateRatingSchema, breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
@@ -120,6 +120,13 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
   const name = humanizeEntityName(slug);
 
+  const title = aggregation
+    ? `${name} Review — ${aggregation.averageRating}/5 from ${aggregation.totalReviews} reviews`
+    : `${name} Review`;
+  const description = aggregation
+    ? `${name} has a ${aggregation.averageRating}/5 rating from ${aggregation.totalReviews} aggregated reviews. SmartScore: ${aggregation.smartScore}/100.`
+    : `Read reviews for ${name} from multiple sources.`;
+
   // Schema.org structured data
   const schemas: Record<string, unknown>[] = [
     breadcrumbSchema([
@@ -127,6 +134,24 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       { name: "Reviews", url: `${SITE_URL}/reviews` },
       { name, url: `${SITE_URL}/reviews/${slug}` },
     ]),
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: title,
+      description,
+      abstract: description,
+      alternativeHeadline: `${name} SmartReview — Aggregated Ratings & Expert Analysis`,
+      url: `${SITE_URL}/reviews/${slug}`,
+      inLanguage: "en-US",
+      creativeWorkStatus: "Published",
+      isAccessibleForFree: true,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      usageInfo: `${SITE_URL}/terms`,
+      accessMode: ["textual"],
+      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    },
   ];
   if (aggregation) {
     schemas.push(
