@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!hub) return { title: "Not Found" };
 
   const canonicalUrl = `${SITE_URL}/hub/${hub.slug}`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(hub.h1)}&type=hub`;
   return {
     title: hub.title,
     description: hub.description,
@@ -33,11 +34,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: hub.description,
       url: canonicalUrl,
       type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${hub.h1} — A Versus B comparison hub` }],
     },
     twitter: {
       card: "summary_large_image",
       title: hub.title,
       description: hub.description,
+      images: [ogImage],
+    },
+    other: {
+      "citation_title": hub.title,
+      "citation_author": "A Versus B",
+      "citation_journal_title": "A Versus B",
+      "citation_language": "en",
+      "citation_abstract": hub.description,
+      "DC.title": hub.title,
+      "DC.creator": "A Versus B",
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": canonicalUrl,
     },
   };
 }

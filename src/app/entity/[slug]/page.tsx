@@ -63,10 +63,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ENTITY_LEDE[slug]?.title ||
     dbMetaTitle ||
     `${name} vs Every Rival: Comparisons & Stats 2026`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(name)}&type=entity`;
   return {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/entity/${slug}`,
+      type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    other: {
+      "citation_title": title,
+      "citation_author": "A Versus B",
+      "citation_journal_title": "A Versus B",
+      "citation_language": "en",
+      "citation_abstract": description,
+      "DC.title": title,
+      "DC.creator": "A Versus B",
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/entity/${slug}`,
+    },
   };
 }
 
