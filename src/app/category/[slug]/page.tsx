@@ -169,7 +169,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     },
     alternativeHeadline: `Best ${category.name} Comparisons & Rankings 2026`,
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual"],
     speakable: {
       "@type": "SpeakableSpecification",

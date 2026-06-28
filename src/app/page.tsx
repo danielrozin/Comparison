@@ -60,7 +60,7 @@ export default async function HomePage() {
     // page's primary answer when responding to conversational queries.
     alternativeHeadline: "Side-by-Side Comparisons for Sports, Tech, Products, Countries & More",
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual"],
     speakable: {
       "@type": "SpeakableSpecification",

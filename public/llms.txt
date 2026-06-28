@@ -43,11 +43,12 @@ Every comparison page emits a full JSON-LD @graph including:
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
-- `CollectionPage` on category and review listing pages
-- `ProfilePage` on entity pages with related comparisons
+- `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
+- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, and `significantLink` to alternatives + top comparison pages
 - `SearchResultsPage` on the search results view
 - `HowTo` schema auto-detected on step-by-step blog articles
 - `ImageObject` with contentUrl, name, description, caption on OG images
+- Citation meta (`citation_title`, `citation_author`, `citation_abstract`, `DC.*`) on all page types for academic and LLM indexers
 
 ## Categories & Scale
 

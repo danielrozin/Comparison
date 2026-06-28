@@ -85,6 +85,9 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "#page-intro"],
     },
+    alternativeHeadline: `${hub.h1} — Expert Comparisons & Analysis`,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual"],
     mainEntity: {
       "@type": "ItemList",

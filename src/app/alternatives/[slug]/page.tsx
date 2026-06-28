@@ -124,7 +124,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     },
     alternativeHeadline: `Best ${name} Alternatives in 2026`,
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual"],
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     about: {

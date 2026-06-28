@@ -2,20 +2,64 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 
+const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
+const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
+const PAGE_DESC = `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page — sourcing, the role of the AI model, the role of human editors, and how your feedback shapes future verdicts.`;
+
 export const metadata: Metadata = {
-  title: "How we write verdicts",
-  description: `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page — sourcing, the role of the AI model, the role of human editors, and how your feedback shapes future verdicts.`,
-  alternates: { canonical: `${SITE_URL}/how-we-write-verdicts` },
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: `How we write verdicts — ${SITE_NAME}`,
-    description: `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page.`,
-    url: `${SITE_URL}/how-we-write-verdicts`,
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    url: PAGE_URL,
+    type: "article",
   },
+  other: {
+    "citation_title": PAGE_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": PAGE_DESC,
+    "DC.title": PAGE_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": PAGE_URL,
+  },
+};
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Article", "TechArticle"],
+  headline: PAGE_TITLE,
+  description: PAGE_DESC,
+  abstract: PAGE_DESC,
+  url: PAGE_URL,
+  inLanguage: "en-US",
+  creativeWorkStatus: "Published",
+  isAccessibleForFree: true,
+  alternativeHeadline: `${SITE_NAME} Verdict Methodology — AI-Assisted Comparison Verdicts`,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  accessMode: ["textual"],
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
 };
 
 export default function HowWeWriteVerdictsPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <nav className="mb-8">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
           <li>

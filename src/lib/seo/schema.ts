@@ -405,7 +405,7 @@ export function comparisonPageSchema(
     alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
     // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
     ...(() => {
       const parts = [
@@ -654,7 +654,7 @@ function buildMultiEntityGraph(
     ].join(", "),
     alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
     // hasPart links to the embedded FAQPage so Google/AI can associate the FAQ graph node.
     ...(comparison.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
@@ -996,7 +996,7 @@ export function profilePageSchema(entity: {
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     license: "https://creativecommons.org/licenses/by/4.0/",
-    usageInfo: `${SITE_URL}/legal`,
+    usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
