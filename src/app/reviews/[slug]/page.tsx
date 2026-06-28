@@ -17,14 +17,44 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const agg = await getEntityAggregation(slug);
   const name = humanizeEntityName(slug);
 
+  const title = agg
+    ? `${name} Review — ${agg.averageRating}/5 from ${agg.totalReviews} reviews`
+    : `${name} Review`;
+  const description = agg
+    ? `${name} has a ${agg.averageRating}/5 rating from ${agg.totalReviews} aggregated reviews. SmartScore: ${agg.smartScore}/100.`
+    : `Read reviews for ${name} from multiple sources.`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(name + " Reviews")}&type=reviews`;
   return {
-    title: agg
-      ? `${name} Review — ${agg.averageRating}/5 from ${agg.totalReviews} reviews`
-      : `${name} Review`,
-    description: agg
-      ? `${name} has a ${agg.averageRating}/5 rating from ${agg.totalReviews} aggregated reviews. SmartScore: ${agg.smartScore}/100.`
-      : `Read reviews for ${name} from multiple sources.`,
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/reviews/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/reviews/${slug}`,
+      type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} reviews and SmartScore — A Versus B` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    other: {
+      "citation_title": title,
+      "citation_author": "A Versus B",
+      "citation_journal_title": "A Versus B SmartReview",
+      "citation_language": "en",
+      "citation_abstract": description,
+      "DC.title": title,
+      "DC.creator": "A Versus B",
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/reviews/${slug}`,
+    },
   };
 }
 
