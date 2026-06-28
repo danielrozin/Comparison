@@ -1,33 +1,33 @@
 import type { KeyDifference, ComparisonEntityData } from "@/types";
 
 const CATEGORY_EMOJIS: Record<string, string> = {
-  display: "\ud83d\udcf1",
-  screen: "\ud83d\udcf1",
-  camera: "\ud83d\udcf7",
-  photo: "\ud83d\udcf7",
-  battery: "\ud83d\udd0b",
-  price: "\ud83d\udcb0",
-  cost: "\ud83d\udcb0",
-  performance: "\u26a1",
-  speed: "\u26a1",
-  processor: "\ud83e\udde0",
-  ai: "\ud83e\udde0",
-  intelligence: "\ud83e\udde0",
-  storage: "\ud83d\udcbe",
-  memory: "\ud83d\udcbe",
-  weight: "\u2696\ufe0f",
-  size: "\ud83d\udccf",
-  design: "\ud83c\udfa8",
-  sound: "\ud83d\udd0a",
-  audio: "\ud83d\udd0a",
-  population: "\ud83d\udc65",
-  area: "\ud83c\udf0d",
-  gdp: "\ud83d\udcb5",
-  economy: "\ud83d\udcb5",
-  goals: "\u26bd",
-  trophies: "\ud83c\udfc6",
-  height: "\ud83d\udccf",
-  age: "\ud83d\udcc5",
+  display: "📱",
+  screen: "📱",
+  camera: "📷",
+  photo: "📷",
+  battery: "🔋",
+  price: "💰",
+  cost: "💰",
+  performance: "⚡",
+  speed: "⚡",
+  processor: "🧠",
+  ai: "🧠",
+  intelligence: "🧠",
+  storage: "💾",
+  memory: "💾",
+  weight: "⚖️",
+  size: "📏",
+  design: "🎨",
+  sound: "🔊",
+  audio: "🔊",
+  population: "👥",
+  area: "🌍",
+  gdp: "💵",
+  economy: "💵",
+  goals: "⚽",
+  trophies: "🏆",
+  height: "📏",
+  age: "📅",
 };
 
 function getEmoji(label: string): string {
@@ -35,7 +35,7 @@ function getEmoji(label: string): string {
   for (const [key, emoji] of Object.entries(CATEGORY_EMOJIS)) {
     if (lower.includes(key)) return emoji;
   }
-  return "\ud83d\udd39";
+  return "🔹";
 }
 
 
@@ -53,11 +53,23 @@ export function KeyDifferencesSummary({
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
-      <div className="bg-white border border-border rounded-xl p-4 sm:p-5">
-        <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-          Key Differences at a Glance
-        </h3>
-        <div className="space-y-2.5">
+      <div className="relative bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-indigo-100 rounded-xl p-4 sm:p-5 overflow-hidden">
+        {/* Top accent stripe */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400" />
+
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 className="text-xs font-bold text-indigo-700 uppercase tracking-widest">
+            Key Differences at a Glance
+          </h3>
+        </div>
+
+        <div className="space-y-2">
           {top3.map((diff) => {
             const winnerName =
               diff.winner === "a"
@@ -65,36 +77,36 @@ export function KeyDifferencesSummary({
                 : diff.winner === "b"
                 ? entityB.name
                 : null;
+            const winnerVal = diff.winner === "a" ? diff.entityAValue : diff.entityBValue;
+            const loserVal = diff.winner === "a" ? diff.entityBValue : diff.entityAValue;
 
             return (
-              <div
-                key={diff.label}
-                className="flex items-start gap-3 text-sm"
-              >
-                <span className="text-base flex-shrink-0 mt-0.5">{getEmoji(diff.label)}</span>
-                <div className="min-w-0">
-                  <span className="font-semibold text-text">{diff.label}:</span>{" "}
+              <div key={diff.label} className="flex items-center gap-2.5 text-sm">
+                <span className="w-7 h-7 flex-shrink-0 bg-white border border-indigo-100 rounded-lg flex items-center justify-center text-sm shadow-sm">
+                  {getEmoji(diff.label)}
+                </span>
+                <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
+                  <span className="font-semibold text-text">{diff.label}:</span>
                   {winnerName ? (
-                    <span className="text-text-secondary">
-                      <span className="text-win font-medium">{winnerName} wins</span>
-                      {" "}({diff.winner === "a" ? diff.entityAValue : diff.entityBValue}
-                      {" vs "}
-                      {diff.winner === "a" ? diff.entityBValue : diff.entityAValue})
-                    </span>
+                    <>
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200/60">
+                        ✓ {winnerName} wins
+                      </span>
+                      <span className="text-text-secondary text-xs">({winnerVal} vs {loserVal})</span>
+                    </>
                   ) : (
-                    <span className="text-text-secondary">
-                      {diff.entityAValue} vs {diff.entityBValue}
-                    </span>
+                    <span className="text-text-secondary">{diff.entityAValue} vs {diff.entityBValue}</span>
                   )}
                 </div>
               </div>
             );
           })}
         </div>
+
         {differences.length > 3 && (
           <a
             href="#key-differences"
-            className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
           >
             See all {differences.length} differences
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

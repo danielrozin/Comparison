@@ -1,6 +1,15 @@
 import Link from "next/link";
 import type { RelatedBlogPost } from "@/types";
 
+const POST_GRADIENTS = [
+  "from-primary-400 to-indigo-500",
+  "from-emerald-400 to-teal-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-400 to-orange-500",
+  "from-rose-400 to-pink-500",
+  "from-cyan-400 to-sky-500",
+];
+
 const CATEGORY_COLORS: Record<string, string> = {
   technology: "bg-blue-50 text-blue-700 border-blue-100",
   products: "bg-violet-50 text-violet-700 border-violet-100",
@@ -49,8 +58,8 @@ export function RelatedBlogPosts({
               style={{ animationDelay: `${idx * 40}ms` }}
               className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in"
             >
-              {/* Top accent strip */}
-              <div className="h-0.5 w-full bg-gradient-to-r from-primary-500 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+              {/* Persistent gradient accent stripe */}
+              <div className={`h-0.5 w-full bg-gradient-to-r ${POST_GRADIENTS[idx % POST_GRADIENTS.length]}`} />
 
               <div className="p-4 flex flex-col flex-1">
                 {/* Category badge */}

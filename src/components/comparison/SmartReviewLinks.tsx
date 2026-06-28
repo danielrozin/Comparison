@@ -36,22 +36,24 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {withReviews.map(({ name, slug, agg }) => {
           const scoreColor = agg.smartScore >= 90
-            ? "bg-green-100 text-green-700"
+            ? "bg-green-100 text-green-700 ring-green-200"
             : agg.smartScore >= 75
-            ? "bg-blue-100 text-blue-700"
+            ? "bg-blue-100 text-blue-700 ring-blue-200"
             : agg.smartScore >= 60
-            ? "bg-amber-100 text-amber-700"
-            : "bg-gray-100 text-gray-700";
+            ? "bg-amber-100 text-amber-700 ring-amber-200"
+            : "bg-gray-100 text-gray-700 ring-gray-200";
 
           return (
             <div key={slug} className="flex flex-col gap-2">
               {/* Internal review page link */}
               <Link
                 href={`/reviews/${slug}`}
-                className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all group"
+                className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden relative"
               >
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold shrink-0 ${scoreColor}`}>
-                  {agg.smartScore}
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-lg font-black shrink-0 ring-2 shadow-sm ${scoreColor}`}>
+                  <span className="leading-none">{agg.smartScore}</span>
+                  <span className="text-[8px] font-semibold opacity-60 leading-none mt-0.5">/ 100</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
