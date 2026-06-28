@@ -38,6 +38,24 @@ export const metadata: Metadata = {
   },
 };
 
+const ARTICLES = [
+  {
+    title: "Best Password Managers Compared (2026)",
+    url: "/password-manager-comparison",
+    date: "2026-05-22",
+  },
+  {
+    title: "Best Browsers Compared (2026)",
+    url: "/browser-comparison-2026",
+    date: "2026-05-22",
+  },
+  {
+    title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
+    url: "/llm-comparisons",
+    date: "2026-05-22",
+  },
+];
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -109,24 +127,6 @@ const profilePageSchema = {
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   mainEntity: { "@type": "Person", "@id": `${PAGE_URL}#person` },
 };
-
-const ARTICLES = [
-  {
-    title: "Best Password Managers Compared (2026)",
-    url: "/password-manager-comparison",
-    date: "2026-05-22",
-  },
-  {
-    title: "Best Browsers Compared (2026)",
-    url: "/browser-comparison-2026",
-    date: "2026-05-22",
-  },
-  {
-    title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
-    url: "/llm-comparisons",
-    date: "2026-05-22",
-  },
-];
 
 export default function DanielRozinPage() {
   return (
