@@ -394,6 +394,10 @@ export function comparisonPageSchema(
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
+    // articleSection — tells Google/AI models the category domain of this comparison.
+    ...(comparison.category && { articleSection: comparison.category }),
+    // wordCount — content length signal; estimated from attribute count × avg words/attribute.
+    wordCount: Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)),
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

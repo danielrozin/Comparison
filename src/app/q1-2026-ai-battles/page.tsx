@@ -31,23 +31,26 @@ export const metadata: Metadata = {
 };
 
 export default function Q1AiBattlesPage() {
+  const description = `${nf.format(HEADLINE_TOTAL)} US Google Search comparison queries across ${BATTLE_COUNT} head-to-head AI tool battles, Jan–Mar 2026.`;
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": ["Article", "TechArticle"],
     headline: "Q1 2026 AI Tool Battles Index — Methodology and Data",
-    description: `${nf.format(
-      HEADLINE_TOTAL,
-    )} US Google Search comparison queries across ${BATTLE_COUNT} head-to-head AI tool battles, Jan–Mar 2026.`,
+    description,
+    abstract: description,
+    url: PAGE_URL,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
     datePublished: PUBLICATION_DATE,
     dateModified: PUBLICATION_DATE,
-    author: { "@type": "Person", name: "Daniel Rozin" },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    lastReviewed: PUBLICATION_DATE,
+    keywords: "AI tool comparison 2026, ChatGPT vs Claude, AI battles data, Q1 2026 search trends",
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
-    isAccessibleForFree: true,
   };
 
   const datasetSchema = {
