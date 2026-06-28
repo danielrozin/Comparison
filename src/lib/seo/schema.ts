@@ -401,6 +401,11 @@ export function comparisonPageSchema(
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // alternativeHeadline — secondary title used by Perplexity / ChatGPT citation extractors.
+    alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
+    // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
     // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
     ...(() => {
       const parts = [
@@ -647,6 +652,10 @@ function buildMultiEntityGraph(
       "versus",
       ...(comparison.category ? [comparison.category] : []),
     ].join(", "),
+    alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
+    isAccessibleForFree: true,
     // hasPart links to the embedded FAQPage so Google/AI can associate the FAQ graph node.
     ...(comparison.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
     ...(multiViewCount > 0 && {

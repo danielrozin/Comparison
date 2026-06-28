@@ -122,6 +122,9 @@ export default async function AlternativesPage({ params }: PageProps) {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1"],
     },
+    alternativeHeadline: `Best ${name} Alternatives in 2026`,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/legal`,
     accessMode: ["textual"],
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     about: {
