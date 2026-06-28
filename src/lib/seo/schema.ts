@@ -657,3 +657,97 @@ function entitySchemaType(entityType: string): string {
   };
   return map[entityType] || "Thing";
 }
+
+export function profilePageSchema(entity: {
+  name: string;
+  slug: string;
+  shortDesc: string | null;
+  entityType: string;
+  imageUrl: string | null;
+  comparisonCount?: number;
+  topComparisons?: { slug: string; title: string }[];
+}) {
+  const url = `${SITE_URL}/entity/${entity.slug}`;
+  const schemaType = entitySchemaType(entity.entityType);
+
+  const subjectOf = (entity.topComparisons ?? []).slice(0, 10).map((c) => ({
+    "@type": "Article",
+    headline: c.title,
+    url: `${SITE_URL}/compare/${c.slug}`,
+  }));
+
+  const mainEntity: Record<string, unknown> = {
+    "@type": schemaType,
+    "@id": url,
+    name: entity.name,
+    url,
+    ...(entity.shortDesc && { description: entity.shortDesc }),
+    ...(entity.imageUrl && { image: entity.imageUrl }),
+    ...(subjectOf.length > 0 && { subjectOf }),
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
+  };
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    name: `${entity.name} — Comparisons & Profile`,
+    url,
+    dateModified: new Date().toISOString().slice(0, 10),
+    inLanguage: "en-US",
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".entity-description", ".entity-short-desc"],
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: entity.name, item: url },
+      ],
+    },
+    mainEntity,
+    ...(entity.comparisonCount && entity.comparisonCount > 0 && {
+      about: {
+        "@type": "ItemList",
+        name: `Comparisons involving ${entity.name}`,
+        numberOfItems: entity.comparisonCount,
+        url: `${SITE_URL}/entity/${entity.slug}`,
+      },
+    }),
+  };
+}
+
+export function howToSchemaFromBlog(opts: {
+  title: string;
+  description: string;
+  url: string;
+  content: string;
+}) {
+  if (!/^how to /i.test(opts.title)) return null;
+
+  const headingMatches = opts.content.match(/^##\s+(.+)$/gm) ?? [];
+  const steps = headingMatches
+    .map((h) => h.replace(/^##\s+/, "").trim())
+    .filter((s) => s.length > 0 && !/introduction|conclusion|summary|overview/i.test(s))
+    .slice(0, 10);
+
+  if (steps.length < 2) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: opts.title,
+    description: opts.description,
+    url: opts.url,
+    step: steps.map((name, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name,
+      url: `${opts.url}#step-${i + 1}`,
+    })),
+  };
+}
