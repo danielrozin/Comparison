@@ -18,7 +18,8 @@ const apiSchema = {
     name: SITE_NAME,
     url: SITE_URL,
   },
-  license: `${SITE_URL}/terms`,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
   offers: [
     {
       "@type": "Offer",
