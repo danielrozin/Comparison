@@ -82,19 +82,23 @@ export default async function MostComparedStudyPage() {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": ["Article", "TechArticle"],
     headline: TITLE,
     description: DESCRIPTION,
+    abstract: DESCRIPTION,
     mainEntityOfPage: CANONICAL,
+    url: CANONICAL,
     image: ogImage,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
     dateModified: study.updatedAt,
-    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` },
-    },
+    lastReviewed: study.updatedAt,
+    keywords: "most compared brands 2026, brand comparison data, popular comparisons, data study, top brands",
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".study-abstract"] },
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   };
 
   const citation = `${SITE_NAME}, "The Most-Compared Brands of 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;
