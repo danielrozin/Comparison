@@ -49,7 +49,47 @@ export function organizationSchema() {
       "Product Comparisons",
       "Technology Reviews",
       "Data-Driven Analysis",
+      "Consumer Electronics",
+      "Software as a Service",
+      "Sports Statistics",
+      "Country Comparisons",
+      "Automotive Reviews",
+      "Health & Wellness",
+      "Financial Products",
     ],
+    audience: {
+      "@type": "Audience",
+      audienceType: "Consumers, Researchers, Decision Makers",
+      geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
+    },
+  };
+}
+
+// ============================================================
+// DataCatalog schema — positions the site as a structured comparison database
+// AI crawlers (Perplexity, ChatGPT, Gemini) use DataCatalog to identify
+// machine-readable data sources with high citation weight.
+// ============================================================
+
+export function dataCatalogSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DataCatalog",
+    "@id": `${SITE_URL}/#datacatalog`,
+    name: `${SITE_NAME} Comparison Database`,
+    description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
+    url: SITE_URL,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    dataset: {
+      "@type": "Dataset",
+      name: "Comparison Pages",
+      description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
+      url: `${SITE_URL}/sitemap.xml`,
+      keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
+      license: `${SITE_URL}/terms`,
+      isAccessibleForFree: true,
+      inLanguage: "en-US",
+    },
   };
 }
 
@@ -202,7 +242,23 @@ export function comparisonPageSchema(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#verdict"] },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      // Include verdict, key-differences, and key-facts so voice assistants and
+      // AI models can extract the most citable sections without full-page processing.
+      cssSelector: ["#verdict", "#key-differences", "#key-facts"],
+    },
+    // accessMode signals content type to AI classifiers and accessibility crawlers.
+    accessMode: ["textual", "visual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    // keywords surfaces entity names + comparison topic for AI index matching.
+    keywords: [
+      ...comparison.entities.map((e) => e.name),
+      `${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      "comparison",
+      "versus",
+      ...(comparison.category ? [comparison.category] : []),
+    ].join(", "),
     // interactionStatistic exposes real view-count data to AI crawlers
     ...(viewCount > 0 && {
       interactionStatistic: {
@@ -449,7 +505,21 @@ function buildMultiEntityGraph(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#verdict"] },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict", "#key-differences", "#key-facts"],
+    },
+    accessMode: ["textual", "visual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    keywords: [
+      ...comparison.entities.map((e) => e.name),
+      `${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      "comparison",
+      "versus",
+      ...(comparison.category ? [comparison.category] : []),
+    ].join(", "),
+    // hasPart links to the embedded FAQPage so Google/AI can associate the FAQ graph node.
+    ...(comparison.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
     ...(multiViewCount > 0 && {
       interactionStatistic: {
         "@type": "InteractionCounter",

@@ -324,6 +324,14 @@ export default async function BlogPostPage({
     license: `${SITE_URL}/terms`,
     copyrightYear: publishedDate ? publishedDate.getFullYear() : new Date().getFullYear(),
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // accessMode signals content modality to AI classifiers and screen-reader crawlers.
+    accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".article-excerpt", ".article-abstract"],
+    },
   };
 
   const breadcrumbs = [

@@ -75,6 +75,21 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Quora-Bot", allow: "/" },
       { userAgent: "Scrapy", allow: "/" },
       { userAgent: "Timpibot", allow: "/" },
+
+      // === Emerging AI crawlers (2025–2026) — explicitly welcomed ===
+      { userAgent: "DeepSeekBot", allow: "/" },
+      { userAgent: "Grok", allow: "/" },
+      { userAgent: "xAI-Bot", allow: "/" },
+      { userAgent: "MistralBot", allow: "/" },
+      { userAgent: "NeevaBot", allow: "/" },
+      { userAgent: "Diffbot", allow: "/" },
+      { userAgent: "VelenPublicWebCrawler", allow: "/" },
+      { userAgent: "Webzio-Extended", allow: "/" },
+
+      // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
+      { userAgent: "AhrefsBot", allow: "/" },
+      { userAgent: "SemrushBot", allow: "/" },
+      { userAgent: "DataForSeoBot", allow: "/" },
     ],
     sitemap: [
       "https://www.aversusb.net/sitemap.xml",

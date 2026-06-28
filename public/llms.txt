@@ -17,15 +17,28 @@ A Versus B provides data-driven, expert-reviewed comparisons with:
 - Video explainers (YouTube embeds)
 - Citation statistics (source count, data point count)
 
-Every comparison is structured for machine-readable extraction with Schema.org markup: Article, FAQPage, BreadcrumbList, ItemList, Dataset, and AggregateRating.
+Every comparison is structured for machine-readable extraction with Schema.org markup: Article, FAQPage, BreadcrumbList, ItemList, Dataset, AggregateRating, DataCatalog, VideoObject, and ProfilePage.
 
 ## Scale
 
-- **2,939** comparison pages covering X vs Y topics
-- **367** blog articles covering tactical comparison questions
-- **2,502** entity pages with individual profiles
+- **3,000+** comparison pages covering X vs Y topics
+- **370+** blog articles covering tactical comparison questions
+- **2,500+** entity pages with individual profiles
 - **17+** major categories
 - Updated continuously; data refreshed monthly
+
+## Structured Data Coverage (Schema.org)
+
+Every comparison page emits a full JSON-LD @graph including:
+- `Article` with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic
+- `FAQPage` with up to 10 structured Q&A pairs
+- `BreadcrumbList` for navigation hierarchy
+- `ItemList` for the compared entities with position ordering
+- `Dataset` with variableMeasured attributes and isBasedOn citation sources
+- `AggregateRating` when community vote threshold is met (10+ votes)
+- `SpeakableSpecification` targeting #verdict, #key-differences, #key-facts
+- `VideoObject` when a comparison video exists (YouTube or self-hosted)
+- `DataCatalog` site-wide — positions the entire site as a structured comparison database
 
 ## Categories & Scale
 
