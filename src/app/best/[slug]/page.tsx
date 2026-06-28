@@ -2,22 +2,64 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { BEST_CONFIG } from "@/lib/data/best-entries";
+import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
+import { getPrisma } from "@/lib/db/prisma";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export const revalidate = 3600;
-export const dynamicParams = false;
+export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return Object.keys(BEST_CONFIG).map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const staticSlugs = Object.keys(BEST_CONFIG).map((slug) => ({ slug }));
+  try {
+    const prisma = getPrisma();
+    if (!prisma) return staticSlugs;
+    const dbPages = await prisma.bestPage.findMany({
+      where: { status: "published" },
+      select: { slug: true },
+    });
+    const dbSlugs = dbPages.map((p) => ({ slug: p.slug }));
+    const all = [...staticSlugs, ...dbSlugs.filter((d) => !staticSlugs.some((s) => s.slug === d.slug))];
+    return all;
+  } catch {
+    return staticSlugs;
+  }
+}
+
+async function getEntry(slug: string): Promise<BestEntry | null> {
+  // Static config takes precedence for existing pages
+  if (BEST_CONFIG[slug]) return BEST_CONFIG[slug];
+
+  try {
+    const prisma = getPrisma();
+    if (!prisma) return null;
+    const row = await prisma.bestPage.findUnique({ where: { slug, status: "published" } });
+    if (!row) return null;
+    return {
+      slug: row.slug,
+      title: row.title,
+      description: row.description,
+      h1: row.h1,
+      authorName: row.authorName,
+      authorUrl: row.authorUrl ?? undefined,
+      category: row.category ?? undefined,
+      bodyMarkdown: row.bodyMarkdown,
+      publishedAt: row.publishedAt ? row.publishedAt.toISOString().slice(0, 10) : row.createdAt.toISOString().slice(0, 10),
+      updatedAt: row.updatedAt.toISOString().slice(0, 10),
+      listItems: (row.listItems as BestEntry["listItems"]) ?? [],
+      faqs: (row.faqs as BestEntry["faqs"]) ?? [],
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const entry = BEST_CONFIG[slug];
+  const entry = await getEntry(slug);
   if (!entry) return { title: "Not Found" };
 
   const canonicalUrl = `${SITE_URL}/best/${slug}`;
@@ -164,7 +206,7 @@ function renderMarkdown(md: string): string {
 
 // ── JSON-LD schema ──
 
-function bestPageSchema(entry: (typeof BEST_CONFIG)[string]) {
+function bestPageSchema(entry: BestEntry) {
   const url = `${SITE_URL}/best/${entry.slug}`;
   return {
     "@context": "https://schema.org",
@@ -216,7 +258,7 @@ function bestPageSchema(entry: (typeof BEST_CONFIG)[string]) {
 
 export default async function BestPage({ params }: PageProps) {
   const { slug } = await params;
-  const entry = BEST_CONFIG[slug];
+  const entry = await getEntry(slug);
   if (!entry) notFound();
 
   const schema = bestPageSchema(entry);

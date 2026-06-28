@@ -110,6 +110,45 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     );
   }
 
+  // Individual Review schema — unlocks Google's "Review Snippet" rich result.
+  // Only emit when reviews have a body and rating to avoid thin/empty items.
+  const reviewableItems = reviews
+    .filter((r) => r.body && r.body.length > 30 && r.rating)
+    .slice(0, 5);
+  if (reviewableItems.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name,
+      url: `${SITE_URL}/reviews/${slug}`,
+      ...(aggregation && {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: aggregation.averageRating.toFixed(1),
+          bestRating: 5,
+          worstRating: 1,
+          reviewCount: aggregation.totalReviews,
+        },
+      }),
+      review: reviewableItems.map((r) => ({
+        "@type": "Review",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: (r.rating as number).toFixed(1),
+          bestRating: 5,
+          worstRating: 1,
+        },
+        author: {
+          "@type": "Person",
+          name: r.authorName || "Verified User",
+        },
+        reviewBody: (r.body as string).slice(0, 500),
+        ...(r.sourceDate && { datePublished: new Date(r.sourceDate).toISOString().slice(0, 10) }),
+        ...(r.sourceUrl && { url: r.sourceUrl }),
+      })),
+    });
+  }
+
   return (
     <>
       {schemas.map((schema, i) => (

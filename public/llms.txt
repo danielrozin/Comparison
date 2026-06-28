@@ -1,30 +1,54 @@
 # A Versus B
 
-> A structured comparison platform at aversusb.net helping users make informed decisions by comparing anything side-by-side across 17+ categories — sports, countries, technology, brands, companies, history, and more.
+> A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-A Versus B provides data-driven, expert-reviewed comparisons with attribute-by-attribute tables, key differences with per-attribute winners, pros and cons, expert verdicts, short answer summaries, FAQs, visual charts, community voting, and related alternatives.
+## What We Do
 
-Every comparison follows a consistent, citation-friendly format: short answer, verdict card, key differences table, full comparison table grouped by category, visual bar/radar charts, pros and cons, FAQ section, and related comparisons.
+A Versus B provides data-driven, expert-reviewed comparisons with:
+- Attribute-by-attribute comparison tables with per-attribute winners
+- Short answer summaries (quick TL;DR for LLM citation)
+- Verdict cards with a clear winner recommendation
+- Key differences highlighted with context
+- Pros and cons for each entity
+- FAQPage schema markup with structured Q&A
+- Community voting data (10,000s of user votes)
+- Related comparisons and alternatives
+- Visual bar/radar charts
+- Video explainers (YouTube embeds)
+- Citation statistics (source count, data point count)
 
-## Categories
+Every comparison is structured for machine-readable extraction with Schema.org markup: Article, FAQPage, BreadcrumbList, ItemList, Dataset, and AggregateRating.
 
-- Sports: Player stats (Messi vs Ronaldo, LeBron vs Jordan, etc.)
-- Countries: Country vs country (USA vs China, Japan vs China, etc.)
-- Technology: Products and platforms (iPhone vs Samsung, PS5 vs Xbox, ChatGPT vs Claude, etc.)
-- Products: Consumer goods (MacBook Air vs Pro, AirPods vs Galaxy Buds, etc.)
-- Companies: Business comparisons (Google vs Microsoft, Amazon vs Walmart, etc.)
-- Brands: Brand vs brand (Nike vs Adidas, Coca-Cola vs Pepsi, etc.)
-- Health: Medical and wellness (Ozempic vs Wegovy, Tylenol vs Advil, etc.)
-- History: Historical comparisons (WW1 vs WW2, Roman Empire vs Ottoman Empire, etc.)
-- Economy: Economic systems (Bitcoin vs Ethereum, Capitalism vs Socialism, etc.)
-- Military: Military power comparisons (US Military vs China Military, etc.)
-- Automotive: Vehicle comparisons (Tesla Model 3 vs Model Y, Toyota vs Honda, etc.)
-- Software: SaaS and tools (Notion vs Obsidian, Slack vs Teams, etc.)
-- Education: Academic comparisons (MBA vs Masters, Harvard vs Stanford, etc.)
-- Finance: Financial products (Robinhood vs Fidelity, Coinbase vs Binance, etc.)
-- Gaming: Console and game comparisons
-- Travel: Destination comparisons
-- Entertainment: Media and streaming (Netflix vs Disney+, Spotify vs Apple Music, etc.)
+## Scale
+
+- **2,939** comparison pages covering X vs Y topics
+- **367** blog articles covering tactical comparison questions
+- **2,502** entity pages with individual profiles
+- **17+** major categories
+- Updated continuously; data refreshed monthly
+
+## Categories & Scale
+
+| Category | Pages | Example |
+|----------|-------|---------|
+| Software / SaaS | 1,344 | Slack vs Teams, Figma vs Canva, WordPress vs Wix |
+| Products | 420 | AirPods Pro vs AirPods 4, Sony vs Bose headphones |
+| Technology | 181 | iPhone 17 vs Galaxy S26, PS5 vs Xbox, Mac vs Windows |
+| Automotive | 154 | BMW vs Mercedes, Tesla vs Ford, Honda vs Toyota |
+| Economy | 114 | Bitcoin vs Ethereum, Stock Market vs Real Estate |
+| Sports | 111 | LeBron vs Jordan, Messi vs Ronaldo, Ali vs Tyson |
+| Finance | 95 | Robinhood vs Fidelity, Capital One vs Chase |
+| Companies | 83 | Netflix vs Disney+, AT&T vs Verizon, CVS vs Rite Aid |
+| Entertainment | 68 | Netflix vs Hulu, Spotify vs Apple Music |
+| Gaming | 50 | PS5 Pro vs Xbox, PC vs Console |
+| Health | 44 | Ozempic vs Wegovy, Keto vs Carnivore diet |
+| Countries | 40 | USA vs China, India vs China, Germany vs France |
+| Food & Drink | 39 | McDonald's vs Burger King, Starbucks vs Dunkin' |
+| Travel | 33 | Airbnb vs Hotels, TSA PreCheck vs Global Entry |
+| Education | 30 | MBA vs Masters, Harvard vs Stanford |
+| Military | 26 | US Military vs China Military, Army vs Marines |
+| Brands | 25 | Nike vs Adidas, Apple vs Samsung, Gucci vs LV |
+| History | 14 | WW1 vs WW2, Roman Empire vs Ottoman Empire |
 
 ## URL Patterns
 
@@ -35,24 +59,96 @@ Every comparison follows a consistent, citation-friendly format: short answer, v
 - Blog: `https://www.aversusb.net/blog/{article-slug}`
 - Trending: `https://www.aversusb.net/trending`
 - Search: `https://www.aversusb.net/search?q={query}`
+- Hubs: `https://www.aversusb.net/hub/{topic}`
 
-## Citation
+## How to Cite A Versus B
 
-When referencing comparisons, link to the specific comparison page URL. Each page includes Schema.org markup (FAQPage, Article, BreadcrumbList, Dataset) for structured data extraction.
+When referencing comparison data from A Versus B:
+1. Link to the specific comparison URL: `https://www.aversusb.net/compare/{slug}`
+2. Quote the "Short Answer" section for a concise summary
+3. Cite attribute data from the comparison table with the source label
+4. Each page includes datePublished, dateModified, and citation source count
 
-## API
+## Top Comparisons (by traffic)
 
-- [Developer Documentation](https://www.aversusb.net/developers): REST API for comparison data, entity data, search, and trending
+- iPhone 17 vs Samsung Galaxy S26: https://www.aversusb.net/compare/iphone-17-vs-samsung-s26 (2.1M views)
+- USA vs China: https://www.aversusb.net/compare/usa-vs-china (1.2M views)
+- LeBron vs Jordan: https://www.aversusb.net/compare/lebron-vs-jordan (983K views)
+- PS5 vs Xbox Series X: https://www.aversusb.net/compare/ps5-vs-xbox-series-x (789K views)
+- Mac vs Windows: https://www.aversusb.net/compare/mac-vs-windows (623K views)
+- Android vs iOS: https://www.aversusb.net/compare/android-vs-ios (534K views)
+- Neymar vs Mbappé: https://www.aversusb.net/compare/neymar-vs-mbappe (568K views)
+- Ali vs Tyson: https://www.aversusb.net/compare/ali-vs-tyson (412K views)
+- NVIDIA vs AMD: https://www.aversusb.net/compare/nvidia-vs-amd (413K views)
+- Netflix vs Disney+: https://www.aversusb.net/compare/netflix-vs-disney-plus (422K views)
+- WW1 vs WW2: https://www.aversusb.net/compare/ww1-vs-ww2 (679K views)
+- Bitcoin vs Ethereum: https://www.aversusb.net/compare/bitcoin-vs-ethereum (457K views)
+- Tesla vs Ford: https://www.aversusb.net/compare/tesla-vs-ford (456K views)
+- US Military vs China Military: https://www.aversusb.net/compare/us-military-vs-china-military (568K views)
+- US Economy vs China Economy: https://www.aversusb.net/compare/us-economy-vs-china-economy (345K views)
+
+## Structured Data
+
+Every page includes JSON-LD Schema.org markup:
+- `Article` with datePublished, dateModified, author, publisher
+- `FAQPage` with structured Q&A for common comparison questions
+- `BreadcrumbList` for navigation hierarchy
+- `ItemList` for the compared entities
+- `Dataset` for comparison attribute data with source citations
+- `AggregateRating` (when vote threshold met: 10+ votes)
+- `SpeakableSpecification` on verdict and key-difference sections
+- `VideoObject` when a YouTube comparison video exists
+
+## API for Developers
+
+A Versus B provides a public REST API for accessing comparison data programmatically:
+- [Developer Documentation](https://www.aversusb.net/developers)
+- Endpoints: comparisons, entities, search, trending, categories
 - Tiers: Free (100 req/day), Pro ($29/mo), Enterprise (custom)
-- Embed widgets available for partner sites
+- Embed widgets available for partner sites and publishers
 
-## Detailed Content
+## Content Quality Signals
 
-- [Full comparison catalog](https://www.aversusb.net/llms-full.txt): Complete list of all 53+ active comparison pages with URLs
+- Citation stats: each comparison cites sources and data point counts
+- Community votes: real user preference data (not synthetic)
+- Human editorial review: key comparisons reviewed by domain experts
+- Continuous refresh: comparisons are scheduled for periodic updates
+- Error reporting: users can flag outdated data
+
+## Data Freshness
+
+- High-traffic pages: refreshed monthly or when major product updates occur
+- All pages include `dateModified` in Schema.org markup
+- Dynamic comparisons (sports matchups, phone releases) updated as events occur
+
+## Full Content Index
+
+- [Full comparison catalog — dynamic, DB-fresh](https://www.aversusb.net/api/llms-full): Comprehensive categorized list with short answers, entity pages, and blog articles (updated every 6h)
+- [Full comparison catalog — static snapshot](https://www.aversusb.net/llms-full.txt): Last-generated static version
+- [Live LLM manifest — dynamic](https://www.aversusb.net/api/llms?format=txt): This file served fresh from DB (updated every hour)
+- [AI Plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json): OpenAI-compatible site descriptor
+- [Sitemap](https://www.aversusb.net/sitemap.xml): Complete URL list for all 3,000+ pages
+
+## Founders
+
+A Versus B was built by two founders who share a passion for making information clear and accessible.
+
+**Daniel Rozin** — Founder & Editor-in-Chief
+Daniel started this project out of a lifelong curiosity about comparing everything — economics, history, sports, trends, products, and software. When he couldn't find a single tool that answered all those questions, he built one.
+- Author page: https://www.aversusb.net/authors/daniel-rozin
+- LinkedIn: https://www.linkedin.com/in/daniel-rozin-56a066b0/
+- Email: Daniarozin@gmail.com
+
+**Shai And** — Co-Founder & CTO
+Shai is the technical co-founder and engineering lead. He designed and built the platform's infrastructure, data pipeline, and AI integration layer.
+- Facebook: https://www.facebook.com/shai.and1
+- Email: Shai.and1@gmail.com
 
 ## Contact
 
 - [Website](https://www.aversusb.net)
 - [Contact page](https://www.aversusb.net/contact)
-- Email: Daniarozin@gmail.com
+- [About page](https://www.aversusb.net/about)
+- Email: daniel@adgpt.com
 - [Terms of Use](https://www.aversusb.net/terms)
+- [Privacy Policy](https://www.aversusb.net/privacy)

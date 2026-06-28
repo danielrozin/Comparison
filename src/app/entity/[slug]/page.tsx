@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, aggregateRatingSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -91,6 +91,31 @@ export default async function EntityPage({ params }: PageProps) {
     ? CATEGORIES.find((c) => c.slug === primaryCategory)
     : null;
 
+  // Map category → Schema.org entity type for correct structured data
+  const CATEGORY_TO_ENTITY_TYPE: Record<string, string> = {
+    sports: "person",
+    countries: "country",
+    technology: "product",
+    products: "product",
+    software: "software",
+    automotive: "product",
+    companies: "company",
+    brands: "brand",
+    health: "product",
+    finance: "company",
+    economy: "product",
+    entertainment: "company",
+    gaming: "product",
+    military: "event",
+    history: "event",
+    education: "company",
+    travel: "place",
+    food_and_drink: "product",
+  };
+  const inferredEntityType = primaryCategory
+    ? (CATEGORY_TO_ENTITY_TYPE[primaryCategory] ?? "product")
+    : "product";
+
   // Breadcrumb items
   const breadcrumbItems = [
     { name: "Home", url: SITE_URL },
@@ -105,9 +130,18 @@ export default async function EntityPage({ params }: PageProps) {
     aggregateRatingSchema({
       name,
       slug,
-      entityType: "product",
+      entityType: inferredEntityType,
       ratingValue: rating,
       reviewCount,
+    }),
+    profilePageSchema({
+      name,
+      slug,
+      shortDesc: entityContent?.description?.slice(0, 200) ?? null,
+      entityType: inferredEntityType,
+      imageUrl: null,
+      comparisonCount: relatedComparisons.length,
+      topComparisons: relatedComparisons.slice(0, 10),
     }),
   ];
 

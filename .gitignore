@@ -50,3 +50,4 @@ hyperframes/**/.hyperframes/
 
 # Local-only render outputs (uploaded to YouTube + copied to public/videos)
 /Videos For Website/
+.env.prod

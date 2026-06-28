@@ -5,6 +5,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
+import { getPrisma } from "@/lib/db/prisma";
 import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 
 const SITE_URL = "https://www.aversusb.net";
@@ -38,25 +39,32 @@ export default async function sitemap({
 
   // ── Sitemap 0: Static + Category pages ──
   if (numId === 0) {
+    // Stable legal/about pages use their real last-edit date rather than `now`.
+    // Inflating lastmod on every build signals false freshness and wastes Google's
+    // crawl budget re-crawling pages that haven't changed.
+    const LEGAL_DATE = "2025-01-15";
+    const ABOUT_DATE = "2026-04-01";
+    const STUDIES_DATE = "2026-05-01";
+
     const staticPages: MetadataRoute.Sitemap = [
       { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
       { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
-      { url: `${SITE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${SITE_URL}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
-      { url: `${SITE_URL}/partnerships`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/about`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/contact`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.4 },
+      { url: `${SITE_URL}/partnerships`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/search`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
-      { url: `${SITE_URL}/developers`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/developers`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/reviews`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
       { url: `${SITE_URL}/feed`, lastModified: now, changeFrequency: "daily", priority: 0.3 },
       { url: `${SITE_URL}/changelog`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
-      { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-      { url: `${SITE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-      { url: `${SITE_URL}/disclaimer`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/privacy`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/terms`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/disclaimer`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
-      { url: `${SITE_URL}/studies`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-      { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/studies/investing-comparison-report-2026`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/studies/investing-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
@@ -83,12 +91,35 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
+    const staticBestSlugs = new Set(Object.keys(BEST_CONFIG));
     const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
       url: `${SITE_URL}/best/${slug}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     }));
+
+    try {
+      const prisma = getPrisma();
+      if (prisma) {
+        const dbBestPages = await prisma.bestPage.findMany({
+          where: { status: "published" },
+          select: { slug: true, updatedAt: true },
+        });
+        for (const page of dbBestPages) {
+          if (!staticBestSlugs.has(page.slug)) {
+            bestPages.push({
+              url: `${SITE_URL}/best/${page.slug}`,
+              lastModified: page.updatedAt,
+              changeFrequency: "weekly" as const,
+              priority: 0.85,
+            });
+          }
+        }
+      }
+    } catch {
+      // DB unavailable — static pages already included
+    }
 
     return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
   }

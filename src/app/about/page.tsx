@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { JsonLd } from "@/components/schema/JsonLd";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -13,8 +14,50 @@ export const metadata: Metadata = {
   },
 };
 
+const aboutPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: `About ${SITE_NAME}`,
+  description: `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`,
+  url: `${SITE_URL}/about`,
+  inLanguage: "en-US",
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
+    founder: [
+      {
+        "@type": "Person",
+        name: "Daniel Rozin",
+        url: `${SITE_URL}/authors/daniel-rozin`,
+        jobTitle: "Founder & Editor-in-Chief",
+        sameAs: [
+          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+          "https://www.facebook.com/daniel.rozin.94",
+        ],
+      },
+      {
+        "@type": "Person",
+        name: "Shai And",
+        jobTitle: "Co-Founder & CTO",
+        sameAs: ["https://www.facebook.com/shai.and1"],
+      },
+    ],
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "About", item: `${SITE_URL}/about` },
+    ],
+  },
+};
+
 export default function AboutPage() {
   return (
+    <>
+      <JsonLd data={aboutPageSchema} />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
       <nav className="mb-8">
@@ -184,6 +227,87 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Founders */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-display font-bold text-text mb-6">Who We Are</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Daniel */}
+          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center text-xl font-display font-black text-primary-600 shrink-0">
+                DR
+              </div>
+              <div>
+                <p className="font-semibold text-text">Daniel Rozin</p>
+                <p className="text-sm text-text-secondary">Founder &amp; Editor-in-Chief</p>
+              </div>
+            </div>
+            <p className="text-sm text-text-secondary leading-relaxed mb-4">
+              Daniel started {SITE_NAME} out of a lifelong curiosity about comparing things — from economics
+              and history to sports, technology, and products. When he couldn&apos;t find a single tool that
+              let him explore all those comparisons in one place, he decided to build it himself.
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.linkedin.com/in/daniel-rozin-56a066b0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-primary-600 hover:underline font-medium"
+              >
+                LinkedIn
+              </a>
+              <span className="text-text-secondary text-xs">·</span>
+              <a
+                href="https://www.facebook.com/daniel.rozin.94"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-primary-600 hover:underline font-medium"
+              >
+                Facebook
+              </a>
+              <span className="text-text-secondary text-xs">·</span>
+              <Link href="/authors/daniel-rozin" className="text-xs text-primary-600 hover:underline font-medium">
+                Author page
+              </Link>
+            </div>
+          </div>
+          {/* Shai */}
+          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center text-xl font-display font-black text-primary-600 shrink-0">
+                SA
+              </div>
+              <div>
+                <p className="font-semibold text-text">Shai And</p>
+                <p className="text-sm text-text-secondary">Co-Founder &amp; CTO</p>
+              </div>
+            </div>
+            <p className="text-sm text-text-secondary leading-relaxed mb-4">
+              Shai is the technical co-founder and engineering lead. He designed and built the platform&apos;s
+              infrastructure, data pipeline, and AI integration layer. Daniel and Shai have worked
+              together since the beginning, combining curiosity with engineering to make the idea real.
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.facebook.com/shai.and1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-primary-600 hover:underline font-medium"
+              >
+                Facebook
+              </a>
+              <span className="text-text-secondary text-xs">·</span>
+              <a
+                href="mailto:Shai.and1@gmail.com"
+                className="text-xs text-primary-600 hover:underline font-medium"
+              >
+                Email
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Team Vision */}
       <section className="mb-12">
         <h2 className="text-2xl font-display font-bold text-text mb-4">Our Vision</h2>
@@ -214,5 +338,6 @@ export default function AboutPage() {
         </Link>
       </section>
     </div>
+    </>
   );
 }

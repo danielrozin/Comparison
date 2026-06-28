@@ -1,0 +1,24 @@
+{
+  "date": "2026-06-25",
+  "tPlus": 13,
+  "measuredBuckets": {
+    "top10": 0,
+    "p11_20": 18,
+    "p21_50": 439
+  },
+  "baseline": {
+    "top10": 0,
+    "p11_20": 10,
+    "p21_50": 307
+  },
+  "movers": [
+    {
+      "keyword": "why is ww2 more famous than ww1",
+      "was": 28,
+      "now": 20,
+      "vol": 30
+    }
+  ],
+  "total": 457,
+  "upwardMigration": true
+}

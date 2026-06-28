@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -194,6 +194,32 @@ export async function generateMetadata({
       description: article.metaDescription || article.excerpt,
       images: [ogImage],
     },
+    // Academic / AI citation meta tags (Dublin Core + citation_ namespace).
+    // Semantic Scholar, Google Scholar, and AI crawlers use these to extract
+    // citable metadata and attribute content to the correct source.
+    other: {
+      "citation_title": article.metaTitle || article.title,
+      "citation_author": "Daniel Rozin",
+      "citation_publication_date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "citation_journal_title": "A Versus B",
+      "citation_abstract": (article.metaDescription || article.excerpt || "").slice(0, 300),
+      "citation_language": "en",
+      "citation_online_date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "DC.title": article.metaTitle || article.title,
+      "DC.creator": "Daniel Rozin",
+      "DC.date": article.publishedAt
+        ? new Date(article.publishedAt).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10),
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": `${SITE_URL}/blog/${slug}`,
+    },
   };
 }
 
@@ -222,11 +248,24 @@ export default async function BlogPostPage({
   const articleUrl = `${SITE_URL}/blog/${slug}`;
   const extras = getBlogSchemaExtras(slug);
 
-  // JSON-LD Article schema
+  // JSON-LD Article schema — enriched with wordCount and speakable for AEO
+  const wordCount = article.content
+    ? article.content.split(/\s+/).filter(Boolean).length
+    : undefined;
+
+  // Use NewsArticle for posts published within 30 days — Google treats NewsArticle
+  // as time-sensitive content and fast-tracks it for freshness ranking signals.
+  const publishedDate = article.publishedAt ? new Date(article.publishedAt) : null;
+  const isRecent = publishedDate
+    ? Date.now() - publishedDate.getTime() < 30 * 24 * 60 * 60 * 1000
+    : false;
+
   const articleSchema = {
-    "@type": "Article",
+    "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
     headline: article.title,
     description: article.excerpt,
+    ...(wordCount && { wordCount }),
+    inLanguage: "en-US",
     author: extras?.author
       ? {
           "@type": "Person",
@@ -234,9 +273,13 @@ export default async function BlogPostPage({
           ...(extras.author.url && { url: extras.author.url }),
         }
       : {
-          "@type": "Organization",
-          name: `${SITE_NAME} Team`,
-          url: SITE_URL,
+          "@type": "Person",
+          name: "Daniel Rozin",
+          url: `${SITE_URL}/authors/daniel-rozin`,
+          sameAs: [
+            "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+            "https://www.facebook.com/daniel.rozin.94",
+          ],
         },
     publisher: {
       "@type": "Organization",
@@ -245,6 +288,8 @@ export default async function BlogPostPage({
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/images/logo.png`,
+        width: 200,
+        height: 60,
       },
       sameAs: socialSameAs(),
     },
@@ -256,6 +301,26 @@ export default async function BlogPostPage({
       : undefined,
     mainEntityOfPage: articleUrl,
     url: articleUrl,
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    // abstract — concise summary for LLM citation snippets (preferred over description)
+    ...(article.excerpt && { abstract: article.excerpt }),
+    // keywords — tags + category for entity/topic recognition in LLM training crawls
+    ...(article.tags?.length && { keywords: article.tags.join(", ") }),
+    // about — links this blog article to the comparison pages it discusses.
+    // AI answer engines use `about` to understand the article's subject matter
+    // and connect it to entity knowledge graphs, increasing citation coverage.
+    ...(article.relatedComparisonSlugs?.length && {
+      about: article.relatedComparisonSlugs.map((s) => ({
+        "@type": "Article",
+        headline: comparisonTitles?.[s] ?? s,
+        url: `${SITE_URL}/compare/${s}`,
+      })),
+    }),
+    // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
+    lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+    reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    isAccessibleForFree: true,
+    license: `${SITE_URL}/terms`,
   };
 
   const breadcrumbs = [
@@ -264,9 +329,20 @@ export default async function BlogPostPage({
     { name: article.title, url: articleUrl },
   ];
 
-  // Build @graph: Article + BreadcrumbList + optional FAQPage + optional ItemList
+  // Build @graph: Article + BreadcrumbList + optional FAQPage + optional ItemList + optional HowTo
   // Slug-keyed extras live in src/lib/data/blog-schema-extras.ts.
   const graph: Record<string, unknown>[] = [articleSchema, breadcrumbSchema(breadcrumbs)];
+
+  // HowTo schema for step-by-step articles (auto-detected from "How to …" title).
+  const howTo = article.content
+    ? howToSchemaFromBlog({
+        title: article.title,
+        description: article.excerpt ?? "",
+        url: articleUrl,
+        content: article.content,
+      })
+    : null;
+  if (howTo) graph.push(howTo);
   if (extras?.faqs?.length) {
     graph.push(faqSchema(extras.faqs));
   }
@@ -284,6 +360,19 @@ export default async function BlogPostPage({
       })),
     });
   }
+
+  // SpeakableSpecification — marks the article headline and first section for
+  // voice assistants and AEO. h1 and first h2 are the most answer-dense elements.
+  graph.push({
+    "@type": "WebPage",
+    "@id": articleUrl,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
+    },
+    url: articleUrl,
+  });
+
   const jsonLd = { "@context": "https://schema.org", "@graph": graph };
 
   return (

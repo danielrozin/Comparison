@@ -1,7 +1,7 @@
 export const revalidate = 300; // ISR: revalidate home page every 5 minutes
 
 import Link from "next/link";
-import { CATEGORIES } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SearchBox } from "@/components/home/SearchBox";
@@ -22,8 +22,46 @@ export default async function HomePage() {
   ]);
   const blogArticles = blogResult.articles;
 
+  // CollectionPage schema — tells AI crawlers this is the root collection of all comparisons.
+  // `about` enumerates every category so entity-disambiguation can map queries to sections.
+  const collectionPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${SITE_NAME} — Compare Anything`,
+    description: `The internet's most comprehensive comparison platform with ${totalCount.toLocaleString()}+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more.`,
+    url: SITE_URL,
+    inLanguage: "en-US",
+    about: CATEGORIES.map((c) => ({
+      "@type": "Thing",
+      name: c.name,
+      url: `${SITE_URL}/category/${c.slug}`,
+    })),
+    significantLink: [
+      `${SITE_URL}/trending`,
+      `${SITE_URL}/blog`,
+      `${SITE_URL}/entity`,
+      `${SITE_URL}/developers`,
+    ],
+    hasPart: trending.slice(0, 5).map((t) => ({
+      "@type": "Article",
+      name: t.title,
+      url: `${SITE_URL}/compare/${t.slug}`,
+    })),
+    // speakable — marks the hero headline and description for voice assistants and AEO.
+    // Google Assistant and AI answer engines read these CSS selectors to extract the
+    // page's primary answer when responding to conversational queries.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".hero-description"],
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
@@ -41,7 +79,7 @@ export default async function HomePage() {
                 Anything
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            <p className="hero-description text-lg sm:text-xl text-primary-100 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
               Sports players, countries, products, technology, history — get clear,
               visual, data-driven comparisons in seconds.
             </p>
