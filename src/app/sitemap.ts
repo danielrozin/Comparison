@@ -84,6 +84,9 @@ export default async function sitemap({
       { url: `${SITE_URL}/faq/diffen`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/faq/g2-reviews`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/faq/versus-com`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
+      // Static blog article pages (hand-authored, not in DB)
+      { url: `${SITE_URL}/blog/best-ai-assistant-2026`, lastModified: "2026-06-13", changeFrequency: "monthly", priority: 0.85 },
+      { url: `${SITE_URL}/blog/best-cloud-platform-2026`, lastModified: "2026-06-27", changeFrequency: "monthly", priority: 0.85 },
       // Static alternatives landing pages (high-traffic curated)
       { url: `${SITE_URL}/alternatives/chatgpt`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/alternatives/figma`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },

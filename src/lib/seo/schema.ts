@@ -995,11 +995,16 @@ export function profilePageSchema(entity: {
     `${SITE_URL}/alternatives/${entity.slug}`,
     ...(entity.topComparisons ?? []).slice(0, 5).map((c) => `${SITE_URL}/compare/${c.slug}`),
   ];
+  const profileDesc = entity.shortDesc ||
+    `${entity.name} comparisons, profile, and alternatives — ${entity.comparisonCount ?? 0}+ head-to-head comparisons on A Versus B.`;
+
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     name: `${entity.name} — Comparisons & Profile`,
     alternativeHeadline: `${entity.name} Comparisons, Profile & Alternatives`,
+    description: profileDesc,
+    abstract: profileDesc,
     url,
     dateModified: today,
     lastReviewed: today,
