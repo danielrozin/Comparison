@@ -6,11 +6,15 @@ const SITE_NAME = "A Versus B";
 const searchResultsPageSchema = {
   "@context": "https://schema.org",
   "@type": "SearchResultsPage",
+  "@id": `${SITE_URL}/search#searchresultspage`,
   name: "Search Comparisons — A Versus B",
   description: "Search and compare anything — sports players, countries, products, technology, and more.",
+  abstract: "Instant search across 3,000+ X vs Y comparisons — find any comparison by topic, product, person, or category.",
   url: `${SITE_URL}/search`,
   inLanguage: "en-US",
-  isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+  isAccessibleForFree: true,
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: {
     "@type": "SearchAction",
     target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
