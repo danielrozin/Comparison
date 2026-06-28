@@ -16,9 +16,11 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
   return (
     <>
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-3">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 sm:p-6 max-w-3xl mx-auto relative overflow-hidden">
-          {/* Decorative accent */}
-          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-500 to-indigo-500 rounded-l-xl" />
+        <div className="bg-gradient-to-br from-blue-50 via-indigo-50/60 to-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto relative overflow-hidden">
+          {/* Top gradient accent stripe */}
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
+          {/* Left accent bar */}
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-500 to-indigo-500 rounded-l-2xl" />
 
           <div className="ml-2">
             <div className="flex items-center flex-wrap gap-2 mb-2">
@@ -27,6 +29,12 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
                 TL;DR
+              </span>
+              <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-100/80 text-blue-700 border border-blue-200/60">
+                <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+                </svg>
+                Speakable
               </span>
               {quickAnswer.winnerName && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 border border-amber-300/60">

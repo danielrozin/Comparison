@@ -119,15 +119,15 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-green-700 uppercase tracking-widest">Pros</h4>
                     </div>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1">
                       {entity.pros.map((pro, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item">
-                          <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5">
+                        <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
+                          <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </span>
-                          <span className="leading-relaxed">{pro}</span>
+                          <span className="leading-relaxed group-hover/item:text-green-900 transition-colors duration-150">{pro}</span>
                         </li>
                       ))}
                     </ul>
@@ -149,15 +149,15 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-red-600 uppercase tracking-widest">Cons</h4>
                     </div>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1">
                       {entity.cons.map((con, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-sm text-text">
-                          <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5">
+                        <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
+                          <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                             </svg>
                           </span>
-                          <span className="leading-relaxed">{con}</span>
+                          <span className="leading-relaxed group-hover/item:text-red-900 transition-colors duration-150">{con}</span>
                         </li>
                       ))}
                     </ul>

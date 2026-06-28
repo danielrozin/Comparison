@@ -4,6 +4,15 @@ import Link from "next/link";
 import type { RelatedComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 
+const CARD_GRADIENTS = [
+  "from-primary-400 to-indigo-500",
+  "from-emerald-400 to-teal-500",
+  "from-violet-400 to-purple-500",
+  "from-amber-400 to-orange-500",
+  "from-rose-400 to-pink-500",
+  "from-cyan-400 to-sky-500",
+];
+
 const CATEGORY_COLORS: Record<string, string> = {
   technology: "bg-blue-50 text-blue-700 border-blue-100",
   products: "bg-violet-50 text-violet-700 border-violet-100",
@@ -67,17 +76,21 @@ export function RelatedComparisons({
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
               style={{ animationDelay: `${cardIdx * 40}ms` }}
-              className="group relative flex flex-col gap-3 p-4 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in"
+              className="group relative flex flex-col gap-3 p-4 pt-5 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in"
             >
+              {/* Gradient accent stripe */}
+              <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${CARD_GRADIENTS[cardIdx % CARD_GRADIENTS.length]}`} />
+
               {/* Subtle hover gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
 
               {/* Avatars row */}
               <div className="relative flex items-center justify-between">
-                <div className="flex -space-x-2">
+                <div className="flex items-center gap-1">
                   <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
                     {letterA}
                   </div>
+                  <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5">vs</span>
                   <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
                     {letterB}
                   </div>
