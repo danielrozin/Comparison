@@ -53,6 +53,23 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     { name: "Trending", url: `${SITE_URL}/trending` },
   ]);
 
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Trending Comparisons on A Versus B",
+    description: trendingDescription,
+    abstract: "The most-viewed X vs Y comparisons right now — ranked by views, votes, and social signals.",
+    url: `${SITE_URL}/trending`,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".trending-description"] },
+    keywords: "trending comparisons, most popular comparisons, top vs comparisons 2026",
+  };
+
   // ItemList schema — lets AI answer engines enumerate the trending comparisons
   // directly from structured data, without parsing the rendered HTML.
   const itemListSchema = {
@@ -76,6 +93,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
       <script
         type="application/ld+json"

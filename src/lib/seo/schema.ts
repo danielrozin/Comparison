@@ -341,6 +341,7 @@ export function comparisonPageSchema(
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
     // abstract is the AI-preferred citation snippet field (more specific than description)
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
