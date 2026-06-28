@@ -109,6 +109,9 @@ interface PageMeta {
   ogType: "article" | "website";
   publishedTime?: string;
   modifiedTime?: string;
+  // article:* OG tags — entity names + category for social graph AEO signals
+  articleSection?: string;
+  articleTags?: string[];
 }
 
 type Props =
@@ -492,6 +495,17 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     ogType: "article",
     publishedTime: enrichedComparison.metadata.publishedAt || undefined,
     modifiedTime: enrichedComparison.metadata.updatedAt,
+    // article:section = category (e.g. "Software", "Technology")
+    articleSection: enrichedComparison.category
+      ? enrichedComparison.category.charAt(0).toUpperCase() + enrichedComparison.category.slice(1)
+      : undefined,
+    // article:tag = entity names + "comparison" + category for social/AI graph signals
+    articleTags: [
+      ...enrichedComparison.entities.map((e) => e.name),
+      "comparison",
+      "versus",
+      ...(enrichedComparison.category ? [enrichedComparison.category] : []),
+    ],
   };
 
   // JSON-sanitize: getStaticProps forbids `undefined` in props.
@@ -526,6 +540,16 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="og:image:height" content="630" />
       {meta.publishedTime && <meta property="article:published_time" content={meta.publishedTime} />}
       {meta.modifiedTime && <meta property="article:modified_time" content={meta.modifiedTime} />}
+      {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
+      <meta property="article:author" content="https://www.aversusb.net/about" />
+      {/* article:tag — entity names + comparison terms for Open Graph topic signals.
+          Social platforms and AI crawlers (Perplexity social graph, Bing social signals)
+          use article:tag to build topic affinity maps for citation selection. */}
+      {(meta.articleTags ?? []).map((tag) => (
+        <meta key={tag} property="article:tag" content={tag} />
+      ))}
+      {/* og:image:alt — alt text for OG image; used by AI models for image understanding */}
+      <meta property="og:image:alt" content={meta.title} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />

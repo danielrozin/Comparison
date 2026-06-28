@@ -78,7 +78,30 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
 
   const faqs = faqSchema(hub.faqs.map((f) => ({ question: f.q, answer: f.a })));
 
-  return [breadcrumbs, collection, faqs];
+  // DefinedTermSet — signals this hub is a topical glossary/directory for the domain.
+  // AI models (ChatGPT, Perplexity) use DefinedTerm nodes for entity disambiguation
+  // when building knowledge graphs from crawled content.
+  const definedTermSet = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": `${hubUrl}#terms`,
+    name: `${hub.h1} Key Terms`,
+    description: `Glossary of key terms and entities covered in the ${hub.h1} comparison hub.`,
+    url: hubUrl,
+    // Each compared product/service in the hub is a DefinedTerm so AI crawlers
+    // can resolve the hub's subject matter to named entities in their knowledge graphs.
+    hasDefinedTerm: spokes.slice(0, 10).flatMap((s) =>
+      s.entities.map((e) => ({
+        "@type": "DefinedTerm",
+        name: e.name,
+        url: `${SITE_URL}/entity/${e.slug}`,
+        ...(e.shortDesc && { description: e.shortDesc }),
+        inDefinedTermSet: { "@id": `${hubUrl}#terms` },
+      }))
+    ).filter((v, i, arr) => arr.findIndex((x) => x.name === v.name) === i).slice(0, 20),
+  };
+
+  return [breadcrumbs, collection, faqs, definedTermSet];
 }
 
 export default async function HubPage({ params }: PageProps) {
