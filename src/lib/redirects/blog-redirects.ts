@@ -355,8 +355,27 @@ const mercedesRedirects: BlogRedirect[] = MERCEDES_DUPES.map((slug) => ({
   permanent: true,
 }));
 
+// DAN-1425 / DAN-1509: `6-month-revenue-report` was excluded from on-site
+// publication by CML (specific revenue figures are company-confidential), so
+// the page never existed and the route 404s. The dev.to repost
+// (article 3513508) still carries canonical_url ->
+// https://aversusb.net/blog/6-month-revenue-report, so Google sees a canonical
+// pointing at a 404. The dev.to API strip is human-gated (no DEV Community API
+// key — DAN-158 holds only an OAuth secret). This 301 resolves the leak from
+// our own host instead: a canonical that 301-redirects makes Google follow the
+// hop and consolidate link equity to the live /blog index (HTTP 200) rather
+// than a dead 404. No confidential content is exposed. Single-hop to /blog.
+const cmlExcludedRedirects: BlogRedirect[] = [
+  {
+    source: "/blog/6-month-revenue-report",
+    destination: "/blog",
+    permanent: true,
+  },
+];
+
 export const BLOG_REDIRECTS: BlogRedirect[] = [
   ...macbookRedirects,
   ...mercedesRedirects,
   ...gdpRedirects,
+  ...cmlExcludedRedirects,
 ];
