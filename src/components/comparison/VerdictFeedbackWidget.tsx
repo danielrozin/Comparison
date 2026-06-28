@@ -130,7 +130,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
 
   const renderVoteButtons = (selected: Vote | null) => {
     const baseBtn =
-      "inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300";
+      "inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-bold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 active:scale-95";
     const upActive = selected === "up";
     const downActive = selected === "down";
     const isLocked = status === "done";
@@ -144,12 +144,12 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
           aria-pressed={upActive}
           className={`${baseBtn} ${
             upActive
-              ? "bg-emerald-500/20 border-emerald-300/60 text-emerald-50"
-              : "bg-white/10 border-white/20 text-white hover:bg-white/15 disabled:opacity-50 disabled:cursor-not-allowed"
+              ? "bg-emerald-500/25 border-emerald-300/70 text-emerald-50 shadow-lg shadow-emerald-500/20 scale-105"
+              : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100"
           }`}
         >
-          <span aria-hidden>👍</span>
-          <span>Yes</span>
+          <span aria-hidden className="text-base">👍</span>
+          <span>Helpful</span>
         </button>
         <button
           type="button"
@@ -158,12 +158,12 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
           aria-pressed={downActive}
           className={`${baseBtn} ${
             downActive
-              ? "bg-rose-500/25 border-rose-300/60 text-rose-50"
-              : "bg-white/10 border-white/20 text-white hover:bg-white/15 disabled:opacity-50 disabled:cursor-not-allowed"
+              ? "bg-rose-500/25 border-rose-300/70 text-rose-50 shadow-lg shadow-rose-500/20 scale-105"
+              : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100"
           }`}
         >
-          <span aria-hidden>👎</span>
-          <span>No</span>
+          <span aria-hidden className="text-base">👎</span>
+          <span>Not quite</span>
         </button>
       </div>
     );
@@ -175,6 +175,9 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
       data-verdict-feedback
       className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm overflow-hidden"
     >
+      {/* Gradient accent top stripe */}
+      <div className="h-0.5 bg-gradient-to-r from-yellow-400/60 via-yellow-300/40 to-transparent" />
+
       {/* Micro-header strip */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10 bg-white/5">
         <svg className="w-3.5 h-3.5 text-yellow-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

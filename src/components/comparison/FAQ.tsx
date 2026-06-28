@@ -47,10 +47,10 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             <div
               key={i}
               style={{ animationDelay: `${i * 40}ms` }}
-              className={`bg-white border rounded-xl overflow-hidden transition-all duration-250 animate-fade-in ${
+              className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out animate-fade-in ${
                 isOpen
-                  ? "border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500"
-                  : "border-border hover:border-primary-200 hover:shadow-sm"
+                  ? "border border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500 translate-y-0"
+                  : "border border-border hover:border-primary-200 hover:shadow-sm"
               }`}
             >
               <button

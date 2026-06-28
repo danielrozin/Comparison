@@ -59,6 +59,8 @@ function EntityAvatar({
 
   return (
     <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
+      {/* Pulsing outer glow ring for fallback avatars */}
+      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-xl opacity-40 animate-pulse scale-125`} />
       <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-60`} />
       <div
         className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
