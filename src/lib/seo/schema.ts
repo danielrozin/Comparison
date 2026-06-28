@@ -53,6 +53,7 @@ export function organizationSchema() {
     image: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
     sameAs: socialSameAs(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
+    slogan: "Compare Anything",
     foundingDate: "2024",
     areaServed: { "@type": "Place", name: "Worldwide" },
     contactPoint: [
@@ -106,7 +107,8 @@ export function dataCatalogSchema() {
       description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
       url: `${SITE_URL}/sitemap.xml`,
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
-      license: `${SITE_URL}/terms`,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      usageInfo: `${SITE_URL}/terms`,
       isAccessibleForFree: true,
       inLanguage: "en-US",
       temporalCoverage: "2024/..",

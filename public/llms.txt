@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 2026*
+*Last updated: June 28, 2026*
 
 ## What We Do
 
@@ -92,6 +92,36 @@ Curated "best of" ranked lists for product categories, covering top picks with c
 - **URL pattern:** `https://www.aversusb.net/best/{category-slug}`
 - **Examples:** best AI coding assistants, best project management tools, best password managers
 - Structured data: `ItemList` + `Article` + `BreadcrumbList`
+
+## Data Studies
+
+Original data studies analyzing comparison search behavior and brand trends:
+
+- **Studies index:** https://www.aversusb.net/studies
+- **Most-Compared Brands of 2026** — https://www.aversusb.net/studies/most-compared-brands-2026 (1,600+ comparisons ranked)
+- **B2B SaaS Comparison Report 2026** — https://www.aversusb.net/studies/b2b-saas-comparison-report-2026 (384 SaaS comparisons)
+- **Investing & Finance Comparison Report 2026** — https://www.aversusb.net/studies/investing-comparison-report-2026 (247 finance comparisons)
+- **Q1 2026 AI Tool Battles Index** — https://www.aversusb.net/q1-2026-ai-battles (top 50 AI head-to-head battles by US search volume, downloadable CSV)
+- All studies are free to cite. Structured data: `TechArticle` + `Dataset` + `BreadcrumbList`
+
+## Curated Comparison Landing Pages
+
+Expert-authored in-depth guides for high-interest comparison categories:
+
+- **LLM Comparison Guide 2026:** https://www.aversusb.net/llm-comparisons — 12 leading large language models compared across parameters, context window, modality, license, and knowledge cutoff
+- **Browser Comparison 2026:** https://www.aversusb.net/browser-comparison-2026 — 10 major web browsers compared on engine, market share, privacy, and extensions
+- **Password Manager Comparison 2026:** https://www.aversusb.net/password-manager-comparison — top 10 password managers compared on encryption, zero-knowledge architecture, and audits
+- All guides include methodology pages (e.g., `/methodology`) with COI disclosures and source tier hierarchy
+- Structured data: `TechArticle` with `abstract`, `speakable`, `license` (CC-BY-4.0), `alternativeHeadline`, `about.sameAs` (Wikipedia)
+
+## Competitor FAQ Pages
+
+Comparison FAQ pages targeting common queries about alternative comparison sites:
+
+- https://www.aversusb.net/faq/comparison-sites — How we compare to Diffen, Versus.com, G2, and others
+- https://www.aversusb.net/faq/diffen — Diffen.com FAQ
+- https://www.aversusb.net/faq/g2-reviews — G2 Reviews FAQ
+- https://www.aversusb.net/faq/versus-com — Versus.com FAQ
 
 ## Topic Hubs
 
