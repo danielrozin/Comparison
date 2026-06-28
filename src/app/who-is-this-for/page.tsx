@@ -66,14 +66,19 @@ function buildSchemas() {
   const webPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: `Who Is This For? | ${SITE_NAME}`,
-    description: `Find out if ${SITE_NAME} is the right comparison tool for you.`,
+    name: WHO_TITLE,
+    description: WHO_DESC,
+    abstract: WHO_DESC,
+    alternativeHeadline: `Is A Versus B Right for You? — Audience Guide & Use Cases`,
     url: pageUrl,
-    isPartOf: {
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    accessMode: ["textual"],
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [

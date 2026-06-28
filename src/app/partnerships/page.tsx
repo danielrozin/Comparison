@@ -83,8 +83,29 @@ const STATS = [
 ];
 
 export default function PartnershipsPage() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: PARTNER_TITLE,
+    description: PARTNER_DESC,
+    abstract: PARTNER_DESC,
+    alternativeHeadline: `Advertise on A Versus B — Sponsored Comparisons & Data Deals`,
+    url: PARTNER_URL,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    accessMode: ["textual"],
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  };
+
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
       <nav className="mb-8">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
@@ -222,5 +243,6 @@ export default function PartnershipsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

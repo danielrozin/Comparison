@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-const schema = {
+const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   "@id": `${PAGE_URL}#person`,
@@ -55,6 +55,12 @@ const schema = {
     url: SITE_URL,
   },
   description: PAGE_DESCRIPTION,
+  hasOccupation: {
+    "@type": "Occupation",
+    name: "Technology Editor",
+    occupationLocation: { "@type": "Country", name: "United States" },
+    skills: "AI/LLM comparisons, browser benchmarking, SaaS analysis, data-driven journalism",
+  },
   knowsAbout: [
     "AI language models",
     "web browsers",
@@ -64,6 +70,7 @@ const schema = {
     "SEO",
     "SaaS",
     "consumer electronics",
+    "startup product comparisons",
   ],
   sameAs: [
     SITE_URL,
@@ -74,6 +81,33 @@ const schema = {
     "@type": "ProfilePage",
     "@id": PAGE_URL,
   },
+  author: ARTICLES.map((a) => ({
+    "@type": "Article",
+    name: a.title,
+    url: `${SITE_URL}${a.url}`,
+    datePublished: a.date,
+  })),
+};
+
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": PAGE_URL,
+  name: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  abstract: PAGE_DESCRIPTION,
+  alternativeHeadline: `${AUTHOR_NAME} — Founder & Editor-in-Chief of A Versus B`,
+  url: PAGE_URL,
+  inLanguage: "en-US",
+  creativeWorkStatus: "Published",
+  isAccessibleForFree: true,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  accessMode: ["textual"],
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  mainEntity: { "@type": "Person", "@id": `${PAGE_URL}#person` },
 };
 
 const ARTICLES = [
@@ -97,7 +131,7 @@ const ARTICLES = [
 export default function DanielRozinPage() {
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <JsonLd data={schema} />
+      <JsonLd data={[personSchema, profilePageSchema]} />
 
       <nav className="mb-8">
         <ol className="flex items-center gap-2 text-sm text-text-secondary">
