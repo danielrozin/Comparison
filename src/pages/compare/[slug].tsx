@@ -530,6 +530,22 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
+      {/* Academic / AI citation meta tags — Perplexity, Semantic Scholar, and AI research
+          crawlers use citation_* and Dublin Core tags to extract citable metadata and
+          attribute content to the correct source, increasing structured citation frequency. */}
+      <meta name="citation_title" content={meta.title} />
+      <meta name="citation_author" content="A Versus B" />
+      {meta.publishedTime && <meta name="citation_publication_date" content={meta.publishedTime.slice(0, 10)} />}
+      {meta.modifiedTime && <meta name="citation_online_date" content={meta.modifiedTime.slice(0, 10)} />}
+      <meta name="citation_journal_title" content="A Versus B" />
+      <meta name="citation_abstract" content={meta.description} />
+      <meta name="citation_language" content="en" />
+      <meta name="DC.title" content={meta.title} />
+      <meta name="DC.creator" content="A Versus B" />
+      <meta name="DC.publisher" content="A Versus B" />
+      <meta name="DC.language" content="en" />
+      <meta name="DC.type" content="Text" />
+      <meta name="DC.format" content="text/html" />
     </Head>
   );
 }

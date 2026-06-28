@@ -319,16 +319,24 @@ export function comparisonPageSchema(
         userInteractionCount: viewCount,
       },
     }),
-    about: comparison.entities.map((e) => ({
-      "@type": entitySchemaType(e.entityType),
-      name: e.name,
-      description: e.shortDesc,
-      ...(e.imageUrl && { image: e.imageUrl }),
-      ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
-      sameAs: entityWikipediaSameAs(e.name),
-      // subjectOf links back to the comparison article (bidirectional entity↔article edge)
-      subjectOf: { "@type": "Article", "@id": `${url}#article` },
-    })),
+    about: comparison.entities.map((e) => {
+      const schType = entitySchemaType(e.entityType);
+      return {
+        "@type": schType,
+        name: e.name,
+        description: e.shortDesc,
+        ...(e.imageUrl && { image: e.imageUrl }),
+        ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
+        sameAs: entityWikipediaSameAs(e.name),
+        subjectOf: { "@type": "Article", "@id": `${url}#article` },
+        // Free Offer on software entities for product-search AI carousels
+        ...(schType === "SoftwareApplication" && {
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web, iOS, Android",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        }),
+      };
+    }),
     // mentions cross-links entity ProfilePages so AI crawlers can follow the
     // entity graph from comparison articles to dedicated entity pages.
     mentions: comparison.entities.map((e) => ({
@@ -336,8 +344,19 @@ export function comparisonPageSchema(
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
-    // hasPart links to the embedded FAQPage for Google's FAQ rich result association.
-    ...(hasFaqs && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
+    // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
+    lastReviewed: comparison.metadata.updatedAt,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
+    hasPart: [
+      ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+      ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+    ].filter(Boolean).length > 0
+      ? [
+          ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+          ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ]
+      : undefined,
   });
 
   // 2. ItemList for the compared entities
@@ -497,12 +516,10 @@ function buildMultiEntityGraph(
     if (schemaType === "SoftwareApplication") {
       node.applicationCategory = "BusinessApplication";
       node.operatingSystem = "Web, iOS, Android";
-      // publisher name defaults to the entity's own brand name; real-data backfill
-      // from Entity.metadata is tracked separately and is out of scope here.
-      node.publisher = {
-        "@type": "Organization",
-        name: entity.name,
-      };
+      node.publisher = { "@type": "Organization", name: entity.name };
+      // Free Offer signals that a free tier exists; most SaaS tools compared on the
+      // site have one. This enables Google/AI product-search carousels for free tools.
+      node.offers = { "@type": "Offer", price: "0", priceCurrency: "USD" };
     }
 
     if (realVotes) {
