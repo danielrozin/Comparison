@@ -5,6 +5,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
+import { getPrisma } from "@/lib/db/prisma";
 
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
@@ -89,12 +90,35 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
+    const staticBestSlugs = new Set(Object.keys(BEST_CONFIG));
     const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
       url: `${SITE_URL}/best/${slug}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     }));
+
+    try {
+      const prisma = getPrisma();
+      if (prisma) {
+        const dbBestPages = await prisma.bestPage.findMany({
+          where: { status: "published" },
+          select: { slug: true, updatedAt: true },
+        });
+        for (const page of dbBestPages) {
+          if (!staticBestSlugs.has(page.slug)) {
+            bestPages.push({
+              url: `${SITE_URL}/best/${page.slug}`,
+              lastModified: page.updatedAt,
+              changeFrequency: "weekly" as const,
+              priority: 0.85,
+            });
+          }
+        }
+      }
+    } catch {
+      // DB unavailable — static pages already included
+    }
 
     return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
   }

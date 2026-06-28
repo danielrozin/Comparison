@@ -1011,3 +1011,29 @@ model ComparisonTracker {
   @@index([email])
   @@map("comparison_trackers")
 }
+
+// ============================================================
+// BEST PAGES — DAN-1503
+// DB-backed /best/[slug] roundup pages (best-of lists)
+// ============================================================
+model BestPage {
+  id          String   @id @default(cuid())
+  slug        String   @unique // "ai-chatbots-2026"
+  title       String   // meta title
+  description String   @db.Text // meta description
+  h1          String   // page H1
+  authorName  String   @map("author_name") @default("AversusB Editorial")
+  authorUrl   String?  @map("author_url")
+  category    String?
+  bodyMarkdown String  @map("body_markdown") @db.Text
+  listItems   Json     @map("list_items") // [{position, name, anchor}]
+  faqs        Json     // [{q, a}]
+  status      String   @default("published") // draft | published | archived
+  publishedAt DateTime? @map("published_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([status])
+  @@index([category])
+  @@map("best_pages")
+}
