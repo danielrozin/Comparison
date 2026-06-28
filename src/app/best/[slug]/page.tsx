@@ -63,6 +63,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!entry) return { title: "Not Found" };
 
   const canonicalUrl = `${SITE_URL}/best/${slug}`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entry.h1)}&type=best`;
   return {
     title: entry.title,
     description: entry.description,
@@ -75,11 +76,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: SITE_NAME,
       publishedTime: entry.publishedAt,
       modifiedTime: entry.updatedAt,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${entry.h1} — A Versus B best-of list` }],
     },
     twitter: {
       card: "summary_large_image",
       title: entry.title,
       description: entry.description,
+      images: [ogImage],
+    },
+    other: {
+      "citation_title": entry.title,
+      "citation_author": entry.authorName,
+      "citation_publication_date": entry.publishedAt?.slice(0, 10) ?? "",
+      "citation_online_date": entry.updatedAt?.slice(0, 10) ?? "",
+      "citation_journal_title": "A Versus B",
+      "citation_language": "en",
+      "citation_abstract": entry.description,
+      "DC.title": entry.title,
+      "DC.creator": entry.authorName,
+      "DC.publisher": "A Versus B",
+      "DC.date": entry.publishedAt?.slice(0, 10) ?? "",
+      "DC.language": "en",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.identifier": canonicalUrl,
     },
   };
 }
