@@ -60,11 +60,11 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-accent-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-black text-xs">VS</span>
+          <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl shadow-sm shadow-primary-400/40 flex items-center justify-center group-hover:shadow-md group-hover:shadow-primary-400/50 transition-all duration-200">
+              <span className="text-white font-black text-[11px] tracking-tight drop-shadow-sm">VS</span>
             </div>
-            <span className="text-lg font-bold text-gray-900 hidden sm:block">{SITE_NAME}</span>
+            <span className="text-lg font-bold text-gray-900 hidden sm:block group-hover:text-primary-700 transition-colors duration-200">{SITE_NAME}</span>
           </Link>
 
           {/* Desktop nav */}
@@ -150,9 +150,9 @@ export function Header() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href="/#search"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-full text-sm text-gray-400 hover:shadow-sm transition-all"
+              className="group flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-white border border-gray-200 hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-gray-400 hover:text-gray-600 hover:shadow-sm transition-all duration-200"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <span className="hidden sm:inline">Search...</span>
