@@ -1,5 +1,6 @@
 export const revalidate = 300; // ISR: revalidate home page every 5 minutes
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
@@ -13,6 +14,26 @@ import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
 import { RecentlyViewed } from "@/components/home/RecentlyViewed";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+
+const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
+const HOME_DESC = "The internet's most comprehensive comparison platform. Side-by-side comparisons across sports, technology, products, countries, software, and more — data-driven, free, and instant.";
+
+export const metadata: Metadata = {
+  other: {
+    "citation_title": HOME_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": HOME_DESC,
+    "DC.title": HOME_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": SITE_URL,
+  },
+};
 
 export default async function HomePage() {
   const [trending, latest, totalCount, blogResult] = await Promise.all([

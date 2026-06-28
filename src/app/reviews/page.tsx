@@ -13,10 +13,28 @@ interface PageProps {
   searchParams: Promise<{ page?: string; sort?: string; category?: string; rating?: string }>;
 }
 
+const REVIEWS_TITLE = "SmartReview — Product Reviews & Ratings";
+const REVIEWS_DESC = "Expert product reviews with aggregated ratings from Reddit, G2, Capterra, Trustpilot, and more. Find the best products with SmartScore ratings.";
+const REVIEWS_URL = `${SITE_URL}/reviews`;
+
 export const metadata: Metadata = {
-  title: "SmartReview — Product Reviews & Ratings",
-  description: "Expert product reviews with aggregated ratings from Reddit, G2, Capterra, Trustpilot, and more. Find the best products with SmartScore ratings.",
-  alternates: { canonical: `${SITE_URL}/reviews` },
+  title: REVIEWS_TITLE,
+  description: REVIEWS_DESC,
+  alternates: { canonical: REVIEWS_URL },
+  other: {
+    "citation_title": REVIEWS_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": REVIEWS_DESC,
+    "DC.title": REVIEWS_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": REVIEWS_URL,
+  },
 };
 
 function SmartScoreBadge({ score }: { score: number }) {

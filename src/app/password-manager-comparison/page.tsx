@@ -20,6 +20,20 @@ export const metadata: Metadata = {
     type: "article",
     siteName: SITE_NAME,
   },
+  other: {
+    "citation_title": PAGE_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": PAGE_DESCRIPTION,
+    "DC.title": PAGE_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": PAGE_URL,
+  },
 };
 
 /* ── Schema.org ─────────────────────────────────────────────────────────── */

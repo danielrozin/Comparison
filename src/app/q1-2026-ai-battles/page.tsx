@@ -14,19 +14,32 @@ const fmtPct = (v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`;
 const pctClass = (v: number) =>
   v > 0 ? "text-green-700" : v < 0 ? "text-red-700" : "text-text-secondary";
 
+const Q1_TITLE = `Q1 2026 AI Tool Battles — ${nf.format(HEADLINE_TOTAL)} US comparison searches, ranked`;
+const Q1_DESC = `Methodology and data for the Q1 2026 AI Tool Battles Index: ${nf.format(HEADLINE_TOTAL)} US Google Search comparison queries across ${BATTLE_COUNT} head-to-head battles (Jan–Mar 2026). Source, ranking method, limitations, and downloadable CSV.`;
+
 export const metadata: Metadata = {
-  title: `Q1 2026 AI Tool Battles — ${nf.format(HEADLINE_TOTAL)} US comparison searches, ranked`,
-  description: `Methodology and data for the Q1 2026 AI Tool Battles Index: ${nf.format(
-    HEADLINE_TOTAL,
-  )} US Google Search comparison queries across ${BATTLE_COUNT} head-to-head battles (Jan–Mar 2026). Source, ranking method, limitations, and downloadable CSV.`,
+  title: Q1_TITLE,
+  description: Q1_DESC,
   alternates: { canonical: PAGE_URL },
   openGraph: {
     title: `Q1 2026 AI Tool Battles — ${SITE_NAME}`,
-    description: `${nf.format(
-      HEADLINE_TOTAL,
-    )} US comparison searches across ${BATTLE_COUNT} AI tool battles (Jan–Mar 2026). Full methodology and downloadable dataset.`,
+    description: `${nf.format(HEADLINE_TOTAL)} US comparison searches across ${BATTLE_COUNT} AI tool battles (Jan–Mar 2026). Full methodology and downloadable dataset.`,
     url: PAGE_URL,
     type: "article",
+  },
+  other: {
+    "citation_title": Q1_TITLE,
+    "citation_author": "Daniel Rozin",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": Q1_DESC,
+    "DC.title": Q1_TITLE,
+    "DC.creator": "Daniel Rozin",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": PAGE_URL,
   },
 };
 

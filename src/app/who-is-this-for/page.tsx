@@ -3,14 +3,32 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 
+const WHO_TITLE = `Who Is This For? | ${SITE_NAME}`;
+const WHO_DESC = `Find out if ${SITE_NAME} is the right comparison tool for you. Structured data comparisons across 17 categories for consumers, students, sports fans, tech professionals, and business decision-makers.`;
+const WHO_URL = `${SITE_URL}/who-is-this-for`;
+
 export const metadata: Metadata = {
-  title: `Who Is This For? | ${SITE_NAME}`,
-  description: `Find out if ${SITE_NAME} is the right comparison tool for you. Structured data comparisons across 17 categories for consumers, students, sports fans, tech professionals, and business decision-makers.`,
-  alternates: { canonical: `${SITE_URL}/who-is-this-for` },
+  title: WHO_TITLE,
+  description: WHO_DESC,
+  alternates: { canonical: WHO_URL },
   openGraph: {
-    title: `Who Is This For? | ${SITE_NAME}`,
+    title: WHO_TITLE,
     description: `Discover who benefits from ${SITE_NAME} — structured, data-driven comparisons across sports, technology, countries, products, and more.`,
-    url: `${SITE_URL}/who-is-this-for`,
+    url: WHO_URL,
+  },
+  other: {
+    "citation_title": WHO_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": WHO_DESC,
+    "DC.title": WHO_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": WHO_URL,
   },
 };
 

@@ -31,6 +31,20 @@ export const metadata: Metadata = {
     description: trendingDescription,
     images: [ogImage],
   },
+  other: {
+    "citation_title": "Trending Comparisons — A Versus B",
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": trendingDescription,
+    "DC.title": "Trending Comparisons — A Versus B",
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": `${SITE_URL}/trending`,
+  },
 };
 
 interface PageProps {

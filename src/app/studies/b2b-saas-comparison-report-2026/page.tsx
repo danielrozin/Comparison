@@ -31,6 +31,20 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: [ogImage],
   },
+  other: {
+    "citation_title": TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": DESCRIPTION,
+    "DC.title": TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": CANONICAL,
+  },
 };
 
 function fmt(n: number): string {

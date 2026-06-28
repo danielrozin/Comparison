@@ -3,14 +3,32 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { PartnershipForm } from "./PartnershipForm";
 
+const PARTNER_TITLE = `Partner With ${SITE_NAME} — Sponsored Comparisons & Data Partnerships`;
+const PARTNER_DESC = `Partner with ${SITE_NAME} to reach millions of decision-makers. Sponsored comparisons, featured placements, and custom data solutions for brands.`;
+const PARTNER_URL = `${SITE_URL}/partnerships`;
+
 export const metadata: Metadata = {
-  title: "Partner With Us",
-  description: `Partner with ${SITE_NAME} to reach millions of decision-makers. Sponsored comparisons, featured placements, and custom data solutions for brands.`,
-  alternates: { canonical: `${SITE_URL}/partnerships` },
+  title: PARTNER_TITLE,
+  description: PARTNER_DESC,
+  alternates: { canonical: PARTNER_URL },
   openGraph: {
-    title: `Partner With ${SITE_NAME}`,
+    title: PARTNER_TITLE,
     description: `Reach decision-makers at the point of comparison. Sponsored placements, featured reviews, and custom data partnerships.`,
-    url: `${SITE_URL}/partnerships`,
+    url: PARTNER_URL,
+  },
+  other: {
+    "citation_title": PARTNER_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": PARTNER_DESC,
+    "DC.title": PARTNER_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": PARTNER_URL,
   },
 };
 

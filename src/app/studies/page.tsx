@@ -9,16 +9,32 @@ const TITLE = "Data Studies — Comparison Trends & Reports";
 const DESCRIPTION =
   "Original data studies from A Versus B: what brands, SaaS tools, and products people compare most. Free to cite and republish with attribution.";
 
+const STUDIES_URL = `${SITE_URL}/studies`;
+
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: `${SITE_URL}/studies` },
+  alternates: { canonical: STUDIES_URL },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
-    url: `${SITE_URL}/studies`,
+    url: STUDIES_URL,
     type: "website",
     siteName: SITE_NAME,
+  },
+  other: {
+    "citation_title": TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": DESCRIPTION,
+    "DC.title": TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": STUDIES_URL,
   },
 };
 

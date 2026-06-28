@@ -570,6 +570,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="DC.language" content="en" />
       <meta name="DC.type" content="Text" />
       <meta name="DC.format" content="text/html" />
+      <meta name="DC.identifier" content={meta.canonical} />
     </Head>
   );
 }

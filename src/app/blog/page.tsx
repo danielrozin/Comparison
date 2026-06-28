@@ -24,6 +24,20 @@ export const metadata: Metadata = {
     description: blogDescription,
     images: [ogImage],
   },
+  other: {
+    "citation_title": `Blog — ${SITE_NAME}`,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": blogDescription,
+    "DC.title": `Blog — ${SITE_NAME}`,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": `${SITE_URL}/blog`,
+  },
 };
 
 const CATEGORIES = [
