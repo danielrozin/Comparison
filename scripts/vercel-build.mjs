@@ -42,11 +42,25 @@ if (databaseUrl && !process.env.DIRECT_URL) {
 
 const run = (cmd) => execSync(cmd, { stdio: "inherit", env: process.env });
 
-if (databaseUrl) {
+// Only apply migrations during an actual Vercel deploy. The Vercel CLI sets
+// `VERCEL=1` for the build command (both `vercel build` in CI/CD and managed
+// Git deploys). The plain CI "Build" job runs `npm run build` directly against
+// a placeholder `localhost` DATABASE_URL with no reachable database — running
+// `migrate deploy` there fails with P1001. `RUN_MIGRATIONS=1` is an escape
+// hatch for applying migrations manually outside a Vercel build.
+const shouldMigrate =
+  Boolean(databaseUrl) &&
+  (process.env.VERCEL === "1" || process.env.RUN_MIGRATIONS === "1");
+
+if (shouldMigrate) {
   run("npx prisma migrate deploy");
-} else {
+} else if (!databaseUrl) {
   console.warn(
     "[vercel-build] DATABASE_URL not set — skipping `prisma migrate deploy`.",
+  );
+} else {
+  console.log(
+    "[vercel-build] Not a Vercel deploy (VERCEL!=1, RUN_MIGRATIONS!=1) — skipping `prisma migrate deploy` (build-only).",
   );
 }
 
