@@ -41,6 +41,7 @@ export function ResourcesSection({
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
+      <div className="h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
       <div className="px-6 py-5 border-b border-border bg-gradient-to-r from-blue-50 to-indigo-50">
         <h2 className="text-xl font-bold text-text flex items-center gap-2">
           <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
