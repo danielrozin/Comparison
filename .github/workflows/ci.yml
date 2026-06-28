@@ -14,6 +14,26 @@ env:
   NODE_VERSION: "20"
 
 jobs:
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for hardcoded DB credentials
+        run: |
+          # Fail if any tracked file embeds a real postgres credential
+          # (user:password@host). Local/placeholder creds are allowlisted.
+          matches=$(git grep -nIE "postgresql://[A-Za-z0-9_]+:[^@/]+@" \
+            | grep -vE "@localhost" \
+            | grep -vE "placeholder:placeholder" \
+            | grep -vE ":password@" || true)
+          if [ -n "$matches" ]; then
+            echo "::error::Hardcoded database credentials detected in tracked files:"
+            echo "$matches"
+            exit 1
+          fi
+          echo "No hardcoded database credentials found."
+
   lint:
     name: Lint
     runs-on: ubuntu-latest

@@ -6,8 +6,13 @@ import * as dotenv from "dotenv";
 import * as path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 
-// Inject the DATABASE_URL directly to ensure correct connection
-process.env.DATABASE_URL = 'postgresql://neondb_owner:npg_EugMoe5n6dWG@ep-bold-voice-amm7gy6j-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
+// DATABASE_URL is read from the environment (.env.local / Vercel env).
+// Never hardcode connection strings with credentials here — see DAN-1513.
+if (!process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL is not set. Add it to .env.local or your shell environment before running this script."
+  );
+}
 
 import Anthropic from "@anthropic-ai/sdk";
 import { PrismaClient } from "@prisma/client";
