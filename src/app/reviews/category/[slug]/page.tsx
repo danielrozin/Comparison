@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import {
   getReviewedEntities,
   getReviewCategories,
@@ -26,10 +26,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const cat = categories.find((c) => c.slug === slug);
   if (!cat) return { title: "Category Not Found" };
 
+  const title = `Best ${cat.name} Reviews & SmartScores`;
+  const desc = `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores. Verified reviews, pros & cons, and side-by-side ratings.`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(cat.name + " Reviews")}&type=reviews`;
   return {
-    title: `Best ${cat.name} Reviews & SmartScores`,
-    description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores. Verified reviews, pros & cons, and side-by-side ratings.`,
+    title,
+    description: desc,
     alternates: { canonical: `${SITE_URL}/reviews/category/${slug}` },
+    openGraph: {
+      title,
+      description: desc,
+      url: `${SITE_URL}/reviews/category/${slug}`,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
+    },
+    twitter: { card: "summary_large_image", title, description: desc, images: [ogImage] },
+    other: {
+      "citation_title": title,
+      "citation_author": SITE_NAME,
+      "citation_journal_title": `${SITE_NAME} SmartReview`,
+      "citation_language": "en",
+      "citation_abstract": desc,
+      "DC.title": title,
+      "DC.creator": SITE_NAME,
+      "DC.publisher": SITE_NAME,
+      "DC.language": "en",
+      "DC.identifier": `${SITE_URL}/reviews/category/${slug}`,
+    },
   };
 }
 
@@ -68,12 +90,32 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     { name: "Reviews", url: `${SITE_URL}/reviews` },
     { name: cat.name, url: `${SITE_URL}/reviews/category/${slug}` },
   ]);
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `Best ${cat.name} Reviews & SmartScores`,
+    description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores from Reddit, G2, Capterra, Trustpilot, and more.`,
+    abstract: `Aggregated ${cat.name} reviews with SmartScores from multiple platforms.`,
+    url: `${SITE_URL}/reviews/category/${slug}`,
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} 2026, SmartScore ${cat.name.toLowerCase()}`,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
