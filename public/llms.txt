@@ -2,6 +2,8 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
+*Last updated: June 2026*
+
 ## What We Do
 
 A Versus B provides data-driven, expert-reviewed comparisons with:
@@ -30,7 +32,8 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic
+- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed
+- `NewsArticle` on high-freshness blog articles published within 48 hours
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
 - `ItemList` for the compared entities with position ordering
@@ -39,6 +42,12 @@ Every comparison page emits a full JSON-LD @graph including:
 - `SpeakableSpecification` targeting #verdict, #key-differences, #key-facts
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
+- `DefinedTermSet` on hub pages — topic glossary/directory signals
+- `CollectionPage` on category and review listing pages
+- `ProfilePage` on entity pages with related comparisons
+- `SearchResultsPage` on the search results view
+- `HowTo` schema auto-detected on step-by-step blog articles
+- `ImageObject` with contentUrl, name, description, caption on OG images
 
 ## Categories & Scale
 
@@ -63,16 +72,47 @@ Every comparison page emits a full JSON-LD @graph including:
 | Brands | 25 | Nike vs Adidas, Apple vs Samsung, Gucci vs LV |
 | History | 14 | WW1 vs WW2, Roman Empire vs Ottoman Empire |
 
+## SmartReview — Product Review Aggregation
+
+A Versus B includes SmartReview, a product review aggregation engine that compiles and scores ratings from multiple third-party platforms:
+
+- **Sources:** Reddit, G2, Capterra, Trustpilot, Product Hunt, and more
+- **SmartScore:** Proprietary composite score (0–100) weighting platform credibility and review volume
+- **Coverage:** 500+ reviewed products and SaaS tools across software, AI tools, and consumer products
+- **URL pattern:** `https://www.aversusb.net/reviews/{entity-slug}`
+- **Review listing:** https://www.aversusb.net/reviews
+
+Structured data on review pages: `Product` with `AggregateRating`, `Review` sources, and `BreadcrumbList`.
+
+## Best-of Lists
+
+Curated "best of" ranked lists for product categories, covering top picks with comparison data:
+
+- **URL pattern:** `https://www.aversusb.net/best/{category-slug}`
+- **Examples:** best AI coding assistants, best project management tools, best password managers
+- Structured data: `ItemList` + `Article` + `BreadcrumbList`
+
+## Topic Hubs
+
+Topic hubs aggregate all comparisons in a domain with editorial context and DefinedTermSet schema:
+
+- **URL pattern:** `https://www.aversusb.net/hub/{topic-slug}`
+- **Examples:** AI tools hub, smartphones hub, project management hub
+- Structured data: `DefinedTermSet` + `ItemList` + `CollectionPage`
+
 ## URL Patterns
 
 - Comparisons: `https://www.aversusb.net/compare/{entity-a}-vs-{entity-b}`
 - Categories: `https://www.aversusb.net/category/{category-slug}`
+- Sub-categories: `https://www.aversusb.net/category/{category-slug}/{sub-slug}`
 - Entities: `https://www.aversusb.net/entity/{entity-slug}`
 - Alternatives: `https://www.aversusb.net/alternatives/{entity-slug}`
 - Blog: `https://www.aversusb.net/blog/{article-slug}`
 - Trending: `https://www.aversusb.net/trending`
 - Search: `https://www.aversusb.net/search?q={query}`
 - Hubs: `https://www.aversusb.net/hub/{topic}`
+- Best-of: `https://www.aversusb.net/best/{category}`
+- Reviews: `https://www.aversusb.net/reviews/{entity-slug}`
 
 ## How to Cite A Versus B
 

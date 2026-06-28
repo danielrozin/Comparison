@@ -54,11 +54,49 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     { name: "Reviews", url: `${SITE_URL}/reviews` },
   ]);
 
+  const collectionPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${SITE_URL}/reviews#collection`,
+    name: "SmartReview — Product Reviews & Ratings",
+    description: "Expert product reviews with aggregated ratings from Reddit, G2, Capterra, Trustpilot, and more.",
+    url: `${SITE_URL}/reviews`,
+    inLanguage: "en-US",
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    ...(total > 0 && {
+      numberOfItems: total,
+      itemListElement: entities.slice(0, 10).map((entity, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE_URL}/reviews/${entity.slug}`,
+        name: entity.name,
+        ...(entity.reviewAggregation?.averageRating && {
+          item: {
+            "@type": "Product",
+            name: entity.name,
+            url: `${SITE_URL}/reviews/${entity.slug}`,
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: entity.reviewAggregation.averageRating.toFixed(1),
+              reviewCount: entity.reviewAggregation.totalReviews,
+              bestRating: 5,
+              worstRating: 1,
+            },
+          },
+        }),
+      })),
+    }),
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

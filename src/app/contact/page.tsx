@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { ContactForm } from "./ContactForm";
+import { JsonLd } from "@/components/schema/JsonLd";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -14,8 +15,49 @@ export const metadata: Metadata = {
   },
 };
 
+const contactPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: `Contact ${SITE_NAME}`,
+  description: `Get in touch with the ${SITE_NAME} team. Report errors, request new comparisons, ask general questions, or explore partnership opportunities.`,
+  url: `${SITE_URL}/contact`,
+  inLanguage: "en-US",
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+  mainEntity: {
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        email: "daniel@adgpt.com",
+        availableLanguage: "English",
+        areaServed: "Worldwide",
+      },
+      {
+        "@type": "ContactPoint",
+        contactType: "partnerships",
+        url: `${SITE_URL}/partnerships`,
+        availableLanguage: "English",
+        areaServed: "Worldwide",
+      },
+    ],
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE_URL}/contact` },
+    ],
+  },
+};
+
 export default function ContactPage() {
   return (
+    <>
+      <JsonLd data={contactPageSchema} />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
       <nav className="mb-8">
@@ -97,5 +139,6 @@ export default function ContactPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
