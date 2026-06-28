@@ -101,15 +101,18 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
                     isActive
-                      ? "bg-primary-50 text-primary-700 font-semibold"
+                      ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
                       : "text-text-secondary hover:text-text hover:bg-gray-50"
                   }`}
                 >
+                  {isActive && (
+                    <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-primary-500 rounded-full" />
+                  )}
                   <span
-                    className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${
-                      isActive ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-400"
+                    className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
+                      isActive ? "bg-primary-600 text-white shadow-sm shadow-primary-300" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     {idx + 1}
@@ -147,15 +150,18 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+                  className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden ${
                     isActive
-                      ? "bg-primary-50 text-primary-700 font-semibold"
+                      ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
                       : "text-text-secondary hover:text-text hover:bg-gray-50"
                   }`}
                 >
+                  {isActive && (
+                    <span className="absolute left-0 top-1 bottom-1 w-0.5 bg-primary-500 rounded-full" />
+                  )}
                   <span
-                    className={`flex-shrink-0 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center ${
-                      isActive ? "bg-primary-600 text-white" : "bg-gray-100 text-gray-400"
+                    className={`flex-shrink-0 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center transition-all ${
+                      isActive ? "bg-primary-600 text-white shadow-sm shadow-primary-300/50" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     {idx + 1}

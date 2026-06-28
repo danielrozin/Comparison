@@ -156,37 +156,60 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
           {/* Choose X if cards */}
           {entities.some((e) => e.bestFor) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {entities.map((entity, idx) =>
-                entity.bestFor ? (
+              {entities.map((entity, idx) => {
+                if (!entity.bestFor) return null;
+                const isWinner = winnerIdx === idx;
+                return (
                   <div
                     key={entity.id}
-                    className={`rounded-xl p-4 backdrop-blur-sm transition-all hover:scale-[1.02] hover:brightness-110 ${
+                    className={`relative rounded-xl overflow-hidden backdrop-blur-sm transition-all hover:scale-[1.02] hover:brightness-110 ${
                       idx === 0
                         ? "bg-blue-500/15 border border-blue-400/30"
                         : "bg-purple-500/15 border border-purple-400/30"
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 mb-2.5">
-                      {entity.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={entity.imageUrl}
-                          alt={entity.name}
-                          className="w-7 h-7 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0"
-                        />
-                      ) : (
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs ${idx === 0 ? "bg-blue-500/30 text-blue-200" : "bg-purple-500/30 text-purple-200"}`}>
-                          {entity.name.charAt(0).toUpperCase()}
+                    {/* Winner ribbon */}
+                    {isWinner && (
+                      <div className="absolute top-0 right-0">
+                        <div className="relative">
+                          <div className="absolute top-0 right-0 w-0 h-0 border-t-[40px] border-r-[40px] border-t-yellow-400 border-r-transparent opacity-90" />
+                          <div className="absolute top-1 right-0.5 rotate-45 text-[8px] font-black text-indigo-900 leading-none">
+                            ★
+                          </div>
                         </div>
-                      )}
-                      <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
-                        Choose {entity.name} if
-                      </p>
+                      </div>
+                    )}
+
+                    <div className="p-4">
+                      <div className="flex items-center gap-2.5 mb-2.5">
+                        {entity.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={entity.imageUrl}
+                            alt={entity.name}
+                            className="w-7 h-7 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0"
+                          />
+                        ) : (
+                          <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs ${idx === 0 ? "bg-blue-500/30 text-blue-200" : "bg-purple-500/30 text-purple-200"}`}>
+                            {entity.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-300 truncate">
+                            Choose {entity.name} if
+                          </p>
+                          {isWinner && (
+                            <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/30">
+                              👑 Best pick
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-sm text-white/90 leading-relaxed">{entity.bestFor}</p>
                     </div>
-                    <p className="text-sm text-white/90 leading-relaxed">{entity.bestFor}</p>
                   </div>
-                ) : null
-              )}
+                );
+              })}
             </div>
           )}
         </div>

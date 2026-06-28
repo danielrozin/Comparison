@@ -170,33 +170,77 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       {/* Category Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
-          <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">{category.name}</li>
+        {/* Floating accent blobs */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 relative">
+          {/* Breadcrumb */}
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-primary-300">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-primary-500">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-semibold">{category.name}</li>
             </ol>
           </nav>
-          <div className="flex items-center gap-5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
-              <span className="text-3xl sm:text-4xl" role="img" aria-label={category.name}>{category.icon}</span>
+
+          {/* Hero content */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
+            {/* Icon */}
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-2xl sm:rounded-3xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-2 ring-white/20 shadow-xl shadow-black/20">
+              <span className="text-4xl sm:text-5xl" role="img" aria-label={category.name}>{category.icon}</span>
             </div>
-            <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
-                {category.name} Comparisons
+
+            <div className="flex-1 min-w-0">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
+                {category.name}
+                <span className="block text-primary-300 text-xl sm:text-2xl lg:text-3xl font-semibold mt-1">
+                  Side-by-Side Comparisons
+                </span>
               </h1>
-              <p className="text-primary-200 mt-1.5 text-sm sm:text-base">
-                {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
-                {hasSubcategories && subcategoryData.filter(s => s.items.length > 0).length > 0 && ` · ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
-              </p>
+
+              {/* Stat pills */}
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">
+                  <svg className="w-3.5 h-3.5 text-primary-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                  </svg>
+                  {dbTotal.toLocaleString()} comparisons
+                </span>
+                {hasSubcategories && subcategoryData.filter(s => s.items.length > 0).length > 0 && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">
+                    <svg className="w-3.5 h-3.5 text-primary-300" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                    </svg>
+                    {subcategoryData.filter(s => s.items.length > 0).length} subcategories
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full text-xs font-semibold text-white backdrop-blur-sm">
+                  <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  Data-backed · Free
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
-            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          <svg viewBox="0 0 1440 32" fill="none" className="w-full">
+            <path d="M0 32V10C360 28 720 0 1080 16C1260 24 1380 8 1440 10V32H0Z" fill="white" />
           </svg>
         </div>
       </div>
