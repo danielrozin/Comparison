@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
+import { webApplicationSchema } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
@@ -61,6 +62,10 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationSchema()) }}
       />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">

@@ -85,6 +85,32 @@ export default async function AlternativesPage({ params }: PageProps) {
     })),
   };
 
+  const alternativesArticleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `Alternatives to ${name}`,
+    description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
+    url: `${SITE_URL}/alternatives/${slug}`,
+    dateModified: new Date().toISOString().slice(0, 10),
+    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}` },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".alternatives-intro"],
+    },
+    about: {
+      "@type": "Thing",
+      name,
+      url: `${SITE_URL}/entity/${slug}`,
+    },
+    mentions: alternatives.slice(0, 10).map((alt) => ({
+      "@type": "Thing",
+      name: alt.name,
+      url: `${SITE_URL}/entity/${alt.slug}`,
+    })),
+  };
+
   return (
     <>
       <script
@@ -94,6 +120,10 @@ export default async function AlternativesPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(alternativesArticleSchema) }}
       />
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumbs */}

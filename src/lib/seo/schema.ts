@@ -72,6 +72,53 @@ export function webSiteSchema() {
 }
 
 // ============================================================
+// Wikipedia sameAs helper for entity knowledge-graph disambiguation
+// ============================================================
+
+/**
+ * Returns a Wikipedia sameAs URL array for a given entity name.
+ * Constructs the canonical Wikipedia URL by replacing spaces with underscores.
+ * AI models (ChatGPT, Perplexity, Gemini) use sameAs Wikipedia links to
+ * unambiguously resolve entities during knowledge-graph grounding.
+ */
+export function entityWikipediaSameAs(name: string): string[] {
+  if (!name || name.trim().length === 0) return [];
+  const wikiSlug = name.trim().replace(/ /g, "_");
+  return [`https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`];
+}
+
+// ============================================================
+// WebApplication schema — positions the site as an interactive tool
+// ============================================================
+
+export function webApplicationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: SITE_NAME,
+    url: SITE_URL,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Web",
+    description: "Interactive comparison platform — compare anything side-by-side: products, technology, countries, sports, and more.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    featureList: [
+      "Head-to-head comparisons",
+      "AI-generated verdicts",
+      "Structured attribute tables",
+      "Community voting",
+      "Category browsing",
+    ],
+    browserRequirements: "Requires JavaScript. Compatible with all modern browsers.",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+  };
+}
+
+// ============================================================
 // WebPage schema
 // ============================================================
 
@@ -127,6 +174,7 @@ export function comparisonPageSchema(
   const schemas: Record<string, unknown>[] = [];
 
   // 1. Article schema
+  const hasFaqs = comparison.faqs.length > 0;
   schemas.push({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -164,7 +212,18 @@ export function comparisonPageSchema(
       name: e.name,
       description: e.shortDesc,
       ...(e.imageUrl && { image: e.imageUrl }),
+      ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
+      sameAs: entityWikipediaSameAs(e.name),
     })),
+    // mentions cross-links entity ProfilePages so AI crawlers can follow the
+    // entity graph from comparison articles to dedicated entity pages.
+    mentions: comparison.entities.map((e) => ({
+      "@type": "Thing",
+      name: e.name,
+      url: `${SITE_URL}/entity/${e.slug}`,
+    })),
+    // hasPart links to the embedded FAQPage for Google's FAQ rich result association.
+    ...(hasFaqs && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
   });
 
   // 2. ItemList for the compared entities
@@ -315,6 +374,8 @@ function buildMultiEntityGraph(
     };
     if (entity.shortDesc) node.description = entity.shortDesc;
     if (entity.imageUrl) node.image = entity.imageUrl;
+    const wikiSameAs = entityWikipediaSameAs(entity.name);
+    if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
 
     if (schemaType === "SoftwareApplication") {
       node.applicationCategory = "BusinessApplication";
@@ -382,6 +443,12 @@ function buildMultiEntityGraph(
       cssSelector: ["#verdict"],
     },
     mainEntity: { "@id": itemListId },
+    // mentions cross-links entity profile pages for AI crawler entity resolution.
+    mentions: comparison.entities.map((e) => ({
+      "@type": "Thing",
+      name: e.name,
+      url: `${SITE_URL}/entity/${e.slug}`,
+    })),
   };
 
   const breadcrumbs = [
