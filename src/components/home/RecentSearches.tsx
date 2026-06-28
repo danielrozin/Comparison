@@ -51,14 +51,14 @@ export function RecentSearches() {
             <Link
               key={search.slug}
               href={`/compare/${search.slug}`}
-              className="group flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all"
+              className="group flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
             >
               {/* Entity avatars */}
               <div className="flex -space-x-2 flex-shrink-0">
-                <div className="w-9 h-9 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                   {(parts[0] || "A").charAt(0).toUpperCase()}
                 </div>
-                <div className="w-9 h-9 bg-gradient-to-br from-accent-50 to-accent-400/30 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                   {(parts[1] || "B").charAt(0).toUpperCase()}
                 </div>
               </div>
