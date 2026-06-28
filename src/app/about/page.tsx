@@ -3,24 +3,51 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 
+const ABOUT_TITLE = `About ${SITE_NAME} — Mission, Team & Methodology`;
+const ABOUT_DESC = `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`;
+const ABOUT_URL = `${SITE_URL}/about`;
+
 export const metadata: Metadata = {
-  title: "About Us",
-  description: `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`,
-  alternates: { canonical: `${SITE_URL}/about` },
+  title: ABOUT_TITLE,
+  description: ABOUT_DESC,
+  alternates: { canonical: ABOUT_URL },
   openGraph: {
-    title: `About ${SITE_NAME}`,
-    description: `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions.`,
-    url: `${SITE_URL}/about`,
+    title: ABOUT_TITLE,
+    description: ABOUT_DESC,
+    url: ABOUT_URL,
+  },
+  other: {
+    "citation_title": ABOUT_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": ABOUT_DESC,
+    "DC.title": ABOUT_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": ABOUT_URL,
   },
 };
 
 const aboutPageSchema = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  name: `About ${SITE_NAME}`,
-  description: `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`,
-  url: `${SITE_URL}/about`,
+  name: ABOUT_TITLE,
+  description: ABOUT_DESC,
+  abstract: ABOUT_DESC,
+  url: ABOUT_URL,
   inLanguage: "en-US",
+  creativeWorkStatus: "Published",
+  isAccessibleForFree: true,
+  alternativeHeadline: `${SITE_NAME} — Compare Anything, Data-Driven & Free`,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  accessMode: ["textual"],
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   publisher: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,

@@ -965,6 +965,7 @@ export function profilePageSchema(entity: {
     url: `${SITE_URL}/compare/${c.slug}`,
   }));
 
+  const wikiSameAs = entityWikipediaSameAs(entity.name);
   const mainEntity: Record<string, unknown> = {
     "@type": schemaType,
     "@id": url,
@@ -972,6 +973,7 @@ export function profilePageSchema(entity: {
     url,
     ...(entity.shortDesc && { description: entity.shortDesc }),
     ...(entity.imageUrl && { image: entity.imageUrl }),
+    ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
     ...(subjectOf.length > 0 && { subjectOf }),
     potentialAction: {
       "@type": "ReadAction",
