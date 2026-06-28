@@ -348,15 +348,13 @@ export function comparisonPageSchema(
     lastReviewed: comparison.metadata.updatedAt,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
-    hasPart: [
-      ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
-      ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
-    ].filter(Boolean).length > 0
-      ? [
-          ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
-          ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
-        ]
-      : undefined,
+    ...(() => {
+      const parts = [
+        ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+      ];
+      return parts.length > 0 ? { hasPart: parts } : {};
+    })(),
   });
 
   // 2. ItemList for the compared entities
