@@ -82,24 +82,43 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">Trending</li>
-          </ol>
-        </nav>
+      {/* Trending Hero */}
+      <div className="bg-gradient-to-br from-orange-600 via-amber-600 to-orange-500 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-orange-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-orange-400">/</li>
+              <li className="text-white font-medium">Trending</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <span className="text-3xl sm:text-4xl" role="img" aria-label="Trending">🔥</span>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                Trending Comparisons
+              </h1>
+              <p className="text-orange-100 mt-1.5 text-sm sm:text-base">
+                The most popular comparisons right now
+                {allTrending.length > ITEMS_PER_PAGE && (
+                  <span className="ml-1">· Showing {startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, allTrending.length)} of {allTrending.length}</span>
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
 
-        <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-2">
-          Trending Comparisons
-        </h1>
-        <p className="text-text-secondary mb-8">
-          The most popular comparisons being viewed right now.
-          {allTrending.length > ITEMS_PER_PAGE && (
-            <span className="ml-1">Showing {startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, allTrending.length)} of {allTrending.length}.</span>
-          )}
-        </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {trending.map((item, index) => (

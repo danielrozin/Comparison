@@ -13,8 +13,11 @@ import {
   topicSignature,
   slugPrefixKey,
   decideDedup,
+  decideSemanticDedup,
   checkBlogDedup,
+  __TESTING__,
 } from "../dedup-gate";
+import { cosineSimilarityVec } from "../embeddings";
 
 describe("contentTokens", () => {
   it("strips years, stop words, SEO modifiers, short tokens, dedupes, preserves order", () => {
@@ -132,6 +135,61 @@ describe("decideDedup", () => {
     expect(
       decideDedup("Anything Goes Here 2026", "anything-goes-here-2026", []).ok
     ).toBe(true);
+  });
+});
+
+describe("cosineSimilarityVec", () => {
+  it("returns 1 for identical vectors and 0 for orthogonal", () => {
+    expect(cosineSimilarityVec([1, 2, 3], [1, 2, 3])).toBeCloseTo(1, 6);
+    expect(cosineSimilarityVec([1, 0, 0], [0, 1, 0])).toBe(0);
+  });
+
+  it("returns 0 for empty, zero-magnitude, or mismatched-length vectors", () => {
+    expect(cosineSimilarityVec([], [1, 2])).toBe(0);
+    expect(cosineSimilarityVec([0, 0], [1, 1])).toBe(0);
+    expect(cosineSimilarityVec([1, 2, 3], [1, 2])).toBe(0);
+  });
+});
+
+describe("decideSemanticDedup", () => {
+  // Stands in for "Apple Notebook Mass Reference 2026" — a real near-dup of
+  // an existing macbook-pro-weight article that shares NO surface tokens, so
+  // the deterministic gates (#1-#3) cannot see it. Vectors are hand-crafted
+  // so the test is deterministic and needs no embeddings API.
+  const proposed = [1, 0.05, 0];
+
+  it("rejects a near-dup whose embedding cosine >= threshold", () => {
+    const result = decideSemanticDedup("apple-notebook-mass-reference-2026", proposed, [
+      { slug: "macbook-pro-weight-2026", title: "Macbook Pro Weight 2026", embedding: [1, 0, 0] },
+    ]);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe("title_cosine_similarity");
+    expect(result.conflictingSlug).toBe("macbook-pro-weight-2026");
+    expect(result.score).toBeGreaterThanOrEqual(__TESTING__.EMBEDDING_SIMILARITY_THRESHOLD);
+  });
+
+  it("does NOT reject a legitimately distinct article (low cosine)", () => {
+    const result = decideSemanticDedup("bitcoin-vs-ethereum-2026", proposed, [
+      { slug: "running-vs-walking", title: "Running vs Walking", embedding: [0, 1, 0] },
+    ]);
+    expect(result.ok).toBe(true);
+  });
+
+  it("skips candidates with no stored embedding and the same-slug row", () => {
+    const result = decideSemanticDedup("macbook-pro-weight-2026", proposed, [
+      // same slug = upsert path
+      { slug: "macbook-pro-weight-2026", title: "Macbook Pro Weight 2026", embedding: [1, 0, 0] },
+      // unembedded candidate must be ignored, not crash
+      { slug: "some-other-article", title: "Some Other Article", embedding: [] },
+    ]);
+    expect(result.ok).toBe(true);
+  });
+
+  it("is a no-op when the proposed embedding is empty (fail-open)", () => {
+    const result = decideSemanticDedup("anything", [], [
+      { slug: "macbook-pro-weight-2026", title: "Macbook Pro Weight 2026", embedding: [1, 0, 0] },
+    ]);
+    expect(result.ok).toBe(true);
   });
 });
 

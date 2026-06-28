@@ -89,11 +89,34 @@ export default async function HomePage() {
               <SearchBox />
             </div>
 
-            {/* Stats + Quick Examples */}
-            <p className="text-xs text-primary-200 mt-6 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              {totalCount}+ comparisons across {CATEGORIES.length} categories
-            </p>
-            <div className="flex flex-wrap justify-center gap-2 mt-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            {/* Social-proof stats row */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-7 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <div className="flex items-center gap-1.5 text-primary-100">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                </svg>
+                <span className="text-sm font-semibold text-white">{totalCount}+</span>
+                <span className="text-xs text-primary-200">comparisons</span>
+              </div>
+              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
+              <div className="flex items-center gap-1.5 text-primary-100">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                </svg>
+                <span className="text-sm font-semibold text-white">{CATEGORIES.length}</span>
+                <span className="text-xs text-primary-200">categories</span>
+              </div>
+              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
+              <div className="flex items-center gap-1.5">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-xs text-primary-200">Always free · Data-backed</span>
+              </div>
+            </div>
+
+            {/* Quick example chips */}
+            <div className="flex flex-wrap justify-center gap-2 mt-5 animate-fade-in" style={{ animationDelay: "0.4s" }}>
               {[
                 { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
                 { label: "Japan vs China", href: "/compare/japan-vs-china" },
@@ -103,8 +126,9 @@ export default async function HomePage() {
                 <Link
                   key={example.href}
                   href={example.href}
-                  className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full text-sm font-medium text-white/90 transition-colors backdrop-blur-sm"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
                 >
+                  <span className="text-[10px] text-white/40">↗</span>
                   {example.label}
                 </Link>
               ))}
@@ -175,34 +199,61 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {latest.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/compare/${item.slug}`}
-                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 p-5 flex flex-col"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 capitalize">
-                    {item.category}
-                  </span>
-                  {item.updatedAt && (
-                    <span className="text-xs text-text-secondary">
-                      {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-semibold text-text group-hover:text-primary-600 transition-colors mb-2">
-                  {item.title}
-                </h3>
-                <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  {item.viewCount.toLocaleString()} views
-                </div>
-              </Link>
-            ))}
+            {latest.map((item) => {
+              const vsParts = item.title.split(/\s+vs\.?\s+/i);
+              const latestEntityA = vsParts[0] || item.title;
+              const latestEntityB = vsParts[1] || "";
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/compare/${item.slug}`}
+                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden"
+                >
+                  {/* Mini gradient header */}
+                  <div className="h-1.5 w-full bg-gradient-to-r from-primary-500 to-accent-500" />
+
+                  <div className="p-5 flex flex-col flex-1">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 capitalize">
+                        {item.category}
+                      </span>
+                      {item.updatedAt && (
+                        <span className="text-xs text-text-secondary">
+                          {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Entity A vs B visual */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
+                          <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityA}</span>
+                        </div>
+                        {latestEntityB && (
+                          <div className="flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-accent-500 flex-shrink-0" />
+                            <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityB}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center">
+                        <span className="text-[8px] font-black text-white">VS</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      {item.viewCount.toLocaleString()} views
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -291,17 +342,19 @@ export default async function HomePage() {
           <p className="text-text-secondary mb-10 max-w-2xl mx-auto">
             Join thousands of users making informed decisions with clear, side-by-side comparisons across {CATEGORIES.length} categories.
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { value: `${totalCount}+`, label: "Comparisons", icon: "📊" },
-              { value: `${CATEGORIES.length}`, label: "Categories", icon: "📁" },
-              { value: "24/7", label: "Available", icon: "🕐" },
-              { value: "Free", label: "Always", icon: "💎" },
+              { value: `${totalCount}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
+              { value: `${CATEGORIES.length}`, label: "Categories", gradient: "from-emerald-500 to-teal-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg> },
+              { value: "24/7", label: "Available", gradient: "from-amber-500 to-orange-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg> },
+              { value: "Free", label: "Always", gradient: "from-rose-500 to-pink-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg> },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-xl p-5 shadow-sm border border-border">
-                <div className="text-2xl mb-2">{stat.icon}</div>
-                <div className="text-2xl font-bold text-primary-700">{stat.value}</div>
-                <div className="text-xs text-text-secondary mt-1">{stat.label}</div>
+              <div key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col items-center text-center">
+                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-sm mb-3`}>
+                  {stat.icon}
+                </div>
+                <div className="text-2xl font-black text-text tabular-nums">{stat.value}</div>
+                <div className="text-xs text-text-secondary mt-1 font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -312,62 +365,106 @@ export default async function HomePage() {
       {blogArticles.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
-                From the Blog
-              </h2>
-              <p className="text-text-secondary mt-1">Expert guides and in-depth analyses</p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">From the Blog</h2>
+                <p className="text-text-secondary text-sm mt-0.5">Expert guides and in-depth analyses</p>
+              </div>
             </div>
             <Link
               href="/blog"
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
-              View all articles &rarr;
+              View all articles
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {blogArticles.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col"
-              >
-                <div className="h-2 bg-gradient-to-r from-primary-500 to-indigo-500" />
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
-                    {article.category && (
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 capitalize">
-                        {article.category}
+            {blogArticles.map((article, idx) => {
+              const gradients = [
+                "from-violet-500 to-purple-600",
+                "from-primary-500 to-indigo-600",
+                "from-rose-500 to-pink-600",
+              ];
+              const grad = gradients[idx % gradients.length];
+              const readMins = Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200));
+              return (
+                <Link
+                  key={article.slug}
+                  href={`/blog/${article.slug}`}
+                  className="group bg-white rounded-2xl border border-border hover:border-primary-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                >
+                  {/* Colour-accent header block */}
+                  <div className={`h-28 bg-gradient-to-br ${grad} relative overflow-hidden flex-shrink-0`}>
+                    <div className="absolute inset-0 opacity-10">
+                      <svg viewBox="0 0 200 80" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                        <circle cx="160" cy="10" r="60" fill="white" />
+                        <circle cx="30" cy="70" r="40" fill="white" />
+                      </svg>
+                    </div>
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                      {article.category && (
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm border border-white/20 capitalize">
+                          {article.category}
+                        </span>
+                      )}
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-black/20 text-white/90 backdrop-blur-sm flex items-center gap-1">
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {readMins} min
                       </span>
-                    )}
-                    <span className="text-xs text-text-secondary">
-                      {Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200))} min read
-                    </span>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-text group-hover:text-primary-600 transition-colors mb-2 line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-text-secondary flex-1 line-clamp-3 mb-4">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
-                    <span>
-                      {article.publishedAt
-                        ? new Date(article.publishedAt).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : ""}
-                    </span>
-                    <span className="text-primary-600 font-medium group-hover:underline">
-                      Read more &rarr;
-                    </span>
+
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="font-bold text-text group-hover:text-primary-600 transition-colors mb-2 line-clamp-2 text-base leading-snug">
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-text-secondary flex-1 line-clamp-3 mb-4 leading-relaxed">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
+                      <span>
+                        {article.publishedAt
+                          ? new Date(article.publishedAt).toLocaleDateString("en-US", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })
+                          : ""}
+                      </span>
+                      <span className="flex items-center gap-1 text-primary-600 font-semibold group-hover:gap-2 transition-all duration-200">
+                        Read more
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center mt-8 sm:hidden">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              View all articles
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </section>
       )}

@@ -18,6 +18,7 @@ function partnerLabel(partner: string): string {
     impact: "Official Store",
     shareasale: "Partner Store",
     generic: "Learn More",
+    brand: "Official Site",
     bhphotovideo: "B&H Photo",
     notion: "Notion",
     canva: "Canva",
@@ -49,29 +50,47 @@ export function AffiliateButton({
   const { variant: ctaVariant } = useExperiment("cta-button-style");
   const isTreatment = ctaVariant === "treatment";
 
+  // generic = informational Google "Learn more" (non-sponsored, no commercial
+  // intent). brand = official homepage for a digital product with no affiliate
+  // program yet — a real, sponsored destination. (DAN-1140)
+  const isGeneric = link.partner === "generic";
+  const isBrand = link.partner === "brand";
+
   const baseClasses =
     "inline-flex items-center gap-1.5 font-semibold rounded-lg transition-all duration-200 no-underline";
   const sizeClasses =
     size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
 
-  const variantClasses = isTreatment
+  const variantClasses = isGeneric
     ? variant === "primary"
-      ? "bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg hover:scale-105"
-      : "bg-white border-2 border-green-500 text-green-700 hover:bg-green-50 hover:border-green-600"
-    : variant === "primary"
-      ? "bg-amber-500 hover:bg-amber-600 text-white shadow-sm hover:shadow-md"
-      : "bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400";
+      ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow-md"
+      : "bg-white border border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400"
+    : isTreatment
+      ? variant === "primary"
+        ? "bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg hover:scale-105"
+        : "bg-white border-2 border-green-500 text-green-700 hover:bg-green-50 hover:border-green-600"
+      : variant === "primary"
+        ? "bg-amber-500 hover:bg-amber-600 text-white shadow-sm hover:shadow-md"
+        : "bg-white border border-amber-300 text-amber-700 hover:bg-amber-50 hover:border-amber-400";
 
-  const ctaText = isTreatment ? "Buy Now" : "Check Price";
+  // Brand homepage links use the entity-specific label ("Get NordVPN"); generic
+  // links are informational; everything else is a priced affiliate offer.
+  const ctaText = isBrand
+    ? link.label
+    : isGeneric
+      ? "Learn More"
+      : isTreatment
+        ? "Buy Now"
+        : "Check Price";
 
   return (
     <a
       href={link.url}
       target="_blank"
-      rel="noopener noreferrer nofollow sponsored"
+      rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
       className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       onClick={() => {
-        trackEvent("affiliate_click", {
+        trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
           affiliate_partner: link.partner,
           affiliate_label: link.label,
           cta_variant: ctaVariant,

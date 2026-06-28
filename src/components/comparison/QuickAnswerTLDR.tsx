@@ -21,7 +21,7 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
           <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-500 to-indigo-500 rounded-l-xl" />
 
           <div className="ml-2">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center flex-wrap gap-2 mb-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white uppercase tracking-wider">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -29,8 +29,11 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
                 TL;DR
               </span>
               {quickAnswer.winnerName && (
-                <span className="text-xs text-blue-700 font-medium">
-                  Winner: {quickAnswer.winnerName}
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 border border-amber-300/60">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  {quickAnswer.winnerName} wins
                 </span>
               )}
             </div>
@@ -39,20 +42,35 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
               {quickAnswer.tldr}
             </p>
 
-            {quickAnswer.keyFact && (
-              <p className="mt-2 text-xs sm:text-sm text-blue-800 bg-blue-100/60 rounded-lg px-3 py-1.5 inline-block">
-                <svg className="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                </svg>
-                {quickAnswer.keyFact}
-              </p>
-            )}
-
-            {quickAnswer.winnerReason && (
-              <p className="mt-2 text-xs text-gray-600">
-                Deciding factor: {quickAnswer.winnerReason}
-              </p>
+            {(quickAnswer.keyFact || quickAnswer.winnerReason) && (
+              <div className="mt-3 pt-3 border-t border-blue-200/50 flex flex-col gap-2">
+                {quickAnswer.winnerReason && (
+                  <div className="flex items-start gap-2">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 border border-amber-200 mt-0.5">
+                      <svg className="w-3 h-3 text-amber-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
+                      </svg>
+                    </span>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      <span className="font-semibold text-amber-800">Deciding factor:</span>{" "}
+                      {quickAnswer.winnerReason}
+                    </p>
+                  </div>
+                )}
+                {quickAnswer.keyFact && (
+                  <div className="flex items-start gap-2">
+                    <span className="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 border border-blue-200 mt-0.5">
+                      <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                    <p className="text-xs text-blue-800 leading-relaxed">
+                      <span className="font-semibold">Key fact:</span>{" "}
+                      {quickAnswer.keyFact}
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

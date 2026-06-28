@@ -121,37 +121,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     }
   }
 
-  const categoryUrl = `${SITE_URL}/category/${slug}`;
-  const schemaData = [
-    breadcrumbSchema([
-      { name: "Home", url: SITE_URL },
-      { name: category.name, url: categoryUrl },
-    ]),
-    // CollectionPage + ItemList for AI parsers (GEO/AEO signal)
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      name: `${category.name} Comparisons`,
-      description: `Browse ${paginatedComparisons.length + (page - 1) * ITEMS_PER_PAGE}+ ${category.name.toLowerCase()} comparisons. Side-by-side analysis with expert verdicts and community votes.`,
-      url: categoryUrl,
-      isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ["h1", ".category-description"],
-      },
-      mainEntity: {
-        "@type": "ItemList",
-        name: `Top ${category.name} Comparisons`,
-        numberOfItems: paginatedComparisons.length,
-        itemListElement: paginatedComparisons.slice(0, 10).map((comp, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          name: comp.title,
-          url: `${SITE_URL}/compare/${comp.slug}`,
-        })),
-      },
-    },
-  ];
+  const schemaData = breadcrumbSchema([
+    { name: "Home", url: SITE_URL },
+    { name: category.name, url: `${SITE_URL}/category/${slug}` },
+  ]);
 
   const basePath = `/category/${slug}`;
 
@@ -194,36 +167,56 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">{category.name}</li>
-          </ol>
-        </nav>
-
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <span className="text-4xl">{category.icon}</span>
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
-              {category.name} Comparisons
-            </h1>
-            <p className="category-description text-text-secondary mt-1">
-              {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
-              {hasSubcategories && subcategoryData.length > 0 && ` across ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
-            </p>
+      {/* Category Hero Banner */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{category.name}</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <span className="text-3xl sm:text-4xl" role="img" aria-label={category.name}>{category.icon}</span>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                {category.name} Comparisons
+              </h1>
+              <p className="text-primary-200 mt-1.5 text-sm sm:text-base">
+                {dbTotal} comparison{dbTotal !== 1 ? "s" : ""} available
+                {hasSubcategories && subcategoryData.filter(s => s.items.length > 0).length > 0 && ` · ${subcategoryData.filter(s => s.items.length > 0).length} subcategories`}
+              </p>
+            </div>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
         {/* Featured / pinned — curated, independent of viewCount sort (DAN-1020) */}
         {featured.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
-              <span aria-hidden="true">⭐</span> Featured Comparisons
-            </h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Featured Comparisons</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {featured.map((item) => {
                 const parts = item.anchor.split(/\s+vs\.?\s+/i);
@@ -257,9 +250,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Top 5 Comparisons — highlighted for quick discovery */}
         {allComparisons.length >= 5 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4">
-              Top {category.name} Comparisons
-            </h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Top {category.name} Comparisons</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               {allComparisons.slice(0, 5).map((comp, idx) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
@@ -293,7 +294,17 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Subcategory Navigation (if applicable) */}
         {hasSubcategories && subcategoryData.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4">Browse by Subcategory</h2>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Browse by Subcategory</h2>
+                <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
+              </div>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
                 <Link

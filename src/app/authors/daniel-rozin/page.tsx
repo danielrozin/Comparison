@@ -6,14 +6,15 @@ import { JsonLd } from "@/components/schema/JsonLd";
 const AUTHOR_NAME = "Daniel Rozin";
 const AUTHOR_TITLE = "Founder & Editor-in-Chief";
 const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
-const PAGE_DESCRIPTION = `Daniel Rozin is the founder of ${SITE_NAME}. A lifelong comparison enthusiast, he built this platform because he was curious about everything — economics, history, sports, trends, products, and software — and couldn't find a single place to compare them all. He writes and edits all primary comparison hub pages.`;
+const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
+const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
 
 export const metadata: Metadata = {
-  title: `${AUTHOR_NAME} — ${AUTHOR_TITLE} | ${SITE_NAME}`,
+  title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: { canonical: PAGE_URL },
   openGraph: {
-    title: `${AUTHOR_NAME} — ${AUTHOR_TITLE} | ${SITE_NAME}`,
+    title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "profile",
@@ -26,38 +27,20 @@ const schema = {
   name: AUTHOR_NAME,
   url: PAGE_URL,
   jobTitle: AUTHOR_TITLE,
-  description: PAGE_DESCRIPTION,
-  email: "Daniarozin@gmail.com",
-  telephone: "+972503733010",
-  founder: {
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-  },
   worksFor: {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    founder: { "@type": "Person", name: AUTHOR_NAME, url: PAGE_URL },
   },
+  description: PAGE_DESCRIPTION,
   knowsAbout: [
-    "comparative analysis",
     "AI language models",
     "web browsers",
     "password managers",
     "technology comparisons",
-    "sports statistics",
-    "country and economic comparisons",
-    "historical comparisons",
-    "consumer product reviews",
-    "software comparisons",
-    "data-driven editorial methodology",
+    "data-driven journalism",
   ],
-  sameAs: [
-    "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
-    "https://www.facebook.com/daniel.rozin.94",
-    SITE_URL,
-  ],
+  sameAs: [SITE_URL],
 };
 
 const ARTICLES = [
@@ -105,60 +88,15 @@ export default function DanielRozinPage() {
           <div>
             <h1 className="text-3xl font-display font-black text-text">{AUTHOR_NAME}</h1>
             <p className="text-text-secondary font-medium">{AUTHOR_TITLE}, {SITE_NAME}</p>
-            <div className="flex items-center gap-3 mt-2">
-              <a
-                href="https://www.linkedin.com/in/daniel-rozin-56a066b0/"
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="text-xs text-primary-600 hover:underline font-medium"
-                aria-label="Daniel Rozin on LinkedIn"
-              >
-                LinkedIn
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <a
-                href="https://www.facebook.com/daniel.rozin.94"
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="text-xs text-primary-600 hover:underline font-medium"
-                aria-label="Daniel Rozin on Facebook"
-              >
-                Facebook
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <a
-                href="mailto:Daniarozin@gmail.com"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Email
-              </a>
-            </div>
           </div>
         </div>
+        <p className="text-lg text-text-secondary leading-relaxed">
+          Daniel Rozin founded {SITE_NAME} to bring transparent, data-driven comparisons to the web.
+          He personally researches, writes, and maintains the primary comparison hub pages — including
+          the LLM, browser, and password-manager comparison guides. All factual claims in his articles
+          are cited to primary sources (vendor documentation, academic papers, or independently audited datasets).
+        </p>
       </header>
-
-      {/* Personal story — core E-E-A-T signal */}
-      <section className="mb-10">
-        <h2 className="text-xl font-display font-bold text-text mb-4">Why I Built This</h2>
-        <p className="text-text-secondary leading-relaxed mb-4">
-          I created {SITE_NAME} because I have always been fascinated by comparing things — and I
-          mean <em>everything</em>. Economics, history, sports, trends, products, software, countries,
-          people. The curiosity never stops. I want to know: which is better? How do they differ?
-          What do the numbers actually say?
-        </p>
-        <p className="text-text-secondary leading-relaxed mb-4">
-          The problem was that no single tool existed that could answer all those questions in one
-          place. Review sites only covered products. Sports databases only covered sports. Country
-          comparison tools were dry and hard to use. And none of them let you just type two things
-          and instantly see how they stack up side by side.
-        </p>
-        <p className="text-text-secondary leading-relaxed">
-          So I built my own. I partnered with Shai, my co-founder and the technical brain behind the
-          platform, and we set out to build the comparison tool I always wished existed. {SITE_NAME}{" "}
-          is the result — a free, fast, universal comparison engine covering AI models, browsers,
-          countries, athletes, products, history, and everything in between.
-        </p>
-      </section>
 
       <section className="mb-10">
         <h2 className="text-xl font-display font-bold text-text mb-4">Expertise</h2>
@@ -166,8 +104,6 @@ export default function DanielRozinPage() {
           <li>AI / large language models — architecture, benchmarks, licensing</li>
           <li>Web browser security, privacy, and performance</li>
           <li>Password manager security models and audit history</li>
-          <li>Country and economic comparisons</li>
-          <li>Sports statistics and athlete comparisons</li>
           <li>Data-driven product comparisons and editorial methodology</li>
         </ul>
       </section>
@@ -204,64 +140,6 @@ export default function DanielRozinPage() {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Co-founder call-out */}
-      <section className="bg-surface-alt border border-border rounded-2xl p-6 mb-10">
-        <h2 className="text-lg font-display font-bold text-text mb-3">Meet the Co-Founder</h2>
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-lg font-display font-black text-primary-600 shrink-0">
-            SA
-          </div>
-          <div>
-            <p className="font-semibold text-text">Shai And</p>
-            <p className="text-sm text-text-secondary mb-1">Co-Founder & CTO</p>
-            <p className="text-sm text-text-secondary leading-relaxed">
-              Shai is the technical architect and engineering lead behind {SITE_NAME}. He built and
-              maintains the platform&apos;s infrastructure, data pipeline, and AI integration layer.
-              Daniel and Shai have been building this together from day one.
-            </p>
-            <div className="flex items-center gap-3 mt-2">
-              <a
-                href="https://www.facebook.com/shai.and1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Facebook
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <a
-                href="mailto:Shai.and1@gmail.com"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Email
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-primary-50 border border-primary-100 rounded-2xl p-6 text-center">
-        <p className="text-text-secondary text-sm mb-3">
-          Want to get in touch with Daniel?
-        </p>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <a
-            href="https://www.linkedin.com/in/daniel-rozin-56a066b0/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-4 py-2 bg-primary-600 text-white text-sm font-semibold rounded-xl hover:bg-primary-700 transition-colors"
-          >
-            Connect on LinkedIn
-          </a>
-          <a
-            href="mailto:Daniarozin@gmail.com"
-            className="inline-block px-4 py-2 bg-surface border border-border text-text text-sm font-semibold rounded-xl hover:bg-surface-alt transition-colors"
-          >
-            Send an Email
-          </a>
-        </div>
       </section>
     </article>
   );

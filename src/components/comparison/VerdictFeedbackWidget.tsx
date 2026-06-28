@@ -173,8 +173,17 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
     <div
       ref={containerRef}
       data-verdict-feedback
-      className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm px-4 py-3 sm:px-5 sm:py-4"
+      className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm overflow-hidden"
     >
+      {/* Micro-header strip */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-white/10 bg-white/5">
+        <svg className="w-3.5 h-3.5 text-yellow-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+        </svg>
+        <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider">Community feedback</span>
+      </div>
+
+      <div className="px-4 py-3 sm:px-5 sm:py-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <p className="text-sm sm:text-base font-semibold text-white">
@@ -247,6 +256,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
           <span aria-hidden>✓</span>
           Thanks — we&apos;ll use this to improve our verdicts.
         </span>
+      </div>
       </div>
     </div>
   );

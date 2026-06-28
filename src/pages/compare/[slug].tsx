@@ -1,8 +1,9 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug, getTrendingComparisons } from "@/lib/services/comparison-service";
-import { comparisonPageSchema, claimReviewSchema, jsonLdGraph, videoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
+import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -21,7 +22,11 @@ import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
 import { getAllMockSlugs } from "@/lib/services/mock-data";
-import { parseComparisonSlug } from "@/lib/utils/slugify";
+import {
+  parseComparisonSlug,
+  sortComparisonSlug,
+  isDegenerateComparisonSlug,
+} from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
@@ -34,6 +39,7 @@ import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
+import { selfHostedVideoExists, selfHostedVideoUploadDate } from "@/lib/services/self-hosted-video";
 import type { RelatedComparison } from "@/types";
 
 // DAN-432 Phase C: /compare/[slug] served by the Pages Router.
@@ -122,11 +128,12 @@ type Props =
     };
 
 // Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
-// These slugs had weak/auto-generated titles+descriptions; the copy here is
-// pre-optimized. Still piped through buildPageTitle/clampDescription so the
-// single-brand and length invariants hold (buildPageTitle is a no-op on the
-// already-clean brand suffix).
-const META_OVERRIDES: Record<string, { title: string; description: string }> = {
+// These slugs had weak/auto-generated titles (and sometimes descriptions); the
+// copy here is pre-optimized. Still piped through buildPageTitle/clampDescription
+// so the single-brand and length invariants hold (buildPageTitle is a no-op on
+// the already-clean brand suffix). `description` is optional — omit it to keep an
+// already-good stored metaDescription and only swap the weak <title> (DAN-1281).
+const META_OVERRIDES: Record<string, { title: string; description?: string }> = {
   "figma-vs-canva": {
     title: "Figma vs Canva 2026: Which Design Tool Wins? | A Versus B",
     description:
@@ -137,10 +144,24 @@ const META_OVERRIDES: Record<string, { title: string; description: string }> = {
     description:
       "Slack vs Microsoft Teams compared: messaging, video, integrations and pricing. See which team chat app wins for your workflow in 2026.",
   },
-  "iphone-15-vs-16": {
-    title: "iPhone 15 vs 16: Specs, Camera & Price (2026) | A Versus B",
-    description:
-      "iPhone 15 vs iPhone 16 compared: chip, camera, battery and price. See if the iPhone 16 is worth upgrading to in 2026.",
+  // DAN-1281: title-only CTR swaps (year + verdict hook). Descriptions audited as
+  // already good — left untouched. The legacy `iphone-15-vs-16` override was
+  // removed: that slug now 308s at the edge to the canonical iphone-15-vs-iphone-16
+  // (compare-redirects.ts), so this page never renders.
+  "ansible-vs-chef": {
+    title: "Ansible vs Chef 2026: Which Config Tool Wins? | A Versus B",
+  },
+  "cold-war-vs-world-war-ii": {
+    title: "Cold War vs WWII: Causes, Deaths & Impact | A Versus B",
+  },
+  "figma-vs-invision": {
+    title: "InVision vs Figma 2026: Prototyping & Price | A Versus B",
+  },
+  "metlife-vs-state-farm": {
+    title: "MetLife vs State Farm 2026: Which Insurer Wins? | A Versus B",
+  },
+  "miro-vs-mural": {
+    title: "Miro vs Mural 2026: Pricing, AI & Features | A Versus B",
   },
 };
 
@@ -168,6 +189,68 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
+// Budget for on-demand server-side generation inside getStaticProps. Kept under
+// Vercel's function ceiling; on timeout we fall back to the client-only shell so
+// the request never hangs. Matches the route's 60s `maxDuration` headroom.
+const SSR_GENERATION_BUDGET_MS = 45000;
+
+/**
+ * DAN-1146 — Defense-in-depth SSR for un-ingested `/compare/*` slugs.
+ *
+ * When `getComparisonBySlug` returns null (no DB row), the page previously
+ * shipped a `"use client"` shell with an empty SSR DOM — crawler-invisible thin
+ * content and $0 SSR monetization on the highest-affiliate-value category.
+ *
+ * Here we generate the comparison server-side (same generator the client
+ * `/api/comparisons/generate` route uses), persist it best-effort so the next
+ * crawl is DB-backed and fully linked, and return a `ComparisonPageData` so the
+ * full SSR layout (incl. the DAN-1140 brand-homepage affiliate CTAs) renders in
+ * raw HTML. Any failure (missing API key, timeout, generation error) returns
+ * null and the caller falls back to the existing client shell — so this strictly
+ * improves on the prior behavior and never regresses it.
+ *
+ * Runs only at request time: `getStaticPaths` uses `fallback: "blocking"`, so
+ * un-ingested slugs are never generated during `next build`.
+ */
+async function generateComparisonForSSR(
+  slug: string,
+  entitySlugParts: string[]
+): Promise<Comparison | null> {
+  if (process.env.DISABLE_SSR_FALLBACK_GENERATION === "1") return null;
+
+  const entityNames = entitySlugParts.map((p) => p.replace(/-/g, " "));
+  const isMulti = entityNames.length > 2;
+
+  try {
+    const result = await Promise.race([
+      isMulti
+        ? generateMultiComparison(entityNames, slug)
+        : generateComparison(entityNames[0], entityNames[1], slug),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), SSR_GENERATION_BUDGET_MS)),
+    ]);
+
+    if (!result || !result.success || !result.comparison) return null;
+
+    // Persist best-effort so the next request is DB-backed (self-healing
+    // ingestion). A save failure (e.g. read-only clone DB) is non-fatal — we
+    // still return the generated comparison for a one-shot full SSR render.
+    try {
+      await saveComparison(result.comparison);
+      // Re-fetch so the comparison carries linking-engine relatedComparisons +
+      // relatedBlogPosts, identical to the natively DB-backed path.
+      const refetched = (await getComparisonBySlug(slug)) as Comparison | null;
+      if (refetched) return refetched;
+    } catch (saveErr) {
+      console.warn("SSR-fallback: saveComparison failed, serving generated copy:", saveErr);
+    }
+
+    return result.comparison as Comparison;
+  } catch (err) {
+    console.warn("SSR-fallback generation failed, using client shell:", err);
+    return null;
+  }
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = getAllMockSlugs();
   return {
@@ -175,6 +258,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: "blocking",
   };
 };
+
+// DAN-1285: append a VideoObject node into an existing @graph JSON-LD document
+// (editorial schemaMarkup or the multi-entity @graph) without disturbing its
+// other nodes. The node's @context is stripped since it lives inside @graph.
+function appendVideoToGraph(
+  doc: Record<string, unknown>,
+  video: Record<string, unknown> | null,
+): Record<string, unknown> {
+  if (!video) return doc;
+  const { ["@context"]: _ctx, ...videoNode } = video;
+  if (Array.isArray(doc["@graph"])) {
+    return { ...doc, "@graph": [...(doc["@graph"] as unknown[]), videoNode] };
+  }
+  // Not a @graph document — wrap the existing doc and the video into one.
+  return jsonLdGraph([doc, video]);
+}
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
@@ -185,6 +284,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { notFound: true };
   }
 
+  // A self-comparison (e.g. `grubhub-vs-grubhub`) is a thin/duplicate-content
+  // dead-end — comparing an entity against itself yields no useful page and
+  // wastes crawl budget. 404 it so it leaves the index; it is also excluded
+  // from the sitemap (DAN: self-comparison crawl-quality guard).
+  if (isDegenerateComparisonSlug(slug)) {
+    return { notFound: true };
+  }
+
   let comparison: Comparison | null = null;
   try {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
@@ -192,8 +299,59 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // Unknown slug → client-side dynamic generation (same fallback as before).
-  if (!comparison) {
+  // A record that's missing OR exists but is empty/corrupt (fewer than 2
+  // entities) is treated the same: the full SSR layout assumes entityA/entityB
+  // exist and throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up
+  // — 25 such records were live in prod). Server-side generation for these slugs
+  // is hoisted into the generateComparisonForSSR() helper, invoked below AFTER
+  // the DAN-1265 canonical-ordering redirect so non-canonical orderings aren't
+  // minted as their own URL. The helper supersedes the older inline DAN-1201
+  // block (it adds N-way support, a timeout budget, and the env kill-switch).
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
+    // DAN-1265: a non-canonical ordering (B-vs-A) — whether brand-new or backed
+    // by an empty/corrupt record — must never be generated/indexed as its own
+    // URL. Send it to the canonical alphabetically-sorted ordering BEFORE any
+    // generation so only one page per comparison can exist. (Known retired
+    // duplicates are already 301'd at the edge by next.config redirects(); this
+    // catches orderings not yet in that map.)
+    const sortedSlug = sortComparisonSlug(slug);
+    if (sortedSlug !== slug) {
+      // DAN-1265 regression guard: only consolidate into the sorted ordering
+      // when that ordering is a REAL comparison. sortComparisonSlug() sorts the
+      // raw "-vs-" tokens, so a slug whose last entity carries a keyword suffix
+      // (e.g. "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the
+      // suffix into the middle and yields a non-existent slug
+      // ("ps5-pro-performance-comparison-2026-vs-xbox-series-x"). 308-ing there
+      // mints a self-canonicalizing thin-shell dead-end and permanently strands
+      // the variant's link equity instead of folding it into the canonical. If
+      // the sorted target has no valid record, fall through to the dynamic
+      // fallback (which self-canonicals at the requested URL) rather than 308 to
+      // a slug that does not exist. Genuine B-vs-A reorderings still redirect,
+      // because their sorted target resolves to a real page here.
+      let canonical: Comparison | null = null;
+      try {
+        canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
+      } catch {
+        canonical = null;
+      }
+      if (canonical && canonical.entities && canonical.entities.length >= 2) {
+        return {
+          redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+        };
+      }
+    }
+
+    // Canonical ordering but unknown/empty → attempt server-side generation so
+    // crawlers get a full SSR body + affiliate CTAs (DAN-1146). On success we
+    // fall through to the normal comparison render path below; on failure we
+    // degrade to the crawlable client shell, which also lets the client
+    // re-generation path heal the record.
+    comparison = await generateComparisonForSSR(slug, slugParts.entities);
+  }
+
+  // Still no usable comparison → client-side dynamic generation (same fallback
+  // as before).
+  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
     const override = META_OVERRIDES[slug];
     const nameParts = slug
       .split("-vs-")
@@ -265,52 +423,57 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
       : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
 
-  // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
-  // present. Otherwise: N>=3 pages get the consolidated @graph from
-  // comparisonPageSchema (schema-3way v1) with VideoObject injected into the
-  // existing @graph when a video exists; 2-entity pages get the DAN-432
-  // jsonLdGraph consolidation (+ optional VideoObject).
-  const videoSchemaNode = videoMeta?.youtubeVideoId
-    ? videoObjectSchema({
-        slug,
-        title: enrichedComparison.title,
-        description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
-        youtubeVideoId: videoMeta.youtubeVideoId,
-        uploadDate: videoMeta.uploadedAt,
-        entityA: videoMeta.entityA,
-        entityB: videoMeta.entityB,
-      })
-    : null;
-
-  let jsonLd: string;
-  if (enrichedComparison.schemaMarkup) {
-    jsonLd = JSON.stringify(enrichedComparison.schemaMarkup);
-  } else if (isMultiEntity) {
-    if (videoSchemaNode) {
-      // Inject VideoObject into the existing multi-entity @graph so crawlers
-      // surface both the comparison and the associated YouTube video in results.
-      const graphDoc = schemas[0] as { "@context": string; "@graph": Record<string, unknown>[] };
-      const { "@context": ctx, "@graph": nodes } = graphDoc;
-      const { "@context": _c, ...videoNode } = videoSchemaNode;
-      jsonLd = JSON.stringify({ "@context": ctx, "@graph": [...nodes, videoNode] });
-    } else {
-      jsonLd = JSON.stringify(schemas[0]);
-    }
-  } else {
-    // Inject ClaimReview for 2-entity pages that have a verdict — major AEO signal
-    // for Google Fact Check Lab and AI answer engines (Perplexity, ChatGPT).
-    const claimReview = !isMultiEntity && enrichedComparison.verdict
-      ? claimReviewSchema({
+  // DAN-1285: self-hosted VideoObject. When there's no YouTube upload but a
+  // public/videos/<slug>.mp4 exists (ComparisonVideoPlayer HEAD-checks and
+  // self-hosts it client-side, so the URL never appears in static HTML), emit a
+  // VideoObject whose contentUrl → the already-served mp4 so Google Video / AI
+  // Overviews can index it. Credential-independent of the YouTube path
+  // (DAN-1197). Only emitted when the file is present so contentUrl never 404s.
+  const selfHostedVideo =
+    !videoMeta?.youtubeVideoId && selfHostedVideoExists(slug)
+      ? selfHostedVideoObjectSchema({
           slug,
-          verdict: enrichedComparison.verdict,
-          entityA,
-          entityB,
-          publishedAt: enrichedComparison.metadata.publishedAt,
-          updatedAt: enrichedComparison.metadata.updatedAt,
+          title: enrichedComparison.title,
+          description:
+            enrichedComparison.shortAnswer ||
+            enrichedComparison.verdict ||
+            enrichedComparison.metadata.metaDescription ||
+            fallbackDescription,
+          // thumbnailUrl is REQUIRED by Google — reuse the per-page OG image.
+          thumbnailUrl: ogImage,
+          uploadDate:
+            selfHostedVideoUploadDate(slug) ||
+            enrichedComparison.metadata.publishedAt ||
+            enrichedComparison.metadata.updatedAt,
         })
       : null;
+
+  // JSON-LD: prefer the validated editorial @graph (comparison.schemaMarkup) when
+  // present. Otherwise: N>=3 pages already get a single consolidated @graph from
+  // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
+  // the DAN-432 jsonLdGraph consolidation. The self-hosted VideoObject (DAN-1285)
+  // is folded into whichever document the page emits.
+  let jsonLd: string;
+  if (enrichedComparison.schemaMarkup) {
+    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, selfHostedVideo));
+  } else if (isMultiEntity) {
+    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], selfHostedVideo));
+  } else {
     jsonLd = JSON.stringify(
-      jsonLdGraph([...schemas, videoSchemaNode, claimReview])
+      jsonLdGraph([
+        ...schemas,
+        videoMeta?.youtubeVideoId
+          ? videoObjectSchema({
+              slug,
+              title: enrichedComparison.title,
+              description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
+              youtubeVideoId: videoMeta.youtubeVideoId,
+              uploadDate: videoMeta.uploadedAt,
+              entityA: videoMeta.entityA,
+              entityB: videoMeta.entityB,
+            })
+          : selfHostedVideo,
+      ])
     );
   }
 
@@ -367,22 +530,6 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
-      {/* Academic / AI citation meta tags — Dublin Core + citation_ namespace.
-          Semantic Scholar, Google Scholar, and AI crawlers use these to extract
-          citable metadata and attribute comparison data to the correct source. */}
-      <meta name="citation_title" content={meta.title} />
-      <meta name="citation_author" content="Daniel Rozin" />
-      <meta name="citation_journal_title" content="A Versus B" />
-      <meta name="citation_language" content="en" />
-      {meta.publishedTime && <meta name="citation_publication_date" content={meta.publishedTime.slice(0, 10)} />}
-      {meta.modifiedTime && <meta name="citation_online_date" content={meta.modifiedTime.slice(0, 10)} />}
-      <meta name="DC.title" content={meta.title} />
-      <meta name="DC.creator" content="Daniel Rozin" />
-      <meta name="DC.publisher" content="A Versus B" />
-      <meta name="DC.language" content="en" />
-      <meta name="DC.type" content="Text" />
-      <meta name="DC.format" content="text/html" />
-      <meta name="DC.identifier" content={meta.canonical} />
     </Head>
   );
 }

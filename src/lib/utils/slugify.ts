@@ -32,6 +32,24 @@ export function comparisonSlugN(entities: string[]): string {
 }
 
 /**
+ * Canonicalizes an existing comparison slug by sorting its `-vs-` segments
+ * alphabetically — the same ordering rule comparisonSlug()/comparisonSlugN()
+ * apply at generation time. Used to detect/prevent A-vs-B vs B-vs-A duplicate
+ * orderings (DAN-1265). Returns the input unchanged if it has no `-vs-`.
+ *
+ *   sortComparisonSlug("roomba-vs-roborock") === "roborock-vs-roomba"
+ */
+export function sortComparisonSlug(slug: string): string {
+  if (!slug.includes("-vs-")) return slug;
+  const parts = slug
+    .split("-vs-")
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0);
+  if (parts.length < 2) return slug;
+  return [...parts].sort().join("-vs-");
+}
+
+/**
  * Parses a comparison slug into N entity slugs.
  *
  * For backward compatibility, returns entityA/entityB (first two entries)
@@ -47,4 +65,24 @@ export function parseComparisonSlug(
   const parts = slug.split("-vs-").map((p) => p.trim()).filter((p) => p.length > 0);
   if (parts.length < 2) return null;
   return { entityA: parts[0], entityB: parts[1], entities: parts };
+}
+
+/**
+ * A degenerate comparison is one that pits an entity against itself
+ * (e.g. `grubhub-vs-grubhub`, or an N-way slug with a repeated entity).
+ * These are thin/duplicate-content dead-ends that waste crawl budget and
+ * dilute quality signals, so they must never be rendered or sitemapped
+ * (DAN: self-comparison crawl-quality guard). Comparison is case-insensitive
+ * since the slug is already lowercased upstream but callers may pass raw input.
+ */
+export function isDegenerateComparisonSlug(slug: string): boolean {
+  const parsed = parseComparisonSlug(slug);
+  if (!parsed) return false;
+  const seen = new Set<string>();
+  for (const entity of parsed.entities) {
+    const key = entity.toLowerCase();
+    if (seen.has(key)) return true;
+    seen.add(key);
+  }
+  return false;
 }

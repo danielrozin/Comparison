@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { SITE_NAME, SITE_URL, CATEGORIES } from "@/lib/utils/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner } from "@/components/layout/GlobalClientWidgets";
-import { organizationSchema, webSiteSchema, siteNavigationSchema } from "@/lib/seo/schema";
+import { FeedbackWidget, CookieConsentBanner, BackToTop } from "@/components/layout/GlobalClientWidgets";
+import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -28,17 +28,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "The internet's most comprehensive comparison platform — 2,900+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more. Data-driven verdicts, community votes, and expert analysis.",
-  keywords: [
-    "comparison",
-    "vs",
-    "versus",
-    "compare",
-    "best",
-    "review",
-    "difference between",
-    "which is better",
-  ],
+    "The internet's best destination for comparisons. Compare sports players, countries, products, technology, and anything else — fast, visual, and data-driven.",
   metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
@@ -47,7 +37,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Compare Anything`,
     description:
-      "2,900+ data-driven comparisons across sports, technology, products, software, automotive, health, finance, and more. Expert verdicts, community votes, structured data.",
+      "Compare sports players, countries, products, technology, and anything else — fast, visual, and data-driven.",
     images: [{
       url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
       width: 1200,
@@ -58,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — Compare Anything`,
-    description: "2,900+ data-driven comparisons. Find the best: technology, sports, software, health, automotive, and more.",
+    description: "The internet's best destination for comparisons.",
     images: [`${SITE_URL}/api/og?title=Compare+Anything&type=home`],
   },
   robots: {
@@ -88,14 +78,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        {/* LLMs.txt discovery — static manifest; dynamic version at /api/llms?format=txt */}
-        <link rel="alternate" type="text/plain" href={`${SITE_URL}/llms.txt`} title="LLM Site Manifest" />
-        {/* Well-known LLM discovery (llmstxt.org spec) */}
-        <link rel="alternate" type="text/plain" href={`${SITE_URL}/.well-known/llms.txt`} title="LLM Discovery" />
-        {/* Full catalog for AI crawlers (DB-fresh, updated every 6h) */}
-        <link rel="alternate" type="text/plain" href={`${SITE_URL}/api/llms-full`} title="LLM Full Catalog" />
-        {/* AI plugin manifest — OpenAI-compatible site descriptor */}
-        <link rel="manifest" type="application/json" href={`${SITE_URL}/.well-known/ai-plugin.json`} />
         {ADSENSE_PUB_ID && (
           <script
             async
@@ -121,12 +103,6 @@ export default function RootLayout({
             __html: JSON.stringify(webSiteSchema()),
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(siteNavigationSchema(CATEGORIES.map((c) => ({ name: c.name, slug: c.slug })))),
-          }}
-        />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
         <GoogleTagManager />
@@ -138,6 +114,7 @@ export default function RootLayout({
           <Footer />
           <FeedbackWidget />
           <CookieConsentBanner />
+          <BackToTop />
         </ExperimentProviderServer>
       </body>
     </html>

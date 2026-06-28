@@ -1,9 +1,23 @@
 /**
  * Email service
  *
- * Two providers:
- * 1. Resend — for outreach / transactional emails (requires RESEND_API_KEY + verified domain)
- * 2. Web3Forms — for internal notifications (lightweight, no domain needed)
+ * Primary transport: Resend. Resend delivers to ANY recipient, so it is the
+ * correct transport for admin notifications, transactional, and outreach mail —
+ * but ONLY from a domain that is VERIFIED on the Resend key. The production key
+ * authorizes aversusb.net (set via RESEND_FROM_EMAIL), so all mail — including
+ * admin notifications — sends from the aversusb.net sender. Sending from any
+ * domain the key does not authorize returns a 403 and drops the mail (DAN-323).
+ *
+ * Fallback transport: Web3Forms. NOTE — Web3Forms' API ignores the `to` field and
+ * always delivers to the access-key owner's mailbox, so it is only a best-effort
+ * fallback for ADMIN notifications (never for external recipients).
+ *
+ * Historical bug (DAN-1204): admin notifications ran Web3Forms FIRST and returned
+ * its `success` verbatim. Web3Forms accepts the submission (success:true) but the
+ * mail lands in the key-owner's mailbox, never the founder's — so Resend was never
+ * reached and the founder's inbox got ZERO form/feedback/newsletter notifications
+ * for 120 days with no error ever raised. Resend is now the primary path and every
+ * send is logged with the provider response.
  */
 
 import { Resend } from "resend";
@@ -11,7 +25,8 @@ import { Resend } from "resend";
 // trailing space; importing the normalized constant keeps embed snippets clean.
 import { SITE_URL } from "@/lib/utils/constants";
 
-const NOTIFICATION_EMAIL = "Daniarozin@gmail.com";
+const NOTIFICATION_EMAIL =
+  process.env.ADMIN_NOTIFICATION_EMAIL || "daniarozin@gmail.com";
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
 const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
 
@@ -25,6 +40,15 @@ function getResend(): Resend | null {
 
 const RESEND_FROM =
   process.env.RESEND_FROM_EMAIL || "A Versus B <noreply@aversusb.net>";
+
+// Admin/transactional notifications MUST send from a domain that is VERIFIED on
+// the Resend key, or Resend rejects the send with a 403 ("domain is not
+// verified") and the founder silently receives nothing (DAN-323). The production
+// key authorizes aversusb.net, so notifications default to the same verified
+// aversusb.net sender as the rest of the app (RESEND_FROM). RESEND_NOTIFICATION_FROM
+// is an optional override for environments whose key verifies a different domain.
+const NOTIFICATION_FROM =
+  process.env.RESEND_NOTIFICATION_FROM || RESEND_FROM;
 
 // ─── Outreach email (Resend only) ───────────────────────────────────
 
@@ -104,7 +128,7 @@ export async function sendBatchOutreachEmails(
   }
 }
 
-// ─── Internal notifications (Web3Forms → Resend fallback) ───────────
+// ─── Internal notifications (Resend primary → Web3Forms fallback) ───
 
 export async function sendNotificationEmail(opts: {
   subject: string;
@@ -112,8 +136,47 @@ export async function sendNotificationEmail(opts: {
   message: string;
   senderEmail?: string;
   pageUrl?: string;
-}) {
-  // If Web3Forms key is set, use it
+}): Promise<{ success: boolean; method: string }> {
+  const subject = `[A Versus B] ${opts.subject}`;
+  const text = [
+    `Type: ${opts.type}`,
+    "",
+    `Message: ${opts.message}`,
+    "",
+    `From: ${opts.senderEmail || "Anonymous"}`,
+    `Page: ${opts.pageUrl || "N/A"}`,
+    `Time: ${new Date().toISOString()}`,
+  ].join("\n");
+  const context = `notification:${opts.type}`;
+
+  // 1) Primary: Resend — reliably delivers to the admin mailbox. Sent from the
+  //    VERIFIED notification domain (NOTIFICATION_FROM); using an unverified
+  //    from-domain returns a 403 and drops the alert silently (DAN-323).
+  const resend = getResend();
+  if (resend) {
+    try {
+      const { data, error } = await resend.emails.send({
+        from: NOTIFICATION_FROM,
+        to: NOTIFICATION_EMAIL,
+        subject,
+        text,
+      });
+      if (!error) {
+        console.log(
+          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAIL} | id=${data?.id ?? "?"}`
+        );
+        return { success: true, method: "resend" };
+      }
+      console.error(
+        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAIL} | ${error.message}`
+      );
+    } catch (err) {
+      console.error(`[EMAIL][resend][throw] ${context} |`, err);
+    }
+  }
+
+  // 2) Fallback: Web3Forms — delivers to the key owner's mailbox only (the `to`
+  //    field is ignored), so it is a best-effort fallback for admin alerts.
   if (WEB3FORMS_KEY) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
@@ -121,42 +184,29 @@ export async function sendNotificationEmail(opts: {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          to: NOTIFICATION_EMAIL,
-          subject: `[A Versus B] ${opts.subject}`,
+          subject,
           from_name: "A Versus B Notifications",
-          message: `Type: ${opts.type}\n\nMessage: ${opts.message}\n\nFrom: ${opts.senderEmail || "Anonymous"}\nPage: ${opts.pageUrl || "N/A"}\nTime: ${new Date().toISOString()}`,
+          message: text,
         }),
       });
-      const data = await res.json();
-      return { success: data.success, method: "web3forms" };
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data?.success) {
+        console.log(`[EMAIL][web3forms][ok] ${context} status=${res.status}`);
+        return { success: true, method: "web3forms" };
+      }
+      console.error(
+        `[EMAIL][web3forms][fail] ${context} status=${res.status} body=${JSON.stringify(data)}`
+      );
     } catch (err) {
-      console.error("Web3Forms email failed:", err);
+      console.error(`[EMAIL][web3forms][throw] ${context} |`, err);
     }
   }
 
-  // Fallback: try Resend
-  const resend = getResend();
-  if (resend) {
-    try {
-      await resend.emails.send({
-        from: RESEND_FROM,
-        to: NOTIFICATION_EMAIL,
-        subject: `[A Versus B] ${opts.subject}`,
-        text: `Type: ${opts.type}\n\nMessage: ${opts.message}\n\nFrom: ${opts.senderEmail || "Anonymous"}\nPage: ${opts.pageUrl || "N/A"}\nTime: ${new Date().toISOString()}`,
-      });
-      return { success: true, method: "resend" };
-    } catch (err) {
-      console.error("Resend notification failed:", err);
-    }
-  }
-
-  // Last resort: log it
-  console.log(`[EMAIL NOTIFICATION] To: ${NOTIFICATION_EMAIL}`);
-  console.log(`  Subject: ${opts.subject}`);
-  console.log(`  Type: ${opts.type}`);
-  console.log(`  Message: ${opts.message}`);
-
-  return { success: true, method: "logged" };
+  // 3) Last resort: log so the submission is recoverable from serverless logs.
+  console.error(
+    `[EMAIL][undelivered] ${context} -> ${NOTIFICATION_EMAIL} | subject="${opts.subject}" message="${opts.message}" from=${opts.senderEmail || "Anonymous"} page=${opts.pageUrl || "N/A"}`
+  );
+  return { success: false, method: "undelivered" };
 }
 
 // ─── Partner key email ──────────────────────────────────────────────
@@ -237,10 +287,11 @@ export async function sendPartnerKeyEmail(opts: {
     }
   }
 
-  console.log(`[PARTNER EMAIL] To: ${opts.partnerEmail}`);
-  console.log(`  Partner: ${opts.partnerName}`);
-  console.log(`  Key: ${opts.partnerKey}`);
-  console.log(`  Tier: ${opts.tier}`);
+  // No provider accepted — report honestly (do NOT claim success) so callers and
+  // logs reflect that the partner never received their key.
+  console.error(
+    `[EMAIL][undelivered] partner_key:embed -> ${opts.partnerEmail} | key=${opts.partnerKey} tier=${opts.tier}`
+  );
 
-  return { success: true, method: "logged" };
+  return { success: false, method: "undelivered" };
 }

@@ -15,3 +15,8 @@ export const CookieConsentBanner = dynamic(
   () => import("@/components/consent/CookieConsentBanner").then((m) => ({ default: m.CookieConsentBanner })),
   { ssr: false, loading: () => null }
 );
+
+export const BackToTop = dynamic(
+  () => import("@/components/layout/BackToTop").then((m) => ({ default: m.BackToTop })),
+  { ssr: false, loading: () => null }
+);

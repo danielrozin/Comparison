@@ -134,20 +134,31 @@ export default async function BlogPage({
       />
     <main className="min-h-screen bg-surface">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-display font-bold mb-4">
+      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 text-sm font-medium text-primary-100 mb-5">
+            <span>✍️</span>
+            <span>Expert Comparison Guides</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
             The Comparison Blog
           </h1>
-          <p className="text-lg text-primary-100 max-w-2xl mx-auto">
+          <p className="text-lg text-primary-200 max-w-2xl mx-auto">
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
       </section>
 
       {/* Category Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div className="bg-white rounded-xl shadow-lg p-2 flex flex-wrap gap-1 justify-center">
           {CATEGORIES.map((cat) => (
             <Link
@@ -196,8 +207,22 @@ export default async function BlogPage({
                   href={`/blog/${article.slug}`}
                   className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col"
                 >
-                  {/* Gradient header */}
-                  <div className="h-2 bg-gradient-to-r from-primary-500 to-indigo-500" />
+                  {/* Card header */}
+                  <div className="h-28 bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-700 flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
+                    <span className="text-5xl relative z-10" aria-hidden="true">
+                      {article.category === "technology" ? "💻" :
+                       article.category === "sports" ? "⚽" :
+                       article.category === "entertainment" ? "🎬" :
+                       article.category === "health" ? "💊" :
+                       article.category === "automotive" ? "🚗" :
+                       article.category === "business" ? "📊" :
+                       article.category === "science" ? "🔬" :
+                       article.category === "education" ? "🎓" :
+                       article.category === "travel" ? "✈️" :
+                       article.category === "food" ? "🍽️" : "📝"}
+                    </span>
+                  </div>
 
                   <div className="p-6 flex-1 flex flex-col">
                     {/* Category & Read Time */}

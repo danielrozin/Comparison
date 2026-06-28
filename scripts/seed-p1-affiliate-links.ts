@@ -215,8 +215,10 @@ const P1_AFFILIATE_LINKS: AffiliateLinkEntry[] = [
   },
 
   // ── Electronics: airpods-pro-vs-galaxy-buds ──────────────────────────
+  // Slugs verified against prod /api/comparisons/airpods-pro-vs-galaxy-buds
+  // (DAN-276): the entity records are the dated 2026 products, not bare names.
   {
-    entitySlug: "airpods-pro",
+    entitySlug: "apple-airpods-pro-3-2026",
     partner: "bhphotovideo",
     url: BH_PHOTO_AFFILIATE_BASE,
     label: "Buy at B&H Photo",
@@ -224,7 +226,7 @@ const P1_AFFILIATE_LINKS: AffiliateLinkEntry[] = [
     metadata: { commission: "8%", network: "direct" },
   },
   {
-    entitySlug: "samsung-galaxy-buds",
+    entitySlug: "samsung-galaxy-buds-4-pro-2026",
     partner: "bhphotovideo",
     url: BH_PHOTO_AFFILIATE_BASE,
     label: "Buy at B&H Photo",
@@ -251,8 +253,10 @@ const P1_AFFILIATE_LINKS: AffiliateLinkEntry[] = [
   },
 
   // ── Electronics: oura-ring-vs-whoop ──────────────────────────────────
+  // Slug verified against prod /api/comparisons/oura-ring-vs-whoop (DAN-276):
+  // entity is "oura-ring-4", not bare "oura-ring".
   {
-    entitySlug: "oura-ring",
+    entitySlug: "oura-ring-4",
     partner: "bhphotovideo",
     url: BH_PHOTO_AFFILIATE_BASE,
     label: "Buy Oura Ring at B&H",
@@ -310,6 +314,7 @@ async function main() {
 
   let upserted = 0;
   let skipped = 0;
+  const skippedSlugs: string[] = [];
 
   for (const entry of P1_AFFILIATE_LINKS) {
     const entity = await prisma.entity.findFirst({
@@ -319,6 +324,7 @@ async function main() {
 
     if (!entity) {
       console.warn(`  ⚠ Entity not found: ${entry.entitySlug} — skipping`);
+      skippedSlugs.push(`${entry.entitySlug} (${entry.partner})`);
       skipped++;
       continue;
     }
@@ -355,6 +361,20 @@ async function main() {
   }
 
   console.log(`\nDone: ${upserted} upserted, ${skipped} skipped.\n`);
+
+  // Fail loudly on any skip: a skipped entry means that high-value page silently
+  // ships with NO affiliate link (just the Amazon fallback) — i.e. lost revenue.
+  // This is exactly how the airpods/galaxy-buds/oura slug drift was missed before
+  // (DAN-276). Slug drift should break the seed, not pass quietly.
+  if (skipped > 0) {
+    console.error(
+      `\n❌ ${skipped} entr${skipped === 1 ? "y" : "ies"} skipped — entity slug(s) not found:\n` +
+      skippedSlugs.map((s) => `  - ${s}`).join("\n") +
+      `\n\nThese pages will have NO program-specific affiliate link until the slug is fixed.\n` +
+      `Verify against prod: https://www.aversusb.net/api/comparisons/<page-slug> (entities[].slug).\n`,
+    );
+    process.exit(1);
+  }
 }
 
 main()

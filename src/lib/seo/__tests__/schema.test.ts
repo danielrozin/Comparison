@@ -191,6 +191,23 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(article.publisher.name).toBe(SITE_NAME);
     expect(article.publisher.url).toBe(SITE_URL);
   });
+
+  it("every @graph node carries a stable canonical-host @id (entity-graph linkage)", () => {
+    const withFaqs: ComparisonPageData = { ...cmp, faqs: [{ question: "Q?", answer: "A." }] };
+    const doc = comparisonPageSchema(withFaqs)[0] as { "@graph": Array<Record<string, string>> };
+    const byType: Record<string, string> = Object.fromEntries(
+      doc["@graph"].map((n) => [n["@type"], n["@id"]]),
+    );
+    expect(byType.Article).toBe(`${pageUrl}#article`);
+    expect(byType.BreadcrumbList).toBe(`${pageUrl}#breadcrumbs`);
+    expect(byType.FAQPage).toBe(`${pageUrl}#faq`);
+    expect(byType.ItemList).toBe(`${pageUrl}#comparison`);
+    // No node may be missing its @id, and all must share the canonical host.
+    for (const node of doc["@graph"]) {
+      expect(node["@id"], `${node["@type"]} missing @id`).toBeTruthy();
+      expect(node["@id"]).toMatch(new RegExp(`^${SITE_URL}/compare/`));
+    }
+  });
 });
 
 describe("comparisonPageSchema — 2-way regression (unchanged shape)", () => {
@@ -218,5 +235,25 @@ describe("comparisonPageSchema — 2-way regression (unchanged shape)", () => {
     expect(article.about.map((a) => a.name)).toEqual(["iPhone 15", "Galaxy S24"]);
     // Legacy 2-way shape does not carry mainEntity → #comparison (that's a 3-way addition)
     expect(article.mainEntity).toBeUndefined();
+  });
+
+  it("every 2-way node carries a stable canonical-host @id once consolidated into a @graph", () => {
+    const withExtras: ComparisonPageData = {
+      ...cmp,
+      faqs: [{ question: "Q?", answer: "A." }],
+      attributes: [{ name: "Battery", values: {} } as never],
+    };
+    const url = `${SITE_URL}/compare/${withExtras.slug}`;
+    const byType: Record<string, string> = Object.fromEntries(
+      (comparisonPageSchema(withExtras) as Array<Record<string, string>>).map((s) => [
+        s["@type"],
+        s["@id"],
+      ]),
+    );
+    expect(byType.Article).toBe(`${url}#article`);
+    expect(byType.ItemList).toBe(`${url}#list`);
+    expect(byType.FAQPage).toBe(`${url}#faq`);
+    expect(byType.BreadcrumbList).toBe(`${url}#breadcrumbs`);
+    expect(byType.Dataset).toBe(`${url}#dataset`);
   });
 });

@@ -5,51 +5,112 @@ import type { FAQData } from "@/types";
 
 export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const allOpen = openIndex === -1;
+
+  const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h2 className="text-2xl font-display font-bold text-text mb-6">
-        Frequently Asked Questions
-      </h2>
-
-      <div className="space-y-3">
-        {faqs.map((faq, i) => (
-          <div
-            key={i}
-            className="bg-white border border-border rounded-xl overflow-hidden"
-          >
-            <button
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-surface-alt/50 transition-colors"
-            >
-              <span className="font-medium text-text text-sm sm:text-base pr-4">
-                {faq.question}
-              </span>
-              <svg
-                className={`w-5 h-5 text-text-secondary flex-shrink-0 transition-transform duration-200 ${
-                  openIndex === i ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
-            {openIndex === i && (
-              <div className="px-5 pb-4">
-                <p className="text-sm text-text-secondary leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            )}
+      {/* Section header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
-        ))}
+          <div>
+            <h2 className="text-2xl font-display font-bold text-text">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs text-text-secondary mt-0.5">{faqs.length} question{faqs.length !== 1 ? "s" : ""}</p>
+          </div>
+        </div>
+        {faqs.length > 2 && (
+          <button
+            type="button"
+            onClick={handleExpandAll}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200"
+          >
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+            {allOpen ? "Collapse all" : "Expand all"}
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        {faqs.map((faq, i) => {
+          const isOpen = openIndex === i || openIndex === -1;
+          return (
+            <div
+              key={i}
+              style={{ animationDelay: `${i * 40}ms` }}
+              className={`bg-white border rounded-xl overflow-hidden transition-all duration-250 animate-fade-in ${
+                isOpen
+                  ? "border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500"
+                  : "border-border hover:border-primary-200 hover:shadow-sm"
+              }`}
+            >
+              <button
+                onClick={() => {
+                  if (openIndex === -1) {
+                    setOpenIndex(null);
+                  } else {
+                    setOpenIndex(isOpen ? null : i);
+                  }
+                }}
+                className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-gray-50/70"}`}
+                aria-expanded={isOpen}
+              >
+                {/* Number badge */}
+                <span
+                  className={`flex-shrink-0 w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center transition-all duration-200 ${
+                    isOpen
+                      ? "bg-primary-600 text-white shadow-sm shadow-primary-300/40"
+                      : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
+                  }`}
+                >
+                  {i + 1}
+                </span>
+
+                <span className={`flex-1 font-medium text-sm sm:text-base pr-2 transition-colors duration-200 ${isOpen ? "text-primary-900" : "text-text"}`}>
+                  {faq.question}
+                </span>
+
+                {/* Animated chevron in a subtle circle */}
+                <span className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 ${isOpen ? "bg-primary-100 text-primary-600" : "text-text-secondary"}`}>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </button>
+
+              {/* Answer — CSS grid-rows trick for smooth natural height animation */}
+              <div
+                className={`grid transition-all duration-300 ease-in-out ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="px-5 pb-5 ml-9">
+                    <div className="h-px bg-gradient-to-r from-primary-200 to-transparent mb-4" />
+                    <p className="text-sm text-text-secondary leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

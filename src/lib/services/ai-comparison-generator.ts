@@ -119,6 +119,34 @@ export interface GenerationResult {
   errorStage?: GenerationErrorStage;
 }
 
+/**
+ * Extract the JSON object from an AI text response. Handles three shapes:
+ *   1. raw JSON
+ *   2. JSON wrapped in ```json … ``` code fences
+ *   3. JSON preceded/followed by stray prose ("Here is the comparison: {…}")
+ * by falling back to the first `{` … last `}` slice. Throws on no object.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function parseGeneratedJson(text: string): Record<string, any> {
+  let jsonText = text.trim();
+  const fenceMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenceMatch) {
+    jsonText = fenceMatch[1].trim();
+  }
+  try {
+    return JSON.parse(jsonText);
+  } catch {
+    // Fall back to the outermost object braces in case the model wrapped the
+    // JSON in prose despite the "ONLY valid JSON" instruction.
+    const start = jsonText.indexOf("{");
+    const end = jsonText.lastIndexOf("}");
+    if (start !== -1 && end > start) {
+      return JSON.parse(jsonText.slice(start, end + 1));
+    }
+    throw new Error("No JSON object found in response");
+  }
+}
+
 export async function generateComparison(
   entityA: string,
   entityB: string,
@@ -156,7 +184,11 @@ export async function generateComparison(
     try {
       message = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 3000,
+        // DAN-1196: 3000 truncated the JSON for spec-rich pairings (e.g. two
+        // flagship phones with 5-8 attributes + key differences + FAQs +
+        // pros/cons), producing an unclosed object that failed JSON.parse with
+        // errorStage "parse". Match the multi-entity path's headroom.
+        max_tokens: 6000,
         messages: [
           {
             role: "user",
@@ -185,13 +217,7 @@ export async function generateComparison(
     // Parse the JSON response
     let data;
     try {
-      // Try to extract JSON if wrapped in code blocks
-      let jsonText = content.text.trim();
-      const jsonMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (jsonMatch) {
-        jsonText = jsonMatch[1].trim();
-      }
-      data = JSON.parse(jsonText);
+      data = parseGeneratedJson(content.text);
     } catch {
       return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
     }
@@ -471,10 +497,7 @@ export async function generateMultiComparison(
 
     let data;
     try {
-      let jsonText = content.text.trim();
-      const jsonMatch = jsonText.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (jsonMatch) jsonText = jsonMatch[1].trim();
-      data = JSON.parse(jsonText);
+      data = parseGeneratedJson(content.text);
     } catch {
       return { success: false, comparison: null, error: "Failed to parse AI response as JSON", errorStage: "parse" };
     }

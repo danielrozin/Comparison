@@ -4,8 +4,9 @@ import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
-import { ENTITY_CONTENT } from "@/lib/data/entity-content";
+import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { prisma } from "@/lib/db/prisma";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -32,11 +33,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const name = humanizeEntityName(slug);
   const content = ENTITY_CONTENT[slug];
-  const description = content
-    ? content.description.slice(0, 155)
-    : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`;
+
+  // DAN-1169: prefer curated SEO meta from the DB when present (CTR tuning for
+  // striking-distance entity pages). Falls back to the generated defaults below
+  // for the long tail of entities that have no curated meta.
+  let dbMetaTitle: string | null = null;
+  let dbMetaDescription: string | null = null;
+  try {
+    const entity = await prisma.entity.findUnique({
+      where: { slug },
+      select: { metaTitle: true, metaDescription: true },
+    });
+    dbMetaTitle = entity?.metaTitle ?? null;
+    dbMetaDescription = entity?.metaDescription ?? null;
+  } catch {
+    // DB unavailable (build-time / offline) — fall through to generated defaults.
+  }
+
+  const description =
+    dbMetaDescription ||
+    (content
+      ? content.description.slice(0, 155)
+      : `See all comparisons involving ${name}. Compare ${name} against other options across key attributes.`);
+  // DAN-1289: title priority — hand-authored ENTITY_LEDE override (intent-matched,
+  // e.g. Browns) wins outright; then curated DB metaTitle (DAN-1169); then a
+  // generated "vs Every Rival" pattern that gives the long tail a "vs" token +
+  // 2026 freshness instead of the old thin "— All Comparisons".
+  const title =
+    ENTITY_LEDE[slug]?.title ||
+    dbMetaTitle ||
+    `${name} vs Every Rival: Comparisons & Stats 2026`;
   return {
-    title: `${name} — All Comparisons`,
+    title,
     description,
     alternates: { canonical: `${SITE_URL}/entity/${slug}` },
   };
@@ -48,6 +76,11 @@ export default async function EntityPage({ params }: PageProps) {
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
+
+  // DAN-1289: every entity page gets a real intro <p> + a "vs" lede H2. Curated
+  // copy (ENTITY_LEDE) wins; otherwise a templated fallback keeps the 200+
+  // long-tail entity pages from being intro-less thin content.
+  const intro = ENTITY_LEDE[slug]?.intro ?? entityIntroFallback(name);
 
   // Find all comparisons that include this entity (DB + mock fallback)
   const relatedComparisons = await getComparisonsForEntity(slug);
@@ -119,41 +152,61 @@ export default async function EntityPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumbs */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            {categoryDef && (
-              <>
-                <li>/</li>
-                <li>
-                  <Link href={`/category/${categoryDef.slug}`} className="hover:text-primary-600">
-                    {categoryDef.name}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li>/</li>
-            <li className="text-text font-medium">{name}</li>
-          </ol>
-        </nav>
-
-        {/* Hero with Star Rating */}
-        <div className="flex items-start gap-4 mb-8 p-6 bg-white border border-border rounded-2xl">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-3xl font-bold text-primary-700">{name.charAt(0)}</span>
-          </div>
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-display font-black text-text">{name}</h1>
-            <div className="mt-2">
-              <StarRating rating={rating} size="lg" reviewCount={reviewCount} />
+      {/* Entity Hero Banner */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200 flex-wrap">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              {categoryDef && (
+                <>
+                  <li aria-hidden="true" className="text-primary-400">/</li>
+                  <li>
+                    <Link href={`/category/${categoryDef.slug}`} className="hover:text-white transition-colors">
+                      {categoryDef.name}
+                    </Link>
+                  </li>
+                </>
+              )}
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{name}</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <span className="text-3xl sm:text-4xl font-bold text-white" aria-hidden="true">{name.charAt(0)}</span>
             </div>
-            <p className="text-text-secondary mt-2">
-              {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""} available
-            </p>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">{name}</h1>
+              <div className="mt-2 flex items-center gap-3 flex-wrap">
+                <StarRating rating={rating} size="lg" reviewCount={reviewCount} inverted />
+                <span className="text-primary-200 text-sm">
+                  · {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+
+        {/* Intro / lede (DAN-1289) — intent-match prose under the H1 for every
+            entity page. The H2 carries the exact "vs" token + entity name; the
+            <p> carries the "versus {name}" prose Google had no on-page text for. */}
+        <section className="mb-8">
+          <h2 className="text-xl font-bold text-text mb-2">{name} vs Every Rival</h2>
+          <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
+            {intro}
+          </p>
+        </section>
 
         {/* Rich Content Section */}
         {entityContent && (

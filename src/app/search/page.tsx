@@ -60,30 +60,50 @@ function SearchContent() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-display font-bold text-text mb-6">Search Comparisons</h1>
+    <div>
+      {/* Search Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
+            Search Comparisons
+          </h1>
+          <p className="text-primary-200 text-sm sm:text-base mb-8">
+            Find any comparison or type &ldquo;A vs B&rdquo; to generate one instantly.
+          </p>
 
-      {/* Search form */}
-      <form onSubmit={handleSearch} className="mb-8">
-        <div className="relative">
-          <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder='Search comparisons or type "A vs B" to create one...'
-            className="w-full pl-12 pr-28 py-4 border border-border rounded-xl text-lg focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
-          >
-            Search
-          </button>
+          {/* Search form */}
+          <form onSubmit={handleSearch} role="search">
+            <div className="relative">
+              <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder='Try "Messi vs Ronaldo" or "Python vs JavaScript"...'
+                aria-label="Search comparisons"
+                className="w-full pl-12 pr-28 py-4 rounded-xl text-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
+                autoFocus={!query}
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Search
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
       {/* Results */}
       {loading ? (
@@ -195,6 +215,7 @@ function SearchContent() {
           <p>Type a search term or comparison to get started.</p>
         </div>
       )}
+      </div>
     </div>
   );
 }

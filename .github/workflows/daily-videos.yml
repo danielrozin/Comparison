@@ -11,6 +11,10 @@ on:
         description: "Number of videos to generate"
         required: false
         default: "3"
+      slugs:
+        description: "Space/comma-separated slugs to publish explicitly (overrides count; e.g. 'usa-vs-china ww1-vs-ww2'). Leave blank for auto-pick."
+        required: false
+        default: ""
       dry_run:
         description: "Dry run (render only, no upload)"
         required: false
@@ -27,7 +31,7 @@ on:
 jobs:
   generate-and-upload:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     permissions:
       contents: write # Needed to commit updated video-uploads.json
@@ -82,17 +86,50 @@ jobs:
           ELEVENLABS_MODEL_ID: ${{ secrets.ELEVENLABS_MODEL_ID }}
         run: |
           COUNT="${{ github.event.inputs.count || '3' }}"
+          SLUGS="${{ github.event.inputs.slugs || '' }}"
           DRY_RUN_FLAG=""
-          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+          # DAN-1198 (interim brand-quality gate): force dry-run on the daily
+          # scheduled cron until ELEVENLABS_API_KEY is provisioned (DAN-1197).
+          # Without narration the renders are silent + caption-less, which we
+          # must not auto-upload to the brand's public YouTube channel.
+          # Manual workflow_dispatch still honors the dry_run input so operators
+          # can test-render (or test-upload once the secret lands).
+          # REVERT when DAN-1197 lands: delete this schedule branch so cron
+          # uploads again (or simply leave it and re-render slugs manually).
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            DRY_RUN_FLAG="--dry-run"
+            echo "::notice::DAN-1198 — scheduled run forced to dry-run (no YouTube upload) until ELEVENLABS_API_KEY is provisioned (DAN-1197)."
+          elif [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             DRY_RUN_FLAG="--dry-run"
           fi
           RENDERER="${{ github.event.inputs.renderer || 'hyperframes' }}"
           if [ "$RENDERER" = "remotion" ]; then
+            SCRIPT="scripts/daily-video-pipeline.mjs"
             echo "Using Remotion renderer (fallback)"
-            node scripts/daily-video-pipeline.mjs --count $COUNT $DRY_RUN_FLAG
           else
+            SCRIPT="scripts/daily-video-pipeline-hf.mjs"
             echo "Using HyperFrames renderer (default — Data Drift style + ElevenLabs v3 narration)"
-            node scripts/daily-video-pipeline-hf.mjs --count $COUNT $DRY_RUN_FLAG
+          fi
+          # Normalize commas to spaces so either separator works.
+          SLUGS="$(echo "$SLUGS" | tr ',' ' ')"
+          if [ -n "$SLUGS" ]; then
+            echo "Explicit slug mode: $SLUGS"
+            FAILED=""
+            for s in $SLUGS; do
+              echo "::group::Publishing $s"
+              if node "$SCRIPT" --slug "$s" $DRY_RUN_FLAG; then
+                echo "OK: $s"
+              else
+                echo "FAILED: $s"
+                FAILED="$FAILED $s"
+              fi
+              echo "::endgroup::"
+            done
+            if [ -n "$FAILED" ]; then
+              echo "::warning::Some slugs failed:$FAILED"
+            fi
+          else
+            node "$SCRIPT" --count $COUNT $DRY_RUN_FLAG
           fi
 
       - name: Commit and push updated video upload log

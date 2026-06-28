@@ -38,66 +38,14 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: {
-      "@type": "ImageObject",
-      url: `${SITE_URL}/images/logo.png`,
-      width: 200,
-      height: 60,
-    },
-    // image — separate from logo; required for Google Knowledge Panel eligibility.
-    // The OG image serves as the brand's representative image in entity cards.
-    image: {
-      "@type": "ImageObject",
-      url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
-      width: 1200,
-      height: 630,
-    },
+    logo: `${SITE_URL}/images/logo.png`,
     sameAs: socialSameAs(),
-    description: "A Versus B is the internet's most comprehensive comparison platform — 2,900+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more. Every page includes structured data (Schema.org), expert verdicts, community voting, and source citations.",
+    description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     foundingDate: "2024",
     knowsAbout: [
       "Product Comparisons",
       "Technology Reviews",
       "Data-Driven Analysis",
-      "Sports Statistics",
-      "Country Comparisons",
-      "Software Reviews",
-      "Automotive Comparisons",
-      "Health and Wellness Comparisons",
-      "Financial Product Comparisons",
-      "Consumer Electronics Reviews",
-    ],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Comparison API",
-      url: `${SITE_URL}/developers`,
-      description: "REST API for accessing structured comparison data, entity profiles, and trending topics.",
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "customer support",
-      url: `${SITE_URL}/contact`,
-      availableLanguage: "English",
-    },
-    // founder[] — E-E-A-T signal: lets Google/LLMs attribute the platform to real people.
-    // sameAs on each Person links to verified social profiles for Knowledge Graph entity matching.
-    founder: [
-      {
-        "@type": "Person",
-        name: "Daniel Rozin",
-        url: `${SITE_URL}/authors/daniel-rozin`,
-        jobTitle: "Founder & Editor-in-Chief",
-        sameAs: [
-          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
-          "https://www.facebook.com/daniel.rozin.94",
-        ],
-      },
-      {
-        "@type": "Person",
-        name: "Shai And",
-        jobTitle: "Co-Founder & CTO",
-        sameAs: ["https://www.facebook.com/shai.and1"],
-      },
     ],
   };
 }
@@ -112,8 +60,6 @@ export function webSiteSchema() {
     "@type": "WebSite",
     name: SITE_NAME,
     url: SITE_URL,
-    description: "Compare anything side-by-side — 2,900+ data-driven comparisons across technology, sports, software, automotive, health, finance, and more.",
-    inLanguage: "en-US",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -180,26 +126,16 @@ export function comparisonPageSchema(
 
   const schemas: Record<string, unknown>[] = [];
 
-  // 1. Article schema — use TechArticle for tech/software comparisons.
-  // TechArticle gets Google's "Technical Article" rich result type and is preferred
-  // by AI Overviews when surfacing technical comparisons (software, SaaS, hardware).
-  const techCategories = new Set(["technology", "software", "automotive", "gaming"]);
-  const articleType = techCategories.has(comparison.category ?? "")
-    ? ["Article", "TechArticle"]
-    : "Article";
+  // 1. Article schema
   schemas.push({
     "@context": "https://schema.org",
-    "@type": articleType,
+    "@type": "Article",
+    "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
-    inLanguage: "en-US",
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // `mentions` signals to Google/LLMs which entities this article discusses — key GEO signal.
-    mentions: comparison.entities.map((e) => ({
-      ...buildEntityMention(e),
-    })),
     author: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -219,61 +155,23 @@ export function comparisonPageSchema(
       "@type": "WebPage",
       "@id": url,
     },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict"],
+    },
     about: comparison.entities.map((e) => ({
       "@type": entitySchemaType(e.entityType),
       name: e.name,
       description: e.shortDesc,
       ...(e.imageUrl && { image: e.imageUrl }),
     })),
-    // significantLink — tells crawlers which entity profile pages are the authoritative
-    // destinations from this comparison. Strengthens the internal link graph and
-    // improves crawl budget routing to high-value entity pages.
-    significantLink: comparison.entities.map((e) => `${SITE_URL}/entity/${e.slug}`),
-    // abstract — concise one-paragraph summary; AI answer engines (ChatGPT, Perplexity,
-    // Claude) prefer `abstract` over `description` for citation snippets because it is
-    // semantically scoped to "scholarly/article summary" rather than SEO blurb.
-    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
-    // keywords — entity names + category make the article discoverable via entity-search
-    // in LLM training pipelines and Bing/Google entity recognition.
-    keywords: [
-      ...comparison.entities.map((e) => e.name),
-      ...(comparison.category ? [comparison.category] : []),
-      "comparison",
-      "vs",
-    ].join(", "),
-    // wordCount — positive freshness/depth signal; LLMs use it to gauge content density.
-    wordCount: comparison.attributes.length > 0
-      ? Math.max(500, comparison.attributes.length * 80 + comparison.faqs.length * 120)
-      : undefined,
-    // lastReviewed / reviewedBy — explicit freshness signal. AI answer engines
-    // (Perplexity, ChatGPT) prefer pages that declare a review date, as it signals
-    // the data is actively maintained rather than stale or abandoned.
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    // interactionStatistic — exposes real page view counts so search engines and LLMs
-    // can rank content by engagement. Uses schema.org/InteractionCounter.
-    ...(comparison.metadata.viewCount > 0 && {
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: { "@type": "WatchAction" },
-        userInteractionCount: comparison.metadata.viewCount,
-      },
-    }),
-    // isAccessibleForFree — signals to Google that content is not paywalled.
-    // Required for "Flexible Sampling" eligibility and broader rich-result coverage.
-    isAccessibleForFree: true,
-    // license — public declaration of content license for AI training transparency.
-    license: `${SITE_URL}/terms`,
   });
 
   // 2. ItemList for the compared entities
   schemas.push({
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${url}#list`,
     name: comparison.title,
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     numberOfItems: comparison.entities.length,
@@ -288,22 +186,8 @@ export function comparisonPageSchema(
 
   // 3. FAQPage if FAQs exist
   if (comparison.faqs.length > 0) {
-    schemas.push(faqSchema(comparison.faqs));
+    schemas.push(faqSchema(comparison.faqs, `${url}#faq`));
   }
-
-  // 3b. SpeakableSpecification — marks verdict + key-differences sections for
-  // voice assistants and AEO (Answer Engine Optimization). These CSS selectors
-  // target the rendered DOM IDs on the /compare/[slug] page.
-  schemas.push({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": url,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["#verdict", "#key-differences", "#pros-cons"],
-    },
-    url,
-  });
 
   // 4. BreadcrumbList
   const breadcrumbs = [
@@ -313,7 +197,7 @@ export function comparisonPageSchema(
       : []),
     { name: comparison.title, url },
   ];
-  schemas.push(breadcrumbSchema(breadcrumbs));
+  schemas.push(breadcrumbSchema(breadcrumbs, `${url}#breadcrumbs`));
 
   // 5. Dataset for structured comparison data (enriched with citation stats)
   if (comparison.attributes.length > 0) {
@@ -321,6 +205,7 @@ export function comparisonPageSchema(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "Dataset",
+      "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
         ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}.`
@@ -337,9 +222,7 @@ export function comparisonPageSchema(
     });
   }
 
-  // 6. AggregateRating + individual Review per entity from user poll votes + review counts.
-  // Individual Review objects make entities eligible for Google rich-result star snippets;
-  // AggregateRating alone does not qualify without at least one Review present.
+  // 6. AggregateRating per entity from user poll votes + review counts
   if (voteData && voteData.total >= 10) {
     const citation = comparison.citationStats;
     for (const entity of comparison.entities) {
@@ -353,6 +236,7 @@ export function comparisonPageSchema(
       schemas.push({
         "@context": "https://schema.org",
         "@type": schemaType,
+        "@id": `${url}#rating-${entity.slug}`,
         name: entity.name,
         url: `${SITE_URL}/entity/${entity.slug}`,
         ...(entity.imageUrl && { image: entity.imageUrl }),
@@ -364,49 +248,8 @@ export function comparisonPageSchema(
           ratingCount: entityVotes,
           ...(citation?.reviewsAnalyzed && { reviewCount: citation.reviewsAnalyzed }),
         },
-        // Individual Review — required alongside AggregateRating for Google rich-result eligibility.
-        // Uses the comparison page itself as the review body; author is the platform.
-        review: {
-          "@type": "Review",
-          reviewRating: {
-            "@type": "Rating",
-            ratingValue: ratingValue.toFixed(1),
-            bestRating: 5,
-            worstRating: 1,
-          },
-          author: {
-            "@type": "Organization",
-            name: SITE_NAME,
-            url: SITE_URL,
-          },
-          reviewBody:
-            comparison.shortAnswer ||
-            `Comparison of ${entity.name} based on ${comparison.attributes.length} attributes across ${comparison.entities.map((e) => e.name).join(" vs ")}.`,
-          url,
-        },
       });
     }
-  }
-
-  // 7. DefinedTermSet for key differences — AEO signal: marks each attribute
-  // as a defined term so LLMs (ChatGPT, Perplexity, Google AI Overviews) can
-  // extract structured Q&A pairs directly from schema, not just from prose.
-  if (comparison.keyDifferences.length > 0) {
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "DefinedTermSet",
-      name: `Key Differences: ${comparison.entities.map((e) => e.name).join(" vs ")}`,
-      url,
-      hasDefinedTerm: comparison.keyDifferences.map((kd) => ({
-        "@type": "DefinedTerm",
-        name: kd.label,
-        description:
-          comparison.entities.length >= 2
-            ? `${comparison.entities[0]?.name}: ${kd.entityAValue} | ${comparison.entities[1]?.name}: ${kd.entityBValue}`
-            : kd.entityAValue,
-        inDefinedTermSet: url,
-      })),
-    });
   }
 
   return schemas;
@@ -517,19 +360,14 @@ function buildMultiEntityGraph(
     })),
   };
 
-  const techCategoriesMulti = new Set(["technology", "software", "automotive", "gaming"]);
   const article: Record<string, unknown> = {
-    "@type": techCategoriesMulti.has(comparison.category ?? "")
-      ? ["Article", "TechArticle"]
-      : "Article",
+    "@type": "Article",
+    "@id": `${url}#article`,
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
-    inLanguage: "en-US",
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    // `mentions` — entity graph signals for GEO (same pattern as 2-entity layout)
-    mentions: comparison.entities.map((e) => buildEntityMention(e)),
     author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     publisher: {
       "@type": "Organization",
@@ -539,28 +377,11 @@ function buildMultiEntityGraph(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["#verdict"],
+    },
     mainEntity: { "@id": itemListId },
-    ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
-    keywords: [
-      ...comparison.entities.map((e) => e.name),
-      ...(comparison.category ? [comparison.category] : []),
-      "comparison",
-      "vs",
-    ].join(", "),
-    wordCount: comparison.attributes.length > 0
-      ? Math.max(500, comparison.attributes.length * 80 + comparison.faqs.length * 120)
-      : undefined,
-    ...(comparison.metadata.viewCount > 0 && {
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: { "@type": "WatchAction" },
-        userInteractionCount: comparison.metadata.viewCount,
-      },
-    }),
-    isAccessibleForFree: true,
-    license: `${SITE_URL}/terms`,
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   };
 
   const breadcrumbs = [
@@ -572,6 +393,7 @@ function buildMultiEntityGraph(
   ];
   const breadcrumbList = {
     "@type": "BreadcrumbList",
+    "@id": `${url}#breadcrumbs`,
     itemListElement: breadcrumbs.map((item, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -590,41 +412,14 @@ function buildMultiEntityGraph(
   if (comparison.faqs.length > 0) {
     graph.push({
       "@type": "FAQPage",
-      mainEntity: comparison.faqs.map((faq) => ({
+      "@id": `${url}#faq`,
+      mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: { "@type": "Answer", text: faq.answer },
       })),
     });
   }
-
-  // DefinedTermSet for multi-entity key differences — mirrors the 2-entity path.
-  if (comparison.keyDifferences.length > 0) {
-    graph.push({
-      "@type": "DefinedTermSet",
-      name: `Key Differences: ${comparison.entities.map((e) => e.name).join(" vs ")}`,
-      url,
-      hasDefinedTerm: comparison.keyDifferences.map((kd) => ({
-        "@type": "DefinedTerm",
-        name: kd.label,
-        description: kd.values
-          ? kd.values.map((v, i) => `${comparison.entities[i]?.name ?? i}: ${v}`).join(" | ")
-          : `${comparison.entities[0]?.name}: ${kd.entityAValue} | ${comparison.entities[1]?.name}: ${kd.entityBValue}`,
-        inDefinedTermSet: url,
-      })),
-    });
-  }
-
-  // SpeakableSpecification for multi-entity pages — same DOM IDs as 2-entity layout.
-  graph.push({
-    "@type": "WebPage",
-    "@id": url,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["#verdict", "#key-differences", "#pros-cons"],
-    },
-    url,
-  });
 
   return {
     "@context": "https://schema.org",
@@ -672,14 +467,60 @@ export function videoObjectSchema(opts: {
 }
 
 // ============================================================
+// Self-hosted VideoObject schema (DAN-1285)
+// ============================================================
+//
+// For /compare/<slug> pages that play a self-hosted `public/videos/<slug>.mp4`
+// (no YouTube upload yet), emit a VideoObject whose contentUrl points at the
+// already-served mp4 so Google Video / AI Overviews can index it. Independent
+// of the credential-gated narrated-YouTube path (DAN-1197). `thumbnailUrl` is
+// REQUIRED by Google for video rich results — we reuse the per-page OG image.
+
+export function selfHostedVideoObjectSchema(opts: {
+  slug: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  uploadDate: string;
+  /** ISO 8601 duration; data files are ~6 stats ≈ 12.5s → PT13S. */
+  duration?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: `${opts.title} — Quick Comparison`,
+    description: opts.description,
+    thumbnailUrl: [opts.thumbnailUrl],
+    uploadDate: opts.uploadDate,
+    contentUrl: `${SITE_URL}/videos/${opts.slug}.mp4`,
+    duration: opts.duration || "PT13S",
+    isFamilyFriendly: true,
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/logo.png`,
+      },
+    },
+    potentialAction: {
+      "@type": "WatchAction",
+      target: `${SITE_URL}/compare/${opts.slug}`,
+    },
+  };
+}
+
+// ============================================================
 // FAQ schema
 // ============================================================
 
-export function faqSchema(faqs: FAQData[]) {
+export function faqSchema(faqs: FAQData[], id?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
+    ...(id && { "@id": id }),
+    mainEntity: faqs.slice(0, 10).map((faq) => ({
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
@@ -694,10 +535,11 @@ export function faqSchema(faqs: FAQData[]) {
 // Breadcrumb schema
 // ============================================================
 
-export function breadcrumbSchema(items: { name: string; url: string }[]) {
+export function breadcrumbSchema(items: { name: string; url: string }[], id?: string) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    ...(id && { "@id": id }),
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -721,7 +563,6 @@ export function categoryPageSchema(category: CategoryData) {
       name: category.name,
       description: category.description,
       url,
-      inLanguage: "en-US",
       mainEntity: {
         "@type": "ItemList",
         name: `${category.name} Comparisons`,
@@ -732,20 +573,6 @@ export function categoryPageSchema(category: CategoryData) {
           name: comp.title,
           url: `${SITE_URL}/compare/${comp.slug}`,
         })),
-      },
-      // hasPart — explicit article membership for each top comparison in this category.
-      // Reinforces the category→comparison hierarchy in the knowledge graph so AI
-      // engines correctly attribute comparison content to its parent category topic.
-      hasPart: category.topComparisons.slice(0, 10).map((comp) => ({
-        "@type": "Article",
-        name: comp.title,
-        url: `${SITE_URL}/compare/${comp.slug}`,
-        isPartOf: { "@type": "CollectionPage", url },
-      })),
-      // speakable — marks the category name/description for voice assistants.
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ["h1", ".category-description"],
       },
     },
     breadcrumbSchema([
@@ -776,116 +603,6 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
-    // potentialAction ReadAction — tells AI crawlers this page is designed to be
-    // read and understood, distinguishing it from interactive/transactional pages.
-    // Increases citation probability in AI Overviews for entity queries.
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
-  };
-}
-
-// ============================================================
-// ProfilePage schema — wraps entity pages for Knowledge Panel signals.
-// Google uses ProfilePage to understand that a URL is "about" a named entity.
-// Emitting this alongside the entity schema strengthens entity disambiguation
-// and increases the chance of our entity pages appearing in AI Overview citations.
-// ============================================================
-
-export function profilePageSchema(entity: {
-  name: string;
-  slug: string;
-  shortDesc: string | null;
-  entityType: string;
-  imageUrl: string | null;
-  comparisonCount?: number;
-  topComparisons?: { slug: string; title: string }[];
-}) {
-  const url = `${SITE_URL}/entity/${entity.slug}`;
-  const schemaType = entitySchemaType(entity.entityType);
-
-  // subjectOf — bidirectional knowledge graph edge: entity → comparisons.
-  // This tells Google/LLMs that the entity is the subject of multiple comparison
-  // articles, creating a rich entity graph that improves AI Overview citation quality.
-  const subjectOf = (entity.topComparisons ?? []).slice(0, 10).map((c) => ({
-    "@type": "Article",
-    headline: c.title,
-    url: `${SITE_URL}/compare/${c.slug}`,
-  }));
-
-  const mainEntity: Record<string, unknown> = {
-    "@type": schemaType,
-    "@id": url,
-    name: entity.name,
-    url,
-    ...(entity.shortDesc && { description: entity.shortDesc }),
-    ...(entity.imageUrl && { image: entity.imageUrl }),
-    ...(subjectOf.length > 0 && { subjectOf }),
-    // potentialAction ReadAction — tells AI crawlers this is an informational
-    // resource about the named entity, not a transactional page.
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
-  };
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    name: `${entity.name} — Comparisons & Profile`,
-    url,
-    dateModified: new Date().toISOString().slice(0, 10),
-    inLanguage: "en-US",
-    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
-    // speakable — marks the entity name/description for voice assistants + AEO.
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".entity-description", ".entity-short-desc"],
-    },
-    breadcrumb: {
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: entity.name, item: url },
-      ],
-    },
-    mainEntity,
-    ...(entity.comparisonCount && entity.comparisonCount > 0 && {
-      about: {
-        "@type": "ItemList",
-        name: `Comparisons involving ${entity.name}`,
-        numberOfItems: entity.comparisonCount,
-        url: `${SITE_URL}/entity/${entity.slug}`,
-      },
-    }),
-  };
-}
-
-// ============================================================
-// SiteNavigation schema — emitted in the global layout.
-// Tells crawlers (Googlebot, LLM bots) the primary navigation structure,
-// improving crawl budget allocation to high-value category pages.
-// ============================================================
-
-export function siteNavigationSchema(categories: { name: string; slug: string }[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "SiteLinksSearchBox",
-    url: SITE_URL,
-    potentialAction: [
-      {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={query}` },
-        "query-input": "required name=query",
-      },
-    ],
-    hasPart: categories.map((cat) => ({
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/category/${cat.slug}`,
-      name: `${cat.name} Comparisons`,
-      url: `${SITE_URL}/category/${cat.slug}`,
-    })),
   };
 }
 
@@ -921,82 +638,8 @@ export function aggregateRatingSchema(entity: {
 }
 
 // ============================================================
-// HowTo schema for step-by-step blog articles (AEO)
-// ============================================================
-
-/**
- * Generates HowTo JSON-LD for blog articles whose title starts with "How to".
- * AI answer engines extract HowTo steps directly from schema — higher citation
- * rate than prose extraction. Steps are derived from heading structure via simple
- * regex on markdown content (h2 headings become steps).
- */
-export function howToSchemaFromBlog(opts: {
-  title: string;
-  description: string;
-  url: string;
-  content: string;
-}) {
-  if (!/^how to /i.test(opts.title)) return null;
-
-  // Extract h2 headings from markdown content as step names.
-  const headingMatches = opts.content.match(/^##\s+(.+)$/gm) ?? [];
-  const steps = headingMatches
-    .map((h) => h.replace(/^##\s+/, "").trim())
-    .filter((s) => s.length > 0 && !/introduction|conclusion|summary|overview/i.test(s))
-    .slice(0, 10);
-
-  if (steps.length < 2) return null;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: opts.title,
-    description: opts.description,
-    url: opts.url,
-    step: steps.map((name, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name,
-      url: `${opts.url}#step-${i + 1}`,
-    })),
-  };
-}
-
-// ============================================================
 // Helpers
 // ============================================================
-
-/**
- * Builds a rich entity mention object for use in Article `mentions` arrays.
- * Adds type-specific enrichments: Country gets containedInPlace, Event/War gets
- * `@type: "Event"` override so Google can link to KG event records.
- */
-function buildEntityMention(e: {
-  entityType: string;
-  name: string;
-  slug: string;
-  shortDesc?: string | null;
-  imageUrl?: string | null;
-}): Record<string, unknown> {
-  const base: Record<string, unknown> = {
-    "@type": entitySchemaType(e.entityType),
-    name: e.name,
-    url: `${SITE_URL}/entity/${e.slug}`,
-    ...(e.shortDesc && { description: e.shortDesc }),
-    ...(e.imageUrl && { image: e.imageUrl }),
-  };
-
-  if (e.entityType === "country") {
-    base["containedInPlace"] = { "@type": "Place", name: "Earth" };
-  }
-
-  if (e.entityType === "war" || e.entityType === "event") {
-    // Event entities get superEvent for hierarchy context — helps KG entity matching.
-    base["superEvent"] = { "@type": "Event", name: "World History" };
-  }
-
-  return base;
-}
 
 function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
@@ -1013,72 +656,4 @@ function entitySchemaType(entityType: string): string {
     place: "Place",
   };
   return map[entityType] || "Thing";
-}
-
-// ============================================================
-// ClaimReview schema — AEO / Google Fact Check signal
-//
-// When a comparison has a clear verdict (A is better), emitting ClaimReview
-// tells Google Fact Check Lab and AI answer engines that we've evaluated the
-// claim. This increases citation likelihood in AI Overviews and Perplexity.
-// ============================================================
-
-export function claimReviewSchema(opts: {
-  slug: string;
-  verdict: string;
-  entityA: string;
-  entityB: string;
-  publishedAt?: string | null;
-  updatedAt?: string | null;
-}): Record<string, unknown> | null {
-  if (!opts.verdict || !opts.entityA || !opts.entityB) return null;
-
-  const url = `${SITE_URL}/compare/${opts.slug}`;
-  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
-
-  // Map verdict text to a normalised rating value Google Fact Check understands.
-  const verdictLower = opts.verdict.toLowerCase();
-  let ratingValue: string;
-  let ratingExplanation: string;
-
-  if (verdictLower.includes(opts.entityA.toLowerCase())) {
-    ratingValue = "TRUE";
-    ratingExplanation = opts.verdict;
-  } else if (verdictLower.includes(opts.entityB.toLowerCase())) {
-    ratingValue = "FALSE";
-    ratingExplanation = `${opts.entityB} is better. ${opts.verdict}`;
-  } else if (verdictLower.includes("tie") || verdictLower.includes("draw") || verdictLower.includes("depends")) {
-    ratingValue = "MIXTURE";
-    ratingExplanation = opts.verdict;
-  } else {
-    ratingValue = "MIXTURE";
-    ratingExplanation = opts.verdict;
-  }
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ClaimReview",
-    url,
-    claimReviewed: claimText,
-    datePublished: opts.publishedAt ?? undefined,
-    dateModified: opts.updatedAt ?? undefined,
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    itemReviewed: {
-      "@type": "Claim",
-      author: { "@type": "Organization", name: "Public Opinion" },
-      datePublished: opts.publishedAt ?? undefined,
-      claimInterpreter: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue,
-      alternateName: ratingExplanation,
-      bestRating: "TRUE",
-      worstRating: "FALSE",
-    },
-  };
 }

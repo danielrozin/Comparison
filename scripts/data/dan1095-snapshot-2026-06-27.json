@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-27",
+  "tPlus": 15,
+  "measuredBuckets": {
+    "top10": 0,
+    "p11_20": 23,
+    "p21_50": 495
+  },
+  "baseline": {
+    "top10": 0,
+    "p11_20": 10,
+    "p21_50": 307
+  },
+  "movers": [
+    {
+      "keyword": "cars like mercedes",
+      "was": 29,
+      "now": 18,
+      "vol": 40
+    },
+    {
+      "keyword": "why is ww2 more famous than ww1",
+      "was": 28,
+      "now": 20,
+      "vol": 30
+    }
+  ],
+  "total": 518,
+  "upwardMigration": true
+}
