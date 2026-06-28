@@ -20,9 +20,11 @@ function avatarColor(letter: string) {
 function ComparisonCard({
   comp,
   sourceSlug,
+  isTrending,
 }: {
   comp: RelatedComparison;
   sourceSlug: string;
+  isTrending?: boolean;
 }) {
   const parts = comp.title.split(/\s+vs\.?\s+/i);
   const colorA = avatarColor((parts[0] || "A").charAt(0));
@@ -31,8 +33,13 @@ function ComparisonCard({
     <Link
       href={`/compare/${comp.slug}`}
       onClick={() => trackRelatedComparisonClick(sourceSlug, comp.slug)}
-      className="flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all duration-200 group shrink-0 lg:shrink"
+      className="flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all duration-200 group shrink-0 lg:shrink relative overflow-hidden"
     >
+      {/* Hot accent stripe */}
+      {isTrending && (
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-400 to-rose-500" />
+      )}
+
       <div className="flex -space-x-2 flex-shrink-0">
         <div className={`w-8 h-8 ${colorA.bg} rounded-full flex items-center justify-center text-xs font-bold ${colorA.text} ring-2 ring-white`}>
           {(parts[0] || "A").charAt(0).toUpperCase()}
@@ -45,11 +52,18 @@ function ComparisonCard({
         <p className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-snug">
           {comp.title}
         </p>
-        {comp.category && (
-          <span className="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-border/60 text-text-secondary capitalize mt-0.5">
-            {comp.category}
-          </span>
-        )}
+        <div className="flex items-center gap-1.5 mt-0.5">
+          {comp.category && (
+            <span className="inline-block text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-border/60 text-text-secondary capitalize">
+              {comp.category}
+            </span>
+          )}
+          {isTrending && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-orange-50 text-orange-600 border border-orange-100">
+              🔥 Hot
+            </span>
+          )}
+        </div>
       </div>
       <svg
         className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-600 group-hover:translate-x-0.5 transition-all flex-shrink-0"
@@ -94,9 +108,9 @@ export function RelatedComparisonsSidebar({
             <h3 className="text-sm font-bold text-text">Related Comparisons</h3>
           </div>
           <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6">
-            {items.map((comp) => (
+            {items.map((comp, i) => (
               <div key={comp.slug} className="snap-start min-w-[260px] max-w-[300px]">
-                <ComparisonCard comp={comp} sourceSlug={sourceSlug} />
+                <ComparisonCard comp={comp} sourceSlug={sourceSlug} isTrending={i < 2} />
               </div>
             ))}
           </div>
@@ -116,11 +130,12 @@ export function RelatedComparisonsSidebar({
                 <h3 className="text-sm font-bold text-text">Related Comparisons</h3>
               </div>
               <div className="space-y-2">
-                {items.map((comp) => (
+                {items.map((comp, i) => (
                   <ComparisonCard
                     key={comp.slug}
                     comp={comp}
                     sourceSlug={sourceSlug}
+                    isTrending={i < 2}
                   />
                 ))}
               </div>

@@ -36,28 +36,60 @@ export function FeaturedComparisons({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((item) => {
+        {items.map((item, idx) => {
           const parts = item.anchor.split(/\s+vs\.?\s+/i);
+          const gradients = [
+            "from-primary-500 to-indigo-600",
+            "from-violet-500 to-purple-600",
+            "from-rose-500 to-pink-600",
+            "from-emerald-500 to-teal-600",
+            "from-amber-500 to-orange-600",
+            "from-cyan-500 to-sky-600",
+          ];
+          const grad = gradients[idx % gradients.length];
           return (
             <Link
               key={item.slug}
               href={`/compare/${item.slug}`}
-              className="group flex flex-col p-5 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md transition-all"
+              className="group flex flex-col bg-white border border-border rounded-2xl overflow-hidden hover:border-primary-200 hover:shadow-xl transition-all duration-300"
             >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="flex -space-x-2">
-                  <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
-                    {(parts[0] || "A").charAt(0)}
+              {/* Gradient accent header */}
+              <div className={`h-1.5 bg-gradient-to-r ${grad}`} />
+
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="flex -space-x-2 flex-shrink-0">
+                    <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-sm font-bold text-primary-700 ring-2 ring-white">
+                      {(parts[0] || "A").charAt(0).toUpperCase()}
+                    </div>
+                    <div className="w-10 h-10 bg-accent-100 rounded-full flex items-center justify-center text-sm font-bold text-accent-600 ring-2 ring-white">
+                      {(parts[1] || "B").charAt(0).toUpperCase()}
+                    </div>
                   </div>
-                  <div className="w-9 h-9 bg-accent-100 rounded-full flex items-center justify-center text-sm font-bold text-accent-600 ring-2 ring-white">
-                    {(parts[1] || "B").charAt(0)}
+                  <div className="flex-1 min-w-0">
+                    <span className="font-bold text-text group-hover:text-primary-700 transition-colors block leading-snug">
+                      {item.anchor}
+                    </span>
+                    {item.categories?.[0] && (
+                      <span className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 capitalize">
+                        {item.categories[0]}
+                      </span>
+                    )}
+                  </div>
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200`}>
+                    <span className="text-[8px] font-black text-white leading-none">VS</span>
                   </div>
                 </div>
-                <span className="font-semibold text-text group-hover:text-primary-700 transition-colors">
-                  {item.anchor}
-                </span>
+                <p className="text-sm text-text-secondary leading-relaxed">{item.blurb}</p>
+                <div className="mt-3 pt-3 border-t border-border/50 flex items-center justify-end">
+                  <span className="text-xs font-semibold text-primary-600 flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
+                    Compare now
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
+                </div>
               </div>
-              <p className="text-sm text-text-secondary leading-relaxed">{item.blurb}</p>
             </Link>
           );
         })}

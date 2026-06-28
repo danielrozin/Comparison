@@ -133,6 +133,23 @@ export default async function HomePage() {
                 </Link>
               ))}
             </div>
+
+            {/* Category pill links */}
+            <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+              <p className="text-[11px] font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {CATEGORIES.slice(0, 10).map((cat) => (
+                  <Link
+                    key={cat.slug}
+                    href={`/category/${cat.slug}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
+                  >
+                    <span className="text-sm leading-none group-hover:scale-110 transition-transform inline-block">{cat.icon}</span>
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
