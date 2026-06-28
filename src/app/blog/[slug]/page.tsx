@@ -283,6 +283,7 @@ export default async function BlogPostPage({
         },
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
       logo: {
@@ -321,6 +322,8 @@ export default async function BlogPostPage({
     reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     isAccessibleForFree: true,
     license: `${SITE_URL}/terms`,
+    copyrightYear: publishedDate ? publishedDate.getFullYear() : new Date().getFullYear(),
+    copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   };
 
   const breadcrumbs = [

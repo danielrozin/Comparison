@@ -36,6 +36,9 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    // Stable @id so all JSON-LD graphs across the site refer to the same node.
+    // Crawlers merge nodes with matching @id, building a unified entity graph.
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
     logo: `${SITE_URL}/images/logo.png`,
@@ -175,6 +178,8 @@ export function comparisonPageSchema(
 
   // 1. Article schema
   const hasFaqs = comparison.faqs.length > 0;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`;
+  const viewCount = comparison.metadata.viewCount;
   schemas.push({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -182,31 +187,30 @@ export function comparisonPageSchema(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    // image lets Google/AI models extract a representative visual for the page
+    image: {
+      "@type": "ImageObject",
+      url: ogImage,
+      width: 1200,
+      height: 630,
+    },
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: SITE_URL,
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo.png`,
-      },
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
       sameAs: socialSameAs(),
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": url,
-    },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["#verdict"],
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#verdict"] },
+    // interactionStatistic exposes real view-count data to AI crawlers
+    ...(viewCount > 0 && {
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ReadAction",
+        userInteractionCount: viewCount,
+      },
+    }),
     about: comparison.entities.map((e) => ({
       "@type": entitySchemaType(e.entityType),
       name: e.name,
@@ -214,6 +218,8 @@ export function comparisonPageSchema(
       ...(e.imageUrl && { image: e.imageUrl }),
       ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
       sameAs: entityWikipediaSameAs(e.name),
+      // subjectOf links back to the comparison article (bidirectional entity↔article edge)
+      subjectOf: { "@type": "Article", "@id": `${url}#article` },
     })),
     // mentions cross-links entity ProfilePages so AI crawlers can follow the
     // entity graph from comparison articles to dedicated entity pages.
@@ -363,6 +369,8 @@ function buildMultiEntityGraph(
   );
   const citation = comparison.citationStats;
   const realVotes = voteData && voteData.total >= 10 ? voteData : null;
+  const multiOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`;
+  const multiViewCount = comparison.metadata.viewCount;
 
   const itemNodes = comparison.entities.map((entity, i) => {
     const schemaType = entitySchemaType(entity.entityType);
@@ -376,6 +384,7 @@ function buildMultiEntityGraph(
     if (entity.imageUrl) node.image = entity.imageUrl;
     const wikiSameAs = entityWikipediaSameAs(entity.name);
     if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
+    node.subjectOf = { "@type": "Article", "@id": `${url}#article` };
 
     if (schemaType === "SoftwareApplication") {
       node.applicationCategory = "BusinessApplication";
@@ -427,23 +436,28 @@ function buildMultiEntityGraph(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    image: { "@type": "ImageObject", url: multiOgImage, width: 1200, height: 630 },
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
       logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["#verdict"],
-    },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["#verdict"] },
+    ...(multiViewCount > 0 && {
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ReadAction",
+        userInteractionCount: multiViewCount,
+      },
+    }),
     mainEntity: { "@id": itemListId },
-    // mentions cross-links entity profile pages for AI crawler entity resolution.
     mentions: comparison.entities.map((e) => ({
       "@type": "Thing",
       name: e.name,
