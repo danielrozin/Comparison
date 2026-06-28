@@ -101,16 +101,27 @@ export function webSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
     url: SITE_URL,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+    description: "The internet's most comprehensive comparison platform — data-driven, expert-reviewed comparisons across technology, sports, countries, products, and more.",
+    inLanguage: "en-US",
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    potentialAction: [
+      {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+        },
+        "query-input": "required name=search_term_string",
       },
-      "query-input": "required name=search_term_string",
-    },
+      {
+        "@type": "ReadAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{slug}` },
+      },
+    ],
   };
 }
 
@@ -179,15 +190,23 @@ export function webApplicationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
+    "@id": `${SITE_URL}/#webapplication`,
     name: SITE_NAME,
     url: SITE_URL,
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     description: "Interactive comparison platform — compare anything side-by-side: products, technology, countries, sports, and more.",
+    abstract: "Data-driven comparison tool covering 3,000+ topics with attribute tables, verdicts, community votes, and structured schema markup.",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    creativeWorkStatus: "Published",
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
     },
     featureList: [
       "Head-to-head comparisons",
@@ -195,10 +214,12 @@ export function webApplicationSchema() {
       "Structured attribute tables",
       "Community voting",
       "Category browsing",
+      "Entity profiles",
+      "Blog articles",
+      "Product reviews (SmartReview)",
     ],
     browserRequirements: "Requires JavaScript. Compatible with all modern browsers.",
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
+    keywords: "comparison tool, compare anything, product comparison, vs tool, A versus B",
   };
 }
 

@@ -28,10 +28,17 @@ export default async function HomePage() {
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${SITE_URL}/#homepage`,
     name: `${SITE_NAME} — Compare Anything`,
     description: `The internet's most comprehensive comparison platform with ${totalCount.toLocaleString()}+ side-by-side comparisons across sports, technology, products, software, automotive, health, finance, countries, and more.`,
+    abstract: "Data-driven side-by-side comparisons across 17+ categories with structured attributes, verdicts, community votes, and expert-reviewed analysis.",
     url: SITE_URL,
     inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     about: CATEGORIES.map((c) => ({
       "@type": "Thing",
       name: c.name,
