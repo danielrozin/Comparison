@@ -916,14 +916,19 @@ export function profilePageSchema(entity: {
     },
   };
 
+  const today = new Date().toISOString().slice(0, 10);
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     name: `${entity.name} — Comparisons & Profile`,
     url,
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: today,
+    lastReviewed: today,
     inLanguage: "en-US",
-    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".entity-description", ".entity-short-desc"],

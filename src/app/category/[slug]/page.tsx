@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { CATEGORIES, SITE_URL, getSubcategoriesForSlug } from "@/lib/utils/constants";
+import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
@@ -131,8 +131,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     "@type": "CollectionPage",
     name: `${category.name} Comparisons`,
     description: `Compare ${category.name} side-by-side — data-driven comparisons with structured attributes, verdicts, and community votes.`,
+    abstract: `Data-driven ${category.name} comparisons with attribute tables, verdicts, and community votes.`,
     url: `${SITE_URL}/category/${slug}`,
-    isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     mainEntity: {
       "@type": "ItemList",
       name: `${category.name} Comparisons`,
@@ -148,6 +154,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".category-description"],
     },
+    keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} 2026`,
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 

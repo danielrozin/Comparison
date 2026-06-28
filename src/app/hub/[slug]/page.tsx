@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
@@ -56,8 +56,14 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     "@type": "CollectionPage",
     name: hub.h1,
     description: hub.description,
+    abstract: hub.description,
     url: hubUrl,
-    isPartOf: { "@type": "WebSite", name: "A Versus B", url: SITE_URL },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    lastReviewed: new Date().toISOString().slice(0, 10),
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".hub-description"],
