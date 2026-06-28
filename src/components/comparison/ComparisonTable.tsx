@@ -356,7 +356,7 @@ function LegacyTable({
                       key={attr.id}
                       className={`${
                         i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
-                      } ${i % 2 === 0 ? "bg-gray-50/50" : ""} hover:bg-primary-50/30 transition-colors`}
+                      } ${i % 2 === 0 ? "bg-gray-50/50" : ""} hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_#6366f1] transition-all duration-150`}
                     >
                       <td className="px-5 py-3 text-sm font-medium text-text">
                         {attr.name}

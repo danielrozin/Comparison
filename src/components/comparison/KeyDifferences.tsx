@@ -154,7 +154,7 @@ export function KeyDifferencesBlock({
                 : diff.winner === "b"
                 ? "border-l-[3px] border-l-purple-500"
                 : ""
-            } hover:bg-gray-50/50 transition-colors duration-200`}
+            } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row`}
             style={{ animationDelay: `${i * 60}ms` }}
           >
             {/* Entity A Value */}
@@ -172,7 +172,7 @@ export function KeyDifferencesBlock({
             </div>
 
             {/* Label */}
-            <div className="px-4 py-3 text-xs font-medium text-text-secondary text-center min-w-[120px] bg-surface-alt/50 self-center">
+            <div className="px-4 py-3 text-xs font-semibold text-text-secondary text-center min-w-[120px] bg-surface-alt/50 group-hover/row:bg-surface-alt self-center transition-colors duration-150">
               {diff.label}
             </div>
 
