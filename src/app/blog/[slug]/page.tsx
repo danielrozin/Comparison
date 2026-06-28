@@ -317,9 +317,10 @@ export default async function BlogPostPage({
         url: `${SITE_URL}/compare/${s}`,
       })),
     }),
+    creativeWorkStatus: "Published",
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-    reviewedBy: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isAccessibleForFree: true,
     license: `${SITE_URL}/terms`,
     copyrightYear: publishedDate ? publishedDate.getFullYear() : new Date().getFullYear(),

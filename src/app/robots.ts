@@ -14,7 +14,6 @@ export default function robots(): MetadataRoute.Robots {
           "/embed/",
           "/developers/dashboard",
           "/survey",
-          "/password-manager-comparison/",
           "/*?*sort=",
           "/*?*page=",
           "/*?*ref=",

@@ -85,22 +85,30 @@ export default async function AlternativesPage({ params }: PageProps) {
     })),
   };
 
+  const today = new Date().toISOString().slice(0, 10);
   const alternativesArticleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": ["Article", "TechArticle"],
     headline: `Alternatives to ${name}`,
     description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
+    abstract: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
     url: `${SITE_URL}/alternatives/${slug}`,
-    dateModified: new Date().toISOString().slice(0, 10),
-    author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
+    inLanguage: "en-US",
+    creativeWorkStatus: "Published",
+    isAccessibleForFree: true,
+    dateModified: today,
+    lastReviewed: today,
+    keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives 2026`,
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}` },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".alternatives-intro"],
     },
     accessMode: ["textual"],
-    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     about: {
       "@type": "Thing",
       name,
