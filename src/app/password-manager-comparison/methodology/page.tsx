@@ -19,22 +19,27 @@ const LAST_UPDATED = "2026-05-22";
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": ["Article", "TechArticle"],
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
+  abstract: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  inLanguage: "en-US",
+  creativeWorkStatus: "Published",
+  isAccessibleForFree: true,
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
+  lastReviewed: LAST_UPDATED,
+  keywords: "password manager methodology, how we test password managers, security benchmark, review methodology",
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
     "@type": "Person",
+    "@id": `${SITE_URL}/authors/daniel-rozin#person`,
     name: "Daniel Rozin",
     url: `${SITE_URL}/authors/daniel-rozin`,
   },
-  publisher: {
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-  },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebPage", url: `${SITE_URL}/password-manager-comparison` },
   license: "https://creativecommons.org/licenses/by/4.0/",
 };
