@@ -37,6 +37,8 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": DESCRIPTION,
+    "citation_publication_date": "2026-06-01",
+    "citation_online_date": "2026-06-01",
     "DC.title": TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -44,6 +46,7 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": CANONICAL,
+    "DC.date": "2026-06-01",
   },
 };
 
@@ -79,8 +82,10 @@ export default async function B2BSaaSStudyPage() {
     description: DESCRIPTION,
     url: CANONICAL,
     creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    license: `${SITE_URL}/terms`,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
+    datePublished: "2026-06-01",
     dateModified: study.updatedAt,
     measurementTechnique:
       "Aggregation of published B2B software head-to-head comparison pages on aversusb.net",
@@ -98,15 +103,21 @@ export default async function B2BSaaSStudyPage() {
     url: CANONICAL,
     image: ogImage,
     inLanguage: "en-US",
+    alternativeHeadline: "Which B2B SaaS Tools Are Compared Most in 2026? — A Versus B Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    datePublished: "2026-06-01",
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    accessMode: ["textual"],
     keywords: "B2B SaaS comparison, software comparison report 2026, SaaS benchmarks, data study",
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   };
 
   const citation = `${SITE_NAME}, "The B2B SaaS Comparison Report 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;

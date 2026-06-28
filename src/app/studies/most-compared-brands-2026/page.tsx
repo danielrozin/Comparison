@@ -37,6 +37,8 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": DESCRIPTION,
+    "citation_publication_date": "2026-05-15",
+    "citation_online_date": "2026-05-15",
     "DC.title": TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -44,6 +46,7 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": CANONICAL,
+    "DC.date": "2026-05-15",
   },
 };
 
@@ -86,8 +89,10 @@ export default async function MostComparedStudyPage() {
     description: DESCRIPTION,
     url: CANONICAL,
     creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
-    license: `${SITE_URL}/terms`,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
+    datePublished: "2026-05-15",
     dateModified: study.updatedAt,
     measurementTechnique:
       "Aggregation of published head-to-head comparison pages on aversusb.net",
@@ -104,15 +109,21 @@ export default async function MostComparedStudyPage() {
     url: CANONICAL,
     image: ogImage,
     inLanguage: "en-US",
+    alternativeHeadline: "What Brands Do People Compare Most in 2026? — A Versus B Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    datePublished: "2026-05-15",
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    accessMode: ["textual"],
     keywords: "most compared brands 2026, brand comparison data, popular comparisons, data study, top brands",
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   };
 
   const citation = `${SITE_NAME}, "The Most-Compared Brands of 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;
