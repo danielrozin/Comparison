@@ -46,6 +46,9 @@ export default async function sitemap({
     const ABOUT_DATE = "2026-04-01";
     const STUDIES_DATE = "2026-05-01";
 
+    const COMPARISONS_DATE = "2026-06-01";
+    const FAQ_DATE = "2026-06-01";
+
     const staticPages: MetadataRoute.Sitemap = [
       { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
       { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
@@ -65,6 +68,29 @@ export default async function sitemap({
       { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/studies/investing-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      // Curated comparison landing pages
+      { url: `${SITE_URL}/llm-comparisons`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/llm-comparisons/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/browser-comparison-2026`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/password-manager-comparison`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
+      { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      // Author page
+      { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      // FAQ competitor comparison pages
+      { url: `${SITE_URL}/faq/comparison-sites`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.7 },
+      { url: `${SITE_URL}/faq/diffen`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/faq/g2-reviews`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/faq/versus-com`, lastModified: FAQ_DATE, changeFrequency: "monthly", priority: 0.6 },
+      // Static alternatives landing pages (high-traffic curated)
+      { url: `${SITE_URL}/alternatives/chatgpt`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/alternatives/figma`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/zoom`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/slack`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/notion`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/nordvpn`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
