@@ -83,7 +83,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "#page-intro"],
+      cssSelector: ["h1", "#page-intro", "#top-comparisons", ".hub-description"],
     },
     alternativeHeadline: `${hub.h1} — Expert Comparisons & Analysis`,
     license: "https://creativecommons.org/licenses/by/4.0/",

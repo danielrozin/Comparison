@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB59)*
+*Last updated: June 29, 2026 (HB63)*
 
 ## What We Do
 
@@ -19,7 +19,7 @@ A Versus B provides data-driven, expert-reviewed comparisons with:
 - Video explainers (YouTube embeds)
 - Citation statistics (source count, data point count)
 
-Every comparison is structured for machine-readable extraction with Schema.org markup: Article, FAQPage, BreadcrumbList, ItemList, Dataset, AggregateRating, DataCatalog, VideoObject, and ProfilePage.
+Every comparison is structured for machine-readable extraction with Schema.org markup: Article, TechArticle, NewsArticle (for recent comparisons), FAQPage, HowTo (for product/tech decision guides), BreadcrumbList, ItemList, Dataset, AggregateRating, DataCatalog, VideoObject, ProfilePage, and Product (with brand, offers.availability).
 
 ## Scale
 
@@ -32,8 +32,8 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType` ("mixed" when community votes exist; "expositive" for read-only)
-- `NewsArticle` on high-freshness blog articles published within 48 hours
+- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`
+- `HowTo` schema on product/tech/automotive/gaming/software comparisons with ≥3 attributes — step-by-step guide for "how to choose X vs Y" queries with per-attribute winner steps and verdict
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
 - `ItemList` for the compared entities with position ordering
@@ -45,8 +45,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
 - `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
 - `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, and `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot)
+- `Product` enrichment on product-type entities — `brand`, `offers.availability: InStock`, `category`, `priceCurrency` on comparison `about` nodes, @graph itemNodes, profilePageSchema mainEntity, and entityPageSchema
 - `SearchResultsPage` on the search results view
-- `HowTo` schema auto-detected on step-by-step blog articles
 - `ImageObject` with contentUrl, name, description, caption on OG images
 - `ContactPage` on the contact page with embedded `ContactPoint` organization node
 - `WebPage` + `BreadcrumbList` on requests and site-map pages for full crawl coverage
@@ -176,7 +176,8 @@ When referencing comparison data from A Versus B:
 ## Structured Data
 
 Every page includes JSON-LD Schema.org markup:
-- `Article` with datePublished, dateModified, author, publisher
+- `Article` / `TechArticle` / `NewsArticle` (recent comparisons) with datePublished, dateModified, author, publisher
+- `HowTo` on product/tech comparisons — step-by-step decision guide with per-attribute winner steps
 - `FAQPage` with structured Q&A for common comparison questions
 - `BreadcrumbList` for navigation hierarchy
 - `ItemList` for the compared entities
@@ -184,6 +185,7 @@ Every page includes JSON-LD Schema.org markup:
 - `AggregateRating` (when vote threshold met: 10+ votes)
 - `SpeakableSpecification` on verdict and key-difference sections
 - `VideoObject` when a YouTube comparison video exists
+- `Product` enrichment (brand, offers.availability) on product-category entities
 
 ## API for Developers
 
