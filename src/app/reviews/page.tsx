@@ -72,19 +72,34 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     { name: "Reviews", url: `${SITE_URL}/reviews` },
   ]);
 
+  const reviewsOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent("SmartReview — Product Reviews")}&type=reviews`;
+  const reviewsToday = new Date().toISOString().slice(0, 10);
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": `${SITE_URL}/reviews#collection`,
+    "@id": `${REVIEWS_URL}#collectionpage`,
     name: "SmartReview — Product Reviews & Ratings",
     description: "Expert product reviews with aggregated ratings from Reddit, G2, Capterra, Trustpilot, and more.",
     abstract: "Expert product reviews with aggregated ratings from Reddit, G2, Capterra, Trustpilot, and more.",
-    url: `${SITE_URL}/reviews`,
+    url: REVIEWS_URL,
     inLanguage: "en-US",
+    genre: "Review Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    lastReviewed: new Date().toISOString().slice(0, 10),
+    interactivityType: "expositive",
+    lastReviewed: reviewsToday,
+    contentReferenceTime: reviewsToday,
+    thumbnailUrl: reviewsOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${REVIEWS_URL}#primaryImage`,
+      url: reviewsOgImage,
+      contentUrl: reviewsOgImage,
+      width: 1200,
+      height: 630,
+      caption: "SmartReview — Product Reviews & Ratings by A Versus B",
+    },
     keywords: "product reviews, software reviews, SmartScore, review aggregator, best software 2026",
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",
     accessMode: ["textual"],
@@ -95,6 +110,8 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro"] },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: REVIEWS_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     ...(total > 0 && {
       numberOfItems: total,
