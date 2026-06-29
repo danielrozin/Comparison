@@ -128,6 +128,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     ? `${name} has a ${aggregation.averageRating}/5 rating from ${aggregation.totalReviews} aggregated reviews. SmartScore: ${aggregation.smartScore}/100.`
     : `Read reviews for ${name} from multiple sources.`;
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(name + " Reviews")}&type=reviews`;
+
   // Schema.org structured data
   const schemas: Record<string, unknown>[] = [
     breadcrumbSchema([
@@ -137,16 +139,38 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     ]),
     {
       "@context": "https://schema.org",
-      "@type": "WebPage",
+      // ReviewPage signals to Google and AI crawlers that this is a structured review index,
+      // enabling "Review Snippet" rich results and query routing for "[product] reviews" queries.
+      "@type": ["WebPage", "ReviewPage"],
+      "@id": `${SITE_URL}/reviews/${slug}#reviewpage`,
       name: title,
       description,
       abstract: description,
       alternativeHeadline: `${name} SmartReview — Aggregated Ratings & Expert Analysis`,
       url: `${SITE_URL}/reviews/${slug}`,
       inLanguage: "en-US",
+      genre: "Product Review",
       creativeWorkStatus: "Published",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      interactivityType: "expositive",
+      // contentReferenceTime — tells LLMs the "as of" date for this review data.
+      contentReferenceTime: new Date().toISOString().slice(0, 10),
+      dateModified: new Date().toISOString().slice(0, 10),
+      lastReviewed: new Date().toISOString().slice(0, 10),
+      thumbnailUrl: ogImage,
+      image: {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/reviews/${slug}#primaryImage`,
+        url: ogImage,
+        contentUrl: ogImage,
+        width: 1200,
+        height: 630,
+        caption: `${name} Reviews — A Versus B SmartReview`,
+        creditText: SITE_NAME,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      },
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
       copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -154,13 +178,33 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       acquireLicensePage: `${SITE_URL}/terms`,
       audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       accessMode: ["textual"],
-      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+      // speakable — voice assistants and LLM engines extract these sections first.
+      // .review-score-summary targets the SmartScore/aggregate rating summary block.
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".review-score-summary", ".entity-rating-summary", "p.review-intro"],
+      },
+      // teaches — AI routers (ChatGPT/Perplexity) use this to match "[product] reviews" queries.
+      teaches: `How to evaluate ${name} based on aggregated reviews and ratings`,
+      educationalUse: "review",
+      keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews 2026`,
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      potentialAction: {
-        "@type": "WriteAction",
-        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
-        name: "Write a Review",
+      potentialAction: [
+        {
+          "@type": "WriteAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
+          name: "Write a Review",
+        },
+        {
+          "@type": "ReadAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
+        },
+      ],
+      about: {
+        "@type": "Thing",
+        name,
+        url: `${SITE_URL}/entity/${slug}`,
       },
     },
   ];
