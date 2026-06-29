@@ -229,7 +229,7 @@ export default async function AlternativesPage({ params }: PageProps) {
           <p className="text-text-secondary mb-4">No alternatives found for {name} yet.</p>
           <Link
             href="/#search"
-            className="inline-block px-5 py-2.5 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+            className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md transition-all duration-150"
           >
             Search for a comparison
           </Link>

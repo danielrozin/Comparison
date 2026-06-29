@@ -308,7 +308,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
               <div className="flex gap-2">
                 <Link
                   href={`/reviews/${slug}`}
-                  className={`text-xs px-3 py-1 rounded-full ${!source ? "bg-primary-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                  className={`text-xs px-3 py-1 rounded-full ${!source ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
                 >
                   All
                 </Link>
@@ -316,7 +316,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <Link
                     key={s}
                     href={`/reviews/${slug}?source=${s}`}
-                    className={`text-xs px-3 py-1 rounded-full capitalize ${source === s ? "bg-primary-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                    className={`text-xs px-3 py-1 rounded-full capitalize ${source === s ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
                   >
                     {s}
                   </Link>
@@ -386,7 +386,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           </p>
           <Link
             href={`/search?q=${encodeURIComponent(name)}`}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-medium hover:shadow-md transition-all duration-150"
           >
             View Comparisons
           </Link>
