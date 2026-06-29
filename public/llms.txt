@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB127)*
+*Last updated: June 29, 2026 (HB128)*
 
 ## What We Do
 
@@ -106,6 +106,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - `acceptable-use/page.tsx` now emits WebPage JSON-LD schema with `@id`, `copyrightNotice`, `isPartOf: WebSite`, `breadcrumb` (HB125)
 - Sitemap: added `acceptable-use` + `cookie-policy` URLs (HB125)
 - HB126: `accessModeSufficient` + AEO fields sweep — main category page, terms/privacy/cookie-policy/disclaimer/acceptable-use/changelog pages; requests page gains `@id`, `accessMode`, `accessModeSufficient`, `interactivityType: mixed`, `potentialAction: ReadAction`
+- HB128: Blog Article + search layout + VideoObject enrichment — blog image/primaryImageOfPage gains `name`+`description`, search layout gains `accessMode`/`accessModeSufficient`/AEO fields, VideoObject gains `inLanguage`/`isAccessibleForFree`/`license`/optional `duration` param; Organization logo gains `name`+`description`+`contentUrl`
 - HB127: E-E-A-T + ImageObject enrichment — Organization gains `publishingPrinciples`, `ethicsPolicy`, `correctionsPolicy`; DataCatalog gains `workExample` (3 sample pages); Dataset gains `spatialCoverage: Worldwide`; comparison Article + multi-entity Article ImageObject gains `name` + `description`; entity ProfilePage `primaryImageOfPage` gains `contentUrl` + `name` + `description`; category CollectionPage gains full `image` ImageObject node
 
 ## Categories & Scale

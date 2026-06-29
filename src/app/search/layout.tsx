@@ -13,6 +13,13 @@ const searchResultsPageSchema = {
   url: `${SITE_URL}/search`,
   inLanguage: "en-US",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
+  interactivityType: "mixed",
+  accessMode: ["textual"],
+  accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  educationalLevel: "General",
+  teaches: "How to find and compare anything side by side on A Versus B",
+  educationalUse: "comparison",
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: {

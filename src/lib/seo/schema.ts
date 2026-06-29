@@ -48,6 +48,9 @@ export function organizationSchema() {
     logo: {
       "@type": "ImageObject",
       url: `${SITE_URL}/images/logo.png`,
+      contentUrl: `${SITE_URL}/images/logo.png`,
+      name: `${SITE_NAME} Logo`,
+      description: "A Versus B — the comparison platform logo",
       width: 200,
       height: 60,
       caption: SITE_NAME,
@@ -1296,6 +1299,7 @@ export function videoObjectSchema(opts: {
   uploadDate: string;
   entityA: string;
   entityB: string;
+  duration?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -1306,9 +1310,14 @@ export function videoObjectSchema(opts: {
     uploadDate: opts.uploadDate,
     contentUrl: `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`,
     embedUrl: `https://www.youtube-nocookie.com/embed/${opts.youtubeVideoId}`,
-    duration: "PT36S",
+    duration: opts.duration ?? "PT36S",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: `${SITE_URL}/terms`,
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
       logo: {
