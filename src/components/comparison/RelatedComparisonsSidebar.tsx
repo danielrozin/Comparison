@@ -4,17 +4,17 @@ import Link from "next/link";
 import type { RelatedComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 
-const AVATAR_COLORS = [
-  { bg: "bg-primary-100", text: "text-primary-700" },
-  { bg: "bg-violet-100", text: "text-violet-700" },
-  { bg: "bg-emerald-100", text: "text-emerald-700" },
-  { bg: "bg-amber-100", text: "text-amber-700" },
-  { bg: "bg-rose-100", text: "text-rose-700" },
+const AVATAR_GRADIENTS = [
+  "from-primary-400 to-primary-600",
+  "from-violet-400 to-violet-600",
+  "from-emerald-400 to-emerald-600",
+  "from-amber-400 to-amber-600",
+  "from-rose-400 to-rose-600",
 ];
 
-function avatarColor(letter: string) {
+function avatarGradient(letter: string) {
   const code = (letter || "A").toUpperCase().charCodeAt(0) - 65;
-  return AVATAR_COLORS[Math.abs(code) % AVATAR_COLORS.length];
+  return AVATAR_GRADIENTS[Math.abs(code) % AVATAR_GRADIENTS.length];
 }
 
 function ComparisonCard({
@@ -27,13 +27,13 @@ function ComparisonCard({
   isTrending?: boolean;
 }) {
   const parts = comp.title.split(/\s+vs\.?\s+/i);
-  const colorA = avatarColor((parts[0] || "A").charAt(0));
-  const colorB = avatarColor((parts[1] || "B").charAt(0));
+  const gradA = avatarGradient((parts[0] || "A").charAt(0));
+  const gradB = avatarGradient((parts[1] || "B").charAt(0));
   return (
     <Link
       href={`/compare/${comp.slug}`}
       onClick={() => trackRelatedComparisonClick(sourceSlug, comp.slug)}
-      className="flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all duration-200 group shrink-0 lg:shrink relative overflow-hidden"
+      className="flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group shrink-0 lg:shrink relative overflow-hidden"
     >
       {/* Hot accent stripe */}
       {isTrending && (
@@ -41,10 +41,10 @@ function ComparisonCard({
       )}
 
       <div className="flex -space-x-2 flex-shrink-0">
-        <div className={`w-8 h-8 ${colorA.bg} rounded-full flex items-center justify-center text-xs font-bold ${colorA.text} ring-2 ring-white`}>
+        <div className={`w-8 h-8 bg-gradient-to-br ${gradA} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
           {(parts[0] || "A").charAt(0).toUpperCase()}
         </div>
-        <div className={`w-8 h-8 ${colorB.bg} rounded-full flex items-center justify-center text-xs font-bold ${colorB.text} ring-2 ring-white`}>
+        <div className={`w-8 h-8 bg-gradient-to-br ${gradB} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
           {(parts[1] || "B").charAt(0).toUpperCase()}
         </div>
       </div>
