@@ -219,6 +219,13 @@ export async function generateMetadata({
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": `${SITE_URL}/blog/${slug}`,
+      // twitter:label/data — structured stat pairs in Twitter/X link preview cards.
+      "twitter:label1": "Category",
+      "twitter:data1": article.category
+        ? article.category.charAt(0).toUpperCase() + article.category.slice(1)
+        : "Blog",
+      "twitter:label2": "Read time",
+      "twitter:data2": `${Math.ceil((article.content?.split(/\s+/).length ?? 500) / 200)} min`,
     },
   };
 }

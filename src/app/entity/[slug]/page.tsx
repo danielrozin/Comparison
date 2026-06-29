@@ -94,6 +94,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": `${SITE_URL}/entity/${slug}`,
+      // twitter:label/data — structured entity stat pairs in Twitter/X link preview cards.
+      "twitter:label1": "Type",
+      "twitter:data1": "Entity Profile",
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }

@@ -112,6 +112,11 @@ interface PageMeta {
   // article:* OG tags — entity names + category for social graph AEO signals
   articleSection?: string;
   articleTags?: string[];
+  // twitter:label/data — structured stat labels shown in Twitter/X link preview cards
+  twitterLabel1?: string;
+  twitterData1?: string;
+  twitterLabel2?: string;
+  twitterData2?: string;
 }
 
 type Props =
@@ -506,6 +511,23 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       "versus",
       ...(enrichedComparison.category ? [enrichedComparison.category] : []),
     ],
+    // twitter:label/data — structured stat labels rendered in Twitter/X link preview cards.
+    // X shows these as two key-value pairs below the card description, surfacing comparison
+    // stats at a glance. Bing and LinkedIn also parse these for structured snippet extraction.
+    twitterLabel1: "Category",
+    twitterData1: enrichedComparison.category
+      ? enrichedComparison.category.charAt(0).toUpperCase() + enrichedComparison.category.slice(1)
+      : "Comparison",
+    twitterLabel2: enrichedComparison.citationStats?.sourceCount
+      ? "Sources"
+      : enrichedComparison.metadata.viewCount
+      ? "Views"
+      : "Attributes",
+    twitterData2: enrichedComparison.citationStats?.sourceCount
+      ? String(enrichedComparison.citationStats.sourceCount)
+      : enrichedComparison.metadata.viewCount
+      ? enrichedComparison.metadata.viewCount.toLocaleString()
+      : String(enrichedComparison.attributes.length),
   };
 
   // JSON-sanitize: getStaticProps forbids `undefined` in props.
@@ -554,6 +576,12 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
+      {/* twitter:label/data — structured stat pairs in Twitter/X link preview cards.
+          Bing and LinkedIn also parse these for structured snippet extraction. */}
+      {meta.twitterLabel1 && <meta name="twitter:label1" content={meta.twitterLabel1} />}
+      {meta.twitterData1 && <meta name="twitter:data1" content={meta.twitterData1} />}
+      {meta.twitterLabel2 && <meta name="twitter:label2" content={meta.twitterLabel2} />}
+      {meta.twitterData2 && <meta name="twitter:data2" content={meta.twitterData2} />}
       {/* Academic / AI citation meta tags — Perplexity, Semantic Scholar, and AI research
           crawlers use citation_* and Dublin Core tags to extract citable metadata and
           attribute content to the correct source, increasing structured citation frequency. */}
