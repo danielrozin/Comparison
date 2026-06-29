@@ -86,6 +86,7 @@ export default function PartnershipsPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": `${PARTNER_URL}#webpage`,
     name: PARTNER_TITLE,
     description: PARTNER_DESC,
     abstract: PARTNER_DESC,
@@ -102,9 +103,11 @@ export default function PartnershipsPage() {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Publishers, Brands, Agencies, Researchers" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: PARTNER_URL },
   };
 
   return (

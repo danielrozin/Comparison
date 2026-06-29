@@ -66,6 +66,7 @@ function buildSchemas() {
   const webPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": `${pageUrl}#webpage`,
     name: WHO_TITLE,
     description: WHO_DESC,
     abstract: WHO_DESC,
@@ -82,8 +83,10 @@ function buildSchemas() {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Students, Researchers, Professionals" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: pageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [

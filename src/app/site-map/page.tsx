@@ -125,15 +125,19 @@ const siteMapPageSchema = {
   "@graph": [
     {
       "@type": "WebPage",
+      "@id": `${SITEMAP_URL}#webpage`,
       name: SITEMAP_TITLE,
       description: SITEMAP_DESC,
       url: SITEMAP_URL,
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      accessMode: ["textual"],
+      accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
       about: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+      potentialAction: { "@type": "ReadAction", target: SITEMAP_URL },
     },
     {
       "@type": "BreadcrumbList",
