@@ -263,6 +263,10 @@ export function webApplicationSchema() {
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual", "visual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
+    educationalLevel: "General",
+    teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
+    educationalUse: "comparison",
     releaseNotes: `${SITE_URL}/changelog`,
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
@@ -694,6 +698,7 @@ export function comparisonPageSchema(
       totalTime: "PT5M",
       estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
       supply: comparison.entities.map((e) => ({ "@type": "HowToSupply", name: e.name })),
+      yield: `A well-informed decision between ${entityNames}`,
     });
   }
 
@@ -1578,6 +1583,9 @@ export function profilePageSchema(entity: {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
+    educationalUse: "comparison",
     keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
     potentialAction: {
       "@type": "ReadAction",

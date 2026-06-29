@@ -51,6 +51,10 @@ const aboutPageSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Potential Partners, Students" },
   accessMode: ["textual"],
+  accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  educationalLevel: "General",
+  teaches: "How A Versus B produces data-driven side-by-side comparisons and the mission behind the platform",
+  educationalUse: "reference",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   publisher: {
