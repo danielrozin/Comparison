@@ -2853,6 +2853,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-26T08:59:21.695Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Booking.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airbnb vs Booking — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.\n\n#airbnb #booking #travel #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-29T09:37:15.379Z"
+    },
+    {
+      "slug": "spotify-vs-apple-music",
+      "title": "Spotify vs Apple Music",
+      "entityA": "Spotify",
+      "entityB": "Apple Music",
+      "category": "General",
+      "videoFile": "Spotify vs Apple Music.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Spotify vs Apple Music — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Spotify vs Apple Music.\n\n#spotify #applemusic #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-29T09:46:33.324Z"
+    },
+    {
+      "slug": "real-madrid-vs-barcelona",
+      "title": "Real Madrid vs Barcelona",
+      "entityA": "Real Madrid",
+      "entityB": "Barcelona",
+      "category": "General",
+      "videoFile": "Real Madrid vs Barcelona.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Real Madrid vs Barcelona — Full Comparison 2026",
+      "youtubeDescription": "Real Madrid has a record 15 UEFA Champions League titles and 35 La Liga titles. Barcelona has 5 Champions Leagues and 27 La Liga titles, plus produced the…\n\n#realmadrid #barcelona #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-06-29T09:55:52.847Z"
     }
   ]
 }
