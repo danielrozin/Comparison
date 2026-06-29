@@ -137,7 +137,7 @@ export default async function B2BSaaSStudyPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, Software Buyers, Business Analysts, Procurement Teams" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     educationalLevel: "General",
     teaches: "How to compare B2B SaaS tools across categories using structured benchmark data",
     educationalUse: "research",
@@ -147,9 +147,6 @@ export default async function B2BSaaSStudyPage() {
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-      ethicsPolicy: `${SITE_URL}/disclaimer`,
-      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: CANONICAL },
   };
 

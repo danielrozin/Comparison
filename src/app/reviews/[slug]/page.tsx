@@ -179,7 +179,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       accessMode: ["textual"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-      accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+      accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
       educationalLevel: "General",
       // speakable — voice assistants and LLM engines extract these sections first.
       // .review-score-summary targets the SmartScore/aggregate rating summary block.
@@ -198,9 +198,6 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       ],
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-      ethicsPolicy: `${SITE_URL}/disclaimer`,
-      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
       potentialAction: [
         {
           "@type": "WriteAction",

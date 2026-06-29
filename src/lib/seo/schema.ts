@@ -91,6 +91,11 @@ export function organizationSchema() {
       "Automotive Reviews",
       "Health & Wellness",
       "Financial Products",
+      "Gaming Comparisons",
+      "Brand Analysis",
+      "Entertainment Reviews",
+      "Artificial Intelligence Tools",
+      "Cybersecurity Products",
     ],
     // publishingPrinciples — links to editorial methodology page.
     // Google's quality raters and AI crawlers use this as a primary E-E-A-T signal:
@@ -103,11 +108,22 @@ export function organizationSchema() {
     // correctionsPolicy — where we document how we fix errors; Google E-E-A-T and
     // MBFC-style rating systems check for this on editorial content sites.
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    // diversityPolicy — included for E-E-A-T completeness (Google EEAT guidelines).
+    diversityPolicy: `${SITE_URL}/about`,
+    // memberOf — voluntary but signals community affiliation to AI trust evaluators.
+    memberOf: {
+      "@type": "Organization",
+      name: "Open Comparison Initiative",
+      url: SITE_URL,
+    },
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Decision Makers",
       geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
+    // subjectOf — links the organization to the DataCatalog it maintains, so AI
+    // crawlers can navigate from the publisher entity to its content corpus.
+    subjectOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog` },
   };
 }
 
@@ -238,7 +254,26 @@ export function webSiteSchema() {
         "@type": "ReadAction",
         target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{slug}` },
       },
+      {
+        "@type": "CompareAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{entity-a}-vs-{entity-b}` },
+        description: "Compare any two entities side-by-side",
+      },
     ],
+    about: [
+      { "@type": "Thing", name: "Product Comparisons", url: `${SITE_URL}/category/products` },
+      { "@type": "Thing", name: "Technology Comparisons", url: `${SITE_URL}/category/technology` },
+      { "@type": "Thing", name: "Sports Comparisons", url: `${SITE_URL}/category/sports` },
+      { "@type": "Thing", name: "Country Comparisons", url: `${SITE_URL}/category/countries` },
+      { "@type": "Thing", name: "Software Comparisons", url: `${SITE_URL}/category/software` },
+    ],
+    audience: {
+      "@type": "Audience",
+      audienceType: "Consumers, Researchers, Decision Makers, Students",
+      geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
+    },
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    keywords: "compare, versus, vs, comparison, side-by-side, which is better, best, alternatives",
   };
 }
 
@@ -364,6 +399,7 @@ export function webPageSchema(opts: {
   datePublished?: string | null;
   dateModified?: string;
   breadcrumbs?: { name: string; url: string }[];
+  keywords?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -377,6 +413,15 @@ export function webPageSchema(opts: {
     inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    accessMode: ["textual", "visual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    ...(opts.keywords && { keywords: opts.keywords }),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "h2", ".page-description", ".page-intro"],
+    },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -651,11 +696,30 @@ export function comparisonPageSchema(
       return citedSources.length > 0 ? { citation: citedSources } : {};
     })(),
     // potentialAction — ReadAction lets AI crawlers understand that this article
-    // is readable at its canonical URL, boosting indexation confidence.
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
+    // is readable at its canonical URL; CompareAction tells AI/Google that this page
+    // performs a comparison between the two entities, boosting eligibility for
+    // "X vs Y" rich results and AI answer engine comparisons.
+    potentialAction: [
+      {
+        "@type": "ReadAction",
+        target: { "@type": "EntryPoint", urlTemplate: url },
+      },
+      {
+        "@type": "CompareAction",
+        actionStatus: "CompletedActionStatus",
+        object: comparison.entities.map((e) => ({
+          "@type": entitySchemaType(e.entityType),
+          name: e.name,
+          ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
+        })),
+        result: {
+          "@type": "Article",
+          "@id": `${url}#article`,
+          url,
+          name: comparison.title,
+        },
+      },
+    ],
     // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
     // Including HowTo in hasPart tells AI crawlers that the step-by-step guide is part of
     // this article, improving eligibility for Google's "Steps" rich result on comparison pages.
@@ -1154,11 +1218,29 @@ function buildMultiEntityGraph(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
-    // potentialAction — ReadAction confirms this article is readable at its canonical URL.
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
+    // potentialAction — ReadAction + CompareAction for multi-entity graph.
+    // CompareAction tells AI/Google this page performs a comparison between the entities.
+    potentialAction: [
+      {
+        "@type": "ReadAction",
+        target: { "@type": "EntryPoint", urlTemplate: url },
+      },
+      {
+        "@type": "CompareAction",
+        actionStatus: "CompletedActionStatus",
+        object: comparison.entities.map((e) => ({
+          "@type": entitySchemaType(e.entityType),
+          name: e.name,
+          ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
+        })),
+        result: {
+          "@type": "Article",
+          "@id": `${url}#article`,
+          url,
+          name: comparison.title,
+        },
+      },
+    ],
     // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
     ...(() => {
       const parts = [

@@ -285,7 +285,7 @@ function bestPageSchema(entry: BestEntry) {
         audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
         accessMode: ["textual"],
         accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-        accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+        accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
         potentialAction: { "@type": "ReadAction", target: url },
         // speakable — expand beyond h1 to cover the first body paragraph and FAQ answers.

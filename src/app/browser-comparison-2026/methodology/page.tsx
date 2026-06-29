@@ -74,7 +74,7 @@ const schema = {
   },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-  accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
   educationalLevel: "General",
   teaches: "How A Versus B tests and benchmarks web browsers for speed, privacy, and compatibility",
   educationalUse: "guide",
@@ -87,9 +87,6 @@ const schema = {
   isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/browser-comparison-2026#article`, url: `${SITE_URL}/browser-comparison-2026` },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
-  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-  ethicsPolicy: `${SITE_URL}/disclaimer`,
-  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 export default function BrowserMethodologyPage() {

@@ -104,7 +104,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -113,9 +113,6 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro"] },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-    ethicsPolicy: `${SITE_URL}/disclaimer`,
-    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: REVIEWS_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     ...(total > 0 && {

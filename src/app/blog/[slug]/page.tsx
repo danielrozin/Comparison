@@ -286,8 +286,6 @@ export default async function BlogPostPage({
       "@type": "ImageObject",
       url: ogImage,
       contentUrl: ogImage,
-      name: article.title,
-      description: article.excerpt ?? article.title,
       width: 1200,
       height: 630,
       caption: article.title,
@@ -369,9 +367,6 @@ export default async function BlogPostPage({
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     copyrightNotice: `© ${publishedDate ? publishedDate.getFullYear() : new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     acquireLicensePage: `${SITE_URL}/terms`,
-    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-    ethicsPolicy: `${SITE_URL}/disclaimer`,
-    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Students, Decision Makers",
@@ -383,7 +378,7 @@ export default async function BlogPostPage({
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
     // .article-excerpt is emitted on the excerpt <p> in the blog header (HB89 fix).
     speakable: {
@@ -491,17 +486,7 @@ export default async function BlogPostPage({
     conditionsOfAccess: "Free",
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    primaryImageOfPage: {
-      "@type": "ImageObject",
-      url: ogImage,
-      contentUrl: ogImage,
-      name: article.title,
-      description: article.excerpt ?? article.title,
-      width: 1200,
-      height: 630,
-      caption: article.title,
-      creditText: SITE_NAME,
-    },
+    primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".article-excerpt", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],

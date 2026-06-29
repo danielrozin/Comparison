@@ -99,9 +99,6 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-      ethicsPolicy: `${SITE_URL}/disclaimer`,
-      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: hubUrl },
     speakable: {
       "@type": "SpeakableSpecification",
@@ -116,7 +113,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     educationalLevel: "General",
     teaches: `How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`,
     educationalUse: "comparison",

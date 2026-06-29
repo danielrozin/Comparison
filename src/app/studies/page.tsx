@@ -113,7 +113,7 @@ export default function StudiesIndexPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, Business Analysts, Marketers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     educationalLevel: "General",
     teaches: "Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers",
     educationalUse: "research",
@@ -121,9 +121,6 @@ export default function StudiesIndexPage() {
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-      ethicsPolicy: `${SITE_URL}/disclaimer`,
-      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: STUDIES_URL },
     hasPart: STUDIES.map((s) => ({
       "@type": "Article",

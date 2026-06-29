@@ -130,6 +130,7 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     accessMode: ["textual"],
     accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} 2026, SmartScore ${cat.name.toLowerCase()}`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

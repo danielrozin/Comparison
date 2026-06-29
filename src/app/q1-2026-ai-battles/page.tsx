@@ -85,7 +85,7 @@ export default function Q1AiBattlesPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, AI Enthusiasts, Marketers, Analysts" },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
-    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     educationalLevel: "General",
     teaches: "How to analyze AI tool comparison search trends using quarterly US Google Search volume data and year-over-year growth rates",
     educationalUse: "research",
@@ -95,9 +95,6 @@ export default function Q1AiBattlesPage() {
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-      ethicsPolicy: `${SITE_URL}/disclaimer`,
-      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   };
 

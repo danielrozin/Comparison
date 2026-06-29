@@ -81,6 +81,7 @@ const articleSchema = {
   accessMode: ["textual"],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
   educationalLevel: "General",
   teaches: "How A Versus B sources comparison data and writes AI-assisted verdicts with structured human editorial oversight",
   educationalUse: "guide",
