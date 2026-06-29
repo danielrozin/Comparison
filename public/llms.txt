@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB86)*
+*Last updated: June 29, 2026 (HB95)*
 
 ## What We Do
 
@@ -43,8 +43,9 @@ Every comparison page emits a full JSON-LD @graph including:
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
-- `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
+- `CollectionPage` on category, subcategory, hub, blog listing, review listing, trending, and studies index pages — all with `@id`, `genre` (category-appropriate, e.g. "Category Index", "Topic Hub", "Review Index", "Trending Index", "Research Hub"), `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, `accessMode`
 - `ProfilePage` on entity pages — with `@id` anchor, `genre: "Entity Profile"`, `thumbnailUrl` (direct OG image URL), `contentReferenceTime`, `interactivityType: "expositive"`, `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`
+- `ProfilePage` on author page `/authors/daniel-rozin` — with `@id: #profilepage`, `genre: "Author Profile"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `datePublished`/`dateModified`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, and linked `Person` node with `knowsAbout`, `sameAs`, `publishedWork`
 - `Product` enrichment on product-type entities — `brand`, `offers.availability: InStock`, `category`, `priceCurrency` on comparison `about` nodes, @graph itemNodes, profilePageSchema mainEntity, and entityPageSchema
 - `SearchResultsPage` on the search results view
 - `ImageObject` with contentUrl, name, description, caption on OG images
@@ -107,7 +108,7 @@ Original data studies analyzing comparison search behavior and brand trends:
 - **B2B SaaS Comparison Report 2026** — https://www.aversusb.net/studies/b2b-saas-comparison-report-2026 (384 SaaS comparisons)
 - **Investing & Finance Comparison Report 2026** — https://www.aversusb.net/studies/investing-comparison-report-2026 (247 finance comparisons)
 - **Q1 2026 AI Tool Battles Index** — https://www.aversusb.net/q1-2026-ai-battles (top 50 AI head-to-head battles by US search volume, downloadable CSV)
-- All studies are free to cite. Structured data: `TechArticle` + `Dataset` + `BreadcrumbList`
+- All studies are free to cite. Structured data: `TechArticle` (with `@id`, `genre: "Data Study"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`) + `Dataset` + `BreadcrumbList`
 
 ## Curated Comparison Landing Pages
 
@@ -117,7 +118,8 @@ Expert-authored in-depth guides for high-interest comparison categories:
 - **Browser Comparison 2026:** https://www.aversusb.net/browser-comparison-2026 — 10 major web browsers compared on engine, market share, privacy, and extensions
 - **Password Manager Comparison 2026:** https://www.aversusb.net/password-manager-comparison — top 10 password managers compared on encryption, zero-knowledge architecture, and audits
 - All guides include methodology pages (e.g., `/methodology`) with COI disclosures and source tier hierarchy
-- Structured data: `TechArticle` with `abstract`, `speakable`, `license` (CC-BY-4.0), `alternativeHeadline`, `about.sameAs` (Wikipedia)
+- Structured data: `TechArticle` with `@id`, `genre: "Comparison Guide"`, `abstract`, `speakable`, `license` (CC-BY-4.0), `alternativeHeadline`, `about.sameAs` (Wikipedia), `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`
+- Methodology pages: `TechArticle` with `@id`, `genre: "Methodology"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebPage @id` (parent guide), `potentialAction: ReadAction`, `author: Person @id`
 
 ## Competitor FAQ Pages
 
