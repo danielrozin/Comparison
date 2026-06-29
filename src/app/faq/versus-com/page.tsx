@@ -140,38 +140,38 @@ function buildSchemas() {
 
 export default function VersusComFaqPage() {
   return (
-    <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <JsonLd data={buildSchemas()} />
 
-      {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href="/faq/comparison-sites" className="hover:text-primary-600 transition-colors">
-              FAQ
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Versus.com</li>
-        </ol>
-      </nav>
-
-      {/* Hero */}
-      <div className="mb-12">
-        <h1 className="text-4xl sm:text-5xl font-display font-black text-text mb-4">
-          Versus.com vs {SITE_NAME}
-        </h1>
-        <p className="text-xl text-text-secondary leading-relaxed">
-          Versus.com is a popular tech comparison site, but it only covers gadgets and electronics.
-          Here are the most common questions users ask — and how {SITE_NAME} compares.
-        </p>
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li><Link href="/faq/comparison-sites" className="hover:text-white transition-colors text-primary-200">FAQ</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">Versus.com</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
+            Versus.com vs {SITE_NAME}
+          </h1>
+          <p className="text-primary-100 text-sm sm:text-base max-w-xl">
+            Versus.com is a popular tech comparison site, but it only covers gadgets and electronics.
+            Here are the most common questions users ask — and how {SITE_NAME} compares.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
       </div>
+
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Comparison highlights */}
       <section className="mb-12">
@@ -239,28 +239,30 @@ export default function VersusComFaqPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
-        <h2 className="text-xl font-display font-bold text-text mb-2">
+      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-2xl" />
+        <h2 className="text-xl font-display font-bold mb-2 relative">
           Looking for more than tech comparisons?
         </h2>
-        <p className="text-text-secondary mb-6 text-sm">
+        <p className="text-primary-100 mb-6 text-sm relative">
           {SITE_NAME} covers 17 categories — sports, countries, products, entertainment, and more.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
+            className="inline-block px-6 py-3 bg-white text-primary-700 font-bold rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-150"
           >
             Start Comparing
           </Link>
           <Link
             href="/trending"
-            className="inline-block px-6 py-3 border border-border text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors"
+            className="inline-block px-6 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors"
           >
             Browse Trending
           </Link>
         </div>
       </section>
     </article>
+    </>
   );
 }
