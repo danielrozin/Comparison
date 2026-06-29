@@ -204,7 +204,7 @@ export function TrackComparisonCard({
       <div className="bg-gradient-to-br from-primary-50 via-white to-blue-50 border border-primary-200 rounded-xl p-6 sm:p-7 shadow-sm">
         <div className="flex items-start gap-3 sm:gap-4">
           <div
-            className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-100 text-primary-700 text-xl"
+            className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-xl shadow-sm"
             aria-hidden="true"
           >
             🔔
@@ -247,7 +247,7 @@ export function TrackComparisonCard({
                   <button
                     type="button"
                     onClick={oneClickTrack}
-                    className="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors"
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150"
                   >
                     Track
                   </button>
@@ -281,7 +281,7 @@ export function TrackComparisonCard({
                   <button
                     type="submit"
                     disabled={state === "loading"}
-                    className="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-60 whitespace-nowrap"
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150 disabled:opacity-60 whitespace-nowrap"
                   >
                     {state === "loading" ? "Saving…" : "Track"}
                   </button>

@@ -517,19 +517,22 @@ export default async function BlogPostPage({
                       <Link
                         key={compSlug}
                         href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50 transition-all group"
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                       >
                         <div className="flex -space-x-2 flex-shrink-0">
-                          <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center text-xs font-bold text-primary-700 ring-2 ring-white">
+                          <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                             {(parts[0] || "A").charAt(0).toUpperCase()}
                           </div>
-                          <div className="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 ring-2 ring-white">
+                          <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
                             {(parts[1] || "B").charAt(0).toUpperCase()}
                           </div>
                         </div>
-                        <span className="text-sm font-medium text-text group-hover:text-primary-600">
+                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors">
                           {title}
                         </span>
+                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all ml-auto flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </Link>
                     );
                   })}
@@ -546,7 +549,7 @@ export default async function BlogPostPage({
           <div className="mt-10 text-center">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold hover:shadow-md transition-all duration-150"
             >
               &larr; Back to Blog
             </Link>
