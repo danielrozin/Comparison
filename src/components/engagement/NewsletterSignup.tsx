@@ -75,36 +75,39 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-6 sm:p-8 text-center">
-        <h3 className="text-lg sm:text-xl font-bold text-text mb-2">
-          Get the best comparisons in your inbox
-        </h3>
-        <p className="text-sm text-text-secondary mb-4">
-          Weekly digest of trending comparisons, new categories, and expert insights. No spam.
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
-            placeholder="you@example.com"
-            required
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
-          />
-          <button
-            type="submit"
-            disabled={status === "loading"}
-            className="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
-          >
-            {status === "loading" ? "Subscribing..." : "Subscribe Free"}
-          </button>
-        </form>
-        {status === "error" && (
-          <p className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
-        )}
-        <p className="text-xs text-text-secondary mt-3">
-          Join 1,000+ readers. Unsubscribe anytime.
-        </p>
+      <div className="relative bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl overflow-hidden text-center">
+        <div className="h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
+        <div className="p-6 sm:p-8">
+          <h3 className="text-lg sm:text-xl font-bold text-text mb-2">
+            Get the best comparisons in your inbox
+          </h3>
+          <p className="text-sm text-text-secondary mb-4">
+            Weekly digest of trending comparisons, new categories, and expert insights. No spam.
+          </p>
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
+              placeholder="you@example.com"
+              required
+              className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap"
+            >
+              {status === "loading" ? "Subscribing..." : "Subscribe Free"}
+            </button>
+          </form>
+          {status === "error" && (
+            <p className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
+          )}
+          <p className="text-xs text-text-secondary mt-3">
+            Join 1,000+ readers. Unsubscribe anytime.
+          </p>
+        </div>
       </div>
     </div>
   );

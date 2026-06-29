@@ -47,7 +47,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
         ) : page === currentPage ? (
           <span
             key={page}
-            className="flex items-center justify-center w-10 h-10 text-sm font-bold text-white bg-primary-600 rounded-lg"
+            className="flex items-center justify-center w-10 h-10 text-sm font-bold text-white bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg shadow-sm"
             aria-current="page"
           >
             {page}
