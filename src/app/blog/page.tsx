@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+      site: "@aversusb",
     title: `Blog — ${SITE_NAME}`,
     description: blogDescription,
     images: [ogImage],

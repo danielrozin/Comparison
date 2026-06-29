@@ -38,6 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
+    site: "@aversusb",
     title: "Search Comparisons | A Versus B",
     description:
       "Search and compare anything — sports players, countries, products, technology, and more.",

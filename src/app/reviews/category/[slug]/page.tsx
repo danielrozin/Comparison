@@ -39,7 +39,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${SITE_URL}/reviews/category/${slug}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
     },
-    twitter: { card: "summary_large_image", title, description: desc, images: [ogImage] },
+    twitter: { card: "summary_large_image",
+      site: "@aversusb", title, description: desc, images: [ogImage] },
     other: {
       "citation_title": title,
       "citation_author": SITE_NAME,
