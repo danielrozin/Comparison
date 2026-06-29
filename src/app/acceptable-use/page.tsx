@@ -33,6 +33,8 @@ const aupSchema = {
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
+  accessMode: ["textual"],
+  accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: AUP_URL },

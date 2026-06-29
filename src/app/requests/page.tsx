@@ -39,19 +39,26 @@ const requestsPageSchema = {
   "@graph": [
     {
       "@type": "WebPage",
+      "@id": `${REQ_URL}#webpage`,
       name: REQ_TITLE,
       description: REQ_DESC,
       url: REQ_URL,
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      interactivityType: "mixed",
+      accessMode: ["textual"],
+      accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-      potentialAction: {
-        "@type": "CommentAction",
-        target: { "@type": "EntryPoint", urlTemplate: REQ_URL },
-        name: "Request a comparison",
-      },
+      potentialAction: [
+        { "@type": "ReadAction", target: REQ_URL },
+        {
+          "@type": "CommentAction",
+          target: { "@type": "EntryPoint", urlTemplate: REQ_URL },
+          name: "Request a comparison",
+        },
+      ],
     },
     {
       "@type": "BreadcrumbList",

@@ -194,6 +194,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    teaches: `How to compare ${category.name.toLowerCase()} side by side`,
+    educationalUse: "comparison",
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".category-description", "#page-description"],

@@ -32,6 +32,7 @@ const webPageSchema = {
   acquireLicensePage: PAGE_URL,
   audience: { "@type": "Audience", audienceType: "General Public" },
   accessMode: ["textual"],
+  accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
 };
