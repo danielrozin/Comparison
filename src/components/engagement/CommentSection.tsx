@@ -177,7 +177,7 @@ export function CommentSection({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-5 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
         >
           {isSubmitting ? "Posting..." : "Post Comment"}
         </button>
@@ -196,8 +196,8 @@ export function CommentSection({
             <div key={comment.id} className="bg-white border border-border rounded-xl p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <span className="text-primary-700 font-bold text-xs">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center shadow-sm">
+                    <span className="text-white font-bold text-xs">
                       {comment.name.charAt(0).toUpperCase()}
                     </span>
                   </div>

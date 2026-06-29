@@ -149,8 +149,8 @@ function SearchContent() {
           {/* Entity page link — for single-entity searches */}
           <div className="bg-white border border-border rounded-xl p-6">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-primary-700 font-bold">{query.charAt(0).toUpperCase()}</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold">{query.charAt(0).toUpperCase()}</span>
               </div>
               <div>
                 <p className="font-semibold text-text">Looking for {query}?</p>
@@ -170,8 +170,8 @@ function SearchContent() {
 
           {/* Quick comparison builder */}
           <div className="text-center py-8 bg-surface-alt rounded-xl">
-            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+              <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>

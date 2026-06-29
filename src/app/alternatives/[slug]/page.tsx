@@ -174,8 +174,8 @@ export default async function AlternativesPage({ params }: PageProps) {
 
       {/* Entity hub link */}
       <div className="mb-6 p-5 bg-primary-50 border border-primary-200 rounded-xl flex items-center gap-4">
-        <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-xl font-bold text-primary-700">{name.charAt(0)}</span>
+        <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+          <span className="text-xl font-bold text-white">{name.charAt(0)}</span>
         </div>
         <div className="flex-1">
           <p className="text-sm text-text-secondary leading-relaxed">
@@ -195,10 +195,10 @@ export default async function AlternativesPage({ params }: PageProps) {
       {alternatives.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {alternatives.map((alt) => (
-            <div key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md transition-all">
+            <div key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-accent-50 rounded-full flex items-center justify-center">
-                  <span className="text-accent-600 font-bold text-lg">{alt.name.charAt(0)}</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-white font-bold text-lg">{alt.name.charAt(0)}</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-text">{alt.name}</h3>
@@ -210,7 +210,7 @@ export default async function AlternativesPage({ params }: PageProps) {
               <div className="flex gap-2">
                 <Link
                   href={`/compare/${alt.comparisonSlug}`}
-                  className="flex-1 text-center py-2 bg-primary-600 text-white text-sm font-semibold rounded-lg hover:bg-primary-700 transition-colors"
+                  className="flex-1 text-center py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150"
                 >
                   Compare
                 </Link>
@@ -250,7 +250,7 @@ export default async function AlternativesPage({ params }: PageProps) {
                 href={`/alternatives/${alt.slug}`}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-border rounded-full text-sm text-primary-600 hover:border-primary-300 hover:bg-primary-50 transition-all"
               >
-                <span className="w-5 h-5 bg-accent-50 rounded-full flex items-center justify-center text-xs font-bold text-accent-600 flex-shrink-0">
+                <span className="w-5 h-5 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0 shadow-sm">
                   {alt.name.charAt(0)}
                 </span>
                 Alternatives to {alt.name}
