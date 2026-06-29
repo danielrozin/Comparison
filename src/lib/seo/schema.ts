@@ -318,9 +318,24 @@ export function comparisonPageSchema(
   // Upgrade Article to TechArticle for technology/software/gaming/automotive categories
   // so Google's Technical Article rich result and AI tech-query citations apply.
   const TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
-  const articleType = comparison.category && TECH_CATEGORIES.has(comparison.category)
-    ? ["Article", "TechArticle"]
-    : "Article";
+  // NewsArticle type for recent tech/product comparisons (<180 days old) — surfaces in
+  // Google News, Perplexity News, and AI Overview "recent" answer slots.
+  const NEWS_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "sports", "entertainment"]);
+  const isRecent = (() => {
+    try {
+      const updated = new Date(comparison.metadata.updatedAt);
+      return Date.now() - updated.getTime() < 180 * 24 * 60 * 60 * 1000;
+    } catch {
+      return false;
+    }
+  })();
+  const isNewsCategory = comparison.category && NEWS_CATEGORIES.has(comparison.category);
+  const articleType = (() => {
+    if (comparison.category && TECH_CATEGORIES.has(comparison.category)) {
+      return isRecent && isNewsCategory ? ["Article", "TechArticle", "NewsArticle"] : ["Article", "TechArticle"];
+    }
+    return isRecent && isNewsCategory ? ["Article", "NewsArticle"] : "Article";
+  })();
 
   // 1. Article schema
   const hasFaqs = comparison.faqs.length > 0;
@@ -482,7 +497,57 @@ export function comparisonPageSchema(
     schemas.push(faqSchema(comparison.faqs, `${url}#faq`));
   }
 
-  // 4. BreadcrumbList
+  // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
+  // surface step-by-step decision guides in "how to choose X vs Y" query slots.
+  const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming"]);
+  if (comparison.category && HOWTO_CATEGORIES.has(comparison.category) && comparison.attributes.length >= 3) {
+    const entityNames = comparison.entities.map((e) => e.name).join(" vs ");
+    const howToSteps = [
+      {
+        "@type": "HowToStep",
+        name: "Define your primary use case",
+        text: `Identify whether you need ${entityNames} for personal, professional, or enterprise use. Your use case will determine which attributes matter most.`,
+        position: 1,
+      },
+      ...comparison.attributes.slice(0, 5).map((attr, i) => {
+        const winnerVal = attr.values.find((v) => v.winner);
+        const winnerEntity = winnerVal
+          ? comparison.entities.find((e) => e.id === winnerVal.entityId)
+          : null;
+        const attrText = winnerEntity
+          ? `${winnerEntity.name} wins on ${attr.name}${winnerVal?.valueText ? `: ${winnerVal.valueText}` : ""}.`
+          : `Evaluate ${attr.name} based on your specific requirements.`;
+        return {
+          "@type": "HowToStep",
+          name: `Compare ${attr.name}`,
+          text: attrText,
+          position: i + 2,
+        };
+      }),
+      {
+        "@type": "HowToStep",
+        name: "Read the verdict",
+        text: comparison.verdict
+          ? comparison.verdict
+          : `Review the full head-to-head verdict between ${entityNames} to make your final decision.`,
+        url,
+        position: comparison.attributes.slice(0, 5).length + 2,
+      },
+    ];
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "@id": `${url}#howto`,
+      name: `How to Choose: ${entityNames}`,
+      description: `A step-by-step guide to deciding between ${entityNames} based on your needs.`,
+      url,
+      step: howToSteps,
+      totalTime: "PT5M",
+      supply: comparison.entities.map((e) => ({ "@type": "HowToSupply", name: e.name })),
+    });
+  }
+
+  // 5. BreadcrumbList
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
     ...(comparison.category
