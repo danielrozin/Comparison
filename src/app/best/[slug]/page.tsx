@@ -284,6 +284,7 @@ function bestPageSchema(entry: BestEntry) {
         acquireLicensePage: `${SITE_URL}/terms`,
         audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
         accessMode: ["textual"],
+        accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
         potentialAction: { "@type": "ReadAction", target: url },
         // speakable — expand beyond h1 to cover the first body paragraph and FAQ answers.

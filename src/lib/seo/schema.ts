@@ -1515,6 +1515,12 @@ export function profilePageSchema(entity: {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     // primaryImageOfPage — the canonical representative image for this entity.
@@ -1551,6 +1557,19 @@ export function profilePageSchema(entity: {
         numberOfItems: entity.comparisonCount,
         url: `${SITE_URL}/entity/${entity.slug}`,
       },
+    }),
+    // citation — links this ProfilePage to the comparison articles that discuss this entity.
+    // AI answer engines use citation to build entity attribution chains: when a user asks
+    // "compare X vs Y", engines that found X cited on its own ProfilePage have a higher
+    // confidence anchor for attributing the answer to our data.
+    ...((entity.topComparisons ?? []).length > 0 && {
+      citation: (entity.topComparisons ?? []).slice(0, 5).map((c) => ({
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/compare/${c.slug}#webpage`,
+        name: c.title,
+        url: `${SITE_URL}/compare/${c.slug}`,
+        publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      })),
     }),
   };
 }
