@@ -180,6 +180,9 @@ const changelogSchema = {
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+      ethicsPolicy: `${SITE_URL}/disclaimer`,
+      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
       potentialAction: { "@type": "ReadAction", target: CHANGELOG_URL },
       speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
       // hasPart — list each release as an ItemList so crawlers can enumerate versions.

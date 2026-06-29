@@ -113,6 +113,9 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro"] },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: REVIEWS_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     ...(total > 0 && {

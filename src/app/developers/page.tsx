@@ -44,6 +44,8 @@ const apiSchema = {
       description: "Unlimited requests, priority support",
     },
   ],
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",

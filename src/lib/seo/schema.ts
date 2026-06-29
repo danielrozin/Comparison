@@ -1549,6 +1549,9 @@ export function categoryPageSchema(category: CategoryData) {
       contentReferenceTime: today,
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+      ethicsPolicy: `${SITE_URL}/disclaimer`,
+      correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
       // speakable — tells voice assistants and LLMs which section has the most citable content
       speakable: {
         "@type": "SpeakableSpecification",
@@ -1777,6 +1780,9 @@ export function profilePageSchema(entity: {
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     // primaryImageOfPage — the canonical representative image for this entity.
     // Google uses this for the Knowledge Panel card image and AI Overview thumbnails.
     primaryImageOfPage: {
