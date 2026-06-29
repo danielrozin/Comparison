@@ -20,6 +20,10 @@ const apiSchema = {
   },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
+  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  acquireLicensePage: `${SITE_URL}/terms`,
+  audience: { "@type": "Audience", audienceType: "Software Developers, Researchers, Data Scientists" },
   offers: [
     {
       "@type": "Offer",

@@ -84,6 +84,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     accessMode: ["textual"],
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+    copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    acquireLicensePage: `${SITE_URL}/terms`,
+    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro"] },
     keywords: "trending comparisons, most popular comparisons, top vs comparisons 2026",
   };
