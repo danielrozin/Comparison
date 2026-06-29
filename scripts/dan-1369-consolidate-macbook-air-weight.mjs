@@ -30,7 +30,9 @@ import { PrismaClient } from "@prisma/client";
 const PRO_CANONICAL_SLUG =
   "macbook-pro-weight-2025-2026-complete-specs-comparison-guide";
 
-const PRO_NEW_META_TITLE = 'MacBook Pro Weight 2026: 14" & 16" Specs | A Versus B';
+// Root layout appends "| A Versus B" via template; metaTitle must NOT include
+// the brand suffix to avoid double "| A Versus B" in the rendered <title>.
+const PRO_NEW_META_TITLE = 'MacBook Pro Weight 2026: 14" & 16" Specs';
 
 const PRO_NEW_META_DESCRIPTION =
   'MacBook Pro weight in 2026: exact figures for the 14" and 16" models (M5, M5 Pro, M5 Max) in pounds and kg, plus how they compare across generations. Looking for the lighter line? See our MacBook Air weight guide.';

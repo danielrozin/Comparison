@@ -32,9 +32,10 @@ const NEW_TITLE =
   "Best Mercedes-Benz Alternatives & Competitors (2026 Luxury Cars)";
 
 // <title> tag: keep the rich entity list (matches "audi competitors …") and
-// the "competitors" term, brand at the end per the meta playbook.
+// the "competitors" term. Root layout appends "| A Versus B" via template so
+// metaTitle must NOT include the brand suffix (avoids double "| A Versus B").
 const NEW_META_TITLE =
-  "Mercedes-Benz Alternatives & Competitors 2026: BMW, Audi & More | A Versus B";
+  "Mercedes-Benz Alternatives & Competitors 2026: BMW, Audi & More";
 
 const NEW_META_DESCRIPTION =
   "The best Mercedes-Benz alternatives and competitors in 2026: BMW (direct rival), Audi (German engineering), Genesis (best value), Lexus (reliability), Volvo (safety), Porsche (performance). Side-by-side comparison table, segment-by-segment matches, and a buyer's FAQ.";
