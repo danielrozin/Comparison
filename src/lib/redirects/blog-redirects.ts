@@ -286,6 +286,43 @@ const macbookRedirects: BlogRedirect[] = [
   permanent: true,
 }));
 
+// DAN-1369 (child of DAN-1365 §C): split the MacBook *Air* weight query
+// ("macbook air weight", 2,400 vol / pos 24) out of the MacBook *Pro* hub it
+// was cannibalizing. This keeps TWO distinct survivors — the Pro hub above
+// (MACBOOK_PRO_WEIGHT_CANONICAL, retitled Pro-specific by
+// scripts/dan-1369-consolidate-macbook-air-weight.mjs) and the Air hub below.
+//
+// Canonical decision (recs caveat #1): the recs doc proposed an "-all-models-
+// analyzed" Pro survivor, but that slug is already a 308 dupe folded into
+// MACBOOK_PRO_WEIGHT_CANONICAL (live 200, ~190 dupes already point at it).
+// Repointing would create a redirect chain, so we KEEP the established Pro
+// canonical and only split out the Air cluster here. Single hop, no chains.
+//
+// Entity verification (recs caveat #2): the four macbook-air-weight-* sources
+// render <title> "MacBook Air Weight …" (Air-primary). The two apple-macbook-*
+// sources are generic "all models / which is lightest" rankings — folded into
+// the Air hub because the Air is the weight/portability leader and the Air
+// survivor ("which model is right for you") is the broad decision page.
+const MACBOOK_AIR_WEIGHT_CANONICAL =
+  "/blog/macbook-air-weight-comparison-2025-2026-which-model-is-right-for-you";
+
+const MACBOOK_AIR_WEIGHT_DUPES: string[] = [
+  "macbook-air-weight-2025-2026-complete-specs-for-all-current-models",
+  "macbook-air-weight-comparison-2025-2026-all-current-models",
+  "macbook-air-weight-comparison-2025-2026-all-current-models-explained",
+  "macbook-air-weight-comparison-2025-2026-which-model-should-you-choose",
+  "apple-macbook-models-weight-comparison-2025-2026-which-is-lightest",
+  "apple-macbook-weight-comparison-2025-2026-all-models-ranked",
+];
+
+const macbookAirRedirects: BlogRedirect[] = MACBOOK_AIR_WEIGHT_DUPES.map(
+  (slug) => ({
+    source: `/blog/${slug}`,
+    destination: MACBOOK_AIR_WEIGHT_CANONICAL,
+    permanent: true,
+  })
+);
+
 // DAN-871: "US vs China GDP 2026" thin cluster collapsed onto the
 // existing Comparison row, not a blog post — these dupes are spammy
 // narrative cron output, the structured comparison page is the canonical.
@@ -375,6 +412,7 @@ const cmlExcludedRedirects: BlogRedirect[] = [
 
 export const BLOG_REDIRECTS: BlogRedirect[] = [
   ...macbookRedirects,
+  ...macbookAirRedirects,
   ...mercedesRedirects,
   ...gdpRedirects,
   ...cmlExcludedRedirects,
