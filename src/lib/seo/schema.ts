@@ -960,6 +960,10 @@ function buildMultiEntityGraph(
     })),
   };
 
+  // Compute HowTo eligibility before the article object so hasPart can reference it.
+  const MULTI_HOWTO_CATS = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
+  const hasMultiHowTo = Boolean(comparison.category && MULTI_HOWTO_CATS.has(comparison.category) && comparison.attributes.length >= 3);
+
   // Article @type locked to "Article" (string) per schema-3way v1 contract (DAN-841).
   // TechArticle enrichment is conveyed via additionalType so tests can reliably find
   // the article node with n["@type"] === "Article" without breaking SEO signals.
@@ -1062,11 +1066,12 @@ function buildMultiEntityGraph(
       "@type": "ReadAction",
       target: { "@type": "EntryPoint", urlTemplate: url },
     },
-    // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
+    // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
     ...(() => {
       const parts = [
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
       ];
       return parts.length > 0 ? { hasPart: parts } : {};
     })(),
@@ -1189,6 +1194,49 @@ function buildMultiEntityGraph(
           url: s.url,
         })),
       }),
+    });
+  }
+
+  // HowTo schema for multi-entity decision guides — parallels 2-entity HowTo.
+  // Step Images on each step enable Google's Step Images rich result in SERP.
+  if (hasMultiHowTo) {
+    const multiEntityNames = comparison.entities.map((e) => e.name).join(", ");
+    graph.push({
+      "@type": "HowTo",
+      "@id": `${url}#howto`,
+      name: `How to Choose: ${multiEntityNames}`,
+      description: `A step-by-step guide to deciding between ${multiEntityNames} based on your needs.`,
+      url,
+      totalTime: "PT5M",
+      estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
+      supply: comparison.entities.map((e) => ({ "@type": "HowToSupply", name: e.name })),
+      yield: `A well-informed decision between ${multiEntityNames}`,
+      step: [
+        {
+          "@type": "HowToStep",
+          name: "Define your priorities",
+          text: `Identify which features matter most when choosing between ${multiEntityNames}. Consider your use case, budget, and specific requirements.`,
+          position: 1,
+          url: `${url}#key-differences`,
+          image: { "@type": "ImageObject", url: multiOgImage, width: 1200, height: 630 },
+        },
+        ...comparison.attributes.slice(0, 5).map((attr, i) => ({
+          "@type": "HowToStep",
+          name: `Compare ${attr.name}`,
+          text: `Evaluate each option's ${attr.name.toLowerCase()} to determine which best fits your specific needs.`,
+          position: i + 2,
+          url: `${url}#comparison-table`,
+          image: { "@type": "ImageObject", url: multiOgImage, width: 1200, height: 630 },
+        })),
+        {
+          "@type": "HowToStep",
+          name: "Read the verdict",
+          text: comparison.verdict || `Review the full comparison to make your final decision between ${multiEntityNames}.`,
+          url: `${url}#verdict`,
+          image: { "@type": "ImageObject", url: multiOgImage, width: 1200, height: 630 },
+          position: comparison.attributes.slice(0, 5).length + 2,
+        },
+      ],
     });
   }
 
