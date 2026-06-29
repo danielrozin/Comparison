@@ -143,20 +143,38 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     { name: category.name, url: `${SITE_URL}/category/${slug}` },
   ]);
 
+  const categoryUrl = `${SITE_URL}/category/${slug}`;
+  const categoryOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${category.name} Comparisons`)}&type=category`;
+  const categoryToday = new Date().toISOString().slice(0, 10);
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${categoryUrl}#collectionpage`,
     name: `${category.name} Comparisons`,
     description: `Compare ${category.name} side-by-side — data-driven comparisons with structured attributes, verdicts, and community votes.`,
     abstract: `Data-driven ${category.name} comparisons with attribute tables, verdicts, and community votes.`,
-    url: `${SITE_URL}/category/${slug}`,
+    url: categoryUrl,
     inLanguage: "en-US",
+    genre: "Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    lastReviewed: new Date().toISOString().slice(0, 10),
+    interactivityType: "expositive",
+    lastReviewed: categoryToday,
+    contentReferenceTime: categoryToday,
+    thumbnailUrl: categoryOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${categoryUrl}#primaryImage`,
+      url: categoryOgImage,
+      contentUrl: categoryOgImage,
+      width: 1200,
+      height: 630,
+      caption: `${category.name} Comparisons — A Versus B`,
+    },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: categoryUrl },
     mainEntity: {
       "@type": "ItemList",
       name: `${category.name} Comparisons`,

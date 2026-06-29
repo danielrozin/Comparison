@@ -68,20 +68,37 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     { name: hub.h1, url: hubUrl },
   ]);
 
+  const hubOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(hub.h1)}&type=hub`;
+  const hubToday = new Date().toISOString().slice(0, 10);
   const collection = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${hubUrl}#collectionpage`,
     name: hub.h1,
     description: hub.description,
     abstract: hub.description,
     url: hubUrl,
     inLanguage: "en-US",
+    genre: "Topic Hub",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    lastReviewed: new Date().toISOString().slice(0, 10),
+    interactivityType: "expositive",
+    lastReviewed: hubToday,
+    contentReferenceTime: hubToday,
+    thumbnailUrl: hubOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${hubUrl}#primaryImage`,
+      url: hubOgImage,
+      contentUrl: hubOgImage,
+      width: 1200,
+      height: 630,
+      caption: `${hub.h1} — Topic Hub on A Versus B`,
+    },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: hubUrl },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "#page-intro", "#top-comparisons", ".hub-description"],
