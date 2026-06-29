@@ -86,6 +86,7 @@ const schema = {
   isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/password-manager-comparison#article`, url: `${SITE_URL}/password-manager-comparison` },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
+  accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
 };
 
 export default function PasswordManagerMethodologyPage() {

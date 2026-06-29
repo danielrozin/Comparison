@@ -171,6 +171,7 @@ const changelogSchema = {
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
       accessMode: ["textual"],
+      accessibilityFeature: ["readingOrder", "structuralNavigation"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       educationalLevel: "General",
       teaches: "What has changed and improved in A Versus B platform features and content",

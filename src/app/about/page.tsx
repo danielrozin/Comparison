@@ -52,6 +52,7 @@ const aboutPageSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Potential Partners, Students" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
   educationalLevel: "General",
   teaches: "How A Versus B produces data-driven side-by-side comparisons and the mission behind the platform",
   educationalUse: "reference",

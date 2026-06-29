@@ -82,6 +82,7 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, IT Professionals, Security Researchers, Developers" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   educationalLevel: "General",
   teaches: "How to choose the best password manager for security, usability, and price",
   educationalUse: "comparison",

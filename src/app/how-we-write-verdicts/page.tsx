@@ -79,6 +79,7 @@ const articleSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, AI Developers" },
   accessMode: ["textual"],
+  accessibilityFeature: ["readingOrder", "structuralNavigation"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   educationalLevel: "General",
   teaches: "How A Versus B sources comparison data and writes AI-assisted verdicts with structured human editorial oversight",

@@ -258,6 +258,7 @@ const collectionPageSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Technology professionals comparing VPN services" },
   accessMode: ["textual"],
+  accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },

@@ -74,6 +74,7 @@ const schema = {
   },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
   educationalLevel: "General",
   teaches: "How A Versus B tests and benchmarks large language models for comparative analysis",
   educationalUse: "guide",

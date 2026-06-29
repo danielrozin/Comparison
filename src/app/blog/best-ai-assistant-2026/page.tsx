@@ -106,6 +106,7 @@ const articleSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Professionals, Researchers, AI Enthusiasts" },
   accessMode: ["textual"],
+  accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
     "@type": "Person",

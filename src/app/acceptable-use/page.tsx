@@ -35,6 +35,7 @@ const aupSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["readingOrder", "structuralNavigation"],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: AUP_URL },

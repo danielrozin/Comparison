@@ -68,6 +68,7 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, Developers, IT Professionals, Privacy Researchers" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   educationalLevel: "General",
   teaches: "How to choose the best web browser for speed, privacy, and compatibility",
   educationalUse: "comparison",

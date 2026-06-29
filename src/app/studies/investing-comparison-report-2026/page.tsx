@@ -134,6 +134,7 @@ export default async function InvestingStudyPage() {
     audience: { "@type": "Audience", audienceType: "Investors, Researchers, Financial Analysts, Consumers" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     teaches: "How to compare investment products and financial instruments using structured benchmark data",
     educationalUse: "research",

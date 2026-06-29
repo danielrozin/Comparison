@@ -83,6 +83,7 @@ function buildSchemas() {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Students, Researchers, Professionals" },
     accessMode: ["textual"],
+    accessibilityFeature: ["readingOrder", "structuralNavigation"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

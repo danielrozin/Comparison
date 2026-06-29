@@ -195,6 +195,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     teaches: `How to compare ${category.name.toLowerCase()} side by side`,
     educationalUse: "comparison",

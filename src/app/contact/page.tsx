@@ -27,6 +27,7 @@ const contactPageSchema = {
   conditionsOfAccess: "Free",
   interactivityType: "mixed",
   accessMode: ["textual"],
+  accessibilityFeature: ["readingOrder", "structuralNavigation"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

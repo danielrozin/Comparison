@@ -103,6 +103,7 @@ export default function PartnershipsPage() {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Publishers, Brands, Agencies, Researchers" },
     accessMode: ["textual"],
+    accessibilityFeature: ["readingOrder", "structuralNavigation"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

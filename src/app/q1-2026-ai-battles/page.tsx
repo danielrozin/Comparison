@@ -85,6 +85,7 @@ export default function Q1AiBattlesPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, AI Enthusiasts, Marketers, Analysts" },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     teaches: "How to analyze AI tool comparison search trends using quarterly US Google Search volume data and year-over-year growth rates",
     educationalUse: "research",
