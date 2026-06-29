@@ -44,6 +44,8 @@ export default async function HomePage() {
   ]);
   const blogArticles = blogResult.articles;
 
+  const homeOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Compare Anything")}&type=home`;
+  const homeToday = new Date().toISOString().slice(0, 10);
   // CollectionPage schema — tells AI crawlers this is the root collection of all comparisons.
   // `about` enumerates every category so entity-disambiguation can map queries to sections.
   const collectionPageSchema = {
@@ -55,12 +57,26 @@ export default async function HomePage() {
     abstract: "Data-driven side-by-side comparisons across 17+ categories with structured attributes, verdicts, community votes, and expert-reviewed analysis.",
     url: SITE_URL,
     inLanguage: "en-US",
+    genre: "Comparison Platform",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    lastReviewed: new Date().toISOString().slice(0, 10),
+    interactivityType: "expositive",
+    lastReviewed: homeToday,
+    contentReferenceTime: homeToday,
+    thumbnailUrl: homeOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}/#homeImage`,
+      url: homeOgImage,
+      contentUrl: homeOgImage,
+      width: 1200,
+      height: 630,
+      caption: "A Versus B — Compare Anything Side-by-Side",
+    },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: SITE_URL },
     about: CATEGORIES.map((c) => ({
       "@type": "Thing",
       name: c.name,
