@@ -63,6 +63,8 @@ export default async function sitemap({
       { url: `${SITE_URL}/privacy`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/terms`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/acceptable-use`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
+      { url: `${SITE_URL}/cookie-policy`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
       { url: `${SITE_URL}/studies`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.7 },
       { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },

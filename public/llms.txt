@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB112)*
+*Last updated: June 29, 2026 (HB125)*
 
 ## What We Do
 
@@ -97,6 +97,14 @@ Every comparison page emits a full JSON-LD @graph including:
 - How We Write Verdicts page: `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "guide"` (HB110)
 - Studies index CollectionPage: `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "research"`, `keywords` (HB111)
 - Author ProfilePage (daniel-rozin): `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "biography"` (HB112)
+- HB113-117: profilePage `educationalUse: comparison`, webApplicationSchema `accessModeSufficient` + `teaches`, HowTo `yield` field, about/developers pages AEO enrichment
+- HB118-120: multi-entity item nodes use canonical entity page `@id` for cross-document graph merging; multi-entity Article `about[]` gains `@id`; DataCatalog gains `educationalLevel` + `educationalUse`
+- HB121: multi-entity comparisons emit `HowTo` schema (step guide + hasPart edge + yield) for 3+ entity comparisons
+- HB122-124: `dataCatalogSchema()` + `siteNavigationSchema()` added to Pages Router `_document.tsx` so they appear on ALL comparison pages; Dataset `educationalLevel: General` + `educationalUse: research`; Organization `numberOfEmployees` E-E-A-T signal
+- WebSite schema enriched with `alternateName[]`, `abstract`, `keywords`, `dateModified`, `license`, `usageInfo` — stronger site-level entity signal for Google Knowledge Panel and AI brand disambiguation (HB125)
+- `FAQPage` Question nodes now include `answerCount: 1` — required for FAQ rich results eligibility in Google Search (HB125)
+- `acceptable-use/page.tsx` now emits WebPage JSON-LD schema with `@id`, `copyrightNotice`, `isPartOf: WebSite`, `breadcrumb` (HB125)
+- Sitemap: added `acceptable-use` + `cookie-policy` URLs (HB125)
 
 ## Categories & Scale
 

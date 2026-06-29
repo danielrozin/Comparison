@@ -160,9 +160,17 @@ export function webSiteSchema() {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
+    // alternateName — secondary brand handles for Knowledge Panel disambiguation and
+    // AI brand entity resolution across "AversusB", "A vs B", and "aversusb.net" mentions.
+    alternateName: ["AversusB", "A vs B", "aversusb.net", "A Versus B"],
     url: SITE_URL,
     description: "The internet's most comprehensive comparison platform — data-driven, expert-reviewed comparisons across technology, sports, countries, products, and more.",
+    abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
+    keywords: "vs, versus, compare, comparison, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
+    dateModified: new Date().toISOString().slice(0, 10),
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     // mainEntity links the WebSite to its primary content subject — the DataCatalog.
@@ -1163,6 +1171,7 @@ function buildMultiEntityGraph(
       mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
         "@type": "Question",
         name: faq.question,
+        answerCount: 1,
         acceptedAnswer: { "@type": "Answer", text: faq.answer, upvoteCount: 1 },
       })),
     });
@@ -1360,10 +1369,13 @@ export function faqSchema(faqs: FAQData[], id?: string) {
     mainEntity: faqs.slice(0, 10).map((faq) => ({
       "@type": "Question",
       name: faq.question,
+      // answerCount — signals exactly one accepted answer; required for FAQ rich results
+      // eligibility in Google Search even when upvoteCount is 0.
+      answerCount: 1,
       acceptedAnswer: {
         "@type": "Answer",
         text: faq.answer,
-        // upvoteCount — even if zero this signals the answer is authoritative.
+        // upvoteCount — editorial confidence signal for AI answer engine ranking.
         upvoteCount: 1,
       },
     })),
