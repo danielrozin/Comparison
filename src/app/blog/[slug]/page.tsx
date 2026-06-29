@@ -377,9 +377,10 @@ export default async function BlogPostPage({
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
+    // .article-excerpt is emitted on the excerpt <p> in the blog header (HB89 fix).
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".article-excerpt", ".article-abstract"],
+      cssSelector: ["h1", ".article-excerpt", ".prose-custom p:first-of-type"],
     },
     // potentialAction — ReadAction lets AI crawlers confirm this article is
     // readable at its canonical URL, boosting indexation and citation confidence.
@@ -458,7 +459,7 @@ export default async function BlogPostPage({
     primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
+      cssSelector: ["h1", ".article-excerpt", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
     },
   });
 
@@ -516,7 +517,7 @@ export default async function BlogPostPage({
             </h1>
 
             {article.excerpt && (
-              <p className="text-lg text-primary-100 leading-relaxed max-w-3xl">
+              <p className="article-excerpt text-lg text-primary-100 leading-relaxed max-w-3xl">
                 {article.excerpt}
               </p>
             )}

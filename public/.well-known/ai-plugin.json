@@ -18,7 +18,7 @@
   "llms_txt": "https://www.aversusb.net/llms.txt",
   "llms_full_txt": "https://www.aversusb.net/api/llms-full",
   "sitemap": "https://www.aversusb.net/sitemap.xml",
-  "last_updated": "2026-06-28",
+  "last_updated": "2026-06-29",
   "capabilities": [
     "comparison_lookup",
     "alternatives_search",

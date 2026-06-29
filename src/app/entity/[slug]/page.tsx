@@ -237,7 +237,7 @@ export default async function EntityPage({ params }: PageProps) {
             <p> carries the "versus {name}" prose Google had no on-page text for. */}
         <section className="mb-8">
           <h2 className="text-xl font-bold text-text mb-2">{name} vs Every Rival</h2>
-          <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
+          <p className="entity-intro text-text-secondary leading-relaxed text-sm sm:text-base">
             {intro}
           </p>
         </section>

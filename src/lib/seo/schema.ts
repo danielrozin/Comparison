@@ -614,14 +614,25 @@ export function comparisonPageSchema(
 
   // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
   // surface step-by-step decision guides in "how to choose X vs Y" query slots.
-  const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming"]);
+  // travel/finance/health/economy added 2026-06-29 (HB89): delta vs united (pos 23),
+  // finance comparisons, and health comparisons now get decision-guide HowTo nodes.
+  const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy"]);
   if (comparison.category && HOWTO_CATEGORIES.has(comparison.category) && comparison.attributes.length >= 3) {
     const entityNames = comparison.entities.map((e) => e.name).join(" vs ");
+    const howToFirstStepText: Record<string, string> = {
+      travel: `Clarify your travel priorities — price, routes, loyalty program, or in-flight experience — to determine which attributes matter most when choosing between ${entityNames}.`,
+      finance: `Identify your financial goals and risk tolerance to determine which factors matter most when comparing ${entityNames}.`,
+      health: `Consult with a healthcare professional and define your health objectives before comparing ${entityNames} based on the attributes below.`,
+      economy: `Define the economic indicators and time horizon most relevant to your analysis of ${entityNames}.`,
+    };
+    const firstStepText = (comparison.category && howToFirstStepText[comparison.category])
+      || `Identify whether you need ${entityNames} for personal, professional, or enterprise use. Your use case will determine which attributes matter most.`;
+
     const howToSteps = [
       {
         "@type": "HowToStep",
-        name: "Define your primary use case",
-        text: `Identify whether you need ${entityNames} for personal, professional, or enterprise use. Your use case will determine which attributes matter most.`,
+        name: "Define your priorities",
+        text: firstStepText,
         position: 1,
       },
       ...comparison.attributes.slice(0, 5).map((attr, i) => {
@@ -663,10 +674,13 @@ export function comparisonPageSchema(
   }
 
   // 5. BreadcrumbList
+  const categoryDisplayName = comparison.category
+    ? comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1)
+    : null;
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
-    ...(comparison.category
-      ? [{ name: comparison.category, url: `${SITE_URL}/category/${comparison.category}` }]
+    ...(categoryDisplayName
+      ? [{ name: categoryDisplayName, url: `${SITE_URL}/category/${comparison.category}` }]
       : []),
     { name: comparison.title, url },
   ];
@@ -761,16 +775,19 @@ export function comparisonPageSchema(
       eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
       competitor: [
         {
-          "@type": "SportsTeam",
+          // Use entity-specific schema type: Person for athletes, SportsTeam for teams.
+          "@type": entitySchemaType(a.entityType) === "Person" ? "Person" : "SportsTeam",
           name: a.name,
           url: `${SITE_URL}/entity/${a.slug}`,
           ...(a.imageUrl && { image: a.imageUrl }),
+          sameAs: entityWikipediaSameAs(a.name),
         },
         {
-          "@type": "SportsTeam",
+          "@type": entitySchemaType(b.entityType) === "Person" ? "Person" : "SportsTeam",
           name: b.name,
           url: `${SITE_URL}/entity/${b.slug}`,
           ...(b.imageUrl && { image: b.imageUrl }),
+          sameAs: entityWikipediaSameAs(b.name),
         },
       ],
       organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -1050,10 +1067,13 @@ function buildMultiEntityGraph(
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
   };
 
+  const multiCategoryDisplay = comparison.category
+    ? comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1)
+    : null;
   const breadcrumbs = [
     { name: "Home", url: SITE_URL },
-    ...(comparison.category
-      ? [{ name: comparison.category, url: `${SITE_URL}/category/${comparison.category}` }]
+    ...(multiCategoryDisplay
+      ? [{ name: multiCategoryDisplay, url: `${SITE_URL}/category/${comparison.category}` }]
       : []),
     { name: comparison.title, url },
   ];
@@ -1079,6 +1099,9 @@ function buildMultiEntityGraph(
     graph.push({
       "@type": "FAQPage",
       "@id": `${url}#faq`,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
       mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
         "@type": "Question",
         name: faq.question,
@@ -1505,9 +1528,11 @@ export function profilePageSchema(entity: {
       copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     },
     significantLink: significantLinks,
+    // .entity-intro selector added HB89: targets the lede paragraph on entity pages
+    // so AI voice assistants can extract the concise entity description directly.
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1"],
+      cssSelector: ["h1", ".entity-intro"],
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
