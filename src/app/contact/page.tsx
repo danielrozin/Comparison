@@ -58,28 +58,38 @@ export default function ContactPage() {
   return (
     <>
       <JsonLd data={contactPageSchema} />
+
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">Contact</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
+            Get in Touch
+          </h1>
+          <p className="text-primary-100 text-sm sm:text-base max-w-xl">
+            Have a question, spotted an error, or want to suggest a new comparison? We respond within 2 business days.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Contact</li>
-        </ol>
-      </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
         {/* Left — Info */}
         <div className="md:col-span-2">
-          <h1 className="text-4xl font-display font-black text-text mb-4">Get in Touch</h1>
-          <p className="text-text-secondary leading-relaxed mb-8">
-            Have a question, spotted an error, or want to suggest a new comparison? We read every
-            message and respond as quickly as we can.
-          </p>
+          <h2 className="text-2xl font-display font-bold text-text mb-4">Contact Options</h2>
 
           <div className="space-y-6">
             <div>

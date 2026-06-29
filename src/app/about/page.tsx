@@ -136,9 +136,9 @@ export default function AboutPage() {
       <section className="mb-12">
         <h2 className="text-2xl font-display font-bold text-text mb-6">How It Works</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
-            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-primary-600 font-bold text-lg">1</span>
+          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
+              <span className="text-white font-bold text-lg">1</span>
             </div>
             <h3 className="font-semibold text-text mb-2">Search Anything</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -146,9 +146,9 @@ export default function AboutPage() {
               and get a structured comparison instantly.
             </p>
           </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
-            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-primary-600 font-bold text-lg">2</span>
+          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
+              <span className="text-white font-bold text-lg">2</span>
             </div>
             <h3 className="font-semibold text-text mb-2">See the Data</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -156,9 +156,9 @@ export default function AboutPage() {
               key differences, and surfaces pros and cons for both sides.
             </p>
           </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
-            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-              <span className="text-primary-600 font-bold text-lg">3</span>
+          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
+              <span className="text-white font-bold text-lg">3</span>
             </div>
             <h3 className="font-semibold text-text mb-2">Make a Decision</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
@@ -174,7 +174,7 @@ export default function AboutPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-4">What Makes Us Different</h2>
         <ul className="space-y-4">
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-primary-600 mt-2 flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
             <div>
               <p className="font-semibold text-text">Visual-first design</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -184,7 +184,7 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-primary-600 mt-2 flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
             <div>
               <p className="font-semibold text-text">Broad coverage</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -194,7 +194,7 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-primary-600 mt-2 flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
             <div>
               <p className="font-semibold text-text">No hidden agendas</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -204,7 +204,7 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-primary-600 mt-2 flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
             <div>
               <p className="font-semibold text-text">Always up to date</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -214,7 +214,7 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-primary-600 mt-2 flex-shrink-0" />
+            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
             <div>
               <p className="font-semibold text-text">Free for everyone</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -260,9 +260,9 @@ export default function AboutPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-6">Who We Are</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Daniel */}
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center text-xl font-display font-black text-primary-600 shrink-0">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
                 DR
               </div>
               <div>
@@ -300,9 +300,9 @@ export default function AboutPage() {
             </div>
           </div>
           {/* Shai */}
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center text-xl font-display font-black text-primary-600 shrink-0">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
                 SA
               </div>
               <div>
@@ -360,7 +360,7 @@ export default function AboutPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+          className="inline-block px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
         >
           Contact Us
         </Link>

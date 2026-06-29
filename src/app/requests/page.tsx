@@ -66,9 +66,9 @@ export default function RequestsPage() {
   return (
     <>
       <JsonLd data={requestsPageSchema} />
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-alt">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-800 to-primary-600 text-white py-14">
+      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white py-14 relative overflow-hidden">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3">
             Request a Comparison
@@ -85,11 +85,11 @@ export default function RequestsPage() {
           {/* Form */}
           <div className="lg:col-span-2">
             <div className="sticky top-20">
-              <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                <h2 className="text-lg font-bold text-gray-900 mb-1">
+              <div className="bg-white border border-border rounded-xl p-6 shadow-sm">
+                <h2 className="text-lg font-bold text-text mb-1">
                   Suggest a Comparison
                 </h2>
-                <p className="text-sm text-gray-500 mb-5">
+                <p className="text-sm text-text-secondary mb-5">
                   Tell us what you&apos;d like to see compared.
                 </p>
                 <RequestForm />
@@ -99,7 +99,7 @@ export default function RequestsPage() {
 
           {/* Request List */}
           <div className="lg:col-span-3">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
+            <h2 className="text-lg font-bold text-text mb-4">
               Community Requests
             </h2>
             <RequestList />
