@@ -397,6 +397,18 @@ export function comparisonPageSchema(
           operatingSystem: "Web, iOS, Android",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         }),
+        // Product enrichment — brand + availability so AI product-search crawlers
+        // can extract structured product data from comparison pages.
+        ...(schType === "Product" && {
+          brand: { "@type": "Brand", name: e.name.split(" ")[0] },
+          category: comparison.category ?? "Products",
+          offers: {
+            "@type": "Offer",
+            availability: "https://schema.org/InStock",
+            priceCurrency: "USD",
+            seller: { "@type": "Organization", name: SITE_NAME },
+          },
+        }),
       };
     }),
     // mentions cross-links entity ProfilePages so AI crawlers can follow the
@@ -629,6 +641,17 @@ function buildMultiEntityGraph(
       // Free Offer signals that a free tier exists; most SaaS tools compared on the
       // site have one. This enables Google/AI product-search carousels for free tools.
       node.offers = { "@type": "Offer", price: "0", priceCurrency: "USD" };
+    }
+
+    if (schemaType === "Product") {
+      node.brand = { "@type": "Brand", name: entity.name.split(" ")[0] };
+      node.category = comparison.category ?? "Products";
+      node.offers = {
+        "@type": "Offer",
+        availability: "https://schema.org/InStock",
+        priceCurrency: "USD",
+        seller: { "@type": "Organization", name: SITE_NAME },
+      };
     }
 
     if (realVotes) {
@@ -975,6 +998,22 @@ export function entityPageSchema(entity: {
     description: entity.shortDesc,
     url,
     ...(entity.imageUrl && { image: entity.imageUrl }),
+    // Product-specific enrichment for AI product-search carousels
+    ...(schemaType === "Product" && {
+      brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
+      offers: {
+        "@type": "Offer",
+        availability: "https://schema.org/InStock",
+        priceCurrency: "USD",
+        seller: { "@type": "Organization", name: SITE_NAME },
+      },
+    }),
+    // SoftwareApplication enrichment on entity pages
+    ...(schemaType === "SoftwareApplication" && {
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web, iOS, Android",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    }),
   };
 }
 
@@ -1062,6 +1101,21 @@ export function profilePageSchema(entity: {
       "@type": "ReadAction",
       target: { "@type": "EntryPoint", urlTemplate: url },
     },
+    // Type-specific enrichment for AI product-search and app-store carousels
+    ...(schemaType === "Product" && {
+      brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
+      offers: {
+        "@type": "Offer",
+        availability: "https://schema.org/InStock",
+        priceCurrency: "USD",
+        seller: { "@type": "Organization", name: SITE_NAME },
+      },
+    }),
+    ...(schemaType === "SoftwareApplication" && {
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web, iOS, Android",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    }),
   };
 
   const today = new Date().toISOString().slice(0, 10);
