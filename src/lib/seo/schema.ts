@@ -958,8 +958,43 @@ function buildMultiEntityGraph(
     }),
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    // hasPart links to the embedded FAQPage so Google/AI can associate the FAQ graph node.
-    ...(comparison.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
+    // interactivityType — multi-entity pages are read-only expositive content.
+    interactivityType: "expositive",
+    // lastReviewed + reviewedBy — freshness signal for AI fact-checkers.
+    lastReviewed: comparison.metadata.updatedAt,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
+    wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
+    // significantLink — entity ProfilePages and alternatives so AI can follow the graph.
+    significantLink: comparison.entities.flatMap((e) => [
+      `${SITE_URL}/entity/${e.slug}`,
+      `${SITE_URL}/alternatives/${e.slug}`,
+    ]),
+    // potentialAction — ReadAction confirms this article is readable at its canonical URL.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
+    // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
+    ...(() => {
+      const parts = [
+        ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
+        ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+      ];
+      return parts.length > 0 ? { hasPart: parts } : {};
+    })(),
+    // isBasedOn — formal graph edge from Article to Dataset evidence source.
+    ...(comparison.attributes.length > 0 && {
+      isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
+    }),
+    // citation — external sources backing the comparison data.
+    ...((): Record<string, unknown> => {
+      const multiCitation = comparison.citationStats;
+      const citedSources = (multiCitation?.sources ?? [])
+        .filter((s: { url?: string; name: string }) => s.url)
+        .map((s: { url?: string; name: string }) => ({ "@type": "CreativeWork", name: s.name, url: s.url }));
+      return citedSources.length > 0 ? { citation: citedSources } : {};
+    })(),
     ...(multiViewCount > 0 && {
       interactionStatistic: {
         "@type": "InteractionCounter",

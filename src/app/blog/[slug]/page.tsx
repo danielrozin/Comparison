@@ -370,6 +370,8 @@ export default async function BlogPostPage({
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Students, Decision Makers",
     },
+    // interactivityType — blog articles are read-only expositive content.
+    interactivityType: "expositive",
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
