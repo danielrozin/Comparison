@@ -380,6 +380,7 @@ export default async function BlogPostPage({
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
     // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
     // .article-excerpt is emitted on the excerpt <p> in the blog header (HB89 fix).
     speakable: {

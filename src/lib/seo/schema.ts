@@ -202,6 +202,29 @@ export function webSiteSchema() {
     // AI crawlers and Google's Site Links generation use mainEntity to understand what
     // the site is about at the corpus level, improving topical authority attribution.
     mainEntity: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog` },
+    // hasPart — lists the primary sections of the site for AI site-structure understanding.
+    // Google Sitelinks and AI crawlers (Perplexity, ChatGPT) use hasPart to generate
+    // structured overviews of what sections exist and how the site is organized.
+    hasPart: [
+      { "@type": "WebPage", name: "Comparisons", url: `${SITE_URL}/trending` },
+      { "@type": "WebPage", name: "Blog", url: `${SITE_URL}/blog` },
+      { "@type": "WebPage", name: "Reviews", url: `${SITE_URL}/reviews` },
+      { "@type": "WebPage", name: "Entity Profiles", url: `${SITE_URL}/entity` },
+      { "@type": "WebPage", name: "Trending", url: `${SITE_URL}/trending` },
+      { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
+      { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },
+    ],
+    // about — explicit topic list for AI topical authority signals.
+    about: [
+      { "@type": "Thing", name: "Product Comparisons" },
+      { "@type": "Thing", name: "Technology Comparisons" },
+      { "@type": "Thing", name: "Sports Comparisons" },
+      { "@type": "Thing", name: "Country Comparisons" },
+      { "@type": "Thing", name: "Software Comparisons" },
+      { "@type": "Thing", name: "Automotive Comparisons" },
+      { "@type": "Thing", name: "Health Comparisons" },
+      { "@type": "Thing", name: "Finance Comparisons" },
+    ],
     potentialAction: [
       {
         "@type": "SearchAction",
@@ -301,6 +324,7 @@ export function webApplicationSchema() {
     usageInfo: `${SITE_URL}/terms`,
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     educationalLevel: "General",
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
@@ -476,6 +500,15 @@ export function comparisonPageSchema(
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    // accessibilityFeature — WCAG accessibility and AI-readability signals.
+    // Google and AI crawlers (Perplexity, ChatGPT) use this to verify that content
+    // is machine-readable, structurally navigable, and citation-safe.
+    // "tableOfContents" = we have named sections (Key Differences, Attributes, FAQ, Verdict);
+    // "readingOrder" = content flows in logical sequence top-to-bottom;
+    // "structuralNavigation" = semantic heading hierarchy (h1 → h2 → h3);
+    // "alternativeText" = all images carry descriptive alt text;
+    // "bookmarks" = named DOM anchors (#short-answer, #verdict, #key-differences, #faq).
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     // educationalLevel — AI classifiers use this to select appropriate citation depth.
     educationalLevel: "General",
     // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
@@ -648,6 +681,16 @@ export function comparisonPageSchema(
     // Google E-E-A-T evaluators and AI crawlers use discussionUrl to confirm
     // real-world engagement with the topic and boost trust signals.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
+    // tableOfContents — enumerates the article's section structure for AI crawlers.
+    // Perplexity and ChatGPT use this to identify which section to cite when answering
+    // specific sub-questions without loading the full page.
+    tableOfContents: [
+      "Quick Answer",
+      "Key Differences",
+      "Side-by-Side Comparison",
+      "Verdict",
+      ...(hasFaqs ? ["FAQ"] : []),
+    ].join(" · "),
   });
 
   // 2. ItemList for the compared entities
@@ -1057,6 +1100,7 @@ function buildMultiEntityGraph(
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     keywords: [
       ...comparison.entities.map((e) => e.name),
       `${comparison.entities.map((e) => e.name).join(" vs ")}`,
@@ -1158,6 +1202,13 @@ function buildMultiEntityGraph(
     teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
     educationalUse: "comparison",
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
+    tableOfContents: [
+      "Quick Answer",
+      "Key Differences",
+      "Side-by-Side Comparison",
+      "Verdict",
+      ...(comparison.faqs.length > 0 ? ["FAQ"] : []),
+    ].join(" · "),
   };
 
   const multiCategoryDisplay = comparison.category
@@ -1473,6 +1524,7 @@ export function categoryPageSchema(category: CategoryData) {
       conditionsOfAccess: "Free",
       accessMode: ["textual"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+      accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
       interactivityType: "expositive",
       educationalLevel: "General",
       teaches: `How to compare ${category.name.toLowerCase()} side by side`,
@@ -1705,6 +1757,7 @@ export function profilePageSchema(entity: {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     educationalLevel: "General",
     teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
     educationalUse: "comparison",

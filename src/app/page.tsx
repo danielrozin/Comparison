@@ -105,6 +105,7 @@ export default async function HomePage() {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     teaches: "How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables",
     educationalUse: "reference",

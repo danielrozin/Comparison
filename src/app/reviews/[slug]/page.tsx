@@ -179,6 +179,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       accessMode: ["textual"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+      accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
       educationalLevel: "General",
       // speakable — voice assistants and LLM engines extract these sections first.
       // .review-score-summary targets the SmartScore/aggregate rating summary block.
