@@ -68,7 +68,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 <span
                   className={`flex-shrink-0 w-6 h-6 rounded-full text-[11px] font-bold flex items-center justify-center transition-all duration-200 ${
                     isOpen
-                      ? "bg-primary-600 text-white shadow-sm shadow-primary-300/40"
+                      ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm"
                       : "bg-gray-100 text-gray-400 group-hover:bg-gray-200"
                   }`}
                 >

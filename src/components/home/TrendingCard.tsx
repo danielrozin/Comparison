@@ -52,7 +52,7 @@ export function TrendingCard({
             className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black flex-shrink-0 ${
               rankGradient
                 ? `bg-gradient-to-br ${rankGradient} text-white shadow-sm`
-                : "bg-gray-100 text-gray-500"
+                : "bg-gradient-to-br from-primary-100 to-primary-200 text-primary-600 shadow-sm"
             }`}
           >
             {rank}

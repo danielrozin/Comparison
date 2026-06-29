@@ -112,7 +112,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   )}
                   <span
                     className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
-                      isActive ? "bg-primary-600 text-white shadow-sm shadow-primary-300" : "bg-gray-100 text-gray-400"
+                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     {idx + 1}
@@ -161,7 +161,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   )}
                   <span
                     className={`flex-shrink-0 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center transition-all ${
-                      isActive ? "bg-primary-600 text-white shadow-sm shadow-primary-300/50" : "bg-gray-100 text-gray-400"
+                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-gray-100 text-gray-400"
                     }`}
                   >
                     {idx + 1}
