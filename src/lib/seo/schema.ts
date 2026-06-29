@@ -110,6 +110,7 @@ export function dataCatalogSchema() {
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       inLanguage: "en-US",
       temporalCoverage: "2024/..",
       measurementTechnique: "Expert editorial research, benchmark aggregation, community voting",
@@ -231,6 +232,7 @@ export function webApplicationSchema() {
     alternativeHeadline: "Side-by-Side Comparison Tool for Products, Tech, Sports & More — Free",
     inLanguage: "en-US",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     creativeWorkStatus: "Published",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
@@ -374,6 +376,7 @@ export function comparisonPageSchema(
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     // abstract is the AI-preferred citation snippet field (more specific than description)
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
@@ -396,14 +399,13 @@ export function comparisonPageSchema(
       "versus",
       ...(comparison.category ? [comparison.category] : []),
     ].join(", "),
-    // interactionStatistic exposes real view-count data to AI crawlers
-    ...(viewCount > 0 && {
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/ReadAction",
-        userInteractionCount: viewCount,
-      },
-    }),
+    // interactionStatistic — ReadAction (views) + VoteAction (community votes) for AI engagement signals
+    ...(() => {
+      const counters = [];
+      if (viewCount > 0) counters.push({ "@type": "InteractionCounter", interactionType: "https://schema.org/ReadAction", userInteractionCount: viewCount });
+      if (voteData && voteData.total >= 1) counters.push({ "@type": "InteractionCounter", interactionType: "https://schema.org/VoteAction", userInteractionCount: voteData.total });
+      return counters.length > 0 ? { interactionStatistic: counters.length === 1 ? counters[0] : counters } : {};
+    })(),
     about: comparison.entities.map((e) => {
       const schType = entitySchemaType(e.entityType);
       return {
@@ -623,6 +625,7 @@ export function comparisonPageSchema(
       url,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       license: `${SITE_URL}/terms`,
       // encodingFormat tells crawlers this Dataset is accessible as HTML and JSON-LD.
       // Semantic Scholar, Google Dataset Search, and AI research indexes use this to
@@ -709,6 +712,7 @@ export function comparisonPageSchema(
       organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
       location: { "@type": "VirtualLocation", url },
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       image: `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`,
     });
   }
@@ -910,6 +914,7 @@ function buildMultiEntityGraph(
       },
     }),
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     // hasPart links to the embedded FAQPage so Google/AI can associate the FAQ graph node.
     ...(comparison.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
     ...(multiViewCount > 0 && {
@@ -978,6 +983,7 @@ function buildMultiEntityGraph(
       url,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       license: `${SITE_URL}/terms`,
       encodingFormat: ["text/html", "application/ld+json"],
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
@@ -1323,6 +1329,7 @@ export function profilePageSchema(entity: {
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
