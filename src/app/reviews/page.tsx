@@ -104,6 +104,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,

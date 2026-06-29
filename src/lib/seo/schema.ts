@@ -603,6 +603,12 @@ export function comparisonPageSchema(
     // acquireLicensePage — where AI trainers, publishers, and scrapers can find the
     // full license terms. Google's training-data team specifically crawls this field.
     acquireLicensePage: `${SITE_URL}/terms`,
+    // publishingPrinciples / ethicsPolicy / correctionsPolicy — Article-level E-E-A-T signals.
+    // Google's quality raters and AI crawlers (Perplexity, ChatGPT) elevate articles that
+    // link back to a documented editorial methodology rather than just the Organization.
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     // audience — topic-audience matching for AI answer routing (e.g., Perplexity picks
     // the most audience-relevant source when multiple pages cover the same comparison).
     audience: {
@@ -1116,6 +1122,9 @@ function buildMultiEntityGraph(
     copyrightYear: new Date().getFullYear(),
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     acquireLicensePage: `${SITE_URL}/terms`,
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     ...(comparison.verdict && {
       review: {

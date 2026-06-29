@@ -1,10 +1,10 @@
 /**
  * Image sitemap — /sitemap/images.xml
  *
- * Serves Google's image extension namespace for the top 3,000 comparison pages.
- * Each <url> entry contains an <image:image> block pointing to the OG image for
- * that comparison page, which Google Images and AI visual search (Lens, SGE) use
- * to index the page's primary visual.
+ * Serves Google's image extension namespace for the top 3,000 comparison pages
+ * and all published blog articles. Each <url> entry contains an <image:image>
+ * block pointing to the OG image for that page, which Google Images and AI visual
+ * search (Lens, SGE) use to index the page's primary visual.
  *
  * AEO/GEO purpose: AI Overviews and visual LLM crawlers follow image sitemaps
  * independently of the text sitemap. Listing OG images here accelerates visual
@@ -15,6 +15,7 @@
  */
 
 import { getPrisma } from "@/lib/db/prisma";
+import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_URL } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
@@ -70,7 +71,7 @@ export async function GET() {
     });
   }
 
-  const entries = comparisons.map((c) => {
+  const comparisonEntries = comparisons.map((c) => {
     const entityA = c.entities[0]?.entity.name ?? "";
     const entityB = c.entities[1]?.entity.name ?? c.entities[0]?.entity.name ?? "";
     const imageUrl = ogImageUrl(c.title, entityA, entityB, c.category ?? "");
@@ -89,6 +90,34 @@ export async function GET() {
       "  </url>",
     ].join("\n");
   });
+
+  // Blog article images — include all published blog articles in the image sitemap.
+  // Blog OG images are generated via /api/og?title=...&type=blog and indexed by
+  // Google Images to drive traffic on "best X" and "X vs Y" informational queries.
+  let blogEntries: string[] = [];
+  try {
+    const { articles } = await listBlogArticles({ limit: 500, status: "published" });
+    blogEntries = articles.map((article) => {
+      const blogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
+      const pageLoc = `${SITE_URL}/blog/${article.slug}`;
+      const title = escapeXml(article.title);
+      const imgLoc = escapeXml(blogImageUrl);
+      return [
+        "  <url>",
+        `    <loc>${escapeXml(pageLoc)}</loc>`,
+        "    <image:image>",
+        `      <image:loc>${imgLoc}</image:loc>`,
+        `      <image:title>${title}</image:title>`,
+        `      <image:caption>${title} — A Versus B Blog</image:caption>`,
+        "    </image:image>",
+        "  </url>",
+      ].join("\n");
+    });
+  } catch {
+    // Blog service unavailable — skip blog images
+  }
+
+  const entries = [...comparisonEntries, ...blogEntries];
 
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +

@@ -369,6 +369,9 @@ export default async function BlogPostPage({
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     copyrightNotice: `© ${publishedDate ? publishedDate.getFullYear() : new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     acquireLicensePage: `${SITE_URL}/terms`,
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Students, Decision Makers",

@@ -149,11 +149,14 @@ export default async function AlternativesPage({ params }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     // teaches + educationalUse — maps this guide to the decision skill it develops
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).
     teaches: `How to find the best alternatives to ${name}`,
     educationalUse: "comparison",
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: altPageUrl },
     // significantLink — entity ProfilePage and top comparison pages for AI graph traversal.

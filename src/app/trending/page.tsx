@@ -101,6 +101,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     alternativeHeadline: "Most Popular X vs Y Comparisons Right Now — A Versus B Trending",
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
     teaches: "How to discover trending comparison topics and make informed decisions",
     educationalUse: "comparison",
