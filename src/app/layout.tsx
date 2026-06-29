@@ -47,6 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@aversusb",
     title: `${SITE_NAME} — Compare Anything`,
     description: "The internet's best destination for comparisons.",
     images: [`${SITE_URL}/api/og?title=Compare+Anything&type=home`],

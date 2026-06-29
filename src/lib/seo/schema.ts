@@ -572,6 +572,9 @@ export function comparisonPageSchema(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
+    // contentReferenceTime — tells LLMs "as of what date" the comparison data is valid,
+    // so time-qualified answer engines (ChatGPT, Perplexity) can cite the freshness window.
+    contentReferenceTime: comparison.metadata.updatedAt,
   });
 
   // 2. ItemList for the compared entities

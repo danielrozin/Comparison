@@ -193,6 +193,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      site: "@aversusb",
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
       images: [ogImage],
@@ -386,6 +387,9 @@ export default async function BlogPostPage({
       "@type": "ReadAction",
       target: { "@type": "EntryPoint", urlTemplate: articleUrl },
     },
+    // contentReferenceTime — tells LLMs the data freshness window so time-qualified
+    // answer engines (ChatGPT, Perplexity) can attribute the correct temporal context.
+    ...(article.updatedAt && { contentReferenceTime: new Date(article.updatedAt).toISOString() }),
   };
 
   const breadcrumbs = [
