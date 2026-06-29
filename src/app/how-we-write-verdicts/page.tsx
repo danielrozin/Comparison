@@ -5,6 +5,8 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
 const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
 const PAGE_DESC = `How ${SITE_NAME} produces the AI-assisted verdict at the top of every comparison page — sourcing, the role of the AI model, the role of human editors, and how your feedback shapes future verdicts.`;
+const VERDICTS_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("How We Write Verdicts")}&type=home`;
+const VERDICTS_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -35,18 +37,36 @@ export const metadata: Metadata = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESC,
   abstract: PAGE_DESC,
   url: PAGE_URL,
+  genre: "Methodology",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
+  datePublished: "2026-03-15",
+  dateModified: VERDICTS_TODAY,
+  lastReviewed: VERDICTS_TODAY,
+  contentReferenceTime: VERDICTS_TODAY,
+  thumbnailUrl: VERDICTS_OG_IMAGE,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: VERDICTS_OG_IMAGE,
+    contentUrl: VERDICTS_OG_IMAGE,
+    width: 1200,
+    height: 630,
+    caption: "How We Write Verdicts — A Versus B",
+  },
   alternativeHeadline: `${SITE_NAME} Verdict Methodology — AI-Assisted Comparison Verdicts`,
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
-  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, AI Developers" },
@@ -55,6 +75,7 @@ const articleSchema = {
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
 };
 

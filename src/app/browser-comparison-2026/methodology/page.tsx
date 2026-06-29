@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026/methodology`;
 const PAGE_TITLE = `How We Test Browsers — Methodology | ${SITE_NAME}`;
+const BROWSER_METHOD_OG = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison Methodology")}&type=trending`;
 const PAGE_DESCRIPTION =
   "Our scoring rubric, data sources, recency policy, conflict-of-interest disclosure, and correction process for the A Versus B browser comparison guide 2026.";
 const LAST_UPDATED = "2026-05-22";
@@ -33,23 +34,38 @@ export const metadata: Metadata = {
 const schema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  genre: "Methodology",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
+  contentReferenceTime: LAST_UPDATED,
+  thumbnailUrl: BROWSER_METHOD_OG,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: BROWSER_METHOD_OG,
+    contentUrl: BROWSER_METHOD_OG,
+    width: 1200,
+    height: 630,
+    caption: "How We Test Browsers — A Versus B Methodology",
+  },
   keywords: "browser testing methodology, how we test browsers, browser benchmark methodology, Chrome Firefox testing",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  isPartOf: { "@type": "WebPage", url: `${SITE_URL}/browser-comparison-2026` },
+  isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/browser-comparison-2026#article`, url: `${SITE_URL}/browser-comparison-2026` },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
 };
 

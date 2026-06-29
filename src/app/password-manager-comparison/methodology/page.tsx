@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison/methodology`;
 const PAGE_TITLE = `How We Test Password Managers — Methodology | ${SITE_NAME}`;
+const PM_METHOD_OG = `${SITE_URL}/api/og?title=${encodeURIComponent("Password Manager Methodology")}&type=trending`;
 const PAGE_DESCRIPTION =
   "Our scoring rubric, data sources, recency policy, conflict-of-interest disclosure, and correction process for the A Versus B password manager comparison guide.";
 
@@ -34,17 +35,31 @@ const LAST_UPDATED = "2026-05-22";
 const schema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  genre: "Methodology",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
+  contentReferenceTime: LAST_UPDATED,
+  thumbnailUrl: PM_METHOD_OG,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: PM_METHOD_OG,
+    contentUrl: PM_METHOD_OG,
+    width: 1200,
+    height: 630,
+    caption: "How We Test Password Managers — A Versus B Methodology",
+  },
   keywords: "password manager methodology, how we test password managers, security benchmark, review methodology",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
@@ -55,7 +70,8 @@ const schema = {
   },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  isPartOf: { "@type": "WebPage", url: `${SITE_URL}/password-manager-comparison` },
+  isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/password-manager-comparison#article`, url: `${SITE_URL}/password-manager-comparison` },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
 };
 

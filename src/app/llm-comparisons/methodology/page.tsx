@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons/methodology`;
 const PAGE_TITLE = `How We Compare Large Language Models — Methodology | ${SITE_NAME}`;
+const LLM_METHOD_OG = `${SITE_URL}/api/og?title=${encodeURIComponent("LLM Comparison Methodology")}&type=trending`;
 const PAGE_DESCRIPTION =
   "Our column definitions, source tier hierarchy, recency policy, COI disclosure, and correction process for the A Versus B LLM comparison guide — structured to mirror the Wikipedia Comparison of large language models table.";
 const LAST_UPDATED = "2026-05-22";
@@ -33,23 +34,38 @@ export const metadata: Metadata = {
 const schema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  genre: "Methodology",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
+  contentReferenceTime: LAST_UPDATED,
+  thumbnailUrl: LLM_METHOD_OG,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: LLM_METHOD_OG,
+    contentUrl: LLM_METHOD_OG,
+    width: 1200,
+    height: 630,
+    caption: "How We Compare Large Language Models — A Versus B Methodology",
+  },
   keywords: "LLM methodology, how we compare language models, AI benchmark methodology, GPT vs Claude testing",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  isPartOf: { "@type": "WebPage", url: `${SITE_URL}/llm-comparisons` },
+  isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/llm-comparisons#article`, url: `${SITE_URL}/llm-comparisons` },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
 };
 

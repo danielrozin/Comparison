@@ -8,6 +8,8 @@ const AUTHOR_TITLE = "Founder & Editor-in-Chief";
 const PAGE_URL = `${SITE_URL}/authors/daniel-rozin`;
 const PAGE_TITLE = `${AUTHOR_NAME} — ${AUTHOR_TITLE}`;
 const PAGE_DESCRIPTION = `${AUTHOR_NAME} is the founder of ${SITE_NAME}, a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17 other product categories. He writes and edits all primary comparison hub pages.`;
+const AUTHOR_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`;
+const AUTHOR_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -111,19 +113,36 @@ const personSchema = {
 const profilePageSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  "@id": PAGE_URL,
+  "@id": `${PAGE_URL}#profilepage`,
   name: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   alternativeHeadline: `${AUTHOR_NAME} — Founder & Editor-in-Chief of A Versus B`,
   url: PAGE_URL,
+  genre: "Author Profile",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
+  datePublished: "2026-03-15",
+  dateModified: AUTHOR_TODAY,
+  lastReviewed: AUTHOR_TODAY,
+  contentReferenceTime: AUTHOR_TODAY,
+  thumbnailUrl: AUTHOR_OG_IMAGE,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: AUTHOR_OG_IMAGE,
+    contentUrl: AUTHOR_OG_IMAGE,
+    width: 1200,
+    height: 630,
+    caption: `${AUTHOR_NAME} — Founder & Editor-in-Chief of A Versus B`,
+  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
-  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, Potential Partners" },
@@ -131,6 +150,7 @@ const profilePageSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   mainEntity: { "@type": "Person", "@id": `${PAGE_URL}#person` },
 };
 

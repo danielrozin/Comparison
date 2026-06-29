@@ -8,6 +8,7 @@ const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of the top 10 password managers in 2026 — encryption, zero-knowledge architecture, independent audits, pricing, and platform support. All data cited to primary sources.";
 const LAST_UPDATED = "2026-05-22";
+const PM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Password Managers Compared 2026")}&type=trending`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -40,17 +41,31 @@ export const metadata: Metadata = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  genre: "Comparison Guide",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
+  contentReferenceTime: LAST_UPDATED,
+  thumbnailUrl: PM_OG_IMAGE,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: PM_OG_IMAGE,
+    contentUrl: PM_OG_IMAGE,
+    width: 1200,
+    height: 630,
+    caption: "Best Password Managers Compared 2026 — A Versus B",
+  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -60,9 +75,11 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, IT Professionals, Security Researchers, Developers" },
   accessMode: ["textual"],
   alternativeHeadline: "Best Password Managers in 2026 — Security, Price & Feature Comparison",
-  author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
+  author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   keywords: "password manager comparison, best password managers, 1Password vs Bitwarden, Dashlane, LastPass 2026",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
   about: { "@type": "Thing", name: "Password managers", sameAs: "https://en.wikipedia.org/wiki/Password_manager" },

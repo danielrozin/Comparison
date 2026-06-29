@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 
+const CHANGELOG_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Changelog — A Versus B Updates")}&type=home`;
 const CHANGELOG_TITLE = `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`;
 const CHANGELOG_DESC = `See what's new on ${SITE_NAME}. Complete history of updates, new comparisons, features, and improvements — updated continuously.`;
 const CHANGELOG_URL = `${SITE_URL}/changelog`;
@@ -141,10 +142,23 @@ const changelogSchema = {
       datePublished: CHANGELOG_FIRST_DATE,
       dateModified: CHANGELOG_LATEST_DATE,
       lastReviewed: CHANGELOG_LATEST_DATE,
+      contentReferenceTime: CHANGELOG_LATEST_DATE,
       inLanguage: "en-US",
+      genre: "Changelog",
+      interactivityType: "expositive",
       creativeWorkStatus: "Published",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      thumbnailUrl: CHANGELOG_OG_IMAGE,
+      image: {
+        "@type": "ImageObject",
+        "@id": `${CHANGELOG_URL}#primaryImage`,
+        url: CHANGELOG_OG_IMAGE,
+        contentUrl: CHANGELOG_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        caption: `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`,
+      },
       alternativeHeadline: `${SITE_NAME} Release Notes & Update History`,
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
@@ -153,6 +167,7 @@ const changelogSchema = {
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      potentialAction: { "@type": "ReadAction", target: CHANGELOG_URL },
       speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
       // hasPart — list each release as an ItemList so crawlers can enumerate versions.
       hasPart: {
