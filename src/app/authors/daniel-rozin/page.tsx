@@ -99,11 +99,12 @@ const personSchema = {
     "@type": "ProfilePage",
     "@id": PAGE_URL,
   },
-  author: ARTICLES.map((a) => ({
+  publishedWork: ARTICLES.map((a) => ({
     "@type": "Article",
     name: a.title,
     url: `${SITE_URL}${a.url}`,
     datePublished: a.date,
+    author: { "@type": "Person", "@id": `${PAGE_URL}#person` },
   })),
 };
 

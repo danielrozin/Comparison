@@ -186,6 +186,9 @@ export async function generateMetadata({
       siteName: SITE_NAME,
       publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
       modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
+      authors: [`${SITE_URL}/authors/daniel-rozin`],
+      section: article.category ?? "Comparisons",
+      tags: article.tags ?? [],
       images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
@@ -291,12 +294,15 @@ export default async function BlogPostPage({
       ? {
           "@type": "Person",
           name: extras.author.name,
-          ...(extras.author.url && { url: extras.author.url }),
+          ...(extras.author.url && { url: extras.author.url, "@id": `${extras.author.url}#person` }),
         }
       : {
           "@type": "Person",
+          "@id": `${SITE_URL}/authors/daniel-rozin#person`,
           name: "Daniel Rozin",
           url: `${SITE_URL}/authors/daniel-rozin`,
+          jobTitle: "Founder & Editor-in-Chief",
+          worksFor: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
           sameAs: [
             "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
             "https://www.facebook.com/daniel.rozin.94",
