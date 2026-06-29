@@ -194,7 +194,7 @@ export default function ChangelogPage() {
             return (
               <div key={idx} className="relative pl-12 sm:pl-16">
                 {/* Dot on timeline */}
-                <div className="absolute left-2.5 sm:left-4.5 top-1.5 w-3 h-3 rounded-full bg-primary-600 ring-4 ring-white" />
+                <div className="absolute left-2.5 sm:left-4.5 top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 ring-4 ring-white" />
 
                 {/* Date & version */}
                 <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -243,7 +243,7 @@ export default function ChangelogPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
         >
           Contact Us
         </Link>
