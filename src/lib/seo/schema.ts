@@ -432,9 +432,7 @@ export function comparisonPageSchema(
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    // genre/educationalLevel — AI classifiers (Google SGE, Perplexity) use these to
-    // categorise content type and select appropriate citation depth for queries.
-    genre: "Comparative Analysis",
+    // educationalLevel — AI classifiers use this to select appropriate citation depth.
     educationalLevel: "General",
     // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
     // Accessibility crawlers and AI classifiers use this to characterise the page experience.
@@ -577,9 +575,6 @@ export function comparisonPageSchema(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
-    // contentReferenceTime — tells LLMs "as of what date" the comparison data is valid,
-    // so time-qualified answer engines (ChatGPT, Perplexity) can cite the freshness window.
-    contentReferenceTime: comparison.metadata.updatedAt,
   });
 
   // 2. ItemList for the compared entities
@@ -1027,18 +1022,10 @@ function buildMultiEntityGraph(
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
-    // contentReferenceTime + lastReviewed — freshness signals for LLM time-qualified answers
-    contentReferenceTime: comparison.metadata.updatedAt,
-    lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    // Properties added for feature parity with 2-entity schema
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    // genre/educationalLevel/interactivityType — AI classifiers use these to route queries
-    genre: "Comparative Analysis",
     educationalLevel: "General",
-    interactivityType: voteData && voteData.total >= 1 ? "mixed" : "expositive",
-    // articleSection + wordCount — structural signals for Google and AI topic classifiers
     ...(comparison.category && { articleSection: comparison.category }),
-    wordCount: Math.max(300, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
   };
 
   const breadcrumbs = [
@@ -1244,16 +1231,38 @@ export function breadcrumbSchema(items: { name: string; url: string }[], id?: st
 
 export function categoryPageSchema(category: CategoryData) {
   const url = `${SITE_URL}/category/${category.slug}`;
+  const today = new Date().toISOString().slice(0, 10);
 
   return [
     {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: category.name,
+      "@id": `${url}#collectionpage`,
+      name: `${category.name} Comparisons`,
       description: category.description,
       url,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      usageInfo: `${SITE_URL}/terms`,
+      dateModified: today,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      // speakable — tells voice assistants and LLMs which section has the most citable content
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", ".category-description", ".comparison-count"],
+      },
+      // potentialAction — CompareAction signals to Google/AI that this page lists comparable entities
+      potentialAction: {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}&category=${category.slug}` },
+        "query-input": "required name=search_term_string",
+      },
       mainEntity: {
         "@type": "ItemList",
+        "@id": `${url}#list`,
         name: `${category.name} Comparisons`,
         numberOfItems: category.comparisonCount,
         itemListElement: category.topComparisons.map((comp, index) => ({
