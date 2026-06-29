@@ -28,11 +28,18 @@ export function FeaturedComparisons({
 
   return (
     <section className={className} aria-label="Featured comparisons">
-      <div className="mb-6">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-text flex items-center gap-2">
-          <span aria-hidden="true">⭐</span> {title}
-        </h2>
-        {subtitle && <p className="text-text-secondary mt-1">{subtitle}</p>}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">{title}</h2>
+            {subtitle && <p className="text-text-secondary text-sm mt-0.5">{subtitle}</p>}
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -47,14 +54,24 @@ export function FeaturedComparisons({
             "from-cyan-500 to-sky-600",
           ];
           const grad = gradients[idx % gradients.length];
+          const isTop = idx === 0;
           return (
             <Link
               key={item.slug}
               href={`/compare/${item.slug}`}
-              className="group flex flex-col bg-white border border-border rounded-2xl overflow-hidden hover:border-primary-200 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200"
+              className={`group relative flex flex-col bg-white border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ${isTop ? "border-amber-200 hover:border-amber-300 ring-1 ring-amber-100" : "border-border hover:border-primary-200"}`}
             >
               {/* Gradient accent header */}
               <div className={`h-1.5 bg-gradient-to-r ${grad}`} />
+              {/* Editor's Pick crown badge on first card */}
+              {isTop && (
+                <div className="absolute top-3 right-3 flex items-center gap-1 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm shadow-amber-300/40 z-10">
+                  <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  Editor&apos;s Pick
+                </div>
+              )}
 
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-start gap-3 mb-3">

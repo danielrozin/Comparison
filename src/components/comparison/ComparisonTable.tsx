@@ -190,33 +190,47 @@ function GroupHeader({
     <button
       type="button"
       onClick={onToggle}
-      className="w-full flex items-center gap-3 bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-gray-100/80 transition-colors cursor-pointer"
+      className="w-full flex items-center gap-3 bg-gradient-to-r from-surface-alt to-surface-alt/60 px-5 py-2.5 border-b border-border hover:from-primary-50/60 hover:to-surface-alt transition-colors cursor-pointer group/cat"
     >
-      <span className="text-xs font-bold uppercase tracking-wider text-text-secondary flex-shrink-0">
+      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-text-secondary flex-shrink-0 group-hover/cat:text-primary-700 transition-colors">
+        <span className="w-1.5 h-1.5 rounded-full bg-primary-400 group-hover/cat:bg-primary-600 transition-colors flex-shrink-0" />
         {categoryName}
       </span>
 
       {total > 0 && (
-        <div className="flex-1 flex items-center gap-1.5 min-w-0">
+        <div className="flex-1 flex items-center gap-2 min-w-0">
+          {/* Win count pills */}
+          {aWins > 0 && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 inline-block" />
+              {aWins}
+            </span>
+          )}
           {/* Mini win-rate bar */}
-          <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden flex max-w-[80px]">
+          <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden flex max-w-[72px]">
             <div
-              className="h-full bg-gradient-to-r from-blue-400 to-blue-300 rounded-l-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-primary-400 to-primary-300 rounded-l-full transition-all duration-500"
               style={{ width: `${aPct}%` }}
             />
             {bPct > 0 && (
               <div
-                className="h-full bg-gradient-to-r from-purple-400 to-purple-300 rounded-r-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-accent-400 to-accent-300 rounded-r-full transition-all duration-500"
                 style={{ width: `${bPct}%` }}
               />
             )}
           </div>
+          {bWins > 0 && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-accent-100 text-accent-700 border border-accent-200/70 whitespace-nowrap flex-shrink-0">
+              {bWins}
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-500 inline-block" />
+            </span>
+          )}
           {leader ? (
-            <span className="text-[10px] font-medium text-text-secondary whitespace-nowrap">
+            <span className="text-[10px] font-medium text-text-secondary whitespace-nowrap hidden sm:block">
               {leader} leads
             </span>
           ) : (
-            <span className="text-[10px] font-medium text-tie whitespace-nowrap">Tied</span>
+            <span className="text-[10px] font-medium text-tie whitespace-nowrap hidden sm:block">Tied</span>
           )}
         </div>
       )}
