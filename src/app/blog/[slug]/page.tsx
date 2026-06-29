@@ -335,6 +335,12 @@ export default async function BlogPostPage({
     alternativeHeadline: `${article.title} — ${SITE_NAME} Guide`,
     copyrightYear: publishedDate ? publishedDate.getFullYear() : new Date().getFullYear(),
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    copyrightNotice: `© ${publishedDate ? publishedDate.getFullYear() : new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+    acquireLicensePage: `${SITE_URL}/terms`,
+    audience: {
+      "@type": "Audience",
+      audienceType: "Consumers, Researchers, Students, Decision Makers",
+    },
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
