@@ -98,7 +98,17 @@ export function dataCatalogSchema() {
     name: `${SITE_NAME} Comparison Database`,
     description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
     url: SITE_URL,
+    // identifier — stable PropertyValue identifier for academic/AI citation systems.
+    // Semantic Scholar and Perplexity use PropertyValue identifiers to deduplicate
+    // dataset citations and track dataset provenance across crawls.
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "url",
+      value: `${SITE_URL}/#datacatalog`,
+    },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    maintainer: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     temporalCoverage: "2024/..",
     dataset: {
       "@type": "Dataset",
@@ -139,6 +149,10 @@ export function webSiteSchema() {
     inLanguage: "en-US",
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    // mainEntity links the WebSite to its primary content subject — the DataCatalog.
+    // AI crawlers and Google's Site Links generation use mainEntity to understand what
+    // the site is about at the corpus level, improving topical authority attribution.
+    mainEntity: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog` },
     potentialAction: [
       {
         "@type": "SearchAction",
@@ -475,6 +489,11 @@ export function comparisonPageSchema(
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // contentReferenceTime — ISO 8601 date that the data in this article is "as of".
+    // LLMs (ChatGPT, Perplexity, Claude) use this to give time-qualified answers:
+    // "According to A Versus B (as of June 2026), ..." instead of treating the data
+    // as timeless, which reduces hallucination risk on stale comparisons.
+    contentReferenceTime: comparison.metadata.updatedAt,
     // alternativeHeadline — secondary title used by Perplexity / ChatGPT citation extractors.
     alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
     // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
@@ -919,6 +938,7 @@ function buildMultiEntityGraph(
       ...(comparison.category ? [comparison.category] : []),
     ].join(", "),
     alternativeHeadline: `${comparison.entities.map((e) => e.name).join(" vs ")}: Which is Better?`,
+    contentReferenceTime: comparison.metadata.updatedAt,
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,

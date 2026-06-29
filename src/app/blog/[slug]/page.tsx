@@ -354,6 +354,9 @@ export default async function BlogPostPage({
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // contentReferenceTime — tells LLMs the "as of" date for data in this article,
+    // enabling time-qualified citations instead of treating content as timeless.
+    contentReferenceTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     license: "https://creativecommons.org/licenses/by/4.0/",
