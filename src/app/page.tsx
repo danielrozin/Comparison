@@ -82,6 +82,10 @@ export default async function HomePage() {
     alternativeHeadline: "Side-by-Side Comparisons for Sports, Tech, Products, Countries & More",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+    copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    acquireLicensePage: `${SITE_URL}/terms`,
+    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     speakable: {
       "@type": "SpeakableSpecification",

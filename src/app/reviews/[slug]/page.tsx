@@ -147,10 +147,19 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       isAccessibleForFree: true,
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
+      copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       accessMode: ["textual"],
       speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      potentialAction: {
+        "@type": "WriteAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
+        name: "Write a Review",
+      },
     },
   ];
   if (aggregation) {
