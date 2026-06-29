@@ -286,9 +286,21 @@ function bestPageSchema(entry: BestEntry) {
         accessMode: ["textual"],
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
         potentialAction: { "@type": "ReadAction", target: url },
-        speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+        // speakable — expand beyond h1 to cover the first body paragraph and FAQ answers.
+        // AI voice assistants (Google Assistant, Siri) and LLM answer engines extract
+        // speakable sections first when generating spoken or cited responses.
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "article.prose-custom p:first-of-type", ".faq-answer"],
+        },
+        // teaches — explicit learning outcome for AI classifiers routing "best X" queries.
+        // ChatGPT and Perplexity route decision queries to pages with a `teaches` field.
+        teaches: `How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`,
+        // educationalUse — signals this is a ranked guide, not a review or comparison.
+        educationalUse: "guide",
         mainEntity: {
           "@type": "ItemList",
+          "@id": `${url}#list`,
           itemListOrder: "https://schema.org/ItemListOrderDescending",
           numberOfItems: entry.listItems.length,
           itemListElement: entry.listItems.map((item) => ({
@@ -301,6 +313,7 @@ function bestPageSchema(entry: BestEntry) {
       },
       {
         "@type": "FAQPage",
+        "@id": `${url}#faq`,
         mainEntity: entry.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.q,

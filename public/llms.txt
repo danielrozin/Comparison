@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB89)*
+*Last updated: June 29, 2026 (HB91)*
 
 ## What We Do
 
@@ -107,7 +107,7 @@ Curated "best of" ranked lists for product categories, covering top picks with c
 
 - **URL pattern:** `https://www.aversusb.net/best/{category-slug}`
 - **Examples:** best AI coding assistants, best project management tools, best password managers
-- Structured data: `CollectionPage + Article` (with `@id`, `genre: "Roundup Guide"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`) + `FAQPage` + `BreadcrumbList`
+- Structured data: `CollectionPage + Article` (with `@id`, `genre: "Roundup Guide"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, `teaches`, `educationalUse: "guide"`, `speakable` targeting h1 + first body paragraph + FAQ answers) + `FAQPage` (with `@id`) + `ItemList` (with `@id`) + `BreadcrumbList`
 
 ## Data Studies
 
