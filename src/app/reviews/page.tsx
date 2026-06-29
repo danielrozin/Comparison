@@ -149,33 +149,40 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">Reviews</li>
-          </ol>
-        </nav>
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">SmartReview</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
             SmartReview
           </h1>
-          <p className="text-text-secondary mt-1">
+          <p className="text-primary-100 text-sm sm:text-base">
             Aggregated reviews from Reddit, G2, Capterra, Trustpilot & more.
             {total > 0 && ` ${total} product${total !== 1 ? "s" : ""} reviewed.`}
           </p>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Category Navigation */}
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
             <Link
               href="/reviews"
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-primary-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
             >
               All ({categories.reduce((s, c) => s + c.count, 0)})
             </Link>
@@ -183,7 +190,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
               <Link
                 key={cat.slug}
                 href={`/reviews?category=${cat.slug}`}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-primary-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
               >
                 {cat.name} ({cat.count})
               </Link>

@@ -116,7 +116,7 @@ export default function Q1AiBattlesPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -126,43 +126,40 @@ export default function Q1AiBattlesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
       />
 
-      {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Q1 2026 AI Tool Battles</li>
-        </ol>
-      </nav>
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">Q1 2026 AI Tool Battles</li>
+            </ol>
+          </nav>
+          <p className="text-xs font-bold uppercase tracking-widest text-primary-300 mb-2">
+            AI Tool Battles Index · Q1 2026 (Jan 1 – Mar 31, 2026)
+          </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
+            The most-compared AI tools on US Google Search, Q1 2026
+          </h1>
+          <p className="text-primary-100 text-sm sm:text-base max-w-2xl">
+            {nf.format(HEADLINE_TOTAL)} US comparison searches across {BATTLE_COUNT} head-to-head battles (Jan–Mar 2026) — documented with full methodology and downloadable dataset.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
 
-      <header className="mb-10">
-        <p className="text-sm font-semibold uppercase tracking-wide text-primary-600 mb-2">
-          AI Tool Battles Index · Q1 2026 (Jan 1 – Mar 31, 2026)
-        </p>
-        <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-4">
-          The most-compared AI and software tools on US Google Search, Q1 2026
-        </h1>
-        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed">
-          We measured{" "}
-          <strong className="text-text">
-            {nf.format(HEADLINE_TOTAL)} US comparison searches across the {BATTLE_COUNT} battles
-          </strong>{" "}
-          in Q1 2026 — head-to-head &ldquo;X vs Y&rdquo; queries people ran on US Google Search to
-          decide between two AI and software products. This page documents how the Index is built,
-          what it counts, what it does not, and links the full downloadable dataset so anyone can
-          reproduce the figures.
-        </p>
-      </header>
-
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Headline figure callout */}
-      <section className="mb-12 rounded-2xl border border-border bg-surface-alt p-6 sm:p-8">
+      <section className="mb-12 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 p-6 sm:p-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           <div>
-            <div className="text-3xl sm:text-4xl font-display font-black text-text">
+            <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">
               {nf.format(HEADLINE_TOTAL)}
             </div>
             <div className="text-sm text-text-secondary mt-1">
@@ -170,13 +167,13 @@ export default function Q1AiBattlesPage() {
             </div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-display font-black text-text">
+            <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">
               {BATTLE_COUNT}
             </div>
             <div className="text-sm text-text-secondary mt-1">head-to-head battles ranked</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-display font-black text-text">US</div>
+            <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">US</div>
             <div className="text-sm text-text-secondary mt-1">
               Google Search only · exact-match
             </div>
@@ -488,6 +485,7 @@ export default function Q1AiBattlesPage() {
           </p>
         </section>
       </article>
-    </div>
+      </div>
+    </>
   );
 }
