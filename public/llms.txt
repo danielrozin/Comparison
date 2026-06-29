@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB63)*
+*Last updated: June 29, 2026 (HB75)*
 
 ## What We Do
 
@@ -32,7 +32,7 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`
+- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`, `isPartOf: WebSite @id` (graph merging), `review` (verdict as formal Review node when verdict present), `copyrightNotice`/`copyrightYear`/`copyrightHolder`/`acquireLicensePage` (AI training attribution), `audience` (topic-audience routing)
 - `HowTo` schema on product/tech/automotive/gaming/software comparisons with ≥3 attributes — step-by-step guide for "how to choose X vs Y" queries with per-attribute winner steps and verdict
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
@@ -44,13 +44,16 @@ Every comparison page emits a full JSON-LD @graph including:
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
 - `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
-- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, and `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot)
+- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`
 - `Product` enrichment on product-type entities — `brand`, `offers.availability: InStock`, `category`, `priceCurrency` on comparison `about` nodes, @graph itemNodes, profilePageSchema mainEntity, and entityPageSchema
 - `SearchResultsPage` on the search results view
 - `ImageObject` with contentUrl, name, description, caption on OG images
 - `ContactPage` on the contact page with embedded `ContactPoint` organization node
 - `WebPage` + `BreadcrumbList` on requests and site-map pages for full crawl coverage
 - Citation meta (`citation_title`, `citation_author`, `citation_abstract`, `DC.*`) on all page types for academic and LLM indexers
+- `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience` on ALL page types (100% coverage: comparisons, blog, entity, category, subcategory, hub, alternatives, reviews, studies, FAQ, about, trending, best-of, curated guides, and more)
+- Blog `Article` enriched with full `ImageObject` (OG image 1200×630 with creditText, creator, copyrightHolder) for rich result thumbnail eligibility
+- `isPartOf: WebSite @id` on comparison and blog Article schemas for knowledge graph entity merging
 
 ## Categories & Scale
 
