@@ -105,37 +105,52 @@ export default function PartnershipsPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Partnerships</li>
-        </ol>
-      </nav>
-
-      {/* Hero */}
-      <div className="text-center mb-16">
-        <h1 className="text-4xl sm:text-5xl font-display font-black text-text mb-4">
-          Reach Buyers at the Point of Decision
-        </h1>
-        <p className="text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed">
-          People visit {SITE_NAME} when they&apos;re actively comparing options and ready to choose.
-          Partner with us to put your brand in front of high-intent decision-makers.
-        </p>
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">Partnerships</li>
+            </ol>
+          </nav>
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium text-primary-100 mb-5 backdrop-blur-sm">
+              <span className="w-2 h-2 rounded-full bg-green-400" />
+              Now accepting partners
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
+              Reach Buyers at the<br className="hidden sm:block" /> Point of Decision
+            </h1>
+            <p className="text-lg text-primary-100 max-w-2xl mx-auto leading-relaxed">
+              People visit {SITE_NAME} when they&apos;re actively comparing options and ready to choose.
+              Partner with us to put your brand in front of high-intent decision-makers.
+            </p>
+            <div className="mt-8">
+              <a href="#apply" className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-primary-700 font-bold rounded-xl hover:bg-primary-50 hover:shadow-lg transition-all duration-150 text-sm">
+                Start a Partnership
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
       </div>
+
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
         {STATS.map((stat) => (
           <div
             key={stat.label}
-            className="bg-surface-alt border border-border rounded-2xl p-6 text-center"
+            className="bg-surface-alt border border-border rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
           >
             <div className="text-3xl font-display font-black text-primary-600 mb-1">
               {stat.value}
@@ -167,7 +182,7 @@ export default function PartnershipsPage() {
           ].map((item) => (
             <div
               key={item.title}
-              className="bg-surface-alt border border-border rounded-2xl p-6"
+              className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
               <h3 className="font-display font-bold text-text mb-2">{item.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed">{item.desc}</p>
@@ -187,12 +202,12 @@ export default function PartnershipsPage() {
               key={tier.name}
               className={`bg-surface-alt border rounded-2xl p-6 relative ${
                 tier.popular
-                  ? "border-primary-600 ring-2 ring-primary-600/20"
-                  : "border-border"
+                  ? "border-primary-500 ring-2 ring-primary-500/20 hover:shadow-lg"
+                  : "border-border hover:border-primary-300 hover:shadow-md"
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary-600 to-accent-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
                   Most Popular
                 </div>
               )}

@@ -96,13 +96,13 @@ export function RequestList() {
     <div>
       {/* Sort controls */}
       <div className="flex items-center gap-2 mb-6">
-        <span className="text-sm text-gray-500">Sort by:</span>
+        <span className="text-sm text-text-secondary">Sort by:</span>
         <button
           onClick={() => { setSort("votes"); setPage(1); }}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "votes"
               ? "bg-primary-100 text-primary-700"
-              : "text-gray-500 hover:bg-gray-100"
+              : "text-text-secondary hover:bg-surface-alt"
           }`}
         >
           Most Voted
@@ -112,7 +112,7 @@ export function RequestList() {
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "newest"
               ? "bg-primary-100 text-primary-700"
-              : "text-gray-500 hover:bg-gray-100"
+              : "text-text-secondary hover:bg-surface-alt"
           }`}
         >
           Newest
@@ -122,19 +122,19 @@ export function RequestList() {
       {loading ? (
         <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="bg-white border border-gray-200 rounded-xl p-5 animate-pulse">
-              <div className="h-5 bg-gray-200 rounded w-2/3 mb-3" />
+            <div key={i} className="bg-white border border-border rounded-xl p-5 animate-pulse">
+              <div className="h-5 bg-gray-100 rounded w-2/3 mb-3" />
               <div className="h-4 bg-gray-100 rounded w-1/3" />
             </div>
           ))}
         </div>
       ) : requests.length === 0 ? (
-        <div className="text-center py-16 bg-gray-50 rounded-xl border border-gray-200">
+        <div className="text-center py-16 bg-surface-alt rounded-xl border border-border">
           <div className="text-4xl mb-3">📭</div>
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          <h3 className="text-lg font-semibold text-text mb-2">
             No requests yet
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-secondary">
             Be the first to suggest a comparison!
           </p>
         </div>
@@ -147,7 +147,7 @@ export function RequestList() {
             return (
               <div
                 key={req.id}
-                className="bg-white border border-gray-200 rounded-xl p-5 hover:border-gray-300 transition-colors flex items-start gap-4"
+                className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-150 flex items-start gap-4"
               >
                 {/* Vote button */}
                 <button
@@ -156,7 +156,7 @@ export function RequestList() {
                   className={`flex flex-col items-center min-w-[52px] py-2 px-2 rounded-lg border transition-all ${
                     hasVoted
                       ? "bg-primary-50 border-primary-200 text-primary-600"
-                      : "bg-gray-50 border-gray-200 text-gray-500 hover:border-primary-300 hover:bg-primary-50 hover:text-primary-600"
+                      : "bg-surface-alt border-border text-text-secondary hover:border-primary-300 hover:bg-primary-50 hover:text-primary-600"
                   } ${req.status === "generated" ? "opacity-50 cursor-default" : ""}`}
                 >
                   <svg
@@ -178,9 +178,9 @@ export function RequestList() {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-text">
                       {req.entityA}{" "}
-                      <span className="text-gray-400 font-normal">vs</span>{" "}
+                      <span className="text-text-secondary font-normal">vs</span>{" "}
                       {req.entityB}
                     </h3>
                     <span
@@ -190,11 +190,11 @@ export function RequestList() {
                     </span>
                   </div>
                   {req.reason && (
-                    <p className="text-sm text-gray-500 line-clamp-2 mb-1">
+                    <p className="text-sm text-text-secondary line-clamp-2 mb-1">
                       {req.reason}
                     </p>
                   )}
-                  <div className="flex items-center gap-3 text-xs text-gray-400">
+                  <div className="flex items-center gap-3 text-xs text-text-secondary">
                     {req.category && (
                       <span className="capitalize">{req.category}</span>
                     )}
@@ -226,17 +226,17 @@ export function RequestList() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+            className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Previous
           </button>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-text-secondary">
             Page {page} of {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg disabled:opacity-50 hover:bg-gray-50 transition-colors"
+            className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Next
           </button>
