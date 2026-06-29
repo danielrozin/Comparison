@@ -171,7 +171,9 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <div className="bg-white border border-border rounded-xl p-5 sm:p-6">
+      <div className="relative bg-white border border-border rounded-xl overflow-hidden">
+        <div className="h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
+        <div className="p-5 sm:p-6">
         <h3 className="text-center text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
           Which do you prefer?
         </h3>
@@ -250,6 +252,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
             )}
           </div>
         )}
+        </div>
       </div>
     </section>
   );
@@ -273,15 +276,15 @@ function VoteButton({
     <button
       onClick={onClick}
       disabled={loading}
-      className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all cursor-pointer ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed`}
+      className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}
     >
       {entity.imageUrl ? (
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-alt">
           <img src={entity.imageUrl} alt={entity.name} className="w-full h-full object-cover" />
         </div>
       ) : (
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${
-          colorClass === "primary" ? "bg-primary-100 text-primary-600" : "bg-purple-100 text-purple-600"
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white shadow-sm ${
+          colorClass === "primary" ? "bg-gradient-to-br from-primary-400 to-primary-600" : "bg-gradient-to-br from-accent-400 to-accent-600"
         }`}>
           {entity.name.charAt(0).toUpperCase()}
         </div>
