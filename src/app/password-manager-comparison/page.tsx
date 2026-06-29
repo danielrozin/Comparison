@@ -20,6 +20,13 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     type: "article",
     siteName: SITE_NAME,
+    images: [{ url: PM_OG_IMAGE, width: 1200, height: 630, alt: "Best Password Managers Compared 2026 — A Versus B" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [PM_OG_IMAGE],
   },
   other: {
     "citation_title": PAGE_TITLE,

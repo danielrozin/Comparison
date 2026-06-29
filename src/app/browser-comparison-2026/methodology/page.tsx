@@ -14,7 +14,20 @@ export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: { canonical: PAGE_URL },
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL },
+  openGraph: {
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    url: PAGE_URL,
+    type: "article",
+    siteName: SITE_NAME,
+    images: [{ url: BROWSER_METHOD_OG, width: 1200, height: 630, alt: "How We Test Browsers — A Versus B Methodology" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [BROWSER_METHOD_OG],
+  },
   other: {
     "citation_title": PAGE_TITLE,
     "citation_author": "A Versus B",

@@ -16,6 +16,14 @@ export const metadata: Metadata = {
     description: CHANGELOG_DESC,
     url: CHANGELOG_URL,
     type: "article",
+    siteName: SITE_NAME,
+    images: [{ url: CHANGELOG_OG_IMAGE, width: 1200, height: 630, alt: "Changelog — A Versus B Updates, Features & New Comparisons" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: CHANGELOG_TITLE,
+    description: CHANGELOG_DESC,
+    images: [CHANGELOG_OG_IMAGE],
   },
   other: {
     "citation_title": CHANGELOG_TITLE,
