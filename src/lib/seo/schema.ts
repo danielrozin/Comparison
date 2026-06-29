@@ -517,6 +517,11 @@ export function comparisonPageSchema(
       ];
       return parts.length > 0 ? { hasPart: parts } : {};
     })(),
+    // isBasedOn — formal graph edge from Article to its Dataset; Google and AI fact-checkers
+    // use this to trace the evidence chain from editorial claim → structured data source.
+    ...(comparison.attributes.length > 0 && {
+      isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
+    }),
   });
 
   // 2. ItemList for the compared entities
