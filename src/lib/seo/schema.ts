@@ -424,6 +424,13 @@ export function comparisonPageSchema(
             seller: { "@type": "Organization", name: SITE_NAME },
           },
         }),
+        // Country enrichment — additionalType + sameAs Wikipedia signals entity identity
+        // to geo-aware AI crawlers (Google Geo, Perplexity, ChatGPT country queries).
+        ...(schType === "Country" && {
+          additionalType: "https://schema.org/Country",
+          sameAs: [`https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`],
+          containedInPlace: { "@type": "Place", name: "Earth" },
+        }),
       };
     }),
     // mentions cross-links entity ProfilePages so AI crawlers can follow the
@@ -751,6 +758,12 @@ function buildMultiEntityGraph(
         priceCurrency: "USD",
         seller: { "@type": "Organization", name: SITE_NAME },
       };
+    }
+
+    if (schemaType === "Country") {
+      node.additionalType = "https://schema.org/Country";
+      node.sameAs = [`https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`];
+      node.containedInPlace = { "@type": "Place", name: "Earth" };
     }
 
     if (realVotes) {

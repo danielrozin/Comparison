@@ -85,6 +85,15 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "VelenPublicWebCrawler", allow: "/" },
       { userAgent: "Webzio-Extended", allow: "/" },
 
+      // === Additional AI/research crawlers (2026) ===
+      { userAgent: "Ai2Bot", allow: "/" },             // Allen Institute for AI
+      { userAgent: "ChatGLM-Spider", allow: "/" },     // Zhipu AI / GLM models
+      { userAgent: "PanguBot", allow: "/" },           // Huawei PanGu model
+      { userAgent: "Meltwater", allow: "/" },          // Meltwater media intelligence
+      { userAgent: "KagiBot", allow: "/" },            // Kagi search engine crawler
+      { userAgent: "AwarioSmartBot", allow: "/" },     // Awario brand monitoring
+      { userAgent: "img2dataset", allow: "/" },        // Common Crawl image dataset
+
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
       { userAgent: "SemrushBot", allow: "/" },
