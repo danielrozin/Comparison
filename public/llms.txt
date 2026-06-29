@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB95)*
+*Last updated: June 29, 2026 (HB86)*
 
 ## What We Do
 
@@ -55,6 +55,16 @@ Every comparison page emits a full JSON-LD @graph including:
 - `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience` on ALL page types (100% coverage: comparisons, blog, entity, category, subcategory, hub, alternatives, reviews, studies, FAQ, about, trending, best-of, curated guides, and more)
 - Blog `Article` enriched with full `ImageObject` (OG image 1200×630 with creditText, creator, copyrightHolder) for rich result thumbnail eligibility
 - `isPartOf: WebSite @id` on comparison and blog Article schemas for knowledge graph entity merging
+- `contentReferenceTime` on all comparison and blog Article schemas — tells LLMs the data freshness window for time-qualified answers
+- `og:site_name` + `og:locale` on comparison pages for correct publisher attribution in social unfurlers and AI scrapers
+- `twitter:site @aversusb` on all page types — comparison, blog, entity, category, reviews, alternatives (publisher handle for X/Twitter card richness)
+- `identifier` on DataCatalog — stable citation ID for Google Dataset Search and AI research tools
+- `mainEntity: DataCatalog` on WebSite schema — direct topic link for Google Knowledge Graph and AI crawlers
+- `founder` on Organization (Daniel Rozin, with LinkedIn sameAs) — E-E-A-T signal connecting Organization to a named expert
+- `socialSameAs` now always emits X (twitter.com/aversusb), LinkedIn, and YouTube — even without env vars
+- `genre: "Comparative Analysis"` + `educationalLevel: "General"` + `interactivityType` on multi-entity (3+) Article schemas (parity with 2-entity)
+- `lastReviewed` + `reviewedBy` on multi-entity Article schemas for freshness verification
+- `genre/educationalLevel/wordCount/articleSection` on blog `hasPart` WebPage nodes
 
 ## Categories & Scale
 

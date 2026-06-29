@@ -19,11 +19,13 @@ import type { ComparisonPageData, FAQData, CategoryData, CitationStats } from "@
 // Empty/unset slots are filtered out so unverified handles don't leak into JSON-LD.
 export function socialSameAs(): string[] {
   const slots = [
-    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "",
-    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "",
+    // Env-var overrides take precedence; hardcoded defaults ensure Organization
+    // always emits rich sameAs even when vars are not set (e.g. local dev).
+    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "https://x.com/aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "https://www.linkedin.com/company/aversusb",
     process.env.NEXT_PUBLIC_SOCIAL_GITHUB ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK ?? "",
-    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "https://www.youtube.com/@aversusb",
     process.env.NEXT_PUBLIC_SOCIAL_PINTEREST ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_REDDIT ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_QUORA ?? "",
@@ -64,6 +66,9 @@ export function organizationSchema() {
         availableLanguage: "English",
       },
     ],
+    // founder — E-E-A-T signal connecting Organization to a named expert author.
+    // Google's quality evaluators and AI crawlers (Perplexity, ChatGPT) use this
+    // to verify that a real person stands behind the content.
     founder: {
       "@type": "Person",
       "@id": `${SITE_URL}/authors/daniel-rozin#person`,
@@ -1022,6 +1027,18 @@ function buildMultiEntityGraph(
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
+    // contentReferenceTime + lastReviewed — freshness signals for LLM time-qualified answers
+    contentReferenceTime: comparison.metadata.updatedAt,
+    lastReviewed: comparison.metadata.updatedAt,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    // genre/educationalLevel/interactivityType — AI classifiers use these to route queries
+    genre: "Comparative Analysis",
+    educationalLevel: "General",
+    interactivityType: voteData && voteData.total >= 1 ? "mixed" : "expositive",
+    // articleSection + wordCount — structural signals for Google and AI topic classifiers
+    ...(comparison.category && { articleSection: comparison.category }),
+    wordCount: Math.max(300, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
   };
 
   const breadcrumbs = [
