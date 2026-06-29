@@ -144,6 +144,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const paginated = sorted.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   const subcatUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
+  const subcatOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${subcat.name} Comparisons`)}&type=category`;
+  const subcatToday = new Date().toISOString().slice(0, 10);
   const breadcrumbs = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: category.name, url: `${SITE_URL}/category/${slug}` },
@@ -152,15 +154,29 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${subcatUrl}#collectionpage`,
     name: `${subcat.name} Comparisons`,
     description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts.`,
     abstract: `Data-driven ${subcat.name} comparisons with structured attributes, verdicts, and community votes.`,
     url: subcatUrl,
     inLanguage: "en-US",
+    genre: "Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    lastReviewed: new Date().toISOString().slice(0, 10),
+    interactivityType: "expositive",
+    lastReviewed: subcatToday,
+    contentReferenceTime: subcatToday,
+    thumbnailUrl: subcatOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${subcatUrl}#primaryImage`,
+      url: subcatOgImage,
+      contentUrl: subcatOgImage,
+      width: 1200,
+      height: 630,
+      caption: `${subcat.name} Comparisons — A Versus B`,
+    },
     keywords: `${subcat.name} comparison, best ${subcat.name.toLowerCase()} 2026, ${subcat.name.toLowerCase()} vs`,
     alternativeHeadline: `Best ${subcat.name} Comparisons & Rankings 2026`,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -171,7 +187,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: subcatUrl },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     mainEntity: {
       "@type": "ItemList",
