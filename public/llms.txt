@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB91)*
+*Last updated: June 29, 2026 (HB95)*
 
 ## What We Do
 
@@ -43,8 +43,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
-- `CollectionPage` on category, subcategory, hub, blog listing, review listing, trending, and studies index pages — all with `@id`, `genre` (category-appropriate, e.g. "Category Index", "Topic Hub", "Review Index", "Trending Index", "Research Hub"), `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, `accessMode`
-- `ProfilePage` on entity pages — with `@id` anchor, `genre: "Entity Profile"`, `thumbnailUrl` (direct OG image URL), `contentReferenceTime`, `interactivityType: "expositive"`, `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`
+- `CollectionPage` on category, subcategory, hub, blog listing, review listing, trending, and studies index pages — all with `@id`, `genre` (category-appropriate, e.g. "Category Index", "Topic Hub", "Review Index", "Trending Index", "Research Hub"), `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, `accessMode`, `accessModeSufficient` (all listing pages, HB93–95)
+- `ProfilePage` on entity pages — with `@id` anchor, `genre: "Entity Profile"`, `thumbnailUrl` (direct OG image URL), `contentReferenceTime`, `interactivityType: "expositive"`, `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `accessModeSufficient`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`, `keywords` (`{entity} comparison, {entity} vs, best {entity} alternatives 2026`), top-level `potentialAction: ReadAction`, `citation` array (top-5 related comparison pages as `WebPage` objects — enables AI entity attribution chains)
 - `ProfilePage` on author page `/authors/daniel-rozin` — with `@id: #profilepage`, `genre: "Author Profile"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `datePublished`/`dateModified`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`, and linked `Person` node with `knowsAbout`, `sameAs`, `publishedWork`
 - `Product` enrichment on product-type entities — `brand`, `offers.availability: InStock`, `category`, `priceCurrency` on comparison `about` nodes, @graph itemNodes, profilePageSchema mainEntity, and entityPageSchema
 - `SearchResultsPage` on the search results view
@@ -53,7 +53,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - `WebPage` + `BreadcrumbList` on requests and site-map pages for full crawl coverage
 - Citation meta (`citation_title`, `citation_author`, `citation_abstract`, `DC.*`) on all page types for academic and LLM indexers
 - `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience` on ALL page types (100% coverage: comparisons, blog, entity, category, subcategory, hub, alternatives, reviews, studies, FAQ, about, trending, best-of, curated guides, and more)
-- Blog `Article` enriched with full `ImageObject` (OG image 1200×630 with creditText, creator, copyrightHolder) for rich result thumbnail eligibility
+- Blog `Article` enriched with full `ImageObject` (OG image 1200×630 with creditText, creator, copyrightHolder) for rich result thumbnail eligibility; `citation` array (related comparison pages as `WebPage` objects — LLM trust signal for claim verification); `mentions` array (article tags mapped to `Thing` entities for knowledge-graph co-occurrence linking)
 - `isPartOf: WebSite @id` on comparison and blog Article schemas for knowledge graph entity merging
 - `contentReferenceTime` on all comparison and blog Article schemas — tells LLMs the data freshness window for time-qualified answers
 - `og:site_name` + `og:locale` on comparison pages for correct publisher attribution in social unfurlers and AI scrapers
@@ -99,7 +99,7 @@ A Versus B includes SmartReview, a product review aggregation engine that compil
 - **URL pattern:** `https://www.aversusb.net/reviews/{entity-slug}`
 - **Review listing:** https://www.aversusb.net/reviews
 
-Structured data on review pages: `Product` with `AggregateRating`, `Review` sources, and `BreadcrumbList`.
+Structured data on review pages: `["WebPage", "ReviewPage"]` (dual type for Google Review Snippet rich results + AI query routing), `Product` with `AggregateRating`, `Review` sources, `BreadcrumbList`, full GEO signals (`contentReferenceTime`, `thumbnailUrl`/`ImageObject`, `speakable`, `teaches`/`educationalUse: "review"`, `about` linking to entity `ProfilePage`, `ReadAction` + `WriteAction`).
 
 ## Best-of Lists
 

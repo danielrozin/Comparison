@@ -104,6 +104,7 @@ export default async function HomePage() {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".hero-description"],
