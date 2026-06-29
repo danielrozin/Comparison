@@ -90,18 +90,36 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     { name: "Reviews", url: `${SITE_URL}/reviews` },
     { name: cat.name, url: `${SITE_URL}/reviews/category/${slug}` },
   ]);
+  const reviewCatUrl = `${SITE_URL}/reviews/category/${slug}`;
+  const reviewCatOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${cat.name} Reviews`)}&type=reviews`;
+  const reviewCatToday = new Date().toISOString().slice(0, 10);
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${reviewCatUrl}#collectionpage`,
     name: `Best ${cat.name} Reviews & SmartScores`,
     alternativeHeadline: `Top ${cat.name} 2026 — Aggregated SmartScore Rankings`,
     description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores from Reddit, G2, Capterra, Trustpilot, and more.`,
     abstract: `Aggregated ${cat.name} reviews with SmartScores from multiple platforms.`,
-    url: `${SITE_URL}/reviews/category/${slug}`,
+    url: reviewCatUrl,
     inLanguage: "en-US",
+    genre: "Review Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    interactivityType: "expositive",
+    lastReviewed: reviewCatToday,
+    contentReferenceTime: reviewCatToday,
+    thumbnailUrl: reviewCatOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${reviewCatUrl}#primaryImage`,
+      url: reviewCatOgImage,
+      contentUrl: reviewCatOgImage,
+      width: 1200,
+      height: 630,
+      caption: `${cat.name} Reviews — A Versus B SmartReview`,
+    },
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -109,10 +127,10 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     accessMode: ["textual"],
-    lastReviewed: new Date().toISOString().slice(0, 10),
     keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} 2026, SmartScore ${cat.name.toLowerCase()}`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: reviewCatUrl },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   };
 

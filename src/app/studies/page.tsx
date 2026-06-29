@@ -76,18 +76,35 @@ export default function StudiesIndexPage() {
     { name: "Studies", url: `${SITE_URL}/studies` },
   ]);
 
+  const studiesToday = new Date().toISOString().slice(0, 10);
+  const studiesOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(TITLE)}&type=studies`;
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${STUDIES_URL}#collectionpage`,
     name: TITLE,
     description: DESCRIPTION,
     abstract: DESCRIPTION,
     alternativeHeadline: "Original Comparison Data Studies — A Versus B Research Hub",
     url: STUDIES_URL,
     inLanguage: "en-US",
+    genre: "Research Hub",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    interactivityType: "expositive",
+    lastReviewed: studiesToday,
+    contentReferenceTime: studiesToday,
+    thumbnailUrl: studiesOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${STUDIES_URL}#primaryImage`,
+      url: studiesOgImage,
+      contentUrl: studiesOgImage,
+      width: 1200,
+      height: 630,
+      caption: "Data Studies — A Versus B Research Hub",
+    },
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -98,6 +115,7 @@ export default function StudiesIndexPage() {
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: STUDIES_URL },
     hasPart: STUDIES.map((s) => ({
       "@type": "Article",
       name: s.title,
