@@ -7,6 +7,7 @@ const PAGE_TITLE = `Is Diffen.com Still Worth Using? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Frequently asked questions about diffen.com — its outdated content, wiki-style editing model, and how A Versus B provides a modern, AI-enriched comparison experience.";
 const PAGE_URL = `${SITE_URL}/faq/diffen`;
+const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Is Diffen.com Still Worth Using?")}&type=faq`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -16,6 +17,15 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
+    siteName: SITE_NAME,
+    type: "article",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [OG_IMAGE],
   },
   other: {
     "citation_title": PAGE_TITLE,
@@ -63,12 +73,20 @@ function buildSchemas() {
   const webPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": `${PAGE_URL}#webpage`,
     name: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     abstract: PAGE_DESCRIPTION,
     alternativeHeadline: `Diffen.com Alternatives — Why A Versus B is Better`,
     url: PAGE_URL,
+    genre: "Entity Profile",
     inLanguage: "en-US",
+    interactivityType: "expositive",
+    datePublished: "2026-03-01",
+    dateModified: "2026-05-22",
+    contentReferenceTime: "2026-05-22",
+    thumbnailUrl: OG_IMAGE,
+    image: { "@type": "ImageObject", "@id": `${PAGE_URL}#primaryImage`, url: OG_IMAGE, contentUrl: OG_IMAGE, width: 1200, height: 630, caption: "Is Diffen.com Still Worth Using in 2026? — A Versus B" },
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
@@ -81,6 +99,7 @@ function buildSchemas() {
     accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: PAGE_URL },
     about: {
       "@type": "WebSite",
       name: "Diffen",

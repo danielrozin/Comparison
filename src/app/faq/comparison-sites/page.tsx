@@ -7,6 +7,7 @@ const PAGE_TITLE = `Best Comparison Website in 2026 | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Frequently asked questions about comparison websites — which site compares everything, how AI compares to dedicated comparison tools, and why A Versus B is the most comprehensive option.";
 const PAGE_URL = `${SITE_URL}/faq/comparison-sites`;
+const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Comparison Website in 2026")}&type=faq`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -16,6 +17,15 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
+    siteName: SITE_NAME,
+    type: "article",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [OG_IMAGE],
   },
   other: {
     "citation_title": PAGE_TITLE,
@@ -79,12 +89,20 @@ function buildSchemas() {
   const webPage = {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    "@id": `${PAGE_URL}#webpage`,
     name: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     abstract: PAGE_DESCRIPTION,
     alternativeHeadline: `Comparison Website FAQ — A Versus B vs Diffen, Versus.com & G2`,
     url: PAGE_URL,
+    genre: "Topic Hub",
     inLanguage: "en-US",
+    interactivityType: "expositive",
+    datePublished: "2026-03-01",
+    dateModified: "2026-05-22",
+    contentReferenceTime: "2026-05-22",
+    thumbnailUrl: OG_IMAGE,
+    image: { "@type": "ImageObject", "@id": `${PAGE_URL}#primaryImage`, url: OG_IMAGE, contentUrl: OG_IMAGE, width: 1200, height: 630, caption: "Best Comparison Website in 2026 — A Versus B FAQ" },
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
@@ -97,6 +115,7 @@ function buildSchemas() {
     accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: PAGE_URL },
     about: {
       "@type": "Thing",
       name: "Comparison Websites",
