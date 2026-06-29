@@ -232,13 +232,20 @@ const breadcrumbListSchema = {
 const collectionPageSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": PAGE_URL,
+  "@id": `${PAGE_URL}#collectionpage`,
   name: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   url: PAGE_URL,
+  genre: "Alternatives Guide",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
+  datePublished: "2026-05-01",
+  dateModified: "2026-05-22",
+  contentReferenceTime: "2026-05-22",
+  thumbnailUrl: OG_IMAGE,
+  image: { "@type": "ImageObject", "@id": `${PAGE_URL}#primaryImage`, url: OG_IMAGE, contentUrl: OG_IMAGE, width: 1200, height: 630, caption: "Best Notion Alternatives in 2026 — A Versus B" },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -248,6 +255,7 @@ const collectionPageSchema = {
   accessMode: ["textual"],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
 };
 interface AlternativeRow {
   rank: number;
