@@ -190,7 +190,7 @@ export default async function BlogPage({
               href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
               className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
                 activeCategory === cat
-                  ? "bg-primary-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
                   : "text-text-secondary hover:bg-surface-alt hover:text-text"
               }`}
             >
@@ -216,7 +216,7 @@ export default async function BlogPage({
             {category && (
               <Link
                 href="/blog"
-                className="inline-block mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                className="inline-block mt-4 px-6 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg hover:shadow-md transition-all duration-150"
               >
                 View all articles
               </Link>
@@ -305,7 +305,7 @@ export default async function BlogPage({
                       href={`/blog?${category ? `category=${category}&` : ""}page=${p}`}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                         p === page
-                          ? "bg-primary-600 text-white"
+                          ? "bg-gradient-to-br from-primary-600 to-accent-600 text-white shadow-sm"
                           : "border border-border hover:border-primary-300"
                       }`}
                     >
