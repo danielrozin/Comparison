@@ -105,6 +105,10 @@ export default async function HomePage() {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    teaches: "How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables",
+    educationalUse: "reference",
+    keywords: "compare anything, side-by-side comparison, product comparison, technology comparison, country comparison, sports comparison",
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".hero-description"],

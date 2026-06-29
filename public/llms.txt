@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB101)*
+*Last updated: June 29, 2026 (HB112)*
 
 ## What We Do
 
@@ -86,6 +86,17 @@ Every comparison page emits a full JSON-LD @graph including:
 - Best-of page FAQPage: `isPartOf`, `speakable`, `upvoteCount`, `inLanguage`, `isAccessibleForFree`; Article gets `hasPart: FAQPage` + `educationalLevel` (HB99)
 - Curated comparison pages (llm-comparisons, browser-comparison-2026, password-manager-comparison): `teaches`, `educationalUse`, `educationalLevel`, `accessModeSufficient` (HB100)
 - Reviews page: `educationalLevel`, `accessModeSufficient`, `significantLink`, `about.@id` (HB101)
+- 2-entity comparison Article `hasPart` now includes HowTo `@id` alongside FAQPage + Dataset (inline Set avoids HOWTO_CATEGORIES temporal dead zone) (HB102)
+- categoryPageSchema massively enriched: `alternativeHeadline`, `abstract`, `thumbnailUrl`, `genre`, `creativeWorkStatus`, `accessMode`/`accessModeSufficient`, `interactivityType`, `educationalLevel`/`teaches`/`educationalUse`, `keywords`, `copyrightNotice`/`copyrightHolder`/`acquireLicensePage`, `audience`, `contentReferenceTime`, ReadAction in `potentialAction[]` (HB103)
+- Hub page (`/hub/[slug]`): `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse`, `keywords` (HB104)
+- Subcategory page, blog listing, trending page: `educationalLevel`, `teaches`, `educationalUse` (HB105)
+- Studies pages (most-compared-brands, b2b-saas, investing-comparison): `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "research"` (HB106)
+- Methodology pages (llm-comparisons/methodology, browser-comparison-2026/methodology): `accessMode`, `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "guide"`, `audience` (HB107)
+- Home page CollectionPage: `educationalLevel`, `teaches`, `educationalUse: "reference"`, `keywords` (HB108)
+- Q1 2026 AI Battles page: `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "research"` (HB109)
+- How We Write Verdicts page: `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "guide"` (HB110)
+- Studies index CollectionPage: `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "research"`, `keywords` (HB111)
+- Author ProfilePage (daniel-rozin): `accessModeSufficient`, `educationalLevel`, `teaches`, `educationalUse: "biography"` (HB112)
 
 ## Categories & Scale
 
