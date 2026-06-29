@@ -277,9 +277,14 @@ export default async function BlogPostPage({
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
+    thumbnailUrl: ogImage,
+    genre: article.category
+      ? `${article.category.charAt(0).toUpperCase()}${article.category.slice(1)} Guide`
+      : "Comparison Guide",
     image: {
       "@type": "ImageObject",
       url: ogImage,
+      contentUrl: ogImage,
       width: 1200,
       height: 630,
       caption: article.title,

@@ -350,12 +350,22 @@ export function comparisonPageSchema(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    // thumbnailUrl — machine-readable OG image pointer for AI visual crawlers (Lens,
+    // AI Overviews, Perplexity image carousels). Distinct from image.url which can
+    // be a page-level URL; thumbnailUrl must be a direct image asset URL.
+    thumbnailUrl: ogImage,
+    // genre — content classification for AI indexers and Google Discover carousels.
+    // Helps LLMs route queries to comparison-type content vs news/opinion/how-to.
+    genre: comparison.category
+      ? `${comparison.category.charAt(0).toUpperCase()}${comparison.category.slice(1)} Comparison`
+      : "Comparison Article",
     // image lets Google/AI models extract a representative visual for the page.
     // creditText + creator + copyrightHolder are read by AI image crawlers and
     // Google Lens to attribute the source when the image is displayed.
     image: {
       "@type": "ImageObject",
       url: ogImage,
+      contentUrl: ogImage,
       width: 1200,
       height: 630,
       caption: comparison.title,
@@ -381,9 +391,10 @@ export function comparisonPageSchema(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      // Include verdict, key-differences, and key-facts so voice assistants and
-      // AI models can extract the most citable sections without full-page processing.
-      cssSelector: ["#verdict", "#key-differences", "#key-facts"],
+      // Include short-answer (quick TL;DR), verdict, key-differences, and key-facts
+      // so voice assistants and AI models can extract the most citable sections.
+      // #short-answer targets the quick-answer summary box at the top of the page.
+      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -856,9 +867,14 @@ function buildMultiEntityGraph(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
+    thumbnailUrl: multiOgImage,
+    genre: comparison.category
+      ? `${comparison.category.charAt(0).toUpperCase()}${comparison.category.slice(1)} Comparison`
+      : "Comparison Article",
     image: {
       "@type": "ImageObject",
       url: multiOgImage,
+      contentUrl: multiOgImage,
       width: 1200,
       height: 630,
       caption: comparison.title,
@@ -884,7 +900,7 @@ function buildMultiEntityGraph(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["#verdict", "#key-differences", "#key-facts"],
+      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
