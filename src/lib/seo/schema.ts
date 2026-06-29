@@ -121,6 +121,9 @@ export function dataCatalogSchema() {
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     maintainer: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    educationalLevel: "General",
+    teaches: "How to use the A Versus B structured comparison database to find side-by-side data on any topic",
+    educationalUse: "reference",
     temporalCoverage: "2024/..",
     dataset: {
       "@type": "Dataset",
@@ -874,8 +877,10 @@ function buildMultiEntityGraph(
   url: string,
 ): Record<string, unknown> {
   const itemListId = `${url}#comparison`;
+  // Use canonical entity ProfilePage @id when slug is available so the item node
+  // merges with the entity's ProfilePage mainEntity across the knowledge graph.
   const itemIds = comparison.entities.map(
-    (_, i) => `${url}#item-${String.fromCharCode(97 + i)}`,
+    (e, i) => e.slug ? `${SITE_URL}/entity/${e.slug}` : `${url}#item-${String.fromCharCode(97 + i)}`,
   );
   const citation = comparison.citationStats;
   const realVotes = voteData && voteData.total >= 10 ? voteData : null;
@@ -1085,6 +1090,14 @@ function buildMultiEntityGraph(
       },
     }),
     mainEntity: { "@id": itemListId },
+    // about[] — primary subjects of this comparison article; @id matches ProfilePage mainEntity.
+    about: comparison.entities.map((e) => ({
+      "@type": entitySchemaType(e.entityType),
+      "@id": `${SITE_URL}/entity/${e.slug}`,
+      name: e.name,
+      url: `${SITE_URL}/entity/${e.slug}`,
+      subjectOf: { "@type": "Article", "@id": `${url}#article` },
+    })),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
     mentions: comparison.entities.map((e) => ({
       "@type": "Thing",
