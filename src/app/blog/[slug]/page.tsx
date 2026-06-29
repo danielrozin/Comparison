@@ -410,6 +410,8 @@ export default async function BlogPostPage({
   if (howTo) graph.push(howTo);
   if (extras?.faqs?.length) {
     graph.push(faqSchema(extras.faqs));
+    // hasPart — formal Article→FAQPage edge so Google/AI associate FAQ items with this article.
+    (articleSchema as Record<string, unknown>).hasPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
   }
   if (extras?.itemList?.items?.length) {
     graph.push({
@@ -431,11 +433,16 @@ export default async function BlogPostPage({
   graph.push({
     "@type": "WebPage",
     "@id": articleUrl,
+    url: articleUrl,
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
     },
-    url: articleUrl,
   });
 
   const jsonLd = { "@context": "https://schema.org", "@graph": graph };

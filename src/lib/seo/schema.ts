@@ -427,6 +427,10 @@ export function comparisonPageSchema(
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    // genre/educationalLevel — AI classifiers (Google SGE, Perplexity) use these to
+    // categorise content type and select appropriate citation depth for queries.
+    genre: "Comparative Analysis",
+    educationalLevel: "General",
     // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
     // Accessibility crawlers and AI classifiers use this to characterise the page experience.
     interactivityType: voteData && voteData.total >= 1 ? "mixed" : "expositive",
