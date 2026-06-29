@@ -178,6 +178,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       acquireLicensePage: `${SITE_URL}/terms`,
       audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       accessMode: ["textual"],
+      accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+      educationalLevel: "General",
       // speakable — voice assistants and LLM engines extract these sections first.
       // .review-score-summary targets the SmartScore/aggregate rating summary block.
       speakable: {
@@ -188,6 +190,11 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       teaches: `How to evaluate ${name} based on aggregated reviews and ratings`,
       educationalUse: "review",
       keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews 2026`,
+      // significantLink — links to entity profile and alternatives page for AI graph traversal.
+      significantLink: [
+        `${SITE_URL}/entity/${slug}`,
+        `${SITE_URL}/alternatives/${slug}`,
+      ],
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
       potentialAction: [
@@ -201,8 +208,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
         },
       ],
+      // @id matches ProfilePage mainEntity @id for cross-document knowledge graph merging.
       about: {
         "@type": "Thing",
+        "@id": `${SITE_URL}/entity/${slug}`,
         name,
         url: `${SITE_URL}/entity/${slug}`,
       },

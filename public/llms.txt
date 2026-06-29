@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB95)*
+*Last updated: June 29, 2026 (HB101)*
 
 ## What We Do
 
@@ -74,6 +74,18 @@ Every comparison page emits a full JSON-LD @graph including:
 - `speakable` expanded on entity ProfilePage: `["h1", "#entity-intro", "#entity-about"]` — voice assistants now extract entity intro lede + curated description
 - `id="entity-intro"` and `id="entity-about"` DOM anchors on entity page for SpeakableSpecification targeting
 - `<link rel="preconnect">` for pagead2.googlesyndication.com + fonts.gstatic.com in Pages Router _document.tsx — reduces TCP handshake latency for LCP resources
+- `@id` on `about[]` entity nodes in comparison Article schemas matching ProfilePage mainEntity `@id` — cross-document knowledge graph entity merging (HB96)
+- `@id` on `mentions[]` entity nodes in comparison Article schemas for the same cross-page graph cohesion (HB96)
+- `itemReviewed: { name: "A vs B" }` on all comparison `review` nodes (2-entity and multi-entity) so AI fact-checkers unambiguously attribute verdicts (HB96)
+- Multi-entity FAQPage now has `isPartOf: Article` back-reference + `upvoteCount: 1` per answer — parity with 2-entity faqSchema() (HB96)
+- Blog FAQPage `faqSchema()` call now passes article URL so `isPartOf` Article back-reference emits correctly (HB97)
+- Blog `about[]` comparison Article references get `@id` for cross-document graph merging (HB97)
+- Blog Article: `educationalLevel: "General"`, `discussionUrl` (for vs-articles) added (HB97)
+- Alternatives page: `@id` on `about`/`mentions` entities, `teaches`, `educationalUse`, `educationalLevel`, `accessModeSufficient`, `significantLink` (HB98)
+- `howToSchemaFromBlog`: `@id` anchor, `totalTime: PT5M`, `estimatedCost: $0` for rich result parity (HB98)
+- Best-of page FAQPage: `isPartOf`, `speakable`, `upvoteCount`, `inLanguage`, `isAccessibleForFree`; Article gets `hasPart: FAQPage` + `educationalLevel` (HB99)
+- Curated comparison pages (llm-comparisons, browser-comparison-2026, password-manager-comparison): `teaches`, `educationalUse`, `educationalLevel`, `accessModeSufficient` (HB100)
+- Reviews page: `educationalLevel`, `accessModeSufficient`, `significantLink`, `about.@id` (HB101)
 
 ## Categories & Scale
 
