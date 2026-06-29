@@ -350,6 +350,7 @@ export default async function BlogPostPage({
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     alternativeHeadline: `${article.title} — ${SITE_NAME} Guide`,

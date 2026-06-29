@@ -130,6 +130,7 @@ const siteMapPageSchema = {
       url: SITEMAP_URL,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
       about: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },

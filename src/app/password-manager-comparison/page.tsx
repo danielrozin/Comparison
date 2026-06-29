@@ -47,6 +47,7 @@ const articleSchema = {
   inLanguage: "en-US",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
   datePublished: "2026-05-22",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,

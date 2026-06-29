@@ -82,6 +82,7 @@ export default async function InvestingStudyPage() {
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-06-10",
     dateModified: study.updatedAt,
     measurementTechnique:
@@ -106,6 +107,7 @@ export default async function InvestingStudyPage() {
     alternativeHeadline: "Which Investing & Finance Products Are Compared Most in 2026? — A Versus B Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-06-10",
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,

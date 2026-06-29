@@ -248,6 +248,7 @@ function bestPageSchema(entry: BestEntry) {
         inLanguage: "en-US",
         creativeWorkStatus: "Published",
         isAccessibleForFree: true,
+        conditionsOfAccess: "Free",
         datePublished: entry.publishedAt,
         dateModified: entry.updatedAt,
         lastReviewed: entry.updatedAt,

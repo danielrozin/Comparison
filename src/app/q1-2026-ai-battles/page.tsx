@@ -55,6 +55,7 @@ export default function Q1AiBattlesPage() {
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: PUBLICATION_DATE,
     dateModified: PUBLICATION_DATE,
     lastReviewed: PUBLICATION_DATE,
@@ -86,6 +87,7 @@ export default function Q1AiBattlesPage() {
     spatialCoverage: "United States",
     temporalCoverage: "2026-01-01/2026-03-31",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     license: `${SITE_URL}/terms`,
     distribution: [
       {

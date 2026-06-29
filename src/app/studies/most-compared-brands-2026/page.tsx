@@ -92,6 +92,7 @@ export default async function MostComparedStudyPage() {
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-05-15",
     dateModified: study.updatedAt,
     measurementTechnique:
@@ -115,6 +116,7 @@ export default async function MostComparedStudyPage() {
     alternativeHeadline: "What Brands Do People Compare Most in 2026? — A Versus B Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-05-15",
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,

@@ -42,6 +42,7 @@ const aboutPageSchema = {
   inLanguage: "en-US",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
   alternativeHeadline: `${SITE_NAME} — Compare Anything, Data-Driven & Free`,
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,

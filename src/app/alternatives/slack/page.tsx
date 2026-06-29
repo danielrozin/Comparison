@@ -242,6 +242,7 @@ const collectionPageSchema = {
   url: PAGE_URL,
   inLanguage: "en-US",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,

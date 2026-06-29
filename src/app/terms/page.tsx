@@ -24,6 +24,7 @@ const webPageSchema = {
   url: PAGE_URL,
   inLanguage: "en-US",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: PAGE_URL,
   copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,

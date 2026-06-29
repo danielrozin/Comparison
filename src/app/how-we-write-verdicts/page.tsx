@@ -42,6 +42,7 @@ const articleSchema = {
   inLanguage: "en-US",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
   alternativeHeadline: `${SITE_NAME} Verdict Methodology — AI-Assisted Comparison Verdicts`,
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,

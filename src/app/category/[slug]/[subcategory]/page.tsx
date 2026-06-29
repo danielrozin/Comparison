@@ -159,6 +159,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     lastReviewed: new Date().toISOString().slice(0, 10),
     keywords: `${subcat.name} comparison, best ${subcat.name.toLowerCase()} 2026, ${subcat.name.toLowerCase()} vs`,
     alternativeHeadline: `Best ${subcat.name} Comparisons & Rankings 2026`,

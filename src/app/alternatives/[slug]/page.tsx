@@ -111,6 +111,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     dateModified: today,
     lastReviewed: today,
     keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives 2026`,

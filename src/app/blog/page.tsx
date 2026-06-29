@@ -125,6 +125,7 @@ export default async function BlogPage({
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     lastReviewed: new Date().toISOString().slice(0, 10),
     keywords: "comparison articles, product analysis, decision guides, technology reviews, software comparisons blog",
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

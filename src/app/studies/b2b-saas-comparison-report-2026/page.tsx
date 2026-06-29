@@ -85,6 +85,7 @@ export default async function B2BSaaSStudyPage() {
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-06-01",
     dateModified: study.updatedAt,
     measurementTechnique:
@@ -109,6 +110,7 @@ export default async function B2BSaaSStudyPage() {
     alternativeHeadline: "Which B2B SaaS Tools Are Compared Most in 2026? — A Versus B Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     datePublished: "2026-06-01",
     dateModified: study.updatedAt,
     lastReviewed: study.updatedAt,

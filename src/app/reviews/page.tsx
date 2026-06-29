@@ -83,6 +83,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     lastReviewed: new Date().toISOString().slice(0, 10),
     keywords: "product reviews, software reviews, SmartScore, review aggregator, best software 2026",
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",

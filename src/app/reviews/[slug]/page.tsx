@@ -145,6 +145,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       inLanguage: "en-US",
       creativeWorkStatus: "Published",
       isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
       copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
