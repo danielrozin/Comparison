@@ -232,7 +232,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                   <button
                     type="submit"
                     disabled={emailCaptureStatus === "loading"}
-                    className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 whitespace-nowrap"
+                    className="px-3 py-1.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-xs font-semibold rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap"
                   >
                     {emailCaptureStatus === "loading" ? "..." : "Subscribe"}
                   </button>

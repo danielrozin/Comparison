@@ -125,7 +125,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                   className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
                 >
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-primary-500 transition-all group-hover:scale-110">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center shadow-lg group-hover:from-primary-500 group-hover:to-accent-500 transition-all group-hover:scale-110">
                       <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                       </svg>

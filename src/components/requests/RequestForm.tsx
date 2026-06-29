@@ -195,7 +195,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
       <button
         type="submit"
         disabled={loading || !entityA.trim() || !entityB.trim()}
-        className="w-full py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+        className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm"
       >
         {loading ? "Submitting..." : "Submit Comparison Request"}
       </button>

@@ -53,7 +53,7 @@ export function FeedbackWidget() {
         className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? "bg-gray-600 hover:bg-gray-700 rotate-45"
-            : "bg-primary-600 hover:bg-primary-700 hover:scale-105"
+            : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"
         }`}
         aria-label={isOpen ? "Close feedback" : "Send feedback"}
       >
@@ -72,7 +72,7 @@ export function FeedbackWidget() {
       {isOpen && (
         <div className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
           {/* Header */}
-          <div className="bg-primary-600 text-white px-5 py-4">
+          <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4">
             <h3 className="font-bold text-lg">Feedback & Requests</h3>
             <p className="text-primary-100 text-sm mt-0.5">
               Ask a question, request a comparison, or give feedback
@@ -169,7 +169,7 @@ export function FeedbackWidget() {
               <button
                 type="submit"
                 disabled={isSubmitting || !message.trim()}
-                className="w-full py-2.5 bg-primary-600 text-white font-semibold text-sm rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold text-sm rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
               >
                 {isSubmitting ? "Sending..." : "Send"}
               </button>
