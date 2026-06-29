@@ -376,7 +376,7 @@ export default async function HomePage() {
             <div key={item.step} className="relative text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-primary-200/50 relative z-10">
                 {item.icon}
-                <span className="absolute -top-2 -right-2 w-7 h-7 bg-primary-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
+                <span className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-primary-600 to-accent-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
                   {item.step}
                 </span>
               </div>
@@ -536,7 +536,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/requests"
-            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white font-semibold rounded-full hover:bg-primary-700 transition-colors shadow-md"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-full hover:shadow-lg transition-all duration-150 shadow-md"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -550,7 +550,8 @@ export default async function HomePage() {
       <NewsletterSignup source="homepage" />
 
       {/* CTA */}
-      <section className="bg-primary-600 text-white py-16">
+      <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">
             Ready to Compare?
