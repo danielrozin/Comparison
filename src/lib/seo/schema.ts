@@ -574,11 +574,17 @@ export function comparisonPageSchema(
       "@type": "ReadAction",
       target: { "@type": "EntryPoint", urlTemplate: url },
     },
-    // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
+    // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
+    // Including HowTo in hasPart tells AI crawlers that the step-by-step guide is part of
+    // this article, improving eligibility for Google's "Steps" rich result on comparison pages.
     ...(() => {
+      // Inline category set mirrors HOWTO_CATEGORIES below (defined after this schemas.push call).
+      const howtoEligible = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
+      const hasHowTo = Boolean(comparison.category && howtoEligible.has(comparison.category) && comparison.attributes.length >= 3);
       const parts = [
         ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
       ];
       return parts.length > 0 ? { hasPart: parts } : {};
     })(),
