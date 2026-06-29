@@ -1327,6 +1327,7 @@ export function categoryPageSchema(category: CategoryData) {
   const url = `${SITE_URL}/category/${category.slug}`;
   const today = new Date().toISOString().slice(0, 10);
 
+  const categoryOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(category.name + " Comparisons")}&type=category`;
   return [
     {
       "@context": "https://schema.org",
@@ -1334,13 +1335,30 @@ export function categoryPageSchema(category: CategoryData) {
       "@id": `${url}#collectionpage`,
       name: `${category.name} Comparisons`,
       description: category.description,
+      alternativeHeadline: `Best ${category.name} Comparisons — Side-by-Side Analysis`,
+      abstract: category.description,
       url,
+      thumbnailUrl: categoryOgImage,
       inLanguage: "en-US",
+      genre: "Category Index",
+      creativeWorkStatus: "Published",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      accessMode: ["textual"],
+      accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+      interactivityType: "expositive",
+      educationalLevel: "General",
+      teaches: `How to compare ${category.name.toLowerCase()} side by side`,
+      educationalUse: "comparison",
+      keywords: `${category.name.toLowerCase()} comparison, ${category.name.toLowerCase()} vs, best ${category.name.toLowerCase()}`,
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
+      copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
       dateModified: today,
+      contentReferenceTime: today,
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
       // speakable — tells voice assistants and LLMs which section has the most citable content
@@ -1348,12 +1366,17 @@ export function categoryPageSchema(category: CategoryData) {
         "@type": "SpeakableSpecification",
         cssSelector: ["h1", ".category-description", ".comparison-count"],
       },
-      // potentialAction — CompareAction signals to Google/AI that this page lists comparable entities
-      potentialAction: {
-        "@type": "SearchAction",
-        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}&category=${category.slug}` },
-        "query-input": "required name=search_term_string",
-      },
+      potentialAction: [
+        {
+          "@type": "ReadAction",
+          target: { "@type": "EntryPoint", urlTemplate: url },
+        },
+        {
+          "@type": "SearchAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}&category=${category.slug}` },
+          "query-input": "required name=search_term_string",
+        },
+      ],
       mainEntity: {
         "@type": "ItemList",
         "@id": `${url}#list`,
