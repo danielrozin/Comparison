@@ -189,7 +189,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: subcatUrl },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".category-description", "#page-description"] },
     mainEntity: {
       "@type": "ItemList",
       name: `${subcat.name} Comparisons`,

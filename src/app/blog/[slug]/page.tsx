@@ -404,6 +404,27 @@ export default async function BlogPostPage({
     educationalUse: (article.title.toLowerCase().includes(" vs ") || article.title.toLowerCase().includes(" versus "))
       ? "comparison"
       : "guide",
+    // citation — bibliographic citations referencing the comparison pages this article
+    // synthesizes. LLMs and AI answer engines (Perplexity, ChatGPT, Gemini) treat
+    // `citation` as a trust signal: an article that cites primary sources gets
+    // elevated confidence scores when its claims are verified against those sources.
+    ...(article.relatedComparisonSlugs?.length && {
+      citation: article.relatedComparisonSlugs.map((s) => ({
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/compare/${s}#webpage`,
+        name: comparisonTitles?.[s] ?? s,
+        url: `${SITE_URL}/compare/${s}`,
+        publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      })),
+    }),
+    // mentions — named entities discussed in this article but not the primary subject.
+    // Helps AI knowledge graphs link entity co-occurrences and improves topical authority.
+    ...(article.tags?.length && {
+      mentions: article.tags.map((tag: string) => ({
+        "@type": "Thing",
+        name: tag,
+      })),
+    }),
   };
 
   const breadcrumbs = [

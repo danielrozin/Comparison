@@ -103,6 +103,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     keywords: "product reviews, software reviews, SmartScore, review aggregator, best software 2026",
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
