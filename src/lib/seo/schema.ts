@@ -424,10 +424,11 @@ export function comparisonPageSchema(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      // Include short-answer (quick TL;DR), verdict, key-differences, and key-facts
-      // so voice assistants and AI models can extract the most citable sections.
-      // #short-answer targets the quick-answer summary box at the top of the page.
-      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts"],
+      // Include short-answer (quick TL;DR), verdict, key-differences, key-facts,
+      // and the FAQ section so voice assistants and AI models (Google AI Overviews,
+      // Perplexity, ChatGPT) can extract the most citable Q&A pairs directly from
+      // the structured FAQ answers.
+      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -940,7 +941,7 @@ function buildMultiEntityGraph(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts"],
+      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts", "#faq"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -1196,6 +1197,14 @@ export function faqSchema(faqs: FAQData[], id?: string) {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     ...(id && { "@id": id }),
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    // speakable on FAQPage — voice assistants extract answers from .faq-answer
+    // elements; AI Overviews pull directly from FAQ structured data.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".faq-answer"],
+    },
     mainEntity: faqs.slice(0, 10).map((faq) => ({
       "@type": "Question",
       name: faq.question,

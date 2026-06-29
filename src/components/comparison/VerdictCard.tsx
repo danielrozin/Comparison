@@ -60,7 +60,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
   const winnerIdx = scores ? (scores.scoreA > scores.scoreB ? 0 : scores.scoreB > scores.scoreA ? 1 : -1) : -1;
 
   return (
-    <section data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <section id="verdict" data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 rounded-2xl p-5 sm:p-8 text-white overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative background circles */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-yellow-500/5 rounded-full" />

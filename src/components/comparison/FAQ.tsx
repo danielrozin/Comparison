@@ -10,7 +10,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="faq" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Section header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -102,7 +102,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 <div className="overflow-hidden">
                   <div className="px-5 pb-5 ml-9">
                     <div className="h-px bg-gradient-to-r from-primary-200 to-transparent mb-4" />
-                    <p className="text-sm text-text-secondary leading-relaxed">
+                    <p className="faq-answer text-sm text-text-secondary leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>

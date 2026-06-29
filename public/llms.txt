@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB86)*
+*Last updated: June 29, 2026 (HB88)*
 
 ## What We Do
 
@@ -39,7 +39,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - `ItemList` for the compared entities with position ordering
 - `Dataset` with variableMeasured attributes and isBasedOn citation sources
 - `AggregateRating` when community vote threshold is met (10+ votes)
-- `SpeakableSpecification` targeting #short-answer (Quick Answer TL;DR box), #verdict, #key-differences, #key-facts — the highest-value extraction targets for voice assistants and LLM citation snippets
+- `SpeakableSpecification` targeting #short-answer (Quick Answer TL;DR box), #verdict, #key-differences, #key-facts, **#faq** (FAQ section with Q&A pairs) — all sections now have real DOM id anchors (HB88); FAQPage also emits its own speakable targeting `.faq-answer` elements so AI models extract answers directly
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
