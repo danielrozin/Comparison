@@ -294,11 +294,14 @@ function bestPageSchema(entry: BestEntry) {
           "@type": "SpeakableSpecification",
           cssSelector: ["h1", "article.prose-custom p:first-of-type", ".faq-answer"],
         },
+        educationalLevel: "General",
         // teaches — explicit learning outcome for AI classifiers routing "best X" queries.
         // ChatGPT and Perplexity route decision queries to pages with a `teaches` field.
         teaches: `How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`,
         // educationalUse — signals this is a ranked guide, not a review or comparison.
         educationalUse: "guide",
+        // hasPart — formal Article→FAQPage edge so Google/AI attribute FAQ items to this article.
+        ...(entry.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
         mainEntity: {
           "@type": "ItemList",
           "@id": `${url}#list`,
@@ -315,10 +318,16 @@ function bestPageSchema(entry: BestEntry) {
       {
         "@type": "FAQPage",
         "@id": `${url}#faq`,
+        inLanguage: "en-US",
+        isAccessibleForFree: true,
+        // isPartOf — back-reference from FAQPage to Article so AI crawlers confirm
+        // FAQ answers belong to this best-of guide.
+        isPartOf: { "@type": "Article", "@id": `${url}#article` },
+        speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
         mainEntity: entry.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.q,
-          acceptedAnswer: { "@type": "Answer", text: faq.a },
+          acceptedAnswer: { "@type": "Answer", text: faq.a, upvoteCount: 1 },
         })),
       },
     ],
