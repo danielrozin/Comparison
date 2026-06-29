@@ -342,11 +342,11 @@ export default async function BlogPostPage({
     // keywords — tags + category for entity/topic recognition in LLM training crawls
     ...(article.tags?.length && { keywords: article.tags.join(", ") }),
     // about — links this blog article to the comparison pages it discusses.
-    // AI answer engines use `about` to understand the article's subject matter
-    // and connect it to entity knowledge graphs, increasing citation coverage.
+    // @id matches the comparison Article @id for cross-document knowledge graph merging.
     ...(article.relatedComparisonSlugs?.length && {
       about: article.relatedComparisonSlugs.map((s) => ({
         "@type": "Article",
+        "@id": `${SITE_URL}/compare/${s}#article`,
         headline: comparisonTitles?.[s] ?? s,
         url: `${SITE_URL}/compare/${s}`,
       })),
@@ -371,6 +371,8 @@ export default async function BlogPostPage({
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Students, Decision Makers",
     },
+    // educationalLevel — AI classifiers use this to select appropriate citation depth.
+    educationalLevel: "General",
     // interactivityType — blog articles are read-only expositive content.
     interactivityType: "expositive",
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
@@ -404,6 +406,11 @@ export default async function BlogPostPage({
     educationalUse: (article.title.toLowerCase().includes(" vs ") || article.title.toLowerCase().includes(" versus "))
       ? "comparison"
       : "guide",
+    // discussionUrl — community discussion on Reddit; E-E-A-T signal for AI crawlers.
+    // Only emits for "vs" articles where a comparison discussion is likely to exist.
+    ...((article.title.toLowerCase().includes(" vs ") || article.title.toLowerCase().includes(" versus ")) && {
+      discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(article.title)}+comparison&type=link&sort=relevance`,
+    }),
     // citation — bibliographic citations referencing the comparison pages this article
     // synthesizes. LLMs and AI answer engines (Perplexity, ChatGPT, Gemini) treat
     // `citation` as a trust signal: an article that cites primary sources gets
@@ -448,7 +455,8 @@ export default async function BlogPostPage({
     : null;
   if (howTo) graph.push(howTo);
   if (extras?.faqs?.length) {
-    graph.push(faqSchema(extras.faqs));
+    // Pass id="${articleUrl}#faq" so faqSchema() emits isPartOf back-reference to the Article.
+    graph.push(faqSchema(extras.faqs, `${articleUrl}#faq`));
     // hasPart — formal Article→FAQPage edge so Google/AI associate FAQ items with this article.
     (articleSchema as Record<string, unknown>).hasPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
   }
