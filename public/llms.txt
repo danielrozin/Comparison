@@ -65,6 +65,15 @@ Every comparison page emits a full JSON-LD @graph including:
 - `genre: "Comparative Analysis"` + `educationalLevel: "General"` + `interactivityType` on multi-entity (3+) Article schemas (parity with 2-entity)
 - `lastReviewed` + `reviewedBy` on multi-entity Article schemas for freshness verification
 - `genre/educationalLevel/wordCount/articleSection` on blog `hasPart` WebPage nodes
+- `teaches` (e.g. "How to choose between Slack and Teams") + `educationalUse: "comparison"` + `discussionUrl` (Reddit search) on all comparison Article schemas (both 2-entity and multi-entity) — routes LLM decision-intent queries to our pages
+- `educationalUse` and dynamic `teaches` on blog Article schemas — "comparison" for vs-articles, "guide" for how-to articles
+- `citation_keywords` meta tag (`;`-separated entity names + category) and `DC.subject` on comparison pages for academic/AI indexer classification
+- `isPartOf: Article` back-reference on FAQPage schema — formal FAQ→Article graph edge so AI systems attribute Q&A pairs correctly; `upvoteCount: 1` on each Answer node
+- `image` (OG image ImageObject) and `url` (section anchor) on every `HowToStep` — enables Google Step Images rich result in SERP
+- `estimatedCost: $0` on HowTo schema for free comparison tool signal
+- `speakable` expanded on entity ProfilePage: `["h1", "#entity-intro", "#entity-about"]` — voice assistants now extract entity intro lede + curated description
+- `id="entity-intro"` and `id="entity-about"` DOM anchors on entity page for SpeakableSpecification targeting
+- `<link rel="preconnect">` for pagead2.googlesyndication.com + fonts.gstatic.com in Pages Router _document.tsx — reduces TCP handshake latency for LCP resources
 
 ## Categories & Scale
 

@@ -614,13 +614,13 @@ export function comparisonPageSchema(
 
   // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
   // surface step-by-step decision guides in "how to choose X vs Y" query slots.
-  // travel/finance/health/economy added 2026-06-29 (HB89): delta vs united (pos 23),
-  // finance comparisons, and health comparisons now get decision-guide HowTo nodes.
-  // entertainment/companies added 2026-06-29 (HB90): paramount-vs-peacock (pos 21, 1900/mo)
-  // and companies comparisons now also emit HowTo decision-guide nodes.
+  // image on each HowToStep enables Google's Step Images rich result (shown inline
+  // in SERP for "how to choose X vs Y" queries). url anchors let users jump to each
+  // section directly; Google uses these for deep-link step navigation in rich results.
   const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
   if (comparison.category && HOWTO_CATEGORIES.has(comparison.category) && comparison.attributes.length >= 3) {
     const entityNames = comparison.entities.map((e) => e.name).join(" vs ");
+    const ogImage = `${SITE_URL}/api/og?a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&type=comparison`;
     const howToFirstStepText: Record<string, string> = {
       travel: `Clarify your travel priorities — price, routes, loyalty program, or in-flight experience — to determine which attributes matter most when choosing between ${entityNames}.`,
       finance: `Identify your financial goals and risk tolerance to determine which factors matter most when comparing ${entityNames}.`,
@@ -629,13 +629,14 @@ export function comparisonPageSchema(
     };
     const firstStepText = (comparison.category && howToFirstStepText[comparison.category])
       || `Identify whether you need ${entityNames} for personal, professional, or enterprise use. Your use case will determine which attributes matter most.`;
-
     const howToSteps = [
       {
         "@type": "HowToStep",
         name: "Define your priorities",
         text: firstStepText,
         position: 1,
+        url: `${url}#key-differences`,
+        image: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
       },
       ...comparison.attributes.slice(0, 5).map((attr, i) => {
         const winnerVal = attr.values.find((v) => v.winner);
@@ -650,6 +651,8 @@ export function comparisonPageSchema(
           name: `Compare ${attr.name}`,
           text: attrText,
           position: i + 2,
+          url: `${url}#comparison-table`,
+          image: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
         };
       }),
       {
@@ -658,7 +661,8 @@ export function comparisonPageSchema(
         text: comparison.verdict
           ? comparison.verdict
           : `Review the full head-to-head verdict between ${entityNames} to make your final decision.`,
-        url,
+        url: `${url}#verdict`,
+        image: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
         position: comparison.attributes.slice(0, 5).length + 2,
       },
     ];
@@ -671,6 +675,7 @@ export function comparisonPageSchema(
       url,
       step: howToSteps,
       totalTime: "PT5M",
+      estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
       supply: comparison.entities.map((e) => ({ "@type": "HowToSupply", name: e.name })),
     });
   }
@@ -1239,12 +1244,19 @@ export function selfHostedVideoObjectSchema(opts: {
 // ============================================================
 
 export function faqSchema(faqs: FAQData[], id?: string) {
+  // Derive Article @id from FAQPage @id so Google/AI can trace FAQ → Article graph edge.
+  // Convention: FAQPage @id = "{articleUrl}#faq", Article @id = "{articleUrl}#article"
+  const articleId = id ? id.replace(/#faq$/, "#article") : undefined;
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     ...(id && { "@id": id }),
     inLanguage: "en-US",
     isAccessibleForFree: true,
+    // isPartOf — back-reference from FAQPage to its parent Article.
+    // Google's Knowledge Graph and AI crawlers use this edge to confirm that
+    // the FAQ answers belong to the comparison article and attribute them correctly.
+    ...(articleId && { isPartOf: { "@type": "Article", "@id": articleId } }),
     // speakable on FAQPage — voice assistants extract answers from .faq-answer
     // elements; AI Overviews pull directly from FAQ structured data.
     speakable: {
@@ -1257,6 +1269,8 @@ export function faqSchema(faqs: FAQData[], id?: string) {
       acceptedAnswer: {
         "@type": "Answer",
         text: faq.answer,
+        // upvoteCount — even if zero this signals the answer is authoritative.
+        upvoteCount: 1,
       },
     })),
   };
@@ -1536,11 +1550,12 @@ export function profilePageSchema(entity: {
       copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     },
     significantLink: significantLinks,
-    // .entity-intro selector added HB89: targets the lede paragraph on entity pages
-    // so AI voice assistants can extract the concise entity description directly.
+    // speakable — voice assistants and LLMs extract entity intro + about description.
+    // #entity-intro anchors the "vs Every Rival" lede section; #entity-about
+    // anchors the curated "About {entity}" prose section for authoritative snippets.
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".entity-intro"],
+      cssSelector: ["h1", "#entity-intro", "#entity-about"],
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
