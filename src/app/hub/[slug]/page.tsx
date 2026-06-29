@@ -112,6 +112,11 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    teaches: `How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`,
+    educationalUse: "comparison",
+    keywords: `${hub.h1.toLowerCase()} comparison, ${hub.slug.replace(/-/g, " ")} vs, best ${hub.slug.replace(/-/g, " ")}`,
     mainEntity: {
       "@type": "ItemList",
       name: `${hub.h1} Comparisons`,
