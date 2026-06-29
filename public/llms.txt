@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB81)*
+*Last updated: June 29, 2026 (HB86)*
 
 ## What We Do
 
@@ -44,7 +44,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
 - `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
-- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`
+- `ProfilePage` on entity pages — with `@id` anchor, `genre: "Entity Profile"`, `thumbnailUrl` (direct OG image URL), `contentReferenceTime`, `interactivityType: "expositive"`, `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot), `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience`
 - `Product` enrichment on product-type entities — `brand`, `offers.availability: InStock`, `category`, `priceCurrency` on comparison `about` nodes, @graph itemNodes, profilePageSchema mainEntity, and entityPageSchema
 - `SearchResultsPage` on the search results view
 - `ImageObject` with contentUrl, name, description, caption on OG images
@@ -96,7 +96,7 @@ Curated "best of" ranked lists for product categories, covering top picks with c
 
 - **URL pattern:** `https://www.aversusb.net/best/{category-slug}`
 - **Examples:** best AI coding assistants, best project management tools, best password managers
-- Structured data: `ItemList` + `Article` + `BreadcrumbList`
+- Structured data: `CollectionPage + Article` (with `@id`, `genre: "Roundup Guide"`, `thumbnailUrl`, `image.contentUrl`, `contentReferenceTime`, `interactivityType: "expositive"`, `isPartOf: WebSite @id`, `potentialAction: ReadAction`) + `FAQPage` + `BreadcrumbList`
 
 ## Data Studies
 
