@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026*
+*Last updated: June 29, 2026 (HB59)*
 
 ## What We Do
 
@@ -32,7 +32,7 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`
+- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType` ("mixed" when community votes exist; "expositive" for read-only)
 - `NewsArticle` on high-freshness blog articles published within 48 hours
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
@@ -44,7 +44,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals
 - `CollectionPage` on category, subcategory, hub, blog, and review listing pages — with `alternativeHeadline`, `license` (CC-BY-4.0), `usageInfo`, and `accessMode`
-- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, and `significantLink` to alternatives + top comparison pages
+- `ProfilePage` on entity pages — with `alternativeHeadline`, `license`, `usageInfo`, `accessMode`, `significantLink`, and `primaryImageOfPage` (ImageObject for Knowledge Panel and AI Overview thumbnail slot)
 - `SearchResultsPage` on the search results view
 - `HowTo` schema auto-detected on step-by-step blog articles
 - `ImageObject` with contentUrl, name, description, caption on OG images

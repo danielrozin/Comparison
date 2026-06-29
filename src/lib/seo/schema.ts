@@ -362,6 +362,9 @@ export function comparisonPageSchema(
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
+    // Accessibility crawlers and AI classifiers use this to characterise the page experience.
+    interactivityType: voteData && voteData.total >= 1 ? "mixed" : "expositive",
     // keywords surfaces entity names + comparison topic for AI index matching.
     keywords: [
       ...comparison.entities.map((e) => e.name),
@@ -1018,6 +1021,11 @@ export function profilePageSchema(entity: {
   const profileDesc = entity.shortDesc ||
     `${entity.name} comparisons, profile, and alternatives — ${entity.comparisonCount ?? 0}+ head-to-head comparisons on A Versus B.`;
 
+  // OG image URL for this entity — used as primaryImageOfPage.
+  // Google's Knowledge Panel and AI Overview image slot prefers the
+  // primaryImageOfPage ImageObject over the generic image field.
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
+
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -1036,6 +1044,16 @@ export function profilePageSchema(entity: {
     accessMode: ["textual"],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    // primaryImageOfPage — the canonical representative image for this entity.
+    // Google uses this for the Knowledge Panel card image and AI Overview thumbnails.
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: ogImage,
+      width: 1200,
+      height: 630,
+      caption: `${entity.name} — Profile on A Versus B`,
+      creditText: SITE_NAME,
+    },
     significantLink: significantLinks,
     speakable: {
       "@type": "SpeakableSpecification",

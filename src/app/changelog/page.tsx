@@ -122,25 +122,59 @@ const TYPE_BADGES: Record<string, { label: string; className: string }> = {
   improvement: { label: "Improvement", className: "bg-amber-100 text-amber-800" },
 };
 
+// Derive dates from the CHANGELOG array so the schema stays in sync automatically.
+const CHANGELOG_LATEST_DATE = CHANGELOG.map((e) => e.date).sort().at(-1) ?? "2026-03-15";
+const CHANGELOG_FIRST_DATE = CHANGELOG.map((e) => e.date).sort()[0] ?? "2026-03-15";
+
 const changelogSchema = {
   "@context": "https://schema.org",
-  "@type": ["Article", "TechArticle"],
-  headline: CHANGELOG_TITLE,
-  description: CHANGELOG_DESC,
-  abstract: CHANGELOG_DESC,
-  url: CHANGELOG_URL,
-  inLanguage: "en-US",
-  creativeWorkStatus: "Published",
-  isAccessibleForFree: true,
-  alternativeHeadline: `${SITE_NAME} Release Notes & Update History`,
-  license: "https://creativecommons.org/licenses/by/4.0/",
-  usageInfo: `${SITE_URL}/terms`,
-  accessMode: ["textual"],
-  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
-  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  "@graph": [
+    {
+      "@type": ["Article", "TechArticle"],
+      "@id": `${CHANGELOG_URL}#article`,
+      headline: CHANGELOG_TITLE,
+      description: CHANGELOG_DESC,
+      abstract: CHANGELOG_DESC,
+      url: CHANGELOG_URL,
+      // datePublished / dateModified — freshness signals for Google and AI crawlers.
+      // Without these, crawlers cannot determine when the changelog was last updated.
+      datePublished: CHANGELOG_FIRST_DATE,
+      dateModified: CHANGELOG_LATEST_DATE,
+      lastReviewed: CHANGELOG_LATEST_DATE,
+      inLanguage: "en-US",
+      creativeWorkStatus: "Published",
+      isAccessibleForFree: true,
+      alternativeHeadline: `${SITE_NAME} Release Notes & Update History`,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      usageInfo: `${SITE_URL}/terms`,
+      accessMode: ["textual"],
+      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+      // hasPart — list each release as an ItemList so crawlers can enumerate versions.
+      hasPart: {
+        "@type": "ItemList",
+        name: "Release History",
+        numberOfItems: CHANGELOG.length,
+        itemListElement: CHANGELOG.map((entry, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: `${entry.version} — ${entry.title}`,
+          description: entry.items[0] ?? entry.title,
+          datePublished: entry.date,
+        })),
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Changelog", item: CHANGELOG_URL },
+      ],
+    },
+  ],
 };
 
 export default function ChangelogPage() {
