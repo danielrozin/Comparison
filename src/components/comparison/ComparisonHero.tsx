@@ -119,7 +119,7 @@ function EntityCard({
 
   return (
     <div
-      className={`bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 transition-all duration-200`}
+      className={`bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
     >
       <EntityAvatar entity={entity} variant={variant} />
       <h3 className="text-base sm:text-xl font-bold text-white mb-1">{entity.name}</h3>

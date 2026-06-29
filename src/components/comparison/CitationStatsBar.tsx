@@ -86,7 +86,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
             {/* Stat pills */}
             {items.map((item, i) => (
               <div key={i} className="flex items-center gap-1.5">
-                <div className="flex items-center gap-1.5 bg-white/90 border border-indigo-100 rounded-full px-3 py-1 text-xs shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-1.5 bg-white/90 border border-indigo-100 rounded-full px-3 py-1 text-xs shadow-sm hover:shadow-md hover:scale-105 transition-all duration-150 cursor-default">
                   <span className="text-indigo-500 flex-shrink-0">{item.icon}</span>
                   <span className="font-bold text-indigo-900">{item.value}</span>
                   <span className="text-gray-500">{item.label}</span>
