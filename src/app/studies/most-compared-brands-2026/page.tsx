@@ -97,11 +97,14 @@ export default async function MostComparedStudyPage() {
     measurementTechnique:
       "Aggregation of published head-to-head comparison pages on aversusb.net",
     variableMeasured: "Number of comparison pages each brand appears in",
+    encodingFormat: ["text/html", "application/ld+json"],
+    spatialCoverage: { "@type": "Place", name: "Global" },
+    temporalCoverage: "2026",
   };
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": ["Article", "TechArticle"],
+    "@type": ["Article", "TechArticle", "ScholarlyArticle"],
     headline: TITLE,
     description: DESCRIPTION,
     abstract: DESCRIPTION,

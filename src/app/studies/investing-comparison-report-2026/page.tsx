@@ -88,11 +88,14 @@ export default async function InvestingStudyPage() {
       "Aggregation of published finance and investing head-to-head comparison pages on aversusb.net",
     variableMeasured: "Number of comparison pages each financial product or institution appears in",
     keywords: ["investing", "brokerages", "retirement accounts", "credit cards", "personal finance", "crypto"],
+    encodingFormat: ["text/html", "application/ld+json"],
+    spatialCoverage: { "@type": "Place", name: "United States" },
+    temporalCoverage: "2026",
   };
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": ["Article", "TechArticle"],
+    "@type": ["Article", "TechArticle", "ScholarlyArticle"],
     headline: TITLE,
     description: DESCRIPTION,
     abstract: DESCRIPTION,

@@ -91,11 +91,14 @@ export default async function B2BSaaSStudyPage() {
       "Aggregation of published B2B software head-to-head comparison pages on aversusb.net",
     variableMeasured: "Number of comparison pages each SaaS tool appears in",
     keywords: ["B2B SaaS", "software comparison", "CRM", "project management", "email marketing"],
+    encodingFormat: ["text/html", "application/ld+json"],
+    spatialCoverage: { "@type": "Place", name: "Global" },
+    temporalCoverage: "2026",
   };
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": ["Article", "TechArticle"],
+    "@type": ["Article", "TechArticle", "ScholarlyArticle"],
     headline: TITLE,
     description: DESCRIPTION,
     abstract: DESCRIPTION,

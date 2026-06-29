@@ -483,6 +483,9 @@ export function comparisonPageSchema(
   // 5. Dataset for structured comparison data (enriched with citation stats)
   if (comparison.attributes.length > 0) {
     const citation = comparison.citationStats;
+    const isCountryComparison = comparison.category === "countries" ||
+      comparison.entities.some((e) => e.entityType === "country");
+
     schemas.push({
       "@context": "https://schema.org",
       "@type": "Dataset",
@@ -492,7 +495,24 @@ export function comparisonPageSchema(
         ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}.`
         : `Structured comparison data for ${comparison.entities.map((e) => e.name).join(" vs ")}`,
       url,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      license: `${SITE_URL}/terms`,
+      // encodingFormat tells crawlers this Dataset is accessible as HTML and JSON-LD.
+      // Semantic Scholar, Google Dataset Search, and AI research indexes use this to
+      // classify data type and surface the page in data-specific search results.
+      encodingFormat: ["text/html", "application/ld+json"],
+      // measurementTechnique describes how attributes were collected.
+      measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => attr.name),
+      // spatialCoverage for country comparisons — signals geographic scope to AI geographic
+      // knowledge graphs and Google Geo Knowledge Panels.
+      ...(isCountryComparison && {
+        spatialCoverage: comparison.entities.map((e) => ({
+          "@type": "Country",
+          name: e.name,
+        })),
+      }),
       ...(citation && citation.sourceCount > 0 && {
         isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
           "@type": "CreativeWork",
@@ -739,6 +759,37 @@ function buildMultiEntityGraph(
         name: faq.question,
         acceptedAnswer: { "@type": "Answer", text: faq.answer },
       })),
+    });
+  }
+
+  // Dataset for multi-entity comparisons — mirrors 2-entity pattern.
+  if (comparison.attributes.length > 0) {
+    const isCountryComparison = comparison.category === "countries" ||
+      comparison.entities.some((e) => e.entityType === "country");
+    graph.push({
+      "@type": "Dataset",
+      "@id": `${url}#dataset`,
+      name: `${comparison.title} - Comparison Data`,
+      description: citation
+        ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points.`
+        : `Structured comparison data for ${comparison.entities.map((e) => e.name).join(", ")}`,
+      url,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      license: `${SITE_URL}/terms`,
+      encodingFormat: ["text/html", "application/ld+json"],
+      measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
+      variableMeasured: comparison.attributes.map((attr) => attr.name),
+      ...(isCountryComparison && {
+        spatialCoverage: comparison.entities.map((e) => ({ "@type": "Country", name: e.name })),
+      }),
+      ...(citation && citation.sourceCount > 0 && {
+        isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
+          "@type": "CreativeWork",
+          name: s.name,
+          url: s.url,
+        })),
+      }),
     });
   }
 
