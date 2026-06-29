@@ -71,15 +71,29 @@ export const metadata: Metadata = {
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
+  "@id": `${PAGE_URL}#article`,
   headline: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   abstract: PAGE_DESCRIPTION,
   alternativeHeadline: "AWS vs Azure vs Google Cloud 2026 — Honest Cloud Platform Comparison",
   url: PAGE_URL,
+  genre: "Buying Guide",
   inLanguage: "en-US",
+  interactivityType: "expositive",
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
+  contentReferenceTime: MODIFIED_DATE,
+  thumbnailUrl: OG_IMAGE,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${PAGE_URL}#primaryImage`,
+    url: OG_IMAGE,
+    contentUrl: OG_IMAGE,
+    width: 1200,
+    height: 630,
+    caption: "Best Cloud Platform 2026 — AWS vs Azure vs GCP Buying Guide",
+  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -91,6 +105,7 @@ const articleSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
     "@type": "Person",
+    "@id": `${SITE_URL}/authors/daniel-rozin#person`,
     name: "Daniel Rozin",
     url: `${SITE_URL}/authors/daniel-rozin`,
   },
@@ -106,6 +121,7 @@ const articleSchema = {
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
 };
 
 const breadcrumbListSchema = {
