@@ -74,8 +74,8 @@ export function ResourcesSection({
                   rel="noopener noreferrer"
                   className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-blue-300 hover:bg-blue-50/50 transition-all"
                 >
-                  <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
-                    <span className="text-gray-500 group-hover:text-blue-600 text-xs font-bold">W</span>
+                  <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
+                    <span className="text-blue-500 group-hover:text-blue-600 text-xs font-bold">W</span>
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-text group-hover:text-blue-700 transition-colors truncate">
@@ -87,7 +87,7 @@ export function ResourcesSection({
                       </p>
                     )}
                   </div>
-                  <svg className="w-4 h-4 text-gray-300 group-hover:text-blue-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-blue-200 group-hover:text-blue-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
@@ -162,7 +162,7 @@ export function ResourcesSection({
                       </p>
                     )}
                   </div>
-                  <svg className="w-4 h-4 text-gray-300 group-hover:text-red-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-4 h-4 text-red-200 group-hover:text-red-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>

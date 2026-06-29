@@ -55,34 +55,40 @@ const articleSchema = {
 
 export default function HowWeWriteVerdictsPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">How we write verdicts</li>
-        </ol>
-      </nav>
 
-      <header className="mb-10">
-        <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-3">
-          How we write verdicts
-        </h1>
-        <p className="text-lg text-text-secondary leading-relaxed">
-          Every &ldquo;Our Verdict&rdquo; section on {SITE_NAME} is AI-assisted. This page explains
-          where the data comes from, what the AI does, what humans do, and how your feedback shapes
-          future verdicts.
-        </p>
-      </header>
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">How we write verdicts</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
+            How we write verdicts
+          </h1>
+          <p className="text-primary-100 text-sm sm:text-base max-w-xl">
+            Every &ldquo;Our Verdict&rdquo; section on {SITE_NAME} is AI-assisted. This page explains
+            where the data comes from, what the AI does, what humans do, and how your feedback shapes
+            future verdicts.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
 
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <article className="prose prose-lg max-w-none space-y-10">
         <section>
           <h2 className="text-2xl font-display font-bold text-text mb-3">
@@ -170,6 +176,7 @@ export default function HowWeWriteVerdictsPage() {
           </p>
         </section>
       </article>
-    </div>
+      </div>
+    </>
   );
 }

@@ -130,40 +130,46 @@ const profilePageSchema = {
 
 export default function DanielRozinPage() {
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <JsonLd data={[personSchema, profilePageSchema]} />
 
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Authors</li>
-          <li>/</li>
-          <li className="text-text font-medium">{AUTHOR_NAME}</li>
-        </ol>
-      </nav>
-
-      <header className="mb-10">
-        <div className="flex items-center gap-6 mb-6">
-          <div className="w-20 h-20 rounded-full bg-primary-100 flex items-center justify-center text-3xl font-display font-black text-primary-600 shrink-0">
-            DR
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-primary-200">Authors</li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{AUTHOR_NAME}</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-3xl font-display font-black text-white shrink-0 ring-2 ring-white/30 shadow-lg">
+              DR
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-display font-black tracking-tight">{AUTHOR_NAME}</h1>
+              <p className="text-primary-100 font-medium">{AUTHOR_TITLE}, {SITE_NAME}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-display font-black text-text">{AUTHOR_NAME}</h1>
-            <p className="text-text-secondary font-medium">{AUTHOR_TITLE}, {SITE_NAME}</p>
-          </div>
+          <p className="text-primary-100 text-sm sm:text-base mt-5 max-w-2xl leading-relaxed">
+            Daniel Rozin founded {SITE_NAME} to bring transparent, data-driven comparisons to the web.
+            He personally researches, writes, and maintains the primary comparison hub pages — including
+            the LLM, browser, and password-manager comparison guides. All factual claims in his articles
+            are cited to primary sources (vendor documentation, academic papers, or independently audited datasets).
+          </p>
         </div>
-        <p className="text-lg text-text-secondary leading-relaxed">
-          Daniel Rozin founded {SITE_NAME} to bring transparent, data-driven comparisons to the web.
-          He personally researches, writes, and maintains the primary comparison hub pages — including
-          the LLM, browser, and password-manager comparison guides. All factual claims in his articles
-          are cited to primary sources (vendor documentation, academic papers, or independently audited datasets).
-        </p>
-      </header>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       <section className="mb-10">
         <h2 className="text-xl font-display font-bold text-text mb-4">Expertise</h2>
@@ -197,7 +203,7 @@ export default function DanielRozinPage() {
         <h2 className="text-xl font-display font-bold text-text mb-4">Published Articles</h2>
         <ul className="space-y-3">
           {ARTICLES.map((a) => (
-            <li key={a.url} className="border border-border rounded-xl p-4 flex items-center justify-between">
+            <li key={a.url} className="border border-border rounded-xl p-4 flex items-center justify-between hover:border-primary-300 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-150">
               <Link href={a.url} className="text-primary-600 hover:underline font-medium">
                 {a.title}
               </Link>
@@ -208,6 +214,7 @@ export default function DanielRozinPage() {
           ))}
         </ul>
       </section>
-    </article>
+      </article>
+    </>
   );
 }
