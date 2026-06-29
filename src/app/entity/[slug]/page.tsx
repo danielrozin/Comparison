@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -159,7 +159,9 @@ export default async function EntityPage({ params }: PageProps) {
     { name, url: `${SITE_URL}/entity/${slug}` },
   ];
 
-  const schemas = [
+  // Wrap in @graph — raw JSON arrays are invalid JSON-LD; Google and AI crawlers
+  // require either a single node or { "@context", "@graph": [...] }.
+  const entityGraphItems: Record<string, unknown>[] = [
     breadcrumbSchema(breadcrumbItems),
     aggregateRatingSchema({
       name,
@@ -178,12 +180,22 @@ export default async function EntityPage({ params }: PageProps) {
       topComparisons: relatedComparisons.slice(0, 10),
     }),
   ];
+  // Inject FAQPage into graph when entity content includes curated FAQs.
+  // AEO: FAQPage schema enables featured-snippet Q&A cards in Google and AI answer engines.
+  if (entityContent?.faqs?.length) {
+    entityGraphItems.push(faqSchema(entityContent.faqs));
+  }
+
+  const entityJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": entityGraphItems.map(({ ["@context"]: _ctx, ...rest }: Record<string, unknown>) => rest),
+  };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(entityJsonLd) }}
       />
 
       {/* Entity Hero Banner */}

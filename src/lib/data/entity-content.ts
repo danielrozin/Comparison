@@ -34,6 +34,11 @@ export const ENTITY_LEDE: Record<string, EntityLede> = {
     intro:
       "Looking for Cleveland Browns matchups? Compare the Browns versus every AFC North rival and NFL opponent — head-to-head records, rosters, and team stats side by side. See the Browns versus the Steelers, Ravens, and Bengals, plus every other matchup, all in one place and updated for the 2026 season.",
   },
+  "mountain-dew": {
+    title: "Mountain Dew vs Every Rival: Caffeine, Flavors & Brand Comparison 2026",
+    intro:
+      "Mountain Dew is a PepsiCo brand — one of the top-selling carbonated soft drinks in the US with ~54mg caffeine per can. Compare Mountain Dew versus Pepsi, Coca-Cola, Dr Pepper, and energy drinks side by side across caffeine content, flavor profiles, and market share, updated for 2026.",
+  },
 };
 
 /**
@@ -8690,6 +8695,24 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     faqs: [
       { question: "Pepsi vs Coca-Cola: who wins blind taste tests?", answer: "Historically, Pepsi wins blind taste tests with first-sip preferences — Pepsi is sweeter and gives a stronger immediate impression. The famous 'Pepsi Challenge' marketing campaigns of the 1970s-1980s were built on this. However, when consumers drink full beverages (not just sips), Coca-Cola often performs better — its more complex, less sweet flavor pairs better with food and doesn't fatigue the palate. This 'less is more' phenomenon is one reason fast-food chains overwhelmingly serve Coca-Cola products." },
       { question: "Is Pepsi better than Coca-Cola for cooking/baking?", answer: "Different uses favor different colas: Coca-Cola is preferred for traditional recipes (Coca-Cola cake, ham glaze, beef brisket) — its caramel notes and cola complexity work well in slow-cooked dishes. Pepsi's sweeter and more citrusy profile works better in lighter recipes (pulled pork, marinades, cocktails). Both work as substitutes in most recipes, with subtle flavor differences. Mexican Coke (made with cane sugar instead of HFCS) is often preferred by chefs for cooking due to cleaner flavor." },
+    ],
+  },
+
+  "mountain-dew": {
+    description: "Mountain Dew is a citrus-flavored carbonated soft drink originally created in 1940 by Barney and Ally Hartman in Tennessee. PepsiCo acquired the brand in 1964, and Mountain Dew is now one of the best-selling soft drinks in the United States, consistently ranking in the top 5 by volume. Mountain Dew is known for its bright yellow-green color, intense citrus flavor, and higher caffeine content (~54mg/12oz) compared to regular Colas. The brand is strongly associated with extreme sports, gaming culture, and younger male demographics. PepsiCo has expanded the Mountain Dew line extensively: Diet Mountain Dew, Code Red, LiveWire, Voltage, White Out, Baja Blast (Taco Bell exclusive), and MTN DEW RISE Energy. Mountain Dew commands approximately 7-8% of the US soft drink market.",
+    highlights: ["Owned by PepsiCo since 1964", "Top 5 US soft drink brand by volume", "Higher caffeine than most colas: ~54mg/12oz", "Baja Blast is a Taco Bell exclusive variant"],
+    category: "products",
+    alternatives: [
+      { name: "Pepsi", slug: "pepsi", reason: "Parent company brand — lower caffeine, sweeter cola taste" },
+      { name: "Coca-Cola", slug: "coca-cola", reason: "Market leader, classic cola alternative" },
+      { name: "Dr Pepper", slug: "dr-pepper", reason: "Distinctive multi-flavor profile, different demographic" },
+      { name: "Monster Energy", slug: "monster-energy", reason: "Higher caffeine, same young male demographic" },
+    ],
+    faqs: [
+      { question: "Is Mountain Dew a Pepsi product?", answer: "Yes. Mountain Dew is owned by PepsiCo, Inc. PepsiCo acquired the Mountain Dew brand in 1964. Today, Mountain Dew is one of PepsiCo's most valuable beverage brands and one of the top-selling carbonated soft drinks in the United States, alongside Pepsi, Gatorade, and Tropicana." },
+      { question: "Why is Mountain Dew called Mountain Dew?", answer: "Mountain Dew was named after a slang term for moonshine (homemade whiskey) common in the Appalachian region of the United States. The drink was created in 1940 by Barney and Ally Hartman in Tennessee as a mixer for whiskey, and the name referenced this regional whiskey culture. PepsiCo acquired the brand in 1964 and repositioned it as a standalone citrus soda." },
+      { question: "Does Mountain Dew have more caffeine than Coke?", answer: "Yes. Mountain Dew contains approximately 54mg of caffeine per 12 fl oz can. Coca-Cola Classic contains about 34mg per 12 fl oz. Pepsi contains about 38mg. Mountain Dew has significantly more caffeine than both major colas, though it still contains less caffeine than most energy drinks (Monster: 160mg per 16oz)." },
+      { question: "What is the most popular Mountain Dew flavor?", answer: "Original Mountain Dew (citrus) is the best-selling variant. Among specialty flavors, Baja Blast (sold at Taco Bell and in cans/bottles) and Code Red (cherry) are consistently the most popular. MTN DEW RISE Energy is the fastest-growing new line targeting the morning energy drink market." },
     ],
   },
 

@@ -616,7 +616,9 @@ export function comparisonPageSchema(
   // surface step-by-step decision guides in "how to choose X vs Y" query slots.
   // travel/finance/health/economy added 2026-06-29 (HB89): delta vs united (pos 23),
   // finance comparisons, and health comparisons now get decision-guide HowTo nodes.
-  const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy"]);
+  // entertainment/companies added 2026-06-29 (HB90): paramount-vs-peacock (pos 21, 1900/mo)
+  // and companies comparisons now also emit HowTo decision-guide nodes.
+  const HOWTO_CATEGORIES = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
   if (comparison.category && HOWTO_CATEGORIES.has(comparison.category) && comparison.attributes.length >= 3) {
     const entityNames = comparison.entities.map((e) => e.name).join(" vs ");
     const howToFirstStepText: Record<string, string> = {
