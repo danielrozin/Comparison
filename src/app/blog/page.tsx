@@ -155,6 +155,9 @@ export default async function BlogPage({
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    teaches: "How to compare anything side by side using expert-written guides",
+    educationalUse: "guide",
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".blog-hero-description"],
