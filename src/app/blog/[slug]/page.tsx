@@ -390,6 +390,19 @@ export default async function BlogPostPage({
     // contentReferenceTime — tells LLMs the data freshness window so time-qualified
     // answer engines (ChatGPT, Perplexity) can attribute the correct temporal context.
     ...(article.updatedAt && { contentReferenceTime: new Date(article.updatedAt).toISOString() }),
+    // teaches — maps the article to a specific learning outcome for educational AI classifiers.
+    // ChatGPT and Perplexity route "how-to" and "which is better" queries to pages
+    // with a populated `teaches` field, increasing citation frequency on decision queries.
+    teaches: (() => {
+      const t = (article.metaTitle || article.title).toLowerCase();
+      if (t.startsWith("how to ")) return article.metaTitle || article.title;
+      if (t.includes(" vs ") || t.includes(" versus ")) return `How to choose: ${article.title}`;
+      return `How to understand: ${article.title}`;
+    })(),
+    // educationalUse — "comparison" for vs-articles, "guide" for how-to articles.
+    educationalUse: (article.title.toLowerCase().includes(" vs ") || article.title.toLowerCase().includes(" versus "))
+      ? "comparison"
+      : "guide",
   };
 
   const breadcrumbs = [

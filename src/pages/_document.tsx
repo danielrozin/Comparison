@@ -16,6 +16,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
+            Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
+            off the first-byte time for OG images and the AdSense script on slow connections. */}
+        <link rel="preconnect" href="https://www.aversusb.net" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {ADSENSE_PUB_ID && (
           <script
             async

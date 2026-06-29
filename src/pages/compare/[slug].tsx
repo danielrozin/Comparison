@@ -600,6 +600,11 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="citation_journal_title" content="A Versus B" />
       <meta name="citation_abstract" content={meta.description} />
       <meta name="citation_language" content="en" />
+      {/* citation_keywords — AI academic indexers (Semantic Scholar, Perplexity research)
+          use these to classify content and boost citation density on keyword-matched queries. */}
+      {(meta.articleTags ?? []).length > 0 && (
+        <meta name="citation_keywords" content={(meta.articleTags ?? []).join("; ")} />
+      )}
       <meta name="DC.title" content={meta.title} />
       <meta name="DC.creator" content="A Versus B" />
       <meta name="DC.publisher" content="A Versus B" />
@@ -607,6 +612,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="DC.type" content="Text" />
       <meta name="DC.format" content="text/html" />
       <meta name="DC.identifier" content={meta.canonical} />
+      {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
+          Maps the comparison topic to a structured subject vocabulary. */}
+      {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
     </Head>
   );
 }

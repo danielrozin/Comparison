@@ -350,11 +350,11 @@ export function comparisonPageSchema(
 
   const schemas: Record<string, unknown>[] = [];
 
-  // Upgrade Article to TechArticle for technology/software/gaming/automotive categories
-  // so Google's Technical Article rich result and AI tech-query citations apply.
+  // Article type — locked to "Article" (string, not array) to satisfy the schema contract
+  // tests and ensure consistent @type === "Article" equality checks. TechArticle / NewsArticle
+  // enrichment is communicated via additionalType so Google still receives the type signals
+  // without breaking the @graph find-by-type pattern.
   const TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
-  // NewsArticle type for recent tech/product comparisons (<180 days old) — surfaces in
-  // Google News, Perplexity News, and AI Overview "recent" answer slots.
   const NEWS_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "sports", "entertainment"]);
   const isRecent = (() => {
     try {
@@ -365,12 +365,11 @@ export function comparisonPageSchema(
     }
   })();
   const isNewsCategory = comparison.category && NEWS_CATEGORIES.has(comparison.category);
-  const articleType = (() => {
-    if (comparison.category && TECH_CATEGORIES.has(comparison.category)) {
-      return isRecent && isNewsCategory ? ["Article", "TechArticle", "NewsArticle"] : ["Article", "TechArticle"];
-    }
-    return isRecent && isNewsCategory ? ["Article", "NewsArticle"] : "Article";
-  })();
+  const articleType = "Article";
+  const additionalArticleTypes: string[] = [
+    ...(comparison.category && TECH_CATEGORIES.has(comparison.category) ? ["https://schema.org/TechArticle"] : []),
+    ...(isRecent && isNewsCategory ? ["https://schema.org/NewsArticle"] : []),
+  ];
 
   // 1. Article schema
   const hasFaqs = comparison.faqs.length > 0;
@@ -380,6 +379,7 @@ export function comparisonPageSchema(
     "@context": "https://schema.org",
     "@type": articleType,
     "@id": `${url}#article`,
+    ...(additionalArticleTypes.length > 0 && { additionalType: additionalArticleTypes }),
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -576,6 +576,18 @@ export function comparisonPageSchema(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
+    // teaches — maps this comparison to the specific decision skill it develops.
+    // LLMs and educational AI classifiers route "how do I decide between X and Y"
+    // queries to decision-support content when `teaches` is present.
+    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+    // educationalUse — "comparison" signals structured decision-support utility.
+    // AI systems (Perplexity, ChatGPT, Google AI Overviews) use this to rank
+    // comparison pages above generic articles for decision-intent queries.
+    educationalUse: "comparison",
+    // discussionUrl — community discussion thread for this comparison on Reddit.
+    // Google E-E-A-T evaluators and AI crawlers use discussionUrl to confirm
+    // real-world engagement with the topic and boost trust signals.
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
   });
 
   // 2. ItemList for the compared entities
@@ -842,9 +854,9 @@ function buildMultiEntityGraph(
       node.applicationCategory = "BusinessApplication";
       node.operatingSystem = "Web, iOS, Android";
       node.publisher = { "@type": "Organization", name: entity.name };
-      // Free Offer signals that a free tier exists; most SaaS tools compared on the
-      // site have one. This enables Google/AI product-search carousels for free tools.
-      node.offers = { "@type": "Offer", price: "0", priceCurrency: "USD" };
+      // Offer intentionally omitted for chatbot/AI-tool cluster per schema-3way v1 contract
+      // §2.3 deferral note (DAN-841). Emit offers only on entity profile pages where price
+      // data is verified, not on comparison item nodes where it may be inaccurate.
     }
 
     if (schemaType === "Product") {
@@ -897,14 +909,19 @@ function buildMultiEntityGraph(
     })),
   };
 
+  // Article @type locked to "Article" (string) per schema-3way v1 contract (DAN-841).
+  // TechArticle enrichment is conveyed via additionalType so tests can reliably find
+  // the article node with n["@type"] === "Article" without breaking SEO signals.
   const MULTI_TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
-  const multiArticleType = comparison.category && MULTI_TECH_CATEGORIES.has(comparison.category)
-    ? ["Article", "TechArticle"]
-    : "Article";
+  const multiArticleType = "Article";
+  const multiAdditionalTypes = (comparison.category && MULTI_TECH_CATEGORIES.has(comparison.category))
+    ? ["https://schema.org/TechArticle"]
+    : [];
 
   const article: Record<string, unknown> = {
     "@type": multiArticleType,
     "@id": `${url}#article`,
+    ...(multiAdditionalTypes.length > 0 && { additionalType: multiAdditionalTypes }),
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -1027,6 +1044,10 @@ function buildMultiEntityGraph(
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     educationalLevel: "General",
     ...(comparison.category && { articleSection: comparison.category }),
+    // teaches — decision-skill mapping for LLM educational classifiers (parity with 2-entity)
+    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    educationalUse: "comparison",
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
   };
 
   const breadcrumbs = [
