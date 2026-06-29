@@ -101,24 +101,40 @@ export default async function AlternativesPage({ params }: PageProps) {
   };
 
   const today = new Date().toISOString().slice(0, 10);
+  const altPageUrl = `${SITE_URL}/alternatives/${slug}`;
+  const altOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Alternatives to ${name}`)}&type=alternatives`;
   const alternativesArticleSchema = {
     "@context": "https://schema.org",
     "@type": ["Article", "TechArticle"],
+    "@id": `${altPageUrl}#article`,
     headline: `Alternatives to ${name}`,
     description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
     abstract: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
-    url: `${SITE_URL}/alternatives/${slug}`,
+    url: altPageUrl,
     inLanguage: "en-US",
+    genre: "Alternatives Guide",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    interactivityType: "expositive",
     dateModified: today,
     lastReviewed: today,
+    contentReferenceTime: today,
+    thumbnailUrl: altOgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${altPageUrl}#primaryImage`,
+      url: altOgImage,
+      contentUrl: altOgImage,
+      width: 1200,
+      height: 630,
+      caption: `Alternatives to ${name} — comparison guide`,
+    },
     keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives 2026`,
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1"],
@@ -132,6 +148,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: altPageUrl },
     about: {
       "@type": "Thing",
       name,

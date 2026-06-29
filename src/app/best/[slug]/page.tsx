@@ -228,6 +228,7 @@ function renderMarkdown(md: string): string {
 
 function bestPageSchema(entry: BestEntry) {
   const url = `${SITE_URL}/best/${entry.slug}`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entry.h1)}&type=best`;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -241,17 +242,31 @@ function bestPageSchema(entry: BestEntry) {
       },
       {
         "@type": ["CollectionPage", "Article"],
+        "@id": `${url}#article`,
         name: entry.h1,
         description: entry.description,
         abstract: entry.description,
         url,
         inLanguage: "en-US",
+        genre: "Roundup Guide",
         creativeWorkStatus: "Published",
         isAccessibleForFree: true,
         conditionsOfAccess: "Free",
+        interactivityType: "expositive",
         datePublished: entry.publishedAt,
         dateModified: entry.updatedAt,
         lastReviewed: entry.updatedAt,
+        contentReferenceTime: entry.updatedAt,
+        thumbnailUrl: ogImage,
+        image: {
+          "@type": "ImageObject",
+          "@id": `${url}#primaryImage`,
+          url: ogImage,
+          contentUrl: ogImage,
+          width: 1200,
+          height: 630,
+          caption: entry.h1,
+        },
         keywords: entry.h1.toLowerCase().replace(/[^a-z0-9 ]/g, "").split(" ").slice(0, 8).join(", "),
         author: {
           "@type": "Person",
@@ -268,6 +283,8 @@ function bestPageSchema(entry: BestEntry) {
         acquireLicensePage: `${SITE_URL}/terms`,
         audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
         accessMode: ["textual"],
+        isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+        potentialAction: { "@type": "ReadAction", target: url },
         speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
         mainEntity: {
           "@type": "ItemList",
