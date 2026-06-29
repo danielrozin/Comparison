@@ -229,6 +229,25 @@ const breadcrumbListSchema = {
   ],
 };
 
+const collectionPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": PAGE_URL,
+  name: PAGE_TITLE,
+  description: PAGE_DESCRIPTION,
+  url: PAGE_URL,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  acquireLicensePage: `${SITE_URL}/terms`,
+  audience: { "@type": "Audience", audienceType: "Technology professionals comparing AI chatbots" },
+  accessMode: ["textual"],
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+};
 interface AlternativeRow {
   rank: number;
   name: string;
@@ -319,6 +338,10 @@ export default function ChatGPTAlternativesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Breadcrumbs */}
