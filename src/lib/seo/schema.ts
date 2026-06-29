@@ -415,6 +415,26 @@ export function comparisonPageSchema(
     // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    // significantLink — entity ProfilePages so AI agents can follow the graph
+    // from comparison article to dedicated entity profiles and alternatives pages.
+    significantLink: comparison.entities.flatMap((e) => [
+      `${SITE_URL}/entity/${e.slug}`,
+      `${SITE_URL}/alternatives/${e.slug}`,
+    ]),
+    // citation — external sources that back the comparison data; AI fact-checkers
+    // and Google's Knowledge Panel use citation to verify factual claims.
+    ...(() => {
+      const citedSources = (comparison.citationStats?.sources ?? [])
+        .filter((s) => s.url)
+        .map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url }));
+      return citedSources.length > 0 ? { citation: citedSources } : {};
+    })(),
+    // potentialAction — ReadAction lets AI crawlers understand that this article
+    // is readable at its canonical URL, boosting indexation confidence.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
+    },
     // hasPart links to FAQPage and Dataset for formal Article sub-document graph edges.
     ...(() => {
       const parts = [

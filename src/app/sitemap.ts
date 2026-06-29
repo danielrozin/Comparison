@@ -77,6 +77,8 @@ export default async function sitemap({
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
+      { url: `${SITE_URL}/requests`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
       // Author page
       { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       // FAQ competitor comparison pages

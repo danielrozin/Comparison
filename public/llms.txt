@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 28, 2026*
+*Last updated: June 29, 2026*
 
 ## What We Do
 
@@ -32,7 +32,7 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed
+- `Article` / `TechArticle` (for tech/software categories) with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`
 - `NewsArticle` on high-freshness blog articles published within 48 hours
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
@@ -48,6 +48,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - `SearchResultsPage` on the search results view
 - `HowTo` schema auto-detected on step-by-step blog articles
 - `ImageObject` with contentUrl, name, description, caption on OG images
+- `ContactPage` on the contact page with embedded `ContactPoint` organization node
+- `WebPage` + `BreadcrumbList` on requests and site-map pages for full crawl coverage
 - Citation meta (`citation_title`, `citation_author`, `citation_abstract`, `DC.*`) on all page types for academic and LLM indexers
 
 ## Categories & Scale

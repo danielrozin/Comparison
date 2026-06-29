@@ -1,15 +1,71 @@
 import type { Metadata } from "next";
+import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { RequestForm } from "@/components/requests/RequestForm";
 import { RequestList } from "@/components/requests/RequestList";
+import { JsonLd } from "@/components/schema/JsonLd";
+
+const REQ_TITLE = `Request a Comparison | ${SITE_NAME}`;
+const REQ_DESC = "Suggest comparisons you'd like to see on A Versus B. Vote on existing requests to help us prioritize what to build next.";
+const REQ_URL = `${SITE_URL}/requests`;
 
 export const metadata: Metadata = {
-  title: "Request a Comparison | A Versus B",
-  description:
-    "Suggest comparisons you'd like to see on A Versus B. Vote on existing requests to help us prioritize what to build next.",
+  title: REQ_TITLE,
+  description: REQ_DESC,
+  alternates: { canonical: REQ_URL },
+  openGraph: {
+    title: REQ_TITLE,
+    description: REQ_DESC,
+    url: REQ_URL,
+    siteName: SITE_NAME,
+  },
+  other: {
+    "citation_title": REQ_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": REQ_DESC,
+    "DC.title": REQ_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": REQ_URL,
+  },
+};
+
+const requestsPageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      name: REQ_TITLE,
+      description: REQ_DESC,
+      url: REQ_URL,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      potentialAction: {
+        "@type": "CommentAction",
+        target: { "@type": "EntryPoint", urlTemplate: REQ_URL },
+        name: "Request a comparison",
+      },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Request a Comparison", item: REQ_URL },
+      ],
+    },
+  ],
 };
 
 export default function RequestsPage() {
   return (
+    <>
+      <JsonLd data={requestsPageSchema} />
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary-800 to-primary-600 text-white py-14">
@@ -51,5 +107,6 @@ export default function RequestsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

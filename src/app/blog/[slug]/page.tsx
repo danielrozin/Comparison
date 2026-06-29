@@ -262,6 +262,7 @@ export default async function BlogPostPage({
 
   const articleSchema = {
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
+    "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
     ...(wordCount && { wordCount }),
@@ -334,6 +335,12 @@ export default async function BlogPostPage({
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".article-excerpt", ".article-abstract"],
+    },
+    // potentialAction — ReadAction lets AI crawlers confirm this article is
+    // readable at its canonical URL, boosting indexation and citation confidence.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: articleUrl },
     },
   };
 

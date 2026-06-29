@@ -3,14 +3,33 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL, CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { getRecentSitemapContent } from "@/lib/services/sitemap-service";
 
+const SITEMAP_TITLE = `Site Map — ${SITE_NAME}`;
+const SITEMAP_DESC = `Browse all content on ${SITE_NAME} — comparisons, blog articles, reviews, and categories organized by date and topic.`;
+const SITEMAP_URL = `${SITE_URL}/site-map`;
+
 export const metadata: Metadata = {
-  title: "Site Map",
-  description: `Browse all content on ${SITE_NAME} — comparisons, blog articles, reviews, and categories organized by date and topic.`,
-  alternates: { canonical: `${SITE_URL}/site-map` },
+  title: SITEMAP_TITLE,
+  description: SITEMAP_DESC,
+  alternates: { canonical: SITEMAP_URL },
   openGraph: {
-    title: `Site Map — ${SITE_NAME}`,
-    description: `Browse all content on ${SITE_NAME} organized by date and topic.`,
-    url: `${SITE_URL}/site-map`,
+    title: SITEMAP_TITLE,
+    description: SITEMAP_DESC,
+    url: SITEMAP_URL,
+    siteName: SITE_NAME,
+  },
+  other: {
+    "citation_title": SITEMAP_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": SITEMAP_DESC,
+    "DC.title": SITEMAP_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.identifier": SITEMAP_URL,
   },
 };
 
@@ -101,11 +120,40 @@ function ContentSection({
   );
 }
 
+const siteMapPageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      name: SITEMAP_TITLE,
+      description: SITEMAP_DESC,
+      url: SITEMAP_URL,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      about: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    },
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Site Map", item: SITEMAP_URL },
+      ],
+    },
+  ],
+};
+
 export default async function SiteMapPage() {
   const { today, yesterday, thisWeek, lastWeek } =
     await getRecentSitemapContent();
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteMapPageSchema) }}
+      />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
       <nav className="mb-8">
@@ -223,5 +271,6 @@ export default async function SiteMapPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
