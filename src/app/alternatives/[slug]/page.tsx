@@ -148,15 +148,30 @@ export default async function AlternativesPage({ params }: PageProps) {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    educationalLevel: "General",
+    // teaches + educationalUse — maps this guide to the decision skill it develops
+    // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).
+    teaches: `How to find the best alternatives to ${name}`,
+    educationalUse: "comparison",
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: altPageUrl },
+    // significantLink — entity ProfilePage and top comparison pages for AI graph traversal.
+    significantLink: [
+      `${SITE_URL}/entity/${slug}`,
+      ...alternatives.slice(0, 5).map((alt) => `${SITE_URL}/compare/${alt.comparisonSlug}`),
+    ],
+    // @id on about matches ProfilePage mainEntity @id for cross-document graph merging.
     about: {
       "@type": "Thing",
+      "@id": `${SITE_URL}/entity/${slug}`,
       name,
       url: `${SITE_URL}/entity/${slug}`,
     },
+    // @id on each mentions entry matches ProfilePage mainEntity for knowledge graph cohesion.
     mentions: alternatives.slice(0, 10).map((alt) => ({
       "@type": "Thing",
+      "@id": `${SITE_URL}/entity/${alt.slug}`,
       name: alt.name,
       url: `${SITE_URL}/entity/${alt.slug}`,
     })),

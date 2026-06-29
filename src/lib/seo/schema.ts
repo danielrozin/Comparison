@@ -1627,9 +1627,12 @@ export function howToSchemaFromBlog(opts: {
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
+    "@id": `${opts.url}#howto`,
     name: opts.title,
     description: opts.description,
     url: opts.url,
+    totalTime: "PT5M",
+    estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
     step: steps.map((name, i) => ({
       "@type": "HowToStep",
       position: i + 1,
