@@ -66,7 +66,7 @@ function ScorecardHeader({
               {leader} leads
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-tie border border-border">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
               Evenly matched
             </span>
           )}
@@ -84,7 +84,7 @@ function ScorecardHeader({
       </div>
 
       {/* Win ratio bar */}
-      <div className="h-2.5 rounded-full overflow-hidden bg-gray-100 flex">
+      <div className="h-2.5 rounded-full overflow-hidden bg-surface-alt flex">
         <div
           className="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-500"
           style={{ width: `${aPercent}%` }}

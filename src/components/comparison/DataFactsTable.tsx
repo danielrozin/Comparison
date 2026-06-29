@@ -102,7 +102,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                     <td className="px-4 py-3 w-24">
                       {numA != null && numB != null ? (
                         <div className="flex flex-col items-center gap-1">
-                          <div className="w-full h-2 rounded-full overflow-hidden bg-gray-100 flex">
+                          <div className="w-full h-2 rounded-full overflow-hidden bg-surface-alt flex">
                             {(() => {
                               const sum = numA + numB;
                               if (sum === 0) return <div className="w-full h-full bg-gray-200" />;

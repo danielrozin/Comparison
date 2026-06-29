@@ -195,7 +195,7 @@ export function StickyAffiliateCTA({
             {/* Dismiss button */}
             <button
               onClick={handleDismiss}
-              className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-all duration-150"
+              className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-alt hover:bg-primary-50 flex items-center justify-center text-text-secondary hover:text-primary-600 transition-all duration-150"
               aria-label="Dismiss"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

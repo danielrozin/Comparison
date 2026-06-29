@@ -41,7 +41,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             ? "bg-emerald-100 text-emerald-700 ring-emerald-200"
             : review.smartScore >= 60
             ? "bg-amber-100 text-amber-700 ring-amber-200"
-            : "bg-gray-100 text-gray-700 ring-gray-200";
+            : "bg-rose-50 text-rose-700 ring-rose-200";
           return (
           <a
             key={review.url}
