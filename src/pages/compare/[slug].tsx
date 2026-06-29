@@ -557,6 +557,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />
       <meta property="og:type" content={meta.ogType} />
+      <meta property="og:site_name" content="A Versus B" />
+      <meta property="og:locale" content="en_US" />
       <meta property="og:image" content={meta.ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
@@ -573,6 +575,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* og:image:alt — alt text for OG image; used by AI models for image understanding */}
       <meta property="og:image:alt" content={meta.title} />
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:site" content="@aversusb" />
+      <meta name="twitter:creator" content="@aversusb" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />

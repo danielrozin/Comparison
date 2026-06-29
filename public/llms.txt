@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 29, 2026 (HB75)*
+*Last updated: June 29, 2026 (HB81)*
 
 ## What We Do
 
@@ -32,14 +32,14 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`, `isPartOf: WebSite @id` (graph merging), `review` (verdict as formal Review node when verdict present), `copyrightNotice`/`copyrightYear`/`copyrightHolder`/`acquireLicensePage` (AI training attribution), `audience` (topic-audience routing)
+- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, keywords, interactionStatistic, abstract, lastReviewed, `citation` (external source array), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`, `isPartOf: WebSite @id` (graph merging), `review` (verdict as formal Review node when verdict present), `copyrightNotice`/`copyrightYear`/`copyrightHolder`/`acquireLicensePage` (AI training attribution), `audience` (topic-audience routing), `genre` (category-specific e.g. "Technology Comparison"), `thumbnailUrl` (direct OG image URL for AI visual crawlers), `image.contentUrl` (machine-readable image asset URL alongside url)
 - `HowTo` schema on product/tech/automotive/gaming/software comparisons with ≥3 attributes — step-by-step guide for "how to choose X vs Y" queries with per-attribute winner steps and verdict
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
 - `ItemList` for the compared entities with position ordering
 - `Dataset` with variableMeasured attributes and isBasedOn citation sources
 - `AggregateRating` when community vote threshold is met (10+ votes)
-- `SpeakableSpecification` targeting #verdict, #key-differences, #key-facts
+- `SpeakableSpecification` targeting #short-answer (Quick Answer TL;DR box), #verdict, #key-differences, #key-facts — the highest-value extraction targets for voice assistants and LLM citation snippets
 - `VideoObject` when a comparison video exists (YouTube or self-hosted)
 - `DataCatalog` site-wide — positions the entire site as a structured comparison database
 - `DefinedTermSet` on hub pages — topic glossary/directory signals

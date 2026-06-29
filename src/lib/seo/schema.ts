@@ -277,15 +277,22 @@ export function webPageSchema(opts: {
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
+    // @id enables graph merging across sitewide JSON-LD so crawlers can correlate
+    // this WebPage node with other schemas emitted on the same URL.
+    "@id": `${opts.url}#webpage`,
     name: opts.title,
     description: opts.description,
     url: opts.url,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),
-    isPartOf: {
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: opts.url },
     },
   };
 }
