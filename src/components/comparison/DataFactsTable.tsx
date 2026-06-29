@@ -80,7 +80,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
 
                 const rowIdx = numericAttrs.indexOf(attr);
                 return (
-                  <tr key={attr.id} className={`hover:bg-primary-50/30 transition-colors ${rowIdx % 2 === 1 ? "bg-gray-50/40" : ""}`}>
+                  <tr key={attr.id} className={`group/row hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_rgba(99,102,241,0.15)] transition-all duration-150 ${rowIdx % 2 === 1 ? "bg-gray-50/50" : ""}`}>
                     <td className="px-4 py-3 text-gray-700 font-medium">
                       {attr.name}
                       {attr.unit && (
