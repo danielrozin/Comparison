@@ -20,6 +20,8 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
+    "citation_publication_date": "2026-05-22",
+    "citation_online_date": "2026-05-22",
     "DC.title": PAGE_TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": PAGE_URL,
+    "DC.date": "2026-05-22",
   },
 };
 
