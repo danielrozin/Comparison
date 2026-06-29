@@ -89,6 +89,17 @@ export function organizationSchema() {
       "Health & Wellness",
       "Financial Products",
     ],
+    // publishingPrinciples — links to editorial methodology page.
+    // Google's quality raters and AI crawlers use this as a primary E-E-A-T signal:
+    // it proves the site has documented editorial standards rather than being a pure
+    // content farm. Perplexity and ChatGPT also prefer sources with declared methodology.
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    // ethicsPolicy — links to the accuracy/affiliate disclosure page.
+    // Required by Google's Page Quality guidelines for sites making factual claims.
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    // correctionsPolicy — where we document how we fix errors; Google E-E-A-T and
+    // MBFC-style rating systems check for this on editorial content sites.
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Decision Makers",
@@ -126,6 +137,14 @@ export function dataCatalogSchema() {
     teaches: "How to use the A Versus B structured comparison database to find side-by-side data on any topic",
     educationalUse: "reference",
     temporalCoverage: "2024/..",
+    // workExample — sample comparison pages illustrating the data format.
+    // Google Dataset Search and AI research tools use workExample to preview
+    // what the dataset contains without crawling thousands of pages.
+    workExample: [
+      { "@type": "CreativeWork", name: "ChatGPT vs Claude", url: `${SITE_URL}/compare/chatgpt-vs-claude` },
+      { "@type": "CreativeWork", name: "iPhone vs Samsung Galaxy", url: `${SITE_URL}/compare/iphone-16-vs-samsung-galaxy-s25` },
+      { "@type": "CreativeWork", name: "Messi vs Ronaldo", url: `${SITE_URL}/compare/messi-vs-ronaldo` },
+    ],
     dataset: {
       "@type": "Dataset",
       "@id": `${SITE_URL}/#dataset`,
@@ -139,6 +158,9 @@ export function dataCatalogSchema() {
       conditionsOfAccess: "Free",
       inLanguage: "en-US",
       temporalCoverage: "2024/..",
+      // spatialCoverage — signals global geographic coverage to AI research tools
+      // and Google Dataset Search, which filters datasets by coverage area.
+      spatialCoverage: { "@type": "Place", name: "Worldwide" },
       measurementTechnique: "Expert editorial research, benchmark aggregation, community voting",
       variableMeasured: [
         { "@type": "PropertyValue", name: "Attribute winner", description: "Per-attribute winner between compared entities" },
@@ -415,6 +437,8 @@ export function comparisonPageSchema(
       "@type": "ImageObject",
       url: ogImage,
       contentUrl: ogImage,
+      name: comparison.title,
+      description: `Side-by-side comparison of ${comparison.entities.map((e) => e.name).join(" vs ")}`,
       width: 1200,
       height: 630,
       caption: comparison.title,
@@ -999,6 +1023,8 @@ function buildMultiEntityGraph(
       "@type": "ImageObject",
       url: multiOgImage,
       contentUrl: multiOgImage,
+      name: comparison.title,
+      description: `Multi-entity comparison of ${comparison.entities.map((e) => e.name).join(", ")}`,
       width: 1200,
       height: 630,
       caption: comparison.title,
@@ -1420,6 +1446,17 @@ export function categoryPageSchema(category: CategoryData) {
       abstract: category.description,
       url,
       thumbnailUrl: categoryOgImage,
+      image: {
+        "@type": "ImageObject",
+        url: categoryOgImage,
+        contentUrl: categoryOgImage,
+        name: `${category.name} Comparisons`,
+        description: `Browse all ${category.name.toLowerCase()} comparisons on A Versus B`,
+        width: 1200,
+        height: 630,
+        caption: `${category.name} Comparisons — A Versus B`,
+        creditText: SITE_NAME,
+      },
       inLanguage: "en-US",
       genre: "Category Index",
       creativeWorkStatus: "Published",
@@ -1674,6 +1711,9 @@ export function profilePageSchema(entity: {
     primaryImageOfPage: {
       "@type": "ImageObject",
       url: ogImage,
+      contentUrl: ogImage,
+      name: `${entity.name} — Profile on A Versus B`,
+      description: `${entity.name} entity profile, comparisons, and alternatives on A Versus B`,
       width: 1200,
       height: 630,
       caption: `${entity.name} — Profile on A Versus B`,
