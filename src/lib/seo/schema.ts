@@ -457,6 +457,9 @@ export function comparisonPageSchema(
       const schType = entitySchemaType(e.entityType);
       return {
         "@type": schType,
+        // @id matches the ProfilePage mainEntity @id so crawlers merge this node
+        // with the entity's canonical ProfilePage across pages in the knowledge graph.
+        ...(e.slug && { "@id": `${SITE_URL}/entity/${e.slug}` }),
         name: e.name,
         description: e.shortDesc,
         ...(e.imageUrl && { image: e.imageUrl }),
@@ -492,8 +495,10 @@ export function comparisonPageSchema(
     }),
     // mentions cross-links entity ProfilePages so AI crawlers can follow the
     // entity graph from comparison articles to dedicated entity pages.
+    // @id matches the ProfilePage mainEntity @id for cross-document graph merging.
     mentions: comparison.entities.map((e) => ({
       "@type": "Thing",
+      "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
@@ -530,6 +535,8 @@ export function comparisonPageSchema(
     },
     // review — emit the verdict as a formal Review node so AI systems can extract
     // the editorial conclusion without parsing the HTML verdict section.
+    // itemReviewed names the specific comparison subject so AI fact-checkers can
+    // attribute the verdict to the correct entity pair without ambiguity.
     ...(() => {
       if (!comparison.verdict) return {};
       return {
@@ -540,6 +547,10 @@ export function comparisonPageSchema(
           reviewBody: comparison.verdict,
           datePublished: comparison.metadata.updatedAt,
           url,
+          itemReviewed: {
+            "@type": "Thing",
+            name: comparison.entities.map((e) => e.name).join(" vs "),
+          },
         },
       };
     })(),
@@ -1010,6 +1021,10 @@ function buildMultiEntityGraph(
         reviewBody: comparison.verdict,
         datePublished: comparison.metadata.updatedAt,
         url,
+        itemReviewed: {
+          "@type": "Thing",
+          name: comparison.entities.map((e) => e.name).join(" vs "),
+        },
       },
     }),
     isAccessibleForFree: true,
@@ -1059,8 +1074,10 @@ function buildMultiEntityGraph(
       },
     }),
     mainEntity: { "@id": itemListId },
+    // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
     mentions: comparison.entities.map((e) => ({
       "@type": "Thing",
+      "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
     })),
@@ -1108,11 +1125,13 @@ function buildMultiEntityGraph(
       "@id": `${url}#faq`,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      // isPartOf — back-reference to Article so AI crawlers confirm FAQ belongs to this comparison.
+      isPartOf: { "@type": "Article", "@id": `${url}#article` },
       speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
       mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
         "@type": "Question",
         name: faq.question,
-        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        acceptedAnswer: { "@type": "Answer", text: faq.answer, upvoteCount: 1 },
       })),
     });
   }
