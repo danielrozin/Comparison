@@ -80,7 +80,11 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     lastReviewed: new Date().toISOString().slice(0, 10),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+    alternativeHeadline: "Most Popular X vs Y Comparisons Right Now — A Versus B Trending",
+    accessMode: ["textual"],
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro"] },
     keywords: "trending comparisons, most popular comparisons, top vs comparisons 2026",
   };
 
