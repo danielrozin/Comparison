@@ -59,12 +59,15 @@ export function InternalLinks({
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-5">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-500 to-slate-700 flex items-center justify-center shadow-sm flex-shrink-0">
-          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
           </svg>
         </div>
-        <h2 className="text-xl font-display font-bold text-text">Explore More</h2>
+        <div>
+          <h2 className="text-xl font-display font-bold text-text">Explore More</h2>
+          <p className="text-xs text-text-secondary mt-0.5">Related comparisons and categories</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">

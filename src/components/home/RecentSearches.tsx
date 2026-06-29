@@ -31,12 +31,17 @@ export function RecentSearches() {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
         <div>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
             Just Compared
           </h2>
-          <p className="text-text-secondary mt-1 text-sm">
+          <p className="text-text-secondary mt-0.5 text-sm">
             Fresh comparisons our community is exploring right now
           </p>
         </div>
@@ -94,16 +99,23 @@ export function RecentSearches() {
 
       {/* Tags cloud */}
       {searches.length > 0 && (
-        <div className="mt-6 flex flex-wrap gap-2">
-          {getUniqueTags(searches).slice(0, 15).map((tag) => (
-            <Link
-              key={tag}
-              href={`/search?q=${encodeURIComponent(tag)}`}
-              className="px-3 py-1 bg-surface-alt text-text-secondary text-xs font-medium rounded-full hover:bg-primary-50 hover:text-primary-700 transition-colors capitalize"
-            >
-              {tag}
-            </Link>
-          ))}
+        <div className="mt-6">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-text-secondary/60 mb-2.5">Trending topics</p>
+          <div className="flex flex-wrap gap-2">
+            {getUniqueTags(searches).slice(0, 15).map((tag, i) => (
+              <Link
+                key={tag}
+                href={`/search?q=${encodeURIComponent(tag)}`}
+                className={`px-3 py-1 text-xs font-medium rounded-full transition-all hover:-translate-y-0.5 capitalize ${
+                  i < 3
+                    ? "bg-gradient-to-r from-primary-100 to-accent-100 text-primary-700 border border-primary-200/60 hover:from-primary-200 hover:to-accent-200"
+                    : "bg-surface-alt text-text-secondary border border-border hover:bg-primary-50 hover:text-primary-700 hover:border-primary-200"
+                }`}
+              >
+                {i < 3 && <span className="mr-1 text-primary-400">#</span>}{tag}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </section>
