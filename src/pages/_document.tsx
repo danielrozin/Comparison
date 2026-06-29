@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { organizationSchema, webSiteSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema } from "@/lib/seo/schema";
 
 // DAN-432 Phase C: Pages Router shell for /compare/[slug].
 // Mirrors the <html>/<head>/<body> scaffold from src/app/layout.tsx so the
@@ -45,6 +45,18 @@ export default function Document() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(webSiteSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(dataCatalogSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(siteNavigationSchema()),
           }}
         />
       </Head>

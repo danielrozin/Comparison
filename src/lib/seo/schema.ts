@@ -57,6 +57,7 @@ export function organizationSchema() {
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
     slogan: "Compare Anything",
     foundingDate: "2024",
+    numberOfEmployees: { "@type": "QuantitativeValue", value: 5 },
     areaServed: { "@type": "Place", name: "Worldwide" },
     contactPoint: [
       {
@@ -736,6 +737,8 @@ export function comparisonPageSchema(
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      educationalLevel: "General",
+      educationalUse: "research",
       license: `${SITE_URL}/terms`,
       // encodingFormat tells crawlers this Dataset is accessible as HTML and JSON-LD.
       // Semantic Scholar, Google Dataset Search, and AI research indexes use this to
