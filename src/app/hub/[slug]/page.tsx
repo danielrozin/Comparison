@@ -155,49 +155,76 @@ export default async function HubPage({ params }: PageProps) {
         />
       ))}
 
-      <main className="max-w-5xl mx-auto px-4 py-8">
-        {/* Breadcrumbs */}
-        <nav aria-label="breadcrumb" className="text-sm text-gray-500 mb-6">
-          <ol className="flex items-center gap-1">
-            <li><Link href="/" className="hover:underline">Home</Link></li>
-            <li aria-hidden="true">/</li>
-            <li><span className="text-gray-700">{hub.h1}</span></li>
-          </ol>
-        </nav>
+      {/* Hub Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav aria-label="breadcrumb" className="text-sm text-primary-200 mb-5">
+            <ol className="flex items-center gap-2 flex-wrap">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">{hub.h1}</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">{hub.h1}</h1>
+          <p id="page-intro" className="text-primary-200 text-sm sm:text-base max-w-2xl">{hub.intro}</p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
 
-        {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{hub.h1}</h1>
-          <p id="page-intro" className="text-lg text-gray-600 leading-relaxed">{hub.intro}</p>
-        </header>
-
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
         {/* Spoke comparison cards */}
         <section aria-labelledby="comparisons-heading" className="mb-12">
-          <h2 id="comparisons-heading" className="text-2xl font-semibold text-gray-800 mb-6">
-            Featured Comparisons
-          </h2>
+          <div className="flex items-center gap-2.5 mb-6">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <h2 id="comparisons-heading" className="text-xl font-display font-bold text-text">Featured Comparisons</h2>
+          </div>
           {spokes.length === 0 ? (
-            <p className="text-gray-500">Comparisons are being generated. Check back soon.</p>
+            <p className="text-text-secondary">Comparisons are being generated. Check back soon.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {hub.comparisonSlugs.map((compSlug) => {
                 const comp = spokes.find((s) => s.slug === compSlug);
                 if (!comp) return null;
+                const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
                   <Link
                     key={compSlug}
                     href={`/compare/${comp.slug}`}
-                    className="block p-5 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all bg-white group"
+                    className="flex items-start gap-4 p-5 rounded-xl border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 bg-white group relative overflow-hidden"
                   >
-                    <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 mb-2 leading-snug">
-                      {comp.title}
-                    </h3>
-                    {comp.shortAnswer && (
-                      <p className="text-sm text-gray-500 line-clamp-2">{comp.shortAnswer}</p>
-                    )}
-                    <span className="mt-3 inline-block text-xs font-medium text-blue-600 uppercase tracking-wide">
-                      Compare →
-                    </span>
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+                    <div className="flex -space-x-2 flex-shrink-0 mt-0.5">
+                      <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                        {(parts[0] || "A").charAt(0)}
+                      </div>
+                      <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                        {(parts[1] || "B").charAt(0)}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-text group-hover:text-primary-700 mb-1 leading-snug transition-colors">
+                        {comp.title}
+                      </h3>
+                      {comp.shortAnswer && (
+                        <p className="text-sm text-text-secondary line-clamp-2">{comp.shortAnswer}</p>
+                      )}
+                      <span className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary-600 group-hover:text-primary-700 transition-colors">
+                        Compare
+                        <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
                   </Link>
                 );
               })}
@@ -207,14 +234,19 @@ export default async function HubPage({ params }: PageProps) {
 
         {/* FAQ section */}
         <section aria-labelledby="faq-heading" className="mb-8">
-          <h2 id="faq-heading" className="text-2xl font-semibold text-gray-800 mb-6">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-6">
+          <div className="flex items-center gap-2.5 mb-6">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 id="faq-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-5">
             {hub.faqs.map((faq, i) => (
-              <div key={i} className="border-b border-gray-100 pb-6 last:border-0">
-                <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
-                <p className="text-gray-600 leading-relaxed">{faq.a}</p>
+              <div key={i} className="border-b border-border pb-5 last:border-0">
+                <h3 className="font-semibold text-text mb-2">{faq.q}</h3>
+                <p className="text-text-secondary leading-relaxed text-sm">{faq.a}</p>
               </div>
             ))}
           </div>
@@ -222,10 +254,10 @@ export default async function HubPage({ params }: PageProps) {
 
         {/* Category back-link */}
         {hub.categoryAnchor && (
-          <div className="mt-8 pt-6 border-t border-gray-100">
+          <div className="mt-8 pt-6 border-t border-border">
             <Link
               href={`/category/${hub.categoryAnchor}`}
-              className="text-blue-600 hover:underline text-sm"
+              className="text-primary-600 hover:text-primary-700 hover:underline text-sm font-medium transition-colors"
             >
               ← Browse all {hub.h1.replace(" Hub (2026)", "").replace(" Comparison", "")} comparisons
             </Link>
