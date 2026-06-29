@@ -630,6 +630,40 @@ export function comparisonPageSchema(
     }
   }
 
+  // 7. SportsEvent schema for sports comparisons — Google Sports and AI sports
+  // query slots prefer Event nodes with competitors listed as `competitor`.
+  if (comparison.category === "sports" && comparison.entities.length === 2) {
+    const [a, b] = comparison.entities;
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      "@id": `${url}#event`,
+      name: comparison.title,
+      description: comparison.shortAnswer || comparison.metadata.metaDescription,
+      url,
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+      competitor: [
+        {
+          "@type": "SportsTeam",
+          name: a.name,
+          url: `${SITE_URL}/entity/${a.slug}`,
+          ...(a.imageUrl && { image: a.imageUrl }),
+        },
+        {
+          "@type": "SportsTeam",
+          name: b.name,
+          url: `${SITE_URL}/entity/${b.slug}`,
+          ...(b.imageUrl && { image: b.imageUrl }),
+        },
+      ],
+      organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      location: { "@type": "VirtualLocation", url },
+      isAccessibleForFree: true,
+      image: `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`,
+    });
+  }
+
   return schemas;
 }
 
