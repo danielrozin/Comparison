@@ -348,12 +348,19 @@ export function comparisonPageSchema(
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
-    // image lets Google/AI models extract a representative visual for the page
+    // image lets Google/AI models extract a representative visual for the page.
+    // creditText + creator + copyrightHolder are read by AI image crawlers and
+    // Google Lens to attribute the source when the image is displayed.
     image: {
       "@type": "ImageObject",
       url: ogImage,
       width: 1200,
       height: 630,
+      caption: comparison.title,
+      creditText: SITE_NAME,
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
     },
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
@@ -452,6 +459,35 @@ export function comparisonPageSchema(
     // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    // copyrightNotice — human-readable attribution string used by AI training pipelines
+    // and syndication tools to generate correct attribution when citing this content.
+    copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+    copyrightYear: new Date().getFullYear(),
+    copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // acquireLicensePage — where AI trainers, publishers, and scrapers can find the
+    // full license terms. Google's training-data team specifically crawls this field.
+    acquireLicensePage: `${SITE_URL}/terms`,
+    // audience — topic-audience matching for AI answer routing (e.g., Perplexity picks
+    // the most audience-relevant source when multiple pages cover the same comparison).
+    audience: {
+      "@type": "Audience",
+      audienceType: "Consumers, Researchers, Decision Makers, Students",
+    },
+    // review — emit the verdict as a formal Review node so AI systems can extract
+    // the editorial conclusion without parsing the HTML verdict section.
+    ...(() => {
+      if (!comparison.verdict) return {};
+      return {
+        review: {
+          "@type": "Review",
+          "@id": `${url}#review`,
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          reviewBody: comparison.verdict,
+          datePublished: comparison.metadata.updatedAt,
+          url,
+        },
+      };
+    })(),
     // significantLink — entity ProfilePages so AI agents can follow the graph
     // from comparison article to dedicated entity profiles and alternatives pages.
     significantLink: comparison.entities.flatMap((e) => [
