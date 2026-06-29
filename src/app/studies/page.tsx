@@ -111,27 +111,39 @@ export default function StudiesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
 
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-sm text-primary-200">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true" className="text-primary-400">/</li>
+              <li className="text-white font-medium">Data Studies</li>
+            </ol>
+          </nav>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
+            Data Studies
+          </h1>
+          <p className="text-primary-100 text-sm sm:text-base max-w-xl">
+            Original research built from our database of {SITE_NAME} comparisons. Every study is free
+            to cite, quote, and republish with attribution and a link back.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">Studies</li>
-          </ol>
-        </nav>
-
-        <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-2">Data Studies</h1>
-        <p className="text-text-secondary mb-8 max-w-2xl">
-          Original research built from our database of {SITE_NAME} comparisons. Every study is free
-          to cite, quote, and republish with attribution and a link back.
-        </p>
-
         <div className="grid grid-cols-1 gap-4">
           {STUDIES.map((s) => (
             <Link
               key={s.slug}
               href={`/studies/${s.slug}`}
-              className="block rounded-xl border border-border bg-surface p-6 hover:border-primary-600 transition-colors"
+              className="block rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
               <span className="text-xs font-semibold text-primary-600 uppercase tracking-wide">{s.badge}</span>
               <h2 className="text-xl font-display font-bold text-text mt-1 mb-2">{s.title}</h2>
