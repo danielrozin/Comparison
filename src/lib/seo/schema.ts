@@ -64,6 +64,13 @@ export function organizationSchema() {
         availableLanguage: "English",
       },
     ],
+    founder: {
+      "@type": "Person",
+      "@id": `${SITE_URL}/authors/daniel-rozin#person`,
+      name: "Daniel Rozin",
+      url: `${SITE_URL}/authors/daniel-rozin`,
+      sameAs: ["https://www.linkedin.com/in/daniel-rozin-56a066b0/"],
+    },
     knowsAbout: [
       "Product Comparisons",
       "Technology Reviews",

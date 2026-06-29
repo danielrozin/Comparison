@@ -45,20 +45,35 @@ export const metadata: Metadata = {
 
 export default function Q1AiBattlesPage() {
   const description = `${nf.format(HEADLINE_TOTAL)} US Google Search comparison queries across ${BATTLE_COUNT} head-to-head AI tool battles, Jan–Mar 2026.`;
+  const q1OgImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Q1 2026 AI Tool Battles")}&type=article`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": ["Article", "TechArticle"],
+    "@id": `${PAGE_URL}#article`,
     headline: "Q1 2026 AI Tool Battles Index — Methodology and Data",
     description,
     abstract: description,
     url: PAGE_URL,
     inLanguage: "en-US",
+    genre: "Data Study",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    interactivityType: "expositive",
     datePublished: PUBLICATION_DATE,
     dateModified: PUBLICATION_DATE,
     lastReviewed: PUBLICATION_DATE,
+    contentReferenceTime: PUBLICATION_DATE,
+    thumbnailUrl: q1OgImage,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${PAGE_URL}#primaryImage`,
+      url: q1OgImage,
+      contentUrl: q1OgImage,
+      width: 1200,
+      height: 630,
+      caption: "Q1 2026 AI Tool Battles Index — A Versus B",
+    },
     keywords: "AI tool comparison 2026, ChatGPT vs Claude, AI battles data, Q1 2026 search trends",
     alternativeHeadline: "Q1 2026 AI Chatbot Search Battle Rankings & Dataset",
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -74,6 +89,8 @@ export default function Q1AiBattlesPage() {
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   };
 
   const datasetSchema = {
