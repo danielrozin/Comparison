@@ -370,6 +370,7 @@ export function comparisonPageSchema(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,

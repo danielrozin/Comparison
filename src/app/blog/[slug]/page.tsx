@@ -267,11 +267,24 @@ export default async function BlogPostPage({
     ? Date.now() - publishedDate.getTime() < 30 * 24 * 60 * 60 * 1000
     : false;
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
+
   const articleSchema = {
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
+    image: {
+      "@type": "ImageObject",
+      url: ogImage,
+      width: 1200,
+      height: 630,
+      caption: article.title,
+      creditText: SITE_NAME,
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
+    },
     ...(wordCount && { wordCount }),
     inLanguage: "en-US",
     author: extras?.author
@@ -308,9 +321,10 @@ export default async function BlogPostPage({
     dateModified: article.updatedAt
       ? new Date(article.updatedAt).toISOString()
       : undefined,
-    mainEntityOfPage: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     url: articleUrl,
-    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    ...(article.category && { articleSection: article.category }),
     // abstract — concise summary for LLM citation snippets (preferred over description)
     ...(article.excerpt && { abstract: article.excerpt }),
     // keywords — tags + category for entity/topic recognition in LLM training crawls
