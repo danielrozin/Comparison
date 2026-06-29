@@ -84,6 +84,11 @@ const articleSchema = {
   isAccessibleForFree: true,
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
+  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightYear: 2026,
+  copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  acquireLicensePage: `${SITE_URL}/terms`,
+  audience: { "@type": "Audience", audienceType: "Consumers, Professionals, Researchers, AI Enthusiasts" },
   accessMode: ["textual"],
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
