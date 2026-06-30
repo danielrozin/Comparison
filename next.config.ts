@@ -22,6 +22,49 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS];
   },
+
+  async headers() {
+    return [
+      {
+        // Global security + SEO headers on all routes
+        source: "/(.*)",
+        headers: [
+          // X-Content-Type-Options — prevents MIME sniffing; trust signals for AI crawlers
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // X-Frame-Options — clickjacking protection; also signals trustworthy content
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // Referrer-Policy — send origin (no path) on cross-origin; analytics accuracy
+          { key: "Referrer-Policy", value: "origin-when-cross-origin" },
+          // Permissions-Policy — minimal footprint signals to AI trust classifiers
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+          // Content-Language — explicit English declaration for AI language classifiers
+          { key: "Content-Language", value: "en" },
+        ],
+      },
+      {
+        // Compare pages: add Link rel=describedby pointing to the knowledge graph API.
+        // W3C Linked Data standard; AI crawlers that follow HTTP Link headers (Perplexity,
+        // Googlebot, DuckDuckGo) can discover JSON-LD without parsing HTML.
+        source: "/compare/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\"",
+          },
+        ],
+      },
+      {
+        // Blog posts: add Link rel=alternate for knowledge graph
+        source: "/blog/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/oembed?url=https://www.aversusb.net/blog/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const sentryEnabled = !!(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT);
