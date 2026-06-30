@@ -590,11 +590,13 @@ export function comparisonPageSchema(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      // Include short-answer (quick TL;DR), verdict, key-differences, key-facts,
-      // and the FAQ section so voice assistants and AI models (Google AI Overviews,
-      // Perplexity, ChatGPT) can extract the most citable Q&A pairs directly from
-      // the structured FAQ answers.
-      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts", "#faq"],
+      // h1 — page title is the highest-confidence speakable node for voice query confirmation.
+      // #short-answer/#verdict — TL;DR and conclusion; Google AI Overviews and Perplexity
+      // prefer these for one-line cited answers. #key-differences — the core comparison delta.
+      // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
+      // grid; AI data-mode crawlers extract column headers + values directly from this section.
+      // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
+      cssSelector: ["h1", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -1437,7 +1439,7 @@ function buildMultiEntityGraph(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["#short-answer", "#verdict", "#key-differences", "#key-facts", "#faq"],
+      cssSelector: ["h1", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -2082,6 +2084,13 @@ export function categoryPageSchema(category: CategoryData) {
           target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}&category=${category.slug}` },
           "query-input": "required name=search_term_string",
         },
+        // SubscribeAction — follow/bookmark intent for AI assistants (ChatGPT, Perplexity)
+        // discovering this category collection; signals content is subscribable/followable.
+        {
+          "@type": "SubscribeAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/contact` },
+          object: { "@type": "CollectionPage", name: `${category.name} Comparisons`, url },
+        },
       ],
       mainEntity: {
         "@type": "ItemList",
@@ -2276,10 +2285,16 @@ export function profilePageSchema(entity: {
     }),
     ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
     ...(subjectOf.length > 0 && { subjectOf }),
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
+    potentialAction: [
+      { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+      // CompareAction — tells AI assistants (ChatGPT, Perplexity, Google AI Overviews) that
+      // this entity can be compared vs others, routing comparison-intent queries here.
+      {
+        "@type": "CompareAction",
+        name: `Compare ${entity.name} with others`,
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/${entity.slug}-vs-{other}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] },
+      },
+    ],
     // Type-specific enrichment for AI product-search and app-store carousels
     ...(schemaType === "Product" && {
       brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
@@ -2349,10 +2364,14 @@ export function profilePageSchema(entity: {
     teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
     educationalUse: "comparison",
     keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
-    potentialAction: {
-      "@type": "ReadAction",
-      target: { "@type": "EntryPoint", urlTemplate: url },
-    },
+    potentialAction: [
+      { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+      {
+        "@type": "CompareAction",
+        name: `Compare ${entity.name} with others`,
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/${entity.slug}-vs-{other}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] },
+      },
+    ],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
