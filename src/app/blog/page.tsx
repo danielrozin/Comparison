@@ -164,6 +164,10 @@ export default async function BlogPage({
     potentialAction: [
       { "@type": "ReadAction", target: `${SITE_URL}/blog` },
       { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+      // SubscribeAction — signals to AI answer engines (ChatGPT, Perplexity, Google AI Overview)
+      // that this blog has a newsletter/subscription CTA, increasing citation selection for
+      // queries that trigger "follow for updates" intent patterns.
+      { "@type": "SubscribeAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/contact` }, object: { "@type": "Blog", name: "A Versus B Blog", url: `${SITE_URL}/blog` } },
     ],
     alternativeHeadline: "Comparison Articles, Data Studies & Decision Guides — A Versus B Blog",
     license: "https://creativecommons.org/licenses/by/4.0/",

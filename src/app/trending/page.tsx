@@ -116,6 +116,8 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       { "@type": "ReadAction", target: `${SITE_URL}/trending` },
       // SearchAction lets Google/AI surface search-within-trending UX in sidebars and AI Overviews.
       { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+      // SubscribeAction — follow/bookmark intent for trending content discovery.
+      { "@type": "SubscribeAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/contact` }, object: { "@type": "WebPage", name: "Trending Comparisons", url: `${SITE_URL}/trending` } },
     ],
     alternativeHeadline: "Most Popular X vs Y Comparisons Right Now — A Versus B Trending",
     accessMode: ["textual"],
