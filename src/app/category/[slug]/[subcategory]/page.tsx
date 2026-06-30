@@ -226,6 +226,13 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     timeRequired: "PT2M",
     wordCount: 400,
+    // about[] — subject classification for AI topic routing.
+    about: [
+      { "@type": "Thing", name: `${subcat.name} Comparisons` },
+      { "@type": "Thing", name: "Consumer Decision Research" },
+    ],
+    // hasPart[] — ItemList is a formal structural part of this CollectionPage.
+    hasPart: [{ "@type": "ItemList", name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
   };
   const schemaData = [breadcrumbs, collectionSchema];
 

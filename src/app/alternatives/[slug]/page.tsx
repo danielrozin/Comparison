@@ -186,7 +186,10 @@ export default async function AlternativesPage({ params }: PageProps) {
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    potentialAction: { "@type": "ReadAction", target: altPageUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: altPageUrl },
+      { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}+alternatives` }, "query-input": "required name=search_term_string" },
+    ],
     // significantLink — entity ProfilePage and top comparison pages for AI graph traversal.
     significantLink: [
       `${SITE_URL}/entity/${slug}`,
@@ -215,6 +218,8 @@ export default async function AlternativesPage({ params }: PageProps) {
     // discussionUrl — Reddit search for community discussions on alternatives to this entity.
     // Google E-E-A-T evaluators and AI crawlers use discussionUrl as an engagement signal.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(name + " alternatives")}+OR+${encodeURIComponent(name + " competitors")}&type=link&sort=relevance`,
+    // hasPart[] — ItemList is a formal structural part of this Article/CollectionPage.
+    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/alternatives/${slug}#list`, name: `Alternatives to ${name}` }],
   };
 
   return (

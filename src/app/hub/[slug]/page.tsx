@@ -179,6 +179,13 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     copyrightYear: new Date().getFullYear(),
     // discussionUrl — Reddit search for community discussions on this hub topic.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(hub.h1.replace(/^[^:]+:\s*/, ""))}+comparison&type=link&sort=relevance`,
+    // hasPart[] — structural sub-documents: ItemList, FAQPage, DefinedTermSet.
+    // AI crawlers follow hasPart edges to resolve sub-schemas without re-crawling the full page.
+    hasPart: [
+      { "@type": "ItemList", name: `${hub.h1} Comparisons`, url: hubUrl },
+      ...(hub.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${hubUrl}#faq` }] : []),
+      { "@type": "DefinedTermSet", "@id": `${hubUrl}#terms`, name: `${hub.h1} Key Terms` },
+    ],
   };
 
   const faqs = faqSchema(hub.faqs.map((f) => ({ question: f.q, answer: f.a })));

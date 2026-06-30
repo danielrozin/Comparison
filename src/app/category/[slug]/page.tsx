@@ -245,6 +245,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     } : {}),
     timeRequired: "PT2M",
     wordCount: 400,
+    // about[] — subject classification for AI topic routing and Google Discover.
+    // Typed Thing nodes let AI crawlers match this CollectionPage to topical queries
+    // without needing to parse the page title.
+    about: [
+      { "@type": "Thing", name: `${category.name} Comparisons` },
+      { "@type": "Thing", name: "Consumer Decision Research" },
+      { "@type": "Thing", name: "Side-by-Side Analysis" },
+    ],
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 
