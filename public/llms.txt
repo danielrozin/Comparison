@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: June 30, 2026 (HB162)*
+*Last updated: June 30, 2026 (HB164)*
 
 ## What We Do
 
@@ -131,6 +131,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB150: reviews/[slug] ReviewPage schema enrichment — `about` node upgraded from generic `Thing` → typed `SoftwareApplication` + `sameAs: [Wikipedia, DBpedia]` via `entityWikipediaSameAs(name)`; added `timeRequired: PT3M`; added `mentions[]` cross-links to entity ProfilePage and alternatives Article so AI graph traversal connects this ReviewPage to the entity's knowledge graph; imported `entityWikipediaSameAs` into reviews page
 - HB149: blog article `mentions[]` upgraded from generic `Thing` → typed `@type` + `sameAs` — added `inferTagSchemaType()` helper that detects Organization (OpenAI, Anthropic, Google, etc.) and SoftwareApplication (GPT, Claude, Gemini, LLM, API, etc.) from tag names; each mention now includes `sameAs: [Wikipedia_URL, DBpedia_URL]` via `entityWikipediaSameAs()` for cross-site knowledge graph merging (same HB139 pattern applied to blog pages)
 - HB148: `timeRequired` parity across blog + entity profile pages — `blog/[slug]/page.tsx` Article schema gains `timeRequired` derived from actual `wordCount` (real content split by whitespace ÷ 200 wpm); static hand-authored blog articles (`best-ai-assistant-2026`, `best-cloud-platform-2026`) gain `timeRequired` (PT8M / PT10M) + `wordCount`; `profilePageSchema` in schema.ts gains `timeRequired` scaled by comparison count (`PT${max(2, ceil(comparisonCount/5))}M`) — complete timeRequired coverage across all article-type pages
+- HB164: Dataset `creator`, `publisher`, `datePublished`, `dateModified`, `temporalCoverage`, `keywords` on both 2-entity and multi-entity comparison Datasets — Google Dataset Search provenance signals; commit HEAD
+- HB163: `contentLocation[]` on comparison Article schemas for country/travel/economy comparisons (2-entity + multi-entity) — geo routing signal for Google Geo and AI geographic answer engines; commit 9e089af
 - HB162: `howToSchemaFromBlog()` HowTo step `duration` (proportional) + `prepTime: "PT1M"` / `performTime: "PT4M"` — parity with HB157 for blog "How to..." articles; commit 1ff774e
 - HB161: GEO `locationCreated` + `countryOfOrigin: { "@type": "Country", name: "United States" }` on 4 data study pages (most-compared-brands, b2b-saas, investing, q1-ai-battles) — US Google Search data origin signal for geographic AI filtering; commit 5552fe3
 - HB160: entity ProfilePage `discussionUrl` (Reddit community signal, 2,500+ pages) + `subjectOf[]` entries gain `@id` (`compare/{slug}#article`) for cross-document KG merging; commit 46ebf7a

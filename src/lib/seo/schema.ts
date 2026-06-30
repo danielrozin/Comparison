@@ -980,6 +980,22 @@ export function comparisonPageSchema(
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
         },
       ],
+      // creator / publisher — Google Dataset Search and AI research indexes use these to
+      // attribute the Dataset source and boost domain authority signals in data-specific results.
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      // datePublished / dateModified — Dataset provenance signals for Google Dataset Search.
+      datePublished: comparison.metadata.publishedAt,
+      dateModified: comparison.metadata.updatedAt,
+      // temporalCoverage — "as of" window for the comparison data; AI fact-checkers use this
+      // to qualify time-sensitive answers ("according to X, as of 2026, ...").
+      temporalCoverage: `2025/${new Date().getFullYear()}`,
+      // keywords — metadata for Dataset Search indexing and AI data-finder routing.
+      keywords: [
+        ...comparison.entities.map((e) => e.name),
+        `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        ...(comparison.category ? [comparison.category] : []),
+      ].join(", "),
       // measurementTechnique describes how attributes were collected.
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => attr.name),
@@ -1499,6 +1515,16 @@ function buildMultiEntityGraph(
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
         },
       ],
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      datePublished: comparison.metadata.publishedAt,
+      dateModified: comparison.metadata.updatedAt,
+      temporalCoverage: `2025/${new Date().getFullYear()}`,
+      keywords: [
+        ...comparison.entities.map((e) => e.name),
+        `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        ...(comparison.category ? [comparison.category] : []),
+      ].join(", "),
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => attr.name),
       ...(isCountryComparison && {
