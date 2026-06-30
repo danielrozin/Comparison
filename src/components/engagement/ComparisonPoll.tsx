@@ -216,7 +216,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
             </p>
 
             {!alreadySubscribed && emailCaptureStatus !== "success" && (
-              <div className="mt-4 pt-4 border-t border-gray-100">
+              <div className="mt-4 pt-4 border-t border-border/50">
                 <p className="text-xs font-medium text-text-secondary text-center mb-2">
                   Get weekly poll results and new comparisons
                 </p>
@@ -227,7 +227,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                     onChange={(e) => { setEmailCaptureEmail(e.target.value); setEmailCaptureStatus("idle"); }}
                     placeholder="you@example.com"
                     required
-                    className="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                    className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                   />
                   <button
                     type="submit"
@@ -244,7 +244,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
             )}
 
             {emailCaptureStatus === "success" && (
-              <div className="mt-4 pt-4 border-t border-gray-100 text-center">
+              <div className="mt-4 pt-4 border-t border-border/50 text-center">
                 <p className="text-sm font-medium text-green-600">
                   You&apos;re subscribed! We&apos;ll send you weekly results.
                 </p>

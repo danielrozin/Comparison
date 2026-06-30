@@ -52,7 +52,7 @@ export default function Error({
           </button>
           <Link
             href="/"
-            className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-gray-200 transition-colors"
+            className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors"
           >
             Go home
           </Link>

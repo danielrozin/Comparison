@@ -207,7 +207,7 @@ function GroupHeader({
             </span>
           )}
           {/* Mini win-rate bar */}
-          <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden flex max-w-[72px]">
+          <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden flex max-w-[72px]">
             <div
               className="h-full bg-gradient-to-r from-primary-400 to-primary-300 rounded-l-full transition-all duration-500"
               style={{ width: `${aPct}%` }}

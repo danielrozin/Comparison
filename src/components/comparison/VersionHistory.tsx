@@ -227,7 +227,7 @@ export function VersionHistory({
                           className={`absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 ${
                             isLatest
                               ? "bg-indigo-500 ring-2 ring-indigo-200 dark:ring-indigo-800"
-                              : "bg-gray-300 dark:bg-gray-600"
+                              : "bg-border dark:bg-gray-600"
                           }`}
                         />
 
@@ -286,7 +286,7 @@ export function VersionHistory({
 
                           {/* Expanded changes */}
                           {isEntryExpanded && entry.changes.length > 0 && (
-                            <div className="px-4 pb-3 pt-1 border-t border-gray-50 dark:border-gray-800">
+                            <div className="px-4 pb-3 pt-1 border-t border-border/50 dark:border-white/10">
                               <ul className="space-y-1.5">
                                 {entry.changes.map((change, ci) => (
                                   <li
@@ -320,7 +320,7 @@ export function VersionHistory({
 
                 <div className="space-y-4">
                   <div className="relative pl-8">
-                    <div className="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 bg-gray-300 dark:bg-gray-600" />
+                    <div className="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 bg-border dark:bg-gray-600" />
                     <div className="rounded-lg border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 px-4 py-3">
                       <div className="flex items-center gap-3">
                         <span className="inline-flex items-center justify-center w-7 h-7 rounded-md text-xs font-bold bg-indigo-100 text-indigo-600">

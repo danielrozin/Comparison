@@ -79,7 +79,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
           {/* Verdict text — styled as a readable quote */}
           <div className="relative mb-5">
             <div className="absolute -left-1 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-400/60 via-yellow-400/30 to-transparent rounded-full" />
-            <p className="pl-4 text-gray-200 leading-relaxed text-base sm:text-lg">
+            <p className="pl-4 text-white/80 leading-relaxed text-base sm:text-lg">
               {verdictText}
             </p>
           </div>

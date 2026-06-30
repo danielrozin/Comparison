@@ -67,7 +67,7 @@ export function VerdictBlock({
 
           {/* Verdict text */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 mb-6">
-            <p className="text-gray-100 leading-relaxed text-base sm:text-lg">{verdict}</p>
+            <p className="text-white/90 leading-relaxed text-base sm:text-lg">{verdict}</p>
           </div>
 
           {/* Who should choose cards */}

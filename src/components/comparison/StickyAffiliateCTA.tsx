@@ -133,7 +133,7 @@ export function StickyAffiliateCTA({
         }`}
         style={placementVariant !== "inline-verdict" ? { paddingBottom: "env(safe-area-inset-bottom, 0px)" } : undefined}
       >
-        <div className="bg-white/96 backdrop-blur-xl border-t border-gray-100 shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
+        <div className="bg-white/96 backdrop-blur-xl border-t border-border shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
           <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
             {/* CTA buttons */}
             <div className="flex-1 flex items-center gap-2">
@@ -162,9 +162,9 @@ export function StickyAffiliateCTA({
 
               {linkA && linkB && (
                 <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
-                  <div className="w-px h-4 bg-gray-200" />
+                  <div className="w-px h-4 bg-border" />
                   <span className="text-[9px] font-bold text-text-secondary uppercase tracking-wider">vs</span>
-                  <div className="w-px h-4 bg-gray-200" />
+                  <div className="w-px h-4 bg-border" />
                 </div>
               )}
 

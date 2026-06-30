@@ -168,7 +168,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
           </p>
 
           {/* Progress bar */}
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mb-4 overflow-hidden">
+          <div className="w-full bg-border rounded-full h-2.5 mb-4 overflow-hidden">
             <div
               className="h-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 transition-all duration-500 ease-out"
               style={{ width: `${Math.min(progress, 100)}%` }}

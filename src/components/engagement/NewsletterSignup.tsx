@@ -91,7 +91,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               placeholder="you@example.com"
               required
-              className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
             />
             <button
               type="submit"

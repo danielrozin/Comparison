@@ -105,7 +105,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                           <div className="w-full h-2 rounded-full overflow-hidden bg-surface-alt flex">
                             {(() => {
                               const sum = numA + numB;
-                              if (sum === 0) return <div className="w-full h-full bg-gray-200" />;
+                              if (sum === 0) return <div className="w-full h-full bg-border" />;
                               const aW = Math.round((numA / sum) * 100);
                               return (
                                 <>

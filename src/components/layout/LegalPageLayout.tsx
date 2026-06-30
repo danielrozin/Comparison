@@ -76,7 +76,7 @@ export function LegalPageLayout({
                       className={`block pl-4 py-1.5 text-sm transition-colors border-l-2 -ml-px ${
                         activeSection === section.id
                           ? "border-primary-600 text-primary-600 font-medium"
-                          : "border-transparent text-text-secondary hover:text-text hover:border-gray-300"
+                          : "border-transparent text-text-secondary hover:text-text hover:border-border"
                       }`}
                     >
                       {section.title}

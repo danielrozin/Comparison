@@ -46,7 +46,7 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
               )}
             </div>
 
-            <p className="text-gray-900 leading-relaxed text-sm sm:text-base font-medium">
+            <p className="text-text leading-relaxed text-sm sm:text-base font-medium">
               {quickAnswer.tldr}
             </p>
 

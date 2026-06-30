@@ -45,14 +45,14 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           className={`w-full flex items-center gap-3 px-4 py-3 border rounded-xl text-sm font-semibold transition-all duration-200 ${
             isOpen
               ? "bg-white border-primary-300 text-primary-700 shadow-sm"
-              : "bg-surface-alt border-border text-text hover:border-gray-300"
+              : "bg-surface-alt border-border text-text hover:border-primary-300"
           }`}
           aria-expanded={isOpen}
         >
           {/* Progress bar dot */}
           <div className="flex-shrink-0 w-5 h-5 relative">
             <svg className="w-5 h-5 -rotate-90" viewBox="0 0 20 20">
-              <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-200" />
+              <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" strokeWidth="2" className="text-border" />
               <circle
                 cx="10"
                 cy="10"
