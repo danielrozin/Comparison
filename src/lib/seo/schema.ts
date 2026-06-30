@@ -808,6 +808,23 @@ export function comparisonPageSchema(
       "Verdict",
       ...(hasFaqs ? ["FAQ"] : []),
     ].join(" · "),
+    // contentLocation — geographic location depicted/described in the content.
+    // Google Geo and AI geographic answer engines (ChatGPT, Perplexity) use this
+    // to route country-query results to pages that explicitly cover those places,
+    // boosting eligibility in "compare X and Y" geo-intent SERP and AI slots.
+    ...(() => {
+      const geoCategories = new Set(["countries", "travel", "economy"]);
+      const isGeoComparison =
+        (comparison.category != null && geoCategories.has(comparison.category)) ||
+        comparison.entities.some((e) => e.entityType === "country");
+      if (!isGeoComparison) return {};
+      return {
+        contentLocation: comparison.entities.map((e) => ({
+          "@type": "Country",
+          name: e.name,
+        })),
+      };
+    })(),
   });
 
   // 2. ItemList for the compared entities
@@ -1387,6 +1404,20 @@ function buildMultiEntityGraph(
       "Verdict",
       ...(comparison.faqs.length > 0 ? ["FAQ"] : []),
     ].join(" · "),
+    // contentLocation — geographic parity with 2-entity schema; fires on country/travel/economy.
+    ...(() => {
+      const geoCategories = new Set(["countries", "travel", "economy"]);
+      const isGeoComparison =
+        (comparison.category != null && geoCategories.has(comparison.category)) ||
+        comparison.entities.some((e) => e.entityType === "country");
+      if (!isGeoComparison) return {};
+      return {
+        contentLocation: comparison.entities.map((e) => ({
+          "@type": "Country",
+          name: e.name,
+        })),
+      };
+    })(),
   };
 
   const multiCategoryDisplay = comparison.category
