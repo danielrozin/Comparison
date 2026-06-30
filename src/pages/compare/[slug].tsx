@@ -436,10 +436,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const ogImage = isMultiEntity
     ? `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&entities=${encodeURIComponent(enrichedComparison.entities.map((e) => e.name).join("|"))}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=multi`
     : `${SITE_URL}/api/og?title=${encodeURIComponent(enrichedComparison.title)}&a=${encodeURIComponent(entityA)}&b=${encodeURIComponent(entityB)}&cat=${encodeURIComponent(enrichedComparison.category || "")}&type=comparison`;
+  // 4-part meta description formula: Problem · Solution · Differentiator · CTA
+  // shortAnswer from DB is preferred; fallback constructs a more compelling description
+  // that names the year (freshness signal) and ends with a verb-led CTA.
+  const currentYear = new Date().getFullYear();
   const fallbackDescription = enrichedComparison.shortAnswer
     || (isMultiEntity
-      ? `${enrichedComparison.entities.map((e) => e.name).join(" vs ")} — compare key differences, pros & cons, features, and find which is best for you.`
-      : `${entityA} vs ${entityB} — compare key differences, pros & cons, features, and find which is best for you.`);
+      ? `Can't decide? See ${enrichedComparison.entities.map((e) => e.name).join(" vs ")} compared side-by-side — key differences, pros & cons, and verdict. Get the answer in seconds.`
+      : `${entityA} vs ${entityB} ${currentYear}: key differences, pros & cons, features, and a clear verdict. See which is best for you — get the answer in seconds.`);
 
   // DAN-1285: self-hosted VideoObject. When there's no YouTube upload but a
   // public/videos/<slug>.mp4 exists (ComparisonVideoPlayer HEAD-checks and
