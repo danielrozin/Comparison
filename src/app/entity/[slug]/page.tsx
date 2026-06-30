@@ -58,11 +58,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // DAN-1289: title priority — hand-authored ENTITY_LEDE override (intent-matched,
   // e.g. Browns) wins outright; then curated DB metaTitle (DAN-1169); then a
   // generated "vs Every Rival" pattern that gives the long tail a "vs" token +
-  // 2026 freshness instead of the old thin "— All Comparisons".
+  // freshness year instead of the old thin "— All Comparisons".
+  const year = new Date().getFullYear();
   const title =
     ENTITY_LEDE[slug]?.title ||
     dbMetaTitle ||
-    `${name} vs Every Rival: Comparisons & Stats 2026`;
+    `${name} vs Every Rival: Comparisons & Stats ${year}`;
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(name)}&type=entity`;
   return {
     title,

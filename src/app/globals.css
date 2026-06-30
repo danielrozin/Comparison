@@ -194,7 +194,9 @@ body {
   .animate-fade-in,
   .animate-pulse-subtle,
   .animate-flame,
-  .animate-border-gradient {
+  .animate-border-gradient,
+  .animate-spin,
+  .animate-pulse {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;

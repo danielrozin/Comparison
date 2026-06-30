@@ -186,7 +186,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
     },
-    alternativeHeadline: `Best ${category.name} Comparisons & Rankings 2026`,
+    alternativeHeadline: `Best ${category.name} Comparisons & Rankings ${new Date().getFullYear()}`,
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,

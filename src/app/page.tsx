@@ -186,7 +186,7 @@ export default async function HomePage() {
                 <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                 </svg>
-                <span className="text-sm font-semibold text-white">{totalCount}+</span>
+                <span className="text-sm font-semibold text-white">{totalCount.toLocaleString()}+</span>
                 <span className="text-xs text-primary-200">comparisons</span>
               </div>
               <div className="w-px h-4 bg-white/15" aria-hidden="true" />
@@ -466,7 +466,7 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
             {[
-              { value: `${totalCount}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
+              { value: `${totalCount.toLocaleString()}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
               { value: `${CATEGORIES.length}`, label: "Categories", gradient: "from-emerald-500 to-teal-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg> },
               { value: "24/7", label: "Available", gradient: "from-amber-500 to-orange-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg> },
               { value: "Free", label: "Always", gradient: "from-rose-500 to-pink-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg> },

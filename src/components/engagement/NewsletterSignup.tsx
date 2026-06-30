@@ -56,8 +56,9 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           value={email}
           onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
           placeholder="Your email address"
+          aria-label="Email address"
           required
-          className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+          className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
         />
         <button
           type="submit"
@@ -90,6 +91,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               placeholder="you@example.com"
+              aria-label="Email address"
               required
               className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
             />
