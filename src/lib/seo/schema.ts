@@ -710,14 +710,15 @@ export function comparisonPageSchema(
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Decision Makers, Students",
     },
-    // review — emit the verdict as a formal Review node so AI systems can extract
-    // the editorial conclusion without parsing the HTML verdict section.
-    // itemReviewed names the specific comparison subject so AI fact-checkers can
-    // attribute the verdict to the correct entity pair without ambiguity.
+    // review — array of Review nodes:
+    // 1. Pair-level review: verdict for the full comparison (gates on verdict existing).
+    // 2. Per-entity reviews: structured pros/cons from entity data, enabling AI answer
+    //    engines (Google Shopping, ChatGPT, Perplexity) to extract "pros and cons of X"
+    //    directly from the comparison page without parsing HTML.
     ...(() => {
-      if (!comparison.verdict) return {};
-      return {
-        review: {
+      const reviews: Record<string, unknown>[] = [];
+      if (comparison.verdict) {
+        reviews.push({
           "@type": "Review",
           "@id": `${url}#review`,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -728,8 +729,38 @@ export function comparisonPageSchema(
             "@type": "Thing",
             name: comparison.entities.map((e) => e.name).join(" vs "),
           },
-        },
-      };
+        });
+      }
+      for (const e of comparison.entities) {
+        if (e.pros.length === 0 && e.cons.length === 0) continue;
+        reviews.push({
+          "@type": "Review",
+          "@id": `${url}#review-${e.slug}`,
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          datePublished: comparison.metadata.updatedAt,
+          url,
+          itemReviewed: {
+            "@type": entitySchemaType(e.entityType),
+            "@id": `${SITE_URL}/entity/${e.slug}`,
+            name: e.name,
+          },
+          ...(e.pros.length > 0 && {
+            positiveNotes: {
+              "@type": "ItemList",
+              itemListElement: e.pros.map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p })),
+            },
+          }),
+          ...(e.cons.length > 0 && {
+            negativeNotes: {
+              "@type": "ItemList",
+              itemListElement: e.cons.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c })),
+            },
+          }),
+          ...(e.bestFor && { reviewBody: e.bestFor }),
+        });
+      }
+      if (reviews.length === 0) return {};
+      return { review: reviews.length === 1 ? reviews[0] : reviews };
     })(),
     // claimReviewed — formal ClaimReview signals that this article evaluates a specific
     // factual claim. AI fact-checking systems (Google Fact Check, Perplexity truth mode,
@@ -1330,20 +1361,54 @@ function buildMultiEntityGraph(
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
-    ...(comparison.verdict && {
-      review: {
-        "@type": "Review",
-        "@id": `${url}#review`,
-        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-        reviewBody: comparison.verdict,
-        datePublished: comparison.metadata.updatedAt,
-        url,
-        itemReviewed: {
-          "@type": "Thing",
-          name: comparison.entities.map((e) => e.name).join(" vs "),
-        },
-      },
-    }),
+    // review[] — pair-level verdict + per-entity pros/cons Reviews (parity with 2-entity schema).
+    ...(() => {
+      const multiReviews: Record<string, unknown>[] = [];
+      if (comparison.verdict) {
+        multiReviews.push({
+          "@type": "Review",
+          "@id": `${url}#review`,
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          reviewBody: comparison.verdict,
+          datePublished: comparison.metadata.updatedAt,
+          url,
+          itemReviewed: {
+            "@type": "Thing",
+            name: comparison.entities.map((e) => e.name).join(" vs "),
+          },
+        });
+      }
+      for (const e of comparison.entities) {
+        if (e.pros.length === 0 && e.cons.length === 0) continue;
+        multiReviews.push({
+          "@type": "Review",
+          "@id": `${url}#review-${e.slug}`,
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          datePublished: comparison.metadata.updatedAt,
+          url,
+          itemReviewed: {
+            "@type": entitySchemaType(e.entityType),
+            "@id": `${SITE_URL}/entity/${e.slug}`,
+            name: e.name,
+          },
+          ...(e.pros.length > 0 && {
+            positiveNotes: {
+              "@type": "ItemList",
+              itemListElement: e.pros.map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p })),
+            },
+          }),
+          ...(e.cons.length > 0 && {
+            negativeNotes: {
+              "@type": "ItemList",
+              itemListElement: e.cons.map((c, i) => ({ "@type": "ListItem", position: i + 1, name: c })),
+            },
+          }),
+          ...(e.bestFor && { reviewBody: e.bestFor }),
+        });
+      }
+      if (multiReviews.length === 0) return {};
+      return { review: multiReviews.length === 1 ? multiReviews[0] : multiReviews };
+    })(),
     ...(comparison.shortAnswer && comparison.entities.length >= 2 && {
       claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities.slice(1).map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
       reviewRating: {
@@ -1509,11 +1574,18 @@ function buildMultiEntityGraph(
       // isPartOf — back-reference to Article so AI crawlers confirm FAQ belongs to this comparison.
       isPartOf: { "@type": "Article", "@id": `${url}#article` },
       speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
-      mainEntity: comparison.faqs.slice(0, 10).map((faq) => ({
+      mainEntity: comparison.faqs.slice(0, 10).map((faq, i) => ({
         "@type": "Question",
+        "@id": `${url}#q${i + 1}`,
         name: faq.question,
         answerCount: 1,
-        acceptedAnswer: { "@type": "Answer", text: faq.answer, upvoteCount: 1 },
+        acceptedAnswer: {
+          "@type": "Answer",
+          "@id": `${url}#a${i + 1}`,
+          text: faq.answer,
+          upvoteCount: 1,
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        },
       })),
     });
   }
@@ -1752,17 +1824,26 @@ export function faqSchema(faqs: FAQData[], id?: string) {
       "@type": "SpeakableSpecification",
       cssSelector: [".faq-answer"],
     },
-    mainEntity: faqs.slice(0, 10).map((faq) => ({
+    mainEntity: faqs.slice(0, 10).map((faq, i) => ({
       "@type": "Question",
+      // @id — stable anchor so AI fact-checkers and cross-page citations can reference
+      // individual Q&A pairs by URL fragment without loading the full page.
+      ...(id && { "@id": `${id.replace(/#faq$/, "")}#q${i + 1}` }),
       name: faq.question,
       // answerCount — signals exactly one accepted answer; required for FAQ rich results
       // eligibility in Google Search even when upvoteCount is 0.
       answerCount: 1,
       acceptedAnswer: {
         "@type": "Answer",
+        // @id on Answer — enables AI knowledge graphs to merge this answer node with
+        // other pages that cite the same answer fragment via the #a anchor.
+        ...(id && { "@id": `${id.replace(/#faq$/, "")}#a${i + 1}` }),
         text: faq.answer,
         // upvoteCount — editorial confidence signal for AI answer engine ranking.
         upvoteCount: 1,
+        // author — attributes the answer to our editorial org; AI answer engines use
+        // this to weight the answer's authority when synthesizing multi-source responses.
+        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
       },
     })),
   };
