@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -91,13 +91,23 @@ export default async function AlternativesPage({ params }: PageProps) {
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${SITE_URL}/alternatives/${slug}#list`,
     name: `Alternatives to ${name}`,
+    description: `Top alternatives to ${name} — each alternative has a full side-by-side comparison with verdict, attribute data, and FAQs on A Versus B.`,
     numberOfItems: alternatives.length,
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
     itemListElement: alternatives.slice(0, 10).map((alt, idx) => ({
       "@type": "ListItem",
       position: idx + 1,
       name: alt.name,
       url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+      item: {
+        "@type": "Article",
+        "@id": `${SITE_URL}/compare/${alt.comparisonSlug}#article`,
+        url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+        name: `${name} vs ${alt.name}`,
+        isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      },
     })),
   };
 
@@ -173,11 +183,13 @@ export default async function AlternativesPage({ params }: PageProps) {
       url: `${SITE_URL}/entity/${slug}`,
     },
     // @id on each mentions entry matches ProfilePage mainEntity for knowledge graph cohesion.
+    // sameAs Wikipedia+DBpedia strengthens entity merging in AI Knowledge Graphs.
     mentions: alternatives.slice(0, 10).map((alt) => ({
       "@type": "Thing",
       "@id": `${SITE_URL}/entity/${alt.slug}`,
       name: alt.name,
       url: `${SITE_URL}/entity/${alt.slug}`,
+      sameAs: entityWikipediaSameAs(alt.name),
     })),
   };
 
