@@ -349,7 +349,13 @@ export function siteNavigationSchema() {
 export function entityWikipediaSameAs(name: string): string[] {
   if (!name || name.trim().length === 0) return [];
   const wikiSlug = name.trim().replace(/ /g, "_");
-  return [`https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`];
+  // Return both Wikipedia and DBpedia — Wikipedia for human-readable authority,
+  // DBpedia for machine-readable Linked Open Data (used by ChatGPT, Perplexity,
+  // and Google Knowledge Graph to merge entity mentions across sources).
+  return [
+    `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`,
+    `https://dbpedia.org/resource/${encodeURIComponent(wikiSlug)}`,
+  ];
 }
 
 // ============================================================
@@ -632,14 +638,16 @@ export function comparisonPageSchema(
         }),
       };
     }),
-    // mentions cross-links entity ProfilePages so AI crawlers can follow the
-    // entity graph from comparison articles to dedicated entity pages.
-    // @id matches the ProfilePage mainEntity @id for cross-document graph merging.
+    // mentions — typed entity references that AI Knowledge Graphs use to merge this
+    // Article with its entity ProfilePages. Using the correct @type (SoftwareApplication,
+    // Product, Country, etc.) instead of generic Thing lets Knowledge Graph systems
+    // classify each entity correctly and strengthen cross-document entity linking.
     mentions: comparison.entities.map((e) => ({
-      "@type": "Thing",
+      "@type": entitySchemaType(e.entityType),
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
+      sameAs: entityWikipediaSameAs(e.name),
     })),
     // articleSection — tells Google/AI models the category domain of this comparison.
     ...(comparison.category && { articleSection: comparison.category }),
@@ -1345,11 +1353,13 @@ function buildMultiEntityGraph(
       subjectOf: { "@type": "Article", "@id": `${url}#article` },
     })),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
+    // Typed @type (not generic Thing) strengthens entity classification in Knowledge Graphs.
     mentions: comparison.entities.map((e) => ({
-      "@type": "Thing",
+      "@type": entitySchemaType(e.entityType),
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
+      sameAs: entityWikipediaSameAs(e.name),
     })),
     // Properties added for feature parity with 2-entity schema
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
