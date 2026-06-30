@@ -563,6 +563,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="canonical" href={meta.canonical} />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
+      {/* JSON-LD knowledge graph — AI crawlers (Perplexity, ChatGPT, Gemini) use this
+          to ingest structured comparison data with typed entities and FAQ pairs */}
+      <link rel="alternate" type="application/ld+json" href={`https://www.aversusb.net/api/knowledge-graph/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison knowledge graph (JSON-LD)" />
       {/* oEmbed — Slack, Discord, Notion, LinkedIn and AI assistants use this to render
           rich comparison cards when a user pastes an aversusb.net URL */}
       <link rel="alternate" type="application/json+oembed" href={`https://www.aversusb.net/api/oembed?url=${encodeURIComponent(meta.canonical)}&format=json`} title={meta.title} />
