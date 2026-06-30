@@ -145,6 +145,9 @@ export default async function BlogPage({
     keywords: "comparison articles, product analysis, decision guides, technology reviews, software comparisons blog",
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/blog` },
     alternativeHeadline: "Comparison Articles, Data Studies & Decision Guides — A Versus B Blog",
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -166,12 +169,21 @@ export default async function BlogPage({
     mainEntity: {
       "@type": "ItemList",
       name: "Latest Articles",
+      description: "Recent comparison articles, data studies, and decision guides from A Versus B",
       numberOfItems: total,
+      itemListOrder: "https://schema.org/ItemListOrderDescending",
       itemListElement: articles.slice(0, 10).map((article, i) => ({
         "@type": "ListItem",
         position: offset + i + 1,
         url: `${SITE_URL}/blog/${article.slug}`,
         name: article.title,
+        item: {
+          "@type": "Article",
+          "@id": `${SITE_URL}/blog/${article.slug}#article`,
+          url: `${SITE_URL}/blog/${article.slug}`,
+          name: article.title,
+          isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+        },
       })),
     },
   };

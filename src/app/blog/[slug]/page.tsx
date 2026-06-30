@@ -336,6 +336,9 @@ export default async function BlogPostPage({
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     url: articleUrl,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     ...(article.category && { articleSection: article.category }),
     // abstract — concise summary for LLM citation snippets (preferred over description)
     ...(article.excerpt && { abstract: article.excerpt }),
