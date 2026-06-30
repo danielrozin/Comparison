@@ -93,6 +93,13 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "KagiBot", allow: "/" },            // Kagi search engine crawler
       { userAgent: "AwarioSmartBot", allow: "/" },     // Awario brand monitoring
       { userAgent: "img2dataset", allow: "/" },        // Common Crawl image dataset
+      { userAgent: "GeminiBot", allow: "/" },          // Google Gemini crawler
+      { userAgent: "Gemini-Web", allow: "/" },         // Google Gemini web access
+      { userAgent: "PetalBot", allow: "/" },           // Huawei Petal Search
+      { userAgent: "SemrushSiteAudit", allow: "/" },   // Semrush technical audit
+      { userAgent: "TurnitinBot", allow: "/" },        // Academic citation indexer
+      { userAgent: "HuggingFaceBot", allow: "/" },     // HuggingFace dataset crawler
+      { userAgent: "OpenAI-SearchBot", allow: "/" },   // OpenAI search product
 
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
@@ -108,6 +115,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/sitemap/4.xml",
       "https://www.aversusb.net/sitemap/images.xml",
       "https://www.aversusb.net/sitemap/video.xml",
+      "https://www.aversusb.net/llms.txt",
     ],
   };
 }

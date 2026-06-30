@@ -1736,12 +1736,23 @@ export function categoryPageSchema(category: CategoryData) {
         "@type": "ItemList",
         "@id": `${url}#list`,
         name: `${category.name} Comparisons`,
+        description: `Top ${category.name.toLowerCase()} comparisons on A Versus B — side-by-side analysis with verdicts, attribute data, and FAQs.`,
         numberOfItems: category.comparisonCount,
+        itemListOrder: "https://schema.org/ItemListOrderDescending",
         itemListElement: category.topComparisons.map((comp, index) => ({
           "@type": "ListItem",
           position: index + 1,
           name: comp.title,
           url: `${SITE_URL}/compare/${comp.slug}`,
+          // item — full Article node so AI answer engines can cite the comparison
+          // directly from the category ItemList without following the link.
+          item: {
+            "@type": "Article",
+            "@id": `${SITE_URL}/compare/${comp.slug}#article`,
+            url: `${SITE_URL}/compare/${comp.slug}`,
+            name: comp.title,
+            isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+          },
         })),
       },
     },
@@ -1984,6 +1995,14 @@ export function profilePageSchema(entity: {
         name: `Comparisons involving ${entity.name}`,
         numberOfItems: entity.comparisonCount,
         url: `${SITE_URL}/entity/${entity.slug}`,
+      },
+      // interactionStatistic — signals community engagement volume to AI answer engines
+      // that use engagement as a proxy for topical authority and citation confidence.
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ReadAction",
+        userInteractionCount: entity.comparisonCount,
+        description: `This entity appears in ${entity.comparisonCount} comparisons on A Versus B`,
       },
     }),
     // citation — links this ProfilePage to the comparison articles that discuss this entity.
