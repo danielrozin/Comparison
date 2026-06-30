@@ -95,13 +95,19 @@ export function middleware(request: NextRequest) {
       sameSite: "lax",
       httpOnly: false,
     });
-    // Security headers — improve E-E-A-T trust signals and browser safety.
-    // nosniff: prevents MIME-type sniffing attacks.
-    // DENY in frame: clickjacking protection (compare pages should never be framed).
-    // referrer: send origin only cross-origin so referer analytics still work.
+    // Security + SEO headers — E-E-A-T trust signals and browser safety.
     response.headers.set("X-Content-Type-Options", "nosniff");
     response.headers.set("Referrer-Policy", "origin-when-cross-origin");
     response.headers.set("X-DNS-Prefetch-Control", "on");
+    // Content-Language — explicit English declaration for AI language classifiers
+    // and international search engines (Bing, Yandex, Baidu).
+    response.headers.set("Content-Language", "en");
+    // X-Pingback — machine-readable pingback discovery for WordPress/Ghost CMS platforms.
+    // When they link to aversusb.net they auto-POST to this endpoint; accelerates
+    // backlink discovery before Googlebot crawls the referring page.
+    if (pathname.startsWith("/compare/") || pathname.startsWith("/blog/")) {
+      response.headers.set("X-Pingback", "https://www.aversusb.net/api/pingback");
+    }
     return response;
   }
 
