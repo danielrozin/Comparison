@@ -160,6 +160,7 @@ export async function GET() {
   lines.push(`- [Entity list JSON](${SITE_URL}/api/v1/entities?limit=50) — browseable entity list; supports ?type and pagination`);
   lines.push(`- [Blog article JSON](${SITE_URL}/api/blog/{slug}) — single blog article with Article JSON-LD; X-Summary header in HTTP response`);
   lines.push(`- [Related comparisons JSON](${SITE_URL}/api/v1/related/{slug}) — related comparisons for a given slug`);
+  lines.push(`- [JSON sitemap](${SITE_URL}/api/sitemap) — paginated JSON sitemap of all comparison pages; supports ?category, ?limit, ?offset, ?format=urlset`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
   lines.push(`- [Popular comparisons](${SITE_URL}/api/popular)`);

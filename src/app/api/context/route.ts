@@ -125,6 +125,11 @@ export async function GET() {
       },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
+      json_sitemap: {
+        url: `${SITE_URL}/api/sitemap`,
+        format: "application/json",
+        description: "JSON sitemap of all comparison pages — paginated, supports ?category, ?limit, ?offset, ?format=urlset. Includes shortAnswer for each page.",
+      },
     },
 
     comparison_data_structure: {
@@ -160,6 +165,7 @@ export async function GET() {
       ai_plugin: `${SITE_URL}/.well-known/ai-plugin.json`,
       opensearch: `${SITE_URL}/opensearch.xml`,
       sitemap: `${SITE_URL}/sitemap.xml`,
+      json_sitemap: `${SITE_URL}/api/sitemap`,
       rss: `${SITE_URL}/feed`,
       atom: `${SITE_URL}/feed/atom`,
       news_sitemap: `${SITE_URL}/sitemap/news.xml`,

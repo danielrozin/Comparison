@@ -75,6 +75,7 @@ export function middleware(request: NextRequest) {
     "/api/faq/",
     "/api/blog",
     "/api/openapi",
+    "/api/sitemap",
     "/api/context",
     "/api/llms",
     "/api/llms-full",

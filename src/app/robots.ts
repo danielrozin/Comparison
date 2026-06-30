@@ -28,6 +28,7 @@ export default function robots(): MetadataRoute.Robots {
           "/api/context",
           "/api/blog",
           "/api/openapi",
+          "/api/sitemap",
         ],
         disallow: [
           "/api/",
@@ -129,6 +130,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "DataForSeoBot", allow: "/" },
     ],
     sitemap: [
+      "https://www.aversusb.net/api/sitemap",
       "https://www.aversusb.net/sitemap.xml",
       "https://www.aversusb.net/sitemap/0.xml",
       "https://www.aversusb.net/sitemap/1.xml",
