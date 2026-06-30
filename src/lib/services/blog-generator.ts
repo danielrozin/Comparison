@@ -9,6 +9,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
+import { submitToIndexNow } from "@/lib/seo/indexnow";
 import { embedText } from "./embeddings";
 
 export interface BlogArticle {
@@ -207,6 +208,8 @@ export async function saveBlogArticle(
         ...(titleEmbedding ? { titleEmbedding } : {}),
       },
     });
+    // Submit to IndexNow so Bing/Yandex/Naver index the new blog article within hours
+    void submitToIndexNow([`/blog/${result.slug}`]).catch(() => {});
     return { id: result.id };
   } catch (e) {
     console.error("Failed to save blog article:", e);
