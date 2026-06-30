@@ -2333,6 +2333,52 @@ export function profilePageSchema(entity: {
   };
 }
 
+// ============================================================
+// DefinedTermSet — site taxonomy vocabulary for AI knowledge graph
+// ============================================================
+
+// DefinedTermSet declares the comparison platform's taxonomy as a formal
+// Schema.org vocabulary. AI crawlers (Perplexity, Google SGE, Bing AI) use this
+// to understand the site's topic space, boosting entity-graph authority and
+// increasing citation selection confidence for comparison queries.
+export function definedTermSetSchema() {
+  const categories = [
+    { name: "Technology", description: "Software, apps, devices, platforms, and digital services" },
+    { name: "Sports", description: "Athletes, teams, leagues, records, and sports equipment" },
+    { name: "Countries", description: "Nations, regions, territories, economies, and cultures" },
+    { name: "Products", description: "Consumer products, gadgets, appliances, and physical goods" },
+    { name: "Automotive", description: "Cars, motorcycles, trucks, electric vehicles, and accessories" },
+    { name: "Health", description: "Medications, supplements, fitness gear, and medical devices" },
+    { name: "Finance", description: "Banks, investment products, credit cards, and fintech services" },
+    { name: "Entertainment", description: "Movies, TV shows, music artists, games, and streaming services" },
+    { name: "Food & Drink", description: "Foods, beverages, restaurants, and dietary products" },
+    { name: "Education", description: "Universities, courses, certifications, and learning platforms" },
+    { name: "Travel", description: "Airlines, hotels, destinations, and travel services" },
+    { name: "Gaming", description: "Video games, consoles, peripherals, and gaming services" },
+    { name: "Business", description: "Companies, SaaS tools, enterprise software, and business services" },
+    { name: "Science", description: "Scientific concepts, research topics, and natural phenomena" },
+  ];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "@id": `${SITE_URL}/#taxonomy`,
+    name: "A Versus B Comparison Taxonomy",
+    description: "The official topic taxonomy used by A Versus B to categorize 3,000+ side-by-side comparisons across technology, sports, products, countries, and more.",
+    url: `${SITE_URL}/category`,
+    inDefinedTermSet: `${SITE_URL}/#taxonomy`,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    hasDefinedTerm: categories.map(({ name, description }) => ({
+      "@type": "DefinedTerm",
+      "@id": `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}#term`,
+      name,
+      description,
+      url: `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}`,
+      inDefinedTermSet: `${SITE_URL}/#taxonomy`,
+    })),
+  };
+}
+
 export function howToSchemaFromBlog(opts: {
   title: string;
   description: string;
