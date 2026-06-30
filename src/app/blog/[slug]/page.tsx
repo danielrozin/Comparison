@@ -216,6 +216,8 @@ export async function generateMetadata({
       types: {
         "application/rss+xml": `${SITE_URL}/feed`,
         "application/atom+xml": `${SITE_URL}/feed/atom`,
+        "application/json": `${SITE_URL}/api/blog/${slug}`,
+        "application/json+oembed": `${SITE_URL}/api/oembed?url=${SITE_URL}/blog/${slug}&format=json`,
       },
     },
     openGraph: {

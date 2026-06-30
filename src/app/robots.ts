@@ -26,6 +26,8 @@ export default function robots(): MetadataRoute.Robots {
           "/api/og",
           "/api/v1/",
           "/api/context",
+          "/api/blog",
+          "/api/openapi",
         ],
         disallow: [
           "/api/",

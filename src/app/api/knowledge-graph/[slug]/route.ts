@@ -167,8 +167,12 @@ export async function GET(
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
       "Access-Control-Allow-Origin": "*",
-      // X-Robots: allow AI crawlers to index this endpoint
       "X-Robots-Tag": "all",
+      // X-Summary: shortAnswer in the HTTP header so AI crawlers scanning response headers
+      // can extract the citation-ready TL;DR without fully parsing the JSON-LD body.
+      ...(comparison.shortAnswer
+        ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
+        : {}),
     },
   });
 }

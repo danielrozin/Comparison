@@ -63,7 +63,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Link",
-            value: "</api/oembed?url=https://www.aversusb.net/blog/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
+            value: "</api/blog/:slug>; rel=\"alternate\"; type=\"application/json\", </api/oembed?url=https://www.aversusb.net/blog/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
           },
         ],
       },

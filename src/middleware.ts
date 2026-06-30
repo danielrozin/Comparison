@@ -73,6 +73,8 @@ export function middleware(request: NextRequest) {
     "/api/knowledge-graph/",
     "/api/comparisons/",
     "/api/faq/",
+    "/api/blog",
+    "/api/openapi",
     "/api/context",
     "/api/llms",
     "/api/llms-full",

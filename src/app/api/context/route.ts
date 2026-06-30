@@ -98,6 +98,21 @@ export async function GET() {
         format: "application/json",
         description: "Full category taxonomy with comparison counts, top pages per category, and DefinedTermSet JSON-LD.",
       },
+      trending: {
+        url: `${SITE_URL}/api/v1/trending?limit=20`,
+        format: "application/json",
+        description: "Top trending comparisons by view count. Supports ?limit and ?category filters.",
+      },
+      entities_list: {
+        url: `${SITE_URL}/api/v1/entities?limit=50`,
+        format: "application/json",
+        description: "Browseable entity list. Supports ?type and pagination (?limit, ?offset).",
+      },
+      blog: {
+        url: `${SITE_URL}/api/blog?limit=20`,
+        format: "application/json",
+        description: "Published blog article list. Supports ?category, ?limit, ?offset.",
+      },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
     },
