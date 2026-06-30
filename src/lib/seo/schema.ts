@@ -877,6 +877,11 @@ export function comparisonPageSchema(
         })),
       };
     })(),
+    // locationCreated — where this CreativeWork was created. A Versus B is a US-based
+    // platform; all comparison data (Google Search volume, USD pricing, market share) is
+    // sourced from US datasets. Geographic AI filters (Perplexity location-aware, Google
+    // AI Overviews for US queries) use locationCreated to correctly scope the data origin.
+    locationCreated: { "@type": "Country", name: "United States" },
   });
 
   // 2. ItemList for the compared entities
@@ -1535,6 +1540,8 @@ function buildMultiEntityGraph(
         })),
       };
     })(),
+    // locationCreated — US data-origin signal (parity with 2-entity schema).
+    locationCreated: { "@type": "Country", name: "United States" },
   };
 
   const multiCategoryDisplay = comparison.category
