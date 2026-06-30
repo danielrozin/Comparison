@@ -10,7 +10,10 @@ const ABOUT_URL = `${SITE_URL}/about`;
 export const metadata: Metadata = {
   title: ABOUT_TITLE,
   description: ABOUT_DESC,
-  alternates: { canonical: ABOUT_URL },
+  alternates: {
+    canonical: ABOUT_URL,
+    languages: { "en": ABOUT_URL, "x-default": ABOUT_URL },
+  },
   openGraph: {
     title: ABOUT_TITLE,
     description: ABOUT_DESC,

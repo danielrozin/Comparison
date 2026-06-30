@@ -10,7 +10,10 @@ const PARTNER_URL = `${SITE_URL}/partnerships`;
 export const metadata: Metadata = {
   title: PARTNER_TITLE,
   description: PARTNER_DESC,
-  alternates: { canonical: PARTNER_URL },
+  alternates: {
+    canonical: PARTNER_URL,
+    languages: { "en": PARTNER_URL, "x-default": PARTNER_URL },
+  },
   openGraph: {
     title: PARTNER_TITLE,
     description: `Reach decision-makers at the point of comparison. Sponsored placements, featured reviews, and custom data partnerships.`,

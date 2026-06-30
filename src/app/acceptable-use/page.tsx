@@ -9,7 +9,10 @@ const AUP_URL = `${SITE_URL}/acceptable-use`;
 export const metadata: Metadata = {
   title: AUP_TITLE,
   description: AUP_DESC,
-  alternates: { canonical: AUP_URL },
+  alternates: {
+    canonical: AUP_URL,
+    languages: { "en": AUP_URL, "x-default": AUP_URL },
+  },
   openGraph: {
     title: AUP_TITLE,
     description: AUP_DESC,
