@@ -174,6 +174,22 @@ export async function GET() {
           responses: { "200": { description: "Recent comparisons" } },
         },
       },
+      "/api/v1/compare": {
+        get: {
+          operationId: "lookupComparison",
+          tags: ["Comparisons"],
+          summary: "Look up a comparison by entity names",
+          description: "AI tool-calling endpoint: given two entity names or slugs (?a= and ?b=), returns the comparison if found (with shortAnswer, verdict, and API URLs) or suggestions if not. Tries both orderings of the slug.",
+          parameters: [
+            { name: "a", in: "query", required: true, description: "First entity name or slug", schema: { type: "string" }, example: "chatgpt" },
+            { name: "b", in: "query", required: true, description: "Second entity name or slug", schema: { type: "string" }, example: "claude" },
+          ],
+          responses: {
+            "200": { description: "Comparison found or not-found with suggestions" },
+            "400": { description: "Missing ?a or ?b parameter" },
+          },
+        },
+      },
       "/api/v1/trending": {
         get: {
           operationId: "getTrending",

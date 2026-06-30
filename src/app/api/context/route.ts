@@ -136,6 +136,12 @@ export async function GET() {
         description: "Pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner, confidence level, and ClaimReview JSON-LD. Best for AI answer engines.",
         key_field_for_citation: "answer (= shortAnswer) + citationFormat",
       },
+      compare_lookup: {
+        url: `${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}`,
+        format: "application/json",
+        description: "AI tool-calling endpoint: look up a comparison by entity names. Returns the comparison if found (with shortAnswer, verdict, API URLs) or suggestions if not. Tries both orderings.",
+        example: `${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`,
+      },
     },
 
     comparison_data_structure: {
