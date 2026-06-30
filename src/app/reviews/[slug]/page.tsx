@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
-import { aggregateRatingSchema, breadcrumbSchema } from "@/lib/seo/schema";
+import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 
@@ -212,13 +212,23 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
         },
       ],
-      // @id matches ProfilePage mainEntity @id for cross-document knowledge graph merging.
+      // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
+      timeRequired: "PT3M",
+      // about — typed SoftwareApplication covers the majority of reviewed entities on the site;
+      // sameAs (Wikipedia + DBpedia) enables AI knowledge graph cross-site entity merging.
       about: {
-        "@type": "Thing",
+        "@type": "SoftwareApplication",
         "@id": `${SITE_URL}/entity/${slug}`,
         name,
         url: `${SITE_URL}/entity/${slug}`,
+        sameAs: entityWikipediaSameAs(name),
       },
+      // mentions — cross-links to entity profile + alternatives so AI graph traversal
+      // connects this ReviewPage to the entity's broader knowledge graph.
+      mentions: [
+        { "@type": "WebPage", "@id": `${SITE_URL}/entity/${slug}#profilepage`, name: `${name} Profile`, url: `${SITE_URL}/entity/${slug}` },
+        { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/${slug}#article`, name: `${name} Alternatives`, url: `${SITE_URL}/alternatives/${slug}` },
+      ],
     },
   ];
   if (aggregation) {
