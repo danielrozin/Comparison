@@ -148,6 +148,18 @@ export async function GET(
           contentUrl: `${SITE_URL}/api/faq/${slug}`,
           name: "Structured FAQ pairs JSON",
         },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/answer/${slug}`,
+          name: "AI Answer API (citation-ready)",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/v1/related/${slug}`,
+          name: "Related comparisons JSON",
+        },
       ],
       variableMeasured: comparison.attributes.map((a) => a.name),
       isBasedOn: url,
@@ -156,6 +168,36 @@ export async function GET(
 
   // Add FAQ node if present
   if (faqNodes) graph.push(faqNodes);
+
+  // Add ClaimReview node for the verdict when present — tells AI fact-checkers and
+  // Google that the verdict is a reviewed claim, not speculation.
+  if (comparison.verdict || comparison.shortAnswer) {
+    graph.push({
+      "@type": "ClaimReview",
+      "@id": `${url}#claimreview`,
+      url,
+      claimReviewed: comparison.title,
+      reviewBody: comparison.shortAnswer ?? comparison.verdict ?? "",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: 5,
+        worstRating: 1,
+        bestRating: 5,
+        alternateName: "Verified Comparison",
+      },
+      author: {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+      itemReviewed: {
+        "@type": "CreativeWork",
+        url,
+        name: comparison.title,
+      },
+    });
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
