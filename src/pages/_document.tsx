@@ -16,6 +16,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        {/* Identity + license link relations — matches layout.tsx for E-E-A-T parity on Pages Router */}
+        <link rel="me" href="https://x.com/aversusb" />
+        <link rel="me" href="https://www.linkedin.com/company/aversusb" />
+        <link rel="me" href="https://www.youtube.com/@aversusb" />
+        <link rel="author" href="https://www.aversusb.net/about" />
+        <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
             Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
             off the first-byte time for OG images and the AdSense script on slow connections. */}

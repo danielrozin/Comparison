@@ -79,6 +79,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* Identity + license link relations — used by AI crawlers for E-E-A-T and training eligibility */}
+        <link rel="me" href="https://x.com/aversusb" />
+        <link rel="me" href="https://www.linkedin.com/company/aversusb" />
+        <link rel="me" href="https://www.youtube.com/@aversusb" />
+        <link rel="author" href={`${SITE_URL}/about`} />
+        <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
         {ADSENSE_PUB_ID && (
           <script
             async
