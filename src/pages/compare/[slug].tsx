@@ -553,6 +553,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="description" content={meta.description} />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       <link rel="canonical" href={meta.canonical} />
+      {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
+      <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />
