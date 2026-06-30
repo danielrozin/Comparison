@@ -304,6 +304,8 @@ function bestPageSchema(entry: BestEntry) {
         teaches: `How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`,
         // educationalUse — signals this is a ranked guide, not a review or comparison.
         educationalUse: "guide",
+        timeRequired: `PT${Math.max(4, Math.ceil(entry.listItems.length * 1.5))}M`,
+        wordCount: Math.max(600, entry.listItems.length * 120),
         // hasPart — formal Article→FAQPage edge so Google/AI attribute FAQ items to this article.
         ...(entry.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
         // mentions — typed entity references for each item in the best-of list.

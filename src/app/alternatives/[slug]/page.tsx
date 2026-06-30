@@ -191,6 +191,8 @@ export default async function AlternativesPage({ params }: PageProps) {
       url: `${SITE_URL}/entity/${alt.slug}`,
       sameAs: entityWikipediaSameAs(alt.name),
     })),
+    timeRequired: "PT4M",
+    wordCount: 800,
   };
 
   return (

@@ -132,6 +132,8 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    timeRequired: "PT3M",
+    wordCount: 600,
   };
 
   const faqs = faqSchema(hub.faqs.map((f) => ({ question: f.q, answer: f.a })));

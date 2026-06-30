@@ -93,6 +93,8 @@ const articleSchema = {
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  timeRequired: "PT4M",
+  wordCount: 800,
 };
 
 export default function HowWeWriteVerdictsPage() {

@@ -141,6 +141,8 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
         }),
       })),
     }),
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
 
   return (

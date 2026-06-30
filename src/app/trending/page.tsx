@@ -116,6 +116,8 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro"] },
     keywords: "trending comparisons, most popular comparisons, top vs comparisons 2026",
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
 
   // ItemList schema — lets AI answer engines enumerate the trending comparisons

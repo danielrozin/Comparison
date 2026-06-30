@@ -186,6 +186,8 @@ export default async function BlogPage({
         },
       })),
     },
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
 
   return (

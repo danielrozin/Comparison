@@ -90,6 +90,8 @@ const aboutPageSchema = {
       },
     ],
   },
+  timeRequired: "PT3M",
+  wordCount: 600,
   breadcrumb: {
     "@type": "BreadcrumbList",
     itemListElement: [
