@@ -51,6 +51,71 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    date: "2026-06-30",
+    version: "1.8.0",
+    title: "Accessibility Pass, Skip Navigation & Reduced-Motion Support",
+    type: "improvement",
+    items: [
+      "Added skip-to-content keyboard navigation link on every page (WCAG 2.1 AA)",
+      "Added @media prefers-reduced-motion support — all hero animations pause for users with motion sensitivity",
+      "Fixed all 4 missing category gradients (software, military, economy, travel) in category cards",
+      "Completed semantic design token sweep across all public-facing components — zero raw gray tokens remain",
+      "Fixed duplicate className bug in RecentlyViewed component",
+    ],
+  },
+  {
+    date: "2026-06-15",
+    version: "1.7.0",
+    title: "E-E-A-T Schema Sweep — Publishing Principles, Ethics & Corrections Policy",
+    type: "improvement",
+    items: [
+      "Added publishingPrinciples, ethicsPolicy, and correctionsPolicy to all 40+ page schemas",
+      "Added accessibilityFeature arrays to every schema (structuralNavigation, alternativeText, readingOrder)",
+      "Launched dynamic /llms.txt describing site structure for AI crawlers",
+      "Added CompareAction schema to homepage and comparison pages for voice/AI search",
+      "Added accessibilityFeature and conditionsOfAccess to organization and WebSite schemas",
+    ],
+  },
+  {
+    date: "2026-05-20",
+    version: "1.6.0",
+    title: "Design System Token Sweep — Full Semantic Color System",
+    type: "improvement",
+    items: [
+      "Replaced all raw Tailwind gray-* classes with semantic design tokens across 60+ components",
+      "Light mode: gray → text-text, text-text-secondary, bg-surface-alt, border-border",
+      "Dark sections (footer, hero gradients): gray → text-white/N opacity variants",
+      "Fixed TrendingCard rank #2 border, Pagination disabled states, SearchBox category fallbacks",
+      "Fixed Header mobile menu, Footer text hierarchy, EmbedButton modal and code blocks",
+    ],
+  },
+  {
+    date: "2026-05-01",
+    version: "1.5.0",
+    title: "Data Studies, Investing Report & B2B SaaS Study",
+    type: "content",
+    items: [
+      "Published 3 original data studies: Most-Compared Brands 2026, B2B SaaS Comparison Report 2026, Investing & Finance Comparison Report 2026",
+      "Each study features interactive data tables, stat cards, and methodology section",
+      "Full Schema.org Article + Dataset + DataCatalog structured data on each study",
+      "Studies hub page at /studies with collection schema for AI crawlers",
+    ],
+  },
+  {
+    date: "2026-04-15",
+    version: "1.4.0",
+    title: "Embed Widget, Developer API & Review Pages",
+    type: "feature",
+    items: [
+      "Launched embeddable comparison widgets — any comparison can be embedded via script tag, iframe, or link badge",
+      "Developer dashboard at /developers with usage stats and embed code generator",
+      "New review pages at /reviews/[slug] with star ratings, pros/cons, and review aggregation",
+      "Added StickyAffiliateCTA component for above-the-fold conversion on comparison pages",
+      "Added VersionHistory component showing comparison update timeline",
+      "Launched survey system for collecting user insights at /survey",
+    ],
+  },
+  {
     date: "2026-03-15",
     version: "1.3.0",
     title: "Email Notifications, Mobile Fixes & Category Logic",
