@@ -778,24 +778,6 @@ export function comparisonPageSchema(
       if (reviews.length === 0) return {};
       return { review: reviews.length === 1 ? reviews[0] : reviews };
     })(),
-    // claimReviewed — formal ClaimReview signals that this article evaluates a specific
-    // factual claim. AI fact-checking systems (Google Fact Check, Perplexity truth mode,
-    // ChatGPT factual validation) look for ClaimReview to trust the source as an evaluator.
-    // We claim that our comparison data is accurate "as of" the contentReferenceTime.
-    ...(() => {
-      if (!comparison.shortAnswer || comparison.entities.length < 2) return {};
-      return {
-        claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
-        reviewRating: {
-          "@type": "Rating",
-          ratingValue: 5,
-          bestRating: 5,
-          worstRating: 1,
-          alternateName: "Accurate",
-          ratingExplanation: "Data verified through multiple sources and editorial review",
-        },
-      };
-    })(),
     // significantLink — entity ProfilePages so AI agents can follow the graph
     // from comparison article to dedicated entity profiles and alternatives pages.
     significantLink: comparison.entities.flatMap((e) => [
@@ -899,6 +881,38 @@ export function comparisonPageSchema(
     // AI Overviews for US queries) use locationCreated to correctly scope the data origin.
     locationCreated: { "@type": "Country", name: "United States" },
   });
+
+  // 1b. ClaimReview — standalone type required by Schema.org and Google Fact Check.
+  // claimReviewed/reviewRating were previously misplaced as Article properties.
+  // A proper ClaimReview node signals to AI fact-checking systems (Google Fact Check,
+  // Perplexity truth mode, ChatGPT factual validation) that this page evaluates a
+  // specific factual claim, enabling the Fact Check rich result and AI trust boost.
+  if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "ClaimReview",
+      "@id": `${url}#claimreview`,
+      url,
+      claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: 5,
+        bestRating: 5,
+        worstRating: 1,
+        alternateName: "Accurate",
+        ratingExplanation: "Data verified through multiple sources and editorial review",
+      },
+      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      datePublished: comparison.metadata.updatedAt,
+      itemReviewed: {
+        "@type": "Claim",
+        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        author: { "@type": "Thing", name: "Internet" },
+        datePublished: comparison.metadata.publishedAt,
+        appearance: { "@type": "WebPage", "@id": url, url },
+      },
+    });
+  }
 
   // 2. ItemList for the compared entities
   schemas.push({
@@ -1441,17 +1455,6 @@ function buildMultiEntityGraph(
       if (multiReviews.length === 0) return {};
       return { review: multiReviews.length === 1 ? multiReviews[0] : multiReviews };
     })(),
-    ...(comparison.shortAnswer && comparison.entities.length >= 2 && {
-      claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities.slice(1).map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        alternateName: "Accurate",
-        ratingExplanation: "Data verified through multiple sources and editorial review",
-      },
-    }),
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     // interactivityType — multi-entity pages are read-only expositive content.
@@ -1598,6 +1601,33 @@ function buildMultiEntityGraph(
     ...itemNodes,
     breadcrumbList,
   ];
+
+  // ClaimReview — standalone node (parity with 2-entity schema).
+  if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    graph.push({
+      "@type": "ClaimReview",
+      "@id": `${url}#claimreview`,
+      url,
+      claimReviewed: `${comparison.entities.map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: 5,
+        bestRating: 5,
+        worstRating: 1,
+        alternateName: "Accurate",
+        ratingExplanation: "Data verified through multiple sources and editorial review",
+      },
+      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      datePublished: comparison.metadata.updatedAt,
+      itemReviewed: {
+        "@type": "Claim",
+        name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        author: { "@type": "Thing", name: "Internet" },
+        datePublished: comparison.metadata.publishedAt,
+        appearance: { "@type": "WebPage", "@id": url, url },
+      },
+    });
+  }
 
   if (comparison.faqs.length > 0) {
     graph.push({
