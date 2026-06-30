@@ -653,6 +653,9 @@ export function comparisonPageSchema(
     ...(comparison.category && { articleSection: comparison.category }),
     // wordCount — content length signal; estimated from attribute count × avg words/attribute.
     wordCount: Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)),
+    // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
+    // use this for content classification and featured-snippet slot selection.
+    timeRequired: `PT${Math.ceil(Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)) / 200)}M`,
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -1287,6 +1290,9 @@ function buildMultiEntityGraph(
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
     wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
+    // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
+    // use this for content classification and featured-snippet slot selection.
+    timeRequired: `PT${Math.ceil(Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)) / 200)}M`,
     // significantLink — entity ProfilePages and alternatives so AI can follow the graph.
     significantLink: comparison.entities.flatMap((e) => [
       `${SITE_URL}/entity/${e.slug}`,
