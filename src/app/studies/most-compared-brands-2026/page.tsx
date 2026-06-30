@@ -49,6 +49,8 @@ export const metadata: Metadata = {
     "citation_abstract": DESCRIPTION,
     "citation_publication_date": "2026-05-15",
     "citation_online_date": "2026-05-15",
+    "citation_keywords": "brand comparison, most compared brands, consumer research, brand awareness, market comparison 2026",
+    "citation_fulltext_world_readable": "",
     "DC.title": TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -57,6 +59,9 @@ export const metadata: Metadata = {
     "DC.format": "text/html",
     "DC.identifier": CANONICAL,
     "DC.date": "2026-05-15",
+    "DC.subject": "Brand Comparison; Consumer Research; Market Analysis; Brand Awareness; Product Research",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "United States; Global",
   },
 };
 

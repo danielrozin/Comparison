@@ -651,6 +651,16 @@ export function comparisonPageSchema(
         ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
         sameAs: entityWikipediaSameAs(e.name),
         subjectOf: { "@type": "Article", "@id": `${url}#article` },
+        // mainEntityOfPage — cross-page graph edge from entity node (inside Article about[])
+        // to the entity's canonical ProfilePage. AI crawlers follow this to the profile
+        // for richer entity context without re-crawling the page.
+        ...(e.slug && {
+          mainEntityOfPage: {
+            "@type": "ProfilePage",
+            "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+            url: `${SITE_URL}/entity/${e.slug}`,
+          },
+        }),
         // Free Offer on software entities for product-search AI carousels
         ...(schType === "SoftwareApplication" && {
           applicationCategory: "BusinessApplication",
@@ -1572,6 +1582,13 @@ function buildMultiEntityGraph(
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
       subjectOf: { "@type": "Article", "@id": `${url}#article` },
+      // mainEntityOfPage — cross-page edge to entity ProfilePage for AI knowledge traversal.
+      mainEntityOfPage: {
+        "@type": "ProfilePage",
+        "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+        url: `${SITE_URL}/entity/${e.slug}`,
+      },
+      sameAs: entityWikipediaSameAs(e.name),
     })),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
     // Typed @type (not generic Thing) strengthens entity classification in Knowledge Graphs.

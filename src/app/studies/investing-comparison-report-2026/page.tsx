@@ -49,6 +49,8 @@ export const metadata: Metadata = {
     "citation_abstract": DESCRIPTION,
     "citation_publication_date": "2026-06-10",
     "citation_online_date": "2026-06-10",
+    "citation_keywords": "investing, stock comparison, investment platforms, brokerage comparison, financial research 2026",
+    "citation_fulltext_world_readable": "",
     "DC.title": TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -57,6 +59,9 @@ export const metadata: Metadata = {
     "DC.format": "text/html",
     "DC.identifier": CANONICAL,
     "DC.date": "2026-06-10",
+    "DC.subject": "Investing; Financial Comparison; Brokerage; Personal Finance; Market Research",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "United States; Global",
   },
 };
 

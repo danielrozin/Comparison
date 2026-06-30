@@ -42,6 +42,10 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": Q1_DESC,
+    "citation_publication_date": "2026-04-15",
+    "citation_online_date": "2026-04-15",
+    "citation_keywords": "AI tool comparison, Q1 2026 AI battles, ChatGPT search volume, Claude vs GPT-4, AI market share, LLM comparison data",
+    "citation_fulltext_world_readable": "",
     "DC.title": Q1_TITLE,
     "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
@@ -49,6 +53,10 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": PAGE_URL,
+    "DC.date": "2026-04-15",
+    "DC.subject": "Artificial Intelligence; AI Comparison; Search Trends; LLM Market; Technology Research",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "United States",
   },
 };
 

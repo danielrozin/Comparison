@@ -34,6 +34,8 @@ export const metadata: Metadata = {
     "citation_abstract": PAGE_DESCRIPTION,
     "citation_publication_date": "2026-05-22",
     "citation_online_date": "2026-05-22",
+    "citation_keywords": "LLM comparison, large language models, AI chatbots, ChatGPT vs Claude, GPT-4 benchmark 2026",
+    "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -42,6 +44,9 @@ export const metadata: Metadata = {
     "DC.format": "text/html",
     "DC.identifier": PAGE_URL,
     "DC.date": "2026-05-22",
+    "DC.subject": "Artificial Intelligence; Large Language Models; AI Comparison; ChatGPT; Claude; Gemini",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "United States; Global",
   },
 };
 

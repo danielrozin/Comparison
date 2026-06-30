@@ -29,6 +29,10 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
+    "citation_publication_date": "2026-04-01",
+    "citation_online_date": "2026-04-01",
+    "citation_keywords": "browser comparison 2026, Chrome vs Firefox, Safari vs Edge, best web browser, browser benchmark",
+    "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
@@ -36,6 +40,10 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": PAGE_URL,
+    "DC.date": "2026-04-01",
+    "DC.subject": "Web Browsers; Browser Comparison; Chrome; Firefox; Safari; Edge; Technology",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "United States; Global",
   },
 };
 
