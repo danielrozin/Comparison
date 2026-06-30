@@ -1895,6 +1895,7 @@ export function profilePageSchema(entity: {
 
   const subjectOf = (entity.topComparisons ?? []).slice(0, 10).map((c) => ({
     "@type": "Article",
+    "@id": `${SITE_URL}/compare/${c.slug}#article`,
     headline: c.title,
     url: `${SITE_URL}/compare/${c.slug}`,
   }));
@@ -2009,6 +2010,7 @@ export function profilePageSchema(entity: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "#entity-intro", "#entity-about"],
     },
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(entity.name)}+comparison&type=link&sort=relevance`,
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
