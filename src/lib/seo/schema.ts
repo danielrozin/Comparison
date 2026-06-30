@@ -1781,7 +1781,11 @@ export function breadcrumbSchema(items: { name: string; url: string }[], id?: st
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: item.url,
+      // Typed WebPage item — AI crawlers and Google follow the @id edge to merge
+      // this breadcrumb node with the target page's WebPage node in the knowledge graph.
+      // Schema.org BreadcrumbList spec allows either URL string or typed Thing; typed is
+      // preferred by Google Rich Results Test and AI schema validators.
+      item: { "@type": "WebPage", "@id": item.url, name: item.name, url: item.url },
     })),
   };
 }

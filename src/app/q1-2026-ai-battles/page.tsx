@@ -103,6 +103,7 @@ export default function Q1AiBattlesPage() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     locationCreated: { "@type": "Country", name: "United States" },
     countryOfOrigin: { "@type": "Country", name: "United States" },
+    discussionUrl: "https://www.reddit.com/search/?q=AI+tool+comparison+2026&type=link&sort=relevance",
   };
 
   const datasetSchema = {
