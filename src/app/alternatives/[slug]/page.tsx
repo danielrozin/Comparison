@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "application/rss+xml": `${SITE_URL}/feed`,
         "application/atom+xml": `${SITE_URL}/feed/atom`,
         "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/alternatives/${slug}`)}&format=json`,
+        "application/json": `${SITE_URL}/api/v1/entities/${slug}`,
       },
     },
     openGraph: {

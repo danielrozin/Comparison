@@ -102,8 +102,10 @@ export async function GET(
         url: SITE_URL,
       },
       about: entityNodes,
-      // Key differences as structured text
-      abstract: comparison.keyDifferences?.join(" "),
+      // abstract = shortAnswer — the 1-2 sentence TL;DR preferred by AI citation engines
+      ...(comparison.shortAnswer ? { abstract: comparison.shortAnswer } : {}),
+      // keyDifferences as a human-readable body text snippet
+      ...(comparison.keyDifferences?.length ? { text: comparison.keyDifferences.join(" ") } : {}),
       // Verdict as the article's conclusionText
       ...(comparison.verdict
         ? { conclusionText: comparison.verdict }
@@ -139,6 +141,12 @@ export async function GET(
           encodingFormat: "application/json",
           contentUrl: `${SITE_URL}/api/comparisons/${slug}`,
           name: "Raw comparison JSON",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/faq/${slug}`,
+          name: "Structured FAQ pairs JSON",
         },
       ],
       variableMeasured: comparison.attributes.map((a) => a.name),
