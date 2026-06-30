@@ -112,7 +112,11 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/trending` },
+    potentialAction: [
+      { "@type": "ReadAction", target: `${SITE_URL}/trending` },
+      // SearchAction lets Google/AI surface search-within-trending UX in sidebars and AI Overviews.
+      { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+    ],
     alternativeHeadline: "Most Popular X vs Y Comparisons Right Now — A Versus B Trending",
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -130,6 +134,22 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     keywords: `trending comparisons, most popular comparisons, top vs comparisons ${new Date().getFullYear()}`,
     timeRequired: "PT2M",
     wordCount: 400,
+    // mentions[] — top-10 trending Article nodes; AI crawlers use this to enumerate
+    // which comparisons are featured without parsing the rendered HTML list.
+    mentions: trending.slice(0, 10).map((item) => ({
+      "@type": "Article",
+      "@id": `${SITE_URL}/compare/${item.slug}#article`,
+      name: item.title,
+      url: `${SITE_URL}/compare/${item.slug}`,
+    })),
+    // about[] — subject-level classification for AI topic-routing and Google Discover.
+    about: [
+      { "@type": "Thing", name: "Comparison Articles" },
+      { "@type": "Thing", name: "Trending Topics" },
+      { "@type": "Thing", name: "Consumer Decisions" },
+    ],
+    // hasPart[] — structural sub-documents: the ItemList is a formal part of this CollectionPage.
+    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` }],
   };
 
   // ItemList schema — lets AI answer engines enumerate the trending comparisons
@@ -137,6 +157,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${SITE_URL}/trending#itemlist`,
     name: "Trending Comparisons on A Versus B",
     description: trendingDescription,
     url: `${SITE_URL}/trending`,

@@ -831,9 +831,9 @@ export function comparisonPageSchema(
         },
       },
     ],
-    // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
-    // Including HowTo in hasPart tells AI crawlers that the step-by-step guide is part of
-    // this article, improving eligibility for Google's "Steps" rich result on comparison pages.
+    // hasPart links to FAQPage, Dataset, HowTo, and entity ProfilePages for formal Article
+    // sub-document graph edges. ProfilePage nodes let AI crawlers traverse Article→entity edges
+    // directly from hasPart, complementing about[] and mentions[] with a page-type-scoped link.
     ...(() => {
       // Inline category set mirrors HOWTO_CATEGORIES below (defined after this schemas.push call).
       const howtoEligible = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
@@ -842,6 +842,14 @@ export function comparisonPageSchema(
         ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
+        // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
+        // @id matches the ProfilePage's own @id so cross-document merging works correctly.
+        ...comparison.entities.filter((e) => e.slug).map((e) => ({
+          "@type": "ProfilePage",
+          "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          name: `${e.name} — Comparisons & Profile`,
+        })),
       ];
       return parts.length > 0 ? { hasPart: parts } : {};
     })(),
@@ -1509,12 +1517,20 @@ function buildMultiEntityGraph(
         },
       },
     ],
-    // hasPart links to FAQPage, Dataset, and HowTo for formal Article sub-document graph edges.
+    // hasPart links to FAQPage, Dataset, HowTo, and entity ProfilePages for formal Article
+    // sub-document graph edges. ProfilePage nodes create Article→entity traversal paths for AI.
     ...(() => {
       const parts = [
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
+        // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
+        ...comparison.entities.filter((e) => e.slug).map((e) => ({
+          "@type": "ProfilePage",
+          "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          name: `${e.name} — Comparisons & Profile`,
+        })),
       ];
       return parts.length > 0 ? { hasPart: parts } : {};
     })(),
