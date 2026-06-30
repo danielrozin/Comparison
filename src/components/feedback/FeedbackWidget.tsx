@@ -52,7 +52,7 @@ export function FeedbackWidget() {
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen
-            ? "bg-gray-600 hover:bg-gray-700 rotate-45"
+            ? "bg-text/60 hover:bg-text/80 rotate-45"
             : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"
         }`}
         aria-label={isOpen ? "Close feedback" : "Send feedback"}

@@ -313,7 +313,7 @@ export default function EmbedLandingPage() {
             </ul>
             <Link
               href="/embed/register?tier=enterprise"
-              className="block w-full text-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors"
+              className="block w-full text-center px-6 py-3 bg-surface-dark text-white font-semibold rounded-xl hover:opacity-90 transition-opacity"
             >
               Contact Sales
             </Link>

@@ -236,7 +236,7 @@ export function VersionHistory({
                           className={`rounded-lg border transition-all ${
                             isLatest
                               ? "border-indigo-200 dark:border-indigo-700 bg-white dark:bg-gray-900"
-                              : "border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60"
+                              : "border-border/30 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60"
                           }`}
                         >
                           <button
@@ -321,7 +321,7 @@ export function VersionHistory({
                 <div className="space-y-4">
                   <div className="relative pl-8">
                     <div className="absolute left-0 top-1 w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 bg-border dark:bg-gray-600" />
-                    <div className="rounded-lg border border-gray-100 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 px-4 py-3">
+                    <div className="rounded-lg border border-border/30 dark:border-gray-800 bg-white/60 dark:bg-gray-900/60 px-4 py-3">
                       <div className="flex items-center gap-3">
                         <span className="inline-flex items-center justify-center w-7 h-7 rounded-md text-xs font-bold bg-indigo-100 text-indigo-600">
                           ✦

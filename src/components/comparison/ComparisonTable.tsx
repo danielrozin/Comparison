@@ -424,7 +424,7 @@ function LegacyTable({
                 const valB = attr.values[1];
                 return (
                   <div key={attr.id} className="bg-white border border-border rounded-xl overflow-hidden hover:shadow-sm transition-shadow">
-                    <div className="px-3 py-2 border-b border-border/50 bg-gradient-to-r from-gray-50 to-white">
+                    <div className="px-3 py-2 border-b border-border/50 bg-gradient-to-r from-surface-alt to-white">
                       <span className="text-xs font-bold text-text">
                         {attr.name}
                         {attr.unit && <span className="ml-1 text-text-secondary font-normal">({attr.unit})</span>}

@@ -405,7 +405,7 @@ export default async function HomePage() {
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
           How It Works
         </h2>
-        <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+        <ol className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto list-none">
           {/* Connecting line (desktop only) */}
           <div className="hidden md:block absolute top-10 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200" />
 
@@ -441,7 +441,7 @@ export default async function HomePage() {
               ),
             },
           ].map((item) => (
-            <div key={item.step} className="relative text-center">
+            <li key={item.step} className="relative text-center">
               <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-primary-200/50 relative z-10">
                 {item.icon}
                 <span className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-primary-600 to-accent-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
@@ -450,9 +450,9 @@ export default async function HomePage() {
               </div>
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
               <p className="text-text-secondary text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       {/* Trust Section */}

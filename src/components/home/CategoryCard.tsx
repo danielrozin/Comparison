@@ -45,7 +45,7 @@ export function CategoryCard({
 }: {
   category: { slug: string; name: string; icon: string };
 }) {
-  const gradient = CATEGORY_GRADIENTS[category.slug] ?? "from-gray-50 to-white group-hover:from-gray-100 group-hover:to-gray-50";
+  const gradient = CATEGORY_GRADIENTS[category.slug] ?? "from-surface-alt to-white group-hover:from-surface group-hover:to-surface-alt";
   const iconBg = ICON_BG[category.slug] ?? "bg-primary-100 group-hover:bg-primary-200";
 
   return (

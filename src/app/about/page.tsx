@@ -251,7 +251,7 @@ export default function AboutPage() {
         <p className="text-text-secondary leading-relaxed mb-6">
           {SITE_NAME} covers a wide and growing range of comparison categories:
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
             { label: "Sports & Athletes", icon: "⚽" },
             { label: "Countries & Nations", icon: "🌍" },
@@ -263,15 +263,15 @@ export default function AboutPage() {
             { label: "Economy & Finance", icon: "📈" },
             { label: "Companies & Brands", icon: "🏢" },
           ].map((item) => (
-            <div
+            <li
               key={item.label}
               className="flex items-center gap-3 bg-surface-alt border border-border rounded-xl p-3"
             >
-              <span className="text-xl">{item.icon}</span>
+              <span className="text-xl" aria-hidden="true">{item.icon}</span>
               <span className="text-sm font-medium text-text">{item.label}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Founders */}
