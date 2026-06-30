@@ -48,6 +48,8 @@ interface VideoSitemapEntry {
   playerLoc?: string;
   contentLoc?: string;
   publicationDate?: string;
+  category?: string;
+  tags?: string[];
 }
 
 /**
@@ -101,6 +103,10 @@ function buildVideoEntries(): VideoSitemapEntry[] {
       thumbnailLoc: yt?.youtubeVideoId
         ? `https://img.youtube.com/vi/${yt.youtubeVideoId}/hqdefault.jpg`
         : ogImageUrl(rec),
+      category: rec.category || undefined,
+      tags: [rec.entityA, rec.entityB, rec.category, "comparison", "vs"]
+        .filter((t): t is string => Boolean(t))
+        .slice(0, 32),
     };
 
     if (yt?.youtubeVideoId) {
@@ -137,6 +143,12 @@ function renderEntry(e: VideoSitemapEntry): string {
   if (e.playerLoc) lines.push(`      <video:player_loc>${escapeXml(e.playerLoc)}</video:player_loc>`);
   if (e.publicationDate)
     lines.push(`      <video:publication_date>${escapeXml(e.publicationDate)}</video:publication_date>`);
+  if (e.category) lines.push(`      <video:category>${escapeXml(e.category)}</video:category>`);
+  if (e.tags) {
+    for (const tag of e.tags) {
+      lines.push(`      <video:tag>${escapeXml(tag)}</video:tag>`);
+    }
+  }
   lines.push("      <video:family_friendly>yes</video:family_friendly>");
   lines.push("    </video:video>");
   lines.push("  </url>");
