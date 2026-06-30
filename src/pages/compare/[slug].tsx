@@ -564,6 +564,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="og:image:height" content="630" />
       {meta.publishedTime && <meta property="article:published_time" content={meta.publishedTime} />}
       {meta.modifiedTime && <meta property="article:modified_time" content={meta.modifiedTime} />}
+      {meta.modifiedTime && <meta property="og:updated_time" content={meta.modifiedTime} />}
       {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
       <meta property="article:author" content="https://www.aversusb.net/about" />
       {/* article:tag — entity names + comparison terms for Open Graph topic signals.
@@ -600,6 +601,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="citation_journal_title" content="A Versus B" />
       <meta name="citation_abstract" content={meta.description} />
       <meta name="citation_language" content="en" />
+      <meta name="citation_url" content={meta.canonical} />
+      <meta name="copyright" content={`© ${new Date().getFullYear()} A Versus B`} />
       {/* citation_keywords — AI academic indexers (Semantic Scholar, Perplexity research)
           use these to classify content and boost citation density on keyword-matched queries. */}
       {(meta.articleTags ?? []).length > 0 && (
