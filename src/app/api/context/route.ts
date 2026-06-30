@@ -121,8 +121,16 @@ export async function GET() {
       rss: `${SITE_URL}/feed`,
       atom: `${SITE_URL}/feed/atom`,
       news_sitemap: `${SITE_URL}/sitemap/news.xml`,
+      image_sitemap: `${SITE_URL}/sitemap/images.xml`,
+      video_sitemap: `${SITE_URL}/sitemap/video.xml`,
       webmention: `${SITE_URL}/api/webmention`,
+      pingback: `${SITE_URL}/api/pingback`,
       security_txt: `${SITE_URL}/.well-known/security.txt`,
+      humans_txt: `${SITE_URL}/humans.txt`,
+      change_password: `${SITE_URL}/.well-known/change-password`,
+      oembed_json: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
+      oembed_xml: `${SITE_URL}/api/oembed?url={page-url}&format=xml`,
+      context: `${SITE_URL}/api/context`,
     },
 
     schema_types_used: [
@@ -131,7 +139,7 @@ export async function GET() {
       "Organization", "WebSite", "CollectionPage", "ItemList",
       "DefinedTermSet", "DefinedTerm", "SearchAction", "CompareAction",
       "ReadAction", "HowTo", "AboutPage", "ProfilePage",
-      "VideoObject", "ImageObject", "DataCatalog",
+      "VideoObject", "ImageObject", "DataCatalog", "AggregateRating",
     ],
 
     how_to_cite: {

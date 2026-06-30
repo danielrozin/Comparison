@@ -565,7 +565,17 @@ export function comparisonPageSchema(
       sameAs: socialSameAs(),
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    isPartOf: [
+      { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      // Category hub back-reference — strengthens internal hierarchy signal for AI crawlers
+      // and Google's topic cluster detection. Lets Perplexity/ChatGPT navigate from
+      // individual comparisons up to the full category collection.
+      ...(comparison.category
+        ? [{ "@type": "CollectionPage", "@id": `${SITE_URL}/category/${comparison.category}#collectionpage`,
+            name: `${comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1)} Comparisons`,
+            url: `${SITE_URL}/category/${comparison.category}` }]
+        : []),
+    ],
     inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,

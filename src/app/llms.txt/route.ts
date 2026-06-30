@@ -167,7 +167,11 @@ export async function GET() {
   lines.push(`- [Google News sitemap](${SITE_URL}/sitemap/news.xml)`);
   lines.push(`- [OpenSearch descriptor](${SITE_URL}/opensearch.xml)`);
   lines.push(`- [WebMention endpoint](${SITE_URL}/api/webmention)`);
+  lines.push(`- [Pingback endpoint](${SITE_URL}/api/pingback)`);
   lines.push(`- [Sitemap index](${SITE_URL}/sitemap.xml)`);
+  lines.push(`- [Image sitemap](${SITE_URL}/sitemap/images.xml)`);
+  lines.push(`- [Video sitemap](${SITE_URL}/sitemap/video.xml)`);
+  lines.push(`- [humans.txt](${SITE_URL}/humans.txt)`);
   lines.push(`- [Developer API docs](${SITE_URL}/developers)`);
 
   const body = lines.join("\n");
