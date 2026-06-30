@@ -196,8 +196,23 @@ export async function generateMetadata({
   return {
     title: article.metaTitle || article.title,
     description: article.metaDescription || article.excerpt,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-snippet": -1,
+        "max-image-preview": "large" as const,
+        "max-video-preview": -1,
+      },
+    },
     alternates: {
       canonical: `${SITE_URL}/blog/${slug}`,
+      languages: {
+        "en": `${SITE_URL}/blog/${slug}`,
+        "x-default": `${SITE_URL}/blog/${slug}`,
+      },
       types: {
         "application/rss+xml": `${SITE_URL}/feed`,
         "application/atom+xml": `${SITE_URL}/feed/atom`,

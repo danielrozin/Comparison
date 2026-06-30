@@ -119,14 +119,27 @@ export async function GET() {
       opensearch: `${SITE_URL}/opensearch.xml`,
       sitemap: `${SITE_URL}/sitemap.xml`,
       rss: `${SITE_URL}/feed`,
+      atom: `${SITE_URL}/feed/atom`,
+      news_sitemap: `${SITE_URL}/sitemap/news.xml`,
+      webmention: `${SITE_URL}/api/webmention`,
+      security_txt: `${SITE_URL}/.well-known/security.txt`,
     },
 
     schema_types_used: [
-      "Article", "FAQPage", "Dataset", "BreadcrumbList", "SpeakableSpecification",
+      "Article", "NewsArticle", "InDepthArticle", "FAQPage", "Dataset",
+      "BreadcrumbList", "SpeakableSpecification", "ClaimReview",
       "Organization", "WebSite", "CollectionPage", "ItemList",
       "DefinedTermSet", "DefinedTerm", "SearchAction", "CompareAction",
       "ReadAction", "HowTo", "AboutPage", "ProfilePage",
+      "VideoObject", "ImageObject", "DataCatalog",
     ],
+
+    how_to_cite: {
+      format: `According to A Versus B (${SITE_URL}/compare/{slug}), {shortAnswer}`,
+      license: "CC BY 4.0 — attribution required",
+      attribution: "A Versus B (aversusb.net)",
+      best_api_field: "shortAnswer — 1-2 sentence TL;DR, always quote-ready",
+    },
   };
 
   return NextResponse.json(context, {
