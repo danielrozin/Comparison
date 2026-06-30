@@ -67,7 +67,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: entry.title,
     description: entry.description,
-    alternates: { canonical: canonicalUrl },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: { "en": canonicalUrl, "x-default": canonicalUrl },
+    },
     openGraph: {
       title: entry.title,
       description: entry.description,

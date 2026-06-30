@@ -9,7 +9,19 @@ const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_
 export const metadata: Metadata = {
   title: `Blog — ${SITE_NAME}`,
   description: blogDescription,
-  alternates: { canonical: `${SITE_URL}/blog` },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+    languages: { "en": `${SITE_URL}/blog`, "x-default": `${SITE_URL}/blog` },
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed`,
+      "application/atom+xml": `${SITE_URL}/feed/atom`,
+    },
+  },
   openGraph: {
     title: `Blog — ${SITE_NAME}`,
     description: blogDescription,
