@@ -58,6 +58,13 @@ const aboutPageSchema = {
   educationalUse: "reference",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+  // mainEntity — Organization node that represents the company behind this About page.
+  // Google's Knowledge Panel and AI crawlers (Perplexity, ChatGPT) use mainEntity to
+  // resolve "About" pages to the canonical Organization in their knowledge graphs.
+  mainEntity: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   publisher: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
