@@ -187,7 +187,8 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
         "Cache-Control": `public, max-age=${CACHE_SECONDS}, stale-while-revalidate=3600`,
-        "X-Robots-Tag": "noindex",
+        "X-Robots-Tag": "all",
+        "Access-Control-Allow-Origin": "*",
       },
     });
   }
@@ -209,11 +210,20 @@ export async function GET(request: Request) {
       llmsTxt: `${SITE_URL}/llms.txt`,
       llmsFullTxt: `${SITE_URL}/api/llms-full`,
       aiPlugin: `${SITE_URL}/.well-known/ai-plugin.json`,
+      context: `${SITE_URL}/api/context`,
+      knowledgeGraphApi: `${SITE_URL}/api/knowledge-graph/{slug}`,
+      oEmbedApi: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
+      atomFeed: `${SITE_URL}/feed/atom`,
+      rssFeed: `${SITE_URL}/feed`,
       sitemap: `${SITE_URL}/sitemap.xml`,
+      newsSitemap: `${SITE_URL}/sitemap/news.xml`,
+      webmention: `${SITE_URL}/api/webmention`,
     },
     {
       headers: {
         "Cache-Control": `public, max-age=${CACHE_SECONDS}, stale-while-revalidate=3600`,
+        "Access-Control-Allow-Origin": "*",
+        "X-Robots-Tag": "all",
       },
     }
   );
