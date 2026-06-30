@@ -101,6 +101,8 @@ export default function Q1AiBattlesPage() {
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    locationCreated: { "@type": "Country", name: "United States" },
+    countryOfOrigin: { "@type": "Country", name: "United States" },
   };
 
   const datasetSchema = {

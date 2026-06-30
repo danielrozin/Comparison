@@ -150,6 +150,8 @@ export default async function InvestingStudyPage() {
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    locationCreated: { "@type": "Country", name: "United States" },
+    countryOfOrigin: { "@type": "Country", name: "United States" },
   };
 
   const citation = `${SITE_NAME}, "The Investing & Finance Comparison Report 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;
