@@ -93,6 +93,11 @@ export async function GET() {
         format: "application/json",
         description: "Entity profile: name, type, shortDesc, description, faqs, rating, and list of comparisons. Includes ProfilePage JSON-LD.",
       },
+      categories: {
+        url: `${SITE_URL}/api/v1/categories`,
+        format: "application/json",
+        description: "Full category taxonomy with comparison counts, top pages per category, and DefinedTermSet JSON-LD.",
+      },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
     },
