@@ -253,6 +253,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       { "@type": "Thing", name: "Consumer Decision Research" },
       { "@type": "Thing", name: "Side-by-Side Analysis" },
     ],
+    // locationCreated — US data-origin signal for geographic AI filters (matches comparison pages).
+    locationCreated: { "@type": "Country", name: "United States" },
+    // discussionUrl — Reddit search for category-level community comparisons.
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(category.name.toLowerCase())}+comparison&type=link&sort=relevance`,
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 

@@ -219,6 +219,7 @@ export default async function BlogPage({
     ],
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
     hasPart: [{ "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` }],
+    locationCreated: { "@type": "Country", name: "United States" },
   };
 
   return (

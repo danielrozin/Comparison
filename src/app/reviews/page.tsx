@@ -167,6 +167,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
       { "@type": "Thing", name: "Product Ratings" },
       { "@type": "Thing", name: "Consumer Software Comparisons" },
     ],
+    locationCreated: { "@type": "Country", name: "United States" },
   };
 
   return (

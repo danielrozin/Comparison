@@ -150,6 +150,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     ],
     // hasPart[] — structural sub-documents: the ItemList is a formal part of this CollectionPage.
     hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` }],
+    locationCreated: { "@type": "Country", name: "United States" },
   };
 
   // ItemList schema — lets AI answer engines enumerate the trending comparisons
