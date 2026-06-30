@@ -101,7 +101,7 @@ const articleSchema = {
   copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
-  audience: { "@type": "Audience", audienceType: "Developers, DevOps Engineers, CTOs, Businesses" },
+  audience: { "@type": "Audience", audienceType: "Developers, DevOps Engineers, CTOs, Businesses", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   accessMode: ["textual"],
   accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },

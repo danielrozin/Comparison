@@ -79,7 +79,7 @@ const schema = {
   teaches: "How A Versus B tests and benchmarks web browsers for speed, privacy, and compatibility",
   educationalUse: "guide",
   keywords: "browser testing methodology, how we test browsers, browser benchmark methodology, Chrome Firefox testing",
-  audience: { "@type": "Audience", audienceType: "Consumers, Developers, IT Professionals, Privacy Researchers" },
+  audience: { "@type": "Audience", audienceType: "Consumers, Developers, IT Professionals, Privacy Researchers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

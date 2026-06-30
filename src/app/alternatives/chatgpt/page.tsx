@@ -268,7 +268,7 @@ const collectionPageSchema = {
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
-  audience: { "@type": "Audience", audienceType: "Technology professionals comparing AI chatbots" },
+  audience: { "@type": "Audience", audienceType: "Technology professionals comparing AI chatbots", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   accessMode: ["textual"],
   accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

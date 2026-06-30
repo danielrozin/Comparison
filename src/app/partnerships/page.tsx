@@ -101,7 +101,7 @@ export default function PartnershipsPage() {
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
-    audience: { "@type": "Audience", audienceType: "Publishers, Brands, Agencies, Researchers" },
+    audience: { "@type": "Audience", audienceType: "Publishers, Brands, Agencies, Researchers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     accessMode: ["textual"],
     accessibilityFeature: ["readingOrder", "structuralNavigation"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],

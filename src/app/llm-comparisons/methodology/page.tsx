@@ -79,7 +79,7 @@ const schema = {
   teaches: "How A Versus B tests and benchmarks large language models for comparative analysis",
   educationalUse: "guide",
   keywords: "LLM methodology, how we compare language models, AI benchmark methodology, GPT vs Claude testing",
-  audience: { "@type": "Audience", audienceType: "AI Researchers, Developers, Consumers, Analysts" },
+  audience: { "@type": "Audience", audienceType: "AI Researchers, Developers, Consumers, Analysts", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

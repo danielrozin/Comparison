@@ -23,7 +23,7 @@ const apiSchema = {
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
-  audience: { "@type": "Audience", audienceType: "Software Developers, Researchers, Data Scientists" },
+  audience: { "@type": "Audience", audienceType: "Software Developers, Researchers, Data Scientists", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
   educationalLevel: "Intermediate",
   teaches: "How to integrate the A Versus B REST API to access structured comparison data, entity profiles, and search results",

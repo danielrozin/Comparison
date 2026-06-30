@@ -749,6 +749,7 @@ export function comparisonPageSchema(
     audience: {
       "@type": "Audience",
       audienceType: "Consumers, Researchers, Decision Makers, Students",
+      geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
     // review — array of Review nodes:
     // 1. Pair-level review: verdict for the full comparison (gates on verdict existing).
@@ -1438,7 +1439,7 @@ function buildMultiEntityGraph(
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
+    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     // review[] — pair-level verdict + per-entity pros/cons Reviews (parity with 2-entity schema).
     ...(() => {
       const multiReviews: Record<string, unknown>[] = [];
@@ -2024,7 +2025,7 @@ export function categoryPageSchema(category: CategoryData) {
       copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
       copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       acquireLicensePage: `${SITE_URL}/terms`,
-      audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
+      audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
       dateModified: today,
       contentReferenceTime: today,
       locationCreated: { "@type": "Country", name: "United States" },
@@ -2305,7 +2306,11 @@ export function profilePageSchema(entity: {
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
-    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
+    audience: {
+      "@type": "Audience",
+      audienceType: "Consumers, Researchers, Decision Makers, Students",
+      geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
+    },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],

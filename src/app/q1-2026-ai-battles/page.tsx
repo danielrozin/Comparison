@@ -91,7 +91,7 @@ export default function Q1AiBattlesPage() {
     copyrightYear: 2026,
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
-    audience: { "@type": "Audience", audienceType: "Researchers, AI Enthusiasts, Marketers, Analysts" },
+    audience: { "@type": "Audience", audienceType: "Researchers, AI Enthusiasts, Marketers, Analysts", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],

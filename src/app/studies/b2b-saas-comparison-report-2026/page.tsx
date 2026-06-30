@@ -143,7 +143,7 @@ export default async function B2BSaaSStudyPage() {
     copyrightYear: 2026,
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
-    audience: { "@type": "Audience", audienceType: "Researchers, Software Buyers, Business Analysts, Procurement Teams" },
+    audience: { "@type": "Audience", audienceType: "Researchers, Software Buyers, Business Analysts, Procurement Teams", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],

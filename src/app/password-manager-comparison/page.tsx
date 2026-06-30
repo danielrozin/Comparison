@@ -88,7 +88,7 @@ const articleSchema = {
   copyrightYear: 2026,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
-  audience: { "@type": "Audience", audienceType: "Consumers, IT Professionals, Security Researchers, Developers" },
+  audience: { "@type": "Audience", audienceType: "Consumers, IT Professionals, Security Researchers, Developers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],

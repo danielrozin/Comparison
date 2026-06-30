@@ -118,7 +118,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
-    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
+    audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro"] },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
