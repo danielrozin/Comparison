@@ -87,6 +87,9 @@ function buildSchemas() {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: pageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
@@ -96,6 +99,8 @@ function buildSchemas() {
         "#how-it-works-section",
       ],
     },
+    timeRequired: "PT3M",
+    wordCount: 600,
   };
 
   const faqPage = {

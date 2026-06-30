@@ -262,6 +262,8 @@ const collectionPageSchema = {
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2", ".alternatives-intro"] },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
+  timeRequired: "PT4M",
+  wordCount: 800,
 };
 interface AlternativeRow {
   rank: number;
