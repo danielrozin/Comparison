@@ -62,7 +62,15 @@ const articleSchema = {
     height: 630,
     caption: "LLM Comparison Guide 2026 — A Versus B",
   },
-  author: { "@type": "Person", name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
+  author: {
+    "@type": "Person",
+    "@id": `${SITE_URL}/authors/daniel-rozin#person`,
+    name: "Daniel Rozin",
+    url: `${SITE_URL}/authors/daniel-rozin`,
+    jobTitle: "Founder & Editor-in-Chief",
+    worksFor: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    sameAs: ["https://www.linkedin.com/in/daniel-rozin-56a066b0/"],
+  },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
@@ -96,6 +104,8 @@ const articleSchema = {
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
   ethicsPolicy: `${SITE_URL}/disclaimer`,
   correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+  // discussionUrl — Reddit community discussions on LLM comparisons; E-E-A-T engagement signal.
+  discussionUrl: "https://www.reddit.com/search/?q=LLM+comparison+OR+%22best+AI+model%22&type=link&sort=relevance",
 };
 
 const productSchemas = [

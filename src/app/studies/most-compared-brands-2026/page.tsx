@@ -161,6 +161,7 @@ export default async function MostComparedStudyPage() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     locationCreated: { "@type": "Country", name: "United States" },
     countryOfOrigin: { "@type": "Country", name: "United States" },
+    discussionUrl: "https://www.reddit.com/search/?q=most+compared+brands+comparison&type=link&sort=relevance",
   };
 
   const citation = `${SITE_NAME}, "The Most-Compared Brands of 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;

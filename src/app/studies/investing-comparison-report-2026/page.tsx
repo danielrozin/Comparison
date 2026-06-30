@@ -152,6 +152,7 @@ export default async function InvestingStudyPage() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     locationCreated: { "@type": "Country", name: "United States" },
     countryOfOrigin: { "@type": "Country", name: "United States" },
+    discussionUrl: "https://www.reddit.com/search/?q=investing+finance+comparison+broker&type=link&sort=relevance",
   };
 
   const citation = `${SITE_NAME}, "The Investing & Finance Comparison Report 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;

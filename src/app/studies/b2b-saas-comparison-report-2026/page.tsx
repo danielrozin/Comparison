@@ -155,6 +155,7 @@ export default async function B2BSaaSStudyPage() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     locationCreated: { "@type": "Country", name: "United States" },
     countryOfOrigin: { "@type": "Country", name: "United States" },
+    discussionUrl: "https://www.reddit.com/search/?q=B2B+SaaS+comparison+software&type=link&sort=relevance",
   };
 
   const citation = `${SITE_NAME}, "The B2B SaaS Comparison Report 2026," aversusb.net, ${updatedLabel}. ${CANONICAL}`;
