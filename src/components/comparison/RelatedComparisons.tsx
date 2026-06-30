@@ -67,7 +67,7 @@ export function RelatedComparisons({
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
           const letterB = (parts[1] || "B").charAt(0).toUpperCase();
           const catColor = comp.category
-            ? CATEGORY_COLORS[comp.category.toLowerCase()] ?? "bg-gray-50 text-gray-600 border-gray-100"
+            ? CATEGORY_COLORS[comp.category.toLowerCase()] ?? "bg-surface-alt text-text-secondary border-border"
             : null;
 
           return (

@@ -61,7 +61,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                     setOpenIndex(isOpen ? null : i);
                   }
                 }}
-                className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-gray-50/70"}`}
+                className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
                 aria-expanded={isOpen}
               >
                 {/* Number badge */}

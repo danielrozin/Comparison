@@ -241,7 +241,7 @@ export function VersionHistory({
                         >
                           <button
                             onClick={() => toggleEntry(entry.id)}
-                            className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg transition-colors"
+                            className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors"
                           >
                             <div className="flex items-center gap-3">
                               <span

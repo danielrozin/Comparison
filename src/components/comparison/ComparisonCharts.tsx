@@ -136,7 +136,7 @@ export function ComparisonCharts({
       <div className="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-border rounded-xl p-4 sm:p-6">
         {/* Tabs */}
         <div className="flex items-center justify-center mb-6">
-          <div className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-gray-200">
+          <div className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-border">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -144,7 +144,7 @@ export function ComparisonCharts({
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                   activeTab === tab.key
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    : "text-text-secondary hover:text-text hover:bg-surface-alt"
                 }`}
               >
                 {tab.label}
@@ -154,7 +154,7 @@ export function ComparisonCharts({
         </div>
 
         {/* Chart Content */}
-        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 min-h-[350px]">
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
           {activeTab === "bar" && (
             <BarChartView
               data={barData}
@@ -196,7 +196,7 @@ function BarChartView({
 
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-4 text-center">
+      <p className="text-sm text-text-secondary mb-4 text-center">
         Side-by-side comparison of numeric attributes
       </p>
       <ResponsiveContainer width="100%" height={chartHeight}>
@@ -257,7 +257,7 @@ function RadarChartView({
 }) {
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-4 text-center">
+      <p className="text-sm text-text-secondary mb-4 text-center">
         Normalized scores (0-100) for at-a-glance comparison
       </p>
       <ResponsiveContainer width="100%" height={400}>
@@ -322,7 +322,7 @@ function ScoreCardView({
 }) {
   return (
     <div>
-      <p className="text-sm text-gray-500 mb-6 text-center">
+      <p className="text-sm text-text-secondary mb-6 text-center">
         Category wins across {data.total} numeric attributes
       </p>
 
@@ -334,23 +334,23 @@ function ScoreCardView({
             color={ENTITY_A_COLOR}
             size={120}
           />
-          <h3 className="mt-3 font-semibold text-gray-900 text-center">
+          <h3 className="mt-3 font-semibold text-text text-center">
             {entityAName}
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-secondary">
             {data.winsA} win{data.winsA !== 1 ? "s" : ""}
           </p>
         </div>
 
         {/* Ties */}
         <div className="flex flex-col items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-            <span className="text-2xl font-bold text-gray-400">
+          <div className="w-20 h-20 rounded-full bg-surface-alt flex items-center justify-center">
+            <span className="text-2xl font-bold text-text-secondary">
               {data.ties}
             </span>
           </div>
-          <h3 className="mt-3 font-semibold text-gray-500">Ties</h3>
-          <p className="text-sm text-gray-400">
+          <h3 className="mt-3 font-semibold text-text-secondary">Ties</h3>
+          <p className="text-sm text-text-secondary">
             {data.total > 0
               ? Math.round((data.ties / data.total) * 100)
               : 0}
@@ -365,10 +365,10 @@ function ScoreCardView({
             color={ENTITY_B_COLOR}
             size={120}
           />
-          <h3 className="mt-3 font-semibold text-gray-900 text-center">
+          <h3 className="mt-3 font-semibold text-text text-center">
             {entityBName}
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-secondary">
             {data.winsB} win{data.winsB !== 1 ? "s" : ""}
           </p>
         </div>
@@ -376,7 +376,7 @@ function ScoreCardView({
 
       {/* Summary bar */}
       <div className="mt-8 max-w-md mx-auto">
-        <div className="flex h-3 rounded-full overflow-hidden bg-gray-100">
+        <div className="flex h-3 rounded-full overflow-hidden bg-surface-alt">
           {data.pctA > 0 && (
             <div
               className="transition-all duration-1000 ease-out rounded-l-full"
@@ -388,7 +388,7 @@ function ScoreCardView({
           )}
           {data.ties > 0 && (
             <div
-              className="transition-all duration-1000 ease-out bg-gray-300"
+              className="transition-all duration-1000 ease-out bg-border"
               style={{
                 width: `${
                   data.total > 0
@@ -408,7 +408,7 @@ function ScoreCardView({
             />
           )}
         </div>
-        <div className="flex justify-between mt-2 text-xs text-gray-500">
+        <div className="flex justify-between mt-2 text-xs text-text-secondary">
           <span>{entityAName}</span>
           <span>{entityBName}</span>
         </div>

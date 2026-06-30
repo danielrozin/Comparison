@@ -99,7 +99,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="entityA" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="entityA" className="block text-sm font-medium text-text mb-1">
             First item
           </label>
           <input
@@ -110,11 +110,11 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             placeholder="e.g. Python"
             maxLength={200}
             required
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+            className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           />
         </div>
         <div>
-          <label htmlFor="entityB" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="entityB" className="block text-sm font-medium text-text mb-1">
             Second item
           </label>
           <input
@@ -125,20 +125,20 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             placeholder="e.g. JavaScript"
             maxLength={200}
             required
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+            className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-          Category <span className="text-gray-400">(optional)</span>
+        <label htmlFor="category" className="block text-sm font-medium text-text mb-1">
+          Category <span className="text-text-secondary">(optional)</span>
         </label>
         <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white"
+          className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white"
         >
           <option value="">Select a category...</option>
           {CATEGORIES.map((cat) => (
@@ -150,8 +150,8 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       <div>
-        <label htmlFor="reason" className="block text-sm font-medium text-gray-700 mb-1">
-          Why do you want this comparison? <span className="text-gray-400">(optional)</span>
+        <label htmlFor="reason" className="block text-sm font-medium text-text mb-1">
+          Why do you want this comparison? <span className="text-text-secondary">(optional)</span>
         </label>
         <textarea
           id="reason"
@@ -160,13 +160,13 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           placeholder="Briefly explain why this comparison would be useful..."
           maxLength={500}
           rows={2}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
+          className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email <span className="text-gray-400">(optional, to get notified when it&apos;s ready)</span>
+        <label htmlFor="email" className="block text-sm font-medium text-text mb-1">
+          Email <span className="text-text-secondary">(optional, to get notified when it&apos;s ready)</span>
         </label>
         <input
           id="email"
@@ -174,7 +174,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+          className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
         />
       </div>
 

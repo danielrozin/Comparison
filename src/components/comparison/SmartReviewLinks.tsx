@@ -41,7 +41,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
             ? "bg-blue-100 text-blue-700 ring-blue-200"
             : agg.smartScore >= 60
             ? "bg-amber-100 text-amber-700 ring-amber-200"
-            : "bg-gray-100 text-gray-700 ring-gray-200";
+            : "bg-surface-alt text-text ring-border";
 
           return (
             <div key={slug} className="flex flex-col gap-2">

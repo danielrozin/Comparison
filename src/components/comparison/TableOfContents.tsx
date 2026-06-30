@@ -104,7 +104,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
                     isActive
                       ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
-                      : "text-text-secondary hover:text-text hover:bg-gray-50"
+                      : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                   }`}
                 >
                   {isActive && (
@@ -112,7 +112,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   )}
                   <span
                     className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
-                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-gray-100 text-gray-400"
+                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
                     }`}
                   >
                     {idx + 1}
@@ -134,7 +134,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
               On this page
             </p>
             {/* Progress bar */}
-            <div className="mt-2 h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div className="mt-2 h-1 bg-surface-alt rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
@@ -153,7 +153,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden ${
                     isActive
                       ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
-                      : "text-text-secondary hover:text-text hover:bg-gray-50"
+                      : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                   }`}
                 >
                   {isActive && (
@@ -161,7 +161,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   )}
                   <span
                     className={`flex-shrink-0 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center transition-all ${
-                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-gray-100 text-gray-400"
+                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
                     }`}
                   >
                     {idx + 1}

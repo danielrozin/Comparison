@@ -295,13 +295,13 @@ function OverflowRowsMobile({
   if (attrs.length === 0) return null;
   return (
     <details className="border-t border-border/30">
-      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-gray-50/80">
+      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-surface-alt/80">
         Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
       </summary>
       <div className="divide-y divide-border/30">
         {attrs.map((attr) => (
           <div key={attr.id} className="bg-white">
-            <div className="px-3 py-1.5 bg-gray-50/40">
+            <div className="px-3 py-1.5 bg-surface-alt/40">
               <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
                 {attr.name}
                 {attr.unit && (
@@ -370,7 +370,7 @@ function LegacyTable({
                       key={attr.id}
                       className={`${
                         i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
-                      } ${i % 2 === 0 ? "bg-gray-50/50" : ""} hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_#6366f1] transition-all duration-150`}
+                      } ${i % 2 === 0 ? "bg-surface-alt/50" : ""} hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_#6366f1] transition-all duration-150`}
                     >
                       <td className="px-5 py-3 text-sm font-medium text-text">
                         {attr.name}
@@ -599,7 +599,7 @@ function RedesignedTable({
                                   isLastVisible
                                     ? "border-b border-border"
                                     : "border-b border-border/30"
-                                } ${i % 2 === 0 ? "bg-gray-50/40" : "bg-white"} hover:bg-primary-50/40 transition-colors`}
+                                } ${i % 2 === 0 ? "bg-surface-alt/40" : "bg-white"} hover:bg-primary-50/40 transition-colors`}
                               >
                                 <td className="px-5 py-3 text-sm font-medium text-text">
                                   {attr.name}
@@ -701,7 +701,7 @@ function RedesignedTable({
                       return (
                         <div key={attr.id} className={`bg-white ${winnerIndicator}`}>
                           {/* Attribute label row */}
-                          <div className="px-3 py-1.5 bg-gray-50/80">
+                          <div className="px-3 py-1.5 bg-surface-alt/80">
                             <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
                               {attr.name}
                               {attr.unit && (

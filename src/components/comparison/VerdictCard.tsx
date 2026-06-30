@@ -195,7 +195,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                           </div>
                         )}
                         <div className="flex items-center gap-1.5 min-w-0">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-gray-300 truncate">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-white/60 truncate">
                             Choose {entity.name} if
                           </p>
                           {isWinner && (

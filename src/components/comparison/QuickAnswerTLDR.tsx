@@ -59,7 +59,7 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
                         <path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" />
                       </svg>
                     </span>
-                    <p className="text-xs text-gray-700 leading-relaxed">
+                    <p className="text-xs text-text leading-relaxed">
                       <span className="font-semibold text-amber-800">Deciding factor:</span>{" "}
                       {quickAnswer.winnerReason}
                     </p>

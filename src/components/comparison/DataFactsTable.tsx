@@ -61,7 +61,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                 const numB = bVal?.valueNumber;
 
                 let diff: string | null = null;
-                let diffColor = "text-gray-400";
+                let diffColor = "text-text-secondary";
                 if (numA != null && numB != null && numB !== 0) {
                   const pct = ((numA - numB) / Math.abs(numB)) * 100;
                   if (Math.abs(pct) >= 1) {
@@ -80,20 +80,20 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
 
                 const rowIdx = numericAttrs.indexOf(attr);
                 return (
-                  <tr key={attr.id} className={`group/row hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_rgba(99,102,241,0.15)] transition-all duration-150 ${rowIdx % 2 === 1 ? "bg-gray-50/50" : ""}`}>
-                    <td className="px-4 py-3 text-gray-700 font-medium">
+                  <tr key={attr.id} className={`group/row hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_rgba(99,102,241,0.15)] transition-all duration-150 ${rowIdx % 2 === 1 ? "bg-surface-alt/50" : ""}`}>
+                    <td className="px-4 py-3 text-text font-medium">
                       {attr.name}
                       {attr.unit && (
-                        <span className="text-gray-400 text-xs ml-1">({attr.unit})</span>
+                        <span className="text-text-secondary text-xs ml-1">({attr.unit})</span>
                       )}
                     </td>
-                    <td className={`px-4 py-3 text-center tabular-nums ${aWins ? "font-bold text-green-700 bg-green-50/60" : "text-gray-600"}`}>
+                    <td className={`px-4 py-3 text-center tabular-nums ${aWins ? "font-bold text-green-700 bg-green-50/60" : "text-text-secondary"}`}>
                       <span className="inline-flex items-center gap-1">
                         {aVal?.valueText || (numA != null ? formatNumber(numA) : "—")}
                         {aWins && <WinnerBadge />}
                       </span>
                     </td>
-                    <td className={`px-4 py-3 text-center tabular-nums ${bWins ? "font-bold text-green-700 bg-green-50/60" : "text-gray-600"}`}>
+                    <td className={`px-4 py-3 text-center tabular-nums ${bWins ? "font-bold text-green-700 bg-green-50/60" : "text-text-secondary"}`}>
                       <span className="inline-flex items-center gap-1">
                         {bVal?.valueText || (numB != null ? formatNumber(numB) : "—")}
                         {bWins && <WinnerBadge />}
@@ -120,7 +120,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                           )}
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 text-center block">—</span>
+                        <span className="text-xs text-text-secondary text-center block">—</span>
                       )}
                     </td>
                   </tr>
@@ -130,7 +130,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
           </table>
         </div>
 
-      <p className="text-[10px] text-gray-400 mt-2 text-right">
+      <p className="text-[10px] text-text-secondary mt-2 text-right">
         Sourced from publicly available data · {new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" })}
       </p>
     </section>

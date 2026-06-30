@@ -22,7 +22,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 function getCategoryColor(category: string | undefined): string {
-  if (!category) return "bg-gray-50 text-gray-600 border-gray-100";
+  if (!category) return "bg-surface-alt text-text-secondary border-border";
   return CATEGORY_COLORS[category.toLowerCase()] ?? "bg-primary-50 text-primary-700 border-primary-100";
 }
 
