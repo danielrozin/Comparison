@@ -164,8 +164,8 @@ export function SurveyForm() {
   if (done) {
     return (
       <div className="max-w-[640px] mx-auto px-4 py-16 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Thank you!</h2>
-        <p className="text-gray-500">
+        <h2 className="text-2xl font-bold text-text mb-3">Thank you!</h2>
+        <p className="text-text-secondary">
           Your feedback helps us build a better SmartReview.
           <br />
           You can close this tab now.
@@ -177,15 +177,15 @@ export function SurveyForm() {
   return (
     <div className="max-w-[640px] mx-auto px-4 py-6">
       {/* Header */}
-      <div className="text-center pb-6 border-b-2 border-gray-200 mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+      <div className="text-center pb-6 border-b-2 border-border mb-8">
+        <h1 className="text-2xl font-bold text-text mb-2">
           Help Shape SmartReview
         </h1>
-        <p className="text-gray-500 text-[0.95rem]">
+        <p className="text-text-secondary text-[0.95rem]">
           Your feedback directly shapes what we build next. Takes about 3
           minutes. All responses are anonymous.
         </p>
-        <div className="w-full h-1.5 bg-gray-200 rounded-full mt-4 overflow-hidden">
+        <div className="w-full h-1.5 bg-surface-alt rounded-full mt-4 overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-400"
             style={{ width: `${(page / TOTAL_PAGES) * 100}%` }}
@@ -321,7 +321,7 @@ export function SurveyForm() {
               features?
               <span className="text-red-500 ml-0.5">*</span>
             </span>
-            <div className="flex justify-between text-xs text-gray-400 mb-4 px-1">
+            <div className="flex justify-between text-xs text-text-secondary/60 mb-4 px-1">
               <span>1 = Not interested</span>
               <span>5 = Very interested</span>
             </div>
@@ -419,7 +419,7 @@ export function SurveyForm() {
               summaries?
               <span className="text-red-500 ml-0.5">*</span>
             </span>
-            <div className="flex justify-between text-xs text-gray-400 mb-4 px-1">
+            <div className="flex justify-between text-xs text-text-secondary/60 mb-4 px-1">
               <span>1 = Not at all</span>
               <span>5 = Completely</span>
             </div>
@@ -515,7 +515,7 @@ export function SurveyForm() {
         {page > 1 ? (
           <button
             onClick={handlePrev}
-            className="px-7 py-3 bg-gray-200 text-gray-600 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+            className="px-7 py-3 bg-surface-alt text-text-secondary font-semibold rounded-lg hover:bg-border transition-colors"
           >
             Back
           </button>
@@ -540,7 +540,7 @@ export function SurveyForm() {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-lg font-semibold text-indigo-600 mb-5 pb-2 border-b border-gray-200">
+    <h2 className="text-lg font-semibold text-indigo-600 mb-5 pb-2 border-b border-border">
       {children}
     </h2>
   );
@@ -584,7 +584,7 @@ function RadioQuestion({
             className={`flex items-start p-2.5 px-3.5 border rounded-lg cursor-pointer transition-all text-sm ${
               value === opt
                 ? "border-indigo-500 bg-indigo-50"
-                : "border-gray-200 hover:border-indigo-300 hover:bg-purple-50"
+                : "border-border hover:border-indigo-300 hover:bg-purple-50"
             }`}
           >
             <input
@@ -605,7 +605,7 @@ function RadioQuestion({
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."
-          className="mt-1.5 w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
         />
       )}
       {error && <ErrorText>{error}</ErrorText>}
@@ -647,7 +647,7 @@ function CheckboxQuestion({
             className={`flex items-start p-2.5 px-3.5 border rounded-lg cursor-pointer transition-all text-sm ${
               values.includes(opt)
                 ? "border-indigo-500 bg-indigo-50"
-                : "border-gray-200 hover:border-indigo-300 hover:bg-purple-50"
+                : "border-border hover:border-indigo-300 hover:bg-purple-50"
             }`}
           >
             <input
@@ -666,10 +666,10 @@ function CheckboxQuestion({
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."
-          className="mt-1.5 w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
         />
       )}
-      {note && <p className="text-xs text-gray-400 mt-1">{note}</p>}
+      {note && <p className="text-xs text-text-secondary/60 mt-1">{note}</p>}
       {error && <ErrorText>{error}</ErrorText>}
     </div>
   );
@@ -700,7 +700,7 @@ function TextAreaQuestion({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm resize-y min-h-[80px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+        className="w-full px-3.5 py-2.5 border border-border rounded-lg text-sm resize-y min-h-[80px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
       />
       {error && <ErrorText>{error}</ErrorText>}
     </div>
@@ -727,7 +727,7 @@ function ScaleRow({
             key={n}
             type="button"
             onClick={() => onChange(n)}
-            className={`flex-1 py-2 text-sm border border-gray-200 transition-all cursor-pointer ${
+            className={`flex-1 py-2 text-sm border border-border transition-all cursor-pointer ${
               i === 0
                 ? "rounded-l-lg"
                 : i === 4

@@ -85,7 +85,7 @@ function categoryColor(cat: string): string {
     food: "bg-orange-100 text-orange-700",
     automotive: "bg-slate-100 text-slate-700",
   };
-  return colors[cat] || "bg-gray-100 text-gray-700";
+  return colors[cat] || "bg-surface-alt text-text-secondary";
 }
 
 export default async function BlogPage({

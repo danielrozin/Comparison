@@ -38,7 +38,7 @@ export default async function NotFound() {
           <form action="/search" method="GET" className="max-w-lg mx-auto">
             <div className="relative">
               <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary/60"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -49,7 +49,7 @@ export default async function NotFound() {
                 type="text"
                 name="q"
                 placeholder='Try "iPhone vs Samsung" or "Tesla vs BMW"...'
-                className="w-full pl-12 pr-28 py-4 rounded-xl text-base bg-white text-gray-900 placeholder:text-gray-400 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
+                className="w-full pl-12 pr-28 py-4 rounded-xl text-base bg-white text-text placeholder:text-text-secondary/50 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
               />
               <button
                 type="submit"

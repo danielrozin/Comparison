@@ -372,22 +372,22 @@ export default async function BestPage({ params }: PageProps) {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Breadcrumbs */}
-        <nav aria-label="breadcrumb" className="text-sm text-gray-500 mb-6">
+        <nav aria-label="breadcrumb" className="text-sm text-text-secondary mb-6">
           <ol className="flex items-center gap-1 flex-wrap">
             <li><Link href="/" className="hover:underline">Home</Link></li>
             <li aria-hidden="true">/</li>
             <li><Link href="/best" className="hover:underline">Best lists</Link></li>
             <li aria-hidden="true">/</li>
-            <li><span className="text-gray-700">{entry.h1}</span></li>
+            <li><span className="text-text">{entry.h1}</span></li>
           </ol>
         </nav>
 
         {/* Header */}
         <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-text mb-4 leading-tight">
             {entry.h1}
           </h1>
-          <div className="flex items-center gap-3 text-sm text-gray-500">
+          <div className="flex items-center gap-3 text-sm text-text-secondary">
             {entry.authorName && (
               <span>
                 By{" "}

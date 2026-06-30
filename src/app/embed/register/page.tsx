@@ -51,7 +51,7 @@ export default async function EmbedRegisterPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-8">
+      <div className="bg-white border border-border rounded-2xl p-8">
         <EmbedRegistrationForm defaultTier={tier} />
       </div>
     </div>

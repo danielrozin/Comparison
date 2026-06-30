@@ -75,7 +75,7 @@ function SearchContent() {
           {/* Search form */}
           <form onSubmit={handleSearch} role="search">
             <div className="relative">
-              <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
@@ -84,7 +84,7 @@ function SearchContent() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='Try "Messi vs Ronaldo" or "Python vs JavaScript"...'
                 aria-label="Search comparisons"
-                className="w-full pl-12 pr-28 py-4 rounded-xl text-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
+                className="w-full pl-12 pr-28 py-4 rounded-xl text-lg bg-white text-text placeholder:text-text-secondary/50 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
                 autoFocus={!query}
               />
               <button

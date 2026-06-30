@@ -177,7 +177,7 @@ function categoryColor(cat: string): string {
     travel: "bg-teal-100 text-teal-700",
     food: "bg-orange-100 text-orange-700",
   };
-  return colors[cat] || "bg-gray-100 text-gray-700";
+  return colors[cat] || "bg-surface-alt text-text-secondary";
 }
 
 // ---------- Metadata ----------

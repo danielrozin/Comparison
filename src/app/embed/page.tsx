@@ -108,7 +108,7 @@ export default function EmbedLandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/trending"
-              className="px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg"
+              className="px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-surface-alt/80 transition-colors shadow-lg"
             >
               Browse Comparisons to Embed
             </Link>
@@ -137,7 +137,7 @@ export default function EmbedLandingPage() {
           {STEPS.map((step) => (
             <div
               key={step.number}
-              className="relative bg-white border border-gray-200 rounded-2xl p-8 text-center hover:shadow-lg hover:border-primary-200 transition-all duration-300"
+              className="relative bg-white border border-border rounded-2xl p-8 text-center hover:shadow-lg hover:border-primary-200 transition-all duration-300"
             >
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
                 {step.number}
@@ -151,7 +151,7 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* Live Demo */}
-      <section className="bg-gray-50 border-y border-gray-200">
+      <section className="bg-surface-alt border-y border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
@@ -161,21 +161,21 @@ export default function EmbedLandingPage() {
               Here is what an embedded comparison looks like on your site.
             </p>
           </div>
-          <div className="border border-gray-200 rounded-2xl overflow-hidden shadow-lg bg-white">
-            <div className="bg-gray-100 px-4 py-3 border-b border-gray-200 flex items-center gap-2">
+          <div className="border border-border rounded-2xl overflow-hidden shadow-lg bg-white">
+            <div className="bg-surface-alt px-4 py-3 border-b border-border flex items-center gap-2">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
               </div>
               <div className="flex-1 mx-4">
-                <div className="bg-white rounded-md px-3 py-1 text-xs text-gray-400 font-mono text-center border border-gray-200">
+                <div className="bg-white rounded-md px-3 py-1 text-xs text-text-secondary/60 font-mono text-center border border-border">
                   yourblog.com/review-post
                 </div>
               </div>
             </div>
             <div className="p-6">
-              <div className="mb-4 text-sm text-gray-500 italic">Your blog content here...</div>
+              <div className="mb-4 text-sm text-text-secondary italic">Your blog content here...</div>
               <iframe
                 src={`${SITE_URL}/embed/react-vs-angular`}
                 width="100%"
@@ -185,7 +185,7 @@ export default function EmbedLandingPage() {
                 title="Embed demo"
                 loading="lazy"
               />
-              <div className="mt-4 text-sm text-gray-500 italic">More of your content below...</div>
+              <div className="mt-4 text-sm text-text-secondary italic">More of your content below...</div>
             </div>
           </div>
         </div>
@@ -225,7 +225,7 @@ export default function EmbedLandingPage() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {/* Free */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8">
+          <div className="bg-white border border-border rounded-2xl p-8">
             <h3 className="font-display font-bold text-text text-lg mb-1">Free</h3>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-3xl font-display font-black text-text">$0</span>
@@ -248,7 +248,7 @@ export default function EmbedLandingPage() {
             </ul>
             <Link
               href="/embed/register"
-              className="block w-full text-center px-6 py-3 bg-gray-100 text-text font-semibold rounded-xl hover:bg-gray-200 transition-colors"
+              className="block w-full text-center px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-border transition-colors"
             >
               Get Started Free
             </Link>
@@ -289,7 +289,7 @@ export default function EmbedLandingPage() {
           </div>
 
           {/* Enterprise */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-8">
+          <div className="bg-white border border-border rounded-2xl p-8">
             <h3 className="font-display font-bold text-text text-lg mb-1">Enterprise</h3>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-3xl font-display font-black text-text">$499</span>
@@ -333,7 +333,7 @@ export default function EmbedLandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/trending"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors shadow-lg text-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-semibold rounded-xl hover:bg-surface-alt/80 transition-colors shadow-lg text-lg"
             >
               Browse Comparisons
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>

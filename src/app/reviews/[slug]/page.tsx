@@ -78,8 +78,8 @@ function SourceBreakdown({ breakdown }: { breakdown: Record<string, { avg: numbe
 }
 
 function SmartScoreRing({ score }: { score: number }) {
-  const color = score >= 90 ? "text-green-600" : score >= 75 ? "text-blue-600" : score >= 60 ? "text-amber-600" : "text-gray-500";
-  const bgColor = score >= 90 ? "bg-green-50" : score >= 75 ? "bg-blue-50" : score >= 60 ? "bg-amber-50" : "bg-gray-50";
+  const color = score >= 90 ? "text-green-600" : score >= 75 ? "text-blue-600" : score >= 60 ? "text-amber-600" : "text-text-secondary";
+  const bgColor = score >= 90 ? "bg-green-50" : score >= 75 ? "bg-blue-50" : score >= 60 ? "bg-amber-50" : "bg-surface-alt";
   return (
     <div className={`flex flex-col items-center justify-center w-24 h-24 rounded-full ${bgColor}`}>
       <span className={`text-3xl font-black ${color}`}>{score}</span>
@@ -94,7 +94,7 @@ function SentimentBar({ positivePct, negativePct }: { positivePct: number; negat
     <div className="w-full">
       <div className="flex h-3 rounded-full overflow-hidden">
         <div className="bg-green-400" style={{ width: `${positivePct}%` }} />
-        <div className="bg-gray-200" style={{ width: `${neutralPct}%` }} />
+        <div className="bg-border" style={{ width: `${neutralPct}%` }} />
         <div className="bg-red-400" style={{ width: `${negativePct}%` }} />
       </div>
       <div className="flex justify-between mt-1 text-xs text-text-secondary">
@@ -412,7 +412,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                       {review.authorName && (
                         <span className="text-sm font-medium text-text">{review.authorName}</span>
                       )}
-                      <span className="text-xs text-text-secondary capitalize px-2 py-0.5 bg-gray-100 rounded">
+                      <span className="text-xs text-text-secondary capitalize px-2 py-0.5 bg-surface-alt rounded">
                         {review.source}
                       </span>
                       {review.isVerified && (

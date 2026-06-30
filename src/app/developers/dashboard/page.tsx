@@ -145,7 +145,7 @@ export default function DeveloperDashboard() {
   };
 
   const tierColors: Record<string, string> = {
-    free: "bg-gray-100 text-gray-700",
+    free: "bg-surface-alt text-text-secondary",
     pro: "bg-indigo-100 text-indigo-700",
     enterprise: "bg-purple-100 text-purple-700",
   };

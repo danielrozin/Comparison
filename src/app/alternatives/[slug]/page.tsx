@@ -272,7 +272,7 @@ export default async function AlternativesPage({ params }: PageProps) {
                 </Link>
                 <Link
                   href={`/entity/${alt.slug}`}
-                  className="flex-1 text-center py-2 bg-surface-alt text-text text-sm font-semibold rounded-lg hover:bg-gray-100 transition-colors border border-border"
+                  className="flex-1 text-center py-2 bg-surface-alt text-text text-sm font-semibold rounded-lg hover:bg-primary-50 transition-colors border border-border"
                 >
                   Learn more
                 </Link>

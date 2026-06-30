@@ -62,7 +62,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           placeholder="Acme Reviews"
         />
       </div>
@@ -77,7 +77,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           placeholder="you@company.com"
         />
       </div>
@@ -91,7 +91,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
           type="url"
           value={website}
           onChange={(e) => setWebsite(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          className="w-full px-4 py-3 border border-border rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           placeholder="https://yoursite.com"
         />
       </div>
@@ -107,7 +107,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
               className={`p-3 rounded-xl border text-left transition-all ${
                 tier === t
                   ? "border-primary-600 ring-2 ring-primary-600/20 bg-primary-50"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-border hover:border-primary-200"
               }`}
             >
               <div className="text-sm font-semibold text-text">{TIER_INFO[t].name}</div>
@@ -178,7 +178,7 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
           type="text"
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          className="w-full px-4 py-3 border border-border rounded-xl text-sm font-mono focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
           placeholder="product-a-vs-product-b"
         />
         <p className="text-xs text-text-secondary mt-1">
@@ -195,13 +195,13 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
             className={`text-xs px-3 py-1 rounded-lg border transition-colors ${
               copied === "script"
                 ? "bg-green-100 text-green-700 border-green-200"
-                : "bg-white text-gray-600 border-gray-200 hover:bg-primary-50 hover:text-primary-600"
+                : "bg-white text-text-secondary border-border hover:bg-primary-50 hover:text-primary-600"
             }`}
           >
             {copied === "script" ? "Copied!" : "Copy"}
           </button>
         </div>
-        <pre className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs font-mono text-gray-700 overflow-x-auto whitespace-pre-wrap break-all">
+        <pre className="bg-surface-alt border border-border rounded-xl p-4 text-xs font-mono text-text overflow-x-auto whitespace-pre-wrap break-all">
           {scriptCode}
         </pre>
       </div>
@@ -215,13 +215,13 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
             className={`text-xs px-3 py-1 rounded-lg border transition-colors ${
               copied === "iframe"
                 ? "bg-green-100 text-green-700 border-green-200"
-                : "bg-white text-gray-600 border-gray-200 hover:bg-primary-50 hover:text-primary-600"
+                : "bg-white text-text-secondary border-border hover:bg-primary-50 hover:text-primary-600"
             }`}
           >
             {copied === "iframe" ? "Copied!" : "Copy"}
           </button>
         </div>
-        <pre className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs font-mono text-gray-700 overflow-x-auto whitespace-pre-wrap break-all">
+        <pre className="bg-surface-alt border border-border rounded-xl p-4 text-xs font-mono text-text overflow-x-auto whitespace-pre-wrap break-all">
           {iframeCode}
         </pre>
       </div>
@@ -229,14 +229,14 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
       {/* Preview */}
       <div>
         <h4 className="text-sm font-semibold text-text mb-2">Preview</h4>
-        <div className="border border-gray-200 rounded-xl overflow-hidden">
-          <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
+        <div className="border border-border rounded-xl overflow-hidden">
+          <div className="bg-surface-alt px-4 py-2 border-b border-border flex items-center gap-2">
             <div className="flex gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
               <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
             </div>
-            <span className="text-xs text-gray-400 font-mono ml-2">Preview</span>
+            <span className="text-xs text-text-secondary font-mono ml-2">Preview</span>
           </div>
           <iframe
             src={`${SITE_URL}/api/v1/embed/${slug}?partner=${partnerKey}`}

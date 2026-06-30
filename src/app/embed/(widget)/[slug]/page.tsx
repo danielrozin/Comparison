@@ -46,7 +46,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-white p-4 font-sans antialiased">
       <div className="mx-auto max-w-xl">
-        <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-border shadow-sm">
           {/* Header */}
           <div
             className="px-6 py-5 text-center text-white"
@@ -72,7 +72,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
             {/* Short Answer */}
             {comparison.shortAnswer && (
               <div
-                className="mb-6 rounded-lg bg-gray-50 p-4 text-sm leading-relaxed text-gray-700"
+                className="mb-6 rounded-lg bg-surface-alt p-4 text-sm leading-relaxed text-text"
                 style={{ borderLeft: `4px solid ${primaryColor}` }}
               >
                 {comparison.shortAnswer}
@@ -82,38 +82,38 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
             {/* Key Differences Table */}
             {comparison.keyDifferences.length > 0 && (
               <div className="mb-6">
-                <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-text-secondary">
                   Key Differences
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b-2 border-gray-200">
-                        <th className="pb-2 text-left font-semibold text-gray-700">
+                      <tr className="border-b-2 border-border">
+                        <th className="pb-2 text-left font-semibold text-text">
                           {entityA?.name || "A"}
                         </th>
-                        <th className="pb-2 text-center font-semibold text-gray-500">
+                        <th className="pb-2 text-center font-semibold text-text-secondary">
                           Category
                         </th>
-                        <th className="pb-2 text-right font-semibold text-gray-700">
+                        <th className="pb-2 text-right font-semibold text-text">
                           {entityB?.name || "B"}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       {comparison.keyDifferences.map((diff, i) => (
-                        <tr key={i} className="border-b border-gray-100">
+                        <tr key={i} className="border-b border-border/40">
                           <td
-                            className="py-2.5 text-gray-700"
+                            className="py-2.5 text-text"
                             style={diff.winner === "a" ? { fontWeight: 700, color: primaryColor } : undefined}
                           >
                             {diff.entityAValue}
                           </td>
-                          <td className="py-2.5 text-center text-xs text-gray-400">
+                          <td className="py-2.5 text-center text-xs text-text-secondary/60">
                             {diff.label}
                           </td>
                           <td
-                            className="py-2.5 text-right text-gray-700"
+                            className="py-2.5 text-right text-text"
                             style={diff.winner === "b" ? { fontWeight: 700, color: accentColor } : undefined}
                           >
                             {diff.entityBValue}
@@ -132,7 +132,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                 {[entityA, entityB].map((entity, idx) => (
                   <div
                     key={entity.id}
-                    className="rounded-lg border border-gray-200 p-4"
+                    className="rounded-lg border border-border p-4"
                   >
                     <h3
                       className="mb-2 text-sm font-bold"
@@ -145,7 +145,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                         {entity.pros.slice(0, 3).map((pro, j) => (
                           <li
                             key={j}
-                            className="flex items-start gap-1 text-xs text-gray-600"
+                            className="flex items-start gap-1 text-xs text-text-secondary"
                           >
                             <span className="mt-0.5 text-green-500">+</span>
                             <span>{pro}</span>
@@ -167,7 +167,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                 <h3 className="mb-1 text-sm font-semibold" style={{ color: primaryColor }}>
                   Verdict
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-700">
+                <p className="text-sm leading-relaxed text-text">
                   {comparison.verdict}
                 </p>
               </div>
@@ -175,7 +175,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 px-6 py-4 text-center">
+          <div className="border-t border-border px-6 py-4 text-center">
             <a
               href={footerUrl}
               target="_blank"
@@ -186,7 +186,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
               {footerText} &rarr;
             </a>
             {!hideBranding && (
-              <p className="mt-1 text-xs text-gray-400">Powered by {brandName}</p>
+              <p className="mt-1 text-xs text-text-secondary/60">Powered by {brandName}</p>
             )}
           </div>
         </div>
