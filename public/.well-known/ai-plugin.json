@@ -9,7 +9,7 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://www.aversusb.net/developers",
+    "url": "https://www.aversusb.net/api/openapi",
     "is_user_authenticated": false
   },
   "logo_url": "https://www.aversusb.net/images/logo.png",

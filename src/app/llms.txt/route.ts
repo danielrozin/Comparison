@@ -175,6 +175,7 @@ export async function GET() {
   lines.push(`- [Image sitemap](${SITE_URL}/sitemap/images.xml)`);
   lines.push(`- [Video sitemap](${SITE_URL}/sitemap/video.xml)`);
   lines.push(`- [humans.txt](${SITE_URL}/humans.txt)`);
+  lines.push(`- [OpenAPI 3.0 spec](${SITE_URL}/api/openapi) — machine-readable API schema for all endpoints`);
   lines.push(`- [Developer API docs](${SITE_URL}/developers)`);
 
   const body = lines.join("\n");

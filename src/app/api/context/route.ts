@@ -129,6 +129,7 @@ export async function GET() {
     ],
 
     discovery: {
+      openapi_spec: `${SITE_URL}/api/openapi`,
       llms_txt: `${SITE_URL}/llms.txt`,
       well_known_llms_txt: `${SITE_URL}/.well-known/llms.txt`,
       ai_plugin: `${SITE_URL}/.well-known/ai-plugin.json`,
