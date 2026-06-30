@@ -305,7 +305,7 @@ export function webSiteSchema() {
       audienceType: "Consumers, Researchers, Decision Makers, Students",
       geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   };
 }
 
@@ -454,7 +454,7 @@ export function webPageSchema(opts: {
     license: "https://creativecommons.org/licenses/by/4.0/",
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(opts.keywords && { keywords: opts.keywords }),
     speakable: {
       "@type": "SpeakableSpecification",
@@ -2308,7 +2308,7 @@ export function profilePageSchema(entity: {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     educationalLevel: "General",
     // timeRequired — estimated reading time; profile page depth scales with comparison count.
     timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,

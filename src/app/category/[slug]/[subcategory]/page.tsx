@@ -187,7 +187,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
     teaches: `How to compare ${subcat.name.toLowerCase()} side by side`,
     educationalUse: "comparison",

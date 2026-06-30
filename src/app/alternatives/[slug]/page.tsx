@@ -176,7 +176,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
     // teaches + educationalUse — maps this guide to the decision skill it develops
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).
