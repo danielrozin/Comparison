@@ -97,6 +97,9 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/trending` },
     alternativeHeadline: "Most Popular X vs Y Comparisons Right Now — A Versus B Trending",
     accessMode: ["textual"],
@@ -130,6 +133,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       position: startIdx + index + 1,
       name: item.title,
       url: `${SITE_URL}/compare/${item.slug}`,
+      item: {
+        "@type": "Article",
+        "@id": `${SITE_URL}/compare/${item.slug}#article`,
+        url: `${SITE_URL}/compare/${item.slug}`,
+        name: item.title,
+        isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      },
     })),
   };
 
