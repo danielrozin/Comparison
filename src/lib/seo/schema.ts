@@ -1848,6 +1848,10 @@ export function categoryPageSchema(category: CategoryData) {
         "@type": "SpeakableSpecification",
         cssSelector: ["h1", ".category-description", ".comparison-count"],
       },
+      // discussionUrl — Reddit search for community comparisons in this category.
+      // Google E-E-A-T evaluators and AI crawlers use discussionUrl to verify real-world
+      // engagement with the topic and boost trust signals for category-level content.
+      discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(category.name.toLowerCase())}+comparison&type=link&sort=relevance`,
       potentialAction: [
         {
           "@type": "ReadAction",
