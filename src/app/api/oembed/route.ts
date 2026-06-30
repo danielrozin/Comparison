@@ -1,118 +1,126 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
-// oEmbed endpoint — https://oembed.com spec v1.0
-// Slack, Discord, Twitter/X, LinkedIn, Notion, and AI assistants (Perplexity cards,
-// ChatGPT browse) use oEmbed to render rich link previews when a user pastes an
-// aversusb.net URL. The rich type returns an HTML snippet + full metadata so
-// embedding platforms display a structured comparison card rather than a plain URL.
+const SITE_URL = "https://www.aversusb.net";
+const SITE_NAME = "A Versus B";
+const PROVIDER_URL = SITE_URL;
 
-const SUPPORTED_PATTERNS = [
-  /^https?:\/\/(www\.)?aversusb\.net\/compare\//,
-  /^https?:\/\/(www\.)?aversusb\.net\/blog\//,
-  /^https?:\/\/(www\.)?aversusb\.net\/entity\//,
-  /^https?:\/\/(www\.)?aversusb\.net\/alternatives\//,
-];
-
-function isSupportedUrl(url: string): boolean {
-  return SUPPORTED_PATTERNS.some((p) => p.test(url));
-}
-
-function slugFromUrl(url: string): { type: string; slug: string } | null {
-  const u = new URL(url);
-  const parts = u.pathname.split("/").filter(Boolean);
-  if (parts.length >= 2) {
-    return { type: parts[0], slug: parts.slice(1).join("/") };
-  }
-  return null;
-}
-
-function buildTitle(type: string, slug: string): string {
-  const readable = slug
-    .replace(/-vs-/g, " vs ")
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-
-  switch (type) {
-    case "compare":
-      return `${readable} — Comparison | ${SITE_NAME}`;
-    case "blog":
-      return `${readable} | ${SITE_NAME} Blog`;
-    case "entity":
-      return `${readable} Profile | ${SITE_NAME}`;
-    case "alternatives":
-      return `${readable} Alternatives | ${SITE_NAME}`;
-    default:
-      return `${readable} | ${SITE_NAME}`;
-  }
-}
+// oEmbed 1.0 endpoint — https://oembed.com/
+//
+// Allows Slack, Discord, Twitter/X, Notion, Ghost, and AI crawlers
+// to fetch rich preview metadata when a user pastes an aversusb.net URL.
+// Perplexity, ChatGPT browsing, and similar AEO tools also call this to get
+// structured summaries without scraping full HTML.
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const url = searchParams.get("url");
+  const url = searchParams.get("url") ?? "";
   const format = searchParams.get("format") ?? "json";
-  const maxwidth = parseInt(searchParams.get("maxwidth") ?? "800", 10);
-  const maxheight = parseInt(searchParams.get("maxheight") ?? "600", 10);
 
   if (!url) {
-    return NextResponse.json({ error: "Missing url parameter" }, { status: 400 });
+    return NextResponse.json({ error: "url parameter is required" }, { status: 400 });
   }
 
-  if (format === "xml") {
-    return NextResponse.json(
-      { error: "XML format not supported; use format=json" },
-      { status: 501 }
-    );
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
-  if (!isSupportedUrl(url)) {
+  const allowedHosts = ["www.aversusb.net", "aversusb.net"];
+  if (!allowedHosts.includes(parsed.hostname)) {
     return NextResponse.json({ error: "URL not supported" }, { status: 404 });
   }
 
-  const parsed = slugFromUrl(url);
-  if (!parsed) {
-    return NextResponse.json({ error: "Could not parse URL" }, { status: 400 });
+  const path = parsed.pathname;
+
+  let title = SITE_NAME;
+  let description = "Compare anything — get clear, data-driven verdicts.";
+  let thumbnailUrl = `${SITE_URL}/images/og-default.jpg`;
+
+  const compareMatch = path.match(/^\/compare\/([^/?#]+)/);
+  const blogMatch = path.match(/^\/blog\/([^/?#]+)/);
+  const entityMatch = path.match(/^\/entity\/([^/?#]+)/);
+
+  const toTitle = (s: string) =>
+    s.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  if (compareMatch) {
+    const slug = compareMatch[1];
+    const parts = slug.split("-vs-");
+    if (parts.length >= 2) {
+      const a = toTitle(parts[0]);
+      const b = toTitle(parts.slice(1).join("-vs-"));
+      title = `${a} vs ${b} — Which Is Better? | ${SITE_NAME}`;
+      description = `In-depth comparison of ${a} and ${b}. Key differences, verdict, and FAQs.`;
+    } else {
+      title = `${toTitle(slug)} | ${SITE_NAME}`;
+    }
+    thumbnailUrl = `${SITE_URL}/api/og?slug=${encodeURIComponent(slug)}&type=compare`;
+  } else if (blogMatch) {
+    const slug = blogMatch[1];
+    title = `${toTitle(slug)} | ${SITE_NAME}`;
+    description = `Read this article on ${SITE_NAME} — comparison guides, data studies, and deep dives.`;
+    thumbnailUrl = `${SITE_URL}/api/og?slug=${encodeURIComponent(slug)}&type=blog`;
+  } else if (entityMatch) {
+    const slug = entityMatch[1];
+    const name = toTitle(slug);
+    title = `${name} — Overview & Comparisons | ${SITE_NAME}`;
+    description = `Everything about ${name}: key facts, comparisons, and community verdicts on ${SITE_NAME}.`;
+    thumbnailUrl = `${SITE_URL}/api/og?slug=${encodeURIComponent(slug)}&type=entity`;
   }
 
-  const { type, slug } = parsed;
-  const canonicalUrl = `${SITE_URL}/${type}/${slug}`;
-  const ogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(slug.replace(/-/g, "+"))}&type=${type}`;
-  const title = buildTitle(type, slug);
-  const description =
-    type === "compare"
-      ? `Side-by-side comparison of ${slug.replace(/-vs-/g, " vs ").replace(/-/g, " ")} with key differences, verdict, and community vote.`
-      : `Discover ${slug.replace(/-/g, " ")} on A Versus B — the internet's most comprehensive comparison platform.`;
-
-  const width = Math.min(maxwidth, 800);
-  const height = Math.min(maxheight, 450);
-
-  const htmlEmbed = `<blockquote class="aversusb-embed" data-url="${canonicalUrl}" style="max-width:${width}px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;font-family:sans-serif;"><a href="${canonicalUrl}" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none;color:inherit;"><img src="${ogImageUrl}" alt="${title}" style="width:100%;height:auto;display:block;" width="${width}" height="${Math.round(width * 0.525)}" loading="lazy" /><div style="padding:12px 16px;"><strong style="font-size:15px;color:#111;">${title}</strong><p style="font-size:13px;color:#555;margin:4px 0 0;">${description}</p><span style="font-size:11px;color:#888;">aversusb.net</span></div></a></blockquote>`;
-
-  const response = {
+  const oembedJson = {
     version: "1.0",
-    type: "rich",
-    provider_name: SITE_NAME,
-    provider_url: SITE_URL,
+    type: "link",
     title,
     description,
-    url: canonicalUrl,
-    thumbnail_url: ogImageUrl,
-    thumbnail_width: width,
-    thumbnail_height: Math.round(width * 0.525),
-    width,
-    height,
-    html: htmlEmbed,
-    // author info for E-E-A-T signals in embedding platforms
-    author_name: "A Versus B",
-    author_url: `${SITE_URL}/about`,
+    provider_name: SITE_NAME,
+    provider_url: PROVIDER_URL,
+    author_name: SITE_NAME,
+    author_url: SITE_URL,
+    thumbnail_url: thumbnailUrl,
+    thumbnail_width: 1200,
+    thumbnail_height: 630,
+    url: parsed.href,
     cache_age: 86400,
   };
 
-  return NextResponse.json(response, {
-    headers: {
-      "Content-Type": "application/json+oembed",
-      "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  const headers: HeadersInit = {
+    "Cache-Control": "public, max-age=3600, s-maxage=86400",
+    "Access-Control-Allow-Origin": "*",
+    "X-Robots-Tag": "all",
+  };
+
+  if (format === "xml") {
+    const xml = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<oembed>
+  <version>1.0</version>
+  <type>link</type>
+  <title>${escXml(title)}</title>
+  <description>${escXml(description)}</description>
+  <provider_name>${escXml(SITE_NAME)}</provider_name>
+  <provider_url>${escXml(PROVIDER_URL)}</provider_url>
+  <author_name>${escXml(SITE_NAME)}</author_name>
+  <author_url>${escXml(SITE_URL)}</author_url>
+  <thumbnail_url>${escXml(thumbnailUrl)}</thumbnail_url>
+  <thumbnail_width>1200</thumbnail_width>
+  <thumbnail_height>630</thumbnail_height>
+  <cache_age>86400</cache_age>
+</oembed>`;
+    return new NextResponse(xml, {
+      headers: { ...headers, "Content-Type": "text/xml; charset=utf-8" },
+    });
+  }
+
+  return NextResponse.json(oembedJson, { headers });
+}
+
+function escXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
