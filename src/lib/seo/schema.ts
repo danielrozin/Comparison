@@ -1611,6 +1611,7 @@ export function videoObjectSchema(opts: {
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    "@id": `${SITE_URL}/compare/${opts.slug}#video`,
     name: `${opts.entityA} vs ${opts.entityB} — Full Comparison`,
     description: opts.description,
     thumbnailUrl: `https://img.youtube.com/vi/${opts.youtubeVideoId}/maxresdefault.jpg`,
@@ -1661,6 +1662,8 @@ export function selfHostedVideoObjectSchema(opts: {
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    // @id — stable anchor so Article hasPart and other nodes can reference this video.
+    "@id": `${SITE_URL}/compare/${opts.slug}#video`,
     name: `${opts.title} — Quick Comparison`,
     description: opts.description,
     thumbnailUrl: [opts.thumbnailUrl],
@@ -1668,8 +1671,13 @@ export function selfHostedVideoObjectSchema(opts: {
     contentUrl: `${SITE_URL}/videos/${opts.slug}.mp4`,
     duration: opts.duration || "PT13S",
     isFamilyFriendly: true,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: `${SITE_URL}/terms`,
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: SITE_NAME,
       url: SITE_URL,
       logo: {
