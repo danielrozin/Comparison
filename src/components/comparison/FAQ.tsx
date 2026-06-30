@@ -40,11 +40,12 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         )}
       </div>
 
-      <div className="space-y-2">
+      <ol className="space-y-2 list-none">
         {faqs.map((faq, i) => {
           const isOpen = openIndex === i || openIndex === -1;
+          const answerId = `faq-answer-${i}`;
           return (
-            <div
+            <li
               key={i}
               style={{ animationDelay: `${i * 40}ms` }}
               className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out animate-fade-in ${
@@ -63,6 +64,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 }}
                 className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
                 aria-expanded={isOpen}
+                aria-controls={answerId}
               >
                 {/* Number badge */}
                 <span
@@ -95,6 +97,9 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
 
               {/* Answer — CSS grid-rows trick for smooth natural height animation */}
               <div
+                id={answerId}
+                role="region"
+                aria-label={faq.question}
                 className={`grid transition-all duration-300 ease-in-out ${
                   isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                 }`}
@@ -108,10 +113,10 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ol>
     </section>
   );
 }

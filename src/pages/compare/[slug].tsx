@@ -591,10 +591,6 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       ))}
       {/* og:image:alt — alt text for OG image; used by AI models for image understanding */}
       <meta property="og:image:alt" content={meta.title} />
-      {/* og:site_name / og:locale — Facebook/LI/Slack unfurlers and AI scrapers use these
-          to attribute content to the correct publisher and language market. */}
-      <meta property="og:site_name" content="A Versus B" />
-      <meta property="og:locale" content="en_US" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@aversusb" />
       <meta name="twitter:creator" content="@aversusb" />
@@ -783,13 +779,11 @@ export default function ComparisonPage(props: Props) {
         <div className="flex-1 min-w-0">
           {/* Full Key Differences Table */}
           {comparison.keyDifferences.length > 0 && (
-            <div id="key-differences">
-              <KeyDifferencesBlock
-                differences={comparison.keyDifferences}
-                entityA={comparison.entities[0]}
-                entityB={comparison.entities[1]}
-              />
-            </div>
+            <KeyDifferencesBlock
+              differences={comparison.keyDifferences}
+              entityA={comparison.entities[0]}
+              entityB={comparison.entities[1]}
+            />
           )}
 
           {/* Comparison Table (code-split, SSR'd) */}
@@ -827,9 +821,7 @@ export default function ComparisonPage(props: Props) {
 
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
-            <div id="faq">
-              <FAQBlock faqs={comparison.faqs} />
-            </div>
+            <FAQBlock faqs={comparison.faqs} />
           )}
 
           {/* Resources & Learn More */}
@@ -1044,9 +1036,7 @@ function MultiEntityLayout({
           </div>
 
           {comparison.faqs.length > 0 && (
-            <div id="faq">
-              <FAQBlock faqs={comparison.faqs} />
-            </div>
+            <FAQBlock faqs={comparison.faqs} />
           )}
 
           <div id="resources">

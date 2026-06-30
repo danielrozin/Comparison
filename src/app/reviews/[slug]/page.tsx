@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      site: "@aversusb",
+    site: "@aversusb",
       title,
       description,
       images: [ogImage],
@@ -190,7 +190,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       // teaches — AI routers (ChatGPT/Perplexity) use this to match "[product] reviews" queries.
       teaches: `How to evaluate ${name} based on aggregated reviews and ratings`,
       educationalUse: "review",
-      keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews 2026`,
+      keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews ${new Date().getFullYear()}`,
       // significantLink — links to entity profile and alternatives page for AI graph traversal.
       significantLink: [
         `${SITE_URL}/entity/${slug}`,

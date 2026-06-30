@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-      site: "@aversusb",
+    site: "@aversusb",
       title: entry.title,
       description: entry.description,
       images: [ogImage],
@@ -276,7 +276,7 @@ function bestPageSchema(entry: BestEntry) {
         },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
         reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-        alternativeHeadline: `Top ${entry.h1} — Expert Picks 2026`,
+        alternativeHeadline: `Top ${entry.h1} — Expert Picks ${new Date().getFullYear()}`,
         license: "https://creativecommons.org/licenses/by/4.0/",
         usageInfo: `${SITE_URL}/terms`,
         copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,

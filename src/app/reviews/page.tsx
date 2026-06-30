@@ -100,7 +100,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
       height: 630,
       caption: "SmartReview — Product Reviews & Ratings by A Versus B",
     },
-    keywords: "product reviews, software reviews, SmartScore, review aggregator, best software 2026",
+    keywords: `product reviews, software reviews, SmartScore, review aggregator, best software ${new Date().getFullYear()}`,
     alternativeHeadline: "Product & Software Review Aggregator — SmartScore by A Versus B",
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
