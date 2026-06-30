@@ -112,19 +112,36 @@ export default function Q1AiBattlesPage() {
     name: "Q1 2026 AI Tool Battles — Top 50 comparison-search volumes (US Google)",
     description:
       "Ranked head-to-head comparison-search query volumes (US Google Search, exact-match) for AI and consumer-software product pairs, Q1 2026 (Jan–Mar 2026), with Q4 2025 and Q1 2025 comparators and QoQ/YoY change.",
-    creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    url: PAGE_URL,
+    inLanguage: "en-US",
+    keywords: "AI tool comparison 2026, ChatGPT vs Claude, search volume data, Q1 2026, Google Search trends, AI battles dataset",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: { "@type": "Person", "@id": `${SITE_URL}/authors/daniel-rozin#person`, name: "Daniel Rozin", url: `${SITE_URL}/authors/daniel-rozin` },
     datePublished: PUBLICATION_DATE,
+    dateModified: PUBLICATION_DATE,
     spatialCoverage: "United States",
     temporalCoverage: "2026-01-01/2026-03-31",
+    variableMeasured: "Monthly Google Search volume (exact-match) for head-to-head AI tool comparison queries in the United States",
+    measurementTechnique: "DataForSEO Labs API (Google Ads Keyword Planner data + clickstream); location_code 2840, language_code en, exact-match only",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     license: `${SITE_URL}/terms`,
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     distribution: [
       {
         "@type": "DataDownload",
         encodingFormat: "text/csv",
         contentUrl: `${SITE_URL}${CSV_PATH}`,
       },
+    ],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Q1 2026 AI Tool Battles", item: PAGE_URL },
     ],
   };
 
@@ -137,6 +154,10 @@ export default function Q1AiBattlesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       {/* Gradient Hero */}
