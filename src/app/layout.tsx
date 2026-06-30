@@ -124,6 +124,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-surface text-text font-body min-h-screen flex flex-col overflow-x-hidden">
+        <a href="#main-content" className="skip-nav">Skip to main content</a>
         <GoogleTagManager />
         <MetaPixel />
         <ClarityTags />

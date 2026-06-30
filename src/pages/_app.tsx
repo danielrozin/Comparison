@@ -25,6 +25,7 @@ const inter = Inter({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={inter.variable} style={{ display: "contents" }}>
+      <a href="#main-content" className="skip-nav">Skip to main content</a>
       <GoogleTagManager />
       <MetaPixel />
       <ClarityTags />
