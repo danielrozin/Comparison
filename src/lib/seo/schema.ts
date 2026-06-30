@@ -2131,7 +2131,7 @@ export function aggregateRatingSchema(entity: {
 // Helpers
 // ============================================================
 
-function entitySchemaType(entityType: string): string {
+export function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
     person: "Person",
     country: "Country",

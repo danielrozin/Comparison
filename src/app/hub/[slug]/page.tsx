@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, faqSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, entitySchemaType } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 
 interface PageProps {
@@ -119,6 +119,24 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     teaches: `How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`,
     educationalUse: "comparison",
     keywords: `${hub.h1.toLowerCase()} comparison, ${hub.slug.replace(/-/g, " ")} vs, best ${hub.slug.replace(/-/g, " ")}`,
+    // about[] — typed entity references extracted from hub spokes; creates direct
+    // hub→entity ProfilePage edges in AI knowledge graphs so crawlers can traverse
+    // from topic hub to entity profiles without requiring spoke-level page visits.
+    about: spokes
+      .flatMap((s) => s.entities.map((e) => ({
+        "@type": entitySchemaType(e.entityType),
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        url: `${SITE_URL}/entity/${e.slug}`,
+        ...(e.shortDesc && { description: e.shortDesc }),
+      })))
+      .filter((v, i, arr) => arr.findIndex((x) => x["@id"] === v["@id"]) === i)
+      .slice(0, 15),
+    // significantLink — top comparison pages + entity ProfilePages for AI graph traversal.
+    significantLink: [
+      ...spokes.slice(0, 6).map((s) => `${SITE_URL}/compare/${s.slug}`),
+      ...spokes.slice(0, 3).flatMap((s) => s.entities.map((e) => `${SITE_URL}/entity/${e.slug}`)),
+    ].filter((v, i, arr) => arr.indexOf(v) === i).slice(0, 15),
     mainEntity: {
       "@type": "ItemList",
       name: `${hub.h1} Comparisons`,
