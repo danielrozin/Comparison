@@ -79,6 +79,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "en": `${SITE_URL}/entity/${slug}`,
         "x-default": `${SITE_URL}/entity/${slug}`,
       },
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed`,
+        "application/atom+xml": `${SITE_URL}/feed/atom`,
+        "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/entity/${slug}`)}&format=json`,
+      },
     },
     openGraph: {
       title,

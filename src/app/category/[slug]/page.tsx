@@ -43,6 +43,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "en": `${SITE_URL}/category/${slug}`,
         "x-default": `${SITE_URL}/category/${slug}`,
       },
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed`,
+        "application/atom+xml": `${SITE_URL}/feed/atom`,
+        "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/category/${slug}`)}&format=json`,
+      },
     },
     openGraph: {
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} Comparisons on A Versus B` }],

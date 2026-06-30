@@ -35,6 +35,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "en": `${SITE_URL}/alternatives/${slug}`,
         "x-default": `${SITE_URL}/alternatives/${slug}`,
       },
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed`,
+        "application/atom+xml": `${SITE_URL}/feed/atom`,
+        "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/alternatives/${slug}`)}&format=json`,
+      },
     },
     openGraph: {
       title: `Alternatives to ${name}`,
