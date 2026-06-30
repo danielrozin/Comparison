@@ -260,6 +260,7 @@ const collectionPageSchema = {
       publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2", ".alternatives-intro"] },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
 };
 interface AlternativeRow {

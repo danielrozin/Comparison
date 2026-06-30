@@ -44,6 +44,7 @@ const apiSchema = {
       description: "Unlimited requests, priority support",
     },
   ],
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2", "#api-overview"] },
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
   ethicsPolicy: `${SITE_URL}/disclaimer`,
   hasPart: {
