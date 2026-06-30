@@ -91,6 +91,11 @@ const articleSchema = {
     { "@type": "SoftwareApplication", name: "Llama 3.3 70B", url: "https://ai.meta.com" },
     { "@type": "SoftwareApplication", name: "DeepSeek-V3", url: "https://deepseek.com" },
   ],
+  timeRequired: "PT6M",
+  wordCount: 1200,
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 const productSchemas = [

@@ -87,6 +87,11 @@ const schema = {
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
   accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+  timeRequired: "PT3M",
+  wordCount: 600,
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 export default function PasswordManagerMethodologyPage() {

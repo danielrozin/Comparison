@@ -87,6 +87,11 @@ const schema = {
   isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/llm-comparisons#article`, url: `${SITE_URL}/llm-comparisons` },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
+  timeRequired: "PT3M",
+  wordCount: 600,
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 export default function LLMMethodologyPage() {

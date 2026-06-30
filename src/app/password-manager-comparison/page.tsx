@@ -107,6 +107,11 @@ const articleSchema = {
     { "@type": "SoftwareApplication", name: "KeePass", url: "https://keepass.info" },
     { "@type": "SoftwareApplication", name: "ProtonPass", url: "https://proton.me/pass" },
   ],
+  timeRequired: "PT6M",
+  wordCount: 1200,
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 const productSchemas = [

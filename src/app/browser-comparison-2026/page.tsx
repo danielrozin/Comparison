@@ -93,6 +93,11 @@ const articleSchema = {
     { "@type": "SoftwareApplication", name: "Samsung Internet", url: "https://www.samsung.com/global/galaxy/apps/samsung-internet/" },
     { "@type": "SoftwareApplication", name: "Tor Browser", url: "https://www.torproject.org/download/" },
   ],
+  timeRequired: "PT6M",
+  wordCount: 1200,
+  publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+  ethicsPolicy: `${SITE_URL}/disclaimer`,
+  correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
 };
 
 const productSchemas = [
