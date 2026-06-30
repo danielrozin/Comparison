@@ -638,6 +638,25 @@ export function comparisonPageSchema(
           sameAs: entityWikipediaSameAs(e.name),
           containedInPlace: { "@type": "Place", name: "Earth" },
         }),
+        // SportsTeam enrichment — `sport` is a required Knowledge Graph field for teams.
+        // AI sports query engines (Perplexity, ChatGPT) use it to route "X vs Y team"
+        // queries to the correct sport domain without parsing the entity name.
+        ...(schType === "SportsTeam" && {
+          sport: comparison.category === "sports" ? "Sports" : (comparison.category ?? "Sports"),
+        }),
+        // Person enrichment — jobTitle from category lets AI answer engines correctly
+        // classify athlete/executive profiles when resolving "X vs Y" person comparisons.
+        ...(schType === "Person" && comparison.category && {
+          jobTitle: (() => {
+            const cat = comparison.category;
+            if (cat === "sports") return "Professional Athlete";
+            if (cat === "technology" || cat === "software") return "Technology Professional";
+            if (cat === "companies" || cat === "brands") return "Business Executive";
+            if (cat === "entertainment") return "Entertainment Professional";
+            if (cat === "history") return "Historical Figure";
+            return "Public Figure";
+          })(),
+        }),
       };
     }),
     // mentions — typed entity references that AI Knowledge Graphs use to merge this
@@ -1183,6 +1202,20 @@ function buildMultiEntityGraph(
       // entityWikipediaSameAs gives both Wikipedia + DBpedia; don't narrow to Wikipedia-only.
       node.sameAs = entityWikipediaSameAs(entity.name);
       node.containedInPlace = { "@type": "Place", name: "Earth" };
+    }
+
+    if (schemaType === "SportsTeam") {
+      node.sport = comparison.category === "sports" ? "Sports" : (comparison.category ?? "Sports");
+    }
+
+    if (schemaType === "Person" && comparison.category) {
+      const cat = comparison.category;
+      node.jobTitle = cat === "sports" ? "Professional Athlete"
+        : cat === "technology" || cat === "software" ? "Technology Professional"
+        : cat === "companies" || cat === "brands" ? "Business Executive"
+        : cat === "entertainment" ? "Entertainment Professional"
+        : cat === "history" ? "Historical Figure"
+        : "Public Figure";
     }
 
     if (realVotes) {
