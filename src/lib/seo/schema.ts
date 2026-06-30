@@ -2385,6 +2385,26 @@ export function profilePageSchema(entity: {
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
       })),
     }),
+    // isBasedOn — formal provenance chain from our ProfilePage to the authoritative Wikipedia
+    // and DBpedia sources. Google E-E-A-T, Perplexity, and ChatGPT citation pipelines follow
+    // isBasedOn edges to verify factual grounding; missing it forces AI to treat the page as
+    // a primary assertion rather than a derivative of a trusted source.
+    ...(wikiSameAs.length > 0 && {
+      isBasedOn: wikiSameAs.map((src) => ({
+        "@type": src.includes("dbpedia") ? "Dataset" : "Article",
+        "@id": src,
+        url: src,
+        name: src.includes("dbpedia")
+          ? `${entity.name} — DBpedia Knowledge Graph`
+          : `${entity.name} — Wikipedia`,
+        ...(src.includes("wikipedia") && {
+          publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
+        }),
+        ...(src.includes("dbpedia") && {
+          publisher: { "@type": "Organization", name: "DBpedia", url: "https://dbpedia.org" },
+        }),
+      })),
+    }),
   };
 }
 

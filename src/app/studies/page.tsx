@@ -122,7 +122,7 @@ export default function StudiesIndexPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, Business Analysts, Marketers, Students" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
     teaches: "Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers",
     educationalUse: "research",

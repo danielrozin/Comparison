@@ -152,7 +152,7 @@ export default async function MostComparedStudyPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, Marketers, Business Analysts, Consumers" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
     teaches: "How to identify which brands are compared most and why they dominate consumer research",
     educationalUse: "research",

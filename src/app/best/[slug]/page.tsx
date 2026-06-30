@@ -293,7 +293,7 @@ function bestPageSchema(entry: BestEntry) {
         audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
         accessMode: ["textual"],
         accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-        accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+        accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
         publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
         ethicsPolicy: `${SITE_URL}/disclaimer`,

@@ -137,7 +137,7 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, AI Developers" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+  accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
   teaches: "How A Versus B sources comparison data and writes AI-assisted verdicts with structured human editorial oversight",
   educationalUse: "guide",

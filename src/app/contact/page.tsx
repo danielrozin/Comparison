@@ -34,6 +34,9 @@ const contactPageSchema = {
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/contact` },
   mainEntity: {
     "@type": "Organization",

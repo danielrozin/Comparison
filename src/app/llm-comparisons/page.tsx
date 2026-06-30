@@ -94,7 +94,7 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "AI Researchers, Developers, Consumers, Analysts" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+  accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
   teaches: "How to choose the best large language model for your use case",
   educationalUse: "comparison",

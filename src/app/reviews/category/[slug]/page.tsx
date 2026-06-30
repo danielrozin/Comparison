@@ -137,7 +137,7 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} ${new Date().getFullYear()}, SmartScore ${cat.name.toLowerCase()}`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

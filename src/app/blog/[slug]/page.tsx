@@ -438,7 +438,7 @@ export default async function BlogPostPage({
     // accessMode signals content modality to AI classifiers and screen-reader crawlers.
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
     // .article-excerpt is emitted on the excerpt <p> in the blog header (HB89 fix).
     speakable: {
@@ -574,7 +574,7 @@ export default async function BlogPostPage({
     conditionsOfAccess: "Free",
     license: "https://creativecommons.org/licenses/by/4.0/",
     accessMode: ["textual"],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
     ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

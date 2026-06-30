@@ -74,7 +74,7 @@ const schema = {
   },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+  accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
   teaches: "How A Versus B tests and benchmarks web browsers for speed, privacy, and compatibility",
   educationalUse: "guide",

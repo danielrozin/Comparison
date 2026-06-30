@@ -149,7 +149,7 @@ const profilePageSchema = {
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, Potential Partners" },
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-  accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+  accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
   teaches: "Editorial methodology and expertise behind A Versus B comparison hub articles authored by Daniel Rozin",
   educationalUse: "biography",

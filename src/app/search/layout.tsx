@@ -20,7 +20,7 @@ const searchResultsPageSchema = {
   educationalLevel: "General",
   teaches: "How to find and compare anything side by side on A Versus B",
   educationalUse: "comparison",
-  accessibilityFeature: ["structuralNavigation", "readingOrder"],
+  accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

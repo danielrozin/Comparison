@@ -146,7 +146,7 @@ export default async function B2BSaaSStudyPage() {
     audience: { "@type": "Audience", audienceType: "Researchers, Software Buyers, Business Analysts, Procurement Teams" },
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
     teaches: "How to compare B2B SaaS tools across categories using structured benchmark data",
     educationalUse: "research",
