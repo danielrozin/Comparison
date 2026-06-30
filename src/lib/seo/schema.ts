@@ -607,7 +607,23 @@ export function comparisonPageSchema(
         ...(e.slug && { "@id": `${SITE_URL}/entity/${e.slug}` }),
         name: e.name,
         description: e.shortDesc,
-        ...(e.imageUrl && { image: e.imageUrl }),
+        // ImageObject (not bare URL) — creditText + acquireLicensePage let AI image
+        // crawlers (Google Lens, Perplexity visual mode) attribute the source when
+        // displaying this entity image in AI Overviews and image carousels.
+        ...(e.imageUrl && {
+          image: {
+            "@type": "ImageObject",
+            url: e.imageUrl,
+            contentUrl: e.imageUrl,
+            name: e.name,
+            description: `${e.name} logo and profile image`,
+            creditText: SITE_NAME,
+            creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+            copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+            acquireLicensePage: `${SITE_URL}/terms`,
+            license: "https://creativecommons.org/licenses/by/4.0/",
+          },
+        }),
         ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
         sameAs: entityWikipediaSameAs(e.name),
         subjectOf: { "@type": "Article", "@id": `${url}#article` },
@@ -1208,7 +1224,18 @@ function buildMultiEntityGraph(
       url: `${SITE_URL}/entity/${entity.slug}`,
     };
     if (entity.shortDesc) node.description = entity.shortDesc;
-    if (entity.imageUrl) node.image = entity.imageUrl;
+    if (entity.imageUrl) node.image = {
+      "@type": "ImageObject",
+      url: entity.imageUrl,
+      contentUrl: entity.imageUrl,
+      name: entity.name,
+      description: `${entity.name} logo and profile image`,
+      creditText: SITE_NAME,
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+    };
     const wikiSameAs = entityWikipediaSameAs(entity.name);
     if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
     node.subjectOf = { "@type": "Article", "@id": `${url}#article` };
@@ -2006,7 +2033,19 @@ export function entityPageSchema(entity: {
     name: entity.name,
     description: entity.shortDesc,
     url,
-    ...(entity.imageUrl && { image: entity.imageUrl }),
+    ...(entity.imageUrl && {
+      image: {
+        "@type": "ImageObject",
+        url: entity.imageUrl,
+        contentUrl: entity.imageUrl,
+        name: `${entity.name} logo and profile image`,
+        creditText: SITE_NAME,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        acquireLicensePage: `${SITE_URL}/terms`,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+      },
+    }),
     // Product-specific enrichment for AI product-search carousels
     ...(schemaType === "Product" && {
       brand: { "@type": "Brand", name: entity.name.split(" ")[0] },
@@ -2104,7 +2143,21 @@ export function profilePageSchema(entity: {
     name: entity.name,
     url,
     ...(entity.shortDesc && { description: entity.shortDesc }),
-    ...(entity.imageUrl && { image: entity.imageUrl }),
+    // ImageObject — creditText + acquireLicensePage let AI image crawlers (Google Lens,
+    // Perplexity visual mode) attribute the source and follow the license on entity images.
+    ...(entity.imageUrl && {
+      image: {
+        "@type": "ImageObject",
+        url: entity.imageUrl,
+        contentUrl: entity.imageUrl,
+        name: `${entity.name} logo and profile image`,
+        creditText: SITE_NAME,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        acquireLicensePage: `${SITE_URL}/terms`,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+      },
+    }),
     ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
     ...(subjectOf.length > 0 && { subjectOf }),
     potentialAction: {
