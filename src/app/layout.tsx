@@ -67,6 +67,7 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
     types: {
       "application/rss+xml": `${SITE_URL}/feed`,
+      "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(SITE_URL)}&format=json`,
     },
   },
 };

@@ -563,6 +563,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="canonical" href={meta.canonical} />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
+      {/* oEmbed — Slack, Discord, Notion, LinkedIn and AI assistants use this to render
+          rich comparison cards when a user pastes an aversusb.net URL */}
+      <link rel="alternate" type="application/json+oembed" href={`https://www.aversusb.net/api/oembed?url=${encodeURIComponent(meta.canonical)}&format=json`} title={meta.title} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />
