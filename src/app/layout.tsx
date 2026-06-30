@@ -65,6 +65,15 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      // hreflang signals — tell search engines this is an English-only site.
+      // x-default: canonical URL for language-unmatched visitors.
+      // en: same URL confirms English content without redirects.
+      // Both are needed for Google to correctly attribute the content language
+      // and avoid "missing x-default" Search Console warnings.
+      "en": SITE_URL,
+      "x-default": SITE_URL,
+    },
     types: {
       "application/rss+xml": `${SITE_URL}/feed`,
       "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(SITE_URL)}&format=json`,

@@ -3,10 +3,26 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      // Default rule for all crawlers
+      // Default rule for all crawlers.
+      // Allow rules take precedence over disallow when both match the same path
+      // (robots.txt spec: longest matching path wins — but Next.js renders them
+      // in declaration order, so specific allows must come before broad disallows).
       {
         userAgent: "*",
-        allow: "/",
+        // Allow public content + specific API endpoints used by AI crawlers and indexers.
+        allow: [
+          "/",
+          "/api/knowledge-graph/",
+          "/api/llms",
+          "/api/llms-full",
+          "/api/oembed",
+          "/api/comparisons/",
+          "/api/popular",
+          "/api/recent",
+          "/api/search",
+          "/api/og",
+          "/api/v1/",
+        ],
         disallow: [
           "/api/",
           "/admin/",
