@@ -287,6 +287,9 @@ function bestPageSchema(entry: BestEntry) {
         accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
         accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+        publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+        ethicsPolicy: `${SITE_URL}/disclaimer`,
+        correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
         potentialAction: { "@type": "ReadAction", target: url },
         // speakable — expand beyond h1 to cover the first body paragraph and FAQ answers.
         // AI voice assistants (Google Assistant, Siri) and LLM answer engines extract
@@ -303,9 +306,6 @@ function bestPageSchema(entry: BestEntry) {
         educationalUse: "guide",
         // hasPart — formal Article→FAQPage edge so Google/AI attribute FAQ items to this article.
         ...(entry.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
-        publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
-        ethicsPolicy: `${SITE_URL}/disclaimer`,
-        correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
         // mentions — typed entity references for each item in the best-of list.
         // AI Knowledge Graphs use mentions to link this roundup article to the
         // individual entity ProfilePages on A Versus B.
