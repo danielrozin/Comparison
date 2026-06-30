@@ -252,6 +252,7 @@ export async function generateMetadata({
       "citation_journal_title": "A Versus B",
       "citation_abstract": (article.metaDescription || article.excerpt || "").slice(0, 300),
       "citation_language": "en",
+      "citation_fulltext_world_accessible": "",
       "citation_online_date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),

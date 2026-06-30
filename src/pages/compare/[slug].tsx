@@ -652,6 +652,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="citation_abstract" content={meta.description} />
       <meta name="citation_language" content="en" />
       <meta name="citation_url" content={meta.canonical} />
+      {/* citation_fulltext_world_accessible — Google Scholar + Semantic Scholar signal that
+          content is freely accessible (no paywall). Increases indexing priority for AI citation. */}
+      <meta name="citation_fulltext_world_accessible" content="" />
       <meta name="copyright" content={`© ${new Date().getFullYear()} A Versus B`} />
       {/* Freshness signals — AI crawlers and news aggregators use these to determine
           content age and prioritize recent content for time-sensitive queries */}
