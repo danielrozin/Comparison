@@ -354,7 +354,7 @@ export default async function BlogPostPage({
     dateModified: article.updatedAt
       ? new Date(article.updatedAt).toISOString()
       : undefined,
-    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${articleUrl}#webpage` },
     url: articleUrl,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -526,17 +526,25 @@ export default async function BlogPostPage({
     });
   }
 
-  // SpeakableSpecification — marks the article headline and first section for
-  // voice assistants and AEO. h1 and first h2 are the most answer-dense elements.
+  // WebPage node — @id uses #webpage anchor for explicit cross-document merging;
+  // matches Article.mainEntityOfPage @id so crawlers can link both nodes in one hop.
   graph.push({
     "@type": "WebPage",
-    "@id": articleUrl,
+    "@id": `${articleUrl}#webpage`,
+    name: article.title,
     url: articleUrl,
+    inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    accessMode: ["textual"],
+    accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
+    ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
+    ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
+    potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: articleUrl } },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".article-excerpt", ".prose-custom h2:first-of-type", ".prose-custom p:first-of-type"],
