@@ -117,7 +117,7 @@ export default function StudiesIndexPage() {
     educationalLevel: "General",
     teaches: "Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers",
     educationalUse: "research",
-    keywords: "comparison data study, brand comparison report, SaaS comparison data 2026, comparison trends",
+    keywords: `comparison data study, brand comparison report, SaaS comparison data ${new Date().getFullYear()}, comparison trends`,
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

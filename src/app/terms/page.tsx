@@ -27,7 +27,7 @@ const webPageSchema = {
   conditionsOfAccess: "Free",
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: PAGE_URL,
-  copyrightNotice: `© 2026 ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: PAGE_URL,
   audience: { "@type": "Audience", audienceType: "General Public" },

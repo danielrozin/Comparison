@@ -115,7 +115,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers" },
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro"] },
-    keywords: "trending comparisons, most popular comparisons, top vs comparisons 2026",
+    keywords: `trending comparisons, most popular comparisons, top vs comparisons ${new Date().getFullYear()}`,
     timeRequired: "PT2M",
     wordCount: 400,
   };
