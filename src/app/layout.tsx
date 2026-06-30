@@ -85,6 +85,13 @@ export default function RootLayout({
         <link rel="me" href="https://www.youtube.com/@aversusb" />
         <link rel="author" href={`${SITE_URL}/about`} />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+        {/* OpenSearch — enables browser address-bar search shortcut (Firefox, Chrome, Safari, Edge) */}
+        <link
+          rel="search"
+          type="application/opensearchdescription+xml"
+          title="A Versus B — Compare Anything"
+          href={`${SITE_URL}/opensearch.xml`}
+        />
         {ADSENSE_PUB_ID && (
           <script
             async

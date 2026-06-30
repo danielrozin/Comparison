@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>A Versus B</ShortName>
+  <Description>Compare anything on A Versus B — 3,000+ comparisons across technology, sports, countries, products, and more.</Description>
+  <Tags>comparison versus vs compare</Tags>
+  <Contact>daniarozin@gmail.com</Contact>
+  <Url type="text/html" template="https://www.aversusb.net/search?q={searchTerms}"/>
+  <Url type="application/json" template="https://www.aversusb.net/api/search?q={searchTerms}&amp;format=json"/>
+  <LongName>A Versus B — Compare Anything</LongName>
+  <Image height="16" width="16" type="image/x-icon">https://www.aversusb.net/favicon.ico</Image>
+  <Image height="64" width="64" type="image/svg+xml">https://www.aversusb.net/favicon.svg</Image>
+  <Query role="example" searchTerms="iPhone vs Samsung"/>
+  <Developer>A Versus B</Developer>
+  <Attribution>Comparison data © 2024–2026 A Versus B (aversusb.net). CC BY 4.0.</Attribution>
+  <SyndicationRight>open</SyndicationRight>
+  <AdultContent>false</AdultContent>
+  <Language>en-us</Language>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <InputEncoding>UTF-8</InputEncoding>
+  <moz:SearchForm>https://www.aversusb.net/search</moz:SearchForm>
+</OpenSearchDescription>
