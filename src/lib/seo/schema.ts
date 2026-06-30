@@ -2067,6 +2067,7 @@ export function howToSchemaFromBlog(opts: {
 
   if (steps.length < 2) return null;
 
+  const stepDuration = `PT${Math.max(1, Math.ceil(5 / steps.length))}M`;
   return {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -2075,11 +2076,14 @@ export function howToSchemaFromBlog(opts: {
     description: opts.description,
     url: opts.url,
     totalTime: "PT5M",
+    prepTime: "PT1M",
+    performTime: "PT4M",
     estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
     step: steps.map((name, i) => ({
       "@type": "HowToStep",
       position: i + 1,
       name,
+      duration: stepDuration,
       url: `${opts.url}#step-${i + 1}`,
     })),
   };
