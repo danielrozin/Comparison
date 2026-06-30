@@ -116,6 +116,19 @@ export default function RootLayout({
         {/* WebMention — W3C standard; CMS platforms (WordPress, Ghost, micro.blog) POST
             inbound links here; accelerates backlink discovery before Google crawls the source */}
         <link rel="webmention" href={`${SITE_URL}/api/webmention`} />
+        {/* pingback — XML-RPC blog backlink discovery; WordPress/Ghost sites POST here when
+            they link to aversusb.net, accelerating inbound link indexing */}
+        <link rel="pingback" href={`${SITE_URL}/api/pingback`} />
+        {/* fediverse:creator — Mastodon/Threads/ActivityPub attribution tag.
+            When aversusb.net pages are shared on the Fediverse, this links the
+            content to the @aversusb@mastodon.social identity for E-E-A-T signals */}
+        <meta name="fediverse:creator" content="@aversusb@mastodon.social" />
+        {/* referrer — send origin (no path) on cross-origin requests; omit on downgrade.
+            Gives analytics accurate referrer data without leaking user paths */}
+        <meta name="referrer" content="origin-when-cross-origin" />
+        {/* format-detection — disable auto-linking of phone numbers/emails on iOS Safari
+            which can cause layout shifts and unintended tap targets */}
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {ADSENSE_PUB_ID && (
           <script
             async

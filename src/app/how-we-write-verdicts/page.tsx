@@ -50,6 +50,55 @@ export const metadata: Metadata = {
   },
 };
 
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "@id": `${PAGE_URL}#howto`,
+  name: "How A Versus B Writes a Comparison Verdict",
+  description: PAGE_DESC,
+  url: PAGE_URL,
+  inLanguage: "en-US",
+  totalTime: "PT2M",
+  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  step: [
+    {
+      "@type": "HowToStep",
+      position: 1,
+      name: "Source structured data",
+      text: "We pull specs, pricing, and attributes from manufacturer pages, official datasheets, and curated reference sources for both entities in a comparison.",
+      url: `${PAGE_URL}#how-we-source-data`,
+    },
+    {
+      "@type": "HowToStep",
+      position: 2,
+      name: "Aggregate public reviews",
+      text: "We collect and normalize public reviews from Reddit, G2, Capterra, Trustpilot, and Product Hunt into ratings and recurring pros/cons.",
+      url: `${PAGE_URL}#how-we-source-data`,
+    },
+    {
+      "@type": "HowToStep",
+      position: 3,
+      name: "Generate AI-assisted verdict draft",
+      text: "Claude (Anthropic's AI model) reads the structured data and reviews to produce a first draft of the verdict, 'Choose X if' cards, and supporting summary.",
+      url: `${PAGE_URL}#the-role-of-the-ai-model-vs-our-human-editor`,
+    },
+    {
+      "@type": "HowToStep",
+      position: 4,
+      name: "Human editorial review",
+      text: "A human editor reviews drafts that fall below quality thresholds or cover sensitive categories (health, finance, legal, safety) — checking accuracy, removing unsupported claims, and adjusting tone.",
+      url: `${PAGE_URL}#the-role-of-the-ai-model-vs-our-human-editor`,
+    },
+    {
+      "@type": "HowToStep",
+      position: 5,
+      name: "Incorporate user feedback",
+      text: "The thumbs up/down widget under each verdict collects signals. Pages with persistent negative feedback get prioritized for human review and regeneration.",
+      url: `${PAGE_URL}#how-feedback-influences-future-verdicts`,
+    },
+  ],
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
@@ -111,6 +160,10 @@ export default function HowWeWriteVerdictsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       {/* Gradient Hero */}

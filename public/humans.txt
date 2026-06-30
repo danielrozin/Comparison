@@ -1,0 +1,15 @@
+/* TEAM */
+Founder & Editor: Daniel Rozin
+Contact: daniarozin@gmail.com
+Twitter: @aversusb
+From: Worldwide
+
+/* SITE */
+Last update: 2026-06-30
+Language: English
+Doctype: HTML5
+Technology: Next.js, Tailwind CSS, PostgreSQL, Redis, Cloudflare
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+/* CONTENT */
+Standards: HTML5, CSS3, WAI-ARIA, Schema.org, OpenSearch 1.1, oEmbed 1.0, Atom 1.0
