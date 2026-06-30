@@ -65,7 +65,7 @@ export function organizationSchema() {
     contactPoint: [
       {
         "@type": "ContactPoint",
-        email: "daniel@adgpt.com",
+        email: "daniarozin@gmail.com",
         contactType: "editorial",
         availableLanguage: "English",
       },
@@ -185,6 +185,32 @@ export function dataCatalogSchema() {
         { "@type": "PropertyValue", name: "Attribute winner", description: "Per-attribute winner between compared entities" },
         { "@type": "PropertyValue", name: "Community preference", description: "Percentage of users preferring each entity" },
         { "@type": "PropertyValue", name: "Verdict", description: "Overall recommended winner with reasoning" },
+      ],
+      // distribution — explicit download endpoints for Google Dataset Search and AI
+      // research indexers. Listing the API and sitemap lets crawlers retrieve the full
+      // catalog programmatically without parsing HTML.
+      distribution: [
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/llms-full`,
+          name: "A Versus B Full Comparison Catalog (JSON)",
+          description: "Machine-readable catalog of all comparison pages with titles, slugs, and short answers",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "text/plain",
+          contentUrl: `${SITE_URL}/llms.txt`,
+          name: "A Versus B LLMs.txt Manifest",
+          description: "llmstxt.org-format manifest listing top comparisons by category for LLM crawlers",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/xml",
+          contentUrl: `${SITE_URL}/sitemap.xml`,
+          name: "A Versus B XML Sitemap",
+          description: "Full sitemap index with all comparison, blog, entity, and category URLs",
+        },
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     },
@@ -902,6 +928,25 @@ export function comparisonPageSchema(
       // Semantic Scholar, Google Dataset Search, and AI research indexes use this to
       // classify data type and surface the page in data-specific search results.
       encodingFormat: ["text/html", "application/ld+json"],
+      // distribution — explicit download locations for Google Dataset Search and AI
+      // research indexes. Listing the API endpoint as a DataDownload lets crawlers
+      // retrieve the raw structured data without parsing HTML.
+      distribution: [
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
+          name: `${comparison.title} — JSON API`,
+          description: "Structured comparison data in JSON format via the A Versus B public API",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: url,
+          name: `${comparison.title} — JSON-LD (embedded in page)`,
+          description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+        },
+      ],
       // measurementTechnique describes how attributes were collected.
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => attr.name),
@@ -1386,6 +1431,22 @@ function buildMultiEntityGraph(
       conditionsOfAccess: "Free",
       license: `${SITE_URL}/terms`,
       encodingFormat: ["text/html", "application/ld+json"],
+      distribution: [
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
+          name: `${comparison.title} — JSON API`,
+          description: "Structured comparison data in JSON format via the A Versus B public API",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: url,
+          name: `${comparison.title} — JSON-LD (embedded in page)`,
+          description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+        },
+      ],
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => attr.name),
       ...(isCountryComparison && {

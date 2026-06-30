@@ -13,12 +13,13 @@
     "is_user_authenticated": false
   },
   "logo_url": "https://www.aversusb.net/images/logo.png",
-  "contact_email": "daniel@adgpt.com",
+  "contact_email": "daniarozin@gmail.com",
   "legal_info_url": "https://www.aversusb.net/terms",
   "llms_txt": "https://www.aversusb.net/llms.txt",
   "llms_full_txt": "https://www.aversusb.net/api/llms-full",
   "sitemap": "https://www.aversusb.net/sitemap.xml",
-  "last_updated": "2026-06-29",
+  "image_sitemap": "https://www.aversusb.net/sitemap/images.xml",
+  "last_updated": "2026-06-30",
   "capabilities": [
     "comparison_lookup",
     "alternatives_search",

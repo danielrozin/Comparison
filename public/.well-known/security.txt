@@ -1,0 +1,7 @@
+Contact: mailto:daniarozin@gmail.com
+Preferred-Languages: en
+Canonical: https://aversusb.net/.well-known/security.txt
+Policy: https://aversusb.net/terms
+Encryption: none
+Acknowledgments: https://aversusb.net/about
+Expires: 2027-01-01T00:00:00.000Z
