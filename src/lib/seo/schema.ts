@@ -207,7 +207,7 @@ export function webSiteSchema() {
     url: SITE_URL,
     description: "The internet's most comprehensive comparison platform — data-driven, expert-reviewed comparisons across technology, sports, countries, products, and more.",
     abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
-    keywords: "vs, versus, compare, comparison, best, alternatives, review, technology, sports, products",
+    keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
     dateModified: new Date().toISOString().slice(0, 10),
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -230,17 +230,7 @@ export function webSiteSchema() {
       { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
       { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },
     ],
-    // about — explicit topic list for AI topical authority signals.
-    about: [
-      { "@type": "Thing", name: "Product Comparisons" },
-      { "@type": "Thing", name: "Technology Comparisons" },
-      { "@type": "Thing", name: "Sports Comparisons" },
-      { "@type": "Thing", name: "Country Comparisons" },
-      { "@type": "Thing", name: "Software Comparisons" },
-      { "@type": "Thing", name: "Automotive Comparisons" },
-      { "@type": "Thing", name: "Health Comparisons" },
-      { "@type": "Thing", name: "Finance Comparisons" },
-    ],
+
     potentialAction: [
       {
         "@type": "SearchAction",
@@ -260,12 +250,16 @@ export function webSiteSchema() {
         description: "Compare any two entities side-by-side",
       },
     ],
+    // about — explicit topic list for AI topical authority signals.
     about: [
       { "@type": "Thing", name: "Product Comparisons", url: `${SITE_URL}/category/products` },
       { "@type": "Thing", name: "Technology Comparisons", url: `${SITE_URL}/category/technology` },
       { "@type": "Thing", name: "Sports Comparisons", url: `${SITE_URL}/category/sports` },
       { "@type": "Thing", name: "Country Comparisons", url: `${SITE_URL}/category/countries` },
       { "@type": "Thing", name: "Software Comparisons", url: `${SITE_URL}/category/software` },
+      { "@type": "Thing", name: "Automotive Comparisons", url: `${SITE_URL}/category/automotive` },
+      { "@type": "Thing", name: "Health Comparisons", url: `${SITE_URL}/category/health` },
+      { "@type": "Thing", name: "Finance Comparisons", url: `${SITE_URL}/category/finance` },
     ],
     audience: {
       "@type": "Audience",
@@ -273,7 +267,6 @@ export function webSiteSchema() {
       geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
     accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
-    keywords: "compare, versus, vs, comparison, side-by-side, which is better, best, alternatives",
   };
 }
 

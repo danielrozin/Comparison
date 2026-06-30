@@ -79,7 +79,6 @@ const articleSchema = {
   acquireLicensePage: `${SITE_URL}/terms`,
   audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Journalists, AI Developers" },
   accessMode: ["textual"],
-  accessibilityFeature: ["readingOrder", "structuralNavigation"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
   educationalLevel: "General",

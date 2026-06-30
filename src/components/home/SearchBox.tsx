@@ -204,7 +204,7 @@ export function SearchBox() {
           }`}
         >
           {/* Search icon or loading spinner */}
-          <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none">
+          <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary/60 pointer-events-none">
             {isSearching ? (
               <svg className="animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -234,7 +234,7 @@ export function SearchBox() {
             onBlur={() => setIsFocused(false)}
             onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
-            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-gray-900 text-base sm:text-lg placeholder:text-gray-400 border-2 border-transparent focus:border-primary-300 outline-none transition-all duration-200"
+            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent focus:border-primary-300 outline-none transition-all duration-200"
             autoComplete="off"
             spellCheck={false}
           />
@@ -260,11 +260,11 @@ export function SearchBox() {
           id={listboxId}
           role="listbox"
           aria-label="Search suggestions"
-          className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-gray-200/80 overflow-hidden z-50 animate-slide-up"
+          className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up"
         >
           {/* Header */}
-          <div className="px-4 py-2.5 border-b border-gray-100 flex items-center justify-between bg-gray-50/60">
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+          <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
+            <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
               {showingLive ? (
                 <>
                   <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -281,7 +281,7 @@ export function SearchBox() {
                 </>
               )}
             </p>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-gray-400 bg-white border border-gray-200 rounded-md px-1.5 py-0.5 font-mono">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
               ↑↓ navigate
             </kbd>
           </div>
@@ -301,7 +301,7 @@ export function SearchBox() {
                 companies: "bg-indigo-50 text-indigo-700 border-indigo-200",
                 automotive: "bg-yellow-50 text-yellow-700 border-yellow-200",
               };
-              const catStyle = catColors[catKey] || "bg-gray-100 text-gray-500 border-gray-200";
+              const catStyle = catColors[catKey] || "bg-surface-alt text-text-secondary border-border";
               return (
                 <Link
                   key={item.slug}
@@ -313,20 +313,20 @@ export function SearchBox() {
                   className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 ${
                     isActive
                       ? "bg-primary-50/80 border-l-primary-500"
-                      : "hover:bg-gray-50/80 border-l-transparent"
+                      : "hover:bg-primary-50/30 border-l-transparent"
                   }`}
                 >
                   <span className="text-base flex-shrink-0 w-5 text-center leading-none">
                     {CATEGORY_ICONS[catKey] || "📊"}
                   </span>
                   {parts ? (
-                    <span className="text-sm text-gray-700 flex-1 min-w-0 flex items-center gap-1.5">
+                    <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">
                       <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.a}</span>
                       <span className="flex-shrink-0 text-[9px] font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
                       <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.b}</span>
                     </span>
                   ) : (
-                    <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-gray-700"}`}>{item.title}</span>
+                    <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-text"}`}>{item.title}</span>
                   )}
                   <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                     {item.category}
@@ -337,10 +337,10 @@ export function SearchBox() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-100 bg-gray-50/60 px-4 py-2 flex items-center justify-between">
+          <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2 flex items-center justify-between">
             {showingLive ? (
               <>
-                <span className="text-[11px] text-gray-400 font-medium">
+                <span className="text-[11px] text-text-secondary font-medium">
                   {liveResults.length} result{liveResults.length !== 1 ? "s" : ""}
                 </span>
                 <button
@@ -358,7 +358,7 @@ export function SearchBox() {
                 </button>
               </>
             ) : (
-              <span className="text-[11px] text-gray-400">Press Enter to search</span>
+              <span className="text-[11px] text-text-secondary/70">Press Enter to search</span>
             )}
           </div>
         </div>
@@ -366,10 +366,10 @@ export function SearchBox() {
 
       {/* Empty state when typing but no results yet */}
       {showDropdown && showingLive && !isSearching && liveResults.length === 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-50 animate-slide-up">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-border z-50 animate-slide-up">
           <div className="px-4 py-6 text-center">
-            <p className="text-sm text-gray-500 mb-1">No results for &ldquo;{query}&rdquo;</p>
-            <p className="text-xs text-gray-400">
+            <p className="text-sm text-text-secondary mb-1">No results for &ldquo;{query}&rdquo;</p>
+            <p className="text-xs text-text-secondary/70">
               Press Enter to search, or try &ldquo;{query} vs ...&rdquo;
             </p>
           </div>

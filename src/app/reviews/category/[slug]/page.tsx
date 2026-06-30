@@ -128,7 +128,6 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers" },
     accessMode: ["textual"],
-    accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["structuralNavigation", "alternativeText", "readingOrder"],
     keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} 2026, SmartScore ${cat.name.toLowerCase()}`,
