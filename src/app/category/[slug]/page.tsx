@@ -207,6 +207,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    ...(hasSubcategories && activeSubcategories.length > 0 ? {
+      hasPart: activeSubcategories.map((sub) => ({
+        "@type": "CollectionPage",
+        name: `${sub.name} Comparisons`,
+        url: `${SITE_URL}/category/${slug}/${sub.slug}`,
+      })),
+    } : {}),
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 

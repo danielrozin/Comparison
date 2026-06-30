@@ -47,6 +47,8 @@ export default async function sitemap({
     const STUDIES_DATE = "2026-05-01";
 
     const COMPARISONS_DATE = "2026-06-01";
+    // Alternatives template received schema improvements in HB90-134 (E-E-A-T, accessibilityFeature, etc.)
+    const ALTERNATIVES_DATE = "2026-06-30";
     const FAQ_DATE = "2026-06-01";
 
     const staticPages: MetadataRoute.Sitemap = [
@@ -92,12 +94,12 @@ export default async function sitemap({
       { url: `${SITE_URL}/blog/best-ai-assistant-2026`, lastModified: "2026-06-13", changeFrequency: "monthly", priority: 0.85 },
       { url: `${SITE_URL}/blog/best-cloud-platform-2026`, lastModified: "2026-06-27", changeFrequency: "monthly", priority: 0.85 },
       // Static alternatives landing pages (high-traffic curated)
-      { url: `${SITE_URL}/alternatives/chatgpt`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
-      { url: `${SITE_URL}/alternatives/figma`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/alternatives/zoom`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/alternatives/slack`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/alternatives/notion`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
-      { url: `${SITE_URL}/alternatives/nordvpn`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/chatgpt`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/alternatives/figma`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/zoom`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/slack`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/notion`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/nordvpn`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
