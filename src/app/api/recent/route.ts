@@ -104,13 +104,28 @@ export async function GET() {
         if (typeof item === "string") return JSON.parse(item);
         return item as RecentSearch;
       });
-      return NextResponse.json({ count: searches.length, searches });
+      return NextResponse.json(
+        { count: searches.length, searches },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+            "Access-Control-Allow-Origin": "*",
+            "X-Robots-Tag": "all",
+          },
+        }
+      );
     } catch (err) {
       console.error("Redis recent GET error:", err);
     }
   }
-  return NextResponse.json({
-    count: memorySearches.length,
-    searches: memorySearches.slice(0, 20),
-  });
+  return NextResponse.json(
+    { count: memorySearches.length, searches: memorySearches.slice(0, 20) },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        "Access-Control-Allow-Origin": "*",
+        "X-Robots-Tag": "all",
+      },
+    }
+  );
 }

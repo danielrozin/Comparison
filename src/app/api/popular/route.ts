@@ -53,11 +53,21 @@ export async function GET() {
   // Sort by score and return top items
   trendingItems.sort((a, b) => b.score - a.score);
 
-  return NextResponse.json({
-    comparisons: trendingItems.slice(0, 12).map(({ slug, title, category }) => ({
-      slug,
-      title,
-      category,
-    })),
-  });
+  return NextResponse.json(
+    {
+      comparisons: trendingItems.slice(0, 12).map(({ slug, title, category }) => ({
+        slug,
+        title,
+        category,
+        url: `https://www.aversusb.net/compare/${slug}`,
+      })),
+    },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=3600",
+        "Access-Control-Allow-Origin": "*",
+        "X-Robots-Tag": "all",
+      },
+    }
+  );
 }

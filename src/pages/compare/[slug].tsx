@@ -658,6 +658,13 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
+      {/* Feed discovery — RSS + Atom feed links on every page; feed readers and AI crawlers
+          use these to subscribe to content updates and detect freshness signals */}
+      <link rel="alternate" type="application/rss+xml" title="A Versus B — RSS Feed" href="https://www.aversusb.net/feed" />
+      <link rel="alternate" type="application/atom+xml" title="A Versus B — Atom Feed" href="https://www.aversusb.net/feed/atom" />
+      {/* hreflang — English-only site; x-default avoids "missing x-default" Search Console warning */}
+      <link rel="alternate" hrefLang="en" href={meta.canonical} />
+      <link rel="alternate" hrefLang="x-default" href={meta.canonical} />
       {/* WebMention — W3C backlink notification; CMS platforms auto-POST here on link */}
       <link rel="webmention" href="https://www.aversusb.net/api/webmention" />
       {/* og:see_also — related comparison URLs.
