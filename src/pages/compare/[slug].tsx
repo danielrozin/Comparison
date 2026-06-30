@@ -667,6 +667,12 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="alternate" hrefLang="x-default" href={meta.canonical} />
       {/* WebMention — W3C backlink notification; CMS platforms auto-POST here on link */}
       <link rel="webmention" href="https://www.aversusb.net/api/webmention" />
+      {/* Pingback — XML-RPC backlink discovery; WordPress/Ghost auto-POST when they link here */}
+      <link rel="pingback" href="https://www.aversusb.net/api/pingback" />
+      {/* news_keywords — Google News, Apple News, Bing News categorization signal */}
+      {(meta.articleTags ?? []).length > 0 && (
+        <meta name="news_keywords" content={(meta.articleTags ?? []).slice(0, 10).join(", ")} />
+      )}
       {/* og:see_also — related comparison URLs.
           AI crawlers (Perplexity, ChatGPT browse, Gemini) follow these to build
           entity-relationship graphs and surface more of our comparisons in answers. */}

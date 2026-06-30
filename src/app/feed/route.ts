@@ -81,7 +81,11 @@ export async function GET() {
   xmlns:atom="http://www.w3.org/2005/Atom"
   xmlns:content="http://purl.org/rss/1.0/modules/content/"
   xmlns:media="http://search.yahoo.com/mrss/"
-  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+  xmlns:webfeeds="http://webfeeds.org/rss/1.0"
+  xmlns:georss="http://www.georss.org/georss">
   <channel>
     <title>${escapeXml(SITE_NAME)} - Compare Anything</title>
     <link>${SITE_URL}</link>
@@ -94,6 +98,13 @@ export async function GET() {
     <webMaster>daniarozin@gmail.com (${escapeXml(SITE_NAME)})</webMaster>
     <copyright>© ${new Date().getFullYear()} ${escapeXml(SITE_NAME)}. Licensed under CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/</copyright>
     <ttl>60</ttl>
+    <sy:updatePeriod>hourly</sy:updatePeriod>
+    <sy:updateFrequency>1</sy:updateFrequency>
+    <sy:updateBase>2024-01-01T00:00:00Z</sy:updateBase>
+    <webfeeds:cover image="${SITE_URL}/api/og?title=Compare+Anything&amp;type=home" />
+    <webfeeds:icon>${SITE_URL}/favicon.svg</webfeeds:icon>
+    <webfeeds:accentColor>1A56DB</webfeeds:accentColor>
+    <webfeeds:related layout="card" target="browser" />
     <dc:creator>${escapeXml(SITE_NAME)} Editorial Team</dc:creator>
     <dc:publisher>${escapeXml(SITE_NAME)}</dc:publisher>
     <dc:rights>CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/</dc:rights>

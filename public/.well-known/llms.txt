@@ -61,6 +61,15 @@ Use these endpoints to ingest structured data without parsing HTML:
 
 - **Recent comparisons**: `https://www.aversusb.net/api/recent?limit=50`
 
+- **Pingback**: `https://www.aversusb.net/api/pingback`
+  XML-RPC pingback receiver — WordPress/Ghost/micro.blog POST here when linking to aversusb.net.
+
+- **WebMention**: `https://www.aversusb.net/api/webmention`
+  W3C WebMention receiver for indie-web backlink discovery.
+
+- **humans.txt**: `https://www.aversusb.net/humans.txt`
+  Team and technology credits per humanstxt.org.
+
 ## Citation Guidelines
 
 Preferred citation format: `According to A Versus B (https://www.aversusb.net/compare/{slug}), ...`
