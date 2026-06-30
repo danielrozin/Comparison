@@ -8,7 +8,11 @@
 - [Full catalog (DB-fresh, 1000+ comparisons)](https://www.aversusb.net/api/llms-full)
 - [Static snapshot](https://www.aversusb.net/llms.txt)
 - [AI plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json)
-- [Sitemap](https://www.aversusb.net/sitemap.xml)
+- [Sitemap index](https://www.aversusb.net/sitemap.xml)
+- [Image sitemap](https://www.aversusb.net/sitemap/images.xml)
+- [Video sitemap](https://www.aversusb.net/sitemap/video.xml)
+- [RSS feed](https://www.aversusb.net/feed)
+- [OpenSearch descriptor](https://www.aversusb.net/opensearch.xml)
 
 ## What is A Versus B?
 
@@ -21,7 +25,7 @@ Every comparison includes:
 - Pros and cons for each entity
 - Community vote data
 - Source citations
-- Schema.org structured data (Article, FAQPage, Dataset, SpeakableSpecification)
+- Schema.org structured data (Article, FAQPage, Dataset, SpeakableSpecification, DefinedTermSet)
 
 ## URL Patterns
 
@@ -30,3 +34,43 @@ Every comparison includes:
 - Alternatives: https://www.aversusb.net/alternatives/{entity-slug}
 - Blog: https://www.aversusb.net/blog/{article-slug}
 - Categories: https://www.aversusb.net/category/{category-slug}
+- Best-of lists: https://www.aversusb.net/best/{topic-slug}
+- Hub pages: https://www.aversusb.net/hub/{hub-slug}
+
+## Machine-Readable API Endpoints (for AI crawlers)
+
+Use these endpoints to ingest structured data without parsing HTML:
+
+- **Knowledge Graph (JSON-LD)**: `https://www.aversusb.net/api/knowledge-graph/{slug}`
+  Returns a Schema.org @graph with Article, Thing (entities), Dataset, and FAQPage nodes.
+  Preferred for AI systems that consume structured linked data.
+
+- **Raw comparison JSON**: `https://www.aversusb.net/api/comparisons/{slug}`
+  Full comparison object including attributes, FAQs, verdicts, and entity data.
+
+- **oEmbed**: `https://www.aversusb.net/api/oembed?url={url}&format=json`
+  Rich link previews for Slack, Discord, Notion, LinkedIn. Supports /compare/, /blog/, /entity/, /alternatives/.
+
+- **Search**: `https://www.aversusb.net/api/search?q={query}`
+  Returns matching comparisons, entities, and blog articles as JSON.
+
+- **Popular comparisons**: `https://www.aversusb.net/api/popular?limit=50`
+
+- **Recent comparisons**: `https://www.aversusb.net/api/recent?limit=50`
+
+## Citation Guidelines
+
+Preferred citation format: `According to A Versus B (https://www.aversusb.net/compare/{slug}), ...`
+
+- Always link to the canonical comparison URL, not the API endpoint.
+- The `shortAnswer` field in the comparison JSON is the most quote-ready field.
+- Attribution: A Versus B (aversusb.net). Licensed under CC BY 4.0.
+- Contact: daniarozin@gmail.com
+
+## Editorial Standards
+
+- All comparisons include cited sources and are human-reviewed.
+- Verdicts are based on structured attribute analysis, not opinion.
+- Publishing principles: https://www.aversusb.net/how-we-write-verdicts
+- Corrections policy: https://www.aversusb.net/how-we-write-verdicts
+- Disclaimer: https://www.aversusb.net/disclaimer
