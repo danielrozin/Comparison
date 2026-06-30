@@ -123,6 +123,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     abstract: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,
     url: altPageUrl,
     inLanguage: "en-US",
+    locationCreated: { "@type": "Country", name: "United States" },
     genre: "Alternatives Guide",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,

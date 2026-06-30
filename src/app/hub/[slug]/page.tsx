@@ -80,6 +80,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     abstract: hub.description,
     url: hubUrl,
     inLanguage: "en-US",
+    locationCreated: { "@type": "Country", name: "United States" },
     genre: "Topic Hub",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
