@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { webApplicationSchema } from "@/lib/seo/schema";
+import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
@@ -125,6 +125,28 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(dataCatalogSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema([
+          { question: "What is A Versus B?", answer: "A Versus B (aversusb.net) is a free comparison platform with 3,000+ side-by-side comparisons across technology, sports, countries, products, software, and more. Each comparison includes a short answer, attribute table, verdict, FAQs, and community votes." },
+          { question: "How do I compare two things on A Versus B?", answer: "Search for any two entities in the search bar (e.g., 'iPhone vs Samsung') or navigate directly to aversusb.net/compare/{entity-a}-vs-{entity-b}. The comparison page shows you side-by-side attributes, a winner verdict, and community vote results." },
+          { question: "Is A Versus B free to use?", answer: "Yes, A Versus B is completely free. All comparison data is accessible without registration, and content is licensed under CC BY 4.0 — free to cite with attribution." },
+          { question: "How accurate are the comparisons on A Versus B?", answer: "Each comparison is researched from multiple sources and reviewed editorially. We cite our sources and publish our methodology at aversusb.net/how-we-write-verdicts. Data is updated regularly as products and information change." },
+          { question: "What categories does A Versus B cover?", answer: "A Versus B covers 17+ categories including technology, software, sports, countries, automotive, companies, health, finance, entertainment, gaming, products, and brands — with more being added regularly." },
+        ])) }}
       />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
