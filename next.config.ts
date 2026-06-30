@@ -39,6 +39,11 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
           // Content-Language — explicit English declaration for AI language classifiers
           { key: "Content-Language", value: "en" },
+          // LLMs-Context — advertise the LLM context endpoint in every HTTP response header.
+          // Emerging AI crawler standard; some LLM agents scan response headers for context discovery.
+          { key: "LLMs-Context", value: "https://www.aversusb.net/api/context" },
+          // X-LLMs-TXT — advertise the LLMs.txt discovery URL in HTTP headers.
+          { key: "X-LLMs-TXT", value: "https://www.aversusb.net/llms.txt" },
           // Strict-Transport-Security — HSTS: tell browsers to always use HTTPS.
           // max-age=63072000 = 2 years. includeSubDomains covers cdn.aversusb.net.
           // preload qualifies the domain for HSTS preload lists (browsers ship with it).
