@@ -3,6 +3,13 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
 import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
+import {
+  startAttempt,
+  finishAttemptSuccess,
+  finishAttemptFailure,
+  evaluateAttemptGuard,
+  type AttemptStage,
+} from "@/lib/services/generation-attempt-tracker";
 import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
