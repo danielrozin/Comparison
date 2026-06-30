@@ -67,7 +67,24 @@ function cleanupStaleEntries() {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // For non-API routes, set geo cookie for consent banner EU detection
+  // Content-serving API endpoints that AI crawlers and indexers should be allowed to index.
+  // These endpoints serve structured data (JSON-LD, JSON) referenced from HTML pages and llms.txt.
+  const CONTENT_API_PATHS = [
+    "/api/knowledge-graph/",
+    "/api/comparisons/",
+    "/api/context",
+    "/api/llms",
+    "/api/llms-full",
+    "/api/oembed",
+    "/api/search",
+    "/api/popular",
+    "/api/recent",
+    "/api/og",
+    "/api/v1/",
+  ];
+  const isContentApi = CONTENT_API_PATHS.some((p) => pathname === p || pathname.startsWith(p));
+
+  // For non-API routes, set geo cookie + security headers
   if (!pathname.startsWith("/api/")) {
     const response = NextResponse.next();
     const country = request.headers.get("x-vercel-ip-country") || "";
@@ -78,14 +95,21 @@ export function middleware(request: NextRequest) {
       sameSite: "lax",
       httpOnly: false,
     });
+    // Security headers — improve E-E-A-T trust signals and browser safety.
+    // nosniff: prevents MIME-type sniffing attacks.
+    // DENY in frame: clickjacking protection (compare pages should never be framed).
+    // referrer: send origin only cross-origin so referer analytics still work.
+    response.headers.set("X-Content-Type-Options", "nosniff");
+    response.headers.set("Referrer-Policy", "origin-when-cross-origin");
+    response.headers.set("X-DNS-Prefetch-Control", "on");
     return response;
   }
 
-  // All /api/ responses: X-Robots-Tag: noindex prevents search engines from
-  // spending crawl budget on JSON endpoints that are already blocked in robots.txt.
-  // Belt-and-suspenders: bots that ignore robots.txt will still respect this header.
+  // API routes: set X-Robots-Tag based on whether it's a content endpoint
   const apiResponse = NextResponse.next();
-  apiResponse.headers.set("X-Robots-Tag", "noindex");
+  // Content-serving endpoints: allow AI crawlers and indexers
+  // Operational endpoints: noindex to save crawl budget on JSON that robots.txt already blocks
+  apiResponse.headers.set("X-Robots-Tag", isContentApi ? "all" : "noindex");
 
   // Rate limiting
   const limit = getRateLimit(pathname);
