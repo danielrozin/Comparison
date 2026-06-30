@@ -117,6 +117,8 @@ interface PageMeta {
   twitterData1?: string;
   twitterLabel2?: string;
   twitterData2?: string;
+  // og:see_also — related comparison URLs for AI crawler graph traversal
+  seeAlsoUrls?: string[];
 }
 
 type Props =
@@ -528,6 +530,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       : enrichedComparison.metadata.viewCount
       ? enrichedComparison.metadata.viewCount.toLocaleString()
       : String(enrichedComparison.attributes.length),
+    // og:see_also — up to 5 related comparison URLs.
+    // AI crawlers (Perplexity, ChatGPT browse, Gemini) follow og:see_also links
+    // to discover semantically related pages and build entity-relationship graphs.
+    seeAlsoUrls: sidebarComparisons
+      .slice(0, 5)
+      .map((c) => `${SITE_URL}/compare/${c.slug}`),
   };
 
   // JSON-sanitize: getStaticProps forbids `undefined` in props.
@@ -620,6 +628,12 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
+      {/* og:see_also — related comparison URLs.
+          AI crawlers (Perplexity, ChatGPT browse, Gemini) follow these to build
+          entity-relationship graphs and surface more of our comparisons in answers. */}
+      {(meta.seeAlsoUrls ?? []).map((url) => (
+        <meta key={url} property="og:see_also" content={url} />
+      ))}
     </Head>
   );
 }
