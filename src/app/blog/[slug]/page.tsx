@@ -295,6 +295,8 @@ export default async function BlogPostPage({
       acquireLicensePage: `${SITE_URL}/terms`,
     },
     ...(wordCount && { wordCount }),
+    // timeRequired — estimated reading time derived from actual word count ÷ 200 wpm.
+    timeRequired: wordCount ? `PT${Math.ceil(wordCount / 200)}M` : "PT3M",
     inLanguage: "en-US",
     author: extras?.author
       ? {

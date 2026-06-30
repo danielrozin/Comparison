@@ -127,6 +127,8 @@ const articleSchema = {
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
+  timeRequired: "PT10M",
+  wordCount: 2000,
 };
 
 const breadcrumbListSchema = {

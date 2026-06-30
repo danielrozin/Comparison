@@ -130,6 +130,8 @@ const articleSchema = {
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
+  timeRequired: "PT8M",
+  wordCount: 1800,
 };
 
 // JSON-LD block 2 — BreadcrumbList (Home → Blog → Best AI Assistant 2026).

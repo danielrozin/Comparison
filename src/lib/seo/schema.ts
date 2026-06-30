@@ -1962,6 +1962,8 @@ export function profilePageSchema(entity: {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
     educationalLevel: "General",
+    // timeRequired — estimated reading time; profile page depth scales with comparison count.
+    timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,
     teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
     educationalUse: "comparison",
     keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
