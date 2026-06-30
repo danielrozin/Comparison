@@ -134,6 +134,11 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     timeRequired: "PT3M",
     wordCount: 600,
+    datePublished: hubToday,
+    dateModified: hubToday,
+    copyrightYear: new Date().getFullYear(),
+    // discussionUrl — Reddit search for community discussions on this hub topic.
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(hub.h1.replace(/^[^:]+:\s*/, ""))}+comparison&type=link&sort=relevance`,
   };
 
   const faqs = faqSchema(hub.faqs.map((f) => ({ question: f.q, answer: f.a })));
