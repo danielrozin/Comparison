@@ -249,6 +249,18 @@ export async function generateMetadata({
         : "Blog",
       "twitter:label2": "Read time",
       "twitter:data2": `${Math.ceil((article.content?.split(/\s+/).length ?? 500) / 200)} min`,
+      // news_keywords — Google News categorization; also parsed by Apple News and AI news aggregators.
+      // Comma-separated list of the most important topics for this article.
+      ...(article.tags && article.tags.length > 0
+        ? { "news_keywords": article.tags.slice(0, 10).join(", ") }
+        : article.category
+        ? { "news_keywords": `${article.category}, comparison, A Versus B` }
+        : {}),
+      // citation_keywords — academic indexers (Semantic Scholar, Perplexity research) use these
+      // to classify and boost citation density on keyword-matched queries.
+      ...(article.tags && article.tags.length > 0
+        ? { "citation_keywords": article.tags.join("; ") }
+        : {}),
     },
   };
 }

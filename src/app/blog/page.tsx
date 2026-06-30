@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": `${SITE_URL}/blog`,
+    "news_keywords": "comparison, versus, technology, sports, products, countries, A Versus B",
   },
 };
 
