@@ -32,7 +32,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${category.name} Comparisons`,
     description: desc,
-    alternates: { canonical: `${SITE_URL}/category/${slug}` },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    },
+    alternates: {
+      canonical: `${SITE_URL}/category/${slug}`,
+      languages: {
+        "en": `${SITE_URL}/category/${slug}`,
+        "x-default": `${SITE_URL}/category/${slug}`,
+      },
+    },
     openGraph: {
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} Comparisons on A Versus B` }],
     },

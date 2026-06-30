@@ -24,7 +24,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `Alternatives to ${name}`,
     description: metaDesc,
-    alternates: { canonical: `${SITE_URL}/alternatives/${slug}` },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    },
+    alternates: {
+      canonical: `${SITE_URL}/alternatives/${slug}`,
+      languages: {
+        "en": `${SITE_URL}/alternatives/${slug}`,
+        "x-default": `${SITE_URL}/alternatives/${slug}`,
+      },
+    },
     openGraph: {
       title: `Alternatives to ${name}`,
       description: `Compare ${name} against top competitors and find the best option.`,
