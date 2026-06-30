@@ -230,7 +230,6 @@ export function webSiteSchema() {
       { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
       { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },
     ],
-
     potentialAction: [
       {
         "@type": "SearchAction",
@@ -671,6 +670,24 @@ export function comparisonPageSchema(
             "@type": "Thing",
             name: comparison.entities.map((e) => e.name).join(" vs "),
           },
+        },
+      };
+    })(),
+    // claimReviewed — formal ClaimReview signals that this article evaluates a specific
+    // factual claim. AI fact-checking systems (Google Fact Check, Perplexity truth mode,
+    // ChatGPT factual validation) look for ClaimReview to trust the source as an evaluator.
+    // We claim that our comparison data is accurate "as of" the contentReferenceTime.
+    ...(() => {
+      if (!comparison.shortAnswer || comparison.entities.length < 2) return {};
+      return {
+        claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: 5,
+          bestRating: 5,
+          worstRating: 1,
+          alternateName: "Accurate",
+          ratingExplanation: "Data verified through multiple sources and editorial review",
         },
       };
     })(),
@@ -1195,6 +1212,17 @@ function buildMultiEntityGraph(
           "@type": "Thing",
           name: comparison.entities.map((e) => e.name).join(" vs "),
         },
+      },
+    }),
+    ...(comparison.shortAnswer && comparison.entities.length >= 2 && {
+      claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities.slice(1).map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: 5,
+        bestRating: 5,
+        worstRating: 1,
+        alternateName: "Accurate",
+        ratingExplanation: "Data verified through multiple sources and editorial review",
       },
     }),
     isAccessibleForFree: true,

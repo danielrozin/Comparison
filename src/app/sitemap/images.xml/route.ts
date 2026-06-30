@@ -1,10 +1,14 @@
 /**
  * Image sitemap — /sitemap/images.xml
  *
- * Serves Google's image extension namespace for the top 3,000 comparison pages
- * and all published blog articles. Each <url> entry contains an <image:image>
- * block pointing to the OG image for that page, which Google Images and AI visual
- * search (Lens, SGE) use to index the page's primary visual.
+ * Serves Google's image extension namespace for:
+ *  - Top 3,000 comparison pages (by viewCount)
+ *  - All published blog articles (~370 pages)
+ *  - Top 1,000 entity profile pages
+ *
+ * Each <url> entry contains an <image:image> block pointing to the OG image
+ * for that page. Google Images and AI visual search (Lens, SGE) use this to
+ * index the page's primary visual.
  *
  * AEO/GEO purpose: AI Overviews and visual LLM crawlers follow image sitemaps
  * independently of the text sitemap. Listing OG images here accelerates visual
@@ -117,7 +121,41 @@ export async function GET() {
     // Blog service unavailable — skip blog images
   }
 
-  const entries = [...comparisonEntries, ...blogEntries];
+  // Entity profile images — top 1,000 entities by ID (most established entities).
+  // Entity OG images are generated via /api/og?title=...&type=entity and indexed by
+  // Google Images to drive visual traffic on "X profile" and "about X" queries.
+  // AI crawlers (Perplexity, ChatGPT) also follow entity images to build their
+  // knowledge graph and link entity mentions to canonical entity pages.
+  let entityEntries: string[] = [];
+  if (prisma) {
+    try {
+      const entities = await prisma.entity.findMany({
+        select: { slug: true, name: true },
+        orderBy: { id: "asc" },
+        take: 1000,
+      });
+      entityEntries = entities.map((entity) => {
+        const entityImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
+        const pageLoc = `${SITE_URL}/entity/${entity.slug}`;
+        const title = escapeXml(`${entity.name} — Profile & Comparisons`);
+        const imgLoc = escapeXml(entityImageUrl);
+        return [
+          "  <url>",
+          `    <loc>${escapeXml(pageLoc)}</loc>`,
+          "    <image:image>",
+          `      <image:loc>${imgLoc}</image:loc>`,
+          `      <image:title>${title}</image:title>`,
+          `      <image:caption>${escapeXml(entity.name)} — Entity Profile on A Versus B</image:caption>`,
+          "    </image:image>",
+          "  </url>",
+        ].join("\n");
+      });
+    } catch {
+      // Entity query unavailable — skip entity images
+    }
+  }
+
+  const entries = [...comparisonEntries, ...blogEntries, ...entityEntries];
 
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
