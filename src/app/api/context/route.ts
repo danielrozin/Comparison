@@ -82,6 +82,12 @@ export async function GET() {
         format: "application/json+oembed",
         description: "oEmbed 1.0 rich type — HTML card + thumbnail for link-unfurling in Slack, Discord, Notion, LinkedIn.",
       },
+      faq: {
+        url: `${SITE_URL}/api/faq/{slug}`,
+        format: "application/json",
+        description: "Structured FAQ pairs (question/answer) + FAQPage JSON-LD for a comparison. Best endpoint for AI Q&A extraction without HTML parsing.",
+        key_field_for_citation: "faqs[].answer",
+      },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
     },

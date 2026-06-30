@@ -153,6 +153,7 @@ export async function GET() {
   lines.push(`- [Full catalog (DB-fresh JSON)](${SITE_URL}/api/llms-full)`);
   lines.push(`- [Knowledge Graph JSON-LD](${SITE_URL}/api/knowledge-graph/{slug})`);
   lines.push(`- [Comparison JSON](${SITE_URL}/api/comparisons/{slug})`);
+  lines.push(`- [FAQ pairs JSON](${SITE_URL}/api/faq/{slug}) — structured Q&A pairs + FAQPage JSON-LD; use for AI Q&A without HTML parsing`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
   lines.push(`- [Popular comparisons](${SITE_URL}/api/popular)`);

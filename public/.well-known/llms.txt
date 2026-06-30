@@ -51,6 +51,9 @@ Use these endpoints to ingest structured data without parsing HTML:
 - **Raw comparison JSON**: `https://www.aversusb.net/api/comparisons/{slug}`
   Full comparison object including attributes, FAQs, verdicts, and entity data.
 
+- **FAQ pairs JSON**: `https://www.aversusb.net/api/faq/{slug}`
+  Structured Q&A pairs + FAQPage JSON-LD for any comparison. Best endpoint for AI Q&A extraction without parsing HTML.
+
 - **oEmbed**: `https://www.aversusb.net/api/oembed?url={url}&format=json`
   Rich link previews for Slack, Discord, Notion, LinkedIn. Supports /compare/, /blog/, /entity/, /alternatives/.
 

@@ -592,6 +592,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* oEmbed — Slack, Discord, Notion, LinkedIn and AI assistants use this to render
           rich comparison cards when a user pastes an aversusb.net URL */}
       <link rel="alternate" type="application/json+oembed" href={`https://www.aversusb.net/api/oembed?url=${encodeURIComponent(meta.canonical)}&format=json`} title={meta.title} />
+      {/* FAQ API — structured Q&A pairs; AI answer engines use this for direct Q&A extraction */}
+      <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/faq/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured FAQ pairs (JSON)" />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />

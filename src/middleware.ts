@@ -72,6 +72,7 @@ export function middleware(request: NextRequest) {
   const CONTENT_API_PATHS = [
     "/api/knowledge-graph/",
     "/api/comparisons/",
+    "/api/faq/",
     "/api/context",
     "/api/llms",
     "/api/llms-full",

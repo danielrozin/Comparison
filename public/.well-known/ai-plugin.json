@@ -32,6 +32,7 @@
   "last_updated": "2026-06-30",
   "context_api": "https://www.aversusb.net/api/context",
   "knowledge_graph_api": "https://www.aversusb.net/api/knowledge-graph/{slug}",
+  "faq_api": "https://www.aversusb.net/api/faq/{slug}",
   "capabilities": [
     "comparison_lookup",
     "alternatives_search",
