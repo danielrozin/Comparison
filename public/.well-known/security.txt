@@ -1,7 +1,9 @@
+# Security Policy for aversusb.net
+# RFC 9116 — https://www.rfc-editor.org/rfc/rfc9116
+
 Contact: mailto:daniarozin@gmail.com
+Expires: 2027-06-30T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://aversusb.net/.well-known/security.txt
-Policy: https://aversusb.net/terms
-Encryption: none
-Acknowledgments: https://aversusb.net/about
-Expires: 2027-01-01T00:00:00.000Z
+Canonical: https://www.aversusb.net/.well-known/security.txt
+Policy: https://www.aversusb.net/acceptable-use
+Acknowledgments: https://www.aversusb.net/about

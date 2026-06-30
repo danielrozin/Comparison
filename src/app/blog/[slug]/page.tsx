@@ -196,7 +196,13 @@ export async function generateMetadata({
   return {
     title: article.metaTitle || article.title,
     description: article.metaDescription || article.excerpt,
-    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
+    alternates: {
+      canonical: `${SITE_URL}/blog/${slug}`,
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed`,
+        "application/atom+xml": `${SITE_URL}/feed/atom`,
+      },
+    },
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,

@@ -12,7 +12,10 @@
 - [Image sitemap](https://www.aversusb.net/sitemap/images.xml)
 - [Video sitemap](https://www.aversusb.net/sitemap/video.xml)
 - [RSS feed](https://www.aversusb.net/feed)
+- [Atom feed](https://www.aversusb.net/feed/atom)
 - [OpenSearch descriptor](https://www.aversusb.net/opensearch.xml)
+- [Security policy](https://www.aversusb.net/.well-known/security.txt)
+- [WebMention endpoint](https://www.aversusb.net/api/webmention)
 
 ## What is A Versus B?
 

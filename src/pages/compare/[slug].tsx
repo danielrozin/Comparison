@@ -3,7 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
 import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -129,6 +129,7 @@ type Props =
       sidebarComparisons: RelatedComparison[];
       videoMeta: ReturnType<typeof getVideoMetadata>;
       jsonLd: string;
+      claimReviewJsonLd: string | null;
       meta: PageMeta;
     }
   | {
@@ -538,6 +539,27 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       .map((c) => `${SITE_URL}/compare/${c.slug}`),
   };
 
+  // ClaimReview schema — only for 2-entity comparisons with a clear verdict winner
+  const claimReviewJsonLd: string | null =
+    !isMultiEntity && enrichedComparison.verdict && entityA && entityB && enrichedComparison.shortAnswer
+      ? JSON.stringify(
+          claimReviewSchema({
+            slug,
+            title: enrichedComparison.title,
+            entityA,
+            entityB,
+            verdict: enrichedComparison.verdict,
+            shortAnswer: enrichedComparison.shortAnswer,
+            datePublished: enrichedComparison.metadata.publishedAt
+              ? new Date(enrichedComparison.metadata.publishedAt).toISOString().slice(0, 10)
+              : undefined,
+            dateModified: enrichedComparison.metadata.updatedAt
+              ? new Date(enrichedComparison.metadata.updatedAt).toISOString().slice(0, 10)
+              : undefined,
+          })
+        )
+      : null;
+
   // JSON-sanitize: getStaticProps forbids `undefined` in props.
   const props: Props = JSON.parse(
     JSON.stringify({
@@ -547,6 +569,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       sidebarComparisons,
       videoMeta,
       jsonLd,
+      claimReviewJsonLd,
       meta,
     })
   );
@@ -667,7 +690,7 @@ export default function ComparisonPage(props: Props) {
     );
   }
 
-  const { comparison, slug, sidebarComparisons, videoMeta, jsonLd } = props;
+  const { comparison, slug, sidebarComparisons, videoMeta, jsonLd, claimReviewJsonLd } = props;
 
   return (
     <>
@@ -675,6 +698,8 @@ export default function ComparisonPage(props: Props) {
 
       {/* Schema markup — single consolidated @graph (or editorial schemaMarkup). */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
+      {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
+      {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />

@@ -2379,6 +2379,78 @@ export function definedTermSetSchema() {
   };
 }
 
+/**
+ * ClaimReview schema for comparison verdict pages.
+ *
+ * ClaimReview is Google's fact-checking schema — it signals that this page reviews
+ * a specific claim with an expert verdict. For comparison pages, the "claim" is the
+ * common user belief about which entity wins (e.g., "iPhone is better than Samsung").
+ * We review that claim with structured evidence.
+ *
+ * Benefits:
+ *  - Google Fact Check Explorer — increases chance of showing a "Fact Check" label
+ *  - Perplexity / ChatGPT citations — AI systems prefer pages with ClaimReview when
+ *    answering "X vs Y" queries, as the schema signals authority and verifiability
+ *  - E-E-A-T: demonstrates the page's role as an authoritative review source
+ *
+ * Only emits when comparison has a clear verdict.winner.
+ */
+export function claimReviewSchema(opts: {
+  slug: string;
+  title: string;
+  entityA: string;
+  entityB: string;
+  verdict: string;
+  shortAnswer: string;
+  datePublished?: string;
+  dateModified?: string;
+}) {
+  const url = `${SITE_URL}/compare/${opts.slug}`;
+  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
+  const verdictLower = opts.verdict.toLowerCase();
+  const ratingValue = verdictLower === opts.entityA.toLowerCase()
+    ? "TRUE"
+    : verdictLower === opts.entityB.toLowerCase()
+    ? "FALSE"
+    : "MIXTURE";
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ClaimReview",
+    "@id": `${url}#claim-review`,
+    url,
+    claimReviewed: claimText,
+    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      bestRating: "TRUE",
+      worstRating: "FALSE",
+      alternateName: ratingValue === "TRUE"
+        ? `${opts.entityA} wins`
+        : ratingValue === "FALSE"
+        ? `${opts.entityB} wins`
+        : "Depends on use case",
+    },
+    itemReviewed: {
+      "@type": "Claim",
+      name: claimText,
+      text: opts.shortAnswer,
+      author: {
+        "@type": "Thing",
+        name: "Internet consensus",
+      },
+    },
+  };
+}
+
 export function howToSchemaFromBlog(opts: {
   title: string;
   description: string;
