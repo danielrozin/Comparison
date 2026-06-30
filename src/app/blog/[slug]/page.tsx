@@ -463,6 +463,9 @@ export default async function BlogPostPage({
         };
       }),
     }),
+    ...(article.relatedComparisonSlugs?.length && {
+      significantLink: article.relatedComparisonSlugs.map((s) => `${SITE_URL}/compare/${s}`),
+    }),
   };
 
   const breadcrumbs = [
