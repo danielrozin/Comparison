@@ -174,7 +174,20 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    potentialAction: { "@type": "ReadAction", target: categoryUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: categoryUrl },
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}+${encodeURIComponent(category.name)}` },
+        "query-input": "required name=search_term_string",
+      },
+    ],
+    mentions: allComparisons.slice(0, 10).map((c) => ({
+      "@type": "Article",
+      "@id": `${SITE_URL}/compare/${c.slug}#article`,
+      headline: c.title,
+      url: `${SITE_URL}/compare/${c.slug}`,
+    })),
     mainEntity: {
       "@type": "ItemList",
       name: `${category.name} Comparisons`,

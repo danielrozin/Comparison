@@ -100,7 +100,20 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    potentialAction: { "@type": "ReadAction", target: hubUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: hubUrl },
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
+    ],
+    mentions: spokes.slice(0, 10).map((s) => ({
+      "@type": "Article",
+      "@id": `${SITE_URL}/compare/${s.slug}#article`,
+      headline: s.title,
+      url: `${SITE_URL}/compare/${s.slug}`,
+    })),
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "#page-intro", "#top-comparisons", ".hub-description"],
