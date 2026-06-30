@@ -10,10 +10,14 @@ const CATEGORY_GRADIENTS: Record<string, string> = {
   education: "from-sky-50 to-blue-50 group-hover:from-sky-100 group-hover:to-blue-100",
   entertainment: "from-pink-50 to-rose-50 group-hover:from-pink-100 group-hover:to-rose-100",
   history: "from-amber-50 to-yellow-50 group-hover:from-amber-100 group-hover:to-yellow-100",
-  automotive: "from-slate-50 to-gray-50 group-hover:from-slate-100 group-hover:to-gray-100",
+  automotive: "from-slate-50 to-zinc-50 group-hover:from-slate-100 group-hover:to-zinc-100",
   companies: "from-indigo-50 to-blue-50 group-hover:from-indigo-100 group-hover:to-blue-100",
   brands: "from-purple-50 to-fuchsia-50 group-hover:from-purple-100 group-hover:to-fuchsia-100",
   celebrities: "from-rose-50 to-pink-50 group-hover:from-rose-100 group-hover:to-pink-100",
+  software: "from-sky-50 to-blue-50 group-hover:from-sky-100 group-hover:to-blue-100",
+  military: "from-green-50 to-teal-50 group-hover:from-green-100 group-hover:to-teal-100",
+  economy: "from-teal-50 to-cyan-50 group-hover:from-teal-100 group-hover:to-cyan-100",
+  travel: "from-sky-50 to-indigo-50 group-hover:from-sky-100 group-hover:to-indigo-100",
 };
 
 const ICON_BG: Record<string, string> = {
@@ -30,6 +34,10 @@ const ICON_BG: Record<string, string> = {
   companies: "bg-indigo-100 group-hover:bg-indigo-200",
   brands: "bg-purple-100 group-hover:bg-purple-200",
   celebrities: "bg-rose-100 group-hover:bg-rose-200",
+  software: "bg-sky-100 group-hover:bg-sky-200",
+  military: "bg-green-100 group-hover:bg-green-200",
+  economy: "bg-teal-100 group-hover:bg-teal-200",
+  travel: "bg-sky-100 group-hover:bg-indigo-100",
 };
 
 export function CategoryCard({
