@@ -16,6 +16,8 @@ export default function robots(): MetadataRoute.Robots {
           "/api/llms",
           "/api/llms-full",
           "/api/oembed",
+          "/feed",
+          "/feed/atom",
           "/api/comparisons/",
           "/api/popular",
           "/api/recent",
@@ -133,6 +135,8 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/sitemap/video.xml",
       "https://www.aversusb.net/sitemap/news.xml",
       "https://www.aversusb.net/llms.txt",
+      "https://www.aversusb.net/feed",
+      "https://www.aversusb.net/feed/atom",
     ],
   };
 }

@@ -12,5 +12,15 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json(comparison);
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+  const headers: Record<string, string> = {
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    "X-Robots-Tag": "all",
+    "Access-Control-Allow-Origin": "*",
+  };
+  if (updatedAt) {
+    headers["Last-Modified"] = new Date(updatedAt).toUTCString();
+  }
+
+  return NextResponse.json(comparison, { headers });
 }

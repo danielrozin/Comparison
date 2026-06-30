@@ -2093,6 +2093,21 @@ export function entityPageSchema(entity: {
       operatingSystem: "Web, iOS, Android",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
+    // potentialAction — CompareAction signals to AI assistants that this entity
+    // can be compared against others via the search URL pattern.
+    potentialAction: {
+      "@type": "CompareAction",
+      name: `Compare ${entity.name} with others`,
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/compare/${entity.slug}-vs-{other}`,
+        actionPlatform: [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/MobileWebPlatform",
+        ],
+      },
+    },
+    sameAs: entityWikipediaSameAs(entity.name),
   };
 }
 

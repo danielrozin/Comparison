@@ -311,7 +311,10 @@ export default async function BlogPostPage({
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
 
   const articleSchema = {
+    // InDepthArticle additionalType: Google Discover uses this to surface comprehensive
+    // explainers. Threshold: 1500+ words qualifies as "in-depth" per Google's guidance.
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
+    ...(wordCount && wordCount >= 1500 ? { additionalType: "https://schema.org/InDepthArticle" } : {}),
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
