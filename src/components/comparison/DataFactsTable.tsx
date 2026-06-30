@@ -50,7 +50,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-border">
               {numericAttrs.map((attr) => {
                 const valA = attr.values.find((v) => v.entityId === entityA.id);
                 const valB = attr.values.find((v) => v.entityId === entityB.id);

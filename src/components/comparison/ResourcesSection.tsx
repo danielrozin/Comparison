@@ -65,10 +65,10 @@ export function ResourcesSection({
               {ICON_MAP.wikipedia}
               Wikipedia
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
               {wikipedia.map((r) => (
+                <li key={r.url}>
                 <a
-                  key={r.url}
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -91,8 +91,9 @@ export function ResourcesSection({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
 
@@ -103,10 +104,10 @@ export function ResourcesSection({
               {ICON_MAP.blog}
               Related Articles
             </h3>
-            <div className="space-y-2">
+            <ul className="space-y-2 list-none">
               {blogs.map((r) => (
+                <li key={r.url}>
                 <Link
-                  key={r.url}
                   href={r.url}
                   className="group flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50/50 transition-all"
                 >
@@ -127,8 +128,9 @@ export function ResourcesSection({
                     Read &rarr;
                   </span>
                 </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
         {/* Videos */}
@@ -138,10 +140,10 @@ export function ResourcesSection({
               {ICON_MAP.video}
               Videos
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
               {videos.map((r) => (
+                <li key={r.url}>
                 <a
-                  key={r.url}
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -166,8 +168,9 @@ export function ResourcesSection({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
       </div>

@@ -48,15 +48,15 @@ export function RelatedBlogPosts({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
         {posts.map((post, idx) => {
           const catColor = getCategoryColor(post.category ?? undefined);
           return (
+            <li key={post.slug} className="flex">
             <Link
-              key={post.slug}
               href={`/blog/${post.slug}`}
               style={{ animationDelay: `${idx * 40}ms` }}
-              className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in"
+              className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in w-full"
             >
               {/* Persistent gradient accent stripe */}
               <div className={`h-0.5 w-full bg-gradient-to-r ${POST_GRADIENTS[idx % POST_GRADIENTS.length]}`} />
@@ -96,9 +96,10 @@ export function RelatedBlogPosts({
                 </div>
               </div>
             </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }
