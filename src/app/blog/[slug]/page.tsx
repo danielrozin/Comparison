@@ -4,13 +4,32 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+
+// ---------- Tag-type inference ----------
+// Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
+// as HB139 on comparison pages. Uses lightweight keyword detection; falls back to Thing.
+function inferTagSchemaType(tag: string): string {
+  const t = tag.toLowerCase();
+  // Known organization names and company-suffix patterns
+  if (
+    ["openai", "anthropic", "google", "microsoft", "meta", "amazon", "apple", "nvidia",
+      "samsung", "ibm", "adobe", "salesforce", "oracle", "sap", "shopify"].includes(t) ||
+    /\b(inc|corp|ltd|llc|group|labs|technologies)\b/.test(t)
+  ) return "Organization";
+  // Software products, AI models, APIs, platforms
+  if (
+    /\b(gpt|chatgpt|claude|gemini|copilot|llm|model|api|sdk|framework|platform|app|plugin|browser|linux|windows|android|ios|macos|software|tool)\b/.test(t) ||
+    t.endsWith(" ai") || t.startsWith("ai ") || t === "ai"
+  ) return "SoftwareApplication";
+  return "Thing";
+}
 
 // ---------- Markdown renderer ----------
 
@@ -431,12 +450,18 @@ export default async function BlogPostPage({
       })),
     }),
     // mentions — named entities discussed in this article but not the primary subject.
-    // Helps AI knowledge graphs link entity co-occurrences and improves topical authority.
+    // Typed @type + sameAs (Wikipedia + DBpedia) mirrors the HB139 pattern on comparison
+    // pages — AI knowledge graphs use sameAs to merge co-occurrence signals across sites.
     ...(article.tags?.length && {
-      mentions: article.tags.map((tag: string) => ({
-        "@type": "Thing",
-        name: tag,
-      })),
+      mentions: article.tags.map((tag: string) => {
+        const sameAs = entityWikipediaSameAs(tag);
+        return {
+          "@type": inferTagSchemaType(tag),
+          name: tag,
+          url: `${SITE_URL}/entity/${tag.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`,
+          ...(sameAs.length > 0 && { sameAs }),
+        };
+      }),
     }),
   };
 
