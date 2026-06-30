@@ -161,7 +161,10 @@ export default async function BlogPage({
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/blog` },
+    potentialAction: [
+      { "@type": "ReadAction", target: `${SITE_URL}/blog` },
+      { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+    ],
     alternativeHeadline: "Comparison Articles, Data Studies & Decision Guides — A Versus B Blog",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
@@ -201,6 +204,21 @@ export default async function BlogPage({
     },
     timeRequired: "PT2M",
     wordCount: 400,
+    // mentions[] — top-10 Article nodes so AI can enumerate featured posts without HTML parsing.
+    mentions: articles.slice(0, 10).map((article) => ({
+      "@type": "Article",
+      "@id": `${SITE_URL}/blog/${article.slug}#article`,
+      name: article.title,
+      url: `${SITE_URL}/blog/${article.slug}`,
+    })),
+    // about[] — subject classification for AI topic routing and Google Discover.
+    about: [
+      { "@type": "Thing", name: "Comparison Guides" },
+      { "@type": "Thing", name: "Product Reviews" },
+      { "@type": "Thing", name: "Decision Making" },
+    ],
+    // hasPart[] — ItemList is a formal structural part of this CollectionPage.
+    hasPart: [{ "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` }],
   };
 
   return (

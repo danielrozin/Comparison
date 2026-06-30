@@ -124,7 +124,10 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    potentialAction: { "@type": "ReadAction", target: REVIEWS_URL },
+    potentialAction: [
+      { "@type": "ReadAction", target: REVIEWS_URL },
+      { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+    ],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     ...(total > 0 && {
       numberOfItems: total,
@@ -151,6 +154,19 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     }),
     timeRequired: "PT2M",
     wordCount: 400,
+    // mentions[] — top-10 reviewed entities so AI can enumerate without HTML parsing.
+    mentions: entities.slice(0, 10).map((entity) => ({
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/entity/${entity.slug}`,
+      name: entity.name,
+      url: `${SITE_URL}/reviews/${entity.slug}`,
+    })),
+    // about[] — subject classification for AI topic routing.
+    about: [
+      { "@type": "Thing", name: "Software Reviews" },
+      { "@type": "Thing", name: "Product Ratings" },
+      { "@type": "Thing", name: "Consumer Software Comparisons" },
+    ],
   };
 
   return (
