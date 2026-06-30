@@ -495,12 +495,21 @@ export default async function BlogPostPage({
         content: article.content,
       })
     : null;
-  if (howTo) graph.push(howTo);
+  if (howTo) {
+    graph.push(howTo);
+    // hasPart — formal Article→HowTo edge; mirrors comparison page hasPart pattern so
+    // Google/AI systems associate the step guide with this article in the @graph.
+    (articleSchema as Record<string, unknown>).hasPart = { "@type": "HowTo", "@id": `${articleUrl}#howto` };
+  }
   if (extras?.faqs?.length) {
     // Pass id="${articleUrl}#faq" so faqSchema() emits isPartOf back-reference to the Article.
     graph.push(faqSchema(extras.faqs, `${articleUrl}#faq`));
-    // hasPart — formal Article→FAQPage edge so Google/AI associate FAQ items with this article.
-    (articleSchema as Record<string, unknown>).hasPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
+    // Merge FAQPage into hasPart — if HowTo was already set, emit an array.
+    const existingPart = (articleSchema as Record<string, unknown>).hasPart;
+    const faqPart = { "@type": "FAQPage", "@id": `${articleUrl}#faq` };
+    (articleSchema as Record<string, unknown>).hasPart = existingPart
+      ? [existingPart, faqPart]
+      : faqPart;
   }
   if (extras?.itemList?.items?.length) {
     graph.push({
