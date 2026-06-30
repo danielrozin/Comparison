@@ -131,6 +131,8 @@ export default function StudiesIndexPage() {
       url: `${STUDIES_URL}/${s.slug}`,
       description: s.blurb,
     })),
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
 
   return (

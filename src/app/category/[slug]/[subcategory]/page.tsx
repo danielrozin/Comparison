@@ -209,6 +209,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
   const schemaData = [breadcrumbs, collectionSchema];
 

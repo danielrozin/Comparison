@@ -76,6 +76,9 @@ export default async function HomePage() {
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: SITE_URL },
     about: CATEGORIES.map((c) => ({
       "@type": "Thing",
@@ -114,6 +117,8 @@ export default async function HomePage() {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", ".hero-description"],
     },
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
 
   return (

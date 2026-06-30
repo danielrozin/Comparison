@@ -214,6 +214,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         url: `${SITE_URL}/category/${slug}/${sub.slug}`,
       })),
     } : {}),
+    timeRequired: "PT2M",
+    wordCount: 400,
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 
