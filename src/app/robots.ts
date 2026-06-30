@@ -131,6 +131,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/sitemap/4.xml",
       "https://www.aversusb.net/sitemap/images.xml",
       "https://www.aversusb.net/sitemap/video.xml",
+      "https://www.aversusb.net/sitemap/news.xml",
       "https://www.aversusb.net/llms.txt",
     ],
   };
