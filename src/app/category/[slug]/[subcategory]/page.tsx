@@ -191,9 +191,24 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     educationalLevel: "General",
     teaches: `How to compare ${subcat.name.toLowerCase()} side by side`,
     educationalUse: "comparison",
+    locationCreated: { "@type": "Country", name: "United States" },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    potentialAction: { "@type": "ReadAction", target: subcatUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: subcatUrl },
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}+${encodeURIComponent(subcat.name)}` },
+        "query-input": "required name=search_term_string",
+      },
+    ],
+    mentions: subcatComparisons.slice(0, 10).map((c) => ({
+      "@type": "Article",
+      "@id": `${SITE_URL}/compare/${c.slug}#article`,
+      headline: c.title,
+      url: `${SITE_URL}/compare/${c.slug}`,
+    })),
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".category-description", "#page-description"] },
     mainEntity: {
       "@type": "ItemList",
