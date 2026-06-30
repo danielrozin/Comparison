@@ -346,6 +346,7 @@ A Versus B provides a public REST API for accessing comparison data programmatic
 - [Entity list JSON](https://www.aversusb.net/api/v1/entities?limit=50): Browseable entity list; supports ?type and pagination
 - [Blog article JSON](https://www.aversusb.net/api/blog/{slug}): Single blog article with Article JSON-LD; X-Summary header carries excerpt
 - [Related comparisons JSON](https://www.aversusb.net/api/v1/related/{slug}): Related comparisons for a given slug — build context around an answer
+- [AI Answer API](https://www.aversusb.net/api/answer/{slug}): Pre-packaged, citation-ready answer — shortAnswer, verdict, keyDifferences, winner, confidence level, and ClaimReview JSON-LD; X-Summary header in HTTP response
 - [JSON sitemap](https://www.aversusb.net/api/sitemap): Paginated JSON sitemap of all comparison pages; supports ?category, ?limit, ?offset, ?format=urlset (DataFeed JSON-LD)
 - [OpenAPI spec](https://www.aversusb.net/api/openapi): Machine-readable API schema for all endpoints (OpenAPI 3.0.3)
 - [AI Plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json): OpenAI-compatible site descriptor

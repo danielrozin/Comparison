@@ -217,6 +217,21 @@ export async function GET() {
           },
         },
       },
+      "/api/answer/{slug}": {
+        get: {
+          operationId: "getAnswer",
+          tags: ["Comparisons"],
+          summary: "Get AI-optimized answer",
+          description: "Returns a pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner entity, confidence level, citation format, and ClaimReview JSON-LD. Designed for AI answer engines. X-Summary HTTP header carries the shortAnswer.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Comparison slug", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": { description: "Citation-ready answer with ClaimReview JSON-LD" },
+            "404": { description: "Comparison not found" },
+          },
+        },
+      },
       "/api/blog/{slug}": {
         get: {
           operationId: "getBlogArticle",

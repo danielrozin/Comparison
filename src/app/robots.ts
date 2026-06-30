@@ -29,6 +29,7 @@ export default function robots(): MetadataRoute.Robots {
           "/api/blog",
           "/api/openapi",
           "/api/sitemap",
+          "/api/answer/",
         ],
         disallow: [
           "/api/",

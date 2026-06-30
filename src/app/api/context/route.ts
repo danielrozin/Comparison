@@ -130,6 +130,12 @@ export async function GET() {
         format: "application/json",
         description: "JSON sitemap of all comparison pages — paginated, supports ?category, ?limit, ?offset, ?format=urlset. Includes shortAnswer for each page.",
       },
+      answer: {
+        url: `${SITE_URL}/api/answer/{slug}`,
+        format: "application/json",
+        description: "Pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner, confidence level, and ClaimReview JSON-LD. Best for AI answer engines.",
+        key_field_for_citation: "answer (= shortAnswer) + citationFormat",
+      },
     },
 
     comparison_data_structure: {

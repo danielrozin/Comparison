@@ -605,6 +605,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="alternate" type="application/json+oembed" href={`https://www.aversusb.net/api/oembed?url=${encodeURIComponent(meta.canonical)}&format=json`} title={meta.title} />
       {/* FAQ API — structured Q&A pairs; AI answer engines use this for direct Q&A extraction */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/faq/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured FAQ pairs (JSON)" />
+      {/* Answer API — pre-packaged citation-ready answer for AI tools */}
+      <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/answer/${meta.canonical.split("/compare/")[1] ?? ""}`} title="AI Answer (citation-ready)" />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />
