@@ -303,9 +303,22 @@ function bestPageSchema(entry: BestEntry) {
         educationalUse: "guide",
         // hasPart — formal Article→FAQPage edge so Google/AI attribute FAQ items to this article.
         ...(entry.faqs.length > 0 && { hasPart: { "@type": "FAQPage", "@id": `${url}#faq` } }),
+        publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+        ethicsPolicy: `${SITE_URL}/disclaimer`,
+        correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+        // mentions — typed entity references for each item in the best-of list.
+        // AI Knowledge Graphs use mentions to link this roundup article to the
+        // individual entity ProfilePages on A Versus B.
+        mentions: entry.listItems.map((item) => ({
+          "@type": "Thing",
+          name: item.name,
+          url: `${url}#${item.anchor}`,
+        })),
         mainEntity: {
           "@type": "ItemList",
           "@id": `${url}#list`,
+          name: entry.h1,
+          description: entry.description,
           itemListOrder: "https://schema.org/ItemListOrderDescending",
           numberOfItems: entry.listItems.length,
           itemListElement: entry.listItems.map((item) => ({
@@ -313,6 +326,11 @@ function bestPageSchema(entry: BestEntry) {
             position: item.position,
             name: item.name,
             url: `${url}#${item.anchor}`,
+            item: {
+              "@type": "Thing",
+              name: item.name,
+              url: `${url}#${item.anchor}`,
+            },
           })),
         },
       },
