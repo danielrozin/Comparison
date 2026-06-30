@@ -22,6 +22,7 @@
   "video_sitemap": "https://www.aversusb.net/sitemap/video.xml",
   "rss_feed": "https://www.aversusb.net/feed",
   "last_updated": "2026-06-30",
+  "context_api": "https://www.aversusb.net/api/context",
   "knowledge_graph_api": "https://www.aversusb.net/api/knowledge-graph/{slug}",
   "capabilities": [
     "comparison_lookup",
