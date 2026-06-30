@@ -340,6 +340,13 @@ A Versus B provides a public REST API for accessing comparison data programmatic
 - [Full comparison catalog — static snapshot](https://www.aversusb.net/llms-full.txt): Last-generated static version
 - [Live LLM manifest — dynamic](https://www.aversusb.net/api/llms?format=txt): This file served fresh from DB (updated every hour)
 - [FAQ pairs JSON](https://www.aversusb.net/api/faq/{slug}): Structured Q&A pairs + FAQPage JSON-LD for any comparison — best for AI Q&A without HTML parsing
+- [Entity profile JSON](https://www.aversusb.net/api/v1/entities/{slug}): Entity name, type, description, FAQs, rating, and comparisons list
+- [Category taxonomy JSON](https://www.aversusb.net/api/v1/categories): Full category taxonomy with comparison counts and top pages
+- [Trending comparisons JSON](https://www.aversusb.net/api/v1/trending?limit=20): Top comparisons by view count; supports ?category filter
+- [Entity list JSON](https://www.aversusb.net/api/v1/entities?limit=50): Browseable entity list; supports ?type and pagination
+- [Blog article JSON](https://www.aversusb.net/api/blog/{slug}): Single blog article with Article JSON-LD; X-Summary header carries excerpt
+- [Related comparisons JSON](https://www.aversusb.net/api/v1/related/{slug}): Related comparisons for a given slug — build context around an answer
+- [OpenAPI spec](https://www.aversusb.net/api/openapi): Machine-readable API schema for all endpoints (OpenAPI 3.0.3)
 - [AI Plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json): OpenAI-compatible site descriptor
 - [Sitemap](https://www.aversusb.net/sitemap.xml): Complete URL list for all 3,000+ pages
 

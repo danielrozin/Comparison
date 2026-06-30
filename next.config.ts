@@ -53,17 +53,37 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Link",
-            value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\", </api/faq/:slug>; rel=\"alternate\"; type=\"application/json\"",
+            value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\", </api/faq/:slug>; rel=\"alternate\"; type=\"application/json\", </api/v1/related/:slug>; rel=\"related\"; type=\"application/json\"",
           },
         ],
       },
       {
-        // Blog posts: add Link rel=alternate for knowledge graph
+        // Blog posts: add Link rel=alternate for blog API + oEmbed
         source: "/blog/:slug",
         headers: [
           {
             key: "Link",
             value: "</api/blog/:slug>; rel=\"alternate\"; type=\"application/json\", </api/oembed?url=https://www.aversusb.net/blog/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
+          },
+        ],
+      },
+      {
+        // Entity pages: add Link rel=alternate pointing to entity profile API
+        source: "/entity/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\", </api/oembed?url=https://www.aversusb.net/entity/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
+          },
+        ],
+      },
+      {
+        // Alternatives pages: add Link rel=alternate pointing to entity profile API
+        source: "/alternatives/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\"",
           },
         ],
       },

@@ -33,8 +33,9 @@ export async function GET() {
       { name: "Categories", description: "Topic category taxonomy" },
       { name: "FAQs", description: "Structured FAQ pairs" },
       { name: "Search", description: "Full-text search" },
-      { name: "Discovery", description: "Feed and popular/recent lists" },
+      { name: "Discovery", description: "Feed, popular, recent, and trending lists" },
       { name: "Knowledge Graph", description: "JSON-LD knowledge graph" },
+      { name: "Blog", description: "Blog articles with Article JSON-LD" },
     ],
     paths: {
       "/api/v1/comparisons": {
@@ -171,6 +172,64 @@ export async function GET() {
             { name: "limit", in: "query", description: "Max results", schema: { type: "integer", default: 20 } },
           ],
           responses: { "200": { description: "Recent comparisons" } },
+        },
+      },
+      "/api/v1/trending": {
+        get: {
+          operationId: "getTrending",
+          tags: ["Discovery"],
+          summary: "Get trending comparisons",
+          description: "Returns top comparisons by view count. Supports ?limit (max 100) and ?category filters.",
+          parameters: [
+            { name: "limit", in: "query", description: "Max results (default 20, max 100)", schema: { type: "integer", default: 20 } },
+            { name: "category", in: "query", description: "Filter by category slug", schema: { type: "string" } },
+          ],
+          responses: { "200": { description: "Trending comparisons list" } },
+        },
+      },
+      "/api/v1/entities": {
+        get: {
+          operationId: "listEntities",
+          tags: ["Entities"],
+          summary: "List entity profiles",
+          description: "Browseable entity list with pagination. Supports ?type filter and ?limit/?offset pagination.",
+          parameters: [
+            { name: "type", in: "query", description: "Filter by entity type (e.g. Software, Country, Athlete)", schema: { type: "string" } },
+            { name: "limit", in: "query", description: "Max results (default 50, max 200)", schema: { type: "integer", default: 50 } },
+            { name: "offset", in: "query", description: "Pagination offset", schema: { type: "integer", default: 0 } },
+          ],
+          responses: { "200": { description: "Entity list" } },
+        },
+      },
+      "/api/v1/related/{slug}": {
+        get: {
+          operationId: "getRelated",
+          tags: ["Comparisons"],
+          summary: "Get related comparisons",
+          description: "Returns related comparisons for a given slug — use to build context around an answer or surface follow-up topics.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Comparison slug", schema: { type: "string" } },
+            { name: "limit", in: "query", description: "Max results (default 8, max 20)", schema: { type: "integer", default: 8 } },
+          ],
+          responses: {
+            "200": { description: "Related comparisons list" },
+            "404": { description: "Comparison not found" },
+          },
+        },
+      },
+      "/api/blog/{slug}": {
+        get: {
+          operationId: "getBlogArticle",
+          tags: ["Blog"],
+          summary: "Get blog article",
+          description: "Returns a single blog article as JSON with Article JSON-LD schema. X-Summary header in HTTP response carries the excerpt.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Blog article slug", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": { description: "Blog article with Article JSON-LD" },
+            "404": { description: "Blog article not found" },
+          },
         },
       },
     },

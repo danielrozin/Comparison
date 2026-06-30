@@ -113,6 +113,16 @@ export async function GET() {
         format: "application/json",
         description: "Published blog article list. Supports ?category, ?limit, ?offset.",
       },
+      blog_article: {
+        url: `${SITE_URL}/api/blog/{slug}`,
+        format: "application/json",
+        description: "Single blog article JSON with Article JSON-LD. X-Summary header in HTTP response.",
+      },
+      related: {
+        url: `${SITE_URL}/api/v1/related/{slug}`,
+        format: "application/json",
+        description: "Related comparisons for a given slug — use to build context around an answer.",
+      },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
     },

@@ -156,6 +156,10 @@ export async function GET() {
   lines.push(`- [FAQ pairs JSON](${SITE_URL}/api/faq/{slug}) — structured Q&A pairs + FAQPage JSON-LD; use for AI Q&A without HTML parsing`);
   lines.push(`- [Entity profile JSON](${SITE_URL}/api/v1/entities/{slug}) — entity name, type, description, FAQs, rating, and comparisons`);
   lines.push(`- [Category taxonomy JSON](${SITE_URL}/api/v1/categories) — all categories with comparison counts and top pages`);
+  lines.push(`- [Trending comparisons JSON](${SITE_URL}/api/v1/trending?limit=20) — top comparisons by view count; supports ?category filter`);
+  lines.push(`- [Entity list JSON](${SITE_URL}/api/v1/entities?limit=50) — browseable entity list; supports ?type and pagination`);
+  lines.push(`- [Blog article JSON](${SITE_URL}/api/blog/{slug}) — single blog article with Article JSON-LD; X-Summary header in HTTP response`);
+  lines.push(`- [Related comparisons JSON](${SITE_URL}/api/v1/related/{slug}) — related comparisons for a given slug`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
   lines.push(`- [Popular comparisons](${SITE_URL}/api/popular)`);
