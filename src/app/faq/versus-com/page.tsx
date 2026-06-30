@@ -122,6 +122,8 @@ function buildSchemas() {
       "@type": "SpeakableSpecification",
       cssSelector: ["#faq-section"],
     },
+    timeRequired: "PT4M",
+    wordCount: 800,
   };
 
   const breadcrumbs = {

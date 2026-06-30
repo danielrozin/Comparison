@@ -96,6 +96,11 @@ export default function Q1AiBattlesPage() {
     mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
+    timeRequired: "PT8M",
+    wordCount: 1600,
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   };
 
   const datasetSchema = {
