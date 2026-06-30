@@ -32,7 +32,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     follow: true,
     googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
   },
-  alternates: { canonical: `${SITE_URL}/reviews/${slug}` },
+  alternates: {
+    canonical: `${SITE_URL}/reviews/${slug}`,
+    languages: { "en": `${SITE_URL}/reviews/${slug}`, "x-default": `${SITE_URL}/reviews/${slug}` },
+  },
     openGraph: {
       title,
       description,

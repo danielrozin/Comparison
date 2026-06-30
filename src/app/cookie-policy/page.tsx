@@ -8,7 +8,10 @@ const PAGE_URL = `${SITE_URL}/cookie-policy`;
 export const metadata: Metadata = {
   title: "Cookie Policy",
   description: `Learn how ${SITE_NAME} uses cookies and similar tracking technologies.`,
-  alternates: { canonical: PAGE_URL },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+  },
   openGraph: {
     title: `Cookie Policy — ${SITE_NAME}`,
     description: `Learn how ${SITE_NAME} uses cookies.`,

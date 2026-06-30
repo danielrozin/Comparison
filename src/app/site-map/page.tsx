@@ -10,7 +10,10 @@ const SITEMAP_URL = `${SITE_URL}/site-map`;
 export const metadata: Metadata = {
   title: SITEMAP_TITLE,
   description: SITEMAP_DESC,
-  alternates: { canonical: SITEMAP_URL },
+  alternates: {
+    canonical: SITEMAP_URL,
+    languages: { "en": SITEMAP_URL, "x-default": SITEMAP_URL },
+  },
   openGraph: {
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,

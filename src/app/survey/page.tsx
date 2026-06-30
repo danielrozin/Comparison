@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: "Help Shape SmartReview — 3 Minute Survey",
   description:
     "Your feedback directly shapes what we build next. Takes about 3 minutes. All responses are anonymous.",
-  alternates: { canonical: `${SITE_URL}/survey` },
+  alternates: {
+    canonical: `${SITE_URL}/survey`,
+    languages: { "en": `${SITE_URL}/survey`, "x-default": `${SITE_URL}/survey` },
+  },
   robots: { index: false, follow: false },
 };
 

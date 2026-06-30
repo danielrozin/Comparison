@@ -8,7 +8,10 @@ const PAGE_URL = `${SITE_URL}/privacy`;
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: `Read the ${SITE_NAME} Privacy Policy to understand how we collect, use, and protect your personal information.`,
-  alternates: { canonical: PAGE_URL },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+  },
   openGraph: {
     title: `Privacy Policy — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Privacy Policy.`,

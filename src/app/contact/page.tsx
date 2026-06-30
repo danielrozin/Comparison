@@ -7,7 +7,10 @@ import { JsonLd } from "@/components/schema/JsonLd";
 export const metadata: Metadata = {
   title: "Contact Us",
   description: `Get in touch with the ${SITE_NAME} team. Report errors, request new comparisons, ask general questions, or explore partnership opportunities.`,
-  alternates: { canonical: `${SITE_URL}/contact` },
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+    languages: { "en": `${SITE_URL}/contact`, "x-default": `${SITE_URL}/contact` },
+  },
   openGraph: {
     title: `Contact ${SITE_NAME}`,
     description: `Get in touch with the ${SITE_NAME} team. We respond within 2 business days.`,

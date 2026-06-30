@@ -8,7 +8,10 @@ const PAGE_URL = `${SITE_URL}/disclaimer`;
 export const metadata: Metadata = {
   title: "Disclaimer",
   description: `Read the ${SITE_NAME} Disclaimer. Understand the limitations of our comparison data, our data sources, and important disclosures.`,
-  alternates: { canonical: PAGE_URL },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+  },
   openGraph: {
     title: `Disclaimer — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Disclaimer covering data accuracy, affiliate disclosures, and limitations of liability.`,

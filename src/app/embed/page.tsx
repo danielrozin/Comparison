@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   title: "Embed Comparisons on Your Site | A Versus B",
   description:
     "Add data-driven comparisons to your blog, review site, or content platform. Free, responsive, and always up-to-date.",
-  alternates: { canonical: `${SITE_URL}/embed` },
+  alternates: {
+    canonical: `${SITE_URL}/embed`,
+    languages: { "en": `${SITE_URL}/embed`, "x-default": `${SITE_URL}/embed` },
+  },
   openGraph: {
     title: "Embed Comparisons on Your Site",
     description:

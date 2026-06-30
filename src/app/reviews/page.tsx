@@ -25,7 +25,10 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
   },
-  alternates: { canonical: REVIEWS_URL },
+  alternates: {
+    canonical: REVIEWS_URL,
+    languages: { "en": REVIEWS_URL, "x-default": REVIEWS_URL },
+  },
   other: {
     "citation_title": REVIEWS_TITLE,
     "citation_author": "A Versus B",

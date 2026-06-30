@@ -8,7 +8,10 @@ const PAGE_URL = `${SITE_URL}/terms`;
 export const metadata: Metadata = {
   title: "Terms of Use",
   description: `Read the ${SITE_NAME} Terms of Use before accessing our website. Understand your rights and responsibilities as a user.`,
-  alternates: { canonical: PAGE_URL },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+  },
   openGraph: {
     title: `Terms of Use — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Terms of Use.`,

@@ -10,7 +10,10 @@ const CHANGELOG_URL = `${SITE_URL}/changelog`;
 export const metadata: Metadata = {
   title: CHANGELOG_TITLE,
   description: CHANGELOG_DESC,
-  alternates: { canonical: CHANGELOG_URL },
+  alternates: {
+    canonical: CHANGELOG_URL,
+    languages: { "en": CHANGELOG_URL, "x-default": CHANGELOG_URL },
+  },
   openGraph: {
     title: CHANGELOG_TITLE,
     description: CHANGELOG_DESC,
