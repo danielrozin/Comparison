@@ -16,7 +16,19 @@ const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Trending Compari
 export const metadata: Metadata = {
   title: "Trending Comparisons",
   description: trendingDescription,
-  alternates: { canonical: `${SITE_URL}/trending` },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: `${SITE_URL}/trending`,
+    languages: { "en": `${SITE_URL}/trending`, "x-default": `${SITE_URL}/trending` },
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed`,
+      "application/atom+xml": `${SITE_URL}/feed/atom`,
+    },
+  },
   openGraph: {
     title: "Trending Comparisons",
     description: trendingDescription,

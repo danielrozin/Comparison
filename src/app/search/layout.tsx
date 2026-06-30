@@ -39,6 +39,14 @@ export const metadata: Metadata = {
     "Search and compare anything — sports players, countries, products, technology, and more. Type any two things to get an instant, data-driven comparison.",
   alternates: {
     canonical: "https://www.aversusb.net/search",
+    languages: {
+      "en": "https://www.aversusb.net/search",
+      "x-default": "https://www.aversusb.net/search",
+    },
+    types: {
+      "application/rss+xml": "https://www.aversusb.net/feed",
+      "application/atom+xml": "https://www.aversusb.net/feed/atom",
+    },
   },
   openGraph: {
     title: "Search Comparisons | A Versus B",
@@ -57,6 +65,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
   },
 };
 
