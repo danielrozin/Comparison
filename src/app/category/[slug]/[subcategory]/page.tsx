@@ -206,6 +206,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
     },
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   };
   const schemaData = [breadcrumbs, collectionSchema];
 

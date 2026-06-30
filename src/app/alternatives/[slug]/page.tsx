@@ -155,6 +155,9 @@ export default async function AlternativesPage({ params }: PageProps) {
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).
     teaches: `How to find the best alternatives to ${name}`,
     educationalUse: "comparison",
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: altPageUrl },
     // significantLink — entity ProfilePage and top comparison pages for AI graph traversal.

@@ -204,6 +204,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       cssSelector: ["h1", ".category-description", "#page-description"],
     },
     keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} 2026`,
+    publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
+    ethicsPolicy: `${SITE_URL}/disclaimer`,
+    correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   };
   const schemaData = [breadcrumbData, categorySchemaObj];
 
