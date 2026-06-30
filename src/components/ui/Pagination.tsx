@@ -21,7 +21,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
       {currentPage > 1 ? (
         <Link
           href={pageUrl(currentPage - 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-gray-100 rounded-lg transition-colors"
+          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           rel="prev"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -30,7 +30,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
           Prev
         </Link>
       ) : (
-        <span className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 cursor-not-allowed">
+        <span className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -56,7 +56,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
           <Link
             key={page}
             href={pageUrl(page)}
-            className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-gray-100 rounded-lg transition-colors"
+            className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           >
             {page}
           </Link>
@@ -67,7 +67,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
       {currentPage < totalPages ? (
         <Link
           href={pageUrl(currentPage + 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-gray-100 rounded-lg transition-colors"
+          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           rel="next"
         >
           Next
@@ -76,7 +76,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
           </svg>
         </Link>
       ) : (
-        <span className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 cursor-not-allowed">
+        <span className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed">
           Next
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

@@ -69,7 +69,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
     <>
       <button
         onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-gray-200 rounded-lg transition-all duration-200"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
         title="Embed this comparison"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -87,11 +87,11 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
           {/* Modal */}
-          <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-gray-100">
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-border">
             {/* Close button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors z-10"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-text-secondary hover:text-text hover:bg-surface-alt transition-colors z-10"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -115,7 +115,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
 
             {/* Tabs */}
             <div className="px-6">
-              <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+              <div className="flex gap-1 bg-surface-alt rounded-lg p-1">
                 {(["script", "iframe", "badge"] as TabType[]).map((tab) => (
                   <button
                     key={tab}
@@ -139,7 +139,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
               </p>
 
               <div className="relative">
-                <pre className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-xs font-mono text-gray-700 overflow-x-auto whitespace-pre-wrap break-all">
+                <pre className="bg-surface-alt border border-border rounded-xl p-4 text-xs font-mono text-text overflow-x-auto whitespace-pre-wrap break-all">
                   {embedCodes[activeTab].code}
                 </pre>
                 <button
@@ -147,7 +147,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                   className={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
                     copiedTab === activeTab
                       ? "bg-green-100 text-green-700 border border-green-200"
-                      : "bg-white text-gray-600 border border-gray-200 hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200"
+                      : "bg-white text-text-secondary border border-border hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200"
                   }`}
                 >
                   {copiedTab === activeTab ? (
@@ -171,14 +171,14 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
 
             {/* Preview */}
             <div className="px-6 pb-6">
-              <div className="border border-gray-200 rounded-xl overflow-hidden">
-                <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex items-center gap-2">
+              <div className="border border-border rounded-xl overflow-hidden">
+                <div className="bg-surface-alt px-4 py-2 border-b border-border flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                     <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
                   </div>
-                  <span className="text-xs text-gray-400 font-mono ml-2">Preview</span>
+                  <span className="text-xs text-text-secondary font-mono ml-2">Preview</span>
                 </div>
                 <iframe
                   src={`${SITE_URL}/compare/${slug}`}

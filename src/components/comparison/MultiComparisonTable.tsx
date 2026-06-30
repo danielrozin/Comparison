@@ -148,7 +148,7 @@ export function MultiComparisonTable({
                         <button
                           type="button"
                           onClick={() => toggleGroup(categoryName)}
-                          className="w-full flex items-center justify-between bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-gray-100/80 transition-colors cursor-pointer"
+                          className="w-full flex items-center justify-between bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
                         >
                           <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                             {categoryName}
@@ -211,7 +211,7 @@ export function MultiComparisonTable({
               <button
                 type="button"
                 onClick={() => toggleGroup(categoryName)}
-                className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-gray-100/80 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
               >
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
                   {categoryName}
@@ -235,7 +235,7 @@ export function MultiComparisonTable({
                           {entities.map((ent, eIdx) => {
                             const v = attr.values[eIdx];
                             const isWinner = winnerIdx === eIdx;
-                            const bg = isWinner ? "bg-green-50 border-win/30" : "bg-gray-50 border-border";
+                            const bg = isWinner ? "bg-green-50 border-win/30" : "bg-surface-alt border-border";
                             const fg = isWinner ? "text-win font-semibold" : "text-text";
                             return (
                               <div
