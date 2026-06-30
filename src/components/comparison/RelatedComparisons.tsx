@@ -61,7 +61,7 @@ export function RelatedComparisons({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -71,12 +71,12 @@ export function RelatedComparisons({
             : null;
 
           return (
+            <li key={comp.slug} className="flex">
             <Link
-              key={comp.slug}
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
               style={{ animationDelay: `${cardIdx * 40}ms` }}
-              className="group relative flex flex-col gap-3 p-4 pt-5 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in"
+              className="group relative flex flex-col gap-3 p-4 pt-5 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in w-full"
             >
               {/* Gradient accent stripe */}
               <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${CARD_GRADIENTS[cardIdx % CARD_GRADIENTS.length]}`} />
@@ -116,9 +116,10 @@ export function RelatedComparisons({
                 </div>
               )}
             </Link>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }

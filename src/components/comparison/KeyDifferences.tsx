@@ -143,8 +143,9 @@ export function KeyDifferencesBlock({
         </div>
 
         {/* Rows */}
+        <ul className="list-none">
         {differences.map((diff, i) => (
-          <div
+          <li
             key={diff.label}
             className={`grid grid-cols-[1fr_auto_1fr] ${
               i !== differences.length - 1 ? "border-b border-border/50" : ""
@@ -189,14 +190,15 @@ export function KeyDifferencesBlock({
               {diff.entityBValue}
               {diff.winner === "b" && <WinBadge />}
             </div>
-          </div>
+          </li>
         ))}
+        </ul>
       </div>
 
       {/* Mobile: Stacked card layout */}
-      <div className="sm:hidden space-y-3">
+      <ul className="sm:hidden space-y-3 list-none">
         {differences.map((diff, i) => (
-          <div
+          <li
             key={diff.label}
             className={`bg-white border border-border rounded-xl overflow-hidden ${
               diff.winner === "a"
@@ -250,9 +252,9 @@ export function KeyDifferencesBlock({
                 </p>
               </div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

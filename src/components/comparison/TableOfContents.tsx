@@ -93,12 +93,13 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <nav className="mt-1 bg-white border border-primary-200 rounded-xl p-2 space-y-0.5 shadow-lg shadow-primary-100/30">
+          <nav className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30">
+            <ul className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
               return (
+                <li key={item.id}>
                 <a
-                  key={item.id}
                   href={`#${item.id}`}
                   onClick={() => setIsOpen(false)}
                   className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
@@ -119,8 +120,10 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   </span>
                   {item.label}
                 </a>
+                </li>
               );
             })}
+            </ul>
           </nav>
         </div>
       </div>
@@ -143,12 +146,12 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           </div>
 
           {/* Nav items */}
-          <div className="p-2 space-y-0.5">
+          <ul className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
               return (
+                <li key={item.id}>
                 <a
-                  key={item.id}
                   href={`#${item.id}`}
                   className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden ${
                     isActive
@@ -168,9 +171,10 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   </span>
                   <span className="truncate">{item.label}</span>
                 </a>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
       </nav>
     </>
