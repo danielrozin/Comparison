@@ -615,6 +615,11 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="citation_language" content="en" />
       <meta name="citation_url" content={meta.canonical} />
       <meta name="copyright" content={`© ${new Date().getFullYear()} A Versus B`} />
+      {/* Freshness signals — AI crawlers and news aggregators use these to determine
+          content age and prioritize recent content for time-sensitive queries */}
+      {meta.publishedTime && <meta name="date" content={meta.publishedTime} />}
+      {meta.modifiedTime && <meta name="last-modified" content={meta.modifiedTime} />}
+      {meta.modifiedTime && <meta http-equiv="last-modified" content={meta.modifiedTime} />}
       {/* citation_keywords — AI academic indexers (Semantic Scholar, Perplexity research)
           use these to classify content and boost citation density on keyword-matched queries. */}
       {(meta.articleTags ?? []).length > 0 && (
