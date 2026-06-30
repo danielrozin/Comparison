@@ -145,15 +145,30 @@ export async function GET() {
 
   lines.push("## Structured Data");
   lines.push("");
-  lines.push("Every page includes Schema.org JSON-LD: Article, FAQPage, Dataset, SpeakableSpecification, BreadcrumbList.");
+  lines.push("Every page includes Schema.org JSON-LD: Article, FAQPage, Dataset, SpeakableSpecification, BreadcrumbList, ClaimReview, DefinedTermSet.");
   lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
   lines.push("");
-  lines.push("## Additional Resources");
+  lines.push("## Machine-Readable Endpoints");
   lines.push("");
-  lines.push(`- [Full catalog (DB-fresh)](${SITE_URL}/api/llms-full)`);
+  lines.push(`- [Full catalog (DB-fresh JSON)](${SITE_URL}/api/llms-full)`);
+  lines.push(`- [Knowledge Graph JSON-LD](${SITE_URL}/api/knowledge-graph/{slug})`);
+  lines.push(`- [Comparison JSON](${SITE_URL}/api/comparisons/{slug})`);
+  lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
+  lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
+  lines.push(`- [Popular comparisons](${SITE_URL}/api/popular)`);
+  lines.push(`- [Recent comparisons](${SITE_URL}/api/recent)`);
+  lines.push(`- [Search](${SITE_URL}/api/search?q={query})`);
+  lines.push("");
+  lines.push("## Discovery");
+  lines.push("");
   lines.push(`- [AI plugin manifest](${SITE_URL}/.well-known/ai-plugin.json)`);
-  lines.push(`- [Sitemap](${SITE_URL}/sitemap.xml)`);
-  lines.push(`- [Developer API](${SITE_URL}/developers)`);
+  lines.push(`- [RSS feed](${SITE_URL}/feed)`);
+  lines.push(`- [Atom feed](${SITE_URL}/feed/atom)`);
+  lines.push(`- [Google News sitemap](${SITE_URL}/sitemap/news.xml)`);
+  lines.push(`- [OpenSearch descriptor](${SITE_URL}/opensearch.xml)`);
+  lines.push(`- [WebMention endpoint](${SITE_URL}/api/webmention)`);
+  lines.push(`- [Sitemap index](${SITE_URL}/sitemap.xml)`);
+  lines.push(`- [Developer API docs](${SITE_URL}/developers)`);
 
   const body = lines.join("\n");
 
