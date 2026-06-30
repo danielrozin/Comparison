@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
           // Content-Language — explicit English declaration for AI language classifiers
           { key: "Content-Language", value: "en" },
+          // Strict-Transport-Security — HSTS: tell browsers to always use HTTPS.
+          // max-age=63072000 = 2 years. includeSubDomains covers cdn.aversusb.net.
+          // preload qualifies the domain for HSTS preload lists (browsers ship with it).
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
       {

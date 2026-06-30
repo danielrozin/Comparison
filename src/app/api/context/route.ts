@@ -88,6 +88,11 @@ export async function GET() {
         description: "Structured FAQ pairs (question/answer) + FAQPage JSON-LD for a comparison. Best endpoint for AI Q&A extraction without HTML parsing.",
         key_field_for_citation: "faqs[].answer",
       },
+      entity: {
+        url: `${SITE_URL}/api/v1/entities/{slug}`,
+        format: "application/json",
+        description: "Entity profile: name, type, shortDesc, description, faqs, rating, and list of comparisons. Includes ProfilePage JSON-LD.",
+      },
       popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
       recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
     },

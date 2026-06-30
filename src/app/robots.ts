@@ -19,11 +19,13 @@ export default function robots(): MetadataRoute.Robots {
           "/feed",
           "/feed/atom",
           "/api/comparisons/",
+          "/api/faq/",
           "/api/popular",
           "/api/recent",
           "/api/search",
           "/api/og",
           "/api/v1/",
+          "/api/context",
         ],
         disallow: [
           "/api/",
