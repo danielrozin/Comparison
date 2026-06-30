@@ -629,11 +629,13 @@ export function comparisonPageSchema(
             seller: { "@type": "Organization", name: SITE_NAME },
           },
         }),
-        // Country enrichment — additionalType + sameAs Wikipedia signals entity identity
+        // Country enrichment — additionalType + sameAs Wikipedia+DBpedia signals entity identity
         // to geo-aware AI crawlers (Google Geo, Perplexity, ChatGPT country queries).
+        // entityWikipediaSameAs() returns both Wikipedia and DBpedia URLs for Knowledge Graph
+        // disambiguation; previously only Wikipedia was emitted (DBpedia was dropped).
         ...(schType === "Country" && {
           additionalType: "https://schema.org/Country",
-          sameAs: [`https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`],
+          sameAs: entityWikipediaSameAs(e.name),
           containedInPlace: { "@type": "Place", name: "Earth" },
         }),
       };
@@ -1178,7 +1180,8 @@ function buildMultiEntityGraph(
 
     if (schemaType === "Country") {
       node.additionalType = "https://schema.org/Country";
-      node.sameAs = [`https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`];
+      // entityWikipediaSameAs gives both Wikipedia + DBpedia; don't narrow to Wikipedia-only.
+      node.sameAs = entityWikipediaSameAs(entity.name);
       node.containedInPlace = { "@type": "Place", name: "Earth" };
     }
 
