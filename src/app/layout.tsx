@@ -80,6 +80,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* theme-color — browser chrome and Android home-screen splash color */}
+        <meta name="theme-color" content="#1a56db" />
+        {/* dns-prefetch / preconnect — resolve third-party origins early to reduce LCP.
+            preconnect opens TLS for frequently used origins; dns-prefetch for lower-priority ones.
+            Faster LCP is a Core Web Vitals signal that directly affects ranking. */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
         {/* Identity + license link relations — used by AI crawlers for E-E-A-T and training eligibility */}
         <link rel="me" href="https://x.com/aversusb" />
         <link rel="me" href="https://www.linkedin.com/company/aversusb" />
