@@ -20,6 +20,11 @@ const REVIEWS_URL = `${SITE_URL}/reviews`;
 export const metadata: Metadata = {
   title: REVIEWS_TITLE,
   description: REVIEWS_DESC,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
   alternates: { canonical: REVIEWS_URL },
   other: {
     "citation_title": REVIEWS_TITLE,

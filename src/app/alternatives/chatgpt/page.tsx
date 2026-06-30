@@ -16,6 +16,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
   alternates: { canonical: PAGE_URL },
   openGraph: {
     title: PAGE_TITLE,

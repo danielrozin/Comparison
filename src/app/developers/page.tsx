@@ -69,6 +69,11 @@ const DEV_URL = `${SITE_URL}/developers`;
 export const metadata: Metadata = {
   title: DEV_TITLE,
   description: DEV_DESC,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
   alternates: { canonical: DEV_URL },
   openGraph: {
     title: DEV_TITLE,
