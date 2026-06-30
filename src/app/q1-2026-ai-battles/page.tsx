@@ -20,7 +20,16 @@ const Q1_DESC = `Methodology and data for the Q1 2026 AI Tool Battles Index: ${n
 export const metadata: Metadata = {
   title: Q1_TITLE,
   description: Q1_DESC,
-  alternates: { canonical: PAGE_URL },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+    types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
+  },
   openGraph: {
     title: `Q1 2026 AI Tool Battles — ${SITE_NAME}`,
     description: `${nf.format(HEADLINE_TOTAL)} US comparison searches across ${BATTLE_COUNT} AI tool battles (Jan–Mar 2026). Full methodology and downloadable dataset.`,

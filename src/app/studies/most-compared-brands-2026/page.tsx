@@ -16,7 +16,16 @@ const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Most-Compared Br
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: CANONICAL },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+  },
+  alternates: {
+    canonical: CANONICAL,
+    languages: { "en": CANONICAL, "x-default": CANONICAL },
+    types: { "application/rss+xml": SITE_URL + "/feed", "application/atom+xml": SITE_URL + "/feed/atom" },
+  },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,

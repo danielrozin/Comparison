@@ -14,7 +14,16 @@ const STUDIES_URL = `${SITE_URL}/studies`;
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: STUDIES_URL },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: STUDIES_URL,
+    languages: { "en": STUDIES_URL, "x-default": STUDIES_URL },
+    types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
+  },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
