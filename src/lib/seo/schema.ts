@@ -80,22 +80,28 @@ export function organizationSchema() {
       url: `${SITE_URL}/authors/daniel-rozin`,
       sameAs: ["https://www.linkedin.com/in/daniel-rozin-56a066b0/"],
     },
+    // knowsAbout typed Thing nodes — AI knowledge graph builders (Google KG, Perplexity,
+    // ChatGPT) use @id URIs to disambiguate topic nodes and route domain-authority signals
+    // to the correct Wikipedia/Wikidata concept, strengthening E-E-A-T for each topic.
     knowsAbout: [
-      "Product Comparisons",
-      "Technology Reviews",
-      "Data-Driven Analysis",
-      "Consumer Electronics",
-      "Software as a Service",
-      "Sports Statistics",
-      "Country Comparisons",
-      "Automotive Reviews",
-      "Health & Wellness",
-      "Financial Products",
-      "Gaming Comparisons",
-      "Brand Analysis",
-      "Entertainment Reviews",
-      "Artificial Intelligence Tools",
-      "Cybersecurity Products",
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Comparison_shopping_website", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Review_site", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Data_analysis", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Consumer_electronics", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Software_as_a_service", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Sports_statistics", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Country", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Automotive_industry", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Health", name: "Health & Wellness", url: "https://en.wikipedia.org/wiki/Health" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Financial_services", name: "Financial Products", url: "https://en.wikipedia.org/wiki/Financial_services" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Video_game", name: "Gaming Comparisons", url: "https://en.wikipedia.org/wiki/Video_game" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Brand", name: "Brand Analysis", url: "https://en.wikipedia.org/wiki/Brand" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Entertainment", name: "Entertainment Reviews", url: "https://en.wikipedia.org/wiki/Entertainment" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Artificial_intelligence", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Computer_security", name: "Cybersecurity Products", url: "https://en.wikipedia.org/wiki/Computer_security" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Large_language_model", name: "Large Language Model Comparisons", url: "https://en.wikipedia.org/wiki/Large_language_model" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/E-commerce", name: "E-Commerce Products", url: "https://en.wikipedia.org/wiki/E-commerce" },
+      { "@type": "Thing", "@id": "https://en.wikipedia.org/wiki/Smartphone", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
     ],
     // publishingPrinciples — links to editorial methodology page.
     // Google's quality raters and AI crawlers use this as a primary E-E-A-T signal:
@@ -1075,6 +1081,11 @@ export function comparisonPageSchema(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "Dataset",
+      // additionalType DataFeed — signals to AI data-pipeline crawlers (Google Dataset Search,
+      // Hugging Face, Kaggle AI, Perplexity data mode) that this Dataset is a structured
+      // data feed with per-attribute rows, not a static document. Boosts visibility in
+      // data-specific AI query results ("comparison data for X vs Y").
+      additionalType: "https://schema.org/DataFeed",
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
@@ -1718,6 +1729,7 @@ function buildMultiEntityGraph(
       comparison.entities.some((e) => e.entityType === "country");
     graph.push({
       "@type": "Dataset",
+      additionalType: "https://schema.org/DataFeed",
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
