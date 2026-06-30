@@ -193,6 +193,11 @@ export default async function AlternativesPage({ params }: PageProps) {
     })),
     timeRequired: "PT4M",
     wordCount: 800,
+    datePublished: today,
+    copyrightYear: new Date().getFullYear(),
+    // discussionUrl — Reddit search for community discussions on alternatives to this entity.
+    // Google E-E-A-T evaluators and AI crawlers use discussionUrl as an engagement signal.
+    discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(name + " alternatives")}+OR+${encodeURIComponent(name + " competitors")}&type=link&sort=relevance`,
   };
 
   return (
