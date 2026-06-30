@@ -449,6 +449,14 @@ export default async function BlogPostPage({
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
       })),
     }),
+    ...(article.relatedComparisonSlugs?.length && {
+      isBasedOn: article.relatedComparisonSlugs.map((s) => ({
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/compare/${s}#webpage`,
+        name: comparisonTitles?.[s] ?? s,
+        url: `${SITE_URL}/compare/${s}`,
+      })),
+    }),
     // mentions — named entities discussed in this article but not the primary subject.
     // Typed @type + sameAs (Wikipedia + DBpedia) mirrors the HB139 pattern on comparison
     // pages — AI knowledge graphs use sameAs to merge co-occurrence signals across sites.
