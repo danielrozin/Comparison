@@ -635,6 +635,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
+      {/* WebMention — W3C backlink notification; CMS platforms auto-POST here on link */}
+      <link rel="webmention" href="https://www.aversusb.net/api/webmention" />
       {/* og:see_also — related comparison URLs.
           AI crawlers (Perplexity, ChatGPT browse, Gemini) follow these to build
           entity-relationship graphs and surface more of our comparisons in answers. */}

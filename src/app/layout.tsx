@@ -112,6 +112,9 @@ export default function RootLayout({
           title="A Versus B — Compare Anything"
           href={`${SITE_URL}/opensearch.xml`}
         />
+        {/* WebMention — W3C standard; CMS platforms (WordPress, Ghost, micro.blog) POST
+            inbound links here; accelerates backlink discovery before Google crawls the source */}
+        <link rel="webmention" href={`${SITE_URL}/api/webmention`} />
         {ADSENSE_PUB_ID && (
           <script
             async
