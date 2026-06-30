@@ -13,7 +13,16 @@ const PM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Passwor
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: PAGE_URL },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+    types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
+  },
   openGraph: {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,

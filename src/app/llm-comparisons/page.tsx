@@ -12,7 +12,19 @@ const LAST_UPDATED = "2026-05-22";
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
-  alternates: { canonical: PAGE_URL },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+  },
+  alternates: {
+    canonical: PAGE_URL,
+    languages: { "en": PAGE_URL, "x-default": PAGE_URL },
+    types: {
+      "application/rss+xml": `${SITE_URL}/feed`,
+      "application/atom+xml": `${SITE_URL}/feed/atom`,
+    },
+  },
   openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", siteName: SITE_NAME },
   other: {
     "citation_title": PAGE_TITLE,
