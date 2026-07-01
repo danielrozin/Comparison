@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { SITE_URL } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,10 @@ export async function GET(
     ETag: etag,
     // X-Summary: shortAnswer (verdict fallback) for AI crawlers scanning headers
     ...(xSummary ? { "X-Summary": xSummary.slice(0, 500) } : {}),
+    // X-Source-* — attribution headers for AI training pipelines and citation engines
+    "X-Source-Title": comparison.title,
+    "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+    "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
   };
   if (updatedAt) {
     headers["Last-Modified"] = new Date(updatedAt).toUTCString();
