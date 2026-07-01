@@ -102,6 +102,37 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Category pages: Link rel=alternate pointing to the categories API with category filter
+        // AI crawlers can navigate from category HTML pages to structured JSON category data.
+        source: "/category/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/categories>; rel=\"alternate\"; type=\"application/json\"; title=\"Category Index API\", </api/sitemap?category=:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Category JSON Sitemap\"",
+          },
+        ],
+      },
+      {
+        // Search page: Link rel=alternate pointing to unified search API for AI crawlers
+        source: "/search",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/search>; rel=\"alternate\"; type=\"application/json\"; title=\"Unified Search API\", </opensearch.xml>; rel=\"search\"; type=\"application/opensearchdescription+xml\"; title=\"A Versus B Search\"",
+          },
+        ],
+      },
+      {
+        // Trending page: Link rel=alternate pointing to trending API
+        source: "/trending",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/trending>; rel=\"alternate\"; type=\"application/json\"; title=\"Trending Comparisons API\"",
+          },
+        ],
+      },
     ];
   },
 };
