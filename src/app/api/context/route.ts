@@ -142,6 +142,18 @@ export async function GET() {
         description: "AI tool-calling endpoint: look up a comparison by entity names. Returns the comparison if found (with shortAnswer, verdict, API URLs) or suggestions if not. Tries both orderings.",
         example: `${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`,
       },
+      best_list: {
+        url: `${SITE_URL}/api/v1/best/{slug}`,
+        format: "application/json",
+        description: "Structured best-of list with ItemList JSON-LD: ranked items (position, name, url), FAQs, author, publishedAt, updatedAt. Use for 'best X' intent routing. X-Summary header in HTTP response.",
+        listing: `${SITE_URL}/api/v1/best`,
+        example: `${SITE_URL}/api/v1/best/best-cloud-platforms-2026`,
+      },
+      best_list_index: {
+        url: `${SITE_URL}/api/v1/best`,
+        format: "application/json",
+        description: "Paginated index of all best-of list pages. Supports ?category and ?limit/?offset.",
+      },
       unified_search: {
         url: `${SITE_URL}/api/v1/search?q={query}`,
         format: "application/json",

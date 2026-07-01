@@ -160,6 +160,7 @@ export async function GET() {
   lines.push(`- [Entity list JSON](${SITE_URL}/api/v1/entities?limit=50) — browseable entity list; supports ?type and pagination`);
   lines.push(`- [Blog article JSON](${SITE_URL}/api/blog/{slug}) — single blog article with Article JSON-LD; X-Summary header in HTTP response`);
   lines.push(`- [Related comparisons JSON](${SITE_URL}/api/v1/related/{slug}) — related comparisons for a given slug`);
+  lines.push(`- [Best-of list JSON](${SITE_URL}/api/v1/best/{slug}) — structured best-of list with ItemList JSON-LD: ranked items (position, name, url), FAQs, author, dates; X-Summary header on response; list all at ${SITE_URL}/api/v1/best`);
   lines.push(`- [Compare Lookup (AI tool-calling)](${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}) — fastest endpoint for AI tools: looks up comparison by entity names, returns shortAnswer + API URLs or suggestions; example: ${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`);
   lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; supports ?types=comparisons,entities,blog and ?limit; X-Summary header on response`);
 

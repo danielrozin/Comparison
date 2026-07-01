@@ -92,6 +92,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Best-of list pages: Link rel=alternate pointing to structured ItemList JSON API
+        source: "/best/:slug",
+        headers: [
+          {
+            key: "Link",
+            value: "</api/v1/best/:slug>; rel=\"alternate\"; type=\"application/json\"",
+          },
+        ],
+      },
     ];
   },
 };

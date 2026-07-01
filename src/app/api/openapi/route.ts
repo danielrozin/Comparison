@@ -263,6 +263,43 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/best": {
+        get: {
+          operationId: "listBestPages",
+          tags: ["Discovery"],
+          summary: "List best-of pages",
+          description: "Returns a paginated list of all published best-of pages. Supports ?category filter and ?limit/?offset pagination. Use to discover 'best X' content for AI routing.",
+          parameters: [
+            { name: "category", in: "query", description: "Filter by category slug", schema: { type: "string" } },
+            { name: "limit", in: "query", description: "Max results (default 20, max 100)", schema: { type: "integer", default: 20, maximum: 100 } },
+            { name: "offset", in: "query", description: "Pagination offset", schema: { type: "integer", default: 0 } },
+          ],
+          responses: {
+            "200": {
+              description: "List of best-of pages",
+              content: { "application/json": { schema: { type: "object", properties: { total: { type: "integer" }, pages: { type: "array", items: { type: "object", properties: { slug: { type: "string" }, title: { type: "string" }, category: { type: "string" }, itemCount: { type: "integer" }, url: { type: "string" }, apiUrl: { type: "string" } } } } } } } },
+            },
+          },
+        },
+      },
+      "/api/v1/best/{slug}": {
+        get: {
+          operationId: "getBestPage",
+          tags: ["Discovery"],
+          summary: "Get a best-of list by slug",
+          description: "Returns a best-of list with structured ItemList JSON-LD: ranked items (position, name, url), FAQs, author, and dates. Designed for AI tools doing 'best X' intent routing. X-Summary header in HTTP response. Tries DB first, falls back to static config.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Best-of page slug (e.g. best-cloud-platforms-2026)", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": {
+              description: "Best-of list with ItemList JSON-LD",
+              content: { "application/json": { schema: { type: "object", properties: { slug: { type: "string" }, title: { type: "string" }, itemCount: { type: "integer" }, items: { type: "array", items: { type: "object", properties: { position: { type: "integer" }, name: { type: "string" }, url: { type: "string" } } } }, faqs: { type: "array", items: { "$ref": "#/components/schemas/FAQ" } }, itemListSchema: { type: "object", description: "ItemList JSON-LD" } } } } },
+            },
+            "404": { description: "Not found" },
+          },
+        },
+      },
       "/api/v1/search": {
         get: {
           operationId: "unifiedSearch",
