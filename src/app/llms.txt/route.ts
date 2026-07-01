@@ -176,8 +176,11 @@ export async function GET() {
   lines.push("## Discovery");
   lines.push("");
   lines.push(`- [AI plugin manifest](${SITE_URL}/.well-known/ai-plugin.json)`);
+  lines.push(`- [AI crawler permissions](${SITE_URL}/.well-known/ai.txt) — explicit Allow: / for 30+ named AI crawlers + CC BY 4.0 license declaration`);
   lines.push(`- [RSS feed](${SITE_URL}/feed)`);
   lines.push(`- [Atom feed](${SITE_URL}/feed/atom)`);
+  lines.push(`- [JSON Feed 1.1](${SITE_URL}/feed/json) — machine-readable JSON feed for AI and aggregators`);
+  lines.push(`- [Changes feed](${SITE_URL}/api/v1/changes) — incremental change feed for AI crawlers; supports ?since={ISO-date} for delta polling`);
   lines.push(`- [Google News sitemap](${SITE_URL}/sitemap/news.xml)`);
   lines.push(`- [OpenSearch descriptor](${SITE_URL}/opensearch.xml)`);
   lines.push(`- [WebMention endpoint](${SITE_URL}/api/webmention)`);
@@ -188,6 +191,15 @@ export async function GET() {
   lines.push(`- [humans.txt](${SITE_URL}/humans.txt)`);
   lines.push(`- [OpenAPI 3.0 spec](${SITE_URL}/api/openapi) — machine-readable API schema for all endpoints`);
   lines.push(`- [Developer API docs](${SITE_URL}/developers)`);
+  lines.push("");
+  lines.push("## HTTP Link Headers (AI-Optimised Discovery)");
+  lines.push("");
+  lines.push("Every page emits `Link:` HTTP headers for fastest structured-data discovery by AI crawlers:");
+  lines.push(`- \`/compare/{slug}\` → Link: <api/v1/schema/{slug}>; rel="describedby"; type="application/ld+json"`);
+  lines.push(`- \`/blog/{slug}\` → Link: <api/blog/{slug}>; rel="describedby"; type="application/ld+json"`);
+  lines.push(`- \`/entity/{slug}\` → Link: <api/v1/entities/{slug}>; rel="describedby"; type="application/ld+json"`);
+  lines.push(`- \`/category/{slug}\` → Link: <api/v1/comparisons?category={slug}>; rel="describedby"; type="application/json"`);
+  lines.push("Content negotiation: GET /compare/{slug} with Accept: application/ld+json → 303 redirect to api/v1/schema/{slug}");
 
   const body = lines.join("\n");
 
