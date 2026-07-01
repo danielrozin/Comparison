@@ -53,11 +53,16 @@ export async function HEAD(
   const url = `${SITE_URL}/compare/${slug}`;
   const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
 
+  // Quick synthetic summary for X-Summary header (mirrors GET logic)
+  const headSummary = comparison.shortAnswer
+    || comparison.verdict?.slice(0, 250).replace(/\n+/g, " ").trim()
+    || null;
+
   return new Response(null, {
     status: 200,
     headers: {
       ...HEADERS,
-      ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+      ...(headSummary ? { "X-Summary": headSummary.slice(0, 500) } : {}),
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       "Link": `<${url}>; rel="canonical", <${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
     },
@@ -98,6 +103,24 @@ export async function GET(
     }
   }
 
+  // Synthesize a shortAnswer when the DB field is empty.
+  // A synthetic answer is better than null for AI citation — Perplexity and ChatGPT
+  // will skip citing a page that has no quotable sentence.
+  // Synthesis priority: shortAnswer → verdict excerpt → winner + keyDifference → title fallback.
+  const entityNames = entities.map((e) => e.name);
+  const syntheticAnswer = comparison.shortAnswer
+    || (comparison.verdict
+        ? comparison.verdict.slice(0, 250).replace(/\n+/g, " ").trim()
+        : null)
+    || (winner && comparison.keyDifferences?.[0]
+        ? `${winner.name} is the better choice for most users. ${comparison.keyDifferences[0]}`
+        : null)
+    || (winner
+        ? `Between ${entityNames.join(" and ")}, ${winner.name} generally comes out ahead across key attributes.`
+        : entityNames.length >= 2
+        ? `${entityNames[0]} and ${entityNames[1]} each have distinct strengths — this comparison covers the key differences to help you choose.`
+        : null);
+
   // Confidence level based on data completeness
   const hasShortAnswer = !!comparison.shortAnswer;
   const hasVerdict = !!comparison.verdict;
@@ -131,7 +154,9 @@ export async function GET(
     {
       slug,
       question: comparison.title,
-      answer: comparison.shortAnswer || null,
+      answer: syntheticAnswer || null,
+      // answer_curated: true when shortAnswer is from DB (human-reviewed), false = synthesized
+      answer_curated: !!comparison.shortAnswer,
       verdict: comparison.verdict || null,
       keyDifferences: comparison.keyDifferences?.slice(0, 5) ?? [],
       winner,
@@ -152,7 +177,7 @@ export async function GET(
         source: SITE_NAME,
         url,
         license: "CC BY 4.0",
-        citationFormat: `According to ${SITE_NAME} (${url}), ${comparison.shortAnswer?.slice(0, 200) ?? ""}`,
+        citationFormat: `According to ${SITE_NAME} (${url}), ${syntheticAnswer?.slice(0, 200) ?? ""}`,
         dateModified: updatedAt ? new Date(updatedAt).toISOString() : null,
       },
       relatedQuestionsUrl: `${SITE_URL}/api/faq/${slug}`,
@@ -164,7 +189,7 @@ export async function GET(
       headers: {
         ...HEADERS,
         ETag: updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`,
-        ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+        ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
       },
     }
   );
