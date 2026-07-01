@@ -119,11 +119,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.creator": SITE_NAME,
       "DC.publisher": SITE_NAME,
       "DC.language": "en",
+      "DC.subject": `${subcat.name} Comparisons, ${category.name} ${subcat.name}`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/category/${slug}/${subcategory}`,
       "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": `${subcat.name} Comparisons`,
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }
