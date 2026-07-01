@@ -55,11 +55,18 @@ export async function GET() {
     },
 
     api_endpoints: {
+      schema_jsonld: {
+        url: `${SITE_URL}/api/v1/schema/{slug}`,
+        format: "application/ld+json",
+        description:
+          "Pure Schema.org JSON-LD document for a comparison. Returns application/ld+json content-type (not application/json) — use for Semantic Web / Linked Data clients and JSON-LD validators. Also the redirect target when Accept: application/ld+json is sent to /compare/{slug}.",
+        content_negotiation: "GET /compare/{slug} with Accept: application/ld+json → 303 redirect here",
+      },
       knowledge_graph: {
         url: `${SITE_URL}/api/knowledge-graph/{slug}`,
         format: "application/ld+json",
         description:
-          "JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes. Preferred for AI systems that consume structured linked data.",
+          "Richer JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes including extra metadata fields. Use /api/v1/schema/{slug} for pure spec-compliant JSON-LD.",
       },
       comparison_json: {
         url: `${SITE_URL}/api/comparisons/{slug}`,

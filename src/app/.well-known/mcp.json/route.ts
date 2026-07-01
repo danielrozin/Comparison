@@ -118,8 +118,18 @@ export async function GET() {
         returns: "JSON: { faqs: [ { question, answer } ] } with FAQPage JSON-LD",
       },
       {
+        name: "get_schema_jsonld",
+        description: "Get pure Schema.org JSON-LD for a comparison. Returns application/ld+json content-type — use for Semantic Web clients, JSON-LD Playground, RDF tools, and AI crawlers doing content negotiation. Also accessible via content negotiation: GET /compare/{slug} with Accept: application/ld+json.",
+        endpoint: `${SITE_URL}/api/v1/schema/{slug}`,
+        method: "GET",
+        parameters: {
+          slug: { type: "string", required: true, description: "Comparison slug, e.g. 'chatgpt-vs-claude'" },
+        },
+        returns: "application/ld+json: { @context, @graph: [WebPage, Article, Thing×N, Dataset, FAQPage, Organization] }",
+      },
+      {
         name: "get_knowledge_graph",
-        description: "Get the full JSON-LD @graph for a comparison (Article, Dataset, FAQPage, HowTo nodes).",
+        description: "Get the rich JSON-LD @graph for a comparison with extra metadata fields (Article, Dataset, FAQPage, HowTo nodes). Use get_schema_jsonld for pure spec-compliant JSON-LD.",
         endpoint: `${SITE_URL}/api/knowledge-graph/{slug}`,
         method: "GET",
         parameters: {

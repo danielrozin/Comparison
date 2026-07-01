@@ -90,6 +90,29 @@ export function middleware(request: NextRequest) {
   ];
   const isContentApi = CONTENT_API_PATHS.some((p) => pathname === p || pathname.startsWith(p));
 
+  // HTTP content negotiation — Linked Data clients that send Accept: application/ld+json
+  // (e.g. Semantic Web tools, some AI crawlers) should receive the JSON-LD graph directly
+  // rather than the HTML page. Redirect /compare/{slug} → /api/knowledge-graph/{slug}
+  // and /entity/{slug} → /api/v1/entities/{slug} with 303 See Other per RFC 7231 §6.4.4.
+  if (!pathname.startsWith("/api/")) {
+    const accept = request.headers.get("accept") ?? "";
+    const primaryAccept = accept.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
+    if (primaryAccept === "application/ld+json") {
+      const SITE = "https://www.aversusb.net";
+      if (pathname.startsWith("/compare/")) {
+        const slug = pathname.replace("/compare/", "").replace(/\/$/, "");
+        if (slug) {
+          return NextResponse.redirect(`${SITE}/api/knowledge-graph/${slug}`, { status: 303 });
+        }
+      } else if (pathname.startsWith("/entity/")) {
+        const slug = pathname.replace("/entity/", "").replace(/\/$/, "");
+        if (slug) {
+          return NextResponse.redirect(`${SITE}/api/v1/entities/${slug}`, { status: 303 });
+        }
+      }
+    }
+  }
+
   // For non-API routes, set geo cookie + security headers
   if (!pathname.startsWith("/api/")) {
     const response = NextResponse.next();
@@ -127,6 +150,7 @@ export function middleware(request: NextRequest) {
         response.headers.set(
           "Link",
           [
+            `<${SITE}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
             `<${SITE}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"; title="Knowledge Graph"`,
             `<${SITE}/api/comparisons/${slug}>; rel="alternate"; type="application/json"; title="Comparison JSON"`,
             `<${SITE}/api/answer/${slug}>; rel="alternate"; type="application/json"; title="AI Answer"`,
