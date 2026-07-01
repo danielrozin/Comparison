@@ -77,6 +77,7 @@ export const metadata: Metadata = {
     types: {
       "application/rss+xml": `${SITE_URL}/feed`,
       "application/atom+xml": `${SITE_URL}/feed/atom`,
+      "application/feed+json": `${SITE_URL}/feed/json`,
       "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(SITE_URL)}&format=json`,
     },
   },

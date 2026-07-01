@@ -227,6 +227,7 @@ export async function GET() {
       json_sitemap: `${SITE_URL}/api/sitemap`,
       rss: `${SITE_URL}/feed`,
       atom: `${SITE_URL}/feed/atom`,
+      json_feed: `${SITE_URL}/feed/json`,
       news_sitemap: `${SITE_URL}/sitemap/news.xml`,
       image_sitemap: `${SITE_URL}/sitemap/images.xml`,
       video_sitemap: `${SITE_URL}/sitemap/video.xml`,
