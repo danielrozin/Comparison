@@ -18,6 +18,9 @@ export async function OPTIONS() {
 // GET /api/v1/entities/[slug]
 // Returns structured entity data for AI tools, knowledge graph ingestion,
 // and developer integrations. Includes comparisons the entity appears in.
+// When Accept: application/ld+json is the primary accept type (e.g. Linked Data
+// clients or the content-negotiation redirect from /entity/{slug}), returns a
+// clean @context + @graph JSON-LD document with application/ld+json content-type.
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
@@ -126,6 +129,43 @@ export async function GET(
     definedTermSchema,
     updatedAt: entity.updatedAt,
   };
+
+  const acceptHeader = _req.headers.get("accept") ?? "";
+  const primaryAccept = acceptHeader.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
+
+  if (primaryAccept === "application/ld+json") {
+    // Linked Data / content-negotiation path: return clean @context + @graph
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@graph": [
+        profilePageSchema,
+        definedTermSchema,
+        ...(entity.faqs.length > 0
+          ? [{
+              "@type": "FAQPage",
+              "@id": `${url}#faq`,
+              url,
+              mainEntity: entity.faqs.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: { "@type": "Answer", text: faq.answer },
+              })),
+            }]
+          : []),
+        { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      ],
+    };
+    return new Response(JSON.stringify(jsonLd, null, 2), {
+      headers: {
+        "Content-Type": "application/ld+json",
+        "Cache-Control": HEADERS["Cache-Control"],
+        "Access-Control-Allow-Origin": "*",
+        "X-Robots-Tag": "all",
+        ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
+        "Link": `<${url}>; rel="canonical"`,
+      },
+    });
+  }
 
   return NextResponse.json(response, {
     headers: {

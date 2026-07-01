@@ -84,6 +84,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "application/atom+xml": `${SITE_URL}/feed/atom`,
         "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/entity/${slug}`)}&format=json`,
         "application/json": `${SITE_URL}/api/v1/entities/${slug}`,
+        "application/ld+json": `${SITE_URL}/api/v1/entities/${slug}`,
       },
     },
     openGraph: {
@@ -106,6 +107,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": description,
+      "abstract": description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": title,
