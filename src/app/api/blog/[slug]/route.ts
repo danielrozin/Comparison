@@ -23,12 +23,18 @@ export async function GET(
   const updatedAt = article.updatedAt ?? article.publishedAt ?? article.createdAt;
   const etag = updatedAt ? `"blog-${slug}-${new Date(updatedAt).getTime()}"` : `"blog-${slug}"`;
 
+  const wordCount = article.content
+    ? article.content.trim().split(/\s+/).length
+    : undefined;
+
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     "@id": `${url}#article`,
     headline: article.title,
     description: article.excerpt || article.metaDescription || "",
+    // abstract = excerpt — the citation-ready TL;DR preferred by AI answer engines
+    ...(article.excerpt ? { abstract: article.excerpt } : {}),
     url,
     datePublished: article.publishedAt ?? article.createdAt,
     dateModified: article.updatedAt ?? article.publishedAt,
@@ -38,7 +44,16 @@ export async function GET(
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     ...(article.tags?.length ? { keywords: article.tags.join(", ") } : {}),
     ...(article.category ? { articleSection: article.category } : {}),
+    ...(wordCount ? { wordCount } : {}),
     license: "https://creativecommons.org/licenses/by/4.0/",
+    // speakable — sections optimized for AI/voice reading extraction
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".article-excerpt", ".article-intro", "#article-summary"],
+    },
+    accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "itemList", itemListElement: "textual" }],
+    isAccessibleForFree: true,
   };
 
   return NextResponse.json(
