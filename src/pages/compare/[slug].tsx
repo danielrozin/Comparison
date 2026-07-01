@@ -685,6 +685,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
           use these to subscribe to content updates and detect freshness signals */}
       <link rel="alternate" type="application/rss+xml" title="A Versus B — RSS Feed" href="https://www.aversusb.net/feed" />
       <link rel="alternate" type="application/atom+xml" title="A Versus B — Atom Feed" href="https://www.aversusb.net/feed/atom" />
+      <link rel="alternate" type="application/feed+json" title="A Versus B — JSON Feed" href="https://www.aversusb.net/feed/json" />
       {/* hreflang — English-only site; x-default avoids "missing x-default" Search Console warning */}
       <link rel="alternate" hrefLang="en" href={meta.canonical} />
       <link rel="alternate" hrefLang="x-default" href={meta.canonical} />
