@@ -492,9 +492,49 @@ export function webApplicationSchema() {
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
     releaseNotes: `${SITE_URL}/changelog`,
+    datePublished: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    // hasPart — the major sections of the application. AI answer engines and
+    // Google's site-structure crawlers use hasPart to understand what sub-apps
+    // or content areas the WebApplication contains.
+    hasPart: [
+      { "@type": "WebPage", name: "Trending Comparisons", url: `${SITE_URL}/trending`, description: "Most-viewed comparisons updated daily" },
+      { "@type": "WebPage", name: "Technology Comparisons", url: `${SITE_URL}/category/technology` },
+      { "@type": "WebPage", name: "Sports Comparisons", url: `${SITE_URL}/category/sports` },
+      { "@type": "WebPage", name: "Country Comparisons", url: `${SITE_URL}/category/countries` },
+      { "@type": "WebPage", name: "Software Comparisons", url: `${SITE_URL}/category/software` },
+      { "@type": "WebPage", name: "Product Comparisons", url: `${SITE_URL}/category/products` },
+      { "@type": "WebPage", name: "Entity Profiles", url: `${SITE_URL}/entity`, description: "Dedicated profile pages for each entity" },
+      { "@type": "WebPage", name: "Blog", url: `${SITE_URL}/blog`, description: "In-depth comparison guides" },
+      { "@type": "WebPage", name: "Developer API", url: `${SITE_URL}/developers`, description: "REST API for comparison data" },
+    ],
+    // potentialAction — tells AI assistants and Google what actions users can take.
+    // SearchAction routes search-intent queries; CompareAction routes comparison-intent;
+    // SubscribeAction signals the newsletter CTA for engagement-intent queries.
+    potentialAction: [
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
+      {
+        "@type": "ReadAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{slug}` },
+      },
+      {
+        "@type": "CompareAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{entity-a}-vs-{entity-b}` },
+        description: "Compare any two entities side-by-side",
+      },
+      {
+        "@type": "SubscribeAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/contact` },
+        description: "Subscribe to comparison updates and newsletter",
+      },
+    ],
     offers: {
       "@type": "Offer",
       price: "0",
