@@ -242,8 +242,15 @@ export function dataCatalogSchema() {
           "@type": "DataDownload",
           encodingFormat: "application/json",
           contentUrl: `${SITE_URL}/api/sitemap`,
-          name: "A Versus B JSON Sitemap",
-          description: "Paginated JSON sitemap of all comparison pages with shortAnswer, category, and structured metadata",
+          name: "A Versus B JSON Sitemap (Comparisons)",
+          description: "Paginated JSON DataFeed sitemap of all comparison pages with shortAnswer, answerUrl, knowledgeGraphUrl, and category; blog variant at ?type=blog",
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: `${SITE_URL}/api/sitemap?type=blog`,
+          name: "A Versus B JSON Sitemap (Blog)",
+          description: "Paginated JSON DataFeed sitemap of all published blog articles with excerpt, tags, and jsonUrl for per-article API access",
         },
         {
           "@type": "DataDownload",

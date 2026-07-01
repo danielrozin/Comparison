@@ -128,7 +128,8 @@ export async function GET() {
       json_sitemap: {
         url: `${SITE_URL}/api/sitemap`,
         format: "application/json",
-        description: "JSON sitemap of all comparison pages — paginated, supports ?category, ?limit, ?offset, ?format=urlset. Includes shortAnswer for each page.",
+        description: "JSON sitemap (DataFeed JSON-LD) of all published content. Supports ?type=comparisons (default) | blog, ?category, ?limit, ?offset, ?format=urlset. Comparisons include shortAnswer, knowledgeGraphUrl, answerUrl. Blog includes excerpt, tags, jsonUrl.",
+        blog_variant: `${SITE_URL}/api/sitemap?type=blog`,
       },
       answer: {
         url: `${SITE_URL}/api/answer/{slug}`,
