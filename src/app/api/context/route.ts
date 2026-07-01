@@ -169,6 +169,19 @@ export async function GET() {
         example: `${SITE_URL}/api/v1/search?q=chatgpt+vs+claude`,
         key_field_for_citation: "comparisons[0].excerpt (= shortAnswer)",
       },
+      batch: {
+        url: `${SITE_URL}/api/v1/batch`,
+        method: "POST",
+        format: "application/json",
+        description: "Fetch up to 20 comparisons in a single request. POST { slugs: string[], fields?: string[] }. Returns a map of slug → data (null if not found). X-Summary carries the first result's shortAnswer. Use for multi-entity analysis and comparison matrices.",
+        example_body: { slugs: ["chatgpt-vs-claude", "gpt-4-vs-claude-3"], fields: ["shortAnswer", "verdict"] },
+      },
+      changes: {
+        url: `${SITE_URL}/api/v1/changes`,
+        format: "application/json",
+        description: "Incremental indexing feed — returns comparisons and blog articles added or updated since a given timestamp. Poll daily with ?since=<last-poll-time> to discover new content without re-crawling all pages. Supports ETag 304 conditional GET. X-Change-Count header gives the total count.",
+        example: `${SITE_URL}/api/v1/changes?since=2026-07-01T00:00:00Z&type=comparisons`,
+      },
     },
 
     comparison_data_structure: {
