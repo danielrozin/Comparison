@@ -695,12 +695,16 @@ function MetaHead({ meta }: { meta: PageMeta }) {
         <meta name="citation_keywords" content={(meta.articleTags ?? []).join("; ")} />
       )}
       <meta name="DC.title" content={meta.title} />
+      <meta name="DC.description" content={meta.description} />
       <meta name="DC.creator" content="A Versus B" />
       <meta name="DC.publisher" content="A Versus B" />
       <meta name="DC.language" content="en" />
       <meta name="DC.type" content="Text" />
       <meta name="DC.format" content="text/html" />
       <meta name="DC.identifier" content={meta.canonical} />
+      <meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/" />
+      <meta name="DC.coverage" content="Worldwide" />
+      {meta.publishedTime && <meta name="DC.date" content={meta.publishedTime} />}
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
