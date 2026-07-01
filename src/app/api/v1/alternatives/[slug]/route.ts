@@ -79,6 +79,9 @@ export async function GET(
           .join(", ")}, and more.`
       : `No alternatives found for ${entityName}.`;
 
+  // ETag based on content fingerprint — enables 304 Not Modified for AI/SEO crawlers
+  const etag = `"alt-${slug}-${allAlternatives.length}"`;
+
   return NextResponse.json(
     {
       entitySlug: slug,
@@ -100,6 +103,7 @@ export async function GET(
     {
       headers: {
         ...HEADERS,
+        ETag: etag,
         "X-Summary": summary.slice(0, 500),
       },
     }

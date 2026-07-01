@@ -81,6 +81,26 @@ export async function GET(
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
   };
 
+  // DefinedTerm schema — makes entity profiles eligible for Google's definition
+  // rich results and AI knowledge-graph "what is X" citation queries.
+  // DefinedTermSet links back to the entity-type category so AI systems can
+  // understand the taxonomy (e.g. "smartphone" belongs to "Consumer Electronics").
+  const definedTermSchema = {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    "@id": `${url}#definedterm`,
+    name: entity.name,
+    description: entity.shortDesc ?? entity.description ?? undefined,
+    url,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      "@id": `${SITE_URL}/entities/${encodeURIComponent(entity.entityType.name.toLowerCase())}#termset`,
+      name: entity.entityType.name,
+      url: `${SITE_URL}/entities/${encodeURIComponent(entity.entityType.name.toLowerCase())}`,
+    },
+    ...(entity.imageUrl ? { image: entity.imageUrl } : {}),
+  };
+
   const response = {
     slug: entity.slug,
     name: entity.name,
@@ -103,6 +123,7 @@ export async function GET(
       category: c.category,
     })),
     profilePageSchema,
+    definedTermSchema,
     updatedAt: entity.updatedAt,
   };
 

@@ -88,8 +88,17 @@ export async function GET(request: NextRequest) {
         answer: found.shortAnswer ?? null,
         verdict: found.verdict ?? null,
         keyDifferences: found.keyDifferences?.slice(0, 3) ?? [],
+        faqs: (found.faqs ?? []).slice(0, 3).map((f) => ({
+          question: f.question,
+          answer: f.answer,
+        })),
         category: found.category,
-        entities: found.entities.map((e) => ({ name: e.name, slug: e.slug })),
+        entities: found.entities.map((e) => ({
+          name: e.name,
+          slug: e.slug,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          alternativesUrl: `${SITE_URL}/api/v1/alternatives/${e.slug}`,
+        })),
       },
       {
         headers: {

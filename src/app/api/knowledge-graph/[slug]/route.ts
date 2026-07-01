@@ -182,6 +182,56 @@ export async function GET(
   // Add FAQ node if present
   if (faqNodes) graph.push(faqNodes);
 
+  // HowTo node — captures "how to choose between X and Y" featured snippets.
+  // Google grants HowTo rich results to comparison pages that structure their
+  // decision criteria as steps. AI answer engines also prefer step-form guidance
+  // for decision-intent queries over free-form prose.
+  if (comparison.keyDifferences?.length && comparison.entities.length >= 2) {
+    const entityNames = comparison.entities.map((e) => e.name).join(" and ");
+    const [entityA, entityB] = comparison.entities;
+    graph.push({
+      "@type": "HowTo",
+      "@id": `${url}#howto`,
+      name: `How to Choose Between ${entityNames}`,
+      description: comparison.shortAnswer ?? `A step-by-step guide to deciding between ${entityNames} based on key differences.`,
+      url,
+      totalTime: "PT3M",
+      step: comparison.keyDifferences.map((diff, i) => {
+        const label = diff.label ?? `Difference ${i + 1}`;
+        const aVal = diff.entityAValue ?? "";
+        const bVal = diff.entityBValue ?? "";
+        const stepText = aVal && bVal
+          ? `${label}: ${entityA?.name ?? "A"} has ${aVal}, while ${entityB?.name ?? "B"} has ${bVal}.`
+          : label;
+        return {
+          "@type": "HowToStep",
+          "@id": `${url}#howto-step-${i + 1}`,
+          position: i + 1,
+          name: `Consider: ${label.slice(0, 80)}`,
+          text: stepText,
+          url: `${url}#key-differences`,
+        };
+      }),
+      ...(comparison.verdict
+        ? {
+            tool: [
+              {
+                "@type": "HowToTool",
+                name: "A Versus B Comparison Guide",
+                url,
+              },
+            ],
+            tip: [
+              {
+                "@type": "HowToTip",
+                text: comparison.verdict,
+              },
+            ],
+          }
+        : {}),
+    });
+  }
+
   // Add ClaimReview node for the verdict when present — tells AI fact-checkers and
   // Google that the verdict is a reviewed claim, not speculation.
   if (comparison.verdict || comparison.shortAnswer) {
