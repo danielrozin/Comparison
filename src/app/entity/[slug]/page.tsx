@@ -123,6 +123,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "twitter:data1": "Entity Profile",
       "twitter:label2": "Platform",
       "twitter:data2": "A Versus B",
+      "thumbnail": ogImage,
     },
   };
 }

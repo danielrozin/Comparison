@@ -69,6 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/category/${slug}`,
+      "thumbnail": ogImage,
     },
   };
 }

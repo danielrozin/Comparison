@@ -109,6 +109,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": canonicalUrl,
+      "thumbnail": ogImage,
     },
   };
 }
