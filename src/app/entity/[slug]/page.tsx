@@ -92,7 +92,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${SITE_URL}/entity/${slug}`,
       type: "website",
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
+      images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
     },
     twitter: {
       card: "summary_large_image",

@@ -622,6 +622,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="og:site_name" content="A Versus B" />
       <meta property="og:locale" content="en_US" />
       <meta property="og:image" content={meta.ogImage} />
+      <meta property="og:image:secure_url" content={meta.ogImage} />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       {meta.publishedTime && <meta property="article:published_time" content={meta.publishedTime} />}
@@ -629,6 +631,11 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta property="og:updated_time" content={meta.modifiedTime} />}
       {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
       <meta property="article:author" content="https://www.aversusb.net/about" />
+      {/* rel=up — HTML hierarchy signal; tells AI crawlers/aggregators this comparison
+          belongs to a specific category, building topical authority context */}
+      {meta.articleSection && (
+        <link rel="up" href={`https://www.aversusb.net/category/${meta.articleSection.toLowerCase().replace(/[\s_]+/g, "-")}`} title={`${meta.articleSection} comparisons`} />
+      )}
       {/* article:tag — entity names + comparison terms for Open Graph topic signals.
           Social platforms and AI crawlers (Perplexity social graph, Bing social signals)
           use article:tag to build topic affinity maps for citation selection. */}
@@ -1074,7 +1081,7 @@ function MultiEntityLayout({
 
       {/* Quick answer (uses array-friendly TLDR text only) */}
       {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-        <section id="verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <section id="short-answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-xl p-5">
             <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-2">Quick Answer</p>
             <p className="text-base sm:text-lg text-text font-medium leading-relaxed">
