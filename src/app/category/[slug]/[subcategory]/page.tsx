@@ -244,6 +244,10 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
 
   return (
     <>
+      {/* describedby — points to the machine-readable JSON catalog for this subcategory.
+          rel=up — HTML hierarchy signal from subcategory to parent category. */}
+      <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
+      <link rel="up" href={`${SITE_URL}/category/${slug}`} title={`${category.name} comparisons`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

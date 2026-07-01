@@ -306,6 +306,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
   return (
     <>
+      {/* describedby — HTML Linked Data discovery for AI crawlers and RDF tools.
+          Points to the machine-readable JSON catalog of all comparisons in this category.
+          Supplements the Link HTTP header from middleware without requiring header parsing. */}
+      <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

@@ -218,6 +218,11 @@ export default async function EntityPage({ params }: PageProps) {
     <>
       {/* describedby — HTML Linked Data discovery; supplements Link HTTP header from middleware */}
       <link rel="describedby" type="application/ld+json" href={`${SITE_URL}/api/v1/entities/${slug}`} />
+      {/* rel=up — HTML hierarchy signal pointing this entity profile to its parent category.
+          AI crawlers use this to build topical authority context without following breadcrumbs. */}
+      {categoryDef && (
+        <link rel="up" href={`${SITE_URL}/category/${categoryDef.slug}`} title={`${categoryDef.name} comparisons`} />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(entityJsonLd) }}

@@ -287,6 +287,8 @@ export async function generateMetadata({
       ...(article.tags && article.tags.length > 0
         ? { "citation_keywords": article.tags.join("; ") }
         : {}),
+      // thumbnail — Bing rich snippets + Microsoft Copilot preview card selection.
+      "thumbnail": ogImage,
     },
   };
 }

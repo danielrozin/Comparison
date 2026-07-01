@@ -644,6 +644,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       ))}
       {/* og:image:alt — alt text for OG image; used by AI models for image understanding */}
       <meta property="og:image:alt" content={meta.title} />
+      {/* thumbnail — Bing rich snippets; also parsed by Apple News and Microsoft Copilot
+          to select the preview image when displaying a summary card for this page */}
+      <meta name="thumbnail" content={meta.ogImage} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@aversusb" />
       <meta name="twitter:creator" content="@aversusb" />
