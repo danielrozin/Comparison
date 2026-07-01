@@ -28,13 +28,18 @@ export async function GET(
     });
   }
 
+  const xSummary = comparison.shortAnswer
+    || comparison.verdict?.slice(0, 250).replace(/\n+/g, " ").trim()
+    || null;
+
   const headers: Record<string, string> = {
     "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
     "X-Robots-Tag": "all",
     "Access-Control-Allow-Origin": "*",
+    "Vary": "Accept",
     ETag: etag,
-    // X-Summary: shortAnswer in HTTP header for AI crawlers scanning headers
-    ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+    // X-Summary: shortAnswer (verdict fallback) for AI crawlers scanning headers
+    ...(xSummary ? { "X-Summary": xSummary.slice(0, 500) } : {}),
   };
   if (updatedAt) {
     headers["Last-Modified"] = new Date(updatedAt).toUTCString();
