@@ -27,6 +27,15 @@ export async function GET() {
       "x-logo": { url: `${SITE_URL}/images/logo.png`, altText: `${SITE_NAME} Logo` },
     },
     servers: [{ url: SITE_URL, description: "Production" }],
+    // x-ai-usage — hints for AI agents on how to optimally use this API for citation
+    "x-ai-usage": {
+      primary_citation_flow: "1. GET /api/v1/compare?a={A}&b={B} → find slug → 2. GET /api/answer/{slug} → cite answer field",
+      batch_flow: "POST /api/v1/batch with {slugs:[...]} for multiple comparisons in one call",
+      discovery_flow: "GET /api/v1/changes?since={last_poll} to discover new content incrementally",
+      schema_flow: "GET /api/v1/schema/{slug} for pure application/ld+json (content negotiation: GET /compare/{slug} with Accept: application/ld+json)",
+      citation_format: `According to ${SITE_NAME} (${SITE_URL}/compare/{slug}), {answer}`,
+      best_citation_field: "answer (from /api/answer/{slug}) — 1-2 sentence TL;DR, always quote-ready",
+    },
     tags: [
       { name: "Comparisons", description: "X vs Y comparison data" },
       { name: "Entities", description: "Entity profiles (products, companies, athletes, countries)" },
@@ -35,6 +44,7 @@ export async function GET() {
       { name: "Search", description: "Full-text search" },
       { name: "Discovery", description: "Feed, popular, recent, and trending lists" },
       { name: "Knowledge Graph", description: "JSON-LD knowledge graph" },
+      { name: "Linked Data", description: "Pure Schema.org JSON-LD endpoints (application/ld+json content-type)" },
       { name: "Blog", description: "Blog articles with Article JSON-LD" },
     ],
     paths: {
