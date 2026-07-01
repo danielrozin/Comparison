@@ -361,6 +361,47 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/changes": {
+        get: {
+          operationId: "getChanges",
+          tags: ["Discovery"],
+          summary: "Incremental indexing feed — content added/updated since a timestamp",
+          description: "Returns comparisons and blog articles changed since the given timestamp. Use for incremental crawling — poll daily with ?since=<last-poll-time> to discover new content without re-crawling all 3,000+ pages. Supports ETag conditional GET for efficient polling. X-Change-Count header shows the total count upfront.",
+          parameters: [
+            { name: "since", in: "query", description: "ISO8601 cutoff timestamp (default: 24 hours ago)", schema: { type: "string", format: "date-time" }, example: "2026-06-30T00:00:00Z" },
+            { name: "type", in: "query", description: "Content type filter (default: all)", schema: { type: "string", enum: ["comparisons", "blog", "all"], default: "all" } },
+            { name: "limit", in: "query", description: "Max results (default 100, max 500)", schema: { type: "integer", default: 100, maximum: 500 } },
+            { name: "offset", in: "query", description: "Pagination offset", schema: { type: "integer", default: 0 } },
+          ],
+          responses: {
+            "200": {
+              description: "List of changes with pagination metadata",
+              headers: {
+                "X-Change-Count": { schema: { type: "integer" }, description: "Total number of changes in this window" },
+                "ETag": { schema: { type: "string" }, description: "For conditional GET polling" },
+              },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      generated_at: { type: "string" },
+                      since: { type: "string" },
+                      type: { type: "string" },
+                      total: { type: "integer" },
+                      hasMore: { type: "boolean" },
+                      nextUrl: { type: "string" },
+                      changes: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, shortAnswer: { type: "string" }, comparisonUrl: { type: "string" }, answerUrl: { type: "string" }, changedAt: { type: "string" }, action: { type: "string", enum: ["added", "updated"] } } } },
+                    },
+                  },
+                },
+              },
+            },
+            "304": { description: "Not Modified — no changes since last poll (conditional GET)" },
+            "400": { description: "Invalid since timestamp" },
+          },
+        },
+      },
       "/api/v1/batch": {
         get: {
           operationId: "batchGetComparisons",

@@ -21,6 +21,19 @@ export async function GET() {
     openapi: `${SITE_URL}/api/openapi`,
     tools: [
       {
+        name: "get_changes",
+        description: "Get recently added or updated comparisons and blog articles since a given timestamp. Enables incremental indexing — poll daily with the last-poll timestamp to discover new content without re-crawling 3,000+ pages. Supports ETag conditional GET.",
+        endpoint: `${SITE_URL}/api/v1/changes`,
+        method: "GET",
+        parameters: {
+          since: { type: "string", required: false, description: "ISO8601 cutoff timestamp (default: 24 hours ago). e.g. 2026-06-30T00:00:00Z" },
+          type: { type: "string", required: false, description: "Content type: comparisons | blog | all (default: all)" },
+          limit: { type: "integer", required: false, description: "Max results (default 100, max 500)" },
+          offset: { type: "integer", required: false, description: "Pagination offset" },
+        },
+        returns: "JSON: { generated_at, since, total, hasMore, nextUrl, changes[] }. X-Change-Count header carries total count.",
+      },
+      {
         name: "batch_get_comparisons",
         description: "Fetch multiple comparisons in a single request. Pass up to 20 slugs; returns a map of slug → comparison data. Ideal for comparison matrices and multi-entity analysis — replaces N sequential API calls with 1.",
         endpoint: `${SITE_URL}/api/v1/batch`,
