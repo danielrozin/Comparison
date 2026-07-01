@@ -103,7 +103,9 @@ export async function GET(request: NextRequest) {
       {
         headers: {
           ...HEADERS,
-          ...(found.shortAnswer ? { "X-Summary": found.shortAnswer.slice(0, 500) } : {}),
+          ...((found.shortAnswer || found.verdict)
+            ? { "X-Summary": (found.shortAnswer || found.verdict!.slice(0, 250)).slice(0, 500) }
+            : {}),
         },
       }
     );

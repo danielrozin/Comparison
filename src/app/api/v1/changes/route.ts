@@ -163,6 +163,34 @@ export async function GET(request: NextRequest) {
     return new Response(null, { status: 304, headers: { ETag: etag, ...HEADERS } });
   }
 
+  // DataFeed JSON-LD — signals to Google Dataset Search and AI crawlers that
+  // this endpoint is a machine-readable feed of structured comparison data.
+  const dataFeedSchema = {
+    "@context": "https://schema.org",
+    "@type": "DataFeed",
+    "@id": `${SITE_URL}/api/v1/changes`,
+    name: `${SITE_NAME} Changes Feed`,
+    description: "Incremental feed of comparisons and blog articles added or updated since a given timestamp.",
+    url: `${SITE_URL}/api/v1/changes`,
+    encodingFormat: "application/json",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    dateModified: mostRecentChange ?? generatedAt,
+    dataFeedElement: allChanges.slice(0, 5).map((c) => ({
+      "@type": "DataFeedItem",
+      dateModified: c.changedAt,
+      item: {
+        "@type": c.type === "comparison" ? "Article" : "BlogPosting",
+        "@id": c.type === "comparison"
+          ? `${SITE_URL}/compare/${c.slug}#article`
+          : `${SITE_URL}/blog/${c.slug}#article`,
+        name: c.title,
+        url: c.type === "comparison" ? `${SITE_URL}/compare/${c.slug}` : `${SITE_URL}/blog/${c.slug}`,
+        ...("shortAnswer" in c && c.shortAnswer ? { abstract: String(c.shortAnswer) } : {}),
+      },
+    })),
+  };
+
   return NextResponse.json(
     {
       generated_at: generatedAt,
@@ -172,6 +200,7 @@ export async function GET(request: NextRequest) {
       hasMore,
       ...(nextUrl ? { nextUrl } : {}),
       publisher: { name: SITE_NAME, url: SITE_URL },
+      dataFeedSchema,
       changes: allChanges,
     },
     {
