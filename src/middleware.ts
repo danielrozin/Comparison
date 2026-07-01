@@ -171,6 +171,7 @@ export function middleware(request: NextRequest) {
         response.headers.set(
           "Link",
           [
+            `<${SITE}/api/blog/${slug}>; rel="describedby"; type="application/ld+json"; title="Article JSON-LD"`,
             `<${SITE}/api/blog/${slug}>; rel="alternate"; type="application/json"; title="Article JSON"`,
             `<${SITE}/blog/${slug}>; rel="cite-as"`,
           ].join(", ")
@@ -182,8 +183,22 @@ export function middleware(request: NextRequest) {
         response.headers.set(
           "Link",
           [
+            `<${SITE}/api/v1/entities/${slug}>; rel="describedby"; type="application/ld+json"; title="Entity Profile JSON-LD"`,
             `<${SITE}/api/v1/entities/${slug}>; rel="alternate"; type="application/json"; title="Entity Profile JSON"`,
             `<${SITE}/entity/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    } else if (pathname.startsWith("/category/")) {
+      // Strip trailing slash and extract category (and optional subcategory)
+      const catPath = pathname.replace(/\/$/, "").replace("/category/", "");
+      const slug = catPath.split("/")[0];
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/v1/comparisons?category=${slug}&limit=100>; rel="describedby"; type="application/json"; title="Category Comparisons JSON"`,
+            `<${SITE}/category/${slug}>; rel="cite-as"`,
           ].join(", ")
         );
       }
