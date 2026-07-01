@@ -322,6 +322,18 @@ export function webSiteSchema() {
         "query-input": "required name=search_term_string",
       },
       {
+        // Machine-readable search API — AI tools call this instead of the HTML UI
+        "@type": "SearchAction",
+        name: "Unified Search API",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/api/v1/search?q={search_term_string}`,
+          encodingType: "application/json",
+        },
+        "query-input": "required name=search_term_string",
+        result: { "@type": "ItemList", description: "Comparisons, entity profiles, and blog articles" },
+      },
+      {
         "@type": "ReadAction",
         target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{slug}` },
       },

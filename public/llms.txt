@@ -346,6 +346,7 @@ A Versus B provides a public REST API for accessing comparison data programmatic
 - [Entity list JSON](https://www.aversusb.net/api/v1/entities?limit=50): Browseable entity list; supports ?type and pagination
 - [Blog article JSON](https://www.aversusb.net/api/blog/{slug}): Single blog article with Article JSON-LD; X-Summary header carries excerpt
 - [Related comparisons JSON](https://www.aversusb.net/api/v1/related/{slug}): Related comparisons for a given slug — build context around an answer
+- [Alternatives API](https://www.aversusb.net/api/v1/alternatives/{slug}): All known alternatives to an entity with ItemList JSON-LD, comparison URLs, and X-Summary header; ideal for 'best alternatives to X' queries. Example: /api/v1/alternatives/chatgpt
 - [Best-of List API](https://www.aversusb.net/api/v1/best/{slug}): Structured best-of list with ItemList JSON-LD — ranked items (position, name, url), FAQs, author, dates; X-Summary header on response; list all at /api/v1/best
 - [Compare Lookup (AI tool-calling)](https://www.aversusb.net/api/v1/compare?a={entityA}&b={entityB}): Fastest AI endpoint — looks up comparison by entity names; returns shortAnswer + API URLs or suggestions. Example: /api/v1/compare?a=chatgpt&b=claude
 - [AI Answer API](https://www.aversusb.net/api/answer/{slug}): Pre-packaged, citation-ready answer — shortAnswer, verdict, keyDifferences, winner, confidence level, and ClaimReview JSON-LD; X-Summary header in HTTP response

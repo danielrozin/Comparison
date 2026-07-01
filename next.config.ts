@@ -83,12 +83,12 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Alternatives pages: add Link rel=alternate pointing to entity profile API
+        // Alternatives pages: add Link rel=alternate for alternatives API + entity profile API
         source: "/alternatives/:slug",
         headers: [
           {
             key: "Link",
-            value: "</api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\"",
+            value: "</api/v1/alternatives/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Alternatives API\", </api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Entity Profile API\"",
           },
         ],
       },

@@ -142,6 +142,13 @@ export async function GET() {
         description: "AI tool-calling endpoint: look up a comparison by entity names. Returns the comparison if found (with shortAnswer, verdict, API URLs) or suggestions if not. Tries both orderings.",
         example: `${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`,
       },
+      alternatives: {
+        url: `${SITE_URL}/api/v1/alternatives/{slug}`,
+        format: "application/json",
+        description: "Structured alternatives list for an entity: all competitors with comparison URLs, ItemList JSON-LD, and X-Summary header. Perfect for AI 'best alternatives to X' queries.",
+        example: `${SITE_URL}/api/v1/alternatives/chatgpt`,
+        key_field_for_citation: "alternatives[].name + alternatives[].comparisonUrl",
+      },
       best_list: {
         url: `${SITE_URL}/api/v1/best/{slug}`,
         format: "application/json",

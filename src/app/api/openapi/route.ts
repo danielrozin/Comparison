@@ -263,6 +263,49 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/alternatives/{slug}": {
+        get: {
+          operationId: "getAlternatives",
+          tags: ["Entities"],
+          summary: "Get alternatives to an entity",
+          description: "Returns all known alternatives to an entity as an ItemList JSON-LD with comparison URLs, names, and positions. Designed for AI tools handling 'best alternatives to X' queries. X-Summary header in HTTP response carries a concise summary.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Entity slug (e.g. chatgpt, iphone-16, slack)", schema: { type: "string" } },
+            { name: "limit", in: "query", description: "Max results (default 20, max 50)", schema: { type: "integer", default: 20, maximum: 50 } },
+          ],
+          responses: {
+            "200": {
+              description: "Alternatives list with ItemList JSON-LD",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      entitySlug: { type: "string" },
+                      entityName: { type: "string" },
+                      total: { type: "integer" },
+                      alternatives: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            position: { type: "integer" },
+                            name: { type: "string" },
+                            slug: { type: "string" },
+                            comparisonUrl: { type: "string" },
+                            answerUrl: { type: "string" },
+                          },
+                        },
+                      },
+                      itemListSchema: { type: "object", description: "ItemList JSON-LD" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       "/api/v1/best": {
         get: {
           operationId: "listBestPages",
