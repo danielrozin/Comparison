@@ -2895,6 +2895,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-06-29T09:55:52.847Z"
+    },
+    {
+      "slug": "costco-vs-sams-club",
+      "title": "Costco vs Sams Club",
+      "entityA": "Costco",
+      "entityB": "Sams Club",
+      "category": "General",
+      "videoFile": "Costco vs Sams Club.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Costco vs Sams Club — Full Comparison 2026",
+      "youtubeDescription": "Compare Costco ($65/year, unlimited returns, 3,500 Kirkland items) vs Sam&#x27;s Club ($50/year, electronics deals). Which warehouse club saves you more?\n\n#costco #samsclub #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-01T09:00:01.247Z"
+    },
+    {
+      "slug": "serena-vs-venus",
+      "title": "Serena vs Venus",
+      "entityA": "Serena",
+      "entityB": "Venus",
+      "category": "General",
+      "videoFile": "Serena vs Venus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Serena vs Venus — Full Comparison 2026",
+      "youtubeDescription": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.\n\n#serena #venus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-01T09:10:35.895Z"
+    },
+    {
+      "slug": "dui-vs-dwi",
+      "title": "Dui vs Dwi",
+      "entityA": "Dui",
+      "entityB": "Dwi",
+      "category": "General",
+      "videoFile": "Dui vs Dwi.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Dui vs Dwi — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Dui vs Dwi.\n\n#dui #dwi #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-01T09:20:27.528Z"
     }
   ]
 }
