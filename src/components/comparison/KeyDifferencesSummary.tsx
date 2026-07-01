@@ -60,7 +60,7 @@ export function KeyDifferencesSummary({
         {/* Header */}
         <div className="flex items-center gap-2 mb-3">
           <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
@@ -69,7 +69,7 @@ export function KeyDifferencesSummary({
           </h3>
         </div>
 
-        <div className="space-y-2">
+        <ul className="space-y-2 list-none">
           {top3.map((diff) => {
             const winnerName =
               diff.winner === "a"
@@ -81,8 +81,8 @@ export function KeyDifferencesSummary({
             const loserVal = diff.winner === "a" ? diff.entityBValue : diff.entityAValue;
 
             return (
-              <div key={diff.label} className="flex items-center gap-2.5 text-sm">
-                <span className="w-7 h-7 flex-shrink-0 bg-white border border-indigo-100 rounded-lg flex items-center justify-center text-sm shadow-sm">
+              <li key={diff.label} className="flex items-center gap-2.5 text-sm">
+                <span className="w-7 h-7 flex-shrink-0 bg-white border border-indigo-100 rounded-lg flex items-center justify-center text-sm shadow-sm" aria-hidden="true">
                   {getEmoji(diff.label)}
                 </span>
                 <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
@@ -98,10 +98,10 @@ export function KeyDifferencesSummary({
                     <span className="text-text-secondary">{diff.entityAValue} vs {diff.entityBValue}</span>
                   )}
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
 
         {differences.length > 3 && (
           <a

@@ -69,7 +69,7 @@ export function AiAssistedBadge() {
         <span
           id={tooltipId}
           role="tooltip"
-          className="absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 rounded-xl bg-gray-900/95 backdrop-blur-sm border border-yellow-400/20 shadow-xl overflow-hidden"
+          className="absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 rounded-xl bg-surface-dark/95 backdrop-blur-sm border border-yellow-400/20 shadow-xl overflow-hidden"
         >
           {/* Tooltip header strip */}
           <span className="block px-3 pt-2.5 pb-1.5 border-b border-white/10 flex items-center gap-1.5">

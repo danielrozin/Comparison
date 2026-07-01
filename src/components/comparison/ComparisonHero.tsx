@@ -150,11 +150,11 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
   return (
     <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white overflow-hidden">
       {/* Background grid */}
-      <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
+      <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" aria-hidden="true" />
 
       {/* Floating blobs */}
-      <div className="absolute top-6 left-10 w-56 h-56 bg-primary-400/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl" />
+      <div className="absolute top-6 left-10 w-56 h-56 bg-primary-400/20 rounded-full blur-3xl" aria-hidden="true" />
+      <div className="absolute bottom-10 right-10 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-16 sm:pb-20">
         {/* Breadcrumb category pill */}
@@ -188,7 +188,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           <div className="flex justify-center mb-6 sm:mb-8">
             <div className="inline-flex items-start gap-2.5 max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-4 py-3 text-left">
               <div className="flex-shrink-0 w-5 h-5 bg-yellow-400/20 rounded-full flex items-center justify-center mt-0.5">
-                <svg className="w-3 h-3 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-3 h-3 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
@@ -218,7 +218,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
       </div>
 
       {/* Wave divider */}
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
         <svg viewBox="0 0 1440 64" fill="none" className="w-full">
           <path d="M0 64V16C240 48 480 0 720 16C960 32 1200 0 1440 16V64H0Z" fill="white" />
         </svg>
