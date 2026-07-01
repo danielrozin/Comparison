@@ -25,7 +25,8 @@ export const metadata: Metadata = {
     description: PAGE_DESC,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: VERDICTS_OG_IMAGE, width: 1200, height: 630, alt: "How We Write Verdicts — A Versus B" }],
   },
   twitter: {

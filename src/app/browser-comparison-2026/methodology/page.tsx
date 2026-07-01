@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: BROWSER_METHOD_OG, width: 1200, height: 630, alt: "How We Test Browsers — A Versus B Methodology" }],
   },
   twitter: {

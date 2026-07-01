@@ -29,7 +29,8 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: STUDIES_URL,
     type: "website",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
   },
   other: {
     "citation_title": TITLE,

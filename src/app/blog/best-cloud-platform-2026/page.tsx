@@ -30,7 +30,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     publishedTime: PUBLISH_DATE,
     modifiedTime: MODIFIED_DATE,
     images: [

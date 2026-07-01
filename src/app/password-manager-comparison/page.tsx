@@ -28,7 +28,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: PM_OG_IMAGE, width: 1200, height: 630, alt: "Best Password Managers Compared 2026 — A Versus B" }],
   },
   twitter: {

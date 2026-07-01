@@ -54,7 +54,8 @@ export const metadata: Metadata = {
       "Search and compare anything — sports players, countries, products, technology, and more.",
     url: "https://www.aversusb.net/search",
     type: "website",
-  },
+
+    locale: "en_US",  },
   twitter: {
     card: "summary",
     site: "@aversusb",

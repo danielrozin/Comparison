@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     siteName: SITE_NAME,
     type: "article",
-    images: [OG_IMAGE],
+
+    locale: "en_US",    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",

@@ -22,7 +22,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: LLM_METHOD_OG, width: 1200, height: 630, alt: "How We Compare Large Language Models — A Versus B Methodology" }],
   },
   twitter: {

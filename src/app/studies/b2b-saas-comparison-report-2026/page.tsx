@@ -31,7 +31,8 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: CANONICAL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: ogImage, width: 1200, height: 630, alt: "B2B SaaS Comparison Report 2026" }],
   },
   twitter: {

@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     description: "Add data-driven comparisons to your blog, review site, or content platform.",
     url: EMBED_URL,
     type: "website",
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": EMBED_TITLE,
     "citation_author": "A Versus B",
