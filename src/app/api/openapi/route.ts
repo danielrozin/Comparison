@@ -361,6 +361,77 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/batch": {
+        get: {
+          operationId: "batchGetComparisons",
+          tags: ["Comparisons"],
+          summary: "Batch comparison lookup (GET)",
+          description: "Fetch multiple comparisons in a single request by passing a comma-separated list of slugs. Returns a map of slug → comparison data. Missing slugs return null. X-Summary header carries the first result's shortAnswer. Max 20 slugs.",
+          parameters: [
+            { name: "slugs", in: "query", required: true, description: "Comma-separated comparison slugs (max 20)", schema: { type: "string" }, example: "chatgpt-vs-claude,gpt-4-vs-claude-3" },
+            { name: "fields", in: "query", description: "Comma-separated fields to return (default: all). Options: shortAnswer,verdict,keyDifferences,entities,attributes,faqs,category,title,slug", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": {
+              description: "Map of slug to comparison (null if not found)",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      total: { type: "integer" },
+                      found: { type: "integer" },
+                      missing: { type: "array", items: { type: "string" } },
+                      results: { type: "object", additionalProperties: { "$ref": "#/components/schemas/Comparison" }, description: "Map of slug → comparison data (null if not found)" },
+                    },
+                  },
+                },
+              },
+            },
+            "400": { description: "Bad request (missing slugs or too many)" },
+          },
+        },
+        post: {
+          operationId: "batchGetComparisonsPost",
+          tags: ["Comparisons"],
+          summary: "Batch comparison lookup (POST)",
+          description: "Fetch multiple comparisons in a single request. POST body: { slugs: string[], fields?: string[] }. Ideal for AI agents doing multi-entity analysis — replaces N sequential calls with 1. Max 20 slugs per request.",
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  required: ["slugs"],
+                  properties: {
+                    slugs: { type: "array", items: { type: "string" }, maxItems: 20, description: "List of comparison slugs to fetch", example: ["chatgpt-vs-claude", "gpt-4-vs-claude-3"] },
+                    fields: { type: "array", items: { type: "string" }, description: "Fields to include in each result (default: all)", example: ["shortAnswer", "verdict", "entities"] },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            "200": {
+              description: "Map of slug to comparison (null if not found)",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      total: { type: "integer" },
+                      found: { type: "integer" },
+                      missing: { type: "array", items: { type: "string" } },
+                      results: { type: "object", additionalProperties: { "$ref": "#/components/schemas/Comparison" } },
+                    },
+                  },
+                },
+              },
+            },
+            "400": { description: "Bad request" },
+          },
+        },
+      },
       "/api/v1/search": {
         get: {
           operationId: "unifiedSearch",

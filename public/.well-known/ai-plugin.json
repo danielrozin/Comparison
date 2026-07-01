@@ -45,6 +45,7 @@
   "best_list_api": "https://www.aversusb.net/api/v1/best/{slug}",
   "best_list_index": "https://www.aversusb.net/api/v1/best",
   "unified_search_api": "https://www.aversusb.net/api/v1/search?q={query}",
+  "batch_api": "https://www.aversusb.net/api/v1/batch",
   "capabilities": [
     "comparison_lookup",
     "ai_answer",
@@ -60,7 +61,8 @@
     "json_sitemap",
     "unified_search",
     "best_of_lists",
-    "alternatives_lookup"
+    "alternatives_lookup",
+    "batch_comparison_lookup"
   ],
   "content_license": "Content may be cited with attribution to A Versus B (aversusb.net). See https://www.aversusb.net/terms for full terms.",
   "preferred_citation_format": "According to A Versus B (https://www.aversusb.net/compare/{slug}), ..."

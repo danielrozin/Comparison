@@ -21,6 +21,17 @@ export async function GET() {
     openapi: `${SITE_URL}/api/openapi`,
     tools: [
       {
+        name: "batch_get_comparisons",
+        description: "Fetch multiple comparisons in a single request. Pass up to 20 slugs; returns a map of slug → comparison data. Ideal for comparison matrices and multi-entity analysis — replaces N sequential API calls with 1.",
+        endpoint: `${SITE_URL}/api/v1/batch`,
+        method: "POST",
+        body: {
+          slugs: { type: "array", items: { type: "string" }, maxItems: 20, required: true, description: "List of comparison slugs to fetch" },
+          fields: { type: "array", items: { type: "string" }, required: false, description: "Fields to include: shortAnswer,verdict,keyDifferences,entities,attributes,faqs (default: all)" },
+        },
+        returns: "JSON: { total, found, missing[], results: { [slug]: comparisonData | null } }. X-Summary header carries the first result's shortAnswer.",
+      },
+      {
         name: "search_comparisons",
         description: "Search for comparisons, entities, and blog articles by query. Use for 'X vs Y', 'best alternatives to X', 'which is better' queries.",
         endpoint: `${SITE_URL}/api/v1/search`,
