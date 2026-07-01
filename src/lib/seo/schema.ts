@@ -130,6 +130,21 @@ export function organizationSchema() {
     // subjectOf — links the organization to the DataCatalog it maintains, so AI
     // crawlers can navigate from the publisher entity to its content corpus.
     subjectOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog` },
+    // hasOfferCatalog — Google Knowledge Panel and AI answer engines use this to
+    // understand what "products" or services the organization offers. Listing our
+    // free comparison platform here routes "what does A Versus B offer?" queries
+    // to the correct structured data node.
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "A Versus B Comparison Platform",
+      description: "Free comparison platform with 3,000+ head-to-head comparisons across technology, sports, countries, products, and software.",
+      numberOfItems: 3000,
+      itemListElement: [
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison Pages", url: `${SITE_URL}/trending` } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Entity Profiles", url: `${SITE_URL}/entity` } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison API", url: `${SITE_URL}/developers` } },
+      ],
+    },
   };
 }
 
@@ -158,6 +173,14 @@ export function dataCatalogSchema() {
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     maintainer: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    usageInfo: `${SITE_URL}/terms`,
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    creativeWorkStatus: "Published",
+    datePublished: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
+    inLanguage: "en-US",
     educationalLevel: "General",
     teaches: "How to use the A Versus B structured comparison database to find side-by-side data on any topic",
     educationalUse: "reference",
@@ -176,6 +199,12 @@ export function dataCatalogSchema() {
       name: "Comparison Pages",
       description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
       url: `${SITE_URL}/sitemap.xml`,
+      // numberOfItems — tells Google Dataset Search and AI crawlers the exact corpus size.
+      // This is a primary signal Dataset Search uses to rank dataset importance and
+      // display corpus size in the "dataset overview" card.
+      numberOfItems: 3000,
+      datePublished: "2024-01-01",
+      dateModified: new Date().toISOString().slice(0, 10),
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
