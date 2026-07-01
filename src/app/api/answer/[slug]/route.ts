@@ -26,13 +26,42 @@ export const dynamic = "force-dynamic";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
 };
 
 export async function OPTIONS() {
   return new Response(null, { status: 204, headers: HEADERS });
+}
+
+// HEAD /api/answer/[slug] — zero-body response with metadata headers.
+// AI crawlers can issue a HEAD request to discover X-Summary (shortAnswer) and
+// Link headers without downloading the full JSON body. This saves crawl budget
+// for agents that only need to decide whether to follow up with a GET.
+export async function HEAD(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  const comparison = await getComparisonBySlug(slug);
+
+  if (!comparison) {
+    return new Response(null, { status: 404 });
+  }
+
+  const url = `${SITE_URL}/compare/${slug}`;
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+
+  return new Response(null, {
+    status: 200,
+    headers: {
+      ...HEADERS,
+      ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+      ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
+      "Link": `<${url}>; rel="canonical", <${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+    },
+  });
 }
 
 export async function GET(

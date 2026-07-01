@@ -214,6 +214,7 @@ export async function GET() {
       pingback: `${SITE_URL}/api/pingback`,
       security_txt: `${SITE_URL}/.well-known/security.txt`,
       humans_txt: `${SITE_URL}/humans.txt`,
+      mcp_manifest: `${SITE_URL}/.well-known/mcp.json`,
       change_password: `${SITE_URL}/.well-known/change-password`,
       oembed_json: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
       oembed_xml: `${SITE_URL}/api/oembed?url={page-url}&format=xml`,

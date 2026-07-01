@@ -86,6 +86,7 @@ export function middleware(request: NextRequest) {
     "/api/recent",
     "/api/og",
     "/api/v1/",
+    "/.well-known/",
   ];
   const isContentApi = CONTENT_API_PATHS.some((p) => pathname === p || pathname.startsWith(p));
 
@@ -113,6 +114,51 @@ export function middleware(request: NextRequest) {
     if (pathname.startsWith("/compare/") || pathname.startsWith("/blog/")) {
       response.headers.set("X-Pingback", "https://www.aversusb.net/api/pingback");
     }
+
+    const SITE = "https://www.aversusb.net";
+
+    // Link: HTTP headers — AI crawlers and semantic web agents use these to discover
+    // structured-data alternatives without parsing HTML. Having JSON-LD reachable via
+    // Link header is the fastest path for LLM crawlers (Perplexity, ChatGPT-User,
+    // ClaudeBot) to find citation-ready data in a single HEAD request.
+    if (pathname.startsWith("/compare/")) {
+      const slug = pathname.replace("/compare/", "").replace(/\/$/, "");
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"; title="Knowledge Graph"`,
+            `<${SITE}/api/comparisons/${slug}>; rel="alternate"; type="application/json"; title="Comparison JSON"`,
+            `<${SITE}/api/answer/${slug}>; rel="alternate"; type="application/json"; title="AI Answer"`,
+            `<${SITE}/api/faq/${slug}>; rel="alternate"; type="application/json"; title="FAQ Pairs"`,
+            `<${SITE}/compare/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    } else if (pathname.startsWith("/blog/")) {
+      const slug = pathname.replace("/blog/", "").replace(/\/$/, "");
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/blog/${slug}>; rel="alternate"; type="application/json"; title="Article JSON"`,
+            `<${SITE}/blog/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    } else if (pathname.startsWith("/entity/")) {
+      const slug = pathname.replace("/entity/", "").replace(/\/$/, "");
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/v1/entities/${slug}>; rel="alternate"; type="application/json"; title="Entity Profile JSON"`,
+            `<${SITE}/entity/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    }
+
     return response;
   }
 

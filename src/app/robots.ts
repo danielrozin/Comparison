@@ -30,6 +30,7 @@ export default function robots(): MetadataRoute.Robots {
           "/api/openapi",
           "/api/sitemap",
           "/api/answer/",
+          "/.well-known/",
         ],
         disallow: [
           "/api/",
