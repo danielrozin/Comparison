@@ -133,6 +133,18 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "HuggingFaceBot", allow: "/" },     // HuggingFace dataset crawler
       { userAgent: "OpenAI-SearchBot", allow: "/" },   // OpenAI search product
 
+      // === 2026 additions — major search engines + new AI crawlers ===
+      { userAgent: "BraveBot", allow: "/" },            // Brave Search + Leo AI assistant
+      { userAgent: "brave-search-bot", allow: "/" },    // Brave Search alternate UA
+      { userAgent: "YandexBot", allow: "/" },           // Yandex Search (Russia/Eastern Europe)
+      { userAgent: "YaDirectFetcher", allow: "/" },     // Yandex Direct fetcher
+      { userAgent: "NaverBot", allow: "/" },            // Naver Search (South Korea)
+      { userAgent: "BaiduSpider", allow: "/" },         // Baidu Search (China)
+      { userAgent: "QwenBot", allow: "/" },             // Alibaba Qwen AI model crawler
+      { userAgent: "TongYiBot", allow: "/" },           // Alibaba Tongyi/Qwen alternate UA
+      { userAgent: "Firecrawl", allow: "/" },           // Firecrawl AI scraping tool (RAG pipelines)
+      { userAgent: "ExaBot", allow: "/" },              // Exa.ai AI-powered search
+
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
       { userAgent: "SemrushBot", allow: "/" },
@@ -151,6 +163,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/sitemap/video.xml",
       "https://www.aversusb.net/sitemap/news.xml",
       "https://www.aversusb.net/llms.txt",
+      "https://www.aversusb.net/.well-known/ai.txt",
       "https://www.aversusb.net/feed",
       "https://www.aversusb.net/feed/atom",
       "https://www.aversusb.net/feed/json",

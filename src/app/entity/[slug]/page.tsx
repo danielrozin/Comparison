@@ -216,6 +216,8 @@ export default async function EntityPage({ params }: PageProps) {
 
   return (
     <>
+      {/* describedby — HTML Linked Data discovery; supplements Link HTTP header from middleware */}
+      <link rel="describedby" type="application/ld+json" href={`${SITE_URL}/api/v1/entities/${slug}`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(entityJsonLd) }}

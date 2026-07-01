@@ -609,6 +609,12 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/faq/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured FAQ pairs (JSON)" />
       {/* Answer API — pre-packaged citation-ready answer for AI tools */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/answer/${meta.canonical.split("/compare/")[1] ?? ""}`} title="AI Answer (citation-ready)" />
+      {/* describedby — Linked Data HTML best practice (RFC 5988 §5, HTML5 §4.8.6).
+          Tells any HTML parser (not just HTTP header readers) that the JSON-LD endpoint
+          is the machine-readable description of this page. Supplements the Link header
+          emitted by middleware; visible to Googlebot, GPTBot, PerplexityBot without
+          requiring HTTP header parsing. */}
+      <link rel="describedby" type="application/ld+json" href={`https://www.aversusb.net/api/v1/schema/${meta.canonical.split("/compare/")[1] ?? ""}`} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />

@@ -72,5 +72,6 @@
     "content_negotiation"
   ],
   "content_license": "Content may be cited with attribution to A Versus B (aversusb.net). See https://www.aversusb.net/terms for full terms.",
-  "preferred_citation_format": "According to A Versus B (https://www.aversusb.net/compare/{slug}), ..."
+  "preferred_citation_format": "According to A Versus B (https://www.aversusb.net/compare/{slug}), ...",
+  "ai_txt": "https://www.aversusb.net/.well-known/ai.txt"
 }
