@@ -631,8 +631,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta property="og:updated_time" content={meta.modifiedTime} />}
       {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
       <meta property="article:author" content="https://www.aversusb.net/about" />
-      {/* rel=up — HTML hierarchy signal; tells AI crawlers/aggregators this comparison
-          belongs to a specific category, building topical authority context */}
+      {/* rel=up — HTML hierarchy signal; tells AI crawlers this comparison belongs to a
+          specific category, enabling topical authority context without following breadcrumbs */}
       {meta.articleSection && (
         <link rel="up" href={`https://www.aversusb.net/category/${meta.articleSection.toLowerCase().replace(/[\s_]+/g, "-")}`} title={`${meta.articleSection} comparisons`} />
       )}
