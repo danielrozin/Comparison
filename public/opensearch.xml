@@ -7,6 +7,7 @@
   <Contact>daniarozin@gmail.com</Contact>
   <Url type="text/html" template="https://www.aversusb.net/search?q={searchTerms}"/>
   <Url type="application/json" template="https://www.aversusb.net/api/search?q={searchTerms}&amp;format=json"/>
+  <Url type="application/json" template="https://www.aversusb.net/api/v1/search?q={searchTerms}" rel="results"/>
   <LongName>A Versus B — Compare Anything</LongName>
   <Image height="16" width="16" type="image/x-icon">https://www.aversusb.net/favicon.ico</Image>
   <Image height="64" width="64" type="image/svg+xml">https://www.aversusb.net/favicon.svg</Image>
