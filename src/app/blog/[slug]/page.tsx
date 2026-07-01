@@ -606,23 +606,24 @@ export default async function BlogPostPage({
       <main className="min-h-screen bg-surface">
         {/* Breadcrumbs */}
         <div className="bg-surface-alt border-b border-border">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <nav className="flex items-center gap-2 text-sm text-text-secondary">
-              <Link
-                href="/"
-                className="hover:text-primary-600 transition-colors"
-              >
-                Home
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs sm:text-sm text-text-secondary overflow-x-auto scrollbar-none whitespace-nowrap">
+              <Link href="/" className="flex items-center gap-1 hover:text-primary-600 transition-colors font-medium flex-shrink-0">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
               </Link>
-              <span>/</span>
-              <Link
-                href="/blog"
-                className="hover:text-primary-600 transition-colors"
-              >
+              <svg className="w-3 h-3 text-text-secondary/30 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+              <Link href="/blog" className="hover:text-primary-600 transition-colors font-medium flex-shrink-0">
                 Blog
               </Link>
-              <span>/</span>
-              <span className="text-text truncate max-w-[200px] sm:max-w-none">
+              <svg className="w-3 h-3 text-text-secondary/30 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+              </svg>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-50 border border-primary-100 text-primary-700 font-semibold truncate max-w-[180px] sm:max-w-none" aria-current="page">
                 {article.title}
               </span>
             </nav>
@@ -630,15 +631,19 @@ export default async function BlogPostPage({
         </div>
 
         {/* Article Header */}
-        <header className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-12 sm:py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
+        <header className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-12 sm:py-16 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 bottom-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.06),transparent_60%)]" />
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div className="flex flex-wrap items-center gap-2.5 mb-5">
               {article.category && (
-                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm capitalize">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/20 capitalize">
                   {article.category}
                 </span>
               )}
-              <span className="text-xs text-primary-200">
+              <span className="flex items-center gap-1.5 text-xs text-primary-200 bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
                 {readTime} min read
               </span>
             </div>
@@ -653,10 +658,26 @@ export default async function BlogPostPage({
               </p>
             )}
 
-            <div className="flex items-center gap-4 mt-6 text-sm text-primary-200">
-              <span>By {SITE_NAME} Team</span>
-              <span>|</span>
-              <span>{formatDate(article.publishedAt)}</span>
+            <div className="flex flex-wrap items-center gap-3 mt-6">
+              <div className="flex items-center gap-2 text-xs text-primary-200">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/20 flex-shrink-0">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="font-medium">{SITE_NAME} Editorial Team</span>
+              </div>
+              {article.publishedAt && (
+                <>
+                  <span className="w-px h-4 bg-white/20" aria-hidden="true" />
+                  <div className="flex items-center gap-1.5 text-xs text-primary-200">
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <time dateTime={new Date(article.publishedAt).toISOString()}>{formatDate(article.publishedAt)}</time>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </header>
