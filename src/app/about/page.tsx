@@ -44,6 +44,8 @@ const aboutPageSchema = {
   url: ABOUT_URL,
   inLanguage: "en-US",
   creativeWorkStatus: "Published",
+  datePublished: "2024-01-01",
+  dateModified: new Date().toISOString().slice(0, 10),
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   alternativeHeadline: `${SITE_NAME} — Compare Anything, Data-Driven & Free`,
