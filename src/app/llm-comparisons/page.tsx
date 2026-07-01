@@ -326,11 +326,22 @@ export default function LLMComparisonsPage() {
     <article className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <JsonLd data={[articleSchema, ...productSchemas]} />
 
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary flex-wrap">
-          <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
-          <li>/</li>
-          <li className="text-text font-medium">LLM Comparisons</li>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+          <li>
+            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">LLM Comparisons</li>
         </ol>
       </nav>
 
@@ -388,7 +399,14 @@ export default function LLMComparisonsPage() {
 
       {/* Main table */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">Comparison table</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 6h4m-4 12h4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Comparison table</h2>
+        </div>
         <p className="text-sm text-text-secondary mb-4">
           All data as of May 2026.<sup><a href="#cite-date-note" className="text-primary-600">[*]</a></sup>{" "}
           &ldquo;Undisclosed&rdquo; means the vendor has not published the value — not that it is unknown to us.
@@ -442,7 +460,14 @@ export default function LLMComparisonsPage() {
 
       {/* Citations */}
       <section className="mb-10">
-        <h2 className="text-xl font-display font-bold text-text mb-4">Sources</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-display font-bold text-text">Sources</h2>
+        </div>
         <ol className="space-y-2 text-sm text-text-secondary">
           {LLMS.map((m, i) => (
             <li key={m.name} id={`cite-${i}`}>
