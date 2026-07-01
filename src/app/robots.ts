@@ -132,6 +132,7 @@ export default function robots(): MetadataRoute.Robots {
     ],
     sitemap: [
       "https://www.aversusb.net/api/sitemap",
+      "https://www.aversusb.net/api/sitemap?type=blog",
       "https://www.aversusb.net/sitemap.xml",
       "https://www.aversusb.net/sitemap/0.xml",
       "https://www.aversusb.net/sitemap/1.xml",

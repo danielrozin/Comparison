@@ -192,8 +192,17 @@ export async function GET() {
   lines.push(`- Concise overview: ${SITE_URL}/llms.txt`);
   lines.push(`- Full catalog (this file): ${SITE_URL}/api/llms-full`);
   lines.push(`- Sitemap: ${SITE_URL}/sitemap.xml`);
+  lines.push(`- JSON sitemap (comparisons): ${SITE_URL}/api/sitemap`);
+  lines.push(`- JSON sitemap (blog): ${SITE_URL}/api/sitemap?type=blog`);
   lines.push(`- RSS Feed: ${SITE_URL}/feed`);
   lines.push(`- API docs: ${SITE_URL}/developers`);
+  lines.push(`- OpenAPI spec: ${SITE_URL}/api/openapi`);
+  lines.push(`- AI plugin manifest: ${SITE_URL}/.well-known/ai-plugin.json`);
+  lines.push(`- Unified search: ${SITE_URL}/api/v1/search?q={query}`);
+  lines.push(`- Compare lookup: ${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}`);
+  lines.push(`- Alternatives: ${SITE_URL}/api/v1/alternatives/{slug}`);
+  lines.push(`- Best-of lists: ${SITE_URL}/api/v1/best/{slug}`);
+  lines.push(`- AI Answer: ${SITE_URL}/api/answer/{slug}`);
   lines.push(`- Contact: ${SITE_URL}/contact`);
 
   return new NextResponse(lines.join("\n"), {
