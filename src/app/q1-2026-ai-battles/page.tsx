@@ -183,10 +183,21 @@ export default function Q1AiBattlesPage() {
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">Q1 2026 AI Tool Battles</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">Q1 2026 AI Tool Battles</li>
             </ol>
           </nav>
           <p className="text-xs font-bold uppercase tracking-widest text-primary-300 mb-2">
@@ -236,9 +247,14 @@ export default function Q1AiBattlesPage() {
       <article className="prose prose-lg max-w-none space-y-12">
         {/* What this measures */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            What this report measures
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">What this report measures</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             This report ranks the most-compared software and consumer products on{" "}
             <strong className="text-text">US Google Search</strong> during{" "}
@@ -257,9 +273,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Top 10 chart */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            Top 10 battles by Q1 2026 volume
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Top 10 battles by Q1 2026 volume</h2>
+          </div>
           <Image
             src="/data/q1-2026-ai-battles/chart-top10.png"
             alt="Bar chart of the top 10 most-compared AI and software tool battles by Q1 2026 US Google Search volume, led by claude code vs cursor and chatgpt vs claude."
@@ -271,7 +292,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Data source */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">Data source</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Data source</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             Keyword search-volume figures come from the{" "}
             <strong className="text-text">DataForSEO Labs API</strong> (endpoint{" "}
@@ -305,7 +333,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Ranking methodology */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">Ranking methodology</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Ranking methodology</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             For the <strong className="text-text">Top 50 list:</strong>
           </p>
