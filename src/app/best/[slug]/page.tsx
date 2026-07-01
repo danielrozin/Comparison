@@ -82,6 +82,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonicalUrl,
       type: "article",
       siteName: SITE_NAME,
+      locale: "en_US",
       publishedTime: entry.publishedAt,
       modifiedTime: entry.updatedAt,
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${entry.h1} — A Versus B best-of list` }],

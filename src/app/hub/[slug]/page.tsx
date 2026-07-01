@@ -42,6 +42,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: hub.description,
       url: canonicalUrl,
       type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${hub.h1} — A Versus B comparison hub` }],
     },
     twitter: {

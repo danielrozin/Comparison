@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/trending`,
     type: "website",
     siteName: SITE_NAME,
+    locale: "en_US",
     images: [{ url: ogImage, width: 1200, height: 630, alt: "Trending Comparisons" }],
   },
   twitter: {

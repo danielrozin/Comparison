@@ -50,6 +50,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
     },
     openGraph: {
+      title: `${category.name} Comparisons`,
+      description: desc,
+      url: `${SITE_URL}/category/${slug}`,
+      type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} Comparisons on A Versus B` }],
     },
     twitter: { card: "summary_large_image", site: "@aversusb", images: [ogImage] },

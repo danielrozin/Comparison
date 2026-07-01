@@ -227,6 +227,7 @@ export async function generateMetadata({
       url: `${SITE_URL}/blog/${slug}`,
       type: "article",
       siteName: SITE_NAME,
+      locale: "en_US",
       publishedTime: article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined,
       modifiedTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
       authors: [`${SITE_URL}/authors/daniel-rozin`],

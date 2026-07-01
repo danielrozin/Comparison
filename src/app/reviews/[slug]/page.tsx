@@ -40,7 +40,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${SITE_URL}/reviews/${slug}`,
-      type: "website",
+      type: "article",
+      siteName: SITE_NAME,
+      locale: "en_US",
+      publishedTime: "2024-01-01T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} reviews and SmartScore — A Versus B` }],
     },
     twitter: {

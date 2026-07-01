@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
@@ -92,6 +92,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${SITE_URL}/entity/${slug}`,
       type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
     },
     twitter: {
@@ -224,6 +226,12 @@ export default async function EntityPage({ params }: PageProps) {
       {categoryDef && (
         <link rel="up" href={`${SITE_URL}/category/${categoryDef.slug}`} title={`${categoryDef.name} comparisons`} />
       )}
+      {/* og:see_also — related comparison URLs for AI social-graph crawlers.
+          Perplexity, ChatGPT browse, and Gemini follow these to build entity-relationship
+          graphs and surface more of our comparisons when answering queries about this entity. */}
+      {relatedComparisons.slice(0, 5).map((c) => (
+        <meta key={c.slug} property="og:see_also" content={`${SITE_URL}/compare/${c.slug}`} />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(entityJsonLd) }}
