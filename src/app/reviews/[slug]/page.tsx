@@ -67,6 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${name} Reviews, Product Review`,
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",

@@ -58,6 +58,7 @@ export const metadata: Metadata = {
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
+    "DC.subject": "Trending Comparisons 2026, Popular Side-by-Side Comparisons",
     "DC.type": "Text",
     "DC.format": "text/html",
       "DC.date": "2024-01-01",

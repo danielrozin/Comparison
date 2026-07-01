@@ -266,6 +266,7 @@ export async function generateMetadata({
         : new Date().toISOString().slice(0, 10),
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${article.category ?? "Comparisons"}, ${article.title}`,
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": `${SITE_URL}/blog/${slug}`,

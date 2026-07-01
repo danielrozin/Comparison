@@ -116,6 +116,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${name} Comparisons, ${name} vs Alternatives`,
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",

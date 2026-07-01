@@ -108,6 +108,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.publisher": "A Versus B",
       "DC.date": entry.publishedAt?.slice(0, 10) ?? "",
       "DC.language": "en",
+      "DC.subject": `${entry.h1}, Best Of`,
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": canonicalUrl,
