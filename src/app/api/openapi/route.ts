@@ -361,6 +361,40 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/schema/{slug}": {
+        get: {
+          operationId: "getSchemaJsonLd",
+          tags: ["Linked Data"],
+          summary: "Pure Schema.org JSON-LD for a comparison",
+          description: "Returns a spec-compliant Schema.org JSON-LD document with application/ld+json content-type. Contains @context + @graph with WebPage, Article, Thing (per entity), Dataset, FAQPage, and Organization nodes. Also accessible via HTTP content negotiation: GET /compare/{slug} with Accept: application/ld+json returns 303 to this endpoint.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Comparison slug (e.g. chatgpt-vs-claude)", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": {
+              description: "Schema.org JSON-LD document",
+              headers: {
+                "Last-Modified": { schema: { type: "string" }, description: "RFC 7231 last-update timestamp" },
+                "Link": { schema: { type: "string" }, description: "rel=canonical + rel=alternate links" },
+              },
+              content: { "application/ld+json": { schema: { type: "object", properties: { "@context": { type: "string", enum: ["https://schema.org"] }, "@graph": { type: "array" } } } } },
+            },
+            "404": { description: "Not found" },
+          },
+        },
+        head: {
+          operationId: "headSchemaJsonLd",
+          tags: ["Linked Data"],
+          summary: "HEAD probe for schema JSON-LD",
+          parameters: [
+            { name: "slug", in: "path", required: true, schema: { type: "string" } },
+          ],
+          responses: {
+            "200": { description: "Comparison exists" },
+            "404": { description: "Not found" },
+          },
+        },
+      },
       "/api/v1/changes": {
         get: {
           operationId: "getChanges",
