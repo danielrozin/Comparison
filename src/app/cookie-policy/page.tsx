@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     title: `Cookie Policy — ${SITE_NAME}`,
     description: `Learn how ${SITE_NAME} uses cookies.`,
     url: PAGE_URL,
-  },
+
+    locale: "en_US",  },
 };
 
 const webPageSchema = {
@@ -25,7 +26,8 @@ const webPageSchema = {
   "@id": PAGE_URL,
   name: `Cookie Policy — ${SITE_NAME}`,
   url: PAGE_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   creativeWorkStatus: "Published",

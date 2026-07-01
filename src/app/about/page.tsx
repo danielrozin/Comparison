@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     title: ABOUT_TITLE,
     description: ABOUT_DESC,
     url: ABOUT_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": ABOUT_TITLE,
     "citation_author": "A Versus B",
@@ -45,7 +46,8 @@ const aboutPageSchema = {
   description: ABOUT_DESC,
   abstract: ABOUT_DESC,
   url: ABOUT_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   creativeWorkStatus: "Published",
   datePublished: "2024-01-01",
   dateModified: new Date().toISOString().slice(0, 10),
@@ -78,13 +80,15 @@ const aboutPageSchema = {
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
-    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
+
+    locale: "en_US",    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
     founder: [
       {
         "@type": "Person",
         name: "Daniel Rozin",
         url: `${SITE_URL}/authors/daniel-rozin`,
-        jobTitle: "Founder & Editor-in-Chief",
+
+        locale: "en_US",        jobTitle: "Founder & Editor-in-Chief",
         sameAs: [
           "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
           "https://www.facebook.com/daniel.rozin.94",

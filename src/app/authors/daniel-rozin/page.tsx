@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
-    type: "profile",
+
+    locale: "en_US",    type: "profile",
     images: [{ url: `${SITE_URL}/api/og?title=${encodeURIComponent(PAGE_TITLE)}&type=author`, width: 1200, height: 630, alt: `${AUTHOR_NAME} — Founder of A Versus B` }],
   },
   twitter: {
@@ -48,17 +49,20 @@ const ARTICLES = [
   {
     title: "Best Password Managers Compared (2026)",
     url: "/password-manager-comparison",
-    date: "2026-05-22",
+
+    locale: "en_US",    date: "2026-05-22",
   },
   {
     title: "Best Browsers Compared (2026)",
     url: "/browser-comparison-2026",
-    date: "2026-05-22",
+
+    locale: "en_US",    date: "2026-05-22",
   },
   {
     title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
     url: "/llm-comparisons",
-    date: "2026-05-22",
+
+    locale: "en_US",    date: "2026-05-22",
   },
 ];
 
@@ -70,14 +74,16 @@ const personSchema = {
   givenName: "Daniel",
   familyName: "Rozin",
   url: PAGE_URL,
-  email: "daniarozin@gmail.com",
+
+  locale: "en_US",  email: "daniarozin@gmail.com",
   jobTitle: AUTHOR_TITLE,
   worksFor: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
-  },
+
+    locale: "en_US",  },
   description: PAGE_DESCRIPTION,
   hasOccupation: {
     "@type": "Occupation",
@@ -109,7 +115,8 @@ const personSchema = {
     "@type": "Article",
     name: a.title,
     url: `${SITE_URL}${a.url}`,
-    datePublished: a.date,
+
+    locale: "en_US",    datePublished: a.date,
     author: { "@type": "Person", "@id": `${PAGE_URL}#person` },
   })),
 };
@@ -123,7 +130,8 @@ const profilePageSchema = {
   abstract: PAGE_DESCRIPTION,
   alternativeHeadline: `${AUTHOR_NAME} — Founder & Editor-in-Chief of A Versus B`,
   url: PAGE_URL,
-  genre: "Author Profile",
+
+  locale: "en_US",  genre: "Author Profile",
   inLanguage: "en-US",
   interactivityType: "expositive",
   creativeWorkStatus: "Published",
@@ -138,7 +146,8 @@ const profilePageSchema = {
     "@type": "ImageObject",
     "@id": `${PAGE_URL}#primaryImage`,
     url: AUTHOR_OG_IMAGE,
-    contentUrl: AUTHOR_OG_IMAGE,
+
+    locale: "en_US",    contentUrl: AUTHOR_OG_IMAGE,
     width: 1200,
     height: 630,
     caption: `${AUTHOR_NAME} — Founder & Editor-in-Chief of A Versus B`,

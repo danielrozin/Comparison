@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,
     url: SITEMAP_URL,
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
   },
   other: {
     "citation_title": SITEMAP_TITLE,
@@ -135,7 +136,8 @@ const siteMapPageSchema = {
       name: SITEMAP_TITLE,
       description: SITEMAP_DESC,
       url: SITEMAP_URL,
-      inLanguage: "en-US",
+
+      locale: "en_US",      inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
       accessMode: ["textual"],

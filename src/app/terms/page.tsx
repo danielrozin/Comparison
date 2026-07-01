@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     title: `Terms of Use — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Terms of Use.`,
     url: PAGE_URL,
-  },
+
+    locale: "en_US",  },
 };
 
 const webPageSchema = {
@@ -25,7 +26,8 @@ const webPageSchema = {
   "@id": PAGE_URL,
   name: `Terms of Use — ${SITE_NAME}`,
   url: PAGE_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   creativeWorkStatus: "Published",

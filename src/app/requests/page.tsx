@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     title: REQ_TITLE,
     description: REQ_DESC,
     url: REQ_URL,
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
   },
   other: {
     "citation_title": REQ_TITLE,
@@ -46,7 +47,8 @@ const requestsPageSchema = {
       name: REQ_TITLE,
       description: REQ_DESC,
       url: REQ_URL,
-      inLanguage: "en-US",
+
+      locale: "en_US",      inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
       interactivityType: "mixed",

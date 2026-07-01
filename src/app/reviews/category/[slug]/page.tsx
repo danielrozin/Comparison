@@ -45,7 +45,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description: desc,
       url: `${SITE_URL}/reviews/category/${slug}`,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
+
+      locale: "en_US",      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
     },
     twitter: { card: "summary_large_image",
     site: "@aversusb", title, description: desc, images: [ogImage] },
@@ -116,7 +117,8 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores from Reddit, G2, Capterra, Trustpilot, and more.`,
     abstract: `Aggregated ${cat.name} reviews with SmartScores from multiple platforms.`,
     url: reviewCatUrl,
-    inLanguage: "en-US",
+
+    locale: "en_US",    inLanguage: "en-US",
     genre: "Review Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
@@ -129,7 +131,8 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
       "@type": "ImageObject",
       "@id": `${reviewCatUrl}#primaryImage`,
       url: reviewCatOgImage,
-      contentUrl: reviewCatOgImage,
+
+      locale: "en_US",      contentUrl: reviewCatOgImage,
       width: 1200,
       height: 630,
       caption: `${cat.name} Reviews — A Versus B SmartReview`,

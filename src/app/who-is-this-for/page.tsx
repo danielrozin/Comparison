@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     title: WHO_TITLE,
     description: `Discover who benefits from ${SITE_NAME} — structured, data-driven comparisons across sports, technology, countries, products, and more.`,
     url: WHO_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": WHO_TITLE,
     "citation_author": "A Versus B",
@@ -75,7 +76,8 @@ function buildSchemas() {
     abstract: WHO_DESC,
     alternativeHeadline: `Is A Versus B Right for You? — Audience Guide & Use Cases`,
     url: pageUrl,
-    inLanguage: "en-US",
+
+    locale: "en_US",    inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",

@@ -17,7 +17,8 @@ export const metadata: Metadata = {
     title: AUP_TITLE,
     description: AUP_DESC,
     url: AUP_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": AUP_TITLE,
     "citation_author": "A Versus B",
@@ -44,7 +45,8 @@ const aupSchema = {
   name: AUP_TITLE,
   description: AUP_DESC,
   url: AUP_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   creativeWorkStatus: "Published",

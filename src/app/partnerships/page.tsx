@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     title: PARTNER_TITLE,
     description: `Reach decision-makers at the point of comparison. Sponsored placements, featured reviews, and custom data partnerships.`,
     url: PARTNER_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": PARTNER_TITLE,
     "citation_author": "A Versus B",
@@ -98,7 +99,8 @@ export default function PartnershipsPage() {
     abstract: PARTNER_DESC,
     alternativeHeadline: `Advertise on A Versus B — Sponsored Comparisons & Data Deals`,
     url: PARTNER_URL,
-    inLanguage: "en-US",
+
+    locale: "en_US",    inLanguage: "en-US",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",

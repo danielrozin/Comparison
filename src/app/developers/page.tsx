@@ -12,12 +12,14 @@ const apiSchema = {
   name: `${SITE_NAME} Comparison API`,
   description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
-  documentation: `${SITE_URL}/developers`,
+
+  locale: "en_US",  documentation: `${SITE_URL}/developers`,
   provider: {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-  },
+
+    locale: "en_US",  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   creativeWorkStatus: "Published",
@@ -55,7 +57,8 @@ const apiSchema = {
     name: "A Versus B Comparison Dataset",
     description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
-    encodingFormat: "text/plain",
+
+    locale: "en_US",    encodingFormat: "text/plain",
     inLanguage: "en-US",
     provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     about: {
@@ -85,7 +88,8 @@ export const metadata: Metadata = {
     title: DEV_TITLE,
     description: DEV_DESC,
     url: DEV_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": DEV_TITLE,
     "citation_author": "A Versus B",

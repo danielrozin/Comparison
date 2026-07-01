@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     title: `Contact ${SITE_NAME}`,
     description: `Get in touch with the ${SITE_NAME} team. We respond within 2 business days.`,
     url: `${SITE_URL}/contact`,
-  },
+
+    locale: "en_US",  },
 };
 
 const contactPageSchema = {
@@ -25,7 +26,8 @@ const contactPageSchema = {
   name: `Contact ${SITE_NAME}`,
   description: `Get in touch with the ${SITE_NAME} team. Report errors, request new comparisons, ask general questions, or explore partnership opportunities.`,
   url: `${SITE_URL}/contact`,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   creativeWorkStatus: "Published",
@@ -47,7 +49,8 @@ const contactPageSchema = {
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
-    contactPoint: [
+
+    locale: "en_US",    contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "customer support",
@@ -59,7 +62,8 @@ const contactPageSchema = {
         "@type": "ContactPoint",
         contactType: "partnerships",
         url: `${SITE_URL}/partnerships`,
-        availableLanguage: "English",
+
+        locale: "en_US",        availableLanguage: "English",
         areaServed: "Worldwide",
       },
     ],
