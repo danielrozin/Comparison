@@ -697,6 +697,10 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {(meta.articleTags ?? []).length > 0 && (
         <meta name="news_keywords" content={(meta.articleTags ?? []).slice(0, 10).join(", ")} />
       )}
+      {/* keywords — standard HTML meta; Bing, Yandex, and AI topic classifiers still use this */}
+      {(meta.articleTags ?? []).length > 0 && (
+        <meta name="keywords" content={(meta.articleTags ?? []).slice(0, 15).join(", ")} />
+      )}
       {/* og:see_also — related comparison URLs.
           AI crawlers (Perplexity, ChatGPT browse, Gemini) follow these to build
           entity-relationship graphs and surface more of our comparisons in answers. */}

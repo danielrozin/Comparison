@@ -79,6 +79,7 @@ async function handleBatch(slugs: string[], fields: string[] | null) {
         raw.comparisonUrl = `${SITE_URL}/compare/${slug}`;
         raw.answerUrl = `${SITE_URL}/api/answer/${slug}`;
         raw.knowledgeGraphUrl = `${SITE_URL}/api/knowledge-graph/${slug}`;
+        raw.schemaJsonLdUrl = `${SITE_URL}/api/v1/schema/${slug}`;
         return { slug, data: filterFields(raw, fields) };
       } catch {
         return { slug, data: null };
