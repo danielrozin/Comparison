@@ -232,7 +232,7 @@ export async function generateMetadata({
       authors: [`${SITE_URL}/authors/daniel-rozin`],
       section: article.category ?? "Comparisons",
       tags: article.tags ?? [],
-      images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
+      images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
@@ -498,11 +498,12 @@ export default async function BlogPostPage({
         url: `${SITE_URL}/compare/${s}`,
       })),
     }),
-    // mentions — named entities discussed in this article but not the primary subject.
-    // Typed @type + sameAs (Wikipedia + DBpedia) mirrors the HB139 pattern on comparison
-    // pages — AI knowledge graphs use sameAs to merge co-occurrence signals across sites.
-    ...(article.tags?.length && {
-      mentions: article.tags.map((tag: string) => {
+    // mentions — named entities + linked comparison pages discussed in this article.
+    // Tag-typed entities (HB139 pattern) + Article-typed comparison nodes merged
+    // into one mentions[] array so AI crawlers get both entity-graph and content
+    // signals from a single schema field.
+    mentions: [
+      ...(article.tags?.length ? article.tags.map((tag: string) => {
         const sameAs = entityWikipediaSameAs(tag);
         return {
           "@type": inferTagSchemaType(tag),
@@ -510,8 +511,16 @@ export default async function BlogPostPage({
           url: `${SITE_URL}/entity/${tag.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`,
           ...(sameAs.length > 0 && { sameAs }),
         };
-      }),
-    }),
+      }) : []),
+      // Comparison page Article nodes — tells AI crawlers which specific comparison
+      // pages this blog post synthesizes, strengthening the inter-document entity graph.
+      ...(article.relatedComparisonSlugs?.length ? article.relatedComparisonSlugs.map((s: string) => ({
+        "@type": "Article",
+        "@id": `${SITE_URL}/compare/${s}#article`,
+        name: comparisonTitles?.[s] ?? s,
+        url: `${SITE_URL}/compare/${s}`,
+      })) : []),
+    ],
     ...(article.relatedComparisonSlugs?.length && {
       significantLink: article.relatedComparisonSlugs.map((s) => `${SITE_URL}/compare/${s}`),
     }),

@@ -201,7 +201,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         "query-input": "required name=search_term_string",
       },
     ],
-    mentions: allComparisons.slice(0, 10).map((c) => ({
+    mentions: allComparisons.slice(0, 30).map((c) => ({
       "@type": "Article",
       "@id": `${SITE_URL}/compare/${c.slug}#article`,
       headline: c.title,
@@ -211,7 +211,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       "@type": "ItemList",
       name: `${category.name} Comparisons`,
       numberOfItems: allComparisons.length,
-      itemListElement: allComparisons.slice(0, 20).map((c, i) => ({
+      itemListElement: allComparisons.slice(0, 50).map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
         name: c.title,
@@ -239,13 +239,20 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    ...(hasSubcategories && activeSubcategories.length > 0 ? {
-      hasPart: activeSubcategories.map((sub) => ({
+    hasPart: [
+      ...(hasSubcategories ? activeSubcategories.map((sub) => ({
         "@type": "CollectionPage",
         name: `${sub.name} Comparisons`,
         url: `${SITE_URL}/category/${slug}/${sub.slug}`,
+      })) : []),
+      // Top comparison pages as WebPage hasPart nodes — AI crawlers use these
+      // to understand the category's content depth without crawling each URL.
+      ...allComparisons.slice(0, hasSubcategories ? 10 : 20).map((c) => ({
+        "@type": "WebPage",
+        name: c.title,
+        url: `${SITE_URL}/compare/${c.slug}`,
       })),
-    } : {}),
+    ],
     timeRequired: "PT2M",
     wordCount: 400,
     // about[] — subject classification for AI topic routing and Google Discover.
