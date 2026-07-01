@@ -66,6 +66,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": metaDesc,
+      "abstract": metaDesc,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": `Best Alternatives to ${name} in 2026`,

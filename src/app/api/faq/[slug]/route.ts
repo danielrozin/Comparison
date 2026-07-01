@@ -81,6 +81,10 @@ export async function GET(
           : comparison.shortAnswer
           ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
           : {}),
+        // X-Source-* — attribution headers for AI training pipelines and citation engines
+        "X-Source-Title": comparison.title,
+        "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+        "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
       },
     }
   );

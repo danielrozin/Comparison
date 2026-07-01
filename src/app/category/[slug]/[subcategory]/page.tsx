@@ -112,6 +112,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": SITE_NAME,
       "citation_language": "en",
       "citation_abstract": description,
+      "abstract": description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": title,

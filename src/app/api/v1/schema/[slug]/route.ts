@@ -217,6 +217,11 @@ export async function GET(
       ...((comparison.shortAnswer || comparison.verdict)
         ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
+      // X-Source-* — attribution headers for AI training pipelines and citation engines.
+      // Allow AI tools to correctly attribute this content without parsing the JSON-LD body.
+      "X-Source-Title": comparison.title,
+      "X-Source-URL": url,
+      "X-Source-Attribution": `A Versus B (${url})`,
       Link: [
         `<${url}>; rel="canonical"`,
         `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/json"`,

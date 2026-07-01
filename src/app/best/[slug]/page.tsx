@@ -102,6 +102,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": entry.description,
+      "abstract": entry.description,
       "DC.title": entry.title,
       "DC.creator": entry.authorName,
       "DC.publisher": "A Versus B",

@@ -65,6 +65,10 @@ export async function GET(
     ETag: etag,
     ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
     ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
+    // X-Source-* — attribution headers for AI training pipelines and citation engines
+    "X-Source-Title": article.title,
+    "X-Source-URL": url,
+    "X-Source-Attribution": `A Versus B (${url})`,
   };
 
   // Content negotiation: return clean application/ld+json when explicitly requested

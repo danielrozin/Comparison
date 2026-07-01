@@ -59,6 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": hub.description,
+      "abstract": hub.description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": hub.title,

@@ -164,6 +164,9 @@ export async function GET(
         "Cache-Control": HEADERS["Cache-Control"],
         "Access-Control-Allow-Origin": "*",
         "X-Robots-Tag": "all",
+        "X-Source-Title": entity.name,
+        "X-Source-URL": url,
+        "X-Source-Attribution": `A Versus B (${url})`,
         ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
         "Link": `<${url}>; rel="canonical"`,
       },
@@ -173,6 +176,9 @@ export async function GET(
   return NextResponse.json(response, {
     headers: {
       ...HEADERS,
+      "X-Source-Title": entity.name,
+      "X-Source-URL": url,
+      "X-Source-Attribution": `A Versus B (${url})`,
       ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
     },
   });
