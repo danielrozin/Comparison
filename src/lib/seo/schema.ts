@@ -483,6 +483,7 @@ export function webPageSchema(opts: {
     inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    creativeWorkStatus: "Published",
     license: "https://creativecommons.org/licenses/by/4.0/",
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],

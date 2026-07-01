@@ -1,5 +1,7 @@
 "use client";
 
+import { useId } from "react";
+
 interface StarRatingProps {
   rating: number; // 0-5
   maxStars?: number;
@@ -29,6 +31,7 @@ export function StarRating({
   reviewCount,
   inverted = false,
 }: StarRatingProps) {
+  const baseId = useId();
   const clampedRating = Math.min(Math.max(rating, 0), maxStars);
   const fullStars = Math.floor(clampedRating);
   const partialFill = clampedRating - fullStars;
@@ -39,15 +42,15 @@ export function StarRating({
       <div className="flex items-center gap-0.5" role="img" aria-label={`${clampedRating.toFixed(1)} out of ${maxStars} stars`}>
         {/* Full stars */}
         {Array.from({ length: fullStars }).map((_, i) => (
-          <Star key={`full-${i}`} fill={1} className={SIZES[size]} />
+          <Star key={`full-${i}`} fill={1} className={SIZES[size]} gradientId={`${baseId}-f${i}`} />
         ))}
         {/* Partial star */}
         {partialFill > 0 && (
-          <Star key="partial" fill={partialFill} className={SIZES[size]} />
+          <Star key="partial" fill={partialFill} className={SIZES[size]} gradientId={`${baseId}-p`} />
         )}
         {/* Empty stars */}
         {Array.from({ length: emptyStars }).map((_, i) => (
-          <Star key={`empty-${i}`} fill={0} className={SIZES[size]} />
+          <Star key={`empty-${i}`} fill={0} className={SIZES[size]} gradientId={`${baseId}-e${i}`} />
         ))}
       </div>
       {showValue && (
@@ -64,8 +67,8 @@ export function StarRating({
   );
 }
 
-function Star({ fill, className }: { fill: number; className: string }) {
-  const id = `star-grad-${Math.random().toString(36).slice(2, 8)}`;
+function Star({ fill, className, gradientId }: { fill: number; className: string; gradientId: string }) {
+  const id = gradientId;
 
   if (fill >= 1) {
     return (
