@@ -71,6 +71,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.date": "2024-01-01",
       "DC.identifier": canonicalUrl,
       "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": "Topic Hub",
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }

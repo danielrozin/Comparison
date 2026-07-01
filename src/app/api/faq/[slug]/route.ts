@@ -84,6 +84,7 @@ export async function GET(
         // X-Source-* — attribution headers for AI training pipelines and citation engines
         "X-Source-Title": comparison.title,
         "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+        "X-Source-License": "CC BY 4.0",
         "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
       },
     }

@@ -221,6 +221,7 @@ export async function GET(
       // Allow AI tools to correctly attribute this content without parsing the JSON-LD body.
       "X-Source-Title": comparison.title,
       "X-Source-URL": url,
+      "X-Source-License": "CC BY 4.0",
       "X-Source-Attribution": `A Versus B (${url})`,
       Link: [
         `<${url}>; rel="canonical"`,

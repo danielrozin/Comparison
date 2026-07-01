@@ -72,6 +72,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/reviews/${slug}`,
       "thumbnail": ogImage,
+      "twitter:label1": "SmartScore",
+      "twitter:data1": agg ? `${agg.smartScore}/100` : "Aggregated",
+      "twitter:label2": "Reviews",
+      "twitter:data2": agg ? `${agg.totalReviews} sources` : "Multiple sources",
     },
   };
 }
