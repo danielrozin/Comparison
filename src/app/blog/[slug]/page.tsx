@@ -289,6 +289,14 @@ export async function generateMetadata({
         : {}),
       // thumbnail — Bing rich snippets + Microsoft Copilot preview card selection.
       "thumbnail": ogImage,
+      // Bing / AI topic classification — subject/topic/classification/category help
+      // Bing Webmaster Tools, Bing AI, and AI crawlers route this page to the right topical cluster.
+      ...(article.category ? {
+        "subject": `${article.category} guide`,
+        "topic": `${article.category} comparison`,
+        "classification": `Reference/Guide/${article.category}`,
+        "category": article.category,
+      } : {}),
     },
   };
 }

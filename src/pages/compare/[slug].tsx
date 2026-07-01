@@ -697,6 +697,13 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
+      {/* Bing / AI topic classification meta tags — Bing Webmaster, Bing AI, and several
+          AI crawlers use subject/topic/classification for topical authority scoring and
+          content routing. category + subject = two separate classification signals. */}
+      {meta.articleSection && <meta name="subject" content={`${meta.articleSection} comparison`} />}
+      {meta.articleSection && <meta name="topic" content={`${meta.articleSection} comparison`} />}
+      {meta.articleSection && <meta name="classification" content={`Reference/Comparison/${meta.articleSection}`} />}
+      {meta.articleSection && <meta name="category" content={meta.articleSection} />}
       {/* Feed discovery — RSS + Atom feed links on every page; feed readers and AI crawlers
           use these to subscribe to content updates and detect freshness signals */}
       <link rel="alternate" type="application/rss+xml" title="A Versus B — RSS Feed" href="https://www.aversusb.net/feed" />
