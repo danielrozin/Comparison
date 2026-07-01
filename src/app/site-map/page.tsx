@@ -168,7 +168,7 @@ export default async function SiteMapPage() {
       />
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-2 text-sm text-primary-200">
@@ -185,7 +185,7 @@ export default async function SiteMapPage() {
             <a href="/sitemap.xml" className="text-primary-200 hover:text-white underline">sitemap.xml</a>.
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -214,11 +214,11 @@ export default async function SiteMapPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
           Browse by Category
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
           {CATEGORIES.map((cat) => {
             const subs = CATEGORY_SUBCATEGORIES[cat.slug] || [];
             return (
-              <div key={cat.slug}>
+              <li key={cat.slug}>
                 <h3 className="font-semibold text-text mb-2">
                   <Link
                     href={`/category/${cat.slug}`}
@@ -227,7 +227,7 @@ export default async function SiteMapPage() {
                     {cat.name}
                   </Link>
                 </h3>
-                <ul className="space-y-1">
+                <ul className="space-y-1 list-none">
                   {subs.map((sub) => (
                     <li key={sub.slug}>
                       <Link
@@ -239,10 +239,10 @@ export default async function SiteMapPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </section>
 
       {/* Quick links */}
@@ -250,7 +250,7 @@ export default async function SiteMapPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
           Pages
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
             { href: "/", label: "Home" },
             { href: "/trending", label: "Trending Comparisons" },
@@ -265,15 +265,16 @@ export default async function SiteMapPage() {
             { href: "/changelog", label: "Changelog" },
             { href: "/feed", label: "RSS Feed" },
           ].map((page) => (
-            <Link
-              key={page.href}
-              href={page.href}
-              className="text-text-secondary hover:text-primary-600 transition-colors"
-            >
-              {page.label}
-            </Link>
+            <li key={page.href}>
+              <Link
+                href={page.href}
+                className="text-text-secondary hover:text-primary-600 transition-colors"
+              >
+                {page.label}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </div>
     </>

@@ -33,7 +33,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
         Aggregated ratings from Reddit, G2, Capterra, Trustpilot & more
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
         {withReviews.map(({ name, slug, agg }) => {
           const scoreColor = agg.smartScore >= 90
             ? "bg-green-100 text-green-700 ring-green-200"
@@ -44,7 +44,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
             : "bg-surface-alt text-text ring-border";
 
           return (
-            <div key={slug} className="flex flex-col gap-2">
+            <li key={slug} className="flex flex-col gap-2">
               {/* Internal review page link */}
               <Link
                 href={`/reviews/${slug}`}
@@ -80,10 +80,10 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
                 <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-[10px] font-bold shrink-0">SR</span>
                 Read {name} reviews on SmartReview &rarr;
               </a>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </section>
   );
 }

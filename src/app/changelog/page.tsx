@@ -290,7 +290,7 @@ export default function ChangelogPage() {
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-2 text-sm text-primary-200">
@@ -306,7 +306,7 @@ export default function ChangelogPage() {
             Everything new on {SITE_NAME}. New comparisons, features, improvements, and fixes.
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -315,32 +315,32 @@ export default function ChangelogPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Stats bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
+      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12 list-none">
         {[
           { label: "Comparisons", value: "53" },
           { label: "Categories", value: "10" },
           { label: "Entity Pages", value: "100+" },
           { label: "Releases", value: String(CHANGELOG.length) },
         ].map((stat) => (
-          <div key={stat.label} className="bg-white border border-border rounded-xl p-4 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+          <li key={stat.label} className="bg-white border border-border rounded-xl p-4 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-2xl font-bold text-primary-600">{stat.value}</p>
             <p className="text-xs text-text-secondary mt-1">{stat.label}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {/* Timeline */}
       <div className="relative">
         {/* Vertical line */}
-        <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" />
+        <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" aria-hidden="true" />
 
-        <div className="space-y-10">
+        <ol className="space-y-10 list-none">
           {CHANGELOG.map((entry, idx) => {
             const badge = TYPE_BADGES[entry.type] || TYPE_BADGES.improvement;
             return (
-              <div key={idx} className="relative pl-12 sm:pl-16">
+              <li key={idx} className="relative pl-12 sm:pl-16">
                 {/* Dot on timeline */}
-                <div className="absolute left-2.5 sm:left-4.5 top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 ring-4 ring-white" />
+                <div className="absolute left-2.5 sm:left-4.5 top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 ring-4 ring-white" aria-hidden="true" />
 
                 {/* Date & version */}
                 <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -368,22 +368,22 @@ export default function ChangelogPage() {
                 <ul className="space-y-1.5">
                   {entry.items.map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-text-secondary leading-relaxed">
-                      <svg className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-primary-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       {item}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </div>
 
       {/* Subscribe CTA */}
       <div className="mt-16 bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-xl p-6 sm:p-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-xl" />
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-xl" aria-hidden="true" />
         <h3 className="text-lg font-bold mb-2 relative">Stay Updated</h3>
         <p className="text-primary-100 text-sm mb-4 relative">
           Want to know when we add new comparisons or features? Get in touch.
