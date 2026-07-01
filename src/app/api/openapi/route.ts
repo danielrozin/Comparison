@@ -179,13 +179,18 @@ export async function GET() {
           operationId: "lookupComparison",
           tags: ["Comparisons"],
           summary: "Look up a comparison by entity names",
-          description: "AI tool-calling endpoint: given two entity names or slugs (?a= and ?b=), returns the comparison if found (with shortAnswer, verdict, and API URLs) or suggestions if not. Tries both orderings of the slug.",
+          description: "AI tool-calling endpoint: given two entity names or slugs (?a= and ?b=), returns the comparison if found. Response includes shortAnswer (immediate citation), verdict, keyDifferences (top 3), faqs (top 3 Q&A pairs), entities with alternativesUrl, answerUrl, knowledgeGraphUrl, and faqUrl. Tries both orderings of the slug. Returns suggestions array when not found. X-Summary HTTP header carries the shortAnswer.",
           parameters: [
             { name: "a", in: "query", required: true, description: "First entity name or slug", schema: { type: "string" }, example: "chatgpt" },
             { name: "b", in: "query", required: true, description: "Second entity name or slug", schema: { type: "string" }, example: "claude" },
           ],
           responses: {
-            "200": { description: "Comparison found or not-found with suggestions" },
+            "200": {
+              description: "Comparison found (found:true with answer fields) or not-found (found:false with suggestions array)",
+              headers: {
+                "X-Summary": { description: "shortAnswer truncated to 500 chars — citation-ready", schema: { type: "string" } },
+              },
+            },
             "400": { description: "Missing ?a or ?b parameter" },
           },
         },
@@ -195,12 +200,19 @@ export async function GET() {
           operationId: "getTrending",
           tags: ["Discovery"],
           summary: "Get trending comparisons",
-          description: "Returns top comparisons by view count. Supports ?limit (max 100) and ?category filters.",
+          description: "Returns top comparisons by view count with ItemList JSON-LD. Each comparison includes answerUrl and knowledgeGraphUrl for AI tool follow-up. Supports ?limit (max 100) and ?category filters. X-Summary header carries a comma-separated summary of top titles.",
           parameters: [
             { name: "limit", in: "query", description: "Max results (default 20, max 100)", schema: { type: "integer", default: 20 } },
             { name: "category", in: "query", description: "Filter by category slug", schema: { type: "string" } },
           ],
-          responses: { "200": { description: "Trending comparisons list" } },
+          responses: {
+            "200": {
+              description: "Trending comparisons list with ItemList JSON-LD",
+              headers: {
+                "X-Summary": { description: "Short summary of top trending titles", schema: { type: "string" } },
+              },
+            },
+          },
         },
       },
       "/api/v1/entities": {
@@ -222,13 +234,19 @@ export async function GET() {
           operationId: "getRelated",
           tags: ["Comparisons"],
           summary: "Get related comparisons",
-          description: "Returns related comparisons for a given slug — use to build context around an answer or surface follow-up topics.",
+          description: "Returns related comparisons for a given slug as a typed ItemList JSON-LD. Each result includes answerUrl and knowledgeGraphUrl for AI tool follow-up. Use to build context around an answer or surface follow-up topics. ETag + X-Summary headers included.",
           parameters: [
             { name: "slug", in: "path", required: true, description: "Comparison slug", schema: { type: "string" } },
             { name: "limit", in: "query", description: "Max results (default 8, max 20)", schema: { type: "integer", default: 8 } },
           ],
           responses: {
-            "200": { description: "Related comparisons list" },
+            "200": {
+              description: "Related comparisons with ItemList JSON-LD",
+              headers: {
+                "ETag": { description: "Content fingerprint for conditional GET (304)", schema: { type: "string" } },
+                "X-Summary": { description: "Short summary of related titles", schema: { type: "string" } },
+              },
+            },
             "404": { description: "Comparison not found" },
           },
         },
@@ -238,7 +256,7 @@ export async function GET() {
           operationId: "getAnswer",
           tags: ["Comparisons"],
           summary: "Get AI-optimized answer",
-          description: "Returns a pre-packaged, citation-ready answer for a comparison: shortAnswer, verdict, keyDifferences, winner entity, confidence level, citation format, and ClaimReview JSON-LD. Designed for AI answer engines. X-Summary HTTP header carries the shortAnswer.",
+          description: "Returns a pre-packaged, citation-ready answer: shortAnswer, verdict, keyDifferences, faqs (top 3), entities with alternativesUrl, winner entity, confidence level, citation format, and ClaimReview JSON-LD. Designed for AI answer engines. X-Summary HTTP header carries the shortAnswer.",
           parameters: [
             { name: "slug", in: "path", required: true, description: "Comparison slug", schema: { type: "string" } },
           ],
@@ -253,7 +271,7 @@ export async function GET() {
           operationId: "getBlogArticle",
           tags: ["Blog"],
           summary: "Get blog article",
-          description: "Returns a single blog article as JSON with Article JSON-LD schema. X-Summary header in HTTP response carries the excerpt.",
+          description: "Returns a single blog article as JSON with BlogPosting JSON-LD schema (includes speakable, abstract, wordCount). X-Summary header in HTTP response carries the excerpt.",
           parameters: [
             { name: "slug", in: "path", required: true, description: "Blog article slug", schema: { type: "string" } },
           ],
