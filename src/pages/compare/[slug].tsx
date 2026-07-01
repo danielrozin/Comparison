@@ -597,8 +597,10 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="canonical" href={meta.canonical} />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
-      {/* JSON-LD knowledge graph — AI crawlers (Perplexity, ChatGPT, Gemini) use this
-          to ingest structured comparison data with typed entities and FAQ pairs */}
+      {/* Pure Schema.org JSON-LD — spec-compliant application/ld+json for Semantic Web tools,
+          RDF clients, and AI crawlers doing Accept: application/ld+json content negotiation */}
+      <link rel="alternate" type="application/ld+json" href={`https://www.aversusb.net/api/v1/schema/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Schema.org JSON-LD (pure)" />
+      {/* JSON-LD knowledge graph — richer format with extra metadata fields for developer tools */}
       <link rel="alternate" type="application/ld+json" href={`https://www.aversusb.net/api/knowledge-graph/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison knowledge graph (JSON-LD)" />
       {/* oEmbed — Slack, Discord, Notion, LinkedIn and AI assistants use this to render
           rich comparison cards when a user pastes an aversusb.net URL */}
@@ -650,6 +652,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta name="citation_online_date" content={meta.modifiedTime.slice(0, 10)} />}
       <meta name="citation_journal_title" content="A Versus B" />
       <meta name="citation_abstract" content={meta.description} />
+      {/* abstract — standard HTML meta used by Bing/Yahoo and some AI tools to extract
+          a short summary without parsing body copy. Same value as citation_abstract. */}
+      <meta name="abstract" content={meta.description} />
       <meta name="citation_language" content="en" />
       <meta name="citation_url" content={meta.canonical} />
       {/* citation_fulltext_world_accessible — Google Scholar + Semantic Scholar signal that

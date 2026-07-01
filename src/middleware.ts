@@ -109,6 +109,11 @@ export function middleware(request: NextRequest) {
         if (slug) {
           return NextResponse.redirect(`${SITE}/api/v1/entities/${slug}`, { status: 303 });
         }
+      } else if (pathname.startsWith("/blog/")) {
+        const slug = pathname.replace("/blog/", "").replace(/\/$/, "");
+        if (slug) {
+          return NextResponse.redirect(`${SITE}/api/blog/${slug}`, { status: 303 });
+        }
       }
     }
   }

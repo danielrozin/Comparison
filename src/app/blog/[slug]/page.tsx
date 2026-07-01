@@ -217,6 +217,7 @@ export async function generateMetadata({
         "application/rss+xml": `${SITE_URL}/feed`,
         "application/atom+xml": `${SITE_URL}/feed/atom`,
         "application/json": `${SITE_URL}/api/blog/${slug}`,
+        "application/ld+json": `${SITE_URL}/api/blog/${slug}`,
         "application/json+oembed": `${SITE_URL}/api/oembed?url=${SITE_URL}/blog/${slug}&format=json`,
       },
     },
@@ -251,6 +252,7 @@ export async function generateMetadata({
         : new Date().toISOString().slice(0, 10),
       "citation_journal_title": "A Versus B",
       "citation_abstract": (article.metaDescription || article.excerpt || "").slice(0, 300),
+      "abstract": (article.metaDescription || article.excerpt || "").slice(0, 300),
       "citation_language": "en",
       "citation_fulltext_world_accessible": "",
       "citation_online_date": article.publishedAt
