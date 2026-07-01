@@ -118,12 +118,23 @@ export function CommentSection({
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h2 className="text-2xl font-display font-bold text-text mb-6">
-        Discussion
-      </h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-2xl font-display font-bold text-text">Discussion</h2>
+          <p className="text-xs text-text-secondary mt-0.5">
+            {comments.length > 0 ? `${comments.length} comment${comments.length !== 1 ? "s" : ""}` : "Join the conversation"}
+          </p>
+        </div>
+      </div>
 
       {/* Comment form */}
-      <form onSubmit={submitComment} className="bg-white border border-border rounded-xl p-5 mb-6">
+      <form onSubmit={submitComment} className="relative bg-white border border-border rounded-xl p-5 mb-6 overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label htmlFor="comment-name" className="block text-sm font-medium text-text mb-1">
@@ -215,8 +226,9 @@ export function CommentSection({
                 <button
                   onClick={() => likeComment(comment.id)}
                   className="flex items-center gap-1 text-xs text-text-secondary hover:text-primary-600 transition-colors"
+                  aria-label="Like this comment"
                 >
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                   </svg>
                   {comment.likes > 0 && comment.likes}
