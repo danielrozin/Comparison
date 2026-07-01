@@ -113,6 +113,19 @@ export async function GET(
       // Attributes as additionalProperties
       additionalProperty: attributeNodes,
       interactivityType: "active",
+      // speakable — sections optimised for voice/AI reading extraction
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["#short-answer", "#verdict", "#key-differences", "#faq"],
+        xpath: ["//*[@id='short-answer']", "//*[@id='verdict']"],
+      },
+      // significantLink — entity profiles + alternatives so AI can traverse the graph
+      significantLink: comparison.entities.flatMap((e) => [
+        `${SITE_URL}/entity/${e.slug}`,
+        `${SITE_URL}/alternatives/${e.slug}`,
+      ]),
+      // teaches — explicit decision-intent signal for AI topic classifiers
+      teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     },
     // Entity nodes
     ...entityNodes,
