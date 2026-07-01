@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 // GET /api/v1/best — List all published best-of pages
 // Supports ?category filter, ?limit (default 20, max 100), ?offset.
@@ -19,6 +19,52 @@ const HEADERS = {
 
 export async function OPTIONS() {
   return new Response(null, { status: 204, headers: HEADERS });
+}
+
+type BestPage = {
+  slug: string;
+  title: string | undefined;
+  metaTitle?: string;
+  category?: string;
+  itemCount: number;
+  publishedAt?: string;
+  updatedAt?: string;
+  url: string;
+  apiUrl: string;
+};
+
+function buildDataFeed(pages: BestPage[], total: number) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "DataFeed",
+    "@id": `${SITE_URL}/api/v1/best#datafeed`,
+    name: `${SITE_NAME} Best-Of Lists`,
+    description: `Ranked best-of lists from ${SITE_NAME} — top picks across technology, software, sports, countries, and more.`,
+    url: `${SITE_URL}/api/v1/best`,
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    about: { "@type": "CollectionPage", url: `${SITE_URL}/best`, name: `${SITE_NAME} Best-Of Lists` },
+    totalItems: total,
+    dataFeedElement: pages.map((p) => ({
+      "@type": "DataFeedItem",
+      item: {
+        "@type": "ItemList",
+        "@id": `${p.url}#itemlist`,
+        name: p.title,
+        url: p.url,
+        numberOfItems: p.itemCount,
+      },
+    })),
+  };
+}
+
+function buildSummary(total: number, pages: BestPage[]) {
+  const s = total > 0
+    ? `${total} best-of lists on ${SITE_NAME}. Sample: ${pages.slice(0, 3).map((p) => p.title).join(", ")}.`
+    : `No best-of lists available.`;
+  return s.slice(0, 500);
 }
 
 export async function GET(request: NextRequest) {
@@ -61,7 +107,12 @@ export async function GET(request: NextRequest) {
       apiUrl: `${SITE_URL}/api/v1/best/${r.slug}`,
     }));
 
-    return NextResponse.json({ total, limit, offset, hasMore, pages }, { headers: HEADERS });
+    const dataFeed = buildDataFeed(pages, total);
+    const summary = buildSummary(total, pages);
+    return NextResponse.json(
+      { total, limit, offset, hasMore, pages, dataFeed },
+      { headers: { ...HEADERS, "X-Summary": summary } }
+    );
   }
 
   // Static fallback
@@ -81,8 +132,10 @@ export async function GET(request: NextRequest) {
     apiUrl: `${SITE_URL}/api/v1/best/${e.slug}`,
   }));
 
+  const dataFeed = buildDataFeed(pages, total);
+  const summary = buildSummary(total, pages);
   return NextResponse.json(
-    { total, limit, offset, hasMore: offset + limit < total, pages },
-    { headers: HEADERS }
+    { total, limit, offset, hasMore: offset + limit < total, pages, dataFeed },
+    { headers: { ...HEADERS, "X-Summary": summary } }
   );
 }
