@@ -55,10 +55,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": `${SITE_NAME} SmartReview`,
       "citation_language": "en",
       "citation_abstract": desc,
+      "citation_publication_date": "2024-01-01",
+      "citation_online_date": "2024-01-01",
       "DC.title": title,
       "DC.creator": SITE_NAME,
       "DC.publisher": SITE_NAME,
       "DC.language": "en",
+      "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/reviews/category/${slug}`,
     },
   };
