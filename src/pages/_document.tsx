@@ -28,6 +28,8 @@ export default function Document() {
         <meta name="coverage" content="Worldwide" />
         <meta name="distribution" content="Global" />
         <meta name="rating" content="General" />
+        {/* format-detection — disable iOS Safari auto-linking; parity with layout.tsx */}
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
             Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
             off the first-byte time for OG images and the AdSense script on slow connections. */}
