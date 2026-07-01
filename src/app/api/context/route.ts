@@ -142,6 +142,13 @@ export async function GET() {
         description: "AI tool-calling endpoint: look up a comparison by entity names. Returns the comparison if found (with shortAnswer, verdict, API URLs) or suggestions if not. Tries both orderings.",
         example: `${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`,
       },
+      unified_search: {
+        url: `${SITE_URL}/api/v1/search?q={query}`,
+        format: "application/json",
+        description: "Unified search across comparisons, entity profiles, and blog articles in parallel. Returns grouped results with URLs, slugs, and excerpts for AI citation. Supports ?types=comparisons,entities,blog and ?limit (max 20 per type). X-Summary header on response carries the top result's excerpt.",
+        example: `${SITE_URL}/api/v1/search?q=chatgpt+vs+claude`,
+        key_field_for_citation: "comparisons[0].excerpt (= shortAnswer)",
+      },
     },
 
     comparison_data_structure: {

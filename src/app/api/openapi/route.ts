@@ -263,6 +263,39 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/search": {
+        get: {
+          operationId: "unifiedSearch",
+          tags: ["Search"],
+          summary: "Unified search across all content types",
+          description: "Searches comparisons, entity profiles, and blog articles in parallel and returns grouped results. Each result includes a URL, slug, title, and excerpt/shortAnswer for AI citation. Best endpoint for intent-based content discovery by AI tools.",
+          parameters: [
+            { name: "q", in: "query", required: true, description: "Search query (e.g. 'chatgpt vs claude' or 'best AI tool')", schema: { type: "string" }, example: "chatgpt vs claude" },
+            { name: "types", in: "query", description: "Comma-separated content types to include (default: comparisons,entities,blog)", schema: { type: "string", default: "comparisons,entities,blog" } },
+            { name: "limit", in: "query", description: "Max results per type (default 5, max 20)", schema: { type: "integer", default: 5, maximum: 20 } },
+          ],
+          responses: {
+            "200": {
+              description: "Grouped search results",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      query: { type: "string" },
+                      total: { type: "integer" },
+                      comparisons: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, answerUrl: { type: "string" }, knowledgeGraphUrl: { type: "string" } } } },
+                      entities: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, entityType: { type: "string" }, profileUrl: { type: "string" } } } },
+                      blog: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, category: { type: "string" }, jsonUrl: { type: "string" } } } },
+                    },
+                  },
+                },
+              },
+            },
+            "400": { description: "Missing ?q parameter" },
+          },
+        },
+      },
     },
     components: {
       schemas: {
