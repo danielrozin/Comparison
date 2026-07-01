@@ -594,6 +594,13 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      {/* author — used by Bing, Yahoo, and AI content attributors for authorship resolution */}
+      <meta name="author" content="A Versus B" />
+      {/* coverage/distribution/rating — classic HTML meta; Bing, Yandex, and AI content
+          classifiers use these to confirm global availability and safe-search eligibility */}
+      <meta name="coverage" content="Worldwide" />
+      <meta name="distribution" content="Global" />
+      <meta name="rating" content="General" />
       <link rel="canonical" href={meta.canonical} />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
