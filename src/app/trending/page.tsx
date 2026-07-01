@@ -59,6 +59,8 @@ export const metadata: Metadata = {
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.subject": "Trending Comparisons 2026, Popular Side-by-Side Comparisons",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "Worldwide",
     "DC.type": "Text",
     "DC.format": "text/html",
       "DC.date": "2024-01-01",

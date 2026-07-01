@@ -109,6 +109,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "DC.date": entry.publishedAt?.slice(0, 10) ?? "",
       "DC.language": "en",
       "DC.subject": `${entry.h1}, Best Of`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": canonicalUrl,

@@ -267,6 +267,8 @@ export async function generateMetadata({
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${article.category ?? "Comparisons"}, ${article.title}`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": `${SITE_URL}/blog/${slug}`,
