@@ -33,10 +33,13 @@ export const metadata: Metadata = {
     "citation_title": PAGE_TITLE,
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
+    "citation_publication_date": "2024-01-01",
+    "citation_online_date": AUTHOR_TODAY,
     "DC.creator": AUTHOR_NAME,
     "DC.title": PAGE_TITLE,
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
+    "DC.date": "2024-01-01",
     "DC.identifier": PAGE_URL,
   },
 };
