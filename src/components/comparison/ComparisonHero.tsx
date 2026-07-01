@@ -60,7 +60,7 @@ function EntityAvatar({
   return (
     <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
       {/* Pulsing outer glow ring for fallback avatars */}
-      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-xl opacity-40 animate-pulse scale-125`} />
+      <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-xl opacity-40 motion-safe:animate-pulse scale-125`} />
       <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-60`} />
       <div
         className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
@@ -93,6 +93,11 @@ function ScoreBar({
       </div>
       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
         <div
+          role="progressbar"
+          aria-valuenow={pct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${entity.name} pros score`}
           className={`h-full bg-gradient-to-r ${barColor} rounded-full`}
           style={{ width: `${pct}%` }}
         />
@@ -206,7 +211,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           {/* VS Badge */}
           <div className="flex items-center justify-center self-center">
             <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 animate-pulse opacity-40 scale-125" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 motion-safe:animate-pulse opacity-40 scale-125" />
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
               <div className="absolute inset-0 rounded-full ring-2 ring-white/30" />
               <span className="relative font-display font-black text-base sm:text-xl text-white tracking-tight">VS</span>

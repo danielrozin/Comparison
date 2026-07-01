@@ -43,6 +43,13 @@ export default function manifest(): MetadataRoute.Manifest {
         form_factor: "wide",
         label: "A Versus B homepage — Compare Anything",
       },
+      {
+        src: `${SITE_URL}/api/og?title=Compare+Anything&type=home&mobile=1`,
+        sizes: "390x844",
+        type: "image/png",
+        form_factor: "narrow",
+        label: "A Versus B on mobile — Compare Anything",
+      },
     ],
     shortcuts: [
       {

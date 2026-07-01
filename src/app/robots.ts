@@ -105,10 +105,17 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Grok", allow: "/" },
       { userAgent: "xAI-Bot", allow: "/" },
       { userAgent: "MistralBot", allow: "/" },
+      { userAgent: "MistralAI-User", allow: "/" },        // Mistral user-facing AI product
       { userAgent: "NeevaBot", allow: "/" },
       { userAgent: "Diffbot", allow: "/" },
       { userAgent: "VelenPublicWebCrawler", allow: "/" },
       { userAgent: "Webzio-Extended", allow: "/" },
+      { userAgent: "Amazonbot", allow: "/" },             // Amazon (Alexa, Kendra, Bedrock training)
+      { userAgent: "DuckAssistBot", allow: "/" },         // DuckDuckGo AI Answer engine
+      { userAgent: "Claude-User", allow: "/" },           // Anthropic Claude user-agent alias
+      { userAgent: "Claude-SearchBot", allow: "/" },      // Anthropic Claude search product
+      { userAgent: "Google-CloudVertexBot", allow: "/" }, // Google Cloud Vertex AI crawler
+      { userAgent: "FriendlyCrawler", allow: "/" },       // FriendlyCrawler (AI research)
 
       // === Additional AI/research crawlers (2026) ===
       { userAgent: "Ai2Bot", allow: "/" },             // Allen Institute for AI
