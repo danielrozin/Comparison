@@ -25,6 +25,7 @@ export const dynamic = "force-dynamic";
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  "Vary": "Accept",
 };
 
 export async function OPTIONS() {

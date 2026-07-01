@@ -9,6 +9,9 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  // Vary: Accept — prevents CDN from serving cached application/json to clients that
+  // sent Accept: application/ld+json (content negotiation produces different bodies).
+  "Vary": "Accept",
 };
 
 export async function OPTIONS() {

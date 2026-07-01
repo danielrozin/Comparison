@@ -60,6 +60,8 @@ export async function GET(
     "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
     "Access-Control-Allow-Origin": "*",
     "X-Robots-Tag": "all",
+    // Vary: Accept prevents CDN from serving application/json to ld+json clients
+    "Vary": "Accept",
     ETag: etag,
     ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
     ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
