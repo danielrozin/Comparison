@@ -213,6 +213,10 @@ export async function GET(
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       "X-Robots-Tag": "all",
+      // X-Summary: shortAnswer (or verdict fallback) for AI crawlers without body parsing
+      ...((comparison.shortAnswer || comparison.verdict)
+        ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
+        : {}),
       Link: [
         `<${url}>; rel="canonical"`,
         `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/json"`,

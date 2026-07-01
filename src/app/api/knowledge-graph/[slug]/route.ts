@@ -289,9 +289,9 @@ export async function GET(
       "Vary": "Accept",
       ETag: etag,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-      // X-Summary: shortAnswer in HTTP header for AI crawlers probing without body download
-      ...(comparison.shortAnswer
-        ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
+      // X-Summary: shortAnswer (or verdict fallback) for AI crawlers probing without body download
+      ...((comparison.shortAnswer || comparison.verdict)
+        ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
       // Link: back to canonical + pure JSON-LD schema endpoint
       "Link": [
