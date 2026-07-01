@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     languages: { "en": PAGE_URL, "x-default": PAGE_URL },
     types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
   },
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", siteName: SITE_NAME },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US",  siteName: SITE_NAME },
   other: {
     "citation_title": PAGE_TITLE,
     "citation_author": "A Versus B",
