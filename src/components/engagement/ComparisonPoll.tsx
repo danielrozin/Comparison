@@ -174,9 +174,16 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
       <div className="relative bg-white border border-border rounded-xl overflow-hidden">
         <div className="h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
         <div className="p-5 sm:p-6">
-        <h3 className="text-center text-sm font-semibold text-text-secondary uppercase tracking-wider mb-4">
-          Which do you prefer?
-        </h3>
+        <div className="flex items-center justify-center gap-2.5 mb-4">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <h3 className="text-sm font-bold text-text-secondary uppercase tracking-wider">
+            Which do you prefer?
+          </h3>
+        </div>
 
         {!voted ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
