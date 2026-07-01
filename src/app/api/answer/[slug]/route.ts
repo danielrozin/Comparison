@@ -190,6 +190,12 @@ export async function GET(
         ...HEADERS,
         ETag: updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`,
         ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
+        // X-Source-* — AI attribution headers for LLM tools that read HTTP headers
+        // to determine content provenance (Perplexity, ChatGPT browse, Gemini).
+        "X-Source-Title": comparison.title,
+        "X-Source-URL": url,
+        "X-Source-License": "CC BY 4.0",
+        "X-Source-Attribution": `A Versus B (${url})`,
       },
     }
   );

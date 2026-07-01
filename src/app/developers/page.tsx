@@ -10,7 +10,7 @@ const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
   name: `${SITE_NAME} Comparison API`,
-  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 2,900+ comparisons in 17+ categories.",
+  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
   documentation: `${SITE_URL}/developers`,
   provider: {
@@ -53,7 +53,7 @@ const apiSchema = {
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",
-    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 2,900+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
     encodingFormat: "text/plain",
     inLanguage: "en-US",

@@ -298,6 +298,11 @@ export async function GET(
         `<${SITE_URL}/compare/${slug}>; rel="canonical"`,
         `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD (pure)"`,
       ].join(", "),
+      // X-Source-* — AI attribution headers for Perplexity, ChatGPT, and Gemini
+      "X-Source-Title": comparison.title,
+      "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+      "X-Source-License": "CC BY 4.0",
+      "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
     },
   });
 }

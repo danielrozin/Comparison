@@ -1,0 +1,11 @@
+import { loadComparison, disconnectPrisma } from "./remotion/loadComparison.mjs";
+const props = await loadComparison("bmw-vs-mercedes-benz");
+console.log("FROM_DB:");
+console.log("  title:", props.title);
+console.log("  entityA:", props.entityA);
+console.log("  entityB:", props.entityB);
+console.log("  category:", props.category);
+console.log("  stats:", props.stats.length);
+console.log("  stats labels:", props.stats.map(s => s.label).join(" | "));
+console.log("  verdict starts:", props.verdict.slice(0, 80));
+await disconnectPrisma();

@@ -145,6 +145,16 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Firecrawl", allow: "/" },           // Firecrawl AI scraping tool (RAG pipelines)
       { userAgent: "ExaBot", allow: "/" },              // Exa.ai AI-powered search
 
+      // === RAG / AI-app infrastructure crawlers (2026) — welcomed for citation coverage ===
+      { userAgent: "JinaAIBot", allow: "/" },           // Jina AI reader — used in RAG pipelines
+      { userAgent: "jina-ai", allow: "/" },             // Jina AI alternate UA
+      { userAgent: "ZyteBot", allow: "/" },             // Zyte / Scrapy Cloud crawler
+      { userAgent: "ScrapingBee", allow: "/" },         // ScrapingBee (used in many AI apps)
+      { userAgent: "MojeekBot", allow: "/" },           // Mojeek privacy search
+      { userAgent: "SpiderBot", allow: "/" },           // Spider.cloud RAG web crawler
+      { userAgent: "SearchGPT-Bot", allow: "/" },       // OpenAI SearchGPT alternate UA
+      { userAgent: "NovaCrawler", allow: "/" },         // Nova AI search
+
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
       { userAgent: "SemrushBot", allow: "/" },
