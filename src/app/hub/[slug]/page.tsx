@@ -237,6 +237,9 @@ export default async function HubPage({ params }: PageProps) {
 
   return (
     <>
+      {hub.categoryAnchor && (
+        <link rel="up" href={`${SITE_URL}/category/${hub.categoryAnchor}`} title={`${hub.h1} category`} />
+      )}
       {schemas.map((schema, i) => (
         <script
           key={i}

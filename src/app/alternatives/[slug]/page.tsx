@@ -228,6 +228,7 @@ export default async function AlternativesPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="up" href={`${SITE_URL}/entity/${slug}`} title={`${name} profile`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}

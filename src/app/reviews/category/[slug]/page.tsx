@@ -151,6 +151,7 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="up" href={`${SITE_URL}/reviews`} title="All Reviews" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
