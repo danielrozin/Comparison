@@ -155,6 +155,7 @@ export function middleware(request: NextRequest) {
         response.headers.set(
           "Link",
           [
+            `<${SITE}/api/v1/schema/${slug}>; rel="describedby"; type="application/ld+json"; title="Schema.org JSON-LD"`,
             `<${SITE}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
             `<${SITE}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"; title="Knowledge Graph"`,
             `<${SITE}/api/comparisons/${slug}>; rel="alternate"; type="application/json"; title="Comparison JSON"`,

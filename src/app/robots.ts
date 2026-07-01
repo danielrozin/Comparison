@@ -146,6 +146,7 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/llms.txt",
       "https://www.aversusb.net/feed",
       "https://www.aversusb.net/feed/atom",
+      "https://www.aversusb.net/feed/json",
     ],
   };
 }
