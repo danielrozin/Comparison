@@ -107,6 +107,18 @@ export async function GET(
       keyDifferences: comparison.keyDifferences?.slice(0, 5) ?? [],
       winner,
       confidence,
+      // entities — who is being compared (name + slug + alternatives URL)
+      entities: entities.map((e) => ({
+        name: e.name,
+        slug: e.slug,
+        url: `${SITE_URL}/entity/${e.slug}`,
+        alternativesUrl: `${SITE_URL}/api/v1/alternatives/${e.slug}`,
+      })),
+      // faqs — top 3 Q&A pairs for additional citation context
+      faqs: (comparison.faqs ?? []).slice(0, 3).map((f) => ({
+        question: f.question,
+        answer: f.answer,
+      })),
       attribution: {
         source: SITE_NAME,
         url,
