@@ -284,11 +284,13 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
-            <TrendingCard key={item.slug} comparison={item} rank={index + 1} />
+            <li key={item.slug}>
+              <TrendingCard comparison={item} rank={index + 1} />
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Latest Comparisons */}
@@ -309,16 +311,16 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none">
             {latest.map((item) => {
               const vsParts = item.title.split(/\s+vs\.?\s+/i);
               const latestEntityA = vsParts[0] || item.title;
               const latestEntityB = vsParts[1] || "";
               return (
+                <li key={item.slug} className="flex">
                 <Link
-                  key={item.slug}
                   href={`/compare/${item.slug}`}
-                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden"
+                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden w-full"
                 >
                   {/* Mini gradient header */}
                   <div className="h-1.5 w-full bg-gradient-to-r from-primary-500 to-accent-500" />
@@ -363,9 +365,10 @@ export default async function HomePage() {
                     </div>
                   </div>
                 </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </div>
       </section>
 
@@ -395,11 +398,13 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
             {CATEGORIES.map((cat) => (
-              <CategoryCard key={cat.slug} category={cat} />
+              <li key={cat.slug}>
+                <CategoryCard category={cat} />
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
@@ -467,22 +472,22 @@ export default async function HomePage() {
           <p className="text-text-secondary mb-10 max-w-2xl mx-auto">
             Join thousands of users making informed decisions with clear, side-by-side comparisons across {CATEGORIES.length} categories.
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 list-none">
             {[
-              { value: `${totalCount.toLocaleString()}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
-              { value: `${CATEGORIES.length}`, label: "Categories", gradient: "from-emerald-500 to-teal-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg> },
-              { value: "24/7", label: "Available", gradient: "from-amber-500 to-orange-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg> },
-              { value: "Free", label: "Always", gradient: "from-rose-500 to-pink-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg> },
+              { value: `${totalCount.toLocaleString()}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
+              { value: `${CATEGORIES.length}`, label: "Categories", gradient: "from-emerald-500 to-teal-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg> },
+              { value: "24/7", label: "Available", gradient: "from-amber-500 to-orange-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg> },
+              { value: "Free", label: "Always", gradient: "from-rose-500 to-pink-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" /></svg> },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col items-center text-center">
+              <li key={stat.label} className="bg-white rounded-2xl p-5 shadow-sm border border-border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col items-center text-center">
                 <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-sm mb-3`}>
                   {stat.icon}
                 </div>
                 <div className="text-2xl font-black text-text tabular-nums">{stat.value}</div>
                 <div className="text-xs text-text-secondary mt-1 font-medium">{stat.label}</div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
@@ -492,7 +497,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
@@ -506,13 +511,13 @@ export default async function HomePage() {
               className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
               View all articles
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
             {blogArticles.map((article, idx) => {
               const gradients = [
                 "from-violet-500 to-purple-600",
@@ -522,10 +527,10 @@ export default async function HomePage() {
               const grad = gradients[idx % gradients.length];
               const readMins = Math.max(1, Math.ceil(article.content.split(/\s+/).length / 200));
               return (
+                <li key={article.slug} className="flex">
                 <Link
-                  key={article.slug}
                   href={`/blog/${article.slug}`}
-                  className="group bg-white rounded-2xl border border-border hover:border-primary-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                  className="group bg-white rounded-2xl border border-border hover:border-primary-200 hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col w-full"
                 >
                   {/* Colour-accent header block */}
                   <div className={`h-28 bg-gradient-to-br ${grad} relative overflow-hidden flex-shrink-0`}>
@@ -576,9 +581,10 @@ export default async function HomePage() {
                     </div>
                   </div>
                 </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
 
           <div className="flex justify-center mt-8 sm:hidden">
             <Link
@@ -586,7 +592,7 @@ export default async function HomePage() {
               className="inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
               View all articles
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>

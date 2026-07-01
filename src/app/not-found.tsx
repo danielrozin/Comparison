@@ -18,8 +18,8 @@ export default async function NotFound() {
     <div className="min-h-screen bg-surface">
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
-        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" aria-hidden="true" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
 
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative text-center">
           {/* 404 display */}
@@ -42,6 +42,7 @@ export default async function NotFound() {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -76,7 +77,7 @@ export default async function NotFound() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -90,12 +91,12 @@ export default async function NotFound() {
             <h2 className="text-xl font-display font-bold text-text mb-4">
               Popular Comparisons
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
               {trending.map((item) => {
                 const parts = item.title.split(/\s+vs\.?\s+/i);
                 return (
+                  <li key={item.slug}>
                   <Link
-                    key={item.slug}
                     href={`/compare/${item.slug}`}
                     className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                   >
@@ -116,9 +117,10 @@ export default async function NotFound() {
                       </p>
                     </div>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </div>
         )}
 
@@ -127,18 +129,19 @@ export default async function NotFound() {
           <h2 className="text-xl font-display font-bold text-text mb-4">
             Browse by Category
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <ul className="flex flex-wrap gap-2 list-none">
             {CATEGORIES.slice(0, 10).map((cat) => (
+              <li key={cat.slug}>
               <Link
-                key={cat.slug}
                 href={`/category/${cat.slug}`}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors"
               >
-                <span>{cat.icon}</span>
+                <span aria-hidden="true">{cat.icon}</span>
                 {cat.name}
               </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </div>
