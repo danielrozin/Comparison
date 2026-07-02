@@ -50,6 +50,8 @@ export function FeedbackWidget() {
       {/* Floating button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="feedback-panel"
         className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           isOpen
             ? "bg-text/60 hover:bg-text/80 rotate-45"
@@ -70,7 +72,7 @@ export function FeedbackWidget() {
 
       {/* Panel */}
       {isOpen && (
-        <div role="dialog" aria-modal="true" aria-label="Feedback and requests" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+        <div id="feedback-panel" role="dialog" aria-modal="true" aria-label="Feedback and requests" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4">
             <h3 className="font-bold text-lg">Feedback & Requests</h3>

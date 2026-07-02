@@ -190,6 +190,8 @@ function GroupHeader({
     <button
       type="button"
       onClick={onToggle}
+      aria-expanded={isOpen}
+      aria-label={`${isOpen ? "Collapse" : "Expand"} ${categoryName} category`}
       className="w-full flex items-center gap-3 bg-gradient-to-r from-surface-alt to-surface-alt/60 px-5 py-2.5 border-b border-border hover:from-primary-50/60 hover:to-surface-alt transition-colors cursor-pointer group/cat"
     >
       <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-text-secondary flex-shrink-0 group-hover/cat:text-primary-700 transition-colors">
