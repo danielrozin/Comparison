@@ -289,10 +289,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     const rating = getComparisonRating(comp.slug);
     const reviewCount = getReviewCount(comp.slug);
     return (
+      <li key={comp.slug} className="flex">
       <Link
-        key={comp.slug}
         href={`/compare/${comp.slug}`}
-        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
       >
         <div className="flex items-center gap-4 mb-3">
           <div className="flex -space-x-3">
@@ -313,6 +313,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
         </div>
       </Link>
+      </li>
     );
   };
 
@@ -421,14 +422,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
               {featured.map((item) => {
                 const parts = item.anchor.split(/\s+vs\.?\s+/i);
                 return (
+                  <li key={item.slug} className="flex">
                   <Link
-                    key={item.slug}
                     href={`/compare/${item.slug}`}
-                    className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
+                    className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <div className="flex -space-x-2">
@@ -445,9 +446,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     </div>
                     <p className="text-xs text-text-secondary leading-relaxed">{item.blurb}</p>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </section>
         )}
 
@@ -465,14 +467,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 list-none">
               {allComparisons.slice(0, 5).map((comp, idx) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
+                  <li key={comp.slug} className="flex">
                   <Link
-                    key={comp.slug}
                     href={`/compare/${comp.slug}`}
-                    className="relative flex flex-col p-4 bg-gradient-to-br from-primary-50 to-white border border-primary-200 rounded-xl hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                    className="relative flex flex-col p-4 bg-gradient-to-br from-primary-50 to-white border border-primary-200 rounded-xl hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                   >
                     <span className="absolute top-2 right-3 text-xs font-bold text-primary-400">
                       #{idx + 1}
@@ -489,9 +491,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                       {comp.title}
                     </p>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </section>
         )}
 
@@ -509,12 +512,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
               {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
+                <li key={subcat.slug} className="flex">
                 <Link
-                  key={subcat.slug}
                   href={`/category/${slug}/${subcat.slug}`}
-                  className="flex flex-col items-center gap-2 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-lg transition-all group text-center"
+                  className="flex flex-col items-center gap-2 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-lg transition-all group text-center w-full"
                 >
                   <span className="text-3xl" role="img" aria-label={subcat.name} aria-hidden="false">{subcat.icon}</span>
                   <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors leading-tight">
@@ -524,8 +527,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     {items.length} comparison{items.length !== 1 ? "s" : ""}
                   </span>
                 </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
 
@@ -542,9 +546,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Product Grid */}
         {paginatedComparisons.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
               {paginatedComparisons.map(renderComparisonCard)}
-            </div>
+            </ul>
 
             {/* Pagination */}
             <Pagination

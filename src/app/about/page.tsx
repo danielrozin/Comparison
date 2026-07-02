@@ -188,8 +188,8 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+        <ol className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">1</span>
             </div>
@@ -198,8 +198,8 @@ export default function AboutPage() {
               Type any two subjects — people, places, products, brands, or ideas — into our search bar
               and get a structured comparison instantly.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">2</span>
             </div>
@@ -208,8 +208,8 @@ export default function AboutPage() {
               Our system aggregates data from reliable sources, organizes it into clear tables, highlights
               key differences, and surfaces pros and cons for both sides.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">3</span>
             </div>
@@ -218,8 +218,8 @@ export default function AboutPage() {
               Walk away with a clear understanding of the strengths and weaknesses of each subject,
               empowered to form your own informed opinion.
             </p>
-          </div>
-        </div>
+          </li>
+        </ol>
       </section>
 
       {/* What Makes Us Different */}
