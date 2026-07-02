@@ -181,12 +181,21 @@ export default async function InvestingStudyPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
-        <nav className="text-sm text-text-secondary mb-6 flex items-center gap-1">
-          <Link href="/" className="hover:text-text">Home</Link>
-          <span>/</span>
-          <Link href="/studies" className="hover:text-text">Studies</Link>
-          <span>/</span>
-          <span className="text-text">Investing Report 2026</span>
+        <nav className="mb-6" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+            <li>
+              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
+              </Link>
+            </li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li><Link href="/studies" className="hover:text-primary-600 transition-colors">Studies</Link></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li className="text-text font-medium" aria-current="page">Investing Report 2026</li>
+          </ol>
         </nav>
 
         {/* Header */}
@@ -221,7 +230,14 @@ export default async function InvestingStudyPage() {
 
         {/* Top 12 finance topics */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-text mb-2">Most-Compared Finance Topics</h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Most-Compared Finance Topics</h2>
+          </div>
           <p className="text-text-secondary text-sm mb-5">
             Ranked by number of published head-to-head comparisons on aversusb.net.
           </p>
@@ -255,7 +271,14 @@ export default async function InvestingStudyPage() {
 
         {/* Category clusters */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-text mb-2">Finance Categories Compared</h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Finance Categories Compared</h2>
+          </div>
           <p className="text-text-secondary text-sm mb-5">
             How comparison activity breaks down across financial product categories.
           </p>
@@ -292,7 +315,14 @@ export default async function InvestingStudyPage() {
 
         {/* Top 10 matchups */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-text mb-2">Most-Read Finance Matchups</h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Most-Read Finance Matchups</h2>
+          </div>
           <p className="text-text-secondary text-sm mb-5">
             Ranked by reader traffic — the specific comparisons people research most.
           </p>
@@ -316,7 +346,14 @@ export default async function InvestingStudyPage() {
 
         {/* Methodology */}
         <section className="mb-12 bg-surface-alt border border-border rounded-xl p-6">
-          <h2 className="text-xl font-bold text-text mb-3">Methodology</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-text">Methodology</h2>
+          </div>
           <ul className="space-y-2 text-sm text-text-secondary list-disc pl-4">
             <li>
               Dataset: all published comparison pages on aversusb.net in the <em>finance</em> and{" "}
@@ -338,7 +375,14 @@ export default async function InvestingStudyPage() {
 
         {/* Citation + embed */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-text mb-4">Cite This Study</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold text-text">Cite This Study</h2>
+          </div>
           <p className="text-sm text-text-secondary mb-3">
             Free to use with attribution. Copy the citation or embed link below.
           </p>
