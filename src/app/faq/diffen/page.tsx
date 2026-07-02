@@ -209,9 +209,9 @@ export default function DiffenFaqPage() {
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">
-                <th className="text-left p-4 font-semibold text-text border-b border-border">Feature</th>
-                <th className="text-left p-4 font-semibold text-text border-b border-border">Diffen</th>
-                <th className="text-left p-4 font-semibold text-primary-600 border-b border-border">{SITE_NAME}</th>
+                <th scope="col" className="text-left p-4 font-semibold text-text border-b border-border">Feature</th>
+                <th scope="col" className="text-left p-4 font-semibold text-text border-b border-border">Diffen</th>
+                <th scope="col" className="text-left p-4 font-semibold text-primary-600 border-b border-border">{SITE_NAME}</th>
               </tr>
             </thead>
             <tbody>

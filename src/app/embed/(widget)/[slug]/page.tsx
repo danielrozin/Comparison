@@ -89,13 +89,13 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b-2 border-border">
-                        <th className="pb-2 text-left font-semibold text-text">
+                        <th scope="col" className="pb-2 text-left font-semibold text-text">
                           {entityA?.name || "A"}
                         </th>
-                        <th className="pb-2 text-center font-semibold text-text-secondary">
+                        <th scope="col" className="pb-2 text-center font-semibold text-text-secondary">
                           Category
                         </th>
-                        <th className="pb-2 text-right font-semibold text-text">
+                        <th scope="col" className="pb-2 text-right font-semibold text-text">
                           {entityB?.name || "B"}
                         </th>
                       </tr>

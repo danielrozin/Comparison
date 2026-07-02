@@ -164,9 +164,9 @@ export default function LLMMethodologyPage() {
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">
-                <th className="text-left p-3 font-semibold text-text border-b border-border">Column</th>
-                <th className="text-left p-3 font-semibold text-text border-b border-border">Definition</th>
-                <th className="text-left p-3 font-semibold text-text border-b border-border">Primary source type</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Column</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Definition</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Primary source type</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

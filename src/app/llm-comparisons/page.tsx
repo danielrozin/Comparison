@@ -426,7 +426,7 @@ export default function LLMComparisonsPage() {
             <thead>
               <tr className="bg-surface-alt">
                 {["Model", "Vendor", "Parameters", "Context window", "Input modalities", "Output modalities", "License", "Knowledge cutoff"].map((h) => (
-                  <th key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
+                  <th scope="col" key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>

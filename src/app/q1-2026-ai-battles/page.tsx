@@ -442,13 +442,13 @@ export default function Q1AiBattlesPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-alt text-left">
-                  <th className="px-3 py-2 font-semibold text-text">#</th>
-                  <th className="px-3 py-2 font-semibold text-text">Battle</th>
-                  <th className="px-3 py-2 font-semibold text-text text-right">Q1 2026</th>
-                  <th className="px-3 py-2 font-semibold text-text text-right">Q4 2025</th>
-                  <th className="px-3 py-2 font-semibold text-text text-right">Q1 2025</th>
-                  <th className="px-3 py-2 font-semibold text-text text-right">QoQ</th>
-                  <th className="px-3 py-2 font-semibold text-text text-right">YoY</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text">#</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text">Battle</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text text-right">Q1 2026</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text text-right">Q4 2025</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text text-right">Q1 2025</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text text-right">QoQ</th>
+                  <th scope="col" className="px-3 py-2 font-semibold text-text text-right">YoY</th>
                 </tr>
               </thead>
               <tbody>

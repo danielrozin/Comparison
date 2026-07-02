@@ -44,9 +44,9 @@ export function CookiePolicyContent() {
           <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
             <thead className="bg-surface-alt">
               <tr>
-                <th className="text-left px-4 py-3 font-semibold text-text">Category</th>
-                <th className="text-left px-4 py-3 font-semibold text-text">Purpose</th>
-                <th className="text-left px-4 py-3 font-semibold text-text">Required</th>
+                <th scope="col" className="text-left px-4 py-3 font-semibold text-text">Category</th>
+                <th scope="col" className="text-left px-4 py-3 font-semibold text-text">Purpose</th>
+                <th scope="col" className="text-left px-4 py-3 font-semibold text-text">Required</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

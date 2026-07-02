@@ -391,7 +391,7 @@ export default function BrowserComparison2026Page() {
             <thead>
               <tr className="bg-surface-alt">
                 {["Browser", "Engine", "Desktop Share", "Mobile Share", "Privacy defaults", "License"].map((h) => (
-                  <th key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
+                  <th scope="col" key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>

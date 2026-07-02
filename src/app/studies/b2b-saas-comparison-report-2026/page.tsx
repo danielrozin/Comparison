@@ -252,9 +252,9 @@ export default async function B2BSaaSStudyPage() {
             <table className="w-full text-sm">
               <thead className="bg-surface text-text-secondary">
                 <tr>
-                  <th className="text-left font-semibold px-4 py-3 w-12">#</th>
-                  <th className="text-left font-semibold px-4 py-3">SaaS tool</th>
-                  <th className="text-right font-semibold px-4 py-3">Comparisons</th>
+                  <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>
+                  <th scope="col" className="text-left font-semibold px-4 py-3">SaaS tool</th>
+                  <th scope="col" className="text-right font-semibold px-4 py-3">Comparisons</th>
                 </tr>
               </thead>
               <tbody>

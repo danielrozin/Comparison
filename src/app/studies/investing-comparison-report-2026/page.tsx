@@ -245,10 +245,10 @@ export default async function InvestingStudyPage() {
             <table className="min-w-full divide-y divide-gray-100 text-sm">
               <thead className="bg-surface-alt">
                 <tr>
-                  <th className="pl-4 pr-3 py-3 text-left font-semibold text-text-secondary">#</th>
-                  <th className="px-3 py-3 text-left font-semibold text-text-secondary">Topic / Product</th>
-                  <th className="px-3 py-3 text-left font-semibold text-text-secondary">Category</th>
-                  <th className="px-3 py-3 text-right font-semibold text-text-secondary">Comparisons</th>
+                  <th scope="col" className="pl-4 pr-3 py-3 text-left font-semibold text-text-secondary">#</th>
+                  <th scope="col" className="px-3 py-3 text-left font-semibold text-text-secondary">Topic / Product</th>
+                  <th scope="col" className="px-3 py-3 text-left font-semibold text-text-secondary">Category</th>
+                  <th scope="col" className="px-3 py-3 text-right font-semibold text-text-secondary">Comparisons</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">

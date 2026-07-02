@@ -259,10 +259,10 @@ export default async function MostComparedStudyPage() {
             <table className="w-full text-sm">
               <thead className="bg-surface text-text-secondary">
                 <tr>
-                  <th className="text-left font-semibold px-4 py-3 w-12">#</th>
-                  <th className="text-left font-semibold px-4 py-3">Brand</th>
-                  <th className="text-left font-semibold px-4 py-3 hidden sm:table-cell">Type</th>
-                  <th className="text-right font-semibold px-4 py-3">Comparisons</th>
+                  <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>
+                  <th scope="col" className="text-left font-semibold px-4 py-3">Brand</th>
+                  <th scope="col" className="text-left font-semibold px-4 py-3 hidden sm:table-cell">Type</th>
+                  <th scope="col" className="text-right font-semibold px-4 py-3">Comparisons</th>
                 </tr>
               </thead>
               <tbody>
