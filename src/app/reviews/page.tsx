@@ -291,14 +291,14 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
         {/* Product Grid */}
         {entities.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
               {entities.map((entity) => {
                 const agg = entity.reviewAggregation;
                 return (
+                  <li key={entity.id} className="flex">
                   <Link
-                    key={entity.id}
                     href={`/reviews/${entity.slug}`}
-                    className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all group"
+                    className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md transition-all group w-full"
                   >
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center text-lg font-bold text-primary-700">
@@ -323,9 +323,10 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
                       )}
                     </div>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
 
             <Pagination currentPage={page} totalPages={totalPages} basePath={basePath} />
           </>

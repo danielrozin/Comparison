@@ -356,9 +356,9 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Who We Are</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {/* Daniel */}
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
                 DR
@@ -396,9 +396,9 @@ export default function AboutPage() {
                 Author page
               </Link>
             </div>
-          </div>
+          </li>
           {/* Shai */}
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
                 SA
@@ -430,8 +430,8 @@ export default function AboutPage() {
                 Email
               </a>
             </div>
-          </div>
-        </div>
+          </li>
+        </ul>
       </section>
 
       {/* Team Vision */}

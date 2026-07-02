@@ -179,9 +179,9 @@ export default function PartnershipsPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <ul className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 list-none">
         {STATS.map((stat) => (
-          <div
+          <li
             key={stat.label}
             className="bg-surface-alt border border-border rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
           >
@@ -189,9 +189,9 @@ export default function PartnershipsPage() {
               {stat.value}
             </div>
             <div className="text-sm text-text-secondary">{stat.label}</div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {/* Why Partner */}
       <div className="mb-16">
@@ -203,7 +203,7 @@ export default function PartnershipsPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Why Partner With {SITE_NAME}?</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {[
             {
               title: "High-Intent Traffic",
@@ -218,15 +218,15 @@ export default function PartnershipsPage() {
               desc: "Monthly performance reports with impressions, clicks, and conversion tracking. Know exactly what you're getting.",
             },
           ].map((item) => (
-            <div
+            <li
               key={item.title}
               className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
               <h3 className="font-display font-bold text-text mb-2">{item.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed">{item.desc}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {/* Pricing Tiers */}
@@ -239,9 +239,9 @@ export default function PartnershipsPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Partnership Tiers</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {TIERS.map((tier) => (
-            <div
+            <li
               key={tier.name}
               className={`bg-surface-alt border rounded-2xl p-6 relative ${
                 tier.popular
@@ -272,9 +272,9 @@ export default function PartnershipsPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {/* Disclosure */}

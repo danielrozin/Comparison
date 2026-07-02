@@ -262,11 +262,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
-            <TrendingCard key={item.slug} comparison={item} rank={startIdx + index + 1} />
+            <li key={item.slug} className="flex">
+              <TrendingCard comparison={item} rank={startIdx + index + 1} />
+            </li>
           ))}
-        </div>
+        </ul>
 
         <Pagination currentPage={safePage} totalPages={totalPages} basePath="/trending" />
       </div>
