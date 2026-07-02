@@ -95,7 +95,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <nav className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30">
+          <nav className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
             <ul className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
@@ -131,7 +131,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
       </div>
 
       {/* Sidebar — visible on wide screens (≥1400px) where content has room beside it */}
-      <nav className="hidden min-[1400px]:block fixed left-4 top-1/3 z-30 w-52">
+      <nav className="hidden min-[1400px]:block fixed left-4 top-1/3 z-30 w-52" aria-label="Table of contents">
         <div className="bg-white/95 backdrop-blur-sm border border-border rounded-2xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-gradient-to-r from-primary-50 to-white">

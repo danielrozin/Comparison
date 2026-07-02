@@ -112,7 +112,7 @@ export function LegalPageLayout({
             <summary className="text-sm font-semibold text-text cursor-pointer select-none">
               Table of Contents
             </summary>
-            <nav className="mt-3">
+            <nav className="mt-3" aria-label="Table of contents">
               <ol className="space-y-1.5">
                 {sections.map((section, i) => (
                   <li key={section.id}>

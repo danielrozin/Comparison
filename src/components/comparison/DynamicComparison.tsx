@@ -240,7 +240,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
   return (
     <>
       {/* Breadcrumbs */}
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4" aria-label="Breadcrumb">
         <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
           <li>
             <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
