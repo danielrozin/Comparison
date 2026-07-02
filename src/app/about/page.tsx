@@ -376,7 +376,7 @@ export default function AboutPage() {
             <div className="flex items-center gap-3">
               <a
                 href="https://www.linkedin.com/in/daniel-rozin-56a066b0/"
-                target="_blank" rel="noopener noreferrer"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >
@@ -385,7 +385,7 @@ export default function AboutPage() {
               <span className="text-text-secondary text-xs">·</span>
               <a
                 href="https://www.facebook.com/daniel.rozin.94"
-                target="_blank" rel="noopener noreferrer"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >
@@ -416,7 +416,7 @@ export default function AboutPage() {
             <div className="flex items-center gap-3">
               <a
                 href="https://www.facebook.com/shai.and1"
-                target="_blank" rel="noopener noreferrer"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >

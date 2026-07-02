@@ -86,7 +86,7 @@ export function AffiliateButton({
   return (
     <a
       href={link.url}
-      target="_blank" rel="noopener noreferrer"
+      target="_blank"
       rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
       className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       onClick={() => {
@@ -187,7 +187,7 @@ export function WhereToBuySection({
               <a
                 key={`${entity.name}-${link.partner}`}
                 href={link.url}
-                target="_blank" rel="noopener noreferrer"
+                target="_blank"
                 rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                 className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all ${
                   isGeneric

@@ -559,7 +559,7 @@ export default function AdminPage() {
                         </div>
                         <a
                           href={q.url}
-                          target="_blank" rel="noopener noreferrer"
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-sm font-medium text-text hover:text-primary-600 transition-colors"
                         >

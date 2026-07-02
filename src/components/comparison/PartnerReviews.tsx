@@ -46,7 +46,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
           <li key={review.url} className="flex">
           <a
             href={review.url}
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
             rel="noopener noreferrer"
             className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden w-full"
           >

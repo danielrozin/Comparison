@@ -251,7 +251,7 @@ export default function OutreachQueuePage() {
                     <div className="flex-1 min-w-0">
                       <a
                         href={post.questionUrl}
-                        target="_blank" rel="noopener noreferrer"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm font-semibold text-gray-900 hover:text-primary-600 line-clamp-2"
                       >
@@ -286,7 +286,7 @@ export default function OutreachQueuePage() {
                       {post.postedUrl && (
                         <a
                           href={post.postedUrl}
-                          target="_blank" rel="noopener noreferrer"
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-xs text-blue-600 hover:underline mt-1 inline-block break-all"
                         >
