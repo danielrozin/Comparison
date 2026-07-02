@@ -243,10 +243,12 @@ export default function AARRRDashboard() {
       </div>
 
       {/* Section Tabs */}
-      <div className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-8 w-fit flex-wrap">
+      <div role="tablist" aria-label="Analytics sections" className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-8 w-fit flex-wrap">
         {sections.map((s) => (
           <button
             key={s.key}
+            role="tab"
+            aria-selected={activeSection === s.key}
             onClick={() => setActiveSection(s.key)}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               activeSection === s.key

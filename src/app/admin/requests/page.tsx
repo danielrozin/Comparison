@@ -109,10 +109,12 @@ export default function AdminRequestsPage() {
         </div>
 
         {/* Filter tabs */}
-        <div className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 inline-flex">
+        <div role="tablist" aria-label="Filter requests" className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 inline-flex">
           {STATUSES.map((s) => (
             <button
               key={s}
+              role="tab"
+              aria-selected={filter === s}
               onClick={() => setFilter(s)}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors capitalize ${
                 filter === s

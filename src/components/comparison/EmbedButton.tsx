@@ -115,10 +115,12 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
 
             {/* Tabs */}
             <div className="px-6">
-              <div className="flex gap-1 bg-surface-alt rounded-lg p-1">
+              <div role="tablist" aria-label="Embed type" className="flex gap-1 bg-surface-alt rounded-lg p-1">
                 {(["script", "iframe", "badge"] as TabType[]).map((tab) => (
                   <button
                     key={tab}
+                    role="tab"
+                    aria-selected={activeTab === tab}
                     onClick={() => setActiveTab(tab)}
                     className={`flex-1 text-sm font-medium py-2 px-3 rounded-md transition-all duration-200 ${
                       activeTab === tab
