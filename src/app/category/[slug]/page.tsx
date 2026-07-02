@@ -177,6 +177,29 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const categoryUrl = `${SITE_URL}/category/${slug}`;
   const categoryOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`${category.name} Comparisons`)}&type=category`;
   const categoryToday = new Date().toISOString().slice(0, 10);
+
+  // Wikipedia @id anchors for each category — used in about[] to give AI knowledge graphs
+  // an unambiguous entity disambiguation handle, boosting GEO citation confidence.
+  const CATEGORY_WIKIPEDIA: Record<string, string> = {
+    sports: "https://en.wikipedia.org/wiki/Sport",
+    countries: "https://en.wikipedia.org/wiki/Country",
+    technology: "https://en.wikipedia.org/wiki/Technology",
+    products: "https://en.wikipedia.org/wiki/Consumer_product",
+    health: "https://en.wikipedia.org/wiki/Health",
+    finance: "https://en.wikipedia.org/wiki/Finance",
+    education: "https://en.wikipedia.org/wiki/Education",
+    entertainment: "https://en.wikipedia.org/wiki/Entertainment",
+    history: "https://en.wikipedia.org/wiki/History",
+    military: "https://en.wikipedia.org/wiki/Military",
+    economy: "https://en.wikipedia.org/wiki/Economy",
+    companies: "https://en.wikipedia.org/wiki/Company",
+    brands: "https://en.wikipedia.org/wiki/Brand",
+    celebrities: "https://en.wikipedia.org/wiki/Celebrity",
+    software: "https://en.wikipedia.org/wiki/Software",
+    automotive: "https://en.wikipedia.org/wiki/Automotive_industry",
+    travel: "https://en.wikipedia.org/wiki/Travel",
+  };
+  const categoryWikiUrl = CATEGORY_WIKIPEDIA[slug];
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -191,6 +214,11 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    // datePublished + dateCreated — stable platform baseline (all category pages live since 2024-01-01).
+    // Without these, Google and AI crawlers treat collection pages as undated, weakening E-E-A-T.
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: categoryToday,
     lastReviewed: categoryToday,
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
@@ -268,10 +296,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     timeRequired: "PT2M",
     wordCount: 400,
     // about[] — subject classification for AI topic routing and Google Discover.
-    // Typed Thing nodes let AI crawlers match this CollectionPage to topical queries
-    // without needing to parse the page title.
+    // Primary Thing node carries a Wikipedia @id when available so AI knowledge graphs
+    // (ChatGPT, Perplexity, Gemini) can disambiguate the topic and merge our data with
+    // existing KG nodes, boosting citation confidence for "[category] comparison" queries.
     about: [
-      { "@type": "Thing", name: `${category.name} Comparisons` },
+      {
+        "@type": "Thing",
+        name: `${category.name} Comparisons`,
+        ...(categoryWikiUrl && { "@id": categoryWikiUrl, url: categoryWikiUrl, sameAs: categoryWikiUrl }),
+      },
       { "@type": "Thing", name: "Consumer Decision Research" },
       { "@type": "Thing", name: "Side-by-Side Analysis" },
     ],
