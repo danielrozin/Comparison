@@ -547,6 +547,8 @@ function RedesignedTable({
                         src={entityA.imageUrl}
                         alt=""
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                     <span>{entityA.name}</span>
@@ -559,6 +561,8 @@ function RedesignedTable({
                         src={entityB.imageUrl}
                         alt=""
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
                     <span>{entityB.name}</span>

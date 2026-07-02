@@ -135,6 +135,8 @@ export function MultiComparisonTable({
                           src={ent.imageUrl}
                           alt=""
                           className="w-6 h-6 rounded-full object-cover border border-white/30 flex-shrink-0"
+                          loading="lazy"
+                          decoding="async"
                         />
                       )}
                       <span className="truncate" title={ent.name}>

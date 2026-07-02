@@ -1080,6 +1080,8 @@ function MultiEntityLayout({
                   src={ent.imageUrl}
                   alt={ent.name}
                   className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-white shadow"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : (
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 bg-gradient-to-br from-primary-100 to-accent-100 text-primary-700 flex items-center justify-center font-bold text-2xl">
