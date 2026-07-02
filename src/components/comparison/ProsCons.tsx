@@ -28,7 +28,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm flex-shrink-0">
-          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
           </svg>
         </div>
@@ -113,7 +113,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       </span>
@@ -123,7 +123,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       {entity.pros.map((pro, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
-                            <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </span>
@@ -143,7 +143,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
-                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </span>
@@ -153,7 +153,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       {entity.cons.map((con, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
-                            <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                             </svg>
                           </span>
