@@ -139,7 +139,14 @@ export function middleware(request: NextRequest) {
     // X-Pingback — machine-readable pingback discovery for WordPress/Ghost CMS platforms.
     // When they link to aversusb.net they auto-POST to this endpoint; accelerates
     // backlink discovery before Googlebot crawls the referring page.
-    if (pathname.startsWith("/compare/") || pathname.startsWith("/blog/")) {
+    if (
+      pathname.startsWith("/compare/") ||
+      pathname.startsWith("/blog/") ||
+      pathname.startsWith("/entity/") ||
+      pathname.startsWith("/hub/") ||
+      pathname.startsWith("/alternatives/") ||
+      pathname.startsWith("/best/")
+    ) {
       response.headers.set("X-Pingback", "https://www.aversusb.net/api/pingback");
     }
 
@@ -229,8 +236,14 @@ export function middleware(request: NextRequest) {
     } else if (pathname.startsWith("/hub/")) {
       const slug = pathname.replace("/hub/", "").replace(/\/$/, "");
       if (slug) {
-        // Hub pages have no standalone JSON endpoint; cite-as is sufficient for canonical linking.
-        response.headers.set("Link", `<${SITE}/hub/${slug}>; rel="cite-as"`);
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/v1/hub/${slug}>; rel="describedby"; type="application/json"; title="Hub JSON"`,
+            `<${SITE}/api/v1/hub/${slug}>; rel="alternate"; type="application/json"; title="Hub JSON"`,
+            `<${SITE}/hub/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
       }
     }
 
