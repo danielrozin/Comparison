@@ -208,12 +208,12 @@ export default function StudiesIndexPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 gap-4">
+        <ul className="grid grid-cols-1 gap-4 list-none p-0 m-0">
           {STUDIES.map((s) => (
+            <li key={s.slug}>
             <Link
-              key={s.slug}
               href={`/studies/${s.slug}`}
-              className="group flex items-start gap-5 rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
+              className="group flex items-start gap-5 rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
             >
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0 mt-0.5">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
@@ -234,8 +234,9 @@ export default function StudiesIndexPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </>
   );

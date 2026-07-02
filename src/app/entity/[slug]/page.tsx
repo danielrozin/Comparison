@@ -408,12 +408,12 @@ export default async function EntityPage({ params }: PageProps) {
                   </div>
                   <h2 className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
                   {entityContent.alternatives.map((alt) => (
+                    <li key={alt.slug}>
                     <Link
-                      key={alt.slug}
                       href={`/entity/${alt.slug}`}
-                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
                     >
                       <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                         <span className="text-white font-bold">{alt.name.charAt(0)}</span>
@@ -423,8 +423,9 @@ export default async function EntityPage({ params }: PageProps) {
                         <p className="text-xs text-text-secondary truncate">{alt.reason}</p>
                       </div>
                     </Link>
+                    </li>
                   ))}
-                </div>
+                </ul>
                 <div className="mt-3 text-center">
                   <Link
                     href={`/alternatives/${slug}`}
