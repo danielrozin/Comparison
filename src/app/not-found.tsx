@@ -35,7 +35,7 @@ export default async function NotFound() {
           </p>
 
           {/* Search form */}
-          <form action="/search" method="GET" className="max-w-lg mx-auto">
+          <form action="/search" method="GET" role="search" className="max-w-lg mx-auto">
             <div className="relative">
               <svg
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary/60"
@@ -48,7 +48,8 @@ export default async function NotFound() {
               </svg>
               <input
                 autoComplete="off"
-                type="text"
+                type="search"
+                inputMode="search"
                 name="q"
                 aria-label="Search comparisons"
                 placeholder='Try "iPhone vs Samsung" or "Tesla vs BMW"...'

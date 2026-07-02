@@ -484,7 +484,7 @@ export default async function BlogPage({
 
                     {/* Footer */}
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
-                      <span>{formatDate(article.publishedAt)}</span>
+                      <time dateTime={article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined}>{formatDate(article.publishedAt)}</time>
                       <span className="text-primary-600 font-medium group-hover:underline">
                         Read more &rarr;
                       </span>

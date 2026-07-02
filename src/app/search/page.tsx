@@ -99,6 +99,7 @@ function SearchContent() {
               <input
                 autoComplete="off"
                 type="search"
+                inputMode="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='Try "Messi vs Ronaldo" or "Python vs JavaScript"...'
