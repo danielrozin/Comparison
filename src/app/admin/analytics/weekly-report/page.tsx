@@ -186,6 +186,8 @@ export default function WeeklyReportPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setShowMarkdown(!showMarkdown)}
+                aria-expanded={showMarkdown}
+                aria-label={showMarkdown ? "Show dashboard view" : "Show markdown source"}
                 className="px-3 py-1.5 text-xs font-medium border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 {showMarkdown ? "Dashboard" : "Markdown"}

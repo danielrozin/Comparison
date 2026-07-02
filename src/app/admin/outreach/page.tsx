@@ -307,6 +307,7 @@ export default function OutreachQueuePage() {
                     </div>
                     <button
                       onClick={() => setExpanded(isOpen ? null : post.id)}
+                      aria-expanded={isOpen}
                       className="mt-2 text-xs text-primary-600 hover:underline"
                     >
                       {isOpen ? "Collapse" : "Expand full answer"}

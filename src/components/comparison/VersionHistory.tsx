@@ -136,6 +136,8 @@ export function VersionHistory({
         {/* Summary row — always visible */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? "Collapse version history" : "Expand version history"}
           className="w-full px-6 py-4 flex items-center justify-between hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-colors"
         >
           <div className="flex items-center gap-4">
@@ -241,6 +243,7 @@ export function VersionHistory({
                         >
                           <button
                             onClick={() => toggleEntry(entry.id)}
+                            aria-expanded={isEntryExpanded}
                             className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors"
                           >
                             <div className="flex items-center gap-3">
