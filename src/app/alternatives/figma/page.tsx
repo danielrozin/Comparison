@@ -829,9 +829,14 @@ export default function FigmaAlternativesPage() {
 
         {/* How to choose */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
-            How to choose the right Figma alternative
-          </h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">How to choose the right Figma alternative</h2>
+          </div>
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
@@ -877,7 +882,14 @@ export default function FigmaAlternativesPage() {
 
         {/* FAQ */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Frequently asked questions</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Frequently asked questions</h2>
+          </div>
 
           <div className="space-y-6">
             <div>
@@ -956,7 +968,14 @@ export default function FigmaAlternativesPage() {
 
         {/* Related comparisons */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Related comparisons</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Related comparisons</h2>
+          </div>
           <ul className="space-y-2 text-text">
             <li>
               <Link
