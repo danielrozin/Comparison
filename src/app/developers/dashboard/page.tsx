@@ -191,7 +191,7 @@ export default function DeveloperDashboard() {
       {error && (
         <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
           {error}
-          <button onClick={() => setError(null)} className="ml-2 font-medium underline">Dismiss</button>
+          <button type="button" onClick={() => setError(null)} className="ml-2 font-medium underline">Dismiss</button>
         </div>
       )}
 
