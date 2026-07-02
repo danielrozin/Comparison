@@ -88,9 +88,14 @@ const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
   { ssr: false, loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
 );
+// DAN-1645: the video player is a purely interactive client widget — its SSR
+// output is just an empty aspect-video placeholder (the crawlable VideoObject is
+// emitted separately in JSON-LD), so it carries no SEO weight. Load client-only
+// (ssr:false) and gate behind DeferUntilVisible so its chunk downloads + mounts
+// only near the viewport, off the initial hydration / LCP path (recharts pattern).
 const ComparisonVideoPlayer = dynamic(
   () => import("@/components/comparison/ComparisonVideoPlayer").then((m) => ({ default: m.ComparisonVideoPlayer })),
-  { loading: () => null }
+  { ssr: false, loading: () => null }
 );
 const RelatedComparisonsSidebar = dynamic(
   () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
@@ -924,8 +929,10 @@ export default function ComparisonPage(props: Props) {
             </DeferUntilVisible>
           )}
 
-          {/* Video Comparison */}
-          <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
+          {/* Video Comparison (client-only, viewport-deferred — DAN-1645) */}
+          <DeferUntilVisible minHeight={320}>
+            <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
+          </DeferUntilVisible>
 
           {/* Pros & Cons */}
           <div id="pros-cons">

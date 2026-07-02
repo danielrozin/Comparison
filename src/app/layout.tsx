@@ -9,6 +9,7 @@ import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderSe
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 // Self-host Inter via next/font so the stylesheet inline-links the woff2 directly:
@@ -199,6 +200,9 @@ export default function RootLayout({
           <CookieConsentBanner />
           <BackToTop />
         </ExperimentProviderServer>
+        {/* DAN-1645: Vercel Speed Insights (RUM) — site-wide real-user CWV so
+            /compare field data is comparable against other routes. */}
+        <SpeedInsights />
       </body>
     </html>
   );
