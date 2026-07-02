@@ -286,6 +286,9 @@ export default function Q1AiBattlesPage() {
             alt="Bar chart of the top 10 most-compared AI and software tool battles by Q1 2026 US Google Search volume, led by claude code vs cursor and chatgpt vs claude."
             width={1350}
             height={780}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) calc(100vw - 2rem), 1280px"
+            loading="lazy"
+            decoding="async"
             className="rounded-xl border border-border w-full h-auto"
           />
         </section>
@@ -386,6 +389,9 @@ export default function Q1AiBattlesPage() {
             alt="Line chart of the fastest-rising AI tool comparison battles in Q1 2026 by year-over-year growth, led by Claude-centric matchups."
             width={1350}
             height={780}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) calc(100vw - 2rem), 1280px"
+            loading="lazy"
+            decoding="async"
             className="rounded-xl border border-border w-full h-auto"
           />
         </section>
@@ -405,6 +411,9 @@ export default function Q1AiBattlesPage() {
             alt="Bar chart of the AI and software comparison battles with the steepest year-over-year decline in US Google Search volume in Q1 2026."
             width={1350}
             height={780}
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) calc(100vw - 2rem), 1280px"
+            loading="lazy"
+            decoding="async"
             className="rounded-xl border border-border w-full h-auto"
           />
         </section>

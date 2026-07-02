@@ -9,7 +9,7 @@ function EntityMiniAvatar({ entity, variant }: { entity: ComparisonEntityData; v
   if (hasImage) {
     return (
       <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-white shadow-sm flex-shrink-0">
-        <Image src={entity.imageUrl!} alt={entity.name} width={32} height={32} className="w-full h-full object-cover" />
+        <Image src={entity.imageUrl!} alt={entity.name} width={32} height={32} sizes="32px" decoding="async" className="w-full h-full object-cover" />
       </div>
     );
   }
