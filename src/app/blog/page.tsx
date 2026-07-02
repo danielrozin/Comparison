@@ -254,6 +254,11 @@ export default async function BlogPage({
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    // dateCreated + datePublished — stable baseline for E-E-A-T freshness scoring.
+    // Dynamic today-dates here would reset content age on every ISR revalidation.
+    dateCreated: "2024-01-01",
+    datePublished: "2024-01-01",
+    dateModified: blogToday,
     lastReviewed: blogToday,
     contentReferenceTime: blogToday,
     thumbnailUrl: ogImage,

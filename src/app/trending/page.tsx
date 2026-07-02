@@ -109,6 +109,11 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    // dateCreated + datePublished — stable baseline so ISR revalidation does not
+    // reset content age. dateModified updates on each revalidation (correct).
+    dateCreated: "2024-01-01",
+    datePublished: "2024-01-01",
+    dateModified: trendingToday,
     lastReviewed: trendingToday,
     contentReferenceTime: trendingToday,
     thumbnailUrl: ogImage,
