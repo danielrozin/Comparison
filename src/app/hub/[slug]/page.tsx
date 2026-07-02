@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, faqSchema, entitySchemaType } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 
 interface PageProps {
@@ -158,14 +158,22 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     // about[] — typed entity references extracted from hub spokes; creates direct
     // hub→entity ProfilePage edges in AI knowledge graphs so crawlers can traverse
     // from topic hub to entity profiles without requiring spoke-level page visits.
+    // about[] — typed entity references with sameAs Wikipedia/Wikidata anchors.
+    // sameAs gives AI knowledge graphs (ChatGPT, Perplexity, Gemini) unambiguous entity
+    // disambiguation handles so they can merge our hub data with existing KG nodes,
+    // boosting citation confidence when the entity appears in "[entity] comparison" queries.
     about: spokes
-      .flatMap((s) => s.entities.map((e) => ({
-        "@type": entitySchemaType(e.entityType),
-        "@id": `${SITE_URL}/entity/${e.slug}`,
-        name: e.name,
-        url: `${SITE_URL}/entity/${e.slug}`,
-        ...(e.shortDesc && { description: e.shortDesc }),
-      })))
+      .flatMap((s) => s.entities.map((e) => {
+        const wikiSameAs = entityWikipediaSameAs(e.name);
+        return {
+          "@type": entitySchemaType(e.entityType),
+          "@id": `${SITE_URL}/entity/${e.slug}`,
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          ...(e.shortDesc && { description: e.shortDesc }),
+          ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
+        };
+      }))
       .filter((v, i, arr) => arr.findIndex((x) => x["@id"] === v["@id"]) === i)
       .slice(0, 15),
     // significantLink — top comparison pages + entity ProfilePages for AI graph traversal.
@@ -246,13 +254,19 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     // Each compared product/service in the hub is a DefinedTerm so AI crawlers
     // can resolve the hub's subject matter to named entities in their knowledge graphs.
     hasDefinedTerm: spokes.slice(0, 10).flatMap((s) =>
-      s.entities.map((e) => ({
-        "@type": "DefinedTerm",
-        name: e.name,
-        url: `${SITE_URL}/entity/${e.slug}`,
-        ...(e.shortDesc && { description: e.shortDesc }),
-        inDefinedTermSet: { "@id": `${hubUrl}#terms` },
-      }))
+      s.entities.map((e) => {
+        const wikiSameAs = entityWikipediaSameAs(e.name);
+        return {
+          "@type": "DefinedTerm",
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          ...(e.shortDesc && { description: e.shortDesc }),
+          // sameAs — Wikipedia/Wikidata/DBpedia anchors so AI systems can merge
+          // this DefinedTerm with their KG entry for the entity without ambiguity.
+          ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
+          inDefinedTermSet: { "@id": `${hubUrl}#terms` },
+        };
+      })
     ).filter((v, i, arr) => arr.findIndex((x) => x.name === v.name) === i).slice(0, 20),
   };
 
