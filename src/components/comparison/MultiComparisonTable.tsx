@@ -155,9 +155,11 @@ export function MultiComparisonTable({
                         <button
                           type="button"
                           onClick={() => toggleGroup(categoryName)}
+                          aria-expanded={isOpen}
+                          aria-label={`${isOpen ? "Collapse" : "Expand"} ${categoryName} category`}
                           className="w-full flex items-center justify-between bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
                         >
-                          <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                          <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                             {categoryName}
                           </span>
                           <ChevronIcon open={isOpen} />
@@ -218,9 +220,11 @@ export function MultiComparisonTable({
               <button
                 type="button"
                 onClick={() => toggleGroup(categoryName)}
+                aria-expanded={openGroups.has(categoryName)}
+                aria-label={`${openGroups.has(categoryName) ? "Collapse" : "Expand"} ${categoryName} category`}
                 className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
               >
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                   {categoryName}
                 </span>
                 <ChevronIcon open={isOpen} />
