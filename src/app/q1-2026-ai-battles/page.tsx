@@ -220,28 +220,28 @@ export default function Q1AiBattlesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Headline figure callout */}
       <section className="mb-12 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 p-6 sm:p-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-          <div>
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center list-none">
+          <li>
             <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">
               {nf.format(HEADLINE_TOTAL)}
             </div>
             <div className="text-sm text-text-secondary mt-1">
               US comparison searches, Q1 2026
             </div>
-          </div>
-          <div>
+          </li>
+          <li>
             <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">
               {BATTLE_COUNT}
             </div>
             <div className="text-sm text-text-secondary mt-1">head-to-head battles ranked</div>
-          </div>
-          <div>
+          </li>
+          <li>
             <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">US</div>
             <div className="text-sm text-text-secondary mt-1">
               Google Search only · exact-match
             </div>
-          </div>
-        </div>
+          </li>
+        </ul>
       </section>
 
       <article className="prose prose-lg max-w-none space-y-12">

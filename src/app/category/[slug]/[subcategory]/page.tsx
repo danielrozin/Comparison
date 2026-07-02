@@ -331,16 +331,16 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         {/* Comparisons Grid */}
         {paginated.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
               {paginated.map((comp) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 const rating = getComparisonRating(comp.slug);
                 const reviewCount = getReviewCount(comp.slug);
                 return (
+                  <li key={comp.slug} className="flex">
                   <Link
-                    key={comp.slug}
                     href={`/compare/${comp.slug}`}
-                    className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                    className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                   >
                     <div className="flex items-center gap-4 mb-3">
                       <div className="flex -space-x-3">
@@ -361,9 +361,10 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                       <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
                     </div>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
 
             {/* Pagination */}
             <Pagination

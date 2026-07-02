@@ -276,9 +276,9 @@ export default function EmbedLandingPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <ul className="grid md:grid-cols-3 gap-6 list-none">
           {/* Free */}
-          <div className="bg-white border border-border rounded-2xl p-8">
+          <li className="bg-white border border-border rounded-2xl p-8">
             <h3 className="font-display font-bold text-text text-lg mb-1">Free</h3>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-3xl font-display font-black text-text">$0</span>
@@ -305,10 +305,10 @@ export default function EmbedLandingPage() {
             >
               Get Started Free
             </Link>
-          </div>
+          </li>
 
           {/* Pro */}
-          <div className="bg-white border-2 border-primary-600 rounded-2xl p-8 relative ring-2 ring-primary-600/20">
+          <li className="bg-white border-2 border-primary-600 rounded-2xl p-8 relative ring-2 ring-primary-600/20">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
               Most Popular
             </div>
@@ -339,10 +339,10 @@ export default function EmbedLandingPage() {
             >
               Start Pro Trial
             </Link>
-          </div>
+          </li>
 
           {/* Enterprise */}
-          <div className="bg-white border border-border rounded-2xl p-8">
+          <li className="bg-white border border-border rounded-2xl p-8">
             <h3 className="font-display font-bold text-text text-lg mb-1">Enterprise</h3>
             <div className="flex items-baseline gap-1 mb-2">
               <span className="text-3xl font-display font-black text-text">$499</span>
@@ -370,8 +370,8 @@ export default function EmbedLandingPage() {
             >
               Contact Sales
             </Link>
-          </div>
-        </div>
+          </li>
+        </ul>
       </section>
 
       {/* CTA */}
