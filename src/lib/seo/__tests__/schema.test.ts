@@ -2,6 +2,13 @@
  * Tests for src/lib/seo/schema.ts — JSON-LD emission, with focus on the
  * schema-3way v1 contract (DAN-841 rev 1a540eda, sign-off DAN-844) for N>=3
  * entity comparisons (DAN-854 Phase 1.1).
+ *
+ * Contract evolution since sign-off (DAN-1654 test reconciliation):
+ *  - DAN-1479 (HB118-120): item node @id switched from `{url}#item-x` to the
+ *    canonical `/entity/{slug}` URL so item nodes merge with the entity
+ *    ProfilePage node across the knowledge graph.
+ *  - HB178: a standalone ClaimReview node now emits in the @graph for
+ *    schema.org fact-check parity with the 2-entity schema.
  */
 import { describe, it, expect } from "vitest";
 import { comparisonPageSchema, type ComparisonVoteData } from "../schema";
@@ -81,9 +88,10 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(Array.isArray(doc["@graph"])).toBe(true);
   });
 
-  it("emits a 5-node @graph (Article + ItemList + 3 items + BreadcrumbList) when no FAQs", () => {
+  it("emits a 7-node @graph (Article + ItemList + 3 items + BreadcrumbList + ClaimReview) when no FAQs", () => {
     const doc = comparisonPageSchema(cmp)[0] as { "@graph": Array<{ "@type": string }> };
     const types = doc["@graph"].map((n) => n["@type"]);
+    // ClaimReview added for schema.org fact-check parity with the 2-entity schema (HB178).
     expect(types).toEqual([
       "Article",
       "ItemList",
@@ -91,10 +99,11 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
       "SoftwareApplication",
       "SoftwareApplication",
       "BreadcrumbList",
+      "ClaimReview",
     ]);
   });
 
-  it("emits a 6-node @graph including FAQPage when faqs are present", () => {
+  it("emits an 8-node @graph including FAQPage and ClaimReview when faqs are present", () => {
     const withFaqs: ComparisonPageData = {
       ...cmp,
       faqs: [{ question: "Q?", answer: "A." }],
@@ -102,7 +111,8 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     const doc = comparisonPageSchema(withFaqs)[0] as { "@graph": Array<{ "@type": string }> };
     const types = doc["@graph"].map((n) => n["@type"]);
     expect(types).toContain("FAQPage");
-    expect(types).toHaveLength(7);
+    expect(types).toContain("ClaimReview");
+    expect(types).toHaveLength(8);
   });
 
   it("Article.mainEntity references the ItemList @id (#comparison)", () => {
@@ -123,10 +133,12 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(list.numberOfItems).toBe(3);
     expect(list.itemListOrder).toBe("https://schema.org/ItemListUnordered");
     expect(list.itemListElement.map((e) => e.position)).toEqual([1, 2, 3]);
+    // DAN-1479: item nodes are @id'd by their canonical /entity/{slug} URL so they
+    // merge with the entity ProfilePage node across the knowledge graph.
     expect(list.itemListElement.map((e) => e.item["@id"])).toEqual([
-      `${pageUrl}#item-a`,
-      `${pageUrl}#item-b`,
-      `${pageUrl}#item-c`,
+      `${SITE_URL}/entity/chatgpt`,
+      `${SITE_URL}/entity/claude`,
+      `${SITE_URL}/entity/gemini`,
     ]);
   });
 
@@ -135,12 +147,15 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     const items = doc["@graph"].filter((n) => n["@type"] === "SoftwareApplication");
     expect(items).toHaveLength(3);
     for (const [i, item] of items.entries()) {
-      expect(item["@id"]).toBe(`${pageUrl}#item-${String.fromCharCode(97 + i)}`);
+      // DAN-1479: @id is the canonical /entity/{slug} URL (entity-graph merge); the
+      // node's own url mirrors it as the entity's profile page.
+      expect(item["@id"]).toBe(`${SITE_URL}/entity/${cmp.entities[i].slug}`);
       expect(item.applicationCategory).toBe("BusinessApplication");
       expect(item.operatingSystem).toBe("Web, iOS, Android");
       expect(item.publisher).toMatchObject({ "@type": "Organization" });
       expect(item.url).toMatch(new RegExp(`^${SITE_URL}/entity/`));
-      expect(item.image).toMatch(/^https:\/\//);
+      // image is emitted as an ImageObject (licensing/credit metadata) — assert its url.
+      expect((item.image as { url: string }).url).toMatch(/^https:\/\//);
     }
   });
 
@@ -202,10 +217,13 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(byType.BreadcrumbList).toBe(`${pageUrl}#breadcrumbs`);
     expect(byType.FAQPage).toBe(`${pageUrl}#faq`);
     expect(byType.ItemList).toBe(`${pageUrl}#comparison`);
+    expect(byType.ClaimReview).toBe(`${pageUrl}#claimreview`);
     // No node may be missing its @id, and all must share the canonical host.
+    // Item (SoftwareApplication) nodes intentionally use their /entity/{slug} @id
+    // (DAN-1479 entity-graph merge); every other node anchors to the /compare/ page.
     for (const node of doc["@graph"]) {
       expect(node["@id"], `${node["@type"]} missing @id`).toBeTruthy();
-      expect(node["@id"]).toMatch(new RegExp(`^${SITE_URL}/compare/`));
+      expect(node["@id"]).toMatch(new RegExp(`^${SITE_URL}/(compare|entity)/`));
     }
   });
 });
