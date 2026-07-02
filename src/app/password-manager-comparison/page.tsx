@@ -426,7 +426,7 @@ export default function PasswordManagerComparisonPage() {
             <thead>
               <tr className="bg-surface-alt">
                 {["Product", "Encryption", "Latest Audit", "Open Source", "Price/yr", "Free Tier", "2FA Methods"].map((h) => (
-                  <th key={h} className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
+                  <th key={h} scope="col" className="text-left p-3 font-semibold text-text border-b border-border whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>

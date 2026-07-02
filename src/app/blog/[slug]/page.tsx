@@ -62,7 +62,7 @@ function renderMarkdown(md: string): string {
         if (idx === 0) {
           tableHtml += "<thead><tr>";
           cells.forEach((cell) => {
-            tableHtml += `<th class="bg-primary-50 px-4 py-3 text-left text-sm font-semibold text-text border-b border-border">${cell.trim()}</th>`;
+            tableHtml += `<th scope="col" class="bg-primary-50 px-4 py-3 text-left text-sm font-semibold text-text border-b border-border">${cell.trim()}</th>`;
           });
           tableHtml += "</tr></thead><tbody>";
         } else {

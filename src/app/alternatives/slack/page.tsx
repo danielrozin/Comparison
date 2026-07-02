@@ -451,12 +451,12 @@ export default function SlackAlternativesPage() {
             <table className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
-                  <th className="text-left px-3 py-3 font-semibold">#</th>
-                  <th className="text-left px-3 py-3 font-semibold">Alternative</th>
-                  <th className="text-left px-3 py-3 font-semibold">Best for</th>
-                  <th className="text-left px-3 py-3 font-semibold">Free tier</th>
-                  <th className="text-left px-3 py-3 font-semibold">Paid (entry)</th>
-                  <th className="text-left px-3 py-3 font-semibold">
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">#</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Alternative</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Best for</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Free tier</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Paid (entry)</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">
                     Key advantage over Slack
                   </th>
                 </tr>

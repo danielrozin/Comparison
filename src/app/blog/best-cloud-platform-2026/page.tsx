@@ -409,11 +409,11 @@ export default function BestCloudPlatform2026Page() {
             <table className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
-                  <th className="text-left px-3 py-3 font-semibold">
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">
                     If your main workload is...
                   </th>
-                  <th className="text-left px-3 py-3 font-semibold">Pick</th>
-                  <th className="text-left px-3 py-3 font-semibold">Why</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Pick</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Why</th>
                 </tr>
               </thead>
               <tbody>
@@ -861,12 +861,12 @@ export default function BestCloudPlatform2026Page() {
             <table className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
-                  <th className="text-left px-3 py-3 font-semibold">
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">
                     If your main job is...
                   </th>
-                  <th className="text-left px-3 py-3 font-semibold">First pick</th>
-                  <th className="text-left px-3 py-3 font-semibold">Second opinion</th>
-                  <th className="text-left px-3 py-3 font-semibold">Skip</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">First pick</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Second opinion</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Skip</th>
                 </tr>
               </thead>
               <tbody>
@@ -936,11 +936,11 @@ export default function BestCloudPlatform2026Page() {
             <table className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
-                  <th className="text-left px-3 py-3 font-semibold">Cloud</th>
-                  <th className="text-left px-3 py-3 font-semibold">
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Cloud</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">
                     Indicative entry cost
                   </th>
-                  <th className="text-left px-3 py-3 font-semibold">Discount levers</th>
+                  <th scope="col" className="text-left px-3 py-3 font-semibold">Discount levers</th>
                 </tr>
               </thead>
               <tbody>

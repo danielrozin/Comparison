@@ -353,11 +353,12 @@ function LegacyTable({
       <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
         <table className="w-full border-collapse">
+          <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
           <thead className="sticky top-0 z-10">
             <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
-              <th className="px-5 py-3.5 text-left text-sm font-semibold w-[40%]">Attribute</th>
-              <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">{entityA.name}</th>
-              <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">{entityB.name}</th>
+              <th scope="col" className="px-5 py-3.5 text-left text-sm font-semibold w-[40%]">Attribute</th>
+              <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">{entityA.name}</th>
+              <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">{entityB.name}</th>
             </tr>
           </thead>
           <tbody>
@@ -533,15 +534,16 @@ function RedesignedTable({
       <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
           <table className="w-full border-collapse">
+            <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
             <thead
               ref={headerRef}
               className="sticky top-0 z-10"
             >
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
-                <th className="px-5 py-3.5 text-left text-sm font-semibold w-[40%]">
+                <th scope="col" className="px-5 py-3.5 text-left text-sm font-semibold w-[40%]">
                   Attribute
                 </th>
-                <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
+                <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityA.imageUrl && (
                       <img
@@ -555,7 +557,7 @@ function RedesignedTable({
                     <span>{entityA.name}</span>
                   </div>
                 </th>
-                <th className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
+                <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityB.imageUrl && (
                       <img

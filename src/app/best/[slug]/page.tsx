@@ -144,7 +144,7 @@ function renderMarkdown(md: string): string {
       const cells = row.split("|").filter((c) => c.trim() !== "");
       if (idx === 0) {
         t += "<thead><tr>" + cells.map((c) =>
-          `<th class="bg-primary-50 px-4 py-3 text-left text-sm font-semibold text-text border-b border-border">${c.trim()}</th>`
+          `<th scope="col" class="bg-primary-50 px-4 py-3 text-left text-sm font-semibold text-text border-b border-border">${c.trim()}</th>`
         ).join("") + "</tr></thead><tbody>";
       } else {
         t += `<tr class="${idx % 2 === 0 ? "bg-surface-alt" : "bg-white"}">` +

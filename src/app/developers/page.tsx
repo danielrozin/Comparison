@@ -331,9 +331,9 @@ export default function DevelopersPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-2 text-text-secondary font-medium">Parameter</th>
-                    <th className="text-left py-2 text-text-secondary font-medium">Type</th>
-                    <th className="text-left py-2 text-text-secondary font-medium">Description</th>
+                    <th scope="col" className="text-left py-2 text-text-secondary font-medium">Parameter</th>
+                    <th scope="col" className="text-left py-2 text-text-secondary font-medium">Type</th>
+                    <th scope="col" className="text-left py-2 text-text-secondary font-medium">Description</th>
                   </tr>
                 </thead>
                 <tbody className="text-text-secondary">
@@ -459,8 +459,8 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-surface-alt">
-                <th className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
-                <th className="text-left px-4 py-3 text-text-secondary font-medium">Meaning</th>
+                <th scope="col" className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>
+                <th scope="col" className="text-left px-4 py-3 text-text-secondary font-medium">Meaning</th>
               </tr>
             </thead>
             <tbody className="text-text-secondary">

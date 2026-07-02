@@ -36,16 +36,16 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
-                <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider">
+                <th scope="col" className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider">
                   Metric
                 </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider">
+                <th scope="col" className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider">
                   {entityA.name}
                 </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider">
+                <th scope="col" className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider">
                   {entityB.name}
                 </th>
-                <th className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider w-20">
+                <th scope="col" className="text-center px-4 py-3 text-xs font-semibold uppercase tracking-wider w-20">
                   Ratio
                 </th>
               </tr>

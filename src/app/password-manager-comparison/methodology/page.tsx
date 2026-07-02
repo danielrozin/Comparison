@@ -153,9 +153,9 @@ export default function PasswordManagerMethodologyPage() {
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">
-                <th className="text-left p-3 font-semibold text-text border-b border-border">Attribute</th>
-                <th className="text-left p-3 font-semibold text-text border-b border-border">What we measure</th>
-                <th className="text-left p-3 font-semibold text-text border-b border-border">Primary source type</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Attribute</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">What we measure</th>
+                <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Primary source type</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">

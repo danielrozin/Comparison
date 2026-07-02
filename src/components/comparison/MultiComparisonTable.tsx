@@ -119,7 +119,7 @@ export function MultiComparisonTable({
           <table className="w-full border-collapse">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
-                <th className="px-5 py-3.5 text-left text-sm font-semibold" style={{ width: attrColWidth }}>
+                <th scope="col" className="px-5 py-3.5 text-left text-sm font-semibold" style={{ width: attrColWidth }}>
                   Attribute
                 </th>
                 {entities.map((ent) => (
