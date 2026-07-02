@@ -102,6 +102,8 @@ export async function GET() {
     "- Comparisons: `/compare/{entity-a}-vs-{entity-b}` — each includes short answer, attributes, verdict, FAQs",
     "- Entity profiles: `/entity/{entity-slug}` — all comparisons involving an entity",
     "- Alternatives: `/alternatives/{entity-slug}` — best alternatives to a product/service",
+    "- Hub pages: `/hub/{hub-slug}` — curated comparison collections around a topic (VPN, project management, AI chatbots, etc.)",
+    "- Best-of lists: `/best/{list-slug}` — ranked guides (e.g. 'best project management tools')",
     "- Blog: `/blog/{article-slug}` — in-depth comparison guides",
     "- Search: `/search?q={query}` — full-text search",
     "- Categories: `/category/{category-slug}` — browse by topic",
@@ -162,6 +164,7 @@ export async function GET() {
   lines.push(`- [Related comparisons JSON](${SITE_URL}/api/v1/related/{slug}) — related comparisons for a given slug`);
   lines.push(`- [Alternatives API](${SITE_URL}/api/v1/alternatives/{slug}) — all known alternatives to an entity with ItemList JSON-LD, comparison URLs, and X-Summary header; ideal for 'best alternatives to X' AI queries; example: ${SITE_URL}/api/v1/alternatives/chatgpt`);
   lines.push(`- [Best-of list JSON](${SITE_URL}/api/v1/best/{slug}) — structured best-of list with ItemList JSON-LD: ranked items (position, name, url), FAQs, author, dates; X-Summary header on response; list all at ${SITE_URL}/api/v1/best`);
+  lines.push(`- [Hub JSON](${SITE_URL}/api/v1/hub/{slug}) — topic hub structured data: title, description, intro, curated comparisonSlugs + comparisonUrls, FAQs, ItemList JSON-LD and FAQPage JSON-LD; use for 'best [topic] comparisons' queries; example: ${SITE_URL}/api/v1/hub/vpn`);
   lines.push(`- [Compare Lookup (AI tool-calling)](${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}) — fastest endpoint for AI tools: looks up comparison by entity names, returns shortAnswer + API URLs or suggestions; example: ${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`);
   lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; supports ?types=comparisons,entities,blog and ?limit; X-Summary header on response`);
 
@@ -194,11 +197,14 @@ export async function GET() {
   lines.push("");
   lines.push("## HTTP Link Headers (AI-Optimised Discovery)");
   lines.push("");
-  lines.push("Every page emits `Link:` HTTP headers for fastest structured-data discovery by AI crawlers:");
+  lines.push("Every content page emits `Link:` HTTP headers for fastest structured-data discovery by AI crawlers (no HTML parsing needed — a HEAD request suffices):");
   lines.push(`- \`/compare/{slug}\` → Link: <api/v1/schema/{slug}>; rel="describedby"; type="application/ld+json"`);
   lines.push(`- \`/blog/{slug}\` → Link: <api/blog/{slug}>; rel="describedby"; type="application/ld+json"`);
-  lines.push(`- \`/entity/{slug}\` → Link: <api/v1/entities/{slug}>; rel="describedby"; type="application/ld+json"`);
+  lines.push(`- \`/entity/{slug}\` → Link: <api/v1/entities/{slug}>; rel="describedby"; type="application/json"`);
   lines.push(`- \`/category/{slug}\` → Link: <api/v1/comparisons?category={slug}>; rel="describedby"; type="application/json"`);
+  lines.push(`- \`/alternatives/{slug}\` → Link: <api/v1/alternatives/{slug}>; rel="describedby"; type="application/json"`);
+  lines.push(`- \`/best/{slug}\` → Link: <api/v1/best/{slug}>; rel="describedby"; type="application/json"`);
+  lines.push(`- \`/hub/{slug}\` → Link: <api/v1/hub/{slug}>; rel="describedby"; type="application/json"`);
   lines.push("Content negotiation: GET /compare/{slug} with Accept: application/ld+json → 303 redirect to api/v1/schema/{slug}");
 
   const body = lines.join("\n");

@@ -24,6 +24,13 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  // X-Source-* — AI attribution headers used by Perplexity, ChatGPT, and Gemini
+  // to link cited data back to this platform in generated answers.
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
