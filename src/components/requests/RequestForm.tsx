@@ -77,8 +77,8 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
 
   if (success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-        <div className="text-3xl mb-3">🎉</div>
+      <div role="status" aria-live="polite" className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+        <div className="text-3xl mb-3" aria-hidden="true">🎉</div>
         <h3 className="text-lg font-bold text-green-800 mb-2">
           Request Submitted!
         </h3>

@@ -40,7 +40,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
     return (
       <div className={variant === "card" ? "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : ""}>
         <div className={`${variant === "card" ? "bg-green-50 border border-green-200 rounded-xl p-6" : ""} text-center`}>
-          <p className={`font-medium ${variant === "card" ? "text-green-800" : "text-green-400"}`}>
+          <p role="status" aria-live="polite" className={`font-medium ${variant === "card" ? "text-green-800" : "text-green-400"}`}>
             You&apos;re subscribed! We&apos;ll send you the best comparisons weekly.
           </p>
         </div>
