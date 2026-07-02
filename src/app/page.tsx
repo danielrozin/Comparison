@@ -281,7 +281,7 @@ export default async function HomePage() {
       <FeaturedComparisons items={FEATURED_COMPARISONS} />
 
       {/* Trending Comparisons */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section aria-labelledby="trending-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -291,7 +291,7 @@ export default async function HomePage() {
               </svg>
             </div>
             <div>
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+              <h2 id="trending-heading" className="text-2xl sm:text-3xl font-display font-bold text-text">
                 Trending Comparisons
               </h2>
               <p className="text-text-secondary mt-1">Most popular comparisons right now</p>
@@ -315,7 +315,7 @@ export default async function HomePage() {
       </section>
 
       {/* Latest Comparisons */}
-      <section className="bg-surface-alt py-16">
+      <section aria-labelledby="latest-heading" className="bg-surface-alt py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
@@ -325,7 +325,7 @@ export default async function HomePage() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+                <h2 id="latest-heading" className="text-2xl sm:text-3xl font-display font-bold text-text">
                   Latest Comparisons
                 </h2>
                 <p className="text-text-secondary mt-1">Recently added and updated comparisons</p>
@@ -401,7 +401,7 @@ export default async function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="bg-surface py-16">
+      <section aria-labelledby="browse-category-heading" className="bg-surface py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-3">
@@ -411,7 +411,7 @@ export default async function HomePage() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">Browse by Category</h2>
+                <h2 id="browse-category-heading" className="text-2xl sm:text-3xl font-display font-bold text-text">Browse by Category</h2>
                 <p className="text-text-secondary text-sm mt-0.5">Explore comparisons across every topic</p>
               </div>
             </div>
@@ -437,8 +437,8 @@ export default async function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
+      <section aria-labelledby="how-it-works-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <h2 id="how-it-works-heading" className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
           How It Works
         </h2>
         <ol className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto list-none">
@@ -492,9 +492,9 @@ export default async function HomePage() {
       </section>
 
       {/* Trust Section */}
-      <section className="bg-surface-alt py-16">
+      <section aria-labelledby="trust-heading" className="bg-surface-alt py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-text mb-4">
+          <h2 id="trust-heading" className="text-2xl sm:text-3xl font-display font-bold text-text mb-4">
             Trusted by Thousands
           </h2>
           <p className="text-text-secondary mb-10 max-w-2xl mx-auto">
@@ -521,7 +521,7 @@ export default async function HomePage() {
 
       {/* From the Blog */}
       {blogArticles.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <section aria-labelledby="blog-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -530,7 +530,7 @@ export default async function HomePage() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">From the Blog</h2>
+                <h2 id="blog-heading" className="text-2xl sm:text-3xl font-display font-bold text-text">From the Blog</h2>
                 <p className="text-text-secondary text-sm mt-0.5">Expert guides and in-depth analyses</p>
               </div>
             </div>
@@ -629,10 +629,10 @@ export default async function HomePage() {
       )}
 
       {/* Request a Comparison CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section aria-labelledby="request-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-200 rounded-2xl p-8 sm:p-10 flex flex-col sm:flex-row items-center gap-6">
           <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-xl sm:text-2xl font-display font-bold text-text mb-2">
+            <h2 id="request-heading" className="text-xl sm:text-2xl font-display font-bold text-text mb-2">
               Can&apos;t find what you&apos;re looking for?
             </h2>
             <p className="text-text-secondary text-sm sm:text-base">
@@ -655,10 +655,10 @@ export default async function HomePage() {
       <NewsletterSignup source="homepage" />
 
       {/* CTA */}
-      <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
+      <section aria-labelledby="cta-heading" className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold mb-4">
+          <h2 id="cta-heading" className="text-2xl sm:text-3xl font-display font-bold mb-4">
             Ready to Compare?
           </h2>
           <p className="text-primary-100 mb-8">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { SITE_URL } from "@/lib/utils/constants";
 import { trackEmbedCtaClick } from "@/lib/utils/analytics";
 
@@ -15,6 +15,8 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>("script");
   const [copiedTab, setCopiedTab] = useState<TabType | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const encodedTitle = encodeURIComponent(title);
 
@@ -36,7 +38,10 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
     },
   };
 
-  const handleClose = useCallback(() => setIsOpen(false), []);
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -46,6 +51,29 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, handleClose]);
+
+  // Focus trap: keep Tab/Shift+Tab inside dialog; auto-focus close button on open
+  useEffect(() => {
+    if (!isOpen || !dialogRef.current) return;
+    const focusable = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute("disabled"));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handleTab);
+    return () => document.removeEventListener("keydown", handleTab);
+  }, [isOpen]);
 
   const handleCopy = async (tab: TabType) => {
     try {
@@ -68,6 +96,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   return (
     <>
       <button
+        ref={triggerRef}
         onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
         title="Embed this comparison"
@@ -87,7 +116,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
           {/* Modal */}
-          <div role="dialog" aria-modal="true" aria-labelledby="embed-modal-title" className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-border">
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="embed-modal-title" className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-border">
             {/* Close button */}
             <button
               onClick={handleClose}

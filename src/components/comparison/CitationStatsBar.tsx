@@ -63,7 +63,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
   });
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+    <section aria-label="Data sources and review status" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
       <div className="relative bg-gradient-to-r from-indigo-50/80 via-blue-50/60 to-indigo-50/80 border border-indigo-100 rounded-xl overflow-hidden">
         {/* Left accent stripe */}
         <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 to-blue-500" />

@@ -52,7 +52,7 @@ export function KeyDifferencesSummary({
   if (top3.length === 0) return null;
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+    <section aria-labelledby="key-diff-summary-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
       <div className="relative bg-gradient-to-br from-indigo-50 via-white to-purple-50 border border-indigo-100 rounded-xl p-4 sm:p-5 overflow-hidden">
         {/* Top accent stripe */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400" />
@@ -64,7 +64,7 @@ export function KeyDifferencesSummary({
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 className="text-xs font-bold text-indigo-700 uppercase tracking-widest">
+          <h3 id="key-diff-summary-heading" className="text-xs font-bold text-indigo-700 uppercase tracking-widest">
             Key Differences at a Glance
           </h3>
         </div>
