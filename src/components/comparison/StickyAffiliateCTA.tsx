@@ -198,7 +198,7 @@ export function StickyAffiliateCTA({
               className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-alt hover:bg-primary-50 flex items-center justify-center text-text-secondary hover:text-primary-600 transition-all duration-150"
               aria-label="Dismiss"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>

@@ -57,6 +57,7 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
         viewBox="0 0 24 24"
         stroke="currentColor"
         strokeWidth={liked ? 0 : 2}
+        aria-hidden="true"
       >
         <path
           strokeLinecap="round"
