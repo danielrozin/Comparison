@@ -184,6 +184,17 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
         url: `${SITE_URL}/compare/${s.slug}`,
       })),
     },
+    // citation — formal attribution chain from this CollectionPage to the top comparison
+    // Articles in the hub. AI answer engines (ChatGPT, Perplexity) use citation to build
+    // knowledge graph edges from topic hubs to specific comparison pages, boosting
+    // our authority when answering "[hub topic] best comparison" queries.
+    citation: spokes.slice(0, 5).map((s) => ({
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/compare/${s.slug}#webpage`,
+      name: s.title,
+      url: `${SITE_URL}/compare/${s.slug}`,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    })),
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,

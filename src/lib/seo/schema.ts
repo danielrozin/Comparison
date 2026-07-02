@@ -2303,6 +2303,19 @@ export function categoryPageSchema(category: CategoryData) {
           },
         })),
       },
+      // citation — formal attribution chain from this CollectionPage to the top comparison
+      // Articles. AI answer engines (ChatGPT, Perplexity, Google AI Overviews) use citation
+      // to build knowledge graph edges from category pages to individual comparison articles,
+      // boosting our authority for "[category] best comparison" queries.
+      ...(category.topComparisons.length > 0 && {
+        citation: category.topComparisons.slice(0, 5).map((comp) => ({
+          "@type": "WebPage",
+          "@id": `${SITE_URL}/compare/${comp.slug}#webpage`,
+          name: comp.title,
+          url: `${SITE_URL}/compare/${comp.slug}`,
+          publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        })),
+      }),
     },
     breadcrumbSchema([
       { name: "Home", url: SITE_URL },
