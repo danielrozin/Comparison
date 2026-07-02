@@ -205,18 +205,18 @@ export default async function InvestingStudyPage() {
         </div>
 
         {/* Headline stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12 list-none p-0 m-0">
           {[
             { label: "Finance Comparisons", value: fmt(study.totalFinanceComparisons) },
             { label: "Distinct Topics", value: fmt(study.distinctTopics) },
             { label: "#1 Most Researched", value: topTopic?.name ?? "—" },
           ].map((s) => (
-            <div key={s.label} className="bg-surface-alt border border-border rounded-xl p-4">
+            <li key={s.label} className="bg-surface-alt border border-border rounded-xl p-4">
               <div className="text-2xl font-bold text-text">{s.value}</div>
               <div className="text-xs text-text-secondary mt-1">{s.label}</div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         {/* Top 12 finance topics */}
         <section className="mb-12">

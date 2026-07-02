@@ -136,21 +136,21 @@ export default function EmbedLandingPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <ol className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
           {STEPS.map((step) => (
-            <div
+            <li
               key={step.number}
               className="relative bg-white border border-border rounded-2xl p-8 text-center hover:shadow-lg hover:border-primary-200 transition-all duration-300"
             >
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md" aria-hidden="true">
                 {step.number}
               </div>
               <div className="flex justify-center mb-4 mt-2">{step.icon}</div>
               <h3 className="text-lg font-display font-bold text-text mb-2">{step.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed">{step.description}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       {/* Live Demo */}
@@ -201,17 +201,17 @@ export default function EmbedLandingPage() {
             Why Embed With Us?
           </h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-8">
+        <ul className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
           {BENEFITS.map((benefit) => (
-            <div key={benefit.title} className="text-center">
+            <li key={benefit.title} className="text-center">
               <div className="w-14 h-14 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 {benefit.icon}
               </div>
               <h3 className="text-lg font-display font-bold text-text mb-2">{benefit.title}</h3>
               <p className="text-sm text-text-secondary leading-relaxed">{benefit.description}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* White-Label Pricing */}

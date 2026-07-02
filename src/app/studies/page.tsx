@@ -179,19 +179,20 @@ export default function StudiesIndexPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 gap-4">
+        <ul className="grid grid-cols-1 gap-4 list-none p-0 m-0">
           {STUDIES.map((s) => (
+            <li key={s.slug}>
             <Link
-              key={s.slug}
               href={`/studies/${s.slug}`}
-              className="block rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
+              className="block rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
             >
               <span className="text-xs font-semibold text-primary-600 uppercase tracking-wide">{s.badge}</span>
               <h2 className="text-xl font-display font-bold text-text mt-1 mb-2">{s.title}</h2>
               <p className="text-text-secondary text-sm">{s.blurb}</p>
             </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </>
   );

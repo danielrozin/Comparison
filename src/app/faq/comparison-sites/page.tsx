@@ -200,18 +200,19 @@ export default function ComparisonSitesFaqPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-6">
           Competitor Deep Dives
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 list-none p-0 m-0">
           {COMPETITOR_LINKS.map((comp) => (
+            <li key={comp.href}>
             <Link
-              key={comp.href}
               href={comp.href}
-              className="block border border-border rounded-xl p-5 hover:border-primary-300 hover:bg-primary-50/50 transition-colors"
+              className="block border border-border rounded-xl p-5 hover:border-primary-300 hover:bg-primary-50/50 transition-colors w-full h-full"
             >
               <h3 className="font-semibold text-text mb-1">{comp.name}</h3>
               <p className="text-sm text-text-secondary">{comp.description}</p>
             </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Why AversusB */}
@@ -219,36 +220,36 @@ export default function ComparisonSitesFaqPage() {
         <h2 className="text-2xl font-display font-bold text-text mb-6">
           Why {SITE_NAME}?
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none p-0 m-0">
+          <li className="bg-surface-alt border border-border rounded-2xl p-6">
             <h3 className="font-semibold text-text mb-2">17 Categories</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
               Sports, countries, technology, products, software, automotive, health, finance,
               education, entertainment, and more — all on one platform.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6">
             <h3 className="font-semibold text-text mb-2">Transparent Data</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
               Every comparison uses sourced attributes with citations. No proprietary scoring,
               no pay-to-play, no hidden vendor influence.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6">
             <h3 className="font-semibold text-text mb-2">Community Voting</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
               Every comparison includes user polls so you can see what the community thinks —
               not just what editors or algorithms decide.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6">
             <h3 className="font-semibold text-text mb-2">Updated Daily</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
               New comparisons added daily with AI-enriched content and real-time trending data.
               No stale wiki pages or abandoned content.
             </p>
-          </div>
-        </div>
+          </li>
+        </ul>
       </section>
 
       {/* FAQ Section */}

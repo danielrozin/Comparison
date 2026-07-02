@@ -282,12 +282,12 @@ export default async function MostComparedStudyPage() {
               Software buyers comparison-shop harder than anyone. These are the SaaS products that
               show up in the most head-to-head evaluations.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
               {study.topSaaS.map((b) => (
+                <li key={b.slug}>
                 <Link
-                  key={b.slug}
                   href={`/entity/${b.slug}`}
-                  className="flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 hover:border-primary-600 transition-colors"
+                  className="flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 hover:border-primary-600 transition-colors w-full h-full"
                 >
                   <span className="font-medium text-text">
                     <span className="text-text-secondary mr-2">{b.rank}.</span>
@@ -295,8 +295,9 @@ export default async function MostComparedStudyPage() {
                   </span>
                   <span className="text-sm font-semibold text-primary-600">{b.count} matchups</span>
                 </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
 
