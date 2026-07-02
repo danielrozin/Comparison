@@ -192,6 +192,7 @@ export default function OutreachQueuePage() {
           <select
             value={platform}
             onChange={(e) => setPlatform(e.target.value as PlatformFilter)}
+            aria-label="Filter by platform"
             className="px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white"
           >
             <option value="all">All Platforms</option>

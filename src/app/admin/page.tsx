@@ -502,6 +502,7 @@ export default function AdminPage() {
                 <select
                   value={outreachPlatform}
                   onChange={(e) => setOutreachPlatform(e.target.value)}
+                  aria-label="Filter outreach by platform"
                   className="px-2 py-1.5 border border-border rounded-lg text-xs bg-white"
                 >
                   <option value="all">All Platforms</option>
