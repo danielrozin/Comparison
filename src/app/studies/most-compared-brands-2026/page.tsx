@@ -189,7 +189,7 @@ export default async function MostComparedStudyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-6">
+        <nav className="mb-6" aria-label="Breadcrumb">
           <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
             <li>
               <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
