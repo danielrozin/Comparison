@@ -216,8 +216,9 @@ export function Header() {
                     {subs.length > 0 && (
                       <button
                         onClick={() => setMobileExpanded(isExpanded ? null : item.slug)}
+                        aria-expanded={isExpanded}
+                        aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
                         className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-surface-alt"
-                        aria-label={`Expand ${item.name}`}
                       >
                         <svg className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
