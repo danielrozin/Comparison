@@ -373,7 +373,14 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {/* Pros & Cons */}
             <div className="bg-white border border-border rounded-xl p-6">
-              <h2 className="text-lg font-display font-bold text-text mb-4">Top Pros & Cons</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-lg font-display font-bold text-text">Top Pros &amp; Cons</h2>
+              </div>
               <div className="space-y-4">
                 {aggregation.topPros.length > 0 && (
                   <div>
@@ -408,13 +415,27 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
             <div className="space-y-6">
               {aggregation.positivePct != null && aggregation.negativePct != null && (
                 <div className="bg-white border border-border rounded-xl p-6">
-                  <h2 className="text-lg font-display font-bold text-text mb-4">Sentiment</h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-lg font-display font-bold text-text">Sentiment</h2>
+                  </div>
                   <SentimentBar positivePct={aggregation.positivePct} negativePct={aggregation.negativePct} />
                 </div>
               )}
               {aggregation.sourceBreakdown && Object.keys(aggregation.sourceBreakdown).length > 0 && (
                 <div className="bg-white border border-border rounded-xl p-6">
-                  <h2 className="text-lg font-display font-bold text-text mb-4">Ratings by Source</h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-lg font-display font-bold text-text">Ratings by Source</h2>
+                  </div>
                   <SourceBreakdown breakdown={aggregation.sourceBreakdown} />
                 </div>
               )}
@@ -425,9 +446,16 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         {/* Reviews list */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-display font-bold text-text">
-              Reviews ({total})
-            </h2>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-display font-bold text-text">
+                Reviews ({total})
+              </h2>
+            </div>
             {aggregation?.sourceBreakdown && (
               <div className="flex gap-2">
                 <Link
