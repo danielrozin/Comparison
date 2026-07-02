@@ -51,6 +51,10 @@
     {
       "path": "/api/cron/trending-freshness",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/survey-thresholds",
+      "schedule": "0 9 * * *"
     }
   ]
 }
