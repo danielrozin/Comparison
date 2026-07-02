@@ -80,7 +80,7 @@ export function RecentSearches() {
                   <span className="text-[10px] text-text-secondary">{timeAgo}</span>
                   {search.generated && (
                     <span className="text-[10px] text-amber-600 flex items-center gap-0.5">
-                      <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                       </svg>
                       AI
@@ -89,7 +89,7 @@ export function RecentSearches() {
                 </div>
               </div>
 
-              <svg className="w-4 h-4 text-text-secondary group-hover:text-primary-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-4 h-4 text-text-secondary group-hover:text-primary-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>

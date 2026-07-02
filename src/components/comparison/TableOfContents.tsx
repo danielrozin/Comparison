@@ -51,7 +51,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         >
           {/* Progress bar dot */}
           <div className="flex-shrink-0 w-5 h-5 relative">
-            <svg className="w-5 h-5 -rotate-90" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 -rotate-90" viewBox="0 0 20 20" aria-hidden="true">
               <circle cx="10" cy="10" r="8" fill="none" stroke="currentColor" strokeWidth="2" className="text-border" />
               <circle
                 cx="10"
@@ -82,6 +82,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
+            aria-hidden="true"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>

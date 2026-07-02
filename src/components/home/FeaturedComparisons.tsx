@@ -101,7 +101,7 @@ export function FeaturedComparisons({
                 <div className="mt-3 pt-3 border-t border-border/50 flex items-center justify-end">
                   <span className="text-xs font-semibold text-primary-600 flex items-center gap-1 group-hover:gap-2 transition-all duration-200">
                     Compare now
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </span>

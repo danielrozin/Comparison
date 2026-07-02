@@ -73,7 +73,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
       ) : (
         <>
           <h2 className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
-            <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
             </svg>
             Video Comparison
@@ -96,7 +96,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                   )}
                   <div className="relative z-10 flex flex-col items-center justify-center">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:bg-red-500 transition-all group-hover:scale-110">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                       </svg>
                     </div>
@@ -126,7 +126,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                 >
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center shadow-lg group-hover:from-primary-500 group-hover:to-accent-500 transition-all group-hover:scale-110">
-                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                       </svg>
                     </div>
