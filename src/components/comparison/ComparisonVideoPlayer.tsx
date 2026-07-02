@@ -67,12 +67,12 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
   if (isVisible && !videoSource) return null;
 
   return (
-    <section ref={containerRef} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section ref={containerRef} aria-labelledby="video-player-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {!isVisible ? (
         <div className="aspect-video bg-surface-alt rounded-xl animate-pulse" />
       ) : (
         <>
-          <h2 className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
+          <h2 id="video-player-heading" className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">
             <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
             </svg>

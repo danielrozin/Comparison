@@ -14,7 +14,7 @@ export function RecentlyViewed() {
   if (items.length === 0) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <section aria-labelledby="recently-viewed-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-primary-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -22,7 +22,7 @@ export function RecentlyViewed() {
           </svg>
         </div>
         <div>
-          <h2 className="text-xl sm:text-2xl font-display font-bold text-text">
+          <h2 id="recently-viewed-heading" className="text-xl sm:text-2xl font-display font-bold text-text">
             Your Recently Viewed
           </h2>
           <p className="text-text-secondary mt-0.5 text-sm">

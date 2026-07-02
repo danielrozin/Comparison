@@ -117,7 +117,7 @@ export function CommentSection({
   const displayComments = showAll ? comments : comments.slice(0, 5);
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section aria-labelledby="discussion-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -125,7 +125,7 @@ export function CommentSection({
           </svg>
         </div>
         <div>
-          <h2 className="text-2xl font-display font-bold text-text">Discussion</h2>
+          <h2 id="discussion-heading" className="text-2xl font-display font-bold text-text">Discussion</h2>
           <p className="text-xs text-text-secondary mt-0.5">
             {comments.length > 0 ? `${comments.length} comment${comments.length !== 1 ? "s" : ""}` : "Join the conversation"}
           </p>

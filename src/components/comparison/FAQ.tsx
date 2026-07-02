@@ -10,7 +10,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
 
   return (
-    <section id="faq" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Section header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -20,7 +20,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             </svg>
           </div>
           <div>
-            <h2 className="text-2xl font-display font-bold text-text">
+            <h2 id="faq-heading" className="text-2xl font-display font-bold text-text">
               Frequently Asked Questions
             </h2>
             <p className="text-xs text-text-secondary mt-0.5">{faqs.length} question{faqs.length !== 1 ? "s" : ""}</p>

@@ -32,7 +32,7 @@ export function VerdictBlock({
   const winner = extractWinner(verdict, entities);
 
   return (
-    <section data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="relative bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 rounded-2xl overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative mesh overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.15),transparent_60%)]" />
@@ -53,7 +53,7 @@ export function VerdictBlock({
               </svg>
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-display font-bold text-white leading-tight">Our Verdict</h2>
+              <h2 id="verdict-heading" className="text-xl sm:text-2xl font-display font-bold text-white leading-tight">Our Verdict</h2>
               {winner && (
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <svg className="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

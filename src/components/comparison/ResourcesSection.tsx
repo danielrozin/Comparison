@@ -40,7 +40,7 @@ export function ResourcesSection({
   const videos = resources.filter((r) => r.type === "video");
 
   return (
-    <section className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
+    <section aria-labelledby="resources-heading" className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
       <div className="h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
       <div className="px-6 py-5 border-b border-border bg-gradient-to-r from-blue-50/70 to-indigo-50/70">
         <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export function ResourcesSection({
             </svg>
           </div>
           <div>
-            <h2 className="text-xl font-display font-bold text-text">Resources & Learn More</h2>
+            <h2 id="resources-heading" className="text-xl font-display font-bold text-text">Resources & Learn More</h2>
             <p className="text-xs text-text-secondary mt-0.5">Curated sources to dive deeper</p>
           </div>
         </div>

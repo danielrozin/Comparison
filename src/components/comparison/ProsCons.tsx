@@ -25,7 +25,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
   const totalCons = entities.reduce((s, e) => s + e.cons.length, 0);
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section aria-labelledby="pros-cons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -33,7 +33,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-2xl font-display font-bold text-text">Pros &amp; Cons</h2>
+          <h2 id="pros-cons-heading" className="text-2xl font-display font-bold text-text">Pros &amp; Cons</h2>
           {(totalPros + totalCons) > 0 && (
             <p className="text-xs text-text-secondary mt-0.5">
               <span className="text-green-600 font-semibold">{totalPros} pros</span>

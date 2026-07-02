@@ -34,7 +34,7 @@ export function RelatedBlogPosts({
   if (posts.length === 0) return null;
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section aria-labelledby="related-articles-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Section header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -43,7 +43,7 @@ export function RelatedBlogPosts({
           </svg>
         </div>
         <div>
-          <h2 className="text-2xl font-display font-bold text-text">Related Articles</h2>
+          <h2 id="related-articles-heading" className="text-2xl font-display font-bold text-text">Related Articles</h2>
           <p className="text-xs text-text-secondary mt-0.5">{posts.length} article{posts.length !== 1 ? "s" : ""}</p>
         </div>
       </div>

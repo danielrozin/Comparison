@@ -46,7 +46,7 @@ export function RelatedComparisons({
   sourceSlug?: string;
 }) {
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-primary-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -55,7 +55,7 @@ export function RelatedComparisons({
             </svg>
           </div>
           <div>
-            <h2 className="text-2xl font-display font-bold text-text">Related Comparisons</h2>
+            <h2 id="related-comparisons-heading" className="text-2xl font-display font-bold text-text">Related Comparisons</h2>
             <p className="text-xs text-text-secondary mt-0.5">{comparisons.length} more to explore</p>
           </div>
         </div>

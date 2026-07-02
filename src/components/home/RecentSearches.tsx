@@ -30,7 +30,7 @@ export function RecentSearches() {
   if (loading || searches.length === 0) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section aria-labelledby="recent-searches-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -38,7 +38,7 @@ export function RecentSearches() {
           </svg>
         </div>
         <div>
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+          <h2 id="recent-searches-heading" className="text-2xl sm:text-3xl font-display font-bold text-text">
             Just Compared
           </h2>
           <p className="text-text-secondary mt-0.5 text-sm">
