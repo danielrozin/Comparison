@@ -104,6 +104,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_abstract": entry.description,
       "abstract": entry.description,
       "DC.title": entry.title,
+      "DC.description": entry.description,
       "DC.creator": entry.authorName,
       "DC.publisher": "A Versus B",
       "DC.date": entry.publishedAt?.slice(0, 10) ?? "",

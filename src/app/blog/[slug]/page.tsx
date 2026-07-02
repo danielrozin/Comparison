@@ -260,6 +260,7 @@ export async function generateMetadata({
         ? new Date(article.publishedAt).toISOString().slice(0, 10)
         : new Date().toISOString().slice(0, 10),
       "DC.title": article.metaTitle || article.title,
+      "DC.description": (article.metaDescription || article.excerpt || "").slice(0, 300),
       "DC.creator": "Daniel Rozin",
       "DC.date": article.publishedAt
         ? new Date(article.publishedAt).toISOString().slice(0, 10)

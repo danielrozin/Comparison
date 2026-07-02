@@ -113,6 +113,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": title,
+      "DC.description": description,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",

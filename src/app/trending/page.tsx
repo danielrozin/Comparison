@@ -61,10 +61,16 @@ export const metadata: Metadata = {
     "DC.subject": "Trending Comparisons 2026, Popular Side-by-Side Comparisons",
     "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
     "DC.coverage": "Worldwide",
+    "DC.description": trendingDescription,
     "DC.type": "Text",
     "DC.format": "text/html",
       "DC.date": "2024-01-01",
     "DC.identifier": `${SITE_URL}/trending`,
+    "thumbnail": ogImage,
+    "twitter:label1": "Content Type",
+    "twitter:data1": "Trending Feed",
+    "twitter:label2": "Updated",
+    "twitter:data2": "Every 5 minutes",
   },
 };
 
