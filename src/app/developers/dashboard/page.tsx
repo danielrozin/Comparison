@@ -198,10 +198,11 @@ export default function DeveloperDashboard() {
 
       {!isAuthenticated ? (
         <div className="max-w-md">
-          <label className="block text-sm font-medium text-text mb-2">Your email address</label>
+          <label htmlFor="dev-email" className="block text-sm font-medium text-text mb-2">Your email address</label>
 
           <div className="flex gap-3">
             <input
+              id="dev-email"
               autoComplete="email"
               type="email"
               value={email}

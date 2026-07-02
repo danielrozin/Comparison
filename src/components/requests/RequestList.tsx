@@ -202,12 +202,12 @@ export function RequestList() {
                     {req.category && (
                       <span className="capitalize">{req.category}</span>
                     )}
-                    <span>
+                    <time dateTime={req.createdAt}>
                       {new Date(req.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                       })}
-                    </span>
+                    </time>
                   </div>
                   {req.status === "generated" && req.comparisonSlug && (
                     <Link

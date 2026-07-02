@@ -160,7 +160,7 @@ export function VersionHistory({
               <span className="font-semibold text-sm">Version History</span>
             </div>
             <span className="text-xs text-text-secondary hidden sm:inline">
-              Last updated {formatDate(currentVersion.updatedAt)}
+              Last updated <time dateTime={currentVersion.updatedAt}>{formatDate(currentVersion.updatedAt)}</time>
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -269,7 +269,7 @@ export function VersionHistory({
                                   </span>
                                 </div>
                                 <div className="text-xs text-text-secondary mt-0.5">
-                                  {formatDateTime(entry.createdAt)} &middot;{" "}
+                                  <time dateTime={entry.createdAt}>{formatDateTime(entry.createdAt)}</time> &middot;{" "}
                                   {PERFORMER_LABELS[entry.performedBy] ||
                                     entry.performedBy}
                                 </div>
@@ -361,7 +361,7 @@ export function VersionHistory({
                             Last Updated
                           </span>
                           <div className="text-xs text-text-secondary mt-0.5">
-                            {formatDate(currentVersion.updatedAt)}
+                            <time dateTime={currentVersion.updatedAt}>{formatDate(currentVersion.updatedAt)}</time>
                           </div>
                         </div>
                       </div>

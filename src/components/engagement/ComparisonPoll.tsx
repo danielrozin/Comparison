@@ -228,7 +228,9 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                   Get weekly poll results and new comparisons
                 </p>
                 <form onSubmit={handleEmailCapture} className="flex gap-2 max-w-sm mx-auto">
+                  <label htmlFor="poll-email-capture" className="sr-only">Email address</label>
                   <input
+                    id="poll-email-capture"
                     autoComplete="email"
                     type="email"
                     value={emailCaptureEmail}
