@@ -49,6 +49,7 @@ export default async function NotFound() {
               <input
                 type="text"
                 name="q"
+                aria-label="Search comparisons"
                 placeholder='Try "iPhone vs Samsung" or "Tesla vs BMW"...'
                 className="w-full pl-12 pr-28 py-4 rounded-xl text-base bg-white text-text placeholder:text-text-secondary/50 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
               />

@@ -221,6 +221,7 @@ export function SearchBox() {
             ref={inputRef}
             type="text"
             role="combobox"
+            aria-label="Search comparisons"
             aria-expanded={showDropdown && hasResults}
             aria-autocomplete="list"
             aria-controls={listboxId}
@@ -234,7 +235,7 @@ export function SearchBox() {
             onBlur={() => setIsFocused(false)}
             onKeyDown={handleKeyDown}
             placeholder={`Try "${TYPING_SUGGESTIONS[suggestionIndex]}"`}
-            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent focus:border-primary-300 outline-none transition-all duration-200"
+            className="w-full pl-12 sm:pl-14 pr-24 sm:pr-32 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent focus:border-primary-300 focus:ring-4 focus:ring-primary-300/20 outline-none transition-all duration-200"
             autoComplete="off"
             spellCheck={false}
           />
