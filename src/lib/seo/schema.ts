@@ -495,6 +495,47 @@ const WIKIDATA_Q_MAP: Record<string, string> = {
   "Hulu": "Q5937844", "Disney+": "Q57523709",
   "HBO Max": "Q115478500", "Amazon Prime Video": "Q8159742",
   "Apple TV+": "Q57737277", "Peacock": "Q66799500",
+  // Sports athletes (expanded)
+  "Kylian Mbappé": "Q1189701", "Mbappe": "Q1189701", "Erling Haaland": "Q3134365",
+  "Neymar": "Q1232897", "Ronaldinho": "Q62413", "Zlatan Ibrahimović": "Q10992",
+  "Kobe Bryant": "Q105765", "Stephen Curry": "Q352395", "Kevin Durant": "Q214868",
+  "Giannis Antetokounmpo": "Q584684", "Usain Bolt": "Q10952", "Simone Biles": "Q19765",
+  "Tiger Woods": "Q10931", "Phil Mickelson": "Q240780", "Lewis Hamilton": "Q9673",
+  "Max Verstappen": "Q2520648", "Michael Schumacher": "Q12541",
+  "Muhammad Ali": "Q36107", "Mike Tyson": "Q79031", "Floyd Mayweather": "Q332672",
+  "Manny Pacquiao": "Q134052", "Conor McGregor": "Q953603",
+  // Sports teams
+  "Real Madrid": "Q8359", "Barcelona": "Q7156", "Manchester United": "Q18656",
+  "Liverpool": "Q1130849", "Manchester City": "Q50602", "Chelsea": "Q9616",
+  "Arsenal": "Q9617", "Bayern Munich": "Q15789", "Juventus": "Q9625",
+  "Paris Saint-Germain": "Q83425", "LA Lakers": "Q38854", "Golden State Warriors": "Q157064",
+  "Chicago Bulls": "Q170793", "New York Knicks": "Q166366",
+  "New England Patriots": "Q170537", "Dallas Cowboys": "Q166296",
+  // Health & nutrition brands
+  "Pfizer": "Q206921", "Johnson & Johnson": "Q167180", "Moderna": "Q84672393",
+  "AstraZeneca": "Q731938", "Novartis": "Q507154", "Roche": "Q507686",
+  "Abbott": "Q7154640", "Medtronic": "Q1900899",
+  "Peloton": "Q28497049", "Fitbit": "Q16943890", "Garmin": "Q723218",
+  // Additional automotive
+  "Kia": "Q34235", "Mazda": "Q183903", "Subaru": "Q81965",
+  "Volvo": "Q215293", "Jaguar": "Q192381", "Land Rover": "Q170174",
+  "Maserati": "Q19660", "Bugatti": "Q207498", "Rolls-Royce": "Q186872",
+  "Bentley": "Q189881", "Dodge": "Q1061489", "Jeep": "Q181483",
+  "Ram": "Q3388818", "Rivian": "Q17112928", "Lucid Motors": "Q24284765",
+  // Software / SaaS
+  "GitHub": "Q364", "GitLab": "Q16639197", "Jira": "Q2130498",
+  "Notion": "Q78505384", "Figma": "Q60762764", "Canva": "Q22085553",
+  "HubSpot": "Q7069829", "Zendesk": "Q28091786", "ServiceNow": "Q2290000",
+  "Atlassian": "Q2768720", "Asana": "Q4801624", "Monday.com": "Q51752759",
+  "Airtable": "Q27714984", "Webflow": "Q7978285", "Squarespace": "Q4765718",
+  "Wix": "Q4015452", "WordPress": "Q257",
+  // Additional countries
+  "Turkey": "Q43", "Poland": "Q36", "Ukraine": "Q212",
+  "Egypt": "Q79", "Nigeria": "Q1033", "South Africa": "Q258",
+  "Indonesia": "Q252", "Pakistan": "Q843", "Bangladesh": "Q902",
+  "Vietnam": "Q881", "Thailand": "Q869", "Philippines": "Q928",
+  "Malaysia": "Q833", "Colombia": "Q739", "Chile": "Q298",
+  "Peru": "Q419", "Venezuela": "Q717", "Iran": "Q794",
 };
 
 /**
@@ -2245,6 +2286,11 @@ export function categoryPageSchema(category: CategoryData) {
       copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       acquireLicensePage: `${SITE_URL}/terms`,
       audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
+      // datePublished + dateCreated — missing creation timestamps weaken freshness signals.
+      // Google's freshness ranking and AI crawler date heuristics treat datePublished as the
+      // authoritative origin point; without it, the page appears undated (low trust for E-E-A-T).
+      datePublished: "2024-01-01",
+      dateCreated: "2024-01-01",
       dateModified: today,
       contentReferenceTime: today,
       locationCreated: { "@type": "Country", name: "United States" },
