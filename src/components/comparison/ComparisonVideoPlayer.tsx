@@ -93,6 +93,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                       alt={title}
                       className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                       loading="lazy"
+                      decoding="async"
                     />
                   )}
                   <div className="relative z-10 flex flex-col items-center justify-center">
