@@ -396,7 +396,14 @@ export default function DevelopersPage() {
 
       {/* Rate Limiting */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Rate Limiting</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Rate Limiting</h2>
+        </div>
         <p className="text-text-secondary mb-4">
           Every response includes rate limit headers:
         </p>
@@ -410,7 +417,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Response Format */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Response Format</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Response Format</h2>
+        </div>
         <CodeBlock title="Example: GET /api/v1/comparisons/messi-vs-ronaldo">{`{
   "id": "clx...",
   "slug": "messi-vs-ronaldo",
@@ -433,7 +447,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Errors */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Error Codes</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Error Codes</h2>
+        </div>
         <div className="border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
@@ -466,7 +487,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Key Management */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Key Management</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Key Management</h2>
+        </div>
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-text mb-2">List your keys</h3>
