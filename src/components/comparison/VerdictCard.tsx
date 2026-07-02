@@ -97,7 +97,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                 <div className={`flex items-center gap-2 min-w-0 transition-all ${winnerIdx === 0 ? "scale-105" : ""}`}>
                   {entityA.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityA.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
+                    <img src={entityA.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-blue-200">
                       {entityA.name.charAt(0).toUpperCase()}
@@ -131,7 +131,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                   </div>
                   {entityB.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityB.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
+                    <img src={entityB.imageUrl} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
                   ) : (
                     <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-purple-200">
                       {entityB.name.charAt(0).toUpperCase()}

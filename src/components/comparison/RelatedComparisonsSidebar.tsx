@@ -118,7 +118,7 @@ export function RelatedComparisonsSidebar({
       )}
 
       {showDesktop && (
-        <aside className="hidden lg:block w-[320px] shrink-0">
+        <aside className="hidden lg:block w-[320px] shrink-0" aria-label="Related comparisons">
           <div className="sticky top-24">
             <div className="bg-surface/60 border border-border rounded-2xl p-4">
               <div className="flex items-center gap-2 mb-4">

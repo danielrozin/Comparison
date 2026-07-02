@@ -69,7 +69,7 @@ export function LegalPageLayout({
 
       <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-12">
         {/* Sidebar TOC — sticky on desktop, hidden on mobile */}
-        <aside className="hidden lg:block print:hidden">
+        <aside className="hidden lg:block print:hidden" aria-label="Table of contents">
           <div className="sticky top-24">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">
               On this page
