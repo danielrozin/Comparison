@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SITE_NAME, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 
 const NAV_ITEMS = [
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
@@ -54,9 +56,6 @@ export function Header() {
 
   return (
     <header className={`sticky top-0 z-50 transition-all duration-200 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white border-b border-border"}`}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium">
-        Skip to main content
-      </a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -68,7 +67,7 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav ref={navRef} className="hidden lg:flex items-center">
+          <nav ref={navRef} aria-label="Primary navigation" className="hidden lg:flex items-center">
             {NAV_ITEMS.map((item, idx) => {
               const subs = CATEGORY_SUBCATEGORIES[item.slug];
               const hasSubs = subs && subs.length > 0;
@@ -85,8 +84,9 @@ export function Header() {
                 >
                   <Link
                     href={`/category/${item.slug}`}
+                    aria-current={pathname?.startsWith(`/category/${item.slug}`) ? "page" : undefined}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors ${
-                      isOpen ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
+                      isOpen || pathname?.startsWith(`/category/${item.slug}`) ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                     }`}
                   >
                     {item.name}
@@ -132,16 +132,16 @@ export function Header() {
 
             <div className="w-px h-5 bg-border mx-1 flex-shrink-0" />
 
-            <Link href="/trending" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-text-secondary hover:text-text hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/trending" aria-current={pathname === "/trending" ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname === "/trending" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Trending
             </Link>
-            <Link href="/blog" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-text-secondary hover:text-text hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/blog" aria-current={pathname?.startsWith("/blog") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname?.startsWith("/blog") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Blog
             </Link>
-            <Link href="/reviews" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-text-secondary hover:text-text hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Reviews
             </Link>
-            <Link href="/requests" className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap">
               Requests
             </Link>
           </nav>
@@ -161,8 +161,9 @@ export function Header() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-alt transition-colors"
-              aria-label="Toggle menu"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               {mobileMenuOpen ? (
                 <svg className="w-5 h-5 text-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -180,7 +181,7 @@ export function Header() {
 
       {/* ─── Mobile menu — only mounted when open, removes ~18KB of subcategory HTML from initial SSR ─── */}
       {mobileMenuOpen && (
-      <div className="lg:hidden">
+      <nav id="mobile-menu" aria-label="Mobile navigation" className="lg:hidden">
         <div className="bg-white border-t border-border overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
@@ -275,7 +276,7 @@ export function Header() {
             </Link>
           </div>
         </div>
-      </div>
+      </nav>
       )}
     </header>
   );
