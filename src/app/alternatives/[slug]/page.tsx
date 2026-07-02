@@ -181,7 +181,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1"],
+      cssSelector: ["h1", ".alternatives-intro", ".entity-description", ".alternatives-list"],
     },
     alternativeHeadline: `Best ${name} Alternatives in ${new Date().getFullYear()}`,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -229,7 +229,11 @@ export default async function AlternativesPage({ params }: PageProps) {
     })),
     timeRequired: "PT4M",
     wordCount: 800,
-    datePublished: today,
+    // Stable baseline — alternatives pages have been live since 2024-01-01.
+    // Using today as datePublished was wrong: it changed on every ISR revalidation,
+    // making the page appear newly published on every crawl (confuses freshness signals).
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
     copyrightYear: new Date().getFullYear(),
     // discussionUrl — Reddit search for community discussions on alternatives to this entity.
     // Google E-E-A-T evaluators and AI crawlers use discussionUrl as an engagement signal.

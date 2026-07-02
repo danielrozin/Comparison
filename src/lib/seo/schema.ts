@@ -2602,6 +2602,10 @@ export function profilePageSchema(entity: {
     description: profileDesc,
     abstract: profileDesc,
     url,
+    // datePublished + dateCreated — stable platform baseline (all entity profiles live since 2024-01-01).
+    // Without these, Google and AI crawlers treat entity pages as undated, weakening E-E-A-T signals.
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
     dateModified: today,
     lastReviewed: today,
     contentReferenceTime: today,
