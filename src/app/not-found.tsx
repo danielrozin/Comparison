@@ -79,7 +79,7 @@ export default async function NotFound() {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
-          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>

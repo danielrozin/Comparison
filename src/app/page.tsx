@@ -199,7 +199,7 @@ export default async function HomePage() {
             {/* Social-proof stats row */}
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-7 animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <div className="flex items-center gap-1.5 text-primary-100">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                 </svg>
                 <span className="text-sm font-semibold text-white">{totalCount.toLocaleString()}+</span>
@@ -207,7 +207,7 @@ export default async function HomePage() {
               </div>
               <div className="w-px h-4 bg-white/15" aria-hidden="true" />
               <div className="flex items-center gap-1.5 text-primary-100">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                 </svg>
                 <span className="text-sm font-semibold text-white">{CATEGORIES.length}</span>
@@ -215,7 +215,7 @@ export default async function HomePage() {
               </div>
               <div className="w-px h-4 bg-white/15" aria-hidden="true" />
               <div className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span className="text-xs text-primary-200">Always free · Data-backed</span>
@@ -262,7 +262,7 @@ export default async function HomePage() {
 
         {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 80" fill="none" className="w-full">
+          <svg viewBox="0 0 1440 80" fill="none" className="w-full" aria-hidden="true">
             <path
               d="M0 80V20C240 60 480 0 720 20C960 40 1200 0 1440 20V80H0Z"
               fill="white"
@@ -385,7 +385,7 @@ export default async function HomePage() {
                     </div>
 
                     <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
@@ -451,7 +451,7 @@ export default async function HomePage() {
               title: "Search or Browse",
               desc: "Type any two things you want to compare, or browse our categories.",
               icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               ),
@@ -461,7 +461,7 @@ export default async function HomePage() {
               title: "Get Instant Answers",
               desc: "See key differences, structured tables, and visual comparisons at a glance.",
               icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               ),
@@ -471,7 +471,7 @@ export default async function HomePage() {
               title: "Explore & Discover",
               desc: "Find related comparisons, alternatives, and deeper analysis.",
               icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               ),
@@ -563,7 +563,7 @@ export default async function HomePage() {
                   {/* Colour-accent header block */}
                   <div className={`h-28 bg-gradient-to-br ${grad} relative overflow-hidden flex-shrink-0`}>
                     <div className="absolute inset-0 opacity-10">
-                      <svg viewBox="0 0 200 80" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                      <svg viewBox="0 0 200 80" className="w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                         <circle cx="160" cy="10" r="60" fill="white" />
                         <circle cx="30" cy="70" r="40" fill="white" />
                       </svg>
@@ -575,7 +575,7 @@ export default async function HomePage() {
                         </span>
                       )}
                       <span className="text-xs font-medium px-2 py-1 rounded-full bg-black/20 text-white/90 backdrop-blur-sm flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         {readMins} min
@@ -602,7 +602,7 @@ export default async function HomePage() {
                       </span>
                       <span className="flex items-center gap-1 text-primary-600 font-semibold group-hover:gap-2 transition-all duration-200">
                         Read more
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                       </span>
@@ -643,7 +643,7 @@ export default async function HomePage() {
             href="/requests"
             className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-full hover:shadow-lg transition-all duration-150 shadow-md"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
             Suggest a Comparison
@@ -669,7 +669,7 @@ export default async function HomePage() {
             className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-bold rounded-full hover:bg-primary-50 transition-colors shadow-lg"
           >
             Start Comparing
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>

@@ -76,7 +76,7 @@ function SearchContent() {
                 </Link>
               </li>
               <li aria-hidden="true">
-                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </li>
@@ -115,7 +115,7 @@ function SearchContent() {
           </form>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>

@@ -350,9 +350,9 @@ export default function BestCloudPlatform2026Page() {
                 <span className="sr-only sm:not-sr-only">Home</span>
               </Link>
             </li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
             <li><Link href="/blog" className="hover:text-primary-600 transition-colors">Blog</Link></li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
             <li className="text-text font-medium" aria-current="page">Best Cloud Platform 2026</li>
           </ol>
         </nav>

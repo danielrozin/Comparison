@@ -775,7 +775,7 @@ export default async function BlogPostPage({
                         <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors">
                           {title}
                         </span>
-                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all ml-auto flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all ml-auto flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>

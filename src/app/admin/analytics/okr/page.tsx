@@ -49,7 +49,7 @@ function ProgressRing({ progress, size = 80, strokeWidth = 6 }: { progress: numb
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+      <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
         <circle cx={size / 2} cy={size / 2} r={radius} stroke="#e5e7eb" strokeWidth={strokeWidth} fill="none" />
         <circle
           cx={size / 2} cy={size / 2} r={radius}
