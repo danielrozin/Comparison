@@ -88,7 +88,7 @@ export function PartnershipForm() {
   if (status === "success") {
     return (
       <div className="bg-surface-alt border border-border rounded-2xl p-8 text-center">
-        <div className="text-4xl mb-4">&#10003;</div>
+        <div className="text-4xl mb-4" aria-hidden="true">&#10003;</div>
         <h3 className="font-display font-bold text-text text-lg mb-2">
           Thank you for your interest!
         </h3>

@@ -294,7 +294,7 @@ export default function EmbedLandingPage() {
                 "\"Powered by A Versus B\" branding",
               ].map((f) => (
                 <li key={f} className="flex gap-2 text-sm text-text-secondary">
-                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  <span className="text-primary-600 font-bold shrink-0" aria-hidden="true">&#10003;</span>
                   {f}
                 </li>
               ))}
@@ -328,7 +328,7 @@ export default function EmbedLandingPage() {
                 "Priority support",
               ].map((f) => (
                 <li key={f} className="flex gap-2 text-sm text-text-secondary">
-                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  <span className="text-primary-600 font-bold shrink-0" aria-hidden="true">&#10003;</span>
                   {f}
                 </li>
               ))}
@@ -359,7 +359,7 @@ export default function EmbedLandingPage() {
                 "Dedicated account manager",
               ].map((f) => (
                 <li key={f} className="flex gap-2 text-sm text-text-secondary">
-                  <span className="text-primary-600 font-bold shrink-0">&#10003;</span>
+                  <span className="text-primary-600 font-bold shrink-0" aria-hidden="true">&#10003;</span>
                   {f}
                 </li>
               ))}

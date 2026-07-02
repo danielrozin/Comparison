@@ -263,7 +263,7 @@ export default function VersusComFaqPage() {
             >
               <summary className="cursor-pointer p-5 font-semibold text-text flex items-center justify-between">
                 {faq.question}
-                <span className="text-text-secondary group-open:rotate-180 transition-transform ml-2">
+                <span className="text-text-secondary group-open:rotate-180 transition-transform ml-2" aria-hidden="true">
                   &#9662;
                 </span>
               </summary>

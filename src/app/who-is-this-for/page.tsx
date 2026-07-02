@@ -396,7 +396,7 @@ export default function WhoIsThisForPage() {
               className="border border-border rounded-xl p-5"
             >
               <div className="flex items-start gap-3">
-                <span className="text-red-500 text-lg mt-0.5">&#10005;</span>
+                <span className="text-red-500 text-lg mt-0.5" aria-hidden="true">&#10005;</span>
                 <div>
                   <h3 className="font-semibold text-text mb-1">{item.title}</h3>
                   <p className="text-sm text-text-secondary leading-relaxed">
@@ -588,7 +588,7 @@ export default function WhoIsThisForPage() {
             >
               <summary className="cursor-pointer p-5 font-semibold text-text flex items-center justify-between">
                 {faq.question}
-                <span className="text-text-secondary group-open:rotate-180 transition-transform ml-2">
+                <span className="text-text-secondary group-open:rotate-180 transition-transform ml-2" aria-hidden="true">
                   &#9662;
                 </span>
               </summary>
