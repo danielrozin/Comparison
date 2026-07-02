@@ -754,15 +754,15 @@ export default async function BlogPostPage({
                 <h3 className="text-lg font-bold text-text mb-4">
                   Related Comparisons
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
                   {article.relatedComparisonSlugs.map((compSlug) => {
                     const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
                     const parts = title.split(/\s+vs\.?\s+/i);
                     return (
+                      <li key={compSlug} className="flex">
                       <Link
-                        key={compSlug}
                         href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                       >
                         <div className="flex -space-x-2 flex-shrink-0">
                           <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
@@ -779,9 +779,10 @@ export default async function BlogPostPage({
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
+                      </li>
                     );
                   })}
-                </div>
+                </ul>
               </div>
             )}
 

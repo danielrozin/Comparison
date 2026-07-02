@@ -87,18 +87,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function SourceBreakdown({ breakdown }: { breakdown: Record<string, { avg: number; count: number }> }) {
   const sources = Object.entries(breakdown).sort((a, b) => b[1].count - a[1].count);
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
       {sources.map(([source, data]) => (
-        <div key={source} className="bg-white border border-border rounded-lg p-3">
+        <li key={source} className="bg-white border border-border rounded-lg p-3">
           <p className="text-sm font-medium text-text capitalize">{source}</p>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-lg font-bold text-text">{data.avg.toFixed(1)}</span>
             <span className="text-xs text-text-secondary">/ 5</span>
           </div>
           <p className="text-xs text-text-secondary mt-0.5">{data.count} review{data.count !== 1 ? "s" : ""}</p>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -377,9 +377,9 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
         {/* Aggregation details */}
         {aggregation && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 list-none">
             {/* Pros & Cons */}
-            <div className="bg-white border border-border rounded-xl p-6">
+            <li className="bg-white border border-border rounded-xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
                   <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -416,10 +416,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   </div>
                 )}
               </div>
-            </div>
+            </li>
 
             {/* Sentiment & Source Breakdown */}
-            <div className="space-y-6">
+            <li className="space-y-6">
               {aggregation.positivePct != null && aggregation.negativePct != null && (
                 <div className="bg-white border border-border rounded-xl p-6">
                   <div className="flex items-center gap-3 mb-4">
@@ -446,8 +446,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <SourceBreakdown breakdown={aggregation.sourceBreakdown} />
                 </div>
               )}
-            </div>
-          </div>
+            </li>
+          </ul>
         )}
 
         {/* Reviews list */}

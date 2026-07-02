@@ -190,7 +190,7 @@ export default function DevelopersPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Pricing</h2>
         </div>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <ul className="grid sm:grid-cols-3 gap-4 list-none">
           {[
             {
               name: "Free",
@@ -215,7 +215,7 @@ export default function DevelopersPage() {
               features: ["Everything in Pro", "Custom categories", "Dedicated support", "SLA guarantee", "White-label embed"],
             },
           ].map((tier) => (
-            <div
+            <li
               key={tier.name}
               className={`rounded-xl border p-6 ${
                 tier.highlighted
@@ -241,9 +241,9 @@ export default function DevelopersPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Getting Started */}
