@@ -191,6 +191,8 @@ export default async function EntityPage({ params }: PageProps) {
 
   // Wrap in @graph — raw JSON arrays are invalid JSON-LD; Google and AI crawlers
   // require either a single node or { "@context", "@graph": [...] }.
+  const hasCuratedFaqs = !!entityContent?.faqs?.length;
+  const faqNodeId = `${SITE_URL}/entity/${slug}#faq`;
   const entityGraphItems: Record<string, unknown>[] = [
     breadcrumbSchema(breadcrumbItems),
     aggregateRatingSchema({
@@ -200,20 +202,27 @@ export default async function EntityPage({ params }: PageProps) {
       ratingValue: rating,
       reviewCount,
     }),
-    profilePageSchema({
-      name,
-      slug,
-      shortDesc: entityContent?.description?.slice(0, 200) ?? null,
-      entityType: inferredEntityType,
-      imageUrl: null,
-      comparisonCount: relatedComparisons.length,
-      topComparisons: relatedComparisons.slice(0, 10),
-    }),
+    {
+      ...profilePageSchema({
+        name,
+        slug,
+        shortDesc: entityContent?.description?.slice(0, 200) ?? null,
+        entityType: inferredEntityType,
+        imageUrl: null,
+        comparisonCount: relatedComparisons.length,
+        topComparisons: relatedComparisons.slice(0, 10),
+      }),
+      // hasPart — formal ProfilePage→FAQPage edge. Google and AI answer engines
+      // use hasPart to discover which structured FAQ content belongs to this profile,
+      // enabling FAQ rich results for "[entity] questions" queries.
+      ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
+    },
   ];
   // Inject FAQPage into graph when entity content includes curated FAQs.
   // AEO: FAQPage schema enables featured-snippet Q&A cards in Google and AI answer engines.
-  if (entityContent?.faqs?.length) {
-    entityGraphItems.push(faqSchema(entityContent.faqs));
+  // Pass faqNodeId so faqSchema emits @id + isPartOf back-reference to the ProfilePage.
+  if (hasCuratedFaqs) {
+    entityGraphItems.push(faqSchema(entityContent!.faqs, faqNodeId));
   }
 
   const entityJsonLd = {

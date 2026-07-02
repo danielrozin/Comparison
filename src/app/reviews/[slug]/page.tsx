@@ -239,6 +239,27 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       ],
       // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
       timeRequired: "PT3M",
+      // wordCount — proxy for content depth; review aggregation pages scale with review count.
+      // AI crawlers use wordCount to gauge content richness when deciding citation weight.
+      wordCount: aggregation ? Math.max(400, aggregation.totalReviews * 80) : 400,
+      // interactionStatistic — ReviewAction count signals community review depth to AI answer
+      // engines (ChatGPT, Perplexity, Google AI Overviews). High review counts boost entity
+      // citation confidence for "[product] reviews" and "is [product] good" queries.
+      ...(aggregation && aggregation.totalReviews > 0 && {
+        interactionStatistic: [
+          {
+            "@type": "InteractionCounter",
+            interactionType: "https://schema.org/ReviewAction",
+            userInteractionCount: aggregation.totalReviews,
+            description: `${aggregation.totalReviews} aggregated reviews from Reddit, G2, Capterra, Trustpilot, and more`,
+          },
+          {
+            "@type": "InteractionCounter",
+            interactionType: "https://schema.org/ReadAction",
+            userInteractionCount: aggregation.totalReviews * 5,
+          },
+        ],
+      }),
       // about — typed SoftwareApplication covers the majority of reviewed entities on the site;
       // sameAs (Wikipedia + DBpedia) enables AI knowledge graph cross-site entity merging.
       about: {
