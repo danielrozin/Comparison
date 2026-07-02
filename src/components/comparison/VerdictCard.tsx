@@ -12,7 +12,7 @@ interface VerdictCardProps {
 
 function TrophyIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} fill="currentColor" viewBox="0 0 24 24">
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M5 3h14a1 1 0 011 1v2a5 5 0 01-3.53 4.78A5.01 5.01 0 0113 14.92V17h2a1 1 0 110 2H9a1 1 0 110-2h2v-2.08A5.01 5.01 0 017.53 10.78 5 5 0 014 6V4a1 1 0 011-1zm1 2v1a3 3 0 002.08 2.85A5 5 0 018 7V5H6zm12 0h-2v2a5 5 0 01-.08 1.85A3 3 0 0018 6V5zm-6 8a3 3 0 003-3V5H9v5a3 3 0 003 3z" />
     </svg>
   );
