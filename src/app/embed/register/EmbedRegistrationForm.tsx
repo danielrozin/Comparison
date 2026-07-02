@@ -97,13 +97,14 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-text mb-2">Plan</label>
-        <div className="grid grid-cols-3 gap-3">
+        <p id="plan-label" className="block text-sm font-medium text-text mb-2">Plan</p>
+        <div className="grid grid-cols-3 gap-3" role="group" aria-labelledby="plan-label">
           {(Object.keys(TIER_INFO) as Tier[]).map((t) => (
             <button
               key={t}
               type="button"
               onClick={() => setTier(t)}
+              aria-pressed={tier === t}
               className={`p-3 rounded-xl border text-left transition-all ${
                 tier === t
                   ? "border-primary-600 ring-2 ring-primary-600/20 bg-primary-50"
