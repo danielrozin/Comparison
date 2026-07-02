@@ -188,6 +188,8 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                             src={entity.imageUrl}
                             alt={entity.name}
                             className="w-7 h-7 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0"
+                            loading="lazy"
+                            decoding="async"
                           />
                         ) : (
                           <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs ${idx === 0 ? "bg-blue-500/30 text-blue-200" : "bg-purple-500/30 text-purple-200"}`}>
