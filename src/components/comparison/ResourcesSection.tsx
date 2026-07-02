@@ -72,7 +72,7 @@ export function ResourcesSection({
                 <li key={r.url}>
                 <a
                   href={r.url}
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                   rel="noopener noreferrer"
                   className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-blue-300 hover:bg-blue-50/50 transition-all"
                 >
@@ -147,7 +147,7 @@ export function ResourcesSection({
                 <li key={r.url}>
                 <a
                   href={r.url}
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                   rel="noopener noreferrer"
                   className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-red-300 hover:bg-red-50/50 transition-all"
                 >

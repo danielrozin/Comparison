@@ -140,7 +140,7 @@ export function StickyAffiliateCTA({
               {linkA && entityA && (
                 <a
                   href={linkA.url}
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                   rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   onClick={() => handleClick(entityA, "left")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
@@ -171,7 +171,7 @@ export function StickyAffiliateCTA({
               {linkB && entityB && (
                 <a
                   href={linkB.url}
-                  target="_blank"
+                  target="_blank" rel="noopener noreferrer"
                   rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   onClick={() => handleClick(entityB, "right")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${

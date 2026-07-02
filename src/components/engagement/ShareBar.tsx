@@ -37,7 +37,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       {/* Twitter/X */}
       <a
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-black hover:text-white transition-all duration-150 hover:scale-110"
         aria-label="Share on X"
@@ -51,7 +51,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       {/* Facebook */}
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-blue-600 hover:text-white transition-all duration-150 hover:scale-110"
         aria-label="Share on Facebook"
@@ -65,7 +65,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       {/* LinkedIn */}
       <a
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#0077B5] hover:text-white transition-all duration-150 hover:scale-110"
         aria-label="Share on LinkedIn"
@@ -79,7 +79,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       {/* WhatsApp */}
       <a
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#25D366] hover:text-white transition-all duration-150 hover:scale-110"
         aria-label="Share on WhatsApp"
@@ -93,7 +93,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       {/* Reddit */}
       <a
         href={`https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         rel="noopener noreferrer"
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-orange-500 hover:text-white transition-all duration-150 hover:scale-110"
         aria-label="Share on Reddit"

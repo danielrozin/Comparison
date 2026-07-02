@@ -78,7 +78,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
               {/* Cross-site SmartReview deep link */}
               <a
                 href={`${SMARTREVIEW_URL}/search?q=${encodeURIComponent(name)}`}
-                target="_blank"
+                target="_blank" rel="noopener noreferrer"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline"
               >

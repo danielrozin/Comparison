@@ -112,7 +112,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
                   {source.url ? (
                     <a
                       href={source.url}
-                      target="_blank"
+                      target="_blank" rel="noopener noreferrer"
                       rel="noopener noreferrer nofollow"
                       className="underline decoration-indigo-200 hover:text-indigo-600 hover:decoration-indigo-400 transition-colors"
                     >

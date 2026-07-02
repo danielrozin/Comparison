@@ -375,7 +375,7 @@ export default function AnalyticsDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a
               href={`https://analytics.google.com/analytics/web/#/p${config.ga4Property.replace("G-", "")}/reports`}
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-sm transition-all"
             >
@@ -387,7 +387,7 @@ export default function AnalyticsDashboard() {
             </a>
             <a
               href={`https://clarity.microsoft.com/projects/view/${config.clarityProject}`}
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-300 hover:shadow-sm transition-all"
             >
@@ -399,7 +399,7 @@ export default function AnalyticsDashboard() {
             </a>
             <a
               href="https://search.google.com/search-console"
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-green-300 hover:shadow-sm transition-all"
             >

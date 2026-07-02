@@ -356,7 +356,7 @@ export default function LLMComparisonsPage() {
           <a
             href="https://en.wikipedia.org/wiki/Comparison_of_large_language_models"
             rel="nofollow noopener"
-            target="_blank"
+            target="_blank" rel="noopener noreferrer"
             className="text-primary-600 hover:underline"
           >
             Comparison of large language models
@@ -488,7 +488,7 @@ export default function LLMComparisonsPage() {
               {m.name} ({m.vendor}).{" "}
               {m.sources.map((s, si) => (
                 <span key={s.url}>
-                  <a href={s.url} rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">{s.label}</a>
+                  <a href={s.url} rel="nofollow noopener" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">{s.label}</a>
                   {si < m.sources.length - 1 ? "; " : ""}
                 </span>
               ))}

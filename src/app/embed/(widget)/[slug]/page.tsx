@@ -178,7 +178,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
           <div className="border-t border-border px-6 py-4 text-center">
             <a
               href={footerUrl}
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
               rel="noopener noreferrer"
               className="text-sm font-medium hover:underline"
               style={{ color: primaryColor }}
