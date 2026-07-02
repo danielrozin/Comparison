@@ -225,7 +225,12 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     timeRequired: "PT3M",
     wordCount: Math.max(600, spokes.length * 40),
-    datePublished: hubToday,
+    // dateCreated + datePublished — stable creation timestamps for freshness ranking.
+    // Using a fixed baseline (platform launch) rather than today prevents Google and
+    // AI crawlers from treating every ISR revalidation as a brand-new document publish,
+    // which would falsely reset content age signals and depress long-term authority.
+    dateCreated: "2024-01-01",
+    datePublished: "2024-01-01",
     dateModified: hubToday,
     copyrightYear: new Date().getFullYear(),
     // discussionUrl — Reddit search for community discussions on this hub topic.

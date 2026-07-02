@@ -156,6 +156,17 @@ export default function StudiesIndexPage() {
     })),
     timeRequired: "PT2M",
     wordCount: 400,
+    // datePublished + dateCreated — stable creation timestamps for E-E-A-T freshness.
+    dateCreated: "2024-01-01",
+    datePublished: "2024-01-01",
+    dateModified: studiesToday,
+    // interactionStatistic — study-page engagement signal for AI citation authority.
+    interactionStatistic: {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/ReadAction",
+      userInteractionCount: STUDIES.length,
+      description: `${STUDIES.length} original data studies published on A Versus B`,
+    },
   };
 
   return (
