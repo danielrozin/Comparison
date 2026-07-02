@@ -130,7 +130,7 @@ export function VersionHistory({
     ACTION_CONFIG[action] || ACTION_CONFIG.updated;
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section aria-label="Version history" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header bar */}
       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-xl border border-indigo-100 dark:border-indigo-800/40 overflow-hidden">
         {/* Summary row — always visible */}

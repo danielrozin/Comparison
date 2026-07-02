@@ -176,6 +176,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                 </pre>
                 <button
                   onClick={() => handleCopy(activeTab)}
+                  aria-label={copiedTab === activeTab ? "Copied to clipboard" : "Copy embed code"}
                   className={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
                     copiedTab === activeTab
                       ? "bg-green-100 text-green-700 border border-green-200"
@@ -183,7 +184,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                   }`}
                 >
                   {copiedTab === activeTab ? (
-                    <span className="flex items-center gap-1">
+                    <span role="status" aria-live="polite" className="flex items-center gap-1">
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>

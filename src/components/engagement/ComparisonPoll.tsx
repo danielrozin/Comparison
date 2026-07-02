@@ -152,7 +152,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
   if (!mounted) {
     // SSR placeholder to avoid hydration mismatch
     return (
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <section aria-label="Community poll" aria-busy="true" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="bg-white border border-border rounded-xl p-5 sm:p-6 animate-pulse">
           <div className="h-6 bg-surface-alt rounded w-48 mx-auto mb-4" />
           <div className="grid grid-cols-2 gap-4">
@@ -170,7 +170,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
   const pctB = total > 0 ? 100 - pctA : 50;
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <section aria-labelledby="poll-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="relative bg-white border border-border rounded-xl overflow-hidden">
         <div className="h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
         <div className="p-5 sm:p-6">
@@ -180,7 +180,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           </div>
-          <h3 className="text-sm font-bold text-text-secondary uppercase tracking-wider">
+          <h3 id="poll-heading" className="text-sm font-bold text-text-secondary uppercase tracking-wider">
             Which do you prefer?
           </h3>
         </div>
@@ -201,7 +201,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
             />
           </div>
         ) : (
-          <div className="space-y-4">
+          <div role="status" aria-live="polite" aria-atomic="true" className="space-y-4">
             <div className="space-y-3">
               <ResultBar
                 name={entityA.name}
