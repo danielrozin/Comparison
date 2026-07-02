@@ -252,7 +252,7 @@ export function PartnershipForm() {
       </button>
 
       {status === "error" && (
-        <p className="text-red-500 text-sm text-center">
+        <p role="alert" className="text-red-500 text-sm text-center">
           Something went wrong. Please try again or email us directly.
         </p>
       )}

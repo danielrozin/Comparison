@@ -179,7 +179,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+        <div role="alert" className="bg-red-50 border border-red-200 rounded-lg p-3">
           <p className="text-sm text-red-700">{error}</p>
           {existingSlug && (
             <a

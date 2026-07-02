@@ -68,7 +68,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           {status === "loading" ? "..." : "Subscribe"}
         </button>
         {status === "error" && (
-          <p className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
+          <p role="alert" className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
         )}
       </form>
     );
@@ -111,7 +111,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             </button>
           </form>
           {status === "error" && (
-            <p className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
+            <p role="alert" className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
           )}
           <p className="text-xs text-text-secondary mt-3">
             Join 1,000+ readers. Unsubscribe anytime.
