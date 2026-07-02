@@ -58,11 +58,11 @@ export function FeedbackWidget() {
         aria-label={isOpen ? "Close feedback" : "Send feedback"}
       >
         {isOpen ? (
-          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
         ) : (
-          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
         )}
@@ -70,7 +70,7 @@ export function FeedbackWidget() {
 
       {/* Panel */}
       {isOpen && (
-        <div className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+        <div role="dialog" aria-modal="true" aria-label="Feedback and requests" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4">
             <h3 className="font-bold text-lg">Feedback & Requests</h3>
