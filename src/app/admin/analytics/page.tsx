@@ -493,10 +493,10 @@ export default function AnalyticsDashboard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="text-left px-4 py-3 font-semibold text-gray-600">Event</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-600">Category</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden md:table-cell">Description</th>
-                  <th className="text-left px-4 py-3 font-semibold text-gray-600 hidden lg:table-cell">Parameters</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold text-gray-600">Event</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold text-gray-600">Category</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold text-gray-600 hidden md:table-cell">Description</th>
+                  <th scope="col" className="text-left px-4 py-3 font-semibold text-gray-600 hidden lg:table-cell">Parameters</th>
                 </tr>
               </thead>
               <tbody>
@@ -681,11 +681,11 @@ export default function AnalyticsDashboard() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-gray-500 font-medium">Query</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Impressions</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Clicks</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">CTR</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Position</th>
+                        <th scope="col" className="text-left py-2 text-gray-500 font-medium">Query</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Impressions</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Clicks</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">CTR</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Position</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -711,11 +711,11 @@ export default function AnalyticsDashboard() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-gray-500 font-medium">Query</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Impressions</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Clicks</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">CTR</th>
-                        <th className="text-right py-2 text-gray-500 font-medium">Position</th>
+                        <th scope="col" className="text-left py-2 text-gray-500 font-medium">Query</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Impressions</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Clicks</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">CTR</th>
+                        <th scope="col" className="text-right py-2 text-gray-500 font-medium">Position</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -897,9 +897,9 @@ export default function AnalyticsDashboard() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-gray-200">
-                          <th className="text-left py-2 text-gray-500 font-medium">#</th>
-                          <th className="text-left py-2 text-gray-500 font-medium">Comparison</th>
-                          <th className="text-right py-2 text-gray-500 font-medium">Searches</th>
+                          <th scope="col" className="text-left py-2 text-gray-500 font-medium">#</th>
+                          <th scope="col" className="text-left py-2 text-gray-500 font-medium">Comparison</th>
+                          <th scope="col" className="text-right py-2 text-gray-500 font-medium">Searches</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -920,9 +920,9 @@ export default function AnalyticsDashboard() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-gray-200">
-                          <th className="text-left py-2 text-gray-500 font-medium">#</th>
-                          <th className="text-left py-2 text-gray-500 font-medium">Category</th>
-                          <th className="text-right py-2 text-gray-500 font-medium">Searches</th>
+                          <th scope="col" className="text-left py-2 text-gray-500 font-medium">#</th>
+                          <th scope="col" className="text-left py-2 text-gray-500 font-medium">Category</th>
+                          <th scope="col" className="text-right py-2 text-gray-500 font-medium">Searches</th>
                         </tr>
                       </thead>
                       <tbody>
