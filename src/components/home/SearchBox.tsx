@@ -318,7 +318,7 @@ export function SearchBox() {
                       : "hover:bg-primary-50/30 border-l-transparent"
                   }`}
                 >
-                  <span className="text-base flex-shrink-0 w-5 text-center leading-none">
+                  <span className="text-base flex-shrink-0 w-5 text-center leading-none" aria-hidden="true">
                     {CATEGORY_ICONS[catKey] || "📊"}
                   </span>
                   {parts ? (

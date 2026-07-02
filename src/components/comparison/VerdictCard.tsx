@@ -106,7 +106,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                   <div className="min-w-0">
                     <div className="flex items-center gap-1">
                       <span className="block text-xs text-blue-300/80 truncate">{entityA.name}</span>
-                      {winnerIdx === 0 && <span className="text-[10px]">👑</span>}
+                      {winnerIdx === 0 && <span className="text-[10px]" aria-hidden="true">👑</span>}
                     </div>
                     <div className="flex items-baseline gap-0.5">
                       <span className={`text-2xl font-black tabular-nums ${winnerIdx === 0 ? "text-yellow-300" : "text-white"}`}>{scores.scoreA}</span>
@@ -121,7 +121,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                 <div className={`flex items-center gap-2 min-w-0 text-right transition-all ${winnerIdx === 1 ? "scale-105" : ""}`}>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1 justify-end">
-                      {winnerIdx === 1 && <span className="text-[10px]">👑</span>}
+                      {winnerIdx === 1 && <span className="text-[10px]" aria-hidden="true">👑</span>}
                       <span className="block text-xs text-purple-300/80 truncate text-right">{entityB.name}</span>
                     </div>
                     <div className="flex items-baseline gap-0.5 justify-end">
@@ -202,7 +202,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                           </p>
                           {isWinner && (
                             <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/30">
-                              👑 Best pick
+                              <span aria-hidden="true">👑</span>{" "}Best pick
                             </span>
                           )}
                         </div>

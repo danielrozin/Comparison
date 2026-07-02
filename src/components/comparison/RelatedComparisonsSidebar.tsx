@@ -60,7 +60,7 @@ function ComparisonCard({
           )}
           {isTrending && (
             <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-orange-50 text-orange-600 border border-orange-100">
-              🔥 Hot
+              <span aria-hidden="true">🔥</span>{" "}Hot
             </span>
           )}
         </div>

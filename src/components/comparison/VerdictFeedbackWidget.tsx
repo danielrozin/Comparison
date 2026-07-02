@@ -194,7 +194,9 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
           </p>
           {status === "done" && vote && (
             <p className="text-xs text-white/70 mt-0.5">
-              You voted {vote === "up" ? "👍" : "👎"} on this verdict.{" "}
+              You voted{" "}
+              <span role="img" aria-label={vote === "up" ? "thumbs up" : "thumbs down"}>{vote === "up" ? "👍" : "👎"}</span>{" "}
+              on this verdict.{" "}
               <button
                 type="button"
                 onClick={() => {
