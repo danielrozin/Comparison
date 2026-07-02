@@ -26,6 +26,9 @@ const searchResultsPageSchema = {
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
   ethicsPolicy: `${SITE_URL}/disclaimer`,
   correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+  datePublished: "2024-01-01",
+  dateCreated: "2024-01-01",
+  dateModified: new Date().toISOString().slice(0, 10),
   potentialAction: {
     "@type": "SearchAction",
     target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
