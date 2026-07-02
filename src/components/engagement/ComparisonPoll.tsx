@@ -281,6 +281,7 @@ function VoteButton({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={loading}
       className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}

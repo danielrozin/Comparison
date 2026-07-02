@@ -139,6 +139,7 @@ export function ComparisonCharts({
           <div role="tablist" aria-label="Chart type" className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-border">
             {tabs.map((tab) => (
               <button
+                type="button"
                 key={tab.key}
                 role="tab"
                 aria-selected={activeTab === tab.key}

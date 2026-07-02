@@ -329,6 +329,7 @@ export default function AdminPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
+            type="button"
             onClick={fetchData}
             disabled={loading}
             className="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 disabled:opacity-50"
@@ -336,6 +337,7 @@ export default function AdminPage() {
             {loading ? "Loading..." : "Refresh"}
           </button>
           <button
+            type="button"
             onClick={() => { setIsLoggedIn(false); setToken(""); localStorage.removeItem("admin_token"); }}
             className="px-4 py-2 bg-surface-alt text-text text-sm font-medium rounded-lg hover:bg-gray-200 border border-border"
           >
@@ -412,6 +414,7 @@ export default function AdminPage() {
               </div>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => triggerPipeline("discover")}
                   disabled={pipelineLoading}
                   className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
@@ -419,6 +422,7 @@ export default function AdminPage() {
                   Discover
                 </button>
                 <button
+                  type="button"
                   onClick={() => triggerPipeline("generate")}
                   disabled={pipelineLoading}
                   className="px-3 py-1.5 bg-amber-600 text-white text-xs font-medium rounded-lg hover:bg-amber-700 disabled:opacity-50"
@@ -426,6 +430,7 @@ export default function AdminPage() {
                   Generate
                 </button>
                 <button
+                  type="button"
                   onClick={() => triggerPipeline("full")}
                   disabled={pipelineLoading}
                   className="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 disabled:opacity-50"
@@ -512,6 +517,7 @@ export default function AdminPage() {
                   <option value="quora">Quora Only</option>
                 </select>
                 <button
+                  type="button"
                   onClick={findOutreachQuestions}
                   disabled={outreachLoading}
                   className="px-3 py-1.5 bg-orange-600 text-white text-xs font-medium rounded-lg hover:bg-orange-700 disabled:opacity-50"
@@ -582,6 +588,7 @@ export default function AdminPage() {
                       <div className="flex-shrink-0">
                         {q.matchingComparisonSlug ? (
                           <button
+                            type="button"
                             onClick={() => generateAnswer(q)}
                             disabled={generatingAnswerId === q.id}
                             className="px-2.5 py-1 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 whitespace-nowrap"
@@ -601,6 +608,7 @@ export default function AdminPage() {
                           <span className="text-xs font-semibold text-text-secondary">Generated Answer</span>
                           <div className="flex items-center gap-1.5">
                             <button
+                              type="button"
                               onClick={() => {
                                 navigator.clipboard.writeText(outreachAnswers[q.id].answer);
                               }}
@@ -609,6 +617,7 @@ export default function AdminPage() {
                               Copy
                             </button>
                             <button
+                              type="button"
                               onClick={() => saveAnswerToQueue(outreachAnswers[q.id])}
                               disabled={savingQuestionId === q.id || savedQuestionIds.has(q.id)}
                               className="px-2 py-0.5 bg-green-600 text-white text-[10px] font-medium rounded hover:bg-green-700 disabled:opacity-60"

@@ -194,6 +194,7 @@ export function StickyAffiliateCTA({
 
             {/* Dismiss button */}
             <button
+              type="button"
               onClick={handleDismiss}
               className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-alt hover:bg-primary-50 flex items-center justify-center text-text-secondary hover:text-primary-600 transition-all duration-150"
               aria-label="Dismiss"

@@ -96,6 +96,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   return (
     <>
       <button
+        type="button"
         ref={triggerRef}
         onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
@@ -119,6 +120,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
           <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="embed-modal-title" className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-border">
             {/* Close button */}
             <button
+              type="button"
               onClick={handleClose}
               aria-label="Close embed dialog"
               className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full text-text-secondary hover:text-text hover:bg-surface-alt transition-colors z-10"
@@ -148,6 +150,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
               <div role="tablist" aria-label="Embed type" className="flex gap-1 bg-surface-alt rounded-lg p-1">
                 {(["script", "iframe", "badge"] as TabType[]).map((tab) => (
                   <button
+                    type="button"
                     key={tab}
                     role="tab"
                     aria-selected={activeTab === tab}
@@ -175,6 +178,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                   {embedCodes[activeTab].code}
                 </pre>
                 <button
+                  type="button"
                   onClick={() => handleCopy(activeTab)}
                   aria-label={copiedTab === activeTab ? "Copied to clipboard" : "Copy embed code"}
                   className={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${

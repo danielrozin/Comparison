@@ -176,6 +176,7 @@ export default function OutreachQueuePage() {
           <div className="flex gap-1 bg-white rounded-lg border border-gray-200 p-1">
             {STATUSES.map((s) => (
               <button
+                type="button"
                 key={s}
                 onClick={() => setStatus(s)}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors capitalize ${
@@ -201,6 +202,7 @@ export default function OutreachQueuePage() {
           </select>
 
           <button
+            type="button"
             onClick={fetchPosts}
             disabled={loading}
             className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
@@ -307,6 +309,7 @@ export default function OutreachQueuePage() {
                       {post.answer}
                     </div>
                     <button
+                      type="button"
                       onClick={() => setExpanded(isOpen ? null : post.id)}
                       aria-expanded={isOpen}
                       className="mt-2 text-xs text-primary-600 hover:underline"
@@ -318,6 +321,7 @@ export default function OutreachQueuePage() {
                   {/* Actions */}
                   <div className="flex flex-wrap gap-2">
                     <button
+                      type="button"
                       onClick={() => copyAndOpen(post)}
                       className="px-3 py-1.5 text-xs font-medium bg-primary-600 text-white rounded-lg hover:bg-primary-700"
                     >
@@ -326,6 +330,7 @@ export default function OutreachQueuePage() {
 
                     {post.status !== "posted" && (
                       <button
+                        type="button"
                         onClick={() => markPosted(post)}
                         disabled={isActing}
                         className="px-3 py-1.5 text-xs font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
@@ -336,6 +341,7 @@ export default function OutreachQueuePage() {
 
                     {post.status !== "skipped" && (
                       <button
+                        type="button"
                         onClick={() => updatePost(post.id, { status: "skipped" })}
                         disabled={isActing}
                         className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50"
@@ -346,6 +352,7 @@ export default function OutreachQueuePage() {
 
                     {post.status !== "queued" && (
                       <button
+                        type="button"
                         onClick={() => updatePost(post.id, { status: "queued" })}
                         disabled={isActing}
                         className="px-3 py-1.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 disabled:opacity-50"
@@ -355,6 +362,7 @@ export default function OutreachQueuePage() {
                     )}
 
                     <button
+                      type="button"
                       onClick={() => deletePost(post.id)}
                       disabled={isActing}
                       className="px-3 py-1.5 text-xs font-medium bg-red-50 text-red-700 rounded-lg hover:bg-red-100 disabled:opacity-50 ml-auto"

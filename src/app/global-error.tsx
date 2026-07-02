@@ -36,6 +36,7 @@ export default function GlobalError({
             )}
             <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
               <button
+                type="button"
                 onClick={reset}
                 style={{ padding: "0.75rem 1.5rem", backgroundColor: "#4f46e5", color: "white", fontWeight: 600, borderRadius: "0.75rem", border: "none", cursor: "pointer", fontSize: "1rem" }}
               >

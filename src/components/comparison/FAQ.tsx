@@ -55,6 +55,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
               }`}
             >
               <button
+                type="button"
                 onClick={() => {
                   if (openIndex === -1) {
                     setOpenIndex(null);

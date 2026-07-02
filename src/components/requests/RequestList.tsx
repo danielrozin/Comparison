@@ -98,6 +98,7 @@ export function RequestList() {
       <div className="flex items-center gap-2 mb-6">
         <span className="text-sm text-text-secondary">Sort by:</span>
         <button
+          type="button"
           onClick={() => { setSort("votes"); setPage(1); }}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "votes"
@@ -108,6 +109,7 @@ export function RequestList() {
           Most Voted
         </button>
         <button
+          type="button"
           onClick={() => { setSort("newest"); setPage(1); }}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "newest"
@@ -151,6 +153,7 @@ export function RequestList() {
               >
                 {/* Vote button */}
                 <button
+                  type="button"
                   onClick={() => handleVote(req.id)}
                   disabled={hasVoted || req.status === "generated"}
                   className={`flex flex-col items-center min-w-[52px] py-2 px-2 rounded-lg border transition-all ${
@@ -225,6 +228,7 @@ export function RequestList() {
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-8">
           <button
+            type="button"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
@@ -235,6 +239,7 @@ export function RequestList() {
             Page {page} of {totalPages}
           </span>
           <button
+            type="button"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"

@@ -49,6 +49,7 @@ export function FeedbackWidget() {
     <>
       {/* Floating button */}
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-controls="feedback-panel"

@@ -246,6 +246,7 @@ export default function AARRRDashboard() {
       <div role="tablist" aria-label="Analytics sections" className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-8 w-fit flex-wrap">
         {sections.map((s) => (
           <button
+            type="button"
             key={s.key}
             role="tab"
             aria-selected={activeSection === s.key}

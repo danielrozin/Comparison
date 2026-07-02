@@ -213,6 +213,7 @@ export function InterceptSurvey({
             {done ? "Thanks for the feedback!" : "Got 20 seconds?"}
           </span>
           <button
+            type="button"
             onClick={close}
             aria-label="Close survey"
             className="text-text-secondary hover:text-text transition-colors -mr-1 p-1"
@@ -258,6 +259,7 @@ export function InterceptSurvey({
                 </p>
                 <div className="flex gap-2">
                   <button
+                    type="button"
                     onClick={() => {
                       setAnswers((a) => ({ ...a, q2Found: true }));
                       advance();
@@ -267,6 +269,7 @@ export function InterceptSurvey({
                     Yes
                   </button>
                   <button
+                    type="button"
                     onClick={() => setAnswers((a) => ({ ...a, q2Found: false }))}
                     className={`flex-1 py-2.5 text-sm font-medium rounded-lg border transition-colors ${
                       answers.q2Found === false
@@ -287,6 +290,7 @@ export function InterceptSurvey({
                       className="w-full px-3 py-2 text-sm border border-border rounded-lg resize-none focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                     />
                     <button
+                      type="button"
                       onClick={advance}
                       className="mt-2 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150"
                     >
@@ -305,6 +309,7 @@ export function InterceptSurvey({
                 <div className="flex gap-1.5">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button
+                      type="button"
                       key={n}
                       aria-label={`${n} out of 5`}
                       onClick={() => {
@@ -344,6 +349,7 @@ export function InterceptSurvey({
                   className="mt-2 w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                 />
                 <button
+                  type="button"
                   onClick={advance}
                   className="mt-3 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150"
                 >
@@ -384,6 +390,7 @@ function SingleChoice({
       <div className="space-y-1.5">
         {options.map((opt) => (
           <button
+            type="button"
             key={opt}
             onClick={() => onSelect(opt)}
             className={`w-full text-left px-3 py-2 text-sm rounded-lg border transition-colors ${

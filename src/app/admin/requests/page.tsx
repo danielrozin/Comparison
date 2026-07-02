@@ -112,6 +112,7 @@ export default function AdminRequestsPage() {
         <div role="tablist" aria-label="Filter requests" className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 inline-flex">
           {STATUSES.map((s) => (
             <button
+              type="button"
               key={s}
               role="tab"
               aria-selected={filter === s}
@@ -169,6 +170,7 @@ export default function AdminRequestsPage() {
                   {req.status === "pending" && (
                     <>
                       <button
+                        type="button"
                         onClick={() => updateStatus(req.id, "approved")}
                         disabled={updating === req.id}
                         className="px-3 py-1.5 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
@@ -176,6 +178,7 @@ export default function AdminRequestsPage() {
                         Approve
                       </button>
                       <button
+                        type="button"
                         onClick={() => updateStatus(req.id, "rejected")}
                         disabled={updating === req.id}
                         className="px-3 py-1.5 text-xs font-medium bg-red-100 text-red-700 rounded-lg hover:bg-red-200 disabled:opacity-50"
@@ -186,6 +189,7 @@ export default function AdminRequestsPage() {
                   )}
                   {req.status === "approved" && (
                     <button
+                      type="button"
                       onClick={() => updateStatus(req.id, "generating")}
                       disabled={updating === req.id}
                       className="px-3 py-1.5 text-xs font-medium bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
@@ -195,6 +199,7 @@ export default function AdminRequestsPage() {
                   )}
                   {req.status === "rejected" && (
                     <button
+                      type="button"
                       onClick={() => updateStatus(req.id, "pending")}
                       disabled={updating === req.id}
                       className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 disabled:opacity-50"

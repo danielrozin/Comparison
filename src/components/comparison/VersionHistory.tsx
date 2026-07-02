@@ -135,6 +135,7 @@ export function VersionHistory({
       <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 rounded-xl border border-indigo-100 dark:border-indigo-800/40 overflow-hidden">
         {/* Summary row — always visible */}
         <button
+          type="button"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? "Collapse version history" : "Expand version history"}
@@ -245,6 +246,7 @@ export function VersionHistory({
                           }`}
                         >
                           <button
+                            type="button"
                             onClick={() => toggleEntry(entry.id)}
                             aria-expanded={isEntryExpanded}
                             className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors"

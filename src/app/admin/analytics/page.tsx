@@ -241,6 +241,7 @@ export default function AnalyticsDashboard() {
       <div role="tablist" aria-label="Analytics views" className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-8 w-fit">
         {tabs.map((tab) => (
           <button
+            type="button"
             key={tab.key}
             role="tab"
             aria-selected={activeTab === tab.key}

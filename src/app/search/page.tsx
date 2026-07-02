@@ -214,6 +214,7 @@ function SearchContent() {
                 }}
               />
               <button
+                type="button"
                 onClick={() => {
                   const input = document.getElementById("compare-with") as HTMLInputElement;
                   const target = input?.value.trim();

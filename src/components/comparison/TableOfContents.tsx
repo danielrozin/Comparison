@@ -41,6 +41,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
       {/* Collapsible bar — shown on all screens except very wide where the sidebar fits */}
       <div className="min-[1400px]:hidden max-w-5xl mx-auto px-4 sm:px-6 mb-4">
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           className={`w-full flex items-center gap-3 px-4 py-3 border rounded-xl text-sm font-semibold transition-all duration-200 ${
             isOpen

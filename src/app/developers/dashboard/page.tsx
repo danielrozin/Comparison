@@ -179,6 +179,7 @@ export default function DeveloperDashboard() {
             Signed in as <span className="font-medium text-text">{email}</span>
             {" "}
             <button
+              type="button"
               onClick={handleSignOut}
               className="text-primary-600 hover:text-primary-700 underline text-sm"
             >
@@ -209,6 +210,7 @@ export default function DeveloperDashboard() {
               onKeyDown={(e) => e.key === "Enter" && email && fetchKeys(email)}
             />
             <button
+              type="button"
               onClick={() => email && fetchKeys(email)}
               disabled={!email || loading}
               className="px-6 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-50"
@@ -235,6 +237,7 @@ export default function DeveloperDashboard() {
                 onKeyDown={(e) => e.key === "Enter" && createKey()}
               />
               <button
+                type="button"
                 onClick={createKey}
                 disabled={!newKeyName.trim() || loading}
                 className="px-6 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-50"
@@ -294,6 +297,7 @@ export default function DeveloperDashboard() {
                     </div>
                     <div className="flex gap-2 shrink-0">
                       <button
+                        type="button"
                         onClick={() => loadUsage(key.id)}
                         className="px-3 py-1.5 text-sm border border-border rounded-lg hover:bg-surface-alt transition-colors"
                       >
@@ -301,6 +305,7 @@ export default function DeveloperDashboard() {
                       </button>
                       {key.status === "active" && (
                         <button
+                          type="button"
                           onClick={() => revokeKey(key.id)}
                           className="px-3 py-1.5 text-sm border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
                         >
@@ -322,6 +327,7 @@ export default function DeveloperDashboard() {
                   Usage: {selectedKeyStats.key.name}
                 </h2>
                 <button
+                  type="button"
                   onClick={() => setSelectedKeyStats(null)}
                   className="text-sm text-text-secondary hover:text-text"
                 >

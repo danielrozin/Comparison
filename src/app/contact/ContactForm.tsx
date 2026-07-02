@@ -70,6 +70,7 @@ export function ContactForm() {
           Thank you for reaching out. We&apos;ll get back to you within 2 business days.
         </p>
         <button
+          type="button"
           onClick={() => {
             setStatus("idle");
             setForm({ name: "", email: "", subject: "", message: "" });

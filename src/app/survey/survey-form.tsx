@@ -514,6 +514,7 @@ export function SurveyForm() {
       <div className="flex justify-between mt-8 gap-3">
         {page > 1 ? (
           <button
+            type="button"
             onClick={handlePrev}
             className="px-7 py-3 bg-surface-alt text-text-secondary font-semibold rounded-lg hover:bg-border transition-colors"
           >
@@ -523,6 +524,7 @@ export function SurveyForm() {
           <div />
         )}
         <button
+          type="button"
           onClick={handleNext}
           disabled={submitting}
           className="px-7 py-3 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

@@ -223,6 +223,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
             {error || "We couldn't generate this comparison. Please try again."}
           </p>
           <button
+            type="button"
             onClick={() => { setStatus("idle"); setError(null); setProgress(0); }}
             className="px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-accent-600 transition-all shadow-md"
           >

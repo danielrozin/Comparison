@@ -185,6 +185,7 @@ export default function WeeklyReportPage() {
             </div>
             <div className="flex gap-2">
               <button
+                type="button"
                 onClick={() => setShowMarkdown(!showMarkdown)}
                 aria-expanded={showMarkdown}
                 aria-label={showMarkdown ? "Show dashboard view" : "Show markdown source"}
@@ -193,6 +194,7 @@ export default function WeeklyReportPage() {
                 {showMarkdown ? "Dashboard" : "Markdown"}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   navigator.clipboard.writeText(data.markdown);
                 }}

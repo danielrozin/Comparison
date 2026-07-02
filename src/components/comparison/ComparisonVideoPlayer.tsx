@@ -83,6 +83,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
             {videoSource === "youtube" ? (
               !isPlaying ? (
                 <button
+                  type="button"
                   onClick={() => setIsPlaying(true)}
                   className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
                 >
@@ -121,6 +122,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
             ) : videoSource === "mp4" ? (
               !isPlaying ? (
                 <button
+                  type="button"
                   onClick={() => setIsPlaying(true)}
                   className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
                 >

@@ -159,6 +159,7 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
           <span className="text-sm text-green-700">Your partner key:</span>
           <code className="bg-green-100 px-2 py-0.5 rounded font-mono text-xs">{partnerKey}</code>
           <button
+            type="button"
             onClick={() => handleCopy(partnerKey, "key")}
             className={`text-xs px-2.5 py-1 rounded-lg border transition-colors ${
               copied === "key"
@@ -194,6 +195,7 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
         <div className="flex items-center justify-between mb-2">
           <h4 className="text-sm font-semibold text-text">Script Tag (easiest)</h4>
           <button
+            type="button"
             onClick={() => handleCopy(scriptCode, "script")}
             className={`text-xs px-3 py-1 rounded-lg border transition-colors ${
               copied === "script"
@@ -214,6 +216,7 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
         <div className="flex items-center justify-between mb-2">
           <h4 className="text-sm font-semibold text-text">iFrame</h4>
           <button
+            type="button"
             onClick={() => handleCopy(iframeCode, "iframe")}
             className={`text-xs px-3 py-1 rounded-lg border transition-colors ${
               copied === "iframe"

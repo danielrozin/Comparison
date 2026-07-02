@@ -159,6 +159,7 @@ export function Header() {
             </Link>
 
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-alt transition-colors"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
@@ -215,6 +216,7 @@ export function Header() {
                     </Link>
                     {subs.length > 0 && (
                       <button
+                        type="button"
                         onClick={() => setMobileExpanded(isExpanded ? null : item.slug)}
                         aria-expanded={isExpanded}
                         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}

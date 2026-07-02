@@ -141,18 +141,21 @@ export function CookieConsentBanner() {
 
               <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                 <button
+                  type="button"
                   onClick={handleAcceptAll}
                   className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Accept All
                 </button>
                 <button
+                  type="button"
                   onClick={handleRejectAll}
                   className="px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Reject All
                 </button>
                 <button
+                  type="button"
                   onClick={handleManageClick}
                   className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
                 >
@@ -165,6 +168,7 @@ export function CookieConsentBanner() {
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm font-semibold text-text">Cookie Preferences</p>
                 <button
+                  type="button"
                   onClick={() => setShowPreferences(false)}
                   aria-label="Back to banner"
                   className="p-1 text-text-secondary hover:text-text transition-colors rounded"
@@ -208,12 +212,14 @@ export function CookieConsentBanner() {
 
               <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                 <button
+                  type="button"
                   onClick={handleSavePreferences}
                   className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Save Preferences
                 </button>
                 <button
+                  type="button"
                   onClick={handleAcceptAll}
                   className="px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >

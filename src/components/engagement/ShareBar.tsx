@@ -106,6 +106,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
 
       {/* Copy Link */}
       <button
+        type="button"
         onClick={copyLink}
         className="w-8 h-8 flex items-center justify-center rounded-full bg-surface-alt hover:bg-primary-100 hover:text-primary-700 transition-all duration-150 hover:scale-110 relative"
         aria-label="Copy link"

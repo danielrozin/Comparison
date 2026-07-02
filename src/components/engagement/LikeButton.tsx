@@ -44,6 +44,7 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
 
   return (
     <button
+      type="button"
       onClick={toggleLike}
       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 hover:scale-105 active:scale-95 ${
         liked

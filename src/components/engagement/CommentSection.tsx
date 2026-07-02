@@ -224,6 +224,7 @@ export function CommentSection({
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => likeComment(comment.id)}
                   className="flex items-center gap-1 text-xs text-text-secondary hover:text-primary-600 transition-colors"
                   aria-label="Like this comment"
@@ -240,6 +241,7 @@ export function CommentSection({
 
           {comments.length > 5 && !showAll && (
             <button
+              type="button"
               onClick={() => setShowAll(true)}
               className="w-full py-3 text-sm font-medium text-primary-600 hover:text-primary-700 bg-surface-alt rounded-xl hover:bg-primary-50 transition-colors"
             >
