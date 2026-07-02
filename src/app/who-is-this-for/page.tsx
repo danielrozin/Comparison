@@ -15,8 +15,16 @@ export const metadata: Metadata = {
     title: WHO_TITLE,
     description: `Discover who benefits from ${SITE_NAME} — structured, data-driven comparisons across sports, technology, countries, products, and more.`,
     url: WHO_URL,
-
-    locale: "en_US",  },
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: WHO_TITLE,
+    description: WHO_DESC,
+  },
   other: {
     "citation_title": WHO_TITLE,
     "citation_author": "A Versus B",

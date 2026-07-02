@@ -8,6 +8,7 @@ const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
 const LAST_UPDATED = "2026-05-22";
+const BROWSER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison 2026")}&type=article`;
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -22,7 +23,14 @@ export const metadata: Metadata = {
     languages: { "en": PAGE_URL, "x-default": PAGE_URL },
     types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
   },
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US",  siteName: SITE_NAME },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US", siteName: SITE_NAME, images: [{ url: BROWSER_OG_IMAGE, width: 1200, height: 630, alt: PAGE_TITLE }] },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [BROWSER_OG_IMAGE],
+  },
   other: {
     "citation_title": PAGE_TITLE,
     "citation_author": "A Versus B",
@@ -47,7 +55,6 @@ export const metadata: Metadata = {
   },
 };
 
-const BROWSER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison 2026")}&type=article`;
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],

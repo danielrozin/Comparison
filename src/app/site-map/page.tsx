@@ -18,8 +18,15 @@ export const metadata: Metadata = {
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,
     url: SITEMAP_URL,
-
-    locale: "en_US",    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary",
+    site: "@aversusb",
+    title: SITEMAP_TITLE,
+    description: SITEMAP_DESC,
   },
   other: {
     "citation_title": SITEMAP_TITLE,

@@ -14,12 +14,19 @@ export const metadata: Metadata = {
     languages: { "en": EMBED_URL, "x-default": EMBED_URL },
   },
   openGraph: {
-    title: "Embed Comparisons on Your Site",
-    description: "Add data-driven comparisons to your blog, review site, or content platform.",
+    title: EMBED_TITLE,
+    description: EMBED_DESC,
     url: EMBED_URL,
     type: "website",
-
-    locale: "en_US",  },
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: EMBED_TITLE,
+    description: EMBED_DESC,
+  },
   other: {
     "citation_title": EMBED_TITLE,
     "citation_author": "A Versus B",

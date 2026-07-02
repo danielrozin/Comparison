@@ -17,8 +17,15 @@ export const metadata: Metadata = {
     title: REQ_TITLE,
     description: REQ_DESC,
     url: REQ_URL,
-
-    locale: "en_US",    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: REQ_TITLE,
+    description: REQ_DESC,
   },
   other: {
     "citation_title": REQ_TITLE,

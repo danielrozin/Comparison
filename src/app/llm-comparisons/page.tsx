@@ -25,7 +25,13 @@ export const metadata: Metadata = {
       "application/atom+xml": `${SITE_URL}/feed/atom`,
     },
   },
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US",  siteName: SITE_NAME },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US", siteName: SITE_NAME },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+  },
   other: {
     "citation_title": PAGE_TITLE,
     "citation_author": "A Versus B",
