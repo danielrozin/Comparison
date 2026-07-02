@@ -280,11 +280,19 @@ export default async function HomePage() {
       {/* Trending Comparisons */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
-              Trending Comparisons
-            </h2>
-            <p className="text-text-secondary mt-1">Most popular comparisons right now</p>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+                Trending Comparisons
+              </h2>
+              <p className="text-text-secondary mt-1">Most popular comparisons right now</p>
+            </div>
           </div>
           <Link
             href="/trending"
@@ -307,11 +315,18 @@ export default async function HomePage() {
       <section className="bg-surface-alt py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
-                Latest Comparisons
-              </h2>
-              <p className="text-text-secondary mt-1">Recently added and updated comparisons</p>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-text">
+                  Latest Comparisons
+                </h2>
+                <p className="text-text-secondary mt-1">Recently added and updated comparisons</p>
+              </div>
             </div>
             <Link
               href="/trending"
