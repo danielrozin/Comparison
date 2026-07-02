@@ -29,6 +29,22 @@ export const metadata: Metadata = {
     canonical: REVIEWS_URL,
     languages: { "en": REVIEWS_URL, "x-default": REVIEWS_URL },
   },
+  openGraph: {
+    title: REVIEWS_TITLE,
+    description: REVIEWS_DESC,
+    url: REVIEWS_URL,
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+    images: [{ url: `${SITE_URL}/api/og?title=${encodeURIComponent("SmartReview — Product Reviews")}&type=reviews`, width: 1200, height: 630, alt: REVIEWS_TITLE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: REVIEWS_TITLE,
+    description: REVIEWS_DESC,
+    images: [`${SITE_URL}/api/og?title=${encodeURIComponent("SmartReview — Product Reviews")}&type=reviews`],
+  },
   other: {
     "citation_title": REVIEWS_TITLE,
     "citation_author": "A Versus B",

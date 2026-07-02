@@ -18,8 +18,16 @@ export const metadata: Metadata = {
     title: PARTNER_TITLE,
     description: `Reach decision-makers at the point of comparison. Sponsored placements, featured reviews, and custom data partnerships.`,
     url: PARTNER_URL,
-
-    locale: "en_US",  },
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: PARTNER_TITLE,
+    description: PARTNER_DESC,
+  },
   other: {
     "citation_title": PARTNER_TITLE,
     "citation_author": "A Versus B",

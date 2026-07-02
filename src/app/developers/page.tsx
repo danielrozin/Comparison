@@ -88,8 +88,16 @@ export const metadata: Metadata = {
     title: DEV_TITLE,
     description: DEV_DESC,
     url: DEV_URL,
-
-    locale: "en_US",  },
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: DEV_TITLE,
+    description: DEV_DESC,
+  },
   other: {
     "citation_title": DEV_TITLE,
     "citation_author": "A Versus B",

@@ -35,8 +35,17 @@ export const metadata: Metadata = {
     description: `${nf.format(HEADLINE_TOTAL)} US comparison searches across ${BATTLE_COUNT} AI tool battles (Jan–Mar 2026). Full methodology and downloadable dataset.`,
     url: PAGE_URL,
     type: "article",
-
-    locale: "en_US",  },
+    locale: "en_US",
+    siteName: SITE_NAME,
+    images: [{ url: `${SITE_URL}/api/og?title=${encodeURIComponent("Q1 2026 AI Tool Battles")}&type=article`, width: 1200, height: 630, alt: "Q1 2026 AI Tool Battles — A Versus B" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: `Q1 2026 AI Tool Battles — ${SITE_NAME}`,
+    description: `${nf.format(HEADLINE_TOTAL)} US comparison searches across ${BATTLE_COUNT} AI tool battles (Jan–Mar 2026).`,
+    images: [`${SITE_URL}/api/og?title=${encodeURIComponent("Q1 2026 AI Tool Battles")}&type=article`],
+  },
   other: {
     "citation_title": Q1_TITLE,
     "citation_author": "Daniel Rozin",
