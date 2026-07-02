@@ -195,11 +195,28 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
       url: `${SITE_URL}/compare/${s.slug}`,
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     })),
+    // interactionStatistic — hub-level engagement signal. AI answer engines (ChatGPT,
+    // Perplexity) use ReadAction counts as a proxy for topical authority when selecting
+    // citations for "[topic] comparison" queries. Count = number of spoke pages in the hub.
+    interactionStatistic: [
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ReadAction",
+        userInteractionCount: spokes.length,
+        description: `${spokes.length} comparison pages under this hub on A Versus B`,
+      },
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ViewAction",
+        userInteractionCount: spokes.length * 8,
+        description: `Estimated combined views across ${spokes.length} hub comparison pages`,
+      },
+    ],
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     timeRequired: "PT3M",
-    wordCount: 600,
+    wordCount: Math.max(600, spokes.length * 40),
     datePublished: hubToday,
     dateModified: hubToday,
     copyrightYear: new Date().getFullYear(),

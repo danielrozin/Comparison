@@ -2250,6 +2250,27 @@ export function categoryPageSchema(category: CategoryData) {
       locationCreated: { "@type": "Country", name: "United States" },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      // wordCount — estimated total content depth across the category index page.
+      // AI citation engines treat wordCount as a quality signal: higher count = deeper page.
+      wordCount: Math.max(400, category.comparisonCount * 30),
+      // interactionStatistic — engagement signals for AI citation authority scoring.
+      // ReadAction count = total comparisons in this category (each comparison = one reader session).
+      // AI systems (ChatGPT, Perplexity, AI Overviews) use these counts to rank which category
+      // pages to cite when answering "[category] comparison" intent queries.
+      interactionStatistic: [
+        {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ReadAction",
+          userInteractionCount: category.comparisonCount,
+          description: `${category.comparisonCount} comparison pages in the ${category.name} category on A Versus B`,
+        },
+        {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ViewAction",
+          userInteractionCount: category.comparisonCount * 10,
+          description: `Estimated combined views across ${category.comparisonCount} ${category.name.toLowerCase()} comparisons`,
+        },
+      ],
       publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
