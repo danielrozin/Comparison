@@ -7,6 +7,7 @@ import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/app/globals.css";
 
 // Self-host Inter via next/font (matches src/app/layout.tsx). Applied through a
@@ -38,6 +39,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <FeedbackWidget />
         <CookieConsentBanner />
       </ExperimentProvider>
+      {/* DAN-1645: Vercel Speed Insights (RUM) — real-user LCP/INP/CLS for
+          /compare/[slug] and every Pages Router route, so we can certify the
+          CWV target from field data instead of noisy shared-infra lab runs. */}
+      <SpeedInsights />
     </div>
   );
 }
