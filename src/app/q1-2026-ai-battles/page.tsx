@@ -411,10 +411,17 @@ export default function Q1AiBattlesPage() {
 
         {/* Full ranked table */}
         <section>
-          <div className="flex flex-wrap items-baseline justify-between gap-3 mb-4">
-            <h2 className="text-2xl font-display font-bold text-text mb-0">
-              Full ranked slate
-            </h2>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-display font-bold text-text mb-0">
+                Full ranked slate
+              </h2>
+            </div>
             <a
               href={CSV_PATH}
               download
@@ -552,7 +559,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Reproducibility */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">Reproducibility</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Reproducibility</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             We publish the{" "}
             <a href={CSV_PATH} download className="text-primary-600 hover:underline">
@@ -567,9 +581,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Citations and corrections */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            Citations and corrections
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Citations and corrections</h2>
+          </div>
           <ul className="list-disc pl-6 mt-3 space-y-2 text-text-secondary leading-relaxed">
             <li>Author: {SITE_NAME} data team. Lead analyst: Daniel Rozin (founder).</li>
             <li>Last updated: June 12, 2026.</li>
@@ -587,7 +606,14 @@ export default function Q1AiBattlesPage() {
 
         {/* Versioning */}
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">Versioning</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Versioning</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             This is the inaugural quarterly report. Future quarters will be published at{" "}
             <code>/q2-2026-ai-battles</code>, <code>/q3-2026-ai-battles</code>, etc., each with its
