@@ -229,6 +229,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                 </p>
                 <form onSubmit={handleEmailCapture} className="flex gap-2 max-w-sm mx-auto">
                   <input
+                    autoComplete="email"
                     type="email"
                     value={emailCaptureEmail}
                     onChange={(e) => { setEmailCaptureEmail(e.target.value); setEmailCaptureStatus("idle"); }}

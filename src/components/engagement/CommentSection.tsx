@@ -141,6 +141,7 @@ export function CommentSection({
               Name
             </label>
             <input
+              autoComplete="name"
               id="comment-name"
               type="text"
               value={name}

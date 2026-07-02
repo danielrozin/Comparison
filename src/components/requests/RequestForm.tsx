@@ -104,6 +104,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             First item
           </label>
           <input
+            autoComplete="off"
             id="entityA"
             type="text"
             value={entityA}
@@ -119,6 +120,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             Second item
           </label>
           <input
+            autoComplete="off"
             id="entityB"
             type="text"
             value={entityB}
@@ -172,6 +174,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
         <input
           id="email"
           type="email"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"

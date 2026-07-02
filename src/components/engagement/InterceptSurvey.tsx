@@ -342,6 +342,7 @@ export function InterceptSurvey({
                   className="w-full px-3 py-2 text-sm border border-border rounded-lg resize-none focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                 />
                 <input
+                  autoComplete="email"
                   type="email"
                   value={answers.optInEmail || ""}
                   onChange={(e) => setAnswers((a) => ({ ...a, optInEmail: e.target.value }))}

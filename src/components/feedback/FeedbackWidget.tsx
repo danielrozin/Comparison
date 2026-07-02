@@ -160,6 +160,7 @@ export function FeedbackWidget() {
                   Email <span className="text-text-secondary font-normal">(optional, for follow-up)</span>
                 </label>
                 <input
+                  autoComplete="email"
                   id="fb-email"
                   type="email"
                   value={email}

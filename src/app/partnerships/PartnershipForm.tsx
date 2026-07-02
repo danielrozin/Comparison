@@ -107,6 +107,7 @@ export function PartnershipForm() {
             Brand / Company Name *
           </label>
           <input
+            autoComplete="organization"
             id="brandName"
             name="brandName"
             type="text"
@@ -154,6 +155,7 @@ export function PartnershipForm() {
             Website
           </label>
           <input
+            autoComplete="url"
             id="website"
             name="website"
             type="url"

@@ -89,6 +89,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
           Website URL (optional)
         </label>
         <input
+          autoComplete="url"
           id="website"
           type="url"
           value={website}
@@ -178,6 +179,7 @@ function EmbedCodeGenerator({ partnerKey, tier }: { partnerKey: string; tier: Ti
           Comparison Slug
         </label>
         <input
+          autoComplete="off"
           id="slug"
           type="text"
           value={slug}

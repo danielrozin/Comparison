@@ -603,6 +603,7 @@ function RadioQuestion({
       </div>
       {value === "Other" && onOtherChange && (
         <input
+          autoComplete="off"
           type="text"
           aria-label="Please specify"
           value={otherValue || ""}
@@ -665,6 +666,7 @@ function CheckboxQuestion({
       </div>
       {values.includes("Other") && onOtherChange && (
         <input
+          autoComplete="off"
           type="text"
           aria-label="Please specify"
           value={otherValue || ""}

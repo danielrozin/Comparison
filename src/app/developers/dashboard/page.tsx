@@ -202,6 +202,7 @@ export default function DeveloperDashboard() {
 
           <div className="flex gap-3">
             <input
+              autoComplete="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -229,6 +230,7 @@ export default function DeveloperDashboard() {
             <h2 className="text-lg font-bold text-text mb-4">Create New API Key</h2>
             <div className="flex gap-3">
               <input
+                autoComplete="off"
                 type="text"
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
