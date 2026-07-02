@@ -95,6 +95,7 @@ export function ContactForm() {
           id="name"
           name="name"
           type="text"
+          autoComplete="name"
           required
           value={form.name}
           onChange={handleChange}
@@ -112,6 +113,7 @@ export function ContactForm() {
           id="email"
           name="email"
           type="email"
+          autoComplete="email"
           required
           value={form.email}
           onChange={handleChange}

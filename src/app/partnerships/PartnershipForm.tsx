@@ -124,6 +124,7 @@ export function PartnershipForm() {
             id="contactName"
             name="contactName"
             type="text"
+            autoComplete="name"
             required
             value={form.contactName}
             onChange={handleChange}
@@ -141,6 +142,7 @@ export function PartnershipForm() {
             id="email"
             name="email"
             type="email"
+            autoComplete="email"
             required
             value={form.email}
             onChange={handleChange}
