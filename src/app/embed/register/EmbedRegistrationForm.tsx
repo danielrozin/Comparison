@@ -59,6 +59,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
         <input
           id="name"
           type="text"
+          autoComplete="organization"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -74,6 +75,7 @@ export function EmbedRegistrationForm({ defaultTier }: { defaultTier?: string })
         <input
           id="email"
           type="email"
+          autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}

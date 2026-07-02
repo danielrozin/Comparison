@@ -53,6 +53,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       <form onSubmit={handleSubmit} className="flex gap-2 max-w-md">
         <input
           type="email"
+          autoComplete="email"
           value={email}
           onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
           placeholder="Your email address"
@@ -95,6 +96,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
             <input
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               placeholder="you@example.com"
