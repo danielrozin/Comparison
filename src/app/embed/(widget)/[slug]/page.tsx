@@ -58,6 +58,8 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                 alt={brandName}
                 className="mx-auto mb-2"
                 style={{ maxHeight: 28 }}
+                loading="lazy"
+                decoding="async"
               />
             )}
             <h1 className="text-xl font-bold">{comparison.title}</h1>
