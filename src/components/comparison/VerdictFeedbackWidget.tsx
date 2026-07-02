@@ -233,7 +233,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="rounded-lg bg-yellow-400 px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-yellow-300 disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300"
+              className="rounded-lg bg-yellow-400 px-4 py-2 text-sm font-semibold text-text hover:bg-yellow-300 disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300"
             >
               {status === "submitting" ? "Sending…" : "Send"}
             </button>

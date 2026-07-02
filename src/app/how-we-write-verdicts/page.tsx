@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: PAGE_URL,
@@ -25,7 +25,8 @@ export const metadata: Metadata = {
     description: PAGE_DESC,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: VERDICTS_OG_IMAGE, width: 1200, height: 630, alt: "How We Write Verdicts — A Versus B" }],
   },
   twitter: {
@@ -174,10 +175,21 @@ export default function HowWeWriteVerdictsPage() {
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">How we write verdicts</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">How we write verdicts</li>
             </ol>
           </nav>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
@@ -199,9 +211,14 @@ export default function HowWeWriteVerdictsPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <article className="prose prose-lg max-w-none space-y-10">
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            How we source data
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">How we source data</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             Verdicts are grounded in three layers of data:
           </p>
@@ -225,9 +242,14 @@ export default function HowWeWriteVerdictsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            The role of the AI model vs. our human editor
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">The role of the AI model vs. our human editor</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             We use Claude (Anthropic&apos;s large language model) to read the structured data and
             reviews above and produce a first draft of the verdict, the &ldquo;Choose X if&rdquo;
@@ -243,9 +265,14 @@ export default function HowWeWriteVerdictsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            How feedback influences future verdicts
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">How feedback influences future verdicts</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             The 👍 / 👎 widget under each verdict is the fastest way to tell us when something is
             off. We use those votes — and the optional written reasons — in three ways:
@@ -265,9 +292,14 @@ export default function HowWeWriteVerdictsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-display font-bold text-text mb-3">
-            Disagree with a specific verdict?
-          </h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Disagree with a specific verdict?</h2>
+          </div>
           <p className="text-text-secondary leading-relaxed">
             Use the <strong className="text-text">&ldquo;Was this verdict helpful?&rdquo;</strong>{" "}
             buttons directly under the verdict on any comparison page. Tap{" "}

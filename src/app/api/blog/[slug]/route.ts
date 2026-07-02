@@ -56,6 +56,40 @@ export async function GET(
     isAccessibleForFree: true,
   };
 
+  const sharedHeaders = {
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+    "Access-Control-Allow-Origin": "*",
+    "X-Robots-Tag": "all",
+    // Vary: Accept prevents CDN from serving application/json to ld+json clients
+    "Vary": "Accept",
+    ETag: etag,
+    ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
+    ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
+    // X-Source-* — attribution headers for AI training pipelines and citation engines
+    "X-Source-Title": article.title,
+    "X-Source-URL": url,
+    "X-Source-License": "CC BY 4.0",
+    "X-Source-Attribution": `A Versus B (${url})`,
+  };
+
+  // Content negotiation: return clean application/ld+json when explicitly requested
+  // (e.g. from content-negotiation redirect /blog/{slug} → here with Accept: ld+json)
+  const acceptHeader = _request.headers.get("accept") ?? "";
+  const primaryAccept = acceptHeader.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
+  if (primaryAccept === "application/ld+json") {
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@graph": [articleSchema],
+    };
+    return new Response(JSON.stringify(jsonLd, null, 2), {
+      headers: {
+        ...sharedHeaders,
+        "Content-Type": "application/ld+json",
+        "Link": `<${url}>; rel="canonical"`,
+      },
+    });
+  }
+
   return NextResponse.json(
     {
       slug: article.slug,
@@ -69,15 +103,6 @@ export async function GET(
       updatedAt: article.updatedAt,
       articleSchema,
     },
-    {
-      headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-        "Access-Control-Allow-Origin": "*",
-        "X-Robots-Tag": "all",
-        ETag: etag,
-        ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-        ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
-      },
-    }
+    { headers: sharedHeaders }
   );
 }

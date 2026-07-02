@@ -30,6 +30,7 @@ export default function robots(): MetadataRoute.Robots {
           "/api/openapi",
           "/api/sitemap",
           "/api/answer/",
+          "/.well-known/",
         ],
         disallow: [
           "/api/",
@@ -104,10 +105,17 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Grok", allow: "/" },
       { userAgent: "xAI-Bot", allow: "/" },
       { userAgent: "MistralBot", allow: "/" },
+      { userAgent: "MistralAI-User", allow: "/" },        // Mistral user-facing AI product
       { userAgent: "NeevaBot", allow: "/" },
       { userAgent: "Diffbot", allow: "/" },
       { userAgent: "VelenPublicWebCrawler", allow: "/" },
       { userAgent: "Webzio-Extended", allow: "/" },
+      { userAgent: "Amazonbot", allow: "/" },             // Amazon (Alexa, Kendra, Bedrock training)
+      { userAgent: "DuckAssistBot", allow: "/" },         // DuckDuckGo AI Answer engine
+      { userAgent: "Claude-User", allow: "/" },           // Anthropic Claude user-agent alias
+      { userAgent: "Claude-SearchBot", allow: "/" },      // Anthropic Claude search product
+      { userAgent: "Google-CloudVertexBot", allow: "/" }, // Google Cloud Vertex AI crawler
+      { userAgent: "FriendlyCrawler", allow: "/" },       // FriendlyCrawler (AI research)
 
       // === Additional AI/research crawlers (2026) ===
       { userAgent: "Ai2Bot", allow: "/" },             // Allen Institute for AI
@@ -124,6 +132,28 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "TurnitinBot", allow: "/" },        // Academic citation indexer
       { userAgent: "HuggingFaceBot", allow: "/" },     // HuggingFace dataset crawler
       { userAgent: "OpenAI-SearchBot", allow: "/" },   // OpenAI search product
+
+      // === 2026 additions — major search engines + new AI crawlers ===
+      { userAgent: "BraveBot", allow: "/" },            // Brave Search + Leo AI assistant
+      { userAgent: "brave-search-bot", allow: "/" },    // Brave Search alternate UA
+      { userAgent: "YandexBot", allow: "/" },           // Yandex Search (Russia/Eastern Europe)
+      { userAgent: "YaDirectFetcher", allow: "/" },     // Yandex Direct fetcher
+      { userAgent: "NaverBot", allow: "/" },            // Naver Search (South Korea)
+      { userAgent: "BaiduSpider", allow: "/" },         // Baidu Search (China)
+      { userAgent: "QwenBot", allow: "/" },             // Alibaba Qwen AI model crawler
+      { userAgent: "TongYiBot", allow: "/" },           // Alibaba Tongyi/Qwen alternate UA
+      { userAgent: "Firecrawl", allow: "/" },           // Firecrawl AI scraping tool (RAG pipelines)
+      { userAgent: "ExaBot", allow: "/" },              // Exa.ai AI-powered search
+
+      // === RAG / AI-app infrastructure crawlers (2026) — welcomed for citation coverage ===
+      { userAgent: "JinaAIBot", allow: "/" },           // Jina AI reader — used in RAG pipelines
+      { userAgent: "jina-ai", allow: "/" },             // Jina AI alternate UA
+      { userAgent: "ZyteBot", allow: "/" },             // Zyte / Scrapy Cloud crawler
+      { userAgent: "ScrapingBee", allow: "/" },         // ScrapingBee (used in many AI apps)
+      { userAgent: "MojeekBot", allow: "/" },           // Mojeek privacy search
+      { userAgent: "SpiderBot", allow: "/" },           // Spider.cloud RAG web crawler
+      { userAgent: "SearchGPT-Bot", allow: "/" },       // OpenAI SearchGPT alternate UA
+      { userAgent: "NovaCrawler", allow: "/" },         // Nova AI search
 
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
@@ -143,8 +173,10 @@ export default function robots(): MetadataRoute.Robots {
       "https://www.aversusb.net/sitemap/video.xml",
       "https://www.aversusb.net/sitemap/news.xml",
       "https://www.aversusb.net/llms.txt",
+      "https://www.aversusb.net/.well-known/ai.txt",
       "https://www.aversusb.net/feed",
       "https://www.aversusb.net/feed/atom",
+      "https://www.aversusb.net/feed/json",
     ],
   };
 }

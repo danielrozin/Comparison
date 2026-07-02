@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: STUDIES_URL,
@@ -29,7 +29,8 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: STUDIES_URL,
     type: "website",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
   },
   other: {
     "citation_title": TITLE,
@@ -43,10 +44,20 @@ export const metadata: Metadata = {
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
+    "DC.description": DESCRIPTION,
+    "DC.subject": "Comparison Intelligence, Brand Research, Market Analysis, Consumer Behavior Studies",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "Worldwide",
     "DC.type": "Text",
     "DC.format": "text/html",
       "DC.date": "2024-01-01",
     "DC.identifier": STUDIES_URL,
+    "abstract": DESCRIPTION,
+    "thumbnail": `${SITE_URL}/api/og?title=${encodeURIComponent("Data Studies — A Versus B")}&type=studies`,
+    "twitter:label1": "Content Type",
+    "twitter:data1": "Research Studies",
+    "twitter:label2": "License",
+    "twitter:data2": "CC BY 4.0",
   },
 };
 
@@ -157,15 +168,33 @@ export default function StudiesIndexPage() {
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">Data Studies</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">Data Studies</li>
             </ol>
           </nav>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
-            Data Studies
-          </h1>
+          <div className="flex items-center gap-4 mb-2">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+              Data Studies
+            </h1>
+          </div>
           <p className="text-primary-100 text-sm sm:text-base max-w-xl">
             Original research built from our database of {SITE_NAME} comparisons. Every study is free
             to cite, quote, and republish with attribution and a link back.
@@ -179,20 +208,34 @@ export default function StudiesIndexPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <ul className="grid grid-cols-1 gap-4 list-none p-0 m-0">
+        <div className="grid grid-cols-1 gap-4">
           {STUDIES.map((s) => (
-            <li key={s.slug}>
             <Link
+              key={s.slug}
               href={`/studies/${s.slug}`}
-              className="block rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
+              className="group flex items-start gap-5 rounded-xl border border-border bg-surface p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
-              <span className="text-xs font-semibold text-primary-600 uppercase tracking-wide">{s.badge}</span>
-              <h2 className="text-xl font-display font-bold text-text mt-1 mb-2">{s.title}</h2>
-              <p className="text-text-secondary text-sm">{s.blurb}</p>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0 mt-0.5">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-primary-50 text-primary-700 border border-primary-200/60 mb-2">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  </svg>
+                  {s.badge}
+                </span>
+                <h2 className="text-xl font-display font-bold text-text mb-2 group-hover:text-primary-700 transition-colors">{s.title}</h2>
+                <p className="text-text-secondary text-sm leading-relaxed">{s.blurb}</p>
+              </div>
+              <svg className="w-5 h-5 text-text-secondary group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all duration-150 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
-            </li>
           ))}
-        </ul>
+        </div>
       </div>
     </>
   );

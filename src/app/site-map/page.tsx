@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,
     url: SITEMAP_URL,
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
   },
   other: {
     "citation_title": SITEMAP_TITLE,
@@ -135,7 +136,8 @@ const siteMapPageSchema = {
       name: SITEMAP_TITLE,
       description: SITEMAP_DESC,
       url: SITEMAP_URL,
-      inLanguage: "en-US",
+
+      locale: "en_US",      inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
       accessMode: ["textual"],
@@ -168,13 +170,24 @@ export default async function SiteMapPage() {
       />
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">Site Map</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">Site Map</li>
             </ol>
           </nav>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
@@ -185,7 +198,7 @@ export default async function SiteMapPage() {
             <a href="/sitemap.xml" className="text-primary-200 hover:text-white underline">sitemap.xml</a>.
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -211,14 +224,19 @@ export default async function SiteMapPage() {
 
       {/* All Categories (permanent browse section) */}
       <section className="mb-10">
-        <h2 className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
-          Browse by Category
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex items-center gap-3 mb-4 pb-2 border-b border-border">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Browse by Category</h2>
+        </div>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
           {CATEGORIES.map((cat) => {
             const subs = CATEGORY_SUBCATEGORIES[cat.slug] || [];
             return (
-              <div key={cat.slug}>
+              <li key={cat.slug}>
                 <h3 className="font-semibold text-text mb-2">
                   <Link
                     href={`/category/${cat.slug}`}
@@ -227,7 +245,7 @@ export default async function SiteMapPage() {
                     {cat.name}
                   </Link>
                 </h3>
-                <ul className="space-y-1">
+                <ul className="space-y-1 list-none">
                   {subs.map((sub) => (
                     <li key={sub.slug}>
                       <Link
@@ -239,18 +257,23 @@ export default async function SiteMapPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </section>
 
       {/* Quick links */}
       <section className="mb-10">
-        <h2 className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
-          Pages
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="flex items-center gap-3 mb-4 pb-2 border-b border-border">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Pages</h2>
+        </div>
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
             { href: "/", label: "Home" },
             { href: "/trending", label: "Trending Comparisons" },
@@ -265,15 +288,16 @@ export default async function SiteMapPage() {
             { href: "/changelog", label: "Changelog" },
             { href: "/feed", label: "RSS Feed" },
           ].map((page) => (
-            <Link
-              key={page.href}
-              href={page.href}
-              className="text-text-secondary hover:text-primary-600 transition-colors"
-            >
-              {page.label}
-            </Link>
+            <li key={page.href}>
+              <Link
+                href={page.href}
+                className="text-text-secondary hover:text-primary-600 transition-colors"
+              >
+                {page.label}
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
     </div>
     </>

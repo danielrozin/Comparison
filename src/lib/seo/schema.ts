@@ -444,22 +444,77 @@ export function siteNavigationSchema() {
 // Wikipedia sameAs helper for entity knowledge-graph disambiguation
 // ============================================================
 
+// Static Wikidata Q-ID map for high-frequency entities.
+// Adding wikidata.org URLs alongside Wikipedia + DBpedia gives AI knowledge
+// graphs (ChatGPT, Perplexity, Google KG, Gemini) a third authority anchor
+// that resolves via the Wikidata SPARQL API — significantly strengthening
+// entity-graph merging across citation sources.
+const WIKIDATA_Q_MAP: Record<string, string> = {
+  // Tech companies
+  "Apple": "Q312", "Microsoft": "Q2283", "Google": "Q95", "Amazon": "Q3884",
+  "Meta": "Q380", "Facebook": "Q380", "Netflix": "Q907311", "Tesla": "Q478214",
+  "Nvidia": "Q182477", "Samsung": "Q21231", "Sony": "Q27751", "Intel": "Q248",
+  "AMD": "Q236429", "IBM": "Q37156", "Oracle": "Q166900", "Salesforce": "Q617922",
+  "Adobe": "Q102038", "Shopify": "Q14721291", "Spotify": "Q152571",
+  "Twitter": "Q918", "X": "Q918", "LinkedIn": "Q213660", "YouTube": "Q866",
+  "TikTok": "Q62826784", "Instagram": "Q209330", "WhatsApp": "Q575908",
+  "Snapchat": "Q289242", "Pinterest": "Q255381", "Reddit": "Q1136",
+  "Discord": "Q72590392", "Slack": "Q18951731", "Zoom": "Q24811894",
+  "Dropbox": "Q547580", "Airbnb": "Q2641391", "Uber": "Q22889286",
+  "Lyft": "Q22906800", "PayPal": "Q91494", "Stripe": "Q2003791",
+  "Anthropic": "Q115747612", "OpenAI": "Q107932506", "DeepMind": "Q15733006",
+  // AI models
+  "ChatGPT": "Q116149782", "Claude": "Q122427025", "Gemini": "Q124718842",
+  "GPT-4": "Q120260988", "Llama": "Q123985908", "Copilot": "Q130358024",
+  // OS / platforms
+  "Windows": "Q1406", "macOS": "Q14116", "Linux": "Q388", "Android": "Q94",
+  "iOS": "Q48493", "Ubuntu": "Q381", "Debian": "Q7715973",
+  // Devices / hardware
+  "iPhone": "Q19828", "iPad": "Q19831", "MacBook": "Q607679",
+  "PlayStation 5": "Q63396", "Xbox Series X": "Q56017533",
+  "Nintendo Switch": "Q19610114", "AirPods": "Q21284598",
+  // Countries
+  "United States": "Q30", "China": "Q148", "India": "Q668",
+  "United Kingdom": "Q145", "Germany": "Q183", "France": "Q142",
+  "Japan": "Q17", "Canada": "Q16", "Australia": "Q408",
+  "Brazil": "Q155", "Russia": "Q159", "South Korea": "Q884",
+  "Mexico": "Q96", "Italy": "Q38", "Spain": "Q29",
+  "Netherlands": "Q55", "Sweden": "Q34", "Norway": "Q20",
+  "Switzerland": "Q39", "Singapore": "Q334", "Israel": "Q801",
+  "UAE": "Q878", "Saudi Arabia": "Q851", "Argentina": "Q414",
+  // Sports entities
+  "LeBron James": "Q36159", "Michael Jordan": "Q41421", "Lionel Messi": "Q615",
+  "Cristiano Ronaldo": "Q11571", "Tom Brady": "Q19676", "Serena Williams": "Q12926",
+  "Roger Federer": "Q1426", "Rafael Nadal": "Q10987", "Novak Djokovic": "Q60462",
+  // Automotive
+  "Toyota": "Q53268", "BMW": "Q26678", "Mercedes-Benz": "Q36008",
+  "Volkswagen": "Q246", "Ford": "Q44294", "Chevrolet": "Q93390",
+  "Honda": "Q9584", "Hyundai": "Q20085", "Audi": "Q23317",
+  "Porsche": "Q40993", "Ferrari": "Q27586", "Lamborghini": "Q29714",
+  // Streaming / media
+  "Hulu": "Q5937844", "Disney+": "Q57523709",
+  "HBO Max": "Q115478500", "Amazon Prime Video": "Q8159742",
+  "Apple TV+": "Q57737277", "Peacock": "Q66799500",
+};
+
 /**
- * Returns a Wikipedia sameAs URL array for a given entity name.
- * Constructs the canonical Wikipedia URL by replacing spaces with underscores.
- * AI models (ChatGPT, Perplexity, Gemini) use sameAs Wikipedia links to
- * unambiguously resolve entities during knowledge-graph grounding.
+ * Returns a sameAs URL array for a given entity name including Wikipedia,
+ * DBpedia, and Wikidata (when a Q-ID is available in the static map).
+ * AI models (ChatGPT, Perplexity, Gemini) use sameAs to unambiguously
+ * resolve entities during knowledge-graph grounding and citation merging.
  */
 export function entityWikipediaSameAs(name: string): string[] {
   if (!name || name.trim().length === 0) return [];
   const wikiSlug = name.trim().replace(/ /g, "_");
-  // Return both Wikipedia and DBpedia — Wikipedia for human-readable authority,
-  // DBpedia for machine-readable Linked Open Data (used by ChatGPT, Perplexity,
-  // and Google Knowledge Graph to merge entity mentions across sources).
-  return [
+  const urls = [
     `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`,
     `https://dbpedia.org/resource/${encodeURIComponent(wikiSlug)}`,
   ];
+  // Append Wikidata entity URL when Q-ID is known — third knowledge-graph anchor
+  // that AI crawlers resolve via the Wikidata API for entity disambiguation.
+  const qId = WIKIDATA_Q_MAP[name.trim()] ?? WIKIDATA_Q_MAP[name.trim().split(" ")[0]];
+  if (qId) urls.push(`https://www.wikidata.org/entity/${qId}`);
+  return urls;
 }
 
 // ============================================================
@@ -2248,6 +2303,19 @@ export function categoryPageSchema(category: CategoryData) {
           },
         })),
       },
+      // citation — formal attribution chain from this CollectionPage to the top comparison
+      // Articles. AI answer engines (ChatGPT, Perplexity, Google AI Overviews) use citation
+      // to build knowledge graph edges from category pages to individual comparison articles,
+      // boosting our authority for "[category] best comparison" queries.
+      ...(category.topComparisons.length > 0 && {
+        citation: category.topComparisons.slice(0, 5).map((comp) => ({
+          "@type": "WebPage",
+          "@id": `${SITE_URL}/compare/${comp.slug}#webpage`,
+          name: comp.title,
+          url: `${SITE_URL}/compare/${comp.slug}`,
+          publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        })),
+      }),
     },
     breadcrumbSchema([
       { name: "Home", url: SITE_URL },

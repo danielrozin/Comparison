@@ -68,9 +68,24 @@ export async function GET(
         "Access-Control-Allow-Origin": "*",
         "X-Robots-Tag": "all",
         "Content-Type": "application/json",
+        "Vary": "Accept",
         ...(comparison.metadata?.updatedAt
-          ? { "Last-Modified": new Date(comparison.metadata.updatedAt).toUTCString() }
+          ? {
+              "Last-Modified": new Date(comparison.metadata.updatedAt).toUTCString(),
+              ETag: `"faq-${slug}-${new Date(comparison.metadata.updatedAt).getTime()}"`,
+            }
           : {}),
+        // X-Summary: first FAQ answer (or shortAnswer) for AI crawlers scanning headers
+        ...(comparison.faqs?.[0]?.answer
+          ? { "X-Summary": comparison.faqs[0].answer.slice(0, 500) }
+          : comparison.shortAnswer
+          ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
+          : {}),
+        // X-Source-* — attribution headers for AI training pipelines and citation engines
+        "X-Source-Title": comparison.title,
+        "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+        "X-Source-License": "CC BY 4.0",
+        "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
       },
     }
   );

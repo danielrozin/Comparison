@@ -35,6 +35,22 @@
     {
       "path": "/api/indexnow?all=1",
       "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/indexnow-recent",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/faq-backfill",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/internal-link-boost",
+      "schedule": "0 10 * * 3"
+    },
+    {
+      "path": "/api/cron/trending-freshness",
+      "schedule": "0 12 * * *"
     }
   ]
 }

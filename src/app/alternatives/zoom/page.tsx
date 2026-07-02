@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: PAGE_URL,
@@ -30,7 +30,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [
       {
         url: OG_IMAGE,
@@ -374,18 +375,31 @@ export default function ZoomAlternativesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Breadcrumbs */}
         <nav className="mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
+          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
             <li>
-              <Link href="/" className="hover:text-primary-600">Home</Link>
+              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
+              </Link>
             </li>
-            <li>/</li>
+            <li aria-hidden="true">
+              <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
             <li>
-              <Link href="/alternatives/zoom" className="hover:text-primary-600">
+              <Link href="/alternatives/zoom" className="hover:text-primary-600 transition-colors">
                 Alternatives
               </Link>
             </li>
-            <li>/</li>
-            <li className="text-text font-medium">Zoom Alternatives</li>
+            <li aria-hidden="true">
+              <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </li>
+            <li className="text-text font-medium" aria-current="page">Zoom Alternatives</li>
           </ol>
         </nav>
 
@@ -808,9 +822,14 @@ export default function ZoomAlternativesPage() {
 
         {/* How to choose */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
-            How to choose the right Zoom alternative
-          </h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">How to choose the right Zoom alternative</h2>
+          </div>
           <p className="text-text font-semibold mb-2">By ecosystem fit:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
@@ -863,7 +882,14 @@ export default function ZoomAlternativesPage() {
 
         {/* FAQ */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Frequently asked questions</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Frequently asked questions</h2>
+          </div>
 
           <div className="space-y-6">
             <div>
@@ -944,7 +970,14 @@ export default function ZoomAlternativesPage() {
 
         {/* Related comparisons */}
         <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Related comparisons</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-text">Related comparisons</h2>
+          </div>
           <ul className="space-y-2 text-text">
             <li>
               <Link

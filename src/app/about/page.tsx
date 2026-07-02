@@ -18,7 +18,8 @@ export const metadata: Metadata = {
     title: ABOUT_TITLE,
     description: ABOUT_DESC,
     url: ABOUT_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": ABOUT_TITLE,
     "citation_author": "A Versus B",
@@ -45,7 +46,8 @@ const aboutPageSchema = {
   description: ABOUT_DESC,
   abstract: ABOUT_DESC,
   url: ABOUT_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   creativeWorkStatus: "Published",
   datePublished: "2024-01-01",
   dateModified: new Date().toISOString().slice(0, 10),
@@ -78,13 +80,15 @@ const aboutPageSchema = {
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
-    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
+
+    locale: "en_US",    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
     founder: [
       {
         "@type": "Person",
         name: "Daniel Rozin",
         url: `${SITE_URL}/authors/daniel-rozin`,
-        jobTitle: "Founder & Editor-in-Chief",
+
+        locale: "en_US",        jobTitle: "Founder & Editor-in-Chief",
         sameAs: [
           "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
           "https://www.facebook.com/daniel.rozin.94",
@@ -115,15 +119,22 @@ export default function AboutPage() {
       <JsonLd data={aboutPageSchema} />
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary">
           <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
+            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
             </Link>
           </li>
-          <li>/</li>
-          <li className="text-text font-medium">About</li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-text-secondary/40 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">About</li>
         </ol>
       </nav>
 
@@ -141,7 +152,14 @@ export default function AboutPage() {
 
       {/* Mission */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">Our Mission</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Our Mission</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed mb-4">
           {SITE_NAME} was founded on a simple idea: comparisons should be easy, fast, and trustworthy.
           Every day, millions of people search the internet to understand the difference between two
@@ -161,9 +179,17 @@ export default function AboutPage() {
 
       {/* How It Works */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">How It Works</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
+        </div>
+        <ol className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">1</span>
             </div>
@@ -172,8 +198,8 @@ export default function AboutPage() {
               Type any two subjects — people, places, products, brands, or ideas — into our search bar
               and get a structured comparison instantly.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">2</span>
             </div>
@@ -182,8 +208,8 @@ export default function AboutPage() {
               Our system aggregates data from reliable sources, organizes it into clear tables, highlights
               key differences, and surfaces pros and cons for both sides.
             </p>
-          </div>
-          <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
+          </li>
+          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">3</span>
             </div>
@@ -192,16 +218,27 @@ export default function AboutPage() {
               Walk away with a clear understanding of the strengths and weaknesses of each subject,
               empowered to form your own informed opinion.
             </p>
-          </div>
-        </div>
+          </li>
+        </ol>
       </section>
 
       {/* What Makes Us Different */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">What Makes Us Different</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">What Makes Us Different</h2>
+        </div>
         <ul className="space-y-4">
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+              </svg>
+            </div>
             <div>
               <p className="font-semibold text-text">Visual-first design</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -211,7 +248,11 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="font-semibold text-text">Broad coverage</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -221,7 +262,11 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
             <div>
               <p className="font-semibold text-text">No hidden agendas</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -231,7 +276,11 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="font-semibold text-text">Always up to date</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -241,7 +290,11 @@ export default function AboutPage() {
             </div>
           </li>
           <li className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 mt-2 flex-shrink-0" />
+            <div className="w-8 h-8 rounded-lg bg-primary-50 border border-primary-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div>
               <p className="font-semibold text-text">Free for everyone</p>
               <p className="text-text-secondary text-sm leading-relaxed mt-1">
@@ -255,27 +308,38 @@ export default function AboutPage() {
 
       {/* Categories */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">What We Compare</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">What We Compare</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed mb-6">
           {SITE_NAME} covers a wide and growing range of comparison categories:
         </p>
         <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
-            { label: "Sports & Athletes", icon: "⚽" },
-            { label: "Countries & Nations", icon: "🌍" },
-            { label: "Technology & Gadgets", icon: "💻" },
-            { label: "Products & Consumer Goods", icon: "📦" },
-            { label: "Celebrities & Public Figures", icon: "⭐" },
-            { label: "History & Events", icon: "📜" },
-            { label: "Military & Defense", icon: "🎖️" },
-            { label: "Economy & Finance", icon: "📈" },
-            { label: "Companies & Brands", icon: "🏢" },
+            { label: "Sports & Athletes", gradient: "from-green-500 to-emerald-600", path: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" },
+            { label: "Countries & Nations", gradient: "from-blue-500 to-cyan-600", path: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+            { label: "Technology & Gadgets", gradient: "from-indigo-500 to-blue-600", path: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" },
+            { label: "Products & Consumer Goods", gradient: "from-violet-500 to-purple-600", path: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" },
+            { label: "Celebrities & Public Figures", gradient: "from-amber-400 to-orange-500", path: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" },
+            { label: "History & Events", gradient: "from-rose-500 to-pink-600", path: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
+            { label: "Military & Defense", gradient: "from-slate-600 to-gray-700", path: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
+            { label: "Economy & Finance", gradient: "from-teal-500 to-emerald-600", path: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+            { label: "Companies & Brands", gradient: "from-primary-500 to-indigo-600", path: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
           ].map((item) => (
             <li
               key={item.label}
-              className="flex items-center gap-3 bg-surface-alt border border-border rounded-xl p-3"
+              className="flex items-center gap-3 bg-surface-alt border border-border rounded-xl p-3 hover:border-primary-200 hover:bg-white transition-colors duration-150"
             >
-              <span className="text-xl" aria-hidden="true">{item.icon}</span>
+              <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d={item.path} />
+                </svg>
+              </div>
               <span className="text-sm font-medium text-text">{item.label}</span>
             </li>
           ))}
@@ -284,7 +348,14 @@ export default function AboutPage() {
 
       {/* Founders */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Who We Are</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Who We Are</h2>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Daniel */}
           <div className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
@@ -365,7 +436,15 @@ export default function AboutPage() {
 
       {/* Team Vision */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">Our Vision</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Our Vision</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed mb-4">
           We envision a world where information asymmetry is no longer a barrier to good decision-making.
           Whether you&apos;re a student researching a school project, a professional evaluating enterprise
@@ -380,16 +459,24 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
+      <section className="bg-gradient-to-br from-primary-50 to-indigo-50 border border-primary-100 rounded-2xl p-8 text-center">
+        <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
         <h2 className="text-xl font-display font-bold text-text mb-2">Have a question or suggestion?</h2>
         <p className="text-text-secondary mb-6 text-sm">
           We&apos;d love to hear from you. Reach out to our team any time.
         </p>
         <Link
           href="/contact"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
         >
           Contact Us
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </section>
     </div>

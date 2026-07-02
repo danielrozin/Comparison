@@ -594,11 +594,20 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      {/* author — used by Bing, Yahoo, and AI content attributors for authorship resolution */}
+      <meta name="author" content="A Versus B" />
+      {/* coverage/distribution/rating — classic HTML meta; Bing, Yandex, and AI content
+          classifiers use these to confirm global availability and safe-search eligibility */}
+      <meta name="coverage" content="Worldwide" />
+      <meta name="distribution" content="Global" />
+      <meta name="rating" content="General" />
       <link rel="canonical" href={meta.canonical} />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
-      {/* JSON-LD knowledge graph — AI crawlers (Perplexity, ChatGPT, Gemini) use this
-          to ingest structured comparison data with typed entities and FAQ pairs */}
+      {/* Pure Schema.org JSON-LD — spec-compliant application/ld+json for Semantic Web tools,
+          RDF clients, and AI crawlers doing Accept: application/ld+json content negotiation */}
+      <link rel="alternate" type="application/ld+json" href={`https://www.aversusb.net/api/v1/schema/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Schema.org JSON-LD (pure)" />
+      {/* JSON-LD knowledge graph — richer format with extra metadata fields for developer tools */}
       <link rel="alternate" type="application/ld+json" href={`https://www.aversusb.net/api/knowledge-graph/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison knowledge graph (JSON-LD)" />
       {/* oEmbed — Slack, Discord, Notion, LinkedIn and AI assistants use this to render
           rich comparison cards when a user pastes an aversusb.net URL */}
@@ -607,6 +616,12 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/faq/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured FAQ pairs (JSON)" />
       {/* Answer API — pre-packaged citation-ready answer for AI tools */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/answer/${meta.canonical.split("/compare/")[1] ?? ""}`} title="AI Answer (citation-ready)" />
+      {/* describedby — Linked Data HTML best practice (RFC 5988 §5, HTML5 §4.8.6).
+          Tells any HTML parser (not just HTTP header readers) that the JSON-LD endpoint
+          is the machine-readable description of this page. Supplements the Link header
+          emitted by middleware; visible to Googlebot, GPTBot, PerplexityBot without
+          requiring HTTP header parsing. */}
+      <link rel="describedby" type="application/ld+json" href={`https://www.aversusb.net/api/v1/schema/${meta.canonical.split("/compare/")[1] ?? ""}`} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:url" content={meta.canonical} />
@@ -614,6 +629,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta property="og:site_name" content="A Versus B" />
       <meta property="og:locale" content="en_US" />
       <meta property="og:image" content={meta.ogImage} />
+      <meta property="og:image:secure_url" content={meta.ogImage} />
+      <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       {meta.publishedTime && <meta property="article:published_time" content={meta.publishedTime} />}
@@ -621,6 +638,11 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta property="og:updated_time" content={meta.modifiedTime} />}
       {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
       <meta property="article:author" content="https://www.aversusb.net/about" />
+      {/* rel=up — HTML hierarchy signal; tells AI crawlers this comparison belongs to a
+          specific category, enabling topical authority context without following breadcrumbs */}
+      {meta.articleSection && (
+        <link rel="up" href={`https://www.aversusb.net/category/${meta.articleSection.toLowerCase().replace(/[\s_]+/g, "-")}`} title={`${meta.articleSection} comparisons`} />
+      )}
       {/* article:tag — entity names + comparison terms for Open Graph topic signals.
           Social platforms and AI crawlers (Perplexity social graph, Bing social signals)
           use article:tag to build topic affinity maps for citation selection. */}
@@ -629,6 +651,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       ))}
       {/* og:image:alt — alt text for OG image; used by AI models for image understanding */}
       <meta property="og:image:alt" content={meta.title} />
+      {/* thumbnail — Bing rich snippets; also parsed by Apple News and Microsoft Copilot
+          to select the preview image when displaying a summary card for this page */}
+      <meta name="thumbnail" content={meta.ogImage} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@aversusb" />
       <meta name="twitter:creator" content="@aversusb" />
@@ -650,6 +675,9 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta name="citation_online_date" content={meta.modifiedTime.slice(0, 10)} />}
       <meta name="citation_journal_title" content="A Versus B" />
       <meta name="citation_abstract" content={meta.description} />
+      {/* abstract — standard HTML meta used by Bing/Yahoo and some AI tools to extract
+          a short summary without parsing body copy. Same value as citation_abstract. */}
+      <meta name="abstract" content={meta.description} />
       <meta name="citation_language" content="en" />
       <meta name="citation_url" content={meta.canonical} />
       {/* citation_fulltext_world_accessible — Google Scholar + Semantic Scholar signal that
@@ -667,19 +695,31 @@ function MetaHead({ meta }: { meta: PageMeta }) {
         <meta name="citation_keywords" content={(meta.articleTags ?? []).join("; ")} />
       )}
       <meta name="DC.title" content={meta.title} />
+      <meta name="DC.description" content={meta.description} />
       <meta name="DC.creator" content="A Versus B" />
       <meta name="DC.publisher" content="A Versus B" />
       <meta name="DC.language" content="en" />
       <meta name="DC.type" content="Text" />
       <meta name="DC.format" content="text/html" />
       <meta name="DC.identifier" content={meta.canonical} />
+      <meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/" />
+      <meta name="DC.coverage" content="Worldwide" />
+      {meta.publishedTime && <meta name="DC.date" content={meta.publishedTime} />}
       {/* DC.subject — Dublin Core subject taxonomy for AI citation indexers.
           Maps the comparison topic to a structured subject vocabulary. */}
       {meta.articleSection && <meta name="DC.subject" content={meta.articleSection} />}
+      {/* Bing / AI topic classification meta tags — Bing Webmaster, Bing AI, and several
+          AI crawlers use subject/topic/classification for topical authority scoring and
+          content routing. category + subject = two separate classification signals. */}
+      {meta.articleSection && <meta name="subject" content={`${meta.articleSection} comparison`} />}
+      {meta.articleSection && <meta name="topic" content={`${meta.articleSection} comparison`} />}
+      {meta.articleSection && <meta name="classification" content={`Reference/Comparison/${meta.articleSection}`} />}
+      {meta.articleSection && <meta name="category" content={meta.articleSection} />}
       {/* Feed discovery — RSS + Atom feed links on every page; feed readers and AI crawlers
           use these to subscribe to content updates and detect freshness signals */}
       <link rel="alternate" type="application/rss+xml" title="A Versus B — RSS Feed" href="https://www.aversusb.net/feed" />
       <link rel="alternate" type="application/atom+xml" title="A Versus B — Atom Feed" href="https://www.aversusb.net/feed/atom" />
+      <link rel="alternate" type="application/feed+json" title="A Versus B — JSON Feed" href="https://www.aversusb.net/feed/json" />
       {/* hreflang — English-only site; x-default avoids "missing x-default" Search Console warning */}
       <link rel="alternate" hrefLang="en" href={meta.canonical} />
       <link rel="alternate" hrefLang="x-default" href={meta.canonical} />
@@ -690,6 +730,10 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {/* news_keywords — Google News, Apple News, Bing News categorization signal */}
       {(meta.articleTags ?? []).length > 0 && (
         <meta name="news_keywords" content={(meta.articleTags ?? []).slice(0, 10).join(", ")} />
+      )}
+      {/* keywords — standard HTML meta; Bing, Yandex, and AI topic classifiers still use this */}
+      {(meta.articleTags ?? []).length > 0 && (
+        <meta name="keywords" content={(meta.articleTags ?? []).slice(0, 15).join(", ")} />
       )}
       {/* og:see_also — related comparison URLs.
           AI crawlers (Perplexity, ChatGPT browse, Gemini) follow these to build
@@ -1058,7 +1102,7 @@ function MultiEntityLayout({
 
       {/* Quick answer (uses array-friendly TLDR text only) */}
       {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-        <section id="verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <section id="short-answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200/40 rounded-xl p-5">
             <p className="text-xs font-semibold text-primary-700 uppercase tracking-wide mb-2">Quick Answer</p>
             <p className="text-base sm:text-lg text-text font-medium leading-relaxed">
@@ -1088,7 +1132,14 @@ function MultiEntityLayout({
           {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
           {comparison.verdict && (
             <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <h2 className="text-2xl font-display font-bold text-text mb-3">Verdict</h2>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-display font-bold text-text">Verdict</h2>
+              </div>
               <p className="text-base text-text leading-relaxed whitespace-pre-line">{comparison.verdict}</p>
             </section>
           )}

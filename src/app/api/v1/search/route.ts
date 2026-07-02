@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
               excerpt: r.shortAnswer ?? undefined,
               answerUrl: `${SITE_URL}/api/answer/${r.slug}`,
               knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${r.slug}`,
+              schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${r.slug}`,
             }))
           )
       : Promise.resolve([]),

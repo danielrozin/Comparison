@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     title: `Disclaimer — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Disclaimer covering data accuracy, affiliate disclosures, and limitations of liability.`,
     url: PAGE_URL,
-  },
+
+    locale: "en_US",  },
 };
 
 const webPageSchema = {
@@ -25,7 +26,8 @@ const webPageSchema = {
   "@id": PAGE_URL,
   name: `Disclaimer — ${SITE_NAME}`,
   url: PAGE_URL,
-  inLanguage: "en-US",
+
+  locale: "en_US",  inLanguage: "en-US",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   creativeWorkStatus: "Published",

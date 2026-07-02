@@ -100,6 +100,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 id={answerId}
                 role="region"
                 aria-label={faq.question}
+                aria-hidden={!isOpen}
                 className={`grid transition-all duration-300 ease-in-out ${
                   isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                 }`}

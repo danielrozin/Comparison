@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" , "max-video-preview": -1 },
   },
   alternates: {
     canonical: CANONICAL,
@@ -31,7 +31,8 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: CANONICAL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: ogImage, width: 1200, height: 630, alt: "Most-Compared Brands of 2026" }],
   },
   twitter: {
@@ -188,13 +189,20 @@ export default async function MostComparedStudyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li><Link href="/studies" className="hover:text-primary-600">Studies</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">Most-Compared Brands 2026</li>
+        <nav className="mb-6" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+            <li>
+              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
+              </Link>
+            </li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li><Link href="/studies" className="hover:text-primary-600 transition-colors">Studies</Link></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li className="text-text font-medium" aria-current="page">Most-Compared Brands 2026</li>
           </ol>
         </nav>
 
@@ -235,9 +243,14 @@ export default async function MostComparedStudyPage() {
 
         {/* Top brands overall */}
         <section className="mb-12">
-          <h2 className="text-2xl font-display font-bold text-text mb-2">
-            Most-compared brands overall
-          </h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Most-compared brands overall</h2>
+          </div>
           <p className="text-text-secondary mb-5">
             Ranked by how many distinct comparison pages each brand appears in. Gaming consoles and
             major SaaS platforms dominate — they sit at the center of the widest webs of rivalry.
@@ -275,9 +288,14 @@ export default async function MostComparedStudyPage() {
         {/* Top SaaS */}
         {study.topSaaS.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-2xl font-display font-bold text-text mb-2">
-              Most-compared B2B SaaS tools
-            </h2>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-display font-bold text-text">Most-compared B2B SaaS tools</h2>
+            </div>
             <p className="text-text-secondary mb-5">
               Software buyers comparison-shop harder than anyone. These are the SaaS products that
               show up in the most head-to-head evaluations.
@@ -303,9 +321,14 @@ export default async function MostComparedStudyPage() {
 
         {/* Biggest matchups */}
         <section className="mb-12">
-          <h2 className="text-2xl font-display font-bold text-text mb-2">
-            Biggest matchups by readership
-          </h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Biggest matchups by readership</h2>
+          </div>
           <p className="text-text-secondary mb-5">
             The single comparisons readers pull up most often — the marquee rivalries of 2026.
           </p>
@@ -329,9 +352,14 @@ export default async function MostComparedStudyPage() {
 
         {/* Category breakdown */}
         <section className="mb-12">
-          <h2 className="text-2xl font-display font-bold text-text mb-2">
-            Where the comparisons cluster
-          </h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Where the comparisons cluster</h2>
+          </div>
           <p className="text-text-secondary mb-5">
             Comparison demand is concentrated in consumer products, software, and technology — the
             categories where switching costs are real and the choice actually matters.
@@ -358,7 +386,14 @@ export default async function MostComparedStudyPage() {
 
         {/* Methodology */}
         <section className="mb-12">
-          <h2 className="text-2xl font-display font-bold text-text mb-3">Methodology</h2>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-display font-bold text-text">Methodology</h2>
+          </div>
           <div className="prose-sm text-text-secondary space-y-3">
             <p>
               We took every published comparison on {SITE_NAME} as of {updatedLabel} —{" "}

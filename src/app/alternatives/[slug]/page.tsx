@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
       canonical: `${SITE_URL}/alternatives/${slug}`,
@@ -46,8 +46,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `Alternatives to ${name}`,
       description: `Compare ${name} against top competitors and find the best option.`,
       url: `${SITE_URL}/alternatives/${slug}`,
-      type: "website",
+      type: "article",
       siteName: SITE_NAME,
+      locale: "en_US",
+      publishedTime: "2024-01-01T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
       images: [{ url: ogImage, width: 1200, height: 630, alt: `Alternatives to ${name} — comparison guide` }],
     },
     twitter: {
@@ -63,16 +66,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": metaDesc,
+      "abstract": metaDesc,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": `Best Alternatives to ${name} in 2026`,
+      "DC.description": metaDesc,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `Best ${name} Alternatives, ${name} Competitors`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/alternatives/${slug}`,
+      "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": "Alternatives Guide",
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }
@@ -227,6 +240,7 @@ export default async function AlternativesPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="up" href={`${SITE_URL}/entity/${slug}`} title={`${name} profile`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(breadcrumbs)) }}
@@ -241,13 +255,28 @@ export default async function AlternativesPage({ params }: PageProps) {
       />
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumbs */}
-      <nav className="mb-6">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-          <li>/</li>
+      <nav className="mb-6" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary">
+          <li>
+            <Link href="/" className="hover:text-primary-600 flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
           <li><Link href={`/entity/${slug}`} className="hover:text-primary-600">{name}</Link></li>
-          <li>/</li>
-          <li className="text-text font-medium">Alternatives</li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">Alternatives</li>
         </ol>
       </nav>
 

@@ -33,7 +33,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
         {reviews.map((review, idx) => {
           const scoreColor = review.smartScore >= 90
             ? "bg-green-100 text-green-700 ring-green-200"
@@ -43,12 +43,12 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             ? "bg-amber-100 text-amber-700 ring-amber-200"
             : "bg-rose-50 text-rose-700 ring-rose-200";
           return (
+          <li key={review.url} className="flex">
           <a
-            key={review.url}
             href={review.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden"
+            className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden w-full"
           >
             {/* Gradient accent stripe */}
             <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${CARD_GRADIENTS[idx % CARD_GRADIENTS.length]}`} />
@@ -75,9 +75,10 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
               </span>
             </div>
           </a>
+          </li>
         );
         })}
-      </div>
+      </ul>
     </section>
   );
 }

@@ -77,6 +77,7 @@ export const metadata: Metadata = {
     types: {
       "application/rss+xml": `${SITE_URL}/feed`,
       "application/atom+xml": `${SITE_URL}/feed/atom`,
+      "application/feed+json": `${SITE_URL}/feed/json`,
       "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(SITE_URL)}&format=json`,
     },
   },
@@ -129,6 +130,12 @@ export default function RootLayout({
         {/* format-detection — disable auto-linking of phone numbers/emails on iOS Safari
             which can cause layout shifts and unintended tap targets */}
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+        {/* author/coverage/distribution/rating — Bing, Yandex, and AI content classifiers
+            use these to confirm authorship, global availability, and safe-search eligibility */}
+        <meta name="author" content="A Versus B" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="distribution" content="Global" />
+        <meta name="rating" content="General" />
         {ADSENSE_PUB_ID && (
           <script
             async

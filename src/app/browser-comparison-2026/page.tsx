@@ -15,14 +15,14 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: PAGE_URL,
     languages: { "en": PAGE_URL, "x-default": PAGE_URL },
     types: { "application/rss+xml": `${SITE_URL}/feed`, "application/atom+xml": `${SITE_URL}/feed/atom` },
   },
-  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", siteName: SITE_NAME },
+  openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US",  siteName: SITE_NAME },
   other: {
     "citation_title": PAGE_TITLE,
     "citation_author": "A Versus B",
@@ -303,11 +303,22 @@ export default function BrowserComparison2026Page() {
     <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <JsonLd data={[articleSchema, ...productSchemas]} />
 
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary flex-wrap">
-          <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
-          <li>/</li>
-          <li className="text-text font-medium">Browser Comparison 2026</li>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+          <li>
+            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">Browser Comparison 2026</li>
         </ol>
       </nav>
 
@@ -345,7 +356,14 @@ export default function BrowserComparison2026Page() {
 
       {/* Quick verdict */}
       <section className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
-        <h2 className="font-display font-bold text-text mb-2">Quick verdict</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="font-display font-bold text-text">Quick verdict</h2>
+        </div>
         <ul className="space-y-1 text-text-secondary text-sm list-disc list-inside">
           <li><strong className="text-text">Best for everyday use:</strong> Chrome (ecosystem) or Edge (Windows-integrated); both Chromium-based.</li>
           <li><strong className="text-text">Best for privacy:</strong> Brave — blocks ads/trackers by default, Tor integration available, open-source.<sup><a href="#cite-4" className="text-primary-600">[5]</a></sup></li>
@@ -356,7 +374,14 @@ export default function BrowserComparison2026Page() {
 
       {/* Main table */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">Full comparison table</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Full comparison table</h2>
+        </div>
         <p className="text-sm text-text-secondary mb-4">
           Market share figures: StatCounter GlobalStats, April 2026.<sup><a href="#cite-statcounter" className="text-primary-600">[*]</a></sup>{" "}
           Desktop and mobile shares are tracked separately; figures may not sum to 100% due to rounding.
@@ -388,7 +413,14 @@ export default function BrowserComparison2026Page() {
 
       {/* Methodology link */}
       <section className="mb-12 p-5 border border-border rounded-2xl">
-        <h2 className="font-display font-bold text-text mb-2">How we evaluate browsers</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+          <h2 className="font-display font-bold text-text">How we evaluate browsers</h2>
+        </div>
         <p className="text-text-secondary text-sm mb-3">
           Our{" "}
           <Link href="/browser-comparison-2026/methodology" className="text-primary-600 hover:underline">full methodology</Link>{" "}
@@ -401,7 +433,14 @@ export default function BrowserComparison2026Page() {
 
       {/* Citations */}
       <section className="mb-10">
-        <h2 className="text-xl font-display font-bold text-text mb-4">Sources</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-display font-bold text-text">Sources</h2>
+        </div>
         <ol className="space-y-2 text-sm text-text-secondary">
           {BROWSERS.map((b, i) => (
             <li key={b.name} id={`cite-${i}`}>

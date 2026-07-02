@@ -267,17 +267,42 @@ export async function GET(
     "@graph": graph,
   };
 
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+  const etag = updatedAt
+    ? `"kg-${slug}-${new Date(updatedAt).getTime()}"`
+    : `"kg-${slug}"`;
+
+  // Conditional GET support — AI crawlers polling for changes can send If-None-Match
+  const ifNoneMatch = _request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
+
   return NextResponse.json(jsonLd, {
     headers: {
       "Content-Type": "application/ld+json",
-      "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       "Access-Control-Allow-Origin": "*",
       "X-Robots-Tag": "all",
-      // X-Summary: shortAnswer in the HTTP header so AI crawlers scanning response headers
-      // can extract the citation-ready TL;DR without fully parsing the JSON-LD body.
-      ...(comparison.shortAnswer
-        ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
+      // Vary: Accept — CDN must cache separately for different Accept types
+      // (this endpoint is the 303 redirect target from /compare/{slug} content negotiation)
+      "Vary": "Accept",
+      ETag: etag,
+      ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
+      // X-Summary: shortAnswer (or verdict fallback) for AI crawlers probing without body download
+      ...((comparison.shortAnswer || comparison.verdict)
+        ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
+      // Link: back to canonical + pure JSON-LD schema endpoint
+      "Link": [
+        `<${SITE_URL}/compare/${slug}>; rel="canonical"`,
+        `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD (pure)"`,
+      ].join(", "),
+      // X-Source-* — AI attribution headers for Perplexity, ChatGPT, and Gemini
+      "X-Source-Title": comparison.title,
+      "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+      "X-Source-License": "CC BY 4.0",
+      "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
     },
   });
 }

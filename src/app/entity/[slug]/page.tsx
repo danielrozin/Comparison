@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_URL, CATEGORIES } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
       canonical: `${SITE_URL}/entity/${slug}`,
@@ -84,6 +84,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         "application/atom+xml": `${SITE_URL}/feed/atom`,
         "application/json+oembed": `${SITE_URL}/api/oembed?url=${encodeURIComponent(`${SITE_URL}/entity/${slug}`)}&format=json`,
         "application/json": `${SITE_URL}/api/v1/entities/${slug}`,
+        "application/ld+json": `${SITE_URL}/api/v1/entities/${slug}`,
       },
     },
     openGraph: {
@@ -91,7 +92,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       url: `${SITE_URL}/entity/${slug}`,
       type: "website",
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
+      siteName: SITE_NAME,
+      locale: "en_US",
+      images: [{ url: ogImage, secureUrl: ogImage, type: "image/png", width: 1200, height: 630, alt: `${name} comparisons and profile — A Versus B` }],
     },
     twitter: {
       card: "summary_large_image",
@@ -106,12 +109,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": description,
+      "abstract": description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": title,
+      "DC.description": description,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${name} Comparisons, ${name} vs Alternatives`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
@@ -121,6 +129,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "twitter:data1": "Entity Profile",
       "twitter:label2": "Platform",
       "twitter:data2": "A Versus B",
+      "thumbnail": ogImage,
     },
   };
 }
@@ -182,6 +191,8 @@ export default async function EntityPage({ params }: PageProps) {
 
   // Wrap in @graph — raw JSON arrays are invalid JSON-LD; Google and AI crawlers
   // require either a single node or { "@context", "@graph": [...] }.
+  const hasCuratedFaqs = !!entityContent?.faqs?.length;
+  const faqNodeId = `${SITE_URL}/entity/${slug}#faq`;
   const entityGraphItems: Record<string, unknown>[] = [
     breadcrumbSchema(breadcrumbItems),
     aggregateRatingSchema({
@@ -191,20 +202,27 @@ export default async function EntityPage({ params }: PageProps) {
       ratingValue: rating,
       reviewCount,
     }),
-    profilePageSchema({
-      name,
-      slug,
-      shortDesc: entityContent?.description?.slice(0, 200) ?? null,
-      entityType: inferredEntityType,
-      imageUrl: null,
-      comparisonCount: relatedComparisons.length,
-      topComparisons: relatedComparisons.slice(0, 10),
-    }),
+    {
+      ...profilePageSchema({
+        name,
+        slug,
+        shortDesc: entityContent?.description?.slice(0, 200) ?? null,
+        entityType: inferredEntityType,
+        imageUrl: null,
+        comparisonCount: relatedComparisons.length,
+        topComparisons: relatedComparisons.slice(0, 10),
+      }),
+      // hasPart — formal ProfilePage→FAQPage edge. Google and AI answer engines
+      // use hasPart to discover which structured FAQ content belongs to this profile,
+      // enabling FAQ rich results for "[entity] questions" queries.
+      ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
+    },
   ];
   // Inject FAQPage into graph when entity content includes curated FAQs.
   // AEO: FAQPage schema enables featured-snippet Q&A cards in Google and AI answer engines.
-  if (entityContent?.faqs?.length) {
-    entityGraphItems.push(faqSchema(entityContent.faqs));
+  // Pass faqNodeId so faqSchema emits @id + isPartOf back-reference to the ProfilePage.
+  if (hasCuratedFaqs) {
+    entityGraphItems.push(faqSchema(entityContent!.faqs, faqNodeId));
   }
 
   const entityJsonLd = {
@@ -214,6 +232,19 @@ export default async function EntityPage({ params }: PageProps) {
 
   return (
     <>
+      {/* describedby — HTML Linked Data discovery; supplements Link HTTP header from middleware */}
+      <link rel="describedby" type="application/ld+json" href={`${SITE_URL}/api/v1/entities/${slug}`} />
+      {/* rel=up — HTML hierarchy signal pointing this entity profile to its parent category.
+          AI crawlers use this to build topical authority context without following breadcrumbs. */}
+      {categoryDef && (
+        <link rel="up" href={`${SITE_URL}/category/${categoryDef.slug}`} title={`${categoryDef.name} comparisons`} />
+      )}
+      {/* og:see_also — related comparison URLs for AI social-graph crawlers.
+          Perplexity, ChatGPT browse, and Gemini follow these to build entity-relationship
+          graphs and surface more of our comparisons when answering queries about this entity. */}
+      {relatedComparisons.slice(0, 5).map((c) => (
+        <meta key={c.slug} property="og:see_also" content={`${SITE_URL}/compare/${c.slug}`} />
+      ))}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(entityJsonLd) }}
@@ -225,11 +256,22 @@ export default async function EntityPage({ params }: PageProps) {
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200 flex-wrap">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
               {categoryDef && (
                 <>
-                  <li aria-hidden="true" className="text-primary-400">/</li>
+                  <li aria-hidden="true">
+                    <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </li>
                   <li>
                     <Link href={`/category/${categoryDef.slug}`} className="hover:text-white transition-colors">
                       {categoryDef.name}
@@ -237,8 +279,12 @@ export default async function EntityPage({ params }: PageProps) {
                   </li>
                 </>
               )}
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">{name}</li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">{name}</li>
             </ol>
           </nav>
           <div className="flex items-center gap-5">
@@ -271,7 +317,14 @@ export default async function EntityPage({ params }: PageProps) {
             id="entity-intro" anchors the SpeakableSpecification so voice assistants
             and LLMs can extract the intro description as the primary answer snippet. */}
         <section id="entity-intro" className="mb-8">
-          <h2 className="text-xl font-bold text-text mb-2">{name} vs Every Rival</h2>
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-display font-bold text-text">{name} vs Every Rival</h2>
+          </div>
           <p className="entity-intro text-text-secondary leading-relaxed text-sm sm:text-base">
             {intro}
           </p>
@@ -282,7 +335,14 @@ export default async function EntityPage({ params }: PageProps) {
           <>
             {/* id="entity-about" anchors the About section for SpeakableSpecification */}
             <div id="entity-about" className="mb-8 p-6 bg-white border border-border rounded-2xl">
-              <h2 className="text-xl font-bold text-text mb-3">About {name}</h2>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-xl font-display font-bold text-text">About {name}</h2>
+              </div>
               <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
                 {entityContent.description}
               </p>
@@ -302,7 +362,14 @@ export default async function EntityPage({ params }: PageProps) {
 
             {entityContent.faqs.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-xl font-bold text-text mb-4">Frequently Asked Questions</h2>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
+                </div>
                 <div className="space-y-3">
                   {entityContent.faqs.map((faq) => (
                     <details
@@ -333,13 +400,20 @@ export default async function EntityPage({ params }: PageProps) {
 
             {entityContent.alternatives.length > 0 && (
               <div className="mb-8">
-                <h2 className="text-xl font-bold text-text mb-4">Top Alternatives to {name}</h2>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {entityContent.alternatives.map((alt) => (
-                    <li key={alt.slug}>
                     <Link
+                      key={alt.slug}
                       href={`/entity/${alt.slug}`}
-                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
+                      className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                     >
                       <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
                         <span className="text-white font-bold">{alt.name.charAt(0)}</span>
@@ -349,9 +423,8 @@ export default async function EntityPage({ params }: PageProps) {
                         <p className="text-xs text-text-secondary truncate">{alt.reason}</p>
                       </div>
                     </Link>
-                    </li>
                   ))}
-                </ul>
+                </div>
                 <div className="mt-3 text-center">
                   <Link
                     href={`/alternatives/${slug}`}
@@ -386,7 +459,14 @@ export default async function EntityPage({ params }: PageProps) {
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
           <div className="space-y-3">
-            <h2 className="text-xl font-bold text-text mb-4">All Comparisons</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-display font-bold text-text">All Comparisons</h2>
+            </div>
             {relatedComparisons.map((comp) => {
               const parts = comp.title.split(/\s+vs\.?\s+/i);
               return (

@@ -22,6 +22,14 @@ export default function Document() {
         <link rel="me" href="https://www.youtube.com/@aversusb" />
         <link rel="author" href="https://www.aversusb.net/about" />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+        {/* author/coverage/distribution/rating — Bing, Yandex, and AI content classifiers
+            use these to confirm authorship, global availability, and safe-search eligibility */}
+        <meta name="author" content="A Versus B" />
+        <meta name="coverage" content="Worldwide" />
+        <meta name="distribution" content="Global" />
+        <meta name="rating" content="General" />
+        {/* format-detection — disable iOS Safari auto-linking; parity with layout.tsx */}
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
             Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
             off the first-byte time for OG images and the AdSense script on slow connections. */}

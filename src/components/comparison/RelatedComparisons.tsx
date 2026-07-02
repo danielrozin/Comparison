@@ -49,16 +49,16 @@ export function RelatedComparisons({
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-sm">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-primary-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Related Comparisons</h2>
+          <div>
+            <h2 className="text-2xl font-display font-bold text-text">Related Comparisons</h2>
+            <p className="text-xs text-text-secondary mt-0.5">{comparisons.length} more to explore</p>
+          </div>
         </div>
-        <span className="text-sm text-text-secondary font-medium hidden sm:block">
-          {comparisons.length} comparisons
-        </span>
       </div>
 
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none">

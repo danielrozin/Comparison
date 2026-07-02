@@ -22,7 +22,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: LLM_METHOD_OG, width: 1200, height: 630, alt: "How We Compare Large Language Models — A Versus B Methodology" }],
   },
   twitter: {
@@ -105,13 +106,28 @@ export default function LLMMethodologyPage() {
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <JsonLd data={schema} />
 
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary flex-wrap">
-          <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
-          <li>/</li>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+          <li>
+            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
           <li><Link href="/llm-comparisons" className="hover:text-primary-600 transition-colors">LLM Comparisons</Link></li>
-          <li>/</li>
-          <li className="text-text font-medium">Methodology</li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">Methodology</li>
         </ol>
       </nav>
 
@@ -136,7 +152,14 @@ export default function LLMMethodologyPage() {
       </header>
 
       <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">1. Column definitions (Wikipedia-parity)</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">1. Column definitions (Wikipedia-parity)</h2>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
@@ -173,7 +196,14 @@ export default function LLMMethodologyPage() {
       </section>
 
       <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">2. Data sources</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 7a8 8 0 0116 0c0 4.418-3.582 8-8 8S4 11.418 4 7zM4 7v10a8 8 0 0016 0V7" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">2. Data sources</h2>
+        </div>
         <ol className="list-decimal list-inside space-y-2 text-text-secondary">
           <li><strong className="text-text">Tier 1 (required):</strong> Vendor API documentation, model card, or official release blog post — cited with URL and access date.</li>
           <li><strong className="text-text">Tier 1 (required):</strong> arXiv technical report authored by the vendor research team — used for parameter counts and architecture details.</li>
@@ -189,7 +219,14 @@ export default function LLMMethodologyPage() {
       </section>
 
       <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed">
           Context windows, knowledge cutoffs, and model versions are updated within 2 weeks of a vendor
           releasing a new stable model. The page&apos;s{" "}
@@ -199,7 +236,14 @@ export default function LLMMethodologyPage() {
       </section>
 
       <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed">
           {SITE_NAME} has no paid relationships with any AI vendor. No model vendor reviewed or approved
           this guide before publication. {SITE_NAME} does not license or resell any of the APIs in this table.
@@ -210,7 +254,14 @@ export default function LLMMethodologyPage() {
       </section>
 
       <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
+        </div>
         <p className="text-text-secondary leading-relaxed">
           Corrections with a primary source may be submitted to{" "}
           <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>.

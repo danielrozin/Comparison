@@ -137,6 +137,7 @@ export async function GET(request: NextRequest) {
     priority: 0.8,
     changefreq: "monthly",
     knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${c.slug}`,
+    schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${c.slug}`,
     faqUrl: `${SITE_URL}/api/faq/${c.slug}`,
     answerUrl: `${SITE_URL}/api/answer/${c.slug}`,
   }));

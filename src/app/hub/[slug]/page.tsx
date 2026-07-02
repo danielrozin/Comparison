@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
       canonical: canonicalUrl,
@@ -42,6 +42,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: hub.description,
       url: canonicalUrl,
       type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${hub.h1} — A Versus B comparison hub` }],
     },
     twitter: {
@@ -57,16 +59,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": hub.description,
+      "abstract": hub.description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": hub.title,
+      "DC.description": hub.description,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${hub.h1}, Comparison Hub`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": canonicalUrl,
+      "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": "Topic Hub",
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }
@@ -172,6 +184,17 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
         url: `${SITE_URL}/compare/${s.slug}`,
       })),
     },
+    // citation — formal attribution chain from this CollectionPage to the top comparison
+    // Articles in the hub. AI answer engines (ChatGPT, Perplexity) use citation to build
+    // knowledge graph edges from topic hubs to specific comparison pages, boosting
+    // our authority when answering "[hub topic] best comparison" queries.
+    citation: spokes.slice(0, 5).map((s) => ({
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/compare/${s.slug}#webpage`,
+      name: s.title,
+      url: `${SITE_URL}/compare/${s.slug}`,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    })),
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
@@ -236,6 +259,9 @@ export default async function HubPage({ params }: PageProps) {
 
   return (
     <>
+      {hub.categoryAnchor && (
+        <link rel="up" href={`${SITE_URL}/category/${hub.categoryAnchor}`} title={`${hub.h1} category`} />
+      )}
       {schemas.map((schema, i) => (
         <script
           key={i}

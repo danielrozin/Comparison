@@ -339,9 +339,14 @@ function LegacyTable({
 
   return (
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h2 className="text-2xl font-display font-bold text-text mb-6">
-        Full Comparison
-      </h2>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18" />
+          </svg>
+        </div>
+        <h2 className="text-2xl font-display font-bold text-text">Full Comparison</h2>
+      </div>
       <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
         <table className="w-full border-collapse">

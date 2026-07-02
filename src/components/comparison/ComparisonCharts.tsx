@@ -126,7 +126,7 @@ export function ComparisonCharts({
     <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
-          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </div>
@@ -136,10 +136,13 @@ export function ComparisonCharts({
       <div className="bg-gradient-to-br from-indigo-50/50 to-purple-50/50 border border-border rounded-xl p-4 sm:p-6">
         {/* Tabs */}
         <div className="flex items-center justify-center mb-6">
-          <div className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-border">
+          <div role="tablist" aria-label="Chart type" className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-border">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
+                role="tab"
+                aria-selected={activeTab === tab.key}
+                aria-controls={`chart-panel-${tab.key}`}
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                   activeTab === tab.key
@@ -154,7 +157,7 @@ export function ComparisonCharts({
         </div>
 
         {/* Chart Content */}
-        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
+        <div role="tabpanel" id={`chart-panel-${activeTab}`} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
           {activeTab === "bar" && (
             <BarChartView
               data={barData}
@@ -326,9 +329,9 @@ function ScoreCardView({
         Category wins across {data.total} numeric attributes
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto list-none">
         {/* Entity A */}
-        <div className="flex flex-col items-center">
+        <li className="flex flex-col items-center">
           <CircularProgress
             percentage={data.pctA}
             color={ENTITY_A_COLOR}
@@ -340,10 +343,10 @@ function ScoreCardView({
           <p className="text-sm text-text-secondary">
             {data.winsA} win{data.winsA !== 1 ? "s" : ""}
           </p>
-        </div>
+        </li>
 
         {/* Ties */}
-        <div className="flex flex-col items-center justify-center">
+        <li className="flex flex-col items-center justify-center">
           <div className="w-20 h-20 rounded-full bg-surface-alt flex items-center justify-center">
             <span className="text-2xl font-bold text-text-secondary">
               {data.ties}
@@ -356,10 +359,10 @@ function ScoreCardView({
               : 0}
             %
           </p>
-        </div>
+        </li>
 
         {/* Entity B */}
-        <div className="flex flex-col items-center">
+        <li className="flex flex-col items-center">
           <CircularProgress
             percentage={data.pctB}
             color={ENTITY_B_COLOR}
@@ -371,8 +374,8 @@ function ScoreCardView({
           <p className="text-sm text-text-secondary">
             {data.winsB} win{data.winsB !== 1 ? "s" : ""}
           </p>
-        </div>
-      </div>
+        </li>
+      </ul>
 
       {/* Summary bar */}
       <div className="mt-8 max-w-md mx-auto">
@@ -434,7 +437,7 @@ function CircularProgress({
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+      <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
         <circle
           cx={size / 2}
           cy={size / 2}

@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
       canonical: `${SITE_URL}/category/${slug}`,
@@ -50,6 +50,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
     },
     openGraph: {
+      title: `${category.name} Comparisons`,
+      description: desc,
+      url: `${SITE_URL}/category/${slug}`,
+      type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} Comparisons on A Versus B` }],
     },
     twitter: { card: "summary_large_image", site: "@aversusb", images: [ogImage] },
@@ -59,16 +65,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": desc,
+      "abstract": desc,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
       "DC.title": `${category.name} Comparisons`,
+      "DC.description": desc,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${category.name} Comparisons, Side-by-Side Analysis`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/category/${slug}`,
+      "thumbnail": ogImage,
     },
   };
 }
@@ -201,7 +213,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         "query-input": "required name=search_term_string",
       },
     ],
-    mentions: allComparisons.slice(0, 10).map((c) => ({
+    mentions: allComparisons.slice(0, 30).map((c) => ({
       "@type": "Article",
       "@id": `${SITE_URL}/compare/${c.slug}#article`,
       headline: c.title,
@@ -211,7 +223,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       "@type": "ItemList",
       name: `${category.name} Comparisons`,
       numberOfItems: allComparisons.length,
-      itemListElement: allComparisons.slice(0, 20).map((c, i) => ({
+      itemListElement: allComparisons.slice(0, 50).map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
         name: c.title,
@@ -239,13 +251,20 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    ...(hasSubcategories && activeSubcategories.length > 0 ? {
-      hasPart: activeSubcategories.map((sub) => ({
+    hasPart: [
+      ...(hasSubcategories ? activeSubcategories.map((sub) => ({
         "@type": "CollectionPage",
         name: `${sub.name} Comparisons`,
         url: `${SITE_URL}/category/${slug}/${sub.slug}`,
+      })) : []),
+      // Top comparison pages as WebPage hasPart nodes — AI crawlers use these
+      // to understand the category's content depth without crawling each URL.
+      ...allComparisons.slice(0, hasSubcategories ? 10 : 20).map((c) => ({
+        "@type": "WebPage",
+        name: c.title,
+        url: `${SITE_URL}/compare/${c.slug}`,
       })),
-    } : {}),
+    ],
     timeRequired: "PT2M",
     wordCount: 400,
     // about[] — subject classification for AI topic routing and Google Discover.
@@ -270,9 +289,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     const rating = getComparisonRating(comp.slug);
     const reviewCount = getReviewCount(comp.slug);
     return (
+      <li key={comp.slug} className="flex">
       <Link
         href={`/compare/${comp.slug}`}
-        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
+        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
       >
         <div className="flex items-center gap-4 mb-3">
           <div className="flex -space-x-3">
@@ -293,11 +313,16 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
         </div>
       </Link>
+      </li>
     );
   };
 
   return (
     <>
+      {/* describedby — HTML Linked Data discovery for AI crawlers and RDF tools.
+          Points to the machine-readable JSON catalog of all comparisons in this category.
+          Supplements the Link HTTP header from middleware without requiring header parsing. */}
+      <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
@@ -316,14 +341,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <ol className="flex items-center gap-1.5 text-sm text-primary-300">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  Home
+                  <span className="sr-only sm:not-sr-only">Home</span>
                 </Link>
               </li>
-              <li aria-hidden="true" className="text-primary-500">
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </li>
@@ -397,14 +422,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
               </div>
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
               {featured.map((item) => {
                 const parts = item.anchor.split(/\s+vs\.?\s+/i);
                 return (
-                  <li key={item.slug}>
+                  <li key={item.slug} className="flex">
                   <Link
                     href={`/compare/${item.slug}`}
-                    className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full h-full"
+                    className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
                   >
                     <div className="flex items-center gap-3 mb-2">
                       <div className="flex -space-x-2">
@@ -442,14 +467,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
               </div>
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 list-none p-0 m-0">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 list-none">
               {allComparisons.slice(0, 5).map((comp, idx) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
-                  <li key={comp.slug}>
+                  <li key={comp.slug} className="flex">
                   <Link
                     href={`/compare/${comp.slug}`}
-                    className="relative flex flex-col p-4 bg-gradient-to-br from-primary-50 to-white border border-primary-200 rounded-xl hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full h-full"
+                    className="relative flex flex-col p-4 bg-gradient-to-br from-primary-50 to-white border border-primary-200 rounded-xl hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                   >
                     <span className="absolute top-2 right-3 text-xs font-bold text-primary-400">
                       #{idx + 1}
@@ -487,14 +512,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
               </div>
             </div>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none p-0 m-0">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
               {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
-                <li key={subcat.slug}>
+                <li key={subcat.slug} className="flex">
                 <Link
                   href={`/category/${slug}/${subcat.slug}`}
-                  className="flex flex-col items-center gap-2 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-lg transition-all group text-center w-full h-full"
+                  className="flex flex-col items-center gap-2 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-lg transition-all group text-center w-full"
                 >
-                  <span className="text-3xl">{subcat.icon}</span>
+                  <span className="text-3xl" role="img" aria-label={subcat.name} aria-hidden="false">{subcat.icon}</span>
                   <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors leading-tight">
                     {subcat.name}
                   </span>
@@ -521,10 +546,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Product Grid */}
         {paginatedComparisons.length > 0 ? (
           <>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none p-0 m-0">
-              {paginatedComparisons.map((comp) => (
-                <li key={comp.slug} className="flex flex-col">{renderComparisonCard(comp)}</li>
-              ))}
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
+              {paginatedComparisons.map(renderComparisonCard)}
             </ul>
 
             {/* Pagination */}

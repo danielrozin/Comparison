@@ -55,11 +55,18 @@ export async function GET() {
     },
 
     api_endpoints: {
+      schema_jsonld: {
+        url: `${SITE_URL}/api/v1/schema/{slug}`,
+        format: "application/ld+json",
+        description:
+          "Pure Schema.org JSON-LD document for a comparison. Returns application/ld+json content-type (not application/json) — use for Semantic Web / Linked Data clients and JSON-LD validators. Also the redirect target when Accept: application/ld+json is sent to /compare/{slug}.",
+        content_negotiation: "GET /compare/{slug} with Accept: application/ld+json → 303 redirect here",
+      },
       knowledge_graph: {
         url: `${SITE_URL}/api/knowledge-graph/{slug}`,
         format: "application/ld+json",
         description:
-          "JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes. Preferred for AI systems that consume structured linked data.",
+          "Richer JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes including extra metadata fields. Use /api/v1/schema/{slug} for pure spec-compliant JSON-LD.",
       },
       comparison_json: {
         url: `${SITE_URL}/api/comparisons/{slug}`,
@@ -169,6 +176,19 @@ export async function GET() {
         example: `${SITE_URL}/api/v1/search?q=chatgpt+vs+claude`,
         key_field_for_citation: "comparisons[0].excerpt (= shortAnswer)",
       },
+      batch: {
+        url: `${SITE_URL}/api/v1/batch`,
+        method: "POST",
+        format: "application/json",
+        description: "Fetch up to 20 comparisons in a single request. POST { slugs: string[], fields?: string[] }. Returns a map of slug → data (null if not found). X-Summary carries the first result's shortAnswer. Use for multi-entity analysis and comparison matrices.",
+        example_body: { slugs: ["chatgpt-vs-claude", "gpt-4-vs-claude-3"], fields: ["shortAnswer", "verdict"] },
+      },
+      changes: {
+        url: `${SITE_URL}/api/v1/changes`,
+        format: "application/json",
+        description: "Incremental indexing feed — returns comparisons and blog articles added or updated since a given timestamp. Poll daily with ?since=<last-poll-time> to discover new content without re-crawling all pages. Supports ETag 304 conditional GET. X-Change-Count header gives the total count.",
+        example: `${SITE_URL}/api/v1/changes?since=2026-07-01T00:00:00Z&type=comparisons`,
+      },
     },
 
     comparison_data_structure: {
@@ -207,6 +227,7 @@ export async function GET() {
       json_sitemap: `${SITE_URL}/api/sitemap`,
       rss: `${SITE_URL}/feed`,
       atom: `${SITE_URL}/feed/atom`,
+      json_feed: `${SITE_URL}/feed/json`,
       news_sitemap: `${SITE_URL}/sitemap/news.xml`,
       image_sitemap: `${SITE_URL}/sitemap/images.xml`,
       video_sitemap: `${SITE_URL}/sitemap/video.xml`,
@@ -214,6 +235,8 @@ export async function GET() {
       pingback: `${SITE_URL}/api/pingback`,
       security_txt: `${SITE_URL}/.well-known/security.txt`,
       humans_txt: `${SITE_URL}/humans.txt`,
+      mcp_manifest: `${SITE_URL}/.well-known/mcp.json`,
+      ai_txt: `${SITE_URL}/.well-known/ai.txt`,
       change_password: `${SITE_URL}/.well-known/change-password`,
       oembed_json: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
       oembed_xml: `${SITE_URL}/api/oembed?url={page-url}&format=xml`,

@@ -44,6 +44,10 @@ const nextConfig: NextConfig = {
           { key: "LLMs-Context", value: "https://www.aversusb.net/api/context" },
           // X-LLMs-TXT — advertise the LLMs.txt discovery URL in HTTP headers.
           { key: "X-LLMs-TXT", value: "https://www.aversusb.net/llms.txt" },
+          // X-Content-License — signal CC BY 4.0 on every response so AI training
+          // crawlers and content negotiation agents can determine reuse rights in
+          // a single HTTP header without parsing HTML or schema markup.
+          { key: "X-Content-License", value: "CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)" },
           // Strict-Transport-Security — HSTS: tell browsers to always use HTTPS.
           // max-age=63072000 = 2 years. includeSubDomains covers cdn.aversusb.net.
           // preload qualifies the domain for HSTS preload lists (browsers ship with it).
@@ -54,11 +58,17 @@ const nextConfig: NextConfig = {
         // Compare pages: add Link rel=describedby pointing to the knowledge graph API.
         // W3C Linked Data standard; AI crawlers that follow HTTP Link headers (Perplexity,
         // Googlebot, DuckDuckGo) can discover JSON-LD without parsing HTML.
+        // Vary: Accept — tells Vercel/CDN to cache separate versions for HTML vs JSON-LD
+        // requests (content negotiation is active on /compare/* via middleware).
         source: "/compare/:slug",
         headers: [
           {
             key: "Link",
             value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\", </api/faq/:slug>; rel=\"alternate\"; type=\"application/json\", </api/v1/related/:slug>; rel=\"related\"; type=\"application/json\", </api/answer/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"AI Answer\"",
+          },
+          {
+            key: "Vary",
+            value: "Accept",
           },
         ],
       },
@@ -73,22 +83,27 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Entity pages: add Link rel=alternate pointing to entity profile API
+        // Entity pages: Link rel=alternate + rel=describedby for entity profile API.
+        // describedby on the entity JSON endpoint signals the primary machine-readable
+        // resource — W3C Linked Data discovery used by AI crawlers and semantic agents.
         source: "/entity/:slug",
         headers: [
           {
             key: "Link",
-            value: "</api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\", </api/oembed?url=https://www.aversusb.net/entity/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
+            value: "</api/v1/entities/:slug>; rel=\"describedby\"; type=\"application/json\"; title=\"Entity Profile\", </api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\", </api/oembed?url=https://www.aversusb.net/entity/:slug&format=json>; rel=\"alternate\"; type=\"application/json+oembed\"",
           },
         ],
       },
       {
-        // Alternatives pages: add Link rel=alternate for alternatives API + entity profile API
+        // Alternatives pages: Link rel=alternate for alternatives API + entity profile API.
+        // rel=describedby on the entity profile API signals the primary Linked Data
+        // resource for this page — AI crawlers (Perplexity, ClaudeBot) resolve the
+        // entity identity from the describedby target before extracting page content.
         source: "/alternatives/:slug",
         headers: [
           {
             key: "Link",
-            value: "</api/v1/alternatives/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Alternatives API\", </api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Entity Profile API\"",
+            value: "</api/v1/alternatives/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Alternatives API\", </api/v1/entities/:slug>; rel=\"describedby\"; type=\"application/json\"; title=\"Entity Profile\", </api/v1/entities/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"Entity Profile API\"",
           },
         ],
       },

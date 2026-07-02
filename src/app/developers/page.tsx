@@ -10,14 +10,16 @@ const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
   name: `${SITE_NAME} Comparison API`,
-  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 2,900+ comparisons in 17+ categories.",
+  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
-  documentation: `${SITE_URL}/developers`,
+
+  locale: "en_US",  documentation: `${SITE_URL}/developers`,
   provider: {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-  },
+
+    locale: "en_US",  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   creativeWorkStatus: "Published",
@@ -53,9 +55,10 @@ const apiSchema = {
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",
-    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 2,900+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
-    encodingFormat: "text/plain",
+
+    locale: "en_US",    encodingFormat: "text/plain",
     inLanguage: "en-US",
     provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
     about: {
@@ -75,7 +78,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: DEV_URL,
@@ -85,7 +88,8 @@ export const metadata: Metadata = {
     title: DEV_TITLE,
     description: DEV_DESC,
     url: DEV_URL,
-  },
+
+    locale: "en_US",  },
   other: {
     "citation_title": DEV_TITLE,
     "citation_author": "A Versus B",
@@ -122,38 +126,70 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
 
 export default function DevelopersPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
       />
-      {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-text font-medium">Developers</li>
-        </ol>
-      </nav>
 
-      {/* Hero */}
-      <div className="mb-12">
-        <h1 className="text-4xl sm:text-5xl font-display font-black text-text mb-4">
-          Developer API
-        </h1>
-        <p className="text-xl text-text-secondary leading-relaxed">
-          Integrate {SITE_NAME}&apos;s comparison data into your applications.
-          Search, retrieve, and embed thousands of structured comparisons.
-        </p>
+      {/* Gradient Hero */}
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">Developers</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                Developer API
+              </h1>
+              <p className="text-primary-200 mt-1.5 text-sm sm:text-base">
+                Integrate {SITE_NAME}&apos;s comparison data into your applications.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
       </div>
+
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Pricing Tiers */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Pricing</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Pricing</h2>
+        </div>
         <div className="grid sm:grid-cols-3 gap-4">
           {[
             {
@@ -196,7 +232,11 @@ export default function DevelopersPage() {
               <ul className="space-y-2">
                 {tier.features.map((f) => (
                   <li key={f} className="text-sm text-text-secondary flex items-start gap-2">
-                    <span className="text-green-500 mt-0.5">&#10003;</span>
+                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-primary-100 flex items-center justify-center mt-0.5">
+                      <svg className="w-2.5 h-2.5 text-primary-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </span>
                     {f}
                   </li>
                 ))}
@@ -208,7 +248,14 @@ export default function DevelopersPage() {
 
       {/* Getting Started */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Getting Started</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Getting Started</h2>
+        </div>
 
         <div className="space-y-6">
           <div>
@@ -240,7 +287,14 @@ export default function DevelopersPage() {
 
       {/* Authentication */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Authentication</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Authentication</h2>
+        </div>
         <p className="text-text-secondary mb-4">
           Pass your API key in one of three ways:
         </p>
@@ -253,7 +307,14 @@ export default function DevelopersPage() {
 
       {/* Endpoints */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">API Endpoints</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">API Endpoints</h2>
+        </div>
 
         <div className="space-y-8">
           <div className="border border-border rounded-xl overflow-hidden">
@@ -335,7 +396,14 @@ export default function DevelopersPage() {
 
       {/* Rate Limiting */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Rate Limiting</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Rate Limiting</h2>
+        </div>
         <p className="text-text-secondary mb-4">
           Every response includes rate limit headers:
         </p>
@@ -349,7 +417,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Response Format */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Response Format</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Response Format</h2>
+        </div>
         <CodeBlock title="Example: GET /api/v1/comparisons/messi-vs-ronaldo">{`{
   "id": "clx...",
   "slug": "messi-vs-ronaldo",
@@ -372,7 +447,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Errors */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Error Codes</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Error Codes</h2>
+        </div>
         <div className="border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
@@ -405,7 +487,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* Key Management */}
       <section className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Key Management</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Key Management</h2>
+        </div>
         <div className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-text mb-2">List your keys</h3>
@@ -425,9 +514,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
 
       {/* CTA */}
       <section className="text-center py-12 border-t border-border">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">
-          Ready to get started?
-        </h2>
+        <div className="flex flex-col items-center gap-2 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 3l14 9-14 9V3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Ready to get started?</h2>
+        </div>
         <p className="text-text-secondary mb-6">
           Create your free API key and start building in minutes.
         </p>
@@ -436,8 +530,12 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
           className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
         >
           Go to Dashboard
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </section>
     </div>
+    </>
   );
 }

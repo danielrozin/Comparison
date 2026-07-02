@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     url: PAGE_URL,
     siteName: SITE_NAME,
     type: "article",
-    images: [OG_IMAGE],
+
+    locale: "en_US",    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
@@ -154,12 +155,27 @@ export default function G2ReviewsFaqPage() {
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li><Link href="/faq/comparison-sites" className="hover:text-white transition-colors text-primary-200">FAQ</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">G2 &amp; Capterra</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li><Link href="/faq/comparison-sites" className="hover:text-white transition-colors">FAQ</Link></li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">G2 &amp; Capterra</li>
             </ol>
           </nav>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
@@ -181,9 +197,14 @@ export default function G2ReviewsFaqPage() {
 
       {/* Comparison highlights */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">
-          Key Differences at a Glance
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Key Differences at a Glance</h2>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
@@ -221,9 +242,14 @@ export default function G2ReviewsFaqPage() {
 
       {/* FAQ Section */}
       <section id="faq-section" className="mb-16">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">
-          Frequently Asked Questions
-        </h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
+        </div>
         <div className="space-y-4">
           {FAQ_DATA.map((faq) => (
             <details

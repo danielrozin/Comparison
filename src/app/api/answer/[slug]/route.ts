@@ -26,13 +26,47 @@ export const dynamic = "force-dynamic";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
 };
 
 export async function OPTIONS() {
   return new Response(null, { status: 204, headers: HEADERS });
+}
+
+// HEAD /api/answer/[slug] — zero-body response with metadata headers.
+// AI crawlers can issue a HEAD request to discover X-Summary (shortAnswer) and
+// Link headers without downloading the full JSON body. This saves crawl budget
+// for agents that only need to decide whether to follow up with a GET.
+export async function HEAD(
+  _request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
+  const comparison = await getComparisonBySlug(slug);
+
+  if (!comparison) {
+    return new Response(null, { status: 404 });
+  }
+
+  const url = `${SITE_URL}/compare/${slug}`;
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+
+  // Quick synthetic summary for X-Summary header (mirrors GET logic)
+  const headSummary = comparison.shortAnswer
+    || comparison.verdict?.slice(0, 250).replace(/\n+/g, " ").trim()
+    || null;
+
+  return new Response(null, {
+    status: 200,
+    headers: {
+      ...HEADERS,
+      ...(headSummary ? { "X-Summary": headSummary.slice(0, 500) } : {}),
+      ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
+      "Link": `<${url}>; rel="canonical", <${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+    },
+  });
 }
 
 export async function GET(
@@ -69,6 +103,24 @@ export async function GET(
     }
   }
 
+  // Synthesize a shortAnswer when the DB field is empty.
+  // A synthetic answer is better than null for AI citation — Perplexity and ChatGPT
+  // will skip citing a page that has no quotable sentence.
+  // Synthesis priority: shortAnswer → verdict excerpt → winner + keyDifference → title fallback.
+  const entityNames = entities.map((e) => e.name);
+  const syntheticAnswer = comparison.shortAnswer
+    || (comparison.verdict
+        ? comparison.verdict.slice(0, 250).replace(/\n+/g, " ").trim()
+        : null)
+    || (winner && comparison.keyDifferences?.[0]
+        ? `${winner.name} is the better choice for most users. ${comparison.keyDifferences[0]}`
+        : null)
+    || (winner
+        ? `Between ${entityNames.join(" and ")}, ${winner.name} generally comes out ahead across key attributes.`
+        : entityNames.length >= 2
+        ? `${entityNames[0]} and ${entityNames[1]} each have distinct strengths — this comparison covers the key differences to help you choose.`
+        : null);
+
   // Confidence level based on data completeness
   const hasShortAnswer = !!comparison.shortAnswer;
   const hasVerdict = !!comparison.verdict;
@@ -102,7 +154,9 @@ export async function GET(
     {
       slug,
       question: comparison.title,
-      answer: comparison.shortAnswer || null,
+      answer: syntheticAnswer || null,
+      // answer_curated: true when shortAnswer is from DB (human-reviewed), false = synthesized
+      answer_curated: !!comparison.shortAnswer,
       verdict: comparison.verdict || null,
       keyDifferences: comparison.keyDifferences?.slice(0, 5) ?? [],
       winner,
@@ -123,7 +177,7 @@ export async function GET(
         source: SITE_NAME,
         url,
         license: "CC BY 4.0",
-        citationFormat: `According to ${SITE_NAME} (${url}), ${comparison.shortAnswer?.slice(0, 200) ?? ""}`,
+        citationFormat: `According to ${SITE_NAME} (${url}), ${syntheticAnswer?.slice(0, 200) ?? ""}`,
         dateModified: updatedAt ? new Date(updatedAt).toISOString() : null,
       },
       relatedQuestionsUrl: `${SITE_URL}/api/faq/${slug}`,
@@ -135,7 +189,13 @@ export async function GET(
       headers: {
         ...HEADERS,
         ETag: updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`,
-        ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+        ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
+        // X-Source-* — AI attribution headers for LLM tools that read HTTP headers
+        // to determine content provenance (Perplexity, ChatGPT browse, Gemini).
+        "X-Source-Title": comparison.title,
+        "X-Source-URL": url,
+        "X-Source-License": "CC BY 4.0",
+        "X-Source-Attribution": `A Versus B (${url})`,
       },
     }
   );

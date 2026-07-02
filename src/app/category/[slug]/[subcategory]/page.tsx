@@ -100,6 +100,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${SITE_URL}/category/${slug}/${subcategory}`,
+      type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${subcat.name} comparisons — A Versus B` }],
     },
     twitter: { card: "summary_large_image", site: "@aversusb", title, description, images: [ogImage] },
@@ -109,13 +112,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": SITE_NAME,
       "citation_language": "en",
       "citation_abstract": description,
+      "abstract": description,
+      "citation_publication_date": "2024-01-01",
+      "citation_online_date": "2024-01-01",
       "DC.title": title,
+      "DC.description": description,
       "DC.creator": SITE_NAME,
       "DC.publisher": SITE_NAME,
       "DC.language": "en",
+      "DC.subject": `${subcat.name} Comparisons, ${category.name} ${subcat.name}`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
+      "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/category/${slug}/${subcategory}`,
+      "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": `${subcat.name} Comparisons`,
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
     },
   };
 }
@@ -241,6 +257,10 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
 
   return (
     <>
+      {/* describedby — points to the machine-readable JSON catalog for this subcategory.
+          rel=up — HTML hierarchy signal from subcategory to parent category. */}
+      <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
+      <link rel="up" href={`${SITE_URL}/category/${slug}`} title={`${category.name} comparisons`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
@@ -252,12 +272,27 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2 text-sm text-primary-200 flex-wrap">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
               <li><Link href={`/category/${slug}`} className="hover:text-white transition-colors">{category.name}</Link></li>
-              <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">{subcat.name}</li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">{subcat.name}</li>
             </ol>
           </nav>
           <div className="flex items-center gap-5">

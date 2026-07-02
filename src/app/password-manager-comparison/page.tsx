@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: PAGE_URL,
@@ -28,7 +28,8 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: PAGE_URL,
     type: "article",
-    siteName: SITE_NAME,
+
+    locale: "en_US",    siteName: SITE_NAME,
     images: [{ url: PM_OG_IMAGE, width: 1200, height: 630, alt: "Best Password Managers Compared 2026 — A Versus B" }],
   },
   twitter: {
@@ -335,11 +336,22 @@ export default function PasswordManagerComparisonPage() {
       <JsonLd data={[articleSchema, ...productSchemas]} />
 
       {/* Breadcrumb */}
-      <nav className="mb-8">
-        <ol className="flex items-center gap-2 text-sm text-text-secondary flex-wrap">
-          <li><Link href="/" className="hover:text-primary-600 transition-colors">Home</Link></li>
-          <li>/</li>
-          <li className="text-text font-medium">Password Manager Comparison</li>
+      <nav className="mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+          <li>
+            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="sr-only sm:not-sr-only">Home</span>
+            </Link>
+          </li>
+          <li aria-hidden="true">
+            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </li>
+          <li className="text-text font-medium" aria-current="page">Password Manager Comparison</li>
         </ol>
       </nav>
 
@@ -379,7 +391,14 @@ export default function PasswordManagerComparisonPage() {
 
       {/* Quick summary */}
       <section className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
-        <h2 className="font-display font-bold text-text mb-2">Quick verdict</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h2 className="font-display font-bold text-text">Quick verdict</h2>
+        </div>
         <ul className="space-y-1 text-text-secondary text-sm list-disc list-inside">
           <li><strong className="text-text">Best overall:</strong> 1Password — strongest audit record, polished apps, reasonable price.</li>
           <li><strong className="text-text">Best free / open-source:</strong> Bitwarden — full-featured free tier, MIT-licensed, Cure53 audited.</li>
@@ -390,7 +409,14 @@ export default function PasswordManagerComparisonPage() {
 
       {/* Main comparison table */}
       <section className="mb-12">
-        <h2 className="text-2xl font-display font-bold text-text mb-6">Full comparison table</h2>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-display font-bold text-text">Full comparison table</h2>
+        </div>
         <p className="text-sm text-text-secondary mb-4">
           Pricing figures are individual annual plans as of May 2026.<sup><a href="#cite-pricing-note" className="text-primary-600">[*]</a></sup>{" "}
           All products use zero-knowledge architecture — the vendor cannot access your plaintext vault.
@@ -425,7 +451,14 @@ export default function PasswordManagerComparisonPage() {
 
       {/* Methodology link */}
       <section className="mb-12 p-5 border border-border rounded-2xl">
-        <h2 className="font-display font-bold text-text mb-2">How we evaluate password managers</h2>
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+          <h2 className="font-display font-bold text-text">How we evaluate password managers</h2>
+        </div>
         <p className="text-text-secondary text-sm mb-3">
           Our{" "}
           <Link href="/password-manager-comparison/methodology" className="text-primary-600 hover:underline">
@@ -441,7 +474,14 @@ export default function PasswordManagerComparisonPage() {
 
       {/* Citations */}
       <section className="mb-10">
-        <h2 className="text-xl font-display font-bold text-text mb-4">Sources</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-display font-bold text-text">Sources</h2>
+        </div>
         <ol className="space-y-2 text-sm text-text-secondary">
           {PASSWORD_MANAGERS.map((pm, i) => (
             <li key={pm.name} id={`cite-${i}`}>

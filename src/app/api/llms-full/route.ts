@@ -203,6 +203,11 @@ export async function GET() {
   lines.push(`- Alternatives: ${SITE_URL}/api/v1/alternatives/{slug}`);
   lines.push(`- Best-of lists: ${SITE_URL}/api/v1/best/{slug}`);
   lines.push(`- AI Answer: ${SITE_URL}/api/answer/{slug}`);
+  lines.push(`- Pure JSON-LD (Schema.org): ${SITE_URL}/api/v1/schema/{slug}`);
+  lines.push(`- Batch lookup (POST): ${SITE_URL}/api/v1/batch`);
+  lines.push(`- Changes feed: ${SITE_URL}/api/v1/changes?since={ISO8601}`);
+  lines.push(`- JSON Feed: ${SITE_URL}/feed/json`);
+  lines.push(`- MCP manifest: ${SITE_URL}/.well-known/mcp.json`);
   lines.push(`- Contact: ${SITE_URL}/contact`);
 
   return new NextResponse(lines.join("\n"), {

@@ -1,21 +1,70 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+
+const EMBED_URL = `${SITE_URL}/embed`;
+const EMBED_TITLE = "Embed Comparisons on Your Site | A Versus B";
+const EMBED_DESC = "Add data-driven comparisons to your blog, review site, or content platform. Free, responsive, and always up-to-date.";
 
 export const metadata: Metadata = {
-  title: "Embed Comparisons on Your Site | A Versus B",
-  description:
-    "Add data-driven comparisons to your blog, review site, or content platform. Free, responsive, and always up-to-date.",
+  title: EMBED_TITLE,
+  description: EMBED_DESC,
   alternates: {
-    canonical: `${SITE_URL}/embed`,
-    languages: { "en": `${SITE_URL}/embed`, "x-default": `${SITE_URL}/embed` },
+    canonical: EMBED_URL,
+    languages: { "en": EMBED_URL, "x-default": EMBED_URL },
   },
   openGraph: {
     title: "Embed Comparisons on Your Site",
-    description:
-      "Add data-driven comparisons to your blog, review site, or content platform.",
-    url: `${SITE_URL}/embed`,
+    description: "Add data-driven comparisons to your blog, review site, or content platform.",
+    url: EMBED_URL,
     type: "website",
+
+    locale: "en_US",  },
+  other: {
+    "citation_title": EMBED_TITLE,
+    "citation_author": "A Versus B",
+    "citation_journal_title": "A Versus B",
+    "citation_language": "en",
+    "citation_abstract": EMBED_DESC,
+    "citation_publication_date": "2024-01-01",
+    "citation_online_date": "2024-01-01",
+    "DC.title": EMBED_TITLE,
+    "DC.creator": "A Versus B",
+    "DC.publisher": "A Versus B",
+    "DC.language": "en",
+    "DC.type": "Text",
+    "DC.format": "text/html",
+    "DC.date": "2024-01-01",
+    "DC.identifier": EMBED_URL,
+  },
+};
+
+const embedSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${EMBED_URL}#webpage`,
+  name: EMBED_TITLE,
+  description: EMBED_DESC,
+  url: EMBED_URL,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
+  creativeWorkStatus: "Published",
+  datePublished: "2024-01-01",
+  dateModified: new Date().toISOString().slice(0, 10),
+  interactivityType: "expositive",
+  accessMode: ["textual"],
+  accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  potentialAction: { "@type": "ReadAction", target: EMBED_URL },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Embed", item: EMBED_URL },
+    ],
   },
 };
 
@@ -88,6 +137,7 @@ const BENEFITS = [
 export default function EmbedLandingPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(embedSchema) }} />
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white">
         <div className="absolute inset-0 opacity-10">

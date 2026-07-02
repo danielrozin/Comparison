@@ -76,13 +76,20 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="relative bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl overflow-hidden text-center">
+      <div className="relative bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl overflow-hidden">
         <div className="h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400" />
         <div className="p-6 sm:p-8">
-          <h3 className="text-lg sm:text-xl font-bold text-text mb-2">
-            Get the best comparisons in your inbox
-          </h3>
-          <p className="text-sm text-text-secondary mb-4">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg sm:text-xl font-bold text-text">
+              Get the best comparisons in your inbox
+            </h3>
+          </div>
+          <p className="text-sm text-text-secondary mb-4 text-center">
             Weekly digest of trending comparisons, new categories, and expert insights. No spam.
           </p>
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">

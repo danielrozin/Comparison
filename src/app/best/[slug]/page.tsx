@@ -70,7 +70,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
       canonical: canonicalUrl,
@@ -82,6 +82,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonicalUrl,
       type: "article",
       siteName: SITE_NAME,
+      locale: "en_US",
       publishedTime: entry.publishedAt,
       modifiedTime: entry.updatedAt,
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${entry.h1} — A Versus B best-of list` }],
@@ -101,14 +102,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": entry.description,
+      "abstract": entry.description,
       "DC.title": entry.title,
+      "DC.description": entry.description,
       "DC.creator": entry.authorName,
       "DC.publisher": "A Versus B",
       "DC.date": entry.publishedAt?.slice(0, 10) ?? "",
       "DC.language": "en",
+      "DC.subject": `${entry.h1}, Best Of`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.identifier": canonicalUrl,
+      "thumbnail": ogImage,
     },
   };
 }

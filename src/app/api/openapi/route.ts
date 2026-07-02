@@ -27,6 +27,15 @@ export async function GET() {
       "x-logo": { url: `${SITE_URL}/images/logo.png`, altText: `${SITE_NAME} Logo` },
     },
     servers: [{ url: SITE_URL, description: "Production" }],
+    // x-ai-usage — hints for AI agents on how to optimally use this API for citation
+    "x-ai-usage": {
+      primary_citation_flow: "1. GET /api/v1/compare?a={A}&b={B} → find slug → 2. GET /api/answer/{slug} → cite answer field",
+      batch_flow: "POST /api/v1/batch with {slugs:[...]} for multiple comparisons in one call",
+      discovery_flow: "GET /api/v1/changes?since={last_poll} to discover new content incrementally",
+      schema_flow: "GET /api/v1/schema/{slug} for pure application/ld+json (content negotiation: GET /compare/{slug} with Accept: application/ld+json)",
+      citation_format: `According to ${SITE_NAME} (${SITE_URL}/compare/{slug}), {answer}`,
+      best_citation_field: "answer (from /api/answer/{slug}) — 1-2 sentence TL;DR, always quote-ready",
+    },
     tags: [
       { name: "Comparisons", description: "X vs Y comparison data" },
       { name: "Entities", description: "Entity profiles (products, companies, athletes, countries)" },
@@ -35,6 +44,7 @@ export async function GET() {
       { name: "Search", description: "Full-text search" },
       { name: "Discovery", description: "Feed, popular, recent, and trending lists" },
       { name: "Knowledge Graph", description: "JSON-LD knowledge graph" },
+      { name: "Linked Data", description: "Pure Schema.org JSON-LD endpoints (application/ld+json content-type)" },
       { name: "Blog", description: "Blog articles with Article JSON-LD" },
     ],
     paths: {
@@ -358,6 +368,152 @@ export async function GET() {
               content: { "application/json": { schema: { type: "object", properties: { slug: { type: "string" }, title: { type: "string" }, itemCount: { type: "integer" }, items: { type: "array", items: { type: "object", properties: { position: { type: "integer" }, name: { type: "string" }, url: { type: "string" } } } }, faqs: { type: "array", items: { "$ref": "#/components/schemas/FAQ" } }, itemListSchema: { type: "object", description: "ItemList JSON-LD" } } } } },
             },
             "404": { description: "Not found" },
+          },
+        },
+      },
+      "/api/v1/schema/{slug}": {
+        get: {
+          operationId: "getSchemaJsonLd",
+          tags: ["Linked Data"],
+          summary: "Pure Schema.org JSON-LD for a comparison",
+          description: "Returns a spec-compliant Schema.org JSON-LD document with application/ld+json content-type. Contains @context + @graph with WebPage, Article, Thing (per entity), Dataset, FAQPage, and Organization nodes. Also accessible via HTTP content negotiation: GET /compare/{slug} with Accept: application/ld+json returns 303 to this endpoint.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Comparison slug (e.g. chatgpt-vs-claude)", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": {
+              description: "Schema.org JSON-LD document",
+              headers: {
+                "Last-Modified": { schema: { type: "string" }, description: "RFC 7231 last-update timestamp" },
+                "Link": { schema: { type: "string" }, description: "rel=canonical + rel=alternate links" },
+              },
+              content: { "application/ld+json": { schema: { type: "object", properties: { "@context": { type: "string", enum: ["https://schema.org"] }, "@graph": { type: "array" } } } } },
+            },
+            "404": { description: "Not found" },
+          },
+        },
+        head: {
+          operationId: "headSchemaJsonLd",
+          tags: ["Linked Data"],
+          summary: "HEAD probe for schema JSON-LD",
+          parameters: [
+            { name: "slug", in: "path", required: true, schema: { type: "string" } },
+          ],
+          responses: {
+            "200": { description: "Comparison exists" },
+            "404": { description: "Not found" },
+          },
+        },
+      },
+      "/api/v1/changes": {
+        get: {
+          operationId: "getChanges",
+          tags: ["Discovery"],
+          summary: "Incremental indexing feed — content added/updated since a timestamp",
+          description: "Returns comparisons and blog articles changed since the given timestamp. Use for incremental crawling — poll daily with ?since=<last-poll-time> to discover new content without re-crawling all 3,000+ pages. Supports ETag conditional GET for efficient polling. X-Change-Count header shows the total count upfront.",
+          parameters: [
+            { name: "since", in: "query", description: "ISO8601 cutoff timestamp (default: 24 hours ago)", schema: { type: "string", format: "date-time" }, example: "2026-06-30T00:00:00Z" },
+            { name: "type", in: "query", description: "Content type filter (default: all)", schema: { type: "string", enum: ["comparisons", "blog", "all"], default: "all" } },
+            { name: "limit", in: "query", description: "Max results (default 100, max 500)", schema: { type: "integer", default: 100, maximum: 500 } },
+            { name: "offset", in: "query", description: "Pagination offset", schema: { type: "integer", default: 0 } },
+          ],
+          responses: {
+            "200": {
+              description: "List of changes with pagination metadata",
+              headers: {
+                "X-Change-Count": { schema: { type: "integer" }, description: "Total number of changes in this window" },
+                "ETag": { schema: { type: "string" }, description: "For conditional GET polling" },
+              },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      generated_at: { type: "string" },
+                      since: { type: "string" },
+                      type: { type: "string" },
+                      total: { type: "integer" },
+                      hasMore: { type: "boolean" },
+                      nextUrl: { type: "string" },
+                      changes: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, shortAnswer: { type: "string" }, comparisonUrl: { type: "string" }, answerUrl: { type: "string" }, changedAt: { type: "string" }, action: { type: "string", enum: ["added", "updated"] } } } },
+                    },
+                  },
+                },
+              },
+            },
+            "304": { description: "Not Modified — no changes since last poll (conditional GET)" },
+            "400": { description: "Invalid since timestamp" },
+          },
+        },
+      },
+      "/api/v1/batch": {
+        get: {
+          operationId: "batchGetComparisons",
+          tags: ["Comparisons"],
+          summary: "Batch comparison lookup (GET)",
+          description: "Fetch multiple comparisons in a single request by passing a comma-separated list of slugs. Returns a map of slug → comparison data. Missing slugs return null. X-Summary header carries the first result's shortAnswer. Max 20 slugs.",
+          parameters: [
+            { name: "slugs", in: "query", required: true, description: "Comma-separated comparison slugs (max 20)", schema: { type: "string" }, example: "chatgpt-vs-claude,gpt-4-vs-claude-3" },
+            { name: "fields", in: "query", description: "Comma-separated fields to return (default: all). Options: shortAnswer,verdict,keyDifferences,entities,attributes,faqs,category,title,slug", schema: { type: "string" } },
+          ],
+          responses: {
+            "200": {
+              description: "Map of slug to comparison (null if not found)",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      total: { type: "integer" },
+                      found: { type: "integer" },
+                      missing: { type: "array", items: { type: "string" } },
+                      results: { type: "object", additionalProperties: { "$ref": "#/components/schemas/Comparison" }, description: "Map of slug → comparison data (null if not found)" },
+                    },
+                  },
+                },
+              },
+            },
+            "400": { description: "Bad request (missing slugs or too many)" },
+          },
+        },
+        post: {
+          operationId: "batchGetComparisonsPost",
+          tags: ["Comparisons"],
+          summary: "Batch comparison lookup (POST)",
+          description: "Fetch multiple comparisons in a single request. POST body: { slugs: string[], fields?: string[] }. Ideal for AI agents doing multi-entity analysis — replaces N sequential calls with 1. Max 20 slugs per request.",
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  required: ["slugs"],
+                  properties: {
+                    slugs: { type: "array", items: { type: "string" }, maxItems: 20, description: "List of comparison slugs to fetch", example: ["chatgpt-vs-claude", "gpt-4-vs-claude-3"] },
+                    fields: { type: "array", items: { type: "string" }, description: "Fields to include in each result (default: all)", example: ["shortAnswer", "verdict", "entities"] },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            "200": {
+              description: "Map of slug to comparison (null if not found)",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      total: { type: "integer" },
+                      found: { type: "integer" },
+                      missing: { type: "array", items: { type: "string" } },
+                      results: { type: "object", additionalProperties: { "$ref": "#/components/schemas/Comparison" } },
+                    },
+                  },
+                },
+              },
+            },
+            "400": { description: "Bad request" },
           },
         },
       },

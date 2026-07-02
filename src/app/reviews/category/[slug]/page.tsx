@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: `${SITE_URL}/reviews/category/${slug}`,
@@ -45,7 +45,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description: desc,
       url: `${SITE_URL}/reviews/category/${slug}`,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
+
+      locale: "en_US",      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
     },
     twitter: { card: "summary_large_image",
     site: "@aversusb", title, description: desc, images: [ogImage] },
@@ -55,11 +56,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": `${SITE_NAME} SmartReview`,
       "citation_language": "en",
       "citation_abstract": desc,
+      "abstract": desc,
+      "citation_publication_date": "2024-01-01",
+      "citation_online_date": "2024-01-01",
       "DC.title": title,
       "DC.creator": SITE_NAME,
       "DC.publisher": SITE_NAME,
       "DC.language": "en",
+      "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/reviews/category/${slug}`,
+      "thumbnail": ogImage,
     },
   };
 }
@@ -111,7 +117,8 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores from Reddit, G2, Capterra, Trustpilot, and more.`,
     abstract: `Aggregated ${cat.name} reviews with SmartScores from multiple platforms.`,
     url: reviewCatUrl,
-    inLanguage: "en-US",
+
+    locale: "en_US",    inLanguage: "en-US",
     genre: "Review Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
@@ -124,7 +131,8 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
       "@type": "ImageObject",
       "@id": `${reviewCatUrl}#primaryImage`,
       url: reviewCatOgImage,
-      contentUrl: reviewCatOgImage,
+
+      locale: "en_US",      contentUrl: reviewCatOgImage,
       width: 1200,
       height: 630,
       caption: `${cat.name} Reviews — A Versus B SmartReview`,
@@ -147,6 +155,7 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="up" href={`${SITE_URL}/reviews`} title="All Reviews" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
@@ -158,21 +167,20 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
+        <nav className="mb-6" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
             <li>
-              <Link href="/" className="hover:text-primary-600">
-                Home
+              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
               </Link>
             </li>
-            <li>/</li>
-            <li>
-              <Link href="/reviews" className="hover:text-primary-600">
-                Reviews
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-text font-medium">{cat.name}</li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li><Link href="/reviews" className="hover:text-primary-600 transition-colors">Reviews</Link></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li className="text-text font-medium" aria-current="page">{cat.name}</li>
           </ol>
         </nav>
 

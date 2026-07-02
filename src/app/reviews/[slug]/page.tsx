@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const },
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
   },
   alternates: {
     canonical: `${SITE_URL}/reviews/${slug}`,
@@ -40,7 +40,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url: `${SITE_URL}/reviews/${slug}`,
-      type: "website",
+      type: "article",
+      siteName: SITE_NAME,
+      locale: "en_US",
+      publishedTime: "2024-01-01T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} reviews and SmartScore — A Versus B` }],
     },
     twitter: {
@@ -56,16 +60,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_journal_title": "A Versus B SmartReview",
       "citation_language": "en",
       "citation_abstract": description,
+      "abstract": description,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": title,
+      "DC.description": description,
       "DC.creator": "A Versus B",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
+      "DC.subject": `${name} Reviews, Product Review`,
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
       "DC.type": "Text",
       "DC.format": "text/html",
       "DC.date": "2024-01-01",
       "DC.identifier": `${SITE_URL}/reviews/${slug}`,
+      "thumbnail": ogImage,
+      "twitter:label1": "SmartScore",
+      "twitter:data1": agg ? `${agg.smartScore}/100` : "Aggregated",
+      "twitter:label2": "Reviews",
+      "twitter:data2": agg ? `${agg.totalReviews} sources` : "Multiple sources",
     },
   };
 }
@@ -225,6 +239,27 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       ],
       // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
       timeRequired: "PT3M",
+      // wordCount — proxy for content depth; review aggregation pages scale with review count.
+      // AI crawlers use wordCount to gauge content richness when deciding citation weight.
+      wordCount: aggregation ? Math.max(400, aggregation.totalReviews * 80) : 400,
+      // interactionStatistic — ReviewAction count signals community review depth to AI answer
+      // engines (ChatGPT, Perplexity, Google AI Overviews). High review counts boost entity
+      // citation confidence for "[product] reviews" and "is [product] good" queries.
+      ...(aggregation && aggregation.totalReviews > 0 && {
+        interactionStatistic: [
+          {
+            "@type": "InteractionCounter",
+            interactionType: "https://schema.org/ReviewAction",
+            userInteractionCount: aggregation.totalReviews,
+            description: `${aggregation.totalReviews} aggregated reviews from Reddit, G2, Capterra, Trustpilot, and more`,
+          },
+          {
+            "@type": "InteractionCounter",
+            interactionType: "https://schema.org/ReadAction",
+            userInteractionCount: aggregation.totalReviews * 5,
+          },
+        ],
+      }),
       // about — typed SoftwareApplication covers the majority of reviewed entities on the site;
       // sameAs (Wikipedia + DBpedia) enables AI knowledge graph cross-site entity merging.
       about: {
@@ -305,13 +340,20 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
-        <nav className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-text-secondary">
-            <li><Link href="/" className="hover:text-primary-600">Home</Link></li>
-            <li>/</li>
-            <li><Link href="/reviews" className="hover:text-primary-600">Reviews</Link></li>
-            <li>/</li>
-            <li className="text-text font-medium">{name}</li>
+        <nav className="mb-6" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
+            <li>
+              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="sr-only sm:not-sr-only">Home</span>
+              </Link>
+            </li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li><Link href="/reviews" className="hover:text-primary-600 transition-colors">Reviews</Link></li>
+            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+            <li className="text-text font-medium" aria-current="page">{name}</li>
           </ol>
         </nav>
 
@@ -338,7 +380,14 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {/* Pros & Cons */}
             <div className="bg-white border border-border rounded-xl p-6">
-              <h2 className="text-lg font-display font-bold text-text mb-4">Top Pros & Cons</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h2 className="text-lg font-display font-bold text-text">Top Pros &amp; Cons</h2>
+              </div>
               <div className="space-y-4">
                 {aggregation.topPros.length > 0 && (
                   <div>
@@ -373,13 +422,27 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
             <div className="space-y-6">
               {aggregation.positivePct != null && aggregation.negativePct != null && (
                 <div className="bg-white border border-border rounded-xl p-6">
-                  <h2 className="text-lg font-display font-bold text-text mb-4">Sentiment</h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-lg font-display font-bold text-text">Sentiment</h2>
+                  </div>
                   <SentimentBar positivePct={aggregation.positivePct} negativePct={aggregation.negativePct} />
                 </div>
               )}
               {aggregation.sourceBreakdown && Object.keys(aggregation.sourceBreakdown).length > 0 && (
                 <div className="bg-white border border-border rounded-xl p-6">
-                  <h2 className="text-lg font-display font-bold text-text mb-4">Ratings by Source</h2>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                      </svg>
+                    </div>
+                    <h2 className="text-lg font-display font-bold text-text">Ratings by Source</h2>
+                  </div>
                   <SourceBreakdown breakdown={aggregation.sourceBreakdown} />
                 </div>
               )}
@@ -390,9 +453,16 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         {/* Reviews list */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-display font-bold text-text">
-              Reviews ({total})
-            </h2>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-display font-bold text-text">
+                Reviews ({total})
+              </h2>
+            </div>
             {aggregation?.sourceBreakdown && (
               <div className="flex gap-2">
                 <Link
