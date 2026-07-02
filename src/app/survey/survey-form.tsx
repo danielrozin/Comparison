@@ -602,6 +602,7 @@ function RadioQuestion({
       {value === "Other" && onOtherChange && (
         <input
           type="text"
+          aria-label="Please specify"
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."
@@ -663,6 +664,7 @@ function CheckboxQuestion({
       {values.includes("Other") && onOtherChange && (
         <input
           type="text"
+          aria-label="Please specify"
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."

@@ -283,8 +283,9 @@ export default function AdminPage() {
               <div className="bg-red-50 text-red-700 text-sm px-3 py-2 rounded-lg">{loginError}</div>
             )}
             <div>
-              <label className="block text-sm font-medium text-text mb-1">Email</label>
+              <label htmlFor="admin-email" className="block text-sm font-medium text-text mb-1">Email</label>
               <input
+                id="admin-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -294,8 +295,9 @@ export default function AdminPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-text mb-1">Password</label>
+              <label htmlFor="admin-password" className="block text-sm font-medium text-text mb-1">Password</label>
               <input
+                id="admin-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

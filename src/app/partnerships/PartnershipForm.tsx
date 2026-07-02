@@ -206,10 +206,10 @@ export function PartnershipForm() {
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-text mb-2">
+      <fieldset>
+        <legend className="block text-sm font-medium text-text mb-2">
           Partnership Goals (select all that apply)
-        </label>
+        </legend>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {GOALS.map((goal) => (
             <label
@@ -226,7 +226,7 @@ export function PartnershipForm() {
             </label>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-text mb-1">
