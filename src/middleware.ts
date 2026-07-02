@@ -202,6 +202,36 @@ export function middleware(request: NextRequest) {
           ].join(", ")
         );
       }
+    } else if (pathname.startsWith("/alternatives/")) {
+      const slug = pathname.replace("/alternatives/", "").replace(/\/$/, "");
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/v1/alternatives/${slug}>; rel="describedby"; type="application/json"; title="Alternatives JSON"`,
+            `<${SITE}/api/v1/alternatives/${slug}>; rel="alternate"; type="application/json"; title="Alternatives JSON"`,
+            `<${SITE}/alternatives/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    } else if (pathname.startsWith("/best/")) {
+      const slug = pathname.replace("/best/", "").replace(/\/$/, "");
+      if (slug) {
+        response.headers.set(
+          "Link",
+          [
+            `<${SITE}/api/v1/best/${slug}>; rel="describedby"; type="application/json"; title="Best-of Guide JSON"`,
+            `<${SITE}/api/v1/best/${slug}>; rel="alternate"; type="application/json"; title="Best-of Guide JSON"`,
+            `<${SITE}/best/${slug}>; rel="cite-as"`,
+          ].join(", ")
+        );
+      }
+    } else if (pathname.startsWith("/hub/")) {
+      const slug = pathname.replace("/hub/", "").replace(/\/$/, "");
+      if (slug) {
+        // Hub pages have no standalone JSON endpoint; cite-as is sufficient for canonical linking.
+        response.headers.set("Link", `<${SITE}/hub/${slug}>; rel="cite-as"`);
+      }
     }
 
     return response;
