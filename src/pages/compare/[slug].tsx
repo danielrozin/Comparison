@@ -21,6 +21,7 @@ import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
 import { DynamicComparison } from "@/components/comparison/DynamicComparison";
+import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
 import { PartnerReviews } from "@/components/comparison/PartnerReviews";
@@ -75,9 +76,17 @@ const MultiComparisonTable = dynamic(
   () => import("@/components/comparison/MultiComparisonTable").then((m) => ({ default: m.MultiComparisonTable })),
   { loading: () => <div className="max-w-6xl mx-auto px-4 py-8 animate-pulse"><div className="h-64 bg-surface-alt rounded-xl" /></div> }
 );
+// DAN-1642: recharts is the single largest client chunk (~115 KB, ~90 KB unused)
+// and its hydration dominated main-thread script evaluation on this route
+// (framework chunk ~8s scripting on throttled mobile → TBT 2.5s, TTI 10s, LCP
+// 4.1s). Charts are a purely visual restatement of the numeric data already
+// crawlable in ComparisonTable/DataFactsTable, so they carry no SEO weight.
+// Load client-only (ssr:false) and gate behind DeferUntilVisible so recharts
+// downloads + mounts only when the section nears the viewport — off the initial
+// hydration / LCP path entirely.
 const ComparisonCharts = dynamic(
   () => import("@/components/comparison/ComparisonCharts").then((m) => ({ default: m.ComparisonCharts })),
-  { loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
+  { ssr: false, loading: () => <div className="max-w-5xl mx-auto px-4 py-8 animate-pulse"><div className="h-48 bg-surface-alt rounded-xl" /></div> }
 );
 const ComparisonVideoPlayer = dynamic(
   () => import("@/components/comparison/ComparisonVideoPlayer").then((m) => ({ default: m.ComparisonVideoPlayer })),
@@ -904,13 +913,15 @@ export default function ComparisonPage(props: Props) {
             </div>
           )}
 
-          {/* Visual Comparison Charts (code-split, SSR'd) */}
+          {/* Visual Comparison Charts (client-only, viewport-deferred — DAN-1642) */}
           {comparison.attributes.some((a) => a.values.some((v) => v.valueNumber != null)) && (
-            <ComparisonCharts
-              attributes={comparison.attributes}
-              entityA={comparison.entities[0]}
-              entityB={comparison.entities[1]}
-            />
+            <DeferUntilVisible minHeight={360}>
+              <ComparisonCharts
+                attributes={comparison.attributes}
+                entityA={comparison.entities[0]}
+                entityB={comparison.entities[1]}
+              />
+            </DeferUntilVisible>
           )}
 
           {/* Video Comparison */}
