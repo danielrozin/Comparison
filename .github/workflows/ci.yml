@@ -1,5 +1,5 @@
 name: CI
-
+# Lockfile regenerated for Linux Node 20 — DAN-1653
 on:
   push:
     branches: [main, staging]
