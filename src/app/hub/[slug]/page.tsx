@@ -337,16 +337,16 @@ export default async function HubPage({ params }: PageProps) {
           {spokes.length === 0 ? (
             <p className="text-text-secondary">Comparisons are being generated. Check back soon.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
               {hub.comparisonSlugs.map((compSlug) => {
                 const comp = spokes.find((s) => s.slug === compSlug);
                 if (!comp) return null;
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
+                  <li key={compSlug} className="flex">
                   <Link
-                    key={compSlug}
                     href={`/compare/${comp.slug}`}
-                    className="flex items-start gap-4 p-5 rounded-xl border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 bg-white group relative overflow-hidden"
+                    className="flex items-start gap-4 p-5 rounded-xl border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 bg-white group relative overflow-hidden w-full"
                   >
                     <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 via-accent-500 to-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
                     <div className="flex -space-x-2 flex-shrink-0 mt-0.5">
@@ -372,9 +372,10 @@ export default async function HubPage({ params }: PageProps) {
                       </span>
                     </div>
                   </Link>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           )}
         </section>
 

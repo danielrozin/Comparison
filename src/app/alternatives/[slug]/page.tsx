@@ -308,9 +308,9 @@ export default async function AlternativesPage({ params }: PageProps) {
       </div>
 
       {alternatives.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
           {alternatives.map((alt) => (
-            <div key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+            <li key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center shadow-sm">
                   <span className="text-white font-bold text-lg">{alt.name.charAt(0)}</span>
@@ -336,9 +336,9 @@ export default async function AlternativesPage({ params }: PageProps) {
                   Learn more
                 </Link>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <div className="text-center py-16 bg-surface-alt rounded-xl">
           <p className="text-text-secondary mb-4">No alternatives found for {name} yet.</p>

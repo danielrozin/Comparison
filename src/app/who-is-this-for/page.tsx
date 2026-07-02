@@ -389,9 +389,9 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">This is <em>not</em> for you if&hellip;</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
           {NOT_FOR_YOU.map((item) => (
-            <div
+            <li
               key={item.title}
               className="border border-border rounded-xl p-5"
             >
@@ -404,9 +404,9 @@ export default function WhoIsThisForPage() {
                   </p>
                 </div>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* ─── Section 3: Use-case scenarios ─── */}
@@ -446,9 +446,9 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <ol className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {HOW_IT_WORKS_STEPS.map((s) => (
-            <div
+            <li
               key={s.step}
               className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
@@ -461,9 +461,9 @@ export default function WhoIsThisForPage() {
               <p className="text-sm text-text-secondary leading-relaxed">
                 {s.description}
               </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       {/* ─── Section 5: Proof with numbers ─── */}
@@ -476,32 +476,32 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">{SITE_NAME} by the Numbers</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
+          <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-4xl font-display font-black text-primary-600 mb-2">
               3,000+
             </p>
             <p className="text-sm text-text-secondary font-medium">
               Structured comparisons
             </p>
-          </div>
-          <div className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+          </li>
+          <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-4xl font-display font-black text-primary-600 mb-2">
               17
             </p>
             <p className="text-sm text-text-secondary font-medium">
               Categories covered
             </p>
-          </div>
-          <div className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+          </li>
+          <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-4xl font-display font-black text-primary-600 mb-2">
               Free
             </p>
             <p className="text-sm text-text-secondary font-medium">
               Forever, no sign-up required
             </p>
-          </div>
-        </div>
+          </li>
+        </ul>
         <p className="text-text-secondary leading-relaxed mt-6">
           Categories include{" "}
           <Link
