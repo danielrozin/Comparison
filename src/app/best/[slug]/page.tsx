@@ -382,6 +382,9 @@ export default async function BestPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="cite-as" href={`${SITE_URL}/best/${entry.slug}`} />
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      <meta httpEquiv="content-language" content="en" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

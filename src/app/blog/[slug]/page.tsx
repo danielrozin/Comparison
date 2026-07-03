@@ -687,6 +687,9 @@ export default async function BlogPostPage({
     <>
       {/* describedby — HTML Linked Data discovery; supplements Link HTTP header from middleware */}
       <link rel="describedby" type="application/ld+json" href={`${SITE_URL}/api/blog/${slug}`} />
+      <link rel="cite-as" href={`${SITE_URL}/blog/${slug}`} />
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      <meta httpEquiv="content-language" content="en" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

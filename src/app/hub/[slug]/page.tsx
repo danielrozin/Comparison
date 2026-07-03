@@ -302,6 +302,9 @@ export default async function HubPage({ params }: PageProps) {
       {hub.categoryAnchor && (
         <link rel="up" href={`${SITE_URL}/category/${hub.categoryAnchor}`} title={`${hub.h1} category`} />
       )}
+      <link rel="cite-as" href={`${SITE_URL}/hub/${hub.slug}`} />
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      <meta httpEquiv="content-language" content="en" />
       {schemas.map((schema, i) => (
         <script
           key={i}
