@@ -15,6 +15,24 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
+const HEADERS = {
+  "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+  "Content-Type": "application/ld+json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "X-Robots-Tag": "all",
+  "Vary": "Accept",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+};
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: HEADERS });
+}
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
@@ -88,6 +106,7 @@ export async function GET(
       description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
       url,
       datePublished: comparison.metadata?.publishedAt ?? undefined,
+      dateCreated: comparison.metadata?.publishedAt ?? undefined,
       dateModified: comparison.metadata?.updatedAt ?? undefined,
       author: {
         "@type": "Organization",
@@ -116,7 +135,7 @@ export async function GET(
       // speakable — sections optimised for voice/AI reading extraction
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["#short-answer", "#verdict", "#key-differences", "#faq"],
+        cssSelector: ["#short-answer", "#verdict", "#key-facts"],
         xpath: ["//*[@id='short-answer']", "//*[@id='verdict']"],
       },
       // significantLink — entity profiles + alternatives so AI can traverse the graph
@@ -280,29 +299,18 @@ export async function GET(
 
   return NextResponse.json(jsonLd, {
     headers: {
-      "Content-Type": "application/ld+json",
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-      "Access-Control-Allow-Origin": "*",
-      "X-Robots-Tag": "all",
-      // Vary: Accept — CDN must cache separately for different Accept types
-      // (this endpoint is the 303 redirect target from /compare/{slug} content negotiation)
-      "Vary": "Accept",
+      ...HEADERS,
+      "X-Source-URL": `${SITE_URL}/compare/${slug}`,
+      "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}/compare/${slug}), ...`,
       ETag: etag,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-      // X-Summary: shortAnswer (or verdict fallback) for AI crawlers probing without body download
       ...((comparison.shortAnswer || comparison.verdict)
         ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
-      // Link: back to canonical + pure JSON-LD schema endpoint
       "Link": [
         `<${SITE_URL}/compare/${slug}>; rel="canonical"`,
         `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD (pure)"`,
       ].join(", "),
-      // X-Source-* — AI attribution headers for Perplexity, ChatGPT, and Gemini
-      "X-Source-Title": comparison.title,
-      "X-Source-URL": `${SITE_URL}/compare/${slug}`,
-      "X-Source-License": "CC BY 4.0",
-      "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
     },
   });
 }

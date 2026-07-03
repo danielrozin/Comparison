@@ -29,6 +29,11 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -188,14 +193,10 @@ export async function GET(
     {
       headers: {
         ...HEADERS,
+        "X-Source-URL": url,
+        "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
         ETag: updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`,
         ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
-        // X-Source-* — AI attribution headers for LLM tools that read HTTP headers
-        // to determine content provenance (Perplexity, ChatGPT browse, Gemini).
-        "X-Source-Title": comparison.title,
-        "X-Source-URL": url,
-        "X-Source-License": "CC BY 4.0",
-        "X-Source-Attribution": `A Versus B (${url})`,
       },
     }
   );
