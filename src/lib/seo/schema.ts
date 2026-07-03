@@ -693,7 +693,7 @@ export function webPageSchema(opts: {
     ...(opts.keywords && { keywords: opts.keywords }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2", ".page-description", ".page-intro"],
+      cssSelector: ["h1", "h2", "#page-intro", "p:first-of-type"],
     },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),

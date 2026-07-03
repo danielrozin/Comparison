@@ -273,7 +273,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     educationalUse: "comparison",
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".category-description", "#page-description"],
+      cssSelector: ["h1", "h2"],
     },
     keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} ${new Date().getFullYear()}`,
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

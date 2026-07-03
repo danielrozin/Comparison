@@ -225,7 +225,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       url: `${SITE_URL}/compare/${c.slug}`,
     })),
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".category-description", "#page-description"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
     mainEntity: {
       "@type": "ItemList",
       name: `${subcat.name} Comparisons`,
