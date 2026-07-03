@@ -312,7 +312,7 @@ function bestPageSchema(entry: BestEntry) {
         // speakable sections first when generating spoken or cited responses.
         speakable: {
           "@type": "SpeakableSpecification",
-          cssSelector: ["h1", "article.prose-custom p:first-of-type", ".faq-answer"],
+          cssSelector: ["h1", "article.prose-custom p:first-of-type", "article.prose-custom"],
         },
         educationalLevel: "General",
         // teaches — explicit learning outcome for AI classifiers routing "best X" queries.
@@ -360,7 +360,7 @@ function bestPageSchema(entry: BestEntry) {
         // isPartOf — back-reference from FAQPage to Article so AI crawlers confirm
         // FAQ answers belong to this best-of guide.
         isPartOf: { "@type": "Article", "@id": `${url}#article` },
-        speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
+        speakable: { "@type": "SpeakableSpecification", cssSelector: ["article.prose-custom"] },
         mainEntity: entry.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.q,

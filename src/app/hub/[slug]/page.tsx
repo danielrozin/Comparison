@@ -139,7 +139,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     })),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "#page-intro", "#top-comparisons", ".hub-description"],
+      cssSelector: ["h1", "#page-intro", "#comparisons-heading", "#faq-heading"],
     },
     alternativeHeadline: `${hub.h1} — Expert Comparisons & Analysis`,
     license: "https://creativecommons.org/licenses/by/4.0/",
