@@ -17,7 +17,6 @@ import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 3600; // rebuild every hour
 
 const PRIORITY_CATEGORIES = [
   "technology",
@@ -202,7 +201,7 @@ export async function GET() {
   lines.push(`- [OpenAPI 3.0 spec](${SITE_URL}/api/openapi) — machine-readable API schema for all endpoints`);
   lines.push(`- [Developer API docs](${SITE_URL}/developers)`);
   lines.push("");
-  lines.push("## HTTP Link Headers (AI-Optimised Discovery)");
+  lines.push("## HTTP Link Headers & HTML Signals (AI-Optimised Discovery)");
   lines.push("");
   lines.push("Every content page emits `Link:` HTTP headers for fastest structured-data discovery by AI crawlers (no HTML parsing needed — a HEAD request suffices):");
   lines.push(`- \`/compare/{slug}\` → Link: <api/v1/schema/{slug}>; rel="describedby"; type="application/ld+json"`);
@@ -213,6 +212,12 @@ export async function GET() {
   lines.push(`- \`/best/{slug}\` → Link: <api/v1/best/{slug}>; rel="describedby"; type="application/json"`);
   lines.push(`- \`/hub/{slug}\` → Link: <api/v1/hub/{slug}>; rel="describedby"; type="application/json"`);
   lines.push("Content negotiation: GET /compare/{slug} with Accept: application/ld+json → 303 redirect to api/v1/schema/{slug}");
+  lines.push("");
+  lines.push("HTML pages also emit inline signals for parsers that skip HTTP headers:");
+  lines.push("- `<link rel=\"cite-as\" href=\"{canonical}\">` — W3C preferred citation URL");
+  lines.push("- `<link rel=\"license\" href=\"https://creativecommons.org/licenses/by/4.0/\">` — CC BY 4.0");
+  lines.push("- `<meta http-equiv=\"content-language\" content=\"en\">` — explicit language declaration");
+  lines.push("- `<link rel=\"describedby\" type=\"application/ld+json\" href=\"{api-url}\">` — machine-readable description");
 
   const body = lines.join("\n");
 

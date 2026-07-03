@@ -7,7 +7,6 @@ import { SITE_URL } from "@/lib/utils/constants";
 // We serve the same DB-fresh content from the /llms.txt route by forwarding the request.
 
 export const dynamic = "force-dynamic";
-export const revalidate = 3600;
 
 export async function GET() {
   const response = await fetch(`${SITE_URL}/llms.txt`, {
