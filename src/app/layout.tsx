@@ -94,6 +94,10 @@ export default function RootLayout({
       <head>
         {/* theme-color — browser chrome and Android home-screen splash color */}
         <meta name="theme-color" content="#1a56db" />
+        {/* color-scheme — tells browser to apply light-mode native controls (inputs, scrollbars)
+            even when the OS is in dark mode. Site is light-only; without this, dark OS users
+            see dark form elements on a light background, causing contrast failures. */}
+        <meta name="color-scheme" content="light" />
         {/* dns-prefetch / preconnect — resolve third-party origins early to reduce LCP.
             preconnect opens TLS for frequently used origins; dns-prefetch for lower-priority ones.
             Faster LCP is a Core Web Vitals signal that directly affects ranking. */}

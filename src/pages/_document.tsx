@@ -1,5 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
+import { SITE_URL } from "@/lib/utils/constants";
 
 // DAN-432 Phase C: Pages Router shell for /compare/[slug].
 // Mirrors the <html>/<head>/<body> scaffold from src/app/layout.tsx so the
@@ -16,26 +17,41 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        {/* theme-color + color-scheme — parity with layout.tsx */}
+        <meta name="theme-color" content="#1a56db" />
+        <meta name="color-scheme" content="light" />
         {/* Identity + license link relations — matches layout.tsx for E-E-A-T parity on Pages Router */}
         <link rel="me" href="https://x.com/aversusb" />
         <link rel="me" href="https://www.linkedin.com/company/aversusb" />
         <link rel="me" href="https://www.youtube.com/@aversusb" />
-        <link rel="author" href="https://www.aversusb.net/about" />
+        <link rel="author" href={`${SITE_URL}/about`} />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+        {/* OpenSearch — enables browser address-bar search shortcut; parity with layout.tsx */}
+        <link rel="search" type="application/opensearchdescription+xml" title="A Versus B — Compare Anything" href={`${SITE_URL}/opensearch.xml`} />
+        {/* WebMention + pingback — inbound link discovery; parity with layout.tsx */}
+        <link rel="webmention" href={`${SITE_URL}/api/webmention`} />
+        <link rel="pingback" href={`${SITE_URL}/api/pingback`} />
         {/* author/coverage/distribution/rating — Bing, Yandex, and AI content classifiers
             use these to confirm authorship, global availability, and safe-search eligibility */}
         <meta name="author" content="A Versus B" />
         <meta name="coverage" content="Worldwide" />
         <meta name="distribution" content="Global" />
         <meta name="rating" content="General" />
+        {/* referrer — send origin on cross-origin requests; parity with layout.tsx */}
+        <meta name="referrer" content="origin-when-cross-origin" />
+        {/* fediverse:creator — Mastodon/ActivityPub attribution; parity with layout.tsx */}
+        <meta name="fediverse:creator" content="@aversusb@mastodon.social" />
         {/* format-detection — disable iOS Safari auto-linking; parity with layout.tsx */}
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.
             Google uses Core Web Vitals (LCP) as a ranking signal; preconnect shaves ~200ms
             off the first-byte time for OG images and the AdSense script on slow connections. */}
-        <link rel="preconnect" href="https://www.aversusb.net" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
         {ADSENSE_PUB_ID && (
           <script
             async
@@ -71,6 +87,18 @@ export default function Document() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(siteNavigationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(definedTermSetSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webApplicationSchema()),
           }}
         />
       </Head>
