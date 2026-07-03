@@ -35,10 +35,26 @@ export async function GET(
 
       incrementViewCount(comparison.id).catch(() => {});
 
+      const compUrl = `${SITE_URL}/compare/${slug}`;
+      const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+      const etag = updatedAt
+        ? `"comp-${slug}-${new Date(updatedAt).getTime()}"`
+        : `"comp-${slug}"`;
+
+      const ifNoneMatch = request.headers.get("if-none-match");
+      if (ifNoneMatch === etag) {
+        return new NextResponse(null, { status: 304, headers: { ETag: etag } });
+      }
+
       return NextResponse.json(comparison, {
         headers: {
           ...HEADERS,
           "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+          "X-Source-URL": compUrl,
+          "X-Attribution": `According to ${SITE_NAME} (${compUrl}), ...`,
+          ETag: etag,
+          ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
+          ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
         },
       });
     } catch (error) {
