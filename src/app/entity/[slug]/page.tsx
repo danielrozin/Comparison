@@ -248,7 +248,12 @@ export default async function EntityPage({ params }: PageProps) {
           "@id": `${SITE_URL}/compare/${comp.slug}#article`,
           name: comp.title,
           url: `${SITE_URL}/compare/${comp.slug}`,
-          ...(comp.category && { articleSection: comp.category }),
+          ...(comp.category && {
+            articleSection: comp.category,
+            // genre — content classification for AI indexers and Google Discover carousels.
+            // AI carousel slots use genre to filter "X comparison" content type correctly.
+            genre: `${comp.category.charAt(0).toUpperCase()}${comp.category.slice(1)} Comparison`,
+          }),
         },
       })),
     });

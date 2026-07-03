@@ -147,7 +147,15 @@ export async function GET() {
 
   lines.push("## Structured Data");
   lines.push("");
-  lines.push("Every page includes Schema.org JSON-LD: Article, FAQPage, Dataset, SpeakableSpecification, BreadcrumbList, ClaimReview, DefinedTermSet.");
+  lines.push("Every page includes Schema.org JSON-LD. Schema types by page:")
+  lines.push("- /compare/{slug}: Article (+ TechArticle/NewsArticle additionalType), FAQPage, Dataset (DataFeed), BreadcrumbList (WebPage-typed items), ItemList, HowTo, SportsEvent (sports category), ClaimReview, AggregateRating, Review, SpeakableSpecification, HowTo");
+  lines.push("- /entity/{slug}: ProfilePage, AggregateRating, BreadcrumbList, FAQPage, ItemList (comparisons list), SpeakableSpecification");
+  lines.push("- /best/{slug}: ItemList, FAQPage, BreadcrumbList, Article");
+  lines.push("- /blog/{slug}: Article (BlogPosting), FAQPage, BreadcrumbList, SpeakableSpecification");
+  lines.push("- /category/{slug}: CollectionPage, ItemList, BreadcrumbList");
+  lines.push("- /alternatives/{slug}: ItemList, FAQPage, BreadcrumbList");
+  lines.push("- Site-wide: Organization, WebSite (SearchAction), WebApplication, DataCatalog (Dataset), DefinedTermSet, SiteNavigationElement");
+  lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
   lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
   lines.push("");
   lines.push("## Machine-Readable Endpoints");

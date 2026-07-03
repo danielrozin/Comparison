@@ -2410,6 +2410,13 @@ export function profilePageSchema(entity: {
     name: entity.name,
     url,
     ...(entity.shortDesc && { description: entity.shortDesc }),
+    // disambiguatingDescription — Schema.org Thing property that helps AI knowledge graphs
+    // and Google Knowledge Panel distinguish entities with ambiguous names (e.g. "Apple" the
+    // company vs "Apple" the fruit). AI crawlers (ChatGPT, Perplexity) use this to pin
+    // the entity to the correct real-world referent when merging knowledge graph nodes.
+    disambiguatingDescription: entity.shortDesc
+      ? entity.shortDesc.slice(0, 120)
+      : `${entity.name} — ${schemaType} profile, comparisons, and alternatives on A Versus B`,
     // ImageObject — always emit; use real imageUrl when available, else OG API fallback.
     // contentUrl and thumbnailUrl are the AI-crawler-preferred image pointer fields:
     // Google Lens, Perplexity visual mode, and AI Overviews read contentUrl to display
