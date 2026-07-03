@@ -4,13 +4,13 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 // GET /api/v1/changes
 //
-// Incremental indexing feed — returns comparisons added or updated since a
+// Incremental indexing feed — returns content added or updated since a
 // given timestamp. AI crawlers and indexers can poll this endpoint daily
 // (or hourly) to discover new content without re-crawling all 3,000+ pages.
 //
 // Query parameters:
 //   since     — ISO8601 timestamp (default: 24 hours ago). e.g. ?since=2026-06-30T00:00:00Z
-//   type      — "comparisons" | "blog" | "all" (default: all)
+//   type      — "comparisons" | "blog" | "best" | "all" (default: all)
 //   limit     — max results per type (default 100, max 500)
 //   offset    — pagination offset
 //
@@ -72,9 +72,13 @@ export async function GET(request: NextRequest) {
 
   const generatedAt = new Date().toISOString();
 
-  // Fetch comparisons + blog changes in parallel
-  const [compChanges, blogChanges] = await Promise.all([
-    type === "blog" ? Promise.resolve([]) : prisma.comparison.findMany({
+  // Fetch comparisons + blog + best changes in parallel
+  const includeBlog = type === "all" || type === "blog";
+  const includeComp = type === "all" || type === "comparisons";
+  const includeBest = type === "all" || type === "best";
+
+  const [compChanges, blogChanges, bestChanges] = await Promise.all([
+    includeComp ? prisma.comparison.findMany({
       where: {
         OR: [
           { createdAt: { gte: since } },
@@ -92,8 +96,8 @@ export async function GET(request: NextRequest) {
       orderBy: { updatedAt: "desc" },
       take: limit,
       skip: offset,
-    }),
-    type === "comparisons" ? Promise.resolve([]) : prisma.blogArticle.findMany({
+    }) : Promise.resolve([]),
+    includeBlog ? prisma.blogArticle.findMany({
       where: {
         status: "published",
         OR: [
@@ -112,7 +116,26 @@ export async function GET(request: NextRequest) {
       orderBy: { updatedAt: "desc" },
       take: limit,
       skip: offset,
-    }),
+    }) : Promise.resolve([]),
+    includeBest ? prisma.bestPage.findMany({
+      where: {
+        status: "published",
+        OR: [
+          { publishedAt: { gte: since, not: null } },
+          { updatedAt: { gte: since } },
+        ],
+      },
+      select: {
+        slug: true,
+        title: true,
+        description: true,
+        publishedAt: true,
+        updatedAt: true,
+      },
+      orderBy: { updatedAt: "desc" },
+      take: limit,
+      skip: offset,
+    }) : Promise.resolve([]),
   ]);
 
   const compItems = compChanges.map((c) => ({
@@ -141,8 +164,19 @@ export async function GET(request: NextRequest) {
     changedAt: b.updatedAt.toISOString(),
   }));
 
+  const bestItems = bestChanges.map((p) => ({
+    type: "best" as const,
+    slug: p.slug,
+    title: p.title,
+    description: p.description ?? undefined,
+    url: `${SITE_URL}/best/${p.slug}`,
+    jsonUrl: `${SITE_URL}/api/v1/best/${p.slug}`,
+    action: p.publishedAt && p.publishedAt >= since ? "added" : "updated",
+    changedAt: p.updatedAt.toISOString(),
+  }));
+
   // Merge and sort all changes by changedAt desc
-  const allChanges = [...compItems, ...blogItems].sort(
+  const allChanges = [...compItems, ...blogItems, ...bestItems].sort(
     (a, b) => new Date(b.changedAt).getTime() - new Date(a.changedAt).getTime()
   );
 
@@ -180,12 +214,18 @@ export async function GET(request: NextRequest) {
       "@type": "DataFeedItem",
       dateModified: c.changedAt,
       item: {
-        "@type": c.type === "comparison" ? "Article" : "BlogPosting",
+        "@type": c.type === "comparison" ? "Article" : c.type === "best" ? "CollectionPage" : "BlogPosting",
         "@id": c.type === "comparison"
           ? `${SITE_URL}/compare/${c.slug}#article`
+          : c.type === "best"
+          ? `${SITE_URL}/best/${c.slug}#collectionpage`
           : `${SITE_URL}/blog/${c.slug}#article`,
         name: c.title,
-        url: c.type === "comparison" ? `${SITE_URL}/compare/${c.slug}` : `${SITE_URL}/blog/${c.slug}`,
+        url: c.type === "comparison"
+          ? `${SITE_URL}/compare/${c.slug}`
+          : c.type === "best"
+          ? `${SITE_URL}/best/${c.slug}`
+          : `${SITE_URL}/blog/${c.slug}`,
         ...("shortAnswer" in c && c.shortAnswer ? { abstract: String(c.shortAnswer) } : {}),
       },
     })),
