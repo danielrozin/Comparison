@@ -159,10 +159,22 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "AhrefsBot", allow: "/" },
       { userAgent: "SemrushBot", allow: "/" },
       { userAgent: "DataForSeoBot", allow: "/" },
+
+      // === 2026 additions — AI assistant agents + platform crawlers ===
+      { userAgent: "OpenAI-Operator", allow: "/" },       // OpenAI Operator autonomous agent
+      { userAgent: "Poe-Bot", allow: "/" },               // Quora Poe AI assistant
+      { userAgent: "CharacterAI-Bot", allow: "/" },       // Character.AI crawler
+      { userAgent: "CohereForAI", allow: "/" },           // Cohere AI alternate UA
+      { userAgent: "NvidiaBot", allow: "/" },             // NVIDIA AI research crawler
+      { userAgent: "NevaBot", allow: "/" },               // Neeva search (Snowflake)
+      { userAgent: "TavilyBot", allow: "/" },             // Tavily AI search (RAG tool)
+      { userAgent: "EZEBot", allow: "/" },                // EZE Bot AI crawler
     ],
     sitemap: [
       "https://www.aversusb.net/api/sitemap",
       "https://www.aversusb.net/api/sitemap?type=blog",
+      "https://www.aversusb.net/api/sitemap?type=hubs",
+      "https://www.aversusb.net/api/sitemap?type=best",
       "https://www.aversusb.net/sitemap.xml",
       "https://www.aversusb.net/sitemap/0.xml",
       "https://www.aversusb.net/sitemap/1.xml",

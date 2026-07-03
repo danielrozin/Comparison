@@ -169,6 +169,8 @@ export async function GET() {
   lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; supports ?types=comparisons,entities,blog and ?limit; X-Summary header on response`);
 
   lines.push(`- [AI Answer (AEO)](${SITE_URL}/api/answer/{slug}) — pre-packaged answer: shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD; X-Summary header in HTTP response`);
+  lines.push(`- [Batch lookup](${SITE_URL}/api/v1/batch) — fetch up to 20 comparisons in a single POST; body: {"slugs":["chatgpt-vs-claude","gpt-4-vs-gemini"]}; optional fields filter; ideal for AI agents building comparison matrices without N sequential calls`);
+  lines.push(`- [Pure JSON-LD schema](${SITE_URL}/api/v1/schema/{slug}) — spec-compliant Schema.org @graph document (Content-Type: application/ld+json); includes WebPage, Article, Dataset, FAQPage, Organization nodes; linked from every /compare/* page via <link rel="alternate" type="application/ld+json">`);
   lines.push(`- [JSON sitemap](${SITE_URL}/api/sitemap) — paginated JSON DataFeed sitemap; ?type=comparisons (default) | ?type=blog | ?type=hubs | ?type=best; also supports ?category, ?limit, ?offset, ?format=urlset; comparisons include shortAnswer+answerUrl; blog includes excerpt+jsonUrl; hubs include comparisonCount+apiUrl; best include apiUrl`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
