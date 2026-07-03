@@ -17,7 +17,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 // Returns:
 //   { generated_at, since, type, total, hasMore, nextUrl, changes: [] }
 //   Each change: { slug, title, shortAnswer, comparisonUrl, answerUrl,
-//                  knowledgeGraphUrl, category, action, changedAt }
+//                  schemaJsonLdUrl, knowledgeGraphUrl, category, action, changedAt }
 //
 // Use cases:
 //   - AI crawl scheduler: check this daily and only re-fetch changed pages
@@ -153,6 +153,7 @@ export async function GET(request: NextRequest) {
     shortAnswer: c.shortAnswer ?? undefined,
     comparisonUrl: `${SITE_URL}/compare/${c.slug}`,
     answerUrl: `${SITE_URL}/api/answer/${c.slug}`,
+    schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${c.slug}`,
     knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${c.slug}`,
     jsonUrl: `${SITE_URL}/api/comparisons/${c.slug}`,
     category: c.category ?? undefined,
