@@ -142,7 +142,21 @@ export async function GET() {
         description: "Get currently trending comparisons by search volume and recent engagement.",
         endpoint: `${SITE_URL}/api/v1/trending`,
         method: "GET",
+        parameters: {
+          limit: { type: "integer", required: false, description: "Max results (default 20, max 100)" },
+          category: { type: "string", required: false, description: "Filter by category slug (e.g. technology, sports)" },
+        },
         returns: "JSON: { trending[] } with ItemList JSON-LD",
+      },
+      {
+        name: "get_blog_article",
+        description: "Get a blog article as JSON with Article JSON-LD. Returns the full article content, excerpt, tags, and BlogPosting schema. X-Summary header in HTTP response carries the excerpt.",
+        endpoint: `${SITE_URL}/api/blog/{slug}`,
+        method: "GET",
+        parameters: {
+          slug: { type: "string", required: true, description: "Blog article slug, e.g. 'best-ai-coding-tools-2026'" },
+        },
+        returns: "JSON: { slug, title, excerpt, content, tags, category, publishedAt, updatedAt, jsonLdSchema }",
       },
       {
         name: "list_categories",
