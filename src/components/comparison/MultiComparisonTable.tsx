@@ -134,6 +134,8 @@ export function MultiComparisonTable({
                         <img
                           src={ent.imageUrl}
                           alt=""
+                          width={24}
+                          height={24}
                           className="w-6 h-6 rounded-full object-cover border border-white/30 flex-shrink-0"
                           loading="lazy"
                           decoding="async"

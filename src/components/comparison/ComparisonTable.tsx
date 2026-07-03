@@ -549,6 +549,8 @@ function RedesignedTable({
                       <img
                         src={entityA.imageUrl}
                         alt=""
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
                         loading="lazy"
                         decoding="async"
@@ -563,6 +565,8 @@ function RedesignedTable({
                       <img
                         src={entityB.imageUrl}
                         alt=""
+                        width={24}
+                        height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
                         loading="lazy"
                         decoding="async"
@@ -662,7 +666,7 @@ function RedesignedTable({
               <div className="flex items-center justify-center gap-1.5">
                 {entity.imageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={entity.imageUrl} alt="" className="w-5 h-5 rounded-full object-cover border border-white/30 flex-shrink-0" loading="lazy" decoding="async" />
+                  <img src={entity.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30 flex-shrink-0" loading="lazy" decoding="async" />
                 ) : (
                   <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black flex-shrink-0 ${idx === 0 ? "bg-blue-400/40" : "bg-purple-400/40"}`}>
                     {entity.name.charAt(0).toUpperCase()}

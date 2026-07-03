@@ -56,6 +56,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
               <img
                 src={partner.logoUrl}
                 alt={brandName}
+                height={28}
                 className="mx-auto mb-2"
                 style={{ maxHeight: 28 }}
                 loading="lazy"

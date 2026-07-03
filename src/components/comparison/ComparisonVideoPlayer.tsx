@@ -91,6 +91,8 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                     <img
                       src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
                       alt={title}
+                      width={480}
+                      height={360}
                       className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
                       loading="lazy"
                       decoding="async"

@@ -291,7 +291,7 @@ function VoteButton({
     >
       {entity.imageUrl ? (
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-alt">
-          <img src={entity.imageUrl} alt={entity.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+          <img src={entity.imageUrl} alt={entity.name} width={48} height={48} className="w-full h-full object-cover" loading="lazy" decoding="async" />
         </div>
       ) : (
         <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white shadow-sm ${
