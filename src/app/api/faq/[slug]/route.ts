@@ -13,8 +13,24 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
+const BASE_HEADERS = {
+  "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  "X-Robots-Tag": "all",
+  "Content-Type": "application/json",
+  "Vary": "Accept",
+  "X-Source": SITE_NAME,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+};
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: BASE_HEADERS });
+}
+
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -26,6 +42,15 @@ export async function GET(
 
   const url = `${SITE_URL}/compare/${slug}`;
   const faqs = comparison.faqs ?? [];
+  const updatedAt = comparison.metadata?.updatedAt;
+  const etag = updatedAt
+    ? `"faq-${slug}-${new Date(updatedAt).getTime()}"`
+    : `"faq-${slug}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
 
   // FAQPage JSON-LD (same format as embedded in the HTML page)
   const faqPage = faqs.length > 0
@@ -34,6 +59,7 @@ export async function GET(
         "@type": "FAQPage",
         "@id": `${url}#faq`,
         url,
+        inLanguage: "en",
         name: `${comparison.title} — FAQ`,
         description: `Frequently asked questions about ${comparison.title}`,
         author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -64,28 +90,16 @@ export async function GET(
     },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
-        "Access-Control-Allow-Origin": "*",
-        "X-Robots-Tag": "all",
-        "Content-Type": "application/json",
-        "Vary": "Accept",
-        ...(comparison.metadata?.updatedAt
-          ? {
-              "Last-Modified": new Date(comparison.metadata.updatedAt).toUTCString(),
-              ETag: `"faq-${slug}-${new Date(comparison.metadata.updatedAt).getTime()}"`,
-            }
-          : {}),
-        // X-Summary: first FAQ answer (or shortAnswer) for AI crawlers scanning headers
+        ...BASE_HEADERS,
+        "X-Source-URL": url,
+        "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+        ETag: etag,
+        ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
         ...(comparison.faqs?.[0]?.answer
           ? { "X-Summary": comparison.faqs[0].answer.slice(0, 500) }
           : comparison.shortAnswer
           ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
           : {}),
-        // X-Source-* — attribution headers for AI training pipelines and citation engines
-        "X-Source-Title": comparison.title,
-        "X-Source-URL": `${SITE_URL}/compare/${slug}`,
-        "X-Source-License": "CC BY 4.0",
-        "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,
       },
     }
   );
