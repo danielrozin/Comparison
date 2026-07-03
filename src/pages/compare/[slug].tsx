@@ -836,8 +836,9 @@ export default function ComparisonPage(props: Props) {
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
 
       {/* Quick Answer TL;DR — above the fold, GEO-optimized. */}
+      {/* id="short-answer" lives inside QuickAnswerTLDR; no wrapper id needed */}
       {comparison.quickAnswer?.tldr && (
-        <div id="verdict">
+        <div>
           <QuickAnswerTLDR
             quickAnswer={comparison.quickAnswer}
             entityA={comparison.entities[0]}
@@ -847,8 +848,9 @@ export default function ComparisonPage(props: Props) {
       )}
 
       {/* Short Answer Block — fallback when no quickAnswer */}
+      {/* id="short-answer" lives inside ShortAnswerBlock; no wrapper id needed */}
       {!comparison.quickAnswer?.tldr && (comparison.shortAnswer || comparison.verdict) && (
-        <div id="verdict">
+        <div>
           <ShortAnswerBlock
             shortAnswer={comparison.shortAnswer || ""}
             verdict={comparison.verdict}
