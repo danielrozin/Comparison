@@ -150,6 +150,7 @@ export function Header() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
               href="/#search"
+              aria-label="Search"
               className="group flex items-center gap-2 px-4 py-2 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200"
             >
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -230,7 +231,7 @@ export function Header() {
                   </div>
 
                   {/* Expandable subcategories */}
-                  <div className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                  <div aria-hidden={!isExpanded} className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
                     <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
                       {subs.map((sub) => (
                         <Link

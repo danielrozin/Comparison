@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
 type FeedbackType = "question" | "request" | "bug" | "suggestion";
@@ -12,6 +12,46 @@ export function FeedbackWidget() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
+
+  // Escape key closes dialog
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen, handleClose]);
+
+  // Focus trap: keep Tab/Shift+Tab inside dialog; auto-focus first element on open
+  useEffect(() => {
+    if (!isOpen || !dialogRef.current) return;
+    const focusable = Array.from(
+      dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute("disabled"));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handleTab);
+    return () => document.removeEventListener("keydown", handleTab);
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,8 +89,9 @@ export function FeedbackWidget() {
     <>
       {/* Floating button */}
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
         className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
@@ -73,13 +114,25 @@ export function FeedbackWidget() {
 
       {/* Panel */}
       {isOpen && (
-        <div id="feedback-panel" role="dialog" aria-modal="true" aria-label="Feedback and requests" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+        <div ref={dialogRef} id="feedback-panel" role="dialog" aria-modal="true" aria-labelledby="feedback-dialog-title" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4">
-            <h3 className="font-bold text-lg">Feedback & Requests</h3>
-            <p className="text-primary-100 text-sm mt-0.5">
-              Ask a question, request a comparison, or give feedback
-            </p>
+          <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4 flex items-start justify-between gap-3">
+            <div>
+              <h3 id="feedback-dialog-title" className="font-bold text-lg">Feedback & Requests</h3>
+              <p className="text-primary-100 text-sm mt-0.5">
+                Ask a question, request a comparison, or give feedback
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleClose}
+              aria-label="Close feedback"
+              className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors mt-0.5"
+            >
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
           {submitted ? (
