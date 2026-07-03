@@ -5,14 +5,13 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -35,26 +34,38 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const related = await getRelatedComparisons(comparison.id, limit);
-
   const pageUrl = `${SITE_URL}/compare/${slug}`;
+  const apiUrl = `${SITE_URL}/api/v1/related/${slug}`;
+
+  const related = await getRelatedComparisons(comparison.id, limit);
+  const etag = `"related-${slug}-${related.length}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
 
   // ItemList JSON-LD — lets AI crawlers extract the related-comparison graph
   // as a typed ItemList node, enabling them to follow answerUrl for each item.
+  // ListItem uses item: { WebPage } per spec (bare url on ListItem is non-standard).
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "@id": `${pageUrl}#related`,
+    "@id": `${apiUrl}#list`,
     name: `Related comparisons for ${comparison.title}`,
     description: `Comparisons related to ${comparison.title} — explore similar topics on ${SITE_NAME}.`,
     url: pageUrl,
+    inLanguage: "en",
     numberOfItems: related.length,
-    itemListElement: related.map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: c.title,
-      url: `${SITE_URL}/compare/${c.slug}`,
-    })),
+    itemListElement: related.map((c, i) => {
+      const itemUrl = `${SITE_URL}/compare/${c.slug}`;
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name: c.title,
+        item: { "@type": "WebPage", "@id": itemUrl, name: c.title, url: itemUrl },
+      };
+    }),
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     license: "https://creativecommons.org/licenses/by/4.0/",
   };
@@ -83,7 +94,9 @@ export async function GET(
     {
       headers: {
         ...HEADERS,
-        ETag: `"related-${slug}-${related.length}"`,
+        ETag: etag,
+        "X-Source-URL": pageUrl,
+        "X-Attribution": `${SITE_NAME} (${pageUrl})`,
         "X-Summary": summary.slice(0, 500),
       },
     }

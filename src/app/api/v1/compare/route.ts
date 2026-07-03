@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug, searchComparisons } from "@/lib/services/comparison-service";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 // GET /api/v1/compare?a={entityA}&b={entityB}
 //
@@ -25,9 +25,10 @@ export const dynamic = "force-dynamic";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
 };
 
 function slugify(name: string): string {
@@ -76,6 +77,26 @@ export async function GET(request: NextRequest) {
 
   if (found && foundSlug) {
     const comparisonUrl = `${SITE_URL}/compare/${foundSlug}`;
+    const etag = `"compare-${foundSlug}-${found.metadata.updatedAt}"`;
+
+    const ifNoneMatch = request.headers.get("if-none-match");
+    if (ifNoneMatch === etag) {
+      return new Response(null, { status: 304, headers: { ETag: etag } });
+    }
+
+    const lookupSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${comparisonUrl}#webpage`,
+      name: found.title,
+      url: comparisonUrl,
+      inLanguage: "en",
+      dateModified: found.metadata.updatedAt,
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      license: "https://creativecommons.org/licenses/by/4.0/",
+    };
+
     return NextResponse.json(
       {
         found: true,
@@ -99,17 +120,20 @@ export async function GET(request: NextRequest) {
           url: `${SITE_URL}/entity/${e.slug}`,
           alternativesUrl: `${SITE_URL}/api/v1/alternatives/${e.slug}`,
         })),
+        lookupSchema,
       },
       {
         headers: {
           ...HEADERS,
+          ETag: etag,
           ...((found.shortAnswer || found.verdict)
             ? { "X-Summary": (found.shortAnswer || found.verdict!.slice(0, 250)).slice(0, 500) }
             : {}),
-          "X-Source-Title": found.title,
+          "X-Source": SITE_NAME,
           "X-Source-URL": comparisonUrl,
-          "X-Source-License": "CC BY 4.0",
-          "X-Source-Attribution": `A Versus B (${comparisonUrl})`,
+          "X-License": "CC BY 4.0",
+          "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+          "X-Attribution": `${SITE_NAME} (${comparisonUrl})`,
         },
       }
     );
