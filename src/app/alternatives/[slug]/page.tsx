@@ -181,7 +181,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".alternatives-intro", ".entity-description", ".alternatives-list"],
+      cssSelector: ["h1", "h2", "main p:first-of-type"],
     },
     alternativeHeadline: `Best ${name} Alternatives in ${new Date().getFullYear()}`,
     license: "https://creativecommons.org/licenses/by/4.0/",
