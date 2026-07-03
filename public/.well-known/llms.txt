@@ -7,12 +7,15 @@
 - [LLM manifest (concise, hourly-fresh)](https://www.aversusb.net/api/llms?format=txt)
 - [Full catalog (DB-fresh, 1000+ comparisons)](https://www.aversusb.net/api/llms-full)
 - [Static snapshot](https://www.aversusb.net/llms.txt)
+- [MCP manifest](https://www.aversusb.net/.well-known/mcp.json)
 - [AI plugin manifest](https://www.aversusb.net/.well-known/ai-plugin.json)
+- [OpenAPI spec](https://www.aversusb.net/api/openapi)
 - [Sitemap index](https://www.aversusb.net/sitemap.xml)
 - [Image sitemap](https://www.aversusb.net/sitemap/images.xml)
 - [Video sitemap](https://www.aversusb.net/sitemap/video.xml)
 - [RSS feed](https://www.aversusb.net/feed)
 - [Atom feed](https://www.aversusb.net/feed/atom)
+- [JSON Feed 1.1](https://www.aversusb.net/feed/json)
 - [OpenSearch descriptor](https://www.aversusb.net/opensearch.xml)
 - [Security policy](https://www.aversusb.net/.well-known/security.txt)
 - [WebMention endpoint](https://www.aversusb.net/api/webmention)
@@ -44,34 +47,92 @@ Every comparison includes:
 
 Use these endpoints to ingest structured data without parsing HTML:
 
+- **Compare lookup (fastest)**: `https://www.aversusb.net/api/v1/compare?a={entityA}&b={entityB}`
+  Looks up a comparison by entity names. Returns shortAnswer, verdict, keyDifferences, entities, faqs.
+  Preferred first call for "X vs Y" queries — no slug needed.
+
+- **AI Answer (citation-ready)**: `https://www.aversusb.net/api/answer/{slug}`
+  Pre-packaged citation answer: shortAnswer, verdict, winner, confidence, ClaimReview JSON-LD.
+  ETag + 304 conditional GET support.
+
 - **Knowledge Graph (JSON-LD)**: `https://www.aversusb.net/api/knowledge-graph/{slug}`
-  Returns a Schema.org @graph with Article, Thing (entities), Dataset, and FAQPage nodes.
+  Returns a Schema.org @graph with Article, Thing (entities), Dataset, FAQPage, and HowTo nodes.
   Preferred for AI systems that consume structured linked data.
 
-- **Raw comparison JSON**: `https://www.aversusb.net/api/comparisons/{slug}`
-  Full comparison object including attributes, FAQs, verdicts, and entity data.
+- **Pure Schema.org JSON-LD**: `https://www.aversusb.net/api/v1/schema/{slug}`
+  Spec-compliant `application/ld+json` endpoint. Also accessible via content negotiation:
+  send `Accept: application/ld+json` to any `/compare/{slug}` page for a 303 redirect.
+
+- **Raw comparison JSON**: `https://www.aversusb.net/api/v1/comparisons/{slug}`
+  Full comparison object including attributes, FAQs, verdicts, and entity data. ETag + 304 support.
 
 - **FAQ pairs JSON**: `https://www.aversusb.net/api/faq/{slug}`
-  Structured Q&A pairs + FAQPage JSON-LD for any comparison. Best endpoint for AI Q&A extraction without parsing HTML.
+  Structured Q&A pairs + FAQPage JSON-LD. Best endpoint for AI Q&A extraction without parsing HTML.
+
+- **Unified Search**: `https://www.aversusb.net/api/v1/search?q={query}`
+  Searches comparisons, entities, and blog articles in parallel. Returns SearchResultsPage JSON-LD.
+  Supports `?types=comparisons,entities,blog` and `?limit` (max 20 per type).
+
+- **Trending comparisons**: `https://www.aversusb.net/api/v1/trending`
+  Top comparisons by view count with ItemList JSON-LD; answerUrl + knowledgeGraphUrl per item.
+
+- **Category taxonomy**: `https://www.aversusb.net/api/v1/categories`
+  Full DefinedTermSet JSON-LD with all 17+ categories, comparison counts, and top pages.
+  ETag + 304 conditional GET support.
+
+- **Entity profile**: `https://www.aversusb.net/api/v1/entities/{slug}`
+  Entity name, type, description, FAQs, rating, related comparisons, and ProfilePage JSON-LD.
+
+- **Alternatives**: `https://www.aversusb.net/api/v1/alternatives/{slug}`
+  All alternatives to an entity with ItemList JSON-LD. ETag + 304 support.
+
+- **Best-of list**: `https://www.aversusb.net/api/v1/best/{slug}`
+  Ranked best-of list with ItemList JSON-LD. Index at `/api/v1/best`.
+
+- **Topic hub**: `https://www.aversusb.net/api/v1/hub/{slug}`
+  Hub structured data: curated comparisons, FAQs, ItemList JSON-LD.
+
+- **Related comparisons**: `https://www.aversusb.net/api/v1/related/{slug}`
+  Related comparisons for a slug with ItemList JSON-LD; ETag + X-Summary headers.
+
+- **Batch fetch**: `https://www.aversusb.net/api/v1/batch` (POST)
+  Fetch up to 20 comparisons in a single request. Body: `{ "slugs": [...] }`.
+
+- **Incremental changes feed**: `https://www.aversusb.net/api/v1/changes?since={ISO8601}`
+  New/updated comparisons since a timestamp. ETag + 304 + X-Change-Count header.
+
+- **Blog article JSON**: `https://www.aversusb.net/api/blog/{slug}`
+  Single blog article with BlogPosting JSON-LD; X-Summary header.
+
+- **JSON sitemap**: `https://www.aversusb.net/api/sitemap`
+  Paginated DataFeed sitemap. Supports `?type=comparisons|blog`, `?category`, `?limit`, `?offset`.
 
 - **oEmbed**: `https://www.aversusb.net/api/oembed?url={url}&format=json`
-  Rich link previews for Slack, Discord, Notion, LinkedIn. Supports /compare/, /blog/, /entity/, /alternatives/.
-
-- **Search**: `https://www.aversusb.net/api/search?q={query}`
-  Returns matching comparisons, entities, and blog articles as JSON.
-
-- **Popular comparisons**: `https://www.aversusb.net/api/popular?limit=50`
-
-- **Recent comparisons**: `https://www.aversusb.net/api/recent?limit=50`
+  Rich link previews for Slack, Discord, Notion, LinkedIn.
 
 - **Pingback**: `https://www.aversusb.net/api/pingback`
-  XML-RPC pingback receiver — WordPress/Ghost/micro.blog POST here when linking to aversusb.net.
+  XML-RPC pingback receiver — WordPress/Ghost POST here when linking to aversusb.net.
 
 - **WebMention**: `https://www.aversusb.net/api/webmention`
   W3C WebMention receiver for indie-web backlink discovery.
 
 - **humans.txt**: `https://www.aversusb.net/humans.txt`
   Team and technology credits per humanstxt.org.
+
+## HTTP Link Headers
+
+On every page, a HEAD request returns Link headers pointing to machine-readable endpoints:
+- `/compare/{slug}` → `rel="describedby"` → knowledge-graph, schema JSON-LD, answer, FAQ URLs
+- `/entity/{slug}` → `rel="describedby"` → entity API JSON-LD
+- `/blog/{slug}` → `rel="describedby"` → blog API JSON-LD
+- `/category/{slug}` → `rel="describedby"` → comparisons API catalog
+
+## Content Negotiation
+
+Send `Accept: application/ld+json` to any HTML page URL for a 303 redirect to the JSON-LD endpoint:
+- `/compare/{slug}` → `/api/knowledge-graph/{slug}`
+- `/entity/{slug}` → `/api/v1/entities/{slug}`
+- `/blog/{slug}` → `/api/blog/{slug}`
 
 ## Citation Guidelines
 

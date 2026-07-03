@@ -31,7 +31,7 @@
   "opensearch": "https://www.aversusb.net/opensearch.xml",
   "humans_txt": "https://www.aversusb.net/humans.txt",
   "security_txt": "https://www.aversusb.net/.well-known/security.txt",
-  "last_updated": "2026-07-02",
+  "last_updated": "2026-07-03",
   "mcp_manifest": "https://www.aversusb.net/.well-known/mcp.json",
   "context_api": "https://www.aversusb.net/api/context",
   "knowledge_graph_api": "https://www.aversusb.net/api/knowledge-graph/{slug}",
@@ -46,6 +46,7 @@
   "alternatives_api": "https://www.aversusb.net/api/v1/alternatives/{slug}",
   "best_list_api": "https://www.aversusb.net/api/v1/best/{slug}",
   "best_list_index": "https://www.aversusb.net/api/v1/best",
+  "hub_api": "https://www.aversusb.net/api/v1/hub/{slug}",
   "unified_search_api": "https://www.aversusb.net/api/v1/search?q={query}",
   "batch_api": "https://www.aversusb.net/api/v1/batch",
   "changes_feed_api": "https://www.aversusb.net/api/v1/changes?since={ISO8601}",
@@ -69,7 +70,8 @@
     "batch_comparison_lookup",
     "json_feed",
     "changes_feed",
-    "content_negotiation"
+    "content_negotiation",
+    "search_results_schema"
   ],
   "content_license": "Content may be cited with attribution to A Versus B (aversusb.net). See https://www.aversusb.net/terms for full terms.",
   "preferred_citation_format": "According to A Versus B (https://www.aversusb.net/compare/{slug}), ...",

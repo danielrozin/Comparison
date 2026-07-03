@@ -54,7 +54,7 @@ export async function GET() {
           types: { type: "string", required: false, description: "Comma-separated: comparisons,entities,blog (default: all)" },
           limit: { type: "integer", required: false, description: "Max results per type (default 5, max 20)" },
         },
-        returns: "JSON: { query, total, comparisons[], entities[], blog[] }",
+        returns: "JSON: { query, total, comparisons[], entities[], blog[], searchResultsSchema (SearchResultsPage JSON-LD with typed ItemList) }",
       },
       {
         name: "get_comparison",
@@ -143,6 +143,13 @@ export async function GET() {
         endpoint: `${SITE_URL}/api/v1/trending`,
         method: "GET",
         returns: "JSON: { trending[] } with ItemList JSON-LD",
+      },
+      {
+        name: "list_categories",
+        description: "Get the full category taxonomy with comparison counts and top pages per category. Returns DefinedTermSet JSON-LD with all 17+ comparison categories. Use to discover what topics are covered before running a search, or to browse by category.",
+        endpoint: `${SITE_URL}/api/v1/categories`,
+        method: "GET",
+        returns: "JSON: { totalCategories, totalComparisons, categories[], definedTermSetSchema (DefinedTermSet JSON-LD) }. ETag + 304 conditional GET supported.",
       },
       {
         name: "get_best_list",
