@@ -248,7 +248,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                   </button>
                 </form>
                 {emailCaptureStatus === "error" && (
-                  <p className="text-red-600 text-xs mt-1 text-center">Something went wrong. Try again.</p>
+                  <p role="alert" className="text-red-600 text-xs mt-1 text-center">Something went wrong. Try again.</p>
                 )}
               </div>
             )}

@@ -91,7 +91,7 @@ export function ContactForm() {
       {/* Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-text mb-1.5">
-          Full Name <span className="text-red-500">*</span>
+          Full Name <span className="text-red-500" aria-hidden="true">*</span>
         </label>
         <input
           id="name"
@@ -109,7 +109,7 @@ export function ContactForm() {
       {/* Email */}
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-text mb-1.5">
-          Email Address <span className="text-red-500">*</span>
+          Email Address <span className="text-red-500" aria-hidden="true">*</span>
         </label>
         <input
           id="email"
@@ -127,7 +127,7 @@ export function ContactForm() {
       {/* Subject */}
       <div>
         <label htmlFor="subject" className="block text-sm font-medium text-text mb-1.5">
-          Subject <span className="text-red-500">*</span>
+          Subject <span className="text-red-500" aria-hidden="true">*</span>
         </label>
         <select
           id="subject"
@@ -151,7 +151,7 @@ export function ContactForm() {
       {/* Message */}
       <div>
         <label htmlFor="message" className="block text-sm font-medium text-text mb-1.5">
-          Message <span className="text-red-500">*</span>
+          Message <span className="text-red-500" aria-hidden="true">*</span>
         </label>
         <textarea
           id="message"
@@ -172,6 +172,12 @@ export function ContactForm() {
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
       </button>
+
+      {status === "error" && (
+        <p role="alert" className="text-red-500 text-sm text-center">
+          Something went wrong. Please try again or email us directly.
+        </p>
+      )}
 
       <p className="text-xs text-text-secondary text-center">
         By submitting this form you agree to our{" "}

@@ -319,7 +319,7 @@ export function SurveyForm() {
             <span className="font-semibold text-[0.95rem] block mb-2.5">
               How interested would you be in creating an account for these
               features?
-              <span className="text-red-500 ml-0.5">*</span>
+              <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
             </span>
             <div className="flex justify-between text-xs text-text-secondary/60 mb-4 px-1">
               <span>1 = Not interested</span>
@@ -417,7 +417,7 @@ export function SurveyForm() {
             <span className="font-semibold text-[0.95rem] block mb-2.5">
               How much do you trust SmartReview&apos;s AI-generated review
               summaries?
-              <span className="text-red-500 ml-0.5">*</span>
+              <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
             </span>
             <div className="flex justify-between text-xs text-text-secondary/60 mb-4 px-1">
               <span>1 = Not at all</span>
@@ -549,7 +549,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function ErrorText({ children }: { children: React.ReactNode }) {
-  return <p className="text-red-500 text-sm mt-1">{children}</p>;
+  return <p role="alert" className="text-red-500 text-sm mt-1">{children}</p>;
 }
 
 function RadioQuestion({
@@ -577,7 +577,7 @@ function RadioQuestion({
     <div className="mb-7">
       <span className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
+        {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
       </span>
       <div className="space-y-1">
         {options.map((opt) => (
@@ -642,7 +642,7 @@ function CheckboxQuestion({
     <div className="mb-7">
       <span className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
+        {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
       </span>
       <div className="space-y-1">
         {options.map((opt) => (
@@ -700,7 +700,7 @@ function TextAreaQuestion({
     <div className="mb-7">
       <span className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
+        {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
       </span>
       <textarea
         value={value}
