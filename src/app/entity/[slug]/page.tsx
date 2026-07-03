@@ -216,6 +216,10 @@ export default async function EntityPage({ params }: PageProps) {
       // use hasPart to discover which structured FAQ content belongs to this profile,
       // enabling FAQ rich results for "[entity] questions" queries.
       ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["#entity-intro", "#entity-about"],
+      },
     },
   ];
   // Inject FAQPage into graph when entity content includes curated FAQs.
