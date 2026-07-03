@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 // GET /api/v1/best/{slug}
 //
@@ -20,6 +20,11 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {

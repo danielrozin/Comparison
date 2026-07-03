@@ -36,6 +36,11 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 const DEFAULT_WINDOW_HOURS = 24;
