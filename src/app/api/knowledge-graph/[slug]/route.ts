@@ -85,6 +85,7 @@ export async function GET(
           "@type": "FAQPage",
           "@id": `${url}#faq`,
           url,
+          inLanguage: "en",
           mainEntity: comparison.faqs.map((faq) => ({
             "@type": "Question",
             name: faq.question,
@@ -105,6 +106,7 @@ export async function GET(
       headline: comparison.title,
       description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
       url,
+      inLanguage: "en",
       datePublished: comparison.metadata?.publishedAt ?? undefined,
       dateCreated: comparison.metadata?.publishedAt ?? undefined,
       dateModified: comparison.metadata?.updatedAt ?? undefined,
@@ -155,6 +157,7 @@ export async function GET(
       name: `${comparison.title} — Structured Comparison Data`,
       description: `Machine-readable comparison dataset for ${comparison.title}. Contains ${comparison.attributes.length} attribute comparisons${comparison.faqs.length > 0 ? `, ${comparison.faqs.length} FAQ pairs` : ""}.`,
       url,
+      inLanguage: "en",
       license: "https://creativecommons.org/licenses/by/4.0/",
       creator: {
         "@type": "Organization",
@@ -214,6 +217,7 @@ export async function GET(
       name: `How to Choose Between ${entityNames}`,
       description: comparison.shortAnswer ?? `A step-by-step guide to deciding between ${entityNames} based on key differences.`,
       url,
+      inLanguage: "en",
       totalTime: "PT3M",
       step: comparison.keyDifferences.map((diff, i) => {
         const label = diff.label ?? `Difference ${i + 1}`;
