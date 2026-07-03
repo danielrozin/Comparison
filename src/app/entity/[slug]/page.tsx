@@ -180,12 +180,12 @@ export default async function EntityPage({ params }: PageProps) {
     ? (CATEGORY_TO_ENTITY_TYPE[primaryCategory] ?? "product")
     : "product";
 
-  // Breadcrumb items
+  // Breadcrumb items — always 3 levels: Home → Category (or Entity Profiles) → Entity
   const breadcrumbItems = [
     { name: "Home", url: SITE_URL },
-    ...(categoryDef
-      ? [{ name: categoryDef.name, url: `${SITE_URL}/category/${categoryDef.slug}` }]
-      : []),
+    categoryDef
+      ? { name: categoryDef.name, url: `${SITE_URL}/category/${categoryDef.slug}` }
+      : { name: "Entity Profiles", url: `${SITE_URL}/entity` },
     { name, url: `${SITE_URL}/entity/${slug}` },
   ];
 

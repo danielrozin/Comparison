@@ -250,10 +250,11 @@ function bestPageSchema(entry: BestEntry) {
     "@graph": [
       {
         "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumbs`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Best lists", item: `${SITE_URL}/best` },
-          { "@type": "ListItem", position: 3, name: entry.h1, item: url },
+          { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+          { "@type": "ListItem", position: 2, name: "Best Lists", item: { "@type": "WebPage", "@id": `${SITE_URL}/best`, name: "Best Lists", url: `${SITE_URL}/best` } },
+          { "@type": "ListItem", position: 3, name: entry.h1, item: { "@type": "WebPage", "@id": url, name: entry.h1, url } },
         ],
       },
       {
