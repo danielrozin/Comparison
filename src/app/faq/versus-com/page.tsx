@@ -135,14 +135,15 @@ function buildSchemas() {
   const breadcrumbs = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${PAGE_URL}#breadcrumbs`,
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "FAQ", item: `${SITE_URL}/faq` },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "FAQ", item: { "@type": "WebPage", "@id": `${SITE_URL}/faq`, name: "FAQ", url: `${SITE_URL}/faq` } },
       {
         "@type": "ListItem",
         position: 3,
         name: "Versus.com",
-        item: PAGE_URL,
+        item: { "@type": "WebPage", "@id": PAGE_URL, name: "Versus.com", url: PAGE_URL },
       },
     ],
   };

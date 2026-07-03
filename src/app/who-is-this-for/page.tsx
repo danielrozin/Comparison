@@ -132,13 +132,14 @@ function buildSchemas() {
   const breadcrumbs = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${pageUrl}#breadcrumbs`,
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
       {
         "@type": "ListItem",
         position: 2,
         name: "Who Is This For?",
-        item: pageUrl,
+        item: { "@type": "WebPage", "@id": pageUrl, name: "Who Is This For?", url: pageUrl },
       },
     ],
   };

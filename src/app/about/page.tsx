@@ -114,9 +114,10 @@ const aboutPageSchema = {
   wordCount: 600,
   breadcrumb: {
     "@type": "BreadcrumbList",
+    "@id": `${SITE_URL}/about#breadcrumbs`,
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "About", item: `${SITE_URL}/about` },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "About", item: { "@type": "WebPage", "@id": `${SITE_URL}/about`, name: "About", url: `${SITE_URL}/about` } },
     ],
   },
 };

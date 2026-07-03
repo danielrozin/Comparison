@@ -225,19 +225,20 @@ const faqPageSchema = {
 const breadcrumbListSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": `${PAGE_URL}#breadcrumbs`,
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": `${SITE_URL}/`, name: "Home", url: `${SITE_URL}/` } },
     {
       "@type": "ListItem",
       position: 2,
       name: "Alternatives",
-      item: `${SITE_URL}/alternatives/`,
+      item: { "@type": "WebPage", "@id": `${SITE_URL}/alternatives/`, name: "Alternatives", url: `${SITE_URL}/alternatives/` },
     },
     {
       "@type": "ListItem",
       position: 3,
       name: "ChatGPT Alternatives",
-      item: PAGE_URL,
+      item: { "@type": "WebPage", "@id": PAGE_URL, name: "ChatGPT Alternatives", url: PAGE_URL },
     },
   ],
 };

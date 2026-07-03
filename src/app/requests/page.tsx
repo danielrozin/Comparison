@@ -76,9 +76,10 @@ const requestsPageSchema = {
     },
     {
       "@type": "BreadcrumbList",
+      "@id": `${REQ_URL}#breadcrumbs`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Request a Comparison", item: REQ_URL },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+        { "@type": "ListItem", position: 2, name: "Request a Comparison", item: { "@type": "WebPage", "@id": REQ_URL, name: "Request a Comparison", url: REQ_URL } },
       ],
     },
   ],

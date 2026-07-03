@@ -67,9 +67,10 @@ const aupSchema = {
   potentialAction: { "@type": "ReadAction", target: AUP_URL },
   breadcrumb: {
     "@type": "BreadcrumbList",
+    "@id": `${AUP_URL}#breadcrumbs`,
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Acceptable Use Policy", item: AUP_URL },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "Acceptable Use Policy", item: { "@type": "WebPage", "@id": AUP_URL, name: "Acceptable Use Policy", url: AUP_URL } },
     ],
   },
 };

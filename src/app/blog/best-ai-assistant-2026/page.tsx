@@ -139,14 +139,15 @@ const articleSchema = {
 const breadcrumbListSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": `${PAGE_URL}#breadcrumbs`,
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-    { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+    { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": `${SITE_URL}/`, name: "Home", url: `${SITE_URL}/` } },
+    { "@type": "ListItem", position: 2, name: "Blog", item: { "@type": "WebPage", "@id": `${SITE_URL}/blog`, name: "Blog", url: `${SITE_URL}/blog` } },
     {
       "@type": "ListItem",
       position: 3,
       name: "Best AI Assistant 2026",
-      item: PAGE_URL,
+      item: { "@type": "WebPage", "@id": PAGE_URL, name: "Best AI Assistant 2026", url: PAGE_URL },
     },
   ],
 };

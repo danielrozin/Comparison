@@ -273,9 +273,10 @@ const changelogSchema = {
     },
     {
       "@type": "BreadcrumbList",
+      "@id": `${CHANGELOG_URL}#breadcrumbs`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Changelog", item: CHANGELOG_URL },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+        { "@type": "ListItem", position: 2, name: "Changelog", item: { "@type": "WebPage", "@id": CHANGELOG_URL, name: "Changelog", url: CHANGELOG_URL } },
       ],
     },
   ],
