@@ -17,17 +17,20 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
+const SEARCH_URL = `${SITE_URL}/api/v1/search`;
+
 const HEADERS = {
   "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
+  "X-Source-URL": SEARCH_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+  "X-Attribution": `Search results powered by ${SITE_NAME} (${SEARCH_URL}). Content is CC BY 4.0.`,
 };
 
 export async function OPTIONS() {
@@ -151,6 +154,40 @@ export async function GET(request: NextRequest) {
 
   const total = compResults.length + entityResults.length + blogResults.length;
 
+  // Build flat list for ItemList (comparisons first, then entities, then blog)
+  const allResults = [...compResults, ...entityResults, ...blogResults];
+
+  // SearchResultsPage JSON-LD — gives AI crawlers a schema.org typed entry point
+  const searchResultsSchema = {
+    "@context": "https://schema.org",
+    "@type": "SearchResultsPage",
+    "@id": `${SEARCH_URL}?q=${encodeURIComponent(q)}#results`,
+    name: `Search results for "${q}" on ${SITE_NAME}`,
+    url: `${SEARCH_URL}?q=${encodeURIComponent(q)}`,
+    inLanguage: "en",
+    description: `Found ${total} result${total !== 1 ? "s" : ""} for "${q}" on ${SITE_NAME} — comparisons, entities, and articles.`,
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    mainEntity: {
+      "@type": "ItemList",
+      "@id": `${SEARCH_URL}?q=${encodeURIComponent(q)}#list`,
+      name: `Search results for "${q}"`,
+      numberOfItems: total,
+      itemListElement: allResults.map((r, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: r.title,
+        item: {
+          "@type": "WebPage",
+          "@id": r.url,
+          name: r.title,
+          url: r.url,
+          ...(r.excerpt ? { description: r.excerpt } : {}),
+        },
+      })),
+    },
+  };
+
   return NextResponse.json(
     {
       query: q,
@@ -158,11 +195,14 @@ export async function GET(request: NextRequest) {
       comparisons: compResults,
       entities: entityResults,
       blog: blogResults,
+      searchResultsSchema,
     },
     {
       headers: {
         ...HEADERS,
-        ...(compResults[0]?.excerpt ? { "X-Summary": compResults[0].excerpt.slice(0, 500) } : {}),
+        "X-Summary": total > 0
+          ? `${total} result${total !== 1 ? "s" : ""} for "${q}" on ${SITE_NAME}: ${allResults[0].title}.`
+          : `No results for "${q}" on ${SITE_NAME}.`,
       },
     }
   );
