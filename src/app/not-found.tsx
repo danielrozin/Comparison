@@ -90,8 +90,8 @@ export default async function NotFound() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Trending comparisons */}
         {trending.length > 0 && (
-          <div className="mb-10">
-            <h2 className="text-xl font-display font-bold text-text mb-4">
+          <section aria-labelledby="popular-comparisons-heading" className="mb-10">
+            <h2 id="popular-comparisons-heading" className="text-xl font-display font-bold text-text mb-4">
               Popular Comparisons
             </h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
@@ -124,12 +124,12 @@ export default async function NotFound() {
                 );
               })}
             </ul>
-          </div>
+          </section>
         )}
 
         {/* Browse categories */}
-        <div>
-          <h2 className="text-xl font-display font-bold text-text mb-4">
+        <section aria-labelledby="browse-categories-heading">
+          <h2 id="browse-categories-heading" className="text-xl font-display font-bold text-text mb-4">
             Browse by Category
           </h2>
           <ul className="flex flex-wrap gap-2 list-none">
@@ -145,7 +145,7 @@ export default async function NotFound() {
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       </div>
     </div>
   );

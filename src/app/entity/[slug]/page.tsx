@@ -316,14 +316,14 @@ export default async function EntityPage({ params }: PageProps) {
             <p> carries the "versus {name}" prose Google had no on-page text for.
             id="entity-intro" anchors the SpeakableSpecification so voice assistants
             and LLMs can extract the intro description as the primary answer snippet. */}
-        <section id="entity-intro" className="mb-8">
+        <section id="entity-intro" aria-labelledby="entity-intro-heading" className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>
-            <h2 className="text-xl font-display font-bold text-text">{name} vs Every Rival</h2>
+            <h2 id="entity-intro-heading" className="text-xl font-display font-bold text-text">{name} vs Every Rival</h2>
           </div>
           <p className="entity-intro text-text-secondary leading-relaxed text-sm sm:text-base">
             {intro}

@@ -94,7 +94,7 @@ export function Footer() {
         <div className="pt-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             {/* Quick links */}
-            <nav className="flex flex-wrap gap-x-5 gap-y-2">
+            <nav aria-label="Quick links" className="flex flex-wrap gap-x-5 gap-y-2">
               <Link href="/trending" className="text-sm text-white/60 hover:text-white transition-colors">Trending</Link>
               <Link href="/studies" className="text-sm text-white/60 hover:text-white transition-colors">Data Studies</Link>
               <Link href="/reviews" className="text-sm text-white/60 hover:text-white transition-colors">Reviews</Link>
