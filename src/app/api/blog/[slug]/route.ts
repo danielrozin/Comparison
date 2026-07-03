@@ -9,7 +9,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -53,7 +53,7 @@ export async function GET(
       cssSelector: ["h1", ".article-excerpt", ".article-intro", "#article-summary"],
     },
     accessMode: ["textual"],
-    accessModeSufficient: [{ "@type": "itemList", itemListElement: "textual" }],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     isAccessibleForFree: true,
   };
 
@@ -66,16 +66,16 @@ export async function GET(
     ETag: etag,
     ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
     ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
-    // X-Source-* — attribution headers for AI training pipelines and citation engines
-    "X-Source-Title": article.title,
+    "X-Source": SITE_NAME,
     "X-Source-URL": url,
-    "X-Source-License": "CC BY 4.0",
-    "X-Source-Attribution": `A Versus B (${url})`,
+    "X-License": "CC BY 4.0",
+    "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+    "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
   };
 
   // Content negotiation: return clean application/ld+json when explicitly requested
   // (e.g. from content-negotiation redirect /blog/{slug} → here with Accept: ld+json)
-  const acceptHeader = _request.headers.get("accept") ?? "";
+  const acceptHeader = request.headers.get("accept") ?? "";
   const primaryAccept = acceptHeader.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
   if (primaryAccept === "application/ld+json") {
     const jsonLd = {

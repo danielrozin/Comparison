@@ -586,7 +586,7 @@ export async function GET() {
                     properties: {
                       query: { type: "string" },
                       total: { type: "integer" },
-                      comparisons: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, answerUrl: { type: "string" }, knowledgeGraphUrl: { type: "string" } } } },
+                      comparisons: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, answerUrl: { type: "string" }, knowledgeGraphUrl: { type: "string" }, schemaJsonLdUrl: { type: "string", description: "Pure Schema.org JSON-LD URL for content negotiation clients" } } } },
                       entities: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, entityType: { type: "string" }, profileUrl: { type: "string" } } } },
                       blog: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, category: { type: "string" }, jsonUrl: { type: "string" } } } },
                     },
