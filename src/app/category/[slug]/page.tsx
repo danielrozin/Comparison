@@ -393,7 +393,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
             {/* Icon */}
             <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-2xl sm:rounded-3xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-2 ring-white/20 shadow-xl shadow-black/20">
-              <span className="text-4xl sm:text-5xl" role="img" aria-label={category.name}>{category.icon}</span>
+              <span className="text-4xl sm:text-5xl" aria-hidden="true">{category.icon}</span>
             </div>
 
             <div className="flex-1 min-w-0">
@@ -443,7 +443,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
         {/* Featured / pinned — curated, independent of viewCount sort (DAN-1020) */}
         {featured.length > 0 && (
-          <section className="mb-10">
+          <section aria-labelledby="featured-heading" className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-4.5 h-4.5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -451,7 +451,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Featured Comparisons</h2>
+                <h2 id="featured-heading" className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Featured Comparisons</h2>
                 <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
               </div>
             </div>
@@ -488,7 +488,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
         {/* Top 5 Comparisons — highlighted for quick discovery */}
         {allComparisons.length >= 5 && (
-          <section className="mb-10">
+          <section aria-labelledby="top-comparisons-heading" className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -496,7 +496,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Top {category.name} Comparisons</h2>
+                <h2 id="top-comparisons-heading" className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Top {category.name} Comparisons</h2>
                 <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
               </div>
             </div>
@@ -533,7 +533,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
         {/* Subcategory Navigation (if applicable) */}
         {hasSubcategories && subcategoryData.length > 0 && (
-          <section className="mb-10">
+          <section aria-labelledby="subcategories-heading" className="mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-4.5 h-4.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -541,7 +541,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Browse by Subcategory</h2>
+                <h2 id="subcategories-heading" className="text-lg sm:text-xl font-display font-bold text-text leading-tight">Browse by Subcategory</h2>
                 <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
               </div>
             </div>
@@ -552,7 +552,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                   href={`/category/${slug}/${subcat.slug}`}
                   className="flex flex-col items-center gap-2 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-lg transition-all group text-center w-full"
                 >
-                  <span className="text-3xl" role="img" aria-label={subcat.name} aria-hidden="false">{subcat.icon}</span>
+                  <span className="text-3xl" aria-hidden="true">{subcat.icon}</span>
                   <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors leading-tight">
                     {subcat.name}
                   </span>

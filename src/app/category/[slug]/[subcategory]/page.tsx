@@ -297,7 +297,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           </nav>
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
-              <span className="text-3xl sm:text-4xl" role="img" aria-label={subcat.name}>{subcat.icon}</span>
+              <span className="text-3xl sm:text-4xl" aria-hidden="true">{subcat.icon}</span>
             </div>
             <div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
