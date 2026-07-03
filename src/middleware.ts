@@ -81,9 +81,6 @@ export function middleware(request: NextRequest) {
     "/api/llms",
     "/api/llms-full",
     "/api/oembed",
-    "/api/search",
-    "/api/popular",
-    "/api/recent",
     "/api/og",
     "/api/v1/",
     "/.well-known/",
@@ -92,8 +89,11 @@ export function middleware(request: NextRequest) {
 
   // HTTP content negotiation — Linked Data clients that send Accept: application/ld+json
   // (e.g. Semantic Web tools, some AI crawlers) should receive the JSON-LD graph directly
-  // rather than the HTML page. Redirect /compare/{slug} → /api/knowledge-graph/{slug}
-  // and /entity/{slug} → /api/v1/entities/{slug} with 303 See Other per RFC 7231 §6.4.4.
+  // rather than the HTML page. Redirect to the spec-compliant describedby endpoint per
+  // RFC 7231 §6.4.4 (303 See Other).
+  // /compare/{slug} → /api/v1/schema/{slug} (spec-compliant @graph, Content-Type: application/ld+json)
+  // /entity/{slug} → /api/v1/entities/{slug} (handles Accept: application/ld+json internally)
+  // /blog/{slug} → /api/blog/{slug} (Article JSON-LD)
   if (!pathname.startsWith("/api/")) {
     const accept = request.headers.get("accept") ?? "";
     const primaryAccept = accept.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
@@ -102,7 +102,7 @@ export function middleware(request: NextRequest) {
       if (pathname.startsWith("/compare/")) {
         const slug = pathname.replace("/compare/", "").replace(/\/$/, "");
         if (slug) {
-          return NextResponse.redirect(`${SITE}/api/knowledge-graph/${slug}`, { status: 303 });
+          return NextResponse.redirect(`${SITE}/api/v1/schema/${slug}`, { status: 303 });
         }
       } else if (pathname.startsWith("/entity/")) {
         const slug = pathname.replace("/entity/", "").replace(/\/$/, "");
