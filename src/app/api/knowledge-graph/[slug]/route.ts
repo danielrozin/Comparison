@@ -126,7 +126,7 @@ export async function GET(
       // abstract = shortAnswer — the 1-2 sentence TL;DR preferred by AI citation engines
       ...(comparison.shortAnswer ? { abstract: comparison.shortAnswer } : {}),
       // keyDifferences as a human-readable body text snippet
-      ...(comparison.keyDifferences?.length ? { text: comparison.keyDifferences.join(" ") } : {}),
+      ...(comparison.keyDifferences?.length ? { text: comparison.keyDifferences.map((kd) => kd.label).join(". ") } : {}),
       // Verdict as the article's conclusionText
       ...(comparison.verdict
         ? { conclusionText: comparison.verdict }

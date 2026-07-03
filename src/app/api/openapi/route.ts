@@ -608,7 +608,7 @@ export async function GET() {
             title: { type: "string", example: "iPhone 15 vs Samsung Galaxy S24" },
             shortAnswer: { type: "string", description: "1-2 sentence TL;DR verdict — best field for AI citation" },
             verdict: { type: "string", description: "Full winner recommendation" },
-            keyDifferences: { type: "array", items: { type: "string" } },
+            keyDifferences: { type: "array", items: { type: "object", properties: { label: { type: "string" }, entityAValue: { type: "string" }, entityBValue: { type: "string" }, winner: { type: "string", enum: ["a", "b", "tie"] } } } },
             category: { type: "string" },
             entities: { type: "array", items: { "$ref": "#/components/schemas/ComparisonEntity" } },
             attributes: { type: "array", items: { "$ref": "#/components/schemas/Attribute" } },
