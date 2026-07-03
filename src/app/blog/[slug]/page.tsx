@@ -650,7 +650,7 @@ export default async function BlogPostPage({
         "@type": "ListItem",
         position: it.position,
         name: it.name,
-        url: `${articleUrl}#${it.anchor}`,
+        item: { "@type": "WebPage", "@id": `${articleUrl}#${it.anchor}`, name: it.name, url: `${articleUrl}#${it.anchor}` },
       })),
     });
   }
