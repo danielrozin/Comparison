@@ -22,10 +22,15 @@ export async function generateStaticParams() {
   return CATEGORIES.map((cat) => ({ slug: cat.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const { page: pageParam } = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
   if (!category) return { title: "Category Not Found" };
+
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+  const baseUrl = `${SITE_URL}/category/${slug}`;
+  const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
 
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(category.name + " Comparisons")}&cat=${encodeURIComponent(category.name)}&type=category`;
   const desc = `Browse the best ${category.name.toLowerCase()} comparisons. Compare products, brands, and more side by side with expert analysis.`;
@@ -38,10 +43,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
     alternates: {
-      canonical: `${SITE_URL}/category/${slug}`,
+      canonical: canonicalUrl,
       languages: {
-        "en": `${SITE_URL}/category/${slug}`,
-        "x-default": `${SITE_URL}/category/${slug}`,
+        "en": baseUrl,
+        "x-default": baseUrl,
       },
       types: {
         "application/rss+xml": `${SITE_URL}/feed`,

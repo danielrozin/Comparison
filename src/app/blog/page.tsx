@@ -6,67 +6,78 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
 
-export const metadata: Metadata = {
-  title: `Blog — ${SITE_NAME}`,
-  description: blogDescription,
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
-  },
-  alternates: {
-    canonical: `${SITE_URL}/blog`,
-    languages: { "en": `${SITE_URL}/blog`, "x-default": `${SITE_URL}/blog` },
-    types: {
-      "application/rss+xml": `${SITE_URL}/feed`,
-      "application/atom+xml": `${SITE_URL}/feed/atom`,
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; category?: string }>;
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+  const baseUrl = `${SITE_URL}/blog`;
+  const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
+
+  return {
+    title: `Blog — ${SITE_NAME}`,
+    description: blogDescription,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
     },
-  },
-  openGraph: {
-    title: `Blog — ${SITE_NAME}`,
-    description: blogDescription,
-    url: `${SITE_URL}/blog`,
-    type: "website",
-    siteName: SITE_NAME,
-    locale: "en_US",
-    images: [{ url: ogImage, width: 1200, height: 630, alt: `${SITE_NAME} Blog` }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@aversusb",
-    title: `Blog — ${SITE_NAME}`,
-    description: blogDescription,
-    images: [ogImage],
-  },
-  other: {
-    "citation_title": `Blog — ${SITE_NAME}`,
-    "citation_author": "A Versus B",
-    "citation_journal_title": "A Versus B",
-    "citation_language": "en",
-    "citation_abstract": blogDescription,
-    "abstract": blogDescription,
-    "citation_publication_date": "2024-01-01",
-    "citation_online_date": "2024-01-01",
-    "DC.title": `Blog — ${SITE_NAME}`,
-    "DC.creator": "A Versus B",
-    "DC.publisher": "A Versus B",
-    "DC.language": "en",
-    "DC.description": blogDescription,
-    "DC.subject": "Comparison Guides, Buyer's Guides, Technology Articles, Product Analysis",
-    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
-    "DC.coverage": "Worldwide",
-    "DC.type": "Text",
-    "DC.format": "text/html",
-    "DC.date": "2024-01-01",
-    "DC.identifier": `${SITE_URL}/blog`,
-    "news_keywords": "comparison, versus, technology, sports, products, countries, A Versus B",
-    "thumbnail": ogImage,
-    "twitter:label1": "Content Type",
-    "twitter:data1": "Articles & Guides",
-    "twitter:label2": "Platform",
-    "twitter:data2": "A Versus B",
-  },
-};
+    alternates: {
+      canonical: canonicalUrl,
+      languages: { "en": baseUrl, "x-default": baseUrl },
+      types: {
+        "application/rss+xml": `${SITE_URL}/feed`,
+        "application/atom+xml": `${SITE_URL}/feed/atom`,
+      },
+    },
+    openGraph: {
+      title: `Blog — ${SITE_NAME}`,
+      description: blogDescription,
+      url: baseUrl,
+      type: "website",
+      siteName: SITE_NAME,
+      locale: "en_US",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${SITE_NAME} Blog` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@aversusb",
+      title: `Blog — ${SITE_NAME}`,
+      description: blogDescription,
+      images: [ogImage],
+    },
+    other: {
+      "citation_title": `Blog — ${SITE_NAME}`,
+      "citation_author": "A Versus B",
+      "citation_journal_title": "A Versus B",
+      "citation_language": "en",
+      "citation_abstract": blogDescription,
+      "abstract": blogDescription,
+      "citation_publication_date": "2024-01-01",
+      "citation_online_date": "2024-01-01",
+      "DC.title": `Blog — ${SITE_NAME}`,
+      "DC.creator": "A Versus B",
+      "DC.publisher": "A Versus B",
+      "DC.language": "en",
+      "DC.description": blogDescription,
+      "DC.subject": "Comparison Guides, Buyer's Guides, Technology Articles, Product Analysis",
+      "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+      "DC.coverage": "Worldwide",
+      "DC.type": "Text",
+      "DC.format": "text/html",
+      "DC.date": "2024-01-01",
+      "DC.identifier": baseUrl,
+      "news_keywords": "comparison, versus, technology, sports, products, countries, A Versus B",
+      "thumbnail": ogImage,
+      "twitter:label1": "Content Type",
+      "twitter:data1": "Articles & Guides",
+      "twitter:label2": "Platform",
+      "twitter:data2": "A Versus B",
+    },
+  };
+}
 
 const CATEGORIES = [
   "all",

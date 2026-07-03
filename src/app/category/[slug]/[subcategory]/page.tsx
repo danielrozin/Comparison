@@ -82,12 +82,17 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: PageProps): Promise<Metadata> {
   const { slug, subcategory } = await params;
+  const { page: pageParam } = await searchParams;
   const category = CATEGORIES.find((c) => c.slug === slug);
   const subcategories = getSubcategoriesForSlug(slug);
   const subcat = subcategories.find((s) => s.slug === subcategory);
   if (!category || !subcat) return { title: "Not Found" };
+
+  const page = Math.max(1, parseInt(pageParam || "1", 10) || 1);
+  const baseUrl = `${SITE_URL}/category/${slug}/${subcategory}`;
+  const canonicalUrl = page > 1 ? `${baseUrl}?page=${page}` : baseUrl;
 
   const title = `${subcat.name} Comparisons — Best ${subcat.name} Compared`;
   const description = `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts to help you choose.`;
@@ -95,7 +100,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/category/${slug}/${subcategory}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title,
       description,

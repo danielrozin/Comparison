@@ -41,8 +41,8 @@ function EntityAvatar({
             width={112}
             height={112}
             sizes="(min-width: 640px) 112px, 80px"
-            priority={isPrimary}
-            fetchPriority={isPrimary ? "high" : "auto"}
+            priority={true}
+            fetchPriority="high"
             className="w-full h-full object-cover"
           />
         </div>
