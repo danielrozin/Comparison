@@ -16,6 +16,23 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 export const dynamic = "force-static";
 export const revalidate = 86400; // refresh daily
 
+const HEADERS = {
+  "Content-Type": "application/json",
+  "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "X-Robots-Tag": "all",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+};
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: HEADERS });
+}
+
 export async function GET() {
   const context = {
     site: {
@@ -135,8 +152,10 @@ export async function GET() {
       json_sitemap: {
         url: `${SITE_URL}/api/sitemap`,
         format: "application/json",
-        description: "JSON sitemap (DataFeed JSON-LD) of all published content. Supports ?type=comparisons (default) | blog, ?category, ?limit, ?offset, ?format=urlset. Comparisons include shortAnswer, knowledgeGraphUrl, answerUrl. Blog includes excerpt, tags, jsonUrl.",
+        description: "JSON sitemap (DataFeed JSON-LD) of all published content. Supports ?type=comparisons (default) | blog | hubs | best, ?category, ?limit, ?offset, ?format=urlset. Comparisons include shortAnswer, knowledgeGraphUrl, answerUrl. Blog includes excerpt, tags, jsonUrl. Hubs include comparisonCount, apiUrl. Best lists include apiUrl.",
         blog_variant: `${SITE_URL}/api/sitemap?type=blog`,
+        hubs_variant: `${SITE_URL}/api/sitemap?type=hubs`,
+        best_variant: `${SITE_URL}/api/sitemap?type=best`,
       },
       answer: {
         url: `${SITE_URL}/api/answer/{slug}`,
@@ -260,11 +279,5 @@ export async function GET() {
     },
   };
 
-  return NextResponse.json(context, {
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  return NextResponse.json(context, { headers: HEADERS });
 }
