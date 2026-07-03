@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug, incrementViewCount } from "@/lib/services/comparison-service";
 import { withApiKey, AuthenticatedRequest } from "@/lib/services/api-middleware";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
-const corsHeaders = {
+const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, X-API-Key, Authorization",
+  "X-Robots-Tag": "all",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: corsHeaders });
+  return new NextResponse(null, { status: 204, headers: HEADERS });
 }
 
 export async function GET(
@@ -30,6 +37,7 @@ export async function GET(
 
       return NextResponse.json(comparison, {
         headers: {
+          ...HEADERS,
           "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
         },
       });

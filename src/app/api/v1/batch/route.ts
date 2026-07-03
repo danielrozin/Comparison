@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { SITE_URL } from "@/lib/utils/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 // POST /api/v1/batch
 //
@@ -40,6 +40,11 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
