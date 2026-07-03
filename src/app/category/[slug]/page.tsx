@@ -255,7 +255,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         "@type": "ListItem",
         position: i + 1,
         name: c.title,
-        url: `${SITE_URL}/compare/${c.slug}`,
+        // item (not url) is the correct Schema.org property for ListItem target.
+        // Typed WebPage with @id enables graph traversal from ItemList → Article node.
+        item: { "@type": "WebPage", "@id": `${SITE_URL}/compare/${c.slug}`, name: c.title, url: `${SITE_URL}/compare/${c.slug}` },
       })),
     },
     alternativeHeadline: `Best ${category.name} Comparisons & Rankings ${new Date().getFullYear()}`,
@@ -289,6 +291,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       // to understand the category's content depth without crawling each URL.
       ...allComparisons.slice(0, hasSubcategories ? 10 : 20).map((c) => ({
         "@type": "WebPage",
+        "@id": `${SITE_URL}/compare/${c.slug}`,
         name: c.title,
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
