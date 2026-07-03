@@ -82,49 +82,63 @@ function renderMarkdown(md: string): string {
   // Process line-by-line for headings and lists
   const lines = html.split("\n");
   const processed: string[] = [];
-  let inList = false;
+  let inUList = false;
+  let inOList = false;
+
+  const closeOpenLists = () => {
+    if (inUList) { processed.push("</ul>"); inUList = false; }
+    if (inOList) { processed.push("</ol>"); inOList = false; }
+  };
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
     // Headings
     if (line.startsWith("### ")) {
-      if (inList) { processed.push("</ul>"); inList = false; }
+      closeOpenLists();
       processed.push(
         `<h3 class="text-xl font-bold text-text mt-8 mb-3">${line.slice(4)}</h3>`
       );
       continue;
     }
     if (line.startsWith("## ")) {
-      if (inList) { processed.push("</ul>"); inList = false; }
+      closeOpenLists();
       processed.push(
         `<h2 class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border">${line.slice(3)}</h2>`
       );
       continue;
     }
 
+    // Ordered list items (1. item, 2. item, …)
+    if (/^\d+\.\s/.test(line)) {
+      if (inUList) { processed.push("</ul>"); inUList = false; }
+      if (!inOList) { processed.push('<ol class="list-decimal list-inside space-y-2 my-4 text-text-secondary">'); inOList = true; }
+      processed.push(`<li>${line.replace(/^\d+\.\s/, "")}</li>`);
+      continue;
+    }
+
     // Unordered list items
     if (/^[-*]\s/.test(line)) {
-      if (!inList) { processed.push('<ul class="list-disc list-inside space-y-2 my-4 text-text-secondary">'); inList = true; }
+      if (inOList) { processed.push("</ol>"); inOList = false; }
+      if (!inUList) { processed.push('<ul class="list-disc list-inside space-y-2 my-4 text-text-secondary">'); inUList = true; }
       processed.push(`<li>${line.replace(/^[-*]\s/, "")}</li>`);
       continue;
     }
 
-    // End list
-    if (inList && line.trim() === "") {
-      processed.push("</ul>");
-      inList = false;
+    // End any open list on a blank line
+    if (line.trim() === "") {
+      closeOpenLists();
     }
 
     // Regular paragraph
     if (line.trim() !== "" && !line.startsWith("<")) {
-      if (inList) { processed.push("</ul>"); inList = false; }
+      closeOpenLists();
       processed.push(`<p class="text-text-secondary leading-relaxed my-4">${line}</p>`);
     } else {
       processed.push(line);
     }
   }
-  if (inList) processed.push("</ul>");
+  closeOpenLists();
 
   html = processed.join("\n");
 
@@ -132,10 +146,16 @@ function renderMarkdown(md: string): string {
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="text-text font-semibold">$1</strong>');
   html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
-  // Links
+  // Links — external URLs get target="_blank" + rel="noopener noreferrer" for security
   html = html.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,
-    '<a href="$2" class="text-primary-600 hover:text-primary-700 underline underline-offset-2">$1</a>'
+    (_match, text, href) => {
+      const isExternal = /^https?:\/\//.test(href);
+      const attrs = isExternal
+        ? ' target="_blank" rel="noopener noreferrer"'
+        : '';
+      return `<a href="${href}" class="text-primary-600 hover:text-primary-700 underline underline-offset-2"${attrs}>${text}</a>`;
+    }
   );
 
   return html;

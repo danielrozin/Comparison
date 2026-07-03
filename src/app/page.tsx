@@ -170,7 +170,7 @@ export default async function HomePage() {
         ])) }}
       />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
+      <section aria-labelledby="hero-heading" className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
 
         {/* Floating gradient blobs */}
@@ -180,7 +180,7 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-4 animate-slide-up">
+            <h1 id="hero-heading" className="text-4xl sm:text-5xl lg:text-7xl font-display font-black tracking-tight mb-4 animate-slide-up">
               Compare{" "}
               <span className="bg-gradient-to-r from-accent-400 to-primary-300 bg-clip-text text-transparent">
                 Anything
