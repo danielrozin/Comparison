@@ -351,7 +351,7 @@ function LegacyTable({
         <h2 id="full-comparison-heading" className="text-2xl font-display font-bold text-text">Full Comparison</h2>
       </div>
       <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden">
-        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
+        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
         <table className="w-full border-collapse">
           <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
           <thead className="sticky top-0 z-10">
@@ -532,7 +532,7 @@ function RedesignedTable({
 
       {/* Desktop: Table layout with sticky header */}
       <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
-        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
+        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
             <thead

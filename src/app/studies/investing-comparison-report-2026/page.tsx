@@ -241,7 +241,7 @@ export default async function InvestingStudyPage() {
           <p className="text-text-secondary text-sm mb-5">
             Ranked by number of published head-to-head comparisons on aversusb.net.
           </p>
-          <div className="overflow-x-auto rounded-xl border border-border">
+          <div className="overflow-x-auto rounded-xl border border-border" tabIndex={0} role="region" aria-label="Investing comparison table — scroll to see all columns">
             <table className="min-w-full divide-y divide-gray-100 text-sm">
               <thead className="bg-surface-alt">
                 <tr>

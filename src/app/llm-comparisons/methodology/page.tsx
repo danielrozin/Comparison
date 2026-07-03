@@ -160,7 +160,7 @@ export default function LLMMethodologyPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">1. Column definitions (Wikipedia-parity)</h2>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Methodology table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">

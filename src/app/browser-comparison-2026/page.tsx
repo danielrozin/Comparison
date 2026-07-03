@@ -393,7 +393,7 @@ export default function BrowserComparison2026Page() {
           Market share figures: StatCounter GlobalStats, April 2026.<sup><a href="#cite-statcounter" className="text-primary-600">[*]</a></sup>{" "}
           Desktop and mobile shares are tracked separately; figures may not sum to 100% due to rounding.
         </p>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Browser comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">

@@ -456,7 +456,7 @@ export default function Q1AiBattlesPage() {
             </a>
             .
           </p>
-          <div className="overflow-x-auto rounded-xl border border-border not-prose">
+          <div className="overflow-x-auto rounded-xl border border-border not-prose" tabIndex={0} role="region" aria-label="AI battles comparison table — scroll to see all columns">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-alt text-left">

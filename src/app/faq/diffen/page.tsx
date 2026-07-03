@@ -205,7 +205,7 @@ export default function DiffenFaqPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Key Differences at a Glance</h2>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">

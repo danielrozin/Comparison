@@ -427,7 +427,7 @@ export default function LLMComparisonsPage() {
           <Link href="/llm-comparisons/methodology" className="text-primary-600 hover:underline">methodology</Link>{" "}
           for details.
         </p>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="LLM comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
               <tr className="bg-surface-alt">

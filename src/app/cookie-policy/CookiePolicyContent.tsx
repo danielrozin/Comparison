@@ -40,7 +40,7 @@ export function CookiePolicyContent() {
 
       <section id="cookies-we-use">
         <h2 className="text-2xl font-display font-bold text-text mb-4">2. Cookies We Use</h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Cookies table — scroll to see all columns">
           <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
             <thead className="bg-surface-alt">
               <tr>
