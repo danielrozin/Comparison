@@ -31,16 +31,19 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
+const CHANGES_URL = `${SITE_URL}/api/v1/changes`;
+
 const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
+  "X-Source-URL": CHANGES_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+  "X-Attribution": `${SITE_NAME} (${CHANGES_URL})`,
 };
 
 const DEFAULT_WINDOW_HOURS = 24;
@@ -207,10 +210,11 @@ export async function GET(request: NextRequest) {
   const dataFeedSchema = {
     "@context": "https://schema.org",
     "@type": "DataFeed",
-    "@id": `${SITE_URL}/api/v1/changes`,
+    "@id": CHANGES_URL,
     name: `${SITE_NAME} Changes Feed`,
     description: "Incremental feed of comparisons and blog articles added or updated since a given timestamp.",
-    url: `${SITE_URL}/api/v1/changes`,
+    url: CHANGES_URL,
+    inLanguage: "en",
     encodingFormat: "application/json",
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
