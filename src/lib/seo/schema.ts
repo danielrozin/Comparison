@@ -793,6 +793,7 @@ export function comparisonPageSchema(
       acquireLicensePage: `${SITE_URL}/terms`,
     },
     datePublished: comparison.metadata.publishedAt,
+    dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL,
@@ -1652,6 +1653,7 @@ function buildMultiEntityGraph(
       acquireLicensePage: `${SITE_URL}/terms`,
     },
     datePublished: comparison.metadata.publishedAt,
+    dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     publisher: {
