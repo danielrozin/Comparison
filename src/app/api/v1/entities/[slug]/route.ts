@@ -6,17 +6,13 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
-  // Vary: Accept — prevents CDN from serving cached application/json to clients that
-  // sent Accept: application/ld+json (content negotiation produces different bodies).
   "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -30,7 +26,7 @@ export async function OPTIONS() {
 // clients or the content-negotiation redirect from /entity/{slug}), returns a
 // clean @context + @graph JSON-LD document with application/ld+json content-type.
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -59,6 +55,15 @@ export async function GET(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  const etag = entity.updatedAt
+    ? `"entity-${slug}-${new Date(entity.updatedAt).getTime()}"`
+    : `"entity-${slug}"`;
+
+  const ifNoneMatch = req.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
+
   const comparisons = await getComparisonsForEntity(slug);
 
   const url = `${SITE_URL}/entity/${slug}`;
@@ -83,17 +88,21 @@ export async function GET(
     mainEntity: {
       "@type": "ItemList",
       name: `Comparisons involving ${entity.name}`,
+      inLanguage: "en",
       numberOfItems: comparisons.length,
-      itemListElement: comparisons.slice(0, 10).map((c, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: `${SITE_URL}/compare/${c.slug}`,
-        name: c.title,
-      })),
+      itemListElement: comparisons.slice(0, 10).map((c, i) => {
+        const itemUrl = `${SITE_URL}/compare/${c.slug}`;
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          name: c.title,
+          item: { "@type": "WebPage", "@id": itemUrl, name: c.title, url: itemUrl },
+        };
+      }),
     },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: entity.updatedAt?.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
   };
 
@@ -144,7 +153,7 @@ export async function GET(
     updatedAt: entity.updatedAt,
   };
 
-  const acceptHeader = _req.headers.get("accept") ?? "";
+  const acceptHeader = req.headers.get("accept") ?? "";
   const primaryAccept = acceptHeader.split(",")[0]?.trim().split(";")[0]?.trim() ?? "";
 
   if (primaryAccept === "application/ld+json") {
@@ -179,7 +188,8 @@ export async function GET(
         "X-Source-URL": url,
         "X-License": "CC BY 4.0",
         "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-        "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+        "X-Attribution": `${SITE_NAME} (${url})`,
+        ETag: etag,
         ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
         ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
         "Link": `<${url}>; rel="canonical"`,
@@ -190,8 +200,9 @@ export async function GET(
   return NextResponse.json(response, {
     headers: {
       ...HEADERS,
+      ETag: etag,
       "X-Source-URL": url,
-      "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+      "X-Attribution": `${SITE_NAME} (${url})`,
       ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
       ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
     },

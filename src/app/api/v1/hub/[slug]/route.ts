@@ -21,16 +21,13 @@ export const revalidate = 86400;
 const HEADERS = {
   "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
-  // X-Source-* — AI attribution headers used by Perplexity, ChatGPT, and Gemini
-  // to link cited data back to this platform in generated answers.
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -38,7 +35,7 @@ export async function OPTIONS() {
 }
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -49,6 +46,12 @@ export async function GET(
   }
 
   const hubUrl = `${SITE_URL}/hub/${slug}`;
+  const etag = `"hub-${slug}-${hub.comparisonSlugs.length}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
 
   const itemListSchema = {
     "@context": "https://schema.org",
@@ -111,8 +114,9 @@ export async function GET(
     status: 200,
     headers: {
       ...HEADERS,
+      ETag: etag,
       "X-Source-URL": hubUrl,
-      "X-Attribution": `According to ${SITE_NAME} (${hubUrl}), ...`,
+      "X-Attribution": `${SITE_NAME} (${hubUrl})`,
       "X-Summary": hub.description.slice(0, 500),
     },
   });
