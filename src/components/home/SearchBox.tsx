@@ -204,6 +204,7 @@ export function SearchBox() {
           }`}
         >
           {/* Search icon or loading spinner */}
+          <span role="status" aria-live="polite" className="sr-only">{isSearching ? "Searching…" : ""}</span>
           <div className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary/60 pointer-events-none">
             {isSearching ? (
               <svg className="animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">

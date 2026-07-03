@@ -679,6 +679,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
       <meta name="twitter:image" content={meta.ogImage} />
+      <meta name="twitter:image:alt" content={meta.title} />
       {/* twitter:label/data — structured stat pairs in Twitter/X link preview cards.
           Bing and LinkedIn also parse these for structured snippet extraction. */}
       {meta.twitterLabel1 && <meta name="twitter:label1" content={meta.twitterLabel1} />}

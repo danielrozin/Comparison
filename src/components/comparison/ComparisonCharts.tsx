@@ -158,7 +158,12 @@ export function ComparisonCharts({
         </div>
 
         {/* Chart Content */}
-        <div role="tabpanel" id={`chart-panel-${activeTab}`} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
+        <figure role="tabpanel" id={`chart-panel-${activeTab}`} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
+          <figcaption className="sr-only">
+            {activeTab === "bar" && `Bar chart comparing ${entityA.name} vs ${entityB.name} across scored attributes`}
+            {activeTab === "radar" && `Radar chart comparing ${entityA.name} vs ${entityB.name} across multiple dimensions`}
+            {activeTab === "score" && `Score card comparing ${entityA.name} vs ${entityB.name} attribute by attribute`}
+          </figcaption>
           {activeTab === "bar" && (
             <BarChartView
               data={barData}
@@ -180,7 +185,7 @@ export function ComparisonCharts({
               entityBName={entityB.name}
             />
           )}
-        </div>
+        </figure>
       </div>
     </section>
   );
