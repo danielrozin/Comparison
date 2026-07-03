@@ -145,46 +145,6 @@ export async function GET() {
           },
         },
       },
-      "/api/search": {
-        get: {
-          operationId: "search",
-          tags: ["Search"],
-          summary: "Full-text search",
-          description: "Search across comparisons, entities, and blog articles.",
-          parameters: [
-            { name: "q", in: "query", required: true, description: "Search query", schema: { type: "string" } },
-            { name: "limit", in: "query", description: "Max results (default 20)", schema: { type: "integer", default: 20 } },
-          ],
-          responses: {
-            "200": {
-              description: "Search results",
-              content: { "application/json": { schema: { type: "object", properties: { query: { type: "string" }, results: { type: "array" } } } } },
-            },
-          },
-        },
-      },
-      "/api/popular": {
-        get: {
-          operationId: "getPopular",
-          tags: ["Discovery"],
-          summary: "Get popular comparisons",
-          parameters: [
-            { name: "limit", in: "query", description: "Max results", schema: { type: "integer", default: 20 } },
-          ],
-          responses: { "200": { description: "Popular comparisons" } },
-        },
-      },
-      "/api/recent": {
-        get: {
-          operationId: "getRecent",
-          tags: ["Discovery"],
-          summary: "Get recent comparisons",
-          parameters: [
-            { name: "limit", in: "query", description: "Max results", schema: { type: "integer", default: 20 } },
-          ],
-          responses: { "200": { description: "Recent comparisons" } },
-        },
-      },
       "/api/v1/compare": {
         get: {
           operationId: "lookupComparison",
@@ -589,6 +549,7 @@ export async function GET() {
                       comparisons: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, answerUrl: { type: "string" }, knowledgeGraphUrl: { type: "string" }, schemaJsonLdUrl: { type: "string", description: "Pure Schema.org JSON-LD URL for content negotiation clients" } } } },
                       entities: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, entityType: { type: "string" }, profileUrl: { type: "string" } } } },
                       blog: { type: "array", items: { type: "object", properties: { type: { type: "string" }, slug: { type: "string" }, title: { type: "string" }, url: { type: "string" }, excerpt: { type: "string" }, category: { type: "string" }, jsonUrl: { type: "string" } } } },
+                      searchResultsSchema: { type: "object", description: "SearchResultsPage JSON-LD with typed ItemList (Schema.org)" },
                     },
                   },
                 },
@@ -677,6 +638,7 @@ export async function GET() {
             totalCategories: { type: "integer" },
             totalComparisons: { type: "integer" },
             categories: { type: "array", items: { "$ref": "#/components/schemas/Category" } },
+            definedTermSetSchema: { type: "object", description: "DefinedTermSet JSON-LD representing the full taxonomy with inLanguage, datePublished, and hasDefinedTerm entries" },
           },
         },
         Category: {
