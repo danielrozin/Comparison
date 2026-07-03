@@ -29,11 +29,10 @@ const HEADERS = {
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -57,8 +56,8 @@ export async function HEAD(
 
   const url = `${SITE_URL}/compare/${slug}`;
   const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+  const etag = updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`;
 
-  // Quick synthetic summary for X-Summary header (mirrors GET logic)
   const headSummary = comparison.shortAnswer
     || comparison.verdict?.slice(0, 250).replace(/\n+/g, " ").trim()
     || null;
@@ -67,6 +66,9 @@ export async function HEAD(
     status: 200,
     headers: {
       ...HEADERS,
+      "X-Source-URL": url,
+      "X-Attribution": `${SITE_NAME} (${url})`,
+      ETag: etag,
       ...(headSummary ? { "X-Summary": headSummary.slice(0, 500) } : {}),
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       "Link": `<${url}>; rel="canonical", <${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
@@ -75,7 +77,7 @@ export async function HEAD(
 }
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -87,6 +89,12 @@ export async function GET(
 
   const url = `${SITE_URL}/compare/${slug}`;
   const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+  const etag = updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
 
   // Determine the winner entity (the one most attributes favor)
   const entities = comparison.entities ?? [];
@@ -200,8 +208,9 @@ export async function GET(
       headers: {
         ...HEADERS,
         "X-Source-URL": url,
-        "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
-        ETag: updatedAt ? `"answer-${slug}-${new Date(updatedAt).getTime()}"` : `"answer-${slug}"`,
+        "X-Attribution": `${SITE_NAME} (${url})`,
+        ETag: etag,
+        ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
         ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
       },
     }

@@ -34,17 +34,20 @@ const ALLOWED_FIELDS = new Set([
 
 const MAX_SLUGS = 20;
 
+const BATCH_URL = `${SITE_URL}/api/v1/batch`;
+
 const HEADERS = {
   "Cache-Control": "public, s-maxage=120, stale-while-revalidate=600",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
+  "X-Source-URL": BATCH_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+  "X-Attribution": `${SITE_NAME} (${BATCH_URL})`,
 };
 
 export async function OPTIONS() {
@@ -101,8 +104,32 @@ async function handleBatch(slugs: string[], fields: string[] | null) {
     ? (firstResult.data as Record<string, unknown>).shortAnswer as string | undefined
     : undefined;
 
+  // ItemList JSON-LD — gives AI crawlers a typed list of the fetched comparisons
+  // with WebPage-typed items so each node has @id and inLanguage signal.
+  const foundResults = results.filter((r) => r.data !== null);
+  const itemListSchema = foundResults.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${BATCH_URL}#list`,
+    name: `Batch comparison results from ${SITE_NAME}`,
+    inLanguage: "en",
+    numberOfItems: foundResults.length,
+    itemListElement: foundResults.map((r, i) => {
+      const itemUrl = `${SITE_URL}/compare/${r.slug}`;
+      const title = (r.data as Record<string, unknown>).title as string | undefined;
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name: title ?? r.slug,
+        item: { "@type": "WebPage", "@id": itemUrl, name: title ?? r.slug, url: itemUrl },
+      };
+    }),
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+  } : undefined;
+
   return NextResponse.json(
-    { total: slugs.length, found, missing, results: resultMap },
+    { total: slugs.length, found, missing, results: resultMap, ...(itemListSchema ? { itemListSchema } : {}) },
     {
       headers: {
         ...HEADERS,
