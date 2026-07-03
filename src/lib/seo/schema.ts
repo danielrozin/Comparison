@@ -2324,12 +2324,33 @@ export function aggregateRatingSchema(entity: {
 }) {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
+  const wikiSameAs = entityWikipediaSameAs(entity.name);
 
   return {
     "@context": "https://schema.org",
     "@type": schemaType,
     name: entity.name,
     url,
+    // thumbnailUrl + image.contentUrl — AI visual crawlers (Google Lens, Perplexity,
+    // AI Overviews) read these fields to display a representative entity image.
+    thumbnailUrl: ogImage,
+    image: {
+      "@type": "ImageObject",
+      url: ogImage,
+      contentUrl: ogImage,
+      name: `${entity.name} profile image`,
+      description: `${entity.name} on A Versus B`,
+      width: 1200,
+      height: 630,
+      creditText: SITE_NAME,
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+    },
+    // sameAs — Wikipedia + DBpedia + Wikidata anchors for AI knowledge-graph disambiguation.
+    ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: entity.ratingValue.toFixed(1),
@@ -2381,27 +2402,30 @@ export function profilePageSchema(entity: {
   }));
 
   const wikiSameAs = entityWikipediaSameAs(entity.name);
+  // OG image URL — computed early so mainEntity can reference it as a fallback image.
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
   const mainEntity: Record<string, unknown> = {
     "@type": schemaType,
     "@id": url,
     name: entity.name,
     url,
     ...(entity.shortDesc && { description: entity.shortDesc }),
-    // ImageObject — creditText + acquireLicensePage let AI image crawlers (Google Lens,
-    // Perplexity visual mode) attribute the source and follow the license on entity images.
-    ...(entity.imageUrl && {
-      image: {
-        "@type": "ImageObject",
-        url: entity.imageUrl,
-        contentUrl: entity.imageUrl,
-        name: `${entity.name} logo and profile image`,
-        creditText: SITE_NAME,
-        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-        acquireLicensePage: `${SITE_URL}/terms`,
-        license: "https://creativecommons.org/licenses/by/4.0/",
-      },
-    }),
+    // ImageObject — always emit; use real imageUrl when available, else OG API fallback.
+    // contentUrl and thumbnailUrl are the AI-crawler-preferred image pointer fields:
+    // Google Lens, Perplexity visual mode, and AI Overviews read contentUrl to display
+    // a representative image for the entity even when no branded asset exists.
+    image: {
+      "@type": "ImageObject",
+      url: entity.imageUrl ?? ogImage,
+      contentUrl: entity.imageUrl ?? ogImage,
+      name: `${entity.name} logo and profile image`,
+      creditText: SITE_NAME,
+      creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      license: "https://creativecommons.org/licenses/by/4.0/",
+    },
+    thumbnailUrl: entity.imageUrl ?? ogImage,
     ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
     ...(subjectOf.length > 0 && { subjectOf }),
     potentialAction: [
@@ -2438,11 +2462,6 @@ export function profilePageSchema(entity: {
   ];
   const profileDesc = entity.shortDesc ||
     `${entity.name} comparisons, profile, and alternatives — ${entity.comparisonCount ?? 0}+ head-to-head comparisons on A Versus B.`;
-
-  // OG image URL for this entity — used as primaryImageOfPage.
-  // Google's Knowledge Panel and AI Overview image slot prefers the
-  // primaryImageOfPage ImageObject over the generic image field.
-  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
 
   return {
     "@context": "https://schema.org",
