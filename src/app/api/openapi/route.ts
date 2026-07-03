@@ -33,6 +33,7 @@ export async function GET() {
       batch_flow: "POST /api/v1/batch with {slugs:[...]} for multiple comparisons in one call",
       discovery_flow: "GET /api/v1/changes?since={last_poll} to discover new content incrementally",
       schema_flow: "GET /api/v1/schema/{slug} for pure application/ld+json (content negotiation: GET /compare/{slug} with Accept: application/ld+json)",
+      search_flow: "GET /api/v1/search?q={query} for intent-based discovery across comparisons, entities, and blog — returns grouped results with answerUrl and schemaJsonLdUrl per item",
       citation_format: `According to ${SITE_NAME} (${SITE_URL}/compare/{slug}), {answer}`,
       best_citation_field: "answer (from /api/answer/{slug}) — 1-2 sentence TL;DR, always quote-ready",
     },
@@ -42,7 +43,7 @@ export async function GET() {
       { name: "Categories", description: "Topic category taxonomy" },
       { name: "FAQs", description: "Structured FAQ pairs" },
       { name: "Search", description: "Full-text search" },
-      { name: "Discovery", description: "Feed, popular, recent, and trending lists" },
+      { name: "Discovery", description: "Trending lists, incremental indexing feed, and batch lookups" },
       { name: "Knowledge Graph", description: "JSON-LD knowledge graph" },
       { name: "Linked Data", description: "Pure Schema.org JSON-LD endpoints (application/ld+json content-type)" },
       { name: "Blog", description: "Blog articles with Article JSON-LD" },
@@ -345,8 +346,10 @@ export async function GET() {
             "200": {
               description: "Schema.org JSON-LD document",
               headers: {
+                "ETag": { schema: { type: "string" }, description: "Content fingerprint keyed on updatedAt — send as If-None-Match to get 304 when unchanged" },
                 "Last-Modified": { schema: { type: "string" }, description: "RFC 7231 last-update timestamp" },
                 "Link": { schema: { type: "string" }, description: "rel=canonical + rel=alternate links" },
+                "X-Attribution": { schema: { type: "string" }, description: "Preferred attribution string: SITE_NAME (canonicalUrl)" },
               },
               content: { "application/ld+json": { schema: { type: "object", properties: { "@context": { type: "string", enum: ["https://schema.org"] }, "@graph": { type: "array" } } } } },
             },
