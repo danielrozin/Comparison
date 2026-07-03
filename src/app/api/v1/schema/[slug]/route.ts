@@ -87,6 +87,7 @@ export async function GET(
     url,
     name: comparison.title,
     description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
+    inLanguage: "en",
     isPartOf: { "@id": `${SITE_URL}/#website` },
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(publishedAt ? { dateCreated: publishedAt } : {}),
@@ -94,9 +95,9 @@ export async function GET(
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Compare", item: `${SITE_URL}/compare` },
-        { "@type": "ListItem", position: 3, name: comparison.title, item: url },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+        { "@type": "ListItem", position: 2, name: "Compare", item: { "@type": "WebPage", "@id": `${SITE_URL}/compare`, name: "Compare", url: `${SITE_URL}/compare` } },
+        { "@type": "ListItem", position: 3, name: comparison.title, item: { "@type": "WebPage", "@id": url, name: comparison.title, url } },
       ],
     },
     speakable: {
@@ -113,6 +114,7 @@ export async function GET(
     ...(comparison.shortAnswer ? { abstract: comparison.shortAnswer } : {}),
     description: comparison.shortAnswer ?? comparison.title,
     url,
+    inLanguage: "en",
     mainEntityOfPage: url,
     author: {
       "@type": "Organization",
@@ -141,7 +143,7 @@ export async function GET(
       ? {
           mentions: comparison.keyDifferences.map((kd) => ({
             "@type": "Thing",
-            name: kd,
+            name: kd.label,
           })),
         }
       : {}),
@@ -169,6 +171,7 @@ export async function GET(
     name: `${comparison.title} — Comparison Data`,
     description: `Structured comparison data for ${comparison.title} with ${comparison.attributes.length} attributes.`,
     url,
+    inLanguage: "en",
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: { "@id": `${SITE_URL}/#organization` },
     distribution: {
@@ -188,6 +191,7 @@ export async function GET(
       "@type": "FAQPage",
       "@id": `${url}#faq`,
       url,
+      inLanguage: "en",
       mainEntity: comparison.faqs.map((faq) => ({
         "@type": "Question",
         name: faq.question,
