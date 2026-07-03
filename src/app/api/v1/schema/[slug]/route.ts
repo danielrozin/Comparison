@@ -28,10 +28,8 @@ const HEADERS = {
   "Vary": "Accept",
   "X-Robots-Tag": "all",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -39,28 +37,39 @@ export async function OPTIONS() {
 }
 
 export async function HEAD(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
   const comparison = await getComparisonBySlug(slug);
   if (!comparison) return new Response(null, { status: 404, headers: HEADERS });
 
+  const url = `${SITE_URL}/compare/${slug}`;
   const updatedAt = comparison.metadata?.updatedAt;
+  const etag = updatedAt ? `"schema-${slug}-${new Date(updatedAt).getTime()}"` : `"schema-${slug}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
+
   return new Response(null, {
     status: 200,
     headers: {
       ...HEADERS,
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      ETag: etag,
+      "X-Source-URL": url,
+      "X-Attribution": `${SITE_NAME} (${url})`,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-      Link: `<${SITE_URL}/compare/${slug}>; rel="canonical"`,
+      Link: `<${url}>; rel="canonical"`,
     },
   });
 }
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
@@ -69,13 +78,19 @@ export async function GET(
   if (!comparison) {
     return new Response(JSON.stringify({ error: "Not found" }), {
       status: 404,
-      headers: { ...HEADERS, "Content-Type": "application/ld+json" },
+      headers: { ...HEADERS, "Content-Type": "application/json" },
     });
   }
 
   const url = `${SITE_URL}/compare/${slug}`;
   const updatedAt = comparison.metadata?.updatedAt;
   const publishedAt = comparison.metadata?.publishedAt;
+  const etag = updatedAt ? `"schema-${slug}-${new Date(updatedAt).getTime()}"` : `"schema-${slug}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
 
   // Build the @graph — core Schema.org types only, no extra non-standard fields
   const graph: object[] = [];
@@ -223,8 +238,9 @@ export async function GET(
       ...HEADERS,
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      ETag: etag,
       "X-Source-URL": url,
-      "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+      "X-Attribution": `${SITE_NAME} (${url})`,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       ...((comparison.shortAnswer || comparison.verdict)
         ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
