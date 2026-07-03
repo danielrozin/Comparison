@@ -81,12 +81,12 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                 const rowIdx = numericAttrs.indexOf(attr);
                 return (
                   <tr key={attr.id} className={`group/row hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_rgba(99,102,241,0.15)] transition-all duration-150 ${rowIdx % 2 === 1 ? "bg-surface-alt/50" : ""}`}>
-                    <td className="px-4 py-3 text-text font-medium">
+                    <th scope="row" className="px-4 py-3 text-text font-medium text-left">
                       {attr.name}
                       {attr.unit && (
                         <span className="text-text-secondary text-xs ml-1">({attr.unit})</span>
                       )}
-                    </td>
+                    </th>
                     <td className={`px-4 py-3 text-center tabular-nums ${aWins ? "font-bold text-green-700 bg-green-50/60" : "text-text-secondary"}`}>
                       <span className="inline-flex items-center gap-1">
                         {aVal?.valueText || (numA != null ? formatNumber(numA) : "—")}

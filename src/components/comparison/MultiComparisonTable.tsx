@@ -124,6 +124,7 @@ export function MultiComparisonTable({
                 </th>
                 {entities.map((ent) => (
                   <th
+                    scope="col"
                     key={ent.id}
                     className="px-3 py-3.5 text-center text-sm font-semibold"
                     style={{ width: `calc((100% - ${attrColWidth}) / ${n})` }}
@@ -180,12 +181,12 @@ export function MultiComparisonTable({
                               i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
                             } hover:bg-primary-50/30 transition-colors`}
                           >
-                            <td className="px-5 py-3 text-sm font-medium text-text">
+                            <th scope="row" className="px-5 py-3 text-sm font-medium text-text text-left">
                               {attr.name}
                               {attr.unit && (
                                 <span className="ml-1 text-xs text-text-secondary">({attr.unit})</span>
                               )}
-                            </td>
+                            </th>
                             {entities.map((_ent, eIdx) => {
                               const v = attr.values[eIdx];
                               const isWinner = winnerIdx === eIdx;

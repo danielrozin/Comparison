@@ -381,10 +381,10 @@ function LegacyTable({
                         i !== attrs.length - 1 ? "border-b border-border/30" : "border-b border-border"
                       } ${i % 2 === 0 ? "bg-surface-alt/50" : ""} hover:bg-primary-50/40 hover:shadow-[inset_2px_0_0_0_#6366f1] transition-all duration-150`}
                     >
-                      <td className="px-5 py-3 text-sm font-medium text-text">
+                      <th scope="row" className="px-5 py-3 text-sm font-medium text-text text-left">
                         {attr.name}
                         {attr.unit && <span className="ml-1 text-xs text-text-secondary">({attr.unit})</span>}
-                      </td>
+                      </th>
                       <td className={`px-5 py-3 text-sm text-center font-medium ${
                         valA?.winner === true ? "text-win bg-green-50/50" : valA?.winner === false ? "text-text-secondary" : "text-text"
                       }`}>
@@ -619,14 +619,14 @@ function RedesignedTable({
                                     : "border-b border-border/30"
                                 } ${i % 2 === 0 ? "bg-surface-alt/40" : "bg-white"} hover:bg-primary-50/40 transition-colors`}
                               >
-                                <td className="px-5 py-3 text-sm font-medium text-text">
+                                <th scope="row" className="px-5 py-3 text-sm font-medium text-text text-left">
                                   {attr.name}
                                   {attr.unit && (
                                     <span className="ml-1 text-xs text-text-secondary">
                                       ({attr.unit})
                                     </span>
                                   )}
-                                </td>
+                                </th>
                                 <ValueCell
                                   value={valA}
                                   isWinner={winner === "a"}
