@@ -10,7 +10,7 @@ import {
   evaluateAttemptGuard,
   type AttemptStage,
 } from "@/lib/services/generation-attempt-tracker";
-import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, type ComparisonVoteData } from "@/lib/seo/schema";
+import { comparisonPageSchema, jsonLdGraph, videoObjectSchema, selfHostedVideoObjectSchema, claimReviewSchema, webPageSchema, type ComparisonVoteData } from "@/lib/seo/schema";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildPageTitle, clampDescription } from "@/lib/seo/metadata";
@@ -503,6 +503,19 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     jsonLd = JSON.stringify(
       jsonLdGraph([
         ...schemas,
+        webPageSchema({
+          title: enrichedComparison.metadata.metaTitle ?? enrichedComparison.title,
+          description: enrichedComparison.metadata.metaDescription ?? fallbackDescription,
+          url: `${SITE_URL}/compare/${slug}`,
+          datePublished: enrichedComparison.metadata.publishedAt ?? undefined,
+          dateModified: enrichedComparison.metadata.updatedAt ?? undefined,
+          keywords: [
+            ...enrichedComparison.entities.map((e) => e.name),
+            "comparison",
+            "versus",
+            ...(enrichedComparison.category ? [enrichedComparison.category] : []),
+          ].join(", "),
+        }),
         videoMeta?.youtubeVideoId
           ? videoObjectSchema({
               slug,
@@ -667,7 +680,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       {meta.modifiedTime && <meta property="article:modified_time" content={meta.modifiedTime} />}
       {meta.modifiedTime && <meta property="og:updated_time" content={meta.modifiedTime} />}
       {meta.articleSection && <meta property="article:section" content={meta.articleSection} />}
-      <meta property="article:author" content="https://www.aversusb.net/about" />
+      <meta property="article:author" content={`${SITE_URL}/authors/daniel-rozin`} />
       {/* rel=up — HTML hierarchy signal; tells AI crawlers this comparison belongs to a
           specific category, enabling topical authority context without following breadcrumbs */}
       {meta.articleSection && (

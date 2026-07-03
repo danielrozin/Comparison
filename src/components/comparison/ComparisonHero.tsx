@@ -173,7 +173,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Title */}
         <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight">
-          {comparison.title}
+          {comparison.metadata?.metaTitle || comparison.title}
         </h1>
 
         {/* Last Updated */}
