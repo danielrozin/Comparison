@@ -300,7 +300,7 @@ export async function generateMetadata({
     site: "@aversusb",
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.excerpt,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: article.metaTitle || article.title }],
     },
     // Academic / AI citation meta tags (Dublin Core + citation_ namespace).
     // Semantic Scholar, Google Scholar, and AI crawlers use these to extract

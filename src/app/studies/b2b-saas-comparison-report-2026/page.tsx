@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     site: "@aversusb",
     title: TITLE,
     description: DESCRIPTION,
-    images: [ogImage],
+    images: [{ url: ogImage, alt: "The B2B SaaS Comparison Report 2026 — Data Study" }],
   },
   other: {
     "citation_title": TITLE,

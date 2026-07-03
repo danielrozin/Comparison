@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     site: "@aversusb",
     title: "Trending Comparisons",
     description: trendingDescription,
-    images: [ogImage],
+    images: [{ url: ogImage, alt: "Trending Comparisons" }],
   },
   other: {
     "citation_title": "Trending Comparisons — A Versus B",

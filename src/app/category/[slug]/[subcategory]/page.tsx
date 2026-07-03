@@ -110,7 +110,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       locale: "en_US",
       images: [{ url: ogImage, width: 1200, height: 630, alt: `${subcat.name} comparisons — A Versus B` }],
     },
-    twitter: { card: "summary_large_image", site: "@aversusb", title, description, images: [ogImage] },
+    twitter: { card: "summary_large_image", site: "@aversusb", title, description, images: [{ url: ogImage, alt: `${subcat.name} comparisons — A Versus B` }] },
     other: {
       "citation_title": title,
       "citation_author": SITE_NAME,

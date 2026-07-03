@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     site: "@aversusb",
     title: `${SITE_NAME} — Compare Anything`,
     description: "The internet's best destination for comparisons.",
-    images: [`${SITE_URL}/api/og?title=Compare+Anything&type=home`],
+    images: [{ url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`, alt: "A Versus B — Compare Anything" }],
   },
   robots: {
     index: true,
@@ -111,7 +111,7 @@ export default function RootLayout({
         <link rel="me" href="https://x.com/aversusb" />
         <link rel="me" href="https://www.linkedin.com/company/aversusb" />
         <link rel="me" href="https://www.youtube.com/@aversusb" />
-        <link rel="author" href={`${SITE_URL}/about`} />
+        <link rel="author" href={`${SITE_URL}/authors/daniel-rozin`} />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
         {/* OpenSearch — enables browser address-bar search shortcut (Firefox, Chrome, Safari, Edge) */}
         <link

@@ -46,7 +46,7 @@ export async function generateMetadata({
       site: "@aversusb",
       title: `Blog — ${SITE_NAME}`,
       description: blogDescription,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: `${SITE_NAME} Blog` }],
     },
     other: {
       "citation_title": `Blog — ${SITE_NAME}`,

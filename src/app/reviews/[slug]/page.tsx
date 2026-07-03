@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     site: "@aversusb",
       title,
       description,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: `${name} reviews and SmartScore — A Versus B` }],
     },
     other: {
       "citation_title": title,

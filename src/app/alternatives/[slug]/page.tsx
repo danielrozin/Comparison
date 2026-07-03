@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     site: "@aversusb",
       title: `Alternatives to ${name}`,
       description: `Compare ${name} against top competitors.`,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: `Alternatives to ${name} — comparison guide` }],
     },
     other: {
       "citation_title": `Best Alternatives to ${name} in 2026`,
