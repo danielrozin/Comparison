@@ -57,8 +57,12 @@ export async function GET(
     name: hub.h1,
     description: hub.description,
     url: hubUrl,
+    inLanguage: "en",
     numberOfItems: hub.comparisonSlugs.length,
     itemListOrder: "https://schema.org/ItemListUnordered",
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     itemListElement: hub.comparisonSlugs.map((compSlug, i) => ({
       "@type": "ListItem",
@@ -73,6 +77,7 @@ export async function GET(
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "@id": `${hubUrl}#faq`,
+        inLanguage: "en",
         mainEntity: hub.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.q,
@@ -98,5 +103,13 @@ export async function GET(
     },
   };
 
-  return NextResponse.json(response, { status: 200, headers: HEADERS });
+  return NextResponse.json(response, {
+    status: 200,
+    headers: {
+      ...HEADERS,
+      "X-Source-URL": hubUrl,
+      "X-Attribution": `According to ${SITE_NAME} (${hubUrl}), ...`,
+      "X-Summary": hub.description.slice(0, 500),
+    },
+  });
 }

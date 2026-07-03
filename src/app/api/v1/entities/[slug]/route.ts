@@ -12,6 +12,11 @@ const HEADERS = {
   // Vary: Accept — prevents CDN from serving cached application/json to clients that
   // sent Accept: application/ld+json (content negotiation produces different bodies).
   "Vary": "Accept",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -65,6 +70,8 @@ export async function GET(
     url,
     name: entity.metaTitle || `${entity.name} — Comparisons & Profile`,
     description: entity.metaDescription || entity.shortDesc || undefined,
+    inLanguage: "en",
+    contentReferenceTime: entity.updatedAt?.toISOString() ?? new Date().toISOString(),
     about: {
       "@type": "Thing",
       "@id": `${url}#entity`,
@@ -100,6 +107,7 @@ export async function GET(
     "@id": `${url}#definedterm`,
     name: entity.name,
     description: entity.shortDesc ?? entity.description ?? undefined,
+    inLanguage: "en",
     url,
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
@@ -167,10 +175,12 @@ export async function GET(
         "Cache-Control": HEADERS["Cache-Control"],
         "Access-Control-Allow-Origin": "*",
         "X-Robots-Tag": "all",
-        "X-Source-Title": entity.name,
+        "X-Source": SITE_NAME,
         "X-Source-URL": url,
-        "X-Source-License": "CC BY 4.0",
-        "X-Source-Attribution": `A Versus B (${url})`,
+        "X-License": "CC BY 4.0",
+        "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+        "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+        ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
         ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
         "Link": `<${url}>; rel="canonical"`,
       },
@@ -180,10 +190,9 @@ export async function GET(
   return NextResponse.json(response, {
     headers: {
       ...HEADERS,
-      "X-Source-Title": entity.name,
       "X-Source-URL": url,
-      "X-Source-License": "CC BY 4.0",
-      "X-Source-Attribution": `A Versus B (${url})`,
+      "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
+      ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
       ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
     },
   });
