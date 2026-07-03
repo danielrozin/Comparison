@@ -326,6 +326,8 @@ export function webSiteSchema() {
     abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
     dateModified: new Date().toISOString().slice(0, 10),
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
@@ -339,11 +341,9 @@ export function webSiteSchema() {
     // Google Sitelinks and AI crawlers (Perplexity, ChatGPT) use hasPart to generate
     // structured overviews of what sections exist and how the site is organized.
     hasPart: [
-      { "@type": "WebPage", name: "Comparisons", url: `${SITE_URL}/trending` },
+      { "@type": "WebPage", name: "Trending Comparisons", url: `${SITE_URL}/trending` },
+      { "@type": "WebPage", name: "Search Comparisons", url: `${SITE_URL}/search` },
       { "@type": "WebPage", name: "Blog", url: `${SITE_URL}/blog` },
-      { "@type": "WebPage", name: "Reviews", url: `${SITE_URL}/reviews` },
-      { "@type": "WebPage", name: "Entity Profiles", url: `${SITE_URL}/entity` },
-      { "@type": "WebPage", name: "Trending", url: `${SITE_URL}/trending` },
       { "@type": "WebPage", name: "Best Lists", url: `${SITE_URL}/best` },
       { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
       { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },
