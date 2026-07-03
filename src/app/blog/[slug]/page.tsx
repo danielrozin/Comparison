@@ -407,6 +407,9 @@ export default async function BlogPostPage({
     datePublished: article.publishedAt
       ? new Date(article.publishedAt).toISOString()
       : undefined,
+    dateCreated: article.publishedAt
+      ? new Date(article.publishedAt).toISOString()
+      : undefined,
     dateModified: article.updatedAt
       ? new Date(article.updatedAt).toISOString()
       : undefined,
@@ -605,6 +608,7 @@ export default async function BlogPostPage({
     accessMode: ["textual"],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
+    ...(article.publishedAt && { dateCreated: new Date(article.publishedAt).toISOString() }),
     ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

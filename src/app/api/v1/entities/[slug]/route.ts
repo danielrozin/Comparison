@@ -84,6 +84,9 @@ export async function GET(
         name: c.title,
       })),
     },
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
   };
 

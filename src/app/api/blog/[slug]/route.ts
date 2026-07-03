@@ -37,6 +37,7 @@ export async function GET(
     ...(article.excerpt ? { abstract: article.excerpt } : {}),
     url,
     datePublished: article.publishedAt ?? article.createdAt,
+    dateCreated: article.publishedAt ?? article.createdAt,
     dateModified: article.updatedAt ?? article.publishedAt,
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
