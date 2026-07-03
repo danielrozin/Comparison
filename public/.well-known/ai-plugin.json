@@ -47,6 +47,7 @@
   "best_list_api": "https://www.aversusb.net/api/v1/best/{slug}",
   "best_list_index": "https://www.aversusb.net/api/v1/best",
   "hub_api": "https://www.aversusb.net/api/v1/hub/{slug}",
+  "compare_lookup_api": "https://www.aversusb.net/api/v1/compare?a={entityA}&b={entityB}",
   "unified_search_api": "https://www.aversusb.net/api/v1/search?q={query}",
   "batch_api": "https://www.aversusb.net/api/v1/batch",
   "changes_feed_api": "https://www.aversusb.net/api/v1/changes?since={ISO8601}",
