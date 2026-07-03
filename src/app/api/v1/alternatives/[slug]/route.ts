@@ -20,14 +20,13 @@ export const dynamic = "force-dynamic";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -53,7 +52,14 @@ export async function GET(
     : slug.replace(/-/g, " ");
 
   const alternativesPageUrl = `${SITE_URL}/alternatives/${slug}`;
+  const etag = `"alt-${slug}-${allAlternatives.length}"`;
 
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
+
+  // ListItem uses item: { WebPage } per spec (bare url on ListItem is non-standard)
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -63,12 +69,15 @@ export async function GET(
     url: alternativesPageUrl,
     inLanguage: "en",
     numberOfItems: alternatives.length,
-    itemListElement: alternatives.map((alt, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: alt.name,
-      url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
-    })),
+    itemListElement: alternatives.map((alt, i) => {
+      const itemUrl = `${SITE_URL}/compare/${alt.comparisonSlug}`;
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name: alt.name,
+        item: { "@type": "WebPage", "@id": itemUrl, name: alt.name, url: itemUrl },
+      };
+    }),
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
@@ -83,9 +92,6 @@ export async function GET(
           .map((a) => a.name)
           .join(", ")}, and more.`
       : `No alternatives found for ${entityName}.`;
-
-  // ETag based on content fingerprint — enables 304 Not Modified for AI/SEO crawlers
-  const etag = `"alt-${slug}-${allAlternatives.length}"`;
 
   return NextResponse.json(
     {
@@ -109,6 +115,8 @@ export async function GET(
       headers: {
         ...HEADERS,
         ETag: etag,
+        "X-Source-URL": alternativesPageUrl,
+        "X-Attribution": `${SITE_NAME} (${alternativesPageUrl})`,
         "X-Summary": summary.slice(0, 500),
       },
     }

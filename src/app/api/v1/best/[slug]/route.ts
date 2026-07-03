@@ -17,21 +17,20 @@ export const dynamic = "force-dynamic";
 const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Content-Type": "application/json",
+  "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
   return new Response(null, { status: 204, headers: HEADERS });
 }
 
-export async function GET(_request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   const url = `${SITE_URL}/best/${slug}`;
@@ -98,7 +97,17 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
     faqs = staticEntry.faqs ?? [];
   }
 
+  const etag = updatedAt
+    ? `"best-${slug}-${new Date(updatedAt).getTime()}"`
+    : `"best-${slug}"`;
+
+  const ifNoneMatch = request.headers.get("if-none-match");
+  if (ifNoneMatch === etag) {
+    return new Response(null, { status: 304, headers: { ETag: etag } });
+  }
+
   // Build ItemList JSON-LD for Rich Results + AI citation
+  // ListItem uses item: { WebPage } per spec (bare url on ListItem is non-standard)
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -108,22 +117,21 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
     url,
     inLanguage: "en",
     numberOfItems: listItems.length,
-    itemListElement: listItems.map((item) => ({
-      "@type": "ListItem",
-      position: item.position,
-      name: item.name,
-      url: `${url}#${item.anchor}`,
-    })),
+    itemListElement: listItems.map((item) => {
+      const itemUrl = `${url}#${item.anchor}`;
+      return {
+        "@type": "ListItem",
+        position: item.position,
+        name: item.name,
+        item: { "@type": "WebPage", "@id": itemUrl, name: item.name, url: itemUrl },
+      };
+    }),
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     datePublished: publishedAt ? new Date(publishedAt).toISOString() : undefined,
     dateCreated: publishedAt ? new Date(publishedAt).toISOString() : undefined,
     dateModified: updatedAt ? new Date(updatedAt).toISOString() : undefined,
     license: "https://creativecommons.org/licenses/by/4.0/",
   };
-
-  const etag = updatedAt
-    ? `"best-${slug}-${new Date(updatedAt).getTime()}"`
-    : `"best-${slug}"`;
 
   return NextResponse.json(
     {
@@ -154,6 +162,8 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
       headers: {
         ...HEADERS,
         ETag: etag,
+        "X-Source-URL": url,
+        "X-Attribution": `${SITE_NAME} (${url})`,
         "X-Summary": `${h1 ?? title}: ranked list of ${listItems.length} items.`,
       },
     }
