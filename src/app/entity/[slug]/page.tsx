@@ -268,6 +268,15 @@ export default async function EntityPage({ params }: PageProps) {
     <>
       {/* describedby — HTML Linked Data discovery; supplements Link HTTP header from middleware */}
       <link rel="describedby" type="application/ld+json" href={`${SITE_URL}/api/v1/entities/${slug}`} />
+      {/* cite-as — W3C preferred citation URL in HTML; mirrors the Link: header set by middleware.
+          HTML parsers (Common Crawl, Internet Archive, AI training pipelines) see this without
+          HTTP header access. Perplexity, ChatGPT browse, and Gemini use cite-as for attribution. */}
+      <link rel="cite-as" href={`${SITE_URL}/entity/${slug}`} />
+      {/* license — CC BY 4.0 link tag; AI citation engines confirm free citability from this. */}
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      {/* content-language — mirrors the HTTP Content-Language: en header into HTML for
+          snapshot crawlers and archive pipelines that parse static HTML only. */}
+      <meta httpEquiv="content-language" content="en" />
       {/* rel=up — HTML hierarchy signal pointing this entity profile to its parent category.
           AI crawlers use this to build topical authority context without following breadcrumbs. */}
       {categoryDef && (
