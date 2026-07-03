@@ -621,6 +621,17 @@ function MetaHead({ meta }: { meta: PageMeta }) {
       <meta name="distribution" content="Global" />
       <meta name="rating" content="General" />
       <link rel="canonical" href={meta.canonical} />
+      {/* cite-as — W3C cite-as in HTML <head> makes the preferred citation URL visible to
+          HTML parsers that don't read HTTP Link headers (complements the Link: header set by
+          middleware). Perplexity, ChatGPT browse, and Gemini all use cite-as for attribution. */}
+      <link rel="cite-as" href={meta.canonical} />
+      {/* license — standard HTML link tag for CC BY 4.0; AI citation engines (Semantic Scholar,
+          Perplexity, Google AI Overview) use this to confirm content is freely citable. */}
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      {/* content-language — HTML <meta> complements the HTTP Content-Language: en header set
+          by middleware; ensures language is declared for HTML snapshot tools that don't inspect
+          HTTP headers (Common Crawl, Internet Archive, some AI training pipelines). */}
+      <meta httpEquiv="content-language" content="en" />
       {/* JSON API alternate — lets AI crawlers and developer tools discover structured data */}
       <link rel="alternate" type="application/json" href={`https://www.aversusb.net/api/comparisons/${meta.canonical.split("/compare/")[1] ?? ""}`} title="Structured comparison data (JSON)" />
       {/* Pure Schema.org JSON-LD — spec-compliant application/ld+json for Semantic Web tools,
