@@ -15,7 +15,6 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 // Related: robots.txt (crawl permissions), llms.txt (content catalog)
 
 export const dynamic = "force-dynamic";
-export const revalidate = 86400;
 
 // Helper to emit a User-agent + Allow block pair
 function ua(agent: string): string[] {
@@ -128,6 +127,33 @@ export async function GET() {
     "# ---- Spider.cloud ----",
     "",
     ...ua("SpiderBot"),
+    "# ---- OpenAI autonomous agents ----",
+    "",
+    ...ua("OpenAI-Operator"),
+    "# ---- Quora Poe AI ----",
+    "",
+    ...ua("Poe-Bot"),
+    "# ---- Character.AI ----",
+    "",
+    ...ua("CharacterAI-Bot"),
+    "# ---- Cohere AI ----",
+    "",
+    ...ua("CohereForAI"),
+    "# ---- NVIDIA AI ----",
+    "",
+    ...ua("NvidiaBot"),
+    "# ---- Tavily AI search ----",
+    "",
+    ...ua("TavilyBot"),
+    "# ---- Neeva / Snowflake ----",
+    "",
+    ...ua("NeevaBot"),
+    "# ---- ByteDance / TikTok ----",
+    "",
+    ...ua("Bytespider"),
+    "# ---- EZE Bot ----",
+    "",
+    ...ua("EZEBot"),
     "# ---- Other AI / Research crawlers ----",
     "",
     ...ua("CCBot"),
