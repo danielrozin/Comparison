@@ -11,6 +11,8 @@ export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
+import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -32,6 +34,31 @@ function inferTagSchemaType(tag: string): string {
 }
 
 // ---------- Markdown renderer ----------
+
+export interface TocHeading { id: string; text: string; level: 2 | 3 }
+
+function slugifyHeading(text: string): string {
+  return text.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-");
+}
+
+function extractTOC(md: string): TocHeading[] {
+  const headings: TocHeading[] = [];
+  const seen = new Set<string>();
+  for (const line of md.split("\n")) {
+    let level: 2 | 3 | null = null;
+    let text = "";
+    if (line.startsWith("## ")) { level = 2; text = line.slice(3).trim(); }
+    else if (line.startsWith("### ")) { level = 3; text = line.slice(4).trim(); }
+    if (!level || !text) continue;
+    const base = slugifyHeading(text);
+    let id = base;
+    let n = 1;
+    while (seen.has(id)) { id = `${base}-${n++}`; }
+    seen.add(id);
+    headings.push({ id, text, level });
+  }
+  return headings;
+}
 
 function renderMarkdown(md: string): string {
   let html = md;
@@ -84,6 +111,15 @@ function renderMarkdown(md: string): string {
   const processed: string[] = [];
   let inUList = false;
   let inOList = false;
+  const seenIds = new Set<string>();
+
+  function headingId(text: string): string {
+    const base = slugifyHeading(text);
+    let id = base; let n = 1;
+    while (seenIds.has(id)) { id = `${base}-${n++}`; }
+    seenIds.add(id);
+    return id;
+  }
 
   const closeOpenLists = () => {
     if (inUList) { processed.push("</ul>"); inUList = false; }
@@ -93,18 +129,22 @@ function renderMarkdown(md: string): string {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
-    // Headings
+    // Headings — include id for TOC anchor navigation
     if (line.startsWith("### ")) {
       closeOpenLists();
+      const text = line.slice(4).trim();
+      const id = headingId(text);
       processed.push(
-        `<h3 class="text-xl font-bold text-text mt-8 mb-3">${line.slice(4)}</h3>`
+        `<h3 id="${id}" class="text-xl font-bold text-text mt-8 mb-3 scroll-mt-20 group"><a href="#${id}" class="no-underline hover:underline hover:text-primary-600 transition-colors">${text}<span class="ml-1.5 text-border opacity-0 group-hover:opacity-100 transition-opacity text-sm font-normal">#</span></a></h3>`
       );
       continue;
     }
     if (line.startsWith("## ")) {
       closeOpenLists();
+      const text = line.slice(3).trim();
+      const id = headingId(text);
       processed.push(
-        `<h2 class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border">${line.slice(3)}</h2>`
+        `<h2 id="${id}" class="text-2xl font-bold text-text mt-10 mb-4 pb-2 border-b border-border scroll-mt-20 group"><a href="#${id}" class="no-underline hover:underline hover:text-primary-600 transition-colors">${text}<span class="ml-1.5 text-border opacity-0 group-hover:opacity-100 transition-opacity text-base font-normal">#</span></a></h2>`
       );
       continue;
     }
@@ -342,6 +382,7 @@ export default async function BlogPostPage({
 
   const readTime = estimateReadTime(article.content);
   const renderedContent = renderMarkdown(article.content);
+  const toc = extractTOC(article.content);
 
   // Fetch actual comparison titles for related comparisons
   const comparisonTitles = article.relatedComparisonSlugs?.length
@@ -651,6 +692,8 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      <ReadingProgressBar articleId="blog-article-body" />
+
       <main className="min-h-screen bg-surface">
         {/* Breadcrumbs */}
         <div className="bg-surface-alt border-b border-border">
@@ -731,13 +774,15 @@ export default async function BlogPostPage({
         </header>
 
         {/* Article Body */}
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
-            <div
-              className="prose-custom"
-              dangerouslySetInnerHTML={{ __html: renderedContent }}
-            />
-          </div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
+            <article id="blog-article-body" className="min-w-0 flex-1">
+              <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
+                <div
+                  className="prose-custom"
+                  dangerouslySetInnerHTML={{ __html: renderedContent }}
+                />
+              </div>
 
           {/* Ad: after article content */}
           <div className="my-8">
@@ -824,7 +869,16 @@ export default async function BlogPostPage({
               &larr; Back to Blog
             </Link>
           </div>
-        </article>
+            </article>
+
+            {/* TOC sidebar — sticky, desktop only */}
+            {toc.length >= 2 && (
+              <aside className="hidden xl:block">
+                <BlogTableOfContents headings={toc} />
+              </aside>
+            )}
+          </div>
+        </div>
       </main>
     </>
   );
