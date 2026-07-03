@@ -106,6 +106,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
     name: h1 ?? title,
     description,
     url,
+    inLanguage: "en",
     numberOfItems: listItems.length,
     itemListElement: listItems.map((item) => ({
       "@type": "ListItem",
@@ -113,12 +114,9 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
       name: item.name,
       url: `${url}#${item.anchor}`,
     })),
-    author: {
-      "@type": "Organization",
-      name: "A Versus B",
-      url: SITE_URL,
-    },
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     datePublished: publishedAt ? new Date(publishedAt).toISOString() : undefined,
+    dateCreated: publishedAt ? new Date(publishedAt).toISOString() : undefined,
     dateModified: updatedAt ? new Date(updatedAt).toISOString() : undefined,
     license: "https://creativecommons.org/licenses/by/4.0/",
   };

@@ -61,6 +61,7 @@ export async function GET(
     name: `Best Alternatives to ${entityName}`,
     description: `Structured list of the best alternatives to ${entityName}, ranked by comparison data from aversusb.net`,
     url: alternativesPageUrl,
+    inLanguage: "en",
     numberOfItems: alternatives.length,
     itemListElement: alternatives.map((alt, i) => ({
       "@type": "ListItem",
@@ -68,11 +69,10 @@ export async function GET(
       name: alt.name,
       url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
     })),
-    author: {
-      "@type": "Organization",
-      name: "A Versus B",
-      url: SITE_URL,
-    },
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
     license: "https://creativecommons.org/licenses/by/4.0/",
   };
 
