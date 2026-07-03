@@ -64,12 +64,16 @@ export async function GET(
     dateCreated: "2024-01-01",
     dateModified: new Date().toISOString().slice(0, 10),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-    itemListElement: hub.comparisonSlugs.map((compSlug, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: compSlug.replace(/-/g, " ").replace(/\bvs\b/, "vs."),
-      url: `${SITE_URL}/compare/${compSlug}`,
-    })),
+    itemListElement: hub.comparisonSlugs.map((compSlug, i) => {
+      const compUrl = `${SITE_URL}/compare/${compSlug}`;
+      const name = compSlug.replace(/-/g, " ").replace(/\bvs\b/, "vs.");
+      return {
+        "@type": "ListItem",
+        position: i + 1,
+        name,
+        item: { "@type": "WebPage", "@id": compUrl, name, url: compUrl },
+      };
+    }),
   };
 
   const faqSchema = hub.faqs.length > 0

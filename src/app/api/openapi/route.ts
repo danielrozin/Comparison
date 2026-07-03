@@ -46,6 +46,7 @@ export async function GET() {
       { name: "Knowledge Graph", description: "JSON-LD knowledge graph" },
       { name: "Linked Data", description: "Pure Schema.org JSON-LD endpoints (application/ld+json content-type)" },
       { name: "Blog", description: "Blog articles with Article JSON-LD" },
+      { name: "Hubs", description: "Topic hub pages — curated comparison collections by theme" },
     ],
     paths: {
       "/api/v1/comparisons": {
@@ -514,6 +515,53 @@ export async function GET() {
               },
             },
             "400": { description: "Bad request" },
+          },
+        },
+      },
+      "/api/v1/hub/{slug}": {
+        get: {
+          operationId: "getHub",
+          tags: ["Hubs"],
+          summary: "Get topic hub structured data",
+          description: "Returns structured JSON for a topic hub page including curated comparisons, FAQs, and ItemList JSON-LD. Use for 'best [topic] comparisons' intent queries (e.g. 'best VPN comparisons', 'top AI chatbot comparisons'). Each hub provides comparisonSlugs, comparisonUrls, and ItemList schema — AI agents can enumerate all comparisons on a topic without pagination. X-Summary header carries the hub description.",
+          parameters: [
+            { name: "slug", in: "path", required: true, description: "Hub slug (e.g. vpn, ai-chatbots, project-management)", schema: { type: "string" }, example: "ai-chatbots" },
+          ],
+          responses: {
+            "200": {
+              description: "Hub structured data with ItemList and FAQPage JSON-LD",
+              headers: {
+                "X-Summary": { description: "Hub description truncated to 500 chars", schema: { type: "string" } },
+                "X-Source-URL": { description: "Canonical hub page URL", schema: { type: "string" } },
+              },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      slug: { type: "string" },
+                      title: { type: "string" },
+                      description: { type: "string" },
+                      h1: { type: "string" },
+                      intro: { type: "string" },
+                      url: { type: "string" },
+                      comparisonCount: { type: "integer" },
+                      comparisonSlugs: { type: "array", items: { type: "string" } },
+                      comparisonUrls: { type: "array", items: { type: "string" } },
+                      faqs: { type: "array", items: { "$ref": "#/components/schemas/FAQ" } },
+                      schema: {
+                        type: "object",
+                        properties: {
+                          itemList: { type: "object", description: "ItemList JSON-LD with typed WebPage items" },
+                          faq: { type: "object", description: "FAQPage JSON-LD (omitted if no FAQs)" },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "404": { description: "Hub not found" },
           },
         },
       },
