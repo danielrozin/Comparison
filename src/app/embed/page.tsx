@@ -69,8 +69,8 @@ const embedSchema = {
   breadcrumb: {
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Embed", item: EMBED_URL },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "Embed", item: { "@type": "WebPage", "@id": EMBED_URL, name: "Embed", url: EMBED_URL } },
     ],
   },
 };

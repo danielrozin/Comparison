@@ -158,8 +158,8 @@ const siteMapPageSchema = {
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: "Site Map", item: SITEMAP_URL },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+        { "@type": "ListItem", position: 2, name: "Site Map", item: { "@type": "WebPage", "@id": SITEMAP_URL, name: "Site Map", url: SITEMAP_URL } },
       ],
     },
   ],

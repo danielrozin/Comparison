@@ -167,8 +167,8 @@ export default function Q1AiBattlesPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Q1 2026 AI Tool Battles", item: PAGE_URL },
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "Q1 2026 AI Tool Battles", item: { "@type": "WebPage", "@id": PAGE_URL, name: "Q1 2026 AI Tool Battles", url: PAGE_URL } },
     ],
   };
 
