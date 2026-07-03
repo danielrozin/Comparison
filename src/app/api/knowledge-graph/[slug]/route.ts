@@ -135,7 +135,7 @@ export async function GET(
       // speakable — sections optimised for voice/AI reading extraction
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["#short-answer", "#verdict", "#key-facts"],
+        cssSelector: ["#short-answer", "#verdict", "#key-differences"],
         xpath: ["//*[@id='short-answer']", "//*[@id='verdict']"],
       },
       // significantLink — entity profiles + alternatives so AI can traverse the graph

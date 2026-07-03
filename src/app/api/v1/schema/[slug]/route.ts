@@ -22,14 +22,20 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
 
-const CORS_HEADERS = {
+const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "Vary": "Accept",
+  "X-Robots-Tag": "all",
+  "X-Source": SITE_NAME,
+  "X-Source-URL": SITE_URL,
+  "X-License": "CC BY 4.0",
+  "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
+  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
-  return new Response(null, { status: 204, headers: CORS_HEADERS });
+  return new Response(null, { status: 204, headers: HEADERS });
 }
 
 export async function HEAD(
@@ -38,13 +44,13 @@ export async function HEAD(
 ) {
   const { slug } = await params;
   const comparison = await getComparisonBySlug(slug);
-  if (!comparison) return new Response(null, { status: 404, headers: CORS_HEADERS });
+  if (!comparison) return new Response(null, { status: 404, headers: HEADERS });
 
   const updatedAt = comparison.metadata?.updatedAt;
   return new Response(null, {
     status: 200,
     headers: {
-      ...CORS_HEADERS,
+      ...HEADERS,
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
@@ -63,7 +69,7 @@ export async function GET(
   if (!comparison) {
     return new Response(JSON.stringify({ error: "Not found" }), {
       status: 404,
-      headers: { ...CORS_HEADERS, "Content-Type": "application/ld+json" },
+      headers: { ...HEADERS, "Content-Type": "application/ld+json" },
     });
   }
 
@@ -83,6 +89,7 @@ export async function GET(
     description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     ...(publishedAt ? { datePublished: publishedAt } : {}),
+    ...(publishedAt ? { dateCreated: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -120,6 +127,7 @@ export async function GET(
       url: SITE_URL,
     },
     ...(publishedAt ? { datePublished: publishedAt } : {}),
+    ...(publishedAt ? { dateCreated: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
     ...(comparison.verdict ? { text: comparison.verdict } : {}),
     about: comparison.entities.map((e) => ({
@@ -208,21 +216,15 @@ export async function GET(
   return new Response(JSON.stringify(jsonLd, null, 2), {
     status: 200,
     headers: {
-      ...CORS_HEADERS,
+      ...HEADERS,
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "X-Source-URL": url,
+      "X-Attribution": `According to ${SITE_NAME} (${url}), ...`,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-      "X-Robots-Tag": "all",
-      // X-Summary: shortAnswer (or verdict fallback) for AI crawlers without body parsing
       ...((comparison.shortAnswer || comparison.verdict)
         ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
-      // X-Source-* — attribution headers for AI training pipelines and citation engines.
-      // Allow AI tools to correctly attribute this content without parsing the JSON-LD body.
-      "X-Source-Title": comparison.title,
-      "X-Source-URL": url,
-      "X-Source-License": "CC BY 4.0",
-      "X-Source-Attribution": `A Versus B (${url})`,
       Link: [
         `<${url}>; rel="canonical"`,
         `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/json"`,
