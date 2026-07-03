@@ -270,6 +270,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           rel=up — HTML hierarchy signal from subcategory to parent category. */}
       <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
       <link rel="up" href={`${SITE_URL}/category/${slug}`} title={`${category.name} comparisons`} />
+      <link rel="cite-as" href={`${SITE_URL}/category/${slug}/${subcategory}`} />
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      <meta httpEquiv="content-language" content="en" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

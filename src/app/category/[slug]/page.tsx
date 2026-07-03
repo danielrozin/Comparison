@@ -364,6 +364,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           Points to the machine-readable JSON catalog of all comparisons in this category.
           Supplements the Link HTTP header from middleware without requiring header parsing. */}
       <link rel="describedby" type="application/json" href={`${SITE_URL}/api/v1/comparisons?category=${slug}&limit=100`} />
+      <link rel="cite-as" href={`${SITE_URL}/category/${slug}`} />
+      <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      <meta httpEquiv="content-language" content="en" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
