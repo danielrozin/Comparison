@@ -183,14 +183,18 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     ].filter((v, i, arr) => arr.indexOf(v) === i).slice(0, 15),
     mainEntity: {
       "@type": "ItemList",
+      "@id": `${hubUrl}#comparisons`,
       name: `${hub.h1} Comparisons`,
       numberOfItems: spokes.length,
-      itemListElement: spokes.map((s, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: s.title,
-        url: `${SITE_URL}/compare/${s.slug}`,
-      })),
+      itemListElement: spokes.map((s, i) => {
+        const compUrl = `${SITE_URL}/compare/${s.slug}`;
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          name: s.title,
+          item: { "@type": "WebPage", "@id": compUrl, name: s.title, url: compUrl },
+        };
+      }),
     },
     // citation — formal attribution chain from this CollectionPage to the top comparison
     // Articles in the hub. AI answer engines (ChatGPT, Perplexity) use citation to build
@@ -238,7 +242,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     // hasPart[] — structural sub-documents: ItemList, FAQPage, DefinedTermSet.
     // AI crawlers follow hasPart edges to resolve sub-schemas without re-crawling the full page.
     hasPart: [
-      { "@type": "ItemList", name: `${hub.h1} Comparisons`, url: hubUrl },
+      { "@type": "ItemList", "@id": `${hubUrl}#comparisons`, name: `${hub.h1} Comparisons`, url: hubUrl },
       ...(hub.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${hubUrl}#faq` }] : []),
       { "@type": "DefinedTermSet", "@id": `${hubUrl}#terms`, name: `${hub.h1} Key Terms` },
     ],
