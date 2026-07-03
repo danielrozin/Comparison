@@ -154,6 +154,16 @@ export async function GET() {
         },
         returns: "JSON ranked list with ItemList JSON-LD",
       },
+      {
+        name: "get_hub",
+        description: "Get topic hub structured data including curated comparisons, FAQs, and ItemList JSON-LD. Use for 'best [topic] comparisons' queries (e.g. 'best VPN comparisons', 'top project management tool comparisons'). Lists all curated comparison slugs and their URLs for a given topic hub.",
+        endpoint: `${SITE_URL}/api/v1/hub/{slug}`,
+        method: "GET",
+        parameters: {
+          slug: { type: "string", required: true, description: "Hub slug, e.g. 'vpn', 'project-management', 'ai-chatbots'" },
+        },
+        returns: "JSON: { slug, title, description, h1, intro, comparisonCount, comparisonSlugs, comparisonUrls, faqs, schema: { itemList, faq } }",
+      },
     ],
     resources: [
       {

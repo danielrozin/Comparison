@@ -270,6 +270,7 @@ function bestPageSchema(entry: BestEntry) {
         conditionsOfAccess: "Free",
         interactivityType: "expositive",
         datePublished: entry.publishedAt,
+        dateCreated: entry.publishedAt,
         dateModified: entry.updatedAt,
         lastReviewed: entry.updatedAt,
         contentReferenceTime: entry.updatedAt,

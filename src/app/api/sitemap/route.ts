@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL } from "@/lib/utils/constants";
+import { HUB_CONFIG } from "@/lib/data/hubs";
 
 // GET /api/sitemap
 // Returns a JSON sitemap (DataFeed JSON-LD) of all published content.
 //
 // Query parameters:
-//   type      — "comparisons" (default) | "blog" | "all"
+//   type      — "comparisons" (default) | "blog" | "hubs" | "best"
 //   category  — filter by category (comparisons/blog only)
 //   limit     — max results (default 500, max 2000)
 //   offset    — pagination offset
@@ -103,6 +104,82 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // Hubs sitemap — static data from HUB_CONFIG
+  if (type === "hubs") {
+    const hubEntries = Object.entries(HUB_CONFIG).map(([slug, hub]) => ({
+      url: `${SITE_URL}/hub/${slug}`,
+      slug,
+      title: hub.title,
+      description: hub.description,
+      comparisonCount: hub.comparisonSlugs.length,
+      priority: 0.7,
+      changefreq: "weekly",
+      apiUrl: `${SITE_URL}/api/v1/hub/${slug}`,
+    }));
+    const total = hubEntries.length;
+    const paginated = hubEntries.slice(offset, offset + limit);
+    const hasMore = offset + limit < total;
+    return NextResponse.json(
+      {
+        "@context": "https://schema.org",
+        "@type": "DataFeed",
+        name: "A Versus B — Hub Pages",
+        url: `${SITE_URL}/api/sitemap?type=hubs`,
+        description: "JSON sitemap of all topic hub pages on aversusb.net",
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        total,
+        limit,
+        offset,
+        hasMore,
+        nextUrl: hasMore ? `${SITE_URL}/api/sitemap?type=hubs&limit=${limit}&offset=${offset + limit}` : null,
+        urls: paginated,
+      },
+      { headers: HEADERS }
+    );
+  }
+
+  // Best-of sitemap — database-backed
+  if (type === "best") {
+    const [total, bestPages] = await Promise.all([
+      prisma.bestPage.count({ where: { status: "published" } }),
+      prisma.bestPage.findMany({
+        where: { status: "published" },
+        select: { slug: true, title: true, description: true, updatedAt: true, publishedAt: true },
+        orderBy: { updatedAt: "desc" },
+        take: limit,
+        skip: offset,
+      }),
+    ]);
+    const hasMore = offset + limit < total;
+    const urls = bestPages.map((p) => ({
+      url: `${SITE_URL}/best/${p.slug}`,
+      slug: p.slug,
+      title: p.title,
+      description: p.description,
+      lastmod: p.updatedAt ?? p.publishedAt,
+      priority: 0.7,
+      changefreq: "monthly",
+      apiUrl: `${SITE_URL}/api/v1/best/${p.slug}`,
+    }));
+    return NextResponse.json(
+      {
+        "@context": "https://schema.org",
+        "@type": "DataFeed",
+        name: "A Versus B — Best-of Lists",
+        url: `${SITE_URL}/api/sitemap?type=best`,
+        description: "JSON sitemap of all best-of ranked guide pages on aversusb.net",
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        total,
+        limit,
+        offset,
+        hasMore,
+        nextUrl: hasMore ? `${SITE_URL}/api/sitemap?type=best&limit=${limit}&offset=${offset + limit}` : null,
+        urls,
+      },
+      { headers: HEADERS }
+    );
+  }
+
   // Comparisons sitemap (default)
   const [total, comparisons] = await Promise.all([
     prisma.comparison.count({
@@ -167,6 +244,8 @@ export async function GET(request: NextRequest) {
       types: {
         comparisons: `${SITE_URL}/api/sitemap?type=comparisons`,
         blog: `${SITE_URL}/api/sitemap?type=blog`,
+        hubs: `${SITE_URL}/api/sitemap?type=hubs`,
+        best: `${SITE_URL}/api/sitemap?type=best`,
       },
       urls,
     },
