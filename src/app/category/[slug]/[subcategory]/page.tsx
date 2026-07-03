@@ -233,14 +233,18 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
     mainEntity: {
       "@type": "ItemList",
+      "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`,
       name: `${subcat.name} Comparisons`,
       numberOfItems: subcatComparisons.length,
-      itemListElement: subcatComparisons.slice(0, 10).map((c, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: c.title,
-        url: `${SITE_URL}/compare/${c.slug}`,
-      })),
+      itemListElement: subcatComparisons.slice(0, 10).map((c, i) => {
+        const compUrl = `${SITE_URL}/compare/${c.slug}`;
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          name: c.title,
+          item: { "@type": "WebPage", "@id": compUrl, name: c.title, url: compUrl },
+        };
+      }),
     },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
@@ -253,7 +257,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       { "@type": "Thing", name: "Consumer Decision Research" },
     ],
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
-    hasPart: [{ "@type": "ItemList", name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
+    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
   };
   const schemaData = [breadcrumbs, collectionSchema];
 
