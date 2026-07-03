@@ -126,9 +126,11 @@ function SearchContent() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
       {/* Results */}
+      <div role="region" aria-label="Search results" aria-live="polite" aria-atomic="false">
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" aria-hidden="true" />
+          <span className="sr-only">Loading results…</span>
         </div>
       ) : query && results.length > 0 ? (
         <div className="space-y-3">
@@ -237,6 +239,7 @@ function SearchContent() {
           <p>Type a search term or comparison to get started.</p>
         </div>
       )}
+      </div>
       </div>
     </div>
   );
