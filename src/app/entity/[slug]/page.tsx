@@ -225,6 +225,35 @@ export default async function EntityPage({ params }: PageProps) {
     entityGraphItems.push(faqSchema(entityContent!.faqs, faqNodeId));
   }
 
+  // ItemList — dedicated @graph node listing the top comparisons for this entity.
+  // AI carousels (Google Discover, Perplexity related-content, ChatGPT browse) extract
+  // ItemList nodes to surface related comparisons in "what else can you compare X with?"
+  // response slots. Each ListItem carries url + name + item/@id so crawlers resolve
+  // the Article node without following the link.
+  if (relatedComparisons.length > 0) {
+    entityGraphItems.push({
+      "@type": "ItemList",
+      "@id": `${SITE_URL}/entity/${slug}#comparisons`,
+      name: `${name} Comparisons`,
+      description: `All head-to-head comparisons involving ${name} on A Versus B`,
+      url: `${SITE_URL}/entity/${slug}`,
+      numberOfItems: relatedComparisons.length,
+      itemListElement: relatedComparisons.slice(0, 20).map((comp, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: comp.title,
+        url: `${SITE_URL}/compare/${comp.slug}`,
+        item: {
+          "@type": "Article",
+          "@id": `${SITE_URL}/compare/${comp.slug}#article`,
+          name: comp.title,
+          url: `${SITE_URL}/compare/${comp.slug}`,
+          ...(comp.category && { articleSection: comp.category }),
+        },
+      })),
+    });
+  }
+
   const entityJsonLd = {
     "@context": "https://schema.org",
     "@graph": entityGraphItems.map(({ ["@context"]: _ctx, ...rest }: Record<string, unknown>) => rest),

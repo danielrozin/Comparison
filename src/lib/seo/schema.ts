@@ -2513,6 +2513,18 @@ export function profilePageSchema(entity: {
         name: `Compare ${entity.name} with others`,
         target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/${entity.slug}-vs-{other}`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] },
       },
+      // SearchAction — tells AI assistants (ChatGPT, Perplexity, Google AI Overviews) that
+      // they can search our catalog for this entity's comparisons. Routes "[entity] vs what"
+      // and "find all [entity] comparisons" queries to our search endpoint.
+      {
+        "@type": "SearchAction",
+        name: `Search ${entity.name} comparisons`,
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${SITE_URL}/search?q=${encodeURIComponent(entity.name)}`,
+        },
+        result: { "@type": "ItemList", description: `Comparisons and alternatives for ${entity.name}` },
+      },
     ],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
