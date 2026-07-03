@@ -118,7 +118,7 @@ export async function GET(
         ? comparison.verdict.slice(0, 250).replace(/\n+/g, " ").trim()
         : null)
     || (winner && comparison.keyDifferences?.[0]
-        ? `${winner.name} is the better choice for most users. ${comparison.keyDifferences[0]}`
+        ? `${winner.name} is the better choice for most users. Key difference: ${comparison.keyDifferences[0].label}.`
         : null)
     || (winner
         ? `Between ${entityNames.join(" and ")}, ${winner.name} generally comes out ahead across key attributes.`
@@ -135,11 +135,16 @@ export async function GET(
   const confidence = score >= 4 ? "high" : score >= 2 ? "medium" : "low";
 
   // ClaimReview schema for verifiable answer attribution
+  const publishedAt = comparison.metadata?.publishedAt;
   const claimReview = {
     "@context": "https://schema.org",
     "@type": "ClaimReview",
+    "@id": `${url}#claimreview`,
     url,
     claimReviewed: comparison.title,
+    reviewBody: syntheticAnswer ?? comparison.title,
+    ...(publishedAt ? { datePublished: publishedAt } : {}),
+    ...(updatedAt ? { dateModified: updatedAt } : {}),
     reviewRating: {
       "@type": "Rating",
       ratingValue: confidence === "high" ? 5 : confidence === "medium" ? 3 : 2,
@@ -149,7 +154,8 @@ export async function GET(
     },
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     itemReviewed: {
-      "@type": "CreativeWork",
+      "@type": "WebPage",
+      "@id": url,
       url,
       name: comparison.title,
     },
