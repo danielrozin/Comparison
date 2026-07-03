@@ -19,14 +19,12 @@ const HEADERS = {
   "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
   "Content-Type": "application/ld+json",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
   "X-Robots-Tag": "all",
   "Vary": "Accept",
   "X-Source": SITE_NAME,
-  "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
 };
 
 export async function OPTIONS() {
@@ -34,14 +32,17 @@ export async function OPTIONS() {
 }
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
   const comparison = await getComparisonBySlug(slug);
 
   if (!comparison) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return new Response(JSON.stringify({ error: "Not found" }), {
+      status: 404,
+      headers: { ...HEADERS, "Content-Type": "application/json" },
+    });
   }
 
   const url = `${SITE_URL}/compare/${slug}`;
@@ -296,23 +297,27 @@ export async function GET(
     : `"kg-${slug}"`;
 
   // Conditional GET support — AI crawlers polling for changes can send If-None-Match
-  const ifNoneMatch = _request.headers.get("if-none-match");
+  const ifNoneMatch = request.headers.get("if-none-match");
   if (ifNoneMatch === etag) {
     return new Response(null, { status: 304, headers: { ETag: etag } });
   }
 
-  return NextResponse.json(jsonLd, {
+  const comparisonUrl = `${SITE_URL}/compare/${slug}`;
+  return new Response(JSON.stringify(jsonLd, null, 2), {
+    status: 200,
     headers: {
       ...HEADERS,
-      "X-Source-URL": `${SITE_URL}/compare/${slug}`,
-      "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}/compare/${slug}), ...`,
+      "Content-Type": "application/ld+json",
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "X-Source-URL": comparisonUrl,
+      "X-Attribution": `${SITE_NAME} (${comparisonUrl})`,
       ETag: etag,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       ...((comparison.shortAnswer || comparison.verdict)
         ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
         : {}),
       "Link": [
-        `<${SITE_URL}/compare/${slug}>; rel="canonical"`,
+        `<${comparisonUrl}>; rel="canonical"`,
         `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD (pure)"`,
       ].join(", "),
     },

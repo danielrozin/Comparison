@@ -20,13 +20,14 @@ const HEADERS = {
   "Content-Type": "application/json",
   "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  "Vary": "Accept",
   "X-Robots-Tag": "all",
   "X-Source": SITE_NAME,
   "X-Source-URL": SITE_URL,
   "X-License": "CC BY 4.0",
   "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
-  "X-Attribution": `According to ${SITE_NAME} (${SITE_URL}), ...`,
+  "X-Attribution": `${SITE_NAME} (${SITE_URL})`,
 };
 
 export async function OPTIONS() {
@@ -96,11 +97,6 @@ export async function GET() {
         format: "application/json",
         description: "All 3,000+ comparisons with title, slug, entities, shortAnswer, and category. DB-fresh.",
       },
-      search: {
-        url: `${SITE_URL}/api/search?q={query}`,
-        format: "application/json",
-        description: "Full-text search across comparisons, entities, and blog articles.",
-      },
       oembed: {
         url: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
         format: "application/json+oembed",
@@ -147,8 +143,6 @@ export async function GET() {
         format: "application/json",
         description: "Related comparisons for a given slug — use to build context around an answer.",
       },
-      popular: { url: `${SITE_URL}/api/popular?limit=50`, description: "Top comparisons by view count." },
-      recent: { url: `${SITE_URL}/api/recent?limit=50`, description: "Most recently added comparisons." },
       json_sitemap: {
         url: `${SITE_URL}/api/sitemap`,
         format: "application/json",
