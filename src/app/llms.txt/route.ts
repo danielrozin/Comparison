@@ -156,7 +156,6 @@ export async function GET() {
   lines.push("- /alternatives/{slug}: ItemList, FAQPage, BreadcrumbList");
   lines.push("- Site-wide: Organization, WebSite (SearchAction), WebApplication, DataCatalog (Dataset), DefinedTermSet, SiteNavigationElement");
   lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
-  lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
   lines.push("");
   lines.push("## Machine-Readable Endpoints");
   lines.push("");
@@ -174,7 +173,7 @@ export async function GET() {
   lines.push(`- [Best-of list JSON](${SITE_URL}/api/v1/best/{slug}) — structured best-of list with ItemList JSON-LD: ranked items (position, name, url), FAQs, author, dates; X-Summary header on response; list all at ${SITE_URL}/api/v1/best`);
   lines.push(`- [Hub JSON](${SITE_URL}/api/v1/hub/{slug}) — topic hub structured data: title, description, intro, curated comparisonSlugs + comparisonUrls, FAQs, ItemList JSON-LD and FAQPage JSON-LD; use for 'best [topic] comparisons' queries; example: ${SITE_URL}/api/v1/hub/vpn`);
   lines.push(`- [Compare Lookup (AI tool-calling)](${SITE_URL}/api/v1/compare?a={entityA}&b={entityB}) — fastest endpoint for AI tools: looks up comparison by entity names, returns shortAnswer + API URLs or suggestions; example: ${SITE_URL}/api/v1/compare?a=chatgpt&b=claude`);
-  lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; supports ?types=comparisons,entities,blog and ?limit; X-Summary header on response`);
+  lines.push(`- [Unified Search](${SITE_URL}/api/v1/search?q={query}) — searches comparisons, entity profiles, and blog articles in parallel; grouped results with URL, slug, and excerpt; includes searchResultsSchema (SearchResultsPage JSON-LD with typed ItemList); supports ?types=comparisons,entities,blog and ?limit; X-Summary header always populated`);
 
   lines.push(`- [AI Answer (AEO)](${SITE_URL}/api/answer/{slug}) — pre-packaged answer: shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD; X-Summary header in HTTP response`);
   lines.push(`- [Batch lookup](${SITE_URL}/api/v1/batch) — fetch up to 20 comparisons in a single POST; body: {"slugs":["chatgpt-vs-claude","gpt-4-vs-gemini"]}; optional fields filter; ideal for AI agents building comparison matrices without N sequential calls`);
@@ -182,9 +181,7 @@ export async function GET() {
   lines.push(`- [JSON sitemap](${SITE_URL}/api/sitemap) — paginated JSON DataFeed sitemap; ?type=comparisons (default) | ?type=blog | ?type=hubs | ?type=best; also supports ?category, ?limit, ?offset, ?format=urlset; comparisons include shortAnswer+answerUrl; blog includes excerpt+jsonUrl; hubs include comparisonCount+apiUrl; best include apiUrl`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
-  lines.push(`- [Popular comparisons](${SITE_URL}/api/popular)`);
-  lines.push(`- [Recent comparisons](${SITE_URL}/api/recent)`);
-  lines.push(`- [Search](${SITE_URL}/api/search?q={query})`);
+  lines.push(`- [OpenAPI 3.0 spec](${SITE_URL}/api/openapi) — machine-readable schema for all endpoints`);
   lines.push("");
   lines.push("## Discovery");
   lines.push("");
