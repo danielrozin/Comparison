@@ -102,6 +102,7 @@ export default function RootLayout({
             preconnect opens TLS for frequently used origins; dns-prefetch for lower-priority ones.
             Faster LCP is a Core Web Vitals signal that directly affects ranking. */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.aversusb.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
