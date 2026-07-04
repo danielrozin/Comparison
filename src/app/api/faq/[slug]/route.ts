@@ -59,17 +59,24 @@ export async function GET(
         "@type": "FAQPage",
         "@id": `${url}#faq`,
         url,
-        inLanguage: "en",
+        inLanguage: "en-US",
         name: `${comparison.title} — FAQ`,
         description: `Frequently asked questions about ${comparison.title}`,
+        dateModified: updatedAt ? new Date(updatedAt).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
         author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         isPartOf: { "@type": "Article", "@id": `${url}#article` },
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        // speakable — marks FAQ answers as the preferred voice-extraction target for
+        // AI voice assistants and LLMs generating spoken summaries from this page.
+        speakable: { "@type": "SpeakableSpecification", cssSelector: ["#faq", ".faq-item"] },
         mainEntity: faqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: {
             "@type": "Answer",
             text: faq.answer,
+            inLanguage: "en-US",
             url,
           },
         })),

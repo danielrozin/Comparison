@@ -75,8 +75,14 @@ export async function GET(
     url,
     name: entity.metaTitle || `${entity.name} — Comparisons & Profile`,
     description: entity.metaDescription || entity.shortDesc || undefined,
-    inLanguage: "en",
+    inLanguage: "en-US",
     contentReferenceTime: entity.updatedAt?.toISOString() ?? new Date().toISOString(),
+    // speakable — marks the entity name and short description as voice-extractable
+    // so AI voice assistants and LLMs can read out a concise entity summary.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".entity-description", ".entity-short-desc", "p.entity-intro"],
+    },
     about: {
       "@type": "Thing",
       "@id": `${url}#entity`,
@@ -88,7 +94,7 @@ export async function GET(
     mainEntity: {
       "@type": "ItemList",
       name: `Comparisons involving ${entity.name}`,
-      inLanguage: "en",
+      inLanguage: "en-US",
       numberOfItems: comparisons.length,
       itemListElement: comparisons.slice(0, 10).map((c, i) => {
         const itemUrl = `${SITE_URL}/compare/${c.slug}`;
@@ -116,7 +122,7 @@ export async function GET(
     "@id": `${url}#definedterm`,
     name: entity.name,
     description: entity.shortDesc ?? entity.description ?? undefined,
-    inLanguage: "en",
+    inLanguage: "en-US",
     url,
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
@@ -132,8 +138,14 @@ export async function GET(
     name: entity.name,
     type: entity.entityType.name,
     url,
+    // schemaJsonLdUrl — canonical JSON-LD endpoint for this entity profile.
+    // AI crawlers (Perplexity, ChatGPT, Gemini) use this to fetch structured
+    // entity data without parsing HTML. Consistent with the field added to
+    // /api/v1/compare and /api/v1/changes (HB292).
+    schemaJsonLdUrl: `${SITE_URL}/api/v1/entities/${entity.slug}`,
     alternativesUrl: `${SITE_URL}/alternatives/${entity.slug}`,
     alternativesApiUrl: `${SITE_URL}/api/v1/alternatives/${entity.slug}`,
+    reviewsUrl: `${SITE_URL}/reviews/${entity.slug}`,
     shortDesc: entity.shortDesc,
     description: entity.description,
     imageUrl: entity.imageUrl,
@@ -146,6 +158,7 @@ export async function GET(
       title: c.title,
       url: `${SITE_URL}/compare/${c.slug}`,
       answerUrl: `${SITE_URL}/api/answer/${c.slug}`,
+      schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${c.slug}`,
       category: c.category,
     })),
     profilePageSchema,
@@ -168,10 +181,18 @@ export async function GET(
               "@type": "FAQPage",
               "@id": `${url}#faq`,
               url,
+              name: `${entity.name} — Frequently Asked Questions`,
+              description: `Frequently asked questions about ${entity.name}`,
+              inLanguage: "en-US",
+              dateModified: entity.updatedAt?.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
+              author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+              isPartOf: { "@type": "ProfilePage", "@id": `${url}#profilepage` },
+              // speakable — marks FAQ answers as voice-extractable for AI assistants.
+              speakable: { "@type": "SpeakableSpecification", cssSelector: [".entity-faq", "#faq"] },
               mainEntity: entity.faqs.map((faq) => ({
                 "@type": "Question",
                 name: faq.question,
-                acceptedAnswer: { "@type": "Answer", text: faq.answer },
+                acceptedAnswer: { "@type": "Answer", text: faq.answer, inLanguage: "en-US" },
               })),
             }]
           : []),
