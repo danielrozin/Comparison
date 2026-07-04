@@ -96,13 +96,21 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                 {/* Score bar */}
                 {total > 0 && (
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-red-100 rounded-full overflow-hidden">
+                    <div
+                      role="meter"
+                      aria-label={`${entity.name} sentiment score`}
+                      aria-valuenow={prosPercent}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuetext={`${prosPercent}% positive`}
+                      className="flex-1 h-1.5 bg-red-100 rounded-full overflow-hidden"
+                    >
                       <div
                         className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500"
                         style={{ width: `${prosPercent}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-semibold text-text-secondary tabular-nums">{prosPercent}% positive</span>
+                    <span className="text-[10px] font-semibold text-text-secondary tabular-nums" aria-hidden="true">{prosPercent}% positive</span>
                   </div>
                 )}
               </div>
@@ -119,7 +127,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-green-700 uppercase tracking-widest">Pros</h4>
                     </div>
-                    <ul className="space-y-1">
+                    <ul aria-label={`Pros for ${entity.name}`} className="space-y-1">
                       {entity.pros.map((pro, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
@@ -149,7 +157,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-red-600 uppercase tracking-widest">Cons</h4>
                     </div>
-                    <ul className="space-y-1">
+                    <ul aria-label={`Cons for ${entity.name}`} className="space-y-1">
                       {entity.cons.map((con, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
