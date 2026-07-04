@@ -229,6 +229,13 @@ export async function GET() {
   lines.push("- Sitemap shards 1–4 (`/sitemap/1.xml`–`/sitemap/4.xml`) include `<image:image>` entries for every comparison, entity, alternatives, blog, and review URL — Google Images + AI visual crawlers get primary images without a separate image sitemap fetch");
   lines.push("- `ClaimReview.inLanguage: \"en-US\"` and `ClaimReview.itemReviewed.inLanguage: \"en-US\"` on `/api/answer/{slug}` — enables language-scoped AI fact-checking");
   lines.push("- `/api/answer/{slug}` GET response now emits `Link:` header pointing to canonical, knowledge-graph, FAQ, and OpenAPI URLs — mirrors the HEAD response for crawlers that issue full GETs");
+  lines.push("- `SoftwareApplication.featureList` — derived from per-entity comparison attribute values (text, number+unit, boolean-true); enables Google Shopping and Perplexity product-mode carousels to surface per-entity capabilities");
+  lines.push("- `SoftwareApplication.applicationSubCategory` — mapped from comparison category (14-category lookup: technology→DeveloperApplication, health→HealthApplication, sports→SportsApplication, finance→FinanceApplication, gaming→GameApplication, travel→TravelApplication, entertainment→EntertainmentApplication, companies→BusinessApplication, automotive→UtilitiesApplication)");
+  lines.push("- `genre` on Article nodes in `/api/knowledge-graph/{slug}` and `/api/v1/schema/{slug}` — derived from comparison category; AI indexers and Google Discover carousels use genre for topic routing");
+  lines.push("- `potentialAction: [ReadAction, CompareAction]` on knowledge-graph and v1/schema Article nodes — CompareAction includes typed competitor object[] so AI routers can match \"X vs Y\" queries to the correct comparison page");
+  lines.push("- `SportsEvent` node in `/api/knowledge-graph/{slug}` for sports-category comparisons — competitor[] typed to SportsTeam/Person; enables Google Sports and Perplexity sports-mode carousels");
+  lines.push("- Entity nodes in `/api/v1/schema/{slug}` upgraded from generic `Thing` to fully-typed entities (SoftwareApplication, Person, Country, SportsTeam, etc.) with `inLanguage: \"en-US\"`, `image.contentUrl`, and `subjectOf` back-reference to Article node");
+  lines.push("- Entity API (`/api/v1/entities/{slug}`) default JSON response now emits `Link:` header (canonical, LD+JSON alternate, alternatives, service-doc) — matches LD+JSON content-negotiation path already in place");
 
   const body = lines.join("\n");
 

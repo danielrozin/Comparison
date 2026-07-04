@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { entitySchemaType } from "@/lib/seo/schema";
 
 // GET /api/v1/schema/{slug}
 //
@@ -161,8 +162,27 @@ export async function GET(
     ...(publishedAt ? { dateCreated: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
     ...(comparison.verdict ? { text: comparison.verdict } : {}),
+    // genre — content classification for AI indexers and Google Discover carousels
+    genre: comparison.category
+      ? comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1)
+      : "Comparison",
+    // potentialAction — ReadAction + CompareAction for AI router intent classification
+    potentialAction: [
+      { "@type": "ReadAction", target: url },
+      {
+        "@type": "Action",
+        additionalType: "CompareAction",
+        name: `Compare ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+        target: url,
+        object: comparison.entities.map((e) => ({
+          "@type": entitySchemaType(e.entityType),
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+        })),
+      },
+    ],
     about: comparison.entities.map((e) => ({
-      "@type": "Thing",
+      "@type": entitySchemaType(e.entityType),
       "@id": `${SITE_URL}/entity/${e.slug}#entity`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
@@ -178,18 +198,29 @@ export async function GET(
       : {}),
   });
 
-  // Entity nodes
+  // Entity nodes — typed via entitySchemaType() so AI product-search carousels and
+  // knowledge-graph crawlers receive correctly typed entities (SoftwareApplication,
+  // Person, Country, SportsTeam, etc.) rather than the generic Thing fallback.
   for (const entity of comparison.entities) {
     graph.push({
-      "@type": "Thing",
+      "@type": entitySchemaType(entity.entityType),
       "@id": `${SITE_URL}/entity/${entity.slug}#entity`,
       name: entity.name,
       url: `${SITE_URL}/entity/${entity.slug}`,
+      inLanguage: "en-US",
       ...(entity.shortDesc ? { description: entity.shortDesc } : {}),
-      ...(entity.imageUrl ? { image: entity.imageUrl } : {}),
+      ...(entity.imageUrl ? {
+        image: {
+          "@type": "ImageObject",
+          url: entity.imageUrl,
+          contentUrl: entity.imageUrl,
+          caption: entity.name,
+        },
+      } : {}),
       sameAs: [
         `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
       ],
+      subjectOf: { "@type": "Article", "@id": `${url}#article` },
     });
   }
 
