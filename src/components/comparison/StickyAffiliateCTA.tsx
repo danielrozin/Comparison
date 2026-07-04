@@ -142,6 +142,7 @@ export function StickyAffiliateCTA({
                   href={linkA.url}
                   target="_blank"
                   rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
+                  aria-label={ctaLabel(entityA, isTreatment)}
                   onClick={() => handleClick(entityA, "left")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
                     isGenericLink(entityA)
@@ -161,7 +162,7 @@ export function StickyAffiliateCTA({
               )}
 
               {linkA && linkB && (
-                <div className="flex-shrink-0 flex flex-col items-center gap-0.5">
+                <div className="flex-shrink-0 flex flex-col items-center gap-0.5" aria-hidden="true">
                   <div className="w-px h-4 bg-border" />
                   <span className="text-[9px] font-bold text-text-secondary uppercase tracking-wider">vs</span>
                   <div className="w-px h-4 bg-border" />
@@ -173,6 +174,7 @@ export function StickyAffiliateCTA({
                   href={linkB.url}
                   target="_blank"
                   rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
+                  aria-label={ctaLabel(entityB, isTreatment)}
                   onClick={() => handleClick(entityB, "right")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 ${
                     isGenericLink(entityB)

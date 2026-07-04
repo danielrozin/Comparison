@@ -217,7 +217,7 @@ export function RequestList() {
                       href={`/compare/${req.comparisonSlug}`}
                       className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-primary-600 hover:text-primary-700"
                     >
-                      View comparison &rarr;
+                      View comparison <span aria-hidden="true">&rarr;</span>
                     </Link>
                   )}
                 </div>
@@ -229,27 +229,29 @@ export function RequestList() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <nav aria-label="Requests pagination" className="flex items-center justify-center gap-2 mt-8">
           <button
             type="button"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
+            aria-label="Go to previous page"
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Previous
           </button>
-          <span className="text-sm text-text-secondary">
+          <span className="text-sm text-text-secondary" aria-live="polite" aria-atomic="true">
             Page {page} of {totalPages}
           </span>
           <button
             type="button"
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
+            aria-label="Go to next page"
             className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Next
           </button>
-        </div>
+        </nav>
       )}
     </div>
   );

@@ -206,11 +206,13 @@ function SearchContent() {
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
               <span className="text-sm font-medium text-text">{query} vs</span>
+              <label htmlFor="compare-with" className="sr-only">Compare {query} with</label>
               <input
                 autoComplete="off"
                 type="text"
                 placeholder="Enter something to compare..."
                 id="compare-with"
+                aria-label={`Compare ${query} with`}
                 className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none w-56"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {

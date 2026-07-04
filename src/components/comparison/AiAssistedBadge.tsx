@@ -68,7 +68,8 @@ export function AiAssistedBadge() {
       {open && (
         <span
           id={tooltipId}
-          role="tooltip"
+          role="region"
+          aria-label="About AI-assisted verdicts"
           className="absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 rounded-xl bg-surface-dark/95 backdrop-blur-sm border border-yellow-400/20 shadow-xl overflow-hidden"
         >
           {/* Tooltip header strip */}
@@ -82,9 +83,10 @@ export function AiAssistedBadge() {
             Our verdict is generated from product specs and verified reviews, then edited for accuracy.{" "}
             <a
               href="/how-we-write-verdicts"
+              aria-label="Learn more about how we write AI-assisted verdicts"
               className="text-yellow-300 underline underline-offset-2 hover:text-yellow-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 rounded"
             >
-              Learn more →
+              Learn more <span aria-hidden="true">→</span>
             </a>
           </span>
         </span>

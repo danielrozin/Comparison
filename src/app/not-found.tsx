@@ -69,7 +69,7 @@ export default async function NotFound() {
               href="/"
               className="px-6 py-2.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors"
             >
-              ← Go Home
+              <span aria-hidden="true">← </span>Go Home
             </Link>
             <Link
               href="/trending"

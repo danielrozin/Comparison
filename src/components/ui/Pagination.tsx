@@ -41,14 +41,15 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
       {/* Page numbers */}
       {pages.map((page, idx) =>
         page === null ? (
-          <span key={`ellipsis-${idx}`} className="px-2 py-2 text-sm text-text-secondary">
-            ...
+          <span key={`ellipsis-${idx}`} className="px-2 py-2 text-sm text-text-secondary" aria-hidden="true">
+            &hellip;
           </span>
         ) : page === currentPage ? (
           <span
             key={page}
             className="flex items-center justify-center w-10 h-10 text-sm font-bold text-white bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg shadow-sm"
             aria-current="page"
+            aria-label={`Page ${page}, current`}
           >
             {page}
           </span>
@@ -56,6 +57,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
           <Link
             key={page}
             href={pageUrl(page)}
+            aria-label={`Page ${page}`}
             className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
           >
             {page}

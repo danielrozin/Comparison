@@ -235,7 +235,7 @@ export default async function HomePage() {
                   href={example.href}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
                 >
-                  <span className="text-[10px] text-white/40">↗</span>
+                  <span className="text-[10px] text-white/40" aria-hidden="true">↗</span>
                   {example.label}
                 </Link>
               ))}
@@ -251,7 +251,7 @@ export default async function HomePage() {
                     href={`/category/${cat.slug}`}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
                   >
-                    <span className="text-sm leading-none group-hover:scale-110 transition-transform inline-block">{cat.icon}</span>
+                    <span className="text-sm leading-none group-hover:scale-110 transition-transform inline-block" aria-hidden="true">{cat.icon}</span>
                     {cat.name}
                   </Link>
                 ))}
