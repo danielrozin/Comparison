@@ -309,6 +309,15 @@ export async function generateComparison(
       // Images are non-critical — don't break comparison generation
     }
 
+    if (comparison.entities.length < 2) {
+      return {
+        success: false,
+        comparison: null,
+        error: "Generation produced fewer than 2 entities",
+        errorStage: "parse",
+      };
+    }
+
     return { success: true, comparison };
   } catch (error) {
     console.error("AI comparison generation failed:", error);
@@ -617,6 +626,15 @@ export async function generateMultiComparison(
       });
     } catch {
       // Images are non-critical
+    }
+
+    if (comparison.entities.length < 2) {
+      return {
+        success: false,
+        comparison: null,
+        error: "Generation produced fewer than 2 entities",
+        errorStage: "parse",
+      };
     }
 
     return { success: true, comparison };
