@@ -165,13 +165,29 @@ export async function GET(request: NextRequest) {
     name: `Search results for "${q}" on ${SITE_NAME}`,
     url: `${SEARCH_URL}?q=${encodeURIComponent(q)}`,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    dateModified: new Date().toISOString(),
     description: `Found ${total} result${total !== 1 ? "s" : ""} for "${q}" on ${SITE_NAME} — comparisons, entities, and articles.`,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    // potentialAction — SearchAction lets AI routers know this page returns search results
+    // and can be re-queried with different terms. Enables AI assistants to treat the
+    // search API as a first-class action target for "find X on A Versus B" queries.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/api/v1/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
     mainEntity: {
       "@type": "ItemList",
       "@id": `${SEARCH_URL}?q=${encodeURIComponent(q)}#list`,
       name: `Search results for "${q}"`,
+      inLanguage: "en-US",
+      isAccessibleForFree: true,
       numberOfItems: total,
       itemListElement: allResults.map((r, i) => ({
         "@type": "ListItem",

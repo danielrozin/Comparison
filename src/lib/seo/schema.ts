@@ -328,7 +328,7 @@ export function webSiteSchema() {
     inLanguage: "en-US",
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: new Date().toISOString(),
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },

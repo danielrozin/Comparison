@@ -65,6 +65,9 @@ export async function GET(request: NextRequest) {
     description: `The most popular comparisons on ${SITE_NAME} right now, ranked by views.`,
     url: TRENDING_PAGE_URL,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    potentialAction: { "@type": "ReadAction", target: TRENDING_PAGE_URL },
     numberOfItems: results.length,
     itemListElement: results.map((c) => ({
       "@type": "ListItem",

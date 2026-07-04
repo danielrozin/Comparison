@@ -216,6 +216,8 @@ export async function GET(request: NextRequest) {
     description: "Incremental feed of comparisons and blog articles added or updated since a given timestamp.",
     url: CHANGES_URL,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     encodingFormat: "application/json",
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
