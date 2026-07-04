@@ -28,7 +28,7 @@ export function ShortAnswerBlock({
   // per URL, and a near-duplicate single-Q schema can dilute the indexed one. (DAN-410)
   return (
     <>
-      <section id="short-answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+      <section id="short-answer" aria-labelledby="short-answer-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
         <div className="relative max-w-3xl mx-auto overflow-hidden">
           {/* Gradient border via wrapper */}
           <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-amber-300 to-orange-400 rounded-2xl" />
@@ -47,7 +47,7 @@ export function ShortAnswerBlock({
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <h2 className="text-xs font-bold text-amber-700 uppercase tracking-widest">
+                  <h2 id="short-answer-heading" className="text-xs font-bold text-amber-700 uppercase tracking-widest">
                     Quick Answer
                   </h2>
                   <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">

@@ -80,6 +80,7 @@ export function LegalPageLayout({
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
+                      aria-current={activeSection === section.id ? "true" : undefined}
                       className={`block pl-4 py-1.5 text-sm transition-colors border-l-2 -ml-px ${
                         activeSection === section.id
                           ? "border-primary-600 text-primary-600 font-medium"
