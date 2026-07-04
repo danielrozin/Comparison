@@ -500,9 +500,16 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                         <span className="text-xs text-green-600 font-medium">Verified</span>
                       )}
                     </div>
-                    {review.rating != null && (
-                      <StarRating rating={review.rating} size="sm" />
-                    )}
+                    <div className="flex items-center gap-2">
+                      {review.sourceDate && (
+                        <time dateTime={new Date(review.sourceDate).toISOString().slice(0, 10)} className="text-xs text-text-secondary">
+                          {new Date(review.sourceDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                        </time>
+                      )}
+                      {review.rating != null && (
+                        <StarRating rating={review.rating} size="sm" />
+                      )}
+                    </div>
                   </div>
                   {review.title && (
                     <h3 className="font-semibold text-text mb-1">{review.title}</h3>
