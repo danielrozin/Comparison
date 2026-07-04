@@ -190,7 +190,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
               href={`/compare/${existingSlug}`}
               className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-1 inline-block"
             >
-              View the comparison &rarr;
+              View the comparison <span aria-hidden="true">&rarr;</span>
             </a>
           )}
         </div>

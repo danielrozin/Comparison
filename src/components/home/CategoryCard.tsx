@@ -57,7 +57,7 @@ export function CategoryCard({
       <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
       <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110`}>
-        <span className="text-2xl leading-none">{category.icon}</span>
+        <span className="text-2xl leading-none" aria-hidden="true">{category.icon}</span>
       </div>
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">
         {category.name}

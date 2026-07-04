@@ -93,7 +93,7 @@ export function FeaturedComparisons({
                       </span>
                     )}
                   </div>
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200`}>
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${grad} flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200`} aria-hidden="true">
                     <span className="text-[8px] font-black text-white leading-none">VS</span>
                   </div>
                 </div>

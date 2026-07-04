@@ -415,21 +415,24 @@ export default async function BlogPage({
 
       {/* Category Filters */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div className="bg-white rounded-xl shadow-lg p-2 flex flex-wrap gap-1 justify-center">
-          {CATEGORIES.map((cat) => (
-            <Link
-              key={cat}
-              href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
-              className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
-                  : "text-text-secondary hover:bg-surface-alt hover:text-text"
-              }`}
-            >
-              {cat}
-            </Link>
-          ))}
-        </div>
+        <nav aria-label="Filter articles by category">
+          <div className="bg-white rounded-xl shadow-lg p-2 flex flex-wrap gap-1 justify-center">
+            {CATEGORIES.map((cat) => (
+              <Link
+                key={cat}
+                href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
+                aria-current={activeCategory === cat ? "true" : undefined}
+                className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
+                  activeCategory === cat
+                    ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
+                    : "text-text-secondary hover:bg-surface-alt hover:text-text"
+                }`}
+              >
+                {cat}
+              </Link>
+            ))}
+          </div>
+        </nav>
       </div>
 
       {/* Articles Grid */}
@@ -517,10 +520,11 @@ export default async function BlogPage({
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-12">
+              <nav aria-label="Blog pagination" className="flex justify-center items-center gap-2 mt-12">
                 {page > 1 && (
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page - 1}`}
+                    aria-label="Go to previous page"
                     className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors"
                   >
                     Previous
@@ -531,6 +535,8 @@ export default async function BlogPage({
                     <Link
                       key={p}
                       href={`/blog?${category ? `category=${category}&` : ""}page=${p}`}
+                      aria-label={`Page ${p}`}
+                      aria-current={p === page ? "page" : undefined}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                         p === page
                           ? "bg-gradient-to-br from-primary-600 to-accent-600 text-white shadow-sm"
@@ -544,12 +550,13 @@ export default async function BlogPage({
                 {page < totalPages && (
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page + 1}`}
+                    aria-label="Go to next page"
                     className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors"
                   >
                     Next
                   </Link>
                 )}
-              </div>
+              </nav>
             )}
           </>
         )}
