@@ -94,7 +94,7 @@ export function MultiComparisonTable({
   const attrColWidth = n >= 5 ? "30%" : n === 4 ? "32%" : "36%";
 
   return (
-    <section aria-labelledby="full-comparison-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
