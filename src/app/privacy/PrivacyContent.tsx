@@ -99,7 +99,7 @@ export function PrivacyContent() {
         <p className="mb-4">
           Where we use Google Analytics, we have enabled IP anonymization. You may opt out by installing the{" "}
           <a href="https://tools.google.com/dlpage/gaoptout" className="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">
-            Google Analytics Opt-out Browser Add-on
+            Google Analytics Opt-out Browser Add-on<span className="sr-only"> (opens in new tab)</span>
           </a>.
         </p>
         <p>Analytics data is retained in aggregated, anonymized form. We do not sell analytics data to third parties.</p>

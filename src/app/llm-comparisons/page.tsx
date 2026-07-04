@@ -365,7 +365,7 @@ export default function LLMComparisonsPage() {
             rel="nofollow noopener noreferrer"
             className="text-primary-600 hover:underline"
           >
-            Comparison of large language models
+            Comparison of large language models<span className="sr-only"> (opens in new tab)</span>
           </a>{" "}
           for easy cross-reference.
         </p>
@@ -494,7 +494,7 @@ export default function LLMComparisonsPage() {
               {m.name} ({m.vendor}).{" "}
               {m.sources.map((s, si) => (
                 <span key={s.url}>
-                  <a href={s.url} target="_blank" rel="nofollow noopener noreferrer" className="text-primary-600 hover:underline">{s.label}</a>
+                  <a href={s.url} target="_blank" rel="nofollow noopener noreferrer" className="text-primary-600 hover:underline">{s.label}<span className="sr-only"> (opens in new tab)</span></a>
                   {si < m.sources.length - 1 ? "; " : ""}
                 </span>
               ))}

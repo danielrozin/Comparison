@@ -40,7 +40,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-black hover:text-white transition-all duration-150 hover:scale-110"
-        aria-label="Share on X"
+        aria-label="Share on X (opens in new tab)"
         onClick={() => trackShareClick("twitter", slug)}
       >
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -54,7 +54,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-blue-600 hover:text-white transition-all duration-150 hover:scale-110"
-        aria-label="Share on Facebook"
+        aria-label="Share on Facebook (opens in new tab)"
         onClick={() => trackShareClick("facebook", slug)}
       >
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -68,7 +68,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#0077B5] hover:text-white transition-all duration-150 hover:scale-110"
-        aria-label="Share on LinkedIn"
+        aria-label="Share on LinkedIn (opens in new tab)"
         onClick={() => trackShareClick("linkedin", slug)}
       >
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -82,7 +82,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#25D366] hover:text-white transition-all duration-150 hover:scale-110"
-        aria-label="Share on WhatsApp"
+        aria-label="Share on WhatsApp (opens in new tab)"
         onClick={() => trackShareClick("whatsapp", slug)}
       >
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -96,7 +96,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         target="_blank"
         rel="noopener noreferrer"
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-orange-500 hover:text-white transition-all duration-150 hover:scale-110"
-        aria-label="Share on Reddit"
+        aria-label="Share on Reddit (opens in new tab)"
         onClick={() => trackShareClick("reddit", slug)}
       >
         <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

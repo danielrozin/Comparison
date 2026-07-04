@@ -389,7 +389,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >
-                LinkedIn
+                LinkedIn<span className="sr-only"> (opens in new tab)</span>
               </a>
               <span className="text-text-secondary text-xs">·</span>
               <a
@@ -398,7 +398,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >
-                Facebook
+                Facebook<span className="sr-only"> (opens in new tab)</span>
               </a>
               <span className="text-text-secondary text-xs">·</span>
               <Link href="/authors/daniel-rozin" className="text-xs text-primary-600 hover:underline font-medium">
@@ -429,7 +429,7 @@ export default function AboutPage() {
                 rel="noopener noreferrer"
                 className="text-xs text-primary-600 hover:underline font-medium"
               >
-                Facebook
+                Facebook<span className="sr-only"> (opens in new tab)</span>
               </a>
               <span className="text-text-secondary text-xs">·</span>
               <a

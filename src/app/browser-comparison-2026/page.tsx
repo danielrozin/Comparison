@@ -454,7 +454,7 @@ export default function BrowserComparison2026Page() {
               {b.name} ({b.vendor}).{" "}
               {b.sources.map((s, si) => (
                 <span key={s.url}>
-                  <a href={s.url} rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">{s.label}</a>
+                  <a href={s.url} rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">{s.label}<span className="sr-only"> (opens in new tab)</span></a>
                   {si < b.sources.length - 1 ? "; " : ""}
                 </span>
               ))}
@@ -464,7 +464,7 @@ export default function BrowserComparison2026Page() {
           <li id="cite-statcounter">
             <sup>*</sup> StatCounter Global Stats. &ldquo;Browser Market Share Worldwide — April 2026.&rdquo; StatCounter, May 2026.{" "}
             <a href="https://gs.statcounter.com/browser-market-share/" rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">
-              gs.statcounter.com/browser-market-share/
+              gs.statcounter.com/browser-market-share/<span className="sr-only"> (opens in new tab)</span>
             </a>. Accessed May 2026.
           </li>
         </ol>

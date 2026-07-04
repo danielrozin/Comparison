@@ -81,7 +81,7 @@ export function ResourcesSection({
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-text group-hover:text-blue-700 transition-colors truncate">
-                      {r.label}
+                      {r.label}<span className="sr-only"> (opens in new tab)</span>
                     </p>
                     {r.description && (
                       <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">
@@ -158,7 +158,7 @@ export function ResourcesSection({
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-text group-hover:text-red-700 transition-colors truncate">
-                      {r.label}
+                      {r.label}<span className="sr-only"> (opens in new tab)</span>
                     </p>
                     {r.description && (
                       <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">

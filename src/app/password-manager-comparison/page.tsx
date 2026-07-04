@@ -488,7 +488,7 @@ export default function PasswordManagerComparisonPage() {
               {pm.name} ({pm.vendor}).{" "}
               {pm.sources.map((s, si) => (
                 <span key={s.url}>
-                  <a href={s.url} rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">{s.label}</a>
+                  <a href={s.url} rel="nofollow noopener" target="_blank" className="text-primary-600 hover:underline">{s.label}<span className="sr-only"> (opens in new tab)</span></a>
                   {si < pm.sources.length - 1 ? "; " : ""}
                 </span>
               ))}

@@ -543,7 +543,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   )}
                   {review.sourceUrl && (
                     <a href={review.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary-600 hover:underline mt-2 inline-block">
-                      View original
+                      View original<span className="sr-only"> (opens in new tab)</span>
                     </a>
                   )}
                 </div>
