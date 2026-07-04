@@ -60,12 +60,12 @@ export async function GET(
     name: hub.h1,
     description: hub.description,
     url: hubUrl,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: hub.comparisonSlugs.length,
     itemListOrder: "https://schema.org/ItemListUnordered",
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: new Date().toISOString(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     itemListElement: hub.comparisonSlugs.map((compSlug, i) => {
       const compUrl = `${SITE_URL}/compare/${compSlug}`;
@@ -84,7 +84,7 @@ export async function GET(
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "@id": `${hubUrl}#faq`,
-        inLanguage: "en",
+        inLanguage: "en-US",
         mainEntity: hub.faqs.map((faq) => ({
           "@type": "Question",
           name: faq.q,

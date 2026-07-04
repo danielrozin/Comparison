@@ -115,7 +115,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     name: h1 ?? title,
     description,
     url,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: listItems.length,
     itemListElement: listItems.map((item) => {
       const itemUrl = `${url}#${item.anchor}`;

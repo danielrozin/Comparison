@@ -55,7 +55,7 @@ export async function GET(
     name: `Related comparisons for ${comparison.title}`,
     description: `Comparisons related to ${comparison.title} — explore similar topics on ${SITE_NAME}.`,
     url: pageUrl,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: related.length,
     itemListElement: related.map((c, i) => {
       const itemUrl = `${SITE_URL}/compare/${c.slug}`;

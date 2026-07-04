@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     name: `Trending Comparisons on ${SITE_NAME}`,
     description: `The most popular comparisons on ${SITE_NAME} right now, ranked by views.`,
     url: TRENDING_PAGE_URL,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: results.length,
     itemListElement: results.map((c) => ({
       "@type": "ListItem",

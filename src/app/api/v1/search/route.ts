@@ -164,7 +164,7 @@ export async function GET(request: NextRequest) {
     "@id": `${SEARCH_URL}?q=${encodeURIComponent(q)}#results`,
     name: `Search results for "${q}" on ${SITE_NAME}`,
     url: `${SEARCH_URL}?q=${encodeURIComponent(q)}`,
-    inLanguage: "en",
+    inLanguage: "en-US",
     description: `Found ${total} result${total !== 1 ? "s" : ""} for "${q}" on ${SITE_NAME} — comparisons, entities, and articles.`,
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },

@@ -81,7 +81,7 @@ export async function GET(
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: new Date().toISOString(),
     license: "https://creativecommons.org/licenses/by/4.0/",
   };
 

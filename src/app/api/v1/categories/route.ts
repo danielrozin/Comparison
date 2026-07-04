@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
     "@id": `${SITE_URL}/#taxonomy`,
     name: "A Versus B Comparison Taxonomy",
     url: CATEGORIES_URL,
-    inLanguage: "en",
+    inLanguage: "en-US",
     datePublished: "2024-01-01",
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
     hasDefinedTerm: CATEGORIES.map((cat) => ({

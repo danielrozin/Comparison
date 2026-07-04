@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
       "@id": `${comparisonUrl}#webpage`,
       name: found.title,
       url: comparisonUrl,
-      inLanguage: "en",
+      inLanguage: "en-US",
       dateModified: found.metadata.updatedAt,
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
       author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },

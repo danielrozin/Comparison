@@ -112,7 +112,7 @@ async function handleBatch(slugs: string[], fields: string[] | null) {
     "@type": "ItemList",
     "@id": `${BATCH_URL}#list`,
     name: `Batch comparison results from ${SITE_NAME}`,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: foundResults.length,
     itemListElement: foundResults.map((r, i) => {
       const itemUrl = `${SITE_URL}/compare/${r.slug}`;
