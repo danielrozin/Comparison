@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
-import { getAllSitemapData } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
@@ -222,23 +221,35 @@ export default async function sitemap({
   }
 
   // ── Sitemap 2: Entity + Alternatives pages ──
+  // Uses a direct Prisma query so entity names are available for OG image URL
+  // construction. Entity OG images (/api/og?title={name}&type=entity) are added
+  // to entity entries; alternatives entries share the same entity OG image since
+  // the page is visually "Alternatives to {entity}".
   if (numId === 2) {
     try {
-      const { entities: entityData } = await getAllSitemapData();
-      const entries = Array.from(entityData.entries());
+      const prisma = getPrisma();
+      if (!prisma) return [];
 
-      const entityPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-        url: `${SITE_URL}/entity/${slug}`,
-        lastModified: updatedAt,
+      const entities = await prisma.entity.findMany({
+        select: { slug: true, name: true, updatedAt: true },
+        orderBy: { id: "asc" },
+        take: MAX_URLS_PER_SITEMAP,
+      });
+
+      const entityPages: MetadataRoute.Sitemap = entities.map((e) => ({
+        url: `${SITE_URL}/entity/${e.slug}`,
+        lastModified: e.updatedAt,
         changeFrequency: "weekly" as const,
         priority: 0.7,
+        images: [`${SITE_URL}/api/og?title=${encodeURIComponent(e.name)}&type=entity`],
       }));
 
-      const alternativesPages: MetadataRoute.Sitemap = entries.map(([slug, updatedAt]) => ({
-        url: `${SITE_URL}/alternatives/${slug}`,
-        lastModified: updatedAt,
+      const alternativesPages: MetadataRoute.Sitemap = entities.map((e) => ({
+        url: `${SITE_URL}/alternatives/${e.slug}`,
+        lastModified: e.updatedAt,
         changeFrequency: "weekly" as const,
         priority: 0.6,
+        images: [`${SITE_URL}/api/og?title=${encodeURIComponent(e.name)}&type=entity`],
       }));
 
       return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
@@ -261,6 +272,7 @@ export default async function sitemap({
         lastModified: article.updatedAt ? new Date(article.updatedAt).toISOString() : now,
         changeFrequency: "weekly" as const,
         priority: 0.7,
+        images: [`${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`],
       }));
     } catch {
       // Blog articles unavailable — skip
