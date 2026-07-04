@@ -220,6 +220,7 @@ export function Header() {
                         type="button"
                         onClick={() => setMobileExpanded(isExpanded ? null : item.slug)}
                         aria-expanded={isExpanded}
+                        aria-controls={`mobile-subs-${item.slug}`}
                         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
                         className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-surface-alt"
                       >
@@ -231,7 +232,7 @@ export function Header() {
                   </div>
 
                   {/* Expandable subcategories */}
-                  <div aria-hidden={!isExpanded} className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                  <div id={`mobile-subs-${item.slug}`} aria-hidden={!isExpanded} className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
                     <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
                       {subs.map((sub) => (
                         <Link
