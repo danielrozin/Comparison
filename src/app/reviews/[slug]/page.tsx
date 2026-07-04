@@ -106,9 +106,17 @@ function SmartScoreRing({ score }: { score: number }) {
   const color = score >= 90 ? "text-green-600" : score >= 75 ? "text-blue-600" : score >= 60 ? "text-amber-600" : "text-text-secondary";
   const bgColor = score >= 90 ? "bg-green-50" : score >= 75 ? "bg-blue-50" : score >= 60 ? "bg-amber-50" : "bg-surface-alt";
   return (
-    <div className={`flex flex-col items-center justify-center w-24 h-24 rounded-full ${bgColor}`}>
-      <span className={`text-3xl font-black ${color}`}>{score}</span>
-      <span className="text-xs text-text-secondary font-medium">SmartScore</span>
+    <div
+      role="meter"
+      aria-label="SmartScore"
+      aria-valuenow={score}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuetext={`SmartScore: ${score} out of 100`}
+      className={`flex flex-col items-center justify-center w-24 h-24 rounded-full ${bgColor}`}
+    >
+      <span className={`text-3xl font-black ${color}`} aria-hidden="true">{score}</span>
+      <span className="text-xs text-text-secondary font-medium" aria-hidden="true">SmartScore</span>
     </div>
   );
 }
@@ -117,12 +125,16 @@ function SentimentBar({ positivePct, negativePct }: { positivePct: number; negat
   const neutralPct = Math.max(0, 100 - positivePct - negativePct);
   return (
     <div className="w-full">
-      <div className="flex h-3 rounded-full overflow-hidden">
+      <div
+        role="img"
+        aria-label={`Sentiment: ${positivePct}% positive, ${neutralPct}% neutral, ${negativePct}% negative`}
+        className="flex h-3 rounded-full overflow-hidden"
+      >
         <div className="bg-green-400" style={{ width: `${positivePct}%` }} />
         <div className="bg-border" style={{ width: `${neutralPct}%` }} />
         <div className="bg-red-400" style={{ width: `${negativePct}%` }} />
       </div>
-      <div className="flex justify-between mt-1 text-xs text-text-secondary">
+      <div className="flex justify-between mt-1 text-xs text-text-secondary" aria-hidden="true">
         <span>{positivePct}% positive</span>
         <span>{negativePct}% negative</span>
       </div>
