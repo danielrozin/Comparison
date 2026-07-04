@@ -81,6 +81,12 @@ export function Header() {
                   className={`relative flex-shrink-0 ${hideOnLg ? "hidden xl:block" : ""}`}
                   onMouseEnter={() => hasSubs && handleEnter(item.slug)}
                   onMouseLeave={handleLeave}
+                  onFocus={() => hasSubs && setOpenDropdown(item.slug)}
+                  onBlur={(e) => {
+                    if (hasSubs && !e.currentTarget.contains(e.relatedTarget as Node)) {
+                      setOpenDropdown(null);
+                    }
+                  }}
                 >
                   <Link
                     href={`/category/${item.slug}`}
