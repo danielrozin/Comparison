@@ -49,6 +49,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
               : "bg-surface-alt border-border text-text hover:border-primary-300"
           }`}
           aria-expanded={isOpen}
+          aria-controls="toc-dropdown"
         >
           {/* Progress bar dot */}
           <div className="flex-shrink-0 w-5 h-5 relative">
@@ -95,7 +96,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <nav className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
+          <nav id="toc-dropdown" className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
             <ul className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
@@ -104,6 +105,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                 <a
                   href={`#${item.id}`}
                   onClick={() => setIsOpen(false)}
+                  aria-current={isActive ? "true" : undefined}
                   className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
                     isActive
                       ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
@@ -139,7 +141,14 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
               On this page
             </p>
             {/* Progress bar */}
-            <div className="mt-2 h-1 bg-surface-alt rounded-full overflow-hidden">
+            <div
+              role="progressbar"
+              aria-valuenow={progressPct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Reading progress"
+              className="mt-2 h-1 bg-surface-alt rounded-full overflow-hidden"
+            >
               <div
                 className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
@@ -155,6 +164,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                 <li key={item.id}>
                 <a
                   href={`#${item.id}`}
+                  aria-current={isActive ? "true" : undefined}
                   className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden ${
                     isActive
                       ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
