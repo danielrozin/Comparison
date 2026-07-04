@@ -373,7 +373,7 @@ export default function AdminPage() {
               href="/admin/requests"
               className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
             >
-              <span className="text-xl">💡</span>
+              <span className="text-xl" aria-hidden="true">💡</span>
               <div>
                 <p className="text-sm font-semibold text-text">Comparison Requests</p>
                 <p className="text-xs text-text-secondary">Moderate user submissions</p>
@@ -383,7 +383,7 @@ export default function AdminPage() {
               href="/admin/analytics"
               className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
             >
-              <span className="text-xl">📊</span>
+              <span className="text-xl" aria-hidden="true">📊</span>
               <div>
                 <p className="text-sm font-semibold text-text">Analytics</p>
                 <p className="text-xs text-text-secondary">View detailed analytics</p>
@@ -393,7 +393,7 @@ export default function AdminPage() {
               href="/admin/outreach"
               className="px-4 py-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-sm transition-all flex items-center gap-3"
             >
-              <span className="text-xl">🔗</span>
+              <span className="text-xl" aria-hidden="true">🔗</span>
               <div>
                 <p className="text-sm font-semibold text-text">Outreach Queue</p>
                 <p className="text-xs text-text-secondary">Quora &amp; Reddit posting workflow</p>

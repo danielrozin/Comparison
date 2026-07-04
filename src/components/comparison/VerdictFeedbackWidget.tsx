@@ -148,7 +148,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
               : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100"
           }`}
         >
-          <span aria-hidden className="text-base">👍</span>
+          <span aria-hidden="true" className="text-base">👍</span>
           <span>Helpful</span>
         </button>
         <button
@@ -162,7 +162,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
               : "bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100"
           }`}
         >
-          <span aria-hidden className="text-base">👎</span>
+          <span aria-hidden="true" className="text-base">👎</span>
           <span>Not quite</span>
         </button>
       </div>
@@ -258,7 +258,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
         }`}
       >
         <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 border border-emerald-300/40 px-3 py-1.5 text-xs font-medium text-emerald-50">
-          <span aria-hidden>✓</span>
+          <span aria-hidden="true">✓</span>
           Thanks — we&apos;ll use this to improve our verdicts.
         </span>
       </div>

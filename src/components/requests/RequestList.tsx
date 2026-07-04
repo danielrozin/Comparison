@@ -134,7 +134,7 @@ export function RequestList() {
         </div>
       ) : requests.length === 0 ? (
         <div className="text-center py-16 bg-surface-alt rounded-xl border border-border">
-          <div className="text-4xl mb-3">📭</div>
+          <div className="text-4xl mb-3" aria-hidden="true">📭</div>
           <h3 className="text-lg font-semibold text-text mb-2">
             No requests yet
           </h3>

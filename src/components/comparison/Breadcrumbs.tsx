@@ -45,7 +45,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
 
           {category && (
             <>
-              <li aria-hidden><ChevronSep /></li>
+              <li aria-hidden="true"><ChevronSep /></li>
               <li>
                 <Link
                   href={`/category/${category}`}
@@ -59,7 +59,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
 
           {subcat && (
             <>
-              <li aria-hidden><ChevronSep /></li>
+              <li aria-hidden="true"><ChevronSep /></li>
               <li>
                 <Link
                   href={`/category/${category}/${subcat.slug}`}
@@ -71,7 +71,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
             </>
           )}
 
-          <li aria-hidden><ChevronSep /></li>
+          <li aria-hidden="true"><ChevronSep /></li>
           <li className="flex items-center gap-1.5" aria-current="page">
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary-50 border border-primary-100 text-primary-700 font-semibold max-w-[200px] sm:max-w-none truncate">
               {title}

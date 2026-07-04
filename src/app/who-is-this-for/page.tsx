@@ -356,7 +356,7 @@ export default function WhoIsThisForPage() {
               className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">{user.icon}</span>
+                <span className="text-2xl" aria-hidden="true">{user.icon}</span>
                 <h3 className="text-lg font-semibold text-text">
                   {user.persona}
                 </h3>

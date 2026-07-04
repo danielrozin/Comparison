@@ -303,7 +303,7 @@ export default function HowWeWriteVerdictsPage() {
           <p className="text-text-secondary leading-relaxed">
             Use the <strong className="text-text">&ldquo;Was this verdict helpful?&rdquo;</strong>{" "}
             buttons directly under the verdict on any comparison page. Tap{" "}
-            <span aria-hidden>👎</span> &ldquo;No,&rdquo; and a short text box will appear where you
+            <span aria-hidden="true">👎</span> &ldquo;No,&rdquo; and a short text box will appear where you
             can tell us what we got wrong — recent release, missing context, factual error, biased
             framing, anything. Reasons go straight into our editorial queue.
           </p>
