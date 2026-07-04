@@ -272,6 +272,12 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       <link rel="up" href={`${SITE_URL}/category/${slug}`} title={`${category.name} comparisons`} />
       <link rel="cite-as" href={`${SITE_URL}/category/${slug}/${subcategory}`} />
       <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
+      {page > 1 && (
+        <link rel="prev" href={page === 2 ? `${SITE_URL}/category/${slug}/${subcategory}` : `${SITE_URL}/category/${slug}/${subcategory}?page=${page - 1}`} />
+      )}
+      {page < totalPages && (
+        <link rel="next" href={`${SITE_URL}/category/${slug}/${subcategory}?page=${page + 1}`} />
+      )}
       <meta httpEquiv="content-language" content="en" />
       <script
         type="application/ld+json"

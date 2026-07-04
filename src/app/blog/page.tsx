@@ -353,12 +353,21 @@ export default async function BlogPage({
     locationCreated: { "@type": "Country", name: "United States" },
   };
 
+  const blogBase = `${SITE_URL}/blog${category ? `?category=${category}` : ""}`;
+  const sep = category ? "&" : "?";
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
+      {page > 1 && (
+        <link rel="prev" href={page === 2 ? blogBase : `${blogBase}${sep}page=${page - 1}`} />
+      )}
+      {page < totalPages && (
+        <link rel="next" href={`${blogBase}${sep}page=${page + 1}`} />
+      )}
     <main className="min-h-screen bg-surface">
       {/* Hero */}
       <section aria-labelledby="blog-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
