@@ -233,7 +233,14 @@ export function InterceptSurvey({
         ) : (
           <div className="px-4 py-4">
             {/* Progress */}
-            <div className="h-1 w-full bg-border rounded-full mb-4 overflow-hidden">
+            <div
+              role="progressbar"
+              aria-valuenow={stepIdx + 1}
+              aria-valuemin={1}
+              aria-valuemax={STEPS.length}
+              aria-label={`Survey step ${stepIdx + 1} of ${STEPS.length}`}
+              className="h-1 w-full bg-border rounded-full mb-4 overflow-hidden"
+            >
               <div
                 className="h-full bg-primary-600 rounded-full transition-all duration-300"
                 style={{ width: `${((stepIdx + 1) / STEPS.length) * 100}%` }}
@@ -260,6 +267,7 @@ export function InterceptSurvey({
                 <div className="flex gap-2">
                   <button
                     type="button"
+                    aria-pressed={answers.q2Found === true}
                     onClick={() => {
                       setAnswers((a) => ({ ...a, q2Found: true }));
                       advance();
@@ -270,6 +278,7 @@ export function InterceptSurvey({
                   </button>
                   <button
                     type="button"
+                    aria-pressed={answers.q2Found === false}
                     onClick={() => setAnswers((a) => ({ ...a, q2Found: false }))}
                     className={`flex-1 py-2.5 text-sm font-medium rounded-lg border transition-colors ${
                       answers.q2Found === false
@@ -282,7 +291,9 @@ export function InterceptSurvey({
                 </div>
                 {answers.q2Found === false && (
                   <div className="mt-3">
+                    <label htmlFor="intercept-missing" className="sr-only">What was missing? (optional)</label>
                     <textarea
+                      id="intercept-missing"
                       value={answers.q2Missing || ""}
                       onChange={(e) => setAnswers((a) => ({ ...a, q2Missing: e.target.value }))}
                       placeholder="What was missing? (optional)"
@@ -312,6 +323,7 @@ export function InterceptSurvey({
                       type="button"
                       key={n}
                       aria-label={`${n} out of 5`}
+                      aria-pressed={answers.q3Rating === n}
                       onClick={() => {
                         setAnswers((a) => ({ ...a, q3Rating: n }));
                         advance();
@@ -395,6 +407,7 @@ function SingleChoice({
           <button
             type="button"
             key={opt}
+            aria-pressed={value === opt}
             onClick={() => onSelect(opt)}
             className={`w-full text-left px-3 py-2 text-sm rounded-lg border transition-colors ${
               value === opt

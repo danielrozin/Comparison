@@ -164,6 +164,7 @@ export function FeedbackWidget() {
                     <button
                       key={opt.value}
                       type="button"
+                      aria-pressed={type === opt.value}
                       onClick={() => setType(opt.value)}
                       className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors ${
                         type === opt.value
