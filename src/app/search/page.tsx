@@ -137,7 +137,7 @@ function SearchContent() {
           <p className="text-sm text-text-secondary mb-4">
             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
           </p>
-          <ul className="space-y-3 list-none" aria-label="Search results">
+          <ul role="list" className="space-y-3 list-none" aria-label="Search results">
           {results.map((result) => {
             const parts = result.title.split(/\s+vs\.?\s+/i);
             return (

@@ -300,7 +300,7 @@ export default async function MostComparedStudyPage() {
               Software buyers comparison-shop harder than anyone. These are the SaaS products that
               show up in the most head-to-head evaluations.
             </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
               {study.topSaaS.map((b) => (
                 <li key={b.slug}>
                 <Link

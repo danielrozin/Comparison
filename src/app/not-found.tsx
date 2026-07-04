@@ -94,7 +94,7 @@ export default async function NotFound() {
             <h2 id="popular-comparisons-heading" className="text-xl font-display font-bold text-text mb-4">
               Popular Comparisons
             </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
               {trending.map((item) => {
                 const parts = item.title.split(/\s+vs\.?\s+/i);
                 return (
@@ -132,7 +132,7 @@ export default async function NotFound() {
           <h2 id="browse-categories-heading" className="text-xl font-display font-bold text-text mb-4">
             Browse by Category
           </h2>
-          <ul className="flex flex-wrap gap-2 list-none">
+          <ul role="list" className="flex flex-wrap gap-2 list-none">
             {CATEGORIES.slice(0, 10).map((cat) => (
               <li key={cat.slug}>
               <Link

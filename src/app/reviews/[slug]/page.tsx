@@ -87,7 +87,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function SourceBreakdown({ breakdown }: { breakdown: Record<string, { avg: number; count: number }> }) {
   const sources = Object.entries(breakdown).sort((a, b) => b[1].count - a[1].count);
   return (
-    <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
+    <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
       {sources.map(([source, data]) => (
         <li key={source} className="bg-white border border-border rounded-lg p-3">
           <p className="text-sm font-medium text-text capitalize">{source}</p>
@@ -389,7 +389,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
 
         {/* Aggregation details */}
         {aggregation && (
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 list-none">
+          <ul role="list" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 list-none">
             {/* Pros & Cons */}
             <li className="bg-white border border-border rounded-xl p-6">
               <div className="flex items-center gap-3 mb-4">

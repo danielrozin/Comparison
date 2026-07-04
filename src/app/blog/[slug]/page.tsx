@@ -834,7 +834,7 @@ export default async function BlogPostPage({
                 <h3 className="text-lg font-bold text-text mb-4">
                   Related Comparisons
                 </h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
                   {article.relatedComparisonSlugs.map((compSlug) => {
                     const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
                     const parts = title.split(/\s+vs\.?\s+/i);
@@ -884,7 +884,7 @@ export default async function BlogPostPage({
 
             {/* TOC sidebar — sticky, desktop only */}
             {toc.length >= 2 && (
-              <aside className="hidden xl:block">
+              <aside className="hidden xl:block" aria-label="Table of contents">
                 <BlogTableOfContents headings={toc} />
               </aside>
             )}

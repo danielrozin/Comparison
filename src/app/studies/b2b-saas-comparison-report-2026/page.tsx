@@ -341,7 +341,7 @@ export default async function B2BSaaSStudyPage() {
                 ? ` ${topChallenger.challenger} leads, appearing in ${topChallenger.challengerCount} matchups vs ${topChallenger.incumbent}'s ${topChallenger.incumbentCount}.`
                 : ""}
             </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
               {study.challengers.map((c) => (
                 <li
                   key={`${c.challengerSlug}-${c.incumbentSlug}`}

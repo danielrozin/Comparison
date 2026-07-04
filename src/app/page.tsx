@@ -305,7 +305,7 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
             <li key={item.slug}>
               <TrendingCard comparison={item} rank={index + 1} />
@@ -339,7 +339,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none">
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none">
             {latest.map((item) => {
               const vsParts = item.title.split(/\s+vs\.?\s+/i);
               const latestEntityA = vsParts[0] || item.title;
@@ -426,7 +426,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
+          <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
             {CATEGORIES.map((cat) => (
               <li key={cat.slug}>
                 <CategoryCard category={cat} />
@@ -441,7 +441,7 @@ export default async function HomePage() {
         <h2 id="how-it-works-heading" className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
           How It Works
         </h2>
-        <ol className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto list-none">
+        <ol role="list" className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto list-none">
           {/* Connecting line (desktop only) */}
           <div className="hidden md:block absolute top-10 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200" />
 
@@ -500,7 +500,7 @@ export default async function HomePage() {
           <p className="text-text-secondary mb-10 max-w-2xl mx-auto">
             Join thousands of users making informed decisions with clear, side-by-side comparisons across {CATEGORIES.length} categories.
           </p>
-          <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 list-none">
+          <ul role="list" className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 list-none">
             {[
               { value: `${totalCount.toLocaleString()}+`, label: "Comparisons", gradient: "from-indigo-500 to-purple-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" /></svg> },
               { value: `${CATEGORIES.length}`, label: "Categories", gradient: "from-emerald-500 to-teal-600", icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg> },
@@ -545,7 +545,7 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
+          <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
             {blogArticles.map((article, idx) => {
               const gradients = [
                 "from-violet-500 to-purple-600",

@@ -229,7 +229,7 @@ export default function Q1AiBattlesPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Headline figure callout */}
       <section className="mb-12 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 p-6 sm:p-8">
-        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center list-none">
           <li>
             <div className="text-3xl sm:text-4xl font-display font-black text-primary-700">
               {nf.format(HEADLINE_TOTAL)}

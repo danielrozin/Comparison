@@ -239,7 +239,7 @@ export default async function SiteMapPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Browse by Category</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
           {CATEGORIES.map((cat) => {
             const subs = CATEGORY_SUBCATEGORIES[cat.slug] || [];
             return (
@@ -252,7 +252,7 @@ export default async function SiteMapPage() {
                     {cat.name}
                   </Link>
                 </h3>
-                <ul className="space-y-1 list-none">
+                <ul role="list" className="space-y-1 list-none">
                   {subs.map((sub) => (
                     <li key={sub.slug}>
                       <Link
@@ -280,7 +280,7 @@ export default async function SiteMapPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Pages</h2>
         </div>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
+        <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
             { href: "/", label: "Home" },
             { href: "/trending", label: "Trending Comparisons" },

@@ -398,7 +398,7 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">This is <em>not</em> for you if&hellip;</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
           {NOT_FOR_YOU.map((item) => (
             <li
               key={item.title}
@@ -455,7 +455,7 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
-        <ol className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
+        <ol role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {HOW_IT_WORKS_STEPS.map((s) => (
             <li
               key={s.step}
@@ -485,7 +485,7 @@ export default function WhoIsThisForPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">{SITE_NAME} by the Numbers</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
           <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-4xl font-display font-black text-primary-600 mb-2">
               3,000+

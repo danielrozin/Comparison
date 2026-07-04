@@ -219,7 +219,7 @@ export default function StudiesIndexPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <ul className="grid grid-cols-1 gap-4 list-none p-0 m-0">
+        <ul role="list" className="grid grid-cols-1 gap-4 list-none p-0 m-0">
           {STUDIES.map((s) => (
             <li key={s.slug}>
             <Link

@@ -197,7 +197,7 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
-        <ol className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
+        <ol role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
           <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl flex items-center justify-center mb-4 shadow-sm">
               <span className="text-white font-bold text-lg">1</span>
@@ -328,7 +328,7 @@ export default function AboutPage() {
         <p className="text-text-secondary leading-relaxed mb-6">
           {SITE_NAME} covers a wide and growing range of comparison categories:
         </p>
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
+        <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
             { label: "Sports & Athletes", gradient: "from-green-500 to-emerald-600", path: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" },
             { label: "Countries & Nations", gradient: "from-blue-500 to-cyan-600", path: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
@@ -365,7 +365,7 @@ export default function AboutPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Who We Are</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {/* Daniel */}
           <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
             <div className="flex items-center gap-4 mb-4">

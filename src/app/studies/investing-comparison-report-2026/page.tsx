@@ -215,7 +215,7 @@ export default async function InvestingStudyPage() {
         </div>
 
         {/* Headline stats */}
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12 list-none p-0 m-0">
+        <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12 list-none p-0 m-0">
           {[
             { label: "Finance Comparisons", value: fmt(study.totalFinanceComparisons) },
             { label: "Distinct Topics", value: fmt(study.distinctTopics) },

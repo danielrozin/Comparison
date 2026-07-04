@@ -315,7 +315,7 @@ export default async function AlternativesPage({ params }: PageProps) {
       </div>
 
       {alternatives.length > 0 ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
           {alternatives.map((alt) => (
             <li key={alt.comparisonSlug} className="bg-white border border-border rounded-xl p-5 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
               <div className="flex items-center gap-3 mb-3">

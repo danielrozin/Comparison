@@ -466,7 +466,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Editor-curated picks for {category.name}</p>
               </div>
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none">
               {featured.map((item) => {
                 const parts = item.anchor.split(/\s+vs\.?\s+/i);
                 return (
@@ -511,7 +511,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Most viewed in this category</p>
               </div>
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 list-none">
               {allComparisons.slice(0, 5).map((comp, idx) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
@@ -556,7 +556,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 <p className="text-xs text-text-secondary mt-0.5">Narrow your search</p>
               </div>
             </div>
-            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
+            <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 list-none">
               {subcategoryData.filter(({ items }) => items.length > 0).map(({ subcat, items }) => (
                 <li key={subcat.slug} className="flex">
                 <Link
@@ -590,7 +590,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Product Grid */}
         {paginatedComparisons.length > 0 ? (
           <>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
               {paginatedComparisons.map(renderComparisonCard)}
             </ul>
 

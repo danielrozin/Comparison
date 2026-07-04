@@ -187,7 +187,7 @@ export default function PartnershipsPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Stats */}
-      <ul className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 list-none">
+      <ul role="list" className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 list-none">
         {STATS.map((stat) => (
           <li
             key={stat.label}
@@ -211,7 +211,7 @@ export default function PartnershipsPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Why Partner With {SITE_NAME}?</h2>
         </div>
-        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
+        <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {[
             {
               title: "High-Intent Traffic",
@@ -247,7 +247,7 @@ export default function PartnershipsPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Partnership Tiers</h2>
         </div>
-        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
+        <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {TIERS.map((tier) => (
             <li
               key={tier.name}

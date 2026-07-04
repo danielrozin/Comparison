@@ -456,7 +456,7 @@ export default async function EntityPage({ params }: PageProps) {
                   </div>
                   <h2 className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
                 </div>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
+                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
                   {entityContent.alternatives.map((alt) => (
                     <li key={alt.slug}>
                     <Link

@@ -69,7 +69,7 @@ export function KeyDifferencesSummary({
           </h3>
         </div>
 
-        <ul className="space-y-2 list-none">
+        <ul role="list" className="space-y-2 list-none">
           {top3.map((diff) => {
             const winnerName =
               diff.winner === "a"

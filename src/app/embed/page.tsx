@@ -193,7 +193,7 @@ export default function EmbedLandingPage() {
           </p>
         </div>
 
-        <ol className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
+        <ol role="list" className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
           {STEPS.map((step) => (
             <li
               key={step.number}
@@ -258,7 +258,7 @@ export default function EmbedLandingPage() {
             Why Embed With Us?
           </h2>
         </div>
-        <ul className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
+        <ul role="list" className="grid md:grid-cols-3 gap-8 list-none p-0 m-0">
           {BENEFITS.map((benefit) => (
             <li key={benefit.title} className="text-center">
               <div className="w-14 h-14 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -283,7 +283,7 @@ export default function EmbedLandingPage() {
           </p>
         </div>
 
-        <ul className="grid md:grid-cols-3 gap-6 list-none">
+        <ul role="list" className="grid md:grid-cols-3 gap-6 list-none">
           {/* Free */}
           <li className="bg-white border border-border rounded-2xl p-8">
             <h3 className="font-display font-bold text-text text-lg mb-1">Free</h3>

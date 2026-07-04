@@ -33,7 +33,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
         </div>
       </div>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
         {reviews.map((review, idx) => {
           const scoreColor = review.smartScore >= 90
             ? "bg-green-100 text-green-700 ring-green-200"

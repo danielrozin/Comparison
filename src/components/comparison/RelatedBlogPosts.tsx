@@ -48,7 +48,7 @@ export function RelatedBlogPosts({
         </div>
       </div>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
         {posts.map((post, idx) => {
           const catColor = getCategoryColor(post.category ?? undefined);
           return (

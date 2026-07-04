@@ -41,7 +41,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         )}
       </div>
 
-      <ol className="space-y-2 list-none">
+      <ol role="list" className="space-y-2 list-none">
         {faqs.map((faq, i) => {
           const isOpen = openIndex === i || openIndex === -1;
           const answerId = `faq-answer-${i}`;

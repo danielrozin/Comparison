@@ -218,7 +218,7 @@ export default function ComparisonSitesFaqPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Competitor Deep Dives</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 list-none p-0 m-0">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-4 list-none p-0 m-0">
           {COMPETITOR_LINKS.map((comp) => (
             <li key={comp.href}>
             <Link
@@ -243,7 +243,7 @@ export default function ComparisonSitesFaqPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Why {SITE_NAME}?</h2>
         </div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none p-0 m-0">
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none p-0 m-0">
           <li className="bg-surface-alt border border-border rounded-2xl p-6">
             <h3 className="font-semibold text-text mb-2">17 Categories</h3>
             <p className="text-sm text-text-secondary leading-relaxed">

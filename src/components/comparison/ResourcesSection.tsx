@@ -67,7 +67,7 @@ export function ResourcesSection({
               {ICON_MAP.wikipedia}
               Wikipedia
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
               {wikipedia.map((r) => (
                 <li key={r.url}>
                 <a
@@ -106,7 +106,7 @@ export function ResourcesSection({
               {ICON_MAP.blog}
               Related Articles
             </h3>
-            <ul className="space-y-2 list-none">
+            <ul role="list" className="space-y-2 list-none">
               {blogs.map((r) => (
                 <li key={r.url}>
                 <Link
@@ -142,7 +142,7 @@ export function ResourcesSection({
               {ICON_MAP.video}
               Videos
             </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
               {videos.map((r) => (
                 <li key={r.url}>
                 <a

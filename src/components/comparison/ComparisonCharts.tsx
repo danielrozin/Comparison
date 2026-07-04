@@ -336,7 +336,7 @@ function ScoreCardView({
         Category wins across {data.total} numeric attributes
       </p>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto list-none">
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto list-none">
         {/* Entity A */}
         <li className="flex flex-col items-center">
           <CircularProgress

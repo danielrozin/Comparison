@@ -64,7 +64,7 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
       </button>
 
       {!isCollapsed && (
-        <ol id="blog-toc-list" className="space-y-1 list-none">
+        <ol id="blog-toc-list" role="list" className="space-y-1 list-none">
           {headings.map((h) => (
             <li key={h.id}>
               <button

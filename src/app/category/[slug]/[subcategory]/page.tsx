@@ -349,7 +349,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         {/* Comparisons Grid */}
         {paginated.length > 0 ? (
           <>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
               {paginated.map((comp) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 const rating = getComparisonRating(comp.slug);

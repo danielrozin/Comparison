@@ -337,7 +337,7 @@ export default function ChangelogPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Stats bar */}
-      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12 list-none">
+      <ul role="list" className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12 list-none">
         {[
           { label: "Comparisons", value: "53" },
           { label: "Categories", value: "10" },
@@ -356,7 +356,7 @@ export default function ChangelogPage() {
         {/* Vertical line */}
         <div className="absolute left-4 sm:left-6 top-0 bottom-0 w-0.5 bg-border" aria-hidden="true" />
 
-        <ol className="space-y-10 list-none">
+        <ol role="list" className="space-y-10 list-none">
           {CHANGELOG.map((entry, idx) => {
             const badge = TYPE_BADGES[entry.type] || TYPE_BADGES.improvement;
             return (

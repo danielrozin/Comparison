@@ -97,7 +97,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           }`}
         >
           <nav id="toc-dropdown" className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
-            <ul className="p-2 space-y-0.5 list-none">
+            <ul role="list" className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
               return (
@@ -157,7 +157,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           </div>
 
           {/* Nav items */}
-          <ul className="p-2 space-y-0.5 list-none">
+          <ul role="list" className="p-2 space-y-0.5 list-none">
             {items.map((item, idx) => {
               const isActive = activeId === item.id;
               return (

@@ -198,7 +198,7 @@ export default function DevelopersPage() {
           </div>
           <h2 className="text-2xl font-display font-bold text-text">Pricing</h2>
         </div>
-        <ul className="grid sm:grid-cols-3 gap-4 list-none">
+        <ul role="list" className="grid sm:grid-cols-3 gap-4 list-none">
           {[
             {
               name: "Free",

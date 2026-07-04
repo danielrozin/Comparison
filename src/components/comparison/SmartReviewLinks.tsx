@@ -38,7 +38,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
         Aggregated ratings from Reddit, G2, Capterra, Trustpilot & more
       </p>
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
         {withReviews.map(({ name, slug, agg }) => {
           const scoreColor = agg.smartScore >= 90
             ? "bg-green-100 text-green-700 ring-green-200"

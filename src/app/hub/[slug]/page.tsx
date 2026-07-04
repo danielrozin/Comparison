@@ -349,7 +349,7 @@ export default async function HubPage({ params }: PageProps) {
           {spokes.length === 0 ? (
             <p className="text-text-secondary">Comparisons are being generated. Check back soon.</p>
           ) : (
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
+            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
               {hub.comparisonSlugs.map((compSlug) => {
                 const comp = spokes.find((s) => s.slug === compSlug);
                 if (!comp) return null;
