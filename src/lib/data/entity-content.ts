@@ -39,6 +39,11 @@ export const ENTITY_LEDE: Record<string, EntityLede> = {
     intro:
       "Mountain Dew is a PepsiCo brand — one of the top-selling carbonated soft drinks in the US with ~54mg caffeine per can. Compare Mountain Dew versus Pepsi, Coca-Cola, Dr Pepper, and energy drinks side by side across caffeine content, flavor profiles, and market share, updated for 2026.",
   },
+  "audi": {
+    title: "Audi Competitors & Luxury Car Rivals: BMW, Mercedes, Lexus vs Audi 2026",
+    intro:
+      "Looking for Audi's top luxury car competitors? Compare Audi versus BMW, Mercedes-Benz, Lexus, Cadillac, and Genesis side by side — pricing, reliability, features, and performance, all updated for 2026. Whether you're deciding between an Audi Q5 and a BMW X3, or comparing the A4 against the Mercedes C-Class, find every matchup in one place.",
+  },
 };
 
 /**
@@ -8165,6 +8170,31 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     ],
   },
 
+  "audi": {
+    description: "Audi AG is a German multinational luxury automobile manufacturer founded in 1909 and headquartered in Ingolstadt, Bavaria. A member of the Volkswagen Group, Audi competes directly with BMW, Mercedes-Benz, and Lexus in the global luxury car market. Audi's defining technology is the Quattro all-wheel-drive system, introduced in 1980 and now standard or available across most of the lineup — widely considered the benchmark for luxury AWD performance in all conditions. Audi sold approximately 1.9 million vehicles globally in 2024. The Audi lineup ranges from the A3 entry-level sedan to the A8 flagship, with Q-series SUVs (Q3 through Q8), R8 supercar, and an expanding e-tron electric vehicle lineup (Q4 e-tron, Q8 e-tron, A6 e-tron). Audi's interior quality and MMI technology interface consistently rank among the best in class. In the US, Audi sits in a slightly lower prestige tier than BMW and Mercedes historically, but has closed the gap through the 2020s with strong Q5 and Q7 sales. Audi has also been a dominant force in motorsport, particularly Le Mans 24 Hours endurance racing, winning 13 times between 2000 and 2014. Key competitors include BMW, Mercedes-Benz, Lexus, Cadillac, and Genesis in the luxury segment.",
+    highlights: [
+      "Quattro AWD — standard across most models, industry benchmark",
+      "1.9M vehicles sold globally (2024)",
+      "Part of Volkswagen Group alongside Porsche, Lamborghini",
+      "Dominant Le Mans winner (2000–2014)",
+    ],
+    category: "automotive",
+    alternatives: [
+      { name: "BMW", slug: "bmw", reason: "More driver-focused, rear-wheel-drive bias, stronger M performance variants" },
+      { name: "Mercedes-Benz", slug: "mercedes-benz", reason: "Greater prestige in many markets, S-Class sets luxury benchmark, AMG performance lineup" },
+      { name: "Lexus", slug: "lexus", reason: "Superior reliability ratings, lower ownership costs, Toyota engineering" },
+      { name: "Cadillac", slug: "cadillac", reason: "American luxury alternative, CT5-V Blackwing is a performance value standout" },
+      { name: "Genesis", slug: "genesis", reason: "Comparable luxury features at significantly lower price, rapidly improving quality" },
+      { name: "Volvo", slug: "volvo", reason: "Scandinavian luxury, best-in-class safety, XC90 competes directly with Audi Q7" },
+    ],
+    faqs: [
+      { question: "Who are Audi's main luxury car competitors?", answer: "Audi's primary luxury car competitors are BMW, Mercedes-Benz, and Lexus. In the US market: BMW competes most directly on performance and driver engagement (3 Series vs A4, X5 vs Q5); Mercedes-Benz competes on prestige and luxury (E-Class vs A6, GLE vs Q7); Lexus competes on reliability and long-term ownership value (RX vs Q5, GX vs Q7). Secondary competitors include Cadillac (American luxury), Genesis (value-oriented Korean luxury), Infiniti, and Acura. Porsche (Cayenne, Macan) is also a VW Group sibling competing in the performance SUV segment." },
+      { question: "Audi vs BMW: which is better for a luxury car?", answer: "Audi vs BMW comes down to priorities. Audi excels in: interior quality and technology (MMI infotainment, Virtual Cockpit), standard Quattro AWD (better in snow/rain), and a more understated, tech-forward aesthetic. BMW excels in: driving dynamics (more rear-wheel-drive feel, sportier steering), the M performance lineup, and a stronger driver engagement focus. For everyday luxury comfort and technology: lean Audi. For driver involvement and sport: lean BMW. Both have similar reliability and resale value in the luxury segment." },
+      { question: "Is Audi more reliable than BMW?", answer: "Audi and BMW are comparable in reliability — both sit below Toyota/Lexus/Honda but above many other European brands. Consumer Reports and J.D. Power data typically rank Lexus #1 in luxury reliability, with BMW and Audi competing for the 2–4 range depending on model year. Audi's 2.0T engine (A4, Q5) is generally well-regarded; the 3.0T V6 is strong but can develop oil consumption issues over 80K miles. BMW's inline-6 engines are celebrated. Both brands benefit significantly from extended warranty coverage and documented maintenance history for used purchases." },
+      { question: "What Audi models compete in the luxury SUV segment?", answer: "Audi's luxury SUV lineup: Q3 (compact SUV, ~$36K start) competes with BMW X1, Mercedes GLA; Q5 (midsize, ~$45K) competes with BMW X3, Mercedes GLC — Audi's best-seller; Q7 (3-row large SUV, ~$57K) competes with BMW X5, Mercedes GLE, Volvo XC90; Q8 (coupe-style flagship, ~$71K) competes with BMW X6, Mercedes GLE Coupe. All offer Quattro AWD. The Q5 and Q7 are the most popular in the US, with the Q5 consistently ranking among the best-selling luxury SUVs." },
+    ],
+  },
+
   // ─── Consumer Tech: Product Model Entities ────────────────────────────────
 
   "macbook-air": {
@@ -8848,6 +8878,31 @@ export const ENTITY_CONTENT: Record<string, EntityContent> = {
     faqs: [
       { question: "Ulta vs Sephora: which has better deals?", answer: "Ulta tends to have more frequent and aggressive deals: 21 Days of Beauty (rotating 50% off prestige items twice yearly), Gorgeous Hair Event, Love Your Skin event, and weekly Ultamate Rewards bonus events. Sephora's deals are less frequent but include Beauty Insider Sale (15-20% off site-wide twice yearly). For sample-heavy promotions: Sephora's Beauty Insider point redemption is more diverse. For percentage-off discounts: Ulta has more events. For overall savings on prestige beauty: Ulta typically offers more discount opportunities." },
       { question: "Does Ulta offer good salon services?", answer: "Yes — most Ulta stores have full-service salons offering haircuts ($30-100), color ($65-200+), highlights, blowouts, brow services (waxing, tinting, threading), and skin services in select markets. Stylists are licensed cosmetologists. Quality varies by location and stylist; reviews on individual stylists are available in the Ulta app. Pricing is competitive with mid-tier salons. Booking 5-7 days in advance is recommended for popular stylists. The Ultamate Rewards program earns points on services too." },
+    ],
+  },
+
+  "cleveland-browns": {
+    description: "The Cleveland Browns are a professional American football team in the AFC North division of the NFL, based in Cleveland, Ohio. Founded in 1946, the Browns are one of the oldest franchises in professional football and play their home games at Huntington Bank Field. Cleveland's fiercest rivals are the Pittsburgh Steelers, Baltimore Ravens, and Cincinnati Bengals — all in the AFC North — with the Steelers rivalry dating back to 1950 and consistently ranking among the most heated in the NFL. The Browns went 3-14 in 2023, then improved to 7-10 in 2024. They have never appeared in a Super Bowl but won four AAFC championships before NFL merger. Key all-time players include Jim Brown (widely considered the greatest running back in NFL history), Bernie Kosar, Ozzie Newsome, and more recently Deshaun Watson and Myles Garrett. The Browns famously relocated to Baltimore in 1996 (becoming the Ravens) before an expansion franchise was awarded to Cleveland in 1999. The team plays in one of the most passionate NFL markets, with the \"Dawg Pound\" endzone section a fixture of NFL culture.",
+    highlights: [
+      "AFC North division — rivals: Steelers, Ravens, Bengals",
+      "Home: Huntington Bank Field, Cleveland, Ohio",
+      "Jim Brown — widely regarded greatest NFL running back ever",
+      "2026 season schedule features all 32 NFL teams across 17 weeks",
+    ],
+    category: "sports",
+    alternatives: [
+      { name: "Pittsburgh Steelers", slug: "pittsburgh-steelers", reason: "Oldest and fiercest divisional rival — AFC North rivalry since 1950" },
+      { name: "Baltimore Ravens", slug: "baltimore-ravens", reason: "Former Browns franchise (relocated 1996), intense AFC North matchup" },
+      { name: "Cincinnati Bengals", slug: "cincinnati-bengals", reason: "AFC North division rival, recent Super Bowl contender" },
+      { name: "Kansas City Chiefs", slug: "kansas-city-chiefs", reason: "AFC powerhouse, frequent playoff matchup" },
+      { name: "New York Giants", slug: "new-york-giants", reason: "Marquee NFC opponent, historic interconference matchup" },
+    ],
+    faqs: [
+      { question: "What is the Cleveland Browns record vs the Pittsburgh Steelers?", answer: "The Cleveland Browns hold an all-time record of approximately 73 wins against the Pittsburgh Steelers (with the Steelers holding a slight overall edge), making it one of the NFL's oldest and most contested rivalries. The series dates to 1950. In recent seasons the Steelers have dominated, but divisional matchups remain tightly contested. Check the current head-to-head page for the latest win-loss breakdown." },
+      { question: "Who are the Cleveland Browns' biggest rivals?", answer: "The Browns' biggest rivals are the Pittsburgh Steelers (oldest and most intense), Baltimore Ravens (former Browns franchise, relocated 1996), and Cincinnati Bengals. All three are AFC North division opponents. The Browns play each rival twice per season — once at home, once away. The Steelers rivalry is widely considered one of the most heated in NFL history." },
+      { question: "What is the Cleveland Browns' 2026 schedule?", answer: "The Browns' 2026 regular season schedule includes home and away matchups against all four AFC North rivals (Steelers, Ravens, Bengals) plus rotational games against other AFC and NFC divisions. The full schedule is typically released in May and runs from September through January. See the schedule matchup pages on this site for head-to-head stats for each opponent." },
+      { question: "How many Super Bowls have the Cleveland Browns won?", answer: "The Cleveland Browns have never appeared in or won a Super Bowl. However, the original Browns franchise won four AAFC (All-America Football Conference) championships (1946–1949) before the merger with the NFL. After joining the NFL in 1950, the Browns won an NFL Championship in 1950, 1954, 1955, and 1964 — the last time Cleveland won a pro football championship. The Super Bowl era began in 1967, and the Browns have not advanced to a Super Bowl." },
+      { question: "What are the Cleveland Browns' home colors and stadium?", answer: "The Cleveland Browns wear orange (helmet and accents), brown (jerseys and pants), and white. Their distinctive bright orange helmet — with no logo — is one of the most recognizable in the NFL. They play home games at Huntington Bank Field in Cleveland, Ohio, which seats approximately 67,895 fans. The stadium opened in 1999 when the expansion Browns franchise was awarded to Cleveland." },
     ],
   },
 
