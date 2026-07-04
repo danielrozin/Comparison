@@ -137,11 +137,12 @@ function SearchContent() {
           <p className="text-sm text-text-secondary mb-4">
             {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
           </p>
+          <ul className="space-y-3 list-none" aria-label="Search results">
           {results.map((result) => {
             const parts = result.title.split(/\s+vs\.?\s+/i);
             return (
+              <li key={result.slug}>
               <Link
-                key={result.slug}
                 href={`/compare/${result.slug}?from=${encodeURIComponent(query)}`}
                 className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
               >
@@ -163,8 +164,10 @@ function SearchContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
+              </li>
             );
           })}
+          </ul>
         </div>
       ) : query ? (
         <div className="space-y-6">
