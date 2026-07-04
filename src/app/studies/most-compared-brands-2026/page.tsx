@@ -256,7 +256,7 @@ export default async function MostComparedStudyPage() {
             major SaaS platforms dominate — they sit at the center of the widest webs of rivalry.
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm" aria-label="Most-compared brands overall — rank, brand, type, comparison count">
               <thead className="bg-surface text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>

@@ -249,7 +249,7 @@ export default async function B2BSaaSStudyPage() {
             platforms dominate — they sit at the center of the widest webs of buyer research.
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm" aria-label="Most-compared B2B SaaS tools — rank, tool name, comparison count">
               <thead className="bg-surface text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>

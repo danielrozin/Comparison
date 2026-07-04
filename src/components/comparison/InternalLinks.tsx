@@ -149,7 +149,7 @@ export function InternalLinks({
                   href={`/category/${cat.slug}`}
                   className="group flex items-center justify-between gap-2 text-sm text-text-secondary hover:text-primary-600 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
                 >
-                  <span>{cat.icon} {cat.name}</span>
+                  <span><span aria-hidden="true">{cat.icon}</span> {cat.name}</span>
                   <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

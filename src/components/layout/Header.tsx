@@ -119,7 +119,7 @@ export function Header() {
                             onClick={() => setOpenDropdown(null)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-surface-alt/60 transition-colors group"
                           >
-                            <span className="text-base flex-shrink-0">{sub.icon}</span>
+                            <span className="text-base flex-shrink-0" aria-hidden="true">{sub.icon}</span>
                             <span className="text-sm text-text-secondary group-hover:text-text">{sub.name}</span>
                           </Link>
                         ))}
@@ -251,7 +251,7 @@ export function Header() {
                           onClick={() => setMobileMenuOpen(false)}
                           className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
                         >
-                          <span>{sub.icon}</span>
+                          <span aria-hidden="true">{sub.icon}</span>
                           <span className="truncate">{sub.name}</span>
                         </Link>
                       ))}
