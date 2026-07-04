@@ -396,7 +396,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </li>
-              <li className="text-white font-semibold">{category.name}</li>
+              <li className="text-white font-semibold" aria-current="page">{category.name}</li>
             </ol>
           </nav>
 

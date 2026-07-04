@@ -322,7 +322,7 @@ export default async function HubPage({ params }: PageProps) {
             <ol className="flex items-center gap-2 flex-wrap">
               <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
               <li aria-hidden="true" className="text-primary-400">/</li>
-              <li className="text-white font-medium">{hub.h1}</li>
+              <li className="text-white font-medium" aria-current="page">{hub.h1}</li>
             </ol>
           </nav>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">{hub.h1}</h1>
