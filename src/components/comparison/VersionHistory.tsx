@@ -138,6 +138,7 @@ export function VersionHistory({
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
           aria-expanded={isExpanded}
+          aria-controls="version-history-panel"
           aria-label={isExpanded ? "Collapse version history" : "Expand version history"}
           className="w-full px-6 py-4 flex items-center justify-between hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-colors"
         >
@@ -207,7 +208,7 @@ export function VersionHistory({
 
         {/* Expanded timeline */}
         {isExpanded && (
-          <div className="px-6 pb-6 pt-2 border-t border-indigo-100 dark:border-indigo-800/40">
+          <div id="version-history-panel" className="px-6 pb-6 pt-2 border-t border-indigo-100 dark:border-indigo-800/40">
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-300 border-t-indigo-600" />
@@ -249,6 +250,7 @@ export function VersionHistory({
                             type="button"
                             onClick={() => toggleEntry(entry.id)}
                             aria-expanded={isEntryExpanded}
+                            aria-controls={`version-entry-${entry.id}`}
                             className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors"
                           >
                             <div className="flex items-center gap-3">
@@ -295,7 +297,7 @@ export function VersionHistory({
 
                           {/* Expanded changes */}
                           {isEntryExpanded && entry.changes.length > 0 && (
-                            <div className="px-4 pb-3 pt-1 border-t border-border/50 dark:border-white/10">
+                            <div id={`version-entry-${entry.id}`} className="px-4 pb-3 pt-1 border-t border-border/50 dark:border-white/10">
                               <ul className="space-y-1.5">
                                 {entry.changes.map((change, ci) => (
                                   <li

@@ -47,6 +47,7 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
         onClick={() => setIsCollapsed((p) => !p)}
         className="flex w-full items-center justify-between gap-2 font-semibold text-text mb-3 hover:text-primary-600 transition-colors"
         aria-expanded={!isCollapsed}
+        aria-controls="blog-toc-list"
       >
         <span className="flex items-center gap-2">
           <svg className="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -63,12 +64,13 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
       </button>
 
       {!isCollapsed && (
-        <ol className="space-y-1 list-none">
+        <ol id="blog-toc-list" className="space-y-1 list-none">
           {headings.map((h) => (
             <li key={h.id}>
               <button
                 type="button"
                 onClick={() => scrollTo(h.id)}
+                aria-current={activeId === h.id ? "true" : undefined}
                 className={`w-full text-left leading-snug transition-colors duration-100 rounded px-2 py-1 ${
                   h.level === 3 ? "ml-3 text-xs" : "text-sm"
                 } ${
