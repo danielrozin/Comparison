@@ -102,7 +102,7 @@ export async function GET(
     url,
     name: comparison.title,
     description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
-    inLanguage: "en",
+    inLanguage: "en-US",
     isPartOf: { "@id": `${SITE_URL}/#website` },
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(publishedAt ? { dateCreated: publishedAt } : {}),
@@ -122,6 +122,7 @@ export async function GET(
   });
 
   // Article node
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&cat=${encodeURIComponent(comparison.category ?? "")}&type=comparison`;
   graph.push({
     "@type": ["Article", "TechArticle"],
     "@id": `${url}#article`,
@@ -129,8 +130,21 @@ export async function GET(
     ...(comparison.shortAnswer ? { abstract: comparison.shortAnswer } : {}),
     description: comparison.shortAnswer ?? comparison.title,
     url,
-    inLanguage: "en",
+    inLanguage: "en-US",
     mainEntityOfPage: url,
+    // image — required for Google article rich results; contentUrl is machine-readable.
+    image: {
+      "@type": "ImageObject",
+      "@id": `${url}#primaryImage`,
+      url: ogImage,
+      contentUrl: ogImage,
+      width: 1200,
+      height: 630,
+      caption: `${comparison.title} — Side-by-side comparison on A Versus B`,
+    },
+    thumbnailUrl: ogImage,
+    // contentReferenceTime — ISO 8601 "as of" date for the data in this article.
+    ...(updatedAt ? { contentReferenceTime: updatedAt } : {}),
     author: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -186,7 +200,7 @@ export async function GET(
     name: `${comparison.title} — Comparison Data`,
     description: `Structured comparison data for ${comparison.title} with ${comparison.attributes.length} attributes.`,
     url,
-    inLanguage: "en",
+    inLanguage: "en-US",
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: { "@id": `${SITE_URL}/#organization` },
     distribution: {
@@ -206,7 +220,7 @@ export async function GET(
       "@type": "FAQPage",
       "@id": `${url}#faq`,
       url,
-      inLanguage: "en",
+      inLanguage: "en-US",
       mainEntity: comparison.faqs.map((faq) => ({
         "@type": "Question",
         name: faq.question,
@@ -249,6 +263,8 @@ export async function GET(
         `<${url}>; rel="canonical"`,
         `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/json"`,
         `<${SITE_URL}/api/comparisons/${slug}>; rel="alternate"; type="application/json"`,
+        `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+        `<${SITE_URL}/api/sitemap>; rel="collection"; type="application/json"`,
       ].join(", "),
     },
   });

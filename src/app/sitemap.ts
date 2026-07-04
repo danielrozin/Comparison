@@ -306,6 +306,7 @@ export default async function sitemap({
           : now,
         changeFrequency: "weekly" as const,
         priority: 0.75,
+        images: [`${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=review`],
       }));
     } catch {
       // Review entities unavailable — skip
