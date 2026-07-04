@@ -255,14 +255,14 @@ export default function Q1AiBattlesPage() {
 
       <article className="prose prose-lg max-w-none space-y-12">
         {/* What this measures */}
-        <section>
+        <section aria-labelledby="q1-what-measures-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">What this report measures</h2>
+            <h2 id="q1-what-measures-heading" className="text-2xl font-display font-bold text-text">What this report measures</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             This report ranks the most-compared software and consumer products on{" "}
@@ -281,14 +281,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Top 10 chart */}
-        <section>
+        <section aria-labelledby="q1-top10-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Top 10 battles by Q1 2026 volume</h2>
+            <h2 id="q1-top10-heading" className="text-2xl font-display font-bold text-text">Top 10 battles by Q1 2026 volume</h2>
           </div>
           <Image
             src="/data/q1-2026-ai-battles/chart-top10.png"
@@ -303,14 +303,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Data source */}
-        <section>
+        <section aria-labelledby="q1-data-source-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Data source</h2>
+            <h2 id="q1-data-source-heading" className="text-2xl font-display font-bold text-text">Data source</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             Keyword search-volume figures come from the{" "}
@@ -344,14 +344,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Ranking methodology */}
-        <section>
+        <section aria-labelledby="q1-methodology-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Ranking methodology</h2>
+            <h2 id="q1-methodology-heading" className="text-2xl font-display font-bold text-text">Ranking methodology</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             For the <strong className="text-text">Top 50 list:</strong>
@@ -379,14 +379,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Fastest-rising chart */}
-        <section>
+        <section aria-labelledby="q1-rising-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Fastest-rising battles</h2>
+            <h2 id="q1-rising-heading" className="text-2xl font-display font-bold text-text">Fastest-rising battles</h2>
           </div>
           <p className="text-text-secondary leading-relaxed mb-4">
             The quarter&rsquo;s growth is Claude-centric. <em>claude code vs cursor</em> (+1,388%
@@ -406,14 +406,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Biggest decliners chart */}
-        <section>
+        <section aria-labelledby="q1-decliners-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Biggest decliners</h2>
+            <h2 id="q1-decliners-heading" className="text-2xl font-display font-bold text-text">Biggest decliners</h2>
           </div>
           <Image
             src="/data/q1-2026-ai-battles/chart-biggest-decliners.png"
@@ -428,7 +428,7 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Full ranked table */}
-        <section>
+        <section aria-labelledby="q1-full-ranked-heading">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -436,7 +436,7 @@ export default function Q1AiBattlesPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-display font-bold text-text mb-0">
+              <h2 id="q1-full-ranked-heading" className="text-2xl font-display font-bold text-text mb-0">
                 Full ranked slate
               </h2>
             </div>
@@ -499,14 +499,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* What this does NOT measure */}
-        <section>
+        <section aria-labelledby="q1-not-measure-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">What this report does NOT measure</h2>
+            <h2 id="q1-not-measure-heading" className="text-2xl font-display font-bold text-text">What this report does NOT measure</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">For honesty in citation:</p>
           <ul className="list-disc pl-6 mt-3 space-y-2 text-text-secondary leading-relaxed">
@@ -538,14 +538,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Confidence and limitations */}
-        <section>
+        <section aria-labelledby="q1-confidence-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Confidence and limitations</h2>
+            <h2 id="q1-confidence-heading" className="text-2xl font-display font-bold text-text">Confidence and limitations</h2>
           </div>
           <ul className="list-disc pl-6 mt-3 space-y-2 text-text-secondary leading-relaxed">
             <li>
@@ -576,14 +576,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Reproducibility */}
-        <section>
+        <section aria-labelledby="q1-reproducibility-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Reproducibility</h2>
+            <h2 id="q1-reproducibility-heading" className="text-2xl font-display font-bold text-text">Reproducibility</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             We publish the{" "}
@@ -598,14 +598,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Citations and corrections */}
-        <section>
+        <section aria-labelledby="q1-citations-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Citations and corrections</h2>
+            <h2 id="q1-citations-heading" className="text-2xl font-display font-bold text-text">Citations and corrections</h2>
           </div>
           <ul className="list-disc pl-6 mt-3 space-y-2 text-text-secondary leading-relaxed">
             <li>Author: {SITE_NAME} data team. Lead analyst: Daniel Rozin (founder).</li>
@@ -623,14 +623,14 @@ export default function Q1AiBattlesPage() {
         </section>
 
         {/* Versioning */}
-        <section>
+        <section aria-labelledby="q1-versioning-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Versioning</h2>
+            <h2 id="q1-versioning-heading" className="text-2xl font-display font-bold text-text">Versioning</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             This is the inaugural quarterly report. Future quarters will be published at{" "}
