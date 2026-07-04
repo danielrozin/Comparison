@@ -152,8 +152,10 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                   <button
                     type="button"
                     key={tab}
+                    id={`embed-tab-${tab}`}
                     role="tab"
                     aria-selected={activeTab === tab}
+                    aria-controls={`embed-panel-${tab}`}
                     onClick={() => setActiveTab(tab)}
                     className={`flex-1 text-sm font-medium py-2 px-3 rounded-md transition-all duration-200 ${
                       activeTab === tab
@@ -168,7 +170,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
             </div>
 
             {/* Active tab content */}
-            <div className="px-6 py-4">
+            <div id={`embed-panel-${activeTab}`} role="tabpanel" aria-labelledby={`embed-tab-${activeTab}`} className="px-6 py-4">
               <p className="text-sm text-text-secondary mb-3">
                 {embedCodes[activeTab].description}
               </p>
@@ -210,7 +212,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
             <div className="px-6 pb-6">
               <div className="border border-border rounded-xl overflow-hidden">
                 <div className="bg-surface-alt px-4 py-2 border-b border-border flex items-center gap-2">
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-1.5" aria-hidden="true">
                     <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                     <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                     <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
