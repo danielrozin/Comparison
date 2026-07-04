@@ -208,7 +208,7 @@ export default async function MostComparedStudyPage() {
 
         <header className="mb-10">
           <p className="text-sm font-semibold text-primary-600 uppercase tracking-wide mb-2">
-            Data Study · Updated {updatedLabel}
+            Data Study · Updated <time dateTime={new Date(study.updatedAt).toISOString()}>{updatedLabel}</time>
           </p>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-text mb-4 leading-tight">
             The Most-Compared Brands of 2026

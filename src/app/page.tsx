@@ -359,9 +359,9 @@ export default async function HomePage() {
                         {item.category}
                       </span>
                       {item.updatedAt && (
-                        <span className="text-xs text-text-secondary">
+                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-xs text-text-secondary">
                           {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                        </span>
+                        </time>
                       )}
                     </div>
 
@@ -591,15 +591,17 @@ export default async function HomePage() {
                       {article.excerpt}
                     </p>
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
-                      <span>
-                        {article.publishedAt
-                          ? new Date(article.publishedAt).toLocaleDateString("en-US", {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })
-                          : ""}
-                      </span>
+                      {article.publishedAt ? (
+                        <time dateTime={new Date(article.publishedAt).toISOString()}>
+                          {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </time>
+                      ) : (
+                        <span />
+                      )}
                       <span className="flex items-center gap-1 text-primary-600 font-semibold group-hover:gap-2 transition-all duration-200">
                         Read more
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

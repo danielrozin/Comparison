@@ -211,7 +211,7 @@ export default async function InvestingStudyPage() {
             on A Versus B to rank the most-researched brokerages, retirement accounts, credit cards, and investment
             products. {study.fromSnapshot ? "" : "Data is live-queried daily and refreshed automatically."}
           </p>
-          <p className="text-sm text-text-secondary/60 mt-3">Last updated: {updatedLabel}</p>
+          <p className="text-sm text-text-secondary/60 mt-3">Last updated: <time dateTime={new Date(study.updatedAt).toISOString()}>{updatedLabel}</time></p>
         </div>
 
         {/* Headline stats */}
