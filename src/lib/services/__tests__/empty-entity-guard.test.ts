@@ -61,8 +61,8 @@ describe('DAN-1266 — saveComparison empty-entity guard', () => {
   })
 
   it('does not throw when entities is undefined', async () => {
-    const data = makeComparisonData([])
-    // @ts-expect-error intentional bad input
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data = makeComparisonData([]) as any
     data.entities = undefined
     await expect(saveComparison(data)).resolves.toBeNull()
   })
