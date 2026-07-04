@@ -154,6 +154,8 @@ export async function GET(
     "@id": `${url}#claimreview`,
     url,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     claimReviewed: comparison.title,
     reviewBody: syntheticAnswer ?? comparison.title,
     ...(publishedAt ? { datePublished: publishedAt } : {}),

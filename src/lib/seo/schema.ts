@@ -1207,6 +1207,8 @@ export function comparisonPageSchema(
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
       url,
+      isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
       reviewRating: {
         "@type": "Rating",
@@ -1967,6 +1969,8 @@ function buildMultiEntityGraph(
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
       url,
+      isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       claimReviewed: `${comparison.entities.map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
       reviewRating: {
         "@type": "Rating",
@@ -2765,6 +2769,8 @@ export function claimReviewSchema(opts: {
     "@type": "ClaimReview",
     "@id": `${url}#claim-review`,
     url,
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     claimReviewed: claimText,
     datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
     dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),

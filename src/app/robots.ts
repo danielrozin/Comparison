@@ -152,6 +152,18 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "SearchGPT-Bot", allow: "/" },       // OpenAI SearchGPT alternate UA
       { userAgent: "NovaCrawler", allow: "/" },         // Nova AI search
 
+      // === 2026 AI additions — model/product crawlers not previously listed ===
+      { userAgent: "AI21Bot", allow: "/" },              // AI21 Labs / Jamba model training
+      { userAgent: "CohereBot", allow: "/" },            // Cohere Command R alternate UA
+      { userAgent: "AnthropicBot", allow: "/" },         // Anthropic training crawler alternate
+      { userAgent: "Runway-Bot", allow: "/" },           // Runway AI media research
+      { userAgent: "Glean-Bot", allow: "/" },            // Glean enterprise search
+      { userAgent: "NotionBot", allow: "/" },            // Notion AI assistant crawler
+      { userAgent: "WriterBot", allow: "/" },            // Writer.com generative AI
+      { userAgent: "InflectionAI", allow: "/" },         // Pi AI (Inflection AI)
+      { userAgent: "Liner-Bot", allow: "/" },            // Liner AI research assistant
+      { userAgent: "PhindBot", allow: "/" },             // Phind developer AI search
+
       // === SEO crawlers — allowed (third-party index coverage helps discoverability) ===
       { userAgent: "AhrefsBot", allow: "/" },
       { userAgent: "SemrushBot", allow: "/" },

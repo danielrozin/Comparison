@@ -321,6 +321,8 @@ export async function GET(
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
       url,
+      isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
       claimReviewed: comparison.title,
       reviewBody: comparison.shortAnswer ?? comparison.verdict ?? "",
       reviewRating: {
