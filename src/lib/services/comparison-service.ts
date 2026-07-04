@@ -685,6 +685,14 @@ export async function getComparisonsByCategory(
 export async function saveComparison(
   data: ComparisonPageData
 ): Promise<{ id: string } | null> {
+  if (!data.entities || data.entities.length < 2) {
+    console.error("saveComparison: refusing to persist comparison with fewer than 2 entities", {
+      slug: data.slug,
+      entityCount: data.entities?.length ?? 0,
+    });
+    return null;
+  }
+
   const prisma = getPrismaClient();
   if (!prisma) {
     console.warn("saveComparison: no database connection, skipping persist");
