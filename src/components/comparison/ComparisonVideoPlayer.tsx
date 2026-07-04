@@ -85,6 +85,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                 <button
                   type="button"
                   onClick={() => setIsPlaying(true)}
+                  aria-label={`Play video: ${title}`}
                   className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
                 >
                   {ytId && (
@@ -127,6 +128,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                 <button
                   type="button"
                   onClick={() => setIsPlaying(true)}
+                  aria-label={`Play video: ${title}`}
                   className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
                 >
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
