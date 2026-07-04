@@ -139,7 +139,11 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                   )}
                 </div>
               </div>
-              <div className="h-2.5 bg-white/10 rounded-full overflow-hidden flex">
+              <div
+                role="img"
+                aria-label={`Score comparison: ${entityA.name} ${scores.scoreA}/10 vs ${entityB.name} ${scores.scoreB}/10${winnerIdx === 0 ? ` — ${entityA.name} wins` : winnerIdx === 1 ? ` — ${entityB.name} wins` : " — tied"}`}
+                className="h-2.5 bg-white/10 rounded-full overflow-hidden flex"
+              >
                 <div
                   className={`bg-gradient-to-r from-blue-400 to-blue-300 transition-all duration-700 ${winnerIdx === 0 ? "brightness-125" : ""}`}
                   style={{ width: `${(scores.scoreA / (scores.scoreA + scores.scoreB)) * 100}%` }}
