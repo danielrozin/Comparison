@@ -98,9 +98,9 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
             ))}
 
             {/* Research date */}
-            <span className="text-[10px] text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
+            <time dateTime={new Date(stats.lastResearched).toISOString()} className="text-[10px] text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
               Updated {researchDate}
-            </span>
+            </time>
           </div>
 
           {/* Source attribution row */}

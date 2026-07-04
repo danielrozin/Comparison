@@ -215,13 +215,13 @@ export function CommentSection({
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-text">{comment.name}</p>
-                    <p className="text-xs text-text-secondary">
+                    <time dateTime={new Date(comment.timestamp).toISOString()} className="text-xs text-text-secondary">
                       {new Date(comment.timestamp).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
                       })}
-                    </p>
+                    </time>
                   </div>
                 </div>
                 <button
