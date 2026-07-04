@@ -167,7 +167,7 @@ export default function OutreachQueuePage() {
             href="/admin"
             className="text-sm text-primary-600 hover:text-primary-700 font-medium"
           >
-            &larr; Back to Dashboard
+            <span aria-hidden="true">&larr; </span>Back to Dashboard
           </Link>
         </div>
 

@@ -258,7 +258,7 @@ export function WhereToBuySection({
                 <span className={`text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ${
                   isGeneric ? "text-blue-600" : "text-amber-600"
                 }`}>
-                  {isGeneric ? "Explore" : "Shop"} &rarr;
+                  {isGeneric ? "Explore" : "Shop"} <span aria-hidden="true">&rarr;</span>
                 </span>
               </a>
             );

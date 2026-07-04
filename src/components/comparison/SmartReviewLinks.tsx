@@ -72,7 +72,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
                   )}
                 </div>
                 <span className="text-xs font-medium text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                  Full review &rarr;
+                  Full review <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>
               {/* Cross-site SmartReview deep link */}
@@ -83,7 +83,7 @@ export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
                 className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline"
               >
                 <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-[10px] font-bold shrink-0">SR</span>
-                Read {name} reviews on SmartReview &rarr;
+                Read {name} reviews on SmartReview <span aria-hidden="true">&rarr;</span>
               </a>
             </li>
           );

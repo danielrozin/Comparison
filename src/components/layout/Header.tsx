@@ -131,7 +131,7 @@ export function Header() {
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center justify-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 py-1.5 rounded-lg hover:bg-primary-50 transition-colors"
                         >
-                          View all {item.name.toLowerCase()} →
+                          View all {item.name.toLowerCase()} <span aria-hidden="true">→</span>
                         </Link>
                       </div>
                     </div>

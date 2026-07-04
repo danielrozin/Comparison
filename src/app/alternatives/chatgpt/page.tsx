@@ -858,33 +858,33 @@ export default function ChatGPTAlternativesPage() {
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              Coding / software engineering → <strong>Claude</strong> (Opus 4.7 + Claude
+              Coding / software engineering<span aria-hidden="true"> →</span> <strong>Claude</strong> (Opus 4.7 + Claude
               Code)
             </li>
             <li>
-              Research with citations → <strong>Perplexity</strong> (all answers sourced)
+              Research with citations<span aria-hidden="true"> →</span> <strong>Perplexity</strong> (all answers sourced)
               or <strong>Gemini</strong> (Deep Research)
             </li>
             <li>
-              Google Workspace integration → <strong>Gemini</strong>
+              Google Workspace integration<span aria-hidden="true"> →</span> <strong>Gemini</strong>
             </li>
             <li>
-              Microsoft 365 integration → <strong>Microsoft Copilot</strong>
+              Microsoft 365 integration<span aria-hidden="true"> →</span> <strong>Microsoft Copilot</strong>
             </li>
             <li>
-              Completely free, no limits → <strong>Meta AI</strong>
+              Completely free, no limits<span aria-hidden="true"> →</span> <strong>Meta AI</strong>
             </li>
             <li>
-              EU data residency → <strong>Mistral Le Chat</strong>
+              EU data residency<span aria-hidden="true"> →</span> <strong>Mistral Le Chat</strong>
             </li>
             <li>
-              Real-time news / X access → <strong>Grok</strong>
+              Real-time news / X access<span aria-hidden="true"> →</span> <strong>Grok</strong>
             </li>
             <li>
-              Self-hosting / open-source → <strong>Llama</strong>
+              Self-hosting / open-source<span aria-hidden="true"> →</span> <strong>Llama</strong>
             </li>
             <li>
-              General purpose, all-in-one → <strong>ChatGPT</strong> (still the broadest
+              General purpose, all-in-one<span aria-hidden="true"> →</span> <strong>ChatGPT</strong> (still the broadest
               option) or <strong>Claude</strong>
             </li>
           </ul>

@@ -171,7 +171,7 @@ export default function OKRDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <Link href="/admin/analytics" className="text-gray-400 hover:text-gray-600 text-sm">&larr; Analytics</Link>
+                <Link href="/admin/analytics" className="text-gray-400 hover:text-gray-600 text-sm"><span aria-hidden="true">&larr; </span>Analytics</Link>
                 <span className="text-gray-300">|</span>
                 <Link href="/admin/analytics/aarrr" className="text-gray-400 hover:text-gray-600 text-sm">AARRR</Link>
               </div>

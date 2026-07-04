@@ -689,7 +689,7 @@ export default function AARRRDashboard() {
       {/* Back to Analytics link */}
       <div className="mt-8 pt-6 border-t border-gray-200">
         <a href="/admin/analytics" className="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-          &larr; Back to Analytics Dashboard
+          <span aria-hidden="true">&larr; </span>Back to Analytics Dashboard
         </a>
       </div>
     </div>

@@ -71,7 +71,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
                 {review.reviewCount.toLocaleString()} verified reviews
               </p>
               <span className="text-xs font-semibold text-primary-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                Read review →
+                Read review <span aria-hidden="true">→</span>
               </span>
             </div>
           </a>

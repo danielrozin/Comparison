@@ -226,13 +226,13 @@ export default function AnalyticsDashboard() {
         </p>
         <div className="flex gap-4 mt-2">
           <a href="/admin/analytics/aarrr" className="inline-block text-sm text-indigo-600 hover:text-indigo-800 font-medium">
-            View AARRR Pirate Metrics Dashboard &rarr;
+            View AARRR Pirate Metrics Dashboard <span aria-hidden="true">&rarr;</span>
           </a>
           <a href="/admin/analytics/okr" className="inline-block text-sm text-violet-600 hover:text-violet-800 font-medium">
-            View OKR Dashboard &rarr;
+            View OKR Dashboard <span aria-hidden="true">&rarr;</span>
           </a>
           <a href="/admin/analytics/weekly-report" className="inline-block text-sm text-emerald-600 hover:text-emerald-800 font-medium">
-            Weekly Report &rarr;
+            Weekly Report <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>

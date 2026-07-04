@@ -834,48 +834,48 @@ export default function ZoomAlternativesPage() {
           <p className="text-text font-semibold mb-2">By ecosystem fit:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Google Workspace org → <strong>Google Meet</strong> (already bundled)
+              Google Workspace org<span aria-hidden="true"> →</span> <strong>Google Meet</strong> (already bundled)
             </li>
             <li>
-              Microsoft 365 org → <strong>Microsoft Teams</strong> (already bundled)
+              Microsoft 365 org<span aria-hidden="true"> →</span> <strong>Microsoft Teams</strong> (already bundled)
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Free calls, no time limit → <strong>Google Meet</strong> or <strong>Jitsi</strong>
+              Free calls, no time limit<span aria-hidden="true"> →</span> <strong>Google Meet</strong> or <strong>Jitsi</strong>
             </li>
             <li>
-              Government / FedRAMP / FIPS → <strong>Webex</strong>
+              Government / FedRAMP / FIPS<span aria-hidden="true"> →</span> <strong>Webex</strong>
             </li>
             <li>
-              Self-hosted / open-source → <strong>Jitsi Meet</strong>
+              Self-hosted / open-source<span aria-hidden="true"> →</span> <strong>Jitsi Meet</strong>
             </li>
             <li>
-              Community / casual teams → <strong>Discord</strong>
+              Community / casual teams<span aria-hidden="true"> →</span> <strong>Discord</strong>
             </li>
             <li>
-              Zoom fatigue / ambient calls → <strong>Around</strong>
+              Zoom fatigue / ambient calls<span aria-hidden="true"> →</span> <strong>Around</strong>
             </li>
             <li>
-              No-download guest calls → <strong>Whereby</strong>
+              No-download guest calls<span aria-hidden="true"> →</span> <strong>Whereby</strong>
             </li>
             <li>
-              Long meetings, no time caps → <strong>GoTo Meeting</strong>
+              Long meetings, no time caps<span aria-hidden="true"> →</span> <strong>GoTo Meeting</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By price:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              $0 → <strong>Google Meet</strong>, <strong>Jitsi</strong>,{" "}
+              $0<span aria-hidden="true"> →</span> <strong>Google Meet</strong>, <strong>Jitsi</strong>,{" "}
               <strong>Discord</strong>, <strong>Around</strong> (free tier)
             </li>
             <li>
-              Under $10/u/mo → <strong>Whereby Pro</strong> ($6.99),{" "}
+              Under $10/u/mo<span aria-hidden="true"> →</span> <strong>Whereby Pro</strong> ($6.99),{" "}
               <strong>Google Meet</strong> (bundled with Workspace)
             </li>
             <li>
-              Bundled with existing SaaS → <strong>Google Meet</strong> (Workspace),{" "}
+              Bundled with existing SaaS<span aria-hidden="true"> →</span> <strong>Google Meet</strong> (Workspace),{" "}
               <strong>Teams</strong> (M365)
             </li>
           </ul>

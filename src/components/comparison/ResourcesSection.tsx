@@ -127,7 +127,7 @@ export function ResourcesSection({
                     )}
                   </div>
                   <span className="text-xs text-primary-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                    Read &rarr;
+                    Read <span aria-hidden="true">&rarr;</span>
                   </span>
                 </Link>
                 </li>

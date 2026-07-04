@@ -924,51 +924,51 @@ export default function NordVPNAlternativesPage() {
           <p className="text-text font-semibold mb-2">By threat model:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Privacy-first / Swiss jurisdiction → <strong>Proton VPN</strong>
+              Privacy-first / Swiss jurisdiction<span aria-hidden="true"> →</span> <strong>Proton VPN</strong>
             </li>
             <li>
-              Anonymous signup / flat pricing → <strong>Mullvad</strong>
+              Anonymous signup / flat pricing<span aria-hidden="true"> →</span> <strong>Mullvad</strong>
             </li>
             <li>
-              Privacy purist with port forwarding → <strong>IVPN</strong>
+              Privacy purist with port forwarding<span aria-hidden="true"> →</span> <strong>IVPN</strong>
             </li>
             <li>
-              Open-source community-run → <strong>AirVPN</strong>
+              Open-source community-run<span aria-hidden="true"> →</span> <strong>AirVPN</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Streaming-first → <strong>ExpressVPN</strong> (or NordVPN itself for some
+              Streaming-first<span aria-hidden="true"> →</span> <strong>ExpressVPN</strong> (or NordVPN itself for some
               regions)
             </li>
             <li>
-              Unlimited devices / family / freelancer → <strong>Surfshark</strong>
+              Unlimited devices / family / freelancer<span aria-hidden="true"> →</span> <strong>Surfshark</strong>
             </li>
             <li>
-              Free VPN for occasional use → <strong>Proton VPN</strong> (unlimited data) or{" "}
+              Free VPN for occasional use<span aria-hidden="true"> →</span> <strong>Proton VPN</strong> (unlimited data) or{" "}
               <strong>Windscribe</strong> (10 GB/mo)
             </li>
             <li>
-              Self-host adjacent (port forwarding for seedboxes, game hosting) →{" "}
+              Self-host adjacent (port forwarding for seedboxes, game hosting)<span aria-hidden="true"> →</span>{" "}
               <strong>PIA</strong>, <strong>AirVPN</strong>, <strong>Mullvad</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By budget:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              $0 → <strong>Proton VPN Free</strong> or <strong>Windscribe Free</strong>
+              $0<span aria-hidden="true"> →</span> <strong>Proton VPN Free</strong> or <strong>Windscribe Free</strong>
             </li>
             <li>
-              Under $3/month (multi-year) → <strong>PIA</strong>, <strong>Surfshark</strong>,{" "}
+              Under $3/month (multi-year)<span aria-hidden="true"> →</span> <strong>PIA</strong>, <strong>Surfshark</strong>,{" "}
               <strong>Proton VPN Plus 2-yr</strong>
             </li>
             <li>
-              Flat pricing, no promotional cliff → <strong>Mullvad</strong> (€5/mo),{" "}
+              Flat pricing, no promotional cliff<span aria-hidden="true"> →</span> <strong>Mullvad</strong> (€5/mo),{" "}
               <strong>IVPN</strong> ($6/mo)
             </li>
             <li>
-              Bundled with mail/drive → <strong>Proton Unlimited</strong> ($12.99/mo for VPN +
+              Bundled with mail/drive<span aria-hidden="true"> →</span> <strong>Proton Unlimited</strong> ($12.99/mo for VPN +
               Mail + Drive + Calendar)
             </li>
           </ul>

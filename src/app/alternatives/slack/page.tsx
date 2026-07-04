@@ -900,52 +900,52 @@ export default function SlackAlternativesPage() {
           <p className="text-text font-semibold mb-2">By ecosystem fit:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Microsoft 365 org → <strong>Microsoft Teams</strong> (already paid for)
+              Microsoft 365 org<span aria-hidden="true"> →</span> <strong>Microsoft Teams</strong> (already paid for)
             </li>
             <li>
-              Google Workspace org → <strong>Google Chat</strong> (already paid for)
+              Google Workspace org<span aria-hidden="true"> →</span> <strong>Google Chat</strong> (already paid for)
             </li>
             <li>
-              Zoom-heavy org → <strong>Zoom Team Chat</strong> (already paid for)
+              Zoom-heavy org<span aria-hidden="true"> →</span> <strong>Zoom Team Chat</strong> (already paid for)
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Free chat with unlimited history → <strong>Discord</strong> (or Zulip Cloud
+              Free chat with unlimited history<span aria-hidden="true"> →</span> <strong>Discord</strong> (or Zulip Cloud
               Free)
             </li>
             <li>
-              Self-hosted / on-prem for compliance → <strong>Mattermost</strong> or{" "}
+              Self-hosted / on-prem for compliance<span aria-hidden="true"> →</span> <strong>Mattermost</strong> or{" "}
               <strong>Element</strong>
             </li>
             <li>
-              Customer messaging + internal chat → <strong>Rocket.Chat</strong>
+              Customer messaging + internal chat<span aria-hidden="true"> →</span> <strong>Rocket.Chat</strong>
             </li>
             <li>
-              E2E encryption / federation / EU sovereignty → <strong>Element (Matrix)</strong>
+              E2E encryption / federation / EU sovereignty<span aria-hidden="true"> →</span> <strong>Element (Matrix)</strong>
             </li>
             <li>
-              Topic-based threading for async / engineering → <strong>Zulip</strong>
+              Topic-based threading for async / engineering<span aria-hidden="true"> →</span> <strong>Zulip</strong>
             </li>
             <li>
-              Regulated industries (defense, healthcare, finance) →{" "}
+              Regulated industries (defense, healthcare, finance)<span aria-hidden="true"> →</span>{" "}
               <strong>Mattermost</strong> or <strong>Element</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By budget:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              $0 budget → <strong>Discord</strong>, <strong>Element matrix.org</strong>,{" "}
+              $0 budget<span aria-hidden="true"> →</span> <strong>Discord</strong>, <strong>Element matrix.org</strong>,{" "}
               <strong>Mattermost Team Edition (self-host)</strong>,{" "}
               <strong>Zulip Cloud Free</strong>
             </li>
             <li>
-              Under $5/user → <strong>Rocket.Chat Starter</strong> ($4),{" "}
+              Under $5/user<span aria-hidden="true"> →</span> <strong>Rocket.Chat Starter</strong> ($4),{" "}
               <strong>Element EMS</strong> (~€5), <strong>Teams Essentials</strong> ($4)
             </li>
             <li>
-              Bundled with existing SaaS → <strong>Teams</strong> (M365),{" "}
+              Bundled with existing SaaS<span aria-hidden="true"> →</span> <strong>Teams</strong> (M365),{" "}
               <strong>Google Chat</strong> (Workspace), <strong>Zoom Team Chat</strong>{" "}
               (Zoom)
             </li>

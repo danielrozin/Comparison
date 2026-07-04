@@ -286,7 +286,7 @@ export function SearchBox() {
               )}
             </p>
             <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
-              ↑↓ navigate
+              <span aria-hidden="true">↑↓</span> navigate
             </kbd>
           </div>
 

@@ -674,7 +674,7 @@ export default function NotionAlternativesPage() {
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>Your team is on Jira and wants native bidirectional linking</li>
             <li>You need enterprise compliance: HIPAA, SOC 2, FedRAMP, GDPR at scale</li>
-            <li>Your wiki needs advanced permission trees (Space → Page → Section)</li>
+            <li>Your wiki needs advanced permission trees (Space<span aria-hidden="true"> →</span> Page<span aria-hidden="true"> →</span> Section)</li>
           </ul>
           <h3 className="font-semibold text-text mt-4 mb-2">When to stick with Notion:</h3>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
@@ -802,42 +802,42 @@ export default function NotionAlternativesPage() {
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              Relational databases + automation → <strong>Coda</strong>
+              Relational databases + automation<span aria-hidden="true"> →</span> <strong>Coda</strong>
             </li>
             <li>
-              Personal PKM, offline-first, local files → <strong>Obsidian</strong>
+              Personal PKM, offline-first, local files<span aria-hidden="true"> →</span> <strong>Obsidian</strong>
             </li>
             <li>
-              Best writing UX on Apple → <strong>Craft</strong>
+              Best writing UX on Apple<span aria-hidden="true"> →</span> <strong>Craft</strong>
             </li>
             <li>
-              Docs + project management in one → <strong>ClickUp</strong>
+              Docs + project management in one<span aria-hidden="true"> →</span> <strong>ClickUp</strong>
             </li>
             <li>
-              Enterprise wiki + Jira integration → <strong>Confluence</strong>
+              Enterprise wiki + Jira integration<span aria-hidden="true"> →</span> <strong>Confluence</strong>
             </li>
             <li>
-              Networked thought, bi-directional links → <strong>Roam Research</strong>
+              Networked thought, bi-directional links<span aria-hidden="true"> →</span> <strong>Roam Research</strong>
             </li>
             <li>
-              Open-source PKM with privacy focus → <strong>Logseq</strong>
+              Open-source PKM with privacy focus<span aria-hidden="true"> →</span> <strong>Logseq</strong>
             </li>
             <li>
-              Simple, affordable notes on Apple → <strong>Bear</strong>
+              Simple, affordable notes on Apple<span aria-hidden="true"> →</span> <strong>Bear</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By budget:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              $0 forever → <strong>Obsidian</strong> (local), <strong>Logseq</strong>{" "}
+              $0 forever<span aria-hidden="true"> →</span> <strong>Obsidian</strong> (local), <strong>Logseq</strong>{" "}
               (open-source), <strong>ClickUp</strong> (free tier), <strong>Confluence</strong>{" "}
               (free up to 10 users)
             </li>
             <li>
-              Under $5/mo → <strong>Bear</strong> ($2.99), <strong>Craft</strong> ($5)
+              Under $5/mo<span aria-hidden="true"> →</span> <strong>Bear</strong> ($2.99), <strong>Craft</strong> ($5)
             </li>
             <li>
-              Enterprise / team budget → <strong>Coda</strong> Team ($30), <strong>Confluence</strong>{" "}
+              Enterprise / team budget<span aria-hidden="true"> →</span> <strong>Coda</strong> Team ($30), <strong>Confluence</strong>{" "}
               Standard ($5.16)
             </li>
           </ul>

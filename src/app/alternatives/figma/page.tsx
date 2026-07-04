@@ -841,42 +841,42 @@ export default function FigmaAlternativesPage() {
           <p className="text-text font-semibold mb-2">By use case:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
             <li>
-              macOS-native, offline design → <strong>Sketch</strong>
+              macOS-native, offline design<span aria-hidden="true"> →</span> <strong>Sketch</strong>
             </li>
             <li>
-              Adobe CC team → <strong>Adobe XD</strong> (bundled)
+              Adobe CC team<span aria-hidden="true"> →</span> <strong>Adobe XD</strong> (bundled)
             </li>
             <li>
-              Open-source, self-hosted → <strong>Penpot</strong>
+              Open-source, self-hosted<span aria-hidden="true"> →</span> <strong>Penpot</strong>
             </li>
             <li>
-              Design + publish websites → <strong>Framer</strong>
+              Design + publish websites<span aria-hidden="true"> →</span> <strong>Framer</strong>
             </li>
             <li>
-              Non-designer / marketing → <strong>Canva</strong>
+              Non-designer / marketing<span aria-hidden="true"> →</span> <strong>Canva</strong>
             </li>
             <li>
-              Enterprise prototyping / user testing → <strong>InVision</strong>
+              Enterprise prototyping / user testing<span aria-hidden="true"> →</span> <strong>InVision</strong>
             </li>
             <li>
-              Fastest prototype to user test → <strong>Marvel</strong>
+              Fastest prototype to user test<span aria-hidden="true"> →</span> <strong>Marvel</strong>
             </li>
             <li>
-              Free offline desktop app → <strong>Lunacy</strong>
+              Free offline desktop app<span aria-hidden="true"> →</span> <strong>Lunacy</strong>
             </li>
           </ul>
           <p className="text-text font-semibold mb-2">By price:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1">
             <li>
-              $0 → <strong>Penpot</strong> (open-source cloud), <strong>Canva</strong> (free
+              $0<span aria-hidden="true"> →</span> <strong>Penpot</strong> (open-source cloud), <strong>Canva</strong> (free
               tier), <strong>Lunacy</strong> (fully free), <strong>InVision</strong> (3 docs
               free), <strong>Marvel</strong> (1 project free)
             </li>
             <li>
-              Under $12/mo → <strong>Sketch</strong> ($10), <strong>Framer Mini</strong> ($5)
+              Under $12/mo<span aria-hidden="true"> →</span> <strong>Sketch</strong> ($10), <strong>Framer Mini</strong> ($5)
             </li>
             <li>
-              Adobe CC bundle → <strong>Adobe XD</strong> (included in $54.99/mo CC)
+              Adobe CC bundle<span aria-hidden="true"> →</span> <strong>Adobe XD</strong> (included in $54.99/mo CC)
             </li>
           </ul>
         </section>
