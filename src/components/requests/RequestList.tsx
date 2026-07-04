@@ -99,6 +99,7 @@ export function RequestList() {
         <span className="text-sm text-text-secondary">Sort by:</span>
         <button
           type="button"
+          aria-pressed={sort === "votes"}
           onClick={() => { setSort("votes"); setPage(1); }}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "votes"
@@ -110,6 +111,7 @@ export function RequestList() {
         </button>
         <button
           type="button"
+          aria-pressed={sort === "newest"}
           onClick={() => { setSort("newest"); setPage(1); }}
           className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
             sort === "newest"
@@ -156,6 +158,7 @@ export function RequestList() {
                   type="button"
                   onClick={() => handleVote(req.id)}
                   disabled={hasVoted || req.status === "generated"}
+                  aria-label={hasVoted ? `Voted — ${req.voteCount} vote${req.voteCount !== 1 ? "s" : ""} for ${req.entityA} vs ${req.entityB}` : `Upvote ${req.entityA} vs ${req.entityB} — ${req.voteCount} vote${req.voteCount !== 1 ? "s" : ""}`}
                   className={`flex flex-col items-center min-w-[52px] py-2 px-2 rounded-lg border transition-all ${
                     hasVoted
                       ? "bg-primary-50 border-primary-200 text-primary-600"

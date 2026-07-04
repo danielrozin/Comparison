@@ -74,7 +74,7 @@ export function LegalPageLayout({
             <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-4">
               On this page
             </h2>
-            <nav>
+            <nav aria-label="On this page">
               <ul className="space-y-1 border-l border-border">
                 {sections.map((section) => (
                   <li key={section.id}>
