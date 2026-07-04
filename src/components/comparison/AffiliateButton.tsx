@@ -88,6 +88,7 @@ export function AffiliateButton({
       href={link.url}
       target="_blank"
       rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
+      aria-label={`${ctaText} — ${link.label}`}
       className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       onClick={() => {
         trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
@@ -126,7 +127,7 @@ export function AffiliateDisclosure() {
         href="/disclaimer"
         className="underline hover:text-text-secondary"
       >
-        Learn more
+        Learn more about our affiliate disclosure
       </a>
     </p>
   );

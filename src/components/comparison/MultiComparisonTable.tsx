@@ -107,6 +107,7 @@ export function MultiComparisonTable({
         <button
           type="button"
           onClick={allOpen ? collapseAll : expandAll}
+          aria-pressed={allOpen}
           className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
         >
           {allOpen ? "Collapse all" : "Expand all"}
@@ -200,7 +201,7 @@ export function MultiComparisonTable({
                                 >
                                   <span className="inline-flex items-center gap-1.5">
                                     {v?.valueText || "—"}
-                                    {isWinner && <TrophyIcon />}
+                                    {isWinner && <><span className="sr-only">(winner)</span><TrophyIcon /></>}
                                   </span>
                                 </td>
                               );
@@ -265,6 +266,7 @@ export function MultiComparisonTable({
                                   {v?.valueText || "—"}
                                   {isWinner && (
                                     <span className="ml-1 inline-block align-middle">
+                                      <span className="sr-only">(winner)</span>
                                       <TrophyIcon />
                                     </span>
                                   )}
