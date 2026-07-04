@@ -248,6 +248,12 @@ export async function GET(
       "X-Attribution": `${SITE_NAME} (${url})`,
       ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
       ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
+      "Link": [
+        `<${url}>; rel="canonical"`,
+        `<${SITE_URL}/api/v1/entities/${entity.slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
+        `<${SITE_URL}/api/v1/alternatives/${entity.slug}>; rel="alternate"; type="application/json"; title="Alternatives"`,
+        `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+      ].join(", "),
     },
   });
 }

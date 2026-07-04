@@ -902,6 +902,21 @@ export function comparisonPageSchema(
         // Free Offer on software entities for product-search AI carousels
         ...(schType === "SoftwareApplication" && {
           applicationCategory: "BusinessApplication",
+          // applicationSubCategory — narrows the type for Google/Perplexity product-carousel
+          // routing. Maps comparison.category to the closest Schema.org subcategory string.
+          ...(() => {
+            const subCat: Record<string, string> = {
+              health: "HealthApplication", entertainment: "EntertainmentApplication",
+              sports: "SportsApplication", finance: "FinanceApplication",
+              economy: "FinanceApplication", travel: "TravelApplication",
+              gaming: "GameApplication", technology: "DeveloperApplication",
+              software: "DeveloperApplication", companies: "BusinessApplication",
+              brands: "BusinessApplication", products: "UtilitiesApplication",
+              automotive: "UtilitiesApplication", education: "EducationalApplication",
+            };
+            const sc = comparison.category ? subCat[comparison.category] : undefined;
+            return sc ? { applicationSubCategory: sc } : {};
+          })(),
           operatingSystem: "Web, iOS, Android",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           // featureList — derived from comparison attribute values for this entity.
@@ -1560,6 +1575,17 @@ function buildMultiEntityGraph(
 
     if (schemaType === "SoftwareApplication") {
       node.applicationCategory = "BusinessApplication";
+      const multiSubCat: Record<string, string> = {
+        health: "HealthApplication", entertainment: "EntertainmentApplication",
+        sports: "SportsApplication", finance: "FinanceApplication",
+        economy: "FinanceApplication", travel: "TravelApplication",
+        gaming: "GameApplication", technology: "DeveloperApplication",
+        software: "DeveloperApplication", companies: "BusinessApplication",
+        brands: "BusinessApplication", products: "UtilitiesApplication",
+        automotive: "UtilitiesApplication", education: "EducationalApplication",
+      };
+      const multiSc = comparison.category ? multiSubCat[comparison.category] : undefined;
+      if (multiSc) node.applicationSubCategory = multiSc;
       node.operatingSystem = "Web, iOS, Android";
       node.publisher = { "@type": "Organization", name: entity.name };
       // Offer intentionally omitted for chatbot/AI-tool cluster per schema-3way v1 contract
