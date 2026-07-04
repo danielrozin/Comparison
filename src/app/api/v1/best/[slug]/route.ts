@@ -116,7 +116,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     description,
     url,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     numberOfItems: listItems.length,
+    ...(category ? { genre: category.charAt(0).toUpperCase() + category.slice(1) } : {}),
+    potentialAction: { "@type": "ReadAction", target: url },
     itemListElement: listItems.map((item) => {
       const itemUrl = `${url}#${item.anchor}`;
       return {
@@ -132,6 +136,26 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     dateModified: updatedAt ? new Date(updatedAt).toISOString() : undefined,
     license: "https://creativecommons.org/licenses/by/4.0/",
   };
+
+  // FAQPage schema — when best-of pages have curated FAQs, emit FAQPage JSON-LD
+  // so Google and AI crawlers can extract Q&A pairs for rich results and voice answers.
+  const faqSchema = faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${url}#faq`,
+    url,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    dateModified: updatedAt ? new Date(updatedAt).toISOString() : new Date().toISOString(),
+    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    isPartOf: { "@type": "WebPage", "@id": url },
+    mainEntity: faqs.map((f: FAQ) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a, inLanguage: "en-US" },
+    })),
+  } : null;
 
   return NextResponse.json(
     {
@@ -151,8 +175,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         url: `${url}#${item.anchor}`,
         anchor: item.anchor,
       })),
-      faqs: faqs.map((f) => ({ question: f.q, answer: f.a })),
+      faqs: faqs.map((f: FAQ) => ({ question: f.q, answer: f.a })),
       itemListSchema,
+      ...(faqSchema ? { faqSchema } : {}),
       links: {
         page: url,
         api: apiUrl,
@@ -165,6 +190,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         "X-Source-URL": url,
         "X-Attribution": `${SITE_NAME} (${url})`,
         "X-Summary": `${h1 ?? title}: ranked list of ${listItems.length} items.`,
+        "Link": [
+          `<${url}>; rel="canonical"`,
+          `<${SITE_URL}/api/v1/best/${slug}>; rel="alternate"; type="application/json"; title="Best-of JSON"`,
+          `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+        ].join(", "),
       },
     }
   );
