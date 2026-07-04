@@ -84,7 +84,11 @@ function ScorecardHeader({
       </div>
 
       {/* Win ratio bar */}
-      <div className="h-2.5 rounded-full overflow-hidden bg-surface-alt flex">
+      <div
+        role="img"
+        aria-label={`${entityA.name} wins ${aWins} of ${total} attributes (${aPercent}%); ${entityB.name} wins ${bWins} (${bPercent}%)`}
+        className="h-2.5 rounded-full overflow-hidden bg-surface-alt flex"
+      >
         <div
           className="h-full bg-gradient-to-r from-primary-500 to-primary-400 transition-all duration-500"
           style={{ width: `${aPercent}%` }}
@@ -94,7 +98,7 @@ function ScorecardHeader({
           style={{ width: `${bPercent}%` }}
         />
       </div>
-      <div className="flex justify-between mt-1">
+      <div className="flex justify-between mt-1" aria-hidden="true">
         <span className="text-[10px] text-primary-600 font-medium">{aPercent}%</span>
         <span className="text-[10px] text-accent-600 font-medium">{bPercent}%</span>
       </div>
