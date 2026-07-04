@@ -398,7 +398,7 @@ export default async function BestPage({ params }: PageProps) {
             <li aria-hidden="true">/</li>
             <li><Link href="/best" className="hover:underline">Best lists</Link></li>
             <li aria-hidden="true">/</li>
-            <li><span className="text-text">{entry.h1}</span></li>
+            <li aria-current="page"><span className="text-text">{entry.h1}</span></li>
           </ol>
         </nav>
 
@@ -423,11 +423,13 @@ export default async function BestPage({ params }: PageProps) {
             {entry.updatedAt && (
               <span>
                 Last updated{" "}
-                {new Date(entry.updatedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                <time dateTime={new Date(entry.updatedAt).toISOString()}>
+                  {new Date(entry.updatedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
               </span>
             )}
           </div>
