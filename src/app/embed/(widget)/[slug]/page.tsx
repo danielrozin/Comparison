@@ -186,7 +186,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
               className="text-sm font-medium hover:underline"
               style={{ color: primaryColor }}
             >
-              {footerText} &rarr;
+              {footerText} <span aria-hidden="true">&rarr;</span>
             </a>
             {!hideBranding && (
               <p className="mt-1 text-xs text-text-secondary/60">Powered by {brandName}</p>

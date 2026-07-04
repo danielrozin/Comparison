@@ -877,7 +877,7 @@ export default async function BlogPostPage({
               href="/blog"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold hover:shadow-md transition-all duration-150"
             >
-              &larr; Back to Blog
+              <span aria-hidden="true">&larr;</span> Back to Blog
             </Link>
           </div>
             </article>

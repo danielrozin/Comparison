@@ -476,9 +476,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
               </h2>
             </div>
             {aggregation?.sourceBreakdown && (
-              <div className="flex gap-2">
+              <nav aria-label="Filter by source" className="flex gap-2">
                 <Link
                   href={`/reviews/${slug}`}
+                  aria-current={!source ? "true" : undefined}
                   className={`text-xs px-3 py-1 rounded-full ${!source ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
                 >
                   All
@@ -487,12 +488,13 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <Link
                     key={s}
                     href={`/reviews/${slug}?source=${s}`}
+                    aria-current={source === s ? "true" : undefined}
                     className={`text-xs px-3 py-1 rounded-full capitalize ${source === s ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
                   >
                     {s}
                   </Link>
                 ))}
-              </div>
+              </nav>
             )}
           </div>
 

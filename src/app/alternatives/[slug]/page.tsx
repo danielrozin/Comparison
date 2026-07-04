@@ -310,7 +310,7 @@ export default async function AlternativesPage({ params }: PageProps) {
           href={`/entity/${slug}`}
           className="flex-shrink-0 px-4 py-2 bg-white text-primary-700 text-sm font-semibold rounded-lg border border-primary-300 hover:bg-primary-50 transition-colors"
         >
-          About {name} &rarr;
+          About {name} <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
 

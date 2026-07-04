@@ -418,7 +418,7 @@ export default async function HubPage({ params }: PageProps) {
               href={`/category/${hub.categoryAnchor}`}
               className="text-primary-600 hover:text-primary-700 hover:underline text-sm font-medium transition-colors"
             >
-              ← Browse all {hub.h1.replace(" Hub (2026)", "").replace(" Comparison", "")} comparisons
+              <span aria-hidden="true">← </span>Browse all {hub.h1.replace(" Hub (2026)", "").replace(" Comparison", "")} comparisons
             </Link>
           </div>
         )}

@@ -479,7 +479,7 @@ export default async function EntityPage({ params }: PageProps) {
                     href={`/alternatives/${slug}`}
                     className="text-sm text-primary-600 hover:text-primary-700 font-medium"
                   >
-                    View all alternatives to {name} &rarr;
+                    View all alternatives to {name} <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>
               </div>
@@ -500,7 +500,7 @@ export default async function EntityPage({ params }: PageProps) {
               href={`/alternatives/${slug}`}
               className="flex-shrink-0 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md"
             >
-              View alternatives &rarr;
+              View alternatives <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
         )}

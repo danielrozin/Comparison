@@ -405,7 +405,7 @@ export default async function InvestingStudyPage() {
         {/* Back */}
         <div className="pt-4 border-t border-border/50">
           <Link href="/studies" className="text-sm text-blue-600 hover:underline">
-            ← All Data Studies
+            <span aria-hidden="true">← </span>All Data Studies
           </Link>
         </div>
       </div>

@@ -265,43 +265,49 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
 
         {/* Category Navigation */}
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            <Link
-              href="/reviews"
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
-            >
-              All ({categories.reduce((s, c) => s + c.count, 0)})
-            </Link>
-            {categories.map((cat) => (
+          <nav aria-label="Filter reviews by category">
+            <div className="flex flex-wrap gap-2 mb-8">
               <Link
-                key={cat.slug}
-                href={`/reviews?category=${cat.slug}`}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                href="/reviews"
+                aria-current={!category ? "true" : undefined}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
               >
-                {cat.name} ({cat.count})
+                All ({categories.reduce((s, c) => s + c.count, 0)})
               </Link>
-            ))}
-          </div>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/reviews?category=${cat.slug}`}
+                  aria-current={category === cat.slug ? "true" : undefined}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                >
+                  {cat.name} ({cat.count})
+                </Link>
+              ))}
+            </div>
+          </nav>
         )}
 
         {/* Sort & Filter Bar */}
-        <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
+        <div className="flex flex-wrap items-center gap-4 mb-6 text-sm" role="group" aria-label="Sort and filter options">
           <span className="text-text-secondary">Sort by:</span>
           {(["smartscore", "rating", "reviews", "alphabetical"] as const).map((s) => (
             <Link
               key={s}
               href={`/reviews?sort=${s}${category ? `&category=${category}` : ""}${sp.rating ? `&rating=${sp.rating}` : ""}`}
+              aria-current={sort === s ? "true" : undefined}
               className={`font-medium ${sort === s ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
             >
               {s === "smartscore" ? "SmartScore" : s === "rating" ? "Rating" : s === "reviews" ? "Most Reviewed" : "A-Z"}
             </Link>
           ))}
-          <span className="mx-2 text-border">|</span>
+          <span className="mx-2 text-border" aria-hidden="true">|</span>
           <span className="text-text-secondary">Min rating:</span>
           {(["all", "3+", "4+"] as const).map((r) => (
             <Link
               key={r}
               href={`/reviews?sort=${sort}${category ? `&category=${category}` : ""}${r !== "all" ? `&rating=${r}` : ""}`}
+              aria-current={(sp.rating || "all") === r ? "true" : undefined}
               className={`font-medium ${(sp.rating || "all") === r ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
             >
               {r === "all" ? "All" : r}
