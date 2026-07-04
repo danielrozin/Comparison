@@ -109,8 +109,11 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         type="button"
         onClick={copyLink}
         className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-primary-100 hover:text-primary-700 transition-all duration-150 hover:scale-110 relative"
-        aria-label="Copy link"
+        aria-label={copied ? "Link copied" : "Copy link"}
       >
+        <span role="status" aria-live="polite" className="sr-only">
+          {copied ? "Link copied to clipboard" : ""}
+        </span>
         {copied ? (
           <svg className="w-3.5 h-3.5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
