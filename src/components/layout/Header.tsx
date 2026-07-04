@@ -91,6 +91,8 @@ export function Header() {
                   <Link
                     href={`/category/${item.slug}`}
                     aria-current={pathname?.startsWith(`/category/${item.slug}`) ? "page" : undefined}
+                    aria-haspopup={hasSubs ? "menu" : undefined}
+                    aria-expanded={hasSubs ? isOpen : undefined}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors ${
                       isOpen || pathname?.startsWith(`/category/${item.slug}`) ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                     }`}
@@ -105,7 +107,7 @@ export function Header() {
 
                   {/* Dropdown — only mounted when this dropdown is open, removes ~16KB of eager-rendered subcategory HTML from SSR */}
                   {hasSubs && isOpen && (
-                    <div className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-border ${
+                    <div role="menu" aria-label={`${item.name} subcategories`} className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-border ${
                       subs.length > 6 ? "w-[480px]" : "w-[260px]"
                     }`}>
                       <div className={`p-2 ${subs.length > 6 ? "grid grid-cols-2 gap-0.5" : ""}`}>
@@ -113,6 +115,7 @@ export function Header() {
                           <Link
                             key={sub.slug}
                             href={`/category/${item.slug}/${sub.slug}`}
+                            role="menuitem"
                             onClick={() => setOpenDropdown(null)}
                             className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-surface-alt/60 transition-colors group"
                           >
@@ -124,6 +127,7 @@ export function Header() {
                       <div className="border-t border-border/50 px-3 py-2">
                         <Link
                           href={`/category/${item.slug}`}
+                          role="menuitem"
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center justify-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 py-1.5 rounded-lg hover:bg-primary-50 transition-colors"
                         >
