@@ -27,6 +27,8 @@ export async function GET(
     ? article.content.trim().split(/\s+/).length
     : undefined;
 
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -36,6 +38,19 @@ export async function GET(
     // abstract = excerpt — the citation-ready TL;DR preferred by AI answer engines
     ...(article.excerpt ? { abstract: article.excerpt } : {}),
     url,
+    // image — required for Google article rich results; contentUrl is machine-readable.
+    image: {
+      "@type": "ImageObject",
+      "@id": `${url}#primaryImage`,
+      url: ogImage,
+      contentUrl: ogImage,
+      width: 1200,
+      height: 630,
+      caption: article.title,
+    },
+    thumbnailUrl: ogImage,
+    // contentReferenceTime — ISO 8601 "as of" date for AI crawlers.
+    ...(updatedAt ? { contentReferenceTime: new Date(updatedAt).toISOString() } : {}),
     datePublished: article.publishedAt ?? article.createdAt,
     dateCreated: article.publishedAt ?? article.createdAt,
     dateModified: article.updatedAt ?? article.publishedAt,

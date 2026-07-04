@@ -71,7 +71,11 @@ export async function HEAD(
       ETag: etag,
       ...(headSummary ? { "X-Summary": headSummary.slice(0, 500) } : {}),
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-      "Link": `<${url}>; rel="canonical", <${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+      "Link": [
+        `<${url}>; rel="canonical"`,
+        `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+        `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+      ].join(", "),
     },
   });
 }
