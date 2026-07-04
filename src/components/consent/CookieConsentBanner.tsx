@@ -170,7 +170,7 @@ export function CookieConsentBanner() {
                 <button
                   type="button"
                   onClick={() => setShowPreferences(false)}
-                  aria-label="Back to banner"
+                  aria-label="Close cookie preferences"
                   className="p-1 text-text-secondary hover:text-text transition-colors rounded"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

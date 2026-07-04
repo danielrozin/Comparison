@@ -75,7 +75,7 @@ export function Footer() {
 
         {/* ─── Category links — top-level only; full subcategory tree is reachable via /category/{slug} ─── */}
         <div className="py-8 border-b border-white/10">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-4">Browse Categories</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60 mb-4">Browse Categories</p>
           <nav aria-label="Browse categories" className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2">
             {FOOTER_CATEGORIES.map((cat) => (
               <Link
@@ -112,7 +112,7 @@ export function Footer() {
           {/* Legal + copyright row */}
           <div className="flex flex-wrap items-center justify-between gap-y-3 gap-x-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-white/35">Legal</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-white/60">Legal</span>
               <Link href="/privacy" className="text-xs text-white/50 hover:text-white/80 transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="text-xs text-white/50 hover:text-white/80 transition-colors">Terms of Service</Link>
               <Link href="/cookie-policy" className="text-xs text-white/50 hover:text-white/80 transition-colors">Cookie Policy</Link>
@@ -120,7 +120,7 @@ export function Footer() {
               <Link href="/disclaimer" className="text-xs text-white/50 hover:text-white/80 transition-colors">Disclaimer</Link>
               <CookiePreferencesButton />
             </div>
-            <p className="text-xs text-white/35">
+            <p className="text-xs text-white/60">
               &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved. Data is for informational purposes only.
             </p>
           </div>

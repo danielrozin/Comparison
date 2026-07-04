@@ -129,7 +129,7 @@ export default function AdminRequestsPage() {
         </div>
 
         {loading ? (
-          <div className="text-center py-10 text-gray-400">Loading...</div>
+          <div role="status" className="text-center py-10 text-gray-400">Loading…</div>
         ) : requests.length === 0 ? (
           <div className="text-center py-10 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500">No {filter} requests.</p>

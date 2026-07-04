@@ -73,7 +73,7 @@ export function VerdictBlock({
           {/* Who should choose cards */}
           {entities.some((e) => e.bestFor) && (
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-3">Who should choose each?</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Who should choose each?</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {entities.map((entity, idx) =>
                   entity.bestFor ? (

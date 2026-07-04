@@ -213,7 +213,7 @@ export default function OutreachQueuePage() {
 
         {/* Posts list */}
         {loading ? (
-          <div className="text-center py-10 text-gray-400">Loading...</div>
+          <div role="status" className="text-center py-10 text-gray-400">Loading…</div>
         ) : posts.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
             <p className="text-gray-500">No {status} posts.</p>

@@ -346,7 +346,9 @@ export function InterceptSurvey({
                 <p className="text-sm font-semibold text-text mb-3">
                   Anything we could improve? (optional)
                 </p>
+                <label htmlFor="intercept-improvement" className="sr-only">Your improvement suggestion (optional)</label>
                 <textarea
+                  id="intercept-improvement"
                   value={answers.q4Improvement || ""}
                   onChange={(e) => setAnswers((a) => ({ ...a, q4Improvement: e.target.value }))}
                   placeholder="Your suggestion…"

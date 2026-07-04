@@ -136,7 +136,7 @@ export default function WeeklyReportPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-pulse text-gray-400">Generating weekly report...</div>
+        <div role="status" className="animate-pulse text-gray-400">Generating weekly report…</div>
       </div>
     );
   }

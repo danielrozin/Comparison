@@ -696,13 +696,15 @@ function TextAreaQuestion({
   error?: string;
   placeholder?: string;
 }) {
+  const id = `survey-ta-${label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`;
   return (
     <div className="mb-7">
-      <span className="font-semibold text-[0.95rem] block mb-2.5">
+      <label htmlFor={id} className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
         {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
-      </span>
+      </label>
       <textarea
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
