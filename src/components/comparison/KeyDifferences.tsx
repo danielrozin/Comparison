@@ -143,7 +143,7 @@ export function KeyDifferencesBlock({
         </div>
 
         {/* Rows */}
-        <ul className="list-none">
+        <ul aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="list-none">
         {differences.map((diff, i) => (
           <li
             key={diff.label}
@@ -196,7 +196,7 @@ export function KeyDifferencesBlock({
       </div>
 
       {/* Mobile: Stacked card layout */}
-      <ul className="sm:hidden space-y-3 list-none">
+      <ul aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="sm:hidden space-y-3 list-none">
         {differences.map((diff, i) => (
           <li
             key={diff.label}
