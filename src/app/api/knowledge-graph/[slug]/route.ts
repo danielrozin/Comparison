@@ -86,7 +86,7 @@ export async function GET(
           "@type": "FAQPage",
           "@id": `${url}#faq`,
           url,
-          inLanguage: "en",
+          inLanguage: "en-US",
           mainEntity: comparison.faqs.map((faq) => ({
             "@type": "Question",
             name: faq.question,
@@ -99,6 +99,9 @@ export async function GET(
         }
       : null;
 
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&cat=${encodeURIComponent(comparison.category ?? "")}&type=comparison`;
+
   const graph: object[] = [
     // Article node (the comparison page itself)
     {
@@ -107,10 +110,23 @@ export async function GET(
       headline: comparison.title,
       description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
       url,
-      inLanguage: "en",
+      inLanguage: "en-US",
       datePublished: comparison.metadata?.publishedAt ?? undefined,
       dateCreated: comparison.metadata?.publishedAt ?? undefined,
       dateModified: comparison.metadata?.updatedAt ?? undefined,
+      // image — required for Google article rich results; contentUrl is machine-readable.
+      image: {
+        "@type": "ImageObject",
+        "@id": `${url}#primaryImage`,
+        url: ogImage,
+        contentUrl: ogImage,
+        width: 1200,
+        height: 630,
+        caption: `${comparison.title} — Side-by-side comparison on A Versus B`,
+      },
+      thumbnailUrl: ogImage,
+      // contentReferenceTime — ISO 8601 "as of" date for the data in this article.
+      ...(updatedAt ? { contentReferenceTime: updatedAt } : {}),
       author: {
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
@@ -158,7 +174,7 @@ export async function GET(
       name: `${comparison.title} — Structured Comparison Data`,
       description: `Machine-readable comparison dataset for ${comparison.title}. Contains ${comparison.attributes.length} attribute comparisons${comparison.faqs.length > 0 ? `, ${comparison.faqs.length} FAQ pairs` : ""}.`,
       url,
-      inLanguage: "en",
+      inLanguage: "en-US",
       license: "https://creativecommons.org/licenses/by/4.0/",
       creator: {
         "@type": "Organization",
@@ -218,7 +234,7 @@ export async function GET(
       name: `How to Choose Between ${entityNames}`,
       description: comparison.shortAnswer ?? `A step-by-step guide to deciding between ${entityNames} based on key differences.`,
       url,
-      inLanguage: "en",
+      inLanguage: "en-US",
       totalTime: "PT3M",
       step: comparison.keyDifferences.map((diff, i) => {
         const label = diff.label ?? `Difference ${i + 1}`;
@@ -291,7 +307,6 @@ export async function GET(
     "@graph": graph,
   };
 
-  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
   const etag = updatedAt
     ? `"kg-${slug}-${new Date(updatedAt).getTime()}"`
     : `"kg-${slug}"`;
@@ -319,6 +334,8 @@ export async function GET(
       "Link": [
         `<${comparisonUrl}>; rel="canonical"`,
         `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD (pure)"`,
+        `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+        `<${SITE_URL}/api/sitemap>; rel="collection"; type="application/json"`,
       ].join(", "),
     },
   });
