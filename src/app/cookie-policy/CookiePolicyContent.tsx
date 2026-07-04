@@ -22,7 +22,7 @@ export function CookiePolicyContent() {
       lastUpdatedISO="2026-03"
       sections={SECTIONS}
     >
-      <section>
+      <section aria-label="Introduction">
         <p>
           This Cookie Policy explains how {SITE_NAME} uses cookies and similar technologies.
           Please read it alongside our{" "}
@@ -30,16 +30,16 @@ export function CookiePolicyContent() {
         </p>
       </section>
 
-      <section id="what-are-cookies">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">1. What Are Cookies</h2>
+      <section id="what-are-cookies" aria-labelledby="what-are-cookies-heading">
+        <h2 id="what-are-cookies-heading" className="text-2xl font-display font-bold text-text mb-4">1. What Are Cookies</h2>
         <p>
           Cookies are small text files placed on your device when you visit a website. They help
           sites remember preferences, understand usage patterns, and improve your experience.
         </p>
       </section>
 
-      <section id="cookies-we-use">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">2. Cookies We Use</h2>
+      <section id="cookies-we-use" aria-labelledby="cookies-we-use-heading">
+        <h2 id="cookies-we-use-heading" className="text-2xl font-display font-bold text-text mb-4">2. Cookies We Use</h2>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Cookies table — scroll to see all columns">
           <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
             <thead className="bg-surface-alt">
@@ -75,8 +75,8 @@ export function CookiePolicyContent() {
         </div>
       </section>
 
-      <section id="third-party-cookies">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">3. Third-Party Cookies</h2>
+      <section id="third-party-cookies" aria-labelledby="third-party-cookies-heading">
+        <h2 id="third-party-cookies-heading" className="text-2xl font-display font-bold text-text mb-4">3. Third-Party Cookies</h2>
         <p className="mb-4">Some cookies are set by services we integrate with:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Google Analytics (usage analytics)</li>
@@ -85,8 +85,8 @@ export function CookiePolicyContent() {
         </ul>
       </section>
 
-      <section id="managing-cookies">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">4. Managing Cookies</h2>
+      <section id="managing-cookies" aria-labelledby="managing-cookies-heading">
+        <h2 id="managing-cookies-heading" className="text-2xl font-display font-bold text-text mb-4">4. Managing Cookies</h2>
         <p className="mb-4">You can control cookies through:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Our cookie consent banner (click &ldquo;Cookie Preferences&rdquo; in the footer)</li>
@@ -95,21 +95,21 @@ export function CookiePolicyContent() {
         </ul>
       </section>
 
-      <section id="consent">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">5. Your Consent</h2>
+      <section id="consent" aria-labelledby="consent-heading">
+        <h2 id="consent-heading" className="text-2xl font-display font-bold text-text mb-4">5. Your Consent</h2>
         <p>
           Non-essential cookies are only set after you provide consent. You can withdraw or change
           your preferences at any time via the &ldquo;Cookie Preferences&rdquo; link in the footer.
         </p>
       </section>
 
-      <section id="changes">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">6. Changes to This Policy</h2>
+      <section id="changes" aria-labelledby="changes-heading">
+        <h2 id="changes-heading" className="text-2xl font-display font-bold text-text mb-4">6. Changes to This Policy</h2>
         <p>We may update this Cookie Policy at any time. Changes are reflected in the &ldquo;Last updated&rdquo; date.</p>
       </section>
 
-      <section id="contact">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">7. Contact Us</h2>
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="text-2xl font-display font-bold text-text mb-4">7. Contact Us</h2>
         <p className="mb-4">Questions about cookies? Contact us:</p>
         <div className="bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>

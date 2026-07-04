@@ -397,7 +397,7 @@ export default function BestAiAssistant2026Page() {
 
           {/* Desktop / tablet: real table */}
           <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
-            <table className="min-w-full text-sm">
+            <table aria-label="TL;DR — 60-second AI assistant verdict" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left px-3 py-3 font-semibold">
@@ -833,7 +833,7 @@ export default function BestAiAssistant2026Page() {
 
           {/* Desktop / tablet: real table */}
           <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
-            <table className="min-w-full text-sm">
+            <table aria-label="AI assistant decision matrix by job-to-be-done" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left px-3 py-3 font-semibold">
@@ -907,7 +907,7 @@ export default function BestAiAssistant2026Page() {
 
           {/* Desktop / tablet: real table */}
           <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
-            <table className="min-w-full text-sm">
+            <table aria-label="AI assistant pricing comparison 2026" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left px-3 py-3 font-semibold">Plan</th>

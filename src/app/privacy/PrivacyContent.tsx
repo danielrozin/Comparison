@@ -28,7 +28,7 @@ export function PrivacyContent() {
       sections={SECTIONS}
     >
       {/* Intro */}
-      <section>
+      <section aria-label="Introduction">
         <p>
           Welcome to {SITE_NAME} (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). We operate the website at{" "}
           <a href="https://comparison.com" className="text-primary-600 hover:underline">

@@ -30,7 +30,7 @@ export function TermsContent() {
       sections={SECTIONS}
     >
       {/* Intro */}
-      <section>
+      <section aria-label="Introduction">
         <p>
           Please read these Terms of Use (&ldquo;Terms&rdquo;) carefully before using the {SITE_NAME} website
           located at{" "}
