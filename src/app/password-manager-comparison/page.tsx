@@ -468,7 +468,7 @@ export default function PasswordManagerComparisonPage() {
           No vendor paid to appear in or influence this guide.
         </p>
         <Link href="/password-manager-comparison/methodology" className="text-sm text-primary-600 hover:underline font-medium">
-          Read the methodology →
+          Read the methodology <span aria-hidden="true">→</span>
         </Link>
       </section>
 

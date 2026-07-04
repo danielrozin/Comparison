@@ -474,7 +474,7 @@ export default function LLMComparisonsPage() {
           for editor cross-reference.
         </p>
         <Link href="/llm-comparisons/methodology" className="text-sm text-primary-600 hover:underline font-medium">
-          Read the methodology →
+          Read the methodology <span aria-hidden="true">→</span>
         </Link>
       </section>
 

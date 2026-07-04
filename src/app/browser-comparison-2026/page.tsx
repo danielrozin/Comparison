@@ -434,7 +434,7 @@ export default function BrowserComparison2026Page() {
           covers all nine measured attributes, source tiers, recency policy, COI disclosure, and the correction process.
         </p>
         <Link href="/browser-comparison-2026/methodology" className="text-sm text-primary-600 hover:underline font-medium">
-          Read the methodology →
+          Read the methodology <span aria-hidden="true">→</span>
         </Link>
       </section>
 

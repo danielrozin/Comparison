@@ -275,7 +275,7 @@ export default function LLMMethodologyPage() {
           CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
         </p>
         <Link href="/llm-comparisons" className="text-primary-600 hover:underline font-medium">
-          ← Back to LLM comparisons
+          <span aria-hidden="true">← </span>Back to LLM comparisons
         </Link>
       </div>
     </article>

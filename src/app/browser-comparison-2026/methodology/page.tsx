@@ -220,7 +220,7 @@ export default function BrowserMethodologyPage() {
           CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
         </p>
         <Link href="/browser-comparison-2026" className="text-primary-600 hover:underline font-medium">
-          ← Back to browser comparison
+          <span aria-hidden="true">← </span>Back to browser comparison
         </Link>
       </div>
     </article>

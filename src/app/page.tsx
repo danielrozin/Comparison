@@ -301,7 +301,7 @@ export default async function HomePage() {
             href="/trending"
             className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
           >
-            View all &rarr;
+            View all <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
 
@@ -335,7 +335,7 @@ export default async function HomePage() {
               href="/trending"
               className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
-              View all &rarr;
+              View all <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
 

@@ -234,7 +234,7 @@ export default function PasswordManagerMethodologyPage() {
           CC-BY-4.0 covers aversusb.net editorial text and table layout; vendor names, logos, and marks remain the property of their owners.
         </p>
         <Link href="/password-manager-comparison" className="text-primary-600 hover:underline font-medium">
-          ← Back to password manager comparison
+          <span aria-hidden="true">← </span>Back to password manager comparison
         </Link>
       </div>
     </article>

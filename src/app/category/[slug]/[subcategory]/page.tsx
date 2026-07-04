@@ -430,7 +430,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         {/* Back link */}
         <div className="mt-6">
           <Link href={`/category/${slug}`} className="text-primary-600 hover:underline font-medium">
-            &larr; All {category.name} Comparisons
+            <span aria-hidden="true">&larr; </span>All {category.name} Comparisons
           </Link>
         </div>
       </div>

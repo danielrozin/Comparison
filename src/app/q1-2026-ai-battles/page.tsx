@@ -445,7 +445,7 @@ export default function Q1AiBattlesPage() {
               download
               className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-700 transition-colors no-underline"
             >
-              ↓ Download CSV
+              <span aria-hidden="true">↓</span> Download CSV
             </a>
           </div>
           <p className="text-text-secondary leading-relaxed mb-4">
@@ -567,7 +567,7 @@ export default function Q1AiBattlesPage() {
               underrepresented here.
             </li>
             <li>
-              <strong className="text-text">&ldquo;Bard&rdquo; → &ldquo;Gemini&rdquo; rebrand:</strong>{" "}
+              <strong className="text-text">&ldquo;Bard&rdquo; <span aria-hidden="true">→</span> &ldquo;Gemini&rdquo; rebrand:</strong>{" "}
               Google rebranded Bard to Gemini in early 2024. Residual &ldquo;bard vs chatgpt&rdquo;
               search volume reflects users whose mental model still uses the legacy name; we report it
               as a <em>legacy</em> term, not a current product.

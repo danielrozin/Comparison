@@ -509,7 +509,7 @@ export default async function BlogPage({
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
                       <time dateTime={article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined}>{formatDate(article.publishedAt)}</time>
                       <span className="text-primary-600 font-medium group-hover:underline">
-                        Read more &rarr;
+                        Read more <span aria-hidden="true">&rarr;</span>
                       </span>
                     </div>
                   </div>
