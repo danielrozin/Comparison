@@ -8,6 +8,17 @@ import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
 
+function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
+  return (
+    `${SITE_URL}/api/og` +
+    `?title=${encodeURIComponent(title)}` +
+    `&a=${encodeURIComponent(entityA)}` +
+    `&b=${encodeURIComponent(entityB)}` +
+    `&cat=${encodeURIComponent(category)}` +
+    `&type=comparison`
+  );
+}
+
 const SITE_URL = "https://www.aversusb.net";
 const MAX_URLS_PER_SITEMAP = 5000; // conservative limit (Google allows 50k)
 
@@ -160,21 +171,51 @@ export default async function sitemap({
   }
 
   // ── Sitemap 1: Comparison pages ──
+  // Uses a direct Prisma query (not getAllSitemapData) so we can select entity
+  // names for OG image URL construction. Next.js 15 supports `images: string[]`
+  // on sitemap entries, which tells Google Images / AI visual crawlers the
+  // primary image for each comparison without requiring a separate image sitemap
+  // fetch. The dedicated /sitemap/images.xml remains in the index for crawlers
+  // that process image sitemaps independently.
   if (numId === 1) {
     try {
-      const { comparisons } = await getAllSitemapData();
-      return comparisons
-        // Drop self-comparisons (e.g. `grubhub-vs-grubhub`) — they 404 at the
-        // route (DAN: self-comparison crawl-quality guard), so submitting them
-        // would advertise a dead URL to crawlers.
-        .filter((comp) => !isDegenerateComparisonSlug(comp.slug))
-        .slice(0, MAX_URLS_PER_SITEMAP)
-        .map((comp) => ({
-          url: `${SITE_URL}/compare/${comp.slug}`,
-          lastModified: comp.updatedAt,
-          changeFrequency: "weekly" as const,
-          priority: 0.9,
-        }));
+      const prisma = getPrisma();
+      if (!prisma) return [];
+
+      const rows = await prisma.comparison.findMany({
+        where: { status: "published" },
+        select: {
+          slug: true,
+          title: true,
+          category: true,
+          updatedAt: true,
+          entities: {
+            select: {
+              position: true,
+              entity: { select: { name: true } },
+            },
+            orderBy: { position: "asc" },
+            take: 2,
+          },
+        },
+        orderBy: { viewCount: "desc" },
+        take: MAX_URLS_PER_SITEMAP,
+      });
+
+      return rows
+        .filter((row) => !isDegenerateComparisonSlug(row.slug))
+        .map((row) => {
+          const entityA = row.entities[0]?.entity.name ?? "";
+          const entityB = row.entities[1]?.entity.name ?? entityA;
+          const imageUrl = comparisonOgImageUrl(row.title, entityA, entityB, row.category ?? "");
+          return {
+            url: `${SITE_URL}/compare/${row.slug}`,
+            lastModified: row.updatedAt,
+            changeFrequency: "weekly" as const,
+            priority: 0.9,
+            images: [imageUrl],
+          };
+        });
     } catch {
       return [];
     }

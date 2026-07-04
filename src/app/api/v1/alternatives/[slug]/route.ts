@@ -67,7 +67,7 @@ export async function GET(
     name: `Best Alternatives to ${entityName}`,
     description: `Structured list of the best alternatives to ${entityName}, ranked by comparison data from aversusb.net`,
     url: alternativesPageUrl,
-    inLanguage: "en",
+    inLanguage: "en-US",
     numberOfItems: alternatives.length,
     itemListElement: alternatives.map((alt, i) => {
       const itemUrl = `${SITE_URL}/compare/${alt.comparisonSlug}`;
