@@ -110,12 +110,12 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                     </div>
                     <div className="flex items-baseline gap-0.5">
                       <span className={`text-2xl font-black tabular-nums ${winnerIdx === 0 ? "text-yellow-300" : "text-white"}`}>{scores.scoreA}</span>
-                      <span className="text-xs text-white/40 font-medium">/10</span>
+                      <span className="text-xs text-white/70 font-medium">/10</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest">vs</div>
+                <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
 
                 {/* Entity B score */}
                 <div className={`flex items-center gap-2 min-w-0 text-right transition-all ${winnerIdx === 1 ? "scale-105" : ""}`}>
@@ -126,7 +126,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                     </div>
                     <div className="flex items-baseline gap-0.5 justify-end">
                       <span className={`text-2xl font-black tabular-nums ${winnerIdx === 1 ? "text-yellow-300" : "text-white"}`}>{scores.scoreB}</span>
-                      <span className="text-xs text-white/40 font-medium">/10</span>
+                      <span className="text-xs text-white/70 font-medium">/10</span>
                     </div>
                   </div>
                   {entityB.imageUrl ? (
@@ -152,7 +152,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                 <div className={`bg-gradient-to-r from-purple-400 to-purple-300 transition-all duration-700 flex-1 ${winnerIdx === 1 ? "brightness-125" : ""}`} />
               </div>
               {winnerIdx === -1 && (
-                <p className="text-center text-[10px] text-white/40 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
+                <p className="text-center text-[10px] text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
               )}
             </div>
           )}

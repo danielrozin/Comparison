@@ -233,6 +233,7 @@ export default function DeveloperDashboard() {
               <input
                 autoComplete="off"
                 type="text"
+                aria-label="API key name"
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
                 placeholder="Key name (e.g., Production, Staging)"
