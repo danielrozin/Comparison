@@ -141,6 +141,7 @@ export function ComparisonCharts({
               <button
                 type="button"
                 key={tab.key}
+                id={`chart-tab-${tab.key}`}
                 role="tab"
                 aria-selected={activeTab === tab.key}
                 aria-controls={`chart-panel-${tab.key}`}
@@ -158,7 +159,7 @@ export function ComparisonCharts({
         </div>
 
         {/* Chart Content */}
-        <figure role="tabpanel" id={`chart-panel-${activeTab}`} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px]">
+        <figure role="tabpanel" id={`chart-panel-${activeTab}`} aria-labelledby={`chart-tab-${activeTab}`} tabIndex={0} className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-border min-h-[350px] outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">
           <figcaption className="sr-only">
             {activeTab === "bar" && `Bar chart comparing ${entityA.name} vs ${entityB.name} across scored attributes`}
             {activeTab === "radar" && `Radar chart comparing ${entityA.name} vs ${entityB.name} across multiple dimensions`}

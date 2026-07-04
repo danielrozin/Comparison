@@ -84,8 +84,8 @@ export function RelatedComparisons({
               {/* Subtle hover gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
 
-              {/* Avatars row */}
-              <div className="relative flex items-center justify-between">
+              {/* Avatars row — decorative; link text comes from the title below */}
+              <div className="relative flex items-center justify-between" aria-hidden="true">
                 <div className="flex items-center gap-1">
                   <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
                     {letterA}

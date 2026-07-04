@@ -30,6 +30,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
           <button
             type="button"
             onClick={handleExpandAll}
+            aria-pressed={allOpen}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200"
           >
             <svg className={`w-3.5 h-3.5 transition-transform duration-200 `} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
