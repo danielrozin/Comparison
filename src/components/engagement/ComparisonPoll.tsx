@@ -287,6 +287,7 @@ function VoteButton({
       type="button"
       onClick={onClick}
       disabled={loading}
+      aria-label={`Vote for ${entity.name}`}
       className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}
     >
       {entity.imageUrl ? (
@@ -334,7 +335,15 @@ function ResultBar({
         </span>
         <span className="text-sm font-semibold text-text">{pct}%</span>
       </div>
-      <div className="h-3 bg-surface-alt rounded-full overflow-hidden">
+      <div
+        role="meter"
+        aria-label={`${name} vote share`}
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuetext={`${pct}% (${count.toLocaleString()} votes)`}
+        className="h-3 bg-surface-alt rounded-full overflow-hidden"
+      >
         <div
           className={`h-full rounded-full ${colorClass} transition-all duration-700 ease-out`}
           style={{
