@@ -210,14 +210,14 @@ export default function HowWeWriteVerdictsPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <article className="prose prose-lg max-w-none space-y-10">
-        <section>
+        <section aria-labelledby="how-source-data-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">How we source data</h2>
+            <h2 id="how-source-data-heading" className="text-2xl font-display font-bold text-text">How we source data</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             Verdicts are grounded in three layers of data:
@@ -241,14 +241,14 @@ export default function HowWeWriteVerdictsPage() {
           </ul>
         </section>
 
-        <section>
+        <section aria-labelledby="ai-role-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">The role of the AI model vs. our human editor</h2>
+            <h2 id="ai-role-heading" className="text-2xl font-display font-bold text-text">The role of the AI model vs. our human editor</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             We use Claude (Anthropic&apos;s large language model) to read the structured data and
@@ -264,14 +264,14 @@ export default function HowWeWriteVerdictsPage() {
           </p>
         </section>
 
-        <section>
+        <section aria-labelledby="feedback-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">How feedback influences future verdicts</h2>
+            <h2 id="feedback-heading" className="text-2xl font-display font-bold text-text">How feedback influences future verdicts</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             The 👍 / 👎 widget under each verdict is the fastest way to tell us when something is
@@ -291,14 +291,14 @@ export default function HowWeWriteVerdictsPage() {
           </ol>
         </section>
 
-        <section>
+        <section aria-labelledby="disagree-heading">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Disagree with a specific verdict?</h2>
+            <h2 id="disagree-heading" className="text-2xl font-display font-bold text-text">Disagree with a specific verdict?</h2>
           </div>
           <p className="text-text-secondary leading-relaxed">
             Use the <strong className="text-text">&ldquo;Was this verdict helpful?&rdquo;</strong>{" "}

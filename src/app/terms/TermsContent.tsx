@@ -40,8 +40,8 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="acceptance">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">1. Acceptance of Terms</h2>
+      <section id="acceptance" aria-labelledby="acceptance-heading">
+        <h2 id="acceptance-heading" className="text-2xl font-display font-bold text-text mb-4">1. Acceptance of Terms</h2>
         <p className="mb-4">
           By accessing or using {SITE_NAME}, you confirm that you are at least 13 years of age, that you have read and
           understood these Terms, and that you agree to be legally bound by them.
@@ -52,8 +52,8 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="use-of-site">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">2. Use of the Site</h2>
+      <section id="use-of-site" aria-labelledby="use-of-site-heading">
+        <h2 id="use-of-site-heading" className="text-2xl font-display font-bold text-text mb-4">2. Use of the Site</h2>
         <p className="mb-4">
           {SITE_NAME} grants you a limited, non-exclusive, non-transferable, revocable license to
           access and use the Site for personal, non-commercial informational purposes only.
@@ -70,8 +70,8 @@ export function TermsContent() {
         </ul>
       </section>
 
-      <section id="user-conduct">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">3. User Conduct</h2>
+      <section id="user-conduct" aria-labelledby="user-conduct-heading">
+        <h2 id="user-conduct-heading" className="text-2xl font-display font-bold text-text mb-4">3. User Conduct</h2>
         <p className="mb-4">You must not submit content that is:</p>
         <ul className="list-disc pl-6 space-y-1 mb-4">
           <li>False, misleading, or fraudulent</li>
@@ -84,8 +84,8 @@ export function TermsContent() {
         <p>We reserve the right to remove content and restrict access for users who violate these standards.</p>
       </section>
 
-      <section id="intellectual-property">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">4. Intellectual Property</h2>
+      <section id="intellectual-property" aria-labelledby="intellectual-property-heading">
+        <h2 id="intellectual-property-heading" className="text-2xl font-display font-bold text-text mb-4">4. Intellectual Property</h2>
         <p className="mb-4">
           All content on {SITE_NAME} is the property of {SITE_NAME} or its content suppliers and
           is protected by applicable intellectual property laws.
@@ -96,8 +96,8 @@ export function TermsContent() {
         <p>You may not reproduce, distribute, or create derivative works without our prior written permission.</p>
       </section>
 
-      <section id="third-party-links">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">5. Third-Party Links and Content</h2>
+      <section id="third-party-links" aria-labelledby="third-party-links-heading">
+        <h2 id="third-party-links-heading" className="text-2xl font-display font-bold text-text mb-4">5. Third-Party Links and Content</h2>
         <p className="mb-4">
           The Site may contain links to third-party websites. These are provided for convenience only.
           We do not endorse or assume responsibility for third-party content or privacy practices.
@@ -105,8 +105,8 @@ export function TermsContent() {
         <p>Accessing third-party links is at your own risk.</p>
       </section>
 
-      <section id="user-generated-content">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">6. User-Generated Content</h2>
+      <section id="user-generated-content" aria-labelledby="user-generated-content-heading">
+        <h2 id="user-generated-content-heading" className="text-2xl font-display font-bold text-text mb-4">6. User-Generated Content</h2>
         <p className="mb-4">
           You grant {SITE_NAME} a worldwide, royalty-free, non-exclusive license to use, reproduce, modify,
           and display content you submit for the purposes of operating and improving the Site.
@@ -114,8 +114,8 @@ export function TermsContent() {
         <p>We are not obligated to publish, retain, or act upon any user-submitted content.</p>
       </section>
 
-      <section id="disclaimers">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">7. Disclaimers</h2>
+      <section id="disclaimers" aria-labelledby="disclaimers-heading">
+        <h2 id="disclaimers-heading" className="text-2xl font-display font-bold text-text mb-4">7. Disclaimers</h2>
         <p className="mb-4">
           THE SITE AND ITS CONTENT ARE PROVIDED ON AN &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE&rdquo; BASIS WITHOUT
           WARRANTIES OF ANY KIND.
@@ -126,8 +126,8 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="limitation-of-liability">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">8. Limitation of Liability</h2>
+      <section id="limitation-of-liability" aria-labelledby="limitation-of-liability-heading">
+        <h2 id="limitation-of-liability-heading" className="text-2xl font-display font-bold text-text mb-4">8. Limitation of Liability</h2>
         <p className="mb-4">
           TO THE MAXIMUM EXTENT PERMITTED BY LAW, {SITE_NAME.toUpperCase()} SHALL NOT BE LIABLE FOR ANY INDIRECT,
           INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES.
@@ -138,23 +138,23 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="indemnification">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">9. Indemnification</h2>
+      <section id="indemnification" aria-labelledby="indemnification-heading">
+        <h2 id="indemnification-heading" className="text-2xl font-display font-bold text-text mb-4">9. Indemnification</h2>
         <p>
           You agree to indemnify and hold harmless {SITE_NAME} from any claims arising from: (a) your
           use of the Site; (b) your violation of these Terms; or (c) your violation of any rights of another.
         </p>
       </section>
 
-      <section id="modifications">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">10. Modifications to the Site</h2>
+      <section id="modifications" aria-labelledby="modifications-heading">
+        <h2 id="modifications-heading" className="text-2xl font-display font-bold text-text mb-4">10. Modifications to the Site</h2>
         <p>
           We reserve the right to modify, suspend, or discontinue the Site at any time without notice or liability.
         </p>
       </section>
 
-      <section id="governing-law">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">11. Governing Law and Dispute Resolution</h2>
+      <section id="governing-law" aria-labelledby="governing-law-heading">
+        <h2 id="governing-law-heading" className="text-2xl font-display font-bold text-text mb-4">11. Governing Law and Dispute Resolution</h2>
         <p className="mb-4">
           These Terms shall be governed by applicable laws. Disputes shall first be attempted to be
           resolved through good-faith negotiation.
@@ -164,16 +164,16 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="termination">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">12. Termination</h2>
+      <section id="termination" aria-labelledby="termination-heading">
+        <h2 id="termination-heading" className="text-2xl font-display font-bold text-text mb-4">12. Termination</h2>
         <p>
           We reserve the right to terminate or restrict your access at any time for any reason without notice.
           Provisions that should survive termination shall survive.
         </p>
       </section>
 
-      <section id="entire-agreement">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">13. Entire Agreement</h2>
+      <section id="entire-agreement" aria-labelledby="entire-agreement-heading">
+        <h2 id="entire-agreement-heading" className="text-2xl font-display font-bold text-text mb-4">13. Entire Agreement</h2>
         <p>
           These Terms, together with our{" "}
           <Link href="/privacy" className="text-primary-600 hover:underline">Privacy Policy</Link> and{" "}
@@ -182,8 +182,8 @@ export function TermsContent() {
         </p>
       </section>
 
-      <section id="contact">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">14. Contact</h2>
+      <section id="contact" aria-labelledby="contact-terms-heading">
+        <h2 id="contact-terms-heading" className="text-2xl font-display font-bold text-text mb-4">14. Contact</h2>
         <p className="mb-4">If you have any questions about these Terms, please contact us:</p>
         <div className="bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>

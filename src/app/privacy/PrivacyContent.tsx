@@ -41,8 +41,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 1. Data We Collect */}
-      <section id="information-we-collect">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">1. Information We Collect</h2>
+      <section id="information-we-collect" aria-labelledby="information-we-collect-heading">
+        <h2 id="information-we-collect-heading" className="text-2xl font-display font-bold text-text mb-4">1. Information We Collect</h2>
         <p className="mb-4">We may collect information about you in several ways:</p>
 
         <h3 className="text-lg font-semibold text-text mb-2">1.1 Information You Provide Directly</h3>
@@ -73,8 +73,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 2. Cookies */}
-      <section id="cookies">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">2. Cookies and Tracking Technologies</h2>
+      <section id="cookies" aria-labelledby="cookies-heading">
+        <h2 id="cookies-heading" className="text-2xl font-display font-bold text-text mb-4">2. Cookies and Tracking Technologies</h2>
         <p className="mb-4">
           {SITE_NAME} uses cookies and similar tracking technologies to enhance your experience and
           gather analytics data. Cookies are small text files placed on your device.
@@ -90,8 +90,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 3. Analytics */}
-      <section id="analytics">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">3. Analytics</h2>
+      <section id="analytics" aria-labelledby="analytics-heading">
+        <h2 id="analytics-heading" className="text-2xl font-display font-bold text-text mb-4">3. Analytics</h2>
         <p className="mb-4">
           We use third-party analytics services, which may include Google Analytics, to understand
           traffic patterns and usage behavior. These services may set their own cookies.
@@ -106,8 +106,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 4. Third-Party Services */}
-      <section id="third-party-services">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">4. Third-Party Services</h2>
+      <section id="third-party-services" aria-labelledby="third-party-services-heading">
+        <h2 id="third-party-services-heading" className="text-2xl font-display font-bold text-text mb-4">4. Third-Party Services</h2>
         <p className="mb-4">Our website may include integrations with or links to third-party services including:</p>
         <ul className="list-disc pl-6 space-y-1 mb-4">
           <li>Analytics providers (e.g., Google Analytics)</li>
@@ -119,8 +119,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 5. How We Use Your Information */}
-      <section id="how-we-use">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">5. How We Use Your Information</h2>
+      <section id="how-we-use" aria-labelledby="how-we-use-heading">
+        <h2 id="how-we-use-heading" className="text-2xl font-display font-bold text-text mb-4">5. How We Use Your Information</h2>
         <p className="mb-3">We use the information we collect to:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Operate and improve the {SITE_NAME} website and its features</li>
@@ -133,8 +133,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 6. Data Sharing */}
-      <section id="data-sharing">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">6. Data Sharing and Disclosure</h2>
+      <section id="data-sharing" aria-labelledby="data-sharing-heading">
+        <h2 id="data-sharing-heading" className="text-2xl font-display font-bold text-text mb-4">6. Data Sharing and Disclosure</h2>
         <p className="mb-4">We do not sell, trade, or rent your personal information. We may share information in these limited circumstances:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li><strong className="text-text">Service providers:</strong> Trusted vendors who assist in operating the site, subject to confidentiality obligations.</li>
@@ -145,8 +145,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 7. User Rights */}
-      <section id="your-rights">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">7. Your Rights</h2>
+      <section id="your-rights" aria-labelledby="your-rights-heading">
+        <h2 id="your-rights-heading" className="text-2xl font-display font-bold text-text mb-4">7. Your Rights</h2>
         <p className="mb-4">Depending on your location, you may have certain rights regarding your personal data:</p>
         <ul className="list-disc pl-6 space-y-2 mb-4">
           <li><strong className="text-text">Right of access:</strong> Request a copy of the personal data we hold about you.</li>
@@ -163,8 +163,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 8. Data Retention */}
-      <section id="data-retention">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">8. Data Retention</h2>
+      <section id="data-retention" aria-labelledby="data-retention-heading">
+        <h2 id="data-retention-heading" className="text-2xl font-display font-bold text-text mb-4">8. Data Retention</h2>
         <p className="mb-4">We retain personal data only for as long as necessary:</p>
         <ul className="list-disc pl-6 space-y-1 mb-4">
           <li>Contact form submissions are retained for up to 24 months.</li>
@@ -175,8 +175,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 9. Security */}
-      <section id="data-security">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">9. Data Security</h2>
+      <section id="data-security" aria-labelledby="data-security-heading">
+        <h2 id="data-security-heading" className="text-2xl font-display font-bold text-text mb-4">9. Data Security</h2>
         <p>
           We implement industry-standard technical and organizational measures to protect your
           information. These include HTTPS encryption, access controls, and regular security reviews.
@@ -185,8 +185,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 10. Children */}
-      <section id="childrens-privacy">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">10. Children&apos;s Privacy</h2>
+      <section id="childrens-privacy" aria-labelledby="childrens-privacy-heading">
+        <h2 id="childrens-privacy-heading" className="text-2xl font-display font-bold text-text mb-4">10. Children&apos;s Privacy</h2>
         <p>
           {SITE_NAME} is not directed to children under 13, and we do not knowingly collect personal
           information from children. If you believe we have collected information from a child under 13,
@@ -196,8 +196,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 11. International Transfers */}
-      <section id="international-transfers">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">11. International Data Transfers</h2>
+      <section id="international-transfers" aria-labelledby="international-transfers-heading">
+        <h2 id="international-transfers-heading" className="text-2xl font-display font-bold text-text mb-4">11. International Data Transfers</h2>
         <p>
           Your information may be transferred to and processed in countries other than your own.
           We take appropriate steps to ensure compliance with applicable data protection laws.
@@ -205,8 +205,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 12. Changes */}
-      <section id="changes">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">12. Changes to This Policy</h2>
+      <section id="changes" aria-labelledby="changes-heading">
+        <h2 id="changes-heading" className="text-2xl font-display font-bold text-text mb-4">12. Changes to This Policy</h2>
         <p className="mb-4">
           We may update this Privacy Policy from time to time. When we make material changes, we
           will update the &ldquo;Last updated&rdquo; date at the top of this page.
@@ -215,8 +215,8 @@ export function PrivacyContent() {
       </section>
 
       {/* 13. Contact */}
-      <section id="contact">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">13. Contact Us</h2>
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="text-2xl font-display font-bold text-text mb-4">13. Contact Us</h2>
         <p>If you have any questions about this Privacy Policy, please contact us:</p>
         <div className="mt-4 bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>
