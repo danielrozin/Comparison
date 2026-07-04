@@ -68,6 +68,8 @@ export async function GET(
 
   const url = `${SITE_URL}/entity/${slug}`;
 
+  const entityOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
+
   const profilePageSchema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -77,6 +79,17 @@ export async function GET(
     description: entity.metaDescription || entity.shortDesc || undefined,
     inLanguage: "en-US",
     contentReferenceTime: entity.updatedAt?.toISOString() ?? new Date().toISOString(),
+    // image — required for Google profile rich results; contentUrl is machine-readable.
+    image: {
+      "@type": "ImageObject",
+      "@id": `${url}#primaryImage`,
+      url: entity.imageUrl ?? entityOgImage,
+      contentUrl: entity.imageUrl ?? entityOgImage,
+      width: entity.imageUrl ? undefined : 1200,
+      height: entity.imageUrl ? undefined : 630,
+      caption: entity.name,
+    },
+    thumbnailUrl: entity.thumbnailUrl ?? entity.imageUrl ?? entityOgImage,
     // speakable — marks the entity name and short description as voice-extractable
     // so AI voice assistants and LLMs can read out a concise entity summary.
     speakable: {
@@ -89,7 +102,16 @@ export async function GET(
       name: entity.name,
       description: entity.shortDesc ?? undefined,
       url,
-      ...(entity.imageUrl ? { image: entity.imageUrl } : {}),
+      ...(entity.imageUrl
+        ? {
+            image: {
+              "@type": "ImageObject",
+              url: entity.imageUrl,
+              contentUrl: entity.imageUrl,
+              caption: entity.name,
+            },
+          }
+        : {}),
     },
     mainEntity: {
       "@type": "ItemList",
@@ -108,7 +130,7 @@ export async function GET(
     },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
-    dateModified: entity.updatedAt?.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
+    dateModified: entity.updatedAt?.toISOString() ?? new Date().toISOString(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
   };
 
@@ -184,7 +206,7 @@ export async function GET(
               name: `${entity.name} — Frequently Asked Questions`,
               description: `Frequently asked questions about ${entity.name}`,
               inLanguage: "en-US",
-              dateModified: entity.updatedAt?.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
+              dateModified: entity.updatedAt?.toISOString() ?? new Date().toISOString(),
               author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
               isPartOf: { "@type": "ProfilePage", "@id": `${url}#profilepage` },
               // speakable — marks FAQ answers as voice-extractable for AI assistants.

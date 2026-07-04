@@ -51,5 +51,15 @@ export async function GET(
     headers["Last-Modified"] = new Date(updatedAt).toUTCString();
   }
 
+  const comparisonUrl = `${SITE_URL}/compare/${slug}`;
+  headers["Link"] = [
+    `<${comparisonUrl}>; rel="canonical"`,
+    `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+    `<${SITE_URL}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
+    `<${SITE_URL}/api/answer/${slug}>; rel="alternate"; type="application/json"; title="AI Answer"`,
+    `<${SITE_URL}/api/faq/${slug}>; rel="alternate"; type="application/json"; title="FAQ pairs"`,
+    `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+  ].join(", ");
+
   return NextResponse.json(comparison, { headers });
 }
