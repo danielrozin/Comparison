@@ -904,6 +904,24 @@ export function comparisonPageSchema(
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web, iOS, Android",
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          // featureList — derived from comparison attribute values for this entity.
+          // AI product-search carousels (Google Shopping, Perplexity product mode) use
+          // featureList to surface per-entity capabilities in structured product results.
+          ...(() => {
+            const features = comparison.attributes
+              .flatMap((attr) => {
+                const val = attr.values.find((v) => v.entityId === e.id);
+                if (!val) return [];
+                if (val.valueBoolean === true) return [`${attr.name}`];
+                if (val.valueText) return [`${attr.name}: ${val.valueText}`];
+                if (val.valueNumber !== null && val.valueNumber !== undefined) {
+                  return [`${attr.name}: ${val.valueNumber}${attr.unit ? " " + attr.unit : ""}`];
+                }
+                return [];
+              })
+              .slice(0, 10);
+            return features.length > 0 ? { featureList: features.join(", ") } : {};
+          })(),
         }),
         // Product enrichment — brand + availability so AI product-search crawlers
         // can extract structured product data from comparison pages.
@@ -1547,6 +1565,19 @@ function buildMultiEntityGraph(
       // Offer intentionally omitted for chatbot/AI-tool cluster per schema-3way v1 contract
       // §2.3 deferral note (DAN-841). Emit offers only on entity profile pages where price
       // data is verified, not on comparison item nodes where it may be inaccurate.
+      const multiFeatures = comparison.attributes
+        .flatMap((attr) => {
+          const val = attr.values.find((v) => v.entityId === entity.id);
+          if (!val) return [];
+          if (val.valueBoolean === true) return [`${attr.name}`];
+          if (val.valueText) return [`${attr.name}: ${val.valueText}`];
+          if (val.valueNumber !== null && val.valueNumber !== undefined) {
+            return [`${attr.name}: ${val.valueNumber}${attr.unit ? " " + attr.unit : ""}`];
+          }
+          return [];
+        })
+        .slice(0, 10);
+      if (multiFeatures.length > 0) node.featureList = multiFeatures.join(", ");
     }
 
     if (schemaType === "Product") {
