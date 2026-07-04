@@ -32,8 +32,8 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border shadow-sm">
-          <table className="w-full text-sm">
+      <div className="overflow-x-auto rounded-xl border border-border shadow-sm" role="region" aria-label="Key facts table — scroll to see all columns">
+          <table className="w-full text-sm" aria-label={`${entityA.name} vs ${entityB.name} — key numeric facts`}>
             <thead>
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
                 <th scope="col" className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider">
@@ -101,7 +101,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                     </td>
                     <td className="px-4 py-3 w-24">
                       {numA != null && numB != null ? (
-                        <div className="flex flex-col items-center gap-1">
+                        <div className="flex flex-col items-center gap-1" aria-hidden="true">
                           <div className="w-full h-2 rounded-full overflow-hidden bg-surface-alt flex">
                             {(() => {
                               const sum = numA + numB;
