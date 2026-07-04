@@ -131,7 +131,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
         </div>
 
       <p className="text-[10px] text-text-secondary mt-2 text-right">
-        Sourced from publicly available data · {new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+        Sourced from publicly available data · <time dateTime={new Date().toISOString().slice(0, 7)}>{new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" })}</time>
       </p>
     </section>
   );
