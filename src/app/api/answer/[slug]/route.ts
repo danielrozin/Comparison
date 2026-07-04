@@ -153,6 +153,7 @@ export async function GET(
     "@type": "ClaimReview",
     "@id": `${url}#claimreview`,
     url,
+    inLanguage: "en-US",
     claimReviewed: comparison.title,
     reviewBody: syntheticAnswer ?? comparison.title,
     ...(publishedAt ? { datePublished: publishedAt } : {}),
@@ -170,6 +171,7 @@ export async function GET(
       "@id": url,
       url,
       name: comparison.title,
+      inLanguage: "en-US",
     },
   };
 
@@ -216,6 +218,12 @@ export async function GET(
         ETag: etag,
         ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
         ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
+        "Link": [
+          `<${url}>; rel="canonical"`,
+          `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,
+          `<${SITE_URL}/api/faq/${slug}>; rel="alternate"; type="application/json"; title="FAQ pairs"`,
+          `<${SITE_URL}/api/openapi>; rel="service-doc"; type="application/json"`,
+        ].join(", "),
       },
     }
   );

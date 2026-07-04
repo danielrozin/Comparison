@@ -62,7 +62,7 @@ export async function GET(
         inLanguage: "en-US",
         name: `${comparison.title} — FAQ`,
         description: `Frequently asked questions about ${comparison.title}`,
-        dateModified: updatedAt ? new Date(updatedAt).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10),
+        dateModified: updatedAt ? new Date(updatedAt).toISOString() : new Date().toISOString(),
         author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         isPartOf: { "@type": "Article", "@id": `${url}#article` },

@@ -218,6 +218,17 @@ export async function GET() {
   lines.push("- `<link rel=\"license\" href=\"https://creativecommons.org/licenses/by/4.0/\">` — CC BY 4.0");
   lines.push("- `<meta http-equiv=\"content-language\" content=\"en\">` — explicit language declaration");
   lines.push("- `<link rel=\"describedby\" type=\"application/ld+json\" href=\"{api-url}\">` — machine-readable description");
+  lines.push("");
+  lines.push("## GEO Signals (AI Crawler Freshness & Visual Context)");
+  lines.push("");
+  lines.push("All JSON-LD API endpoints emit a consistent set of signals for AI temporal and visual grounding:");
+  lines.push("- `inLanguage: \"en-US\"` — ISO locale on every JSON-LD node across all content API endpoints");
+  lines.push("- `image.contentUrl` — machine-readable OG image URL (1200×630 PNG) on Article, BlogPosting, and ClaimReview nodes");
+  lines.push("- `thumbnailUrl` — direct OG image URL for AI visual crawlers on comparison Article, BlogPosting, and schema API Article nodes");
+  lines.push("- `contentReferenceTime` — ISO 8601 \"data as of\" timestamp on comparison Article and BlogPosting schemas; tells LLMs the freshness window for time-qualified answers");
+  lines.push("- Sitemap shards 1–4 (`/sitemap/1.xml`–`/sitemap/4.xml`) include `<image:image>` entries for every comparison, entity, alternatives, blog, and review URL — Google Images + AI visual crawlers get primary images without a separate image sitemap fetch");
+  lines.push("- `ClaimReview.inLanguage: \"en-US\"` and `ClaimReview.itemReviewed.inLanguage: \"en-US\"` on `/api/answer/{slug}` — enables language-scoped AI fact-checking");
+  lines.push("- `/api/answer/{slug}` GET response now emits `Link:` header pointing to canonical, knowledge-graph, FAQ, and OpenAPI URLs — mirrors the HEAD response for crawlers that issue full GETs");
 
   const body = lines.join("\n");
 
