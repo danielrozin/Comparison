@@ -37,7 +37,7 @@ export function AiAssistedBadge() {
       <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-500/15 to-amber-500/10 border border-yellow-400/40 hover:border-yellow-400/70 px-3 py-1 text-xs font-medium text-yellow-100 backdrop-blur-sm transition-colors duration-200 cursor-default">
         {/* Animated sparkle */}
         <svg
-          className="w-3.5 h-3.5 text-yellow-300 animate-pulse"
+          className="w-3.5 h-3.5 text-yellow-300 motion-safe:animate-pulse"
           fill="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"

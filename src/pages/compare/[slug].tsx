@@ -1142,7 +1142,7 @@ function MultiEntityLayout({
                   {ent.name.charAt(0).toUpperCase()}
                 </div>
               )}
-              <h3 className="text-sm sm:text-base font-bold text-text mb-1">{ent.name}</h3>
+              <h2 className="text-sm sm:text-base font-bold text-text mb-1">{ent.name}</h2>
               {ent.shortDesc && (
                 <p className="text-xs text-text-secondary leading-snug line-clamp-2">{ent.shortDesc}</p>
               )}
