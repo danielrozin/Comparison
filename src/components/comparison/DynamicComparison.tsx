@@ -35,8 +35,14 @@ export function DynamicComparison({ slug }: { slug: string }) {
   const [comparison, setComparison] = useState<ComparisonPageData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [funFact] = useState(() => FUN_FACTS[Math.floor(Math.random() * FUN_FACTS.length)]);
+  // Math.random() is deferred to a useEffect so the initial value is stable
+  // across SSR and hydration (prevents "Application error" hydration mismatch).
+  const [funFact, setFunFact] = useState(FUN_FACTS[0]);
   const title = formatSlugToTitle(slug);
+
+  useEffect(() => {
+    setFunFact(FUN_FACTS[Math.floor(Math.random() * FUN_FACTS.length)]);
+  }, []);
 
   // Animate progress bar during generation
   useEffect(() => {

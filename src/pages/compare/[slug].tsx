@@ -20,7 +20,14 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
-import { DynamicComparison } from "@/components/comparison/DynamicComparison";
+// DAN-1724: DynamicComparison is a pure client widget (generates content via
+// fetch, uses Math.random for fun facts). Loading it ssr:false eliminates the
+// SSR → hydration mismatch that caused "Application error" when Prisma was
+// unavailable and getStaticProps fell back to kind:"dynamic".
+const DynamicComparison = dynamic(
+  () => import("@/components/comparison/DynamicComparison").then((m) => ({ default: m.DynamicComparison })),
+  { ssr: false, loading: () => null }
+);
 import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
