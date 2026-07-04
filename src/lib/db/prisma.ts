@@ -18,8 +18,27 @@ function isValidDatabaseUrl(): boolean {
   return true;
 }
 
+// Mirror the vercel-build.mjs logic at runtime: prisma/schema.prisma declares
+// `directUrl = env("DIRECT_URL")` (required for safe migrations via the direct
+// non-pooled Neon endpoint — DAN-1512). Prisma Client reads DIRECT_URL at
+// initialization time; if it is missing the client throws "Environment variable
+// not found: DIRECT_URL", crashing every DB-backed page. The vercel-build.mjs
+// wrapper sets DIRECT_URL during the build step but the Vercel runtime env may
+// not have it as a permanent variable. Derive it from DATABASE_URL here so the
+// server process always has a valid DIRECT_URL regardless of whether the Vercel
+// dashboard env var was configured explicitly.
+function ensureDirectUrl(): void {
+  if (process.env.DIRECT_URL) return;
+  const databaseUrl = process.env.DATABASE_URL;
+  if (!databaseUrl) return;
+  // Neon pooler host: ep-xxxx-pooler.<region>.aws.neon.tech
+  // Direct host:      ep-xxxx.<region>.aws.neon.tech
+  process.env.DIRECT_URL = databaseUrl.replace("-pooler.", ".");
+}
+
 function createPrismaClient(): PrismaClient | null {
   if (!isValidDatabaseUrl()) return null;
+  ensureDirectUrl();
   try {
     return new PrismaClient();
   } catch {
