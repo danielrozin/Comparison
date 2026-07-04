@@ -217,7 +217,7 @@ export default async function B2BSaaSStudyPage() {
         </header>
 
         {/* Key stat cards */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        <section aria-label="Study statistics" className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
           <div className="rounded-xl border border-border bg-surface p-5">
             <div className="text-3xl font-black text-text">{fmt(study.totalSaaSComparisons)}</div>
             <div className="text-sm text-text-secondary mt-1">SaaS comparisons analyzed</div>
@@ -235,14 +235,14 @@ export default async function B2BSaaSStudyPage() {
         </section>
 
         {/* Top SaaS tools */}
-        <section className="mb-12">
+        <section aria-labelledby="b2b-saas-top-heading" className="mb-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Most-compared B2B SaaS tools</h2>
+            <h2 id="b2b-saas-top-heading" className="text-2xl font-display font-bold text-text">Most-compared B2B SaaS tools</h2>
           </div>
           <p className="text-text-secondary mb-5">
             Ranked by how many distinct comparison pages each tool appears in. CRM and marketing
@@ -275,14 +275,14 @@ export default async function B2BSaaSStudyPage() {
         </section>
 
         {/* Category clusters */}
-        <section className="mb-12">
+        <section aria-labelledby="b2b-saas-where-heading" className="mb-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Where SaaS buyers compare most</h2>
+            <h2 id="b2b-saas-where-heading" className="text-2xl font-display font-bold text-text">Where SaaS buyers compare most</h2>
           </div>
           <p className="text-text-secondary mb-5">
             Comparison demand by software category. Email marketing &amp; CRM and website builders
@@ -325,14 +325,14 @@ export default async function B2BSaaSStudyPage() {
 
         {/* Challenger vs incumbent */}
         {study.challengers.length > 0 && (
-          <section className="mb-12">
+          <section aria-labelledby="b2b-saas-challengers-heading" className="mb-12">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-display font-bold text-text">Challengers out-pacing the incumbents</h2>
+              <h2 id="b2b-saas-challengers-heading" className="text-2xl font-display font-bold text-text">Challengers out-pacing the incumbents</h2>
             </div>
             <p className="text-text-secondary mb-5">
               In these categories a newer entrant now shows up in more buyer comparisons than the
@@ -369,14 +369,14 @@ export default async function B2BSaaSStudyPage() {
         )}
 
         {/* Methodology */}
-        <section className="mb-12">
+        <section aria-labelledby="b2b-saas-methodology-heading" className="mb-12">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-display font-bold text-text">Methodology</h2>
+            <h2 id="b2b-saas-methodology-heading" className="text-2xl font-display font-bold text-text">Methodology</h2>
           </div>
           <div className="prose-sm text-text-secondary space-y-3">
             <p>
@@ -402,8 +402,8 @@ export default async function B2BSaaSStudyPage() {
         </section>
 
         {/* Cite / reuse box — the link-earning hook */}
-        <section className="rounded-xl border border-primary-600/30 bg-primary-600/5 p-6 mb-12">
-          <h2 className="text-xl font-display font-bold text-text mb-2">Cite or republish this study</h2>
+        <section aria-labelledby="b2b-saas-cite-heading" className="rounded-xl border border-primary-600/30 bg-primary-600/5 p-6 mb-12">
+          <h2 id="b2b-saas-cite-heading" className="text-xl font-display font-bold text-text mb-2">Cite or republish this study</h2>
           <p className="text-text-secondary text-sm mb-4">
             This data is free to reference, quote, and republish with attribution and a link back to{" "}
             {SITE_NAME}. Writing a SaaS roundup or market report? Reach out via our{" "}

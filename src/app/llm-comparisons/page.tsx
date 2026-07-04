@@ -393,14 +393,14 @@ export default function LLMComparisonsPage() {
       </header>
 
       {/* Quick summary */}
-      <section className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
+      <section aria-labelledby="llm-takeaways-heading" className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="font-display font-bold text-text">Key takeaways (as of May 2026)</h2>
+          <h2 id="llm-takeaways-heading" className="font-display font-bold text-text">Key takeaways (as of May 2026)</h2>
         </div>
         <ul className="space-y-1 text-text-secondary text-sm list-disc list-inside">
           <li><strong className="text-text">Largest context windows:</strong> GPT-4.1 and Gemini 2.0 Flash / 2.5 Pro — all at 1M tokens.<sup><a href="#cite-0" className="text-primary-600">[1]</a></sup><sup><a href="#cite-4" className="text-primary-600">[5]</a></sup></li>
@@ -411,14 +411,14 @@ export default function LLMComparisonsPage() {
       </section>
 
       {/* Main table */}
-      <section className="mb-12">
+      <section aria-labelledby="llm-comparison-table-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 6h4m-4 12h4M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Comparison table</h2>
+          <h2 id="llm-comparison-table-heading" className="text-2xl font-display font-bold text-text">Comparison table</h2>
         </div>
         <p className="text-sm text-text-secondary mb-4">
           All data as of May 2026.<sup><a href="#cite-date-note" className="text-primary-600">[*]</a></sup>{" "}
@@ -457,14 +457,14 @@ export default function LLMComparisonsPage() {
       </section>
 
       {/* Methodology link */}
-      <section className="mb-12 p-5 border border-border rounded-2xl">
+      <section aria-labelledby="llm-methodology-heading" className="mb-12 p-5 border border-border rounded-2xl">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           </div>
-          <h2 className="font-display font-bold text-text">How we compile this table</h2>
+          <h2 id="llm-methodology-heading" className="font-display font-bold text-text">How we compile this table</h2>
         </div>
         <p className="text-text-secondary text-sm mb-3">
           Our{" "}
@@ -479,14 +479,14 @@ export default function LLMComparisonsPage() {
       </section>
 
       {/* Citations */}
-      <section className="mb-10">
+      <section aria-labelledby="llm-sources-heading" className="mb-10">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h2 className="text-xl font-display font-bold text-text">Sources</h2>
+          <h2 id="llm-sources-heading" className="text-xl font-display font-bold text-text">Sources</h2>
         </div>
         <ol className="space-y-2 text-sm text-text-secondary">
           {LLMS.map((m, i) => (

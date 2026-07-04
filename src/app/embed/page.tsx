@@ -146,7 +146,7 @@ export default function EmbedLandingPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(embedSchema) }} />
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white">
+      <section aria-labelledby="embed-hero-heading" className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-300 rounded-full blur-3xl" />
@@ -158,7 +158,7 @@ export default function EmbedLandingPage() {
             </svg>
             Embed Widget
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-6">
+          <h1 id="embed-hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-6">
             Embed Comparisons<br className="hidden sm:block" /> on Your Site
           </h1>
           <p className="text-lg sm:text-xl text-white/85 max-w-2xl mx-auto mb-10">
@@ -183,9 +183,9 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="how-it-works" aria-labelledby="embed-how-it-works-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
+          <h2 id="embed-how-it-works-heading" className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
             How It Works
           </h2>
           <p className="text-text-secondary text-lg max-w-xl mx-auto">
@@ -211,10 +211,10 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* Live Demo */}
-      <section className="bg-surface-alt border-y border-border">
+      <section aria-labelledby="embed-live-demo-heading" className="bg-surface-alt border-y border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
+            <h2 id="embed-live-demo-heading" className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
               Live Demo
             </h2>
             <p className="text-text-secondary text-lg">
@@ -252,9 +252,9 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* Benefits */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section aria-labelledby="embed-benefits-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
+          <h2 id="embed-benefits-heading" className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
             Why Embed With Us?
           </h2>
         </div>
@@ -272,9 +272,9 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* White-Label Pricing */}
-      <section id="pricing" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="pricing" aria-labelledby="embed-pricing-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
+          <h2 id="embed-pricing-heading" className="text-3xl sm:text-4xl font-display font-bold text-text mb-4">
             White-Label Embed Plans
           </h2>
           <p className="text-text-secondary text-lg max-w-2xl mx-auto">
@@ -382,9 +382,9 @@ export default function EmbedLandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-br from-primary-600 to-accent-600 text-white">
+      <section aria-labelledby="embed-cta-heading" className="bg-gradient-to-br from-primary-600 to-accent-600 text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h2 className="text-3xl sm:text-4xl font-display font-bold mb-4">
+          <h2 id="embed-cta-heading" className="text-3xl sm:text-4xl font-display font-bold mb-4">
             Ready to embed?
           </h2>
           <p className="text-white/85 text-lg mb-8">
