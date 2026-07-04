@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { entitySchemaType } from "@/lib/seo/schema";
 
 // /api/knowledge-graph/[slug] — JSON-LD knowledge graph for a comparison.
 //
@@ -164,6 +165,24 @@ export async function GET(
       ]),
       // teaches — explicit decision-intent signal for AI topic classifiers
       teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+      // genre — content classification for AI indexers and Google Discover carousels
+      ...(comparison.category ? { genre: comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1) } : { genre: "Comparison" }),
+      // potentialAction — ReadAction lets AI crawlers understand page is readable; CompareAction
+      // signals comparison intent so AI routers surface this for "X vs Y" queries.
+      potentialAction: [
+        { "@type": "ReadAction", target: url },
+        {
+          "@type": "Action",
+          additionalType: "CompareAction",
+          name: `Compare ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+          target: url,
+          object: comparison.entities.map((e) => ({
+            "@type": "Thing",
+            name: e.name,
+            ...(e.slug ? { url: `${SITE_URL}/entity/${e.slug}` } : {}),
+          })),
+        },
+      ],
     },
     // Entity nodes
     ...entityNodes,
@@ -269,6 +288,29 @@ export async function GET(
             ],
           }
         : {}),
+    });
+  }
+
+  // SportsEvent node — for sports-category comparisons, adds a virtual SportsEvent
+  // representing the head-to-head matchup. Google Sports and Perplexity sports-mode
+  // crawlers use SportsEvent to surface athlete/team comparisons in sports carousels.
+  if (comparison.category === "sports" && comparison.entities.length >= 2) {
+    graph.push({
+      "@type": "SportsEvent",
+      "@id": `${url}#sportsevent`,
+      name: comparison.title,
+      description: comparison.shortAnswer ?? `Head-to-head comparison: ${comparison.title}`,
+      url,
+      inLanguage: "en-US",
+      ...(updatedAt ? { startDate: updatedAt } : {}),
+      competitor: comparison.entities.slice(0, 2).map((e) => ({
+        "@type": ["SportsTeam", "Person"].includes(entitySchemaType(e.entityType)) ? entitySchemaType(e.entityType) : "Person",
+        name: e.name,
+        ...(e.slug ? { url: `${SITE_URL}/entity/${e.slug}` } : {}),
+        ...(e.shortDesc ? { description: e.shortDesc } : {}),
+      })),
+      organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      isAccessibleForFree: true,
     });
   }
 
