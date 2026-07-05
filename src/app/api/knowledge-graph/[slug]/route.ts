@@ -48,28 +48,54 @@ export async function GET(
 
   const url = `${SITE_URL}/compare/${slug}`;
 
+  // Generate alternate names for an entity from its name and slug.
+  // Provides AI citation engines and KG crawlers with common aliases so they can
+  // resolve queries like "US vs China" to "United States vs China" (and vice versa).
+  function buildAlternateNames(name: string, slug: string): string[] {
+    const alts: string[] = [];
+    const words = name.split(/\s+/).filter(Boolean);
+    // Acronym for multi-word names (e.g. "Machine Learning" → "ML")
+    if (words.length >= 2) {
+      const acronym = words.map((w) => w[0] ?? "").join("").toUpperCase();
+      if (acronym.length >= 2 && acronym !== name) alts.push(acronym);
+    }
+    // Slug → title-case variant (e.g. "united-states" → "United States")
+    const slugTitle = slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    if (slugTitle !== name && !alts.includes(slugTitle)) alts.push(slugTitle);
+    return alts.slice(0, 3);
+  }
+
   // Build entity nodes — typed via entitySchemaType() so knowledge graph crawlers
   // (Google KG, Perplexity, ChatGPT) receive correctly typed nodes instead of Thing.
-  const entityNodes = comparison.entities.map((entity) => ({
-    "@type": entitySchemaType(entity.entityType),
-    "@id": `${SITE_URL}/entity/${entity.slug}#entity`,
-    name: entity.name,
-    url: `${SITE_URL}/entity/${entity.slug}`,
-    inLanguage: "en-US",
-    description: entity.shortDesc ?? entity.name,
-    ...(entity.imageUrl ? {
-      image: {
-        "@type": "ImageObject",
-        url: entity.imageUrl,
-        contentUrl: entity.imageUrl,
-        caption: entity.name,
-      },
-    } : {}),
-    sameAs: [
-      `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
-    ],
-    subjectOf: { "@type": "Article", "@id": `${url}#article` },
-  }));
+  // alternateName provides common aliases/abbreviations so AI fact-checkers can
+  // resolve variant spellings to the same canonical entity node.
+  const entityNodes = comparison.entities.map((entity) => {
+    const alternateNames = buildAlternateNames(entity.name, entity.slug);
+    return {
+      "@type": entitySchemaType(entity.entityType),
+      "@id": `${SITE_URL}/entity/${entity.slug}#entity`,
+      name: entity.name,
+      ...(alternateNames.length > 0 ? { alternateName: alternateNames } : {}),
+      url: `${SITE_URL}/entity/${entity.slug}`,
+      inLanguage: "en-US",
+      description: entity.shortDesc ?? entity.name,
+      ...(entity.imageUrl ? {
+        image: {
+          "@type": "ImageObject",
+          url: entity.imageUrl,
+          contentUrl: entity.imageUrl,
+          caption: entity.name,
+        },
+      } : {}),
+      sameAs: [
+        `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
+      ],
+      subjectOf: { "@type": "Article", "@id": `${url}#article` },
+    };
+  });
 
   // Build attribute comparison nodes — join entity values into a readable string
   const attributeNodes = comparison.attributes.map((attr) => {
@@ -269,10 +295,42 @@ export async function GET(
           name: "Related comparisons JSON",
         },
       ],
-      variableMeasured: comparison.attributes.map((a) => a.name),
+      variableMeasured: comparison.attributes.map((a) => ({
+        "@type": "PropertyValue",
+        name: a.name,
+        ...(a.category ? { valueReference: { "@type": "DefinedTerm", name: a.category } } : {}),
+      })),
       isBasedOn: url,
     },
   ];
+
+  // DefinedTermSet — vocabulary of attribute categories used in this comparison.
+  // Tells AI indexers and semantic crawlers how the comparison attributes are classified
+  // (e.g. "Performance", "Price", "Design") enabling entity-level faceted retrieval.
+  const attributeCategories = [
+    ...new Set(
+      comparison.attributes
+        .map((a) => a.category)
+        .filter((c): c is string => !!c)
+    ),
+  ];
+  if (attributeCategories.length > 0) {
+    graph.push({
+      "@type": "DefinedTermSet",
+      "@id": `${url}#attribute-vocabulary`,
+      name: `${comparison.title} — Attribute Category Vocabulary`,
+      url,
+      inLanguage: "en-US",
+      description: `Taxonomy of attribute categories used to classify comparison data for ${comparison.title}.`,
+      hasDefinedTerm: attributeCategories.map((cat) => ({
+        "@type": "DefinedTerm",
+        "@id": `${url}#term-${encodeURIComponent(cat.toLowerCase().replace(/\s+/g, "-"))}`,
+        name: cat.charAt(0).toUpperCase() + cat.slice(1),
+        termCode: cat.toLowerCase().replace(/\s+/g, "-"),
+        inDefinedTermSet: `${url}#attribute-vocabulary`,
+      })),
+    });
+  }
 
   // Add FAQ node if present
   if (faqNodes) graph.push(faqNodes);

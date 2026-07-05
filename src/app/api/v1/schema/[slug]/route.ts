@@ -232,14 +232,35 @@ export async function GET(
     ],
   });
 
+  // Build alternate names from entity name + slug (acronym + slug-title variant).
+  // Provides AI citation engines and KG crawlers with common aliases for entity resolution.
+  function buildAlternateNames(name: string, slug: string): string[] {
+    const alts: string[] = [];
+    const words = name.split(/\s+/).filter(Boolean);
+    if (words.length >= 2) {
+      const acronym = words.map((w) => w[0] ?? "").join("").toUpperCase();
+      if (acronym.length >= 2 && acronym !== name) alts.push(acronym);
+    }
+    const slugTitle = slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    if (slugTitle !== name && !alts.includes(slugTitle)) alts.push(slugTitle);
+    return alts.slice(0, 3);
+  }
+
   // Entity nodes — typed via entitySchemaType() so AI product-search carousels and
   // knowledge-graph crawlers receive correctly typed entities (SoftwareApplication,
   // Person, Country, SportsTeam, etc.) rather than the generic Thing fallback.
+  // alternateName provides common aliases so AI fact-checkers resolve variant spellings
+  // (e.g. "US" → "United States") to the same canonical entity node.
   for (const entity of comparison.entities) {
+    const alternateNames = buildAlternateNames(entity.name, entity.slug);
     graph.push({
       "@type": entitySchemaType(entity.entityType),
       "@id": `${SITE_URL}/entity/${entity.slug}#entity`,
       name: entity.name,
+      ...(alternateNames.length > 0 ? { alternateName: alternateNames } : {}),
       url: `${SITE_URL}/entity/${entity.slug}`,
       inLanguage: "en-US",
       ...(entity.shortDesc ? { description: entity.shortDesc } : {}),
@@ -279,8 +300,37 @@ export async function GET(
     variableMeasured: comparison.attributes.map((a) => ({
       "@type": "PropertyValue",
       name: a.name,
+      ...(a.category ? { valueReference: { "@type": "DefinedTerm", name: a.category } } : {}),
     })),
   });
+
+  // DefinedTermSet — structured vocabulary for attribute categories.
+  // Enables AI indexers to understand the taxonomy of dimensions used in this comparison
+  // (e.g. "Performance", "Price", "Design") for faceted entity retrieval.
+  const attributeCategories = [
+    ...new Set(
+      comparison.attributes
+        .map((a) => a.category)
+        .filter((c): c is string => !!c)
+    ),
+  ];
+  if (attributeCategories.length > 0) {
+    graph.push({
+      "@type": "DefinedTermSet",
+      "@id": `${url}#attribute-vocabulary`,
+      name: `${comparison.title} — Attribute Category Vocabulary`,
+      url,
+      inLanguage: "en-US",
+      description: `Taxonomy of attribute categories used to classify comparison data for ${comparison.title}.`,
+      hasDefinedTerm: attributeCategories.map((cat) => ({
+        "@type": "DefinedTerm",
+        "@id": `${url}#term-${encodeURIComponent(cat.toLowerCase().replace(/\s+/g, "-"))}`,
+        name: cat.charAt(0).toUpperCase() + cat.slice(1),
+        termCode: cat.toLowerCase().replace(/\s+/g, "-"),
+        inDefinedTermSet: `${url}#attribute-vocabulary`,
+      })),
+    });
+  }
 
   // FAQPage node
   if (comparison.faqs.length > 0) {
