@@ -213,7 +213,7 @@ function SearchContent() {
                 placeholder="Enter something to compare..."
                 id="compare-with"
                 aria-label={`Compare ${query} with`}
-                className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none w-56"
+                className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none w-56"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     const target = (e.target as HTMLInputElement).value.trim();

@@ -150,7 +150,7 @@ export function CommentSection({
                 if (validationError) setValidationError(null);
               }}
               placeholder="Your name"
-              className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none transition-colors"
+              className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none transition-colors"
             />
           </div>
           <div className="sm:flex sm:items-end">
@@ -174,7 +174,7 @@ export function CommentSection({
             rows={3}
             aria-invalid={validationError ? true : undefined}
             aria-describedby={validationError ? "comment-validation" : undefined}
-            className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-400 outline-none transition-colors resize-none"
+            className="w-full px-3 py-2 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none transition-colors resize-none"
           />
           {validationError ? (
             <p
