@@ -340,14 +340,14 @@ export default function WhoIsThisForPage() {
 
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* ─── Section 1: This is for you if... ─── */}
-      <section id="for-you-section" className="mb-16">
+      <section id="for-you-section" aria-labelledby="for-you-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">This is for you if&hellip;</h2>
+          <h2 id="for-you-heading" className="text-2xl font-display font-bold text-text">This is for you if&hellip;</h2>
         </div>
         <div className="space-y-6">
           {IDEAL_USERS.map((user) => (
@@ -389,14 +389,14 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── Section 2: This is NOT for you if... ─── */}
-      <section id="not-for-you-section" className="mb-16">
+      <section id="not-for-you-section" aria-labelledby="not-for-you-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">This is <em>not</em> for you if&hellip;</h2>
+          <h2 id="not-for-you-heading" className="text-2xl font-display font-bold text-text">This is <em>not</em> for you if&hellip;</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 list-none">
           {NOT_FOR_YOU.map((item) => (
@@ -419,14 +419,14 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── Section 3: Use-case scenarios ─── */}
-      <section className="mb-16">
+      <section aria-labelledby="use-cases-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Real-World Use Cases</h2>
+          <h2 id="use-cases-heading" className="text-2xl font-display font-bold text-text">Real-World Use Cases</h2>
         </div>
         <div className="space-y-4">
           {USE_CASES.map((uc, i) => (
@@ -446,14 +446,14 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── Section 4: How it works ─── */}
-      <section id="how-it-works-section" className="mb-16">
+      <section id="how-it-works-section" aria-labelledby="how-it-works-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
+          <h2 id="how-it-works-heading" className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
         <ol role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {HOW_IT_WORKS_STEPS.map((s) => (
@@ -476,14 +476,14 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── Section 5: Proof with numbers ─── */}
-      <section className="mb-16">
+      <section aria-labelledby="by-numbers-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">{SITE_NAME} by the Numbers</h2>
+          <h2 id="by-numbers-heading" className="text-2xl font-display font-bold text-text">{SITE_NAME} by the Numbers</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
           <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
@@ -580,14 +580,14 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="mb-16">
+      <section aria-labelledby="witf-faq-heading" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
+          <h2 id="witf-faq-heading" className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
         </div>
         <div className="space-y-4">
           {FAQ_DATA.map((faq) => (
@@ -610,8 +610,8 @@ export default function WhoIsThisForPage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white rounded-2xl p-8 text-center">
-        <h2 className="text-xl font-display font-bold text-white mb-2">
+      <section aria-labelledby="witf-cta-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white rounded-2xl p-8 text-center">
+        <h2 id="witf-cta-heading" className="text-xl font-display font-bold text-white mb-2">
           Ready to compare?
         </h2>
         <p className="text-primary-100 mb-6 text-sm">

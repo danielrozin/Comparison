@@ -71,9 +71,10 @@ function ContentSection({
   const blogs = items.filter((i) => i.type === "blog");
   const entities = items.filter((i) => i.type === "entity");
 
+  const headingId = `sitemap-${title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`;
   return (
-    <section className="mb-10">
-      <h2 className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
+    <section aria-labelledby={headingId} className="mb-10">
+      <h2 id={headingId} className="text-2xl font-display font-bold text-text mb-4 pb-2 border-b border-border">
         {title}
       </h2>
 
@@ -230,14 +231,14 @@ export default async function SiteMapPage() {
         )}
 
       {/* All Categories (permanent browse section) */}
-      <section className="mb-10">
+      <section aria-labelledby="sitemap-categories-heading" className="mb-10">
         <div className="flex items-center gap-3 mb-4 pb-2 border-b border-border">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Browse by Category</h2>
+          <h2 id="sitemap-categories-heading" className="text-2xl font-display font-bold text-text">Browse by Category</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
           {CATEGORIES.map((cat) => {
@@ -271,14 +272,14 @@ export default async function SiteMapPage() {
       </section>
 
       {/* Quick links */}
-      <section className="mb-10">
+      <section aria-labelledby="sitemap-pages-heading" className="mb-10">
         <div className="flex items-center gap-3 mb-4 pb-2 border-b border-border">
           <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Pages</h2>
+          <h2 id="sitemap-pages-heading" className="text-2xl font-display font-bold text-text">Pages</h2>
         </div>
         <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-3 list-none">
           {[
