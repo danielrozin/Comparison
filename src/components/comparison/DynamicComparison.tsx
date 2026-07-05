@@ -204,7 +204,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
               Comparing attributes...
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" />
+              <div aria-hidden="true" className="w-4 h-4 border-2 border-primary-400 border-t-transparent rounded-full animate-spin" />
               Generating comparison...
             </div>
           </div>

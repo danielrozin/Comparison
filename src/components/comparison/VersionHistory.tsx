@@ -211,7 +211,7 @@ export function VersionHistory({
           <div id="version-history-panel" className="px-6 pb-6 pt-2 border-t border-indigo-100 dark:border-indigo-800/40">
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-300 border-t-indigo-600" />
+                <div aria-hidden="true" className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-300 border-t-indigo-600" />
                 <span className="ml-3 text-sm text-text-secondary">
                   Loading history...
                 </span>
