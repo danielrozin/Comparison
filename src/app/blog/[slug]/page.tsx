@@ -815,12 +815,12 @@ export default async function BlogPostPage({
           )}
 
           {/* Share Section */}
-          <div className="mt-8 p-6 bg-white rounded-xl border border-border">
-            <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+          <section aria-labelledby="blog-share-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
+            <h2 id="blog-share-heading" className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
               Share this article
             </h2>
             <ShareBar title={article.title} slug={slug} path="blog" />
-          </div>
+          </section>
 
           {/* Newsletter Signup */}
           <div className="mt-8">
@@ -830,8 +830,8 @@ export default async function BlogPostPage({
           {/* Related Comparisons */}
           {article.relatedComparisonSlugs &&
             article.relatedComparisonSlugs.length > 0 && (
-              <div className="mt-8 p-6 bg-white rounded-xl border border-border">
-                <h2 className="text-lg font-bold text-text mb-4">
+              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
+                <h2 id="blog-related-comparisons-heading" className="text-lg font-bold text-text mb-4">
                   Related Comparisons
                 </h2>
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
@@ -863,7 +863,7 @@ export default async function BlogPostPage({
                     );
                   })}
                 </ul>
-              </div>
+              </section>
             )}
 
           {/* Ad: before back button */}
