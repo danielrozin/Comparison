@@ -32,7 +32,7 @@ export const ENTITY_LEDE: Record<string, EntityLede> = {
   "cleveland-browns": {
     title: "Cleveland Browns vs Every NFL Rival: Matchups & Stats 2026",
     intro:
-      "Looking for Cleveland Browns matchups? Compare the Browns versus every AFC North rival and NFL opponent — head-to-head records, rosters, and team stats side by side. See the Browns versus the Steelers, Ravens, and Bengals, plus every other matchup, all in one place and updated for the 2026 season.",
+      "Every NFL team versus Browns, in one place — head-to-head records, roster breakdowns, and matchup stats for the 2026 season. Explore the Steelers versus Browns rivalry (dating to 1950), Ravens versus Browns, Bengals versus Browns, and all 31 other opponents side by side. Find who has the edge in every Cleveland Browns matchup.",
   },
   "mountain-dew": {
     title: "Mountain Dew vs Every Rival: Caffeine, Flavors & Brand Comparison 2026",
