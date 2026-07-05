@@ -34,7 +34,8 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
     const el = document.getElementById(id);
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top, behavior: "smooth" });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top, behavior: reduceMotion ? "instant" : "smooth" });
   }
 
   return (

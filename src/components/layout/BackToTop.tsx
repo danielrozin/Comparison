@@ -16,7 +16,10 @@ export function BackToTop() {
   return (
     <button
       type="button"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onClick={() => {
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduceMotion ? "instant" : "smooth" });
+      }}
       aria-label="Back to top"
       className="fixed bottom-20 right-4 sm:bottom-8 sm:right-6 z-40 group w-11 h-11 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-lg shadow-primary-500/30 flex items-center justify-center text-white hover:shadow-xl hover:shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all duration-200 animate-fade-in"
     >
