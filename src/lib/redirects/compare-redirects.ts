@@ -49,6 +49,12 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   // ("kobe vs lebron", 1,600 vol, pos 27), 4× the dup's keyword. Fold the
   // full-name slug in; its full-name query stays covered by the survivor's H1.
   "kobe-bryant-vs-lebron-james": "kobe-vs-lebron",
+  // DAN-1747: Bloomberg/WSJ duplicate canonical. Two self-canonical live pages
+  // (both 200) split link equity for "bloomberg vs wsj" (DAN-1176/DAN-1169 watch
+  // keyword, baseline pos 17). Survivor is the full-name slug
+  // `bloomberg-vs-the-wall-street-journal` — DAN-1288 gave it the better on-page
+  // optimization. Fold the short `bloomberg-vs-wsj` slug into it (308 at edge).
+  "bloomberg-vs-wsj": "bloomberg-vs-the-wall-street-journal",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
