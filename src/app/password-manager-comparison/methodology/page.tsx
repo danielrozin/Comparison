@@ -143,8 +143,8 @@ export default function PasswordManagerMethodologyPage() {
         </p>
       </header>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
+      <section aria-labelledby="method-scoring-heading" className="mb-10 space-y-4">
+        <h2 id="method-scoring-heading" className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
         <p className="text-text-secondary leading-relaxed">
           Each password manager is evaluated on nine attributes. Scores are not weighted into a single
           composite number; we present raw per-attribute data so you can weight by your own priorities.
@@ -182,8 +182,8 @@ export default function PasswordManagerMethodologyPage() {
         </div>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">2. Data sources</h2>
+      <section aria-labelledby="method-sources-heading" className="mb-10 space-y-4">
+        <h2 id="method-sources-heading" className="text-2xl font-display font-bold text-text">2. Data sources</h2>
         <p className="text-text-secondary leading-relaxed">
           We accept only primary or independently audited sources. The hierarchy:
         </p>
@@ -197,8 +197,8 @@ export default function PasswordManagerMethodologyPage() {
         </ol>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
+      <section aria-labelledby="method-recency-heading" className="mb-10 space-y-4">
+        <h2 id="method-recency-heading" className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
         <p className="text-text-secondary leading-relaxed">
           All time-sensitive data cells (pricing, audit dates, breach history) carry a visible
           &ldquo;as of [YYYY-MM]&rdquo; label. We review and update pricing data monthly and audit
@@ -207,8 +207,8 @@ export default function PasswordManagerMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
+      <section aria-labelledby="method-coi-heading" className="mb-10 space-y-4">
+        <h2 id="method-coi-heading" className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
         <p className="text-text-secondary leading-relaxed">
           {SITE_NAME} does not accept payment from vendors to influence comparison scores or rankings.
           We may display affiliate links for some products; these are clearly labeled and do not affect
@@ -219,8 +219,8 @@ export default function PasswordManagerMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
+      <section aria-labelledby="method-corrections-heading" className="mb-10 space-y-4">
+        <h2 id="method-corrections-heading" className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
         <p className="text-text-secondary leading-relaxed">
           If you identify an error — factual, numerical, or attributional — email{" "}
           <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>{" "}
