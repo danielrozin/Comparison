@@ -188,7 +188,7 @@ function renderMarkdown(md: string): string {
     if (cleanLine.startsWith("# ")) {
       if (inUl) { processed.push("</ul>"); inUl = false; }
       if (inOl) { processed.push("</ol>"); inOl = false; }
-      processed.push(`<h1${anchorId} class="text-3xl font-bold text-text mt-4 mb-6">${cleanLine.slice(2)}</h1>`);
+      processed.push(`<h2${anchorId} class="text-3xl font-bold text-text mt-4 mb-6">${cleanLine.slice(2)}</h2>`);
       continue;
     }
 
