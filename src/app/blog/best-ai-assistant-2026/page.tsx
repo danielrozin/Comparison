@@ -390,8 +390,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* TL;DR */}
-        <section className="mt-10" id="tldr">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section className="mt-10" id="tldr" aria-labelledby="ai-tldr-heading">
+          <h2 id="ai-tldr-heading" className="text-2xl font-bold text-text mb-4">
             TL;DR — the 60-second verdict
           </h2>
 
@@ -468,8 +468,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* How the market changed */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-market-heading" className="mt-12">
+          <h2 id="ai-market-heading" className="text-2xl font-bold text-text mb-4">
             How the market changed in 2026
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -512,8 +512,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* 6-criteria framework */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-choose-heading" className="mt-12">
+          <h2 id="ai-choose-heading" className="text-2xl font-bold text-text mb-4">
             How to choose: a 6-criteria framework
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -615,8 +615,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* The shortlist */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-shortlist-heading" className="mt-12">
+          <h2 id="ai-shortlist-heading" className="text-2xl font-bold text-text mb-4">
             The shortlist: 7 assistants worth your time in 2026
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -826,8 +826,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* Decision matrix */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-matrix-heading" className="mt-12">
+          <h2 id="ai-matrix-heading" className="text-2xl font-bold text-text mb-4">
             Decision matrix: pick your assistant by job-to-be-done
           </h2>
 
@@ -900,8 +900,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* Pricing */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-pricing-heading" className="mt-12">
+          <h2 id="ai-pricing-heading" className="text-2xl font-bold text-text mb-4">
             Pricing in 2026: what you actually pay
           </h2>
 
@@ -961,8 +961,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* Common mistakes */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-mistakes-heading" className="mt-12">
+          <h2 id="ai-mistakes-heading" className="text-2xl font-bold text-text mb-4">
             Common mistakes when buying an AI assistant
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -1003,8 +1003,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* FAQ — byte-aligned with faqPageSchema above */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-faq-heading" className="mt-12">
+          <h2 id="ai-faq-heading" className="text-2xl font-bold text-text mb-4">
             Frequently asked questions
           </h2>
 
@@ -1113,8 +1113,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* Our recommendation */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="ai-recommendation-heading" className="mt-12">
+          <h2 id="ai-recommendation-heading" className="text-2xl font-bold text-text mb-4">
             Our recommendation, in one paragraph
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -1149,8 +1149,8 @@ export default function BestAiAssistant2026Page() {
         </section>
 
         {/* Where to go next */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Where to go next</h2>
+        <section aria-labelledby="ai-next-heading" className="mt-12">
+          <h2 id="ai-next-heading" className="text-2xl font-bold text-text mb-4">Where to go next</h2>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-2">
             <li>
               <strong>Head-to-head:</strong>{" "}

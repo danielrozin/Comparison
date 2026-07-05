@@ -400,8 +400,8 @@ export default function BestCloudPlatform2026Page() {
 
         {/* TL;DR — 60-second verdict (the decision matrix table at the TL;DR that
             must render responsively on mobile — DAN-873 acceptance #5). */}
-        <section className="mt-10" id="tldr">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section className="mt-10" id="tldr" aria-labelledby="cloud-tldr-heading">
+          <h2 id="cloud-tldr-heading" className="text-2xl font-bold text-text mb-4">
             TL;DR — the 60-second verdict
           </h2>
 
@@ -492,8 +492,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* How the cloud market changed in 2026 */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-market-heading" className="mt-12">
+          <h2 id="cloud-market-heading" className="text-2xl font-bold text-text mb-4">
             How the cloud market changed in 2026
           </h2>
           <p className="text-text leading-relaxed mb-4">Three shifts matter for buyers this year.</p>
@@ -537,8 +537,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* 6-criteria framework */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-choose-heading" className="mt-12">
+          <h2 id="cloud-choose-heading" className="text-2xl font-bold text-text mb-4">
             How to choose: a 6-criteria framework
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -621,8 +621,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* The shortlist — 7 platforms */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-shortlist-heading" className="mt-12">
+          <h2 id="cloud-shortlist-heading" className="text-2xl font-bold text-text mb-4">
             The shortlist: 7 cloud platforms worth your time in 2026
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -852,8 +852,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* Decision matrix by job-to-be-done */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-matrix-heading" className="mt-12">
+          <h2 id="cloud-matrix-heading" className="text-2xl font-bold text-text mb-4">
             Decision matrix: pick your cloud by job-to-be-done
           </h2>
 
@@ -927,8 +927,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* Pricing */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-pricing-heading" className="mt-12">
+          <h2 id="cloud-pricing-heading" className="text-2xl font-bold text-text mb-4">
             Pricing in 2026: what you actually pay
           </h2>
 
@@ -1012,8 +1012,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* Common mistakes */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-mistakes-heading" className="mt-12">
+          <h2 id="cloud-mistakes-heading" className="text-2xl font-bold text-text mb-4">
             Common mistakes when buying a cloud
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -1064,8 +1064,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* FAQ — byte-identical to faqPageSchema above */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-faq-heading" className="mt-12">
+          <h2 id="cloud-faq-heading" className="text-2xl font-bold text-text mb-4">
             Frequently asked questions
           </h2>
 
@@ -1188,8 +1188,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* Our recommendation */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="cloud-recommendation-heading" className="mt-12">
+          <h2 id="cloud-recommendation-heading" className="text-2xl font-bold text-text mb-4">
             Our recommendation, in one paragraph
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -1232,8 +1232,8 @@ export default function BestCloudPlatform2026Page() {
         </section>
 
         {/* Where to go next */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Where to go next</h2>
+        <section aria-labelledby="cloud-next-heading" className="mt-12">
+          <h2 id="cloud-next-heading" className="text-2xl font-bold text-text mb-4">Where to go next</h2>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-2">
             <li>
               <strong>Head-to-head:</strong>{" "}
