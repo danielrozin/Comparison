@@ -1113,8 +1113,8 @@ function MultiEntityLayout({
       </div>
 
       {/* Multi-entity hero: title + N entity cards in a grid */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
+      <section aria-labelledby="compare-hero-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <h1 id="compare-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
           {comparison.title}
         </h1>
         {comparison.metadata?.updatedAt && (
