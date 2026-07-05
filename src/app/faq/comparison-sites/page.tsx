@@ -209,14 +209,14 @@ export default function ComparisonSitesFaqPage() {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Competitor deep-dives */}
-      <section className="mb-12">
+      <section aria-labelledby="compfaq-competitor-deep-dives" className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Competitor Deep Dives</h2>
+          <h2 id="compfaq-competitor-deep-dives" className="text-2xl font-display font-bold text-text">Competitor Deep Dives</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-4 list-none p-0 m-0">
           {COMPETITOR_LINKS.map((comp) => (
@@ -234,14 +234,14 @@ export default function ComparisonSitesFaqPage() {
       </section>
 
       {/* Why AversusB */}
-      <section className="mb-12">
+      <section aria-labelledby="compfaq-why-sitename" className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Why {SITE_NAME}?</h2>
+          <h2 id="compfaq-why-sitename" className="text-2xl font-display font-bold text-text">Why {SITE_NAME}?</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none p-0 m-0">
           <li className="bg-surface-alt border border-border rounded-2xl p-6">
@@ -306,9 +306,9 @@ export default function ComparisonSitesFaqPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
+      <section aria-labelledby="compfaq-ready-to-compare-anything" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-2xl" />
-        <h2 className="text-xl font-display font-bold mb-2 relative">
+        <h2 id="compfaq-ready-to-compare-anything" className="text-xl font-display font-bold mb-2 relative">
           Ready to compare anything?
         </h2>
         <p className="text-primary-100 mb-6 text-sm relative">

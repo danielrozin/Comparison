@@ -413,8 +413,8 @@ export default function ZoomAlternativesPage() {
           </p>
         </header>
 
-        <section className="prose-section">
-          <h2 className="text-2xl font-bold text-text mt-10 mb-4">
+        <section aria-labelledby="zoom-why-look-for-a" className="prose-section">
+          <h2 id="zoom-why-look-for-a" className="text-2xl font-bold text-text mt-10 mb-4">
             Why look for a Zoom alternative?
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -438,8 +438,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* The comparison table */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="zoom-the-8-best-zoom" className="mt-10">
+          <h2 id="zoom-the-8-best-zoom" className="text-2xl font-bold text-text mb-4">
             The 8 best Zoom alternatives at a glance
           </h2>
 
@@ -512,8 +512,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 1. Google Meet */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-1-google-meet-best" className="mt-12">
+          <h2 id="zoom-1-google-meet-best" className="text-2xl font-bold text-text mb-3">
             1. Google Meet — best alternative for Google Workspace orgs
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -565,8 +565,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 2. Microsoft Teams */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-2-microsoft-teams-best" className="mt-12">
+          <h2 id="zoom-2-microsoft-teams-best" className="text-2xl font-bold text-text mb-3">
             2. Microsoft Teams — best alternative for Microsoft 365 orgs
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -616,8 +616,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 3. Webex */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-3-webex-best-alternative" className="mt-12">
+          <h2 id="zoom-3-webex-best-alternative" className="text-2xl font-bold text-text mb-3">
             3. Webex — best alternative for enterprise and government use
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -651,8 +651,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 4. GoTo Meeting */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-4-goto-meeting-best" className="mt-12">
+          <h2 id="zoom-4-goto-meeting-best" className="text-2xl font-bold text-text mb-3">
             4. GoTo Meeting — best alternative for unlimited meeting duration
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -685,8 +685,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 5. Discord */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-5-discord-best-free" className="mt-12">
+          <h2 id="zoom-5-discord-best-free" className="text-2xl font-bold text-text mb-3">
             5. Discord — best free alternative for communities and informal teams
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -719,8 +719,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 6. Around */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-6-around-best-alternative" className="mt-12">
+          <h2 id="zoom-6-around-best-alternative" className="text-2xl font-bold text-text mb-3">
             6. Around — best alternative for remote-first teams fighting Zoom fatigue
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -753,8 +753,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 7. Jitsi Meet */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-7-jitsi-meet-best" className="mt-12">
+          <h2 id="zoom-7-jitsi-meet-best" className="text-2xl font-bold text-text mb-3">
             7. Jitsi Meet — best open-source and self-hosted alternative
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -788,8 +788,8 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* 8. Whereby */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="zoom-8-whereby-best-alternative" className="mt-12">
+          <h2 id="zoom-8-whereby-best-alternative" className="text-2xl font-bold text-text mb-3">
             8. Whereby — best alternative for no-install browser calls
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -822,14 +822,14 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* How to choose */}
-        <section className="mt-12">
+        <section aria-labelledby="zoom-how-to-choose-the" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">How to choose the right Zoom alternative</h2>
+            <h2 id="zoom-how-to-choose-the" className="text-2xl font-bold text-text">How to choose the right Zoom alternative</h2>
           </div>
           <p className="text-text font-semibold mb-2">By ecosystem fit:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
@@ -882,14 +882,14 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* FAQ */}
-        <section className="mt-12">
+        <section aria-labelledby="zoom-frequently-asked-questions" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">Frequently asked questions</h2>
+            <h2 id="zoom-frequently-asked-questions" className="text-2xl font-bold text-text">Frequently asked questions</h2>
           </div>
 
           <div className="space-y-6">
@@ -970,14 +970,14 @@ export default function ZoomAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
-        <section className="mt-12">
+        <section aria-labelledby="zoom-related-comparisons" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">Related comparisons</h2>
+            <h2 id="zoom-related-comparisons" className="text-2xl font-bold text-text">Related comparisons</h2>
           </div>
           <ul className="space-y-2 text-text">
             <li>

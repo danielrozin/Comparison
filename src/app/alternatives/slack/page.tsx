@@ -417,8 +417,8 @@ export default function SlackAlternativesPage() {
           </p>
         </header>
 
-        <section className="prose-section">
-          <h2 className="text-2xl font-bold text-text mt-10 mb-4">
+        <section aria-labelledby="slack-why-look-for-a" className="prose-section">
+          <h2 id="slack-why-look-for-a" className="text-2xl font-bold text-text mt-10 mb-4">
             Why look for a Slack alternative?
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -442,8 +442,8 @@ export default function SlackAlternativesPage() {
         {/* The comparison table — responsive: scrollable wrapper on small screens,
             and stacked card-style rows on the smallest viewports so the table never
             horizontal-scrolls the whole page (DAN-872 acceptance). */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="slack-the-8-best-slack" className="mt-10">
+          <h2 id="slack-the-8-best-slack" className="text-2xl font-bold text-text mb-4">
             The 8 best Slack alternatives at a glance
           </h2>
 
@@ -522,8 +522,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 1. Microsoft Teams */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-1-microsoft-teams-best" className="mt-12">
+          <h2 id="slack-1-microsoft-teams-best" className="text-2xl font-bold text-text mb-3">
             1. Microsoft Teams — best alternative for Microsoft 365 orgs
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -570,8 +570,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 2. Google Chat */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-2-google-chat-best" className="mt-12">
+          <h2 id="slack-2-google-chat-best" className="text-2xl font-bold text-text mb-3">
             2. Google Chat — best alternative for Google Workspace orgs
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -615,8 +615,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 3. Discord */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-3-discord-best-free" className="mt-12">
+          <h2 id="slack-3-discord-best-free" className="text-2xl font-bold text-text mb-3">
             3. Discord — best free Slack alternative for communities and small teams
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -661,8 +661,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 4. Mattermost */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-4-mattermost-best-alternative" className="mt-12">
+          <h2 id="slack-4-mattermost-best-alternative" className="text-2xl font-bold text-text mb-3">
             4. Mattermost — best alternative for self-hosted and regulated industries
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -706,8 +706,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 5. Rocket.Chat */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-5-rocketchat-best-alternative" className="mt-12">
+          <h2 id="slack-5-rocketchat-best-alternative" className="text-2xl font-bold text-text mb-3">
             5. Rocket.Chat — best alternative for customer-facing chat plus self-host
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -750,8 +750,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 6. Zoom Team Chat */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-6-zoom-team-chat" className="mt-12">
+          <h2 id="slack-6-zoom-team-chat" className="text-2xl font-bold text-text mb-3">
             6. Zoom Team Chat — best alternative for Zoom-first orgs
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -795,8 +795,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 7. Element (Matrix) */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-7-element-matrix-best" className="mt-12">
+          <h2 id="slack-7-element-matrix-best" className="text-2xl font-bold text-text mb-3">
             7. Element (Matrix) — best alternative for privacy, federation, and EU
             sovereignty
           </h2>
@@ -842,8 +842,8 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* 8. Zulip */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="slack-8-zulip-best-alternative" className="mt-12">
+          <h2 id="slack-8-zulip-best-alternative" className="text-2xl font-bold text-text mb-3">
             8. Zulip — best alternative for engineering teams and async-heavy work
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -888,14 +888,14 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* How to choose */}
-        <section className="mt-12">
+        <section aria-labelledby="slack-how-to-choose-the" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">How to choose the right Slack alternative</h2>
+            <h2 id="slack-how-to-choose-the" className="text-2xl font-bold text-text">How to choose the right Slack alternative</h2>
           </div>
           <p className="text-text font-semibold mb-2">By ecosystem fit:</p>
           <ul className="list-disc pl-6 text-text leading-relaxed space-y-1 mb-4">
@@ -953,14 +953,14 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* FAQ */}
-        <section className="mt-12">
+        <section aria-labelledby="slack-frequently-asked-questions" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">Frequently asked questions</h2>
+            <h2 id="slack-frequently-asked-questions" className="text-2xl font-bold text-text">Frequently asked questions</h2>
           </div>
 
           <div className="space-y-6">
@@ -1040,14 +1040,14 @@ export default function SlackAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
-        <section className="mt-12">
+        <section aria-labelledby="slack-related-comparisons" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-text">Related comparisons</h2>
+            <h2 id="slack-related-comparisons" className="text-2xl font-bold text-text">Related comparisons</h2>
           </div>
           <ul className="space-y-2 text-text">
             <li>

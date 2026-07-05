@@ -419,8 +419,8 @@ export default function ChatGPTAlternativesPage() {
           </p>
         </header>
 
-        <section className="prose-section">
-          <h2 className="text-2xl font-bold text-text mt-10 mb-4">
+        <section aria-labelledby="chatgpt-why-look-for-a" className="prose-section">
+          <h2 id="chatgpt-why-look-for-a" className="text-2xl font-bold text-text mt-10 mb-4">
             Why look for a ChatGPT alternative?
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -443,8 +443,8 @@ export default function ChatGPTAlternativesPage() {
         {/* The comparison table — responsive: scrollable wrapper on small screens,
             and stacked card-style rows on the smallest viewports so the table never
             horizontal-scrolls the whole page (DAN-872 acceptance). */}
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="chatgpt-the-8-best-chatgpt" className="mt-10">
+          <h2 id="chatgpt-the-8-best-chatgpt" className="text-2xl font-bold text-text mb-4">
             The 8 best ChatGPT alternatives at a glance
           </h2>
 
@@ -523,8 +523,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 1. Claude */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-1-claude-best-alternative" className="mt-12">
+          <h2 id="chatgpt-1-claude-best-alternative" className="text-2xl font-bold text-text mb-3">
             1. Claude — best alternative for coding and long documents
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -571,8 +571,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 2. Gemini */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-2-gemini-best-alternative" className="mt-12">
+          <h2 id="chatgpt-2-gemini-best-alternative" className="text-2xl font-bold text-text mb-3">
             2. Gemini — best alternative for research and Google users
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -628,8 +628,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 3. Perplexity */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-3-perplexity-best-alternative" className="mt-12">
+          <h2 id="chatgpt-3-perplexity-best-alternative" className="text-2xl font-bold text-text mb-3">
             3. Perplexity — best alternative when every answer needs a source
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -676,8 +676,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 4. Microsoft Copilot */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-4-microsoft-copilot-best" className="mt-12">
+          <h2 id="chatgpt-4-microsoft-copilot-best" className="text-2xl font-bold text-text mb-3">
             4. Microsoft Copilot — best alternative for Microsoft 365 users
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -709,8 +709,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 5. Meta AI */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-5-meta-ai-best" className="mt-12">
+          <h2 id="chatgpt-5-meta-ai-best" className="text-2xl font-bold text-text mb-3">
             5. Meta AI — best free ChatGPT alternative
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -741,8 +741,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 6. Grok */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-6-grok-best-alternative" className="mt-12">
+          <h2 id="chatgpt-6-grok-best-alternative" className="text-2xl font-bold text-text mb-3">
             6. Grok — best alternative for X/Twitter users and real-time news
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -774,8 +774,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 7. Mistral */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-7-mistral-le-chat" className="mt-12">
+          <h2 id="chatgpt-7-mistral-le-chat" className="text-2xl font-bold text-text mb-3">
             7. Mistral Le Chat — best alternative for European teams and cost-sensitive
             users
           </h2>
@@ -808,8 +808,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* 8. Llama */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-3">
+        <section aria-labelledby="chatgpt-8-llama-best-alternative" className="mt-12">
+          <h2 id="chatgpt-8-llama-best-alternative" className="text-2xl font-bold text-text mb-3">
             8. Llama — best alternative for self-hosting and open-source
           </h2>
           <p className="text-text leading-relaxed mb-4">
@@ -851,8 +851,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* How to choose */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">
+        <section aria-labelledby="chatgpt-how-to-choose-the" className="mt-12">
+          <h2 id="chatgpt-how-to-choose-the" className="text-2xl font-bold text-text mb-4">
             How to choose the right ChatGPT alternative
           </h2>
           <p className="text-text font-semibold mb-2">By use case:</p>
@@ -891,8 +891,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* FAQ */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Frequently asked questions</h2>
+        <section aria-labelledby="chatgpt-frequently-asked-questions" className="mt-12">
+          <h2 id="chatgpt-frequently-asked-questions" className="text-2xl font-bold text-text mb-4">Frequently asked questions</h2>
 
           <div className="space-y-6">
             <div>
@@ -970,8 +970,8 @@ export default function ChatGPTAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
-        <section className="mt-12">
-          <h2 className="text-2xl font-bold text-text mb-4">Related comparisons</h2>
+        <section aria-labelledby="chatgpt-related-comparisons" className="mt-12">
+          <h2 id="chatgpt-related-comparisons" className="text-2xl font-bold text-text mb-4">Related comparisons</h2>
           <ul className="space-y-2 text-text">
             <li>
               <Link

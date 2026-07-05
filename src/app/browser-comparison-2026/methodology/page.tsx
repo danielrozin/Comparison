@@ -140,8 +140,8 @@ export default function BrowserMethodologyPage() {
         </p>
       </header>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
+      <section aria-labelledby="browsmethod-1-scoring-dimensions" className="mb-10 space-y-4">
+        <h2 id="browsmethod-1-scoring-dimensions" className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
             <thead>
@@ -174,8 +174,8 @@ export default function BrowserMethodologyPage() {
         </div>
       </section>
 
-      <section className="mb-10 space-y-4">
-        <h2 className="text-2xl font-display font-bold text-text">2. Data sources</h2>
+      <section aria-labelledby="browsmethod-2-data-sources" className="mb-10 space-y-4">
+        <h2 id="browsmethod-2-data-sources" className="text-2xl font-display font-bold text-text">2. Data sources</h2>
         <ol className="list-decimal list-inside space-y-2 text-text-secondary">
           <li><strong className="text-text">Tier 1:</strong> Vendor official documentation, release notes, or privacy whitepaper — cited with URL and access date.</li>
           <li><strong className="text-text">Tier 1:</strong> StatCounter GlobalStats for market share — monthly CSV download, methodology publicly disclosed at <a href="https://gs.statcounter.com/methodology" rel="nofollow" className="text-primary-600 hover:underline">gs.statcounter.com/methodology</a>.</li>
@@ -186,8 +186,8 @@ export default function BrowserMethodologyPage() {
         </ol>
       </section>
 
-      <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
+      <section aria-labelledby="browsmethod-3-recency-policy" className="mb-10 space-y-3">
+        <h2 id="browsmethod-3-recency-policy" className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
         <p className="text-text-secondary leading-relaxed">
           Market share figures carry &ldquo;as of [YYYY-MM]&rdquo; labels referencing the StatCounter monthly data release.
           Version numbers are updated when a new stable channel release is announced. The page{" "}
@@ -195,8 +195,8 @@ export default function BrowserMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
+      <section aria-labelledby="browsmethod-4-conflictofinterest-disclosure" className="mb-10 space-y-3">
+        <h2 id="browsmethod-4-conflictofinterest-disclosure" className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
         <p className="text-text-secondary leading-relaxed">
           {SITE_NAME} has no paid relationships with any browser vendor. No browser vendor reviewed
           or approved this guide before publication. Affiliate links, if present, are clearly labeled
@@ -204,8 +204,8 @@ export default function BrowserMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-3">
-        <h2 className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
+      <section aria-labelledby="browsmethod-5-correction-policy" className="mb-10 space-y-3">
+        <h2 id="browsmethod-5-correction-policy" className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
         <p className="text-text-secondary leading-relaxed">
           Errors can be reported to{" "}
           <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>.

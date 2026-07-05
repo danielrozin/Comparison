@@ -197,14 +197,14 @@ export default function DiffenFaqPage() {
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Comparison highlights */}
-      <section className="mb-12">
+      <section aria-labelledby="diffenfaq-key-differences-at-a" className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Key Differences at a Glance</h2>
+          <h2 id="diffenfaq-key-differences-at-a" className="text-2xl font-display font-bold text-text">Key Differences at a Glance</h2>
         </div>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
@@ -272,9 +272,9 @@ export default function DiffenFaqPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
+      <section aria-labelledby="diffenfaq-ready-for-modern-comparisons" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-2xl" />
-        <h2 className="text-xl font-display font-bold mb-2 relative">
+        <h2 id="diffenfaq-ready-for-modern-comparisons" className="text-xl font-display font-bold mb-2 relative">
           Ready for modern comparisons?
         </h2>
         <p className="text-primary-100 mb-6 text-sm relative">

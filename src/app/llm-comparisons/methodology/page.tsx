@@ -151,14 +151,14 @@ export default function LLMMethodologyPage() {
         </p>
       </header>
 
-      <section className="mb-10 space-y-4">
+      <section aria-labelledby="llmmethod-1-column-definitions-wikipediaparity" className="mb-10 space-y-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18M10 3v18M14 3v18" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">1. Column definitions (Wikipedia-parity)</h2>
+          <h2 id="llmmethod-1-column-definitions-wikipediaparity" className="text-2xl font-display font-bold text-text">1. Column definitions (Wikipedia-parity)</h2>
         </div>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Methodology table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
@@ -195,14 +195,14 @@ export default function LLMMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-4">
+      <section aria-labelledby="llmmethod-2-data-sources" className="mb-10 space-y-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 7a8 8 0 0116 0c0 4.418-3.582 8-8 8S4 11.418 4 7zM4 7v10a8 8 0 0016 0V7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">2. Data sources</h2>
+          <h2 id="llmmethod-2-data-sources" className="text-2xl font-display font-bold text-text">2. Data sources</h2>
         </div>
         <ol className="list-decimal list-inside space-y-2 text-text-secondary">
           <li><strong className="text-text">Tier 1 (required):</strong> Vendor API documentation, model card, or official release blog post — cited with URL and access date.</li>
@@ -218,14 +218,14 @@ export default function LLMMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-3">
+      <section aria-labelledby="llmmethod-3-recency-policy" className="mb-10 space-y-3">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
+          <h2 id="llmmethod-3-recency-policy" className="text-2xl font-display font-bold text-text">3. Recency policy</h2>
         </div>
         <p className="text-text-secondary leading-relaxed">
           Context windows, knowledge cutoffs, and model versions are updated within 2 weeks of a vendor
@@ -235,14 +235,14 @@ export default function LLMMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-3">
+      <section aria-labelledby="llmmethod-4-conflictofinterest-disclosure" className="mb-10 space-y-3">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
+          <h2 id="llmmethod-4-conflictofinterest-disclosure" className="text-2xl font-display font-bold text-text">4. Conflict-of-interest disclosure</h2>
         </div>
         <p className="text-text-secondary leading-relaxed">
           {SITE_NAME} has no paid relationships with any AI vendor. No model vendor reviewed or approved
@@ -253,14 +253,14 @@ export default function LLMMethodologyPage() {
         </p>
       </section>
 
-      <section className="mb-10 space-y-3">
+      <section aria-labelledby="llmmethod-5-correction-policy" className="mb-10 space-y-3">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
+          <h2 id="llmmethod-5-correction-policy" className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
         </div>
         <p className="text-text-secondary leading-relaxed">
           Corrections with a primary source may be submitted to{" "}
