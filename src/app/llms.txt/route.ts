@@ -243,6 +243,8 @@ export async function GET() {
   lines.push("- `isAccessibleForFree: true`, `conditionsOfAccess: \"Free\"`, `dateModified`, `author`, `publisher`, `isPartOf` added to FAQPage nodes in `/api/knowledge-graph/{slug}` and `/api/v1/schema/{slug}` — Google FAQ rich results + AI answer-engine citation eligibility requires these fields");
   lines.push("- `Answer.inLanguage: \"en-US\"` added inside FAQPage `acceptedAnswer` nodes in both knowledge-graph and schema routes — language-scoped answer extraction for multilingual AI engines");
   lines.push("- Organization schema `abstract` field added — AI KG citation engines (Perplexity, ChatGPT) prefer `abstract` over `description` for entity summaries; distinct from search-snippet-oriented `description`");
+  lines.push("- Country entity nodes in `buildMultiEntityGraph` + `buildTwoEntityGraph` schema paths gain `geo: { \"@type\": \"GeoShape\", name }` — signals geo-typed entity to Google Geo crawlers and Perplexity/ChatGPT country-query routing; `containedInPlace` upgraded from bare `\"Earth\"` Place to `{ name: \"World\", sameAs: \"https://en.wikipedia.org/wiki/World\" }`");
+  lines.push("- WebPage node in `/api/v1/schema/{slug}` gains `primaryImageOfPage: ImageObject` (OG image, 1200×630, `@id: #primaryImage`) so Google and AI crawlers use the comparison card image as the canonical visual; also adds `isAccessibleForFree: true` + `conditionsOfAccess: \"Free\"` on WebPage");
 
   const body = lines.join("\n");
 

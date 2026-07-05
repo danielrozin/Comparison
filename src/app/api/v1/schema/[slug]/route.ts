@@ -97,6 +97,7 @@ export async function GET(
   const graph: object[] = [];
 
   // WebPage node
+  const ogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&cat=${encodeURIComponent(comparison.category ?? "")}&type=comparison`;
   graph.push({
     "@type": "WebPage",
     "@id": url,
@@ -104,10 +105,23 @@ export async function GET(
     name: comparison.title,
     description: comparison.shortAnswer ?? comparison.verdict ?? comparison.title,
     inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
     isPartOf: { "@id": `${SITE_URL}/#website` },
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(publishedAt ? { dateCreated: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
+    // primaryImageOfPage — links WebPage to the OG ImageObject so Google and AI crawlers
+    // treat the comparison card image as the canonical visual for this page.
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      "@id": `${url}#primaryImage`,
+      url: ogImageUrl,
+      contentUrl: ogImageUrl,
+      width: 1200,
+      height: 630,
+      caption: `${comparison.title} — Side-by-side comparison on A Versus B`,
+    },
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -122,8 +136,7 @@ export async function GET(
     },
   });
 
-  // Article node
-  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&cat=${encodeURIComponent(comparison.category ?? "")}&type=comparison`;
+  // Article node — reuses ogImageUrl declared in WebPage block above
   graph.push({
     "@type": ["Article", "TechArticle"],
     "@id": `${url}#article`,
@@ -137,13 +150,13 @@ export async function GET(
     image: {
       "@type": "ImageObject",
       "@id": `${url}#primaryImage`,
-      url: ogImage,
-      contentUrl: ogImage,
+      url: ogImageUrl,
+      contentUrl: ogImageUrl,
       width: 1200,
       height: 630,
       caption: `${comparison.title} — Side-by-side comparison on A Versus B`,
     },
-    thumbnailUrl: ogImage,
+    thumbnailUrl: ogImageUrl,
     // contentReferenceTime — ISO 8601 "as of" date for the data in this article.
     ...(updatedAt ? { contentReferenceTime: updatedAt } : {}),
     author: {

@@ -1627,7 +1627,11 @@ function buildMultiEntityGraph(
       node.additionalType = "https://schema.org/Country";
       // entityWikipediaSameAs gives both Wikipedia + DBpedia; don't narrow to Wikipedia-only.
       node.sameAs = entityWikipediaSameAs(entity.name);
-      node.containedInPlace = { "@type": "Place", name: "Earth" };
+      // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
+      // Perplexity/ChatGPT country-query routing — even without precise coordinates.
+      node.geo = { "@type": "GeoShape", name: entity.name };
+      // containedInPlace: sovereign countries sit inside the world geopolitical hierarchy.
+      node.containedInPlace = { "@type": "Place", name: "World", sameAs: "https://en.wikipedia.org/wiki/World" };
     }
 
     if (schemaType === "SportsTeam") {
