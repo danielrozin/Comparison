@@ -64,11 +64,12 @@ export function SidebarAd() {
 /** In-content ad for between sections */
 export function InContentAd() {
   return (
-    <AdUnit
-      slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INCONTENT || ""}
-      format="fluid"
-      className="my-8 max-w-5xl mx-auto px-4"
-    />
+    <div className="my-8 max-w-5xl mx-auto px-4 min-h-[90px]">
+      <AdUnit
+        slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_INCONTENT || ""}
+        format="fluid"
+      />
+    </div>
   );
 }
 

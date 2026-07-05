@@ -163,6 +163,7 @@ type Props =
       sidebarComparisons: RelatedComparison[];
       smartReviews: SmartReviewEntry[];
       videoMeta: ReturnType<typeof getVideoMetadata>;
+      hasSelfHostedVideo: boolean;
       jsonLd: string;
       claimReviewJsonLd: string | null;
       meta: PageMeta;
@@ -639,6 +640,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       sidebarComparisons,
       smartReviews,
       videoMeta,
+      hasSelfHostedVideo: !!selfHostedVideo,
       jsonLd,
       claimReviewJsonLd,
       meta,
@@ -837,7 +839,7 @@ export default function ComparisonPage(props: Props) {
     );
   }
 
-  const { comparison, slug, sidebarComparisons, videoMeta, jsonLd, claimReviewJsonLd } = props;
+  const { comparison, slug, sidebarComparisons, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
 
   return (
     <>
@@ -990,10 +992,15 @@ export default function ComparisonPage(props: Props) {
             </DeferUntilVisible>
           )}
 
-          {/* Video Comparison (client-only, viewport-deferred — DAN-1645) */}
-          <DeferUntilVisible minHeight={320}>
-            <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
-          </DeferUntilVisible>
+          {/* Video Comparison (client-only, viewport-deferred — DAN-1645).
+              Gate on actual video existence: if neither a YouTube nor a self-hosted
+              video exists, skip the wrapper entirely to avoid reserving 320px that
+              would collapse to 0 on visibility and cause CLS (HB179). */}
+          {(videoMeta?.youtubeVideoId || hasSelfHostedVideo) && (
+            <DeferUntilVisible minHeight={320}>
+              <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
+            </DeferUntilVisible>
+          )}
 
           {/* Pros & Cons */}
           <div id="pros-cons">
