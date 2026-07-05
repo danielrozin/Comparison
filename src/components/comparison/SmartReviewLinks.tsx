@@ -1,26 +1,28 @@
 import Link from "next/link";
-import { getEntityAggregation } from "@/lib/services/review-service";
+import type { AggregationData } from "@/lib/services/review-service";
 import { StarRating } from "@/components/ui/StarRating";
 
 const SMARTREVIEW_URL = process.env.NEXT_PUBLIC_SMARTREVIEW_URL || "https://smartreview.com";
 
-interface SmartReviewLinksProps {
-  entities: { name: string; slug: string }[];
+// One entity's pre-fetched SmartReview aggregation. Resolved server-side in the
+// page's getStaticProps (getEntityAggregation is Prisma/Redis-backed and must not
+// run on the client) and passed in as a plain-serializable prop.
+export interface SmartReviewEntry {
+  name: string;
+  slug: string;
+  agg: AggregationData;
 }
 
-export async function SmartReviewLinks({ entities }: SmartReviewLinksProps) {
-  const aggregations = await Promise.all(
-    entities.map(async (entity) => {
-      const agg = await getEntityAggregation(entity.slug);
-      return agg ? { ...entity, agg } : null;
-    })
-  );
+interface SmartReviewLinksProps {
+  reviews: SmartReviewEntry[];
+}
 
-  const withReviews = aggregations.filter(Boolean) as {
-    name: string;
-    slug: string;
-    agg: NonNullable<Awaited<ReturnType<typeof getEntityAggregation>>>;
-  }[];
+// DAN-1656: This renders inside the Pages Router /compare/[slug] tree, where every
+// component is a Client Component. It MUST stay synchronous — an async component
+// here throws React #482 ("async Client Component") on hydration and crashes the
+// whole page. The DB aggregation is fetched in getStaticProps and threaded in.
+export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
+  const withReviews = reviews ?? [];
 
   if (withReviews.length === 0) return null;
 

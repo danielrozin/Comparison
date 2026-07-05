@@ -49,7 +49,8 @@ import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
 import { ShortAnswerBlock } from "@/components/comparison/ShortAnswerBlock";
 import { InContentAd } from "@/components/ads/AdUnit";
-import { SmartReviewLinks } from "@/components/comparison/SmartReviewLinks";
+import { SmartReviewLinks, type SmartReviewEntry } from "@/components/comparison/SmartReviewLinks";
+import { getEntityAggregation } from "@/lib/services/review-service";
 import { QuickAnswerTLDR } from "@/components/comparison/QuickAnswerTLDR";
 import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
@@ -160,6 +161,7 @@ type Props =
       slug: string;
       comparison: Comparison;
       sidebarComparisons: RelatedComparison[];
+      smartReviews: SmartReviewEntry[];
       videoMeta: ReturnType<typeof getVideoMetadata>;
       jsonLd: string;
       claimReviewJsonLd: string | null;
@@ -431,6 +433,24 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const schemas = comparisonPageSchema(comparison, voteData);
   const videoMeta = getVideoMetadata(slug);
 
+  // DAN-1656: SmartReview aggregations are fetched here (server-side) — the
+  // service is Prisma/Redis-backed and must never run on the client. The
+  // presentational SmartReviewLinks component receives this as a plain prop and
+  // renders synchronously. (Previously it was an async Client Component, which
+  // threw React #482 on hydration and crashed every /compare page.)
+  const smartReviews: SmartReviewEntry[] = (
+    await Promise.all(
+      comparison.entities.map(async (e) => {
+        try {
+          const agg = await getEntityAggregation(e.slug);
+          return agg ? { name: e.name, slug: e.slug, agg } : null;
+        } catch {
+          return null;
+        }
+      })
+    )
+  ).filter((x): x is SmartReviewEntry => x !== null);
+
   // Enrich entities with images (Wikipedia/Clearbit) + affiliate links in parallel
   const [entitiesWithImages, entitiesWithAffiliates] = await Promise.all([
     enrichEntitiesWithImages(comparison.entities),
@@ -617,6 +637,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       slug,
       comparison: enrichedComparison,
       sidebarComparisons,
+      smartReviews,
       videoMeta,
       jsonLd,
       claimReviewJsonLd,
@@ -1014,7 +1035,7 @@ export default function ComparisonPage(props: Props) {
       })()}
 
       {/* SmartReview Cross-Links */}
-      <SmartReviewLinks entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))} />
+      <SmartReviewLinks reviews={props.smartReviews} />
 
       {/* Related Comparisons (bottom grid, kept for SEO internal links) */}
       {comparison.relatedComparisons.length > 0 && (
@@ -1073,11 +1094,13 @@ function MultiEntityLayout({
   comparison,
   slug,
   sidebarComparisons,
+  smartReviews,
   jsonLd,
 }: {
   comparison: Comparison;
   slug: string;
   sidebarComparisons: RelatedComparison[];
+  smartReviews: SmartReviewEntry[];
   jsonLd: string;
 }) {
   const n = comparison.entities.length;
@@ -1231,7 +1254,7 @@ function MultiEntityLayout({
 
       <InContentAd />
 
-      <SmartReviewLinks entities={comparison.entities.map((e) => ({ name: e.name, slug: e.slug }))} />
+      <SmartReviewLinks reviews={smartReviews} />
 
       {comparison.relatedComparisons.length > 0 && (
         <RelatedComparisons comparisons={comparison.relatedComparisons} sourceSlug={slug} />
