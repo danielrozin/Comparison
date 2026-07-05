@@ -250,13 +250,14 @@ export function PartnershipForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
+        aria-describedby={status === "error" ? "partnership-form-error" : undefined}
         className="w-full px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "submitting" ? "Submitting..." : "Submit Partnership Inquiry"}
       </button>
 
       {status === "error" && (
-        <p role="alert" className="text-red-500 text-sm text-center">
+        <p id="partnership-form-error" role="alert" className="text-red-500 text-sm text-center">
           Something went wrong. Please try again or email us directly.
         </p>
       )}
