@@ -197,7 +197,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
-              <p className="text-xs sm:text-sm text-primary-100/90 leading-relaxed line-clamp-3">
+              <p id="hero-tldr" className="text-xs sm:text-sm text-primary-100/90 leading-relaxed line-clamp-3">
                 {comparison.quickAnswer?.tldr || comparison.shortAnswer}
               </p>
             </div>

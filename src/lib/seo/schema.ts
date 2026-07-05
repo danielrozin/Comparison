@@ -825,12 +825,14 @@ export function comparisonPageSchema(
     speakable: {
       "@type": "SpeakableSpecification",
       // h1 — page title is the highest-confidence speakable node for voice query confirmation.
+      // #hero-tldr — above-fold quick-answer paragraph in the hero; first speakable hit
+      // for voice/AI queries since it appears before the fold.
       // #short-answer/#verdict — TL;DR and conclusion; Google AI Overviews and Perplexity
       // prefer these for one-line cited answers. #key-differences — the core comparison delta.
       // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
       // grid; AI data-mode crawlers extract column headers + values directly from this section.
       // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
-      cssSelector: ["h1", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -1330,7 +1332,8 @@ export function comparisonPageSchema(
     });
   }
 
-  // 5. BreadcrumbList
+  // 5. BreadcrumbList — always 3 levels: Home → Category (or "Comparisons") → Title
+  // Ensures rich BreadcrumbList rich results even when comparison.category is null.
   const categoryDisplayName = comparison.category
     ? comparison.category.charAt(0).toUpperCase() + comparison.category.slice(1)
     : null;
@@ -1338,7 +1341,7 @@ export function comparisonPageSchema(
     { name: "Home", url: SITE_URL },
     ...(categoryDisplayName
       ? [{ name: categoryDisplayName, url: `${SITE_URL}/category/${comparison.category}` }]
-      : []),
+      : [{ name: "Comparisons", url: `${SITE_URL}/trending` }]),
     { name: comparison.title, url },
   ];
   schemas.push(breadcrumbSchema(breadcrumbs, `${url}#breadcrumbs`));
@@ -1737,7 +1740,7 @@ function buildMultiEntityGraph(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -1950,7 +1953,7 @@ function buildMultiEntityGraph(
     { name: "Home", url: SITE_URL },
     ...(multiCategoryDisplay
       ? [{ name: multiCategoryDisplay, url: `${SITE_URL}/category/${comparison.category}` }]
-      : []),
+      : [{ name: "Comparisons", url: `${SITE_URL}/trending` }]),
     { name: comparison.title, url },
   ];
   const breadcrumbList = {

@@ -181,7 +181,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2", "main p:first-of-type"],
+      cssSelector: ["h1", "h2", "#alternatives-intro"],
     },
     alternativeHeadline: `Best ${name} Alternatives in ${new Date().getFullYear()}`,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -300,7 +300,7 @@ export default async function AlternativesPage({ params }: PageProps) {
           <span className="text-xl font-bold text-white">{name.charAt(0)}</span>
         </div>
         <div className="flex-1">
-          <p className="text-sm text-text-secondary leading-relaxed">
+          <p id="alternatives-intro" className="text-sm text-text-secondary leading-relaxed">
             {entityContent
               ? `${entityContent.description.split(". ").slice(0, 2).join(". ")}.`
               : `Looking for alternatives to ${name}? Compare the top competitors below.`}
