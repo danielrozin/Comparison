@@ -245,6 +245,8 @@ export async function GET() {
   lines.push("- Organization schema `abstract` field added — AI KG citation engines (Perplexity, ChatGPT) prefer `abstract` over `description` for entity summaries; distinct from search-snippet-oriented `description`");
   lines.push("- Country entity nodes in `buildMultiEntityGraph` + `buildTwoEntityGraph` schema paths gain `geo: { \"@type\": \"GeoShape\", name }` — signals geo-typed entity to Google Geo crawlers and Perplexity/ChatGPT country-query routing; `containedInPlace` upgraded from bare `\"Earth\"` Place to `{ name: \"World\", sameAs: \"https://en.wikipedia.org/wiki/World\" }`");
   lines.push("- WebPage node in `/api/v1/schema/{slug}` gains `primaryImageOfPage: ImageObject` (OG image, 1200×630, `@id: #primaryImage`) so Google and AI crawlers use the comparison card image as the canonical visual; also adds `isAccessibleForFree: true` + `conditionsOfAccess: \"Free\"` on WebPage");
+  lines.push("- DataCatalog schema gains `abstract` (AI KG citation summary), `potentialAction: SearchAction` pointing to `/api/v1/search`, and `dateModified` upgraded from YYYY-MM-DD to full ISO 8601 datetime");
+  lines.push("- Dataset node inside DataCatalog and WebApplication schema `dateModified` fields upgraded from `.slice(0,10)` truncation to full ISO 8601 — 3 truncation sites fixed in schema.ts");
 
   const body = lines.join("\n");
 

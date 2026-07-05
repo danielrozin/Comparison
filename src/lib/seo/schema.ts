@@ -165,6 +165,8 @@ export function dataCatalogSchema() {
     "@id": `${SITE_URL}/#datacatalog`,
     name: `${SITE_NAME} Comparison Database`,
     description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
+    // abstract — preferred by AI KG citation engines over description for DataCatalog summaries.
+    abstract: "A Versus B is a free, machine-readable comparison database with 3,000+ structured side-by-side comparisons. Each entry includes per-attribute winners, a curated verdict, FAQ pairs, community votes, and JSON-LD Schema.org markup — queryable via the /api/v1 endpoint suite.",
     url: SITE_URL,
     // identifier — stable PropertyValue identifier for academic/AI citation systems.
     // Semantic Scholar and Perplexity use PropertyValue identifiers to deduplicate
@@ -183,8 +185,18 @@ export function dataCatalogSchema() {
     conditionsOfAccess: "Free",
     creativeWorkStatus: "Published",
     datePublished: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: new Date().toISOString(),
     inLanguage: "en-US",
+    // potentialAction: SearchAction lets AI routers know the catalog is queryable by keyword —
+    // same pattern as WebSite SearchAction but scoped to the DataCatalog entity.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/api/v1/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
     educationalLevel: "General",
     teaches: "How to use the A Versus B structured comparison database to find side-by-side data on any topic",
     educationalUse: "reference",
@@ -208,7 +220,7 @@ export function dataCatalogSchema() {
       // display corpus size in the "dataset overview" card.
       numberOfItems: 3000,
       datePublished: "2024-01-01",
-      dateModified: new Date().toISOString().slice(0, 10),
+      dateModified: new Date().toISOString(),
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
       license: "https://creativecommons.org/licenses/by/4.0/",
       usageInfo: `${SITE_URL}/terms`,
@@ -593,7 +605,7 @@ export function webApplicationSchema() {
     educationalUse: "comparison",
     releaseNotes: `${SITE_URL}/changelog`,
     datePublished: "2024-01-01",
-    dateModified: new Date().toISOString().slice(0, 10),
+    dateModified: new Date().toISOString(),
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
