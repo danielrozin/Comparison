@@ -900,12 +900,17 @@ export function comparisonPageSchema(
     })(),
     about: comparison.entities.map((e) => {
       const schType = entitySchemaType(e.entityType);
+      const entityAliases = entityAlternateNames(e.name);
       return {
         "@type": schType,
         // @id matches the ProfilePage mainEntity @id so crawlers merge this node
         // with the entity's canonical ProfilePage across pages in the knowledge graph.
         ...(e.slug && { "@id": `${SITE_URL}/entity/${e.slug}` }),
         name: e.name,
+        // alternateName — entity aliases for AI Knowledge Graph disambiguation.
+        // Google KG, Perplexity, and ChatGPT use alternateName to merge entity nodes
+        // across documents (e.g. "Apple Inc." and "Apple" resolve to the same entity).
+        ...(entityAliases.length > 0 && { alternateName: entityAliases }),
         description: e.shortDesc,
         // ImageObject (not bare URL) — creditText + acquireLicensePage let AI image
         // crawlers (Google Lens, Perplexity visual mode) attribute the source when
@@ -1128,6 +1133,14 @@ export function comparisonPageSchema(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
+    // relatedLink — sibling comparison URLs for AI cross-document graph traversal.
+    // Perplexity and ChatGPT use relatedLink to build comparative knowledge clusters
+    // and surface adjacent comparisons in "X vs Y" answer threads.
+    ...(comparison.relatedComparisons.length > 0 && {
+      relatedLink: comparison.relatedComparisons.slice(0, 5).map(
+        (rc) => `${SITE_URL}/compare/${rc.slug}`
+      ),
+    }),
     // citation — external sources backing the comparison; AI fact-checkers (Google, Perplexity,
     // ChatGPT) follow citation links to verify factual claims and boost citation confidence.
     // Always populated: explicit citationStats.sources merged with entity Wikipedia references
@@ -2497,6 +2510,42 @@ export function entitySchemaType(entityType: string): string {
     place: "Place",
   };
   return map[entityType] || "Thing";
+}
+
+// entityAlternateNames — derive AI-disambiguation aliases from an entity name.
+// Returns alternate name strings that help AI Knowledge Graph systems (Google KG,
+// Perplexity, ChatGPT) resolve entity identity across documents:
+// 1. Strips common legal suffixes (Inc., Corp., LLC, Ltd.) for company disambiguation.
+// 2. Extracts parenthetical clarifiers (e.g. "Apple (Company)" → "Apple").
+// Schema.org `alternateName` is the canonical field for entity aliases per spec.
+export function entityAlternateNames(name: string): string[] {
+  const aliases: string[] = [];
+
+  // Strip common legal-entity suffixes so crawlers don't treat "Apple Inc." and
+  // "Apple" as different entities during cross-document Knowledge Graph merging.
+  const withoutSuffix = name
+    .replace(/\s*,?\s*(?:Inc\.|Incorporated|Corp\.|Corporation|LLC|Ltd\.|Limited|Co\.|Company|GmbH|S\.A\.|PLC|AG|NV|BV|SA|AB|AS|Pty\.?\s*Ltd\.?)\.?\s*$/i, "")
+    .trim();
+  if (withoutSuffix && withoutSuffix !== name) {
+    aliases.push(withoutSuffix);
+  }
+
+  // Extract content inside parentheses as a disambiguation qualifier.
+  // e.g. "Apple (Company)" → "Apple" already handled above; "Meta (Facebook)" → "Facebook"
+  const parenMatch = name.match(/\(([^)]+)\)/);
+  if (parenMatch) {
+    const inner = parenMatch[1].trim();
+    if (inner && inner !== name && !aliases.includes(inner)) {
+      aliases.push(inner);
+    }
+    // Also add the name without the parenthetical for cleaner entity matching.
+    const withoutParen = name.replace(/\s*\([^)]+\)/, "").trim();
+    if (withoutParen && withoutParen !== name && !aliases.includes(withoutParen)) {
+      aliases.push(withoutParen);
+    }
+  }
+
+  return aliases;
 }
 
 export function profilePageSchema(entity: {
