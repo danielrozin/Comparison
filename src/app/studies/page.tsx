@@ -175,7 +175,7 @@ export default function StudiesIndexPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
 
       {/* Gradient Hero */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+      <section aria-labelledby="studies-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -202,7 +202,7 @@ export default function StudiesIndexPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+            <h1 id="studies-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
               Data Studies
             </h1>
           </div>
@@ -216,7 +216,7 @@ export default function StudiesIndexPage() {
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>
-      </div>
+      </section>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <ul role="list" className="grid grid-cols-1 gap-4 list-none p-0 m-0">

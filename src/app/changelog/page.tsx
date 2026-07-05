@@ -291,7 +291,7 @@ export default function ChangelogPage() {
       />
 
       {/* Gradient Hero */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+      <section aria-labelledby="changelog-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -319,7 +319,7 @@ export default function ChangelogPage() {
               </svg>
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+              <h1 id="changelog-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
                 Changelog
               </h1>
               <p className="text-primary-100 text-sm sm:text-base max-w-xl mt-1">
@@ -333,7 +333,7 @@ export default function ChangelogPage() {
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>
-      </div>
+      </section>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Stats bar */}
