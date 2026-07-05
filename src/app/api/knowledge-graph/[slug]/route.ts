@@ -48,14 +48,27 @@ export async function GET(
 
   const url = `${SITE_URL}/compare/${slug}`;
 
-  // Build entity nodes
+  // Build entity nodes — typed via entitySchemaType() so knowledge graph crawlers
+  // (Google KG, Perplexity, ChatGPT) receive correctly typed nodes instead of Thing.
   const entityNodes = comparison.entities.map((entity) => ({
-    "@type": "Thing",
+    "@type": entitySchemaType(entity.entityType),
     "@id": `${SITE_URL}/entity/${entity.slug}#entity`,
     name: entity.name,
     url: `${SITE_URL}/entity/${entity.slug}`,
+    inLanguage: "en-US",
     description: entity.shortDesc ?? entity.name,
-    ...(entity.imageUrl ? { image: entity.imageUrl } : {}),
+    ...(entity.imageUrl ? {
+      image: {
+        "@type": "ImageObject",
+        url: entity.imageUrl,
+        contentUrl: entity.imageUrl,
+        caption: entity.name,
+      },
+    } : {}),
+    sameAs: [
+      `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
+    ],
+    subjectOf: { "@type": "Article", "@id": `${url}#article` },
   }));
 
   // Build attribute comparison nodes — join entity values into a readable string
@@ -158,11 +171,16 @@ export async function GET(
         cssSelector: ["#short-answer", "#verdict", "#key-differences", "#faq"],
         xpath: ["//*[@id='short-answer']", "//*[@id='verdict']"],
       },
-      // significantLink — entity profiles + alternatives so AI can traverse the graph
-      significantLink: comparison.entities.flatMap((e) => [
-        `${SITE_URL}/entity/${e.slug}`,
-        `${SITE_URL}/alternatives/${e.slug}`,
-      ]),
+      // significantLink — entity profiles, alternatives, answer API, schema JSON-LD
+      // so AI graph traversal reaches all machine-readable representations.
+      significantLink: [
+        ...comparison.entities.flatMap((e) => [
+          `${SITE_URL}/entity/${e.slug}`,
+          `${SITE_URL}/alternatives/${e.slug}`,
+        ]),
+        `${SITE_URL}/api/answer/${slug}`,
+        `${SITE_URL}/api/v1/schema/${slug}`,
+      ],
       // teaches — explicit decision-intent signal for AI topic classifiers
       teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
       // genre — content classification for AI indexers and Google Discover carousels

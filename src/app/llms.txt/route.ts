@@ -236,6 +236,10 @@ export async function GET() {
   lines.push("- `SportsEvent` node in `/api/knowledge-graph/{slug}` for sports-category comparisons — competitor[] typed to SportsTeam/Person; enables Google Sports and Perplexity sports-mode carousels");
   lines.push("- Entity nodes in `/api/v1/schema/{slug}` upgraded from generic `Thing` to fully-typed entities (SoftwareApplication, Person, Country, SportsTeam, etc.) with `inLanguage: \"en-US\"`, `image.contentUrl`, and `subjectOf` back-reference to Article node");
   lines.push("- Entity API (`/api/v1/entities/{slug}`) default JSON response now emits `Link:` header (canonical, LD+JSON alternate, alternatives, service-doc) — matches LD+JSON content-negotiation path already in place");
+  lines.push("- Entity nodes in `/api/knowledge-graph/{slug}` upgraded from generic `Thing` to fully-typed entities (entitySchemaType mapping) with `inLanguage: \"en-US\"`, `image.contentUrl` ImageObject, `sameAs` Wikipedia, and `subjectOf` back-reference to Article node — mirrors `/api/v1/schema/{slug}` typing depth");
+  lines.push("- `significantLink` on `/api/knowledge-graph/{slug}` Article extended to include `/api/answer/{slug}` + `/api/v1/schema/{slug}` — AI graph traversal now reaches all machine-readable representations from a single Article node");
+  lines.push("- `significantLink` added to `/api/v1/schema/{slug}` Article node — entity profiles, alternatives, answer API, and knowledge-graph URL — matching knowledge-graph endpoint coverage");
+  lines.push("- Dataset `distribution` in `/api/v1/schema/{slug}` expanded from single entry to full 6-item array (schema JSON-LD, knowledge-graph, raw comparison JSON, answer API, FAQ JSON, related comparisons) — mirrors knowledge-graph Dataset distribution depth");
 
   const body = lines.join("\n");
 

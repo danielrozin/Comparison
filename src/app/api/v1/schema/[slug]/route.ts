@@ -196,6 +196,16 @@ export async function GET(
           })),
         }
       : {}),
+    // significantLink — entity profiles, alternatives, answer API, knowledge-graph
+    // so AI crawlers can traverse all machine-readable representations of this topic.
+    significantLink: [
+      ...comparison.entities.flatMap((e) => [
+        `${SITE_URL}/entity/${e.slug}`,
+        `${SITE_URL}/alternatives/${e.slug}`,
+      ]),
+      `${SITE_URL}/api/answer/${slug}`,
+      `${SITE_URL}/api/knowledge-graph/${slug}`,
+    ],
   });
 
   // Entity nodes — typed via entitySchemaType() so AI product-search carousels and
@@ -234,11 +244,14 @@ export async function GET(
     inLanguage: "en-US",
     license: "https://creativecommons.org/licenses/by/4.0/",
     creator: { "@id": `${SITE_URL}/#organization` },
-    distribution: {
-      "@type": "DataDownload",
-      encodingFormat: "application/ld+json",
-      contentUrl: `${SITE_URL}/api/v1/schema/${slug}`,
-    },
+    distribution: [
+      { "@type": "DataDownload", encodingFormat: "application/ld+json", contentUrl: `${SITE_URL}/api/v1/schema/${slug}`, name: "Schema.org JSON-LD (pure)" },
+      { "@type": "DataDownload", encodingFormat: "application/ld+json", contentUrl: `${SITE_URL}/api/knowledge-graph/${slug}`, name: "JSON-LD knowledge graph" },
+      { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/api/comparisons/${slug}`, name: "Raw comparison JSON" },
+      { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/api/answer/${slug}`, name: "AI Answer API (citation-ready)" },
+      { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/api/faq/${slug}`, name: "Structured FAQ pairs JSON" },
+      { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${SITE_URL}/api/v1/related/${slug}`, name: "Related comparisons JSON" },
+    ],
     variableMeasured: comparison.attributes.map((a) => ({
       "@type": "PropertyValue",
       name: a.name,
