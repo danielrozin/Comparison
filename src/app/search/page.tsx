@@ -104,7 +104,7 @@ function SearchContent() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='Try "Messi vs Ronaldo" or "Python vs JavaScript"...'
                 aria-label="Search comparisons"
-                className="w-full pl-12 pr-28 py-4 rounded-xl text-lg bg-white text-text placeholder:text-text-secondary/50 focus:ring-4 focus:ring-primary-400/30 outline-none border-2 border-transparent focus:border-primary-400/50 transition-all"
+                className="w-full pl-12 pr-28 py-4 rounded-xl text-lg bg-white text-text placeholder:text-text-secondary/50 focus:ring-4 focus:ring-primary-400/60 outline-none border-2 border-transparent focus:border-primary-500 transition-all"
                 autoFocus={!query}
               />
               <button

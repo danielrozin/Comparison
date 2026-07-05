@@ -208,7 +208,7 @@ export default function DeveloperDashboard() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-surface text-text placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+              className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-surface text-text placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-primary-500/60"
               onKeyDown={(e) => e.key === "Enter" && email && fetchKeys(email)}
             />
             <button
@@ -237,7 +237,7 @@ export default function DeveloperDashboard() {
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
                 placeholder="Key name (e.g., Production, Staging)"
-                className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-surface text-text placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                className="flex-1 px-4 py-2.5 rounded-xl border border-border bg-surface text-text placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-primary-500/60"
                 onKeyDown={(e) => e.key === "Enter" && createKey()}
               />
               <button

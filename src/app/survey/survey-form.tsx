@@ -610,7 +610,7 @@ function RadioQuestion({
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."
-          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/60"
         />
       )}
       {error && <ErrorText>{error}</ErrorText>}
@@ -674,7 +674,7 @@ function CheckboxQuestion({
           value={otherValue || ""}
           onChange={(e) => onOtherChange(e.target.value)}
           placeholder="Please specify..."
-          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+          className="mt-1.5 w-full px-3.5 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/60"
         />
       )}
       {note && <p className="text-xs text-text-secondary/60 mt-1">{note}</p>}
@@ -710,7 +710,7 @@ function TextAreaQuestion({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3.5 py-2.5 border border-border rounded-lg text-sm resize-y min-h-[80px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10"
+        className="w-full px-3.5 py-2.5 border border-border rounded-lg text-sm resize-y min-h-[80px] focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/60"
       />
       {error && <ErrorText>{error}</ErrorText>}
     </div>
