@@ -285,7 +285,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       />
 
       {/* Subcategory Hero Banner */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
+      <section aria-labelledby="subcategory-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
@@ -318,7 +318,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
               <span className="text-3xl sm:text-4xl" aria-hidden="true">{subcat.icon}</span>
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+              <h1 id="subcategory-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
                 {subcat.name}
               </h1>
               <p className="text-primary-200 mt-1.5 text-sm sm:text-base">
@@ -332,7 +332,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>
-      </div>
+      </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
