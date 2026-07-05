@@ -55,8 +55,12 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
 // Survivor chosen by current Semrush rank (per the DAN-1264 audit). "paramount"
 // here is Paramount+, the same service as "paramount-plus".
 //   paramount-vs-peacock (pos 39) beats paramount-plus-vs-peacock (pos 57).
+// DAN-1742: collapse 2-hop chain. peacock-vs-paramount-plus would otherwise go
+// through the runtime sortComparisonSlug (→ paramount-plus-vs-peacock 308) then
+// the alias redirect (→ paramount-vs-peacock 308). Pin directly at the edge.
 const ALIAS_CONSOLIDATIONS: Record<string, string> = {
   "paramount-plus-vs-peacock": "paramount-vs-peacock",
+  "peacock-vs-paramount-plus": "paramount-vs-peacock",
 };
 
 // Merge order: ordering (generated) first, then alias, then manual overrides win.
