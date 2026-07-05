@@ -178,8 +178,6 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          aria-describedby={error ? "request-form-error" : undefined}
-          aria-invalid={error ? "true" : undefined}
           className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
         />
       </div>
@@ -201,6 +199,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
       <button
         type="submit"
         disabled={loading || !entityA.trim() || !entityB.trim()}
+        aria-describedby={error ? "request-form-error" : undefined}
         className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm"
       >
         {loading ? "Submitting..." : "Submit Comparison Request"}

@@ -52,7 +52,7 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
+      <div role="status" aria-live="polite" className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center">
         <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
             className="w-6 h-6 text-green-600"
@@ -168,6 +168,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
+        aria-describedby={status === "error" ? "contact-form-error" : undefined}
         className="w-full py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
