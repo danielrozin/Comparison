@@ -89,7 +89,7 @@ export default async function EmbedPage({ params, searchParams }: PageProps) {
                   Key Differences
                 </h2>
                 <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Key differences table — scroll to see all columns">
-                  <table className="w-full text-sm">
+                  <table aria-label="Key differences comparison" className="w-full text-sm">
                     <thead>
                       <tr className="border-b-2 border-border">
                         <th scope="col" className="pb-2 text-left font-semibold text-text">

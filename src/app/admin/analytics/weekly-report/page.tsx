@@ -170,11 +170,11 @@ export default function WeeklyReportPage() {
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <Link href="/admin/analytics" className="text-gray-400 hover:text-gray-600 text-sm"><span aria-hidden="true">&larr; </span>Analytics</Link>
-                <span className="text-gray-300">|</span>
-                <Link href="/admin/analytics/aarrr" className="text-gray-400 hover:text-gray-600 text-sm">AARRR</Link>
-                <span className="text-gray-300">|</span>
-                <Link href="/admin/analytics/okr" className="text-gray-400 hover:text-gray-600 text-sm">OKR</Link>
+                <Link href="/admin/analytics" className="text-gray-600 hover:text-gray-800 text-sm"><span aria-hidden="true">&larr; </span>Analytics</Link>
+                <span className="text-gray-400" aria-hidden="true">|</span>
+                <Link href="/admin/analytics/aarrr" className="text-gray-600 hover:text-gray-800 text-sm">AARRR</Link>
+                <span className="text-gray-400" aria-hidden="true">|</span>
+                <Link href="/admin/analytics/okr" className="text-gray-600 hover:text-gray-800 text-sm">OKR</Link>
               </div>
               <h1 className="text-2xl font-bold text-gray-900 mt-1">
                 Weekly Report W{data.weekNumber}

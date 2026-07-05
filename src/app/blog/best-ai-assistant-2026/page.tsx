@@ -361,7 +361,7 @@ export default function BestAiAssistant2026Page() {
         </header>
 
         {/* Intro */}
-        <section>
+        <section aria-label="Introduction">
           <p className="text-text leading-relaxed mb-4">
             If you&rsquo;ve spent the last six months hearing that ChatGPT, Claude,
             and Gemini are &ldquo;basically the same now,&rdquo; you&rsquo;re not

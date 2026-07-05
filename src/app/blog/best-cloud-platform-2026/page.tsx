@@ -368,7 +368,7 @@ export default function BestCloudPlatform2026Page() {
         </header>
 
         {/* Intro */}
-        <section>
+        <section aria-label="Introduction">
           <p className="text-text leading-relaxed mb-4">
             If you&rsquo;ve spent the last two years hearing that &ldquo;AWS, Azure and
             Google Cloud are basically the same now,&rdquo; you&rsquo;re not alone — and

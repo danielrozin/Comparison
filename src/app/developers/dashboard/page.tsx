@@ -263,8 +263,8 @@ export default function DeveloperDashboard() {
           </section>
 
           {/* Keys List */}
-          <section>
-            <h2 className="text-lg font-bold text-text mb-4">
+          <section aria-labelledby="api-keys-list-heading">
+            <h2 id="api-keys-list-heading" className="text-lg font-bold text-text mb-4">
               Your API Keys ({keys.length})
             </h2>
             {keys.length === 0 ? (

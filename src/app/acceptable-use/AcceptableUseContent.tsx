@@ -22,7 +22,7 @@ export function AcceptableUseContent() {
       lastUpdatedISO="2026-03"
       sections={SECTIONS}
     >
-      <section>
+      <section aria-label="Introduction">
         <p>
           This Acceptable Use Policy governs your use of {SITE_NAME}. By accessing the site, you agree
           to this policy alongside our{" "}
@@ -30,16 +30,16 @@ export function AcceptableUseContent() {
         </p>
       </section>
 
-      <section id="purpose">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">1. Purpose</h2>
+      <section id="purpose" aria-labelledby="purpose-heading">
+        <h2 id="purpose-heading" className="text-2xl font-display font-bold text-text mb-4">1. Purpose</h2>
         <p>
           {SITE_NAME} provides objective, data-driven comparisons. This policy ensures the platform
           remains trustworthy, accurate, and useful for all users.
         </p>
       </section>
 
-      <section id="prohibited-activities">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">2. Prohibited Activities</h2>
+      <section id="prohibited-activities" aria-labelledby="prohibited-activities-heading">
+        <h2 id="prohibited-activities-heading" className="text-2xl font-display font-bold text-text mb-4">2. Prohibited Activities</h2>
         <p className="mb-4">You must not:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li>Use the Site for unlawful purposes</li>
@@ -53,8 +53,8 @@ export function AcceptableUseContent() {
         </ul>
       </section>
 
-      <section id="content-standards">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">3. Content Standards</h2>
+      <section id="content-standards" aria-labelledby="content-standards-heading">
+        <h2 id="content-standards-heading" className="text-2xl font-display font-bold text-text mb-4">3. Content Standards</h2>
         <p className="mb-4">Any content you submit (feedback, contact messages, suggestions) must:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Be truthful and accurate to the best of your knowledge</li>
@@ -64,8 +64,8 @@ export function AcceptableUseContent() {
         </ul>
       </section>
 
-      <section id="enforcement">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">4. Enforcement</h2>
+      <section id="enforcement" aria-labelledby="enforcement-heading">
+        <h2 id="enforcement-heading" className="text-2xl font-display font-bold text-text mb-4">4. Enforcement</h2>
         <p className="mb-4">Violations may result in:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Content removal</li>
@@ -75,8 +75,8 @@ export function AcceptableUseContent() {
         </ul>
       </section>
 
-      <section id="reporting">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">5. Reporting Violations</h2>
+      <section id="reporting" aria-labelledby="reporting-heading">
+        <h2 id="reporting-heading" className="text-2xl font-display font-bold text-text mb-4">5. Reporting Violations</h2>
         <p>
           If you encounter content or behavior that violates this policy, please{" "}
           <Link href="/contact" className="text-primary-600 hover:underline">contact us</Link>.
@@ -84,13 +84,13 @@ export function AcceptableUseContent() {
         </p>
       </section>
 
-      <section id="changes">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">6. Changes to This Policy</h2>
+      <section id="changes" aria-labelledby="changes-heading">
+        <h2 id="changes-heading" className="text-2xl font-display font-bold text-text mb-4">6. Changes to This Policy</h2>
         <p>We may update this policy at any time. Changes are reflected in the &ldquo;Last updated&rdquo; date.</p>
       </section>
 
-      <section id="contact">
-        <h2 className="text-2xl font-display font-bold text-text mb-4">7. Contact Us</h2>
+      <section id="contact" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="text-2xl font-display font-bold text-text mb-4">7. Contact Us</h2>
         <p className="mb-4">Questions about this policy? Contact us:</p>
         <div className="bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>
