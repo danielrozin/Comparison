@@ -84,7 +84,7 @@ export default function ContactPage() {
       <JsonLd data={contactPageSchema} />
 
       {/* Gradient Hero */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+      <section aria-labelledby="contact-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -105,7 +105,7 @@ export default function ContactPage() {
               <li className="text-white font-medium" aria-current="page">Contact</li>
             </ol>
           </nav>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
+          <h1 id="contact-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-2">
             Get in Touch
           </h1>
           <p className="text-primary-100 text-sm sm:text-base max-w-xl">
@@ -117,13 +117,13 @@ export default function ContactPage() {
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>
-      </div>
+      </section>
 
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-12">
         {/* Left — Info */}
-        <div className="md:col-span-2">
+        <section aria-labelledby="contact-options-heading" className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -131,7 +131,7 @@ export default function ContactPage() {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl font-display font-bold text-text">Contact Options</h2>
+              <h2 id="contact-options-heading" className="text-xl font-display font-bold text-text">Contact Options</h2>
               <p className="text-xs text-text-secondary mt-0.5">We respond within 2 business days</p>
             </div>
           </div>
@@ -206,7 +206,7 @@ export default function ContactPage() {
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Right — Form */}
         <div className="md:col-span-3">

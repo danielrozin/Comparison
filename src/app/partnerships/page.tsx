@@ -136,7 +136,7 @@ export default function PartnershipsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       {/* Gradient Hero */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
+      <section aria-labelledby="partnerships-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
           <nav className="mb-6" aria-label="Breadcrumb">
@@ -162,7 +162,7 @@ export default function PartnershipsPage() {
               <span className="w-2 h-2 rounded-full bg-green-400" />
               Now accepting partners
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
+            <h1 id="partnerships-hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
               Reach Buyers at the<br className="hidden sm:block" /> Point of Decision
             </h1>
             <p className="text-lg text-primary-100 max-w-2xl mx-auto leading-relaxed">
@@ -182,7 +182,7 @@ export default function PartnershipsPage() {
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
         </div>
-      </div>
+      </section>
 
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
@@ -202,14 +202,14 @@ export default function PartnershipsPage() {
       </ul>
 
       {/* Why Partner */}
-      <div className="mb-16">
+      <section aria-labelledby="partnerships-why-heading" className="mb-16">
         <div className="flex flex-col items-center gap-2 mb-8">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Why Partner With {SITE_NAME}?</h2>
+          <h2 id="partnerships-why-heading" className="text-2xl font-display font-bold text-text">Why Partner With {SITE_NAME}?</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {[
@@ -235,17 +235,17 @@ export default function PartnershipsPage() {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {/* Pricing Tiers */}
-      <div className="mb-16">
+      <section aria-labelledby="partnerships-tiers-heading" className="mb-16">
         <div className="flex flex-col items-center gap-2 mb-8">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Partnership Tiers</h2>
+          <h2 id="partnerships-tiers-heading" className="text-2xl font-display font-bold text-text">Partnership Tiers</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
           {TIERS.map((tier) => (
@@ -283,7 +283,7 @@ export default function PartnershipsPage() {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {/* Disclosure */}
       <div className="bg-surface-alt border border-border rounded-2xl p-6 mb-16">
@@ -301,14 +301,14 @@ export default function PartnershipsPage() {
       </div>
 
       {/* Intake Form */}
-      <div id="apply">
+      <section id="apply" aria-labelledby="partnerships-apply-heading">
         <div className="flex flex-col items-center gap-2 mb-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Start a Partnership</h2>
+          <h2 id="partnerships-apply-heading" className="text-2xl font-display font-bold text-text">Start a Partnership</h2>
         </div>
         <p className="text-text-secondary text-center mb-8">
           Fill out the form below and we&apos;ll get back to you within 2 business days.
@@ -316,7 +316,7 @@ export default function PartnershipsPage() {
         <div className="max-w-2xl mx-auto">
           <PartnershipForm />
         </div>
-      </div>
+      </section>
     </div>
     </>
   );
