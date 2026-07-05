@@ -36,6 +36,8 @@
 /* Smooth scrolling & font rendering */
 html {
   scroll-behavior: smooth;
+  /* Offset scrolled-to elements below the 64px sticky header (WCAG 2.4.12 Focus Not Obscured) */
+  scroll-padding-top: 80px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
