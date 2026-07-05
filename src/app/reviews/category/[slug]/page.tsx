@@ -185,14 +185,14 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
         </nav>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
+        <section aria-labelledby="review-category-heading" className="mb-8">
+          <h1 id="review-category-heading" className="text-3xl sm:text-4xl font-display font-black text-text">
             Best {cat.name} Reviews
           </h1>
           <p className="text-text-secondary mt-1">
             {total} product{total !== 1 ? "s" : ""} ranked by SmartScore
           </p>
-        </div>
+        </section>
 
         {/* Product List */}
         {entities.length > 0 ? (

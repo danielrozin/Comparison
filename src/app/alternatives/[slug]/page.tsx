@@ -260,7 +260,7 @@ export default async function AlternativesPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(alternativesArticleSchema) }}
       />
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <section aria-labelledby="alternatives-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumbs */}
       <nav className="mb-6" aria-label="Breadcrumb">
         <ol className="flex items-center gap-1.5 text-sm text-text-secondary">
@@ -287,7 +287,7 @@ export default async function AlternativesPage({ params }: PageProps) {
         </ol>
       </nav>
 
-      <h1 className="text-3xl sm:text-4xl font-display font-black text-text mb-2">
+      <h1 id="alternatives-heading" className="text-3xl sm:text-4xl font-display font-black text-text mb-2">
         Alternatives to {name}
       </h1>
       <p className="text-text-secondary mb-4">
@@ -386,7 +386,7 @@ export default async function AlternativesPage({ params }: PageProps) {
       <div className="mt-12">
         <NewsletterSignup source="alternatives" referrerSlug={slug} />
       </div>
-    </div>
+    </section>
     </>
   );
 }
