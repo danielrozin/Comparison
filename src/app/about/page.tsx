@@ -160,14 +160,14 @@ export default function AboutPage() {
       </div>
 
       {/* Mission */}
-      <section className="mb-12">
+      <section aria-labelledby="about-mission-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Our Mission</h2>
+          <h2 id="about-mission-heading" className="text-2xl font-display font-bold text-text">Our Mission</h2>
         </div>
         <p className="text-text-secondary leading-relaxed mb-4">
           {SITE_NAME} was founded on a simple idea: comparisons should be easy, fast, and trustworthy.
@@ -187,7 +187,7 @@ export default function AboutPage() {
       </section>
 
       {/* How It Works */}
-      <section className="mb-12">
+      <section aria-labelledby="about-how-it-works-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -195,7 +195,7 @@ export default function AboutPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">How It Works</h2>
+          <h2 id="about-how-it-works-heading" className="text-2xl font-display font-bold text-text">How It Works</h2>
         </div>
         <ol role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
           <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
@@ -232,14 +232,14 @@ export default function AboutPage() {
       </section>
 
       {/* What Makes Us Different */}
-      <section className="mb-12">
+      <section aria-labelledby="about-differentiators-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">What Makes Us Different</h2>
+          <h2 id="about-differentiators-heading" className="text-2xl font-display font-bold text-text">What Makes Us Different</h2>
         </div>
         <ul className="space-y-4">
           <li className="flex gap-4">
@@ -316,14 +316,14 @@ export default function AboutPage() {
       </section>
 
       {/* Categories */}
-      <section className="mb-12">
+      <section aria-labelledby="about-categories-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">What We Compare</h2>
+          <h2 id="about-categories-heading" className="text-2xl font-display font-bold text-text">What We Compare</h2>
         </div>
         <p className="text-text-secondary leading-relaxed mb-6">
           {SITE_NAME} covers a wide and growing range of comparison categories:
@@ -356,14 +356,14 @@ export default function AboutPage() {
       </section>
 
       {/* Founders */}
-      <section className="mb-12">
+      <section aria-labelledby="about-team-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Who We Are</h2>
+          <h2 id="about-team-heading" className="text-2xl font-display font-bold text-text">Who We Are</h2>
         </div>
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
           {/* Daniel */}
@@ -444,7 +444,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team Vision */}
-      <section className="mb-12">
+      <section aria-labelledby="about-vision-heading" className="mb-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -452,7 +452,7 @@ export default function AboutPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Our Vision</h2>
+          <h2 id="about-vision-heading" className="text-2xl font-display font-bold text-text">Our Vision</h2>
         </div>
         <p className="text-text-secondary leading-relaxed mb-4">
           We envision a world where information asymmetry is no longer a barrier to good decision-making.
@@ -468,13 +468,13 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-br from-primary-50 to-indigo-50 border border-primary-100 rounded-2xl p-8 text-center">
+      <section aria-labelledby="about-contact-cta-heading" className="bg-gradient-to-br from-primary-50 to-indigo-50 border border-primary-100 rounded-2xl p-8 text-center">
         <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
           <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
           </svg>
         </div>
-        <h2 className="text-xl font-display font-bold text-text mb-2">Have a question or suggestion?</h2>
+        <h2 id="about-contact-cta-heading" className="text-xl font-display font-bold text-text mb-2">Have a question or suggestion?</h2>
         <p className="text-text-secondary mb-6 text-sm">
           We&apos;d love to hear from you. Reach out to our team any time.
         </p>

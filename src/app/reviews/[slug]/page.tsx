@@ -463,7 +463,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         )}
 
         {/* Reviews list */}
-        <div className="mb-10">
+        <section aria-labelledby="reviews-list-heading" className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -471,7 +471,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-display font-bold text-text">
+              <h2 id="reviews-list-heading" className="text-xl font-display font-bold text-text">
                 Reviews ({total})
               </h2>
             </div>
@@ -554,11 +554,11 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
               No individual reviews available yet. Check back soon.
             </p>
           )}
-        </div>
+        </section>
 
         {/* Cross-link to comparisons */}
-        <div className="bg-primary-50 border border-primary-200 rounded-xl p-6 text-center">
-          <h2 className="text-lg font-display font-bold text-text mb-2">
+        <section aria-labelledby="reviews-crosslink-heading" className="bg-primary-50 border border-primary-200 rounded-xl p-6 text-center">
+          <h2 id="reviews-crosslink-heading" className="text-lg font-display font-bold text-text mb-2">
             See how {name} compares
           </h2>
           <p className="text-sm text-text-secondary mb-4">
@@ -570,7 +570,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           >
             View Comparisons
           </Link>
-        </div>
+        </section>
       </div>
     </>
   );
