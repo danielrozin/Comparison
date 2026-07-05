@@ -1631,6 +1631,9 @@ function buildMultiEntityGraph(
     };
     const wikiSameAs = entityWikipediaSameAs(entity.name);
     if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
+    // alternateName — legal-suffix-stripped aliases for AI Knowledge Graph cross-document merging.
+    const itemAliases = entityAlternateNames(entity.name);
+    if (itemAliases.length > 0) node.alternateName = itemAliases;
     node.subjectOf = { "@type": "Article", "@id": `${url}#article` };
 
     if (schemaType === "SoftwareApplication") {
@@ -1881,6 +1884,12 @@ function buildMultiEntityGraph(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
+    // relatedLink — sibling comparison URLs for AI cross-document graph traversal (parity with 2-entity).
+    ...(comparison.relatedComparisons.length > 0 && {
+      relatedLink: comparison.relatedComparisons.slice(0, 5).map(
+        (rc) => `${SITE_URL}/compare/${rc.slug}`
+      ),
+    }),
     // potentialAction — ReadAction + CompareAction for multi-entity graph.
     // CompareAction tells AI/Google this page performs a comparison between the entities.
     potentialAction: [
@@ -1947,20 +1956,25 @@ function buildMultiEntityGraph(
     }),
     mainEntity: { "@id": itemListId },
     // about[] — primary subjects of this comparison article; @id matches ProfilePage mainEntity.
-    about: comparison.entities.map((e) => ({
-      "@type": entitySchemaType(e.entityType),
-      "@id": `${SITE_URL}/entity/${e.slug}`,
-      name: e.name,
-      url: `${SITE_URL}/entity/${e.slug}`,
-      subjectOf: { "@type": "Article", "@id": `${url}#article` },
-      // mainEntityOfPage — cross-page edge to entity ProfilePage for AI knowledge traversal.
-      mainEntityOfPage: {
-        "@type": "ProfilePage",
-        "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+    about: comparison.entities.map((e) => {
+      const multiEntityAliases = entityAlternateNames(e.name);
+      return {
+        "@type": entitySchemaType(e.entityType),
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        // alternateName — entity aliases for AI Knowledge Graph disambiguation (parity with 2-entity).
+        ...(multiEntityAliases.length > 0 && { alternateName: multiEntityAliases }),
         url: `${SITE_URL}/entity/${e.slug}`,
-      },
-      sameAs: entityWikipediaSameAs(e.name),
-    })),
+        subjectOf: { "@type": "Article", "@id": `${url}#article` },
+        // mainEntityOfPage — cross-page edge to entity ProfilePage for AI knowledge traversal.
+        mainEntityOfPage: {
+          "@type": "ProfilePage",
+          "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
+          url: `${SITE_URL}/entity/${e.slug}`,
+        },
+        sameAs: entityWikipediaSameAs(e.name),
+      };
+    }),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
     // Typed @type (not generic Thing) strengthens entity classification in Knowledge Graphs.
     mentions: comparison.entities.map((e) => ({
