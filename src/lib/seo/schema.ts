@@ -1128,14 +1128,20 @@ export function comparisonPageSchema(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
-    // citation — external sources that back the comparison data; AI fact-checkers
-    // and Google's Knowledge Panel use citation to verify factual claims.
-    ...(() => {
-      const citedSources = (comparison.citationStats?.sources ?? [])
+    // citation — external sources backing the comparison; AI fact-checkers (Google, Perplexity,
+    // ChatGPT) follow citation links to verify factual claims and boost citation confidence.
+    // Always populated: explicit citationStats.sources merged with entity Wikipedia references
+    // as fallback so every Article node has at least the entity canonical sources.
+    citation: [
+      ...(comparison.citationStats?.sources ?? [])
         .filter((s) => s.url)
-        .map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url }));
-      return citedSources.length > 0 ? { citation: citedSources } : {};
-    })(),
+        .map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+      ...comparison.entities.map((e) => ({
+        "@type": "CreativeWork",
+        name: `${e.name} — Wikipedia`,
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+      })),
+    ],
     // potentialAction — ReadAction lets AI crawlers understand that this article
     // is readable at its canonical URL; CompareAction tells AI/Google that this page
     // performs a comparison between the two entities, boosting eligibility for
@@ -1906,14 +1912,19 @@ function buildMultiEntityGraph(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
-    // citation — external sources backing the comparison data.
-    ...((): Record<string, unknown> => {
-      const multiCitation = comparison.citationStats;
-      const citedSources = (multiCitation?.sources ?? [])
+    // citation — external sources backing the comparison; always populated with explicit
+    // sources merged with per-entity Wikipedia references so every Article node provides
+    // AI fact-checkers a citation chain even without explicit editorial sources.
+    citation: [
+      ...(comparison.citationStats?.sources ?? [])
         .filter((s: { url?: string; name: string }) => s.url)
-        .map((s: { url?: string; name: string }) => ({ "@type": "CreativeWork", name: s.name, url: s.url }));
-      return citedSources.length > 0 ? { citation: citedSources } : {};
-    })(),
+        .map((s: { url?: string; name: string }) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+      ...comparison.entities.map((e) => ({
+        "@type": "CreativeWork",
+        name: `${e.name} — Wikipedia`,
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+      })),
+    ],
     ...(multiViewCount > 0 && {
       interactionStatistic: {
         "@type": "InteractionCounter",

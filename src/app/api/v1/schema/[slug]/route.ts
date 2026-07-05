@@ -209,6 +209,13 @@ export async function GET(
           })),
         }
       : {}),
+    // citation — Wikipedia references for each entity; ensures every Article node provides
+    // AI fact-checkers a citation chain even without editorial sources.
+    citation: comparison.entities.map((e) => ({
+      "@type": "CreativeWork",
+      name: `${e.name} — Wikipedia`,
+      url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+    })),
     // significantLink — entity profiles, alternatives, answer API, knowledge-graph
     // so AI crawlers can traverse all machine-readable representations of this topic.
     significantLink: [

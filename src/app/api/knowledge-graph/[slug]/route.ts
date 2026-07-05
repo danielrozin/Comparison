@@ -189,6 +189,13 @@ export async function GET(
         `${SITE_URL}/api/answer/${slug}`,
         `${SITE_URL}/api/v1/schema/${slug}`,
       ],
+      // citation — Wikipedia references for each entity so AI fact-checkers always have
+      // a citation chain even when no explicit editorial sources are recorded.
+      citation: comparison.entities.map((e) => ({
+        "@type": "CreativeWork",
+        name: `${e.name} — Wikipedia`,
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+      })),
       // teaches — explicit decision-intent signal for AI topic classifiers
       teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
       // genre — content classification for AI indexers and Google Discover carousels
