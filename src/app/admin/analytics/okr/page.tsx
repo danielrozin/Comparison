@@ -204,8 +204,8 @@ export default function OKRDashboard() {
         </section>
 
         {/* Health Metrics */}
-        <section>
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Health Metrics</h2>
+        <section aria-labelledby="okr-health-metrics">
+          <h2 id="okr-health-metrics" className="text-lg font-bold text-gray-900 mb-4">Health Metrics</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {data.healthMetrics.map((m) => (
               <HealthCard key={m.name} metric={m} />
@@ -214,8 +214,8 @@ export default function OKRDashboard() {
         </section>
 
         {/* Team OKRs */}
-        <section>
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Team OKRs</h2>
+        <section aria-labelledby="okr-team">
+          <h2 id="okr-team" className="text-lg font-bold text-gray-900 mb-4">Team OKRs</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {data.teamOKRs.map((okr) => (
               <OKRCard key={okr.id} okr={okr} />

@@ -189,14 +189,14 @@ export default function DevelopersPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Pricing Tiers */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-pricing" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Pricing</h2>
+          <h2 id="dev-pricing" className="text-2xl font-display font-bold text-text">Pricing</h2>
         </div>
         <ul role="list" className="grid sm:grid-cols-3 gap-4 list-none">
           {[
@@ -255,14 +255,14 @@ export default function DevelopersPage() {
       </section>
 
       {/* Getting Started */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-getting-started" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Getting Started</h2>
+          <h2 id="dev-getting-started" className="text-2xl font-display font-bold text-text">Getting Started</h2>
         </div>
 
         <div className="space-y-6">
@@ -294,14 +294,14 @@ export default function DevelopersPage() {
       </section>
 
       {/* Authentication */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-authentication" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Authentication</h2>
+          <h2 id="dev-authentication" className="text-2xl font-display font-bold text-text">Authentication</h2>
         </div>
         <p className="text-text-secondary mb-4">
           Pass your API key in one of three ways:
@@ -314,14 +314,14 @@ export default function DevelopersPage() {
       </section>
 
       {/* Endpoints */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-endpoints" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">API Endpoints</h2>
+          <h2 id="dev-endpoints" className="text-2xl font-display font-bold text-text">API Endpoints</h2>
         </div>
 
         <div className="space-y-8">
@@ -404,14 +404,14 @@ export default function DevelopersPage() {
       </section>
 
       {/* Rate Limiting */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-rate-limiting" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Rate Limiting</h2>
+          <h2 id="dev-rate-limiting" className="text-2xl font-display font-bold text-text">Rate Limiting</h2>
         </div>
         <p className="text-text-secondary mb-4">
           Every response includes rate limit headers:
@@ -425,14 +425,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
       </section>
 
       {/* Response Format */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-response-format" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Response Format</h2>
+          <h2 id="dev-response-format" className="text-2xl font-display font-bold text-text">Response Format</h2>
         </div>
         <CodeBlock title="Example: GET /api/v1/comparisons/messi-vs-ronaldo">{`{
   "id": "clx...",
@@ -455,14 +455,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
       </section>
 
       {/* Errors */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-error-codes" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Error Codes</h2>
+          <h2 id="dev-error-codes" className="text-2xl font-display font-bold text-text">Error Codes</h2>
         </div>
         <div className="border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
@@ -496,14 +496,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
       </section>
 
       {/* Key Management */}
-      <section className="mb-16">
+      <section aria-labelledby="dev-key-management" className="mb-16">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Key Management</h2>
+          <h2 id="dev-key-management" className="text-2xl font-display font-bold text-text">Key Management</h2>
         </div>
         <div className="space-y-4">
           <div>
@@ -523,14 +523,14 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
       </section>
 
       {/* CTA */}
-      <section className="text-center py-12 border-t border-border">
+      <section aria-labelledby="dev-cta" className="text-center py-12 border-t border-border">
         <div className="flex flex-col items-center gap-2 mb-4">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 3l14 9-14 9V3z" />
             </svg>
           </div>
-          <h2 className="text-2xl font-display font-bold text-text">Ready to get started?</h2>
+          <h2 id="dev-cta" className="text-2xl font-display font-bold text-text">Ready to get started?</h2>
         </div>
         <p className="text-text-secondary mb-6">
           Create your free API key and start building in minutes.
