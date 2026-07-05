@@ -127,7 +127,7 @@ function EntityCard({
       className={`bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
     >
       <EntityAvatar entity={entity} variant={variant} />
-      <h3 className="text-base sm:text-xl font-bold text-white mb-1">{entity.name}</h3>
+      <h2 className="text-base sm:text-xl font-bold text-white mb-1">{entity.name}</h2>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-2">{entity.shortDesc}</p>
       )}

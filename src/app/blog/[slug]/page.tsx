@@ -816,9 +816,9 @@ export default async function BlogPostPage({
 
           {/* Share Section */}
           <div className="mt-8 p-6 bg-white rounded-xl border border-border">
-            <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
+            <h2 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
               Share this article
-            </h3>
+            </h2>
             <ShareBar title={article.title} slug={slug} path="blog" />
           </div>
 
@@ -831,9 +831,9 @@ export default async function BlogPostPage({
           {article.relatedComparisonSlugs &&
             article.relatedComparisonSlugs.length > 0 && (
               <div className="mt-8 p-6 bg-white rounded-xl border border-border">
-                <h3 className="text-lg font-bold text-text mb-4">
+                <h2 className="text-lg font-bold text-text mb-4">
                   Related Comparisons
-                </h3>
+                </h2>
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
                   {article.relatedComparisonSlugs.map((compSlug) => {
                     const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
