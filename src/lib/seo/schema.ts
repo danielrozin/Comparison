@@ -73,6 +73,22 @@ export function organizationSchema() {
         contactType: "editorial",
         availableLanguage: "English",
       },
+      // technical-support ContactPoint — used by AI crawlers (Perplexity, ChatGPT) to route
+      // developer/API queries and by Google Knowledge Panel to surface the developer portal link.
+      {
+        "@type": "ContactPoint",
+        url: `${SITE_URL}/developers`,
+        contactType: "technical support",
+        availableLanguage: "English",
+        productSupported: "A Versus B Comparison API",
+      },
+      // customer-support — used by AI answer engines when users ask how to reach A Versus B.
+      {
+        "@type": "ContactPoint",
+        url: `${SITE_URL}/contact`,
+        contactType: "customer support",
+        availableLanguage: "English",
+      },
     ],
     // founder — E-E-A-T signal connecting Organization to a named expert author.
     // Google's quality evaluators and AI crawlers (Perplexity, ChatGPT) use this
@@ -709,6 +725,7 @@ export function webPageSchema(opts: {
     ...(opts.keywords && { keywords: opts.keywords }),
     speakable: {
       "@type": "SpeakableSpecification",
+      "@id": `${opts.url}#speakable`,
       cssSelector: ["h1", "h2", "#page-intro", "p:first-of-type"],
     },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
@@ -836,6 +853,9 @@ export function comparisonPageSchema(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
+      // Stable @id lets AI knowledge graphs reference this SpeakableSpecification node
+      // from other @graph documents without ambiguity (e.g. ClaimReview citing speakable).
+      "@id": `${url}#speakable`,
       // h1 — page title is the highest-confidence speakable node for voice query confirmation.
       // #hero-tldr — above-fold quick-answer paragraph in the hero; first speakable hit
       // for voice/AI queries since it appears before the fold.
@@ -1752,6 +1772,7 @@ function buildMultiEntityGraph(
     ...(comparison.shortAnswer && { abstract: comparison.shortAnswer }),
     speakable: {
       "@type": "SpeakableSpecification",
+      "@id": `${url}#speakable`,
       cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
     },
     accessMode: ["textual", "visual"],
@@ -2023,7 +2044,7 @@ function buildMultiEntityGraph(
       isAccessibleForFree: true,
       // isPartOf — back-reference to Article so AI crawlers confirm FAQ belongs to this comparison.
       isPartOf: { "@type": "Article", "@id": `${url}#article` },
-      speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
+      speakable: { "@type": "SpeakableSpecification", "@id": `${url}#faq-speakable`, cssSelector: [".faq-answer"] },
       mainEntity: comparison.faqs.slice(0, 10).map((faq, i) => ({
         "@type": "Question",
         "@id": `${url}#q${i + 1}`,
@@ -2273,6 +2294,7 @@ export function faqSchema(faqs: FAQData[], id?: string) {
     // elements; AI Overviews pull directly from FAQ structured data.
     speakable: {
       "@type": "SpeakableSpecification",
+      ...(id && { "@id": id.replace(/#faq$/, "#faq-speakable") }),
       cssSelector: [".faq-answer"],
     },
     mainEntity: faqs.slice(0, 10).map((faq, i) => ({
@@ -2643,6 +2665,7 @@ export function profilePageSchema(entity: {
     // anchors the curated "About {entity}" prose section for authoritative snippets.
     speakable: {
       "@type": "SpeakableSpecification",
+      "@id": `${url}#speakable`,
       cssSelector: ["h1", "#entity-intro", "#entity-about"],
     },
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(entity.name)}+comparison&type=link&sort=relevance`,
