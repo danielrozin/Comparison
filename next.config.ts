@@ -3,6 +3,7 @@ import { withSentryConfig } from "@sentry/nextjs";
 import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
 import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
 import { COMPARE_REDIRECTS } from "./src/lib/redirects/compare-redirects";
+import { ENTITY_REDIRECTS } from "./src/lib/redirects/entity-redirects";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -20,7 +21,7 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS];
+    return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS, ...ENTITY_REDIRECTS];
   },
 
   async headers() {
