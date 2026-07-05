@@ -209,6 +209,10 @@ export async function GET(
           })),
         }
       : {}),
+    // relatedLink — related comparison pages for AI graph traversal and topic clustering.
+    ...(comparison.relatedComparisons?.length ? {
+      relatedLink: comparison.relatedComparisons.slice(0, 8).map((r: { slug: string }) => `${SITE_URL}/compare/${r.slug}`),
+    } : {}),
     // citation — Wikipedia references for each entity; ensures every Article node provides
     // AI fact-checkers a citation chain even without editorial sources.
     citation: comparison.entities.map((e) => ({

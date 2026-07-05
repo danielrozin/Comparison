@@ -189,6 +189,10 @@ export async function GET(
         `${SITE_URL}/api/answer/${slug}`,
         `${SITE_URL}/api/v1/schema/${slug}`,
       ],
+      // relatedLink — related comparison pages for AI graph traversal and topic clustering.
+      ...(comparison.relatedComparisons?.length ? {
+        relatedLink: comparison.relatedComparisons.slice(0, 8).map((r: { slug: string }) => `${SITE_URL}/compare/${r.slug}`),
+      } : {}),
       // citation — Wikipedia references for each entity so AI fact-checkers always have
       // a citation chain even when no explicit editorial sources are recorded.
       citation: comparison.entities.map((e) => ({

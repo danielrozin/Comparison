@@ -1133,14 +1133,11 @@ export function comparisonPageSchema(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
-    // relatedLink — sibling comparison URLs for AI cross-document graph traversal.
-    // Perplexity and ChatGPT use relatedLink to build comparative knowledge clusters
-    // and surface adjacent comparisons in "X vs Y" answer threads.
-    ...(comparison.relatedComparisons.length > 0 && {
-      relatedLink: comparison.relatedComparisons.slice(0, 5).map(
-        (rc) => `${SITE_URL}/compare/${rc.slug}`
-      ),
-    }),
+    // relatedLink — related comparison pages; AI crawlers use this to traverse the
+    // comparison graph and surface topic clusters in recommendation carousels.
+    ...(comparison.relatedComparisons?.length ? {
+      relatedLink: comparison.relatedComparisons.slice(0, 8).map((r) => `${SITE_URL}/compare/${r.slug}`),
+    } : {}),
     // citation — external sources backing the comparison; AI fact-checkers (Google, Perplexity,
     // ChatGPT) follow citation links to verify factual claims and boost citation confidence.
     // Always populated: explicit citationStats.sources merged with entity Wikipedia references
@@ -1464,7 +1461,14 @@ export function comparisonPageSchema(
       ].join(", "),
       // measurementTechnique describes how attributes were collected.
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
-      variableMeasured: comparison.attributes.map((attr) => attr.name),
+      // variableMeasured as PropertyValue objects — Google Dataset Search and AI research
+      // tools extract structured attribute metadata from typed PropertyValue nodes rather
+      // than bare strings, improving dataset carousels and citation accuracy.
+      variableMeasured: comparison.attributes.map((attr) => ({
+        "@type": "PropertyValue",
+        name: attr.name,
+        ...(attr.unit ? { unitText: attr.unit } : {}),
+      })),
       // spatialCoverage for country comparisons — signals geographic scope to AI geographic
       // knowledge graphs and Google Geo Knowledge Panels.
       ...(isCountryComparison && {
@@ -1884,12 +1888,10 @@ function buildMultiEntityGraph(
       `${SITE_URL}/entity/${e.slug}`,
       `${SITE_URL}/alternatives/${e.slug}`,
     ]),
-    // relatedLink — sibling comparison URLs for AI cross-document graph traversal (parity with 2-entity).
-    ...(comparison.relatedComparisons.length > 0 && {
-      relatedLink: comparison.relatedComparisons.slice(0, 5).map(
-        (rc) => `${SITE_URL}/compare/${rc.slug}`
-      ),
-    }),
+    // relatedLink — related comparison pages for AI graph traversal and topic clustering.
+    ...(comparison.relatedComparisons?.length ? {
+      relatedLink: comparison.relatedComparisons.slice(0, 8).map((r) => `${SITE_URL}/compare/${r.slug}`),
+    } : {}),
     // potentialAction — ReadAction + CompareAction for multi-entity graph.
     // CompareAction tells AI/Google this page performs a comparison between the entities.
     potentialAction: [
@@ -2144,7 +2146,11 @@ function buildMultiEntityGraph(
         ...(comparison.category ? [comparison.category] : []),
       ].join(", "),
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
-      variableMeasured: comparison.attributes.map((attr) => attr.name),
+      variableMeasured: comparison.attributes.map((attr) => ({
+        "@type": "PropertyValue",
+        name: attr.name,
+        ...(attr.unit ? { unitText: attr.unit } : {}),
+      })),
       ...(isCountryComparison && {
         spatialCoverage: comparison.entities.map((e) => ({ "@type": "Country", name: e.name })),
       }),
