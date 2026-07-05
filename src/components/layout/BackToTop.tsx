@@ -18,7 +18,7 @@ export function BackToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Back to top"
-      className="fixed bottom-20 right-4 sm:bottom-8 sm:right-6 z-40 group w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-lg shadow-primary-500/30 flex items-center justify-center text-white hover:shadow-xl hover:shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all duration-200 animate-fade-in"
+      className="fixed bottom-20 right-4 sm:bottom-8 sm:right-6 z-40 group w-11 h-11 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-lg shadow-primary-500/30 flex items-center justify-center text-white hover:shadow-xl hover:shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all duration-200 animate-fade-in"
     >
       <div className="absolute inset-0 rounded-full ring-2 ring-primary-400/30 ring-offset-1 ring-offset-white group-hover:ring-primary-400/60 transition-all duration-200" />
       <svg className="w-4 h-4 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

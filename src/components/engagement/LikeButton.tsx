@@ -48,7 +48,7 @@ export function LikeButton({ comparisonId }: { comparisonId: string }) {
       onClick={toggleLike}
       aria-pressed={liked}
       aria-label={liked ? `Unlike — ${count} like${count !== 1 ? "s" : ""}` : `Like — ${count} like${count !== 1 ? "s" : ""}`}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 hover:scale-105 active:scale-95 ${
+      className={`flex items-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-full text-sm font-medium transition-all duration-150 hover:scale-105 active:scale-95 ${
         liked
           ? "bg-red-50 text-red-600 border border-red-200 shadow-sm"
           : "bg-surface-alt text-text-secondary border border-border hover:border-red-200 hover:text-red-500"

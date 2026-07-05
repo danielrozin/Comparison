@@ -172,7 +172,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-alt transition-colors"
+              className="lg:hidden flex items-center justify-center w-11 h-11 rounded-full hover:bg-surface-alt transition-colors"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -232,7 +232,7 @@ export function Header() {
                         aria-expanded={isExpanded}
                         aria-controls={`mobile-subs-${item.slug}`}
                         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
-                        className="flex items-center justify-center w-10 h-10 rounded-lg active:bg-surface-alt"
+                        className="flex items-center justify-center w-11 h-11 rounded-lg active:bg-surface-alt"
                       >
                         <svg className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
