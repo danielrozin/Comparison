@@ -240,6 +240,9 @@ export async function GET() {
   lines.push("- `significantLink` on `/api/knowledge-graph/{slug}` Article extended to include `/api/answer/{slug}` + `/api/v1/schema/{slug}` — AI graph traversal now reaches all machine-readable representations from a single Article node");
   lines.push("- `significantLink` added to `/api/v1/schema/{slug}` Article node — entity profiles, alternatives, answer API, and knowledge-graph URL — matching knowledge-graph endpoint coverage");
   lines.push("- Dataset `distribution` in `/api/v1/schema/{slug}` expanded from single entry to full 6-item array (schema JSON-LD, knowledge-graph, raw comparison JSON, answer API, FAQ JSON, related comparisons) — mirrors knowledge-graph Dataset distribution depth");
+  lines.push("- `isAccessibleForFree: true`, `conditionsOfAccess: \"Free\"`, `dateModified`, `author`, `publisher`, `isPartOf` added to FAQPage nodes in `/api/knowledge-graph/{slug}` and `/api/v1/schema/{slug}` — Google FAQ rich results + AI answer-engine citation eligibility requires these fields");
+  lines.push("- `Answer.inLanguage: \"en-US\"` added inside FAQPage `acceptedAnswer` nodes in both knowledge-graph and schema routes — language-scoped answer extraction for multilingual AI engines");
+  lines.push("- Organization schema `abstract` field added — AI KG citation engines (Perplexity, ChatGPT) prefer `abstract` over `description` for entity summaries; distinct from search-snippet-oriented `description`");
 
   const body = lines.join("\n");
 

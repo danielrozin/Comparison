@@ -265,12 +265,19 @@ export async function GET(
       "@id": `${url}#faq`,
       url,
       inLanguage: "en-US",
+      isAccessibleForFree: true,
+      conditionsOfAccess: "Free",
+      ...(updatedAt ? { dateModified: new Date(updatedAt).toISOString() } : {}),
+      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      isPartOf: { "@type": "WebPage", "@id": url },
       mainEntity: comparison.faqs.map((faq) => ({
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: {
           "@type": "Answer",
           text: faq.answer,
+          inLanguage: "en-US",
         },
       })),
     });

@@ -58,6 +58,10 @@ export function organizationSchema() {
     image: `${SITE_URL}/api/og?title=Compare+Anything&type=home`,
     sameAs: socialSameAs(),
     description: "The internet's best destination for comparing anything — sports, countries, products, technology, and more.",
+    // abstract — 1-2 sentence summary preferred by AI answer engines (Perplexity,
+    // ChatGPT) for Organization KG citations; distinct from description which is
+    // search-snippet-oriented.
+    abstract: "A Versus B is a free, data-driven comparison platform with 3,000+ structured side-by-side comparisons across technology, sports, countries, products, software, automotive, health, and finance — each with attribute tables, verdicts, FAQs, and Schema.org JSON-LD.",
     slogan: "Compare Anything",
     foundingDate: "2024",
     numberOfEmployees: { "@type": "QuantitativeValue", value: 5 },

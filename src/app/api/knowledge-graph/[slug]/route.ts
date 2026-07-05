@@ -93,6 +93,8 @@ export async function GET(
     };
   });
 
+  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
+
   // Build FAQ nodes
   const faqNodes =
     comparison.faqs.length > 0
@@ -101,19 +103,25 @@ export async function GET(
           "@id": `${url}#faq`,
           url,
           inLanguage: "en-US",
+          isAccessibleForFree: true,
+          conditionsOfAccess: "Free",
+          ...(updatedAt ? { dateModified: new Date(updatedAt).toISOString() } : {}),
+          author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          isPartOf: { "@type": "WebPage", "@id": url },
           mainEntity: comparison.faqs.map((faq) => ({
             "@type": "Question",
             name: faq.question,
             acceptedAnswer: {
               "@type": "Answer",
               text: faq.answer,
+              inLanguage: "en-US",
               url,
             },
           })),
         }
       : null;
 
-  const updatedAt = comparison.metadata?.updatedAt ?? comparison.metadata?.publishedAt;
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&a=${encodeURIComponent(comparison.entities[0]?.name ?? "")}&b=${encodeURIComponent(comparison.entities[1]?.name ?? "")}&cat=${encodeURIComponent(comparison.category ?? "")}&type=comparison`;
 
   const graph: object[] = [
