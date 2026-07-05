@@ -17,6 +17,20 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
   const [copiedTab, setCopiedTab] = useState<TabType | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const embedTabOrder: TabType[] = ["script", "iframe", "badge"];
+  const embedTabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function handleEmbedTabKeyDown(e: React.KeyboardEvent, index: number) {
+    let next = index;
+    if (e.key === "ArrowRight") next = (index + 1) % embedTabOrder.length;
+    else if (e.key === "ArrowLeft") next = (index - 1 + embedTabOrder.length) % embedTabOrder.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = embedTabOrder.length - 1;
+    else return;
+    e.preventDefault();
+    setActiveTab(embedTabOrder[next]);
+    embedTabRefs.current[next]?.focus();
+  }
 
   const encodedTitle = encodeURIComponent(title);
 
@@ -148,15 +162,18 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
             {/* Tabs */}
             <div className="px-6">
               <div role="tablist" aria-label="Embed type" className="flex gap-1 bg-surface-alt rounded-lg p-1">
-                {(["script", "iframe", "badge"] as TabType[]).map((tab) => (
+                {embedTabOrder.map((tab, i) => (
                   <button
                     type="button"
                     key={tab}
                     id={`embed-tab-${tab}`}
+                    ref={(el) => { embedTabRefs.current[i] = el; }}
                     role="tab"
                     aria-selected={activeTab === tab}
                     aria-controls={`embed-panel-${tab}`}
+                    tabIndex={activeTab === tab ? 0 : -1}
                     onClick={() => setActiveTab(tab)}
+                    onKeyDown={(e) => handleEmbedTabKeyDown(e, i)}
                     className={`flex-1 text-sm font-medium py-2 px-3 rounded-md transition-all duration-200 ${
                       activeTab === tab
                         ? "bg-white text-primary-600 shadow-sm"

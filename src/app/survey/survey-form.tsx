@@ -573,13 +573,14 @@ function RadioQuestion({
   otherValue?: string;
   onOtherChange?: (v: string) => void;
 }) {
+  const groupLabelId = `rq-label-${name}`;
   return (
     <div className="mb-7">
-      <span className="font-semibold text-[0.95rem] block mb-2.5">
+      <span id={groupLabelId} className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
         {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
       </span>
-      <div className="space-y-1">
+      <div role="radiogroup" aria-labelledby={groupLabelId} className="space-y-1">
         {options.map((opt) => (
           <label
             key={`${name}-${opt}`}
@@ -638,13 +639,14 @@ function CheckboxQuestion({
   onOtherChange?: (v: string) => void;
   note?: string;
 }) {
+  const groupLabelId = `cq-label-${label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").slice(0, 32)}`;
   return (
     <div className="mb-7">
-      <span className="font-semibold text-[0.95rem] block mb-2.5">
+      <span id={groupLabelId} className="font-semibold text-[0.95rem] block mb-2.5">
         {label}
         {required && <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>}
       </span>
-      <div className="space-y-1">
+      <div role="group" aria-labelledby={groupLabelId} className="space-y-1">
         {options.map((opt) => (
           <label
             key={opt}

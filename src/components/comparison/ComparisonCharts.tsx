@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 import {
   BarChart,
@@ -114,13 +114,27 @@ export function ComparisonCharts({
     };
   }, [numericAttributes, entityA, entityB]);
 
-  if (numericAttributes.length === 0) return null;
-
   const tabs: { key: TabType; label: string }[] = [
     { key: "bar", label: "Bar Chart" },
     { key: "radar", label: "Radar Chart" },
     { key: "score", label: "Score Card" },
   ];
+
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function handleTabKeyDown(e: React.KeyboardEvent, index: number) {
+    let next = index;
+    if (e.key === "ArrowRight") next = (index + 1) % tabs.length;
+    else if (e.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = tabs.length - 1;
+    else return;
+    e.preventDefault();
+    setActiveTab(tabs[next].key);
+    tabRefs.current[next]?.focus();
+  }
+
+  if (numericAttributes.length === 0) return null;
 
   return (
     <section aria-labelledby="visual-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -137,15 +151,18 @@ export function ComparisonCharts({
         {/* Tabs */}
         <div className="flex items-center justify-center mb-6">
           <div role="tablist" aria-label="Chart type" className="inline-flex items-center bg-white rounded-full p-1 shadow-sm border border-border">
-            {tabs.map((tab) => (
+            {tabs.map((tab, i) => (
               <button
                 type="button"
                 key={tab.key}
                 id={`chart-tab-${tab.key}`}
+                ref={(el) => { tabRefs.current[i] = el; }}
                 role="tab"
                 aria-selected={activeTab === tab.key}
                 aria-controls={`chart-panel-${tab.key}`}
+                tabIndex={activeTab === tab.key ? 0 : -1}
                 onClick={() => setActiveTab(tab.key)}
+                onKeyDown={(e) => handleTabKeyDown(e, i)}
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
                   activeTab === tab.key
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md"
