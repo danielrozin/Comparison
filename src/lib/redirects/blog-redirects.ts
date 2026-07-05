@@ -217,6 +217,7 @@ const MERCEDES_CANONICAL =
   "/blog/mercedes-benz-alternatives-in-2026-best-luxury-cars-brands-to-consider";
 
 const MERCEDES_DUPES: string[] = [
+  "mercedes-benz-competitors", // bare short slug missed in DAN-868 consolidation (DAN-1738 follow-up)
   "alternatives-to-mercedes-top-luxury-car-options-for-every-budget",
   "best-alternatives-to-mercedes-benz-luxury-cars-worth-considering-in-2024",
   "best-mercedes-alternatives-2024-luxury-cars-that-compete-with-every-mercedes-cla",
