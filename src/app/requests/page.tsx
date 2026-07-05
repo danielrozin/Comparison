@@ -91,7 +91,7 @@ export default function RequestsPage() {
       <JsonLd data={requestsPageSchema} />
     <div className="min-h-screen bg-surface-alt">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white py-10 sm:py-14 relative overflow-hidden">
+      <section aria-labelledby="requests-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white py-10 sm:py-14 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -112,7 +112,7 @@ export default function RequestsPage() {
               <li className="text-white font-medium" aria-current="page">Requests</li>
             </ol>
           </nav>
-          <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3">
+          <h1 id="requests-hero-heading" className="text-3xl sm:text-4xl font-display font-bold mb-3">
             Request a Comparison
           </h1>
           <p className="text-primary-100 text-base sm:text-lg max-w-xl mx-auto">
@@ -132,7 +132,7 @@ export default function RequestsPage() {
           {/* Form */}
           <div className="lg:col-span-2">
             <div className="sticky top-20">
-              <div className="relative bg-white border border-border rounded-xl p-6 shadow-sm overflow-hidden">
+              <section aria-labelledby="requests-suggest-heading" className="relative bg-white border border-border rounded-xl p-6 shadow-sm overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-amber-400 via-orange-500 to-amber-400" />
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -141,17 +141,17 @@ export default function RequestsPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-text">Suggest a Comparison</h2>
+                    <h2 id="requests-suggest-heading" className="text-lg font-bold text-text">Suggest a Comparison</h2>
                     <p className="text-xs text-text-secondary mt-0.5">Tell us what you&apos;d like to see compared</p>
                   </div>
                 </div>
                 <RequestForm />
-              </div>
+              </section>
             </div>
           </div>
 
           {/* Request List */}
-          <div className="lg:col-span-3">
+          <section aria-labelledby="requests-community-heading" className="lg:col-span-3">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -159,12 +159,12 @@ export default function RequestsPage() {
                 </svg>
               </div>
               <div>
-                <h2 className="text-lg font-bold text-text">Community Requests</h2>
+                <h2 id="requests-community-heading" className="text-lg font-bold text-text">Community Requests</h2>
                 <p className="text-xs text-text-secondary mt-0.5">Vote for what gets built next</p>
               </div>
             </div>
             <RequestList />
-          </div>
+          </section>
         </div>
       </div>
     </div>
