@@ -697,7 +697,7 @@ export default async function BlogPostPage({
 
       <ReadingProgressBar articleId="blog-article-body" />
 
-      <main className="min-h-screen bg-surface">
+      <div className="min-h-screen bg-surface">
         {/* Breadcrumbs */}
         <div className="bg-surface-alt border-b border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
@@ -890,7 +890,7 @@ export default async function BlogPostPage({
             )}
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

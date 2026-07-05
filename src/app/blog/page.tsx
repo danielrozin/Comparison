@@ -368,7 +368,7 @@ export default async function BlogPage({
       {page < totalPages && (
         <link rel="next" href={`${blogBase}${sep}page=${page + 1}`} />
       )}
-    <main className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-surface">
       {/* Hero */}
       <section aria-labelledby="blog-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
@@ -561,7 +561,7 @@ export default async function BlogPage({
           </>
         )}
       </div>
-    </main>
+    </div>
     </>
   );
 }

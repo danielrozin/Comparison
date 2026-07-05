@@ -390,7 +390,7 @@ export default async function BestPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Breadcrumbs */}
         <nav aria-label="breadcrumb" className="text-sm text-text-secondary mb-6">
           <ol className="flex items-center gap-1 flex-wrap">
@@ -440,7 +440,7 @@ export default async function BestPage({ params }: PageProps) {
           className="prose-custom"
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
-      </main>
+      </div>
     </>
   );
 }

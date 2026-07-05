@@ -335,7 +335,7 @@ export default async function HubPage({ params }: PageProps) {
         </div>
       </div>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
         {/* Spoke comparison cards */}
         <section aria-labelledby="comparisons-heading" className="mb-12">
           <div className="flex items-center gap-2.5 mb-6">
@@ -422,7 +422,7 @@ export default async function HubPage({ params }: PageProps) {
             </Link>
           </div>
         )}
-      </main>
+      </div>
     </>
   );
 }
