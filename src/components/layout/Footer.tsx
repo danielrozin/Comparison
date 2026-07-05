@@ -121,7 +121,8 @@ export function Footer() {
               <CookiePreferencesButton />
             </div>
             <p className="text-xs text-white/60">
-              &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved. Data is for informational purposes only.
+              {/* suppressHydrationWarning: getFullYear() differs server vs client at year boundary */}
+              &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> {SITE_NAME}. All rights reserved. Data is for informational purposes only.
             </p>
           </div>
         </div>
