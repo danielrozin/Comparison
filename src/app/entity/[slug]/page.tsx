@@ -381,14 +381,14 @@ export default async function EntityPage({ params }: PageProps) {
         {entityContent && (
           <>
             {/* id="entity-about" anchors the About section for SpeakableSpecification */}
-            <div id="entity-about" className="mb-8 p-6 bg-white border border-border rounded-2xl">
+            <section id="entity-about" aria-labelledby="entity-about-heading" className="mb-8 p-6 bg-white border border-border rounded-2xl">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-sm flex-shrink-0">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h2 className="text-xl font-display font-bold text-text">About {name}</h2>
+                <h2 id="entity-about-heading" className="text-xl font-display font-bold text-text">About {name}</h2>
               </div>
               <p className="text-text-secondary leading-relaxed text-sm sm:text-base">
                 {entityContent.description}
@@ -405,17 +405,17 @@ export default async function EntityPage({ params }: PageProps) {
                   ))}
                 </div>
               )}
-            </div>
+            </section>
 
             {entityContent.faqs.length > 0 && (
-              <div className="mb-8">
+              <section aria-labelledby="entity-faqs-heading" className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h2 className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
+                  <h2 id="entity-faqs-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
                 </div>
                 <div className="space-y-3">
                   {entityContent.faqs.map((faq) => (
@@ -443,18 +443,18 @@ export default async function EntityPage({ params }: PageProps) {
                     </details>
                   ))}
                 </div>
-              </div>
+              </section>
             )}
 
             {entityContent.alternatives.length > 0 && (
-              <div className="mb-8">
+              <section aria-labelledby="entity-alternatives-heading" className="mb-8">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                     </svg>
                   </div>
-                  <h2 className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
+                  <h2 id="entity-alternatives-heading" className="text-xl font-display font-bold text-text">Top Alternatives to {name}</h2>
                 </div>
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
                   {entityContent.alternatives.map((alt) => (
@@ -482,16 +482,16 @@ export default async function EntityPage({ params }: PageProps) {
                     View all alternatives to {name} <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>
-              </div>
+              </section>
             )}
           </>
         )}
 
         {/* Alternatives Link (always visible, even without curated content) */}
         {!entityContent && relatedComparisons.length > 0 && (
-          <div className="mb-8 p-5 bg-white border border-border rounded-xl flex items-center justify-between">
+          <section aria-labelledby="entity-alt-link-heading" className="mb-8 p-5 bg-white border border-border rounded-xl flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-text">Alternatives to {name}</h2>
+              <h2 id="entity-alt-link-heading" className="text-lg font-bold text-text">Alternatives to {name}</h2>
               <p className="text-sm text-text-secondary mt-1">
                 Explore other options and compare them side by side.
               </p>
@@ -502,19 +502,19 @@ export default async function EntityPage({ params }: PageProps) {
             >
               View alternatives <span aria-hidden="true">&rarr;</span>
             </Link>
-          </div>
+          </section>
         )}
 
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
-          <div className="space-y-3">
+          <section aria-labelledby="entity-comparisons-heading" className="space-y-3">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                 </svg>
               </div>
-              <h2 className="text-xl font-display font-bold text-text">All Comparisons</h2>
+              <h2 id="entity-comparisons-heading" className="text-xl font-display font-bold text-text">All Comparisons</h2>
             </div>
             {relatedComparisons.map((comp) => {
               const parts = comp.title.split(/\s+vs\.?\s+/i);
@@ -546,7 +546,7 @@ export default async function EntityPage({ params }: PageProps) {
                 </Link>
               );
             })}
-          </div>
+          </section>
         ) : (
           <div className="text-center py-16 bg-surface-alt rounded-xl">
             <p className="text-text-secondary mb-4">No comparisons found for {name} yet.</p>
