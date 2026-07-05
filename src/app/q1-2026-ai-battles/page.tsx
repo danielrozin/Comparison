@@ -296,8 +296,7 @@ export default function Q1AiBattlesPage() {
             width={1350}
             height={780}
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) calc(100vw - 2rem), 1280px"
-            loading="lazy"
-            decoding="async"
+            priority={true}
             className="rounded-xl border border-border w-full h-auto"
           />
         </section>
@@ -609,7 +608,7 @@ export default function Q1AiBattlesPage() {
           </div>
           <ul className="list-disc pl-6 mt-3 space-y-2 text-text-secondary leading-relaxed">
             <li>Author: {SITE_NAME} data team. Lead analyst: Daniel Rozin (founder).</li>
-            <li>Last updated: June 12, 2026.</li>
+            <li>Last updated: <time dateTime="2026-06-12">June 12, 2026</time>.</li>
             <li>Methodology version: 1.1 (US-only scope reconciled with press release).</li>
             <li>
               Corrections: contact{" "}

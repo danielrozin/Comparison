@@ -58,6 +58,8 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
           placeholder="Your email address"
           aria-label="Email address"
+          aria-describedby={status === "error" ? "nl-inline-error" : undefined}
+          aria-invalid={status === "error" ? "true" : undefined}
           required
           className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
         />
@@ -69,7 +71,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           {status === "loading" ? "..." : "Subscribe"}
         </button>
         {status === "error" && (
-          <p role="alert" className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
+          <p id="nl-inline-error" role="alert" className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
         )}
       </form>
     );
@@ -101,6 +103,8 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               placeholder="you@example.com"
               aria-label="Email address"
+              aria-describedby={status === "error" ? "nl-banner-error" : undefined}
+              aria-invalid={status === "error" ? "true" : undefined}
               required
               className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
             />
@@ -113,7 +117,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             </button>
           </form>
           {status === "error" && (
-            <p role="alert" className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
+            <p id="nl-banner-error" role="alert" className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
           )}
           <p className="text-xs text-text-secondary mt-3">
             Join 1,000+ readers. Unsubscribe anytime.

@@ -178,12 +178,14 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
+          aria-describedby={error ? "request-form-error" : undefined}
+          aria-invalid={error ? "true" : undefined}
           className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
         />
       </div>
 
       {error && (
-        <div role="alert" className="bg-red-50 border border-red-200 rounded-lg p-3">
+        <div id="request-form-error" role="alert" className="bg-red-50 border border-red-200 rounded-lg p-3">
           <p className="text-sm text-red-700">{error}</p>
           {existingSlug && (
             <a

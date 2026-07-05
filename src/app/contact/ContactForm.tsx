@@ -174,7 +174,7 @@ export function ContactForm() {
       </button>
 
       {status === "error" && (
-        <p role="alert" className="text-red-500 text-sm text-center">
+        <p id="contact-form-error" role="alert" className="text-red-500 text-sm text-center">
           Something went wrong. Please try again or email us directly.
         </p>
       )}

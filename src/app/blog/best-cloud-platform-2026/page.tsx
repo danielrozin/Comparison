@@ -363,7 +363,7 @@ export default function BestCloudPlatform2026Page() {
             Best Cloud Platform 2026: The Honest Buying Guide
           </h1>
           <p className="mt-3 text-sm text-text-secondary italic">
-            Updated June 2026 · A no-hype buying guide by workload, integration, sovereignty and cost.
+            <time dateTime="2026-06-01">Updated June 2026</time> · A no-hype buying guide by workload, integration, sovereignty and cost.
           </p>
         </header>
 

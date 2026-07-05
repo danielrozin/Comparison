@@ -237,6 +237,8 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                     onChange={(e) => { setEmailCaptureEmail(e.target.value); setEmailCaptureStatus("idle"); }}
                     placeholder="you@example.com"
                     required
+                    aria-describedby={emailCaptureStatus === "error" ? "poll-email-error" : undefined}
+                    aria-invalid={emailCaptureStatus === "error" ? "true" : undefined}
                     className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
                   />
                   <button
@@ -248,7 +250,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                   </button>
                 </form>
                 {emailCaptureStatus === "error" && (
-                  <p role="alert" className="text-red-600 text-xs mt-1 text-center">Something went wrong. Try again.</p>
+                  <p id="poll-email-error" role="alert" className="text-red-600 text-xs mt-1 text-center">Something went wrong. Try again.</p>
                 )}
               </div>
             )}
