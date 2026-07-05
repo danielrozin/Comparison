@@ -2937,6 +2937,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-01T09:20:27.528Z"
+    },
+    {
+      "slug": "chatgpt-vs-claude",
+      "title": "Chatgpt vs Claude",
+      "entityA": "Chatgpt",
+      "entityB": "Claude",
+      "category": "General",
+      "videoFile": "Chatgpt vs Claude.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Claude — Full Comparison 2026",
+      "youtubeDescription": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.\n\n#chatgpt #claude #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-05T08:08:08.836Z"
+    },
+    {
+      "slug": "vanguard-vs-fidelity",
+      "title": "Vanguard vs Fidelity",
+      "entityA": "Vanguard",
+      "entityB": "Fidelity",
+      "category": "General",
+      "videoFile": "Vanguard vs Fidelity.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Vanguard vs Fidelity — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Vanguard vs Fidelity.\n\n#vanguard #fidelity #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-05T08:17:35.828Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "General",
+      "videoFile": "Uber vs Lyft.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uber vs Lyft — Full Comparison 2026",
+      "youtubeDescription": "Compare Uber (71% US market share, 72 countries) vs Lyft (29% share, US/Canada only). Analyze revenue, driver rates, and service differences in 2026.\n\n#uber #lyft #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-05T08:27:02.449Z"
     }
   ]
 }
