@@ -151,6 +151,7 @@ export default function PasswordManagerMethodologyPage() {
         </p>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">Password manager scoring dimensions — attribute, what we measure, and primary source type</caption>
             <thead>
               <tr className="bg-surface-alt">
                 <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Attribute</th>

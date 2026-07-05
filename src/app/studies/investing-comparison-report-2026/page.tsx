@@ -243,6 +243,7 @@ export default async function InvestingStudyPage() {
           </p>
           <div className="overflow-x-auto rounded-xl border border-border" tabIndex={0} role="region" aria-label="Investing comparison table — scroll to see all columns">
             <table className="min-w-full divide-y divide-gray-100 text-sm">
+              <caption className="sr-only">Top investing comparison topics — ranked by search volume</caption>
               <thead className="bg-surface-alt">
                 <tr>
                   <th scope="col" className="pl-4 pr-3 py-3 text-left font-semibold text-text-secondary">#</th>

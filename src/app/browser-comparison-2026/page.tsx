@@ -395,6 +395,7 @@ export default function BrowserComparison2026Page() {
         </p>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Browser comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">Browser comparison table — engine, market share, privacy defaults, and license</caption>
             <thead>
               <tr className="bg-surface-alt">
                 {["Browser", "Engine", "Desktop Share", "Mobile Share", "Privacy defaults", "License"].map((h) => (

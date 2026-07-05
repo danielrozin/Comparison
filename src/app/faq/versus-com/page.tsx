@@ -213,6 +213,7 @@ export default function VersusComFaqPage() {
         </div>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">Key differences at a glance — Versus.com compared to aversusb</caption>
             <thead>
               <tr className="bg-surface-alt">
                 <th scope="col" className="text-left p-4 font-semibold text-text border-b border-border">Feature</th>

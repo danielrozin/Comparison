@@ -337,6 +337,7 @@ export default function DevelopersPage() {
                 List and search comparisons. Supports pagination, search, and category filtering.
               </p>
               <table className="w-full text-sm">
+                <caption className="sr-only">API query parameters — name, type, and description</caption>
                 <thead>
                   <tr className="border-b border-border">
                     <th scope="col" className="text-left py-2 text-text-secondary font-medium">Parameter</th>
@@ -465,6 +466,7 @@ X-RateLimit-Remaining: 95`}</CodeBlock>
         </div>
         <div className="border border-border rounded-xl overflow-hidden">
           <table className="w-full text-sm">
+            <caption className="sr-only">API error codes — HTTP status code and meaning</caption>
             <thead>
               <tr className="border-b border-border bg-surface-alt">
                 <th scope="col" className="text-left px-4 py-3 text-text-secondary font-medium">Status</th>

@@ -457,6 +457,7 @@ export default function Q1AiBattlesPage() {
           </p>
           <div className="overflow-x-auto rounded-xl border border-border not-prose" tabIndex={0} role="region" aria-label="AI battles comparison table — scroll to see all columns">
             <table className="w-full text-sm">
+              <caption className="sr-only">Full Q1 2026 AI battles comparison table — battle rank, matchup, and comparison volume</caption>
               <thead>
                 <tr className="bg-surface-alt text-left">
                   <th scope="col" className="px-3 py-2 font-semibold text-text">#</th>

@@ -144,6 +144,7 @@ export default function BrowserMethodologyPage() {
         <h2 id="browsmethod-1-scoring-dimensions" className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">Browser scoring dimensions — attribute, what we measure, and primary source type</caption>
             <thead>
               <tr className="bg-surface-alt">
                 <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Attribute</th>

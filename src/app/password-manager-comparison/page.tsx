@@ -423,6 +423,7 @@ export default function PasswordManagerComparisonPage() {
         </p>
         <div className="overflow-x-auto">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">Password manager comparison table — encryption, audit, open source, pricing, and 2FA methods</caption>
             <thead>
               <tr className="bg-surface-alt">
                 {["Product", "Encryption", "Latest Audit", "Open Source", "Price/yr", "Free Tier", "2FA Methods"].map((h) => (

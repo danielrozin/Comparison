@@ -429,6 +429,7 @@ export default function LLMComparisonsPage() {
         </p>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="LLM comparison table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">LLM comparison table — model specs including parameters, context window, modalities, and license</caption>
             <thead>
               <tr className="bg-surface-alt">
                 {["Model", "Vendor", "Parameters", "Context window", "Input modalities", "Output modalities", "License", "Knowledge cutoff"].map((h) => (

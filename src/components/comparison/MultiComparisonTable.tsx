@@ -118,6 +118,7 @@ export function MultiComparisonTable({
       <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
           <table className="w-full border-collapse">
+            <caption className="sr-only">{entities.map(e => e.name).join(" vs ")} — attribute comparison table</caption>
             <thead className="sticky top-0 z-10">
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
                 <th scope="col" className="px-5 py-3.5 text-left text-sm font-semibold" style={{ width: attrColWidth }}>

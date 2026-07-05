@@ -162,6 +162,7 @@ export default function LLMMethodologyPage() {
         </div>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Methodology table — scroll to see all columns">
           <table className="w-full border border-border rounded-xl text-sm">
+            <caption className="sr-only">LLM methodology — column definitions, definitions, and primary source types</caption>
             <thead>
               <tr className="bg-surface-alt">
                 <th scope="col" className="text-left p-3 font-semibold text-text border-b border-border">Column</th>

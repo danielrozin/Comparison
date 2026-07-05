@@ -42,6 +42,7 @@ export function CookiePolicyContent() {
         <h2 id="cookies-we-use-heading" className="text-2xl font-display font-bold text-text mb-4">2. Cookies We Use</h2>
         <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Cookies table — scroll to see all columns">
           <table className="w-full text-sm border border-border rounded-lg overflow-hidden">
+            <caption className="sr-only">Cookies used on this site — category, purpose, and whether required</caption>
             <thead className="bg-surface-alt">
               <tr>
                 <th scope="col" className="text-left px-4 py-3 font-semibold text-text">Category</th>

@@ -462,7 +462,7 @@ export default function NordVPNAlternativesPage() {
 
           {/* Desktop / tablet: real table inside an overflow wrapper */}
           <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-sm" aria-label="Best NordVPN alternatives at a glance">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left px-3 py-3 font-semibold">#</th>
