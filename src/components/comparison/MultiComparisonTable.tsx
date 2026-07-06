@@ -116,7 +116,7 @@ export function MultiComparisonTable({
 
       {/* Desktop: full table */}
       <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
-        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto">
+        <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Multi-comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entities.map(e => e.name).join(" vs ")} — attribute comparison table</caption>
             <thead className="sticky top-0 z-10">
