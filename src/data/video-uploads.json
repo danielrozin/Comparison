@@ -2979,6 +2979,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-05T08:27:02.449Z"
+    },
+    {
+      "slug": "coca-cola-vs-pepsi",
+      "title": "Coca Cola vs Pepsi",
+      "entityA": "Coca Cola",
+      "entityB": "Pepsi",
+      "category": "General",
+      "videoFile": "Coca Cola vs Pepsi.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Coca Cola vs Pepsi — Full Comparison 2026",
+      "youtubeDescription": "Compare Coca-Cola (46% market share) vs Pepsi (29%). Caffeine, sugar, brand value, and which cola wins head-to-head.\n\n#cocacola #pepsi #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-06T09:10:38.288Z"
+    },
+    {
+      "slug": "mcdonalds-vs-burger-king",
+      "title": "Mcdonalds vs Burger King",
+      "entityA": "Mcdonalds",
+      "entityB": "Burger King",
+      "category": "General",
+      "videoFile": "Mcdonalds vs Burger King.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mcdonalds vs Burger King — Full Comparison 2026",
+      "youtubeDescription": "McDonald's generates 2.4x more revenue per location ($3.96M vs $1.63M) but requires much higher initial investment ($1.47M vs $232K). McDonald's dominates in efficiency and brand strength.\n\n#mcdonalds #burgerking #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-06T09:20:57.868Z"
+    },
+    {
+      "slug": "notion-vs-obsidian",
+      "title": "Notion vs Obsidian",
+      "entityA": "Notion",
+      "entityB": "Obsidian",
+      "category": "Software",
+      "videoFile": "Notion vs Obsidian.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Notion vs Obsidian — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Notion vs Obsidian.\n\n#notion #obsidian #software #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-06T09:30:36.393Z"
     }
   ]
 }
