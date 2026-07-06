@@ -227,8 +227,8 @@ export default function DeveloperDashboard() {
       ) : (
         <div className="space-y-8">
           {/* Create New Key */}
-          <section className="p-6 rounded-xl border border-border bg-surface">
-            <h2 className="text-lg font-bold text-text mb-4">Create New API Key</h2>
+          <section aria-labelledby="create-api-key-heading" className="p-6 rounded-xl border border-border bg-surface">
+            <h2 id="create-api-key-heading" className="text-lg font-bold text-text mb-4">Create New API Key</h2>
             <div className="flex gap-3">
               <input
                 autoComplete="off"
@@ -325,9 +325,9 @@ export default function DeveloperDashboard() {
 
           {/* Usage Stats */}
           {selectedKeyStats && (
-            <section className="p-6 rounded-xl border border-border bg-surface">
+            <section aria-labelledby="api-usage-heading" className="p-6 rounded-xl border border-border bg-surface">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-text">
+                <h2 id="api-usage-heading" className="text-lg font-bold text-text">
                   Usage: {selectedKeyStats.key.name}
                 </h2>
                 <button
@@ -378,8 +378,8 @@ export default function DeveloperDashboard() {
           )}
 
           {/* Upgrade CTA */}
-          <section className="p-6 rounded-xl bg-gradient-to-br from-primary-50 to-purple-50 border border-primary-200">
-            <h2 className="text-lg font-bold text-text mb-2">Need more requests?</h2>
+          <section aria-labelledby="api-upgrade-heading" className="p-6 rounded-xl bg-gradient-to-br from-primary-50 to-purple-50 border border-primary-200">
+            <h2 id="api-upgrade-heading" className="text-lg font-bold text-text mb-2">Need more requests?</h2>
             <p className="text-text-secondary text-sm mb-4">
               Upgrade to Pro for 10,000 requests/day or Enterprise for unlimited access.
             </p>
