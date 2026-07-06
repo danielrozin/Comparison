@@ -163,7 +163,7 @@ export function SurveyForm() {
 
   if (done) {
     return (
-      <div className="max-w-[640px] mx-auto px-4 py-16 text-center">
+      <div role="status" aria-live="polite" className="max-w-[640px] mx-auto px-4 py-16 text-center">
         <h2 className="text-2xl font-bold text-text mb-3">Thank you!</h2>
         <p className="text-text-secondary">
           Your feedback helps us build a better SmartReview.
@@ -185,7 +185,14 @@ export function SurveyForm() {
           Your feedback directly shapes what we build next. Takes about 3
           minutes. All responses are anonymous.
         </p>
-        <div className="w-full h-1.5 bg-surface-alt rounded-full mt-4 overflow-hidden">
+        <div
+          role="progressbar"
+          aria-valuenow={page}
+          aria-valuemin={1}
+          aria-valuemax={TOTAL_PAGES}
+          aria-label={`Step ${page} of ${TOTAL_PAGES}`}
+          className="w-full h-1.5 bg-surface-alt rounded-full mt-4 overflow-hidden"
+        >
           <div
             className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-400"
             style={{ width: `${(page / TOTAL_PAGES) * 100}%` }}
