@@ -406,7 +406,7 @@ export default function BestCloudPlatform2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table inside an overflow wrapper */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="Cloud platform TL;DR decision matrix" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
@@ -858,7 +858,7 @@ export default function BestCloudPlatform2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="Cloud platform decision matrix by job-to-be-done" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
@@ -933,7 +933,7 @@ export default function BestCloudPlatform2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="Cloud platform pricing comparison 2026" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>

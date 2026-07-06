@@ -396,7 +396,7 @@ export default function BestAiAssistant2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="TL;DR — 60-second AI assistant verdict" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
@@ -832,7 +832,7 @@ export default function BestAiAssistant2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="AI assistant decision matrix by job-to-be-done" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>
@@ -906,7 +906,7 @@ export default function BestAiAssistant2026Page() {
           </h2>
 
           {/* Desktop / tablet: real table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table aria-label="AI assistant pricing comparison 2026" className="min-w-full text-sm">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>

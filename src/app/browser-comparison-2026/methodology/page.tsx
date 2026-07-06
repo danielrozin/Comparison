@@ -142,7 +142,7 @@ export default function BrowserMethodologyPage() {
 
       <section aria-labelledby="browsmethod-1-scoring-dimensions" className="mb-10 space-y-4">
         <h2 id="browsmethod-1-scoring-dimensions" className="text-2xl font-display font-bold text-text">1. Scoring dimensions</h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Scrollable table">
           <table className="w-full border border-border rounded-xl text-sm">
             <caption className="sr-only">Browser scoring dimensions — attribute, what we measure, and primary source type</caption>
             <thead>
