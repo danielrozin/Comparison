@@ -114,7 +114,7 @@ export function PartnershipForm() {
             required
             value={form.brandName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           />
         </div>
         <div>
@@ -129,7 +129,7 @@ export function PartnershipForm() {
             required
             value={form.contactName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           />
         </div>
       </div>
@@ -147,7 +147,7 @@ export function PartnershipForm() {
             required
             value={form.email}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           />
         </div>
         <div>
@@ -162,7 +162,7 @@ export function PartnershipForm() {
             value={form.website}
             onChange={handleChange}
             placeholder="https://"
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           />
         </div>
       </div>
@@ -178,7 +178,7 @@ export function PartnershipForm() {
             required
             value={form.category}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           >
             <option value="">Select a category</option>
             {CATEGORIES.map((cat) => (
@@ -198,7 +198,7 @@ export function PartnershipForm() {
             required
             value={form.budget}
             onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none"
+            className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none"
           >
             <option value="">Select budget range</option>
             {BUDGET_RANGES.map((range) => (
@@ -243,7 +243,7 @@ export function PartnershipForm() {
           value={form.message}
           onChange={handleChange}
           placeholder="What are you looking to achieve with this partnership?"
-          className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-1 focus:ring-primary-600 outline-none resize-none"
+          className="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text placeholder:text-text-secondary/50 focus:border-primary-600 focus:ring-2 focus:ring-primary-600 outline-none resize-none"
         />
       </div>
 

@@ -239,7 +239,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                     required
                     aria-describedby={emailCaptureStatus === "error" ? "poll-email-error" : undefined}
                     aria-invalid={emailCaptureStatus === "error" ? "true" : undefined}
-                    className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                    className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                   />
                   <button
                     type="submit"

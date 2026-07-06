@@ -275,7 +275,7 @@ export function TrackComparisonCard({
                       if (state === "error") setState("idle_loggedout");
                     }}
                     placeholder="you@example.com"
-                    className="flex-1 px-4 py-2.5 bg-white border border-border rounded-lg text-sm text-text placeholder:text-text-secondary focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                    className="flex-1 px-4 py-2.5 bg-white border border-border rounded-lg text-sm text-text placeholder:text-text-secondary focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                     aria-invalid={state === "error" || undefined}
                   />
                   <button

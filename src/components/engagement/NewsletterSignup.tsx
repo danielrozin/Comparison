@@ -61,7 +61,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           aria-describedby={status === "error" ? "nl-inline-error" : undefined}
           aria-invalid={status === "error" ? "true" : undefined}
           required
-          className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400"
+          className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
         />
         <button
           type="submit"
@@ -106,7 +106,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               aria-describedby={status === "error" ? "nl-banner-error" : undefined}
               aria-invalid={status === "error" ? "true" : undefined}
               required
-              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
             />
             <button
               type="submit"
