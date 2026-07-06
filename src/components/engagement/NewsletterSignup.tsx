@@ -54,6 +54,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
         <input
           type="email"
           autoComplete="email"
+          enterKeyHint="go"
           value={email}
           onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
           placeholder="Your email address"
@@ -99,6 +100,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             <input
               type="email"
               autoComplete="email"
+              enterKeyHint="go"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
               placeholder="you@example.com"

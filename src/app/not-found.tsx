@@ -50,6 +50,7 @@ export default async function NotFound() {
                 autoComplete="off"
                 type="search"
                 inputMode="search"
+                enterKeyHint="search"
                 name="q"
                 aria-label="Search comparisons"
                 placeholder='Try "iPhone vs Samsung" or "Tesla vs BMW"...'

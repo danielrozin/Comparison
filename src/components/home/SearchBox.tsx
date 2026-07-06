@@ -240,6 +240,7 @@ export function SearchBox() {
             name="q"
             autoComplete="off"
             inputMode="search"
+            enterKeyHint="search"
             spellCheck={false}
           />
           <button
