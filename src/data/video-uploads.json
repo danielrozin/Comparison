@@ -3021,6 +3021,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-06T09:30:36.393Z"
+    },
+    {
+      "slug": "llc-vs-s-corp",
+      "title": "Llc vs S Corp",
+      "entityA": "Llc",
+      "entityB": "S Corp",
+      "category": "General",
+      "videoFile": "Llc vs S Corp.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Llc vs S Corp — Full Comparison 2026",
+      "youtubeDescription": "Compare LLC vs S-Corp: formation costs, self-employment taxes, compliance. Save $3,000-5,000 annually with S-Corp if profits exceed $60,000.\n\n#llc #scorp #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-07T08:33:15.028Z"
+    },
+    {
+      "slug": "ufc-vs-boxing",
+      "title": "Ufc vs Boxing",
+      "entityA": "Ufc",
+      "entityB": "Boxing",
+      "category": "Sports",
+      "videoFile": "Ufc vs Boxing.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ufc vs Boxing — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Ufc vs Boxing.\n\n#ufc #boxing #sports #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-07T08:42:39.837Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Booking.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airbnb vs Booking — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.\n\n#airbnb #booking #travel #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-07T08:52:56.265Z"
     }
   ]
 }
