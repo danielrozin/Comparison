@@ -3063,6 +3063,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-07T08:52:56.265Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "videoFile": "Airbnb vs Booking.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Airbnb vs Booking — Full Comparison 2026",
+      "youtubeDescription": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.\n\n#airbnb #booking #travel #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-08T07:40:12.360Z"
+    },
+    {
+      "slug": "ww1-vs-ww2",
+      "title": "Ww1 vs Ww2",
+      "entityA": "Ww1",
+      "entityB": "Ww2",
+      "category": "General",
+      "videoFile": "Ww1 vs Ww2.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ww1 vs Ww2 — Full Comparison 2026",
+      "youtubeDescription": "WW2 was significantly more deadly than WW1, with 70-85 million deaths vs ~20 million. WW2 had far greater civilian casualties and expanded to the Pacific Theatre.\n\n#ww1 #ww2 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-08T07:50:20.229Z"
+    },
+    {
+      "slug": "wordpress-vs-wix",
+      "title": "Wordpress vs Wix",
+      "entityA": "Wordpress",
+      "entityB": "Wix",
+      "category": "General",
+      "videoFile": "Wordpress vs Wix.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Wordpress vs Wix — Full Comparison 2026",
+      "youtubeDescription": "WordPress powers 43% of all websites and offers unlimited customization through plugins and themes. Wix is a drag-and-drop website builder requiring no coding…\n\n#wordpress #wix #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-08T07:59:40.467Z"
     }
   ]
 }
