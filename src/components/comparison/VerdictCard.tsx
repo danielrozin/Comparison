@@ -1,6 +1,7 @@
 import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
 import { AiAssistedBadge } from "./AiAssistedBadge";
 import { VerdictFeedbackWidget } from "./VerdictFeedbackWidget";
+import { VerdictShareButton } from "./VerdictShareButton";
 
 interface VerdictCardProps {
   verdict: string;
@@ -68,12 +69,18 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
 
         <div className="relative z-10">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center ring-2 ring-yellow-400/30">
-              <TrophyIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center ring-2 ring-yellow-400/30">
+                <TrophyIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
+              </div>
+              <h2 id="verdict-heading" className="text-lg sm:text-2xl font-display font-bold tracking-tight">Our Verdict</h2>
+              <AiAssistedBadge />
             </div>
-            <h2 id="verdict-heading" className="text-lg sm:text-2xl font-display font-bold tracking-tight">Our Verdict</h2>
-            <AiAssistedBadge />
+            <VerdictShareButton
+              title={`${entityA.name} vs ${entityB.name}`}
+              winnerName={winnerIdx === 0 ? entityA.name : winnerIdx === 1 ? entityB.name : null}
+            />
           </div>
 
           {/* Verdict text — styled as a readable quote */}

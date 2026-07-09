@@ -43,6 +43,7 @@ export function SearchOverlay() {
   const [loading, setLoading] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listboxRef = useRef<HTMLUListElement>(null);
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
@@ -117,6 +118,13 @@ export function SearchOverlay() {
   }, [query]);
 
   useEffect(() => { setActiveIdx(-1); }, [results, query]);
+
+  // Scroll the active result into view when keyboard navigation moves it
+  useEffect(() => {
+    if (activeIdx < 0 || !listboxRef.current) return;
+    const options = listboxRef.current.querySelectorAll('[role="option"]');
+    options[activeIdx]?.scrollIntoView({ block: "nearest" });
+  }, [activeIdx]);
 
   const items = query.trim().length >= 2 ? results : popular;
 
@@ -240,7 +248,7 @@ export function SearchOverlay() {
               </kbd>
             </div>
 
-            <ul role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
+            <ul ref={listboxRef} role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
               {items.map((item, idx) => {
                 const parts = item.title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
                 const isActive = idx === activeIdx;
