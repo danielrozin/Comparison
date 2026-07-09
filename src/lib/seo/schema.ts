@@ -704,6 +704,11 @@ export function webPageSchema(opts: {
   dateModified?: string;
   breadcrumbs?: { name: string; url: string }[];
   keywords?: string;
+  // mainEntity — if provided, creates the bidirectional WebPage↔Article graph edge.
+  // Pass { "@type": "Article", "@id": "{url}#article" } on comparison pages so AI
+  // crawlers can traverse WebPage→Article without a separate stub node.
+  mainEntity?: Record<string, string>;
+  speakableCssSelector?: string[];
 }) {
   return {
     "@context": "https://schema.org",
@@ -723,10 +728,11 @@ export function webPageSchema(opts: {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(opts.keywords && { keywords: opts.keywords }),
+    ...(opts.mainEntity && { mainEntity: opts.mainEntity }),
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${opts.url}#speakable`,
-      cssSelector: ["h1", "h2", "#page-intro", "p:first-of-type"],
+      cssSelector: opts.speakableCssSelector ?? ["h1", "h2", "#page-intro", "p:first-of-type"],
     },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),
@@ -1591,36 +1597,7 @@ export function comparisonPageSchema(
     });
   }
 
-  // 8. Standalone WebPage node — bidirectional Article↔WebPage graph edge.
-  // Article.mainEntityOfPage points AT this WebPage; this WebPage.mainEntity points back
-  // at the Article. AI crawlers traversing the knowledge graph need both directions:
-  // forward (Article → WebPage) and reverse (WebPage → Article). Without a standalone
-  // WebPage node, the reverse edge is missing and cross-document resolution breaks.
-  schemas.push({
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${url}#webpage`,
-    name: comparison.title,
-    url,
-    inLanguage: "en-US",
-    isAccessibleForFree: true,
-    datePublished: comparison.metadata.publishedAt,
-    dateModified: comparison.metadata.updatedAt,
-    // mainEntity — reverse pointer completing the Article↔WebPage bidirectional edge.
-    mainEntity: { "@type": "Article", "@id": `${url}#article` },
-    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    ...(comparison.category && {
-      breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb` },
-    }),
-    speakable: {
-      "@type": "SpeakableSpecification",
-      "@id": `${url}#speakable`,
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
-    },
-    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  });
-
-  // 9. DefinedTermSet — formal vocabulary for this comparison's attribute dimensions.
+  // 8. DefinedTermSet — formal vocabulary for this comparison's attribute dimensions.
   // AI research tools (Perplexity, ChatGPT) and Google Dataset Search extract DefinedTerm
   // nodes to build domain-specific knowledge about what properties are being compared.
   // isPartOf Dataset creates a graph edge so crawlers can navigate TermSet → Dataset → Article.
