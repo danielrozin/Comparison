@@ -104,3 +104,13 @@ export const FloatingShareButton = dynamic(
   () => import("@/components/engagement/FloatingShareButton").then((m) => ({ default: m.FloatingShareButton })),
   { ssr: false, loading: () => null }
 );
+
+export const ReadingProgressBar = dynamic(
+  () => import("@/components/ui/ReadingProgressBar").then((m) => ({ default: m.ReadingProgressBar })),
+  { ssr: false, loading: () => null }
+);
+
+export const BackToTop = dynamic(
+  () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
+  { ssr: false, loading: () => null }
+);

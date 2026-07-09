@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface StickyCompareBarProps {
   entityA: string;
@@ -12,6 +12,17 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
   const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState("");
   const [entered, setEntered] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore — clipboard API may be unavailable */
+    }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -98,6 +109,29 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
             );
           })}
         </nav>
+
+        {/* Copy link */}
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label={copied ? "Link copied!" : "Copy link to this comparison"}
+          title={copied ? "Copied!" : "Copy link"}
+          className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-150 ml-1 ${
+            copied
+              ? "bg-emerald-100 text-emerald-600"
+              : "text-text-secondary hover:text-primary-600 hover:bg-primary-50"
+          }`}
+        >
+          {copied ? (
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          )}
+        </button>
       </div>
     </div>
   );

@@ -115,6 +115,11 @@ const ReadingProgressBar = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const BackToTop = dynamic(
+  () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
+  { ssr: false, loading: () => null }
+);
+
 // Interactive/tracking widgets — kept out of SSR HTML (ssr:false shim, shared
 // verbatim with the former App Router route).
 import {
@@ -855,6 +860,12 @@ export default function ComparisonPage(props: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
+
+      {/* Reading progress indicator */}
+      <ReadingProgressBar />
+
+      {/* Floating back-to-top */}
+      <BackToTop />
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />

@@ -156,6 +156,20 @@ export default async function EntityPage({ params }: PageProps) {
     ? CATEGORIES.find((c) => c.slug === primaryCategory)
     : null;
 
+  // Compute top categories for the at-a-glance chip row
+  const categoryCounts: Record<string, number> = {};
+  for (const c of relatedComparisons) {
+    if (c.category) categoryCounts[c.category] = (categoryCounts[c.category] ?? 0) + 1;
+  }
+  const topCategories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([slug, count]) => ({
+      slug,
+      name: CATEGORIES.find((c) => c.slug === slug)?.name ?? slug,
+      count,
+    }));
+
   // Map category → Schema.org entity type for correct structured data
   const CATEGORY_TO_ENTITY_TYPE: Record<string, string> = {
     sports: "person",
@@ -354,6 +368,23 @@ export default async function EntityPage({ params }: PageProps) {
           <div className="max-w-lg mt-2">
             <EntityCompareSearch entityName={name} entitySlug={slug} />
           </div>
+
+          {/* At-a-glance stat chips */}
+          {topCategories.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2" aria-label="Top comparison categories">
+              {topCategories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-sm ring-1 ring-white/20 transition-colors"
+                >
+                  <span className="capitalize">{cat.name}</span>
+                  <span className="opacity-60">·</span>
+                  <span className="opacity-80">{cat.count}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
