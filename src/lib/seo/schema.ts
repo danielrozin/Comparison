@@ -271,6 +271,10 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/llms-full`,
           name: "A Versus B Full Comparison Catalog (JSON)",
           description: "Machine-readable catalog of all comparison pages with titles, slugs, and short answers",
+          // potentialAction ReadAction — Google Dataset Search shows an "Access Data" button
+          // and AI data-pipeline crawlers (Perplexity data mode, ChatGPT browsing) use this
+          // to confirm the endpoint is machine-accessible without parsing HTML.
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/llms-full`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] } },
         },
         {
           "@type": "DataDownload",
@@ -278,6 +282,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/llms.txt`,
           name: "A Versus B LLMs.txt Manifest",
           description: "llmstxt.org-format manifest listing top comparisons by category for LLM crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/llms.txt` } },
         },
         {
           "@type": "DataDownload",
@@ -285,6 +290,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/sitemap.xml`,
           name: "A Versus B XML Sitemap",
           description: "Full sitemap index with all comparison, blog, entity, and category URLs",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/sitemap.xml` } },
         },
         {
           "@type": "DataDownload",
@@ -292,6 +298,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/feed/atom`,
           name: "A Versus B Atom Feed",
           description: "Atom 1.0 feed of all recent comparisons and blog articles with ISO 8601 timestamps",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/feed/atom` } },
         },
         {
           "@type": "DataDownload",
@@ -299,6 +306,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/knowledge-graph/{slug}`,
           name: "A Versus B Knowledge Graph API",
           description: "Per-comparison JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/{slug}`, "http://schema.org/urlTemplate": `${SITE_URL}/api/knowledge-graph/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -306,6 +314,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/answer/{slug}`,
           name: "A Versus B AI Answer API",
           description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/answer/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -313,6 +322,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/sitemap`,
           name: "A Versus B JSON Sitemap (Comparisons)",
           description: "Paginated JSON DataFeed sitemap of all comparison pages with shortAnswer, answerUrl, knowledgeGraphUrl, and category; blog variant at ?type=blog",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/sitemap?type=comparisons&limit={limit}&offset={offset}` } },
         },
         {
           "@type": "DataDownload",
@@ -320,6 +330,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/sitemap?type=blog`,
           name: "A Versus B JSON Sitemap (Blog)",
           description: "Paginated JSON DataFeed sitemap of all published blog articles with excerpt, tags, and jsonUrl for per-article API access",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/sitemap?type=blog&limit={limit}&offset={offset}` } },
         },
         {
           "@type": "DataDownload",
@@ -327,6 +338,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/openapi`,
           name: "A Versus B OpenAPI Specification",
           description: "OpenAPI 3.0.3 machine-readable API schema for all public endpoints",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/openapi` } },
         },
         {
           "@type": "DataDownload",
@@ -334,6 +346,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/v1/best`,
           name: "A Versus B Best-of Lists API",
           description: "Paginated index of all best-of list pages with ItemList JSON-LD per slug at /api/v1/best/{slug}",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/v1/best/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -341,6 +354,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/v1/search`,
           name: "A Versus B Unified Search API",
           description: "Unified search across comparisons, entities, and blog articles; ?q={query}&types=comparisons,entities,blog",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/v1/search?q={search_term_string}`, "query-input": "required name=search_term_string" } },
         },
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
@@ -1533,6 +1547,7 @@ export function comparisonPageSchema(
           contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
           name: `${comparison.title} — JSON API`,
           description: "Structured comparison data in JSON format via the A Versus B public API",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/comparisons/${comparison.slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -1540,6 +1555,15 @@ export function comparisonPageSchema(
           contentUrl: url,
           name: `${comparison.title} — JSON-LD (embedded in page)`,
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: `${SITE_URL}/api/knowledge-graph/${comparison.slug}`,
+          name: `${comparison.title} — Knowledge Graph API`,
+          description: "Full JSON-LD @graph with typed Article, Dataset, FAQPage, and Entity nodes for AI crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/${comparison.slug}` } },
         },
       ],
       // creator / publisher — Google Dataset Search and AI research indexes use these to
@@ -2343,6 +2367,7 @@ function buildMultiEntityGraph(
           contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
           name: `${comparison.title} — JSON API`,
           description: "Structured comparison data in JSON format via the A Versus B public API",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/comparisons/${comparison.slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -2350,6 +2375,15 @@ function buildMultiEntityGraph(
           contentUrl: url,
           name: `${comparison.title} — JSON-LD (embedded in page)`,
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: `${SITE_URL}/api/knowledge-graph/${comparison.slug}`,
+          name: `${comparison.title} — Knowledge Graph API`,
+          description: "Full JSON-LD @graph with typed Article, Dataset, FAQPage, and Entity nodes for AI crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/${comparison.slug}` } },
         },
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
