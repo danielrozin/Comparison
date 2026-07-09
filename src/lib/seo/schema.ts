@@ -2195,7 +2195,9 @@ function buildMultiEntityGraph(
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: item.url,
+      // Typed WebPage item — parity with 2-entity path and breadcrumbSchema() helper.
+      // AI crawlers and Google follow @id to merge breadcrumb with target WebPage node.
+      item: { "@type": "WebPage", "@id": item.url, name: item.name, url: item.url },
     })),
   };
 
@@ -2989,6 +2991,10 @@ export function profilePageSchema(entity: {
     // timeRequired — estimated reading time; profile page depth scales with comparison count.
     timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,
     teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
+    // assesses — evaluation framing for AI answer engines on entity profile pages.
+    // Signals that this page assesses the relative merit of entity vs alternatives,
+    // helping LLMs route "is X good?" and "X vs alternatives" queries here.
+    assesses: `How does ${entity.name} compare to alternatives?`,
     educationalUse: "comparison",
     keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
     potentialAction: [
@@ -3041,11 +3047,15 @@ export function profilePageSchema(entity: {
       cssSelector: ["h1", "#entity-intro", "#entity-about"],
     },
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(entity.name)}+comparison&type=link&sort=relevance`,
+    // BreadcrumbList — 3 levels for rich-result eligibility (Google requires ≥2 levels;
+    // 3 levels also enables the "Comparisons > Entity" navigational trail in AI snippets).
     breadcrumb: {
       "@type": "BreadcrumbList",
+      "@id": `${url}#breadcrumbs`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: entity.name, item: url },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, url: SITE_URL, name: "Home" } },
+        { "@type": "ListItem", position: 2, name: "Comparisons", item: { "@type": "WebPage", "@id": `${SITE_URL}/compare`, url: `${SITE_URL}/compare`, name: "Comparisons" } },
+        { "@type": "ListItem", position: 3, name: entity.name, item: { "@type": "WebPage", "@id": url, url, name: entity.name } },
       ],
     },
     mainEntity,
