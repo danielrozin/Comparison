@@ -275,6 +275,9 @@ export async function GET() {
   lines.push("- `PropertyValue.propertyID` added to `variableMeasured` entries in both 2-entity and multi-entity Dataset schemas — stable URI that Google Dataset Search uses to dereference attribute definitions across documents; mirrors DefinedTerm @id so crawlers merge both nodes (HB333)");
   lines.push("- `WebSite.alternativeHeadline` added to `webSiteSchema()` — secondary tagline used by Perplexity/ChatGPT citation extractors and Google Sitelinks to display a human-readable description alongside the brand name (HB334)");
   lines.push("- `Dataset.includedInDataCatalog` added to both 2-entity and multi-entity Dataset emit paths — explicit graph edge linking every per-comparison Dataset to the site's global DataCatalog node; Google Dataset Search uses this to cluster datasets under the platform catalog and boost corpus-level authority (HB334)");
+  lines.push("- `Claim.text` added to itemReviewed.Claim in both 2-entity and multi-entity ClaimReview inline emitters — required by Google Fact Check Tools for rich-result eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation) use text to extract the assertion independently of claimReviewed (HB335)");
+  lines.push("- `ItemList.itemListOrder: ItemListUnordered` added to 2-entity comparison ItemList — parity with multi-entity path; signals to AI carousels and Google Shopping that entities are peers, not position-ranked (HB335)");
+  lines.push("- `SoftwareApplication.softwareRequirements` added to entityPageSchema and profilePageSchema SoftwareApplication sections — routes 'works on X' intent queries in AI product-search carousels and Google app-install panels (HB335)");
 
   const body = lines.join("\n");
 

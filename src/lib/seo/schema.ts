@@ -1324,6 +1324,10 @@ export function comparisonPageSchema(
         // inLanguage on itemReviewed — language-scopes the reviewed claim for multilingual AI crawlers.
         inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        // text — the actual claim text as required by Google Fact Check Tools for rich-result
+        // eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation)
+        // use text to extract the assertion independently of the claimReviewed field.
+        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
         // appearance — current canonical URL of the claim; used by AI fact-checkers
@@ -1346,6 +1350,10 @@ export function comparisonPageSchema(
     name: comparison.title,
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     numberOfItems: comparison.entities.length,
+    // itemListOrder — explicit ordering signal; Unordered signals these are peer comparisons
+    // not ranked items. AI carousels and Google Shopping use this to render entity chips
+    // without implying position-based ranking bias.
+    itemListOrder: "https://schema.org/ItemListUnordered",
     url,
     itemListElement: comparison.entities.map((entity, index) => ({
       "@type": "ListItem",
@@ -2216,6 +2224,8 @@ function buildMultiEntityGraph(
         "@type": "Claim",
         inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        // text — required by Google Fact Check Tools for rich-result eligibility.
+        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
         appearance: { "@type": "WebPage", "@id": url, url },
@@ -2682,6 +2692,9 @@ export function entityPageSchema(entity: {
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",
+      // softwareRequirements — minimum platform requirements for AI app-store carousels
+      // and Google product-search carousels; helps route "works on X" intent queries.
+      softwareRequirements: "Web Browser (Chrome, Safari, Firefox, Edge), iOS 14+, Android 8+",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
     // inLanguage — language-scopes the entity node for multilingual AI knowledge
@@ -2894,6 +2907,7 @@ export function profilePageSchema(entity: {
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",
+      softwareRequirements: "Web Browser (Chrome, Safari, Firefox, Edge), iOS 14+, Android 8+",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
     // speakable on mainEntity — voice assistants (Google Assistant, Alexa) and LLMs
