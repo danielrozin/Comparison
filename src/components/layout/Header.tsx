@@ -22,7 +22,19 @@ export function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [searchHintIdx, setSearchHintIdx] = useState(0);
   const navRef = useRef<HTMLElement>(null);
+
+  const SEARCH_HINTS = [
+    "iPhone vs Android…",
+    "React vs Vue…",
+    "Nike vs Adidas…",
+    "Mac vs PC…",
+    "Coffee vs Tea…",
+    "Netflix vs Disney+…",
+    "Tesla vs BMW…",
+    "Python vs JavaScript…",
+  ];
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -30,6 +42,11 @@ export function Header() {
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
+
+  useEffect(() => {
+    const id = setInterval(() => setSearchHintIdx((i) => (i + 1) % SEARCH_HINTS.length), 2800);
+    return () => clearInterval(id);
+  }, [SEARCH_HINTS.length]);
 
   useEffect(() => {
     const fn = () => { if (window.innerWidth >= 1024) setMobileMenuOpen(false); };
@@ -184,7 +201,9 @@ export function Header() {
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden sm:inline">Search...</span>
+              <span className="hidden sm:inline overflow-hidden whitespace-nowrap" aria-live="polite" aria-atomic="true">
+                {SEARCH_HINTS[searchHintIdx]}
+              </span>
               <span className="hidden md:inline-flex items-center gap-1 text-[10px] text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">⌘K</kbd>
                 <span className="text-text-secondary/20">/</span>
