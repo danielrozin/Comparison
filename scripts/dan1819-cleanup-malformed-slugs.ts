@@ -10,11 +10,13 @@
  *   - Filters them out of the XML sitemap
  *   - 301-redirects incoming requests to the clean version
  *
- * This script performs the DB-level cleanup so the records don't accumulate
- * storage and can never re-appear in sitemaps after a cache purge.
+ * This script performs the DB-level cleanup so the records stop appearing in
+ * sitemaps. By default it UNPUBLISHES them (status -> "archived"), a reversible
+ * change; pass HARD_DELETE=true to remove them permanently.
  *
- * Run: DATABASE_URL=... npx ts-node -P tsconfig.json scripts/dan1819-cleanup-malformed-slugs.ts
- * Or:  DATABASE_URL=... tsx scripts/dan1819-cleanup-malformed-slugs.ts
+ * Dry run (default):  npm run cleanup:slugs
+ * Execute (archive):  DRY_RUN=false npm run cleanup:slugs
+ * Execute (delete):   DRY_RUN=false HARD_DELETE=true npm run cleanup:slugs
  */
 
 import { PrismaClient } from "@prisma/client";
@@ -48,27 +50,41 @@ async function main() {
 
   const ids = malformed.map((r) => r.id);
 
+  // Default cleanup mode is a reversible UNPUBLISH (status -> "archived"), which
+  // matches the issue title and satisfies acceptance because the sitemap only
+  // serves `published` rows. This is safer than a hard delete: if any malformed
+  // slug turns out to have NO clean counterpart, its content is recoverable
+  // (just flip status back) instead of being lost forever. Set HARD_DELETE=true
+  // to permanently remove the rows instead.
+  const HARD_DELETE = process.env.HARD_DELETE === "true";
+  const verb = HARD_DELETE ? "delete" : "archive (unpublish)";
+
   // Dry-run guard
   const DRY_RUN = process.env.DRY_RUN !== "false";
   if (DRY_RUN) {
-    console.log(`\nDRY RUN — would delete ${ids.length} records.`);
-    console.log("Set DRY_RUN=false to execute.");
+    console.log(`\nDRY RUN — would ${verb} ${ids.length} records.`);
+    console.log("Set DRY_RUN=false to execute (archive), or add HARD_DELETE=true to delete.");
     return;
   }
 
-  // Delete in batches of 500 to avoid timeout
-  let deleted = 0;
+  // Process in batches of 500 to avoid statement timeouts.
+  let processed = 0;
   const BATCH = 500;
   for (let i = 0; i < ids.length; i += BATCH) {
     const batch = ids.slice(i, i + BATCH);
-    const result = await prisma.comparison.deleteMany({
-      where: { id: { in: batch } },
-    });
-    deleted += result.count;
-    console.log(`Deleted batch ${Math.floor(i / BATCH) + 1}: ${result.count} records (total: ${deleted})`);
+    const result = HARD_DELETE
+      ? await prisma.comparison.deleteMany({ where: { id: { in: batch } } })
+      : await prisma.comparison.updateMany({
+          where: { id: { in: batch } },
+          data: { status: "archived" },
+        });
+    processed += result.count;
+    console.log(
+      `Batch ${Math.floor(i / BATCH) + 1}: ${verb} ${result.count} records (total: ${processed})`
+    );
   }
 
-  console.log(`\nDone. Deleted ${deleted} malformed comparison records.`);
+  console.log(`\nDone. ${HARD_DELETE ? "Deleted" : "Archived"} ${processed} malformed comparison records.`);
   console.log("Next steps:");
   console.log("  1. Verify: curl https://www.aversusb.net/api/sitemap?limit=1 | jq .total");
   console.log("     (expect ~3138, was 5442)");

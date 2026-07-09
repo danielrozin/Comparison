@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "cleanup:consent": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/cleanup-consent-records.ts",
+    "cleanup:slugs": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/dan1819-cleanup-malformed-slugs.ts",
     "audit:blog-dupes": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/audit-blog-dupes.ts",
     "backfill:blog-embeddings": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/backfill-blog-embeddings.ts"
   },
