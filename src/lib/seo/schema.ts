@@ -1309,12 +1309,22 @@ export function comparisonPageSchema(
     name: comparison.title,
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     numberOfItems: comparison.entities.length,
+    url,
     itemListElement: comparison.entities.map((entity, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: entity.name,
       description: entity.shortDesc,
       url: `${SITE_URL}/entity/${entity.slug}`,
+      // item with typed @id — AI crawlers and Google Knowledge Graph use this
+      // to traverse from the ItemList to the entity ProfilePage in one hop,
+      // instead of following a bare url string and inferring the entity type.
+      item: {
+        "@type": entitySchemaType(entity.entityType),
+        "@id": `${SITE_URL}/entity/${entity.slug}`,
+        name: entity.name,
+        url: `${SITE_URL}/entity/${entity.slug}`,
+      },
     })),
   });
 
@@ -1814,11 +1824,20 @@ function buildMultiEntityGraph(
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(", ")}`,
     numberOfItems: comparison.entities.length,
     itemListOrder: "https://schema.org/ItemListUnordered",
-    itemListElement: comparison.entities.map((_, i) => ({
+    itemListElement: comparison.entities.map((entity, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      item: { "@id": itemIds[i] },
+      name: entity.name,
+      // item @type + @id — typed entity reference so AI crawlers resolve the entity
+      // node type without following the URL (merges with top-level itemNode in @graph).
+      item: {
+        "@type": entitySchemaType(entity.entityType),
+        "@id": itemIds[i],
+        name: entity.name,
+        url: itemIds[i],
+      },
     })),
+    url,
   };
 
   // Compute HowTo eligibility before the article object so hasPart can reference it.
