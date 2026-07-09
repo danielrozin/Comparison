@@ -187,6 +187,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
     lastReviewed: subcatToday,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: subcatToday,
     thumbnailUrl: subcatOgImage,
     image: {

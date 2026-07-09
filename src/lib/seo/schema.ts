@@ -3029,6 +3029,7 @@ export function profilePageSchema(entity: {
     dateCreated: "2024-01-01",
     dateModified: today,
     lastReviewed: today,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: today,
     locationCreated: { "@type": "Country", name: "United States" },
     inLanguage: "en-US",

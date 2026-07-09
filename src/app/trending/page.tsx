@@ -177,6 +177,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     datePublished: "2024-01-01",
     dateModified: trendingToday,
     lastReviewed: trendingToday,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: trendingToday,
     thumbnailUrl: ogImage,
     image: {

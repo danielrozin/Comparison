@@ -225,6 +225,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     dateCreated: "2024-01-01",
     dateModified: categoryToday,
     lastReviewed: categoryToday,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
     image: {
