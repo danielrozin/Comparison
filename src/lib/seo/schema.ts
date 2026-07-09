@@ -1103,6 +1103,10 @@ export function comparisonPageSchema(
           "@id": `${url}#review`,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
           reviewBody: comparison.verdict,
+          // reviewAspect — what dimension of the subject is covered; AI product-search engines
+          // (Google Shopping, Perplexity product-mode) use this to categorise Review nodes and
+          // surface the correct review type for "X vs Y overall" queries.
+          reviewAspect: "Overall Comparison",
           datePublished: comparison.metadata.updatedAt,
           url,
           itemReviewed: {
@@ -1117,6 +1121,11 @@ export function comparisonPageSchema(
           "@type": "Review",
           "@id": `${url}#review-${e.slug}`,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          // reviewAspect — entity-level aspect reviewed; routes "pros and cons of X" AI queries
+          // to this Review node rather than the pair-level verdict Review above.
+          reviewAspect: e.pros.length > 0 && e.cons.length > 0
+            ? "Pros and Cons"
+            : e.pros.length > 0 ? "Strengths" : "Weaknesses",
           datePublished: comparison.metadata.updatedAt,
           url,
           itemReviewed: {
@@ -1306,7 +1315,14 @@ export function comparisonPageSchema(
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
+        // appearance — current canonical URL of the claim; used by AI fact-checkers
+        // to fetch the live page for verification.
         appearance: { "@type": "WebPage", "@id": url, url },
+        // firstAppearance — the original publication URL of the claim; when claim and
+        // reviewer are the same page (self-published editorial), both fields point here.
+        // Google Fact Check and AI trust engines (Perplexity truth mode) use this to
+        // establish claim provenance and publication timeline.
+        firstAppearance: { "@type": "WebPage", "@id": url, url },
       },
     });
   }
@@ -1828,6 +1844,10 @@ function buildMultiEntityGraph(
       "@type": "ListItem",
       position: i + 1,
       name: entity.name,
+      // description — one-line entity summary for AI product-search carousels (Google Shopping,
+      // Perplexity product mode); lets crawlers surface entity context from the ListItem node
+      // without loading the entity ProfilePage.
+      ...(entity.shortDesc && { description: entity.shortDesc }),
       // item @type + @id — typed entity reference so AI crawlers resolve the entity
       // node type without following the URL (merges with top-level itemNode in @graph).
       item: {
@@ -1835,6 +1855,7 @@ function buildMultiEntityGraph(
         "@id": itemIds[i],
         name: entity.name,
         url: itemIds[i],
+        ...(entity.shortDesc && { description: entity.shortDesc }),
       },
     })),
     url,
@@ -2176,6 +2197,7 @@ function buildMultiEntityGraph(
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
         appearance: { "@type": "WebPage", "@id": url, url },
+        firstAppearance: { "@type": "WebPage", "@id": url, url },
       },
     });
   }
@@ -3129,6 +3151,8 @@ export function claimReviewSchema(opts: {
         "@type": "Thing",
         name: "Internet consensus",
       },
+      appearance: { "@type": "WebPage", "@id": url, url },
+      firstAppearance: { "@type": "WebPage", "@id": url, url },
     },
   };
 }
