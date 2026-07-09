@@ -237,6 +237,48 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     locationCreated: { "@type": "Country", name: "United States" },
   };
 
+  // Dataset node — Google Dataset Search and AI research tools index Dataset nodes
+  // independently from CollectionPage. Emitting one on the trending hub gives it a
+  // machine-readable data fingerprint with numberOfItems, distribution, and DataCatalog
+  // membership — same pattern applied to category pages in HB347.
+  const trendingDatasetSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${SITE_URL}/trending#dataset`,
+    name: "Trending Comparisons Dataset — A Versus B",
+    description: `Real-time dataset of the ${allTrending.length} most-viewed X vs Y comparisons on A Versus B, ranked by views, votes, and social signals.`,
+    url: `${SITE_URL}/trending`,
+    identifier: `${SITE_URL}/trending#dataset`,
+    inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateModified: trendingToday,
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    numberOfItems: allTrending.length,
+    keywords: "trending comparisons, most popular comparisons, top vs comparisons, viral comparisons",
+    about: [
+      { "@type": "Thing", name: "Trending Topics" },
+      { "@type": "Thing", name: "Comparison Articles" },
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&format=json`,
+        name: "Comparisons JSON DataFeed",
+        description: "Paginated JSON feed of all comparison pages with slugs, titles, and verdicts",
+      },
+    ],
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/trending` },
+    },
+  };
+
   // ItemList schema — lets AI answer engines enumerate the trending comparisons
   // directly from structured data, without parsing the rendered HTML.
   const itemListSchema = {
@@ -276,6 +318,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trendingDatasetSchema) }}
       />
 
       {/* Trending Hero */}

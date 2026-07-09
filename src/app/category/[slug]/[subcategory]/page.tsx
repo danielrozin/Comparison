@@ -260,7 +260,45 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
     hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
   };
-  const schemaData = [breadcrumbs, collectionSchema];
+  // Dataset node — parity with parent category pages (HB347).
+  // Google Dataset Search and AI research tools index Dataset nodes separately from
+  // CollectionPage; emitting one gives this subcategory hub a machine-readable data
+  // fingerprint that AI crawlers use to score source authority.
+  const subcatDatasetObj = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${subcatUrl}#dataset`,
+    name: `${subcat.name} Comparisons Dataset`,
+    description: `Structured dataset of ${subcatComparisons.length} ${subcat.name.toLowerCase()} side-by-side comparisons with attribute tables, verdicts, community votes, and entity profiles.`,
+    url: subcatUrl,
+    identifier: `${subcatUrl}#dataset`,
+    inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateModified: subcatToday,
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    numberOfItems: subcatComparisons.length,
+    keywords: `${subcat.name} comparison, ${subcat.name.toLowerCase()} vs, ${subcat.name.toLowerCase()} data`,
+    about: { "@type": "Thing", name: `${subcat.name} Comparisons` },
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
+        name: `${subcat.name} Comparisons JSON Feed`,
+        description: `Paginated JSON DataFeed of all ${subcat.name.toLowerCase()} comparison pages`,
+      },
+    ],
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: subcatUrl },
+    },
+  };
+  const schemaData = [breadcrumbs, collectionSchema, subcatDatasetObj];
 
   const basePath = `/category/${slug}/${subcategory}`;
   // schemaData is now used below
