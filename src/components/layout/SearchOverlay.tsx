@@ -53,12 +53,21 @@ export function SearchOverlay() {
     setActiveIdx(-1);
   }, []);
 
-  // ⌘K / Ctrl+K global shortcut + custom event from Header
+  // ⌘K / Ctrl+K / forward-slash global shortcut + custom event from Header
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setOpen((prev) => !prev);
+        return;
+      }
+      // "/" opens overlay unless focus is in an input/textarea/select/contenteditable
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const tag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+        const editable = (e.target as HTMLElement)?.isContentEditable;
+        if (tag === "input" || tag === "textarea" || tag === "select" || editable) return;
+        e.preventDefault();
+        setOpen(true);
       }
     }
     const onToggle = (_e: Event) => { setOpen((prev) => !prev); };

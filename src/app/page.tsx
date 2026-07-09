@@ -394,21 +394,22 @@ export default async function HomePage() {
                     </div>
 
                     {/* Entity A vs B visual */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex-1 min-w-0 space-y-1">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
-                          <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityA}</span>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex -space-x-2 flex-shrink-0">
+                        <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                          {latestEntityA.charAt(0).toUpperCase()}
                         </div>
                         {latestEntityB && (
-                          <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-accent-500 flex-shrink-0" />
-                            <span className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">{latestEntityB}</span>
+                          <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                            {latestEntityB.charAt(0).toUpperCase()}
                           </div>
                         )}
                       </div>
-                      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center">
-                        <span className="text-[8px] font-black text-white">VS</span>
+                      <div className="flex-1 min-w-0 space-y-0.5">
+                        <span className="text-sm font-semibold text-text truncate block group-hover:text-primary-700 transition-colors">{latestEntityA}</span>
+                        {latestEntityB && (
+                          <span className="text-sm font-semibold text-text truncate block group-hover:text-primary-700 transition-colors">{latestEntityB}</span>
+                        )}
                       </div>
                     </div>
 
@@ -464,63 +465,6 @@ export default async function HomePage() {
             ))}
           </ul>
         </div>
-      </section>
-      </ScrollReveal>
-
-      {/* How It Works */}
-      <ScrollReveal delay={150}>
-      <section aria-labelledby="how-it-works-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 id="how-it-works-heading" className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
-          How It Works
-        </h2>
-        <ol role="list" className="relative grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto list-none">
-          {/* Connecting line (desktop only) */}
-          <div className="hidden md:block absolute top-10 left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 bg-gradient-to-r from-primary-200 via-primary-400 to-primary-200" />
-
-          {[
-            {
-              step: "1",
-              title: "Search or Browse",
-              desc: "Type any two things you want to compare, or browse our categories.",
-              icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              ),
-            },
-            {
-              step: "2",
-              title: "Get Instant Answers",
-              desc: "See key differences, structured tables, and visual comparisons at a glance.",
-              icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              ),
-            },
-            {
-              step: "3",
-              title: "Explore & Discover",
-              desc: "Find related comparisons, alternatives, and deeper analysis.",
-              icon: (
-                <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              ),
-            },
-          ].map((item) => (
-            <li key={item.step} className="relative text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 text-primary-700 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-primary-200/50 relative z-10">
-                {item.icon}
-                <span className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-primary-600 to-accent-600 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm">
-                  {item.step}
-                </span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-text-secondary text-sm leading-relaxed max-w-xs mx-auto">{item.desc}</p>
-            </li>
-          ))}
-        </ol>
       </section>
       </ScrollReveal>
 
