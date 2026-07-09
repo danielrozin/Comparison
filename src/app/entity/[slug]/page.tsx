@@ -4,6 +4,7 @@ import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { EntityCompareSearch } from "@/components/ui/EntityCompareSearch";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
@@ -347,6 +348,11 @@ export default async function EntityPage({ params }: PageProps) {
                 </span>
               </div>
             </div>
+          </div>
+
+          {/* Inline "compare with" search — turns entity pages into comparison entry points */}
+          <div className="max-w-lg mt-2">
+            <EntityCompareSearch entityName={name} entitySlug={slug} />
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">

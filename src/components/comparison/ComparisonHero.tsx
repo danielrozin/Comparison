@@ -1,5 +1,6 @@
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
 import { AffiliateButton } from "./AffiliateButton";
 
 function WinnerBadge() {
@@ -145,7 +146,15 @@ function EntityCard({
     >
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
-      <h2 className="text-base sm:text-xl font-bold text-white mb-1">{entity.name}</h2>
+      <h2 className="text-base sm:text-xl font-bold text-white mb-1">
+        <Link
+          href={`/entity/${entity.slug}`}
+          className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30"
+          title={`All comparisons featuring ${entity.name}`}
+        >
+          {entity.name}
+        </Link>
+      </h2>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-2">{entity.shortDesc}</p>
       )}
