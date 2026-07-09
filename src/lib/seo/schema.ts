@@ -714,6 +714,10 @@ export function webPageSchema(opts: {
   datePublished?: string | null;
   dateModified?: string;
   breadcrumbs?: { name: string; url: string }[];
+  // breadcrumbId — when provided, emits WebPage.breadcrumb pointing to an already-emitted
+  // BreadcrumbList node by @id. AI crawlers and Google follow this edge to find breadcrumbs
+  // without traversing the full @graph. Pass e.g. `${url}#breadcrumbs`.
+  breadcrumbId?: string;
   keywords?: string;
   // mainEntity — if provided, creates the bidirectional WebPage↔Article graph edge.
   // Pass { "@type": "Article", "@id": "{url}#article" } on comparison pages so AI
@@ -740,6 +744,9 @@ export function webPageSchema(opts: {
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(opts.keywords && { keywords: opts.keywords }),
     ...(opts.mainEntity && { mainEntity: opts.mainEntity }),
+    // breadcrumb — WebPage→BreadcrumbList graph edge so Google and AI crawlers can find the
+    // breadcrumb node from the WebPage node without traversing the entire @graph.
+    ...(opts.breadcrumbId && { breadcrumb: { "@type": "BreadcrumbList", "@id": opts.breadcrumbId } }),
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${opts.url}#speakable`,
@@ -2479,9 +2486,10 @@ function buildMultiEntityGraph(
     dateModified: comparison.metadata.updatedAt,
     mainEntity: { "@type": "Article", "@id": `${url}#article` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    ...(comparison.category && {
-      breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb` },
-    }),
+    // breadcrumb — WebPage→BreadcrumbList graph edge; @id must match the BreadcrumbList node's
+    // own @id (${url}#breadcrumbs) so Google and AI crawlers can merge the two nodes.
+    // Previously "#breadcrumb" (no 's') was a mismatch that broke cross-node graph linking.
+    breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumbs` },
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,

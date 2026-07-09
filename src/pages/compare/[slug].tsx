@@ -545,6 +545,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           ].join(", "),
           // mainEntity — bidirectional WebPage↔Article graph edge (HB322 fix).
           mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
+          // breadcrumbId — WebPage→BreadcrumbList graph edge; matches the BreadcrumbList
+          // @id emitted by comparisonPageSchema so AI crawlers can link the two nodes.
+          breadcrumbId: `${SITE_URL}/compare/${slug}#breadcrumbs`,
           speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
         }),
         videoMeta?.youtubeVideoId
