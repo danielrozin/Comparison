@@ -11,7 +11,11 @@
  */
 
 import crypto from "crypto";
-import { getComparisonSlugsExisting } from "./comparison-service";
+import {
+  getComparisonSlugsExisting,
+  bulkUpdateSearchImpressions,
+  type BulkImpressionsResult,
+} from "./comparison-service";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -817,5 +821,153 @@ export async function getGSCCompareWeekly(
     consecutiveCompleteWeeksAtThreshold: consecutive,
     gateClear: consecutive >= 2,
     note: baseNote,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Backfill comparisons.searchImpressions from GSC per-page data (DAN-1807)
+// ---------------------------------------------------------------------------
+//
+// `comparisons.searchImpressions` ships as 0 for every row, so the DAN-1800
+// thin-page audit cannot rank the zero-traffic long tail by real demand. This
+// sync joins GSC per-page /compare/* impressions to comparison rows by slug and
+// writes the observed impression totals, so the audit's THIN_NO_DEMAND bucket
+// reflects actual demand. Run weekly alongside the DAN-1008 compare-gate cron.
+
+export interface SyncSearchImpressionsResult extends BulkImpressionsResult {
+  available: boolean; // false when no GSC credentials / no /compare/* data
+  windowDays: number;
+  pagesWithImpressions: number; // distinct /compare/* pages GSC reported
+  totalImpressions: number; // summed over the window
+}
+
+/**
+ * Extract the comparison slug from a GSC page URL.
+ * Handles full URLs (`https://host/compare/<slug>`), trailing slashes, and
+ * query/hash suffixes. Returns null for non-/compare/ or index URLs.
+ */
+export function slugFromComparePage(page: string): string | null {
+  const m = page.match(/\/compare\/([^/?#]+)/i);
+  if (!m) return null;
+  const slug = decodeURIComponent(m[1]).trim().toLowerCase();
+  return slug.length > 0 ? slug : null;
+}
+
+/**
+ * Fetch per-page (date-collapsed) GSC totals for `/compare/*`.
+ *
+ * Uses the `page` dimension alone (no `date`), so GSC returns one row per URL —
+ * the total impressions/clicks over the window. This avoids the row-limit
+ * truncation risk of the date×page `fetchGSCComparePageRows` when summing demand
+ * over a long window (the corpus has 5k+ pages).
+ */
+export async function fetchGSCComparePageTotals(
+  days = 90
+): Promise<GSCPageData[]> {
+  const token = await getAccessToken();
+  if (!token) {
+    console.warn("GSC: No access token — returning empty /compare/* totals");
+    return [];
+  }
+
+  const siteUrl = getSiteUrl();
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - days);
+
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: fmtDateUTC(startDate),
+          endDate: fmtDateUTC(endDate),
+          dimensions: ["page"],
+          dimensionFilterGroups: [
+            { filters: [{ dimension: "page", operator: "contains", expression: "/compare/" }] },
+          ],
+          rowLimit: 25000,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error("GSC: /compare/* totals fetch failed:", res.status, errText);
+      return [];
+    }
+
+    const data = await res.json();
+    if (!data.rows) return [];
+
+    return data.rows.map(
+      (row: {
+        keys: string[];
+        clicks: number;
+        impressions: number;
+        ctr: number;
+        position: number;
+      }) => ({
+        page: row.keys[0],
+        clicks: row.clicks,
+        impressions: row.impressions,
+        ctr: row.ctr,
+        position: row.position,
+      })
+    );
+  } catch (err) {
+    console.error("GSC: /compare/* totals fetch error:", err);
+    return [];
+  }
+}
+
+/**
+ * Backfill / refresh `comparisons.searchImpressions` from GSC per-page
+ * `/compare/*` impressions over the last `days` (DAN-1807).
+ *
+ * Sums impressions per slug (multiple URL variants — trailing slash, casing —
+ * collapse to one slug), then bulk-writes the totals onto matching rows. Pages
+ * with no GSC impressions in the window are left untouched (their default `0` is
+ * the correct "no demand" signal). Safe no-op when GSC creds or DB are absent.
+ */
+export async function syncCompareSearchImpressions(
+  days = 90
+): Promise<SyncSearchImpressionsResult> {
+  const totals = await fetchGSCComparePageTotals(days);
+
+  const bySlug = new Map<string, number>();
+  let totalImpressions = 0;
+  for (const p of totals) {
+    if (p.impressions <= 0) continue;
+    const slug = slugFromComparePage(p.page);
+    if (!slug) continue;
+    bySlug.set(slug, (bySlug.get(slug) || 0) + p.impressions);
+    totalImpressions += p.impressions;
+  }
+
+  if (bySlug.size === 0) {
+    return {
+      available: false,
+      windowDays: days,
+      pagesWithImpressions: 0,
+      totalImpressions: 0,
+      attempted: 0,
+      matched: 0,
+      skipped: true,
+    };
+  }
+
+  const result = await bulkUpdateSearchImpressions(bySlug);
+  return {
+    available: true,
+    windowDays: days,
+    pagesWithImpressions: bySlug.size,
+    totalImpressions,
+    ...result,
   };
 }
