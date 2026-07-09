@@ -8,6 +8,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
+import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { TrendingCard } from "@/components/home/TrendingCard";
@@ -297,6 +298,9 @@ export default async function HomePage() {
 
       {/* Recent Searches */}
       <RecentSearches />
+
+      {/* How it works — 3-step explainer for first-time visitors and AI crawlers (GEO) */}
+      <HowItWorks />
 
       {/* Featured Comparisons — curated editor's picks, independent of viewCount (DAN-1020) */}
       <FeaturedComparisons items={FEATURED_COMPARISONS} />

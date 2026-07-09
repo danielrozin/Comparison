@@ -333,24 +333,35 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       <li key={comp.slug} className="flex">
       <Link
         href={`/compare/${comp.slug}`}
-        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
+        className="group relative flex flex-col p-4 sm:p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full overflow-hidden"
       >
-        <div className="flex items-center gap-4 mb-3">
-          <div className="flex -space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
-              {(parts[0] || "A").charAt(0)}
+        {/* Hover accent top strip */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+        <div className="flex items-center gap-3 mb-3">
+          {/* Entity initials with VS badge */}
+          <div className="relative flex flex-shrink-0">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
+              {(parts[0] || "A").charAt(0).toUpperCase()}
             </div>
-            <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
-              {(parts[1] || "B").charAt(0)}
+            <div className="absolute left-5 top-0 w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
+              {(parts[1] || "B").charAt(0).toUpperCase()}
+            </div>
+            <div className="absolute -bottom-1 left-4 z-20 w-5 h-5 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+              <span className="text-[7px] font-black text-white leading-none">VS</span>
             </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
+          <div className="flex-1 min-w-0 pl-4">
+            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2 text-sm sm:text-base leading-snug">
               {comp.title}
             </h3>
           </div>
+          {/* Arrow on hover */}
+          <svg className="w-4 h-4 text-primary-400 opacity-0 group-hover:opacity-100 flex-shrink-0 transition-all duration-150 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
-        <div className="mt-auto">
+        <div className="mt-auto pt-2">
           <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
         </div>
       </Link>
