@@ -97,6 +97,9 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
   const collection = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    // LearningResource — hub pages are structured topic guides for decision-making.
+    // Google Education carousel and AI engines use this to prioritize educational content.
+    additionalType: "https://schema.org/LearningResource",
     "@id": `${hubUrl}#collectionpage`,
     name: hub.h1,
     description: hub.description,

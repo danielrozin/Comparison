@@ -259,6 +259,10 @@ function bestPageSchema(entry: BestEntry) {
       },
       {
         "@type": ["CollectionPage", "Article"],
+        // LearningResource — signals Google Education carousel + AI educational intent routing.
+        // Best-of pages are structured decision guides, which qualifies them as LearningResource
+        // under Schema.org's definition (a resource designed to support learning a skill/topic).
+        additionalType: ["https://schema.org/LearningResource", "https://schema.org/InDepthArticle"],
         "@id": `${url}#article`,
         name: entry.h1,
         description: entry.description,

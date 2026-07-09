@@ -407,10 +407,15 @@ export default async function BlogPostPage({
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
 
   const articleSchema = {
-    // InDepthArticle additionalType: Google Discover uses this to surface comprehensive
-    // explainers. Threshold: 1500+ words qualifies as "in-depth" per Google's guidance.
+    // InDepthArticle + LearningResource additionalType: Google Discover surfaces InDepthArticle
+    // for comprehensive explainers (1500+ words). LearningResource tells Google's Education
+    // carousel and AI answer engines (Perplexity, ChatGPT) that this article is structured
+    // educational content — improves citation likelihood for "how to choose X" queries.
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
-    ...(wordCount && wordCount >= 1500 ? { additionalType: "https://schema.org/InDepthArticle" } : {}),
+    additionalType: [
+      ...(wordCount && wordCount >= 1500 ? ["https://schema.org/InDepthArticle"] : []),
+      "https://schema.org/LearningResource",
+    ],
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
