@@ -16,6 +16,7 @@ import { EmbedButton } from "@/components/comparison/EmbedButton";
 import { CommentSection } from "@/components/engagement/CommentSection";
 import { InterceptSurvey } from "@/components/engagement/InterceptSurvey";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { QuickSectionNav } from "./QuickSectionNav";
 
 const FUN_FACTS = [
   "Did you know? We\u2019ve compared 107+ topics!",
@@ -307,6 +308,8 @@ export function DynamicComparison({ slug }: { slug: string }) {
 
       <ComparisonHero comparison={comparison} />
 
+      <QuickSectionNav />
+
       {comparison.keyDifferences.length > 0 && (
         <KeyDifferencesBlock
           differences={comparison.keyDifferences}
@@ -316,11 +319,13 @@ export function DynamicComparison({ slug }: { slug: string }) {
       )}
 
       {comparison.attributes.length > 0 && (
-        <ComparisonTable
-          attributes={comparison.attributes}
-          entityA={comparison.entities[0]}
-          entityB={comparison.entities[1]}
-        />
+        <div id="comparison-table" className="scroll-mt-20">
+          <ComparisonTable
+            attributes={comparison.attributes}
+            entityA={comparison.entities[0]}
+            entityB={comparison.entities[1]}
+          />
+        </div>
       )}
 
       <ProsConsBlock entities={comparison.entities} />

@@ -114,3 +114,8 @@ export const BackToTop = dynamic(
   () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
   { ssr: false, loading: () => null }
 );
+
+export const QuickSectionNav = dynamic(
+  () => import("@/components/comparison/QuickSectionNav").then((m) => ({ default: m.QuickSectionNav })),
+  { ssr: false, loading: () => null }
+);

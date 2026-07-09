@@ -138,6 +138,7 @@ import {
   TableOfContents,
   StickyCompareBar,
   FloatingShareButton,
+  QuickSectionNav,
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
@@ -920,6 +921,9 @@ export default function ComparisonPage(props: Props) {
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
 
+      {/* Quick section jump nav — always visible, complements the scroll-triggered sticky bar */}
+      <QuickSectionNav />
+
       {/* Citation Stats Bar */}
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
 
@@ -1037,9 +1041,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Pros & Cons */}
-          <div id="pros-cons" className="scroll-mt-20">
-            <ProsConsBlock entities={comparison.entities} />
-          </div>
+          <ProsConsBlock entities={comparison.entities} />
 
           {/* Inline Newsletter Signup */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -1252,9 +1254,7 @@ function MultiEntityLayout({
           )}
 
           {/* Pros & Cons (already array-friendly, renders all N entities) */}
-          <div id="pros-cons" className="scroll-mt-20">
-            <ProsConsBlock entities={comparison.entities} />
-          </div>
+          <ProsConsBlock entities={comparison.entities} />
 
           {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
           {comparison.verdict && (

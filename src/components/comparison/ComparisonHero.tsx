@@ -185,6 +185,35 @@ function resolveWinner(comparison: ComparisonPageData): "a" | "b" | null {
   return null;
 }
 
+function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
+  const attrCount = comparison.attributes?.length ?? 0;
+  const diffCount = comparison.keyDifferences?.length ?? 0;
+  const totalPros = comparison.entities.reduce((s, e) => s + (e.pros?.length ?? 0), 0);
+  const totalCons = comparison.entities.reduce((s, e) => s + (e.cons?.length ?? 0), 0);
+
+  const stats = [
+    attrCount > 0 && { label: `${attrCount} attributes`, icon: "📊" },
+    diffCount > 0 && { label: `${diffCount} differences`, icon: "⚡" },
+    (totalPros + totalCons) > 0 && { label: `${totalPros + totalCons} pros/cons`, icon: "✅" },
+  ].filter(Boolean) as { label: string; icon: string }[];
+
+  if (stats.length === 0) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-2 flex-wrap mt-2">
+      {stats.map((s) => (
+        <span
+          key={s.label}
+          className="inline-flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
+        >
+          <span aria-hidden="true">{s.icon}</span>
+          {s.label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function ComparisonHero({ comparison }: { comparison: ComparisonPageData }) {
   const entityA = comparison.entities[0];
   const entityB = comparison.entities[1];
@@ -259,7 +288,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
 
           {/* VS Badge */}
-          <div className="flex items-center justify-center self-center">
+          <div className="flex flex-col items-center justify-center self-center gap-2">
             <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 motion-safe:animate-pulse opacity-40 scale-125" />
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
@@ -270,6 +299,9 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
           <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
         </div>
+
+        {/* Comparison stats row */}
+        <ComparisonStats comparison={comparison} />
       </div>
 
       {/* Wave divider */}

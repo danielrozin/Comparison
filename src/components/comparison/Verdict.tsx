@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { ComparisonEntityData } from "@/types";
 
 function SparkleIcon({ className }: { className?: string }) {
@@ -30,9 +33,20 @@ export function VerdictBlock({
   entities: ComparisonEntityData[];
 }) {
   const winner = extractWinner(verdict, entities);
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(verdict);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
 
   return (
-    <section data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="verdict" data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
       <div className="relative bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 rounded-2xl overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative mesh overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.15),transparent_60%)]" />
@@ -66,8 +80,29 @@ export function VerdictBlock({
           </div>
 
           {/* Verdict text */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 mb-6">
-            <p className="text-white/90 leading-relaxed text-base sm:text-lg">{verdict}</p>
+          <div className="relative bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 mb-6 group/verdict">
+            <p className="text-white/90 leading-relaxed text-base sm:text-lg pr-8">{verdict}</p>
+            <button
+              type="button"
+              onClick={handleCopy}
+              aria-label={copied ? "Verdict copied!" : "Copy verdict to clipboard"}
+              title={copied ? "Copied!" : "Copy verdict"}
+              className={`absolute top-3 right-3 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 opacity-0 group-hover/verdict:opacity-100 focus:opacity-100 ${
+                copied
+                  ? "bg-emerald-500/30 text-emerald-300"
+                  : "bg-white/10 text-white/50 hover:bg-white/20 hover:text-white/80"
+              }`}
+            >
+              {copied ? (
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              )}
+            </button>
           </div>
 
           {/* Who should choose cards */}
