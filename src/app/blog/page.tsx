@@ -480,7 +480,7 @@ export default async function BlogPage({
                 >
                   {/* Card header */}
                   <div className={`h-28 bg-gradient-to-br ${getBlogCardGradient(article.category)} flex items-center justify-center relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
+                    <div className="absolute inset-0 bg-grid opacity-10" />
                     <div className="relative z-10 w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center ring-1 ring-white/20 shadow-lg group-hover:scale-105 transition-transform duration-200">
                       <BlogCardIcon category={article.category} />
                     </div>

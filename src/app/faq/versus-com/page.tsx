@@ -158,7 +158,7 @@ export default function VersusComFaqPage() {
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -279,7 +279,7 @@ export default function VersusComFaqPage() {
 
       {/* CTA */}
       <section aria-labelledby="versusfaq-looking-for-more-than" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-2xl" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none rounded-2xl" />
         <h2 id="versusfaq-looking-for-more-than" className="text-xl font-display font-bold mb-2 relative">
           Looking for more than tech comparisons?
         </h2>

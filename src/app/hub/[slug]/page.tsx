@@ -327,7 +327,7 @@ export default async function HubPage({ params }: PageProps) {
 
       {/* Hub Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav aria-label="breadcrumb" className="text-sm text-primary-200 mb-5">

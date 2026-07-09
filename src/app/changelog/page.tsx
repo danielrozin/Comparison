@@ -292,7 +292,7 @@ export default function ChangelogPage() {
 
       {/* Gradient Hero */}
       <section aria-labelledby="changelog-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -405,7 +405,7 @@ export default function ChangelogPage() {
 
       {/* Subscribe CTA */}
       <div className="mt-16 bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-xl p-6 sm:p-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none rounded-xl" aria-hidden="true" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none rounded-xl" aria-hidden="true" />
         <h3 className="text-lg font-bold mb-2 relative">Stay Updated</h3>
         <p className="text-primary-100 text-sm mb-4 relative">
           Want to know when we add new comparisons or features? Get in touch.

@@ -193,6 +193,12 @@ body {
   display: none;
 }
 
+/* Grid pattern — inline SVG data URI avoids 27+ separate HTTP requests for grid.svg.
+   Use alongside opacity-5 / opacity-10 utilities as needed. */
+.bg-grid {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTAgMGgzMnYzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjODg4IiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2Utb3BhY2l0eT0iLjQiLz48cGF0aCBkPSJNMCAxNmgzMk0xNiAwdjMyIiBmaWxsPSJub25lIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iLjUiIHN0cm9rZS1vcGFjaXR5PSIuMiIvPjwvc3ZnPg==");
+}
+
 /* Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-float,

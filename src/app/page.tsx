@@ -669,7 +669,7 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section aria-labelledby="cta-heading" className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 id="cta-heading" className="text-2xl sm:text-3xl font-display font-bold mb-4">
             Ready to Compare?

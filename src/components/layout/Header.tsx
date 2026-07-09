@@ -37,6 +37,12 @@ export function Header() {
     return () => window.removeEventListener("resize", fn);
   }, []);
 
+  // Close mobile menu when the route changes (Next.js soft-navigation).
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+  }, [pathname]);
+
   useEffect(() => {
     const fn = (e: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenDropdown(null);
@@ -44,6 +50,17 @@ export function Header() {
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
   }, []);
+
+  // WCAG 2.1 §3.2.5 — Escape closes both the mobile menu and any open dropdown.
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (openDropdown) { setOpenDropdown(null); return; }
+      if (mobileMenuOpen) setMobileMenuOpen(false);
+    };
+    document.addEventListener("keydown", fn);
+    return () => document.removeEventListener("keydown", fn);
+  }, [openDropdown, mobileMenuOpen]);
 
   function handleEnter(slug: string) {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);

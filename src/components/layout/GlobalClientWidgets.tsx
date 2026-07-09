@@ -20,3 +20,8 @@ export const BackToTop = dynamic(
   () => import("@/components/layout/BackToTop").then((m) => ({ default: m.BackToTop })),
   { ssr: false, loading: () => null }
 );
+
+export const ReadingProgress = dynamic(
+  () => import("@/components/layout/ReadingProgress").then((m) => ({ default: m.ReadingProgress })),
+  { ssr: false, loading: () => null }
+);
