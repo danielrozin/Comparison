@@ -866,12 +866,13 @@ export default async function BlogPostPage({
           {article.tags && article.tags.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-2">
               {article.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border"
+                  href={`/blog?category=${encodeURIComponent(tag)}`}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 transition-colors"
                 >
                   #{tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}

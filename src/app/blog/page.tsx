@@ -472,17 +472,35 @@ export default async function BlogPage({
         ) : (
           <>
             <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 list-none">
-              {articles.map((article) => (
+              {articles.map((article) => {
+                const isNew = article.publishedAt
+                  ? Date.now() - new Date(article.publishedAt).getTime() < 7 * 24 * 60 * 60 * 1000
+                  : false;
+                return (
                 <li key={article.slug} className="flex">
                 <Link
                   href={`/blog/${article.slug}`}
                   className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col w-full"
                 >
-                  {/* Card header */}
-                  <div className={`h-28 bg-gradient-to-br ${getBlogCardGradient(article.category)} flex items-center justify-center relative overflow-hidden`}>
+                  {/* Card header — gradient with title text overlay */}
+                  <div className={`h-36 bg-gradient-to-br ${getBlogCardGradient(article.category)} flex flex-col justify-end relative overflow-hidden`}>
                     <div className="absolute inset-0 bg-grid opacity-10" />
-                    <div className="relative z-10 w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center ring-1 ring-white/20 shadow-lg group-hover:scale-105 transition-transform duration-200">
+                    {/* Category icon — top right */}
+                    <div className="absolute top-3 right-3 z-10 w-9 h-9 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center ring-1 ring-white/20 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
                       <BlogCardIcon category={article.category} />
+                    </div>
+                    {/* New badge */}
+                    {isNew && (
+                      <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-emerald-700 shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
+                        New
+                      </span>
+                    )}
+                    {/* Title overlay */}
+                    <div className="relative z-10 px-4 pb-3 pt-10 bg-gradient-to-t from-black/50 via-black/20 to-transparent">
+                      <p className="text-white font-bold text-sm leading-snug line-clamp-2 drop-shadow">
+                        {article.title}
+                      </p>
                     </div>
                   </div>
 
@@ -523,7 +541,8 @@ export default async function BlogPage({
                   </div>
                 </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
 
             {/* Pagination */}
