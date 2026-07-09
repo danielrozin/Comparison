@@ -52,3 +52,4 @@ hyperframes/**/.hyperframes/
 /Videos For Website/
 .env.prod
 .env.vercel.production
+.env.local

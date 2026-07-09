@@ -1,4 +1,4 @@
-/* GA4 + Google Ads + Meta Pixel + Clarity Event Tracking */
+/* GA4 + Google Ads + Meta Pixel + Clarity + PostHog Event Tracking */
 
 import {
   tagComparisonView as clarityTagComparison,
@@ -7,6 +7,7 @@ import {
   tagUserAction as clarityTagAction,
   tagEngagement as clarityTagEngagement,
 } from "@/lib/services/clarity-service";
+import posthog from "posthog-js";
 
 declare global {
   interface Window {
@@ -72,18 +73,21 @@ export function trackAffiliateClick(product: string, position: string, page: str
   trackEvent("affiliate_click", { product, position, page });
   clarityTagAction("affiliate_click");
   clarityTagEngagement("converted");
+  posthog.capture("affiliate_link_clicked", { product, position, page });
 }
 
 export function trackComparisonVote(entityA: string, entityB: string, choice: string) {
   trackEvent("comparison_vote", { entity_a: entityA, entity_b: entityB, choice });
   clarityTagAction("vote");
   clarityTagEngagement("engaged");
+  posthog.capture("comparison_poll_voted", { entity_a: entityA, entity_b: entityB, choice });
 }
 
 export function trackNewsletterSignup(page: string, placement: string) {
   trackEvent("newsletter_signup", { page, placement });
   trackEvent("generate_lead", { lead_source: "newsletter", page, placement });
   trackMetaEvent("Lead", { content_name: "newsletter", content_category: placement });
+  posthog.capture("newsletter_subscribed", { page, placement });
 }
 
 /**
@@ -106,6 +110,7 @@ export function trackContactFormSubmit(subject: string) {
 
 export function trackShareClick(platform: string, page: string) {
   trackEvent("share_click", { platform, page });
+  posthog.capture("share_clicked", { platform, page });
 }
 
 export function trackRelatedComparisonClick(sourcePage: string, targetPage: string) {
@@ -131,12 +136,14 @@ export function trackComparisonSearch(query: string, resultType: string, resultC
   trackEvent("comparison_search", { search_term: query, result_type: resultType });
   trackMetaEvent("Search", { search_string: query, content_category: resultType });
   clarityTagSearch(query, resultCount ?? 0);
+  posthog.capture("comparison_search_performed", { search_term: query, result_type: resultType, result_count: resultCount ?? 0 });
 }
 
 export function trackComparisonView(slug: string, category: string) {
   trackEvent("comparison_view", { comparison_slug: slug, category });
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
   clarityTagComparison(slug, category);
+  posthog.capture("comparison_viewed", { comparison_slug: slug, category });
 }
 
 export function trackPollEmailCapture(page: string) {
@@ -151,6 +158,7 @@ export function trackEmbedCtaClick(comparisonSlug: string, page: string) {
 
 export function trackCommentSubmission(comparisonId: string, page: string) {
   trackEvent("comment_submission", { comparison_id: comparisonId, page });
+  posthog.capture("comment_submitted", { comparison_id: comparisonId, page });
 }
 
 export function trackEmbedKeyRegistration(tier: string) {
@@ -208,6 +216,7 @@ export function trackComparisonTrackerSubmit(slug: string, mode: "logged_in" | "
   trackEvent("track_comparison_submit", { comparison_slug: slug, mode });
   trackEvent("generate_lead", { lead_source: "comparison_tracker", comparison_slug: slug });
   trackMetaEvent("Lead", { content_name: "comparison_tracker", content_category: slug });
+  posthog.capture("comparison_tracker_submitted", { comparison_slug: slug, mode });
 }
 
 export function trackComparisonTrackerConfirmed(slug: string) {
@@ -228,6 +237,7 @@ export function trackVerdictFeedbackVote(slug: string, vote: "up" | "down") {
   trackEvent(eventName, { comparison_slug: slug });
   clarityTagAction(eventName);
   clarityTagEngagement("engaged");
+  posthog.capture("verdict_feedback_voted", { comparison_slug: slug, vote });
 }
 
 export function trackVerdictFeedbackReasonSubmit(slug: string, vote: "up" | "down") {

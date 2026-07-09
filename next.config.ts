@@ -24,6 +24,24 @@ const nextConfig: NextConfig = {
     return [...BLOG_REDIRECTS, ...VS_REDIRECTS, ...COMPARE_REDIRECTS, ...ENTITY_REDIRECTS];
   },
 
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/array/:path*",
+        destination: "https://us-assets.i.posthog.com/array/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+    ];
+  },
+  skipTrailingSlashRedirect: true,
+
   async headers() {
     return [
       {
