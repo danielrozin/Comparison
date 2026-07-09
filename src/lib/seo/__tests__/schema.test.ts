@@ -88,10 +88,11 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     expect(Array.isArray(doc["@graph"])).toBe(true);
   });
 
-  it("emits a 7-node @graph (Article + ItemList + 3 items + BreadcrumbList + ClaimReview) when no FAQs", () => {
+  it("emits an 8-node @graph (Article + ItemList + 3 items + BreadcrumbList + ClaimReview + WebPage) when no FAQs", () => {
     const doc = comparisonPageSchema(cmp)[0] as { "@graph": Array<{ "@type": string }> };
     const types = doc["@graph"].map((n) => n["@type"]);
     // ClaimReview added for schema.org fact-check parity with the 2-entity schema (HB178).
+    // WebPage node added for bidirectional Article↔WebPage graph edge (HB325+).
     expect(types).toEqual([
       "Article",
       "ItemList",
@@ -100,10 +101,11 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
       "SoftwareApplication",
       "BreadcrumbList",
       "ClaimReview",
+      "WebPage",
     ]);
   });
 
-  it("emits an 8-node @graph including FAQPage and ClaimReview when faqs are present", () => {
+  it("emits a 9-node @graph including FAQPage, ClaimReview and WebPage when faqs are present", () => {
     const withFaqs: ComparisonPageData = {
       ...cmp,
       faqs: [{ question: "Q?", answer: "A." }],
@@ -112,7 +114,8 @@ describe("comparisonPageSchema — 3-way v1 contract (DAN-854)", () => {
     const types = doc["@graph"].map((n) => n["@type"]);
     expect(types).toContain("FAQPage");
     expect(types).toContain("ClaimReview");
-    expect(types).toHaveLength(8);
+    expect(types).toContain("WebPage");
+    expect(types).toHaveLength(9);
   });
 
   it("Article.mainEntity references the ItemList @id (#comparison)", () => {

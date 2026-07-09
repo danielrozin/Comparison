@@ -371,7 +371,15 @@ export default async function BlogPage({
     <div className="min-h-screen bg-surface">
       {/* Hero */}
       <section aria-labelledby="blog-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="blog-hero-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
+        </svg>
         <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative text-center">
           <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
@@ -401,7 +409,7 @@ export default async function BlogPage({
           <h1 id="blog-hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
             The Comparison Blog
           </h1>
-          <p className="text-lg text-primary-200 max-w-2xl mx-auto">
+          <p className="blog-hero-description text-lg text-primary-200 max-w-2xl mx-auto">
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
@@ -421,7 +429,7 @@ export default async function BlogPage({
               <Link
                 key={cat}
                 href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
-                aria-current={activeCategory === cat ? "true" : undefined}
+                aria-current={activeCategory === cat ? "page" : undefined}
                 className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
                   activeCategory === cat
                     ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"

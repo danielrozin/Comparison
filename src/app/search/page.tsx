@@ -15,6 +15,7 @@ function SearchContent() {
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [compareWith, setCompareWith] = useState("");
 
   useEffect(() => {
     setSearchQuery(query);
@@ -63,7 +64,15 @@ function SearchContent() {
     <div>
       {/* Search Hero */}
       <section aria-labelledby="search-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="search-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#search-grid)"/>
+        </svg>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -214,23 +223,20 @@ function SearchContent() {
                 placeholder="Enter something to compare..."
                 id="compare-with"
                 aria-label={`Compare ${query} with`}
+                value={compareWith}
+                onChange={(e) => setCompareWith(e.target.value)}
                 className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none w-56"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const target = (e.target as HTMLInputElement).value.trim();
-                    if (target) {
-                      window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
-                    }
+                  if (e.key === "Enter" && compareWith.trim()) {
+                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
                   }
                 }}
               />
               <button
                 type="button"
                 onClick={() => {
-                  const input = document.getElementById("compare-with") as HTMLInputElement;
-                  const target = input?.value.trim();
-                  if (target) {
-                    window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
+                  if (compareWith.trim()) {
+                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
                   }
                 }}
                 className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md hover:scale-105 active:scale-95"

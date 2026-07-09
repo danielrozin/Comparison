@@ -217,7 +217,15 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
       {/* Trending Hero */}
       <section aria-labelledby="trending-hero-heading" className="bg-gradient-to-br from-orange-600 via-amber-600 to-orange-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="trending-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#trending-grid)"/>
+        </svg>
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -249,7 +257,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               <h1 id="trending-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
                 Trending Comparisons
               </h1>
-              <p className="text-orange-100 mt-1.5 text-sm sm:text-base">
+              <p id="trending-description" className="text-orange-100 mt-1.5 text-sm sm:text-base">
                 The most popular comparisons right now
                 {allTrending.length > ITEMS_PER_PAGE && (
                   <span className="ml-1">· Showing {startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, allTrending.length)} of {allTrending.length}</span>

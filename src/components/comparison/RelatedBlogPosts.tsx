@@ -26,6 +26,13 @@ function getCategoryColor(category: string | undefined): string {
   return CATEGORY_COLORS[category.toLowerCase()] ?? "bg-primary-50 text-primary-700 border-primary-100";
 }
 
+// Excerpts are ~15% of the full article — scale to estimate total article length
+function estimateReadingTime(excerpt: string): number {
+  const words = excerpt.trim().split(/\s+/).length;
+  const estimatedTotal = words * 7;
+  return Math.max(2, Math.round(estimatedTotal / 200));
+}
+
 export function RelatedBlogPosts({
   posts,
 }: {
@@ -51,6 +58,7 @@ export function RelatedBlogPosts({
       <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 list-none">
         {posts.map((post, idx) => {
           const catColor = getCategoryColor(post.category ?? undefined);
+          const readMins = estimateReadingTime(post.excerpt || "");
           return (
             <li key={post.slug} className="flex">
             <Link
@@ -62,12 +70,20 @@ export function RelatedBlogPosts({
               <div className={`h-0.5 w-full bg-gradient-to-r ${POST_GRADIENTS[idx % POST_GRADIENTS.length]}`} />
 
               <div className="p-4 flex flex-col flex-1">
-                {/* Category badge */}
-                {post.category && (
-                  <span className={`self-start text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize mb-3 ${catColor}`}>
-                    {post.category}
+                {/* Category + reading time row */}
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                  {post.category && (
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
+                      {post.category}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1 text-[10px] text-text-secondary">
+                    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{readMins} min read</span>
                   </span>
-                )}
+                </div>
 
                 {/* Title */}
                 <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2 leading-snug mb-2 flex-1">
