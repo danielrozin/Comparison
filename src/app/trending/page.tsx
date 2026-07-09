@@ -74,20 +74,60 @@ export const metadata: Metadata = {
   },
 };
 
+const CATEGORY_ICONS: Record<string, string> = {
+  sports: "⚽", countries: "🌍", technology: "💻", products: "📦",
+  health: "💊", finance: "💰", entertainment: "🎬", history: "📜",
+  companies: "🏢", brands: "🏷️", celebrities: "⭐", software: "🖥️",
+  automotive: "🚗",
+};
+
+const CATEGORY_COLORS: Record<string, string> = {
+  sports: "bg-green-100 text-green-800 border-green-200 ring-green-400",
+  countries: "bg-orange-100 text-orange-800 border-orange-200 ring-orange-400",
+  technology: "bg-blue-100 text-blue-800 border-blue-200 ring-blue-400",
+  products: "bg-violet-100 text-violet-800 border-violet-200 ring-violet-400",
+  health: "bg-rose-100 text-rose-800 border-rose-200 ring-rose-400",
+  finance: "bg-emerald-100 text-emerald-800 border-emerald-200 ring-emerald-400",
+  entertainment: "bg-purple-100 text-purple-800 border-purple-200 ring-purple-400",
+  history: "bg-amber-100 text-amber-800 border-amber-200 ring-amber-400",
+  companies: "bg-indigo-100 text-indigo-800 border-indigo-200 ring-indigo-400",
+  brands: "bg-pink-100 text-pink-800 border-pink-200 ring-pink-400",
+  celebrities: "bg-yellow-100 text-yellow-800 border-yellow-200 ring-yellow-400",
+  software: "bg-cyan-100 text-cyan-800 border-cyan-200 ring-cyan-400",
+  automotive: "bg-slate-100 text-slate-800 border-slate-200 ring-slate-400",
+};
+
 interface PageProps {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; category?: string }>;
 }
 
 export default async function TrendingPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
+  const activeCategory = sp.category?.toLowerCase() || "";
 
   // Fetch enough items for pagination (up to 100)
   const allTrending = await getTrendingComparisons(100);
-  const totalPages = Math.ceil(allTrending.length / ITEMS_PER_PAGE);
+
+  // Collect unique categories from data
+  const categoryCounts: Record<string, number> = {};
+  for (const item of allTrending) {
+    const cat = item.category?.toLowerCase();
+    if (cat) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+  }
+  const categories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([cat]) => cat);
+
+  // Filter by category if selected
+  const filtered = activeCategory
+    ? allTrending.filter((item) => item.category?.toLowerCase() === activeCategory)
+    : allTrending;
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const safePage = Math.min(page, Math.max(1, totalPages));
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
-  const trending = allTrending.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  const trending = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
@@ -275,6 +315,62 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
+        {/* Category filter chips */}
+        {categories.length > 1 && (
+          <nav aria-label="Filter by category" className="mb-6 -mx-1">
+            <div className="flex flex-wrap gap-2 px-1">
+              <Link
+                href="/trending"
+                aria-current={!activeCategory ? "true" : undefined}
+                className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
+                  !activeCategory
+                    ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
+                    : "bg-white text-text-secondary border-border hover:border-orange-300 hover:text-text hover:bg-orange-50"
+                }`}
+              >
+                All
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
+                  {allTrending.length}
+                </span>
+              </Link>
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat;
+                const colorClass = CATEGORY_COLORS[cat] || "bg-surface-alt text-text-secondary border-border ring-gray-400";
+                const [bg, text, border, ring] = colorClass.split(" ");
+                return (
+                  <Link
+                    key={cat}
+                    href={`/trending?category=${encodeURIComponent(cat)}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
+                      isActive
+                        ? `${bg} ${text} ${border} ring-2 ${ring} shadow-sm`
+                        : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"
+                    }`}
+                  >
+                    <span aria-hidden="true">{CATEGORY_ICONS[cat] || "📊"}</span>
+                    <span className="capitalize">{cat}</span>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
+                      {categoryCounts[cat]}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+        )}
+
+        {/* Active category label */}
+        {activeCategory && (
+          <div className="mb-4 flex items-center gap-2">
+            <p className="text-sm text-text-secondary">
+              Showing <span className="font-semibold text-text capitalize">{activeCategory}</span> comparisons
+              <span className="text-text-secondary/60"> · {filtered.length} total</span>
+            </p>
+            <Link href="/trending" className="text-xs text-primary-600 hover:underline ml-2">Clear filter</Link>
+          </div>
+        )}
+
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
             <li key={item.slug} className="flex">
@@ -283,7 +379,12 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           ))}
         </ul>
 
-        <Pagination currentPage={safePage} totalPages={totalPages} basePath="/trending" />
+        <Pagination
+          currentPage={safePage}
+          totalPages={totalPages}
+          basePath="/trending"
+          extraParams={activeCategory ? { category: activeCategory } : undefined}
+        />
       </div>
     </>
   );
