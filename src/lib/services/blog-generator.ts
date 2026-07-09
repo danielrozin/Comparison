@@ -10,6 +10,7 @@ import { searchTavily } from "./tavily-service";
 import { BLOG_CATEGORIES, validateBlogCategory } from "@/lib/utils/categories";
 import { checkBlogDedup, recordDedupRejection } from "./dedup-gate";
 import { submitToIndexNow } from "@/lib/seo/indexnow";
+import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { embedText } from "./embeddings";
 
 export interface BlogArticle {
@@ -100,6 +101,9 @@ ${gscData ? `\nThis topic was discovered from search data with ${gscData.impress
 ${enrichmentContext}
 
 Remember to respond with ONLY valid JSON in the exact format specified.`;
+
+  // Stamp topic as distinct ID so blog generations are linked in PostHog AI Observability.
+  setPostHogDistinctId(`blog:${topic.slice(0, 80)}`);
 
   const message = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
