@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 
 interface PageProps {
@@ -279,7 +279,19 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     ).filter((v, i, arr) => arr.findIndex((x) => x.name === v.name) === i).slice(0, 20),
   };
 
-  return [breadcrumbs, collection, faqs, definedTermSet];
+  // WebPage node — bidirectional CollectionPage↔WebPage graph edge.
+  // CollectionPage.mainEntityOfPage points at this WebPage; this WebPage.mainEntity
+  // points back at the CollectionPage. Mirrors the pattern on comparison + alternatives pages.
+  const webpage = webPageSchema({
+    title: hub.h1,
+    description: hub.description,
+    url: hubUrl,
+    dateModified: hubToday,
+    mainEntity: { "@type": "CollectionPage", "@id": `${hubUrl}#collectionpage` },
+    speakableCssSelector: ["h1", "#hub-intro", "#hub-description"],
+  });
+
+  return [breadcrumbs, collection, faqs, definedTermSet, webpage];
 }
 
 export default async function HubPage({ params }: PageProps) {
