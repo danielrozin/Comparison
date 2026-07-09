@@ -213,28 +213,26 @@ export default async function HomePage() {
             </div>
 
             {/* Social-proof stats row */}
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-7 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <div className="flex items-center gap-1.5 text-primary-100">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-7 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm hover:bg-white/15 transition-colors">
+                <svg className="w-4 h-4 text-accent-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h7a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
                 </svg>
-                <span className="text-sm font-semibold text-white">{totalCount.toLocaleString()}+</span>
+                <span className="text-sm font-bold text-white">{totalCount.toLocaleString()}+</span>
                 <span className="text-xs text-primary-200">comparisons</span>
               </div>
-              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
-              <div className="flex items-center gap-1.5 text-primary-100">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm hover:bg-white/15 transition-colors">
+                <svg className="w-4 h-4 text-accent-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                 </svg>
-                <span className="text-sm font-semibold text-white">{CATEGORIES.length}</span>
+                <span className="text-sm font-bold text-white">{CATEGORIES.length}</span>
                 <span className="text-xs text-primary-200">categories</span>
               </div>
-              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
-              <div className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-primary-300 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm hover:bg-white/15 transition-colors">
+                <svg className="w-4 h-4 text-accent-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-xs text-primary-200">Always free · Data-backed</span>
+                <span className="text-xs text-primary-200 font-medium">Always free · Data-backed</span>
               </div>
             </div>
 
@@ -278,6 +276,16 @@ export default async function HomePage() {
 
         {/* Live activity toast — shows popular trending comparisons with simulated viewer count */}
         <LiveActivityToast items={trending.slice(0, 8).map((t) => ({ slug: t.slug, title: t.title, viewCount: t.viewCount }))} />
+
+        {/* Scroll down indicator — absolutely positioned so it sits above the wave without adding height */}
+        <div className="absolute bottom-[88px] left-0 right-0 flex justify-center animate-fade-in pointer-events-none" style={{ animationDelay: "0.7s" }} aria-hidden="true">
+          <div className="flex flex-col items-center gap-1 motion-safe:animate-bounce-gentle">
+            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
+            <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </div>
+        </div>
 
         {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
@@ -368,57 +376,76 @@ export default async function HomePage() {
           </div>
 
           <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none">
-            {latest.map((item) => {
+            {latest.map((item, cardIdx) => {
               const vsParts = item.title.split(/\s+vs\.?\s+/i);
               const latestEntityA = vsParts[0] || item.title;
               const latestEntityB = vsParts[1] || "";
+              const LATEST_GRADIENTS = [
+                "from-primary-400 to-indigo-500",
+                "from-emerald-400 to-teal-500",
+                "from-violet-400 to-purple-500",
+                "from-amber-400 to-orange-500",
+              ];
+              const stripeGradient = LATEST_GRADIENTS[cardIdx % LATEST_GRADIENTS.length];
               return (
                 <li key={item.slug} className="flex">
                 <Link
                   href={`/compare/${item.slug}`}
-                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden w-full"
+                  className="group relative bg-white rounded-2xl border border-border hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col overflow-hidden w-full"
                 >
-                  {/* Mini gradient header */}
-                  <div className="h-1.5 w-full bg-gradient-to-r from-primary-500 to-accent-500" />
+                  {/* Gradient accent stripe */}
+                  <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${stripeGradient}`} />
+                  {/* Subtle hover overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
 
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-50 text-primary-700 capitalize">
+                  <div className="relative p-4 pt-5 flex flex-col flex-1 gap-3">
+                    {/* Category + date row */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100 capitalize">
                         {item.category}
                       </span>
                       {item.updatedAt && (
-                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-xs text-text-secondary">
+                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-[10px] text-text-secondary">
                           {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </time>
                       )}
                     </div>
 
-                    {/* Entity A vs B visual */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="flex -space-x-2 flex-shrink-0">
-                        <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                    {/* Entity A vs B — side by side with VS badge */}
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm flex-shrink-0">
                           {latestEntityA.charAt(0).toUpperCase()}
                         </div>
-                        {latestEntityB && (
-                          <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                        <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight">{latestEntityA}</span>
+                      </div>
+                      <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5 flex-shrink-0">vs</span>
+                      {latestEntityB ? (
+                        <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
+                          <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight text-right">{latestEntityB}</span>
+                          <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm flex-shrink-0">
                             {latestEntityB.charAt(0).toUpperCase()}
                           </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0 space-y-0.5">
-                        <span className="text-sm font-semibold text-text truncate block group-hover:text-primary-700 transition-colors">{latestEntityA}</span>
-                        {latestEntityB && (
-                          <span className="text-sm font-semibold text-text truncate block group-hover:text-primary-700 transition-colors">{latestEntityB}</span>
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <div className="w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm flex-shrink-0 opacity-30">
+                          ?
+                        </div>
+                      )}
                     </div>
 
-                    <div className="mt-auto flex items-center gap-1 text-xs text-text-secondary">
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    {/* Footer */}
+                    <div className="mt-auto flex items-center justify-between gap-1 text-xs text-text-secondary">
+                      <div className="flex items-center gap-1">
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        {item.viewCount.toLocaleString()} views
+                      </div>
+                      <svg className="w-4 h-4 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
-                      {item.viewCount.toLocaleString()} views
                     </div>
                   </div>
                 </Link>

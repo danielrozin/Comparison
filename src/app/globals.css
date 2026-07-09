@@ -192,6 +192,22 @@ body {
 .animate-flame { animation: flame-flicker 0.8s ease-in-out infinite; }
 .animate-border-gradient { animation: border-gradient 3s ease infinite; }
 
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+.animate-bounce-gentle { animation: bounce-gentle 1.8s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
 /* Hide scrollbar for horizontal scroll strips */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -255,6 +271,8 @@ body {
   .animate-pulse-subtle,
   .animate-flame,
   .animate-border-gradient,
+  .animate-bounce-gentle,
+  .animate-shimmer,
   .animate-spin,
   .animate-pulse {
     animation: none !important;
