@@ -1,5 +1,10 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useMemo } from "react";
 import type { KeyDifference, ComparisonEntityData } from "@/types";
+
+type FilterTab = "all" | "a" | "tie" | "b";
 
 function EntityMiniAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
   const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
@@ -115,6 +120,26 @@ export function KeyDifferencesBlock({
   entityA: ComparisonEntityData;
   entityB: ComparisonEntityData;
 }) {
+  const [filter, setFilter] = useState<FilterTab>("all");
+
+  const aWins = useMemo(() => differences.filter((d) => d.winner === "a").length, [differences]);
+  const bWins = useMemo(() => differences.filter((d) => d.winner === "b").length, [differences]);
+  const ties = useMemo(() => differences.filter((d) => !d.winner).length, [differences]);
+
+  const filtered = useMemo(() => {
+    if (filter === "all") return differences;
+    if (filter === "a") return differences.filter((d) => d.winner === "a");
+    if (filter === "b") return differences.filter((d) => d.winner === "b");
+    return differences.filter((d) => !d.winner);
+  }, [differences, filter]);
+
+  const tabs: { id: FilterTab; label: string; count: number; color: string; activeColor: string }[] = [
+    { id: "all", label: "All", count: differences.length, color: "text-text-secondary border-border hover:border-primary-300 hover:text-primary-600", activeColor: "bg-primary-600 text-white border-primary-600 shadow-sm" },
+    { id: "a", label: entityA.name, count: aWins, color: "text-primary-600 border-primary-200 hover:border-primary-400 hover:bg-primary-50", activeColor: "bg-primary-600 text-white border-primary-600 shadow-sm" },
+    { id: "tie", label: "Tied", count: ties, color: "text-amber-600 border-amber-200 hover:border-amber-400 hover:bg-amber-50", activeColor: "bg-amber-500 text-white border-amber-500 shadow-sm" },
+    { id: "b", label: entityB.name, count: bWins, color: "text-accent-600 border-accent-200 hover:border-accent-400 hover:bg-accent-50", activeColor: "bg-accent-600 text-white border-accent-600 shadow-sm" },
+  ];
+
   return (
     <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
       <div className="flex items-center gap-3 mb-4">
@@ -125,13 +150,49 @@ export function KeyDifferencesBlock({
         </div>
         <div className="flex-1 min-w-0">
           <h2 id="key-differences-heading" className="text-2xl font-display font-bold text-text">Key Differences</h2>
-          <p className="text-xs text-text-secondary mt-0.5">{differences.length} attribute{differences.length !== 1 ? "s" : ""} compared head-to-head</p>
+          <p className="text-xs text-text-secondary mt-0.5">
+            {filter === "all"
+              ? `${differences.length} attribute${differences.length !== 1 ? "s" : ""} compared head-to-head`
+              : `Showing ${filtered.length} of ${differences.length} attributes`}
+          </p>
         </div>
       </div>
 
       <ScorecardHeader differences={differences} entityA={entityA} entityB={entityB} />
 
+      {/* Filter tabs */}
+      <div className="flex items-center gap-2 flex-wrap mb-4" role="group" aria-label="Filter by winner">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setFilter(tab.id)}
+            aria-pressed={filter === tab.id}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
+              filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
+            }`}
+          >
+            {tab.label}
+            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
+              filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
+            }`}>
+              {tab.count}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {filtered.length === 0 && (
+        <div className="text-center py-10 text-text-secondary text-sm">
+          <svg className="w-8 h-8 mx-auto mb-3 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          No attributes match this filter.
+        </div>
+      )}
+
       {/* Desktop: 3-column grid layout */}
+      {filtered.length > 0 && (
       <div className="hidden sm:block bg-white border border-border rounded-xl overflow-hidden shadow-sm">
         {/* Header */}
         <div className="grid grid-cols-[1fr_auto_1fr] bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900">
@@ -148,11 +209,11 @@ export function KeyDifferencesBlock({
 
         {/* Rows */}
         <ul role="list" aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="list-none">
-        {differences.map((diff, i) => (
+        {filtered.map((diff, i) => (
           <li
             key={diff.label}
             className={`grid grid-cols-[1fr_auto_1fr] ${
-              i !== differences.length - 1 ? "border-b border-border/50" : ""
+              i !== filtered.length - 1 ? "border-b border-border/50" : ""
             } ${
               diff.winner === "a"
                 ? "border-l-[3px] border-l-green-500"
@@ -198,10 +259,12 @@ export function KeyDifferencesBlock({
         ))}
         </ul>
       </div>
+      )}
 
       {/* Mobile: Stacked card layout */}
+      {filtered.length > 0 && (
       <ul role="list" aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="sm:hidden space-y-3 list-none">
-        {differences.map((diff, i) => (
+        {filtered.map((diff, i) => (
           <li
             key={diff.label}
             className={`bg-white border border-border rounded-xl overflow-hidden ${
@@ -259,6 +322,7 @@ export function KeyDifferencesBlock({
           </li>
         ))}
       </ul>
+      )}
     </section>
   );
 }

@@ -3,6 +3,8 @@
 import { useState, useMemo, useCallback } from "react";
 import type { FAQData } from "@/types";
 
+const INITIAL_FAQ_SHOW = 5;
+
 function highlight(text: string, query: string): React.ReactNode {
   if (!query) return text;
   const idx = text.toLowerCase().indexOf(query.toLowerCase());
@@ -19,12 +21,14 @@ function highlight(text: string, query: string): React.ReactNode {
 export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [search, setSearch] = useState("");
+  const [showAll, setShowAll] = useState(false);
   const allOpen = openIndex === -1;
 
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setOpenIndex(-1);
+    setShowAll(true); // show all when searching
   }, []);
 
   const filtered = useMemo(() => {
@@ -34,6 +38,13 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
       .map((f, i) => ({ ...f, originalIndex: i }))
       .filter((f) => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q));
   }, [faqs, search]);
+
+  const visibleItems = useMemo(() => {
+    if (search.trim() || showAll) return filtered;
+    return filtered.slice(0, INITIAL_FAQ_SHOW);
+  }, [filtered, showAll, search]);
+
+  const hiddenCount = search.trim() ? 0 : Math.max(0, filtered.length - INITIAL_FAQ_SHOW);
 
   return (
     <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
@@ -110,7 +121,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
       )}
 
       <ol role="list" className="space-y-2 list-none">
-        {filtered.map((faq, listIdx) => {
+        {visibleItems.map((faq, listIdx) => {
           const i = faq.originalIndex;
           const isOpen = openIndex === i || openIndex === -1;
           const answerId = `faq-answer-${i}`;
@@ -184,6 +195,34 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
           );
         })}
       </ol>
+
+      {/* Show more / show less toggle */}
+      {hiddenCount > 0 && !showAll && (
+        <button
+          type="button"
+          onClick={() => setShowAll(true)}
+          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-primary-600 hover:text-primary-700 rounded-xl border border-dashed border-primary-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-150"
+          aria-label={`Show ${hiddenCount} more questions`}
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          Show {hiddenCount} more question{hiddenCount !== 1 ? "s" : ""}
+        </button>
+      )}
+      {showAll && !search.trim() && faqs.length > INITIAL_FAQ_SHOW && (
+        <button
+          type="button"
+          onClick={() => { setShowAll(false); setOpenIndex(0); }}
+          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-text-secondary hover:text-text rounded-xl border border-dashed border-border hover:border-border transition-all duration-150"
+          aria-label="Show fewer questions"
+        >
+          <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          Show fewer questions
+        </button>
+      )}
     </section>
   );
 }
