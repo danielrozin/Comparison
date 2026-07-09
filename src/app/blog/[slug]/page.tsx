@@ -451,6 +451,17 @@ export default async function BlogPostPage({
             "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
             "https://www.facebook.com/daniel.rozin.94",
           ],
+          // knowsAbout — topic-expertise E-E-A-T signal; AI crawlers (Perplexity, ChatGPT)
+          // use this to elevate citations when author expertise matches the article subject.
+          knowsAbout: [
+            { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+            { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+            { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+            { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+            { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+            { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+            { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+          ],
         },
     publisher: {
       "@type": "Organization",
@@ -582,6 +593,22 @@ export default async function BlogPostPage({
         name: comparisonTitles?.[s] ?? s,
         url: `${SITE_URL}/compare/${s}`,
       })),
+    }),
+    // correction — when updatedAt differs from publishedAt, emit a CorrectionComment.
+    // Google E-E-A-T evaluators treat `correction` as a strong content-maintenance signal:
+    // it proves editorial accountability and active fact-checking, not a set-and-forget page.
+    // AI crawlers (Perplexity, ChatGPT) also weight this positively when evaluating source reliability.
+    ...(article.updatedAt && article.publishedAt &&
+      new Date(article.updatedAt).getTime() > new Date(article.publishedAt).getTime() + 60_000 && {
+      correction: {
+        "@type": "CorrectionComment",
+        "@id": `${articleUrl}#correction`,
+        name: `Updated: ${article.title}`,
+        text: `This article was reviewed and updated on ${new Date(article.updatedAt).toISOString().slice(0, 10)} to reflect the latest information. For corrections or feedback, contact ${SITE_URL}/contact.`,
+        dateCreated: new Date(article.updatedAt).toISOString(),
+        url: `${SITE_URL}/how-we-write-verdicts`,
+        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      },
     }),
     // mentions — named entities + linked comparison pages discussed in this article.
     // Tag-typed entities (HB139 pattern) + Article-typed comparison nodes merged
