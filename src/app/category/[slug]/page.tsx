@@ -322,7 +322,52 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     // discussionUrl — Reddit search for category-level community comparisons.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(category.name.toLowerCase())}+comparison&type=link&sort=relevance`,
   };
-  const schemaData = [breadcrumbData, categorySchemaObj];
+  // Dataset node — Google Dataset Search and AI research tools (Perplexity, ChatGPT) index
+  // Dataset nodes separately from CollectionPage. Emitting one here gives the category
+  // a machine-readable data fingerprint that AI crawlers use to score source authority
+  // and disambiguate the category from generic comparison query results.
+  const categoryDatasetObj = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${categoryUrl}#dataset`,
+    name: `${category.name} Comparisons Dataset`,
+    description: `Structured dataset of ${allComparisons.length} ${category.name.toLowerCase()} side-by-side comparisons with attribute tables, verdicts, community votes, and entity profiles.`,
+    url: categoryUrl,
+    identifier: `${categoryUrl}#dataset`,
+    inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateModified: categoryToday,
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    numberOfItems: allComparisons.length,
+    keywords: `${category.name} comparison, ${category.name} vs, ${category.name} data, side-by-side analysis`,
+    about: {
+      "@type": "Thing",
+      name: `${category.name} Comparisons`,
+      ...(categoryWikiUrl && { "@id": categoryWikiUrl, sameAs: categoryWikiUrl }),
+    },
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
+        name: `${category.name} Comparisons JSON Feed`,
+        description: `Paginated JSON DataFeed of all ${category.name.toLowerCase()} comparison pages with slugs, titles, and verdicts`,
+      },
+    ],
+    // isPartOf links Dataset back to the site-level DataCatalog for AI graph traversal.
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    // includedInDataCatalog — Google Dataset Search primary indexing signal.
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    // potentialAction ReadAction — tells Dataset Search this data is browsable.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
+    },
+  };
+  const schemaData = [breadcrumbData, categorySchemaObj, categoryDatasetObj];
 
   const basePath = `/category/${slug}`;
 

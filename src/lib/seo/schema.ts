@@ -2018,7 +2018,48 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      // knowsAbout — topic-expertise E-E-A-T parity with 2-entity comparisonPageSchema.
+      // AI crawlers match author expertise to query topic for citation confidence scoring.
+      knowsAbout: [
+        { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+        { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+        { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+        { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+        { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+        { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+        { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+        { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+        { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+        { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+      ],
+    },
+    // correction — CorrectionComment when updatedAt materially exceeds publishedAt.
+    // Parity with 2-entity path; Google E-E-A-T and AI source-reliability weighting.
+    ...(() => {
+      try {
+        const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
+        const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
+        if (upd > pub + 60_000) {
+          return {
+            correction: {
+              "@type": "CorrectionComment",
+              "@id": `${url}#correction`,
+              name: `Updated: ${comparison.title}`,
+              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
+              url: `${SITE_URL}/how-we-write-verdicts`,
+              author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+            },
+          };
+        }
+      } catch { /* ignore date parse errors */ }
+      return {};
+    })(),
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
