@@ -7,6 +7,7 @@ import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount 
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { TrendingCard } from "@/components/home/TrendingCard";
@@ -292,6 +293,7 @@ export default async function HomePage() {
       <FeaturedComparisons items={FEATURED_COMPARISONS} />
 
       {/* Trending Comparisons */}
+      <ScrollReveal>
       <section aria-labelledby="trending-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
@@ -324,8 +326,10 @@ export default async function HomePage() {
           ))}
         </ul>
       </section>
+      </ScrollReveal>
 
       {/* Latest Comparisons */}
+      <ScrollReveal delay={100}>
       <section aria-labelledby="latest-heading" className="bg-surface-alt py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
@@ -410,8 +414,10 @@ export default async function HomePage() {
           </ul>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* Categories */}
+      <ScrollReveal delay={100}>
       <section aria-labelledby="browse-category-heading" className="bg-surface py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
@@ -446,8 +452,10 @@ export default async function HomePage() {
           </ul>
         </div>
       </section>
+      </ScrollReveal>
 
       {/* How It Works */}
+      <ScrollReveal delay={150}>
       <section aria-labelledby="how-it-works-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 id="how-it-works-heading" className="text-2xl sm:text-3xl font-display font-bold text-text text-center mb-16">
           How It Works
@@ -501,6 +509,7 @@ export default async function HomePage() {
           ))}
         </ol>
       </section>
+      </ScrollReveal>
 
       {/* Trust Section */}
       <section aria-labelledby="trust-heading" className="bg-surface-alt py-16">

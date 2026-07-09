@@ -25,3 +25,8 @@ export const ReadingProgress = dynamic(
   () => import("@/components/layout/ReadingProgress").then((m) => ({ default: m.ReadingProgress })),
   { ssr: false, loading: () => null }
 );
+
+export const SearchOverlay = dynamic(
+  () => import("@/components/layout/SearchOverlay").then((m) => ({ default: m.SearchOverlay })),
+  { ssr: false, loading: () => null }
+);
