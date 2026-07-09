@@ -132,6 +132,7 @@ import {
   BackToResults,
   TableOfContents,
   StickyCompareBar,
+  FloatingShareButton,
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
@@ -877,6 +878,9 @@ export default function ComparisonPage(props: Props) {
           { id: "comments", label: "Comments" },
         ]}
       />
+
+      {/* Floating mobile share button — visible only on sm and below */}
+      <FloatingShareButton title={comparison.title} slug={comparison.slug} />
 
       {/* Sticky mini entity bar — slides in after scrolling past the hero */}
       {comparison.entities.length >= 2 && (

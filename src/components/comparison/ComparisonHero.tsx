@@ -2,6 +2,20 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import { AffiliateButton } from "./AffiliateButton";
 
+function WinnerBadge() {
+  return (
+    <div
+      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 shadow-md shadow-amber-400/40 ring-1 ring-amber-300/60 whitespace-nowrap z-10"
+      aria-label="Winner"
+    >
+      <svg className="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+      Our Pick
+    </div>
+  );
+}
+
 const AVATAR_PALETTES = [
   { bg: "from-indigo-500 to-blue-400", ring: "ring-indigo-400/50", shadow: "shadow-[0_0_40px_rgba(99,102,241,0.5)]" },
   { bg: "from-violet-500 to-purple-400", ring: "ring-violet-400/50", shadow: "shadow-[0_0_40px_rgba(167,139,250,0.5)]" },
@@ -109,14 +123,17 @@ function ScoreBar({
 function EntityCard({
   entity,
   variant,
+  isWinner,
 }: {
   entity: ComparisonEntityData;
   variant: "a" | "b";
+  isWinner?: boolean;
 }) {
-  const borderClass =
-    variant === "a"
-      ? "border-primary-400/30 hover:border-primary-400/60"
-      : "border-accent-400/30 hover:border-accent-400/60";
+  const borderClass = isWinner
+    ? "border-amber-400/60 ring-1 ring-amber-400/30"
+    : variant === "a"
+    ? "border-primary-400/30 hover:border-primary-400/60"
+    : "border-accent-400/30 hover:border-accent-400/60";
   const pillClass =
     variant === "a"
       ? "text-primary-200 bg-primary-600/30 border border-primary-400/30"
@@ -124,8 +141,9 @@ function EntityCard({
 
   return (
     <div
-      className={`bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
+      className={`relative bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
     >
+      {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
       <h2 className="text-base sm:text-xl font-bold text-white mb-1">{entity.name}</h2>
       {entity.shortDesc && (
@@ -146,11 +164,25 @@ function EntityCard({
   );
 }
 
+function resolveWinner(comparison: ComparisonPageData): "a" | "b" | null {
+  const winnerName = comparison.quickAnswer?.winnerName;
+  if (!winnerName) return null;
+  const a = comparison.entities[0];
+  const b = comparison.entities[1];
+  if (!a || !b) return null;
+  const lc = winnerName.toLowerCase().trim();
+  if (a.name.toLowerCase().trim() === lc) return "a";
+  if (b.name.toLowerCase().trim() === lc) return "b";
+  return null;
+}
+
 export function ComparisonHero({ comparison }: { comparison: ComparisonPageData }) {
   const entityA = comparison.entities[0];
   const entityB = comparison.entities[1];
 
   if (!entityA || !entityB) return null;
+
+  const winner = resolveWinner(comparison);
 
   return (
     <section aria-labelledby="comparison-hero-heading" className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white overflow-hidden">
@@ -215,7 +247,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Entity VS Cards */}
         <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
-          <EntityCard entity={entityA} variant="a" />
+          <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
 
           {/* VS Badge */}
           <div className="flex items-center justify-center self-center">
@@ -227,7 +259,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             </div>
           </div>
 
-          <EntityCard entity={entityB} variant="b" />
+          <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
         </div>
       </div>
 

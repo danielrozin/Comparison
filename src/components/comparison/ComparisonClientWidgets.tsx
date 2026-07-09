@@ -99,3 +99,8 @@ export const StickyCompareBar = dynamic(
   () => import("@/components/comparison/StickyCompareBar").then((m) => ({ default: m.StickyCompareBar })),
   { ssr: false, loading: () => null }
 );
+
+export const FloatingShareButton = dynamic(
+  () => import("@/components/engagement/FloatingShareButton").then((m) => ({ default: m.FloatingShareButton })),
+  { ssr: false, loading: () => null }
+);
