@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 10, 2026 (HB342)*
+*Last updated: July 10, 2026 (HB353)*
 
 ## What We Do
 
@@ -215,6 +215,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB338: `Article.citation` typed object upgrade — comparison page Article citations (both 2-entity and multi-entity paths) upgraded from bare `CreativeWork` to `WebPage` (external sources with domain-extracted publisher) and `Article` (Wikipedia references with publisher: Wikipedia org node); enables AI fact-checkers to follow typed citation chains and resolve publisher provenance without body parsing; `llms.txt` freshness updated to July 9, 2026
 - HB341: `Article.teaches` upgraded from plain string to typed `DefinedTerm` node with `@id` + `inDefinedTermSet` edge on all comparison pages (~3000 pages, 2-entity + multi-entity); enables AI KG traversal via teaches→DefinedTermSet edge. Blog "X vs Y" articles gain `ClaimReview` schema nodes (auto-parsed from title) for Google Fact Check eligibility + AI E-E-A-T signal; ClaimReview wired into `Article.hasPart`; commit e07314f
 - HB342: `DataDownload.potentialAction ReadAction` added to all DataDownload nodes across DataCatalog (11 API endpoints) and comparison Dataset.distribution (both 2-entity and multi-entity paths, ~3000 pages); also adds `/api/knowledge-graph/{slug}` as a 3rd DataDownload per comparison Dataset; Google Dataset Search "Access Data" buttons now triggered; commit 0c02729
+- HB352: `reviews/[slug]` upgraded from `Product` → `SoftwareApplication` (with `additionalType: Product`) as the primary schema @type; added `applicationCategory`, `operatingSystem`, `offers`, and `ratingExplanation` on the `AggregateRating` node; unlocks Google Software rich result carousel and improves AI Overviews software panel signals for "[tool] reviews" queries; commit 91231df
+- HB353: `DataDownload.potentialAction ReadAction` parity sweep — added to DataDownload nodes in trending Dataset, category Dataset, and subcategory Dataset (previously only comparison pages had this from HB342); Google Dataset Search "Access Data" button now triggers on all dataset-emitting page types; `ai-plugin.json` last_updated refreshed to 2026-07-10; `llms.txt` freshness updated
 
 ## Categories & Scale
 

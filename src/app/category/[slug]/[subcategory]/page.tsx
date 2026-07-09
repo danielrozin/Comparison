@@ -289,6 +289,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
         contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
         name: `${subcat.name} Comparisons JSON Feed`,
         description: `Paginated JSON DataFeed of all ${subcat.name.toLowerCase()} comparison pages`,
+        potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json` },
       },
     ],
     isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },

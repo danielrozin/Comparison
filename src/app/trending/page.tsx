@@ -269,6 +269,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&format=json`,
         name: "Comparisons JSON DataFeed",
         description: "Paginated JSON feed of all comparison pages with slugs, titles, and verdicts",
+        potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/api/sitemap-data?type=comparison&format=json` },
       },
     ],
     isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },

@@ -355,6 +355,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
         name: `${category.name} Comparisons JSON Feed`,
         description: `Paginated JSON DataFeed of all ${category.name.toLowerCase()} comparison pages with slugs, titles, and verdicts`,
+        potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json` },
       },
     ],
     // isPartOf links Dataset back to the site-level DataCatalog for AI graph traversal.
