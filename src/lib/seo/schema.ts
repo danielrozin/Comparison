@@ -1250,6 +1250,10 @@ export function comparisonPageSchema(
     // LLMs and educational AI classifiers route "how do I decide between X and Y"
     // queries to decision-support content when `teaches` is present.
     teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+    // assesses — the specific competency or claim this Article evaluates.
+    // Google AI Overviews and LLM answer engines use assesses to understand the
+    // evaluation framing so they can route "which is better" decision queries here.
+    assesses: `Which is better: ${comparison.entities.map((e) => e.name).join(" or ")}`,
     // educationalUse — "comparison" signals structured decision-support utility.
     // AI systems (Perplexity, ChatGPT, Google AI Overviews) use this to rank
     // comparison pages above generic articles for decision-intent queries.
@@ -2145,6 +2149,8 @@ function buildMultiEntityGraph(
     ...(comparison.category && { articleSection: comparison.category }),
     // teaches — decision-skill mapping for LLM educational classifiers (parity with 2-entity)
     teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    // assesses — evaluation framing for AI answer engines (parity with 2-entity path)
+    assesses: `Which is best: ${comparison.entities.map((e) => e.name).join(", ")}`,
     educationalUse: "comparison",
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
     tableOfContents: [
@@ -2260,7 +2266,10 @@ function buildMultiEntityGraph(
         "@type": "Question",
         "@id": `${url}#q${i + 1}`,
         name: faq.question,
+        text: faq.question,
+        url: `${url}#q${i + 1}`,
         answerCount: 1,
+        upvoteCount: 1,
         dateCreated: faqDatePublished,
         dateModified: faqDateModified,
         acceptedAnswer: {
@@ -2589,9 +2598,20 @@ export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": strin
       // individual Q&A pairs by URL fragment without loading the full page.
       ...(id && { "@id": `${id.replace(/#faq$/, "")}#q${i + 1}` }),
       name: faq.question,
+      // text — duplicate of name; required by QAPage spec for Answer extraction tools
+      // that prefer text over name on the Question node (e.g. schema.org validators,
+      // Bing structured data, some AI extractors).
+      text: faq.question,
+      // url — deep-link anchor for this specific Q&A pair; Google rich results use
+      // this to navigate directly to the answer when the question matches a voice query.
+      ...(id && { url: `${id.replace(/#faq$/, "")}#q${i + 1}` }),
       // answerCount — signals exactly one accepted answer; required for FAQ rich results
       // eligibility in Google Search even when upvoteCount is 0.
       answerCount: 1,
+      // upvoteCount on Question — editorial confidence signal at the question level;
+      // AI answer engines use this to rank Q&A pairs within a FAQPage when multiple
+      // questions match the same query intent.
+      upvoteCount: 1,
       // dateCreated — temporal freshness per Q&A pair; AI engines (Perplexity, ChatGPT)
       // qualify citations with dates ("as of …") and prefer fresher Q&A nodes over
       // undated ones when synthesising multi-source responses.
