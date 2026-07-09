@@ -250,6 +250,10 @@ export async function GET() {
   lines.push("- WebPage node in `/api/v1/schema/{slug}` gains `primaryImageOfPage: ImageObject` (OG image, 1200×630, `@id: #primaryImage`) so Google and AI crawlers use the comparison card image as the canonical visual; also adds `isAccessibleForFree: true` + `conditionsOfAccess: \"Free\"` on WebPage");
   lines.push("- DataCatalog schema gains `abstract` (AI KG citation summary), `potentialAction: SearchAction` pointing to `/api/v1/search`, and `dateModified` upgraded from YYYY-MM-DD to full ISO 8601 datetime");
   lines.push("- Dataset node inside DataCatalog and WebApplication schema `dateModified` fields upgraded from `.slice(0,10)` truncation to full ISO 8601 — 3 truncation sites fixed in schema.ts");
+  lines.push("- `Answer.inLanguage: \"en-US\"` added to shared `faqSchema` `acceptedAnswer` nodes — now propagates to ALL FAQ-bearing pages (entity, hub, blog, comparison, best-of, alternatives) not just API routes; language-scoped answer extraction across the entire site");
+  lines.push("- Country entity `geo: { \"@type\": \"GeoShape\", name }` + `containedInPlace.sameAs: wikipedia/World` now applied to 2-entity comparison path, achieving full parity with multi-entity path — every comparison involving country entities now emits geo-typed structured data");
+  lines.push("- `ClaimReview.inLanguage: \"en-US\"` + `ClaimReview.itemReviewed.inLanguage: \"en-US\"` added to all 3 ClaimReview emit paths (2-entity comparison, multi-entity comparison, `claimReviewSchema` export) — language-scoped fact-checking across all comparison types");
+  lines.push("- `SportsEvent.inLanguage: \"en-US\"` + `SportsEvent.startDate` added to sports-category 2-entity comparisons — enables language-scoped sports-event indexing and Event rich results eligibility (startDate is required by Google for Event rich results)");
 
   const body = lines.join("\n");
 

@@ -1000,7 +1000,10 @@ export function comparisonPageSchema(
         ...(schType === "Country" && {
           additionalType: "https://schema.org/Country",
           sameAs: entityWikipediaSameAs(e.name),
-          containedInPlace: { "@type": "Place", name: "Earth" },
+          // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
+          // Perplexity/ChatGPT country-query routing — parity with multi-entity path.
+          geo: { "@type": "GeoShape", name: e.name },
+          containedInPlace: { "@type": "Place", name: "World", sameAs: "https://en.wikipedia.org/wiki/World" },
         }),
         // SportsTeam enrichment — `sport` is a required Knowledge Graph field for teams.
         // AI sports query engines (Perplexity, ChatGPT) use it to route "X vs Y team"
@@ -1261,6 +1264,9 @@ export function comparisonPageSchema(
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
       url,
+      // inLanguage — language-scoped fact-checking for AI engines; enables language-qualified
+      // citations ("According to [source] (en-US), ...") in ChatGPT, Perplexity, and Google Fact Check.
+      inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
       claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
@@ -1276,6 +1282,8 @@ export function comparisonPageSchema(
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
+        // inLanguage on itemReviewed — language-scopes the reviewed claim for multilingual AI crawlers.
+        inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
@@ -1528,6 +1536,12 @@ export function comparisonPageSchema(
       name: comparison.title,
       description: comparison.shortAnswer || comparison.metadata.metaDescription,
       url,
+      // inLanguage — language-scoped sports event for Google Sports and Perplexity sports-mode
+      // carousels; prevents entity disambiguation errors in multilingual KG merges.
+      inLanguage: "en-US",
+      // startDate — required for Event rich results; maps to comparison publish date as the
+      // "event record" creation date when no actual event date is known.
+      startDate: comparison.metadata.publishedAt ?? comparison.metadata.updatedAt,
       eventStatus: "https://schema.org/EventScheduled",
       eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
       competitor: [
@@ -2053,6 +2067,7 @@ function buildMultiEntityGraph(
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
       url,
+      inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
       claimReviewed: `${comparison.entities.map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
@@ -2068,6 +2083,7 @@ function buildMultiEntityGraph(
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
+        inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
@@ -2094,6 +2110,7 @@ function buildMultiEntityGraph(
           "@type": "Answer",
           "@id": `${url}#a${i + 1}`,
           text: faq.answer,
+          inLanguage: "en-US",
           upvoteCount: 1,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         },
@@ -2356,6 +2373,10 @@ export function faqSchema(faqs: FAQData[], id?: string) {
         // other pages that cite the same answer fragment via the #a anchor.
         ...(id && { "@id": `${id.replace(/#faq$/, "")}#a${i + 1}` }),
         text: faq.answer,
+        // inLanguage — language-scoped answer extraction for multilingual AI engines;
+        // Perplexity/ChatGPT/Gemini use this to qualify citations as English-language only,
+        // preventing cross-language entity confusion in multi-lingual KG merges.
+        inLanguage: "en-US",
         // upvoteCount — editorial confidence signal for AI answer engine ranking.
         upvoteCount: 1,
         // author — attributes the answer to our editorial org; AI answer engines use
@@ -2895,6 +2916,7 @@ export function claimReviewSchema(opts: {
     "@type": "ClaimReview",
     "@id": `${url}#claim-review`,
     url,
+    inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     claimReviewed: claimText,
@@ -2919,6 +2941,7 @@ export function claimReviewSchema(opts: {
     },
     itemReviewed: {
       "@type": "Claim",
+      inLanguage: "en-US",
       name: claimText,
       text: opts.shortAnswer,
       author: {
