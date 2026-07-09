@@ -1,5 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import type { ComparisonEntityData } from "@/types";
+
+const INITIAL_SHOW = 5;
 
 function EntityAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
   const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
@@ -20,7 +25,42 @@ function EntityAvatar({ entity, variant }: { entity: ComparisonEntityData; varia
   );
 }
 
+function ShowMoreButton({ hidden, onToggle, label }: { hidden: number; onToggle: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
+      aria-label={label}
+    >
+      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+      Show {hidden} more
+    </button>
+  );
+}
+
+function ShowLessButton({ onToggle }: { onToggle: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
+      aria-label="Show less"
+    >
+      <svg className="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+      Show less
+    </button>
+  );
+}
+
 export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }) {
+  const [showAllPros, setShowAllPros] = useState<boolean[]>(entities.map(() => false));
+  const [showAllCons, setShowAllCons] = useState<boolean[]>(entities.map(() => false));
+
   const totalPros = entities.reduce((s, e) => s + e.pros.length, 0);
   const totalCons = entities.reduce((s, e) => s + e.cons.length, 0);
 
@@ -55,6 +95,16 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
         {entities.map((entity, idx) => {
           const total = entity.pros.length + entity.cons.length;
           const prosPercent = total > 0 ? Math.round((entity.pros.length / total) * 100) : 50;
+          const prosExpanded = showAllPros[idx] ?? false;
+          const consExpanded = showAllCons[idx] ?? false;
+          const visiblePros = prosExpanded ? entity.pros : entity.pros.slice(0, INITIAL_SHOW);
+          const visibleCons = consExpanded ? entity.cons : entity.cons.slice(0, INITIAL_SHOW);
+          const hiddenPros = entity.pros.length - INITIAL_SHOW;
+          const hiddenCons = entity.cons.length - INITIAL_SHOW;
+
+          const togglePros = () => setShowAllPros((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
+          const toggleCons = () => setShowAllCons((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
+
           return (
             <div
               key={entity.id}
@@ -128,7 +178,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       <h4 className="text-xs font-bold text-green-700 uppercase tracking-widest">Pros</h4>
                     </div>
                     <ul aria-label={`Pros for ${entity.name}`} className="space-y-1">
-                      {entity.pros.map((pro, i) => (
+                      {visiblePros.map((pro, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -139,6 +189,12 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         </li>
                       ))}
                     </ul>
+                    {hiddenPros > 0 && !prosExpanded && (
+                      <ShowMoreButton hidden={hiddenPros} onToggle={togglePros} label={`Show ${hiddenPros} more pros for ${entity.name}`} />
+                    )}
+                    {prosExpanded && entity.pros.length > INITIAL_SHOW && (
+                      <ShowLessButton onToggle={togglePros} />
+                    )}
                   </div>
                 )}
 
@@ -158,7 +214,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       <h4 className="text-xs font-bold text-red-600 uppercase tracking-widest">Cons</h4>
                     </div>
                     <ul aria-label={`Cons for ${entity.name}`} className="space-y-1">
-                      {entity.cons.map((con, i) => (
+                      {visibleCons.map((con, i) => (
                         <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -169,6 +225,12 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         </li>
                       ))}
                     </ul>
+                    {hiddenCons > 0 && !consExpanded && (
+                      <ShowMoreButton hidden={hiddenCons} onToggle={toggleCons} label={`Show ${hiddenCons} more cons for ${entity.name}`} />
+                    )}
+                    {consExpanded && entity.cons.length > INITIAL_SHOW && (
+                      <ShowLessButton onToggle={toggleCons} />
+                    )}
                   </div>
                 )}
               </div>
