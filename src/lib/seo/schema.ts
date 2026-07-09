@@ -1059,6 +1059,10 @@ export function comparisonPageSchema(
     // license + usageInfo — signals AI crawlers that this content is citable under CC-BY-4.0.
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    // encodingFormat — MIME types for AI content-type routing. Crawlers (Perplexity, ChatGPT,
+    // Common Crawl) use this to classify whether the page is parseable as HTML and JSON-LD
+    // without probing the Content-Type header, improving content-type routing accuracy.
+    encodingFormat: ["text/html", "application/ld+json"],
     // copyrightNotice — human-readable attribution string used by AI training pipelines
     // and syndication tools to generate correct attribution when citing this content.
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -1192,6 +1196,9 @@ export function comparisonPageSchema(
       const parts = [
         ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
+        // attribute vocabulary directly from the Article node without loading the Dataset first.
+        ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         // @id matches the ProfilePage's own @id so cross-document merging works correctly.
@@ -1887,6 +1894,7 @@ function buildMultiEntityGraph(
     contentReferenceTime: comparison.metadata.updatedAt,
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
+    encodingFormat: ["text/html", "application/ld+json"],
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
     copyrightYear: new Date().getFullYear(),
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -1993,6 +2001,7 @@ function buildMultiEntityGraph(
       const parts = [
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
