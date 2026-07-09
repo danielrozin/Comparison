@@ -260,7 +260,10 @@ export async function GET() {
   lines.push("- `ListItem.item` upgraded to typed entity references `{ \"@type\": entityType, \"@id\": profileUrl }` on both 2-entity and multi-entity comparison ItemList nodes — AI crawlers traverse ItemList→entity ProfilePage in one hop without inferring type");
   lines.push("- `webPageSchema()` function enhanced with `mainEntity` + `speakableCssSelector` params; 2-entity compare page passes `mainEntity: Article @id` and comparison-specific speakable selectors — eliminates duplicate WebPage node conflict");
   lines.push("- `/api/faq/{slug}` route: `acceptedAnswer` now includes `author`, `upvoteCount`, `answerCount`, `@id` anchors on Question/Answer; speakable `cssSelector` aligned to `[.faq-answer]` matching embedded schema (was `[#faq, .faq-item]`)");
-
+  lines.push("- `WebPage` node added to hub pages (`/hub/{slug}`) via `webPageSchema()` — `mainEntity → CollectionPage` bidirectional edge; `speakableCssSelector: [h1, #hub-intro, #hub-description]` for AEO voice extraction; mirrors pattern on compare + alternatives pages (HB327)");
+  lines.push("- `Dataset.interactionStatistic: InteractionCounter(ReadAction, viewCount)` added to both 2-entity and multi-entity comparison Dataset nodes — view engagement signals visible to Google Dataset Search and AI data-pipeline crawlers (Perplexity data mode, Kaggle AI, Semantic Scholar) (HB328)");
+  lines.push("- Multi-entity `Dataset` gains `educationalLevel: \"General\"` + `educationalUse: \"research\"` — aligns with 2-entity Dataset parity; educational classifier signals for AI research indexing (HB328)");
+  lines.push("- `FAQPage.about[]` added to both 2-entity and multi-entity comparison FAQ schemas — typed entity references linking FAQ answers to their subject entities; enables AI engines to attribute Q&A pairs without re-parsing parent Article; `faqSchema()` export updated with optional `about` param (HB328)");
 
   const body = lines.join("\n");
 

@@ -1336,7 +1336,15 @@ export function comparisonPageSchema(
 
   // 3. FAQPage if FAQs exist
   if (comparison.faqs.length > 0) {
-    schemas.push(faqSchema(comparison.faqs, `${url}#faq`));
+    const faqAbout = comparison.entities
+      .filter((e) => e.slug)
+      .map((e) => ({
+        "@type": entitySchemaType(e.entityType),
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        url: `${SITE_URL}/entity/${e.slug}`,
+      }));
+    schemas.push(faqSchema(comparison.faqs, `${url}#faq`, faqAbout));
   }
 
   // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
@@ -1519,6 +1527,17 @@ export function comparisonPageSchema(
           name: s.name,
           url: s.url,
         })),
+      }),
+      // interactionStatistic on Dataset — ReadAction signals to Google Dataset Search
+      // and AI data-pipeline crawlers that this dataset has real human engagement.
+      // Indexed alongside view counts on the Article; kept separate so dataset-specific
+      // crawlers (Kaggle AI, Semantic Scholar, Perplexity data mode) also see the signal.
+      ...(viewCount > 0 && {
+        interactionStatistic: {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ReadAction",
+          userInteractionCount: viewCount,
+        },
       }),
     });
   }
@@ -2161,6 +2180,16 @@ function buildMultiEntityGraph(
       "@id": `${url}#faq`,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      // about[] — primary subjects this FAQ covers; mirrors 2-entity path so AI engines
+      // can attribute individual Q&A pairs to the correct entities without re-parsing Article.
+      about: comparison.entities
+        .filter((e) => e.slug)
+        .map((e) => ({
+          "@type": entitySchemaType(e.entityType),
+          "@id": `${SITE_URL}/entity/${e.slug}`,
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+        })),
       // isPartOf — back-reference to Article so AI crawlers confirm FAQ belongs to this comparison.
       isPartOf: { "@type": "Article", "@id": `${url}#article` },
       speakable: { "@type": "SpeakableSpecification", "@id": `${url}#faq-speakable`, cssSelector: [".faq-answer"] },
@@ -2242,6 +2271,15 @@ function buildMultiEntityGraph(
           url: s.url,
         })),
       }),
+      ...(multiViewCount > 0 && {
+        interactionStatistic: {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ReadAction",
+          userInteractionCount: multiViewCount,
+        },
+      }),
+      educationalLevel: "General",
+      educationalUse: "research",
     });
   }
 
@@ -2443,7 +2481,7 @@ export function selfHostedVideoObjectSchema(opts: {
 // FAQ schema
 // ============================================================
 
-export function faqSchema(faqs: FAQData[], id?: string) {
+export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": string; "@id": string; name: string; url: string }[]) {
   // Derive Article @id from FAQPage @id so Google/AI can trace FAQ → Article graph edge.
   // Convention: FAQPage @id = "{articleUrl}#faq", Article @id = "{articleUrl}#article"
   const articleId = id ? id.replace(/#faq$/, "#article") : undefined;
@@ -2453,6 +2491,11 @@ export function faqSchema(faqs: FAQData[], id?: string) {
     ...(id && { "@id": id }),
     inLanguage: "en-US",
     isAccessibleForFree: true,
+    // about[] — primary subjects this FAQ covers; links FAQPage to entity nodes so
+    // AI knowledge graphs can attribute individual Q&A pairs to the correct entities
+    // without re-parsing the parent Article. Perplexity and ChatGPT use this to
+    // scope FAQ answers to the right entity when synthesising multi-source responses.
+    ...(about && about.length > 0 && { about }),
     // isPartOf — back-reference from FAQPage to its parent Article.
     // Google's Knowledge Graph and AI crawlers use this edge to confirm that
     // the FAQ answers belong to the comparison article and attribute them correctly.
