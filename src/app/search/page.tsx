@@ -64,7 +64,15 @@ function SearchContent() {
     <div>
       {/* Search Hero */}
       <section aria-labelledby="search-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="search-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#search-grid)"/>
+        </svg>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">

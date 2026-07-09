@@ -56,6 +56,12 @@ body {
   overflow-wrap: break-word;
 }
 
+/* Brand-color text selection — highlights selected text in the primary palette */
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
 /* Focus styles */
 *:focus-visible {
   outline: 2px solid var(--color-primary-500);
