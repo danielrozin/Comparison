@@ -84,9 +84,9 @@ export function FeaturedComparisons({
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="font-bold text-text group-hover:text-primary-700 transition-colors block leading-snug">
+                    <h3 className="font-bold text-text group-hover:text-primary-700 transition-colors block leading-snug text-base">
                       {item.anchor}
-                    </span>
+                    </h3>
                     {item.categories?.[0] && (
                       <span className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 capitalize">
                         {item.categories[0]}

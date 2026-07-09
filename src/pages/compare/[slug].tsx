@@ -115,6 +115,11 @@ const ReadingProgressBar = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const BackToTop = dynamic(
+  () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
+  { ssr: false, loading: () => null }
+);
+
 // Interactive/tracking widgets — kept out of SSR HTML (ssr:false shim, shared
 // verbatim with the former App Router route).
 import {
@@ -131,6 +136,8 @@ import {
   LikeButton,
   BackToResults,
   TableOfContents,
+  StickyCompareBar,
+  FloatingShareButton,
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
@@ -854,6 +861,12 @@ export default function ComparisonPage(props: Props) {
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
+      {/* Reading progress indicator */}
+      <ReadingProgressBar />
+
+      {/* Floating back-to-top */}
+      <BackToTop />
+
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
 
@@ -876,6 +889,24 @@ export default function ComparisonPage(props: Props) {
           { id: "comments", label: "Comments" },
         ]}
       />
+
+      {/* Floating mobile share button — visible only on sm and below */}
+      <FloatingShareButton title={comparison.title} slug={comparison.slug} />
+
+      {/* Sticky mini entity bar — slides in after scrolling past the hero */}
+      {comparison.entities.length >= 2 && (
+        <StickyCompareBar
+          entityA={comparison.entities[0].name}
+          entityB={comparison.entities[1].name}
+          sections={[
+            ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
+            ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
+            ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Table" }] : []),
+            { id: "pros-cons", label: "Pros & Cons" },
+            ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ]}
+        />
+      )}
 
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
@@ -951,7 +982,7 @@ export default function ComparisonPage(props: Props) {
 
       {/* Key Facts & Figures table */}
       {comparison.attributes.length > 0 && (
-        <div id="key-facts">
+        <div id="key-facts" className="scroll-mt-20">
           <DataFactsTable
             attributes={comparison.attributes}
             entityA={comparison.entities[0]}
@@ -975,7 +1006,7 @@ export default function ComparisonPage(props: Props) {
 
           {/* Comparison Table (code-split, SSR'd) */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table">
+            <div id="comparison-table" className="scroll-mt-20">
               <ComparisonTable
                 attributes={comparison.attributes}
                 entityA={comparison.entities[0]}
@@ -1006,7 +1037,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Pros & Cons */}
-          <div id="pros-cons">
+          <div id="pros-cons" className="scroll-mt-20">
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
@@ -1021,7 +1052,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Resources & Learn More */}
-          <div id="resources">
+          <div id="resources" className="scroll-mt-20">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1067,7 +1098,7 @@ export default function ComparisonPage(props: Props) {
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
-      <div id="comments">
+      <div id="comments" className="scroll-mt-20">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 
@@ -1215,13 +1246,13 @@ function MultiEntityLayout({
         <div className="flex-1 min-w-0">
           {/* MultiComparisonTable — main N-entity attribute grid */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table">
+            <div id="comparison-table" className="scroll-mt-20">
               <MultiComparisonTable attributes={comparison.attributes} entities={comparison.entities} />
             </div>
           )}
 
           {/* Pros & Cons (already array-friendly, renders all N entities) */}
-          <div id="pros-cons">
+          <div id="pros-cons" className="scroll-mt-20">
             <ProsConsBlock entities={comparison.entities} />
           </div>
 
@@ -1249,7 +1280,7 @@ function MultiEntityLayout({
             <FAQBlock faqs={comparison.faqs} />
           )}
 
-          <div id="resources">
+          <div id="resources" className="scroll-mt-20">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1281,7 +1312,7 @@ function MultiEntityLayout({
 
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
-      <div id="comments">
+      <div id="comments" className="scroll-mt-20">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 

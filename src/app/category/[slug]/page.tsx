@@ -345,9 +345,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
               {comp.title}
-            </p>
+            </h3>
           </div>
         </div>
         <div className="mt-auto">
@@ -374,7 +374,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
       {/* Category Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         {/* Floating accent blobs */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
@@ -531,9 +531,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                         {(parts[1] || "B").charAt(0)}
                       </div>
                     </div>
-                    <p className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
+                    <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
                       {comp.title}
-                    </p>
+                    </h3>
                   </Link>
                   </li>
                 );

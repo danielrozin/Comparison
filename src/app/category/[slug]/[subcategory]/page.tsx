@@ -286,7 +286,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
 
       {/* Subcategory Hero Banner */}
       <section aria-labelledby="subcategory-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -370,9 +370,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+                        <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
                           {comp.title}
-                        </p>
+                        </h3>
                       </div>
                     </div>
                     <div className="mt-auto">

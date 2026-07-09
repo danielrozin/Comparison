@@ -10,7 +10,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
 
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
       {/* Section header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -33,7 +33,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             aria-pressed={allOpen}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200"
           >
-            <svg className={`w-3.5 h-3.5 transition-transform duration-200 `} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
             {allOpen ? "Collapse all" : "Expand all"}

@@ -671,6 +671,9 @@ export default async function BlogPostPage({
     ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
     ...(article.publishedAt && { dateCreated: new Date(article.publishedAt).toISOString() }),
     ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),
+    // mainEntity — bidirectional WebPage↔Article edge; Article.mainEntityOfPage points
+    // here, this WebPage.mainEntity points back. Mirrors compare + alternatives pages.
+    mainEntity: { "@type": "Article", "@id": `${articleUrl}#article` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },

@@ -18,7 +18,15 @@ export default async function NotFound() {
     <div className="min-h-screen bg-surface">
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" aria-hidden="true" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="notfound-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#notfound-grid)"/>
+        </svg>
         <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
 
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative text-center">

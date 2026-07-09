@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { Pagination } from "@/components/ui/Pagination";
+import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -74,20 +76,80 @@ export const metadata: Metadata = {
   },
 };
 
+const CATEGORY_ICONS: Record<string, string> = {
+  sports: "⚽", countries: "🌍", technology: "💻", products: "📦",
+  health: "💊", finance: "💰", entertainment: "🎬", history: "📜",
+  companies: "🏢", brands: "🏷️", celebrities: "⭐", software: "🖥️",
+  automotive: "🚗",
+};
+
+const CATEGORY_COLORS: Record<string, string> = {
+  sports: "bg-green-100 text-green-800 border-green-200 ring-green-400",
+  countries: "bg-orange-100 text-orange-800 border-orange-200 ring-orange-400",
+  technology: "bg-blue-100 text-blue-800 border-blue-200 ring-blue-400",
+  products: "bg-violet-100 text-violet-800 border-violet-200 ring-violet-400",
+  health: "bg-rose-100 text-rose-800 border-rose-200 ring-rose-400",
+  finance: "bg-emerald-100 text-emerald-800 border-emerald-200 ring-emerald-400",
+  entertainment: "bg-purple-100 text-purple-800 border-purple-200 ring-purple-400",
+  history: "bg-amber-100 text-amber-800 border-amber-200 ring-amber-400",
+  companies: "bg-indigo-100 text-indigo-800 border-indigo-200 ring-indigo-400",
+  brands: "bg-pink-100 text-pink-800 border-pink-200 ring-pink-400",
+  celebrities: "bg-yellow-100 text-yellow-800 border-yellow-200 ring-yellow-400",
+  software: "bg-cyan-100 text-cyan-800 border-cyan-200 ring-cyan-400",
+  automotive: "bg-slate-100 text-slate-800 border-slate-200 ring-slate-400",
+};
+
+const SORT_OPTIONS = [
+  { value: "views", label: "Most Views" },
+  { value: "newest", label: "Newest" },
+  { value: "alpha", label: "A → Z" },
+] as const;
+type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+
 interface PageProps {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; category?: string; sort?: string }>;
 }
 
 export default async function TrendingPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
+  const activeCategory = sp.category?.toLowerCase() || "";
+  const activeSort: SortValue = (SORT_OPTIONS.find((o) => o.value === sp.sort)?.value) ?? "views";
 
   // Fetch enough items for pagination (up to 100)
   const allTrending = await getTrendingComparisons(100);
-  const totalPages = Math.ceil(allTrending.length / ITEMS_PER_PAGE);
+
+  // Collect unique categories from data
+  const categoryCounts: Record<string, number> = {};
+  for (const item of allTrending) {
+    const cat = item.category?.toLowerCase();
+    if (cat) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+  }
+  const categories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([cat]) => cat);
+
+  // Filter by category if selected
+  let filtered = activeCategory
+    ? allTrending.filter((item) => item.category?.toLowerCase() === activeCategory)
+    : [...allTrending];
+
+  // Sort
+  if (activeSort === "newest") {
+    filtered = filtered.sort((a, b) => {
+      const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return bTime - aTime;
+    });
+  } else if (activeSort === "alpha") {
+    filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+  }
+  // "views" is the default from getTrendingComparisons (already sorted by viewCount)
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const safePage = Math.min(page, Math.max(1, totalPages));
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
-  const trending = allTrending.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+  const trending = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
@@ -217,7 +279,15 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
       {/* Trending Hero */}
       <section aria-labelledby="trending-hero-heading" className="bg-gradient-to-br from-orange-600 via-amber-600 to-orange-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="trending-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#trending-grid)"/>
+        </svg>
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -249,7 +319,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               <h1 id="trending-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
                 Trending Comparisons
               </h1>
-              <p className="text-orange-100 mt-1.5 text-sm sm:text-base">
+              <p id="trending-description" className="text-orange-100 mt-1.5 text-sm sm:text-base">
                 The most popular comparisons right now
                 {allTrending.length > ITEMS_PER_PAGE && (
                   <span className="ml-1">· Showing {startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, allTrending.length)} of {allTrending.length}</span>
@@ -267,6 +337,75 @@ export default async function TrendingPage({ searchParams }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
+        {/* Category filter chips */}
+        {categories.length > 1 && (
+          <nav aria-label="Filter by category" className="mb-6 -mx-1">
+            <div className="flex flex-wrap gap-2 px-1">
+              <Link
+                href="/trending"
+                aria-current={!activeCategory ? "true" : undefined}
+                className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
+                  !activeCategory
+                    ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
+                    : "bg-white text-text-secondary border-border hover:border-orange-300 hover:text-text hover:bg-orange-50"
+                }`}
+              >
+                All
+                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
+                  {allTrending.length}
+                </span>
+              </Link>
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat;
+                const colorClass = CATEGORY_COLORS[cat] || "bg-surface-alt text-text-secondary border-border ring-gray-400";
+                const [bg, text, border, ring] = colorClass.split(" ");
+                return (
+                  <Link
+                    key={cat}
+                    href={`/trending?category=${encodeURIComponent(cat)}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
+                      isActive
+                        ? `${bg} ${text} ${border} ring-2 ${ring} shadow-sm`
+                        : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"
+                    }`}
+                  >
+                    <span aria-hidden="true">{CATEGORY_ICONS[cat] || "📊"}</span>
+                    <span className="capitalize">{cat}</span>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
+                      {categoryCounts[cat]}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </nav>
+        )}
+
+        {/* Sort + active label row */}
+        <div className="mb-4 flex items-center justify-between flex-wrap gap-3">
+          {activeCategory ? (
+            <p className="text-sm text-text-secondary">
+              Showing <span className="font-semibold text-text capitalize">{activeCategory}</span> comparisons
+              <span className="text-text-secondary/60"> · {filtered.length} total</span>
+            </p>
+          ) : (
+            <p className="text-sm text-text-secondary">{allTrending.length} comparisons</p>
+          )}
+
+          {/* Sort select — client component (needs useSearchParams for URL-aware navigation) */}
+          <Suspense fallback={<div className="h-8 w-28 bg-surface-alt rounded-lg animate-pulse" />}>
+            <TrendingSortSelect activeSort={activeSort} />
+          </Suspense>
+        </div>
+
+        {/* Legacy active-category clear link (still needed when both category + sort active) */}
+        {activeCategory && (
+          <div className="mb-3 flex items-center gap-2">
+            <Link href="/trending" className="text-xs text-primary-600 hover:underline ml-2">Clear filter</Link>
+          </div>
+        )}
+
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 list-none">
           {trending.map((item, index) => (
             <li key={item.slug} className="flex">
@@ -275,7 +414,15 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           ))}
         </ul>
 
-        <Pagination currentPage={safePage} totalPages={totalPages} basePath="/trending" />
+        <Pagination
+          currentPage={safePage}
+          totalPages={totalPages}
+          basePath="/trending"
+          extraParams={{
+            ...(activeCategory ? { category: activeCategory } : {}),
+            ...(activeSort !== "views" ? { sort: activeSort } : {}),
+          }}
+        />
       </div>
     </>
   );

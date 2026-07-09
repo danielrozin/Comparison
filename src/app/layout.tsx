@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
@@ -206,9 +206,11 @@ export default function RootLayout({
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
+          <ReadingProgress />
           <FeedbackWidget />
           <CookieConsentBanner />
           <BackToTop />
+          <SearchOverlay />
         </ExperimentProviderServer>
         {/* DAN-1645: Vercel Speed Insights (RUM) — site-wide real-user CWV so
             /compare field data is comparable against other routes. */}

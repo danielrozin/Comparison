@@ -4,6 +4,7 @@ import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { EntityCompareSearch } from "@/components/ui/EntityCompareSearch";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
@@ -155,6 +156,20 @@ export default async function EntityPage({ params }: PageProps) {
     ? CATEGORIES.find((c) => c.slug === primaryCategory)
     : null;
 
+  // Compute top categories for the at-a-glance chip row
+  const categoryCounts: Record<string, number> = {};
+  for (const c of relatedComparisons) {
+    if (c.category) categoryCounts[c.category] = (categoryCounts[c.category] ?? 0) + 1;
+  }
+  const topCategories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([slug, count]) => ({
+      slug,
+      name: CATEGORIES.find((c) => c.slug === slug)?.name ?? slug,
+      count,
+    }));
+
   // Map category → Schema.org entity type for correct structured data
   const CATEGORY_TO_ENTITY_TYPE: Record<string, string> = {
     sports: "person",
@@ -299,7 +314,7 @@ export default async function EntityPage({ params }: PageProps) {
 
       {/* Entity Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -348,6 +363,28 @@ export default async function EntityPage({ params }: PageProps) {
               </div>
             </div>
           </div>
+
+          {/* Inline "compare with" search — turns entity pages into comparison entry points */}
+          <div className="max-w-lg mt-2">
+            <EntityCompareSearch entityName={name} entitySlug={slug} />
+          </div>
+
+          {/* At-a-glance stat chips */}
+          {topCategories.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2" aria-label="Top comparison categories">
+              {topCategories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-sm ring-1 ring-white/20 transition-colors"
+                >
+                  <span className="capitalize">{cat.name}</span>
+                  <span className="opacity-60">·</span>
+                  <span className="opacity-80">{cat.count}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

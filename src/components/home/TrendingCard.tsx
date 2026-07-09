@@ -38,6 +38,7 @@ export function TrendingCard({
       href={`/compare/${comparison.slug}`}
       className={`group relative flex flex-col bg-white border ${borderClass} rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200`}
     >
+      <h3 className="sr-only">{comparison.title}</h3>
       {/* Top color strip */}
       <div className={`h-1 w-full ${
         isTopThree

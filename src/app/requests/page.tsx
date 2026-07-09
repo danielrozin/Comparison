@@ -92,7 +92,7 @@ export default function RequestsPage() {
     <div className="min-h-screen bg-surface-alt">
       {/* Hero */}
       <section aria-labelledby="requests-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white py-10 sm:py-14 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center justify-center gap-1.5 text-sm text-primary-200">

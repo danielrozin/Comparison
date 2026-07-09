@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 
 interface PageProps {
@@ -279,7 +279,19 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     ).filter((v, i, arr) => arr.findIndex((x) => x.name === v.name) === i).slice(0, 20),
   };
 
-  return [breadcrumbs, collection, faqs, definedTermSet];
+  // WebPage node — bidirectional CollectionPage↔WebPage graph edge.
+  // CollectionPage.mainEntityOfPage points at this WebPage; this WebPage.mainEntity
+  // points back at the CollectionPage. Mirrors the pattern on comparison + alternatives pages.
+  const webpage = webPageSchema({
+    title: hub.h1,
+    description: hub.description,
+    url: hubUrl,
+    dateModified: hubToday,
+    mainEntity: { "@type": "CollectionPage", "@id": `${hubUrl}#collectionpage` },
+    speakableCssSelector: ["h1", "#hub-intro", "#hub-description"],
+  });
+
+  return [breadcrumbs, collection, faqs, definedTermSet, webpage];
 }
 
 export default async function HubPage({ params }: PageProps) {
@@ -315,7 +327,7 @@ export default async function HubPage({ params }: PageProps) {
 
       {/* Hub Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav aria-label="breadcrumb" className="text-sm text-primary-200 mb-5">

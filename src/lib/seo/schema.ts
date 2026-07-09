@@ -165,6 +165,14 @@ export function organizationSchema() {
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison API", url: `${SITE_URL}/developers` } },
       ],
     },
+    // owns — links the Organization to the digital assets it controls.
+    // Google Knowledge Graph and AI crawlers (Perplexity, ChatGPT) use `owns` to
+    // build the entity graph edge Organization→WebSite and Organization→DataCatalog,
+    // strengthening E-E-A-T by confirming the publisher controls the data source.
+    owns: [
+      { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
+    ],
   };
 }
 
@@ -350,6 +358,9 @@ export function webSiteSchema() {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
+    // alternativeHeadline — secondary title used by Perplexity / ChatGPT citation extractors
+    // and Google Sitelinks generation to display a human-readable tagline alongside the brand name.
+    alternativeHeadline: "The #1 Platform for Side-by-Side Comparisons — Products, Tech, Sports & More",
     // alternateName — secondary brand handles for Knowledge Panel disambiguation and
     // AI brand entity resolution across "AversusB", "A vs B", and "aversusb.net" mentions.
     alternateName: ["AversusB", "A vs B", "aversusb.net", "A Versus B"],
@@ -1103,6 +1114,10 @@ export function comparisonPageSchema(
           "@id": `${url}#review`,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
           reviewBody: comparison.verdict,
+          // reviewAspect — what dimension of the subject is covered; AI product-search engines
+          // (Google Shopping, Perplexity product-mode) use this to categorise Review nodes and
+          // surface the correct review type for "X vs Y overall" queries.
+          reviewAspect: "Overall Comparison",
           datePublished: comparison.metadata.updatedAt,
           url,
           itemReviewed: {
@@ -1117,6 +1132,11 @@ export function comparisonPageSchema(
           "@type": "Review",
           "@id": `${url}#review-${e.slug}`,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+          // reviewAspect — entity-level aspect reviewed; routes "pros and cons of X" AI queries
+          // to this Review node rather than the pair-level verdict Review above.
+          reviewAspect: e.pros.length > 0 && e.cons.length > 0
+            ? "Pros and Cons"
+            : e.pros.length > 0 ? "Strengths" : "Weaknesses",
           datePublished: comparison.metadata.updatedAt,
           url,
           itemReviewed: {
@@ -1160,11 +1180,23 @@ export function comparisonPageSchema(
     citation: [
       ...(comparison.citationStats?.sources ?? [])
         .filter((s) => s.url)
-        .map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+        .map((s) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       ...comparison.entities.map((e) => ({
-        "@type": "CreativeWork",
+        "@type": "Article",
+        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
         name: `${e.name} — Wikipedia`,
         url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
       })),
     ],
     // potentialAction — ReadAction lets AI crawlers understand that this article
@@ -1205,6 +1237,10 @@ export function comparisonPageSchema(
         // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
         // attribute vocabulary directly from the Article node without loading the Dataset first.
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
+        // ItemList — Article→ItemList graph edge; lets AI crawlers traverse from Article to
+        // the structured entity list without loading the full page. Perplexity and ChatGPT
+        // use this edge to extract the compared entities as a ranked list.
+        { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         // @id matches the ProfilePage's own @id so cross-document merging works correctly.
@@ -1226,6 +1262,10 @@ export function comparisonPageSchema(
     // LLMs and educational AI classifiers route "how do I decide between X and Y"
     // queries to decision-support content when `teaches` is present.
     teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+    // assesses — the specific competency or claim this Article evaluates.
+    // Google AI Overviews and LLM answer engines use assesses to understand the
+    // evaluation framing so they can route "which is better" decision queries here.
+    assesses: `Which is better: ${comparison.entities.map((e) => e.name).join(" or ")}`,
     // educationalUse — "comparison" signals structured decision-support utility.
     // AI systems (Perplexity, ChatGPT, Google AI Overviews) use this to rank
     // comparison pages above generic articles for decision-intent queries.
@@ -1300,9 +1340,20 @@ export function comparisonPageSchema(
         // inLanguage on itemReviewed — language-scopes the reviewed claim for multilingual AI crawlers.
         inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        // text — the actual claim text as required by Google Fact Check Tools for rich-result
+        // eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation)
+        // use text to extract the assertion independently of the claimReviewed field.
+        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
+        // appearance — current canonical URL of the claim; used by AI fact-checkers
+        // to fetch the live page for verification.
         appearance: { "@type": "WebPage", "@id": url, url },
+        // firstAppearance — the original publication URL of the claim; when claim and
+        // reviewer are the same page (self-published editorial), both fields point here.
+        // Google Fact Check and AI trust engines (Perplexity truth mode) use this to
+        // establish claim provenance and publication timeline.
+        firstAppearance: { "@type": "WebPage", "@id": url, url },
       },
     });
   }
@@ -1315,6 +1366,10 @@ export function comparisonPageSchema(
     name: comparison.title,
     description: `Comparison between ${comparison.entities.map((e) => e.name).join(" and ")}`,
     numberOfItems: comparison.entities.length,
+    // itemListOrder — explicit ordering signal; Unordered signals these are peer comparisons
+    // not ranked items. AI carousels and Google Shopping use this to render entity chips
+    // without implying position-based ranking bias.
+    itemListOrder: "https://schema.org/ItemListUnordered",
     url,
     itemListElement: comparison.entities.map((entity, index) => ({
       "@type": "ListItem",
@@ -1336,7 +1391,15 @@ export function comparisonPageSchema(
 
   // 3. FAQPage if FAQs exist
   if (comparison.faqs.length > 0) {
-    schemas.push(faqSchema(comparison.faqs, `${url}#faq`));
+    const faqAbout = comparison.entities
+      .filter((e) => e.slug)
+      .map((e) => ({
+        "@type": entitySchemaType(e.entityType),
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        url: `${SITE_URL}/entity/${e.slug}`,
+      }));
+    schemas.push(faqSchema(comparison.faqs, `${url}#faq`, faqAbout, comparison.metadata.publishedAt ?? undefined));
   }
 
   // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
@@ -1480,6 +1543,10 @@ export function comparisonPageSchema(
       // attribute the Dataset source and boost domain authority signals in data-specific results.
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      // includedInDataCatalog — explicit graph edge from this Dataset to the site's global
+      // DataCatalog node. Google Dataset Search uses this to cluster per-comparison Datasets
+      // under the platform-level catalog, boosting corpus-level authority signals.
+      includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
       // datePublished / dateModified — Dataset provenance signals for Google Dataset Search.
       datePublished: comparison.metadata.publishedAt,
       dateModified: comparison.metadata.updatedAt,
@@ -1499,6 +1566,9 @@ export function comparisonPageSchema(
       // than bare strings, improving dataset carousels and citation accuracy.
       variableMeasured: comparison.attributes.map((attr) => ({
         "@type": "PropertyValue",
+        // propertyID — stable URI that Dataset Search uses to dereference the attribute
+        // definition across documents; mirrors the DefinedTerm @id so crawlers merge both nodes.
+        propertyID: `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
         // valueReference → DefinedTerm lets Dataset Search + AI research tools resolve
@@ -1519,6 +1589,17 @@ export function comparisonPageSchema(
           name: s.name,
           url: s.url,
         })),
+      }),
+      // interactionStatistic on Dataset — ReadAction signals to Google Dataset Search
+      // and AI data-pipeline crawlers that this dataset has real human engagement.
+      // Indexed alongside view counts on the Article; kept separate so dataset-specific
+      // crawlers (Kaggle AI, Semantic Scholar, Perplexity data mode) also see the signal.
+      ...(viewCount > 0 && {
+        interactionStatistic: {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ReadAction",
+          userInteractionCount: viewCount,
+        },
       }),
     });
   }
@@ -1614,6 +1695,10 @@ export function comparisonPageSchema(
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
+        // termCode — machine-readable stable key for this term.
+        // AI Dataset Search tools and LLM knowledge graphs use termCode to
+        // resolve dimension labels to canonical identifiers across documents.
+        termCode: termSlug(attr.name),
         ...(attr.unit ? { unitCode: attr.unit } : {}),
         inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
       })),
@@ -1805,6 +1890,10 @@ function buildMultiEntityGraph(
       "@type": "ListItem",
       position: i + 1,
       name: entity.name,
+      // description — one-line entity summary for AI product-search carousels (Google Shopping,
+      // Perplexity product mode); lets crawlers surface entity context from the ListItem node
+      // without loading the entity ProfilePage.
+      ...(entity.shortDesc && { description: entity.shortDesc }),
       // item @type + @id — typed entity reference so AI crawlers resolve the entity
       // node type without following the URL (merges with top-level itemNode in @graph).
       item: {
@@ -1812,6 +1901,7 @@ function buildMultiEntityGraph(
         "@id": itemIds[i],
         name: entity.name,
         url: itemIds[i],
+        ...(entity.shortDesc && { description: entity.shortDesc }),
       },
     })),
     url,
@@ -1998,6 +2088,8 @@ function buildMultiEntityGraph(
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
+        // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
+        { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
@@ -2019,11 +2111,23 @@ function buildMultiEntityGraph(
     citation: [
       ...(comparison.citationStats?.sources ?? [])
         .filter((s: { url?: string; name: string }) => s.url)
-        .map((s: { url?: string; name: string }) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+        .map((s: { url?: string; name: string }) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       ...comparison.entities.map((e) => ({
-        "@type": "CreativeWork",
+        "@type": "Article",
+        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
         name: `${e.name} — Wikipedia`,
         url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
       })),
     ],
     ...(multiViewCount > 0 && {
@@ -2069,6 +2173,8 @@ function buildMultiEntityGraph(
     ...(comparison.category && { articleSection: comparison.category }),
     // teaches — decision-skill mapping for LLM educational classifiers (parity with 2-entity)
     teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    // assesses — evaluation framing for AI answer engines (parity with 2-entity path)
+    assesses: `Which is best: ${comparison.entities.map((e) => e.name).join(", ")}`,
     educationalUse: "comparison",
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(comparison.entities.map((e) => e.name).join(" vs "))}+comparison&type=link&sort=relevance`,
     tableOfContents: [
@@ -2113,7 +2219,9 @@ function buildMultiEntityGraph(
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: item.url,
+      // Typed WebPage item — parity with 2-entity path and breadcrumbSchema() helper.
+      // AI crawlers and Google follow @id to merge breadcrumb with target WebPage node.
+      item: { "@type": "WebPage", "@id": item.url, name: item.name, url: item.url },
     })),
   };
 
@@ -2148,19 +2256,35 @@ function buildMultiEntityGraph(
         "@type": "Claim",
         inLanguage: "en-US",
         name: `${comparison.entities.map((e) => e.name).join(" vs ")} comparison`,
+        // text — required by Google Fact Check Tools for rich-result eligibility.
+        text: comparison.shortAnswer ? comparison.shortAnswer.slice(0, 400) : `${comparison.entities.map((e) => e.name).join(" vs ")} — a structured side-by-side comparison`,
         author: { "@type": "Thing", name: "Internet" },
         datePublished: comparison.metadata.publishedAt,
         appearance: { "@type": "WebPage", "@id": url, url },
+        firstAppearance: { "@type": "WebPage", "@id": url, url },
       },
     });
   }
 
   if (comparison.faqs.length > 0) {
+    const faqDatePublished = comparison.metadata.publishedAt ?? new Date().toISOString().slice(0, 10);
+    const faqDateModified = new Date().toISOString().slice(0, 10);
     graph.push({
       "@type": "FAQPage",
+      additionalType: "https://schema.org/QAPage",
       "@id": `${url}#faq`,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      // about[] — primary subjects this FAQ covers; mirrors 2-entity path so AI engines
+      // can attribute individual Q&A pairs to the correct entities without re-parsing Article.
+      about: comparison.entities
+        .filter((e) => e.slug)
+        .map((e) => ({
+          "@type": entitySchemaType(e.entityType),
+          "@id": `${SITE_URL}/entity/${e.slug}`,
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+        })),
       // isPartOf — back-reference to Article so AI crawlers confirm FAQ belongs to this comparison.
       isPartOf: { "@type": "Article", "@id": `${url}#article` },
       speakable: { "@type": "SpeakableSpecification", "@id": `${url}#faq-speakable`, cssSelector: [".faq-answer"] },
@@ -2168,13 +2292,20 @@ function buildMultiEntityGraph(
         "@type": "Question",
         "@id": `${url}#q${i + 1}`,
         name: faq.question,
+        text: faq.question,
+        url: `${url}#q${i + 1}`,
         answerCount: 1,
+        upvoteCount: 1,
+        dateCreated: faqDatePublished,
+        dateModified: faqDateModified,
         acceptedAnswer: {
           "@type": "Answer",
           "@id": `${url}#a${i + 1}`,
           text: faq.answer,
           inLanguage: "en-US",
           upvoteCount: 1,
+          dateCreated: faqDatePublished,
+          dateModified: faqDateModified,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         },
       })),
@@ -2217,6 +2348,8 @@ function buildMultiEntityGraph(
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      // includedInDataCatalog — explicit graph edge to the site's global DataCatalog node.
+      includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
       datePublished: comparison.metadata.publishedAt,
       dateModified: comparison.metadata.updatedAt,
       temporalCoverage: `2025/${new Date().getFullYear()}`,
@@ -2228,6 +2361,7 @@ function buildMultiEntityGraph(
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => ({
         "@type": "PropertyValue",
+        propertyID: `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
         valueReference: { "@type": "DefinedTerm", "@id": `${url}#term-${termSlug(attr.name)}` },
@@ -2242,6 +2376,15 @@ function buildMultiEntityGraph(
           url: s.url,
         })),
       }),
+      ...(multiViewCount > 0 && {
+        interactionStatistic: {
+          "@type": "InteractionCounter",
+          interactionType: "https://schema.org/ReadAction",
+          userInteractionCount: multiViewCount,
+        },
+      }),
+      educationalLevel: "General",
+      educationalUse: "research",
     });
   }
 
@@ -2329,6 +2472,7 @@ function buildMultiEntityGraph(
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
+        termCode: termSlug(attr.name),
         ...(attr.unit ? { unitCode: attr.unit } : {}),
         inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
       })),
@@ -2443,16 +2587,26 @@ export function selfHostedVideoObjectSchema(opts: {
 // FAQ schema
 // ============================================================
 
-export function faqSchema(faqs: FAQData[], id?: string) {
+export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": string; "@id": string; name: string; url: string }[], datePublished?: string) {
   // Derive Article @id from FAQPage @id so Google/AI can trace FAQ → Article graph edge.
   // Convention: FAQPage @id = "{articleUrl}#faq", Article @id = "{articleUrl}#article"
   const articleId = id ? id.replace(/#faq$/, "#article") : undefined;
+  const today = new Date().toISOString().slice(0, 10);
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // additionalType QAPage — makes FAQ eligible for the QA answer-box rich result
+    // (distinct from the FAQ accordion). Google and Perplexity render QAPage nodes
+    // as upvoted Q&A panels with author attribution, separate from FAQ carousels.
+    additionalType: "https://schema.org/QAPage",
     ...(id && { "@id": id }),
     inLanguage: "en-US",
     isAccessibleForFree: true,
+    // about[] — primary subjects this FAQ covers; links FAQPage to entity nodes so
+    // AI knowledge graphs can attribute individual Q&A pairs to the correct entities
+    // without re-parsing the parent Article. Perplexity and ChatGPT use this to
+    // scope FAQ answers to the right entity when synthesising multi-source responses.
+    ...(about && about.length > 0 && { about }),
     // isPartOf — back-reference from FAQPage to its parent Article.
     // Google's Knowledge Graph and AI crawlers use this edge to confirm that
     // the FAQ answers belong to the comparison article and attribute them correctly.
@@ -2470,9 +2624,25 @@ export function faqSchema(faqs: FAQData[], id?: string) {
       // individual Q&A pairs by URL fragment without loading the full page.
       ...(id && { "@id": `${id.replace(/#faq$/, "")}#q${i + 1}` }),
       name: faq.question,
+      // text — duplicate of name; required by QAPage spec for Answer extraction tools
+      // that prefer text over name on the Question node (e.g. schema.org validators,
+      // Bing structured data, some AI extractors).
+      text: faq.question,
+      // url — deep-link anchor for this specific Q&A pair; Google rich results use
+      // this to navigate directly to the answer when the question matches a voice query.
+      ...(id && { url: `${id.replace(/#faq$/, "")}#q${i + 1}` }),
       // answerCount — signals exactly one accepted answer; required for FAQ rich results
       // eligibility in Google Search even when upvoteCount is 0.
       answerCount: 1,
+      // upvoteCount on Question — editorial confidence signal at the question level;
+      // AI answer engines use this to rank Q&A pairs within a FAQPage when multiple
+      // questions match the same query intent.
+      upvoteCount: 1,
+      // dateCreated — temporal freshness per Q&A pair; AI engines (Perplexity, ChatGPT)
+      // qualify citations with dates ("as of …") and prefer fresher Q&A nodes over
+      // undated ones when synthesising multi-source responses.
+      dateCreated: datePublished ?? today,
+      dateModified: today,
       acceptedAnswer: {
         "@type": "Answer",
         // @id on Answer — enables AI knowledge graphs to merge this answer node with
@@ -2485,6 +2655,8 @@ export function faqSchema(faqs: FAQData[], id?: string) {
         inLanguage: "en-US",
         // upvoteCount — editorial confidence signal for AI answer engine ranking.
         upvoteCount: 1,
+        dateCreated: datePublished ?? today,
+        dateModified: today,
         // author — attributes the answer to our editorial org; AI answer engines use
         // this to weight the answer's authority when synthesizing multi-source responses.
         author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -2566,8 +2738,18 @@ export function entityPageSchema(entity: {
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",
+      // softwareRequirements — minimum platform requirements for AI app-store carousels
+      // and Google product-search carousels; helps route "works on X" intent queries.
+      softwareRequirements: "Web Browser (Chrome, Safari, Firefox, Edge), iOS 14+, Android 8+",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
+    // inLanguage — language-scopes the entity node for multilingual AI knowledge
+    // graph merge. Perplexity/ChatGPT use this to prefer English-language entity
+    // nodes when synthesising cross-document answers.
+    inLanguage: "en-US",
+    // thumbnailUrl — AI image crawlers (Google Lens, Perplexity visual mode) prefer
+    // thumbnailUrl over bare image URL for Knowledge Panel candidate images.
+    ...(entity.imageUrl && { thumbnailUrl: entity.imageUrl }),
     // potentialAction — CompareAction signals to AI assistants that this entity
     // can be compared against others via the search URL pattern.
     potentialAction: {
@@ -2771,8 +2953,17 @@ export function profilePageSchema(entity: {
     ...(schemaType === "SoftwareApplication" && {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",
+      softwareRequirements: "Web Browser (Chrome, Safari, Firefox, Edge), iOS 14+, Android 8+",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
+    // speakable on mainEntity — voice assistants (Google Assistant, Alexa) and LLMs
+    // reading the entity node directly (e.g. via knowledge-graph API) use speakable
+    // to identify the authoritative text snippet without traversing to the ProfilePage wrapper.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      "@id": `${url}#entity-speakable`,
+      cssSelector: ["h1", "#entity-intro", "#entity-about"],
+    },
   };
 
   const today = new Date().toISOString().slice(0, 10);
@@ -2824,6 +3015,10 @@ export function profilePageSchema(entity: {
     // timeRequired — estimated reading time; profile page depth scales with comparison count.
     timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,
     teaches: `How to compare ${entity.name} with similar products and alternatives using structured data`,
+    // assesses — evaluation framing for AI answer engines on entity profile pages.
+    // Signals that this page assesses the relative merit of entity vs alternatives,
+    // helping LLMs route "is X good?" and "X vs alternatives" queries here.
+    assesses: `How does ${entity.name} compare to alternatives?`,
     educationalUse: "comparison",
     keywords: `${entity.name} comparison, ${entity.name} vs, best ${entity.name} alternatives 2026`,
     potentialAction: [
@@ -2876,11 +3071,15 @@ export function profilePageSchema(entity: {
       cssSelector: ["h1", "#entity-intro", "#entity-about"],
     },
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(entity.name)}+comparison&type=link&sort=relevance`,
+    // BreadcrumbList — 3 levels for rich-result eligibility (Google requires ≥2 levels;
+    // 3 levels also enables the "Comparisons > Entity" navigational trail in AI snippets).
     breadcrumb: {
       "@type": "BreadcrumbList",
+      "@id": `${url}#breadcrumbs`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: entity.name, item: url },
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, url: SITE_URL, name: "Home" } },
+        { "@type": "ListItem", position: 2, name: "Comparisons", item: { "@type": "WebPage", "@id": `${SITE_URL}/compare`, url: `${SITE_URL}/compare`, name: "Comparisons" } },
+        { "@type": "ListItem", position: 3, name: entity.name, item: { "@type": "WebPage", "@id": url, url, name: entity.name } },
       ],
     },
     mainEntity,
@@ -2976,6 +3175,7 @@ export function definedTermSetSchema() {
       "@id": `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}#term`,
       name,
       description,
+      termCode: name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-"),
       url: `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}`,
       inDefinedTermSet: `${SITE_URL}/#taxonomy`,
     })),
@@ -3054,6 +3254,8 @@ export function claimReviewSchema(opts: {
         "@type": "Thing",
         name: "Internet consensus",
       },
+      appearance: { "@type": "WebPage", "@id": url, url },
+      firstAppearance: { "@type": "WebPage", "@id": url, url },
     },
   };
 }

@@ -48,6 +48,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             href={review.url}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Read ${review.productName} review on ${review.source} — SmartScore ${review.smartScore}/100 (opens in new tab)`}
             className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden w-full"
           >
             {/* Gradient accent stripe */}
@@ -58,9 +59,9 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
                 <span className="text-[7px] font-semibold opacity-60 leading-none mt-0.5">/ 100</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">
-                  {review.productName}<span className="sr-only"> (opens in new tab)</span>
-                </p>
+                <h3 className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">
+                  {review.productName}
+                </h3>
                 <p className="text-xs text-text-secondary mt-0.5">
                   SmartScore™
                 </p>

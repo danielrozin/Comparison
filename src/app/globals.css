@@ -56,6 +56,12 @@ body {
   overflow-wrap: break-word;
 }
 
+/* Brand-color text selection — highlights selected text in the primary palette */
+::selection {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-900);
+}
+
 /* Focus styles */
 *:focus-visible {
   outline: 2px solid var(--color-primary-500);
@@ -169,6 +175,14 @@ body {
   100% { border-color: var(--color-primary-400); }
 }
 
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee { animation: marquee-scroll 30s linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-glow { animation: glow 2s ease-in-out infinite; }
 .animate-gradient { animation: gradient-shift 3s ease infinite; background-size: 200% 200%; }
@@ -187,6 +201,25 @@ body {
   display: none;
 }
 
+/* Grid pattern — inline SVG data URI avoids 27+ separate HTTP requests for grid.svg.
+   Use alongside opacity-5 / opacity-10 utilities as needed. */
+.bg-grid {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTAgMGgzMnYzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjODg4IiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2Utb3BhY2l0eT0iLjQiLz48cGF0aCBkPSJNMCAxNmgzMk0xNiAwdjMyIiBmaWxsPSJub25lIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iLjUiIHN0cm9rZS1vcGFjaXR5PSIuMiIvPjwvc3ZnPg==");
+}
+
+/* Scroll-reveal — elements fade + rise into view as they enter the viewport.
+   JavaScript adds `.reveal-visible` via IntersectionObserver (ScrollReveal.tsx).
+   Without JS the element stays visible so the page is still readable. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+.reveal.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
@@ -203,6 +236,13 @@ body {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  /* Instant reveal for users who prefer no motion */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

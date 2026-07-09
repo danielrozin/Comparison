@@ -599,7 +599,7 @@ export async function getGSCStats(): Promise<GSCStats> {
 // NOTE ON THE METRIC: GSC reports organic-search *clicks*, which is a subset of
 // GA4 *sessions* (organic Google only; clicks, not all sessions). It is the
 // directly-relevant signal for an organic-SEO push and needs no human grant.
-// The DAN-1008 gate threshold (≥250/wk, 2 consecutive weeks) is surfaced here
+// The DAN-1008 gate threshold (≥50/wk, 2 consecutive weeks) is surfaced here
 // against GSC clicks and labelled `metric: "gsc_clicks"`; whether GSC clicks is
 // the accepted read path for the gate is a VP-Product (gate owner) decision.
 
