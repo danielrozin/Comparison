@@ -1407,3 +1407,67 @@ export async function markComparisonRefreshed(
     console.warn(`markComparisonRefreshed failed for ${slug}:`, e);
   }
 }
+
+// ---------------------------------------------------------------------------
+// GSC per-page impressions backfill (DAN-1807)
+// ---------------------------------------------------------------------------
+
+export interface BulkImpressionsResult {
+  attempted: number; // distinct slugs we tried to write
+  matched: number; // rows that actually existed and were updated
+  skipped: boolean; // true when no DB is available
+}
+
+/**
+ * Backfill / refresh `comparisons.searchImpressions` from a slug → impressions
+ * map derived from GSC per-page data (DAN-1807).
+ *
+ * The `comparisons.searchImpressions` field ships as `0` for every row, so the
+ * DAN-1800 thin-page audit cannot rank the zero-traffic long tail by real
+ * demand. This writes the GSC-observed impression totals onto the matching rows.
+ *
+ * Only slugs present in the map are touched — pages with no GSC impressions in
+ * the window keep their existing value (default `0`), which is the correct
+ * "no demand" signal for the audit. Updates are grouped by impression value and
+ * issued with `updateMany(slug in [...])`, so writing a few thousand pages costs
+ * a handful of queries (impression counts cluster heavily on small integers)
+ * rather than one query per page — keeps the weekly cron well inside its budget.
+ */
+export async function bulkUpdateSearchImpressions(
+  bySlug: Map<string, number>
+): Promise<BulkImpressionsResult> {
+  const prisma = getPrismaClient();
+  if (!prisma) return { attempted: bySlug.size, matched: 0, skipped: true };
+
+  // Group slugs by their target impression value so identical values collapse
+  // into a single updateMany instead of one update per slug.
+  const byValue = new Map<number, string[]>();
+  for (const [slug, impressions] of bySlug) {
+    const v = Math.max(0, Math.round(impressions));
+    const list = byValue.get(v);
+    if (list) list.push(slug);
+    else byValue.set(v, [slug]);
+  }
+
+  let matched = 0;
+  for (const [impressions, slugs] of byValue) {
+    // Chunk the `in` list to keep individual statements a sane size.
+    for (let i = 0; i < slugs.length; i += 500) {
+      const chunk = slugs.slice(i, i + 500);
+      try {
+        const res = await prisma.comparison.updateMany({
+          where: { slug: { in: chunk } },
+          data: { searchImpressions: impressions },
+        });
+        matched += res.count;
+      } catch (e) {
+        console.warn(
+          `bulkUpdateSearchImpressions failed for value ${impressions} (${chunk.length} slugs):`,
+          e
+        );
+      }
+    }
+  }
+
+  return { attempted: bySlug.size, matched, skipped: false };
+}
