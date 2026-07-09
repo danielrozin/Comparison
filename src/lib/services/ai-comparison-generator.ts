@@ -9,6 +9,7 @@ import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types
 import { enrichComparisonData, type TavilyResult } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
+import { assessComparisonQuality } from "@/lib/services/comparison-quality";
 
 // Cap each Claude call at 45s so a slow upstream can't blow past the
 // 60s Vercel function budget and leave the user-facing route hanging
@@ -315,6 +316,21 @@ export async function generateComparison(
         comparison: null,
         error: "Generation produced fewer than 2 entities",
         errorStage: "parse",
+      };
+    }
+
+    // DAN-1800 quality gate: reject thin/filler generations so scaled
+    // low-value pages stop being minted (spam-update recovery, lever #3).
+    const quality = assessComparisonQuality(comparison);
+    if (!quality.pass) {
+      console.warn(
+        `Quality gate rejected ${slug} (score ${quality.score}): ${quality.reasons.join("; ")}`
+      );
+      return {
+        success: false,
+        comparison: null,
+        error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
+        errorStage: "quality",
       };
     }
 
@@ -634,6 +650,20 @@ export async function generateMultiComparison(
         comparison: null,
         error: "Generation produced fewer than 2 entities",
         errorStage: "parse",
+      };
+    }
+
+    // DAN-1800 quality gate (see generateComparison) — applies to N-way too.
+    const quality = assessComparisonQuality(comparison);
+    if (!quality.pass) {
+      console.warn(
+        `Quality gate rejected ${slug} (score ${quality.score}): ${quality.reasons.join("; ")}`
+      );
+      return {
+        success: false,
+        comparison: null,
+        error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
+        errorStage: "quality",
       };
     }
 
