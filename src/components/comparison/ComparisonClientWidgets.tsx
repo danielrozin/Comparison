@@ -94,3 +94,8 @@ export const TableOfContents = dynamic(
     ),
   }
 );
+
+export const StickyCompareBar = dynamic(
+  () => import("@/components/comparison/StickyCompareBar").then((m) => ({ default: m.StickyCompareBar })),
+  { ssr: false, loading: () => null }
+);

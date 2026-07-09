@@ -131,6 +131,7 @@ import {
   LikeButton,
   BackToResults,
   TableOfContents,
+  StickyCompareBar,
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
@@ -876,6 +877,21 @@ export default function ComparisonPage(props: Props) {
           { id: "comments", label: "Comments" },
         ]}
       />
+
+      {/* Sticky mini entity bar — slides in after scrolling past the hero */}
+      {comparison.entities.length >= 2 && (
+        <StickyCompareBar
+          entityA={comparison.entities[0].name}
+          entityB={comparison.entities[1].name}
+          sections={[
+            ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
+            ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
+            ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Table" }] : []),
+            { id: "pros-cons", label: "Pros & Cons" },
+            ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ]}
+        />
+      )}
 
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">

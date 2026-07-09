@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { Pagination } from "@/components/ui/Pagination";
+import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -97,14 +99,22 @@ const CATEGORY_COLORS: Record<string, string> = {
   automotive: "bg-slate-100 text-slate-800 border-slate-200 ring-slate-400",
 };
 
+const SORT_OPTIONS = [
+  { value: "views", label: "Most Views" },
+  { value: "newest", label: "Newest" },
+  { value: "alpha", label: "A → Z" },
+] as const;
+type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+
 interface PageProps {
-  searchParams: Promise<{ page?: string; category?: string }>;
+  searchParams: Promise<{ page?: string; category?: string; sort?: string }>;
 }
 
 export default async function TrendingPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const page = Math.max(1, parseInt(sp.page || "1", 10) || 1);
   const activeCategory = sp.category?.toLowerCase() || "";
+  const activeSort: SortValue = (SORT_OPTIONS.find((o) => o.value === sp.sort)?.value) ?? "views";
 
   // Fetch enough items for pagination (up to 100)
   const allTrending = await getTrendingComparisons(100);
@@ -120,9 +130,21 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     .map(([cat]) => cat);
 
   // Filter by category if selected
-  const filtered = activeCategory
+  let filtered = activeCategory
     ? allTrending.filter((item) => item.category?.toLowerCase() === activeCategory)
-    : allTrending;
+    : [...allTrending];
+
+  // Sort
+  if (activeSort === "newest") {
+    filtered = filtered.sort((a, b) => {
+      const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return bTime - aTime;
+    });
+  } else if (activeSort === "alpha") {
+    filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+  }
+  // "views" is the default from getTrendingComparisons (already sorted by viewCount)
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const safePage = Math.min(page, Math.max(1, totalPages));
@@ -360,13 +382,26 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           </nav>
         )}
 
-        {/* Active category label */}
-        {activeCategory && (
-          <div className="mb-4 flex items-center gap-2">
+        {/* Sort + active label row */}
+        <div className="mb-4 flex items-center justify-between flex-wrap gap-3">
+          {activeCategory ? (
             <p className="text-sm text-text-secondary">
               Showing <span className="font-semibold text-text capitalize">{activeCategory}</span> comparisons
               <span className="text-text-secondary/60"> · {filtered.length} total</span>
             </p>
+          ) : (
+            <p className="text-sm text-text-secondary">{allTrending.length} comparisons</p>
+          )}
+
+          {/* Sort select — client component (needs useSearchParams for URL-aware navigation) */}
+          <Suspense fallback={<div className="h-8 w-28 bg-surface-alt rounded-lg animate-pulse" />}>
+            <TrendingSortSelect activeSort={activeSort} />
+          </Suspense>
+        </div>
+
+        {/* Legacy active-category clear link (still needed when both category + sort active) */}
+        {activeCategory && (
+          <div className="mb-3 flex items-center gap-2">
             <Link href="/trending" className="text-xs text-primary-600 hover:underline ml-2">Clear filter</Link>
           </div>
         )}
@@ -383,7 +418,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           currentPage={safePage}
           totalPages={totalPages}
           basePath="/trending"
-          extraParams={activeCategory ? { category: activeCategory } : undefined}
+          extraParams={{
+            ...(activeCategory ? { category: activeCategory } : {}),
+            ...(activeSort !== "views" ? { sort: activeSort } : {}),
+          }}
         />
       </div>
     </>
