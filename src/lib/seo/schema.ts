@@ -765,6 +765,8 @@ export function comparisonPageSchema(
   }
 
   const schemas: Record<string, unknown>[] = [];
+  // termSlug — stable URL-fragment key for DefinedTerm @id anchors on this page.
+  const termSlug = (name: string) => name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 
   // Article type — locked to "Article" (string, not array) to satisfy the schema contract
   // tests and ensure consistent @type === "Article" equality checks. TechArticle / NewsArticle
@@ -1476,6 +1478,9 @@ export function comparisonPageSchema(
         "@type": "PropertyValue",
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
+        // valueReference → DefinedTerm lets Dataset Search + AI research tools resolve
+        // each measured variable to its formal term definition in this page's DefinedTermSet.
+        valueReference: { "@type": "DefinedTerm", "@id": `${url}#term-${termSlug(attr.name)}` },
       })),
       // spatialCoverage for country comparisons — signals geographic scope to AI geographic
       // knowledge graphs and Google Geo Knowledge Panels.
@@ -1569,6 +1574,58 @@ export function comparisonPageSchema(
     });
   }
 
+  // 8. Standalone WebPage node — bidirectional Article↔WebPage graph edge.
+  // Article.mainEntityOfPage points AT this WebPage; this WebPage.mainEntity points back
+  // at the Article. AI crawlers traversing the knowledge graph need both directions:
+  // forward (Article → WebPage) and reverse (WebPage → Article). Without a standalone
+  // WebPage node, the reverse edge is missing and cross-document resolution breaks.
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    name: comparison.title,
+    url,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    datePublished: comparison.metadata.publishedAt,
+    dateModified: comparison.metadata.updatedAt,
+    // mainEntity — reverse pointer completing the Article↔WebPage bidirectional edge.
+    mainEntity: { "@type": "Article", "@id": `${url}#article` },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    ...(comparison.category && {
+      breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb` },
+    }),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      "@id": `${url}#speakable`,
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+    },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  });
+
+  // 9. DefinedTermSet — formal vocabulary for this comparison's attribute dimensions.
+  // AI research tools (Perplexity, ChatGPT) and Google Dataset Search extract DefinedTerm
+  // nodes to build domain-specific knowledge about what properties are being compared.
+  // isPartOf Dataset creates a graph edge so crawlers can navigate TermSet → Dataset → Article.
+  if (comparison.attributes.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "DefinedTermSet",
+      "@id": `${url}#terms`,
+      name: `${comparison.entities.map((e) => e.name).join(" vs ")} — Comparison Attribute Vocabulary`,
+      description: `Formal definitions of the attributes used to compare ${comparison.entities.map((e) => e.name).join(" and ")}.`,
+      inLanguage: "en-US",
+      isPartOf: { "@type": "Dataset", "@id": `${url}#dataset` },
+      hasDefinedTerm: comparison.attributes.map((attr) => ({
+        "@type": "DefinedTerm",
+        "@id": `${url}#term-${termSlug(attr.name)}`,
+        name: attr.name,
+        ...(attr.unit ? { unitCode: attr.unit } : {}),
+        inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
+      })),
+    });
+  }
+
   return schemas;
 }
 
@@ -1615,6 +1672,7 @@ function buildMultiEntityGraph(
   voteData: ComparisonVoteData | null | undefined,
   url: string,
 ): Record<string, unknown> {
+  const termSlug = (name: string) => name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const itemListId = `${url}#comparison`;
   // Use canonical entity ProfilePage @id when slug is available so the item node
   // merges with the entity's ProfilePage mainEntity across the knowledge graph.
@@ -2167,6 +2225,7 @@ function buildMultiEntityGraph(
         "@type": "PropertyValue",
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
+        valueReference: { "@type": "DefinedTerm", "@id": `${url}#term-${termSlug(attr.name)}` },
       })),
       ...(isCountryComparison && {
         spatialCoverage: comparison.entities.map((e) => ({ "@type": "Country", name: e.name })),
@@ -2226,6 +2285,48 @@ function buildMultiEntityGraph(
           duration: "PT1M",
         },
       ],
+    });
+  }
+
+  // WebPage node — bidirectional Article↔WebPage graph edge (matches 2-entity path).
+  graph.push({
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    name: comparison.title,
+    url,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    datePublished: comparison.metadata.publishedAt,
+    dateModified: comparison.metadata.updatedAt,
+    mainEntity: { "@type": "Article", "@id": `${url}#article` },
+    isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    ...(comparison.category && {
+      breadcrumb: { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb` },
+    }),
+    speakable: {
+      "@type": "SpeakableSpecification",
+      "@id": `${url}#speakable`,
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+    },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  });
+
+  // DefinedTermSet — formal vocabulary for this comparison's attribute dimensions.
+  if (comparison.attributes.length > 0) {
+    graph.push({
+      "@type": "DefinedTermSet",
+      "@id": `${url}#terms`,
+      name: `${comparison.entities.map((e) => e.name).join(", ")} — Comparison Attribute Vocabulary`,
+      description: `Formal definitions of the attributes used to compare ${comparison.entities.map((e) => e.name).join(", ")}.`,
+      inLanguage: "en-US",
+      isPartOf: { "@type": "Dataset", "@id": `${url}#dataset` },
+      hasDefinedTerm: comparison.attributes.map((attr) => ({
+        "@type": "DefinedTerm",
+        "@id": `${url}#term-${termSlug(attr.name)}`,
+        name: attr.name,
+        ...(attr.unit ? { unitCode: attr.unit } : {}),
+        inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
+      })),
     });
   }
 

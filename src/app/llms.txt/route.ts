@@ -147,7 +147,7 @@ export async function GET() {
   lines.push("## Structured Data");
   lines.push("");
   lines.push("Every page includes Schema.org JSON-LD. Schema types by page:")
-  lines.push("- /compare/{slug}: Article (+ TechArticle/NewsArticle additionalType), FAQPage, Dataset (DataFeed), BreadcrumbList (WebPage-typed items), ItemList, HowTo, SportsEvent (sports category), ClaimReview, AggregateRating, Review, SpeakableSpecification, HowTo");
+  lines.push("- /compare/{slug}: Article (+ TechArticle/NewsArticle additionalType), FAQPage, Dataset (DataFeed), DefinedTermSet (attribute vocabulary), WebPage (mainEntity↔Article bidirectional), BreadcrumbList (WebPage-typed items), ItemList, HowTo, SportsEvent (sports category), ClaimReview, AggregateRating, Review, SpeakableSpecification");
   lines.push("- /entity/{slug}: ProfilePage, AggregateRating, BreadcrumbList, FAQPage, ItemList (comparisons list), SpeakableSpecification");
   lines.push("- /best/{slug}: ItemList, FAQPage, BreadcrumbList, Article");
   lines.push("- /blog/{slug}: Article (BlogPosting), FAQPage, BreadcrumbList, SpeakableSpecification");
@@ -254,6 +254,8 @@ export async function GET() {
   lines.push("- Country entity `geo: { \"@type\": \"GeoShape\", name }` + `containedInPlace.sameAs: wikipedia/World` now applied to 2-entity comparison path, achieving full parity with multi-entity path — every comparison involving country entities now emits geo-typed structured data");
   lines.push("- `ClaimReview.inLanguage: \"en-US\"` + `ClaimReview.itemReviewed.inLanguage: \"en-US\"` added to all 3 ClaimReview emit paths (2-entity comparison, multi-entity comparison, `claimReviewSchema` export) — language-scoped fact-checking across all comparison types");
   lines.push("- `SportsEvent.inLanguage: \"en-US\"` + `SportsEvent.startDate` added to sports-category 2-entity comparisons — enables language-scoped sports-event indexing and Event rich results eligibility (startDate is required by Google for Event rich results)");
+  lines.push("- Standalone `WebPage` node with `mainEntity: { Article }` added to ALL comparison pages (2-entity + multi-entity paths) — completes the bidirectional Article↔WebPage graph edge; AI crawlers now traverse both directions: `Article.mainEntityOfPage → WebPage` and `WebPage.mainEntity → Article`");
+  lines.push("- `DefinedTermSet` schema block (with `DefinedTerm` nodes per attribute) added to all comparison pages — formalizes comparison attribute vocabulary for Google Dataset Search and AI research tools; each `PropertyValue` in `variableMeasured` now carries `valueReference → DefinedTerm` cross-linking Dataset to TermSet");
 
   const body = lines.join("\n");
 
