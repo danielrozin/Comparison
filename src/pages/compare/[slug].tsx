@@ -41,6 +41,8 @@ import {
   parseComparisonSlug,
   sortComparisonSlug,
   isDegenerateComparisonSlug,
+  isCleanSlug,
+  cleanComparisonSlug,
 } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
@@ -344,6 +346,18 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // wastes crawl budget. 404 it so it leaves the index; it is also excluded
   // from the sitemap (DAN: self-comparison crawl-quality guard).
   if (isDegenerateComparisonSlug(slug)) {
+    return { notFound: true };
+  }
+
+  // DB corruption guard: slugs with non-alphanumeric/hyphen characters (e.g.
+  // trailing `)` or `-keyword-suffix`) are artifacts of a slug generation bug.
+  // Redirect permanently to the clean version so Google consolidates authority
+  // on the real canonical instead of indexing 2000+ garbage duplicate URLs.
+  if (!isCleanSlug(slug)) {
+    const cleaned = cleanComparisonSlug(slug);
+    if (cleaned && cleaned !== slug && cleaned.includes("-vs-")) {
+      return { redirect: { destination: `/compare/${cleaned}`, permanent: true } };
+    }
     return { notFound: true };
   }
 

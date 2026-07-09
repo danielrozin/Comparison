@@ -86,3 +86,30 @@ export function isDegenerateComparisonSlug(slug: string): boolean {
   }
   return false;
 }
+
+/**
+ * Returns true when a slug contains only lowercase alphanumeric characters and
+ * hyphens — i.e. the set that slugify() produces. Slugs with `)`, `(`, spaces,
+ * or other special characters are DB corruption artifacts and must never be
+ * sitemapped or rendered as their own canonical URL.
+ */
+export function isCleanSlug(slug: string): boolean {
+  return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug);
+}
+
+/**
+ * Strips known corruption suffixes from a comparison slug and returns the
+ * cleaned version so malformed variants can be redirected to the real page.
+ * Returns the input unchanged when no corruption is detected.
+ *
+ * Known patterns (from DB corruption incident):
+ *   - Trailing `)` or `))` — markdown link parsing artifact
+ *   - `-keyword-suffix` — SEO-variant generation artifact
+ */
+export function cleanComparisonSlug(slug: string): string {
+  return slug
+    .replace(/\)+$/, "")          // strip trailing ) or ))
+    .replace(/-keyword-suffix$/, "") // strip -keyword-suffix
+    .replace(/\)+$/, "")          // strip any ) exposed after suffix removal
+    .replace(/-+$/, "");          // strip trailing hyphens
+}

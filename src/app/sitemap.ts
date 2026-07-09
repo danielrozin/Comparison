@@ -5,7 +5,7 @@ import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
-import { isDegenerateComparisonSlug } from "@/lib/utils/slugify";
+import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
   return (
@@ -202,7 +202,7 @@ export default async function sitemap({
       });
 
       return rows
-        .filter((row) => !isDegenerateComparisonSlug(row.slug))
+        .filter((row) => isCleanSlug(row.slug) && !isDegenerateComparisonSlug(row.slug))
         .map((row) => {
           const entityA = row.entities[0]?.entity.name ?? "";
           const entityB = row.entities[1]?.entity.name ?? entityA;
