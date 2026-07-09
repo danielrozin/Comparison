@@ -2611,6 +2611,13 @@ export function entityPageSchema(entity: {
       operatingSystem: "Web, iOS, Android",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
+    // inLanguage — language-scopes the entity node for multilingual AI knowledge
+    // graph merge. Perplexity/ChatGPT use this to prefer English-language entity
+    // nodes when synthesising cross-document answers.
+    inLanguage: "en-US",
+    // thumbnailUrl — AI image crawlers (Google Lens, Perplexity visual mode) prefer
+    // thumbnailUrl over bare image URL for Knowledge Panel candidate images.
+    ...(entity.imageUrl && { thumbnailUrl: entity.imageUrl }),
     // potentialAction — CompareAction signals to AI assistants that this entity
     // can be compared against others via the search URL pattern.
     potentialAction: {

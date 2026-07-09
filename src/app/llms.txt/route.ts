@@ -264,6 +264,8 @@ export async function GET() {
   lines.push("- `Dataset.interactionStatistic: InteractionCounter(ReadAction, viewCount)` added to both 2-entity and multi-entity comparison Dataset nodes — view engagement signals visible to Google Dataset Search and AI data-pipeline crawlers (Perplexity data mode, Kaggle AI, Semantic Scholar) (HB328)");
   lines.push("- Multi-entity `Dataset` gains `educationalLevel: \"General\"` + `educationalUse: \"research\"` — aligns with 2-entity Dataset parity; educational classifier signals for AI research indexing (HB328)");
   lines.push("- `FAQPage.about[]` added to both 2-entity and multi-entity comparison FAQ schemas — typed entity references linking FAQ answers to their subject entities; enables AI engines to attribute Q&A pairs without re-parsing parent Article; `faqSchema()` export updated with optional `about` param (HB328)");
+  lines.push("- `entityPageSchema()` gains `inLanguage: \"en-US\"` + `thumbnailUrl` — language-scopes entity nodes for multilingual AI KG merge (Perplexity/ChatGPT prefer en-US entity nodes); thumbnailUrl preferred by Google Lens + AI Overview image slots over bare `image.url` (HB329)");
+  lines.push("- Blog WebPage node gains `mainEntity: { Article }` back-edge — completes bidirectional WebPage↔Article graph for blog articles; mirrors compare + alternatives pages; AI crawlers now traverse both directions on all content types (HB329)");
 
   const body = lines.join("\n");
 
