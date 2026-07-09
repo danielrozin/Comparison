@@ -70,9 +70,9 @@ export function RelatedBlogPosts({
                 )}
 
                 {/* Title */}
-                <p className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2 leading-snug mb-2 flex-1">
+                <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2 leading-snug mb-2 flex-1">
                   {post.title}
-                </p>
+                </h3>
 
                 {/* Excerpt */}
                 {post.excerpt && (

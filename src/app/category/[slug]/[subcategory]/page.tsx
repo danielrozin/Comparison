@@ -370,9 +370,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+                        <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
                           {comp.title}
-                        </p>
+                        </h3>
                       </div>
                     </div>
                     <div className="mt-auto">

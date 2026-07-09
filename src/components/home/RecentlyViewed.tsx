@@ -52,9 +52,9 @@ export function RecentlyViewed() {
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+                <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
                   {item.title}
-                </p>
+                </h3>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="text-[10px] font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded capitalize">
                     {item.category}

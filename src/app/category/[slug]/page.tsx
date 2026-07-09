@@ -345,9 +345,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
+            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
               {comp.title}
-            </p>
+            </h3>
           </div>
         </div>
         <div className="mt-auto">
@@ -531,9 +531,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                         {(parts[1] || "B").charAt(0)}
                       </div>
                     </div>
-                    <p className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
+                    <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
                       {comp.title}
-                    </p>
+                    </h3>
                   </Link>
                   </li>
                 );
