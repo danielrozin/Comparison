@@ -1224,9 +1224,11 @@ export function comparisonPageSchema(
         },
       },
     ],
-    // hasPart links to FAQPage, Dataset, HowTo, and entity ProfilePages for formal Article
-    // sub-document graph edges. ProfilePage nodes let AI crawlers traverse Article→entity edges
-    // directly from hasPart, complementing about[] and mentions[] with a page-type-scoped link.
+    // hasPart links to FAQPage, Dataset, HowTo, ClaimReview, and entity ProfilePages for
+    // formal Article sub-document graph edges. ProfilePage nodes let AI crawlers traverse
+    // Article→entity edges directly from hasPart, complementing about[] and mentions[] with
+    // a page-type-scoped link. ClaimReview reference lets AI fact-checkers (Google Fact Check,
+    // Perplexity truth mode) discover the claim node from the Article without loading the page.
     ...(() => {
       // Inline category set mirrors HOWTO_CATEGORIES below (defined after this schemas.push call).
       const howtoEligible = new Set(["technology", "software", "products", "automotive", "gaming", "travel", "finance", "health", "economy", "entertainment", "companies"]);
@@ -1242,6 +1244,12 @@ export function comparisonPageSchema(
         // use this edge to extract the compared entities as a ranked list.
         { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
+        // ClaimReview — Article→ClaimReview graph edge for AI fact-checker discovery.
+        // Google Fact Check and Perplexity truth mode follow hasPart to find the claim node
+        // without a full-page crawl; gates on shortAnswer so only fact-checkable pages emit this.
+        ...(comparison.shortAnswer && comparison.entities.length >= 2
+          ? [{ "@type": "ClaimReview", "@id": `${url}#claimreview` }]
+          : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         // @id matches the ProfilePage's own @id so cross-document merging works correctly.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
@@ -1583,12 +1591,22 @@ export function comparisonPageSchema(
           name: e.name,
         })),
       }),
+      // isBasedOn — typed WebPage objects (parity with Article.citation HB338).
+      // AI fact-checkers (Google, Perplexity truth mode) follow isBasedOn to verify
+      // Dataset claims; typed WebPage + publisher gives a provenance chain they can
+      // traverse, vs bare CreativeWork which has no dereferenciable anchor.
       ...(citation && citation.sourceCount > 0 && {
-        isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
-          "@type": "CreativeWork",
-          name: s.name,
-          url: s.url,
-        })),
+        isBasedOn: citation.sources.filter((s) => s.url).map((s) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       }),
       // interactionStatistic on Dataset — ReadAction signals to Google Dataset Search
       // and AI data-pipeline crawlers that this dataset has real human engagement.
@@ -2081,8 +2099,10 @@ function buildMultiEntityGraph(
         },
       },
     ],
-    // hasPart links to FAQPage, Dataset, HowTo, and entity ProfilePages for formal Article
-    // sub-document graph edges. ProfilePage nodes create Article→entity traversal paths for AI.
+    // hasPart links to FAQPage, Dataset, HowTo, ClaimReview, and entity ProfilePages for
+    // formal Article sub-document graph edges. ProfilePage nodes create Article→entity
+    // traversal paths for AI. ClaimReview reference lets AI fact-checkers discover the
+    // claim node from the Article without a full-page crawl (parity with 2-entity path).
     ...(() => {
       const parts = [
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
@@ -2091,6 +2111,10 @@ function buildMultiEntityGraph(
         // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
         { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
+        // ClaimReview — Article→ClaimReview hasPart edge for AI fact-checker graph traversal.
+        ...(comparison.shortAnswer && comparison.entities.length >= 2
+          ? [{ "@type": "ClaimReview", "@id": `${url}#claimreview` }]
+          : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
           "@type": "ProfilePage",
@@ -2369,12 +2393,19 @@ function buildMultiEntityGraph(
       ...(isCountryComparison && {
         spatialCoverage: comparison.entities.map((e) => ({ "@type": "Country", name: e.name })),
       }),
+      // isBasedOn — typed WebPage objects (parity with HB338 Article.citation + 2-entity Dataset.isBasedOn).
       ...(citation && citation.sourceCount > 0 && {
-        isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
-          "@type": "CreativeWork",
-          name: s.name,
-          url: s.url,
-        })),
+        isBasedOn: citation.sources.filter((s: { url?: string; name: string }) => s.url).map((s: { url?: string; name: string }) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       }),
       ...(multiViewCount > 0 && {
         interactionStatistic: {
