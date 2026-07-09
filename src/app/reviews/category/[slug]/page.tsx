@@ -117,22 +117,23 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     description: `Compare the best ${cat.name.toLowerCase()} with aggregated SmartScores from Reddit, G2, Capterra, Trustpilot, and more.`,
     abstract: `Aggregated ${cat.name} reviews with SmartScores from multiple platforms.`,
     url: reviewCatUrl,
-
-    locale: "en_US",    inLanguage: "en-US",
+    inLanguage: "en-US",
     genre: "Review Category Index",
     creativeWorkStatus: "Published",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    datePublished: "2024-01-01",
+    dateModified: reviewCatToday,
     lastReviewed: reviewCatToday,
     contentReferenceTime: reviewCatToday,
+    numberOfItems: total,
     thumbnailUrl: reviewCatOgImage,
     image: {
       "@type": "ImageObject",
       "@id": `${reviewCatUrl}#primaryImage`,
       url: reviewCatOgImage,
-
-      locale: "en_US",      contentUrl: reviewCatOgImage,
+      contentUrl: reviewCatOgImage,
       width: 1200,
       height: 630,
       caption: `${cat.name} Reviews — A Versus B SmartReview`,
@@ -149,9 +150,71 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     keywords: `${cat.name} reviews, best ${cat.name.toLowerCase()} ${new Date().getFullYear()}, SmartScore ${cat.name.toLowerCase()}`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
-    potentialAction: { "@type": "ReadAction", target: reviewCatUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: reviewCatUrl },
+      { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}+${encodeURIComponent(cat.name.toLowerCase())}` }, "query-input": "required name=search_term_string" },
+    ],
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".category-description", "#page-description"] },
+    // mentions[] — top-10 products for AI crawlers that enumerate category members without HTML parsing.
+    ...(entities.length > 0 && {
+      mentions: entities.slice(0, 10).map((e) => ({
+        "@type": "SoftwareApplication",
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        url: `${SITE_URL}/reviews/${e.slug}`,
+        ...(e.reviewAggregation?.smartScore && { aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: e.reviewAggregation.averageRating?.toFixed(1) ?? "0",
+          reviewCount: e.reviewAggregation.totalReviews ?? 0,
+          bestRating: 5,
+          worstRating: 1,
+          ratingExplanation: `SmartScore ${e.reviewAggregation.smartScore}/100`,
+        }}),
+      })),
+    }),
   };
+
+  // ItemList — ranked product list with AggregateRating per entry.
+  // Google uses ItemList + AggregateRating to surface category carousels in search
+  // and AI answer engines (Perplexity, ChatGPT) use it to rank and enumerate products.
+  const itemListSchema = entities.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${reviewCatUrl}#list`,
+    name: `Best ${cat.name} — Ranked by SmartScore`,
+    description: `Top ${cat.name} products ranked by aggregated SmartScore from Reddit, G2, Capterra, Trustpilot, and more.`,
+    url: reviewCatUrl,
+    numberOfItems: Math.min(entities.length, 10),
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: entities.slice(0, 10).map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: e.name,
+      url: `${SITE_URL}/reviews/${e.slug}`,
+      item: {
+        "@type": "SoftwareApplication",
+        "@id": `${SITE_URL}/entity/${e.slug}`,
+        name: e.name,
+        url: `${SITE_URL}/reviews/${e.slug}`,
+        applicationCategory: cat.name,
+        ...(e.reviewAggregation && {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: e.reviewAggregation.averageRating?.toFixed(1) ?? "0",
+            reviewCount: e.reviewAggregation.totalReviews ?? 0,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }),
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      },
+    })),
+  } : null;
 
   return (
     <>
@@ -164,6 +227,12 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
+      {itemListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        />
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
