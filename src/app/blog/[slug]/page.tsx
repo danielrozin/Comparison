@@ -496,6 +496,12 @@ export default async function BlogPostPage({
       })),
     }),
     creativeWorkStatus: "Published",
+    // locationCreated — US data-origin signal; parity with comparisonPageSchema.
+    // AI Overviews and Google local ranking signals use this to scope data authority.
+    locationCreated: { "@type": "Country", name: "United States" },
+    // dateline — NewsArticle origin marker; required by some news aggregators (Apple News,
+    // Yahoo News) to correctly attribute the publication geography in article bylines.
+    ...(isRecent && { dateline: "Online, United States" }),
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

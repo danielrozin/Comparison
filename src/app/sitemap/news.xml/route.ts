@@ -53,6 +53,11 @@ export async function GET() {
     const title = escapeXml(article.title);
     const url = `${SITE_URL}/blog/${article.slug}`;
     const keywords = (article.tags ?? []).slice(0, 10).join(", ");
+    // image:caption — article excerpt truncated to 200 chars; tells Google Images and
+    // AI news aggregators (Apple News, Perplexity) the article's primary answer summary.
+    const captionText = article.excerpt
+      ? escapeXml(article.excerpt.slice(0, 200))
+      : title;
 
     return `  <url>
     <loc>${url}</loc>
@@ -68,6 +73,7 @@ export async function GET() {
     <image:image>
       <image:loc>${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&amp;type=blog</image:loc>
       <image:title>${title}</image:title>
+      <image:caption>${captionText}</image:caption>
     </image:image>
   </url>`;
   });
