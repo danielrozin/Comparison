@@ -175,6 +175,14 @@ body {
   100% { border-color: var(--color-primary-400); }
 }
 
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee { animation: marquee-scroll 30s linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-glow { animation: glow 2s ease-in-out infinite; }
 .animate-gradient { animation: gradient-shift 3s ease infinite; background-size: 200% 200%; }

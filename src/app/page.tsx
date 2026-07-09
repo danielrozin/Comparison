@@ -16,6 +16,8 @@ import { RecentSearches } from "@/components/home/RecentSearches";
 import { RecentlyViewed } from "@/components/home/RecentlyViewed";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { AnimatedStats } from "@/components/home/AnimatedStats";
+import { ComparisonTicker } from "@/components/home/ComparisonTicker";
+import { LiveActivityToast } from "@/components/home/LiveActivityToast";
 
 const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
 const HOME_DESC = "The internet's most comprehensive comparison platform. Side-by-side comparisons across sports, technology, products, countries, software, and more — data-driven, free, and instant.";
@@ -273,6 +275,9 @@ export default async function HomePage() {
           </div>
         </div>
 
+        {/* Live activity toast — shows popular trending comparisons with simulated viewer count */}
+        <LiveActivityToast items={trending.slice(0, 8).map((t) => ({ slug: t.slug, title: t.title, viewCount: t.viewCount }))} />
+
         {/* Wave divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" className="w-full" aria-hidden="true">
@@ -286,6 +291,9 @@ export default async function HomePage() {
 
       {/* Your Recently Viewed (localStorage-based, personal) */}
       <RecentlyViewed />
+
+      {/* Trending ticker — social proof strip showing live popular comparisons */}
+      <ComparisonTicker items={trending} />
 
       {/* Recent Searches */}
       <RecentSearches />
