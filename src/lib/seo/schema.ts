@@ -1205,6 +1205,10 @@ export function comparisonPageSchema(
         // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
         // attribute vocabulary directly from the Article node without loading the Dataset first.
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
+        // ItemList — Article→ItemList graph edge; lets AI crawlers traverse from Article to
+        // the structured entity list without loading the full page. Perplexity and ChatGPT
+        // use this edge to extract the compared entities as a ranked list.
+        { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         // @id matches the ProfilePage's own @id so cross-document merging works correctly.
@@ -1344,7 +1348,7 @@ export function comparisonPageSchema(
         name: e.name,
         url: `${SITE_URL}/entity/${e.slug}`,
       }));
-    schemas.push(faqSchema(comparison.faqs, `${url}#faq`, faqAbout));
+    schemas.push(faqSchema(comparison.faqs, `${url}#faq`, faqAbout, comparison.metadata.publishedAt ?? undefined));
   }
 
   // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
@@ -2017,6 +2021,8 @@ function buildMultiEntityGraph(
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
+        // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
+        { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
@@ -2175,8 +2181,11 @@ function buildMultiEntityGraph(
   }
 
   if (comparison.faqs.length > 0) {
+    const faqDatePublished = comparison.metadata.publishedAt ?? new Date().toISOString().slice(0, 10);
+    const faqDateModified = new Date().toISOString().slice(0, 10);
     graph.push({
       "@type": "FAQPage",
+      additionalType: "https://schema.org/QAPage",
       "@id": `${url}#faq`,
       inLanguage: "en-US",
       isAccessibleForFree: true,
@@ -2198,12 +2207,16 @@ function buildMultiEntityGraph(
         "@id": `${url}#q${i + 1}`,
         name: faq.question,
         answerCount: 1,
+        dateCreated: faqDatePublished,
+        dateModified: faqDateModified,
         acceptedAnswer: {
           "@type": "Answer",
           "@id": `${url}#a${i + 1}`,
           text: faq.answer,
           inLanguage: "en-US",
           upvoteCount: 1,
+          dateCreated: faqDatePublished,
+          dateModified: faqDateModified,
           author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
         },
       })),
@@ -2481,13 +2494,18 @@ export function selfHostedVideoObjectSchema(opts: {
 // FAQ schema
 // ============================================================
 
-export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": string; "@id": string; name: string; url: string }[]) {
+export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": string; "@id": string; name: string; url: string }[], datePublished?: string) {
   // Derive Article @id from FAQPage @id so Google/AI can trace FAQ → Article graph edge.
   // Convention: FAQPage @id = "{articleUrl}#faq", Article @id = "{articleUrl}#article"
   const articleId = id ? id.replace(/#faq$/, "#article") : undefined;
+  const today = new Date().toISOString().slice(0, 10);
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // additionalType QAPage — makes FAQ eligible for the QA answer-box rich result
+    // (distinct from the FAQ accordion). Google and Perplexity render QAPage nodes
+    // as upvoted Q&A panels with author attribution, separate from FAQ carousels.
+    additionalType: "https://schema.org/QAPage",
     ...(id && { "@id": id }),
     inLanguage: "en-US",
     isAccessibleForFree: true,
@@ -2516,6 +2534,11 @@ export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": strin
       // answerCount — signals exactly one accepted answer; required for FAQ rich results
       // eligibility in Google Search even when upvoteCount is 0.
       answerCount: 1,
+      // dateCreated — temporal freshness per Q&A pair; AI engines (Perplexity, ChatGPT)
+      // qualify citations with dates ("as of …") and prefer fresher Q&A nodes over
+      // undated ones when synthesising multi-source responses.
+      dateCreated: datePublished ?? today,
+      dateModified: today,
       acceptedAnswer: {
         "@type": "Answer",
         // @id on Answer — enables AI knowledge graphs to merge this answer node with
@@ -2528,6 +2551,8 @@ export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": strin
         inLanguage: "en-US",
         // upvoteCount — editorial confidence signal for AI answer engine ranking.
         upvoteCount: 1,
+        dateCreated: datePublished ?? today,
+        dateModified: today,
         // author — attributes the answer to our editorial org; AI answer engines use
         // this to weight the answer's authority when synthesizing multi-source responses.
         author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
