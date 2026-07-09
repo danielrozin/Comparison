@@ -273,6 +273,8 @@ export async function GET() {
   lines.push("- `Organization.owns` added linking to WebSite and DataCatalog — completes Organization→digital-asset graph edge; Google KG and AI crawlers (Perplexity, ChatGPT) use `owns` to confirm publisher controls the data source (E-E-A-T signal) (HB332)");
   lines.push("- `speakable` added to `profilePageSchema` `mainEntity` node — voice assistants and LLMs reading entity nodes via `/api/knowledge-graph/{slug}` now find speakable selectors on the entity itself without traversing the ProfilePage wrapper (HB332)");
   lines.push("- `PropertyValue.propertyID` added to `variableMeasured` entries in both 2-entity and multi-entity Dataset schemas — stable URI that Google Dataset Search uses to dereference attribute definitions across documents; mirrors DefinedTerm @id so crawlers merge both nodes (HB333)");
+  lines.push("- `WebSite.alternativeHeadline` added to `webSiteSchema()` — secondary tagline used by Perplexity/ChatGPT citation extractors and Google Sitelinks to display a human-readable description alongside the brand name (HB334)");
+  lines.push("- `Dataset.includedInDataCatalog` added to both 2-entity and multi-entity Dataset emit paths — explicit graph edge linking every per-comparison Dataset to the site's global DataCatalog node; Google Dataset Search uses this to cluster datasets under the platform catalog and boost corpus-level authority (HB334)");
 
   const body = lines.join("\n");
 

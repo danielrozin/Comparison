@@ -358,6 +358,9 @@ export function webSiteSchema() {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
+    // alternativeHeadline — secondary title used by Perplexity / ChatGPT citation extractors
+    // and Google Sitelinks generation to display a human-readable tagline alongside the brand name.
+    alternativeHeadline: "The #1 Platform for Side-by-Side Comparisons — Products, Tech, Sports & More",
     // alternateName — secondary brand handles for Knowledge Panel disambiguation and
     // AI brand entity resolution across "AversusB", "A vs B", and "aversusb.net" mentions.
     alternateName: ["AversusB", "A vs B", "aversusb.net", "A Versus B"],
@@ -1516,6 +1519,10 @@ export function comparisonPageSchema(
       // attribute the Dataset source and boost domain authority signals in data-specific results.
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      // includedInDataCatalog — explicit graph edge from this Dataset to the site's global
+      // DataCatalog node. Google Dataset Search uses this to cluster per-comparison Datasets
+      // under the platform-level catalog, boosting corpus-level authority signals.
+      includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
       // datePublished / dateModified — Dataset provenance signals for Google Dataset Search.
       datePublished: comparison.metadata.publishedAt,
       dateModified: comparison.metadata.updatedAt,
@@ -2296,6 +2303,8 @@ function buildMultiEntityGraph(
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      // includedInDataCatalog — explicit graph edge to the site's global DataCatalog node.
+      includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
       datePublished: comparison.metadata.publishedAt,
       dateModified: comparison.metadata.updatedAt,
       temporalCoverage: `2025/${new Date().getFullYear()}`,
