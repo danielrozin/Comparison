@@ -117,5 +117,5 @@ export const BackToTop = dynamic(
 
 export const QuickSectionNav = dynamic(
   () => import("@/components/comparison/QuickSectionNav").then((m) => ({ default: m.QuickSectionNav })),
-  { ssr: false, loading: () => null }
+  { ssr: false, loading: () => <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4"><div className="h-8" aria-hidden="true" /></div> }
 );

@@ -936,7 +936,7 @@ export default function ComparisonPage(props: Props) {
       <ComparisonHero comparison={comparison} />
 
       {/* Quick section jump nav — always visible, complements the scroll-triggered sticky bar */}
-      <QuickSectionNav />
+      <QuickSectionNav winnerName={comparison.quickAnswer?.winnerName || undefined} />
 
       {/* Citation Stats Bar */}
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
