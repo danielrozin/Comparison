@@ -16,6 +16,18 @@ function SearchContent() {
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [compareWith, setCompareWith] = useState("");
+  const [trending, setTrending] = useState<{ slug: string; title: string }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/v1/trending?limit=8")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data.comparisons)) {
+          setTrending(data.comparisons.slice(0, 8));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setSearchQuery(query);
@@ -247,8 +259,48 @@ function SearchContent() {
           </div>
         </div>
       ) : (
-        <div className="text-center py-12 text-text-secondary">
-          <p>Type a search term or comparison to get started.</p>
+        <div className="space-y-8 pt-2">
+          {trending.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <svg className="w-4 h-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <p className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Trending Comparisons</p>
+              </div>
+              <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+                {trending.map((item) => {
+                  const parts = item.title.split(/\s+vs\.?\s+/i);
+                  return (
+                    <li key={item.slug}>
+                    <Link
+                      href={`/compare/${item.slug}`}
+                      className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                    >
+                      <div className="flex -space-x-2 flex-shrink-0">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                          {(parts[0] || "A").charAt(0).toUpperCase()}
+                        </div>
+                        <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                          {(parts[1] || "B").charAt(0).toUpperCase()}
+                        </div>
+                      </div>
+                      <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors truncate flex-1">
+                        {item.title}
+                      </span>
+                      <svg className="w-4 h-4 text-text-secondary group-hover:translate-x-0.5 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+          <p className="text-center text-sm text-text-secondary py-4">
+            Or type &ldquo;A vs B&rdquo; above to generate any comparison instantly.
+          </p>
         </div>
       )}
       </div>
