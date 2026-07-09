@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
 // Feature flag for A/B testing the redesigned table
@@ -492,6 +492,7 @@ function RedesignedTable({
     () => new Set(categoryEntries.map(([name]) => name))
   );
   const [winnersOnly, setWinnersOnly] = useState(false);
+  const [filterQuery, setFilterQuery] = useState("");
 
   const headerRef = useRef<HTMLTableSectionElement>(null);
 
@@ -510,9 +511,27 @@ function RedesignedTable({
 
   const allOpen = openGroups.size === categoryEntries.length;
 
-  // Filter attributes per category when winnersOnly is active
+  const filterNormalized = filterQuery.trim().toLowerCase();
+
+  // When a filter is active, auto-expand all groups so results are visible
+  useEffect(() => {
+    if (filterNormalized) {
+      setOpenGroups(new Set(categoryEntries.map(([name]) => name)));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterNormalized]);
+
+  // Filter attributes per category when winnersOnly or filterQuery is active
   const visibleCategories = categoryEntries.map(([name, attrs]) => {
-    const filtered = winnersOnly ? attrs.filter((a) => getWinner(a) !== null && getWinner(a) !== "tie") : attrs;
+    let filtered = winnersOnly ? attrs.filter((a) => getWinner(a) !== null && getWinner(a) !== "tie") : attrs;
+    if (filterNormalized) {
+      filtered = filtered.filter((a) => {
+        const inName = a.name.toLowerCase().includes(filterNormalized);
+        const inValA = a.values[0]?.valueText?.toLowerCase().includes(filterNormalized) ?? false;
+        const inValB = a.values[1]?.valueText?.toLowerCase().includes(filterNormalized) ?? false;
+        return inName || inValA || inValB;
+      });
+    }
     return [name, filtered] as [string, ComparisonAttribute[]];
   }).filter(([, attrs]) => attrs.length > 0);
 
@@ -557,8 +576,52 @@ function RedesignedTable({
         </div>
       </div>
 
+      {/* Live attribute filter — only shown when table has enough rows to warrant it */}
+      {attributes.length > 6 && (
+        <div className="relative mb-4">
+          <svg className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="search"
+            value={filterQuery}
+            onChange={(e) => setFilterQuery(e.target.value)}
+            placeholder="Filter attributes…"
+            aria-label="Filter comparison attributes"
+            className="w-full pl-9 pr-9 py-2 text-sm bg-surface-alt border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-400 placeholder:text-text-secondary/50 transition-all"
+          />
+          {filterQuery && (
+            <button
+              type="button"
+              onClick={() => setFilterQuery("")}
+              aria-label="Clear filter"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:bg-border text-text-secondary/60 hover:text-text transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Empty state when filter matches nothing */}
+      {filterNormalized && visibleCategories.length === 0 && (
+        <div className="py-12 flex flex-col items-center gap-3 text-center">
+          <div className="w-12 h-12 rounded-full bg-surface-alt flex items-center justify-center">
+            <svg className="w-6 h-6 text-text-secondary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <p className="text-sm font-medium text-text-secondary">No attributes match <span className="font-semibold text-text">&ldquo;{filterQuery}&rdquo;</span></p>
+          <button type="button" onClick={() => setFilterQuery("")} className="text-xs text-primary-600 hover:text-primary-700 font-semibold underline underline-offset-2">
+            Clear filter
+          </button>
+        </div>
+      )}
+
       {/* Desktop: Table layout with sticky header */}
-      <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
+      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
@@ -682,7 +745,7 @@ function RedesignedTable({
       </div>
 
       {/* Mobile: Sticky entity header + compact rows for density */}
-      <div className="md:hidden">
+      <div className={`md:hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
         {/* Sticky entity names header */}
         <div className="sticky top-0 z-20 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 rounded-t-xl grid grid-cols-[1fr_1fr] text-white shadow-lg shadow-indigo-900/30">
           {[entityA, entityB].map((entity, idx) => (

@@ -1,9 +1,53 @@
+"use client";
+
+import { useState, useCallback } from "react";
 import type { QuickAnswerTLDR as QuickAnswerData, ComparisonEntityData } from "@/types";
 
 interface QuickAnswerTLDRProps {
   quickAnswer: QuickAnswerData;
   entityA: ComparisonEntityData;
   entityB: ComparisonEntityData;
+}
+
+function CopyTldrButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* ignore */ }
+  }, [text]);
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      aria-label={copied ? "Copied!" : "Copy quick answer"}
+      title={copied ? "Copied!" : "Copy quick answer"}
+      className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold border transition-all duration-150 ${
+        copied
+          ? "bg-green-50 text-green-700 border-green-200"
+          : "bg-white/60 text-blue-600 border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+      }`}
+    >
+      {copied ? (
+        <>
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          Copied
+        </>
+      ) : (
+        <>
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          Copy
+        </>
+      )}
+    </button>
+  );
 }
 
 export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _entityB }: QuickAnswerTLDRProps) {
@@ -23,7 +67,8 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
           <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-500 to-indigo-500 rounded-l-2xl" />
 
           <div className="ml-2">
-            <div className="flex items-center flex-wrap gap-2 mb-2">
+            <div className="flex items-center justify-between gap-2 mb-2">
+            <div className="flex items-center flex-wrap gap-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white uppercase tracking-wider">
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
@@ -44,6 +89,8 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
                   {quickAnswer.winnerName} wins
                 </span>
               )}
+            </div>
+            <CopyTldrButton text={quickAnswer.tldr} />
             </div>
 
             <p className="text-text leading-relaxed text-sm sm:text-base font-medium">
