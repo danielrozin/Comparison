@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
-import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 
@@ -249,6 +249,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
         },
       ],
+      // hasPart — formal ReviewPage→FAQPage edge so AI crawlers attribute FAQ answers to this page.
+      hasPart: { "@type": "FAQPage", "@id": `${SITE_URL}/reviews/${slug}#faq` },
       // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
       timeRequired: "PT3M",
       // wordCount — proxy for content depth; review aggregation pages scale with review count.
@@ -339,6 +341,44 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       })),
     });
   }
+
+  // FAQPage — synthetic Q&A pairs built from aggregation data.
+  // AEO: enables FAQ rich results and AI answer-engine Q&A slots for "[product] reviews" queries.
+  // Each question targets a distinct common query pattern so Google can surface multiple
+  // FAQ cards and AI engines (Perplexity, ChatGPT) can cite the answers directly.
+  const reviewFaqId = `${SITE_URL}/reviews/${slug}#faq`;
+  const reviewFaqs = [
+    {
+      question: `Is ${name} good?`,
+      answer: aggregation
+        ? `${name} has a ${aggregation.averageRating.toFixed(1)}/5 rating based on ${aggregation.totalReviews} aggregated reviews across Reddit, G2, Capterra, Trustpilot, and other sources. Its SmartScore is ${aggregation.smartScore}/100, which ${aggregation.smartScore >= 70 ? "indicates a well-regarded product" : aggregation.smartScore >= 50 ? "indicates mixed reception" : "indicates room for improvement"}.`
+        : `${name} is a notable product in its category. Visit our reviews page for the latest aggregated ratings and community feedback.`,
+    },
+    {
+      question: `What is ${name}'s rating?`,
+      answer: aggregation
+        ? `${name} has an average rating of ${aggregation.averageRating.toFixed(1)} out of 5 stars based on ${aggregation.totalReviews} reviews. The SmartScore — a composite metric from A Versus B — is ${aggregation.smartScore}/100.`
+        : `See the latest ${name} ratings on A Versus B, aggregated from multiple review sources.`,
+    },
+    {
+      question: `How many reviews does ${name} have?`,
+      answer: aggregation
+        ? `${name} has ${aggregation.totalReviews} aggregated reviews on A Versus B, sourced from Reddit, G2, Capterra, Trustpilot, and more. This gives it a broad community-based perspective on its strengths and weaknesses.`
+        : `${name} review data is being collected from multiple sources. Check back soon for an updated review count.`,
+    },
+    {
+      question: `Where can I compare ${name} with alternatives?`,
+      answer: `You can compare ${name} head-to-head with alternatives on A Versus B at aversusb.net/alternatives/${slug}. The site also has a full entity profile at aversusb.net/entity/${slug} with comparison data and rankings.`,
+    },
+  ];
+  schemas.push(
+    faqSchema(
+      reviewFaqs,
+      reviewFaqId,
+      [{ "@type": "SoftwareApplication", "@id": `${SITE_URL}/entity/${slug}`, name, url: `${SITE_URL}/entity/${slug}` }],
+      "2024-01-01"
+    )
+  );
 
   return (
     <>
