@@ -231,7 +231,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       url: `${SITE_URL}/compare/${c.slug}`,
     })),
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro"] },
     mainEntity: {
       "@type": "ItemList",
       "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`,
@@ -374,6 +374,11 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+
+        {/* Subcategory intro — speakable target for voice assistants and AI answer engines */}
+        <p id="subcategory-intro" className="text-text-secondary text-sm mb-4">
+          Browse {subcatComparisons.length} head-to-head {subcat.name.toLowerCase()} comparison{subcatComparisons.length !== 1 ? "s" : ""} in the {category.name} category. Each comparison includes attribute tables, a verdict, and community votes to help you decide.
+        </p>
 
         {/* Filters & Sorting */}
         <Suspense fallback={null}>

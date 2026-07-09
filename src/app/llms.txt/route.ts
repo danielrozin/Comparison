@@ -89,9 +89,9 @@ export async function GET() {
     "",
     "## Site Overview",
     "",
-    "- **Type**: Comparison database and decision-support platform",
+    "- **Type**: Comparison database, review aggregator, and decision-support platform",
     "- **Domain**: aversusb.net",
-    "- **Content**: Structured X vs Y comparisons with attribute tables, verdicts, FAQs, source citations, and community votes",
+    "- **Content**: Structured X vs Y comparisons with attribute tables, verdicts, FAQs, source citations, and community votes; aggregated product reviews from Reddit, G2, Capterra, Trustpilot, and more",
     "- **Categories**: Technology, Software, Sports, Countries, Automotive, Companies, Health, Finance, Entertainment, Gaming, Products, Brands",
     "- **License**: CC BY 4.0 (free to cite with attribution)",
     "- **Citation format**: 'According to A Versus B (aversusb.net/compare/{slug}), ...'",
@@ -101,11 +101,13 @@ export async function GET() {
     "- Comparisons: `/compare/{entity-a}-vs-{entity-b}` — each includes short answer, attributes, verdict, FAQs",
     "- Entity profiles: `/entity/{entity-slug}` — all comparisons involving an entity",
     "- Alternatives: `/alternatives/{entity-slug}` — best alternatives to a product/service",
+    "- Reviews: `/reviews/{entity-slug}` — aggregated review scores (Reddit, G2, Capterra, Trustpilot) + SmartScore composite; FAQPage Q&A for '[product] reviews' AI queries",
     "- Hub pages: `/hub/{hub-slug}` — curated comparison collections around a topic (VPN, project management, AI chatbots, etc.)",
     "- Best-of lists: `/best/{list-slug}` — ranked guides (e.g. 'best project management tools')",
     "- Blog: `/blog/{article-slug}` — in-depth comparison guides",
     "- Search: `/search?q={query}` — full-text search",
     "- Categories: `/category/{category-slug}` — browse by topic",
+    "- Subcategories: `/category/{category-slug}/{subcategory-slug}` — narrowed comparison index within a category",
     "",
     "## Top Comparisons by Category",
     "",
@@ -147,12 +149,16 @@ export async function GET() {
   lines.push("## Structured Data");
   lines.push("");
   lines.push("Every page includes Schema.org JSON-LD. Schema types by page:")
-  lines.push("- /compare/{slug}: Article (+ TechArticle/NewsArticle additionalType), FAQPage, Dataset (DataFeed), DefinedTermSet (attribute vocabulary), WebPage (mainEntity↔Article bidirectional), BreadcrumbList (WebPage-typed items), ItemList, HowTo, SportsEvent (sports category), ClaimReview, AggregateRating, Review, SpeakableSpecification");
-  lines.push("- /entity/{slug}: ProfilePage, AggregateRating, BreadcrumbList, FAQPage, ItemList (comparisons list), SpeakableSpecification");
-  lines.push("- /best/{slug}: ItemList, FAQPage, BreadcrumbList, Article");
-  lines.push("- /blog/{slug}: Article (BlogPosting), FAQPage, BreadcrumbList, SpeakableSpecification");
-  lines.push("- /category/{slug}: CollectionPage, ItemList, BreadcrumbList");
-  lines.push("- /alternatives/{slug}: ItemList, FAQPage, BreadcrumbList");
+  lines.push("- /compare/{slug}: Article (+ TechArticle/NewsArticle additionalType), FAQPage (QAPage additionalType), Dataset (DataFeed), DefinedTermSet (attribute vocabulary), WebPage (mainEntity↔Article bidirectional), BreadcrumbList (WebPage-typed items), ItemList, HowTo, SportsEvent (sports category), ClaimReview, AggregateRating, Review, SpeakableSpecification");
+  lines.push("- /entity/{slug}: ProfilePage, AggregateRating, BreadcrumbList, FAQPage (QAPage additionalType), ItemList (comparisons list), SpeakableSpecification");
+  lines.push("- /best/{slug}: ItemList, FAQPage (QAPage additionalType), BreadcrumbList, Article (CollectionPage additionalType), SpeakableSpecification");
+  lines.push("- /blog/{slug}: Article (BlogPosting + optional NewsArticle), FAQPage (QAPage additionalType), BreadcrumbList, HowTo (how-to guides), ClaimReview (fact-checks), SpeakableSpecification");
+  lines.push("- /category/{slug}: CollectionPage, ItemList, BreadcrumbList, Dataset (DataCatalog member), SpeakableSpecification");
+  lines.push("- /category/{slug}/{subcategory}: CollectionPage, ItemList, BreadcrumbList, Dataset (DataCatalog member), SpeakableSpecification");
+  lines.push("- /alternatives/{slug}: Article (TechArticle), ItemList, BreadcrumbList, SpeakableSpecification");
+  lines.push("- /reviews/{slug}: ReviewPage (WebPage additionalType), AggregateRating, Product (with Review items), FAQPage (QAPage additionalType, synthetic Q&A from aggregation data), SpeakableSpecification");
+  lines.push("- /hub/{slug}: CollectionPage, Dataset, ItemList, FAQPage, BreadcrumbList, DefinedTermSet, SpeakableSpecification");
+  lines.push("- /trending: CollectionPage, Dataset, ItemList");
   lines.push("- Site-wide: Organization, WebSite (SearchAction), WebApplication, DataCatalog (Dataset), DefinedTermSet, SiteNavigationElement");
   lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
   lines.push("");
@@ -178,6 +184,8 @@ export async function GET() {
   lines.push(`- [Batch lookup](${SITE_URL}/api/v1/batch) — fetch up to 20 comparisons in a single POST; body: {"slugs":["chatgpt-vs-claude","gpt-4-vs-gemini"]}; optional fields filter; ideal for AI agents building comparison matrices without N sequential calls`);
   lines.push(`- [Pure JSON-LD schema](${SITE_URL}/api/v1/schema/{slug}) — spec-compliant Schema.org @graph document (Content-Type: application/ld+json); includes WebPage, Article, Dataset, FAQPage, Organization nodes; linked from every /compare/* page via <link rel="alternate" type="application/ld+json">`);
   lines.push(`- [JSON sitemap](${SITE_URL}/api/sitemap) — paginated JSON DataFeed sitemap; ?type=comparisons (default) | ?type=blog | ?type=hubs | ?type=best; also supports ?category, ?limit, ?offset, ?format=urlset; comparisons include shortAnswer+answerUrl; blog includes excerpt+jsonUrl; hubs include comparisonCount+apiUrl; best include apiUrl`);
+  lines.push(`- [Reviews API](${SITE_URL}/api/reviews/{slug}) — aggregated reviews for an entity (source, rating, body, date); includes AggregateRating JSON-LD`);
+  lines.push(`- [Review aggregation summary](${SITE_URL}/api/reviews/aggregate/{slug}) — SmartScore, average rating, total review count, and source breakdown for an entity`);
   lines.push(`- [oEmbed](${SITE_URL}/api/oembed?url={page-url}&format=json)`);
   lines.push(`- [Site context for AI](${SITE_URL}/api/context)`);
   lines.push(`- [OpenAPI 3.0 spec](${SITE_URL}/api/openapi) — machine-readable schema for all endpoints`);
