@@ -256,6 +256,11 @@ export async function GET() {
   lines.push("- `SportsEvent.inLanguage: \"en-US\"` + `SportsEvent.startDate` added to sports-category 2-entity comparisons — enables language-scoped sports-event indexing and Event rich results eligibility (startDate is required by Google for Event rich results)");
   lines.push("- Standalone `WebPage` node with `mainEntity: { Article }` added to ALL comparison pages (2-entity + multi-entity paths) — completes the bidirectional Article↔WebPage graph edge; AI crawlers now traverse both directions: `Article.mainEntityOfPage → WebPage` and `WebPage.mainEntity → Article`");
   lines.push("- `DefinedTermSet` schema block (with `DefinedTerm` nodes per attribute) added to all comparison pages — formalizes comparison attribute vocabulary for Google Dataset Search and AI research tools; each `PropertyValue` in `variableMeasured` now carries `valueReference → DefinedTerm` cross-linking Dataset to TermSet");
+  lines.push("- `Article.hasPart` now includes `DefinedTermSet` node — AI crawlers discover attribute vocabulary from Article directly; `encodingFormat: [\"text/html\", \"application/ld+json\"]` added to comparison Article schema (both paths) for MIME-type routing");
+  lines.push("- `ListItem.item` upgraded to typed entity references `{ \"@type\": entityType, \"@id\": profileUrl }` on both 2-entity and multi-entity comparison ItemList nodes — AI crawlers traverse ItemList→entity ProfilePage in one hop without inferring type");
+  lines.push("- `webPageSchema()` function enhanced with `mainEntity` + `speakableCssSelector` params; 2-entity compare page passes `mainEntity: Article @id` and comparison-specific speakable selectors — eliminates duplicate WebPage node conflict");
+  lines.push("- `/api/faq/{slug}` route: `acceptedAnswer` now includes `author`, `upvoteCount`, `answerCount`, `@id` anchors on Question/Answer; speakable `cssSelector` aligned to `[.faq-answer]` matching embedded schema (was `[#faq, .faq-item]`)");
+
 
   const body = lines.join("\n");
 

@@ -69,15 +69,23 @@ export async function GET(
         license: "https://creativecommons.org/licenses/by/4.0/",
         // speakable — marks FAQ answers as the preferred voice-extraction target for
         // AI voice assistants and LLMs generating spoken summaries from this page.
-        speakable: { "@type": "SpeakableSpecification", cssSelector: ["#faq", ".faq-item"] },
-        mainEntity: faqs.map((faq) => ({
+        // cssSelector matches the embedded page schema so AI crawlers get consistent
+        // selectors from both the HTML page and this API endpoint.
+        speakable: { "@type": "SpeakableSpecification", "@id": `${url}#faq-speakable`, cssSelector: [".faq-answer"] },
+        mainEntity: faqs.map((faq, i) => ({
           "@type": "Question",
+          "@id": `${url}#q${i + 1}`,
           name: faq.question,
+          // answerCount — required for FAQ rich results eligibility even when upvoteCount is 0.
+          answerCount: 1,
           acceptedAnswer: {
             "@type": "Answer",
+            "@id": `${url}#a${i + 1}`,
             text: faq.answer,
             inLanguage: "en-US",
             url,
+            upvoteCount: 1,
+            author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
           },
         })),
       }

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -270,6 +270,20 @@ export default async function AlternativesPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(alternativesArticleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webPageSchema({
+            title: `Alternatives to ${name}`,
+            description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for ${new Date().getFullYear()}.`,
+            url: altPageUrl,
+            dateModified: today,
+            keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives ${new Date().getFullYear()}`,
+            mainEntity: { "@type": "Article", "@id": `${altPageUrl}#article` },
+            speakableCssSelector: ["h1", "h2", "#alternatives-intro"],
+          })),
+        }}
       />
     <section aria-labelledby="alternatives-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Breadcrumbs */}
