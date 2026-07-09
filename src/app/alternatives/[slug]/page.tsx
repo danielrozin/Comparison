@@ -238,6 +238,17 @@ export default async function AlternativesPage({ params }: PageProps) {
     // discussionUrl — Reddit search for community discussions on alternatives to this entity.
     // Google E-E-A-T evaluators and AI crawlers use discussionUrl as an engagement signal.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(name + " alternatives")}+OR+${encodeURIComponent(name + " competitors")}&type=link&sort=relevance`,
+    // citation — formal attribution chain from this alternatives guide to the comparison pages.
+    // AI answer engines (ChatGPT, Perplexity) use citation to build knowledge graph edges from
+    // alternatives guides to specific comparison pages, boosting authority when answering
+    // "best alternatives to X" queries. Each citation links the comparison Article @id directly.
+    citation: alternatives.slice(0, 8).map((alt) => ({
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/compare/${alt.comparisonSlug}#webpage`,
+      name: alt.comparisonTitle ?? `${name} vs ${alt.name}`,
+      url: `${SITE_URL}/compare/${alt.comparisonSlug}`,
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+    })),
     // hasPart[] — ItemList is a formal structural part of this Article/CollectionPage.
     hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/alternatives/${slug}#list`, name: `Alternatives to ${name}` }],
   };
