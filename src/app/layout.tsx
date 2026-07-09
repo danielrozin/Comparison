@@ -103,6 +103,11 @@ export default function RootLayout({
             Faster LCP is a Core Web Vitals signal that directly affects ranking. */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cdn.aversusb.net" crossOrigin="anonymous" />
+        {/* Entity images in multi-entity layouts are served directly from Wikipedia/Clearbit —
+            preconnect+dns-prefetch so the TLS handshake completes before the browser
+            discovers the <img> src, reducing image load time. */}
+        <link rel="preconnect" href="https://upload.wikimedia.org" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://logo.clearbit.com" />
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />

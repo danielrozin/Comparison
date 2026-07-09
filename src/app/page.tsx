@@ -171,12 +171,23 @@ export default async function HomePage() {
       />
       {/* Hero Section */}
       <section aria-labelledby="hero-heading" className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" />
+        {/* Grid pattern — inline SVG avoids a separate HTTP request during LCP */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="home-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#home-grid)"/>
+        </svg>
 
-        {/* Floating gradient blobs */}
-        <div className="absolute top-10 left-10 w-72 h-72 bg-accent-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: "4s" }} />
+        {/* Floating gradient blobs — hidden on mobile; blur-3xl forces compositor layers
+            that delay first paint on mobile GPU. Animation is suppressed via motion-safe
+            (prefers-reduced-motion), but mobile still pays the compositing cost. */}
+        <div className="hidden sm:block absolute top-10 left-10 w-72 h-72 bg-accent-500/20 rounded-full blur-3xl motion-safe:animate-float" />
+        <div className="hidden sm:block absolute bottom-20 right-10 w-96 h-96 bg-primary-400/15 rounded-full blur-3xl motion-safe:animate-float" style={{ animationDelay: "2s" }} />
+        <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-accent-400/10 rounded-full blur-3xl motion-safe:animate-float" style={{ animationDelay: "4s" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-28">
           <div className="text-center max-w-4xl mx-auto">

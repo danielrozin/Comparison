@@ -449,7 +449,7 @@ export default function ChatGPTAlternativesPage() {
           </h2>
 
           {/* Desktop / tablet: real table inside an overflow wrapper */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-border bg-white" tabIndex={0} role="region" aria-label="Scrollable table">
             <table className="min-w-full text-sm" aria-label="Best ChatGPT alternatives at a glance">
               <thead className="bg-surface-alt text-text-secondary">
                 <tr>

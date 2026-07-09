@@ -154,12 +154,21 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
   return (
     <section aria-labelledby="comparison-hero-heading" className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white overflow-hidden">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-10" aria-hidden="true" />
+      {/* Background grid — inline SVG pattern avoids a separate HTTP request during the LCP window */}
+      <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" aria-hidden="true">
+        <defs>
+          <pattern id="hero-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+            <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hero-grid)"/>
+      </svg>
 
-      {/* Floating blobs */}
-      <div className="absolute top-6 left-10 w-56 h-56 bg-primary-400/20 rounded-full blur-3xl" aria-hidden="true" />
-      <div className="absolute bottom-10 right-10 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl" aria-hidden="true" />
+      {/* Floating blobs — hidden on mobile to avoid GPU compositing overhead (blur-3xl forces
+          a compositor layer; on mobile GPU this delays first paint and hurts mobile LCP). */}
+      <div className="hidden sm:block absolute top-6 left-10 w-56 h-56 bg-primary-400/20 rounded-full blur-3xl" aria-hidden="true" />
+      <div className="hidden sm:block absolute bottom-10 right-10 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-16 sm:pb-20">
         {/* Breadcrumb category pill */}
