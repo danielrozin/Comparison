@@ -866,6 +866,18 @@ export default function ComparisonPage(props: Props) {
 
   const { comparison, slug, sidebarComparisons, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
 
+  const winnerSide = (() => {
+    const wn = comparison.quickAnswer?.winnerName;
+    if (!wn) return undefined;
+    const a = comparison.entities[0];
+    const b = comparison.entities[1];
+    if (!a || !b) return undefined;
+    const lc = wn.toLowerCase().trim();
+    if (a.name.toLowerCase().trim() === lc) return "a" as const;
+    if (b.name.toLowerCase().trim() === lc) return "b" as const;
+    return undefined;
+  })();
+
   return (
     <>
       <MetaHead meta={props.meta} />
@@ -913,6 +925,7 @@ export default function ComparisonPage(props: Props) {
         <StickyCompareBar
           entityA={comparison.entities[0].name}
           entityB={comparison.entities[1].name}
+          winner={winnerSide}
           sections={[
             ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
             ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),

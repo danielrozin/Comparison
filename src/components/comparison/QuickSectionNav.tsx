@@ -115,6 +115,11 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
       aria-label="Jump to section"
       className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
     >
+      <div className="relative">
+      {/* Right-edge fade — signals more pills off-screen on mobile */}
+      {visible.length > 3 && (
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10" aria-hidden="true" />
+      )}
       <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
         <span className="flex-shrink-0 text-[11px] font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
           Jump to:
@@ -152,6 +157,7 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
             </a>
           );
         })}
+      </div>
       </div>
     </nav>
   );

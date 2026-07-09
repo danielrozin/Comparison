@@ -1,18 +1,21 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface StickyCompareBarProps {
   entityA: string;
   entityB: string;
   sections: { id: string; label: string }[];
+  winner?: "a" | "b";
 }
 
-export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBarProps) {
+export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyCompareBarProps) {
   const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState("");
   const [entered, setEntered] = useState(false);
   const [copied, setCopied] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
   const handleCopy = useCallback(async () => {
     try {
@@ -50,6 +53,15 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
     return () => observer.disconnect();
   }, [sections]);
 
+  // Auto-scroll active section link into view in the horizontal nav
+  useEffect(() => {
+    if (!activeId || !navRef.current) return;
+    const activeLink = linkRefs.current.get(activeId);
+    if (activeLink) {
+      activeLink.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    }
+  }, [activeId]);
+
   if (!entered) return null;
 
   return (
@@ -63,11 +75,18 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
       <div className="max-w-5xl mx-auto px-4 h-10 flex items-center gap-3 overflow-hidden">
         {/* Entity A vs B compact */}
         <div className="flex items-center gap-2 flex-shrink-0 min-w-0 mr-2">
-          <span
-            className="font-bold text-[13px] text-primary-700 truncate max-w-[100px] sm:max-w-[160px]"
-            title={entityA}
-          >
-            {entityA}
+          <span className="flex items-center gap-1">
+            <span
+              className={`font-bold text-[13px] truncate max-w-[100px] sm:max-w-[160px] ${winner === "a" ? "text-amber-600" : "text-primary-700"}`}
+              title={entityA}
+            >
+              {entityA}
+            </span>
+            {winner === "a" && (
+              <svg className="w-3 h-3 text-amber-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-label="Winner" role="img">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            )}
           </span>
           <div
             className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 shadow-sm"
@@ -75,11 +94,18 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
           >
             <span className="text-[8px] font-black text-white leading-none">VS</span>
           </div>
-          <span
-            className="font-bold text-[13px] text-accent-700 truncate max-w-[100px] sm:max-w-[160px]"
-            title={entityB}
-          >
-            {entityB}
+          <span className="flex items-center gap-1">
+            {winner === "b" && (
+              <svg className="w-3 h-3 text-amber-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-label="Winner" role="img">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            )}
+            <span
+              className={`font-bold text-[13px] truncate max-w-[100px] sm:max-w-[160px] ${winner === "b" ? "text-amber-600" : "text-accent-700"}`}
+              title={entityB}
+            >
+              {entityB}
+            </span>
           </span>
         </div>
 
@@ -88,6 +114,7 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
 
         {/* Section jump links */}
         <nav
+          ref={navRef}
           className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-1"
           aria-label="Jump to section"
         >
@@ -96,6 +123,10 @@ export function StickyCompareBar({ entityA, entityB, sections }: StickyCompareBa
             return (
               <a
                 key={s.id}
+                ref={(el) => {
+                  if (el) linkRefs.current.set(s.id, el);
+                  else linkRefs.current.delete(s.id);
+                }}
                 href={`#${s.id}`}
                 aria-current={isActive ? "true" : undefined}
                 className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
