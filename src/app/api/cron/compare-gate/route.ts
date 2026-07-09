@@ -11,12 +11,12 @@ export const maxDuration = 120;
  *
  * Reads GSC organic clicks to `/compare/*` (VP Product ruling DAN-1022: the gate
  * read path is GSC organic clicks, NOT GA4 sessions) and evaluates the gate:
- * `≥250 gsc_clicks/week for 2 consecutive complete weeks`. A trailing partial
+ * `≥50 gsc_clicks/week for 2 consecutive complete weeks`. A trailing partial
  * week is excluded (GSC's ~2-day lag is accounted for in getGSCCompareWeekly).
  *
  * Runs unattended so the meter advances every week with no human in the loop.
  * Emails the gate status to the admin notification address each run, with a
- * GATE CLEAR alert when `≥250 × 2 consecutive complete weeks` is met — that is
+ * GATE CLEAR alert when `≥50 × 2 consecutive complete weeks` is met — that is
  * the signal to mark DAN-1008 `done`, which auto-resumes DAN-703 (usability R1).
  *
  * Scheduled Tuesday (not Monday) so the just-ended Mon–Sun week is ≥2 days past
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     try {
       await sendNotificationEmail({
         subject: report.gateClear
-          ? "/compare/* GATE CLEAR — ≥250 GSC clicks × 2 weeks"
+          ? "/compare/* GATE CLEAR — ≥50 GSC clicks × 2 weeks"
           : "/compare/* gate meter — weekly check",
         type: "cron-report",
         message: lines.join("\n"),

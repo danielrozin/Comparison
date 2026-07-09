@@ -717,7 +717,7 @@ export async function fetchGSCComparePageRows(days = 35): Promise<GSCComparePage
  */
 export async function getGSCCompareWeekly(
   weeksBack = 6,
-  threshold = 250
+  threshold = 50
 ): Promise<GSCCompareWeeklyReport> {
   const baseNote =
     "GSC organic clicks to /compare/* pages. Subset of GA4 sessions (Google organic clicks only). Read path independent of the GA4 grant (DAN-710).";
