@@ -3105,6 +3105,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-08T07:59:40.467Z"
+    },
+    {
+      "slug": "midjourney-vs-dall-e",
+      "title": "Midjourney vs Dall E",
+      "entityA": "Midjourney",
+      "entityB": "Dall E",
+      "category": "General",
+      "videoFile": "Midjourney vs Dall E.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Midjourney vs Dall E — Full Comparison 2026",
+      "youtubeDescription": "Compare Midjourney and DALL-E 3 in 2026. Pricing, features, quality, and character consistency. Midjourney excels artistically; DALL-E 3 being deprecated May…\n\n#midjourney #dalle #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-09T08:41:46.068Z"
+    },
+    {
+      "slug": "peloton-vs-nordictrack",
+      "title": "Peloton vs Nordictrack",
+      "entityA": "Peloton",
+      "entityB": "Nordictrack",
+      "category": "General",
+      "videoFile": "Peloton vs Nordictrack.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Peloton vs Nordictrack — Full Comparison 2026",
+      "youtubeDescription": "NordicTrack offers better value with lower costs, more features, and automatic adjustments. Peloton provides premium studio experience but requires expensive subscription.\n\n#peloton #nordictrack #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-09T08:46:05.543Z"
+    },
+    {
+      "slug": "serena-vs-venus",
+      "title": "Serena vs Venus",
+      "entityA": "Serena",
+      "entityB": "Venus",
+      "category": "General",
+      "videoFile": "Serena vs Venus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Serena vs Venus — Full Comparison 2026",
+      "youtubeDescription": "Serena Williams dominates with superior statistics across 21 of 24 categories and higher peak performance, making her the clear GOAT over Venus Williams.\n\n#serena #venus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-09T08:50:14.081Z"
     }
   ]
 }
