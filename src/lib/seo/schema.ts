@@ -165,6 +165,14 @@ export function organizationSchema() {
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison API", url: `${SITE_URL}/developers` } },
       ],
     },
+    // owns — links the Organization to the digital assets it controls.
+    // Google Knowledge Graph and AI crawlers (Perplexity, ChatGPT) use `owns` to
+    // build the entity graph edge Organization→WebSite and Organization→DataCatalog,
+    // strengthening E-E-A-T by confirming the publisher controls the data source.
+    owns: [
+      { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparison Database`, url: SITE_URL },
+    ],
   };
 }
 
@@ -1653,6 +1661,10 @@ export function comparisonPageSchema(
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
+        // termCode — machine-readable stable key for this term.
+        // AI Dataset Search tools and LLM knowledge graphs use termCode to
+        // resolve dimension labels to canonical identifiers across documents.
+        termCode: termSlug(attr.name),
         ...(attr.unit ? { unitCode: attr.unit } : {}),
         inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
       })),
@@ -2402,6 +2414,7 @@ function buildMultiEntityGraph(
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
+        termCode: termSlug(attr.name),
         ...(attr.unit ? { unitCode: attr.unit } : {}),
         inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${url}#terms` },
       })),
@@ -2870,6 +2883,14 @@ export function profilePageSchema(entity: {
       operatingSystem: "Web, iOS, Android",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     }),
+    // speakable on mainEntity — voice assistants (Google Assistant, Alexa) and LLMs
+    // reading the entity node directly (e.g. via knowledge-graph API) use speakable
+    // to identify the authoritative text snippet without traversing to the ProfilePage wrapper.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      "@id": `${url}#entity-speakable`,
+      cssSelector: ["h1", "#entity-intro", "#entity-about"],
+    },
   };
 
   const today = new Date().toISOString().slice(0, 10);
@@ -3073,6 +3094,7 @@ export function definedTermSetSchema() {
       "@id": `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}#term`,
       name,
       description,
+      termCode: name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-"),
       url: `${SITE_URL}/category/${name.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}`,
       inDefinedTermSet: `${SITE_URL}/#taxonomy`,
     })),
