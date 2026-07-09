@@ -1258,10 +1258,13 @@ export function comparisonPageSchema(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
-    // teaches — maps this comparison to the specific decision skill it develops.
-    // LLMs and educational AI classifiers route "how do I decide between X and Y"
-    // queries to decision-support content when `teaches` is present.
-    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+    // teaches — typed DefinedTerm node (not plain string) so AI KGs can traverse the
+    // teaches→DefinedTermSet graph edge. Educational classifiers (ChatGPT, Perplexity)
+    // route "how do I decide between X and Y" queries to pages with a typed teaches node.
+    teaches: teachesDefinedTerm(
+      `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+      url,
+    ),
     // assesses — the specific competency or claim this Article evaluates.
     // Google AI Overviews and LLM answer engines use assesses to understand the
     // evaluation framing so they can route "which is better" decision queries here.
@@ -2171,8 +2174,11 @@ function buildMultiEntityGraph(
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     educationalLevel: "General",
     ...(comparison.category && { articleSection: comparison.category }),
-    // teaches — decision-skill mapping for LLM educational classifiers (parity with 2-entity)
-    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    // teaches — typed DefinedTerm (parity with 2-entity path); KG-traversable node.
+    teaches: teachesDefinedTerm(
+      `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+      url,
+    ),
     // assesses — evaluation framing for AI answer engines (parity with 2-entity path)
     assesses: `Which is best: ${comparison.entities.map((e) => e.name).join(", ")}`,
     educationalUse: "comparison",
@@ -3198,6 +3204,89 @@ export function definedTermSetSchema() {
  *
  * Only emits when comparison has a clear verdict.winner.
  */
+// ============================================================
+// Typed DefinedTerm helper — converts a plain "teaches" string into a proper
+// Schema.org DefinedTerm node so AI knowledge graphs can traverse the teaches→
+// DefinedTermSet edge, boosting educational-intent citation confidence.
+// ============================================================
+export function teachesDefinedTerm(label: string, pageUrl: string): Record<string, unknown> {
+  return {
+    "@type": "DefinedTerm",
+    "@id": `${pageUrl}#learning-outcome`,
+    name: label,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      "@id": `${SITE_URL}/#definedTermSet`,
+      name: "A Versus B Learning Outcomes",
+      url: SITE_URL,
+    },
+  };
+}
+
+// ============================================================
+// Blog ClaimReview — emitted for "X vs Y" blog articles. Adds Google Fact Check
+// eligibility + AI fact-checking E-E-A-T signal. Unlike comparison ClaimReview
+// (which has explicit verdicts), blog articles default to MIXTURE when no clear
+// winner is declared, signalling nuanced analysis rather than a binary ruling.
+// ============================================================
+export function blogClaimReviewSchema(opts: {
+  articleUrl: string;
+  entityA: string;
+  entityB: string;
+  shortAnswer?: string;
+  verdict?: string | null;
+  datePublished?: string;
+  dateModified?: string;
+}) {
+  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
+  const verdictLower = (opts.verdict ?? "").toLowerCase();
+  const ratingValue =
+    verdictLower && verdictLower === opts.entityA.toLowerCase()
+      ? "TRUE"
+      : verdictLower && verdictLower === opts.entityB.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
+
+  return {
+    "@type": "ClaimReview",
+    "@id": `${opts.articleUrl}#claim-review`,
+    url: opts.articleUrl,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    claimReviewed: claimText,
+    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      bestRating: "TRUE",
+      worstRating: "FALSE",
+      alternateName:
+        ratingValue === "TRUE"
+          ? `${opts.entityA} wins`
+          : ratingValue === "FALSE"
+            ? `${opts.entityB} wins`
+            : "Depends on use case — see analysis",
+    },
+    itemReviewed: {
+      "@type": "Claim",
+      inLanguage: "en-US",
+      name: claimText,
+      ...(opts.shortAnswer && { text: opts.shortAnswer.slice(0, 300) }),
+      author: { "@type": "Thing", name: "Internet consensus" },
+      appearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
+      firstAppearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
+    },
+  };
+}
+
 export function claimReviewSchema(opts: {
   slug: string;
   title: string;
