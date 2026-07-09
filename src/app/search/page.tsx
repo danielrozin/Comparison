@@ -15,6 +15,7 @@ function SearchContent() {
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<{ slug: string; title: string; category: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [compareWith, setCompareWith] = useState("");
 
   useEffect(() => {
     setSearchQuery(query);
@@ -214,23 +215,20 @@ function SearchContent() {
                 placeholder="Enter something to compare..."
                 id="compare-with"
                 aria-label={`Compare ${query} with`}
+                value={compareWith}
+                onChange={(e) => setCompareWith(e.target.value)}
                 className="px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500/60 focus:border-primary-500 outline-none w-56"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const target = (e.target as HTMLInputElement).value.trim();
-                    if (target) {
-                      window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
-                    }
+                  if (e.key === "Enter" && compareWith.trim()) {
+                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
                   }
                 }}
               />
               <button
                 type="button"
                 onClick={() => {
-                  const input = document.getElementById("compare-with") as HTMLInputElement;
-                  const target = input?.value.trim();
-                  if (target) {
-                    window.location.href = `/compare/${slugify(query)}-vs-${slugify(target)}`;
+                  if (compareWith.trim()) {
+                    router.push(`/compare/${slugify(query)}-vs-${slugify(compareWith.trim())}`);
                   }
                 }}
                 className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md hover:scale-105 active:scale-95"
