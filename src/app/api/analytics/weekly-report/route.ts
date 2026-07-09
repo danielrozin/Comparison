@@ -74,7 +74,7 @@ export async function GET() {
     compareWeekly = {
       available: false,
       metric: "gsc_clicks",
-      thresholdPerWeek: 250,
+      thresholdPerWeek: 50,
       weeks: [],
       latestCompleteWeek: null,
       priorCompleteWeek: null,
