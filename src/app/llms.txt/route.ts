@@ -266,6 +266,13 @@ export async function GET() {
   lines.push("- `FAQPage.about[]` added to both 2-entity and multi-entity comparison FAQ schemas — typed entity references linking FAQ answers to their subject entities; enables AI engines to attribute Q&A pairs without re-parsing parent Article; `faqSchema()` export updated with optional `about` param (HB328)");
   lines.push("- `entityPageSchema()` gains `inLanguage: \"en-US\"` + `thumbnailUrl` — language-scopes entity nodes for multilingual AI KG merge (Perplexity/ChatGPT prefer en-US entity nodes); thumbnailUrl preferred by Google Lens + AI Overview image slots over bare `image.url` (HB329)");
   lines.push("- Blog WebPage node gains `mainEntity: { Article }` back-edge — completes bidirectional WebPage↔Article graph for blog articles; mirrors compare + alternatives pages; AI crawlers now traverse both directions on all content types (HB329)");
+  lines.push("- `Review.reviewAspect` added to all Review nodes in comparison schemas — routes 'pros and cons of X' queries to the correct Review type; AI answer engines use reviewAspect to filter reviews by dimension (HB331)");
+  lines.push("- `ListItem.description` populated from entity `shortDesc` on multi-entity comparison ItemList — AI carousels extract entity summaries without fetching the full ProfilePage node (HB331)");
+  lines.push("- `ClaimReview.firstAppearance` added to all three ClaimReview emit paths (2-entity, multi-entity, `claimReviewSchema` export) — completes Google Fact Check Tools rich-result eligibility; firstAppearance links the ClaimReview to the original claim URL (HB331)");
+  lines.push("- `DefinedTerm.termCode` added to all DefinedTerm nodes (2-entity DefinedTermSet, multi-entity DefinedTermSet, site taxonomy DefinedTermSet) — stable machine-readable slug; Dataset Search + LLM knowledge graphs resolve dimension labels to canonical identifiers without string matching (HB332)");
+  lines.push("- `Organization.owns` added linking to WebSite and DataCatalog — completes Organization→digital-asset graph edge; Google KG and AI crawlers (Perplexity, ChatGPT) use `owns` to confirm publisher controls the data source (E-E-A-T signal) (HB332)");
+  lines.push("- `speakable` added to `profilePageSchema` `mainEntity` node — voice assistants and LLMs reading entity nodes via `/api/knowledge-graph/{slug}` now find speakable selectors on the entity itself without traversing the ProfilePage wrapper (HB332)");
+  lines.push("- `PropertyValue.propertyID` added to `variableMeasured` entries in both 2-entity and multi-entity Dataset schemas — stable URI that Google Dataset Search uses to dereference attribute definitions across documents; mirrors DefinedTerm @id so crawlers merge both nodes (HB333)");
 
   const body = lines.join("\n");
 

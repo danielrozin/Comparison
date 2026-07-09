@@ -1535,6 +1535,9 @@ export function comparisonPageSchema(
       // than bare strings, improving dataset carousels and citation accuracy.
       variableMeasured: comparison.attributes.map((attr) => ({
         "@type": "PropertyValue",
+        // propertyID — stable URI that Dataset Search uses to dereference the attribute
+        // definition across documents; mirrors the DefinedTerm @id so crawlers merge both nodes.
+        propertyID: `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
         // valueReference → DefinedTerm lets Dataset Search + AI research tools resolve
@@ -2304,6 +2307,7 @@ function buildMultiEntityGraph(
       measurementTechnique: "Research aggregation from manufacturer specifications, benchmark tests, expert reviews, and community data.",
       variableMeasured: comparison.attributes.map((attr) => ({
         "@type": "PropertyValue",
+        propertyID: `${url}#term-${termSlug(attr.name)}`,
         name: attr.name,
         ...(attr.unit ? { unitText: attr.unit } : {}),
         valueReference: { "@type": "DefinedTerm", "@id": `${url}#term-${termSlug(attr.name)}` },
