@@ -80,13 +80,17 @@ export function TrendingCard({
         <div className="flex items-center gap-2 mb-4">
           <div className="flex-1 min-w-0 space-y-1.5">
             <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-primary-500 flex-shrink-0" />
+              <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
+                {entityA.charAt(0).toUpperCase()}
+              </div>
               <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors truncate">
                 {entityA}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 rounded-full bg-accent-500 flex-shrink-0" />
+              <div className="w-6 h-6 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
+                {entityB.charAt(0).toUpperCase()}
+              </div>
               <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors truncate">
                 {entityB}
               </span>

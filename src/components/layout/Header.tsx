@@ -220,16 +220,19 @@ export function Header() {
         <div className="bg-white border-t border-border overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
-            <Link
-              href="/#search"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 w-full h-11 px-4 bg-surface-alt border border-border rounded-full text-sm text-text-secondary"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new Event("open-search-overlay"));
+              }}
+              className="flex items-center gap-3 w-full h-11 px-4 bg-surface-alt border border-border rounded-full text-sm text-text-secondary text-left"
             >
               <svg className="w-4 h-4 text-text-secondary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               Search comparisons...
-            </Link>
+            </button>
           </div>
 
           {/* Categories with expandable subcategories */}

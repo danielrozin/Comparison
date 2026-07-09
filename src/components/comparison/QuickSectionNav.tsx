@@ -59,6 +59,7 @@ const SECTION_CONFIGS: Array<{ id: string; label: string; icon: React.ReactNode;
 
 export function QuickSectionNav() {
   const [visible, setVisible] = useState<Section[]>([]);
+  const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
     const found: Section[] = [];
@@ -69,6 +70,23 @@ export function QuickSectionNav() {
     }
     setVisible(found);
   }, []);
+
+  useEffect(() => {
+    if (visible.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        }
+      },
+      { rootMargin: "-80px 0px -55% 0px", threshold: 0 }
+    );
+    for (const s of visible) {
+      const el = document.getElementById(s.id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
+  }, [visible]);
 
   if (visible.length < 2) return null;
 
@@ -81,16 +99,24 @@ export function QuickSectionNav() {
         <span className="flex-shrink-0 text-[11px] font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
           Jump to:
         </span>
-        {visible.map((section) => (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${section.color}`}
-          >
-            {section.icon}
-            {section.label}
-          </a>
-        ))}
+        {visible.map((section) => {
+          const isActive = activeId === section.id;
+          return (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              aria-current={isActive ? "true" : undefined}
+              className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
+                isActive
+                  ? "bg-primary-600 text-white border-primary-600 shadow-sm shadow-primary-300"
+                  : section.color
+              }`}
+            >
+              {section.icon}
+              {section.label}
+            </a>
+          );
+        })}
       </div>
     </nav>
   );
