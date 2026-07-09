@@ -292,11 +292,14 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     },
   ];
   if (aggregation) {
+    // SoftwareApplication + AggregateRating — typed for Google's Software rich results.
+    // Using "software" entityType maps to SoftwareApplication in aggregateRatingSchema,
+    // which unlocks the Software carousel in Google Search and AI Overviews software panels.
     schemas.push(
       aggregateRatingSchema({
         name,
         slug,
-        entityType: "product",
+        entityType: "software",
         ratingValue: aggregation.averageRating,
         reviewCount: aggregation.totalReviews,
       })
@@ -304,6 +307,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
   }
 
   // Individual Review schema — unlocks Google's "Review Snippet" rich result.
+  // SoftwareApplication type (with Product as additionalType fallback) signals to Google
+  // that this is software-specific, enabling Software rich results alongside Review Snippets.
   // Only emit when reviews have a body and rating to avoid thin/empty items.
   const reviewableItems = reviews
     .filter((r) => r.body && r.body.length > 30 && r.rating)
@@ -311,9 +316,26 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
   if (reviewableItems.length > 0) {
     schemas.push({
       "@context": "https://schema.org",
-      "@type": "Product",
+      // SoftwareApplication is the primary type; additionalType Product preserves
+      // Product Review Snippet eligibility for non-software entities in the catalog.
+      "@type": "SoftwareApplication",
+      additionalType: "https://schema.org/Product",
+      "@id": `${SITE_URL}/entity/${slug}#software`,
       name,
       url: `${SITE_URL}/reviews/${slug}`,
+      // applicationCategory — required for Google's Software rich result carousel.
+      // "WebApplication" covers the majority of reviewed entities (SaaS, AI tools, platforms).
+      applicationCategory: "WebApplication",
+      // operatingSystem — "Web" is the safe default for SaaS/AI tools reviewed on the site.
+      operatingSystem: "Web",
+      // offers — free tier is common; signals to AI tools that the product is accessible.
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        description: "Free tier available",
+      },
       ...(aggregation && {
         aggregateRating: {
           "@type": "AggregateRating",
@@ -321,6 +343,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           bestRating: 5,
           worstRating: 1,
           reviewCount: aggregation.totalReviews,
+          // ratingExplanation — AI crawlers use this to understand the rating methodology.
+          ratingExplanation: `SmartScore ${aggregation.smartScore}/100 — aggregated from Reddit, G2, Capterra, Trustpilot, and more`,
         },
       }),
       review: reviewableItems.map((r) => ({
