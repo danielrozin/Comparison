@@ -1,18 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import type { FAQData } from "@/types";
+
+function highlight(text: string, query: string): React.ReactNode {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-primary-200 text-primary-900 rounded px-0.5">{text.slice(idx, idx + query.length)}</mark>
+      {text.slice(idx + query.length)}
+    </>
+  );
+}
 
 export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [search, setSearch] = useState("");
   const allOpen = openIndex === -1;
 
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setOpenIndex(-1);
+  }, []);
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return faqs.map((f, i) => ({ ...f, originalIndex: i }));
+    const q = search.trim().toLowerCase();
+    return faqs
+      .map((f, i) => ({ ...f, originalIndex: i }))
+      .filter((f) => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q));
+  }, [faqs, search]);
 
   return (
     <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
       {/* Section header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -23,10 +49,14 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             <h2 id="faq-heading" className="text-2xl font-display font-bold text-text">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs text-text-secondary mt-0.5">{faqs.length} question{faqs.length !== 1 ? "s" : ""}</p>
+            <p className="text-xs text-text-secondary mt-0.5">
+              {search && filtered.length !== faqs.length
+                ? `${filtered.length} of ${faqs.length} questions`
+                : `${faqs.length} question${faqs.length !== 1 ? "s" : ""}`}
+            </p>
           </div>
         </div>
-        {faqs.length > 2 && (
+        {faqs.length > 2 && !search && (
           <button
             type="button"
             onClick={handleExpandAll}
@@ -41,14 +71,53 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         )}
       </div>
 
+      {/* Search input — only shown when there are enough FAQs to benefit */}
+      {faqs.length >= 4 && (
+        <div className="relative mb-4">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="search"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Search questions…"
+            aria-label="Filter FAQ questions"
+            className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 placeholder:text-text-secondary/60 transition-all duration-150"
+          />
+          {search && (
+            <button
+              type="button"
+              onClick={() => { setSearch(""); setOpenIndex(0); }}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface-alt flex items-center justify-center text-text-secondary hover:bg-border hover:text-text transition-colors"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      )}
+
+      {filtered.length === 0 && (
+        <div className="text-center py-10 text-text-secondary text-sm">
+          <svg className="w-8 h-8 mx-auto mb-3 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          No questions match &ldquo;{search}&rdquo;
+        </div>
+      )}
+
       <ol role="list" className="space-y-2 list-none">
-        {faqs.map((faq, i) => {
+        {filtered.map((faq, listIdx) => {
+          const i = faq.originalIndex;
           const isOpen = openIndex === i || openIndex === -1;
           const answerId = `faq-answer-${i}`;
           return (
             <li
               key={i}
-              style={{ animationDelay: `${i * 40}ms` }}
+              style={{ animationDelay: `${listIdx * 40}ms` }}
               className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out animate-fade-in ${
                 isOpen
                   ? "border border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500 translate-y-0"
@@ -57,13 +126,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             >
               <button
                 type="button"
-                onClick={() => {
-                  if (openIndex === -1) {
-                    setOpenIndex(null);
-                  } else {
-                    setOpenIndex(isOpen ? null : i);
-                  }
-                }}
+                onClick={() => setOpenIndex(isOpen ? null : i)}
                 className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
                 aria-expanded={isOpen}
                 aria-controls={answerId}
@@ -80,7 +143,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 </span>
 
                 <span className={`flex-1 font-medium text-sm sm:text-base pr-2 transition-colors duration-200 ${isOpen ? "text-primary-900" : "text-text"}`}>
-                  {faq.question}
+                  {highlight(faq.question, search)}
                 </span>
 
                 {/* Animated chevron in a subtle circle */}
@@ -112,7 +175,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                   <div className="px-5 pb-5 ml-9">
                     <div className="h-px bg-gradient-to-r from-primary-200 to-transparent mb-4" />
                     <p className="faq-answer text-sm text-text-secondary leading-relaxed">
-                      {faq.answer}
+                      {highlight(faq.answer, search)}
                     </p>
                   </div>
                 </div>

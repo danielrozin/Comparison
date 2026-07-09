@@ -491,6 +491,7 @@ function RedesignedTable({
   const [openGroups, setOpenGroups] = useState<Set<string>>(
     () => new Set(categoryEntries.map(([name]) => name))
   );
+  const [winnersOnly, setWinnersOnly] = useState(false);
 
   const headerRef = useRef<HTMLTableSectionElement>(null);
 
@@ -509,9 +510,15 @@ function RedesignedTable({
 
   const allOpen = openGroups.size === categoryEntries.length;
 
+  // Filter attributes per category when winnersOnly is active
+  const visibleCategories = categoryEntries.map(([name, attrs]) => {
+    const filtered = winnersOnly ? attrs.filter((a) => getWinner(a) !== null && getWinner(a) !== "tie") : attrs;
+    return [name, filtered] as [string, ComparisonAttribute[]];
+  }).filter(([, attrs]) => attrs.length > 0);
+
   return (
     <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -520,17 +527,34 @@ function RedesignedTable({
           </div>
           <h2 id="full-comparison-heading" className="text-2xl font-display font-bold text-text">Full Comparison</h2>
         </div>
-        <button
-          type="button"
-          onClick={allOpen ? collapseAll : expandAll}
-          aria-pressed={allOpen}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-all bg-primary-50 hover:bg-primary-100 border border-transparent hover:border-primary-200 px-3 py-1.5 rounded-lg"
-        >
-          <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-          {allOpen ? "Collapse all" : "Expand all"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setWinnersOnly((v) => !v)}
+            aria-pressed={winnersOnly}
+            className={`inline-flex items-center gap-1.5 text-xs font-semibold transition-all px-3 py-1.5 rounded-lg border ${
+              winnersOnly
+                ? "bg-win/10 text-win border-win/30 hover:bg-win/20"
+                : "text-text-secondary hover:text-text bg-surface-alt hover:bg-border border-transparent"
+            }`}
+          >
+            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            Winners only
+          </button>
+          <button
+            type="button"
+            onClick={allOpen ? collapseAll : expandAll}
+            aria-pressed={allOpen}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-all bg-primary-50 hover:bg-primary-100 border border-transparent hover:border-primary-200 px-3 py-1.5 rounded-lg"
+          >
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+            {allOpen ? "Collapse all" : "Expand all"}
+          </button>
+        </div>
       </div>
 
       {/* Desktop: Table layout with sticky header */}
@@ -581,7 +605,7 @@ function RedesignedTable({
               </tr>
             </thead>
             <tbody>
-              {categoryEntries.map(([categoryName, attrs]) => {
+              {visibleCategories.map(([categoryName, attrs]) => {
                 const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
                 const isOpen = openGroups.has(categoryName);
 
@@ -683,7 +707,7 @@ function RedesignedTable({
 
         {/* Category groups */}
         <div className="space-y-0 border border-border rounded-b-xl overflow-hidden">
-          {categoryEntries.map(([categoryName, attrs]) => {
+          {visibleCategories.map(([categoryName, attrs]) => {
             const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
             const isOpen = openGroups.has(categoryName);
 

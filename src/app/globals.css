@@ -201,6 +201,31 @@ body {
   display: none;
 }
 
+/* ─── Scroll-driven section reveals ──────────────────────────────────────────
+   Progressive enhancement: browsers that don't support animation-timeline (Safari
+   < 18, older FF) simply show sections without animation. Targets comparison
+   section IDs directly so both the SSR pages-router and DynamicComparison paths
+   benefit without any JS changes.
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes reveal-section {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #key-differences,
+    #comparison-table,
+    #pros-cons,
+    #verdict,
+    #faq {
+      animation: reveal-section linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 22%;
+    }
+  }
+}
+
 /* Grid pattern — inline SVG data URI avoids 27+ separate HTTP requests for grid.svg.
    Use alongside opacity-5 / opacity-10 utilities as needed. */
 .bg-grid {
