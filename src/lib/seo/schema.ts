@@ -1180,11 +1180,23 @@ export function comparisonPageSchema(
     citation: [
       ...(comparison.citationStats?.sources ?? [])
         .filter((s) => s.url)
-        .map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+        .map((s) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       ...comparison.entities.map((e) => ({
-        "@type": "CreativeWork",
+        "@type": "Article",
+        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
         name: `${e.name} — Wikipedia`,
         url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
       })),
     ],
     // potentialAction — ReadAction lets AI crawlers understand that this article
@@ -2099,11 +2111,23 @@ function buildMultiEntityGraph(
     citation: [
       ...(comparison.citationStats?.sources ?? [])
         .filter((s: { url?: string; name: string }) => s.url)
-        .map((s: { url?: string; name: string }) => ({ "@type": "CreativeWork", name: s.name, url: s.url })),
+        .map((s: { url?: string; name: string }) => {
+          let domain = "";
+          try { domain = new URL(s.url!).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+          return {
+            "@type": "WebPage",
+            "@id": s.url,
+            name: s.name,
+            url: s.url,
+            ...(domain && { publisher: { "@type": "Organization", name: domain } }),
+          };
+        }),
       ...comparison.entities.map((e) => ({
-        "@type": "CreativeWork",
+        "@type": "Article",
+        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
         name: `${e.name} — Wikipedia`,
         url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
       })),
     ],
     ...(multiViewCount > 0 && {
