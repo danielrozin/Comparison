@@ -1,3 +1,4 @@
+import type React from "react";
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -185,6 +186,30 @@ function resolveWinner(comparison: ComparisonPageData): "a" | "b" | null {
   return null;
 }
 
+function AttrIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  );
+}
+
+function DiffIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function ProsIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
 function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   const attrCount = comparison.attributes?.length ?? 0;
   const diffCount = comparison.keyDifferences?.length ?? 0;
@@ -192,10 +217,10 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   const totalCons = comparison.entities.reduce((s, e) => s + (e.cons?.length ?? 0), 0);
 
   const stats = [
-    attrCount > 0 && { label: `${attrCount} attributes`, icon: "📊" },
-    diffCount > 0 && { label: `${diffCount} differences`, icon: "⚡" },
-    (totalPros + totalCons) > 0 && { label: `${totalPros + totalCons} pros/cons`, icon: "✅" },
-  ].filter(Boolean) as { label: string; icon: string }[];
+    attrCount > 0 && { label: `${attrCount} attributes`, icon: <AttrIcon /> },
+    diffCount > 0 && { label: `${diffCount} differences`, icon: <DiffIcon /> },
+    (totalPros + totalCons) > 0 && { label: `${totalPros + totalCons} pros/cons`, icon: <ProsIcon /> },
+  ].filter(Boolean) as { label: string; icon: React.ReactNode }[];
 
   if (stats.length === 0) return null;
 
@@ -206,7 +231,7 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
           key={s.label}
           className="inline-flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
         >
-          <span aria-hidden="true">{s.icon}</span>
+          {s.icon}
           {s.label}
         </span>
       ))}

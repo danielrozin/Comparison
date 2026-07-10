@@ -90,45 +90,47 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           </svg>
         </button>
 
-        {/* Dropdown nav */}
+        {/* Dropdown nav — grid-rows trick gives smooth natural-height animation */}
         <div
-          className={`overflow-hidden transition-all duration-200 ease-in-out ${
-            isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+          className={`grid transition-all duration-200 ease-in-out ${
+            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
           }`}
         >
-          <nav id="toc-dropdown" className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
-            <ul role="list" className="p-2 space-y-0.5 list-none">
-            {items.map((item, idx) => {
-              const isActive = activeId === item.id;
-              return (
-                <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={() => setIsOpen(false)}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
-                    isActive
-                      ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
-                      : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
-                  }`}
-                >
-                  {isActive && (
-                    <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-primary-500 rounded-full" />
-                  )}
-                  <span
-                    className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
-                      isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
+          <div className="overflow-hidden">
+            <nav id="toc-dropdown" className="mt-1 bg-white border border-primary-200 rounded-xl shadow-lg shadow-primary-100/30" aria-label="Table of contents">
+              <ul role="list" className="p-2 space-y-0.5 list-none">
+              {items.map((item, idx) => {
+                const isActive = activeId === item.id;
+                return (
+                  <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
+                      isActive
+                        ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
+                        : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                     }`}
                   >
-                    {idx + 1}
-                  </span>
-                  {item.label}
-                </a>
-                </li>
-              );
-            })}
-            </ul>
-          </nav>
+                    {isActive && (
+                      <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-primary-500 rounded-full" />
+                    )}
+                    <span
+                      className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
+                        isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
+                      }`}
+                    >
+                      {idx + 1}
+                    </span>
+                    {item.label}
+                  </a>
+                  </li>
+                );
+              })}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
 
