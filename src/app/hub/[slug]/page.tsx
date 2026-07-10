@@ -6,6 +6,7 @@ import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -445,6 +446,10 @@ export default async function HubPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        <div className="mt-12">
+          <NewsletterSignup source={`hub-${slug}`} />
+        </div>
       </div>
     </>
   );

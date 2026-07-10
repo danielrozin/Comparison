@@ -8,6 +8,7 @@ import { EntityCompareSearch } from "@/components/ui/EntityCompareSearch";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -599,6 +600,10 @@ export default async function EntityPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        <div className="mt-12">
+          <NewsletterSignup source={`entity-${slug}`} />
+        </div>
       </div>
     </>
   );
