@@ -180,6 +180,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       // enabling "Review Snippet" rich results and query routing for "[product] reviews" queries.
       "@type": ["WebPage", "ReviewPage"],
       "@id": `${SITE_URL}/reviews/${slug}#reviewpage`,
+      additionalType: "https://schema.org/LearningResource",
+      learningResourceType: "Review",
       name: title,
       description,
       abstract: description,

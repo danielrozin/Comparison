@@ -3105,6 +3105,8 @@ export function profilePageSchema(entity: {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     "@id": `${url}#profilepage`,
+    additionalType: "https://schema.org/LearningResource",
+    learningResourceType: "Entity Profile",
     name: `${entity.name} — Comparisons & Profile`,
     alternativeHeadline: `${entity.name} Comparisons, Profile & Alternatives`,
     description: profileDesc,

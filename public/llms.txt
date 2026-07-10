@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 10, 2026 (HB353)*
+*Last updated: July 10, 2026 (HB357)*
 
 ## What We Do
 
@@ -217,6 +217,10 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB342: `DataDownload.potentialAction ReadAction` added to all DataDownload nodes across DataCatalog (11 API endpoints) and comparison Dataset.distribution (both 2-entity and multi-entity paths, ~3000 pages); also adds `/api/knowledge-graph/{slug}` as a 3rd DataDownload per comparison Dataset; Google Dataset Search "Access Data" buttons now triggered; commit 0c02729
 - HB352: `reviews/[slug]` upgraded from `Product` → `SoftwareApplication` (with `additionalType: Product`) as the primary schema @type; added `applicationCategory`, `operatingSystem`, `offers`, and `ratingExplanation` on the `AggregateRating` node; unlocks Google Software rich result carousel and improves AI Overviews software panel signals for "[tool] reviews" queries; commit 91231df
 - HB353: `DataDownload.potentialAction ReadAction` parity sweep — added to DataDownload nodes in trending Dataset, category Dataset, and subcategory Dataset (previously only comparison pages had this from HB342); Google Dataset Search "Access Data" button now triggers on all dataset-emitting page types; `ai-plugin.json` last_updated refreshed to 2026-07-10; `llms.txt` freshness updated
+- HB354: `LearningResource additionalType` on blog, best/[slug], hub/[slug], alternatives/[slug] pages — AI answer engines (Google Education carousel, Perplexity, ChatGPT) route educational-intent queries to pages carrying this type; affects blog articles, best-of guides, topic hubs, and alternatives pages
+- HB355: `learningResourceType` added to all LearningResource-typed pages — typed subtype strings (e.g. "Comparison Guide", "Guide", "Overview") improve AI classification precision for educational content routing
+- HB356: `LearningResource additionalType` + `learningResourceType: "Comparison Guide"` on compare (2-entity + multi-entity) and category/[slug] + category/[slug]/[subcategory] pages — the highest-traffic page types (~50,000+ comparison pages + 17+ category pages) now all signal educational intent; complete site-wide LearningResource rollout
+- HB357: `LearningResource additionalType` + `learningResourceType` extended to entity ProfilePage (2,500+ entity pages, `learningResourceType: "Entity Profile"`) and reviews/[slug] ReviewPage (500+ review pages, `learningResourceType: "Review"`) — 100% LearningResource coverage across all public page types; `llms.txt` freshness updated to July 10, 2026
 
 ## Categories & Scale
 
