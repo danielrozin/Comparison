@@ -435,6 +435,22 @@ export default async function HubPage({ params }: PageProps) {
           </div>
         </section>
 
+        {/* Cite this hub */}
+        <section aria-labelledby="hub-cite-heading" className="mt-10 pt-8 border-t border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h2 id="hub-cite-heading" className="text-base font-display font-bold text-text">Cite This Guide</h2>
+          </div>
+          <p className="text-xs text-text-secondary mb-3">Free to use with attribution (CC BY 4.0).</p>
+          <pre className="whitespace-pre-wrap break-words rounded-xl bg-surface-alt border border-border px-4 py-3 text-xs text-text font-mono select-all leading-relaxed">
+            {`A Versus B, "${hub.h1}," aversusb.net, ${new Date().getFullYear()}. https://aversusb.net/hub/${slug}`}
+          </pre>
+        </section>
+
         {/* Category back-link */}
         {hub.categoryAnchor && (
           <div className="mt-8 pt-6 border-t border-border">
