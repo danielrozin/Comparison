@@ -544,7 +544,7 @@ export default function AboutPage() {
           </div>
           <h2 id="about-faq-heading" className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
         </div>
-        <dl className="space-y-4">
+        <div className="space-y-2">
           {[
             {
               q: "Is A Versus B free to use?",
@@ -567,12 +567,19 @@ export default function AboutPage() {
               a: "Comparison pages refresh automatically on a rolling schedule and re-rank daily based on trending activity. You can also trigger an update by flagging outdated information via the thumbs-down widget.",
             },
           ].map(({ q, a }) => (
-            <div key={q} className="border border-border rounded-xl p-5 bg-surface-alt/40">
-              <dt className="font-semibold text-text mb-1.5">{q}</dt>
-              <dd className="text-sm text-text-secondary leading-relaxed">{a}</dd>
-            </div>
+            <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+              <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                <span>{q}</span>
+                <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">
+                {a}
+              </div>
+            </details>
           ))}
-        </dl>
+        </div>
       </section>
 
       {/* CTA */}
