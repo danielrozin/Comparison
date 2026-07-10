@@ -435,10 +435,18 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
       {/* Category Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="category-hero-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#category-hero-grid)"/>
+        </svg>
         {/* Floating accent blobs */}
-        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="hidden sm:block absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" aria-hidden="true" />
+        <div className="hidden sm:block absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" aria-hidden="true" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 relative">
           {/* Breadcrumb */}
@@ -462,10 +470,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           </nav>
 
           {/* Hero content */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7">
+          <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7">
             {/* Icon */}
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white/10 rounded-2xl sm:rounded-3xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-2 ring-white/20 shadow-xl shadow-black/20">
-              <span className="text-4xl sm:text-5xl" aria-hidden="true">{category.icon}</span>
+            <div className="relative flex-shrink-0">
+              <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary-400 to-accent-500 blur-xl opacity-50 scale-125" aria-hidden="true" />
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary-600/80 via-primary-700/80 to-indigo-800/80 rounded-2xl sm:rounded-3xl flex items-center justify-center backdrop-blur-sm ring-2 ring-white/25 shadow-2xl shadow-primary-900/60">
+                <span className="text-4xl sm:text-5xl" aria-hidden="true">{category.icon}</span>
+              </div>
             </div>
 
             <div className="flex-1 min-w-0">

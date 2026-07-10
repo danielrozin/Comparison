@@ -791,7 +791,15 @@ export default async function BlogPostPage({
 
         {/* Article Header */}
         <header className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-12 sm:py-16 pb-20 sm:pb-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+          <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+            <defs>
+              <pattern id="blog-article-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+                <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+                <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#blog-article-grid)"/>
+          </svg>
           <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-wrap items-center gap-2.5 mb-5">

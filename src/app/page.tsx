@@ -647,7 +647,15 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section aria-labelledby="cta-heading" className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="home-cta-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#home-cta-grid)"/>
+        </svg>
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 id="cta-heading" className="text-2xl sm:text-3xl font-display font-bold mb-4">
             Ready to Compare?
