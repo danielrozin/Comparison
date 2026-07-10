@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
 
@@ -226,6 +226,9 @@ export default async function RootLayout({
           <CookieConsentBanner />
           <BackToTop />
           <SearchOverlay />
+          <MobileBottomNav />
+          {/* Spacer so footer content doesn't hide behind the fixed mobile bottom nav */}
+          <div className="md:hidden h-14" style={{ paddingBottom: "env(safe-area-inset-bottom)" }} aria-hidden="true" />
         </ExperimentProviderServer>
         {/* DAN-1645: Vercel Speed Insights (RUM) — site-wide real-user CWV so
             /compare field data is comparable against other routes. */}

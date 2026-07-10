@@ -268,7 +268,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-16 sm:pb-20">
         {/* Breadcrumb category pill */}
         {comparison.category && (
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-4 motion-safe:animate-fade-in">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider">
               {comparison.category}
             </span>
@@ -276,13 +276,13 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         )}
 
         {/* Title */}
-        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight">
+        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight motion-safe:animate-slide-up">
           {comparison.metadata?.metaTitle || comparison.title}
         </h1>
 
         {/* Last Updated */}
         {comparison.metadata?.updatedAt && (
-          <p className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-1.5">
+          <p className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-1.5 motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>
@@ -294,7 +294,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Short Answer preview badge — AEO/GEO snippet signal */}
         {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-          <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-6 sm:mb-8 motion-safe:animate-slide-up" style={{ animationDelay: "0.15s" }}>
             <div className="inline-flex items-start gap-2.5 max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-4 py-3 text-left">
               <div className="flex-shrink-0 w-5 h-5 bg-yellow-400/20 rounded-full flex items-center justify-center mt-0.5">
                 <svg className="w-3 h-3 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -310,10 +310,12 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Entity VS Cards */}
         <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
-          <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
+          <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
+            <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
+          </div>
 
           {/* VS Badge */}
-          <div className="flex flex-col items-center justify-center self-center gap-2">
+          <div className="flex flex-col items-center justify-center self-center gap-2 motion-safe:animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 motion-safe:animate-pulse opacity-40 scale-125" />
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
@@ -322,15 +324,19 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             </div>
           </div>
 
-          <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
+          <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
+            <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
+          </div>
         </div>
 
         {/* Comparison stats row */}
-        <ComparisonStats comparison={comparison} />
+        <div className="motion-safe:animate-fade-in" style={{ animationDelay: "0.35s" }}>
+          <ComparisonStats comparison={comparison} />
+        </div>
 
         {/* Jump to verdict CTA — only when there's verdict content */}
         {(comparison.verdict || comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-          <div className="flex items-center justify-center gap-3 mt-5">
+          <div className="flex items-center justify-center gap-3 mt-5 motion-safe:animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <a
               href="#verdict"
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold text-white/80 bg-white/15 hover:bg-white/25 border border-white/20 hover:border-white/40 backdrop-blur-sm transition-all duration-200 group"

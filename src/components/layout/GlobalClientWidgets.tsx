@@ -30,3 +30,8 @@ export const SearchOverlay = dynamic(
   () => import("@/components/layout/SearchOverlay").then((m) => ({ default: m.SearchOverlay })),
   { ssr: false, loading: () => null }
 );
+
+export const MobileBottomNav = dynamic(
+  () => import("@/components/layout/MobileBottomNav").then((m) => ({ default: m.MobileBottomNav })),
+  { ssr: false, loading: () => null }
+);
