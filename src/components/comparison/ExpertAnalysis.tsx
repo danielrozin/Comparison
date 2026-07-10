@@ -52,13 +52,40 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
           </div>
         </div>
 
-        {/* Analysis body */}
+        {/* Analysis body — first 3 paragraphs always visible; rest in a <details> fold.
+            Using native <details> keeps the full text in SSR HTML (crawlable by AI/SEO)
+            while preventing an overwhelming wall of text on first load. */}
         <div className="px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-          {paragraphs.map((para, i) => (
+          {paragraphs.slice(0, 3).map((para, i) => (
             <p key={i} className="text-base text-text leading-relaxed">
               {para}
             </p>
           ))}
+          {paragraphs.length > 3 && (
+            <details className="group">
+              <summary className="list-none cursor-pointer select-none">
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 group-open:hidden transition-colors">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Read {paragraphs.length - 3} more paragraph{paragraphs.length - 3 !== 1 ? "s" : ""}
+                </span>
+                <span className="hidden group-open:inline-flex items-center gap-1.5 text-sm font-semibold text-text-secondary hover:text-text transition-colors">
+                  <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Show less
+                </span>
+              </summary>
+              <div className="space-y-4 mt-4">
+                {paragraphs.slice(3).map((para, i) => (
+                  <p key={i + 3} className="text-base text-text leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
 
         {/* Footer: E-E-A-T badge */}
