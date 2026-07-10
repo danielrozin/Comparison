@@ -6,6 +6,8 @@ import { PartnershipForm } from "./PartnershipForm";
 const PARTNER_TITLE = `Partner With ${SITE_NAME} — Sponsored Comparisons & Data Partnerships`;
 const PARTNER_DESC = `Partner with ${SITE_NAME} to reach millions of decision-makers. Sponsored comparisons, featured placements, and custom data solutions for brands.`;
 const PARTNER_URL = `${SITE_URL}/partnerships`;
+const PARTNER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Partner With A Versus B")}&type=home`;
+const PARTNER_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
   title: PARTNER_TITLE,
@@ -21,28 +23,30 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,
+    images: [{ url: PARTNER_OG_IMAGE, width: 1200, height: 630, alt: PARTNER_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@aversusb",
     title: PARTNER_TITLE,
     description: PARTNER_DESC,
+    images: [PARTNER_OG_IMAGE],
   },
   other: {
     "citation_title": PARTNER_TITLE,
     "citation_author": "A Versus B",
-    "citation_journal_title": "A Versus B",
+    "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": PARTNER_DESC,
-      "citation_publication_date": "2024-01-01",
-      "citation_online_date": "2024-01-01",
+    "citation_publication_date": "2024-01-01",
+    "citation_online_date": PARTNER_TODAY,
     "DC.title": PARTNER_TITLE,
     "DC.creator": "A Versus B",
-    "DC.publisher": "A Versus B",
+    "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",
     "DC.format": "text/html",
-      "DC.date": "2024-01-01",
+    "DC.date": PARTNER_TODAY,
     "DC.identifier": PARTNER_URL,
   },
 };
@@ -130,9 +134,23 @@ export default function PartnershipsPage() {
     abstract: PARTNER_DESC,
     alternativeHeadline: `Advertise on A Versus B — Sponsored Comparisons & Data Deals`,
     url: PARTNER_URL,
-
-    locale: "en_US",    inLanguage: "en-US",
+    genre: "Business Partnership",
+    inLanguage: "en-US",
     creativeWorkStatus: "Published",
+    datePublished: "2024-01-01",
+    dateModified: PARTNER_TODAY,
+    lastReviewed: PARTNER_TODAY,
+    contentReferenceTime: PARTNER_TODAY,
+    thumbnailUrl: PARTNER_OG_IMAGE,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${PARTNER_URL}#primaryImage`,
+      url: PARTNER_OG_IMAGE,
+      contentUrl: PARTNER_OG_IMAGE,
+      width: 1200,
+      height: 630,
+      caption: PARTNER_TITLE,
+    },
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     license: "https://creativecommons.org/licenses/by/4.0/",

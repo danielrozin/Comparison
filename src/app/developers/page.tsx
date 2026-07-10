@@ -9,6 +9,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
+  "@id": `${SITE_URL}/developers#webapi`,
   name: `${SITE_NAME} Comparison API`,
   description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 500+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
@@ -71,6 +72,8 @@ const apiSchema = {
 const DEV_TITLE = `${SITE_NAME} Developer API — Comparison Data REST API`;
 const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 500+ comparisons, entity profiles, and search.`;
 const DEV_URL = `${SITE_URL}/developers`;
+const DEV_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Developer API")}&type=home`;
+const DEV_TODAY = new Date().toISOString().split("T")[0];
 
 export const metadata: Metadata = {
   title: DEV_TITLE,
@@ -91,29 +94,83 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,
+    images: [{ url: DEV_OG_IMAGE, width: 1200, height: 630, alt: DEV_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@aversusb",
     title: DEV_TITLE,
     description: DEV_DESC,
+    images: [DEV_OG_IMAGE],
   },
   other: {
     "citation_title": DEV_TITLE,
     "citation_author": "A Versus B",
-    "citation_journal_title": "A Versus B",
+    "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": DEV_DESC,
-      "citation_publication_date": "2024-01-01",
-      "citation_online_date": "2024-01-01",
+    "citation_publication_date": "2024-06-01",
+    "citation_online_date": DEV_TODAY,
     "DC.title": DEV_TITLE,
     "DC.creator": "A Versus B",
-    "DC.publisher": "A Versus B",
+    "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",
     "DC.format": "text/html",
-      "DC.date": "2024-01-01",
+    "DC.date": DEV_TODAY,
     "DC.identifier": DEV_URL,
+  },
+};
+
+const devWebPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${DEV_URL}#webpage`,
+  name: DEV_TITLE,
+  description: DEV_DESC,
+  abstract: DEV_DESC,
+  alternativeHeadline: `Free REST API for Structured Comparison Data — ${SITE_NAME}`,
+  url: DEV_URL,
+  genre: "Developer Documentation",
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  conditionsOfAccess: "Free",
+  creativeWorkStatus: "Published",
+  datePublished: "2024-06-01",
+  dateModified: DEV_TODAY,
+  lastReviewed: DEV_TODAY,
+  contentReferenceTime: DEV_TODAY,
+  thumbnailUrl: DEV_OG_IMAGE,
+  image: {
+    "@type": "ImageObject",
+    "@id": `${DEV_URL}#primaryImage`,
+    url: DEV_OG_IMAGE,
+    contentUrl: DEV_OG_IMAGE,
+    width: 1200,
+    height: 630,
+    caption: DEV_TITLE,
+  },
+  license: "https://creativecommons.org/licenses/by/4.0/",
+  usageInfo: `${SITE_URL}/terms`,
+  copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+  copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  acquireLicensePage: `${SITE_URL}/terms`,
+  audience: { "@type": "Audience", audienceType: "Software Developers, Researchers, Data Scientists", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
+  accessMode: ["textual"],
+  accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+  accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2", "#api-overview"] },
+  potentialAction: { "@type": "ReadAction", target: DEV_URL },
+  publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  mainEntity: { "@type": "WebAPI", "@id": `${DEV_URL}#webapi` },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    "@id": `${DEV_URL}#breadcrumbs`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, url: SITE_URL } },
+      { "@type": "ListItem", position: 2, name: "Developers", item: { "@type": "WebPage", "@id": DEV_URL, url: DEV_URL } },
+    ],
   },
 };
 
@@ -186,6 +243,10 @@ const devFaqSchema = {
 export default function DevelopersPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(devWebPageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
