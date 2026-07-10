@@ -144,7 +144,7 @@ function MobileValueCell({
 
   return (
     <div className={`px-3 py-2.5 ${bgClass}`}>
-      <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">
+      <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">
         {entityName}
       </p>
       <p className={`text-sm font-medium break-words ${textClass}`}>
@@ -152,7 +152,7 @@ function MobileValueCell({
           {value?.valueText || "\u2014"}
           {isWinner && <TrophyIcon />}
           {isTie && (
-            <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
+            <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
               Tie
             </span>
           )}
@@ -826,7 +826,7 @@ function RedesignedTable({
                                 {valA?.valueText || "\u2014"}
                                 {winner === "a" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>
@@ -837,7 +837,7 @@ function RedesignedTable({
                                 {valB?.valueText || "\u2014"}
                                 {winner === "b" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>

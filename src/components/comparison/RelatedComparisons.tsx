@@ -46,7 +46,7 @@ export function RelatedComparisons({
   sourceSlug?: string;
 }) {
   return (
-    <section aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="related-comparisons" aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-primary-600 flex items-center justify-center shadow-sm flex-shrink-0">

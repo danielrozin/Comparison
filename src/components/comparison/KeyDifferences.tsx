@@ -6,6 +6,11 @@ import type { KeyDifference, ComparisonEntityData } from "@/types";
 
 type FilterTab = "all" | "a" | "tie" | "b";
 
+// Treats winner===undefined and winner==="tie" as the same bucket (no declared winner)
+function isTieOrUndefined(winner: KeyDifference["winner"]): boolean {
+  return !winner || winner === "tie";
+}
+
 function EntityMiniAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
   const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
   const initials = entity.name.split(/\s+/).slice(0, 2).map((w) => w.charAt(0)).join("").toUpperCase();
@@ -124,13 +129,13 @@ export function KeyDifferencesBlock({
 
   const aWins = useMemo(() => differences.filter((d) => d.winner === "a").length, [differences]);
   const bWins = useMemo(() => differences.filter((d) => d.winner === "b").length, [differences]);
-  const ties = useMemo(() => differences.filter((d) => !d.winner).length, [differences]);
+  const ties = useMemo(() => differences.filter((d) => isTieOrUndefined(d.winner)).length, [differences]);
 
   const filtered = useMemo(() => {
     if (filter === "all") return differences;
     if (filter === "a") return differences.filter((d) => d.winner === "a");
     if (filter === "b") return differences.filter((d) => d.winner === "b");
-    return differences.filter((d) => !d.winner);
+    return differences.filter((d) => isTieOrUndefined(d.winner));
   }, [differences, filter]);
 
   const tabs: { id: FilterTab; label: string; count: number; color: string; activeColor: string }[] = [
@@ -287,7 +292,7 @@ export function KeyDifferencesBlock({
             <div className="grid grid-cols-2 divide-x divide-border/50">
               {/* Entity A */}
               <div className={`px-3 py-3 ${diff.winner === "a" ? "bg-green-50" : ""}`}>
-                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                <p className="text-xs font-medium text-text-secondary mb-1 truncate">
                   {entityA.name}
                 </p>
                 <p className={`text-sm font-semibold break-words ${
@@ -304,7 +309,7 @@ export function KeyDifferencesBlock({
 
               {/* Entity B */}
               <div className={`px-3 py-3 ${diff.winner === "b" ? "bg-green-50" : ""}`}>
-                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                <p className="text-xs font-medium text-text-secondary mb-1 truncate">
                   {entityB.name}
                 </p>
                 <p className={`text-sm font-semibold break-words ${

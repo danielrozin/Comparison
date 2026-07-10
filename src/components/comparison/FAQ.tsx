@@ -186,7 +186,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
                 <div className="overflow-hidden">
                   <div className="px-5 pb-5 ml-9">
                     <div className="h-px bg-gradient-to-r from-primary-200 to-transparent mb-4" />
-                    <p className="faq-answer text-sm text-text-secondary leading-relaxed">
+                    <p className="faq-answer text-sm text-text leading-relaxed">
                       {highlight(faq.answer, search)}
                     </p>
                   </div>
