@@ -165,7 +165,18 @@ interface PageMeta {
   twitterData2?: string;
   // og:see_also — related comparison URLs for AI crawler graph traversal
   seeAlsoUrls?: string[];
+  // DAN-1890: robots directive. Defaults to the indexable string in MetaHead;
+  // set to a noindex variant for archived (spam-recovery consolidated) rows so
+  // they leave Google's index at the serving layer.
+  robots?: string;
 }
+
+// DAN-1890: robots directives. Archived rows still render a full 200 (the slug
+// lookup is status-agnostic), so they must self-declare noindex to drop out of
+// the index; "follow" preserves link equity flow to the surviving canonicals.
+const ROBOTS_INDEX =
+  "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+const ROBOTS_NOINDEX = "noindex, follow, max-image-preview:large";
 
 type Props =
   | {
@@ -605,6 +616,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     canonical: `${SITE_URL}/compare/${slug}`,
     ogImage,
     ogType: "article",
+    // DAN-1890: archived rows still resolve to a full 200 here (slug lookup is
+    // status-agnostic), so noindex them to complete Phase B's deindex of the
+    // consolidated duplicate footprint. Published/unknown → indexable.
+    robots:
+      enrichedComparison.metadata.status === "archived"
+        ? ROBOTS_NOINDEX
+        : ROBOTS_INDEX,
     publishedTime: enrichedComparison.metadata.publishedAt || undefined,
     modifiedTime: enrichedComparison.metadata.updatedAt,
     // article:section = category (e.g. "Software", "Technology")
@@ -688,7 +706,7 @@ function MetaHead({ meta }: { meta: PageMeta }) {
     <Head>
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="robots" content={meta.robots ?? ROBOTS_INDEX} />
       {/* author — used by Bing, Yahoo, and AI content attributors for authorship resolution */}
       <meta name="author" content="A Versus B" />
       {/* coverage/distribution/rating — classic HTML meta; Bing, Yandex, and AI content

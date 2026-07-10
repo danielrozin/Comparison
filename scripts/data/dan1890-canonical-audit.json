@@ -1,0 +1,166 @@
+{
+  "generatedAt": "2026-07-10T10:12:32.495Z",
+  "totalRows": 3203,
+  "published": 39,
+  "archived": 3164,
+  "entityPairGroups": 2815,
+  "dupGroups": 259,
+  "redundantSlugs": 388,
+  "dupGroupsWithPublishedCanonical": 9,
+  "safeRedirects": 0,
+  "skippedDifferentIntent": 225,
+  "noindexOnly": 388,
+  "redirectSamples": [],
+  "skippedSamples": [
+    {
+      "member": "kayak-vs-expedia-for-booking-flights-2025-2026-comparison",
+      "canonical": "expedia-vs-kayak",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "google-meet-vs-zoom",
+      "canonical": "zoom-vs-google-meet",
+      "reason": "canonical is archived — noindex whole group"
+    },
+    {
+      "member": "bmw-vs-mercedes-benz",
+      "canonical": "bmw-vs-mercedes",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "notion-vs-coda",
+      "canonical": "coda-vs-notion",
+      "reason": "canonical is archived — noindex whole group"
+    },
+    {
+      "member": "real-madrid-vs-barcelona-trophies-all-time-2026",
+      "canonical": "real-madrid-vs-barcelona-la-liga-titles-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "real-madrid-vs-barcelona-trophies-comparison-2026",
+      "canonical": "real-madrid-vs-barcelona-la-liga-titles-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "real-madrid-vs-barcelona",
+      "canonical": "real-madrid-vs-barcelona-la-liga-titles-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "barcelona-vs-real-madrid-total-trophies-comparison-2026",
+      "canonical": "real-madrid-vs-barcelona-la-liga-titles-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "macbook-air-vs-macbook-pro-comparison-2026",
+      "canonical": "macbook-vs-macbook-air-vs-macbook-pro-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-performance-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-specs-performance-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-performance-comparison-2026-games-differences",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-performance-games-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-specs-performance-games-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x-2026-comparison",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-specs-performance-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "playstation-5-vs-xbox-series-x-2026-comparison",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-performance-specs-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-specs-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "playstation-5-vs-xbox-series-x",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-comparison-specs-performance-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x-comparison-specs-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x-specs-performance-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "ps5-vs-xbox-series-x-performance-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "xbox-series-x-vs-ps5-games-comparison-2026",
+      "canonical": "xbox-series-x-vs-ps5-specs-comparison-2026",
+      "reason": "different tokens/intent — noindex, do not merge"
+    },
+    {
+      "member": "nordictrack-vs-peloton",
+      "canonical": "peloton-vs-nordictrack",
+      "reason": "canonical is archived — noindex whole group"
+    },
+    {
+      "member": "delta-airlines-vs-united",
+      "canonical": "delta-vs-united",
+      "reason": "different tokens/intent — noindex, do not merge"
+    }
+  ]
+}
