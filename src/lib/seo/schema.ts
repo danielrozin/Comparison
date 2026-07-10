@@ -383,6 +383,7 @@ export function webSiteSchema() {
     abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
+    availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
     dateModified: new Date().toISOString(),
@@ -400,7 +401,7 @@ export function webSiteSchema() {
     hasPart: [
       { "@type": "WebPage", name: "Trending Comparisons", url: `${SITE_URL}/trending` },
       { "@type": "WebPage", name: "Search Comparisons", url: `${SITE_URL}/search` },
-      { "@type": "WebPage", name: "Blog", url: `${SITE_URL}/blog` },
+      { "@type": "Blog", name: "A Versus B Blog", url: `${SITE_URL}/blog`, description: "Expert guides, how-tos, and comparison articles" },
       { "@type": "WebPage", name: "Best Lists", url: `${SITE_URL}/best` },
       { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
       { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },

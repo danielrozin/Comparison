@@ -414,6 +414,7 @@ export default async function BlogPostPage({
     // educational content — improves citation likelihood for "how to choose X" queries.
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
     additionalType: [
+      "https://schema.org/BlogPosting",
       ...(wordCount && wordCount >= 1500 ? ["https://schema.org/InDepthArticle"] : []),
       "https://schema.org/LearningResource",
     ],
