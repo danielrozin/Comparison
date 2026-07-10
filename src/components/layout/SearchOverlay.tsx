@@ -220,7 +220,7 @@ export function SearchOverlay() {
           <div className="mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
-              <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
+              <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
                 {query.trim().length >= 2 ? (
                   <>
                     <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -291,7 +291,7 @@ export function SearchOverlay() {
             </ul>
 
             {/* Footer */}
-            <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2.5 flex items-center gap-4 text-[11px] text-text-secondary">
+            <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2.5 flex items-center gap-4 text-xs text-text-secondary">
               <span><kbd className="font-mono bg-white border border-border rounded px-1">↵</kbd> to go</span>
               <span><kbd className="font-mono bg-white border border-border rounded px-1">↑↓</kbd> to navigate</span>
               <span><kbd className="font-mono bg-white border border-border rounded px-1">Esc</kbd> to close</span>

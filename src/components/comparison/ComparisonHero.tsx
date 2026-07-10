@@ -7,7 +7,7 @@ import { AffiliateButton } from "./AffiliateButton";
 function WinnerBadge() {
   return (
     <div
-      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 shadow-md shadow-amber-400/40 ring-1 ring-amber-300/60 whitespace-nowrap z-10"
+      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 shadow-md shadow-amber-400/40 ring-1 ring-amber-300/60 whitespace-nowrap z-10"
       aria-label="Winner"
     >
       <svg className="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

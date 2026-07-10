@@ -231,7 +231,7 @@ export function MultiComparisonTable({
                 aria-label={`${openGroups.has(categoryName) ? "Collapse" : "Expand"} ${categoryName} category`}
                 className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
               >
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
+                <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                   {categoryName}
                 </span>
                 <ChevronIcon open={isOpen} />
@@ -242,7 +242,7 @@ export function MultiComparisonTable({
                     const winnerIdx = getWinnerIndex(attr);
                     return (
                       <div key={attr.id} className="p-3">
-                        <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-2">
+                        <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-2">
                           {attr.name}
                           {attr.unit && <span className="font-normal ml-1">({attr.unit})</span>}
                         </p>

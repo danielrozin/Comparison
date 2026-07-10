@@ -305,7 +305,7 @@ function OverflowRowsMobile({
         {attrs.map((attr) => (
           <div key={attr.id} className="bg-white">
             <div className="px-3 py-1.5 bg-surface-alt/40">
-              <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
                 {attr.name}
                 {attr.unit && (
                   <span className="font-normal ml-0.5">({attr.unit})</span>
@@ -810,7 +810,7 @@ function RedesignedTable({
                         <div key={attr.id} className={`bg-white ${winnerIndicator}`}>
                           {/* Attribute label row */}
                           <div className="px-3 py-1.5 bg-surface-alt/80">
-                            <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                            <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
                               {attr.name}
                               {attr.unit && (
                                 <span className="font-normal ml-0.5">({attr.unit})</span>

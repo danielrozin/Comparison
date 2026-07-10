@@ -251,7 +251,7 @@ export function SearchBox() {
         >
           {/* Header */}
           <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
-            <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
               {showingLive ? (
                 <>
                   <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

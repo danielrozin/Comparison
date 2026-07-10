@@ -258,7 +258,7 @@ export default async function HomePage() {
 
             {/* Category pill links */}
             <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-              <p className="text-[11px] font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
+              <p className="text-xs font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {CATEGORIES.slice(0, 10).map((cat) => (
                   <Link
@@ -402,11 +402,11 @@ export default async function HomePage() {
                   <div className="relative p-4 pt-5 flex flex-col flex-1 gap-3">
                     {/* Category + date row */}
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100 capitalize">
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100 capitalize">
                         {item.category}
                       </span>
                       {item.updatedAt && (
-                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-[10px] text-text-secondary">
+                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-xs text-text-secondary">
                           {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </time>
                       )}

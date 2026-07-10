@@ -133,7 +133,7 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10" aria-hidden="true" />
       )}
       <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
-        <span className="flex-shrink-0 text-[11px] font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
+        <span className="flex-shrink-0 text-xs font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
           Jump to:
         </span>
         {winnerName && (
