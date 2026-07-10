@@ -417,6 +417,7 @@ export default async function BlogPostPage({
       ...(wordCount && wordCount >= 1500 ? ["https://schema.org/InDepthArticle"] : []),
       "https://schema.org/LearningResource",
     ],
+    learningResourceType: "How-to Guide",
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,

@@ -152,6 +152,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     // LearningResource — alternatives guides help users make informed software/product choices.
     // Signals Google Education carousel eligibility + AI educational intent routing.
     additionalType: ["https://schema.org/LearningResource", "https://schema.org/InDepthArticle"],
+    learningResourceType: "Comparison Guide",
     "@id": `${altPageUrl}#article`,
     headline: `Alternatives to ${name}`,
     description: `${alternatives.length} alternatives to ${name} — compare side-by-side and find the best option for 2026.`,

@@ -265,6 +265,7 @@ function bestPageSchema(entry: BestEntry) {
         // Best-of pages are structured decision guides, which qualifies them as LearningResource
         // under Schema.org's definition (a resource designed to support learning a skill/topic).
         additionalType: ["https://schema.org/LearningResource", "https://schema.org/InDepthArticle"],
+        learningResourceType: "Roundup",
         "@id": `${url}#article`,
         name: entry.h1,
         description: entry.description,
