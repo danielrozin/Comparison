@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
-import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -214,7 +214,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
-    teaches: `How to compare ${subcat.name.toLowerCase()} side by side`,
+    teaches: teachesDefinedTerm(`How to compare ${subcat.name.toLowerCase()} side by side`, subcatUrl),
     educationalUse: "comparison",
     locationCreated: { "@type": "Country", name: "United States" },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

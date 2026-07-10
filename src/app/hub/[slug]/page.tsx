@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -157,7 +157,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
-    teaches: `How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`,
+    teaches: teachesDefinedTerm(`How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`, hubUrl),
     educationalUse: "comparison",
     keywords: `${hub.h1.toLowerCase()} comparison, ${hub.slug.replace(/-/g, " ")} vs, best ${hub.slug.replace(/-/g, " ")}`,
     // about[] — typed entity references extracted from hub spokes; creates direct

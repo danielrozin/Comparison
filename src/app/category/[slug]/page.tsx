@@ -6,7 +6,7 @@ import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
-import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -280,7 +280,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
-    teaches: `How to compare ${category.name.toLowerCase()} side by side`,
+    teaches: teachesDefinedTerm(`How to compare ${category.name.toLowerCase()} side by side`, categoryUrl),
     educationalUse: "comparison",
     speakable: {
       "@type": "SpeakableSpecification",

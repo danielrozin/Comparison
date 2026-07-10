@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity } from "@/lib/services/comparison-service";
-import { personAuthorNode, breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -200,7 +200,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     educationalLevel: "General",
     // teaches + educationalUse — maps this guide to the decision skill it develops
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).
-    teaches: `How to find the best alternatives to ${name}`,
+    teaches: teachesDefinedTerm(`How to find the best alternatives to ${name}`, altPageUrl),
     educationalUse: "comparison",
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
