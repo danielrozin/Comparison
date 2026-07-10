@@ -45,6 +45,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // DAN-1891 spam recovery: hard pause until domain recovers from Google June 2026 Spam Update.
+  // Remove this gate (or set SPAM_RECOVERY_PAUSE=false) only after GSC clicks recover to baseline
+  // and DAN-1740 recovery routine confirms re-assessment.
+  if ((process.env.SPAM_RECOVERY_PAUSE ?? "true").toLowerCase() !== "false") {
+    return NextResponse.json({
+      status: "paused",
+      reason: "SPAM_RECOVERY_PAUSE — auto-generation suspended for Google Spam Update recovery (DAN-1891)",
+    });
+  }
+
   const checkInId = Sentry.captureCheckIn({
     monitorSlug: "auto-generate",
     status: "in_progress",

@@ -18,6 +18,7 @@ import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
 import { warmCacheForSlug } from "./cache-warming";
 import { checkAndAlert } from "./pipeline-alerting";
+import { cleanComparisonSlug } from "@/lib/utils/slugify";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -472,6 +473,9 @@ function makeSlug(entityA: string, entityB: string): string {
     s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
   const a = clean(entityA);
   const b = clean(entityB);
-  // Sort alphabetically so "A vs B" and "B vs A" produce the same slug
-  return a <= b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
+  // Sort alphabetically so "A vs B" and "B vs A" produce the same slug.
+  // cleanComparisonSlug strips known corruption patterns (trailing ) or )) from
+  // Markdown-link parsing artifacts in keyword sources).
+  const raw = a <= b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
+  return cleanComparisonSlug(raw);
 }
