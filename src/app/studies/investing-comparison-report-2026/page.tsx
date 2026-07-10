@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getFinanceStudy } from "@/lib/services/studies-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 86400;
 
@@ -426,6 +427,10 @@ export default async function InvestingStudyPage() {
           </Link>
         </div>
       </article>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <NewsletterSignup source="study-investing" />
+      </div>
     </>
   );
 }

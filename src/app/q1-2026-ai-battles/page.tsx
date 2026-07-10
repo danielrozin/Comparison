@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { BATTLES, HEADLINE_TOTAL, BATTLE_COUNT } from "./data";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_PATH = "/q1-2026-ai-battles";
 const PAGE_URL = `${SITE_URL}${PAGE_PATH}`;
@@ -641,6 +642,10 @@ export default function Q1AiBattlesPage() {
           </p>
         </section>
       </article>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <NewsletterSignup source="q1-2026-ai-battles" />
       </div>
     </>
   );
