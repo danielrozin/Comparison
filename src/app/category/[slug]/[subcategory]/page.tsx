@@ -10,6 +10,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ITEMS_PER_PAGE = 16;
 
@@ -480,6 +481,13 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
             <span aria-hidden="true">&larr; </span>All {category.name} Comparisons
           </Link>
         </div>
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source={`subcategory-${slug}-${subcategory}`} />
+          </div>
+        )}
       </div>
     </>
   );

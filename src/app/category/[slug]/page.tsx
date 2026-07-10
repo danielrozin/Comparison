@@ -11,6 +11,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
@@ -687,6 +688,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <Link href={basePath} className="mt-4 inline-block text-primary-600 font-medium hover:underline">
               Clear filters
             </Link>
+          </div>
+        )}
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source={`category-${category.slug}`} />
           </div>
         )}
       </div>
