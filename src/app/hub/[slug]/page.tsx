@@ -417,12 +417,19 @@ export default async function HubPage({ params }: PageProps) {
             </div>
             <h2 id="faq-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-2">
             {hub.faqs.map((faq, i) => (
-              <div key={i} className="border-b border-border pb-5 last:border-0">
-                <h3 className="font-semibold text-text mb-2">{faq.q}</h3>
-                <p className="text-text-secondary leading-relaxed text-sm">{faq.a}</p>
-              </div>
+              <details key={i} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+                <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                  <span>{faq.q}</span>
+                  <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">
+                  {faq.a}
+                </div>
+              </details>
             ))}
           </div>
         </section>
