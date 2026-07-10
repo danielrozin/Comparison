@@ -6,6 +6,7 @@ import { getReviewedEntities, getReviewCategories } from "@/lib/services/review-
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ITEMS_PER_PAGE = 16;
 
@@ -366,6 +367,13 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
                 View all reviews
               </Link>
             )}
+          </div>
+        )}
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source="reviews-listing" />
           </div>
         )}
       </div>

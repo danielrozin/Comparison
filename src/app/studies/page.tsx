@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 86400;
 
@@ -249,6 +250,10 @@ export default function StudiesIndexPage() {
             </li>
           ))}
         </ul>
+
+        <div className="mt-16">
+          <NewsletterSignup source="studies-listing" />
+        </div>
       </div>
     </>
   );
