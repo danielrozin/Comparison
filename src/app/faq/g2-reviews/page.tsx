@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_TITLE = `Are G2 and Capterra Reviews Unbiased? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -298,6 +299,10 @@ export default function G2ReviewsFaqPage() {
         </div>
       </section>
     </article>
+
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <NewsletterSignup source="faq-g2-reviews" />
+    </div>
     </>
   );
 }

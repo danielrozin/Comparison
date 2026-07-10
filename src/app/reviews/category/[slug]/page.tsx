@@ -8,6 +8,7 @@ import {
 } from "@/lib/services/review-service";
 import { StarRating } from "@/components/ui/StarRating";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 3600; // ISR: 1 hour
 
@@ -383,6 +384,10 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        <div className="mt-16">
+          <NewsletterSignup source={`review-category-${slug}`} />
+        </div>
       </div>
     </>
   );

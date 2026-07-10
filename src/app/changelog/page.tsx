@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const CHANGELOG_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Changelog — A Versus B Updates")}&type=home`;
 const CHANGELOG_TITLE = `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`;
@@ -405,18 +406,8 @@ export default function ChangelogPage() {
       </div>
 
       {/* Subscribe CTA */}
-      <div className="mt-16 bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-xl p-6 sm:p-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none rounded-xl" aria-hidden="true" />
-        <h3 className="text-lg font-bold mb-2 relative">Stay Updated</h3>
-        <p className="text-primary-100 text-sm mb-4 relative">
-          Want to know when we add new comparisons or features? Get in touch.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-primary-700 font-bold rounded-xl hover:bg-primary-50 hover:shadow-md transition-all duration-150 relative"
-        >
-          Contact Us
-        </Link>
+      <div className="mt-16">
+        <NewsletterSignup source="changelog" />
       </div>
       </div>
     </>

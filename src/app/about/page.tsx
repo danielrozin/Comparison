@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ABOUT_TITLE = `About ${SITE_NAME} — Mission, Team & Methodology`;
 const ABOUT_DESC = `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`;
@@ -603,6 +604,10 @@ export default function AboutPage() {
           </svg>
         </Link>
       </section>
+
+      <div className="mt-12">
+        <NewsletterSignup source="about" />
+      </div>
     </div>
     </>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
 const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
@@ -363,6 +364,10 @@ export default function HowWeWriteVerdictsPage() {
           </p>
         </section>
       </article>
+
+      <div className="mt-12">
+        <NewsletterSignup source="how-we-write-verdicts" />
+      </div>
       </div>
     </>
   );

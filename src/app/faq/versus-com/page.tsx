@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_TITLE = `Is Versus.com the Best Comparison Site? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -303,6 +304,10 @@ export default function VersusComFaqPage() {
         </div>
       </section>
     </article>
+
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <NewsletterSignup source="faq-versus-com" />
+    </div>
     </>
   );
 }

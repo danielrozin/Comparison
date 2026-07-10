@@ -6,6 +6,7 @@ import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-
 import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -634,6 +635,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
             View Comparisons
           </Link>
         </section>
+
+        <div className="mt-12">
+          <NewsletterSignup source={`review-${slug}`} />
+        </div>
       </div>
     </>
   );

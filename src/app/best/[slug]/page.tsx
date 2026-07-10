@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
@@ -456,6 +457,9 @@ export default async function BestPage({ params }: PageProps) {
           className="prose-custom"
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
+        <div className="mt-12">
+          <NewsletterSignup source={`best-${slug}`} />
+        </div>
       </div>
       <BackToTop />
     </>

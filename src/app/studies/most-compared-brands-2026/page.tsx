@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getMostComparedStudy } from "@/lib/services/studies-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 86400; // refresh the dataset once a day
 
@@ -462,6 +463,10 @@ export default async function MostComparedStudyPage() {
           </p>
         </footer>
       </article>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <NewsletterSignup source="study-most-compared-brands" />
+      </div>
     </>
   );
 }

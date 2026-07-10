@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const WHO_TITLE = `Who Is This For? | ${SITE_NAME}`;
 const WHO_DESC = `Find out if ${SITE_NAME} is the right comparison tool for you. Structured data comparisons across 17 categories for consumers, students, sports fans, tech professionals, and business decision-makers.`;
@@ -634,6 +635,10 @@ export default function WhoIsThisForPage() {
         </div>
       </section>
     </article>
+
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <NewsletterSignup source="who-is-this-for" />
+    </div>
     </>
   );
 }
