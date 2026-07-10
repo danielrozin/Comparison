@@ -799,9 +799,9 @@ function RedesignedTable({
 
                       const winnerIndicator =
                         winner === "a"
-                          ? "border-l-3 border-l-win"
+                          ? "border-l-[3px] border-l-win"
                           : winner === "b"
-                            ? "border-r-3 border-r-win"
+                            ? "border-r-[3px] border-r-win"
                             : winner === "tie"
                               ? "border-l-2 border-l-tie border-r-2 border-r-tie"
                               : "";

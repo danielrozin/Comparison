@@ -2,6 +2,7 @@ import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
 import { AiAssistedBadge } from "./AiAssistedBadge";
 import { VerdictFeedbackWidget } from "./VerdictFeedbackWidget";
 import { VerdictShareButton } from "./VerdictShareButton";
+import { VerdictShareStrip } from "./VerdictShareStrip";
 import { ScoreBarPanel } from "./ScoreBarPanel";
 
 interface VerdictCardProps {
@@ -158,7 +159,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                             Choose {entity.name} if
                           </p>
                           {isWinner && (
-                            <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 border border-yellow-400/30">
+                            <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-yellow-400 text-amber-900">
                               <span aria-hidden="true">👑</span>{" "}Best pick
                             </span>
                           )}
@@ -171,6 +172,12 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
               })}
             </div>
           )}
+
+          {/* Bottom share strip — high-intent moment after reading verdict */}
+          <VerdictShareStrip
+            title={`${entityA.name} vs ${entityB.name}`}
+            winnerName={winnerIdx === 0 ? entityA.name : winnerIdx === 1 ? entityB.name : null}
+          />
         </div>
       </div>
     </section>

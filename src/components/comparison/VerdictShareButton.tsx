@@ -21,24 +21,29 @@ export function VerdictShareButton({
     }
   }, []);
 
-  const tweetText = winnerName
+  const shareText = winnerName
     ? `🏆 ${winnerName} wins in "${title}" — see the full comparison:`
     : `${title} — side-by-side comparison:`;
 
-  const tweetHref = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(
-    typeof window !== "undefined" ? window.location.href : ""
-  )}`;
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  const tweetHref = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+  const linkedInHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+
+  const btnBase = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200";
+  const btnDefault = "bg-white/10 border-white/20 text-white/70 hover:bg-white/20 hover:text-white";
 
   return (
     <div className="flex items-center gap-2 flex-shrink-0">
+      {/* Copy link */}
       <button
         type="button"
         onClick={handleCopy}
         aria-label={copied ? "Link copied!" : "Copy link to share this comparison"}
-        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 ${
+        className={`${btnBase} ${
           copied
             ? "bg-emerald-500/25 border-emerald-400/50 text-emerald-300"
-            : "bg-white/10 border-white/20 text-white/70 hover:bg-white/20 hover:text-white"
+            : btnDefault
         }`}
       >
         {copied ? (
@@ -53,17 +58,32 @@ export function VerdictShareButton({
         <span className="hidden sm:inline">{copied ? "Copied!" : "Copy"}</span>
       </button>
 
+      {/* X / Twitter */}
       <a
         href={tweetHref}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share verdict on X (Twitter)"
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-white/70 hover:bg-white/20 hover:text-white transition-all duration-200"
+        className={`${btnBase} ${btnDefault}`}
       >
         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 5.895L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
         </svg>
-        <span className="hidden sm:inline">Share</span>
+        <span className="hidden sm:inline">X</span>
+      </a>
+
+      {/* LinkedIn */}
+      <a
+        href={linkedInHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Share verdict on LinkedIn"
+        className={`${btnBase} ${btnDefault}`}
+      >
+        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+        <span className="hidden sm:inline">LinkedIn</span>
       </a>
     </div>
   );
