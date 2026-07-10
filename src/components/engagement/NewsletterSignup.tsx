@@ -37,44 +37,60 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
   };
 
   if (status === "success") {
-    return (
-      <div className={variant === "card" ? "max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8" : ""}>
-        <div className={`${variant === "card" ? "bg-green-50 border border-green-200 rounded-xl p-6" : ""} text-center`}>
-          <p role="status" aria-live="polite" className={`font-medium ${variant === "card" ? "text-green-800" : "text-green-400"}`}>
-            You&apos;re subscribed! We&apos;ll send you the best comparisons weekly.
-          </p>
+    if (variant === "card") {
+      return (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="relative bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl overflow-hidden">
+            <div className="h-0.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-400" />
+            <div className="p-6 sm:p-8 text-center">
+              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p role="status" aria-live="polite" className="text-base font-bold text-emerald-800 mb-1">You&apos;re in!</p>
+              <p className="text-sm text-emerald-700/80">We&apos;ll send you the best comparisons weekly. No spam, unsubscribe anytime.</p>
+            </div>
+          </div>
         </div>
-      </div>
+      );
+    }
+    return (
+      <p role="status" aria-live="polite" className="text-sm font-medium text-green-400">
+        ✓ Subscribed! Weekly comparisons incoming.
+      </p>
     );
   }
 
   if (variant === "inline") {
     return (
-      <form onSubmit={handleSubmit} className="flex gap-2 max-w-md">
-        <input
-          type="email"
-          autoComplete="email"
-          enterKeyHint="go"
-          value={email}
-          onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
-          placeholder="Your email address"
-          aria-label="Email address"
-          aria-describedby={status === "error" ? "nl-inline-error" : undefined}
-          aria-invalid={status === "error" ? "true" : undefined}
-          required
-          className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
-        />
-        <button
-          type="submit"
-          disabled={status === "loading"}
-          className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50"
-        >
-          {status === "loading" ? "..." : "Subscribe"}
-        </button>
+      <div className="max-w-md">
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <input
+            type="email"
+            autoComplete="email"
+            enterKeyHint="go"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setStatus("idle"); }}
+            placeholder="Your email address"
+            aria-label="Email address"
+            aria-describedby={status === "error" ? "nl-inline-error" : undefined}
+            aria-invalid={status === "error" ? "true" : undefined}
+            required
+            className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+          />
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap"
+          >
+            {status === "loading" ? "…" : "Subscribe"}
+          </button>
+        </form>
         {status === "error" && (
-          <p id="nl-inline-error" role="alert" className="text-red-400 text-xs mt-1">Something went wrong. Try again.</p>
+          <p id="nl-inline-error" role="alert" className="text-red-400 text-xs mt-1.5">Something went wrong. Try again.</p>
         )}
-      </form>
+      </div>
     );
   }
 
