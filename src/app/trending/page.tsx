@@ -7,6 +7,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
 
@@ -471,6 +472,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             ...(activeSort !== "views" ? { sort: activeSort } : {}),
           }}
         />
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {safePage === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source="trending" />
+          </div>
+        )}
       </div>
     </>
   );

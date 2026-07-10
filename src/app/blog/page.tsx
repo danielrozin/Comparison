@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
@@ -586,6 +587,13 @@ export default async function BlogPage({
               </nav>
             )}
           </>
+        )}
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source="blog-listing" />
+          </div>
         )}
       </div>
     </div>
