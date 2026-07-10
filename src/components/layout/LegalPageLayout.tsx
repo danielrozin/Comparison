@@ -50,7 +50,7 @@ export function LegalPageLayout({
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-slate-900 via-primary-900 to-indigo-900 text-white relative overflow-hidden print:hidden">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 pb-14 sm:pb-16 relative">
           <nav className="mb-4" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-slate-300">
