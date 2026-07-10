@@ -208,6 +208,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    additionalType: ["https://schema.org/LearningResource"],
+    learningResourceType: "Overview",
     "@id": `${categoryUrl}#collectionpage`,
     name: `${category.name} Comparisons`,
     description: `Compare ${category.name} side-by-side — data-driven comparisons with structured attributes, verdicts, and community votes.`,

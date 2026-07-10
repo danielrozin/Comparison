@@ -818,6 +818,7 @@ export function comparisonPageSchema(
   const additionalArticleTypes: string[] = [
     ...(comparison.category && TECH_CATEGORIES.has(comparison.category) ? ["https://schema.org/TechArticle"] : []),
     ...(isRecent && isNewsCategory ? ["https://schema.org/NewsArticle"] : []),
+    "https://schema.org/LearningResource",
   ];
 
   // 1. Article schema
@@ -829,6 +830,7 @@ export function comparisonPageSchema(
     "@type": articleType,
     "@id": `${url}#article`,
     ...(additionalArticleTypes.length > 0 && { additionalType: additionalArticleTypes }),
+    learningResourceType: "Comparison Guide",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -1993,7 +1995,8 @@ function buildMultiEntityGraph(
   const article: Record<string, unknown> = {
     "@type": multiArticleType,
     "@id": `${url}#article`,
-    ...(multiAdditionalTypes.length > 0 && { additionalType: multiAdditionalTypes }),
+    additionalType: [...multiAdditionalTypes, "https://schema.org/LearningResource"],
+    learningResourceType: "Comparison Guide",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,

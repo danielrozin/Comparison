@@ -175,6 +175,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    additionalType: ["https://schema.org/LearningResource"],
+    learningResourceType: "Overview",
     "@id": `${subcatUrl}#collectionpage`,
     name: `${subcat.name} Comparisons`,
     description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts.`,
