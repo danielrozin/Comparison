@@ -281,7 +281,7 @@ export default async function HomePage() {
         {/* Scroll down indicator — absolutely positioned so it sits above the wave without adding height */}
         <div className="absolute bottom-[88px] left-0 right-0 flex justify-center animate-fade-in pointer-events-none" style={{ animationDelay: "0.7s" }} aria-hidden="true">
           <div className="flex flex-col items-center gap-1 motion-safe:animate-bounce-gentle">
-            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
             <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>

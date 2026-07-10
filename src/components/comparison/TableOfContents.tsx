@@ -117,7 +117,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                       <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-primary-500 rounded-full" />
                     )}
                     <span
-                      className={`flex-shrink-0 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center transition-all ${
+                      className={`flex-shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
                         isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
                       }`}
                     >
@@ -139,7 +139,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         <div className="bg-white/95 backdrop-blur-sm border border-border rounded-2xl shadow-lg overflow-hidden">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-gradient-to-r from-primary-50 to-white">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-primary-700">
+            <p className="text-xs font-bold uppercase tracking-wider text-primary-700">
               On this page
             </p>
             {/* Progress bar */}

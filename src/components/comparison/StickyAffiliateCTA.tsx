@@ -152,7 +152,7 @@ export function StickyAffiliateCTA({
                         : "bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700"
                   }`}
                 >
-                  <span className="text-[10px] font-medium text-white/70 truncate max-w-full leading-none">
+                  <span className="text-xs font-medium text-white/70 truncate max-w-full leading-none">
                     {entityA.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">
@@ -184,7 +184,7 @@ export function StickyAffiliateCTA({
                         : "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700"
                   }`}
                 >
-                  <span className="text-[10px] font-medium text-white/70 truncate max-w-full leading-none">
+                  <span className="text-xs font-medium text-white/70 truncate max-w-full leading-none">
                     {entityB.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">

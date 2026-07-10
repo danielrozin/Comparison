@@ -84,7 +84,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline"
               >
-                <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-[10px] font-bold shrink-0">SR</span>
+                <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-xs font-bold shrink-0">SR</span>
                 Read {name} reviews on SmartReview<span className="sr-only"> (opens in new tab)</span> <span aria-hidden="true">&rarr;</span>
               </a>
             </li>

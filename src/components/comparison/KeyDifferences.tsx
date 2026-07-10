@@ -178,7 +178,7 @@ export function KeyDifferencesBlock({
             }`}
           >
             {tab.label}
-            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
+            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
               filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
             }`}>
               {tab.count}

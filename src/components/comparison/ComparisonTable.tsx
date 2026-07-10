@@ -233,7 +233,7 @@ function GroupHeader({
               {leader} leads
             </span>
           ) : (
-            <span className="text-[10px] font-medium text-tie whitespace-nowrap hidden sm:block">Tied</span>
+            <span className="text-xs font-medium text-tie whitespace-nowrap hidden sm:block">Tied</span>
           )}
         </div>
       )}
@@ -826,7 +826,7 @@ function RedesignedTable({
                                 {valA?.valueText || "\u2014"}
                                 {winner === "a" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>
@@ -837,7 +837,7 @@ function RedesignedTable({
                                 {valB?.valueText || "\u2014"}
                                 {winner === "b" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>

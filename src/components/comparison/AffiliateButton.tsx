@@ -120,7 +120,7 @@ export function AffiliateButton({
 
 export function AffiliateDisclosure() {
   return (
-    <p className="text-[10px] text-text-secondary/70 mt-2 leading-tight">
+    <p className="text-xs text-text-secondary/70 mt-2 leading-tight">
       As an affiliate, we may earn a commission from qualifying purchases at no
       extra cost to you.{" "}
       <a

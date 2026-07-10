@@ -506,7 +506,7 @@ export default async function BlogPage({
                     </div>
                     {/* New badge */}
                     {isNew && (
-                      <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-emerald-700 shadow-sm">
+                      <span className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-white/90 text-emerald-700 shadow-sm">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
                         New
                       </span>

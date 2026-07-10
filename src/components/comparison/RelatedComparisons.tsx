@@ -110,7 +110,7 @@ export function RelatedComparisons({
               {/* Category badge */}
               {catColor && comp.category && (
                 <div className="relative">
-                  <span className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
+                  <span className={`inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
                     {comp.category}
                   </span>
                 </div>

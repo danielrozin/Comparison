@@ -50,7 +50,7 @@ export function TrendingCard({
         {/* Rank badge + category */}
         <div className="flex items-center gap-2 mb-3">
           <div
-            className={`w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black flex-shrink-0 ${
+            className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
               rankGradient
                 ? `bg-gradient-to-br ${rankGradient} text-white shadow-sm`
                 : "bg-gradient-to-br from-primary-100 to-primary-200 text-primary-600 shadow-sm"
@@ -82,7 +82,7 @@ export function TrendingCard({
         <div className="flex items-center gap-2 mb-4">
           <div className="flex-1 min-w-0 space-y-1.5">
             <div className="flex items-center gap-1.5">
-              <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
+              <div className="w-6 h-6 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
                 {entityA.charAt(0).toUpperCase()}
               </div>
               <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors truncate">
@@ -90,7 +90,7 @@ export function TrendingCard({
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-6 h-6 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
+              <div className="w-6 h-6 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-1 ring-white shadow-sm flex-shrink-0">
                 {entityB.charAt(0).toUpperCase()}
               </div>
               <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors truncate">

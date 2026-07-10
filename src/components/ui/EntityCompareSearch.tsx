@@ -125,10 +125,10 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-primary-50 transition-colors text-sm"
               >
                 <div className="flex -space-x-1.5 flex-shrink-0">
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs font-bold text-white ring-1 ring-white">
                     {entityName.charAt(0)}
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-[10px] font-bold text-white ring-1 ring-white">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-xs font-bold text-white ring-1 ring-white">
                     {s.title.charAt(0)}
                   </div>
                 </div>

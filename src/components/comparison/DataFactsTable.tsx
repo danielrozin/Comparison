@@ -116,7 +116,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
                             })()}
                           </div>
                           {diff && (
-                            <span className={`text-[10px] font-semibold tabular-nums ${diffColor}`}>{diff}</span>
+                            <span className={`text-xs font-semibold tabular-nums ${diffColor}`}>{diff}</span>
                           )}
                         </div>
                       ) : (
@@ -130,7 +130,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
           </table>
         </div>
 
-      <p className="text-[10px] text-text-secondary mt-2 text-right">
+      <p className="text-xs text-text-secondary mt-2 text-right">
         Sourced from publicly available data · <time dateTime={new Date().toISOString().slice(0, 7)} suppressHydrationWarning>{new Date().toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })}</time>
       </p>
     </section>

@@ -446,7 +446,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
             {aggregation && (
               <div className="hidden sm:flex flex-col items-center justify-center w-20 h-20 rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur-sm shrink-0" role="meter" aria-label="SmartScore" aria-valuenow={aggregation.smartScore} aria-valuemin={0} aria-valuemax={100}>
                 <span className="text-2xl font-black text-white">{aggregation.smartScore}</span>
-                <span className="text-[10px] text-primary-300 font-semibold uppercase tracking-wide">SmartScore</span>
+                <span className="text-xs text-primary-300 font-semibold uppercase tracking-wide">SmartScore</span>
               </div>
             )}
           </div>

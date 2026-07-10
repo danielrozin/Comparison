@@ -50,7 +50,7 @@ export function ShortAnswerBlock({
                   <h2 id="short-answer-heading" className="text-xs font-bold text-amber-700 uppercase tracking-widest">
                     Quick Answer
                   </h2>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
                     <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
                     AI Summary
                   </span>

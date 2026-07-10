@@ -395,7 +395,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
                   }`}
                 >
                   All
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
+                  <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
                     {allTrending.length}
                   </span>
                 </Link>
@@ -416,7 +416,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
                     >
                       <CategoryIcon category={cat} />
                       <span className="capitalize">{cat}</span>
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
+                      <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
                         {categoryCounts[cat]}
                       </span>
                     </Link>
