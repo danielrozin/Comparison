@@ -122,10 +122,61 @@ const aboutPageSchema = {
   },
 };
 
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/about#faqpage`,
+  url: `${SITE_URL}/about`,
+  inLanguage: "en-US",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is A Versus B free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All comparisons, verdicts, and data on A Versus B are completely free. There is no paywall, login requirement, or usage limit for readers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How accurate are the comparison verdicts on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages that fall below quality thresholds or cover sensitive topics. Users can flag inaccuracies directly on any comparison page using the feedback widget.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I request a comparison that does not exist yet?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Visit the Comparison Requests page to suggest any comparison you would like to see. You can also upvote existing requests — top-voted comparisons are built first.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B accept paid placements or sponsored comparisons?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. A Versus B does not accept payment to influence comparison verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How often is comparison data updated on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Comparison pages are refreshed automatically on a rolling schedule and re-ranked daily based on trending activity. You can trigger an update on any page by using the thumbs-down feedback widget to flag outdated information.",
+      },
+    },
+  ],
+};
+
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={aboutPageSchema} />
+      <JsonLd data={[aboutPageSchema, faqPageSchema]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-slate-900 via-primary-900 to-indigo-900 text-white relative overflow-hidden">
@@ -481,6 +532,47 @@ export default function AboutPage() {
           about information quality and user experience. We are committed to continuous improvement and
           always welcome feedback from our community.
         </p>
+      </section>
+
+      {/* FAQ */}
+      <section aria-labelledby="about-faq-heading" className="mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 id="about-faq-heading" className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
+        </div>
+        <dl className="space-y-4">
+          {[
+            {
+              q: "Is A Versus B free to use?",
+              a: "Yes. All comparisons, verdicts, and data are completely free — no paywall, login, or usage limit.",
+            },
+            {
+              q: "How accurate are the comparison verdicts?",
+              a: "Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages below quality thresholds or covering sensitive topics. You can flag inaccuracies using the feedback widget on any comparison page.",
+            },
+            {
+              q: "Can I request a comparison that doesn't exist yet?",
+              a: "Yes — visit our Comparison Requests page, suggest any pairing you'd like to see, and upvote existing requests. Top-voted comparisons are built first.",
+            },
+            {
+              q: "Does A Versus B accept paid placements or sponsored comparisons?",
+              a: "No. We don't accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.",
+            },
+            {
+              q: "How often is comparison data updated?",
+              a: "Comparison pages refresh automatically on a rolling schedule and re-rank daily based on trending activity. You can also trigger an update by flagging outdated information via the thumbs-down widget.",
+            },
+          ].map(({ q, a }) => (
+            <div key={q} className="border border-border rounded-xl p-5 bg-surface-alt/40">
+              <dt className="font-semibold text-text mb-1.5">{q}</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed">{a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* CTA */}
