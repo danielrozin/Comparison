@@ -158,6 +158,7 @@ export async function GET() {
   lines.push("- /alternatives/{slug}: Article (TechArticle), ItemList, BreadcrumbList, SpeakableSpecification");
   lines.push("- /reviews/{slug}: ReviewPage (WebPage additionalType), AggregateRating, Product (with Review items), FAQPage (QAPage additionalType, synthetic Q&A from aggregation data), SpeakableSpecification");
   lines.push("- /hub/{slug}: CollectionPage, Dataset, ItemList, FAQPage, BreadcrumbList, DefinedTermSet, SpeakableSpecification");
+  lines.push("- /search: SearchResultsPage (with thumbnailUrl, image.contentUrl, contentReferenceTime, copyrightNotice, speakable, significantLink), BreadcrumbList, FAQPage (QAPage additionalType, 4 Q&A pairs covering search UX) — all with citation meta tags");
   lines.push("- /trending: CollectionPage, Dataset, ItemList");
   lines.push("- Site-wide: Organization, WebSite (SearchAction), WebApplication, DataCatalog (Dataset), DefinedTermSet, SiteNavigationElement");
   lines.push("Comparisons are licensed CC BY 4.0 and freely citable with attribution to aversusb.net.");
@@ -286,6 +287,7 @@ export async function GET() {
   lines.push("- `Claim.text` added to itemReviewed.Claim in both 2-entity and multi-entity ClaimReview inline emitters — required by Google Fact Check Tools for rich-result eligibility; AI fact-checkers (Perplexity truth mode, ChatGPT factual validation) use text to extract the assertion independently of claimReviewed (HB335)");
   lines.push("- `ItemList.itemListOrder: ItemListUnordered` added to 2-entity comparison ItemList — parity with multi-entity path; signals to AI carousels and Google Shopping that entities are peers, not position-ranked (HB335)");
   lines.push("- `SoftwareApplication.softwareRequirements` added to entityPageSchema and profilePageSchema SoftwareApplication sections — routes 'works on X' intent queries in AI product-search carousels and Google app-install panels (HB335)");
+  lines.push("- `/search` layout upgraded from minimal SearchResultsPage to full AEO schema stack: `SearchResultsPage` with `thumbnailUrl`, `image` (1200×630 ImageObject with contentUrl, creditText, creator, copyrightHolder), `alternativeHeadline`, `genre`, `contentReferenceTime`, `copyrightNotice`/`copyrightHolder`/`acquireLicensePage`, `license`, `usageInfo`, `audience`, `speakable`, `significantLink` (trending + top categories + API); adds `BreadcrumbList` (Home→Search); adds `FAQPage (QAPage additionalType)` with 4 structured Q&A pairs covering search UX (how to compare, what can be compared, is it free, how comparisons are generated); adds citation meta tags (citation_title, citation_abstract, DC.* suite, abstract) and Twitter card labels; OG + Twitter images now populated — search page achieves full schema parity with other content page types (HB361)");
 
   const body = lines.join("\n");
 
