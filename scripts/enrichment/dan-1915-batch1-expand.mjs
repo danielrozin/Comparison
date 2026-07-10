@@ -2,11 +2,14 @@
  * DAN-1915: Second pass — expand expert analyses to 400-600 word target
  */
 
-import { PrismaClient } from '/Users/danielrozin/Comparison/node_modules/@prisma/client/index.js'
+import { PrismaClient } from '@prisma/client'
+import * as dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+const __dirname = dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: resolve(__dirname, '../../.env.local'), override: true })
 
-const prisma = new PrismaClient({
-  datasources: { db: { url: "postgresql://neondb_owner:npg_AgABP2Q9Ccun1eLPoZ1Z@ep-bold-voice-amm7gy6j-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require" } }
-})
+const prisma = new PrismaClient()
 
 // Expanded analyses targeting 400-600 words each
 const EXPANDED_ANALYSES = {
