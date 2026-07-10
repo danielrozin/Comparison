@@ -121,9 +121,22 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           {status === "error" && (
             <p id="nl-banner-error" role="alert" className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
           )}
-          <p className="text-xs text-text-secondary mt-3">
-            Join 1,000+ readers. Unsubscribe anytime.
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <div className="flex -space-x-2" aria-hidden="true">
+              {["#6366f1", "#8b5cf6", "#ec4899", "#f97316", "#10b981"].map((color, i) => (
+                <div
+                  key={i}
+                  className="w-6 h-6 rounded-full ring-2 ring-white flex items-center justify-center text-white text-[9px] font-bold"
+                  style={{ backgroundColor: color }}
+                >
+                  {String.fromCharCode(65 + i)}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-text-secondary">
+              Join <span className="font-semibold text-text">1,000+</span> readers · Unsubscribe anytime
+            </p>
+          </div>
         </div>
       </div>
     </div>
