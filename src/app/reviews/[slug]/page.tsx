@@ -102,24 +102,6 @@ function SourceBreakdown({ breakdown }: { breakdown: Record<string, { avg: numbe
   );
 }
 
-function SmartScoreRing({ score }: { score: number }) {
-  const color = score >= 90 ? "text-green-600" : score >= 75 ? "text-blue-600" : score >= 60 ? "text-amber-600" : "text-text-secondary";
-  const bgColor = score >= 90 ? "bg-green-50" : score >= 75 ? "bg-blue-50" : score >= 60 ? "bg-amber-50" : "bg-surface-alt";
-  return (
-    <div
-      role="meter"
-      aria-label="SmartScore"
-      aria-valuenow={score}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuetext={`SmartScore: ${score} out of 100`}
-      className={`flex flex-col items-center justify-center w-24 h-24 rounded-full ${bgColor}`}
-    >
-      <span className={`text-3xl font-black ${color}`} aria-hidden="true">{score}</span>
-      <span className="text-xs text-text-secondary font-medium" aria-hidden="true">SmartScore</span>
-    </div>
-  );
-}
 
 function SentimentBar({ positivePct, negativePct }: { positivePct: number; negativePct: number }) {
   const neutralPct = Math.max(0, 100 - positivePct - negativePct);

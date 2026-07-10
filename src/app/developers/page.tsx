@@ -132,12 +132,67 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
   );
 }
 
+const devFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/developers#faqpage`,
+  url: `${SITE_URL}/developers`,
+  inLanguage: "en-US",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is the A Versus B comparison API free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, a free tier is available with 50 requests per day. Paid tiers unlock higher rate limits and additional endpoints — see the Pricing section for full details.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I authenticate with the A Versus B API?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Authentication uses a Bearer token passed in the Authorization header: Authorization: Bearer YOUR_API_KEY. Generate your key from the developer dashboard after signing in.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What data does the A Versus B comparison API return?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across 3,000+ comparisons in 17+ categories.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What are the rate limits for the A Versus B API?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The free tier allows 50 requests per day. Rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset) are included in every API response so you can track usage programmatically.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use the A Versus B API in a commercial product?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Commercial use is permitted on any paid API tier. Free-tier usage is limited to personal and non-commercial projects. See the terms of service for full details.",
+      },
+    },
+  ],
+};
+
 export default function DevelopersPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(devFaqSchema) }}
       />
 
       {/* Gradient Hero */}
