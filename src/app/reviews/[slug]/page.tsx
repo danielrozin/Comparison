@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
-import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema } from "@/lib/seo/schema";
+import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -210,7 +210,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         cssSelector: ["h1", ".review-score-summary", ".entity-rating-summary", "p.review-intro"],
       },
       // teaches — AI routers (ChatGPT/Perplexity) use this to match "[product] reviews" queries.
-      teaches: `How to evaluate ${name} based on aggregated reviews and ratings`,
+      teaches: teachesDefinedTerm(`How to evaluate ${name} based on aggregated reviews and ratings`, `${SITE_URL}/reviews/${slug}`),
       educationalUse: "review",
       keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews ${new Date().getFullYear()}`,
       // significantLink — links to entity profile and alternatives page for AI graph traversal.
