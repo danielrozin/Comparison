@@ -880,11 +880,20 @@ export default async function BlogPostPage({
           )}
 
           {/* Share Section */}
-          <section aria-labelledby="blog-share-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
-            <h2 id="blog-share-heading" className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-              Share this article
-            </h2>
-            <ShareBar title={article.title} slug={slug} path="blog" />
+          <section aria-labelledby="blog-share-heading" className="mt-8 rounded-xl border border-border overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-surface-alt to-white border-b border-border">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </div>
+              <h2 id="blog-share-heading" className="text-sm font-semibold text-text">
+                Share this article
+              </h2>
+            </div>
+            <div className="px-6 py-4 bg-white">
+              <ShareBar title={article.title} slug={slug} path="blog" />
+            </div>
           </section>
 
           {/* Newsletter Signup */}
@@ -895,11 +904,22 @@ export default async function BlogPostPage({
           {/* Related Comparisons */}
           {article.relatedComparisonSlugs &&
             article.relatedComparisonSlugs.length > 0 && (
-              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
-                <h2 id="blog-related-comparisons-heading" className="text-lg font-bold text-text mb-4">
-                  Related Comparisons
-                </h2>
-                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 rounded-xl border border-border overflow-hidden">
+                <div className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-primary-50 to-accent-50 border-b border-border">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 id="blog-related-comparisons-heading" className="text-base font-bold text-text">
+                      Related Comparisons
+                    </h2>
+                    <p className="text-xs text-text-secondary">{article.relatedComparisonSlugs.length} head-to-head comparisons</p>
+                  </div>
+                </div>
+                <div className="p-4 bg-white">
+                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 list-none">
                   {article.relatedComparisonSlugs.map((compSlug) => {
                     const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
                     const parts = title.split(/\s+vs\.?\s+/i);
@@ -907,7 +927,7 @@ export default async function BlogPostPage({
                       <li key={compSlug} className="flex">
                       <Link
                         href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
+                        className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                       >
                         <div className="flex -space-x-2 flex-shrink-0">
                           <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
@@ -917,10 +937,10 @@ export default async function BlogPostPage({
                             {(parts[1] || "B").charAt(0).toUpperCase()}
                           </div>
                         </div>
-                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors">
+                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors flex-1 min-w-0 truncate">
                           {title}
                         </span>
-                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all ml-auto flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
@@ -928,6 +948,7 @@ export default async function BlogPostPage({
                     );
                   })}
                 </ul>
+                </div>
               </section>
             )}
 
