@@ -97,6 +97,29 @@ const STATS = [
   { label: "Decision-Stage Visitors", value: "89%" },
 ];
 
+const PARTNER_FAQS = [
+  {
+    q: "How much does it cost to partner with A Versus B?",
+    a: "Partnership tiers start at $500/month for Standard (sponsored listing + logo), $1,000/month for Featured (dedicated landing page + priority placement), and $2,000/month for Premium (custom widgets, API access, co-branded content, and a dedicated account manager). All tiers are billed monthly with no lock-in period.",
+  },
+  {
+    q: "Are sponsored comparisons labeled as paid content?",
+    a: "Yes — all sponsored comparisons carry a clear 'Sponsored' label. Our editorial team retains full control over comparison methodology and data accuracy. Sponsorship affects visibility and placement, but never the comparison results themselves.",
+  },
+  {
+    q: "What types of brands are a good fit for A Versus B partnerships?",
+    a: "Any brand whose products or services are regularly compared by consumers: software companies, SaaS platforms, consumer electronics brands, financial services, insurance providers, e-commerce retailers, and B2B vendors. If shoppers search 'X vs Y' and your product is X or Y, you're a strong fit.",
+  },
+  {
+    q: "How is partnership performance measured?",
+    a: "Every partner receives a monthly performance report with impressions, clicks, and click-through rates by comparison page. Featured and Premium partners also get conversion tracking integration so you can tie traffic directly to downstream sales.",
+  },
+  {
+    q: "How quickly can a sponsored comparison go live?",
+    a: "Standard placements typically go live within 3–5 business days after contract signing. Featured and Premium tiers that require custom content or a dedicated landing page take 5–10 business days. Fill out the form below and we'll send a full timeline with your proposal.",
+  },
+];
+
 export default function PartnershipsPage() {
   const schema = {
     "@context": "https://schema.org",
@@ -132,9 +155,23 @@ export default function PartnershipsPage() {
     wordCount: 600,
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${PARTNER_URL}#faqpage`,
+    name: `Partnership FAQ — ${SITE_NAME}`,
+    url: PARTNER_URL,
+    mainEntity: PARTNER_FAQS.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* Gradient Hero */}
       <section aria-labelledby="partnerships-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
@@ -300,6 +337,31 @@ export default function PartnershipsPage() {
           for details.
         </p>
       </div>
+
+      {/* FAQ */}
+      <section aria-labelledby="partnerships-faq-heading" className="mb-16">
+        <div className="flex flex-col items-center gap-2 mb-8">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 id="partnerships-faq-heading" className="text-2xl font-display font-bold text-text">Partnership FAQ</h2>
+        </div>
+        <div className="max-w-3xl mx-auto space-y-3">
+          {PARTNER_FAQS.map(({ q, a }) => (
+            <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+              <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                <span>{q}</span>
+                <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">{a}</div>
+            </details>
+          ))}
+        </div>
+      </section>
 
       {/* Intake Form */}
       <section id="apply" aria-labelledby="partnerships-apply-heading">

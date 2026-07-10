@@ -78,10 +78,46 @@ const contactPageSchema = {
   },
 };
 
+const CONTACT_FAQS = [
+  {
+    q: "How long does A Versus B take to respond to messages?",
+    a: "We aim to respond to all messages within 2 business days. During high-volume periods it may take up to 3 business days, but we always reply.",
+  },
+  {
+    q: "How do I report an incorrect comparison on A Versus B?",
+    a: "Use the contact form on this page and select 'Report an error' as the subject. Include the comparison URL and the specific data point that needs correcting — our editorial team will investigate and update within 5 business days.",
+  },
+  {
+    q: "Can I request a new comparison topic on A Versus B?",
+    a: "Yes — use the contact form or visit the Requests page. Highly voted requests are prioritized in our weekly content queue. Include both entities (e.g., 'iPhone 16 vs. Samsung Galaxy S25') so we can add it immediately.",
+  },
+  {
+    q: "How do I contact A Versus B about a business partnership or sponsorship?",
+    a: "Visit our Partnerships page for pricing tiers and the intake form. Alternatively, send a message using this contact form with 'Partnership inquiry' in the subject line and someone from the team will follow up within 2 business days.",
+  },
+  {
+    q: "Does A Versus B have a press or media contact?",
+    a: "For press inquiries, data licensing, or media coverage requests, use the contact form with 'Press / media' in the subject line. We provide usage rights for comparison data under CC BY 4.0 with attribution.",
+  },
+];
+
+const contactFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/contact#faqpage`,
+  name: `Contact FAQ — ${SITE_NAME}`,
+  url: `${SITE_URL}/contact`,
+  mainEntity: CONTACT_FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+
 export default function ContactPage() {
   return (
     <>
-      <JsonLd data={contactPageSchema} />
+      <JsonLd data={[contactPageSchema, contactFaqSchema]} />
 
       {/* Gradient Hero */}
       <section aria-labelledby="contact-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
@@ -213,6 +249,31 @@ export default function ContactPage() {
           <ContactForm />
         </div>
       </div>
+
+      {/* FAQ */}
+      <section aria-labelledby="contact-faq-heading" className="mt-16 pt-12 border-t border-border">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 id="contact-faq-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
+        </div>
+        <div className="space-y-3">
+          {CONTACT_FAQS.map(({ q, a }) => (
+            <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+              <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                <span>{q}</span>
+                <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">{a}</div>
+            </details>
+          ))}
+        </div>
+      </section>
     </div>
     </>
   );

@@ -141,10 +141,47 @@ const BENEFITS = [
   },
 ];
 
+const EMBED_FAQS = [
+  {
+    q: "Is it free to embed A Versus B comparisons?",
+    a: "Yes — the Free tier allows up to 10,000 embed views per month at no cost, with all comparisons available and no registration required. Pro ($199/month) and Enterprise ($499/month) tiers remove attribution and unlock white-label customization.",
+  },
+  {
+    q: "What embed formats does A Versus B support?",
+    a: "A Versus B supports three embed formats: a JavaScript script tag (recommended — auto-resizes, no iframe sandbox restrictions), a standard iFrame (maximum compatibility), and a Link Badge (a compact comparison pill for inline text embeds). You can find all three on any comparison page under the 'Embed' button.",
+  },
+  {
+    q: "Can I remove the 'Powered by A Versus B' branding from embeds?",
+    a: "Yes — white-label attribution removal is available on the Pro tier ($199/month) and above. Pro also adds custom brand colors, your logo in the embed header, and custom footer text.",
+  },
+  {
+    q: "Does embedding comparisons require registration or an API key?",
+    a: "No — the Free tier requires no registration or API key. Simply copy the embed code from any comparison page and paste it into your site. Registration is only required if you want white-label customization on a Pro or Enterprise plan.",
+  },
+  {
+    q: "Will embedded comparisons update automatically on my site?",
+    a: "Yes — embedded comparisons always pull the latest data from A Versus B, so your visitors always see up-to-date specs, scores, and verdicts without any action on your part.",
+  },
+];
+
+const embedFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${EMBED_URL}#faqpage`,
+  name: `Embed FAQ — ${SITE_NAME}`,
+  url: EMBED_URL,
+  mainEntity: EMBED_FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+
 export default function EmbedLandingPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(embedSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(embedFaqSchema) }} />
       {/* Hero */}
       <section aria-labelledby="embed-hero-heading" className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white">
         <div className="absolute inset-0 opacity-10">
@@ -379,6 +416,29 @@ export default function EmbedLandingPage() {
             </Link>
           </li>
         </ul>
+      </section>
+
+      {/* FAQ */}
+      <section aria-labelledby="embed-faq-heading" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-10">
+          <h2 id="embed-faq-heading" className="text-3xl sm:text-4xl font-display font-bold text-text mb-3">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-text-secondary">Everything you need to know about embedding comparisons.</p>
+        </div>
+        <div className="space-y-3">
+          {EMBED_FAQS.map(({ q, a }) => (
+            <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+              <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                <span>{q}</span>
+                <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">{a}</div>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* CTA */}
