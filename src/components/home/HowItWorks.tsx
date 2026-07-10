@@ -84,7 +84,7 @@ export function HowItWorks() {
             style={{ animationDelay: `${idx * 80}ms` }}
           >
             {/* Step tag */}
-            <span className="absolute top-3 right-3 text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest">
+            <span className="absolute top-3 right-3 text-xs font-bold text-text-secondary/40 uppercase tracking-widest">
               {step.tag}
             </span>
 

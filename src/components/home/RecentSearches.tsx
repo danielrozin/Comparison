@@ -74,12 +74,12 @@ export function RecentSearches() {
                   {search.title}
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[10px] font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded capitalize">
+                  <span className="text-xs font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded capitalize">
                     {search.subcategory}
                   </span>
-                  <span className="text-[10px] text-text-secondary">{timeAgo}</span>
+                  <span className="text-xs text-text-secondary">{timeAgo}</span>
                   {search.generated && (
-                    <span className="text-[10px] text-amber-600 flex items-center gap-0.5">
+                    <span className="text-xs text-amber-600 flex items-center gap-0.5">
                       <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
                       </svg>
@@ -100,7 +100,7 @@ export function RecentSearches() {
       {/* Tags cloud */}
       {searches.length > 0 && (
         <div className="mt-6">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-text-secondary/60 mb-2.5">Trending topics</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-text-secondary/60 mb-2.5">Trending topics</p>
           <div className="flex flex-wrap gap-2">
             {getUniqueTags(searches).slice(0, 15).map((tag, i) => (
               <Link

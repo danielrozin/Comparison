@@ -268,7 +268,7 @@ export function SearchBox() {
                 </>
               )}
             </p>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
               <span aria-hidden="true">↑↓</span> navigate
             </kbd>
           </div>
@@ -315,7 +315,7 @@ export function SearchBox() {
                   ) : (
                     <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-text"}`}>{item.title}</span>
                   )}
-                  <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
+                  <span className={`text-xs capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                     {item.category}
                   </span>
                 </Link>
@@ -360,7 +360,7 @@ export function SearchBox() {
             if (parsed) {
               return (
                 <div className="px-4 py-4">
-                  <p className="text-[10px] font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
                   <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-100 rounded-xl">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                       {parsed[0].charAt(0).toUpperCase()}
@@ -377,7 +377,7 @@ export function SearchBox() {
                     </div>
                   </div>
                   <p className="text-xs text-text-secondary/70 mt-2 text-center">
-                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-[10px] font-mono">Enter</kbd> to generate this comparison
+                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to generate this comparison
                   </p>
                 </div>
               );

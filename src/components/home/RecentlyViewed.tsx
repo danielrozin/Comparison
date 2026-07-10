@@ -56,10 +56,10 @@ export function RecentlyViewed() {
                   {item.title}
                 </h3>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[10px] font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded capitalize">
+                  <span className="text-xs font-medium text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded capitalize">
                     {item.category}
                   </span>
-                  <span className="text-[10px] text-text-secondary">{timeAgo}</span>
+                  <span className="text-xs text-text-secondary">{timeAgo}</span>
                 </div>
               </div>
             </Link>

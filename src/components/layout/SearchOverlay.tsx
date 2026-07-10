@@ -203,7 +203,7 @@ export function SearchOverlay() {
           />
 
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-surface-alt border border-border rounded-md px-1.5 py-0.5 font-mono">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-surface-alt border border-border rounded-md px-1.5 py-0.5 font-mono">
               Esc
             </kbd>
             <button
@@ -237,7 +237,7 @@ export function SearchOverlay() {
                   </>
                 )}
               </p>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
+              <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
                 <span aria-hidden="true">↑↓</span> navigate
               </kbd>
             </div>
@@ -281,7 +281,7 @@ export function SearchOverlay() {
                       ) : (
                         <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-text"}`}>{item.title}</span>
                       )}
-                      <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
+                      <span className={`text-xs capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                         {item.category}
                       </span>
                     </Link>

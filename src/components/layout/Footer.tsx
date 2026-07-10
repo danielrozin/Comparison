@@ -55,13 +55,13 @@ export function Footer() {
                 <svg className="w-3 h-3 text-green-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-[10px] font-semibold text-white/70">Data-backed</span>
+                <span className="text-xs font-semibold text-white/70">Data-backed</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-2.5 py-1">
                 <svg className="w-3 h-3 text-blue-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                 </svg>
-                <span className="text-[10px] font-semibold text-white/70">Research-first</span>
+                <span className="text-xs font-semibold text-white/70">Research-first</span>
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@ export function Footer() {
 
         {/* ─── Category links — top-level only; full subcategory tree is reachable via /category/{slug} ─── */}
         <div className="py-8 border-b border-white/10">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60 mb-4">Browse Categories</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-4">Browse Categories</p>
           <nav aria-label="Browse categories" className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2">
             {FOOTER_CATEGORIES.map((cat) => (
               <Link
