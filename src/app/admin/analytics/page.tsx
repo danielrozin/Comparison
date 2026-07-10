@@ -518,7 +518,7 @@ export default function AnalyticsDashboard() {
                     <td className="px-4 py-3 hidden lg:table-cell">
                       <div className="flex flex-wrap gap-1">
                         {event.params.map((p) => (
-                          <code key={p} className="text-[10px] bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded border border-gray-100">
+                          <code key={p} className="text-xs bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded border border-gray-100">
                             {p}
                           </code>
                         ))}

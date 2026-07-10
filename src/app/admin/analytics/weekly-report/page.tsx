@@ -98,7 +98,7 @@ function FunnelBar({ step, maxValue }: { step: FunnelStep; maxValue: number }) {
           className="bg-indigo-500 rounded-full h-6 transition-all duration-500 flex items-center justify-end pr-2"
           style={{ width: `${pct}%`, minWidth: "40px" }}
         >
-          <span className="text-[10px] font-bold text-white">{step.value}</span>
+          <span className="text-xs font-bold text-white">{step.value}</span>
         </div>
       </div>
       <div className="w-16 text-right text-xs text-gray-500">{step.rate}%</div>
@@ -243,7 +243,7 @@ export default function WeeklyReportPage() {
                     </div>
                   ))}
                 </div>
-                <div className="flex gap-4 mt-3 text-[10px] text-gray-500">
+                <div className="flex gap-4 mt-3 text-xs text-gray-500">
                   <span className="flex items-center gap-1"><span className="w-2 h-2 bg-indigo-400 rounded" />Searches</span>
                   <span className="flex items-center gap-1"><span className="w-2 h-2 bg-violet-400 rounded" />Views</span>
                   <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-400 rounded" />Engagements</span>
@@ -300,19 +300,19 @@ export default function WeeklyReportPage() {
                 <h3 className="text-sm font-bold text-gray-700 mb-3">Revenue & Monetization</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">Affiliate Clicks (7d)</p>
+                    <p className="text-xs text-gray-500 uppercase">Affiliate Clicks (7d)</p>
                     <p className="text-xl font-bold text-gray-900">{data.revenue.affiliateClicksThisWeek}</p>
-                    <p className="text-[10px] text-gray-400">{data.revenue.totalAffiliateClicks} all-time</p>
+                    <p className="text-xs text-gray-400">{data.revenue.totalAffiliateClicks} all-time</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">API Requests (7d)</p>
+                    <p className="text-xs text-gray-500 uppercase">API Requests (7d)</p>
                     <p className="text-xl font-bold text-gray-900">{data.revenue.apiRequestsThisWeek}</p>
-                    <p className="text-[10px] text-gray-400">{data.revenue.apiKeys.active}/{data.revenue.apiKeys.total} active keys</p>
+                    <p className="text-xs text-gray-400">{data.revenue.apiKeys.active}/{data.revenue.apiKeys.total} active keys</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">Embed Partners</p>
+                    <p className="text-xs text-gray-500 uppercase">Embed Partners</p>
                     <p className="text-xl font-bold text-gray-900">{data.revenue.embedPartners.active}</p>
-                    <p className="text-[10px] text-gray-400">{data.revenue.embedPartners.total} total</p>
+                    <p className="text-xs text-gray-400">{data.revenue.embedPartners.total} total</p>
                   </div>
                 </div>
               </section>
@@ -321,23 +321,23 @@ export default function WeeklyReportPage() {
                 <h3 className="text-sm font-bold text-gray-700 mb-3">Engagement & Satisfaction</h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">Votes (7d)</p>
+                    <p className="text-xs text-gray-500 uppercase">Votes (7d)</p>
                     <p className="text-xl font-bold text-gray-900">{data.engagement.votesThisWeek}</p>
-                    <p className="text-[10px] text-gray-400">{data.engagement.totalVotes} all-time</p>
+                    <p className="text-xs text-gray-400">{data.engagement.totalVotes} all-time</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">NPS Score</p>
+                    <p className="text-xs text-gray-500 uppercase">NPS Score</p>
                     <p className="text-xl font-bold text-gray-900">{data.engagement.npsScore}</p>
-                    <p className="text-[10px] text-gray-400">Target: 50+</p>
+                    <p className="text-xs text-gray-400">Target: 50+</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">Subscribers</p>
+                    <p className="text-xs text-gray-500 uppercase">Subscribers</p>
                     <p className="text-xl font-bold text-gray-900">{data.engagement.totalSubscribers}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-500 uppercase">Surveys (avg rating)</p>
+                    <p className="text-xs text-gray-500 uppercase">Surveys (avg rating)</p>
                     <p className="text-xl font-bold text-gray-900">{data.engagement.surveys.avgRating}/5</p>
-                    <p className="text-[10px] text-gray-400">{data.engagement.surveys.total} responses</p>
+                    <p className="text-xs text-gray-400">{data.engagement.surveys.total} responses</p>
                   </div>
                 </div>
               </section>
@@ -356,7 +356,7 @@ export default function WeeklyReportPage() {
                 ].map((item) => (
                   <div key={item.label} className="text-center">
                     <p className="text-2xl font-bold text-gray-900">{item.value.toLocaleString()}</p>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-wider">{item.label}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wider">{item.label}</p>
                   </div>
                 ))}
               </div>
