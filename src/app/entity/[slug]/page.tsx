@@ -544,7 +544,7 @@ export default async function EntityPage({ params }: PageProps) {
 
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
-          <section aria-labelledby="entity-comparisons-heading" className="space-y-3">
+          <section aria-labelledby="entity-comparisons-heading">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -552,12 +552,14 @@ export default async function EntityPage({ params }: PageProps) {
                 </svg>
               </div>
               <h2 id="entity-comparisons-heading" className="text-xl font-display font-bold text-text">All Comparisons</h2>
+              <span className="ml-auto text-xs font-medium text-text-secondary bg-surface-alt px-2.5 py-1 rounded-full">{relatedComparisons.length}</span>
             </div>
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
             {relatedComparisons.map((comp) => {
               const parts = comp.title.split(/\s+vs\.?\s+/i);
               return (
+                <li key={comp.slug} className="m-0 p-0">
                 <Link
-                  key={comp.slug}
                   href={`/compare/${comp.slug}`}
                   className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                 >
@@ -569,20 +571,22 @@ export default async function EntityPage({ params }: PageProps) {
                       {(parts[1] || "B").charAt(0)}
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-text group-hover:text-primary-700 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
                       {comp.title}
                     </p>
                     {comp.category && (
                       <p className="text-xs text-text-secondary capitalize">{comp.category}</p>
                     )}
                   </div>
-                  <svg className="w-5 h-5 text-text-secondary group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg className="w-5 h-5 text-text-secondary group-hover:translate-x-0.5 transition-transform duration-150 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
+                </li>
               );
             })}
+            </ul>
           </section>
         ) : (
           <div className="text-center py-16 bg-surface-alt rounded-xl">
