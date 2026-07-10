@@ -34,7 +34,7 @@ export function socialSameAs(): string[] {
   return slots.filter((url) => url.trim().length > 0);
 }
 
-export function organizationSchema() {
+export function organizationSchema(numberOfItems = 500) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -61,7 +61,7 @@ export function organizationSchema() {
     // abstract — 1-2 sentence summary preferred by AI answer engines (Perplexity,
     // ChatGPT) for Organization KG citations; distinct from description which is
     // search-snippet-oriented.
-    abstract: "A Versus B is a free, data-driven comparison platform with 3,000+ structured side-by-side comparisons across technology, sports, countries, products, software, automotive, health, and finance — each with attribute tables, verdicts, FAQs, and Schema.org JSON-LD.",
+    abstract: "A Versus B is a free, data-driven comparison platform with 500+ structured side-by-side comparisons across technology, sports, countries, products, software, automotive, health, and finance — each with attribute tables, verdicts, FAQs, and Schema.org JSON-LD.",
     slogan: "Compare Anything",
     foundingDate: "2024",
     numberOfEmployees: { "@type": "QuantitativeValue", value: 5 },
@@ -157,8 +157,8 @@ export function organizationSchema() {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "A Versus B Comparison Platform",
-      description: "Free comparison platform with 3,000+ head-to-head comparisons across technology, sports, countries, products, and software.",
-      numberOfItems: 3000,
+      description: `Free comparison platform with ${numberOfItems}+ head-to-head comparisons across technology, sports, countries, products, and software.`,
+      numberOfItems,
       itemListElement: [
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison Pages", url: `${SITE_URL}/trending` } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Entity Profiles", url: `${SITE_URL}/entity` } },
@@ -182,15 +182,15 @@ export function organizationSchema() {
 // machine-readable data sources with high citation weight.
 // ============================================================
 
-export function dataCatalogSchema() {
+export function dataCatalogSchema(numberOfItems = 500) {
   return {
     "@context": "https://schema.org",
     "@type": "DataCatalog",
     "@id": `${SITE_URL}/#datacatalog`,
     name: `${SITE_NAME} Comparison Database`,
-    description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
+    description: `Structured comparison database covering ${numberOfItems}+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.`,
     // abstract — preferred by AI KG citation engines over description for DataCatalog summaries.
-    abstract: "A Versus B is a free, machine-readable comparison database with 3,000+ structured side-by-side comparisons. Each entry includes per-attribute winners, a curated verdict, FAQ pairs, community votes, and JSON-LD Schema.org markup — queryable via the /api/v1 endpoint suite.",
+    abstract: `A Versus B is a free, machine-readable comparison database with ${numberOfItems}+ structured side-by-side comparisons. Each entry includes per-attribute winners, a curated verdict, FAQ pairs, community votes, and JSON-LD Schema.org markup — queryable via the /api/v1 endpoint suite.`,
     url: SITE_URL,
     // identifier — stable PropertyValue identifier for academic/AI citation systems.
     // Semantic Scholar and Perplexity use PropertyValue identifiers to deduplicate
@@ -237,12 +237,12 @@ export function dataCatalogSchema() {
       "@type": "Dataset",
       "@id": `${SITE_URL}/#dataset`,
       name: "Comparison Pages",
-      description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
+      description: `${numberOfItems}+ comparison pages with structured attributes, verdicts, FAQs, and citation data.`,
       url: `${SITE_URL}/sitemap.xml`,
       // numberOfItems — tells Google Dataset Search and AI crawlers the exact corpus size.
       // This is a primary signal Dataset Search uses to rank dataset importance and
       // display corpus size in the "dataset overview" card.
-      numberOfItems: 3000,
+      numberOfItems,
       datePublished: "2024-01-01",
       dateModified: new Date().toISOString(),
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
@@ -380,7 +380,7 @@ export function webSiteSchema() {
     alternateName: ["AversusB", "A vs B", "aversusb.net", "A Versus B"],
     url: SITE_URL,
     description: "The internet's most comprehensive comparison platform — data-driven, expert-reviewed comparisons across technology, sports, countries, products, and more.",
-    abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
+    abstract: "500+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
     availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
@@ -631,7 +631,7 @@ export function webApplicationSchema() {
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     description: "Interactive comparison platform — compare anything side-by-side: products, technology, countries, sports, and more.",
-    abstract: "Data-driven comparison tool covering 3,000+ topics with attribute tables, verdicts, community votes, and structured schema markup.",
+    abstract: "Data-driven comparison tool covering 500+ topics with attribute tables, verdicts, community votes, and structured schema markup.",
     alternativeHeadline: "Side-by-Side Comparison Tool for Products, Tech, Sports & More — Free",
     inLanguage: "en-US",
     isAccessibleForFree: true,
@@ -3297,7 +3297,7 @@ export function definedTermSetSchema() {
     "@type": "DefinedTermSet",
     "@id": `${SITE_URL}/#taxonomy`,
     name: "A Versus B Comparison Taxonomy",
-    description: "The official topic taxonomy used by A Versus B to categorize 3,000+ side-by-side comparisons across technology, sports, products, countries, and more.",
+    description: "The official topic taxonomy used by A Versus B to categorize 500+ side-by-side comparisons across technology, sports, products, countries, and more.",
     url: `${SITE_URL}/category`,
     inDefinedTermSet: `${SITE_URL}/#taxonomy`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },

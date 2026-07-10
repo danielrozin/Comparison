@@ -154,11 +154,11 @@ export default async function HomePage() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(totalCount)) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(dataCatalogSchema()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(dataCatalogSchema(totalCount)) }}
       />
       <script
         type="application/ld+json"
