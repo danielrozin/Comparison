@@ -381,43 +381,52 @@ export default function ChatGPTAlternativesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
       />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Breadcrumbs */}
-        <nav className="mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-1.5 text-sm text-text-secondary">
-            <li>
-              <Link href="/" className="hover:text-primary-600 flex items-center gap-1">
-                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span className="sr-only sm:not-sr-only">Home</span>
-              </Link>
-            </li>
-            <li aria-hidden="true">
-              <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      {/* Gradient Hero */}
+      <section aria-labelledby="chatgpt-alt-heading" className="bg-gradient-to-br from-violet-900 via-purple-900 to-primary-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 pb-16 sm:pb-20 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-violet-200 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-violet-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li><Link href="/alternatives/chatgpt" className="hover:text-white transition-colors">Alternatives</Link></li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-violet-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li className="text-white font-medium" aria-current="page">ChatGPT Alternatives</li>
+            </ol>
+          </nav>
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
               </svg>
-            </li>
-            <li>
-              <Link href="/alternatives/chatgpt" className="hover:text-primary-600">Alternatives</Link>
-            </li>
-            <li aria-hidden="true">
-              <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </li>
-            <li className="text-text font-medium" aria-current="page">ChatGPT Alternatives</li>
-          </ol>
-        </nav>
+            </div>
+            <div className="flex-1">
+              <span className="text-xs font-semibold text-violet-300 uppercase tracking-wider">AI Comparison Guide</span>
+              <h1 id="chatgpt-alt-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
+                Best ChatGPT Alternatives in 2026: 8 AI Chatbots That Are Actually Good
+              </h1>
+              <p className="mt-2 text-sm text-violet-200">
+                Updated May 2026 · Pricing verified against provider pages.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </section>
 
-        <header className="mb-8">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text leading-tight">
-            Best ChatGPT Alternatives in 2026: 8 AI Chatbots That Are Actually Good
-          </h1>
-          <p className="mt-3 text-sm text-text-secondary italic">
-            Updated May 2026 · Pricing verified against provider pages.
-          </p>
-        </header>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         <section aria-labelledby="chatgpt-why-look-for-a" className="prose-section">
           <h2 id="chatgpt-why-look-for-a" className="text-2xl font-bold text-text mt-10 mb-4">
