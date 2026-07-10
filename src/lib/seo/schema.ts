@@ -864,27 +864,43 @@ export function comparisonPageSchema(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      // knowsAbout — topic-expertise E-E-A-T signal on the Organization author.
-      // AI crawlers (Perplexity, ChatGPT, Google AI Overviews) match author expertise
-      // to comparison topic, boosting citation confidence on subject-matched queries.
-      knowsAbout: [
-        { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
-        { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
-        { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
-        { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
-        { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
-        { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
-        { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
-        { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
-        { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
-        { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
-      ],
-    },
+    // author — array of Person + Organization for maximum E-E-A-T coverage.
+    // Person node (Daniel Rozin) satisfies Google's named-author requirement for E-E-A-T
+    // and is used by AI crawlers (Perplexity, ChatGPT, Google AI Overviews) to attribute
+    // expertise to a real human editor, boosting citation confidence.
+    // Organization node satisfies schema.org publisher-as-author for structured-data validators.
+    author: [
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/authors/daniel-rozin#person`,
+        name: "Daniel Rozin",
+        url: `${SITE_URL}/authors/daniel-rozin`,
+        jobTitle: "Founder & Editor-in-Chief",
+        worksFor: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        sameAs: [
+          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+          "https://www.facebook.com/daniel.rozin.94",
+        ],
+        knowsAbout: [
+          { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+          { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+          { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+          { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+          { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+          { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+          { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+          { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+          { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+          { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+        ],
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+    ],
     // correction — when updatedAt is materially later than publishedAt, emit a CorrectionComment.
     // Google E-E-A-T evaluators treat this as content-maintenance evidence (editorial accountability).
     // AI crawlers (Perplexity, ChatGPT) also weight this positively as a source-reliability signal.
@@ -2022,26 +2038,39 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: SITE_NAME,
-      url: SITE_URL,
-      // knowsAbout — topic-expertise E-E-A-T parity with 2-entity comparisonPageSchema.
-      // AI crawlers match author expertise to query topic for citation confidence scoring.
-      knowsAbout: [
-        { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
-        { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
-        { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
-        { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
-        { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
-        { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
-        { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
-        { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
-        { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
-        { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
-      ],
-    },
+    // author — Person + Organization array for E-E-A-T parity with 2-entity path and blog pages.
+    author: [
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/authors/daniel-rozin#person`,
+        name: "Daniel Rozin",
+        url: `${SITE_URL}/authors/daniel-rozin`,
+        jobTitle: "Founder & Editor-in-Chief",
+        worksFor: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        sameAs: [
+          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
+          "https://www.facebook.com/daniel.rozin.94",
+        ],
+        knowsAbout: [
+          { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+          { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+          { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+          { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+          { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+          { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+          { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+          { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+          { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+          { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+        ],
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+    ],
     // correction — CorrectionComment when updatedAt materially exceeds publishedAt.
     // Parity with 2-entity path; Google E-E-A-T and AI source-reliability weighting.
     ...(() => {
