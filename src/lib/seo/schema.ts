@@ -1150,7 +1150,7 @@ export function comparisonPageSchema(
     timeRequired: `PT${Math.ceil(Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)) / 200)}M`,
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     // contentReferenceTime — ISO 8601 date that the data in this article is "as of".
     // LLMs (ChatGPT, Perplexity, Claude) use this to give time-qualified answers:
     // "According to A Versus B (as of June 2026), ..." instead of treating the data
@@ -2165,7 +2165,7 @@ function buildMultiEntityGraph(
     interactivityType: "expositive",
     // lastReviewed + reviewedBy — freshness signal for AI fact-checkers.
     lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
     wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
@@ -3146,7 +3146,7 @@ export function profilePageSchema(entity: {
     dateCreated: "2024-01-01",
     dateModified: today,
     lastReviewed: today,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: today,
     locationCreated: { "@type": "Country", name: "United States" },
     inLanguage: "en-US",

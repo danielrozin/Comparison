@@ -155,7 +155,7 @@ const articleSchema = {
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
   timeRequired: "PT4M",
   wordCount: 800,
 };

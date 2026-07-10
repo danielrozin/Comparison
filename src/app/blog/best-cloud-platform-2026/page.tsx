@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { personAuthorNode } from "@/lib/seo/schema";
 
 const PAGE_URL = `${SITE_URL}/blog/best-cloud-platform-2026`;
 const PAGE_TITLE =
@@ -121,7 +122,7 @@ const articleSchema = {
   datePublished: PUBLISH_DATE,
   dateModified: MODIFIED_DATE,
   lastReviewed: MODIFIED_DATE,
-  reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
       publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

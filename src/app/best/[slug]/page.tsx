@@ -7,6 +7,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
+import { personAuthorNode } from "@/lib/seo/schema";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -300,7 +301,7 @@ function bestPageSchema(entry: BestEntry) {
           ...(entry.authorUrl ? { url: `${SITE_URL}${entry.authorUrl}` } : {}),
         },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-        reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+        reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
         alternativeHeadline: `Top ${entry.h1} — Expert Picks ${new Date().getFullYear()}`,
         license: "https://creativecommons.org/licenses/by/4.0/",
         usageInfo: `${SITE_URL}/terms`,

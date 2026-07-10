@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { contentAuthorArray } from "@/lib/seo/schema";
+import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
 
 const PAGE_TITLE = `Is Versus.com the Best Comparison Site? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -116,7 +116,7 @@ function buildSchemas() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
     author: contentAuthorArray(),
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     about: {
       "@type": "WebSite",
       name: "Versus",

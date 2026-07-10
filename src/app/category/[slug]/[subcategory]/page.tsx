@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -190,7 +190,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
     lastReviewed: subcatToday,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: subcatToday,
     thumbnailUrl: subcatOgImage,
     image: {

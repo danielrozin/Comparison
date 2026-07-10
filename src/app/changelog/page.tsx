@@ -258,7 +258,7 @@ const changelogSchema = {
       ethicsPolicy: `${SITE_URL}/disclaimer`,
       correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
       potentialAction: { "@type": "ReadAction", target: CHANGELOG_URL },
-      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
       // hasPart — list each release as an ItemList so crawlers can enumerate versions.
       hasPart: {
         "@type": "ItemList",

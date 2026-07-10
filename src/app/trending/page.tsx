@@ -5,7 +5,7 @@ import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { Pagination } from "@/components/ui/Pagination";
 import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -178,7 +178,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     datePublished: "2024-01-01",
     dateModified: trendingToday,
     lastReviewed: trendingToday,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: trendingToday,
     thumbnailUrl: ogImage,
     image: {

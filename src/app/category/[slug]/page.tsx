@@ -6,7 +6,7 @@ import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -228,7 +228,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     dateCreated: "2024-01-01",
     dateModified: categoryToday,
     lastReviewed: categoryToday,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
     image: {

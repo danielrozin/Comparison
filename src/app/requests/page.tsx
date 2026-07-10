@@ -89,7 +89,7 @@ const requestsPageSchema = {
       accessMode: ["textual"],
       accessibilityFeature: ["readingOrder", "structuralNavigation"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
       potentialAction: [
