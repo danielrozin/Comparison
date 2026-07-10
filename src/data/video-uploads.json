@@ -3147,6 +3147,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-09T08:50:14.081Z"
+    },
+    {
+      "slug": "russia-vs-usa",
+      "title": "Russia vs Usa",
+      "entityA": "Russia",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Russia vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Russia vs Usa — Full Comparison 2026",
+      "youtubeDescription": "Compare Russia vs US: GDP $27.4T vs $2.1T, military spending, nuclear capabilities, and living standards. Detailed country comparison 2026.\n\n#russia #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-10T08:27:23.272Z"
+    },
+    {
+      "slug": "tiger-woods-vs-jack-nicklaus",
+      "title": "Tiger Woods vs Jack Nicklaus",
+      "entityA": "Tiger Woods",
+      "entityB": "Jack Nicklaus",
+      "category": "General",
+      "videoFile": "Tiger Woods vs Jack Nicklaus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Tiger Woods vs Jack Nicklaus — Full Comparison 2026",
+      "youtubeDescription": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.\n\n#tigerwoods #jacknicklaus #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-10T08:31:35.397Z"
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "Chatgpt vs Gemini",
+      "entityA": "Chatgpt",
+      "entityB": "Gemini",
+      "category": "General",
+      "videoFile": "Chatgpt vs Gemini.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Chatgpt vs Gemini — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Chatgpt vs Gemini.\n\n#chatgpt #gemini #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-10T08:35:31.396Z"
     }
   ]
 }
