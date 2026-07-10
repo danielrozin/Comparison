@@ -968,7 +968,8 @@ export function comparisonPageSchema(
       // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
       // grid; AI data-mode crawlers extract column headers + values directly from this section.
       // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      // #expert-analysis — human-reviewed analysis; high E-E-A-T signal for AI content extraction.
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -2121,7 +2122,7 @@ function buildMultiEntityGraph(
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -2650,7 +2651,7 @@ function buildMultiEntityGraph(
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   });
