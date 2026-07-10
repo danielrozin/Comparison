@@ -9,7 +9,7 @@ const searchResultsPageSchema = {
   "@id": `${SITE_URL}/search#searchresultspage`,
   name: "Search Comparisons — A Versus B",
   description: "Search and compare anything — sports players, countries, products, technology, and more.",
-  abstract: "Instant search across 3,000+ X vs Y comparisons — find any comparison by topic, product, person, or category.",
+  abstract: "Instant search across 500+ X vs Y comparisons — find any comparison by topic, product, person, or category.",
   url: `${SITE_URL}/search`,
   inLanguage: "en-US",
   isAccessibleForFree: true,

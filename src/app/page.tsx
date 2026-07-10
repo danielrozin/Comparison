@@ -167,7 +167,7 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema([
-          { question: "What is A Versus B?", answer: "A Versus B (aversusb.net) is a free comparison platform with 3,000+ side-by-side comparisons across technology, sports, countries, products, software, and more. Each comparison includes a short answer, attribute table, verdict, FAQs, and community votes." },
+          { question: "What is A Versus B?", answer: "A Versus B (aversusb.net) is a free comparison platform with 500+ side-by-side comparisons across technology, sports, countries, products, software, and more. Each comparison includes a short answer, attribute table, verdict, FAQs, and community votes." },
           { question: "How do I compare two things on A Versus B?", answer: "Search for any two entities in the search bar (e.g., 'iPhone vs Samsung') or navigate directly to aversusb.net/compare/{entity-a}-vs-{entity-b}. The comparison page shows you side-by-side attributes, a winner verdict, and community vote results." },
           { question: "Is A Versus B free to use?", answer: "Yes, A Versus B is completely free. All comparison data is accessible without registration, and content is licensed under CC BY 4.0 — free to cite with attribution." },
           { question: "How accurate are the comparisons on A Versus B?", answer: "Each comparison is researched from multiple sources and reviewed editorially. We cite our sources and publish our methodology at aversusb.net/how-we-write-verdicts. Data is updated regularly as products and information change." },

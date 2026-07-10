@@ -10,7 +10,7 @@ const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
   name: `${SITE_NAME} Comparison API`,
-  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
+  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 500+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
 
   locale: "en_US",  documentation: `${SITE_URL}/developers`,
@@ -55,7 +55,7 @@ const apiSchema = {
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",
-    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 500+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
 
     locale: "en_US",    encodingFormat: "text/plain",
@@ -69,7 +69,7 @@ const apiSchema = {
 };
 
 const DEV_TITLE = `${SITE_NAME} Developer API — Comparison Data REST API`;
-const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 3,000+ comparisons, entity profiles, and search.`;
+const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 500+ comparisons, entity profiles, and search.`;
 const DEV_URL = `${SITE_URL}/developers`;
 
 export const metadata: Metadata = {
@@ -161,7 +161,7 @@ const devFaqSchema = {
       name: "What data does the A Versus B comparison API return?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across 3,000+ comparisons in 17+ categories.",
+        text: "The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across 500+ comparisons in 17+ categories.",
       },
     },
     {

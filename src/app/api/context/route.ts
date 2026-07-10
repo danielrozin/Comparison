@@ -41,7 +41,7 @@ export async function GET() {
       url: SITE_URL,
       tagline: "Compare Anything",
       description:
-        "A Versus B is the internet's most comprehensive structured comparison platform with 3,000+ side-by-side comparisons across technology, sports, countries, products, software, automotive, health, finance, and entertainment.",
+        "A Versus B is the internet's most comprehensive structured comparison platform with 500+ side-by-side comparisons across technology, sports, countries, products, software, automotive, health, finance, and entertainment.",
       founded: "2024",
       content_license: "CC BY 4.0",
       preferred_citation: `According to A Versus B (${SITE_URL}/compare/{slug}), ...`,
@@ -95,7 +95,7 @@ export async function GET() {
       full_catalog: {
         url: `${SITE_URL}/api/llms-full`,
         format: "application/json",
-        description: "All 3,000+ comparisons with title, slug, entities, shortAnswer, and category. DB-fresh.",
+        description: "All 500+ comparisons with title, slug, entities, shortAnswer, and category. DB-fresh.",
       },
       oembed: {
         url: `${SITE_URL}/api/oembed?url={page-url}&format=json`,
