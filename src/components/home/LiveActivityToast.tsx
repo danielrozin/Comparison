@@ -77,7 +77,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
           {emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] text-white/60 leading-none mb-0.5">
+          <p className="text-xs text-white/60 leading-none mb-0.5">
             <span className="font-semibold text-white/80">{people} people</span> comparing now
           </p>
           <p className="text-xs font-semibold text-white truncate group-hover:text-white/90">

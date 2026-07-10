@@ -105,7 +105,7 @@ function ScoreBar({
     <div className="mt-3 px-1">
       <div className="flex justify-between items-center mb-1">
         <span className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">Score</span>
-        <span className="text-[11px] font-bold text-white/80">{pct}%</span>
+        <span className="text-xs font-bold text-white/80">{pct}%</span>
       </div>
       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
         <div
