@@ -789,8 +789,9 @@ export default async function BlogPostPage({
         </div>
 
         {/* Article Header */}
-        <header className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-12 sm:py-16 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.06),transparent_60%)]" />
+        <header className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-12 sm:py-16 pb-20 sm:pb-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-wrap items-center gap-2.5 mb-5">
               {article.category && (
@@ -845,6 +846,12 @@ export default async function BlogPostPage({
                 </>
               )}
             </div>
+          </div>
+          {/* Wave divider */}
+          <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+            <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+              <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+            </svg>
           </div>
         </header>
 
