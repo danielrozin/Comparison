@@ -159,7 +159,15 @@ export default function VersusComFaqPage() {
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+  <defs>
+    <pattern id="grid-faq-versus-com-cta" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+      <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid-faq-versus-com-cta)"/>
+</svg>
         <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
@@ -281,7 +289,15 @@ export default function VersusComFaqPage() {
 
       {/* CTA */}
       <section aria-labelledby="versusfaq-looking-for-more-than" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 rounded-2xl p-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none rounded-2xl" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none rounded-2xl" aria-hidden="true">
+  <defs>
+    <pattern id="grid-faq-versus-com-hero" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+      <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid-faq-versus-com-hero)"/>
+</svg>
         <h2 id="versusfaq-looking-for-more-than" className="text-xl font-display font-bold mb-2 relative">
           Looking for more than tech comparisons?
         </h2>

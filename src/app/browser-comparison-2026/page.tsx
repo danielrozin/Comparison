@@ -312,7 +312,15 @@ export default function BrowserComparison2026Page() {
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-cyan-900 via-teal-900 to-primary-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+  <defs>
+    <pattern id="grid-browser-comparison-2026-hero" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+      <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid-browser-comparison-2026-hero)"/>
+</svg>
         <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">

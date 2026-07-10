@@ -192,7 +192,15 @@ export default function PartnershipsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* Gradient Hero */}
       <section aria-labelledby="partnerships-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+  <defs>
+    <pattern id="grid-partnerships-hero" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+      <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid-partnerships-hero)"/>
+</svg>
         <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
           <nav className="mb-6" aria-label="Breadcrumb">
