@@ -150,6 +150,11 @@ function renderEntry(e: VideoSitemapEntry): string {
     }
   }
   lines.push("      <video:family_friendly>yes</video:family_friendly>");
+  // requires_subscription — tells Google this video is freely accessible (no paywall).
+  // Free videos are preferred for Google Video Search and YouTube recommendations.
+  lines.push("      <video:requires_subscription>no</video:requires_subscription>");
+  // uploader — publisher identity for Google Video Search attribution and KG merging.
+  lines.push(`      <video:uploader info="${SITE_URL}">A Versus B</video:uploader>`);
   lines.push("    </video:video>");
   lines.push("  </url>");
   return lines.join("\n");

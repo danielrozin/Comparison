@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { trackConversionFunnel, trackComparisonView } from "@/lib/utils/analytics";
+import posthog from "posthog-js";
 
 export function ConversionFunnelTracker({
   slug,
@@ -30,21 +31,25 @@ export function ConversionFunnelTracker({
       if (scrollPercent >= 25 && !firedRef.current.has("scroll_depth_25")) {
         firedRef.current.add("scroll_depth_25");
         trackConversionFunnel("scroll_depth_25", page, { category });
+        posthog.capture("scroll_depth_milestone", { depth: 25, page, category });
       }
 
       if (scrollPercent >= 50 && !firedRef.current.has("scroll_depth_50")) {
         firedRef.current.add("scroll_depth_50");
         trackConversionFunnel("scroll_depth_50", page, { category });
+        posthog.capture("scroll_depth_milestone", { depth: 50, page, category });
       }
 
       if (scrollPercent >= 75 && !firedRef.current.has("scroll_depth_75")) {
         firedRef.current.add("scroll_depth_75");
         trackConversionFunnel("scroll_depth_75", page, { category });
+        posthog.capture("scroll_depth_milestone", { depth: 75, page, category });
       }
 
       if (scrollPercent >= 90 && !firedRef.current.has("scroll_depth_100")) {
         firedRef.current.add("scroll_depth_100");
         trackConversionFunnel("scroll_depth_100", page, { category });
+        posthog.capture("scroll_depth_milestone", { depth: 90, page, category });
       }
     };
 

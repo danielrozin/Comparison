@@ -1,6 +1,8 @@
 import type { ComparisonEntityData, ComparisonAttribute } from "@/types";
 import { AiAssistedBadge } from "./AiAssistedBadge";
 import { VerdictFeedbackWidget } from "./VerdictFeedbackWidget";
+import { VerdictShareButton } from "./VerdictShareButton";
+import { ScoreBarPanel } from "./ScoreBarPanel";
 
 interface VerdictCardProps {
   verdict: string;
@@ -68,12 +70,18 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
 
         <div className="relative z-10">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center ring-2 ring-yellow-400/30">
-              <TrophyIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-500/20 rounded-full flex items-center justify-center ring-2 ring-yellow-400/30">
+                <TrophyIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400" />
+              </div>
+              <h2 id="verdict-heading" className="text-lg sm:text-2xl font-display font-bold tracking-tight">Our Verdict</h2>
+              <AiAssistedBadge />
             </div>
-            <h2 id="verdict-heading" className="text-lg sm:text-2xl font-display font-bold tracking-tight">Our Verdict</h2>
-            <AiAssistedBadge />
+            <VerdictShareButton
+              title={`${entityA.name} vs ${entityB.name}`}
+              winnerName={winnerIdx === 0 ? entityA.name : winnerIdx === 1 ? entityB.name : null}
+            />
           </div>
 
           {/* Verdict text — styled as a readable quote */}
@@ -89,72 +97,15 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
             <VerdictFeedbackWidget comparisonSlug={comparisonSlug} />
           </div>
 
-          {/* Score bar */}
+          {/* Score bar — animated on scroll-into-view */}
           {scores && (
-            <div className="mb-6 bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
-              <div className="flex items-center justify-between mb-3 gap-2">
-                {/* Entity A score */}
-                <div className={`flex items-center gap-2 min-w-0 transition-all ${winnerIdx === 0 ? "scale-105" : ""}`}>
-                  {entityA.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityA.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-blue-200">
-                      {entityA.name.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1">
-                      <span className="block text-xs text-blue-300/80 truncate">{entityA.name}</span>
-                      {winnerIdx === 0 && <span className="text-[10px]" aria-hidden="true">👑</span>}
-                    </div>
-                    <div className="flex items-baseline gap-0.5">
-                      <span className={`text-2xl font-black tabular-nums ${winnerIdx === 0 ? "text-yellow-300" : "text-white"}`}>{scores.scoreA}</span>
-                      <span className="text-xs text-white/70 font-medium">/10</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
-
-                {/* Entity B score */}
-                <div className={`flex items-center gap-2 min-w-0 text-right transition-all ${winnerIdx === 1 ? "scale-105" : ""}`}>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1 justify-end">
-                      {winnerIdx === 1 && <span className="text-[10px]" aria-hidden="true">👑</span>}
-                      <span className="block text-xs text-purple-300/80 truncate text-right">{entityB.name}</span>
-                    </div>
-                    <div className="flex items-baseline gap-0.5 justify-end">
-                      <span className={`text-2xl font-black tabular-nums ${winnerIdx === 1 ? "text-yellow-300" : "text-white"}`}>{scores.scoreB}</span>
-                      <span className="text-xs text-white/70 font-medium">/10</span>
-                    </div>
-                  </div>
-                  {entityB.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={entityB.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
-                  ) : (
-                    <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-purple-200">
-                      {entityB.name.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div
-                role="img"
-                aria-label={`Score comparison: ${entityA.name} ${scores.scoreA}/10 vs ${entityB.name} ${scores.scoreB}/10${winnerIdx === 0 ? ` — ${entityA.name} wins` : winnerIdx === 1 ? ` — ${entityB.name} wins` : " — tied"}`}
-                className="h-2.5 bg-white/10 rounded-full overflow-hidden flex"
-              >
-                <div
-                  className={`bg-gradient-to-r from-blue-400 to-blue-300 transition-all duration-700 ${winnerIdx === 0 ? "brightness-125" : ""}`}
-                  style={{ width: `${(scores.scoreA / (scores.scoreA + scores.scoreB)) * 100}%` }}
-                />
-                <div className="w-px bg-white/30" />
-                <div className={`bg-gradient-to-r from-purple-400 to-purple-300 transition-all duration-700 flex-1 ${winnerIdx === 1 ? "brightness-125" : ""}`} />
-              </div>
-              {winnerIdx === -1 && (
-                <p className="text-center text-[10px] text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
-              )}
-            </div>
+            <ScoreBarPanel
+              scoreA={scores.scoreA}
+              scoreB={scores.scoreB}
+              winnerIdx={winnerIdx}
+              entityA={entityA}
+              entityB={entityB}
+            />
           )}
 
           {/* Choose X if cards */}

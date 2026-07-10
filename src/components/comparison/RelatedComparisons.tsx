@@ -61,7 +61,7 @@ export function RelatedComparisons({
         </div>
       </div>
 
-      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none">
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none mb-6">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -120,6 +120,19 @@ export function RelatedComparisons({
           );
         })}
       </ul>
+
+      {/* Browse all CTA */}
+      <div className="flex justify-center">
+        <Link
+          href="/trending"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 hover:bg-primary-100 hover:border-primary-300 hover:text-primary-700 transition-all duration-150"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+          Browse all comparisons
+        </Link>
+      </div>
     </section>
   );
 }

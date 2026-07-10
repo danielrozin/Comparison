@@ -307,59 +307,76 @@ const BROWSERS: Browser[] = [
 
 export default function BrowserComparison2026Page() {
   return (
-    <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <>
       <JsonLd data={[articleSchema, ...productSchemas]} />
 
-      <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-br from-cyan-900 via-teal-900 to-primary-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-cyan-200 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-cyan-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">Browser Comparison 2026</li>
+            </ol>
+          </nav>
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20 mt-1">
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
               </svg>
-              <span className="sr-only sm:not-sr-only">Home</span>
-            </Link>
-          </li>
-          <li aria-hidden="true">
-            <svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </li>
-          <li className="text-text font-medium" aria-current="page">Browser Comparison 2026</li>
-        </ol>
-      </nav>
-
-      <header className="mb-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-text mb-4">
-          Best Web Browsers Compared (2026)
-        </h1>
-        <p id="page-intro" className="text-lg text-text-secondary leading-relaxed mb-4">
-          An independent, citation-backed comparison of 10 major browsers — covering rendering engine,
-          global market share, privacy defaults, extension support, and open-source status.
-          Every figure is linked to its primary source.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-secondary border-t border-b border-border py-3">
-          <span>
-            By{" "}
-            <Link href="/authors/daniel-rozin" className="text-primary-600 hover:underline font-medium">
-              Daniel Rozin
-            </Link>
-            , Founder &amp; Editor-in-Chief
-          </span>
-          <span>·</span>
-          <span>
-            Last updated:{" "}
-            <time dateTime={LAST_UPDATED}>
-              {new Date(LAST_UPDATED).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-          </span>
-          <span>·</span>
-          <Link href="/browser-comparison-2026/methodology" className="text-primary-600 hover:underline">
-            Methodology
-          </Link>
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                Best Web Browsers Compared (2026)
+              </h1>
+              <p id="page-intro" className="mt-2 text-cyan-100 text-base sm:text-lg leading-relaxed max-w-3xl">
+                An independent, citation-backed comparison of 10 major browsers — covering rendering engine,
+                market share, privacy defaults, extension support, and open-source status.
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-cyan-200">
+                <span>
+                  By{" "}
+                  <Link href="/authors/daniel-rozin" className="text-white hover:underline font-medium">
+                    Daniel Rozin
+                  </Link>
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  Updated:{" "}
+                  <time dateTime={LAST_UPDATED}>
+                    {new Date(LAST_UPDATED).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                  </time>
+                </span>
+                <span aria-hidden="true">·</span>
+                <Link href="/browser-comparison-2026/methodology" className="text-white hover:underline">
+                  Methodology
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
-      </header>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
+
+    <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Quick verdict */}
       <section aria-labelledby="browscomp-quick-verdict" className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
@@ -471,5 +488,6 @@ export default function BrowserComparison2026Page() {
         </ol>
       </section>
     </article>
+    </>
   );
 }

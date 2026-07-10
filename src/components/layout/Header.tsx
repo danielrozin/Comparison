@@ -22,7 +22,19 @@ export function Header() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [searchHintIdx, setSearchHintIdx] = useState(0);
   const navRef = useRef<HTMLElement>(null);
+
+  const SEARCH_HINTS = [
+    "iPhone vs Android…",
+    "React vs Vue…",
+    "Nike vs Adidas…",
+    "Mac vs PC…",
+    "Coffee vs Tea…",
+    "Netflix vs Disney+…",
+    "Tesla vs BMW…",
+    "Python vs JavaScript…",
+  ];
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -32,10 +44,21 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    const id = setInterval(() => setSearchHintIdx((i) => (i + 1) % SEARCH_HINTS.length), 2800);
+    return () => clearInterval(id);
+  }, [SEARCH_HINTS.length]);
+
+  useEffect(() => {
     const fn = () => { if (window.innerWidth >= 1024) setMobileMenuOpen(false); };
     window.addEventListener("resize", fn);
     return () => window.removeEventListener("resize", fn);
   }, []);
+
+  // Close mobile menu when the route changes (Next.js soft-navigation).
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+  }, [pathname]);
 
   useEffect(() => {
     const fn = (e: MouseEvent) => {
@@ -44,6 +67,17 @@ export function Header() {
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
   }, []);
+
+  // WCAG 2.1 §3.2.5 — Escape closes both the mobile menu and any open dropdown.
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      if (openDropdown) { setOpenDropdown(null); return; }
+      if (mobileMenuOpen) setMobileMenuOpen(false);
+    };
+    document.addEventListener("keydown", fn);
+    return () => document.removeEventListener("keydown", fn);
+  }, [openDropdown, mobileMenuOpen]);
 
   function handleEnter(slug: string) {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
@@ -158,16 +192,24 @@ export function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Link
-              href="/#search"
-              aria-label="Search"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
+              aria-label="Search (⌘K or /)"
               className="group flex items-center gap-2 px-4 py-2 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200"
             >
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden sm:inline">Search...</span>
-            </Link>
+              <span className="hidden sm:inline overflow-hidden whitespace-nowrap" aria-live="polite" aria-atomic="true">
+                {SEARCH_HINTS[searchHintIdx]}
+              </span>
+              <span className="hidden md:inline-flex items-center gap-1 text-[10px] text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
+                <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">⌘K</kbd>
+                <span className="text-text-secondary/20">/</span>
+                <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">/</kbd>
+              </span>
+            </button>
 
             <button
               type="button"
@@ -197,16 +239,19 @@ export function Header() {
         <div className="bg-white border-t border-border overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
-            <Link
-              href="/#search"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 w-full h-11 px-4 bg-surface-alt border border-border rounded-full text-sm text-text-secondary"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new Event("open-search-overlay"));
+              }}
+              className="flex items-center gap-3 w-full h-11 px-4 bg-surface-alt border border-border rounded-full text-sm text-text-secondary text-left"
             >
               <svg className="w-4 h-4 text-text-secondary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               Search comparisons...
-            </Link>
+            </button>
           </div>
 
           {/* Categories with expandable subcategories */}

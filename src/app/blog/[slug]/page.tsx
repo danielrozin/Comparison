@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -13,6 +13,7 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -407,10 +408,17 @@ export default async function BlogPostPage({
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`;
 
   const articleSchema = {
-    // InDepthArticle additionalType: Google Discover uses this to surface comprehensive
-    // explainers. Threshold: 1500+ words qualifies as "in-depth" per Google's guidance.
+    // InDepthArticle + LearningResource additionalType: Google Discover surfaces InDepthArticle
+    // for comprehensive explainers (1500+ words). LearningResource tells Google's Education
+    // carousel and AI answer engines (Perplexity, ChatGPT) that this article is structured
+    // educational content — improves citation likelihood for "how to choose X" queries.
     "@type": isRecent ? ["Article", "NewsArticle"] : "Article",
-    ...(wordCount && wordCount >= 1500 ? { additionalType: "https://schema.org/InDepthArticle" } : {}),
+    additionalType: [
+      "https://schema.org/BlogPosting",
+      ...(wordCount && wordCount >= 1500 ? ["https://schema.org/InDepthArticle"] : []),
+      "https://schema.org/LearningResource",
+    ],
+    learningResourceType: "How-to Guide",
     "@id": `${articleUrl}#article`,
     headline: article.title,
     description: article.excerpt,
@@ -450,6 +458,17 @@ export default async function BlogPostPage({
           sameAs: [
             "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
             "https://www.facebook.com/daniel.rozin.94",
+          ],
+          // knowsAbout — topic-expertise E-E-A-T signal; AI crawlers (Perplexity, ChatGPT)
+          // use this to elevate citations when author expertise matches the article subject.
+          knowsAbout: [
+            { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+            { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+            { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+            { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+            { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+            { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+            { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
           ],
         },
     publisher: {
@@ -496,6 +515,12 @@ export default async function BlogPostPage({
       })),
     }),
     creativeWorkStatus: "Published",
+    // locationCreated — US data-origin signal; parity with comparisonPageSchema.
+    // AI Overviews and Google local ranking signals use this to scope data authority.
+    locationCreated: { "@type": "Country", name: "United States" },
+    // dateline — NewsArticle origin marker; required by some news aggregators (Apple News,
+    // Yahoo News) to correctly attribute the publication geography in article bylines.
+    ...(isRecent && { dateline: "Online, United States" }),
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -577,6 +602,22 @@ export default async function BlogPostPage({
         url: `${SITE_URL}/compare/${s}`,
       })),
     }),
+    // correction — when updatedAt differs from publishedAt, emit a CorrectionComment.
+    // Google E-E-A-T evaluators treat `correction` as a strong content-maintenance signal:
+    // it proves editorial accountability and active fact-checking, not a set-and-forget page.
+    // AI crawlers (Perplexity, ChatGPT) also weight this positively when evaluating source reliability.
+    ...(article.updatedAt && article.publishedAt &&
+      new Date(article.updatedAt).getTime() > new Date(article.publishedAt).getTime() + 60_000 && {
+      correction: {
+        "@type": "CorrectionComment",
+        "@id": `${articleUrl}#correction`,
+        name: `Updated: ${article.title}`,
+        text: `This article was reviewed and updated on ${new Date(article.updatedAt).toISOString().slice(0, 10)} to reflect the latest information. For corrections or feedback, contact ${SITE_URL}/contact.`,
+        dateCreated: new Date(article.updatedAt).toISOString(),
+        url: `${SITE_URL}/how-we-write-verdicts`,
+        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      },
+    }),
     // mentions — named entities + linked comparison pages discussed in this article.
     // Tag-typed entities (HB139 pattern) + Article-typed comparison nodes merged
     // into one mentions[] array so AI crawlers get both entity-graph and content
@@ -655,6 +696,27 @@ export default async function BlogPostPage({
     });
   }
 
+  // ClaimReview — for "X vs Y" blog articles; adds Google Fact Check eligibility and
+  // AI fact-checking E-E-A-T signal. Parse entities from title: "X vs Y ..." pattern.
+  const vsMatch = article.title.match(/^(.+?)\s+vs\.?\s+(.+?)(?:\s*[:|—]|$)/i);
+  if (vsMatch) {
+    const [, blogEntityA, blogEntityB] = vsMatch;
+    graph.push(blogClaimReviewSchema({
+      articleUrl,
+      entityA: blogEntityA.trim(),
+      entityB: blogEntityB.trim(),
+      shortAnswer: article.excerpt ?? undefined,
+      datePublished: article.publishedAt ? new Date(article.publishedAt).toISOString().slice(0, 10) : undefined,
+      dateModified: article.updatedAt ? new Date(article.updatedAt).toISOString().slice(0, 10) : undefined,
+    }));
+    // hasPart — formal Article→ClaimReview graph edge.
+    const existingPart = (articleSchema as Record<string, unknown>).hasPart;
+    const claimPart = { "@type": "ClaimReview", "@id": `${articleUrl}#claim-review` };
+    (articleSchema as Record<string, unknown>).hasPart = existingPart
+      ? Array.isArray(existingPart) ? [...existingPart, claimPart] : [existingPart, claimPart]
+      : claimPart;
+  }
+
   // WebPage node — @id uses #webpage anchor for explicit cross-document merging;
   // matches Article.mainEntityOfPage @id so crawlers can link both nodes in one hop.
   graph.push({
@@ -728,8 +790,9 @@ export default async function BlogPostPage({
         </div>
 
         {/* Article Header */}
-        <header className="bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 text-white py-12 sm:py-16 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 bottom-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.06),transparent_60%)]" />
+        <header className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-12 sm:py-16 pb-20 sm:pb-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+          <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="flex flex-wrap items-center gap-2.5 mb-5">
               {article.category && (
@@ -785,6 +848,12 @@ export default async function BlogPostPage({
               )}
             </div>
           </div>
+          {/* Wave divider */}
+          <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+            <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+              <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+            </svg>
+          </div>
         </header>
 
         {/* Article Body */}
@@ -807,22 +876,32 @@ export default async function BlogPostPage({
           {article.tags && article.tags.length > 0 && (
             <div className="mt-8 flex flex-wrap gap-2">
               {article.tags.map((tag) => (
-                <span
+                <Link
                   key={tag}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border"
+                  href={`/blog?category=${encodeURIComponent(tag)}`}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 transition-colors"
                 >
                   #{tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
 
           {/* Share Section */}
-          <section aria-labelledby="blog-share-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
-            <h2 id="blog-share-heading" className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3">
-              Share this article
-            </h2>
-            <ShareBar title={article.title} slug={slug} path="blog" />
+          <section aria-labelledby="blog-share-heading" className="mt-8 rounded-xl border border-border overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-surface-alt to-white border-b border-border">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </div>
+              <h2 id="blog-share-heading" className="text-sm font-semibold text-text">
+                Share this article
+              </h2>
+            </div>
+            <div className="px-6 py-4 bg-white">
+              <ShareBar title={article.title} slug={slug} path="blog" />
+            </div>
           </section>
 
           {/* Newsletter Signup */}
@@ -833,11 +912,22 @@ export default async function BlogPostPage({
           {/* Related Comparisons */}
           {article.relatedComparisonSlugs &&
             article.relatedComparisonSlugs.length > 0 && (
-              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 p-6 bg-white rounded-xl border border-border">
-                <h2 id="blog-related-comparisons-heading" className="text-lg font-bold text-text mb-4">
-                  Related Comparisons
-                </h2>
-                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 rounded-xl border border-border overflow-hidden">
+                <div className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-primary-50 to-accent-50 border-b border-border">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h2 id="blog-related-comparisons-heading" className="text-base font-bold text-text">
+                      Related Comparisons
+                    </h2>
+                    <p className="text-xs text-text-secondary">{article.relatedComparisonSlugs.length} head-to-head comparisons</p>
+                  </div>
+                </div>
+                <div className="p-4 bg-white">
+                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 list-none">
                   {article.relatedComparisonSlugs.map((compSlug) => {
                     const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
                     const parts = title.split(/\s+vs\.?\s+/i);
@@ -845,7 +935,7 @@ export default async function BlogPostPage({
                       <li key={compSlug} className="flex">
                       <Link
                         href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
+                        className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                       >
                         <div className="flex -space-x-2 flex-shrink-0">
                           <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
@@ -855,10 +945,10 @@ export default async function BlogPostPage({
                             {(parts[1] || "B").charAt(0).toUpperCase()}
                           </div>
                         </div>
-                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors">
+                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors flex-1 min-w-0 truncate">
                           {title}
                         </span>
-                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all ml-auto flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </Link>
@@ -866,6 +956,7 @@ export default async function BlogPostPage({
                     );
                   })}
                 </ul>
+                </div>
               </section>
             )}
 
@@ -894,6 +985,7 @@ export default async function BlogPostPage({
           </div>
         </div>
       </div>
+      <BackToTop />
     </>
   );
 }

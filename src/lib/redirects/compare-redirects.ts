@@ -25,6 +25,7 @@
 
 import type { BlogRedirect } from "./blog-redirects";
 import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated";
+import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.dan1800.generated";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -69,9 +70,13 @@ const ALIAS_CONSOLIDATIONS: Record<string, string> = {
   "peacock-vs-paramount-plus": "paramount-vs-peacock",
 };
 
-// Merge order: ordering (generated) first, then alias, then manual overrides win.
+// Merge order: DAN-1265 ordering first, then the DAN-1800 ordering sweep, then
+// alias, then manual overrides win. The loop/chain guard below drops any source
+// that collides with a survivor across all layers, so later layers can safely
+// re-map a slug an earlier layer used as a destination.
 const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...ORDERING_CONSOLIDATIONS,
+  ...ORDERING_CONSOLIDATIONS_DAN1800,
   ...ALIAS_CONSOLIDATIONS,
   ...MANUAL_CONSOLIDATIONS,
 };

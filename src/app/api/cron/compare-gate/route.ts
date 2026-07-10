@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGSCCompareWeekly } from "@/lib/services/gsc-service";
+import {
+  getGSCCompareWeekly,
+  syncCompareSearchImpressions,
+} from "@/lib/services/gsc-service";
 import { sendNotificationEmail } from "@/lib/services/email";
 
 export const maxDuration = 120;
@@ -33,6 +36,19 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // DAN-1807: backfill/refresh comparisons.searchImpressions from GSC per-page
+    // /compare/* impressions so the DAN-1800 thin-page audit can rank the
+    // zero-traffic long tail by real demand. Never fail the gate on a sync error.
+    let impressionsSync: Awaited<ReturnType<typeof syncCompareSearchImpressions>> | null = null;
+    try {
+      impressionsSync = await syncCompareSearchImpressions();
+      console.log(
+        `compare-gate: searchImpressions sync — ${impressionsSync.matched}/${impressionsSync.attempted} rows matched (${impressionsSync.pagesWithImpressions} GSC pages, ${impressionsSync.totalImpressions} impressions, ${impressionsSync.windowDays}d)`
+      );
+    } catch (syncErr) {
+      console.error("compare-gate: searchImpressions sync failed:", syncErr);
+    }
+
     const report = await getGSCCompareWeekly();
 
     const latest = report.latestCompleteWeek;
@@ -42,6 +58,9 @@ export async function GET(request: NextRequest) {
       `Gate status: ${report.gateClear ? "CLEAR" : "not yet"} (${report.consecutiveCompleteWeeksAtThreshold} consecutive complete week(s) at/above threshold)`,
       `Latest complete week: ${latest ? `${latest.weekStart} -> ${latest.weekEnd}: ${latest.clicks} clicks (${report.wowClicksChange} WoW)` : "none complete yet"}`,
       `Data available: ${report.available}`,
+      impressionsSync
+        ? `searchImpressions sync (DAN-1807): ${impressionsSync.matched} rows updated from ${impressionsSync.pagesWithImpressions} GSC pages (${impressionsSync.totalImpressions} impressions, ${impressionsSync.windowDays}d window)`
+        : "searchImpressions sync (DAN-1807): failed — see logs",
     ];
     if (report.gateClear) {
       lines.push(
@@ -72,6 +91,7 @@ export async function GET(request: NextRequest) {
       available: report.available,
       latestCompleteWeek: latest,
       weeks: report.weeks,
+      searchImpressionsSync: impressionsSync,
     });
   } catch (error) {
     console.error("compare-gate cron error:", error);

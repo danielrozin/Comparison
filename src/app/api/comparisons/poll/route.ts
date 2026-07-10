@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getPrisma } from "@/lib/db/prisma";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const voteSchema = z.object({
   comparisonId: z.string().min(1).max(200),
@@ -52,6 +53,12 @@ export async function POST(request: NextRequest) {
         total += r._count.entityChoice;
       }
 
+      getPostHogClient().capture({
+        distinctId: sessionId,
+        event: "comparison_poll_voted",
+        properties: { comparison_id: comparisonId, entity_choice: entityChoice },
+      });
+
       return NextResponse.json({ success: true, votes, total });
     }
 
@@ -74,6 +81,12 @@ export async function POST(request: NextRequest) {
       votes[entity] = count;
       total += count;
     }
+
+    getPostHogClient().capture({
+      distinctId: sessionId,
+      event: "comparison_poll_voted",
+      properties: { comparison_id: comparisonId, entity_choice: entityChoice },
+    });
 
     return NextResponse.json({ success: true, votes, total });
   } catch {

@@ -40,6 +40,12 @@ export function FeaturedComparisons({
             {subtitle && <p className="text-text-secondary text-sm mt-0.5">{subtitle}</p>}
           </div>
         </div>
+        <Link
+          href="/trending"
+          className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+        >
+          View all <span aria-hidden="true">&rarr;</span>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

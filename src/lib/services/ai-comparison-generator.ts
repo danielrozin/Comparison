@@ -8,6 +8,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { ComparisonPageData, CitationStats, QuickAnswerTLDR } from "@/types";
 import { enrichComparisonData, type TavilyResult } from "./tavily-service";
 import { fetchEntityImages } from "@/lib/services/image-service";
+import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 import { assessComparisonQuality } from "@/lib/services/comparison-quality";
 
@@ -180,6 +181,10 @@ export async function generateComparison(
     if (tavilyContext) {
       userMessage += `\n\nHere is current real-world data to incorporate into your comparison:\n${tavilyContext}`;
     }
+
+    // Stamp the comparison slug as the PostHog distinct ID so this generation
+    // is linked to the correct comparison in AI Observability.
+    setPostHogDistinctId(`comparison:${slug}`);
 
     let message;
     try {
@@ -495,6 +500,8 @@ export async function generateMultiComparison(
     if (tavilyContext) {
       userMessage += `\n\nHere is current real-world data to incorporate into your comparison:\n${tavilyContext}`;
     }
+
+    setPostHogDistinctId(`comparison:${slug}`);
 
     let message;
     try {

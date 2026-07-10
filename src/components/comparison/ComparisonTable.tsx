@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
 // Feature flag for A/B testing the redesigned table
@@ -491,6 +491,8 @@ function RedesignedTable({
   const [openGroups, setOpenGroups] = useState<Set<string>>(
     () => new Set(categoryEntries.map(([name]) => name))
   );
+  const [winnersOnly, setWinnersOnly] = useState(false);
+  const [filterQuery, setFilterQuery] = useState("");
 
   const headerRef = useRef<HTMLTableSectionElement>(null);
 
@@ -509,9 +511,33 @@ function RedesignedTable({
 
   const allOpen = openGroups.size === categoryEntries.length;
 
+  const filterNormalized = filterQuery.trim().toLowerCase();
+
+  // When a filter is active, auto-expand all groups so results are visible
+  useEffect(() => {
+    if (filterNormalized) {
+      setOpenGroups(new Set(categoryEntries.map(([name]) => name)));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterNormalized]);
+
+  // Filter attributes per category when winnersOnly or filterQuery is active
+  const visibleCategories = categoryEntries.map(([name, attrs]) => {
+    let filtered = winnersOnly ? attrs.filter((a) => getWinner(a) !== null && getWinner(a) !== "tie") : attrs;
+    if (filterNormalized) {
+      filtered = filtered.filter((a) => {
+        const inName = a.name.toLowerCase().includes(filterNormalized);
+        const inValA = a.values[0]?.valueText?.toLowerCase().includes(filterNormalized) ?? false;
+        const inValB = a.values[1]?.valueText?.toLowerCase().includes(filterNormalized) ?? false;
+        return inName || inValA || inValB;
+      });
+    }
+    return [name, filtered] as [string, ComparisonAttribute[]];
+  }).filter(([, attrs]) => attrs.length > 0);
+
   return (
     <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -520,21 +546,82 @@ function RedesignedTable({
           </div>
           <h2 id="full-comparison-heading" className="text-2xl font-display font-bold text-text">Full Comparison</h2>
         </div>
-        <button
-          type="button"
-          onClick={allOpen ? collapseAll : expandAll}
-          aria-pressed={allOpen}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-all bg-primary-50 hover:bg-primary-100 border border-transparent hover:border-primary-200 px-3 py-1.5 rounded-lg"
-        >
-          <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-          {allOpen ? "Collapse all" : "Expand all"}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setWinnersOnly((v) => !v)}
+            aria-pressed={winnersOnly}
+            className={`inline-flex items-center gap-1.5 text-xs font-semibold transition-all px-3 py-1.5 rounded-lg border ${
+              winnersOnly
+                ? "bg-win/10 text-win border-win/30 hover:bg-win/20"
+                : "text-text-secondary hover:text-text bg-surface-alt hover:bg-border border-transparent"
+            }`}
+          >
+            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            Winners only
+          </button>
+          <button
+            type="button"
+            onClick={allOpen ? collapseAll : expandAll}
+            aria-pressed={allOpen}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-all bg-primary-50 hover:bg-primary-100 border border-transparent hover:border-primary-200 px-3 py-1.5 rounded-lg"
+          >
+            <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+            {allOpen ? "Collapse all" : "Expand all"}
+          </button>
+        </div>
       </div>
 
+      {/* Live attribute filter — only shown when table has enough rows to warrant it */}
+      {attributes.length > 6 && (
+        <div className="relative mb-4">
+          <svg className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="search"
+            value={filterQuery}
+            onChange={(e) => setFilterQuery(e.target.value)}
+            placeholder="Filter attributes…"
+            aria-label="Filter comparison attributes"
+            className="w-full pl-9 pr-9 py-2 text-sm bg-surface-alt border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-400 placeholder:text-text-secondary/50 transition-all"
+          />
+          {filterQuery && (
+            <button
+              type="button"
+              onClick={() => setFilterQuery("")}
+              aria-label="Clear filter"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full hover:bg-border text-text-secondary/60 hover:text-text transition-colors"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Empty state when filter matches nothing */}
+      {filterNormalized && visibleCategories.length === 0 && (
+        <div className="py-12 flex flex-col items-center gap-3 text-center">
+          <div className="w-12 h-12 rounded-full bg-surface-alt flex items-center justify-center">
+            <svg className="w-6 h-6 text-text-secondary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <p className="text-sm font-medium text-text-secondary">No attributes match <span className="font-semibold text-text">&ldquo;{filterQuery}&rdquo;</span></p>
+          <button type="button" onClick={() => setFilterQuery("")} className="text-xs text-primary-600 hover:text-primary-700 font-semibold underline underline-offset-2">
+            Clear filter
+          </button>
+        </div>
+      )}
+
       {/* Desktop: Table layout with sticky header */}
-      <div className="hidden md:block bg-white border border-border rounded-xl overflow-hidden">
+      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
@@ -581,7 +668,7 @@ function RedesignedTable({
               </tr>
             </thead>
             <tbody>
-              {categoryEntries.map(([categoryName, attrs]) => {
+              {visibleCategories.map(([categoryName, attrs]) => {
                 const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
                 const isOpen = openGroups.has(categoryName);
 
@@ -658,7 +745,7 @@ function RedesignedTable({
       </div>
 
       {/* Mobile: Sticky entity header + compact rows for density */}
-      <div className="md:hidden">
+      <div className={`md:hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
         {/* Sticky entity names header */}
         <div className="sticky top-0 z-20 bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 rounded-t-xl grid grid-cols-[1fr_1fr] text-white shadow-lg shadow-indigo-900/30">
           {[entityA, entityB].map((entity, idx) => (
@@ -683,7 +770,7 @@ function RedesignedTable({
 
         {/* Category groups */}
         <div className="space-y-0 border border-border rounded-b-xl overflow-hidden">
-          {categoryEntries.map(([categoryName, attrs]) => {
+          {visibleCategories.map(([categoryName, attrs]) => {
             const { aWins, bWins, ties } = getCategoryWinCounts(attrs);
             const isOpen = openGroups.has(categoryName);
 

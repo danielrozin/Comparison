@@ -10,7 +10,7 @@ const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
   name: `${SITE_NAME} Comparison API`,
-  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
+  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 500+ comparisons in 17+ categories.",
   url: `${SITE_URL}/developers`,
 
   locale: "en_US",  documentation: `${SITE_URL}/developers`,
@@ -55,7 +55,7 @@ const apiSchema = {
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",
-    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 500+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
 
     locale: "en_US",    encodingFormat: "text/plain",
@@ -69,7 +69,7 @@ const apiSchema = {
 };
 
 const DEV_TITLE = `${SITE_NAME} Developer API — Comparison Data REST API`;
-const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 3,000+ comparisons, entity profiles, and search.`;
+const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 500+ comparisons, entity profiles, and search.`;
 const DEV_URL = `${SITE_URL}/developers`;
 
 export const metadata: Metadata = {
@@ -132,6 +132,57 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
   );
 }
 
+const devFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/developers#faqpage`,
+  url: `${SITE_URL}/developers`,
+  inLanguage: "en-US",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is the A Versus B comparison API free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, a free tier is available with 50 requests per day. Paid tiers unlock higher rate limits and additional endpoints — see the Pricing section for full details.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I authenticate with the A Versus B API?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Authentication uses a Bearer token passed in the Authorization header: Authorization: Bearer YOUR_API_KEY. Generate your key from the developer dashboard after signing in.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What data does the A Versus B comparison API return?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across 500+ comparisons in 17+ categories.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What are the rate limits for the A Versus B API?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The free tier allows 50 requests per day. Rate limit headers (X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset) are included in every API response so you can track usage programmatically.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use the A Versus B API in a commercial product?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Commercial use is permitted on any paid API tier. Free-tier usage is limited to personal and non-commercial projects. See the terms of service for full details.",
+      },
+    },
+  ],
+};
+
 export default function DevelopersPage() {
   return (
     <>
@@ -139,11 +190,15 @@ export default function DevelopersPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(apiSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(devFaqSchema) }}
+      />
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">

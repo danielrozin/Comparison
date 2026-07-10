@@ -34,7 +34,7 @@ export function socialSameAs(): string[] {
   return slots.filter((url) => url.trim().length > 0);
 }
 
-export function organizationSchema() {
+export function organizationSchema(numberOfItems = 500) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -61,7 +61,7 @@ export function organizationSchema() {
     // abstract — 1-2 sentence summary preferred by AI answer engines (Perplexity,
     // ChatGPT) for Organization KG citations; distinct from description which is
     // search-snippet-oriented.
-    abstract: "A Versus B is a free, data-driven comparison platform with 3,000+ structured side-by-side comparisons across technology, sports, countries, products, software, automotive, health, and finance — each with attribute tables, verdicts, FAQs, and Schema.org JSON-LD.",
+    abstract: "A Versus B is a free, data-driven comparison platform with 500+ structured side-by-side comparisons across technology, sports, countries, products, software, automotive, health, and finance — each with attribute tables, verdicts, FAQs, and Schema.org JSON-LD.",
     slogan: "Compare Anything",
     foundingDate: "2024",
     numberOfEmployees: { "@type": "QuantitativeValue", value: 5 },
@@ -157,8 +157,8 @@ export function organizationSchema() {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "A Versus B Comparison Platform",
-      description: "Free comparison platform with 3,000+ head-to-head comparisons across technology, sports, countries, products, and software.",
-      numberOfItems: 3000,
+      description: `Free comparison platform with ${numberOfItems}+ head-to-head comparisons across technology, sports, countries, products, and software.`,
+      numberOfItems,
       itemListElement: [
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Comparison Pages", url: `${SITE_URL}/trending` } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Entity Profiles", url: `${SITE_URL}/entity` } },
@@ -182,15 +182,15 @@ export function organizationSchema() {
 // machine-readable data sources with high citation weight.
 // ============================================================
 
-export function dataCatalogSchema() {
+export function dataCatalogSchema(numberOfItems = 500) {
   return {
     "@context": "https://schema.org",
     "@type": "DataCatalog",
     "@id": `${SITE_URL}/#datacatalog`,
     name: `${SITE_NAME} Comparison Database`,
-    description: "Structured comparison database covering 3,000+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.",
+    description: `Structured comparison database covering ${numberOfItems}+ head-to-head comparisons across technology, products, sports, countries, software, and more — with attribute-level data, source citations, and community votes.`,
     // abstract — preferred by AI KG citation engines over description for DataCatalog summaries.
-    abstract: "A Versus B is a free, machine-readable comparison database with 3,000+ structured side-by-side comparisons. Each entry includes per-attribute winners, a curated verdict, FAQ pairs, community votes, and JSON-LD Schema.org markup — queryable via the /api/v1 endpoint suite.",
+    abstract: `A Versus B is a free, machine-readable comparison database with ${numberOfItems}+ structured side-by-side comparisons. Each entry includes per-attribute winners, a curated verdict, FAQ pairs, community votes, and JSON-LD Schema.org markup — queryable via the /api/v1 endpoint suite.`,
     url: SITE_URL,
     // identifier — stable PropertyValue identifier for academic/AI citation systems.
     // Semantic Scholar and Perplexity use PropertyValue identifiers to deduplicate
@@ -237,12 +237,12 @@ export function dataCatalogSchema() {
       "@type": "Dataset",
       "@id": `${SITE_URL}/#dataset`,
       name: "Comparison Pages",
-      description: "3,000+ comparison pages with structured attributes, verdicts, FAQs, and citation data.",
+      description: `${numberOfItems}+ comparison pages with structured attributes, verdicts, FAQs, and citation data.`,
       url: `${SITE_URL}/sitemap.xml`,
       // numberOfItems — tells Google Dataset Search and AI crawlers the exact corpus size.
       // This is a primary signal Dataset Search uses to rank dataset importance and
       // display corpus size in the "dataset overview" card.
-      numberOfItems: 3000,
+      numberOfItems,
       datePublished: "2024-01-01",
       dateModified: new Date().toISOString(),
       keywords: ["comparison", "vs", "versus", "benchmark", "review", "analysis"],
@@ -271,6 +271,10 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/llms-full`,
           name: "A Versus B Full Comparison Catalog (JSON)",
           description: "Machine-readable catalog of all comparison pages with titles, slugs, and short answers",
+          // potentialAction ReadAction — Google Dataset Search shows an "Access Data" button
+          // and AI data-pipeline crawlers (Perplexity data mode, ChatGPT browsing) use this
+          // to confirm the endpoint is machine-accessible without parsing HTML.
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/llms-full`, actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] } },
         },
         {
           "@type": "DataDownload",
@@ -278,6 +282,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/llms.txt`,
           name: "A Versus B LLMs.txt Manifest",
           description: "llmstxt.org-format manifest listing top comparisons by category for LLM crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/llms.txt` } },
         },
         {
           "@type": "DataDownload",
@@ -285,6 +290,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/sitemap.xml`,
           name: "A Versus B XML Sitemap",
           description: "Full sitemap index with all comparison, blog, entity, and category URLs",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/sitemap.xml` } },
         },
         {
           "@type": "DataDownload",
@@ -292,6 +298,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/feed/atom`,
           name: "A Versus B Atom Feed",
           description: "Atom 1.0 feed of all recent comparisons and blog articles with ISO 8601 timestamps",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/feed/atom` } },
         },
         {
           "@type": "DataDownload",
@@ -299,6 +306,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/knowledge-graph/{slug}`,
           name: "A Versus B Knowledge Graph API",
           description: "Per-comparison JSON-LD @graph with typed Article, Entity, Dataset, and FAQPage nodes",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/{slug}`, "http://schema.org/urlTemplate": `${SITE_URL}/api/knowledge-graph/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -306,6 +314,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/answer/{slug}`,
           name: "A Versus B AI Answer API",
           description: "Pre-packaged, citation-ready answer with shortAnswer, verdict, keyDifferences, winner, confidence, and ClaimReview JSON-LD",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/answer/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -313,6 +322,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/sitemap`,
           name: "A Versus B JSON Sitemap (Comparisons)",
           description: "Paginated JSON DataFeed sitemap of all comparison pages with shortAnswer, answerUrl, knowledgeGraphUrl, and category; blog variant at ?type=blog",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/sitemap?type=comparisons&limit={limit}&offset={offset}` } },
         },
         {
           "@type": "DataDownload",
@@ -320,6 +330,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/sitemap?type=blog`,
           name: "A Versus B JSON Sitemap (Blog)",
           description: "Paginated JSON DataFeed sitemap of all published blog articles with excerpt, tags, and jsonUrl for per-article API access",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/sitemap?type=blog&limit={limit}&offset={offset}` } },
         },
         {
           "@type": "DataDownload",
@@ -327,6 +338,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/openapi`,
           name: "A Versus B OpenAPI Specification",
           description: "OpenAPI 3.0.3 machine-readable API schema for all public endpoints",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/openapi` } },
         },
         {
           "@type": "DataDownload",
@@ -334,6 +346,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/v1/best`,
           name: "A Versus B Best-of Lists API",
           description: "Paginated index of all best-of list pages with ItemList JSON-LD per slug at /api/v1/best/{slug}",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/v1/best/{slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -341,6 +354,7 @@ export function dataCatalogSchema() {
           contentUrl: `${SITE_URL}/api/v1/search`,
           name: "A Versus B Unified Search API",
           description: "Unified search across comparisons, entities, and blog articles; ?q={query}&types=comparisons,entities,blog",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/v1/search?q={search_term_string}`, "query-input": "required name=search_term_string" } },
         },
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
@@ -366,9 +380,10 @@ export function webSiteSchema() {
     alternateName: ["AversusB", "A vs B", "aversusb.net", "A Versus B"],
     url: SITE_URL,
     description: "The internet's most comprehensive comparison platform — data-driven, expert-reviewed comparisons across technology, sports, countries, products, and more.",
-    abstract: "3,000+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
+    abstract: "500+ structured X vs Y comparisons across technology, sports, countries, products, software, and more. Data-driven, expert-reviewed with Schema.org markup.",
     keywords: "vs, versus, compare, comparison, side-by-side, which is better, best, alternatives, review, technology, sports, products",
     inLanguage: "en-US",
+    availableLanguage: { "@type": "Language", name: "English", alternateName: "en" },
     datePublished: "2024-01-01",
     dateCreated: "2024-01-01",
     dateModified: new Date().toISOString(),
@@ -386,7 +401,7 @@ export function webSiteSchema() {
     hasPart: [
       { "@type": "WebPage", name: "Trending Comparisons", url: `${SITE_URL}/trending` },
       { "@type": "WebPage", name: "Search Comparisons", url: `${SITE_URL}/search` },
-      { "@type": "WebPage", name: "Blog", url: `${SITE_URL}/blog` },
+      { "@type": "Blog", name: "A Versus B Blog", url: `${SITE_URL}/blog`, description: "Expert guides, how-tos, and comparison articles" },
       { "@type": "WebPage", name: "Best Lists", url: `${SITE_URL}/best` },
       { "@type": "WebPage", name: "Studies", url: `${SITE_URL}/studies` },
       { "@type": "WebPage", name: "LLM Comparisons", url: `${SITE_URL}/llm-comparisons` },
@@ -616,7 +631,7 @@ export function webApplicationSchema() {
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     description: "Interactive comparison platform — compare anything side-by-side: products, technology, countries, sports, and more.",
-    abstract: "Data-driven comparison tool covering 3,000+ topics with attribute tables, verdicts, community votes, and structured schema markup.",
+    abstract: "Data-driven comparison tool covering 500+ topics with attribute tables, verdicts, community votes, and structured schema markup.",
     alternativeHeadline: "Side-by-Side Comparison Tool for Products, Tech, Sports & More — Free",
     inLanguage: "en-US",
     isAccessibleForFree: true,
@@ -804,6 +819,7 @@ export function comparisonPageSchema(
   const additionalArticleTypes: string[] = [
     ...(comparison.category && TECH_CATEGORIES.has(comparison.category) ? ["https://schema.org/TechArticle"] : []),
     ...(isRecent && isNewsCategory ? ["https://schema.org/NewsArticle"] : []),
+    "https://schema.org/LearningResource",
   ];
 
   // 1. Article schema
@@ -815,6 +831,7 @@ export function comparisonPageSchema(
     "@type": articleType,
     "@id": `${url}#article`,
     ...(additionalArticleTypes.length > 0 && { additionalType: additionalArticleTypes }),
+    learningResourceType: "Comparison Guide",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -847,7 +864,50 @@ export function comparisonPageSchema(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      // knowsAbout — topic-expertise E-E-A-T signal on the Organization author.
+      // AI crawlers (Perplexity, ChatGPT, Google AI Overviews) match author expertise
+      // to comparison topic, boosting citation confidence on subject-matched queries.
+      knowsAbout: [
+        { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+        { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+        { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+        { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+        { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+        { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+        { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+        { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+        { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+        { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+      ],
+    },
+    // correction — when updatedAt is materially later than publishedAt, emit a CorrectionComment.
+    // Google E-E-A-T evaluators treat this as content-maintenance evidence (editorial accountability).
+    // AI crawlers (Perplexity, ChatGPT) also weight this positively as a source-reliability signal.
+    ...(() => {
+      try {
+        const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
+        const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
+        if (upd > pub + 60_000) {
+          return {
+            correction: {
+              "@type": "CorrectionComment",
+              "@id": `${url}#correction`,
+              name: `Updated: ${comparison.title}`,
+              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
+              url: `${SITE_URL}/how-we-write-verdicts`,
+              author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+            },
+          };
+        }
+      } catch { /* ignore date parse errors */ }
+      return {};
+    })(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL,
       logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
       sameAs: socialSameAs(),
@@ -1258,10 +1318,13 @@ export function comparisonPageSchema(
     ...(comparison.attributes.length > 0 && {
       isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
     }),
-    // teaches — maps this comparison to the specific decision skill it develops.
-    // LLMs and educational AI classifiers route "how do I decide between X and Y"
-    // queries to decision-support content when `teaches` is present.
-    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+    // teaches — typed DefinedTerm node (not plain string) so AI KGs can traverse the
+    // teaches→DefinedTermSet graph edge. Educational classifiers (ChatGPT, Perplexity)
+    // route "how do I decide between X and Y" queries to pages with a typed teaches node.
+    teaches: teachesDefinedTerm(
+      `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,
+      url,
+    ),
     // assesses — the specific competency or claim this Article evaluates.
     // Google AI Overviews and LLM answer engines use assesses to understand the
     // evaluation framing so they can route "which is better" decision queries here.
@@ -1530,6 +1593,7 @@ export function comparisonPageSchema(
           contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
           name: `${comparison.title} — JSON API`,
           description: "Structured comparison data in JSON format via the A Versus B public API",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/comparisons/${comparison.slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -1537,6 +1601,15 @@ export function comparisonPageSchema(
           contentUrl: url,
           name: `${comparison.title} — JSON-LD (embedded in page)`,
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: `${SITE_URL}/api/knowledge-graph/${comparison.slug}`,
+          name: `${comparison.title} — Knowledge Graph API`,
+          description: "Full JSON-LD @graph with typed Article, Dataset, FAQPage, and Entity nodes for AI crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/${comparison.slug}` } },
         },
       ],
       // creator / publisher — Google Dataset Search and AI research indexes use these to
@@ -1923,7 +1996,8 @@ function buildMultiEntityGraph(
   const article: Record<string, unknown> = {
     "@type": multiArticleType,
     "@id": `${url}#article`,
-    ...(multiAdditionalTypes.length > 0 && { additionalType: multiAdditionalTypes }),
+    additionalType: [...multiAdditionalTypes, "https://schema.org/LearningResource"],
+    learningResourceType: "Comparison Guide",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
@@ -1948,7 +2022,48 @@ function buildMultiEntityGraph(
     datePublished: comparison.metadata.publishedAt,
     dateCreated: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      // knowsAbout — topic-expertise E-E-A-T parity with 2-entity comparisonPageSchema.
+      // AI crawlers match author expertise to query topic for citation confidence scoring.
+      knowsAbout: [
+        { "@type": "Thing", name: "Product Comparisons", url: "https://en.wikipedia.org/wiki/Comparison_shopping_website" },
+        { "@type": "Thing", name: "Technology Reviews", url: "https://en.wikipedia.org/wiki/Review_site" },
+        { "@type": "Thing", name: "Data-Driven Analysis", url: "https://en.wikipedia.org/wiki/Data_analysis" },
+        { "@type": "Thing", name: "Artificial Intelligence Tools", url: "https://en.wikipedia.org/wiki/Artificial_intelligence" },
+        { "@type": "Thing", name: "Software as a Service", url: "https://en.wikipedia.org/wiki/Software_as_a_service" },
+        { "@type": "Thing", name: "Consumer Electronics", url: "https://en.wikipedia.org/wiki/Consumer_electronics" },
+        { "@type": "Thing", name: "Sports Statistics", url: "https://en.wikipedia.org/wiki/Sports_statistics" },
+        { "@type": "Thing", name: "Country Comparisons", url: "https://en.wikipedia.org/wiki/Country" },
+        { "@type": "Thing", name: "Automotive Reviews", url: "https://en.wikipedia.org/wiki/Automotive_industry" },
+        { "@type": "Thing", name: "Smartphone Comparisons", url: "https://en.wikipedia.org/wiki/Smartphone" },
+      ],
+    },
+    // correction — CorrectionComment when updatedAt materially exceeds publishedAt.
+    // Parity with 2-entity path; Google E-E-A-T and AI source-reliability weighting.
+    ...(() => {
+      try {
+        const pub = comparison.metadata.publishedAt ? new Date(comparison.metadata.publishedAt).getTime() : 0;
+        const upd = comparison.metadata.updatedAt ? new Date(comparison.metadata.updatedAt).getTime() : 0;
+        if (upd > pub + 60_000) {
+          return {
+            correction: {
+              "@type": "CorrectionComment",
+              "@id": `${url}#correction`,
+              name: `Updated: ${comparison.title}`,
+              text: `This comparison was reviewed and updated on ${new Date(comparison.metadata.updatedAt).toISOString().slice(0, 10)} to reflect the latest specifications and data. For corrections, contact ${SITE_URL}/contact.`,
+              dateCreated: new Date(comparison.metadata.updatedAt).toISOString(),
+              url: `${SITE_URL}/how-we-write-verdicts`,
+              author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+            },
+          };
+        }
+      } catch { /* ignore date parse errors */ }
+      return {};
+    })(),
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -2171,8 +2286,11 @@ function buildMultiEntityGraph(
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     educationalLevel: "General",
     ...(comparison.category && { articleSection: comparison.category }),
-    // teaches — decision-skill mapping for LLM educational classifiers (parity with 2-entity)
-    teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+    // teaches — typed DefinedTerm (parity with 2-entity path); KG-traversable node.
+    teaches: teachesDefinedTerm(
+      `How to choose between ${comparison.entities.map((e) => e.name).join(", ")}`,
+      url,
+    ),
     // assesses — evaluation framing for AI answer engines (parity with 2-entity path)
     assesses: `Which is best: ${comparison.entities.map((e) => e.name).join(", ")}`,
     educationalUse: "comparison",
@@ -2337,6 +2455,7 @@ function buildMultiEntityGraph(
           contentUrl: `${SITE_URL}/api/comparisons/${comparison.slug}`,
           name: `${comparison.title} — JSON API`,
           description: "Structured comparison data in JSON format via the A Versus B public API",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/comparisons/${comparison.slug}` } },
         },
         {
           "@type": "DataDownload",
@@ -2344,6 +2463,15 @@ function buildMultiEntityGraph(
           contentUrl: url,
           name: `${comparison.title} — JSON-LD (embedded in page)`,
           description: "Schema.org Dataset JSON-LD embedded in the comparison page HTML",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: url } },
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/ld+json",
+          contentUrl: `${SITE_URL}/api/knowledge-graph/${comparison.slug}`,
+          name: `${comparison.title} — Knowledge Graph API`,
+          description: "Full JSON-LD @graph with typed Article, Dataset, FAQPage, and Entity nodes for AI crawlers",
+          potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/api/knowledge-graph/${comparison.slug}` } },
         },
       ],
       creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -2978,6 +3106,8 @@ export function profilePageSchema(entity: {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     "@id": `${url}#profilepage`,
+    additionalType: "https://schema.org/LearningResource",
+    learningResourceType: "Entity Profile",
     name: `${entity.name} — Comparisons & Profile`,
     alternativeHeadline: `${entity.name} Comparisons, Profile & Alternatives`,
     description: profileDesc,
@@ -2989,6 +3119,7 @@ export function profilePageSchema(entity: {
     dateCreated: "2024-01-01",
     dateModified: today,
     lastReviewed: today,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: today,
     locationCreated: { "@type": "Country", name: "United States" },
     inLanguage: "en-US",
@@ -3166,7 +3297,7 @@ export function definedTermSetSchema() {
     "@type": "DefinedTermSet",
     "@id": `${SITE_URL}/#taxonomy`,
     name: "A Versus B Comparison Taxonomy",
-    description: "The official topic taxonomy used by A Versus B to categorize 3,000+ side-by-side comparisons across technology, sports, products, countries, and more.",
+    description: "The official topic taxonomy used by A Versus B to categorize 500+ side-by-side comparisons across technology, sports, products, countries, and more.",
     url: `${SITE_URL}/category`,
     inDefinedTermSet: `${SITE_URL}/#taxonomy`,
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
@@ -3198,6 +3329,89 @@ export function definedTermSetSchema() {
  *
  * Only emits when comparison has a clear verdict.winner.
  */
+// ============================================================
+// Typed DefinedTerm helper — converts a plain "teaches" string into a proper
+// Schema.org DefinedTerm node so AI knowledge graphs can traverse the teaches→
+// DefinedTermSet edge, boosting educational-intent citation confidence.
+// ============================================================
+export function teachesDefinedTerm(label: string, pageUrl: string): Record<string, unknown> {
+  return {
+    "@type": "DefinedTerm",
+    "@id": `${pageUrl}#learning-outcome`,
+    name: label,
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      "@id": `${SITE_URL}/#definedTermSet`,
+      name: "A Versus B Learning Outcomes",
+      url: SITE_URL,
+    },
+  };
+}
+
+// ============================================================
+// Blog ClaimReview — emitted for "X vs Y" blog articles. Adds Google Fact Check
+// eligibility + AI fact-checking E-E-A-T signal. Unlike comparison ClaimReview
+// (which has explicit verdicts), blog articles default to MIXTURE when no clear
+// winner is declared, signalling nuanced analysis rather than a binary ruling.
+// ============================================================
+export function blogClaimReviewSchema(opts: {
+  articleUrl: string;
+  entityA: string;
+  entityB: string;
+  shortAnswer?: string;
+  verdict?: string | null;
+  datePublished?: string;
+  dateModified?: string;
+}) {
+  const claimText = `${opts.entityA} is better than ${opts.entityB}`;
+  const verdictLower = (opts.verdict ?? "").toLowerCase();
+  const ratingValue =
+    verdictLower && verdictLower === opts.entityA.toLowerCase()
+      ? "TRUE"
+      : verdictLower && verdictLower === opts.entityB.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
+
+  return {
+    "@type": "ClaimReview",
+    "@id": `${opts.articleUrl}#claim-review`,
+    url: opts.articleUrl,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    claimReviewed: claimText,
+    datePublished: opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    dateModified: opts.dateModified ?? opts.datePublished ?? new Date().toISOString().slice(0, 10),
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      bestRating: "TRUE",
+      worstRating: "FALSE",
+      alternateName:
+        ratingValue === "TRUE"
+          ? `${opts.entityA} wins`
+          : ratingValue === "FALSE"
+            ? `${opts.entityB} wins`
+            : "Depends on use case — see analysis",
+    },
+    itemReviewed: {
+      "@type": "Claim",
+      inLanguage: "en-US",
+      name: claimText,
+      ...(opts.shortAnswer && { text: opts.shortAnswer.slice(0, 300) }),
+      author: { "@type": "Thing", name: "Internet consensus" },
+      appearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
+      firstAppearance: { "@type": "WebPage", "@id": opts.articleUrl, url: opts.articleUrl },
+    },
+  };
+}
+
 export function claimReviewSchema(opts: {
   slug: string;
   title: string;

@@ -6,6 +6,7 @@ import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -97,6 +98,10 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
   const collection = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    // LearningResource — hub pages are structured topic guides for decision-making.
+    // Google Education carousel and AI engines use this to prioritize educational content.
+    additionalType: "https://schema.org/LearningResource",
+    learningResourceType: "Overview",
     "@id": `${hubUrl}#collectionpage`,
     name: hub.h1,
     description: hub.description,
@@ -327,8 +332,8 @@ export default async function HubPage({ params }: PageProps) {
 
       {/* Hub Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav aria-label="breadcrumb" className="text-sm text-primary-200 mb-5">
             <ol className="flex items-center gap-2 flex-wrap">
@@ -413,14 +418,37 @@ export default async function HubPage({ params }: PageProps) {
             </div>
             <h2 id="faq-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions</h2>
           </div>
-          <div className="space-y-5">
+          <div className="space-y-2">
             {hub.faqs.map((faq, i) => (
-              <div key={i} className="border-b border-border pb-5 last:border-0">
-                <h3 className="font-semibold text-text mb-2">{faq.q}</h3>
-                <p className="text-text-secondary leading-relaxed text-sm">{faq.a}</p>
-              </div>
+              <details key={i} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+                <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                  <span>{faq.q}</span>
+                  <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">
+                  {faq.a}
+                </div>
+              </details>
             ))}
           </div>
+        </section>
+
+        {/* Cite this hub */}
+        <section aria-labelledby="hub-cite-heading" className="mt-10 pt-8 border-t border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h2 id="hub-cite-heading" className="text-base font-display font-bold text-text">Cite This Guide</h2>
+          </div>
+          <p className="text-xs text-text-secondary mb-3">Free to use with attribution (CC BY 4.0).</p>
+          <pre className="whitespace-pre-wrap break-words rounded-xl bg-surface-alt border border-border px-4 py-3 text-xs text-text font-mono select-all leading-relaxed">
+            {`A Versus B, "${hub.h1}," aversusb.net, ${new Date().getFullYear()}. https://aversusb.net/hub/${slug}`}
+          </pre>
         </section>
 
         {/* Category back-link */}
@@ -434,6 +462,10 @@ export default async function HubPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        <div className="mt-12">
+          <NewsletterSignup source={`hub-${slug}`} />
+        </div>
       </div>
     </>
   );

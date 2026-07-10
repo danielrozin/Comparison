@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ABOUT_TITLE = `About ${SITE_NAME} — Mission, Team & Methodology`;
 const ABOUT_DESC = `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`;
@@ -122,42 +123,109 @@ const aboutPageSchema = {
   },
 };
 
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/about#faqpage`,
+  url: `${SITE_URL}/about`,
+  inLanguage: "en-US",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is A Versus B free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All comparisons, verdicts, and data on A Versus B are completely free. There is no paywall, login requirement, or usage limit for readers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How accurate are the comparison verdicts on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages that fall below quality thresholds or cover sensitive topics. Users can flag inaccuracies directly on any comparison page using the feedback widget.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I request a comparison that does not exist yet?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Visit the Comparison Requests page to suggest any comparison you would like to see. You can also upvote existing requests — top-voted comparisons are built first.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B accept paid placements or sponsored comparisons?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. A Versus B does not accept payment to influence comparison verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How often is comparison data updated on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Comparison pages are refreshed automatically on a rolling schedule and re-ranked daily based on trending activity. You can trigger an update on any page by using the thumbs-down feedback widget to flag outdated information.",
+      },
+    },
+  ],
+};
+
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={aboutPageSchema} />
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center gap-1.5 text-sm text-text-secondary">
-          <li>
-            <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              <span className="sr-only sm:not-sr-only">Home</span>
-            </Link>
-          </li>
-          <li aria-hidden="true">
-            <svg className="w-3 h-3 text-text-secondary/40 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </li>
-          <li className="text-text font-medium" aria-current="page">About</li>
-        </ol>
-      </nav>
+      <JsonLd data={[aboutPageSchema, faqPageSchema]} />
 
-      {/* Hero */}
-      <div className="mb-12">
-        <h1 className="text-4xl sm:text-5xl font-display font-black text-text mb-4">
-          About {SITE_NAME}
-        </h1>
-        <p className="text-xl text-text-secondary leading-relaxed">
-          We believe everyone deserves clear, unbiased information to make confident decisions —
-          whether you&apos;re choosing a smartphone, understanding world history, or settling a
-          debate with friends.
-        </p>
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-br from-slate-900 via-primary-900 to-indigo-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true">
+                <svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </li>
+              <li className="text-white font-medium" aria-current="page">About</li>
+            </ol>
+          </nav>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+              About {SITE_NAME}
+            </h1>
+          </div>
+          <p className="text-primary-100 text-base sm:text-lg leading-relaxed max-w-2xl">
+            We believe everyone deserves clear, unbiased information to make confident decisions —
+            whether you&apos;re choosing a smartphone, understanding world history, or settling a
+            debate with friends.
+          </p>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
       </div>
+
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Mission */}
       <section aria-labelledby="about-mission-heading" className="mb-12">
@@ -467,6 +535,54 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* FAQ */}
+      <section aria-labelledby="about-faq-heading" className="mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 id="about-faq-heading" className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
+        </div>
+        <div className="space-y-2">
+          {[
+            {
+              q: "Is A Versus B free to use?",
+              a: "Yes. All comparisons, verdicts, and data are completely free — no paywall, login, or usage limit.",
+            },
+            {
+              q: "How accurate are the comparison verdicts?",
+              a: "Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages below quality thresholds or covering sensitive topics. You can flag inaccuracies using the feedback widget on any comparison page.",
+            },
+            {
+              q: "Can I request a comparison that doesn't exist yet?",
+              a: "Yes — visit our Comparison Requests page, suggest any pairing you'd like to see, and upvote existing requests. Top-voted comparisons are built first.",
+            },
+            {
+              q: "Does A Versus B accept paid placements or sponsored comparisons?",
+              a: "No. We don't accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.",
+            },
+            {
+              q: "How often is comparison data updated?",
+              a: "Comparison pages refresh automatically on a rolling schedule and re-rank daily based on trending activity. You can also trigger an update by flagging outdated information via the thumbs-down widget.",
+            },
+          ].map(({ q, a }) => (
+            <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
+              <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                <span>{q}</span>
+                <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">
+                {a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
       <section aria-labelledby="about-contact-cta-heading" className="bg-gradient-to-br from-primary-50 to-indigo-50 border border-primary-100 rounded-2xl p-8 text-center">
         <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
@@ -488,6 +604,10 @@ export default function AboutPage() {
           </svg>
         </Link>
       </section>
+
+      <div className="mt-12">
+        <NewsletterSignup source="about" />
+      </div>
     </div>
     </>
   );

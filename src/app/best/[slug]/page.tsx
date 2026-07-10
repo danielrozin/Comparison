@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 
@@ -259,6 +262,11 @@ function bestPageSchema(entry: BestEntry) {
       },
       {
         "@type": ["CollectionPage", "Article"],
+        // LearningResource — signals Google Education carousel + AI educational intent routing.
+        // Best-of pages are structured decision guides, which qualifies them as LearningResource
+        // under Schema.org's definition (a resource designed to support learning a skill/topic).
+        additionalType: ["https://schema.org/LearningResource", "https://schema.org/InDepthArticle"],
+        learningResourceType: "Roundup",
         "@id": `${url}#article`,
         name: entry.h1,
         description: entry.description,
@@ -390,57 +398,70 @@ export default async function BestPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Breadcrumbs */}
-        <nav aria-label="breadcrumb" className="text-sm text-text-secondary mb-6">
-          <ol className="flex items-center gap-1 flex-wrap">
-            <li><Link href="/" className="hover:underline">Home</Link></li>
-            <li aria-hidden="true">/</li>
-            <li><Link href="/best" className="hover:underline">Best lists</Link></li>
-            <li aria-hidden="true">/</li>
-            <li aria-current="page"><span className="text-text">{entry.h1}</span></li>
-          </ol>
-        </nav>
+      <ReadingProgressBar articleId="best-article-body" />
 
-        {/* Header */}
-        <header className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-text mb-4 leading-tight">
-            {entry.h1}
-          </h1>
-          <div className="flex items-center gap-3 text-sm text-text-secondary">
-            {entry.authorName && (
-              <span>
-                By{" "}
-                {entry.authorUrl ? (
-                  <Link href={entry.authorUrl} className="text-blue-600 hover:underline">
-                    {entry.authorName}
-                  </Link>
-                ) : (
-                  <span>{entry.authorName}</span>
+      {/* Hero Banner */}
+      <div className="bg-gradient-to-br from-emerald-900 via-teal-800 to-primary-800 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
+          <nav aria-label="breadcrumb" className="text-sm text-emerald-200 mb-5">
+            <ol className="flex items-center gap-1.5 flex-wrap">
+              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-emerald-400/60 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li><Link href="/best" className="hover:text-white transition-colors">Best lists</Link></li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-emerald-400/60 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li className="text-white font-medium" aria-current="page">{entry.h1}</li>
+            </ol>
+          </nav>
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
+                {entry.h1}
+              </h1>
+              <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-emerald-200">
+                {entry.authorName && (
+                  <span className="flex items-center gap-1.5">
+                    <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    {entry.authorUrl ? (
+                      <Link href={entry.authorUrl} className="hover:text-white transition-colors">{entry.authorName}</Link>
+                    ) : entry.authorName}
+                  </span>
                 )}
-              </span>
-            )}
-            {entry.updatedAt && (
-              <span>
-                Last updated{" "}
-                <time dateTime={new Date(entry.updatedAt).toISOString()}>
-                  {new Date(entry.updatedAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
-              </span>
-            )}
+                {entry.updatedAt && (
+                  <time dateTime={new Date(entry.updatedAt).toISOString()} className="flex items-center gap-1.5">
+                    <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    Updated {new Date(entry.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                  </time>
+                )}
+              </div>
+            </div>
           </div>
-        </header>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </div>
 
-        {/* Article body */}
+      {/* Article body */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <article
+          id="best-article-body"
           className="prose-custom"
           dangerouslySetInnerHTML={{ __html: bodyHtml }}
         />
+        <div className="mt-12">
+          <NewsletterSignup source={`best-${slug}`} />
+        </div>
       </div>
+      <BackToTop />
     </>
   );
 }

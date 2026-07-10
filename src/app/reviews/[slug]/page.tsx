@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
-import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs } from "@/lib/seo/schema";
+import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -102,24 +103,6 @@ function SourceBreakdown({ breakdown }: { breakdown: Record<string, { avg: numbe
   );
 }
 
-function SmartScoreRing({ score }: { score: number }) {
-  const color = score >= 90 ? "text-green-600" : score >= 75 ? "text-blue-600" : score >= 60 ? "text-amber-600" : "text-text-secondary";
-  const bgColor = score >= 90 ? "bg-green-50" : score >= 75 ? "bg-blue-50" : score >= 60 ? "bg-amber-50" : "bg-surface-alt";
-  return (
-    <div
-      role="meter"
-      aria-label="SmartScore"
-      aria-valuenow={score}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuetext={`SmartScore: ${score} out of 100`}
-      className={`flex flex-col items-center justify-center w-24 h-24 rounded-full ${bgColor}`}
-    >
-      <span className={`text-3xl font-black ${color}`} aria-hidden="true">{score}</span>
-      <span className="text-xs text-text-secondary font-medium" aria-hidden="true">SmartScore</span>
-    </div>
-  );
-}
 
 function SentimentBar({ positivePct, negativePct }: { positivePct: number; negativePct: number }) {
   const neutralPct = Math.max(0, 100 - positivePct - negativePct);
@@ -180,6 +163,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       // enabling "Review Snippet" rich results and query routing for "[product] reviews" queries.
       "@type": ["WebPage", "ReviewPage"],
       "@id": `${SITE_URL}/reviews/${slug}#reviewpage`,
+      additionalType: "https://schema.org/LearningResource",
+      learningResourceType: "Review",
       name: title,
       description,
       abstract: description,
@@ -249,6 +234,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/reviews/${slug}` },
         },
       ],
+      // hasPart — formal ReviewPage→FAQPage edge so AI crawlers attribute FAQ answers to this page.
+      hasPart: { "@type": "FAQPage", "@id": `${SITE_URL}/reviews/${slug}#faq` },
       // timeRequired — estimated reading time for a review page (aggregated reviews + ratings).
       timeRequired: "PT3M",
       // wordCount — proxy for content depth; review aggregation pages scale with review count.
@@ -290,11 +277,14 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     },
   ];
   if (aggregation) {
+    // SoftwareApplication + AggregateRating — typed for Google's Software rich results.
+    // Using "software" entityType maps to SoftwareApplication in aggregateRatingSchema,
+    // which unlocks the Software carousel in Google Search and AI Overviews software panels.
     schemas.push(
       aggregateRatingSchema({
         name,
         slug,
-        entityType: "product",
+        entityType: "software",
         ratingValue: aggregation.averageRating,
         reviewCount: aggregation.totalReviews,
       })
@@ -302,6 +292,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
   }
 
   // Individual Review schema — unlocks Google's "Review Snippet" rich result.
+  // SoftwareApplication type (with Product as additionalType fallback) signals to Google
+  // that this is software-specific, enabling Software rich results alongside Review Snippets.
   // Only emit when reviews have a body and rating to avoid thin/empty items.
   const reviewableItems = reviews
     .filter((r) => r.body && r.body.length > 30 && r.rating)
@@ -309,9 +301,26 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
   if (reviewableItems.length > 0) {
     schemas.push({
       "@context": "https://schema.org",
-      "@type": "Product",
+      // SoftwareApplication is the primary type; additionalType Product preserves
+      // Product Review Snippet eligibility for non-software entities in the catalog.
+      "@type": "SoftwareApplication",
+      additionalType: "https://schema.org/Product",
+      "@id": `${SITE_URL}/entity/${slug}#software`,
       name,
       url: `${SITE_URL}/reviews/${slug}`,
+      // applicationCategory — required for Google's Software rich result carousel.
+      // "WebApplication" covers the majority of reviewed entities (SaaS, AI tools, platforms).
+      applicationCategory: "WebApplication",
+      // operatingSystem — "Web" is the safe default for SaaS/AI tools reviewed on the site.
+      operatingSystem: "Web",
+      // offers — free tier is common; signals to AI tools that the product is accessible.
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        description: "Free tier available",
+      },
       ...(aggregation && {
         aggregateRating: {
           "@type": "AggregateRating",
@@ -319,6 +328,8 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
           bestRating: 5,
           worstRating: 1,
           reviewCount: aggregation.totalReviews,
+          // ratingExplanation — AI crawlers use this to understand the rating methodology.
+          ratingExplanation: `SmartScore ${aggregation.smartScore}/100 — aggregated from Reddit, G2, Capterra, Trustpilot, and more`,
         },
       }),
       review: reviewableItems.map((r) => ({
@@ -340,6 +351,44 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
     });
   }
 
+  // FAQPage — synthetic Q&A pairs built from aggregation data.
+  // AEO: enables FAQ rich results and AI answer-engine Q&A slots for "[product] reviews" queries.
+  // Each question targets a distinct common query pattern so Google can surface multiple
+  // FAQ cards and AI engines (Perplexity, ChatGPT) can cite the answers directly.
+  const reviewFaqId = `${SITE_URL}/reviews/${slug}#faq`;
+  const reviewFaqs = [
+    {
+      question: `Is ${name} good?`,
+      answer: aggregation
+        ? `${name} has a ${aggregation.averageRating.toFixed(1)}/5 rating based on ${aggregation.totalReviews} aggregated reviews across Reddit, G2, Capterra, Trustpilot, and other sources. Its SmartScore is ${aggregation.smartScore}/100, which ${aggregation.smartScore >= 70 ? "indicates a well-regarded product" : aggregation.smartScore >= 50 ? "indicates mixed reception" : "indicates room for improvement"}.`
+        : `${name} is a notable product in its category. Visit our reviews page for the latest aggregated ratings and community feedback.`,
+    },
+    {
+      question: `What is ${name}'s rating?`,
+      answer: aggregation
+        ? `${name} has an average rating of ${aggregation.averageRating.toFixed(1)} out of 5 stars based on ${aggregation.totalReviews} reviews. The SmartScore — a composite metric from A Versus B — is ${aggregation.smartScore}/100.`
+        : `See the latest ${name} ratings on A Versus B, aggregated from multiple review sources.`,
+    },
+    {
+      question: `How many reviews does ${name} have?`,
+      answer: aggregation
+        ? `${name} has ${aggregation.totalReviews} aggregated reviews on A Versus B, sourced from Reddit, G2, Capterra, Trustpilot, and more. This gives it a broad community-based perspective on its strengths and weaknesses.`
+        : `${name} review data is being collected from multiple sources. Check back soon for an updated review count.`,
+    },
+    {
+      question: `Where can I compare ${name} with alternatives?`,
+      answer: `You can compare ${name} head-to-head with alternatives on A Versus B at aversusb.net/alternatives/${slug}. The site also has a full entity profile at aversusb.net/entity/${slug} with comparison data and rankings.`,
+    },
+  ];
+  schemas.push(
+    faqSchema(
+      reviewFaqs,
+      reviewFaqId,
+      [{ "@type": "SoftwareApplication", "@id": `${SITE_URL}/entity/${slug}`, name, url: `${SITE_URL}/entity/${slug}` }],
+      "2024-01-01"
+    )
+  );
+
   return (
     <>
       {schemas.map((schema, i) => (
@@ -350,43 +399,58 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         />
       ))}
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
-            <li>
-              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
-                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span className="sr-only sm:not-sr-only">Home</span>
-              </Link>
-            </li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
-            <li><Link href="/reviews" className="hover:text-primary-600 transition-colors">Reviews</Link></li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
-            <li className="text-text font-medium" aria-current="page">{name}</li>
-          </ol>
-        </nav>
-
-        {/* Hero section */}
-        <div className="flex flex-col sm:flex-row items-start gap-6 mb-10">
-          <div className="w-20 h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-3xl font-bold text-primary-700 shrink-0">
-            {name.charAt(0)}
-          </div>
-          <div className="flex-1">
-            <h1 className="text-3xl sm:text-4xl font-display font-black text-text">
-              {name}
-            </h1>
+      {/* Gradient Hero */}
+      <section aria-labelledby="review-product-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-violet-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 pb-16 sm:pb-20 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
+              <li>
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li><Link href="/reviews" className="hover:text-white transition-colors">Reviews</Link></li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li className="text-white font-medium" aria-current="page">{name}</li>
+            </ol>
+          </nav>
+          <div className="flex items-start gap-4 sm:gap-6">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-bold text-white shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              {name.charAt(0)}
+            </div>
+            <div className="flex-1">
+              <span className="text-xs font-semibold text-primary-300 uppercase tracking-wider">SmartReview</span>
+              <h1 id="review-product-heading" className="text-3xl sm:text-4xl font-display font-black tracking-tight leading-tight">
+                {name}
+              </h1>
+              {aggregation && (
+                <div className="mt-2">
+                  <StarRating rating={aggregation.averageRating} size="lg" reviewCount={aggregation.totalReviews} inverted />
+                </div>
+              )}
+            </div>
             {aggregation && (
-              <div className="flex items-center gap-4 mt-2">
-                <StarRating rating={aggregation.averageRating} size="lg" reviewCount={aggregation.totalReviews} />
+              <div className="hidden sm:flex flex-col items-center justify-center w-20 h-20 rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur-sm shrink-0" role="meter" aria-label="SmartScore" aria-valuenow={aggregation.smartScore} aria-valuemin={0} aria-valuemax={100}>
+                <span className="text-2xl font-black text-white">{aggregation.smartScore}</span>
+                <span className="text-[9px] text-primary-300 font-semibold uppercase tracking-wide">SmartScore</span>
               </div>
             )}
           </div>
-          {aggregation && <SmartScoreRing score={aggregation.smartScore} />}
         </div>
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </section>
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Aggregation details */}
         {aggregation && (
           <ul role="list" className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 list-none">
@@ -571,6 +635,10 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
             View Comparisons
           </Link>
         </section>
+
+        <div className="mt-12">
+          <NewsletterSignup source={`review-${slug}`} />
+        </div>
       </div>
     </>
   );

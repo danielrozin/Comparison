@@ -6,6 +6,7 @@ import { getReviewedEntities, getReviewCategories } from "@/lib/services/review-
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { breadcrumbSchema } from "@/lib/seo/schema";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ITEMS_PER_PAGE = 16;
 
@@ -217,7 +218,8 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
 
       {/* Gradient Hero */}
       <section aria-labelledby="reviews-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -365,6 +367,13 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
                 View all reviews
               </Link>
             )}
+          </div>
+        )}
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source="reviews-listing" />
           </div>
         )}
       </div>

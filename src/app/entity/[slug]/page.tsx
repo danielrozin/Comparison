@@ -4,9 +4,11 @@ import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { breadcrumbSchema, aggregateRatingSchema, profilePageSchema, faqSchema } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
+import { EntityCompareSearch } from "@/components/ui/EntityCompareSearch";
 import { ENTITY_CONTENT, ENTITY_LEDE, entityIntroFallback } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { prisma } from "@/lib/db/prisma";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -155,6 +157,20 @@ export default async function EntityPage({ params }: PageProps) {
     ? CATEGORIES.find((c) => c.slug === primaryCategory)
     : null;
 
+  // Compute top categories for the at-a-glance chip row
+  const categoryCounts: Record<string, number> = {};
+  for (const c of relatedComparisons) {
+    if (c.category) categoryCounts[c.category] = (categoryCounts[c.category] ?? 0) + 1;
+  }
+  const topCategories = Object.entries(categoryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([slug, count]) => ({
+      slug,
+      name: CATEGORIES.find((c) => c.slug === slug)?.name ?? slug,
+      count,
+    }));
+
   // Map category → Schema.org entity type for correct structured data
   const CATEGORY_TO_ENTITY_TYPE: Record<string, string> = {
     sports: "person",
@@ -299,8 +315,8 @@ export default async function EntityPage({ params }: PageProps) {
 
       {/* Entity Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
@@ -348,6 +364,28 @@ export default async function EntityPage({ params }: PageProps) {
               </div>
             </div>
           </div>
+
+          {/* Inline "compare with" search — turns entity pages into comparison entry points */}
+          <div className="max-w-lg mt-2">
+            <EntityCompareSearch entityName={name} entitySlug={slug} />
+          </div>
+
+          {/* At-a-glance stat chips */}
+          {topCategories.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2" aria-label="Top comparison categories">
+              {topCategories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-sm ring-1 ring-white/20 transition-colors"
+                >
+                  <span className="capitalize">{cat.name}</span>
+                  <span className="opacity-60">·</span>
+                  <span className="opacity-80">{cat.count}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
@@ -507,7 +545,7 @@ export default async function EntityPage({ params }: PageProps) {
 
         {/* Comparisons */}
         {relatedComparisons.length > 0 ? (
-          <section aria-labelledby="entity-comparisons-heading" className="space-y-3">
+          <section aria-labelledby="entity-comparisons-heading">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center shadow-sm flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -515,12 +553,14 @@ export default async function EntityPage({ params }: PageProps) {
                 </svg>
               </div>
               <h2 id="entity-comparisons-heading" className="text-xl font-display font-bold text-text">All Comparisons</h2>
+              <span className="ml-auto text-xs font-medium text-text-secondary bg-surface-alt px-2.5 py-1 rounded-full">{relatedComparisons.length}</span>
             </div>
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
             {relatedComparisons.map((comp) => {
               const parts = comp.title.split(/\s+vs\.?\s+/i);
               return (
+                <li key={comp.slug} className="m-0 p-0">
                 <Link
-                  key={comp.slug}
                   href={`/compare/${comp.slug}`}
                   className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                 >
@@ -532,20 +572,22 @@ export default async function EntityPage({ params }: PageProps) {
                       {(parts[1] || "B").charAt(0)}
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-text group-hover:text-primary-700 transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">
                       {comp.title}
                     </p>
                     {comp.category && (
                       <p className="text-xs text-text-secondary capitalize">{comp.category}</p>
                     )}
                   </div>
-                  <svg className="w-5 h-5 text-text-secondary group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <svg className="w-5 h-5 text-text-secondary group-hover:translate-x-0.5 transition-transform duration-150 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </Link>
+                </li>
               );
             })}
+            </ul>
           </section>
         ) : (
           <div className="text-center py-16 bg-surface-alt rounded-xl">
@@ -558,6 +600,26 @@ export default async function EntityPage({ params }: PageProps) {
             </Link>
           </div>
         )}
+
+        {/* Cite this entity page */}
+        <section aria-labelledby="entity-cite-heading" className="mt-10 pt-8 border-t border-border">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-slate-500 to-gray-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h2 id="entity-cite-heading" className="text-base font-display font-bold text-text">Cite This Page</h2>
+          </div>
+          <p className="text-xs text-text-secondary mb-3">Free to use with attribution (CC BY 4.0).</p>
+          <pre className="whitespace-pre-wrap break-words rounded-xl bg-surface-alt border border-border px-4 py-3 text-xs text-text font-mono select-all leading-relaxed">
+            {`A Versus B, "${name} Comparisons," aversusb.net, ${new Date().getFullYear()}. https://aversusb.net/entity/${slug}`}
+          </pre>
+        </section>
+
+        <div className="mt-10">
+          <NewsletterSignup source={`entity-${slug}`} />
+        </div>
       </div>
     </>
   );

@@ -41,9 +41,13 @@ import {
   parseComparisonSlug,
   sortComparisonSlug,
   isDegenerateComparisonSlug,
+  isCleanSlug,
+  cleanComparisonSlug,
 } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
+import { AuthorByline } from "@/components/comparison/AuthorByline";
+import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -115,6 +119,11 @@ const ReadingProgressBar = dynamic(
   { ssr: false, loading: () => null }
 );
 
+const BackToTop = dynamic(
+  () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
+  { ssr: false, loading: () => null }
+);
+
 // Interactive/tracking widgets — kept out of SSR HTML (ssr:false shim, shared
 // verbatim with the former App Router route).
 import {
@@ -131,6 +140,9 @@ import {
   LikeButton,
   BackToResults,
   TableOfContents,
+  StickyCompareBar,
+  FloatingShareButton,
+  QuickSectionNav,
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
@@ -339,11 +351,29 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { notFound: true };
   }
 
+  // DB corruption guard: slugs with non-alphanumeric/hyphen characters (e.g.
+  // trailing `)` or `-keyword-suffix`) are artifacts of a slug generation bug.
+  // Redirect permanently to the clean version so Google consolidates authority
+  // on the real canonical instead of indexing 2000+ garbage duplicate URLs.
+  if (!isCleanSlug(slug)) {
+    const cleaned = cleanComparisonSlug(slug);
+    if (cleaned && cleaned !== slug && cleaned.includes("-vs-")) {
+      return { redirect: { destination: `/compare/${cleaned}`, permanent: true } };
+    }
+    return { notFound: true };
+  }
+
   let comparison: Comparison | null = null;
   try {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
   } catch {
     comparison = null;
+  }
+
+  // DAN-1886: archived pages must not be indexed — return 404 so Google removes
+  // them from the index rather than continuing to crawl thin auto-gen content.
+  if (comparison && comparison.metadata?.status === "archived") {
+    return { notFound: true };
   }
 
   // A record that's missing OR exists but is empty/corrupt (fewer than 2
@@ -658,6 +688,8 @@ function MetaHead({ meta }: { meta: PageMeta }) {
     <Head>
       <title>{meta.title}</title>
       <meta name="description" content={meta.description} />
+      {/* Archived rows are 404'd upstream in getStaticProps (DAN-1886), so every
+          page that renders here is indexable; keep the standard directive. */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       {/* author — used by Bing, Yahoo, and AI content attributors for authorship resolution */}
       <meta name="author" content="A Versus B" />
@@ -844,6 +876,18 @@ export default function ComparisonPage(props: Props) {
 
   const { comparison, slug, sidebarComparisons, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
 
+  const winnerSide = (() => {
+    const wn = comparison.quickAnswer?.winnerName;
+    if (!wn) return undefined;
+    const a = comparison.entities[0];
+    const b = comparison.entities[1];
+    if (!a || !b) return undefined;
+    const lc = wn.toLowerCase().trim();
+    if (a.name.toLowerCase().trim() === lc) return "a" as const;
+    if (b.name.toLowerCase().trim() === lc) return "b" as const;
+    return undefined;
+  })();
+
   return (
     <>
       <MetaHead meta={props.meta} />
@@ -854,6 +898,12 @@ export default function ComparisonPage(props: Props) {
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
+      {/* Reading progress indicator */}
+      <ReadingProgressBar />
+
+      {/* Floating back-to-top */}
+      <BackToTop />
+
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
 
@@ -862,6 +912,12 @@ export default function ComparisonPage(props: Props) {
 
       {/* Breadcrumbs */}
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
+
+      {/* Author byline — E-E-A-T signal */}
+      <AuthorByline
+        updatedAt={comparison.metadata.updatedAt}
+        isHumanReviewed={comparison.metadata.isHumanReviewed}
+      />
 
       {/* Table of Contents */}
       <TableOfContents
@@ -872,10 +928,30 @@ export default function ComparisonPage(props: Props) {
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
           ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ...(comparison.expertAnalysis ? [{ id: "expert-analysis", label: "Expert Analysis" }] : []),
           { id: "resources", label: "Resources" },
           { id: "comments", label: "Comments" },
         ]}
       />
+
+      {/* Floating mobile share button — visible only on sm and below */}
+      <FloatingShareButton title={comparison.title} slug={comparison.slug} />
+
+      {/* Sticky mini entity bar — slides in after scrolling past the hero */}
+      {comparison.entities.length >= 2 && (
+        <StickyCompareBar
+          entityA={comparison.entities[0].name}
+          entityB={comparison.entities[1].name}
+          winner={winnerSide}
+          sections={[
+            ...(comparison.quickAnswer?.tldr || comparison.verdict || comparison.shortAnswer ? [{ id: "verdict", label: "Quick Answer" }] : []),
+            ...(comparison.keyDifferences.length > 0 ? [{ id: "key-differences", label: "Key Differences" }] : []),
+            ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Table" }] : []),
+            { id: "pros-cons", label: "Pros & Cons" },
+            ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ]}
+        />
+      )}
 
       {/* Share + Like Bar */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
@@ -888,6 +964,9 @@ export default function ComparisonPage(props: Props) {
 
       {/* Hero: Title + Entity Cards */}
       <ComparisonHero comparison={comparison} />
+
+      {/* Quick section jump nav — always visible, complements the scroll-triggered sticky bar */}
+      <QuickSectionNav winnerName={comparison.quickAnswer?.winnerName || undefined} />
 
       {/* Citation Stats Bar */}
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
@@ -1006,9 +1085,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Pros & Cons */}
-          <div id="pros-cons" className="scroll-mt-20">
-            <ProsConsBlock entities={comparison.entities} />
-          </div>
+          <ProsConsBlock entities={comparison.entities} />
 
           {/* Inline Newsletter Signup */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -1018,6 +1095,16 @@ export default function ComparisonPage(props: Props) {
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
             <FAQBlock faqs={comparison.faqs} />
+          )}
+
+          {/* Expert Analysis — human-authored deep dive for value-add pages (DAN-1888) */}
+          {comparison.expertAnalysis && (
+            <ExpertAnalysis
+              analysis={comparison.expertAnalysis}
+              entityAName={comparison.entities[0]?.name ?? ""}
+              entityBName={comparison.entities[1]?.name ?? ""}
+              updatedAt={comparison.metadata.updatedAt}
+            />
           )}
 
           {/* Resources & Learn More */}
@@ -1221,9 +1308,7 @@ function MultiEntityLayout({
           )}
 
           {/* Pros & Cons (already array-friendly, renders all N entities) */}
-          <div id="pros-cons" className="scroll-mt-20">
-            <ProsConsBlock entities={comparison.entities} />
-          </div>
+          <ProsConsBlock entities={comparison.entities} />
 
           {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
           {comparison.verdict && (

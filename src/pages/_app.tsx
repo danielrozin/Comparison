@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress } from "@/components/layout/GlobalClientWidgets";
 import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -36,6 +36,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </main>
         <Footer />
+        <ReadingProgress />
+        <BackToTop />
         <FeedbackWidget />
         <CookieConsentBanner />
       </ExperimentProvider>

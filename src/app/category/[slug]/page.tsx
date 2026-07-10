@@ -11,6 +11,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
@@ -208,6 +209,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   const categorySchemaObj = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    additionalType: ["https://schema.org/LearningResource"],
+    learningResourceType: "Overview",
     "@id": `${categoryUrl}#collectionpage`,
     name: `${category.name} Comparisons`,
     description: `Compare ${category.name} side-by-side — data-driven comparisons with structured attributes, verdicts, and community votes.`,
@@ -225,6 +228,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     dateCreated: "2024-01-01",
     dateModified: categoryToday,
     lastReviewed: categoryToday,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
     image: {
@@ -321,7 +325,53 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     // discussionUrl — Reddit search for category-level community comparisons.
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(category.name.toLowerCase())}+comparison&type=link&sort=relevance`,
   };
-  const schemaData = [breadcrumbData, categorySchemaObj];
+  // Dataset node — Google Dataset Search and AI research tools (Perplexity, ChatGPT) index
+  // Dataset nodes separately from CollectionPage. Emitting one here gives the category
+  // a machine-readable data fingerprint that AI crawlers use to score source authority
+  // and disambiguate the category from generic comparison query results.
+  const categoryDatasetObj = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${categoryUrl}#dataset`,
+    name: `${category.name} Comparisons Dataset`,
+    description: `Structured dataset of ${allComparisons.length} ${category.name.toLowerCase()} side-by-side comparisons with attribute tables, verdicts, community votes, and entity profiles.`,
+    url: categoryUrl,
+    identifier: `${categoryUrl}#dataset`,
+    inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateModified: categoryToday,
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    numberOfItems: allComparisons.length,
+    keywords: `${category.name} comparison, ${category.name} vs, ${category.name} data, side-by-side analysis`,
+    about: {
+      "@type": "Thing",
+      name: `${category.name} Comparisons`,
+      ...(categoryWikiUrl && { "@id": categoryWikiUrl, sameAs: categoryWikiUrl }),
+    },
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
+        name: `${category.name} Comparisons JSON Feed`,
+        description: `Paginated JSON DataFeed of all ${category.name.toLowerCase()} comparison pages with slugs, titles, and verdicts`,
+        potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json` },
+      },
+    ],
+    // isPartOf links Dataset back to the site-level DataCatalog for AI graph traversal.
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    // includedInDataCatalog — Google Dataset Search primary indexing signal.
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    // potentialAction ReadAction — tells Dataset Search this data is browsable.
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
+    },
+  };
+  const schemaData = [breadcrumbData, categorySchemaObj, categoryDatasetObj];
 
   const basePath = `/category/${slug}`;
 
@@ -333,24 +383,35 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       <li key={comp.slug} className="flex">
       <Link
         href={`/compare/${comp.slug}`}
-        className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
+        className="group relative flex flex-col p-4 sm:p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full overflow-hidden"
       >
-        <div className="flex items-center gap-4 mb-3">
-          <div className="flex -space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
-              {(parts[0] || "A").charAt(0)}
+        {/* Hover accent top strip */}
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+        <div className="flex items-center gap-3 mb-3">
+          {/* Entity initials with VS badge */}
+          <div className="relative flex flex-shrink-0">
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
+              {(parts[0] || "A").charAt(0).toUpperCase()}
             </div>
-            <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
-              {(parts[1] || "B").charAt(0)}
+            <div className="absolute left-5 top-0 w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
+              {(parts[1] || "B").charAt(0).toUpperCase()}
+            </div>
+            <div className="absolute -bottom-1 left-4 z-20 w-5 h-5 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+              <span className="text-[7px] font-black text-white leading-none">VS</span>
             </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate text-base">
+          <div className="flex-1 min-w-0 pl-4">
+            <h3 className="font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2 text-sm sm:text-base leading-snug">
               {comp.title}
             </h3>
           </div>
+          {/* Arrow on hover */}
+          <svg className="w-4 h-4 text-primary-400 opacity-0 group-hover:opacity-100 flex-shrink-0 transition-all duration-150 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
-        <div className="mt-auto">
+        <div className="mt-auto pt-2">
           <StarRating rating={rating} size="sm" reviewCount={reviewCount} />
         </div>
       </Link>
@@ -374,10 +435,10 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
 
       {/* Category Hero Banner */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
         {/* Floating accent blobs */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="hidden sm:block absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 relative">
           {/* Breadcrumb */}
@@ -439,6 +500,16 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-[44px] left-0 right-0 flex justify-center pointer-events-none" aria-hidden="true">
+          <div className="flex flex-col items-center gap-1 animate-bounce-gentle">
+            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
+            <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
           </div>
         </div>
 
@@ -617,6 +688,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <Link href={basePath} className="mt-4 inline-block text-primary-600 font-medium hover:underline">
               Clear filters
             </Link>
+          </div>
+        )}
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source={`category-${category.slug}`} />
           </div>
         )}
       </div>

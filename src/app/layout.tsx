@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { unstable_cache } from "next/cache";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
+import { prisma } from "@/lib/db/prisma";
+
+const getPublishedComparisonCount = unstable_cache(
+  async () => {
+    try {
+      return await prisma.comparison.count({ where: { status: "published" } });
+    } catch {
+      return 500;
+    }
+  },
+  ["published-comparison-count"],
+  { revalidate: 3600 }
+);
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -84,11 +98,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const comparisonCount = await getPublishedComparisonCount();
   return (
     <html lang="en" className={inter.variable}>
       <head>
@@ -163,7 +178,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema()),
+            __html: JSON.stringify(organizationSchema(comparisonCount)),
           }}
         />
         <script
@@ -175,7 +190,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(dataCatalogSchema()),
+            __html: JSON.stringify(dataCatalogSchema(comparisonCount)),
           }}
         />
         <script
@@ -206,9 +221,11 @@ export default function RootLayout({
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
+          <ReadingProgress />
           <FeedbackWidget />
           <CookieConsentBanner />
           <BackToTop />
+          <SearchOverlay />
         </ExperimentProviderServer>
         {/* DAN-1645: Vercel Speed Insights (RUM) — site-wide real-user CWV so
             /compare field data is comparable against other routes. */}

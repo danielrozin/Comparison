@@ -51,26 +51,28 @@ export function CategoryCard({
   return (
     <Link
       href={`/category/${category.slug}`}
-      className={`group relative flex flex-col items-center gap-3 p-5 bg-gradient-to-br ${gradient} border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 text-center overflow-hidden`}
+      className={`group relative flex flex-col items-center gap-3 p-5 bg-gradient-to-br ${gradient} border border-border rounded-2xl hover:border-primary-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-center overflow-hidden`}
     >
-      {/* Subtle shine on hover */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/40 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      {/* Shine sweep on hover */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/50 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110`}>
+      {/* Glow dot in corner */}
+      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+      <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:shadow-sm`}>
         <span className="text-2xl leading-none" aria-hidden="true">{category.icon}</span>
       </div>
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">
         {category.name}
       </span>
-      <svg
-        className="absolute bottom-2.5 right-2.5 w-3.5 h-3.5 text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        aria-hidden="true"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-      </svg>
+
+      {/* Arrow that slides in on hover */}
+      <div className="flex items-center gap-1 text-[10px] font-semibold text-primary-500 opacity-0 -mt-1 group-hover:opacity-100 group-hover:mt-0 transition-all duration-200">
+        Browse
+        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
     </Link>
   );
 }

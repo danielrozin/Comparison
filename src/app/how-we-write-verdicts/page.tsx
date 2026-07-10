@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
 const PAGE_TITLE = `How We Write Verdicts — ${SITE_NAME}`;
@@ -158,6 +159,49 @@ const articleSchema = {
   wordCount: 800,
 };
 
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faqpage`,
+  url: PAGE_URL,
+  inLanguage: "en-US",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How does A Versus B source data for its comparisons?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Verdicts are grounded in three layers of data: structured specs and pricing pulled from manufacturer pages and official datasheets; verified public reviews aggregated from Reddit, G2, Capterra, Trustpilot, and Product Hunt; and live web context from recent search results and news snippets to surface anything that has changed since the page was last refreshed.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What role does AI play in writing comparison verdicts at A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We use Claude (Anthropic's large language model) to read the structured data and reviews and produce a first draft of the verdict, the 'Choose X if' cards, and the supporting summary. The model only sees data we have already collected — it does not browse the open web at write time. A human editor then reviews drafts that fall below an internal quality threshold or cover sensitive categories such as health, finance, legal, or safety.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does user feedback influence future verdicts on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The thumbs-up / thumbs-down widget under each verdict collects signals. Pages with persistent negative feedback are prioritized for human review. Common categories of complaint feed back into the prompt and data pipeline so the next regeneration covers them. We also sample reader feedback when evaluating new model versions — a verdict that wins on human reads but loses on reader feedback gets rolled back.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I disagree with a specific verdict on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Use the 'Was this verdict helpful?' buttons directly under the verdict on any comparison page. Tap the thumbs-down button and a short text box will appear where you can describe what is wrong — a recent release, missing context, a factual error, or biased framing. Reasons go straight into our editorial queue. You can also reach us via the contact page.",
+      },
+    },
+  ],
+};
+
 export default function HowWeWriteVerdictsPage() {
   return (
     <>
@@ -169,10 +213,14 @@ export default function HowWeWriteVerdictsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -316,6 +364,10 @@ export default function HowWeWriteVerdictsPage() {
           </p>
         </section>
       </article>
+
+      <div className="mt-12">
+        <NewsletterSignup source="how-we-write-verdicts" />
+      </div>
       </div>
     </>
   );

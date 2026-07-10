@@ -85,14 +85,51 @@ const requestsPageSchema = {
   ],
 };
 
+const REQUEST_FAQS = [
+  {
+    q: "How do I request a new comparison on A Versus B?",
+    a: "Use the 'Suggest a Comparison' form on this page. Enter the two entities you want compared (e.g., 'iPhone 16 vs. Samsung Galaxy S25'), add an optional reason, and submit. Your request is added to the community queue immediately.",
+  },
+  {
+    q: "How does voting work on comparison requests?",
+    a: "Any visitor can upvote existing requests without an account. Requests with the most votes are prioritized in our weekly content queue. If you want a comparison built faster, share the request link to get more votes.",
+  },
+  {
+    q: "How long does it take for a requested comparison to be published?",
+    a: "High-voted requests are typically published within 1–2 weeks. Lower-voted requests may take longer depending on editorial capacity. You can also email us directly if you need a comparison urgently.",
+  },
+  {
+    q: "Can I request a comparison between any two things?",
+    a: "Yes — we cover products, software, services, countries, historical figures, sports teams, brands, and more. The only requirement is that there's a meaningful basis for comparison. Requests that are too similar or lack a comparison angle may be declined.",
+  },
+  {
+    q: "Will I be notified when my requested comparison is published?",
+    a: "Not automatically — subscribe to the A Versus B newsletter at the bottom of any page to get notified of new comparisons by category. You can also check back on this page to see when a request moves to 'In Progress'.",
+  },
+];
+
+const requestsFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${REQ_URL}#faqpage`,
+  name: `Comparison Requests FAQ — ${SITE_NAME}`,
+  url: REQ_URL,
+  mainEntity: REQUEST_FAQS.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+
 export default function RequestsPage() {
   return (
     <>
-      <JsonLd data={requestsPageSchema} />
+      <JsonLd data={[requestsPageSchema, requestsFaqSchema]} />
     <div className="min-h-screen bg-surface-alt">
       {/* Hero */}
       <section aria-labelledby="requests-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white py-10 sm:py-14 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center justify-center gap-1.5 text-sm text-primary-200">
@@ -166,6 +203,30 @@ export default function RequestsPage() {
             <RequestList />
           </section>
         </div>
+        {/* FAQ */}
+        <section aria-labelledby="requests-faq-heading" className="mt-10 pt-8 border-t border-border">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h2 id="requests-faq-heading" className="text-lg font-bold text-text">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-3">
+            {REQUEST_FAQS.map(({ q, a }) => (
+              <details key={q} className="group border border-border rounded-xl overflow-hidden bg-white open:shadow-sm transition-all">
+                <summary className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none font-semibold text-text list-none">
+                  <span>{q}</span>
+                  <svg className="w-4 h-4 flex-shrink-0 text-text-secondary transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-5 pb-4 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border">{a}</div>
+              </details>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
     </>

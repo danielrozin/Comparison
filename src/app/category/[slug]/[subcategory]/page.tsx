@@ -10,6 +10,7 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const ITEMS_PER_PAGE = 16;
 
@@ -175,6 +176,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    additionalType: ["https://schema.org/LearningResource"],
+    learningResourceType: "Overview",
     "@id": `${subcatUrl}#collectionpage`,
     name: `${subcat.name} Comparisons`,
     description: `Compare the best ${subcat.name.toLowerCase()} side by side. Expert comparisons with specs, pros & cons, and verdicts.`,
@@ -187,6 +190,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
     lastReviewed: subcatToday,
+    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     contentReferenceTime: subcatToday,
     thumbnailUrl: subcatOgImage,
     image: {
@@ -230,7 +234,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       url: `${SITE_URL}/compare/${c.slug}`,
     })),
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro"] },
     mainEntity: {
       "@type": "ItemList",
       "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`,
@@ -259,7 +263,46 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
     hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
   };
-  const schemaData = [breadcrumbs, collectionSchema];
+  // Dataset node — parity with parent category pages (HB347).
+  // Google Dataset Search and AI research tools index Dataset nodes separately from
+  // CollectionPage; emitting one gives this subcategory hub a machine-readable data
+  // fingerprint that AI crawlers use to score source authority.
+  const subcatDatasetObj = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${subcatUrl}#dataset`,
+    name: `${subcat.name} Comparisons Dataset`,
+    description: `Structured dataset of ${subcatComparisons.length} ${subcat.name.toLowerCase()} side-by-side comparisons with attribute tables, verdicts, community votes, and entity profiles.`,
+    url: subcatUrl,
+    identifier: `${subcatUrl}#dataset`,
+    inLanguage: "en-US",
+    datePublished: "2024-01-01",
+    dateModified: subcatToday,
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    numberOfItems: subcatComparisons.length,
+    keywords: `${subcat.name} comparison, ${subcat.name.toLowerCase()} vs, ${subcat.name.toLowerCase()} data`,
+    about: { "@type": "Thing", name: `${subcat.name} Comparisons` },
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json`,
+        name: `${subcat.name} Comparisons JSON Feed`,
+        description: `Paginated JSON DataFeed of all ${subcat.name.toLowerCase()} comparison pages`,
+        potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/api/sitemap-data?type=comparison&category=${encodeURIComponent(slug)}&format=json` },
+      },
+    ],
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: subcatUrl },
+    },
+  };
+  const schemaData = [breadcrumbs, collectionSchema, subcatDatasetObj];
 
   const basePath = `/category/${slug}/${subcategory}`;
   // schemaData is now used below
@@ -286,8 +329,8 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
 
       {/* Subcategory Hero Banner */}
       <section aria-labelledby="subcategory-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute inset-0 bg-grid opacity-5" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
@@ -335,6 +378,11 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+
+        {/* Subcategory intro — speakable target for voice assistants and AI answer engines */}
+        <p id="subcategory-intro" className="text-text-secondary text-sm mb-4">
+          Browse {subcatComparisons.length} head-to-head {subcat.name.toLowerCase()} comparison{subcatComparisons.length !== 1 ? "s" : ""} in the {category.name} category. Each comparison includes attribute tables, a verdict, and community votes to help you decide.
+        </p>
 
         {/* Filters & Sorting */}
         <Suspense fallback={null}>
@@ -433,6 +481,13 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
             <span aria-hidden="true">&larr; </span>All {category.name} Comparisons
           </Link>
         </div>
+
+        {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
+        {page === 1 && (
+          <div className="mt-16">
+            <NewsletterSignup source={`subcategory-${slug}-${subcategory}`} />
+          </div>
+        )}
       </div>
     </>
   );

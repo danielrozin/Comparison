@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { logAdminEvent } from "@/lib/services/admin-logger";
 import { sendNotificationEmail } from "@/lib/services/email";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,6 +55,11 @@ export async function POST(request: NextRequest) {
       source,
       referrerSlug,
     });
+
+    // Server-side PostHog: identify + capture (use normalizedEmail as distinct ID before a real user ID is known)
+    const ph = getPostHogClient();
+    ph.identify({ distinctId: normalizedEmail, properties: { email: normalizedEmail } });
+    ph.capture({ distinctId: normalizedEmail, event: "newsletter_subscribed", properties: { source: source || "unknown", referrer_slug: referrerSlug || null } });
 
     return NextResponse.json({ success: true });
   } catch (error) {

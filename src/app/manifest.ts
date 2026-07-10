@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${SITE_NAME} — Compare Anything`,
     short_name: "A Versus B",
     description:
-      "The internet's most comprehensive comparison platform — 3,000+ side-by-side comparisons across technology, sports, countries, products, and more.",
+      "The internet's most comprehensive comparison platform — 500+ side-by-side comparisons across technology, sports, countries, products, and more.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

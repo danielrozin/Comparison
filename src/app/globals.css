@@ -175,6 +175,14 @@ body {
   100% { border-color: var(--color-primary-400); }
 }
 
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee { animation: marquee-scroll 30s linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
+
 .animate-float { animation: float 6s ease-in-out infinite; }
 .animate-glow { animation: glow 2s ease-in-out infinite; }
 .animate-gradient { animation: gradient-shift 3s ease infinite; background-size: 200% 200%; }
@@ -184,6 +192,22 @@ body {
 .animate-flame { animation: flame-flicker 0.8s ease-in-out infinite; }
 .animate-border-gradient { animation: border-gradient 3s ease infinite; }
 
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(7px); opacity: 1; }
+}
+.animate-bounce-gentle { animation: bounce-gentle 1.8s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
 /* Hide scrollbar for horizontal scroll strips */
 .scrollbar-hide {
   -ms-overflow-style: none;
@@ -191,6 +215,50 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* ─── Scroll-driven section reveals ──────────────────────────────────────────
+   Progressive enhancement: browsers that don't support animation-timeline (Safari
+   < 18, older FF) simply show sections without animation. Targets comparison
+   section IDs directly so both the SSR pages-router and DynamicComparison paths
+   benefit without any JS changes.
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes reveal-section {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    #key-differences,
+    #comparison-table,
+    #pros-cons,
+    #verdict,
+    #faq {
+      animation: reveal-section linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 22%;
+    }
+  }
+}
+
+/* Grid pattern — inline SVG data URI avoids 27+ separate HTTP requests for grid.svg.
+   Use alongside opacity-5 / opacity-10 utilities as needed. */
+.bg-grid {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiI+PHBhdGggZD0iTTAgMGgzMnYzMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjODg4IiBzdHJva2Utd2lkdGg9Ii41IiBzdHJva2Utb3BhY2l0eT0iLjQiLz48cGF0aCBkPSJNMCAxNmgzMk0xNiAwdjMyIiBmaWxsPSJub25lIiBzdHJva2U9IiM4ODgiIHN0cm9rZS13aWR0aD0iLjUiIHN0cm9rZS1vcGFjaXR5PSIuMiIvPjwvc3ZnPg==");
+}
+
+/* Scroll-reveal — elements fade + rise into view as they enter the viewport.
+   JavaScript adds `.reveal-visible` via IntersectionObserver (ScrollReveal.tsx).
+   Without JS the element stays visible so the page is still readable. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+.reveal.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Respect user preference for reduced motion */
@@ -203,12 +271,21 @@ body {
   .animate-pulse-subtle,
   .animate-flame,
   .animate-border-gradient,
+  .animate-bounce-gentle,
+  .animate-shimmer,
   .animate-spin,
   .animate-pulse {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  /* Instant reveal for users who prefer no motion */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

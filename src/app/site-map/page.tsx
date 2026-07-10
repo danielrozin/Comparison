@@ -5,7 +5,9 @@ import { getRecentSitemapContent } from "@/lib/services/sitemap-service";
 
 const SITEMAP_TITLE = `Site Map — ${SITE_NAME}`;
 const SITEMAP_DESC = `Browse all content on ${SITE_NAME} — comparisons, blog articles, reviews, and categories organized by date and topic.`;
+const SITEMAP_ABSTRACT = "Complete directory of all content on A Versus B: 3,000+ X vs Y comparisons, 370+ blog articles, 2,500+ entity profiles, hub pages, best-of lists, and reviews — organized by date and category.";
 const SITEMAP_URL = `${SITE_URL}/site-map`;
+const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Site Map — A Versus B")}&type=sitemap`;
 
 export const metadata: Metadata = {
   title: SITEMAP_TITLE,
@@ -21,29 +23,46 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: SITE_NAME,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Site Map — A Versus B" }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     site: "@aversusb",
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,
+    images: [{ url: OG_IMAGE, alt: "Site Map — A Versus B" }],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const, "max-video-preview": -1 },
   },
   other: {
     "citation_title": SITEMAP_TITLE,
     "citation_author": "A Versus B",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
-    "citation_abstract": SITEMAP_DESC,
-      "citation_publication_date": "2024-01-01",
-      "citation_online_date": "2024-01-01",
+    "citation_abstract": SITEMAP_ABSTRACT,
+    "citation_publication_date": "2024-01-01",
+    "citation_online_date": "2024-01-01",
     "DC.title": SITEMAP_TITLE,
     "DC.creator": "A Versus B",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
-    "DC.type": "Text",
+    "DC.subject": "Site Map, Content Directory, Comparison Index 2026",
+    "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
+    "DC.coverage": "Worldwide",
+    "DC.description": SITEMAP_DESC,
+    "DC.type": "Collection",
     "DC.format": "text/html",
-      "DC.date": "2024-01-01",
+    "DC.date": "2024-01-01",
     "DC.identifier": SITEMAP_URL,
+    "abstract": SITEMAP_ABSTRACT,
+    "thumbnail": OG_IMAGE,
+    "twitter:label1": "Content Types",
+    "twitter:data1": "Comparisons, Blog, Entities",
+    "twitter:label2": "Updated",
+    "twitter:data2": "Hourly",
   },
 };
 
@@ -143,21 +162,83 @@ const siteMapPageSchema = {
       "@id": `${SITEMAP_URL}#webpage`,
       name: SITEMAP_TITLE,
       description: SITEMAP_DESC,
+      abstract: SITEMAP_ABSTRACT,
+      alternativeHeadline: "Complete Directory of All A Versus B Content — Comparisons, Blog, Entities, Reviews",
       url: SITEMAP_URL,
-
-      locale: "en_US",      inLanguage: "en-US",
+      inLanguage: "en-US",
+      genre: "Site Index",
+      creativeWorkStatus: "Published",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
+      interactivityType: "expositive",
       accessMode: ["textual"],
-      accessibilityFeature: ["readingOrder", "structuralNavigation"],
+      accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+      // datePublished + dateModified — temporal anchors for AI crawlers and Google freshness signals
+      datePublished: "2024-01-01",
+      dateCreated: "2024-01-01",
+      dateModified: new Date().toISOString().slice(0, 10),
+      contentReferenceTime: new Date().toISOString(),
+      // thumbnailUrl + image — AI visual crawlers and Knowledge Panel candidate images
+      thumbnailUrl: OG_IMAGE,
+      image: {
+        "@type": "ImageObject",
+        url: OG_IMAGE,
+        contentUrl: OG_IMAGE,
+        name: SITEMAP_TITLE,
+        description: SITEMAP_DESC,
+        width: 1200,
+        height: 630,
+        creditText: SITE_NAME,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        acquireLicensePage: `${SITE_URL}/terms`,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+      },
+      keywords: "site map, content directory, comparison index, all comparisons, all articles, all entities",
+      educationalLevel: "General",
+      teaches: "How to navigate A Versus B — finding comparisons, blog articles, entity profiles, and reviews",
+      educationalUse: "reference",
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      usageInfo: `${SITE_URL}/terms`,
+      copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
+      copyrightYear: new Date().getFullYear(),
+      copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      acquireLicensePage: `${SITE_URL}/terms`,
+      audience: {
+        "@type": "Audience",
+        audienceType: "Consumers, Researchers, Decision Makers, Students",
+        geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
+      },
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
-      about: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
-      potentialAction: { "@type": "ReadAction", target: SITEMAP_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      about: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      // speakable — h1 and first paragraph for voice assistants
+      speakable: {
+        "@type": "SpeakableSpecification",
+        "@id": `${SITEMAP_URL}#speakable`,
+        cssSelector: ["h1", "p:first-of-type"],
+      },
+      potentialAction: [
+        { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: SITEMAP_URL } },
+        // SearchAction — let AI routers know the site map links to a searchable catalog
+        {
+          "@type": "SearchAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+          "query-input": "required name=search_term_string",
+        },
+      ],
+      // significantLink — key discovery paths for AI crawlers landing on this page
+      significantLink: [
+        `${SITE_URL}/trending`,
+        `${SITE_URL}/blog`,
+        `${SITE_URL}/entity`,
+        `${SITE_URL}/sitemap.xml`,
+      ],
     },
     {
       "@type": "BreadcrumbList",
+      "@id": `${SITEMAP_URL}#breadcrumbs`,
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, name: "Home", url: SITE_URL } },
         { "@type": "ListItem", position: 2, name: "Site Map", item: { "@type": "WebPage", "@id": SITEMAP_URL, name: "Site Map", url: SITEMAP_URL } },
@@ -178,7 +259,8 @@ export default async function SiteMapPage() {
       />
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-5 pointer-events-none" aria-hidden="true" />
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" aria-hidden="true" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">

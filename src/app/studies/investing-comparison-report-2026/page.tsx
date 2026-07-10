@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getFinanceStudy } from "@/lib/services/studies-service";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 export const revalidate = 86400;
 
@@ -179,40 +180,56 @@ export default async function InvestingStudyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-6" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-1.5 text-sm text-text-secondary flex-wrap">
-            <li>
-              <Link href="/" className="hover:text-primary-600 transition-colors flex items-center gap-1">
-                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span className="sr-only sm:not-sr-only">Home</span>
-              </Link>
-            </li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
-            <li><Link href="/studies" className="hover:text-primary-600 transition-colors">Studies</Link></li>
-            <li aria-hidden="true"><svg className="w-3 h-3 text-border flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
-            <li className="text-text font-medium" aria-current="page">Investing Report 2026</li>
-          </ol>
-        </nav>
-
-        {/* Header */}
-        <div className="mb-10">
-          <span className="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full mb-4">
-            Data Study
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-text mb-4 leading-tight">
-            The Investing &amp; Finance Comparison Report 2026
-          </h1>
-          <p id="page-intro" className="text-lg text-text-secondary leading-relaxed">
-            We analyzed <strong>{fmt(study.totalFinanceComparisons)} head-to-head finance comparisons</strong> published
-            on A Versus B to rank the most-researched brokerages, retirement accounts, credit cards, and investment
-            products. {study.fromSnapshot ? "" : "Data is live-queried daily and refreshed automatically."}
-          </p>
-          <p className="text-sm text-text-secondary/60 mt-3">Last updated: <time dateTime={new Date(study.updatedAt).toISOString()}>{updatedLabel}</time></p>
+      {/* Gradient Hero */}
+      <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 pb-16 sm:pb-20 relative">
+          <nav className="mb-5" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
+              <li>
+                <Link href="/" className="text-primary-200 hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  <span className="sr-only sm:not-sr-only">Home</span>
+                </Link>
+              </li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li><Link href="/studies" className="text-primary-200 hover:text-white transition-colors">Studies</Link></li>
+              <li aria-hidden="true"><svg className="w-3 h-3 text-primary-400/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg></li>
+              <li className="text-white font-medium" aria-current="page">Investing Report 2026</li>
+            </ol>
+          </nav>
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-xs font-semibold text-primary-300 uppercase tracking-wider mb-1">
+                Data Study · Updated <time dateTime={new Date(study.updatedAt).toISOString()}>{updatedLabel}</time>
+              </p>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
+                The Investing &amp; Finance Comparison Report 2026
+              </h1>
+              <p id="page-intro" className="mt-2 text-primary-100 text-sm sm:text-base leading-relaxed">
+                We analyzed <strong>{fmt(study.totalFinanceComparisons)} head-to-head finance comparisons</strong> published
+                on A Versus B to rank the most-researched brokerages, retirement accounts, credit cards, and investment
+                products. {study.fromSnapshot ? "" : "Data is live-queried daily and refreshed automatically."}
+              </p>
+            </div>
+          </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
+            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+          </svg>
+        </div>
+      </section>
+
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Headline stats */}
         <ul role="list" className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-12 list-none p-0 m-0">
@@ -409,6 +426,10 @@ export default async function InvestingStudyPage() {
             <span aria-hidden="true">← </span>All Data Studies
           </Link>
         </div>
+      </article>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <NewsletterSignup source="study-investing" />
       </div>
     </>
   );
