@@ -136,6 +136,10 @@ function buildSchemas() {
     },
     timeRequired: "PT3M",
     wordCount: 600,
+    educationalLevel: "General",
+    teaches: "Who benefits from using A Versus B and how to get started with structured side-by-side comparisons",
+    educationalUse: "guide",
+    interactivityType: "expositive",
   };
 
   const faqPage = {

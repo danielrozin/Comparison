@@ -171,6 +171,10 @@ export default function PartnershipsPage() {
     potentialAction: { "@type": "ReadAction", target: PARTNER_URL },
     timeRequired: "PT3M",
     wordCount: 600,
+    educationalLevel: "General",
+    teaches: "How to partner with A Versus B to reach decision-making audiences through sponsored content, data integrations, and API access",
+    educationalUse: "guide",
+    interactivityType: "expositive",
   };
 
   const faqSchema = {

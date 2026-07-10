@@ -52,7 +52,7 @@ export default async function sitemap({
     // Using `new Date()` (build-time "now") causes every redeploy to signal false
     // freshness, burning Googlebot crawl budget on unchanged pages.
     const LEGAL_DATE = "2025-01-15";
-    // HB369/370: E-E-A-T named authorship + speakable upgrades across all pages (2026-07-10)
+    // HB371: blog interactionStatistic (ReadAction viewCount) + llms.txt refresh (2026-07-10)
     const ABOUT_DATE = "2026-07-10";
     const STUDIES_DATE = "2026-07-10";
     const COMPARISONS_DATE = "2026-06-01";

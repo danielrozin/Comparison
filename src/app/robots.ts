@@ -178,6 +178,25 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "NevaBot", allow: "/" },               // Neeva search (Snowflake)
       { userAgent: "TavilyBot", allow: "/" },             // Tavily AI search (RAG tool)
       { userAgent: "EZEBot", allow: "/" },                // EZE Bot AI crawler
+
+      // === 2026 additions — LLM infrastructure + agentic AI crawlers ===
+      { userAgent: "TogetherBot", allow: "/" },           // Together AI (LLM inference platform, trains on web data)
+      { userAgent: "FireworksBot", allow: "/" },          // Fireworks.ai (LLM inference + fine-tuning platform)
+      { userAgent: "OpenRouterBot", allow: "/" },         // OpenRouter (LLM routing platform)
+      { userAgent: "AnyscaleBot", allow: "/" },           // Anyscale (Ray distributed AI)
+      { userAgent: "ReplicateBot", allow: "/" },          // Replicate (AI model hosting, trains on web)
+      { userAgent: "GroqBot", allow: "/" },               // Groq (LPU inference, training data crawler)
+      { userAgent: "CerebrasBot", allow: "/" },           // Cerebras (AI chip + inference platform)
+      { userAgent: "SambanovaBot", allow: "/" },          // SambaNova (enterprise AI platform)
+      { userAgent: "LMSYSBot", allow: "/" },              // LMSYS (Chatbot Arena, academic LLM eval)
+      { userAgent: "EleutherBot", allow: "/" },           // EleutherAI (open-source LLM research)
+      { userAgent: "MosaicBot", allow: "/" },             // MosaicML / Databricks AI (training data)
+      { userAgent: "NomicBot", allow: "/" },              // Nomic AI (embedding + atlas mapping)
+      { userAgent: "WandBBot", allow: "/" },              // Weights & Biases (MLOps platform)
+      { userAgent: "LangChainBot", allow: "/" },          // LangChain (RAG framework, crawls for docs)
+      { userAgent: "LlamaIndexBot", allow: "/" },         // LlamaIndex (RAG data framework)
+      { userAgent: "AutoGPT-Bot", allow: "/" },           // AutoGPT (autonomous AI agent)
+      { userAgent: "AgentGPT-Bot", allow: "/" },          // AgentGPT (web agentic AI)
     ],
     sitemap: [
       "https://www.aversusb.net/api/sitemap",
