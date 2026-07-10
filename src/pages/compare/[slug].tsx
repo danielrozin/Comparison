@@ -1027,7 +1027,7 @@ export default function ComparisonPage(props: Props) {
 
       {/* Key Facts & Figures table */}
       {comparison.attributes.length > 0 && (
-        <div id="key-facts" className="scroll-mt-20">
+        <div id="key-facts" className="scroll-mt-28">
           <DataFactsTable
             attributes={comparison.attributes}
             entityA={comparison.entities[0]}
@@ -1051,7 +1051,7 @@ export default function ComparisonPage(props: Props) {
 
           {/* Comparison Table (code-split, SSR'd) */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table" className="scroll-mt-20">
+            <div id="comparison-table" className="scroll-mt-28">
               <ComparisonTable
                 attributes={comparison.attributes}
                 entityA={comparison.entities[0]}
@@ -1105,7 +1105,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Resources & Learn More */}
-          <div id="resources" className="scroll-mt-20">
+          <div id="resources" className="scroll-mt-28">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1151,7 +1151,7 @@ export default function ComparisonPage(props: Props) {
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
-      <div id="comments" className="scroll-mt-20">
+      <div id="comments" className="scroll-mt-28">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 
@@ -1299,7 +1299,7 @@ function MultiEntityLayout({
         <div className="flex-1 min-w-0">
           {/* MultiComparisonTable — main N-entity attribute grid */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table" className="scroll-mt-20">
+            <div id="comparison-table" className="scroll-mt-28">
               <MultiComparisonTable attributes={comparison.attributes} entities={comparison.entities} />
             </div>
           )}
@@ -1331,7 +1331,7 @@ function MultiEntityLayout({
             <FAQBlock faqs={comparison.faqs} />
           )}
 
-          <div id="resources" className="scroll-mt-20">
+          <div id="resources" className="scroll-mt-28">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1363,7 +1363,7 @@ function MultiEntityLayout({
 
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
-      <div id="comments" className="scroll-mt-20">
+      <div id="comments" className="scroll-mt-28">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 
