@@ -898,9 +898,6 @@ export default function ComparisonPage(props: Props) {
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
-      {/* Reading progress indicator */}
-      <ReadingProgressBar />
-
       {/* Floating back-to-top */}
       <BackToTop />
 

@@ -47,7 +47,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const hiddenCount = search.trim() ? 0 : Math.max(0, filtered.length - INITIAL_FAQ_SHOW);
 
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       {/* Section header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">

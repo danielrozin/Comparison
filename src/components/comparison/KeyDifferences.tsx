@@ -141,7 +141,7 @@ export function KeyDifferencesBlock({
   ];
 
   return (
-    <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -220,7 +220,7 @@ export function KeyDifferencesBlock({
                 : diff.winner === "b"
                 ? "border-l-[3px] border-l-purple-500"
                 : ""
-            } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row`}
+            } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row motion-safe:animate-fade-in`}
             style={{ animationDelay: `${i * 60}ms` }}
           >
             {/* Entity A Value */}
@@ -267,7 +267,7 @@ export function KeyDifferencesBlock({
         {filtered.map((diff, i) => (
           <li
             key={diff.label}
-            className={`bg-white border border-border rounded-xl overflow-hidden ${
+            className={`bg-white border border-border rounded-xl overflow-hidden motion-safe:animate-fade-in ${
               diff.winner === "a"
                 ? "border-l-[3px] border-l-green-500"
                 : diff.winner === "b"

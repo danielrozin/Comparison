@@ -17,7 +17,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
   if (numericAttrs.length === 0) return null;
 
   return (
-    <section id="key-facts" aria-labelledby="key-facts-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-20">
+    <section id="key-facts" aria-labelledby="key-facts-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-28">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">

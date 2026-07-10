@@ -46,7 +46,7 @@ export function VerdictBlock({
   }
 
   return (
-    <section id="verdict" data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="verdict" data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="relative bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 rounded-2xl overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative mesh overlay */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.15),transparent_60%)]" />

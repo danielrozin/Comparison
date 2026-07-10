@@ -234,7 +234,8 @@ body {
     #comparison-table,
     #pros-cons,
     #verdict,
-    #faq {
+    #faq,
+    #expert-analysis {
       animation: reveal-section linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 22%;

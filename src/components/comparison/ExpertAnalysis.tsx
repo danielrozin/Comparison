@@ -17,7 +17,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
     <section
       id="expert-analysis"
       aria-labelledby="expert-analysis-heading"
-      className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 scroll-mt-20"
+      className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 scroll-mt-28"
     >
       <div className="bg-white border border-border rounded-2xl shadow-sm overflow-hidden">
         {/* Header */}
