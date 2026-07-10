@@ -85,7 +85,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
             <span className="mx-1 text-white/40 font-normal">vs</span>
             {b}
           </p>
-          <p className="text-[10px] text-white/40 mt-0.5">{fmtViews(item.viewCount)} total views</p>
+          <p className="text-xs text-white/40 mt-0.5">{fmtViews(item.viewCount)} total views</p>
         </div>
         <svg className="w-3.5 h-3.5 text-white/30 flex-shrink-0 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

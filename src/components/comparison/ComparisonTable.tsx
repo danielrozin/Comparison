@@ -113,7 +113,7 @@ function ValueCell({
         {value?.valueText || "\u2014"}
         {isWinner && <><span className="sr-only">(winner)</span><TrophyIcon /></>}
         {isTie && (
-          <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
+          <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
             Tie
           </span>
         )}
@@ -152,7 +152,7 @@ function MobileValueCell({
           {value?.valueText || "\u2014"}
           {isWinner && <TrophyIcon />}
           {isTie && (
-            <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
               Tie
             </span>
           )}
@@ -204,7 +204,7 @@ function GroupHeader({
         <div className="flex-1 flex items-center gap-2 min-w-0">
           {/* Win count pills */}
           {aWins > 0 && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
+            <span className="inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 inline-block" />
               {aWins}
             </span>
@@ -223,13 +223,13 @@ function GroupHeader({
             )}
           </div>
           {bWins > 0 && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-accent-100 text-accent-700 border border-accent-200/70 whitespace-nowrap flex-shrink-0">
+            <span className="inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-accent-100 text-accent-700 border border-accent-200/70 whitespace-nowrap flex-shrink-0">
               {bWins}
               <span className="w-1.5 h-1.5 rounded-full bg-accent-500 inline-block" />
             </span>
           )}
           {leader ? (
-            <span className="text-[10px] font-medium text-text-secondary whitespace-nowrap hidden sm:block">
+            <span className="text-xs font-medium text-text-secondary whitespace-nowrap hidden sm:block">
               {leader} leads
             </span>
           ) : (
@@ -425,7 +425,7 @@ function LegacyTable({
         {Array.from(categories.entries()).map(([categoryName, attrs]) => (
           <div key={categoryName}>
             <div className="bg-surface-alt px-3 py-2 rounded-lg mb-2">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
+              <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                 {categoryName}
               </span>
             </div>
@@ -443,7 +443,7 @@ function LegacyTable({
                     </div>
                     <div className="grid grid-cols-2 divide-x divide-border/50">
                       <div className={`px-3 py-2.5 ${valA?.winner === true ? "bg-green-50" : ""}`}>
-                        <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">{entityA.name}</p>
+                        <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">{entityA.name}</p>
                         <p className={`text-sm font-medium break-words ${
                           valA?.winner === true ? "text-win" : valA?.winner === false ? "text-text-secondary" : "text-text"
                         }`}>
@@ -451,7 +451,7 @@ function LegacyTable({
                         </p>
                       </div>
                       <div className={`px-3 py-2.5 ${valB?.winner === true ? "bg-green-50" : ""}`}>
-                        <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">{entityB.name}</p>
+                        <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">{entityB.name}</p>
                         <p className={`text-sm font-medium break-words ${
                           valB?.winner === true ? "text-win" : valB?.winner === false ? "text-text-secondary" : "text-text"
                         }`}>

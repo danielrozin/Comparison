@@ -97,7 +97,7 @@ export function KeyDifferencesSummary({
                   <span className="font-semibold text-text">{diff.label}:</span>
                   {winnerName ? (
                     <>
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200/60">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200/60">
                         ✓ {winnerName} wins
                       </span>
                       <span className="text-text-secondary text-xs">({winnerVal} vs {loserVal})</span>

@@ -111,14 +111,14 @@ export function TrendingCard({
           </svg>
           <span>{formatViews(comparison.viewCount)} views</span>
           {isTopThree ? (
-            <span className="ml-auto inline-flex items-center gap-0.5 text-[10px] font-semibold text-orange-600 bg-orange-50 border border-orange-100 px-1.5 py-0.5 rounded-full">
+            <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-orange-600 bg-orange-50 border border-orange-100 px-1.5 py-0.5 rounded-full">
               <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
               </svg>
               Trending
             </span>
           ) : (
-            <span className="ml-auto inline-flex items-center gap-0.5 text-[10px] font-semibold text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+            <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
               Compare
               <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

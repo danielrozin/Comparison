@@ -204,7 +204,7 @@ export function Header() {
               <span className="hidden sm:inline overflow-hidden whitespace-nowrap" aria-live="polite" aria-atomic="true">
                 {SEARCH_HINTS[searchHintIdx]}
               </span>
-              <span className="hidden md:inline-flex items-center gap-1 text-[10px] text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
+              <span className="hidden md:inline-flex items-center gap-1 text-xs text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">⌘K</kbd>
                 <span className="text-text-secondary/20">/</span>
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">/</kbd>
