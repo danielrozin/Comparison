@@ -105,7 +105,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
       </div>
 
       {winnerIdx === -1 && (
-        <p className="text-center text-[10px] text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
+        <p className="text-center text-xs text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
       )}
     </div>
   );

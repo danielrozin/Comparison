@@ -104,7 +104,7 @@ function ScoreBar({
   return (
     <div className="mt-3 px-1">
       <div className="flex justify-between items-center mb-1">
-        <span className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">Score</span>
+        <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Score</span>
         <span className="text-xs font-bold text-white/80">{pct}%</span>
       </div>
       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -229,7 +229,7 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
       {stats.map((s) => (
         <span
           key={s.label}
-          className="inline-flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
         >
           {s.icon}
           {s.label}

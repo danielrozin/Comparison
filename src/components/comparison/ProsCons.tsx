@@ -131,12 +131,12 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                   </div>
                   <div className="flex gap-1.5 ml-2 mt-0.5 flex-shrink-0">
                     {entity.pros.length > 0 && (
-                      <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      <span className="text-xs font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
                         +{entity.pros.length}
                       </span>
                     )}
                     {entity.cons.length > 0 && (
-                      <span className="text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      <span className="text-xs font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full whitespace-nowrap">
                         -{entity.cons.length}
                       </span>
                     )}
@@ -160,7 +160,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         style={{ width: `${prosPercent}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-semibold text-text-secondary tabular-nums" aria-hidden="true">{prosPercent}% positive</span>
+                    <span className="text-xs font-semibold text-text-secondary tabular-nums" aria-hidden="true">{prosPercent}% positive</span>
                   </div>
                 )}
               </div>

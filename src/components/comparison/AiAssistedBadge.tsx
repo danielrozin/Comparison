@@ -77,7 +77,7 @@ export function AiAssistedBadge() {
             <svg className="w-3 h-3 text-yellow-300 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41L12 0Z" />
             </svg>
-            <span className="text-[10px] font-bold text-yellow-300 uppercase tracking-wider">AI-Assisted Verdict</span>
+            <span className="text-xs font-bold text-yellow-300 uppercase tracking-wider">AI-Assisted Verdict</span>
           </span>
           <span className="block px-3 py-2.5 text-xs leading-relaxed text-white/80">
             Our verdict is generated from product specs and verified reviews, then edited for accuracy.{" "}

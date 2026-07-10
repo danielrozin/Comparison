@@ -63,7 +63,7 @@ function ScorecardHeader({
         <div className="flex flex-col items-center gap-1.5 min-w-0">
           <EntityMiniAvatar entity={entityA} variant="a" />
           <span className="block text-xl sm:text-2xl font-black text-primary-700">{aWins}</span>
-          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityA.name}</span>
+          <span className="text-xs text-text-secondary truncate max-w-[72px] text-center">{entityA.name}</span>
         </div>
 
         {/* Center: leader badge */}
@@ -81,7 +81,7 @@ function ScorecardHeader({
             </span>
           )}
           {ties > 0 && (
-            <span className="block mt-1 text-[10px] text-text-secondary">{ties} tie{ties !== 1 ? "s" : ""}</span>
+            <span className="block mt-1 text-xs text-text-secondary">{ties} tie{ties !== 1 ? "s" : ""}</span>
           )}
         </div>
 
@@ -89,7 +89,7 @@ function ScorecardHeader({
         <div className="flex flex-col items-center gap-1.5 min-w-0">
           <EntityMiniAvatar entity={entityB} variant="b" />
           <span className="block text-xl sm:text-2xl font-black text-accent-600">{bWins}</span>
-          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityB.name}</span>
+          <span className="text-xs text-text-secondary truncate max-w-[72px] text-center">{entityB.name}</span>
         </div>
       </div>
 
@@ -109,8 +109,8 @@ function ScorecardHeader({
         />
       </div>
       <div className="flex justify-between mt-1" aria-hidden="true">
-        <span className="text-[10px] text-primary-600 font-medium">{aPercent}%</span>
-        <span className="text-[10px] text-accent-600 font-medium">{bPercent}%</span>
+        <span className="text-xs text-primary-600 font-medium">{aPercent}%</span>
+        <span className="text-xs text-accent-600 font-medium">{bPercent}%</span>
       </div>
     </div>
   );

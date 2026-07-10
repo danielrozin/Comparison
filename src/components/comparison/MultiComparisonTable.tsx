@@ -260,7 +260,7 @@ export function MultiComparisonTable({
                                 key={`${attr.id}-${eIdx}`}
                                 className={`text-center px-2 py-1.5 rounded border ${bg}`}
                               >
-                                <p className="text-[10px] text-text-secondary truncate mb-0.5" title={ent.name}>
+                                <p className="text-xs text-text-secondary truncate mb-0.5" title={ent.name}>
                                   {ent.name}
                                 </p>
                                 <p className={`text-sm break-words ${fg}`}>

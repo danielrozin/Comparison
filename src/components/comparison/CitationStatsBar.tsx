@@ -99,14 +99,14 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
             ))}
 
             {/* Research date */}
-            <time dateTime={new Date(stats.lastResearched).toISOString()} className="text-[10px] text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
+            <time dateTime={new Date(stats.lastResearched).toISOString()} className="text-xs text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
               Updated {researchDate}
             </time>
           </div>
 
           {/* Source attribution row */}
           {stats.sources.length > 0 && (
-            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-[10px] text-indigo-400 border-t border-indigo-100/80 pt-2">
+            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-xs text-indigo-400 border-t border-indigo-100/80 pt-2">
               <span className="font-semibold text-indigo-500 mr-0.5">Sources:</span>
               {stats.sources.slice(0, 5).map((source, i) => (
                 <span key={i}>

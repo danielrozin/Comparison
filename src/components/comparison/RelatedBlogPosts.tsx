@@ -41,7 +41,7 @@ export function RelatedBlogPosts({
   if (posts.length === 0) return null;
 
   return (
-    <section aria-labelledby="related-articles-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="related-articles" aria-labelledby="related-articles-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       {/* Section header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -73,11 +73,11 @@ export function RelatedBlogPosts({
                 {/* Category + reading time row */}
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                   {post.category && (
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
                       {post.category}
                     </span>
                   )}
-                  <span className="flex items-center gap-1 text-[10px] text-text-secondary">
+                  <span className="flex items-center gap-1 text-xs text-text-secondary">
                     <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
