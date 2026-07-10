@@ -107,7 +107,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": title,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": description,
@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": "2024-01-01",
       "DC.title": title,
       "DC.description": description,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${name} Comparisons, ${name} vs Alternatives`,

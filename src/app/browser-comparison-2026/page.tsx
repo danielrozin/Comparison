@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "citation_keywords": "browser comparison 2026, Chrome vs Firefox, Safari vs Edge, best web browser, browser benchmark",
     "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",

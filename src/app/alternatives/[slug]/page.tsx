@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": `Best Alternatives to ${name} in 2026`,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": metaDesc,
@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": `Best Alternatives to ${name} in 2026`,
       "DC.description": metaDesc,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `Best ${name} Alternatives, ${name} Competitors`,

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "citation_keywords": "LLM comparison, large language models, AI chatbots, ChatGPT vs Claude, GPT-4 benchmark 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",

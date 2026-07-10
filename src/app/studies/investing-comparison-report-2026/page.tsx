@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": DESCRIPTION,
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     "citation_keywords": "investing, stock comparison, investment platforms, brokerage comparison, financial research 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",

@@ -53,3 +53,4 @@ hyperframes/**/.hyperframes/
 .env.prod
 .env.vercel.production
 .env.local
+.env.vercel.prod

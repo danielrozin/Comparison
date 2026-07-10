@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
 
 const CHANGELOG_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Changelog — A Versus B Updates")}&type=home`;
 const CHANGELOG_TITLE = `Changelog — ${SITE_NAME} Updates, Features & New Comparisons`;
@@ -32,14 +33,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": CHANGELOG_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": CHANGELOG_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": CHANGELOG_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -249,7 +250,7 @@ const changelogSchema = {
       educationalLevel: "General",
       teaches: "What has changed and improved in A Versus B platform features and content",
       educationalUse: "reference",
-      author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      author: contentAuthorArray(),
       publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       mainEntityOfPage: { "@type": "WebPage", "@id": CHANGELOG_URL },
       isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

@@ -26,14 +26,14 @@ const HOME_DESC = "The internet's most comprehensive comparison platform. Side-b
 export const metadata: Metadata = {
   other: {
     "citation_title": HOME_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": HOME_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": HOME_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.description": HOME_DESC,

@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": "Trending Comparisons — A Versus B",
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": trendingDescription,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": "Trending Comparisons — A Versus B",
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.subject": "Trending Comparisons 2026, Popular Side-by-Side Comparisons",

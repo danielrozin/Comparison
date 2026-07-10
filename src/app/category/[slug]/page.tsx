@@ -67,7 +67,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     twitter: { card: "summary_large_image", site: "@aversusb", images: [{ url: ogImage, alt: `${category.name} Comparisons on A Versus B` }] },
     other: {
       "citation_title": `${category.name} Comparisons — A Versus B`,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": desc,
@@ -76,7 +76,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       "citation_online_date": "2024-01-01",
       "DC.title": `${category.name} Comparisons`,
       "DC.description": desc,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${category.name} Comparisons, Side-by-Side Analysis`,
