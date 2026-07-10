@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -139,7 +139,7 @@ export default function StudiesIndexPage() {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
-    teaches: "Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers",
+    teaches: teachesDefinedTerm("Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers", `${SITE_URL}/studies`),
     educationalUse: "research",
     keywords: `comparison data study, brand comparison report, SaaS comparison data ${new Date().getFullYear()}, comparison trends`,
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },

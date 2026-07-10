@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
@@ -116,7 +116,7 @@ const articleSchema = {
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
-  teaches: "How to choose the best large language model for your use case",
+  teaches: teachesDefinedTerm("How to choose the best large language model for your use case", PAGE_URL),
   educationalUse: "comparison",
   alternativeHeadline: `Best Large Language Models in ${new Date().getFullYear()} — LLM Comparison Guide`,
   keywords: `LLM comparison, large language models, GPT-4o, Claude, Gemini, AI models ${new Date().getFullYear()}`,

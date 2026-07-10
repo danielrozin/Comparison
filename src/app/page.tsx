@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema } from "@/lib/seo/schema";
+import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -132,7 +132,7 @@ export default async function HomePage() {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
-    teaches: "How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables",
+    teaches: teachesDefinedTerm("How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables", SITE_URL),
     educationalUse: "reference",
     keywords: "compare anything, side-by-side comparison, product comparison, technology comparison, country comparison, sports comparison",
     speakable: {

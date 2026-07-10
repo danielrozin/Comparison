@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
@@ -309,7 +309,7 @@ export default async function BlogPage({
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
-    teaches: "How to compare anything side by side using expert-written guides",
+    teaches: teachesDefinedTerm("How to compare anything side by side using expert-written guides", `${SITE_URL}/blog`),
     educationalUse: "guide",
     speakable: {
       "@type": "SpeakableSpecification",

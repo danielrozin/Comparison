@@ -6,7 +6,8 @@ import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
-import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { getCategoryFaqs } from "@/lib/data/category-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -281,11 +282,11 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
-    teaches: `How to compare ${category.name.toLowerCase()} side by side`,
+    teaches: teachesDefinedTerm(`How to compare ${category.name.toLowerCase()} side by side`, categoryUrl),
     educationalUse: "comparison",
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2"],
+      cssSelector: ["h1", "h2", ".faq-answer"],
     },
     keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} ${new Date().getFullYear()}`,
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -305,6 +306,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         name: c.title,
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
+      // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage
+      // schema node, resolving structured Q&A without re-parsing the full CollectionPage.
+      { "@type": "FAQPage", "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
     ],
     timeRequired: "PT2M",
     wordCount: 400,
@@ -372,7 +376,21 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
     },
   };
-  const schemaData = [breadcrumbData, categorySchemaObj, categoryDatasetObj];
+  const categoryFaqs = getCategoryFaqs(slug);
+  const categoryFaqSchema = categoryFaqs.length > 0
+    ? faqSchema(
+        categoryFaqs,
+        `${categoryUrl}#faq`,
+        [{ "@type": "Thing", "@id": categoryUrl, name: `${category.name} Comparisons`, url: categoryUrl }],
+        "2024-01-01",
+      )
+    : null;
+  const schemaData = [
+    breadcrumbData,
+    categorySchemaObj,
+    categoryDatasetObj,
+    ...(categoryFaqSchema ? [categoryFaqSchema] : []),
+  ];
 
   const basePath = `/category/${slug}`;
 
@@ -708,6 +726,24 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <div className="mt-16">
             <NewsletterSignup source={`category-${category.slug}`} />
           </div>
+        )}
+
+        {/* FAQ Section — renders FAQ HTML so FAQPage JSON-LD speakable selectors resolve,
+            satisfying Google FAQ rich-result eligibility and AEO answer extraction. */}
+        {page === 1 && categoryFaqs.length > 0 && (
+          <section className="mt-14" aria-labelledby="category-faq-heading" id="category-faq">
+            <h2 id="category-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+              Frequently Asked Questions: {category.name} Comparisons
+            </h2>
+            <dl className="space-y-5">
+              {categoryFaqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-border rounded-xl p-5" id={`q${i + 1}`}>
+                  <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+                  <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         )}
       </div>
     </>

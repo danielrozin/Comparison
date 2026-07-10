@@ -7,7 +7,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
-import { personAuthorNode } from "@/lib/seo/schema";
+import { personAuthorNode, teachesDefinedTerm } from "@/lib/seo/schema";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -327,7 +327,7 @@ function bestPageSchema(entry: BestEntry) {
         educationalLevel: "General",
         // teaches — explicit learning outcome for AI classifiers routing "best X" queries.
         // ChatGPT and Perplexity route decision queries to pages with a `teaches` field.
-        teaches: `How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`,
+        teaches: teachesDefinedTerm(`How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`, url),
         // educationalUse — signals this is a ranked guide, not a review or comparison.
         educationalUse: "guide",
         timeRequired: `PT${Math.max(4, Math.ceil(entry.listItems.length * 1.5))}M`,
