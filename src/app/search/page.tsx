@@ -85,6 +85,7 @@ function SearchContent() {
           </defs>
           <rect width="100%" height="100%" fill="url(#search-grid)"/>
         </svg>
+        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
