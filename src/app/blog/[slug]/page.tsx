@@ -13,6 +13,7 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -954,6 +955,7 @@ export default async function BlogPostPage({
           </div>
         </div>
       </div>
+      <BackToTop />
     </>
   );
 }
