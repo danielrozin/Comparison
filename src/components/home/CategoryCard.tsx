@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
   sports: "from-orange-50 to-amber-50 group-hover:from-orange-100 group-hover:to-amber-100",
@@ -60,7 +61,7 @@ export function CategoryCard({
       <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
       <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:shadow-sm`}>
-        <span className="text-2xl leading-none" aria-hidden="true">{category.icon}</span>
+        <CategoryIcon category={category.slug} className="w-6 h-6" />
       </div>
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">
         {category.name}

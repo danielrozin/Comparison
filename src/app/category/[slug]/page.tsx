@@ -12,6 +12,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
@@ -475,7 +476,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <div className="relative flex-shrink-0">
               <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary-400 to-accent-500 blur-xl opacity-50 scale-125" aria-hidden="true" />
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary-600/80 via-primary-700/80 to-indigo-800/80 rounded-2xl sm:rounded-3xl flex items-center justify-center backdrop-blur-sm ring-2 ring-white/25 shadow-2xl shadow-primary-900/60">
-                <span className="text-4xl sm:text-5xl" aria-hidden="true">{category.icon}</span>
+                <CategoryIcon category={category.slug} className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
               </div>
             </div>
 

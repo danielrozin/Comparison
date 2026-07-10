@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { CATEGORIES } from "@/lib/utils/constants";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 export default async function NotFound() {
   let trending: { slug: string; title: string; category: string }[] = [];
@@ -148,7 +149,7 @@ export default async function NotFound() {
                 href={`/category/${cat.slug}`}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors"
               >
-                <span aria-hidden="true">{cat.icon}</span>
+                <CategoryIcon category={cat.slug} className="w-4 h-4" />
                 {cat.name}
               </Link>
               </li>

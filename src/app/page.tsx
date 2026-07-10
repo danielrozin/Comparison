@@ -19,6 +19,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { AnimatedStats } from "@/components/home/AnimatedStats";
 import { ComparisonTicker } from "@/components/home/ComparisonTicker";
 import { LiveActivityToast } from "@/components/home/LiveActivityToast";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
 const HOME_DESC = "The internet's most comprehensive comparison platform. Side-by-side comparisons across sports, technology, products, countries, software, and more — data-driven, free, and instant.";
@@ -265,7 +266,7 @@ export default async function HomePage() {
                     href={`/category/${cat.slug}`}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
                   >
-                    <span className="text-sm leading-none group-hover:scale-110 transition-transform inline-block" aria-hidden="true">{cat.icon}</span>
+                    <span className="group-hover:scale-110 transition-transform inline-block text-white/70 group-hover:text-white" aria-hidden="true"><CategoryIcon category={cat.slug} className="w-3.5 h-3.5" /></span>
                     {cat.name}
                   </Link>
                 ))}
