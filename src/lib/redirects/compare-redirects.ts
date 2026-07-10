@@ -14,10 +14,11 @@
  *   3. ORDERING_CONSOLIDATIONS — generated A-vs-B / B-vs-A ordering duplicates
  *      (DAN-1265, 166 clusters). See compare-ordering-redirects.generated.ts.
  *
- * DAN-1269 — DAN-1169 (PR #72) redirected only the xbox-first short slug and
- * missed the mirror ps5-first short slug, leaving `ps5-pro-vs-xbox-series-x` as
- * a thin, self-canonicalizing 200 duplicate competing for the same cluster.
- * Fold that short slug into the same canonical so both orderings 308 to it.
+ * DAN-1269 / DAN-1908 — the PS5 Pro vs Xbox Series X cluster originally
+ * consolidated into the keyword-suffixed slug `…-performance-comparison-2026`.
+ * DAN-1890 Phase B later archived that slug (archived rows 404), so the whole
+ * cluster is now folded into the clean, still-`published` canonical
+ * `ps5-pro-vs-xbox-series-x` instead. See the MANUAL_CONSOLIDATIONS note below.
  *
  * Add new entries as more compare-route cannibalization clusters are found:
  * map each retired slug to the canonical slug it should consolidate into.
@@ -39,10 +40,22 @@ import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.da
 // runtime sort ever runs. (Only known shared-model-number stub in the 1,964-slug
 // sitemap sweep — explicit pin keeps blast radius at one URL.)
 const MANUAL_CONSOLIDATIONS: Record<string, string> = {
-  "xbox-series-x-vs-ps5-pro":
-    "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
-  "ps5-pro-vs-xbox-series-x":
-    "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+  // DAN-1908: PS5 Pro vs Xbox Series X cluster was consolidating INTO the
+  // keyword-suffixed slug `…-performance-comparison-2026`, but DAN-1890 Phase B
+  // later archived that slug (archived rows 404 via getStaticProps, DAN-1886),
+  // so every ordering 308'd straight into a 404 — including the clean canonical
+  // `ps5-pro-vs-xbox-series-x` that was pitched to an editor in wave-1 outreach.
+  // The clean slug is itself a healthy `published` 200 record, so flip the whole
+  // cluster to fold INTO it: the mirror ordering + the archived keyword/spec
+  // variants all 308 at the edge to the live canonical.
+  "xbox-series-x-vs-ps5-pro": "ps5-pro-vs-xbox-series-x",
+  "ps5-pro-vs-xbox-series-x-performance-comparison-2026":
+    "ps5-pro-vs-xbox-series-x",
+  "ps5-pro-vs-xbox-series-x-performance-comparison-2026-keyword-suffix":
+    "ps5-pro-vs-xbox-series-x",
+  "ps5-pro-vs-xbox-series-x-performance": "ps5-pro-vs-xbox-series-x",
+  "ps5-pro-vs-xbox-series-x-specs": "ps5-pro-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-pro-specs": "ps5-pro-vs-xbox-series-x",
   "iphone-15-vs-16": "iphone-15-vs-iphone-16",
   // DAN-1365 §A: Kobe/LeBron cannibalization. Two self-canonical live pages with
   // an identical "Kobe Bryant vs LeBron James" H1 split authority. The survivor is

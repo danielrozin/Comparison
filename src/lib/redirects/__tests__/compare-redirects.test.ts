@@ -14,6 +14,42 @@ describe("COMPARE_REDIRECTS", () => {
     expect(hit?.permanent).toBe(true);
   });
 
+  describe("DAN-1908 PS5 Pro vs Xbox Series X cluster", () => {
+    const CANONICAL = "ps5-pro-vs-xbox-series-x";
+    const VARIANTS = [
+      "xbox-series-x-vs-ps5-pro",
+      "ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+      "ps5-pro-vs-xbox-series-x-performance-comparison-2026-keyword-suffix",
+      "ps5-pro-vs-xbox-series-x-performance",
+      "ps5-pro-vs-xbox-series-x-specs",
+      "xbox-series-x-vs-ps5-pro-specs",
+    ];
+
+    it("folds every variant into the live clean canonical (never the archived keyword slug)", () => {
+      for (const from of VARIANTS) {
+        expect(getConsolidatedCompareSlug(from), `${from} should fold`).toBe(
+          CANONICAL,
+        );
+      }
+    });
+
+    it("never redirects the clean canonical away (it is a live 200 survivor)", () => {
+      expect(getConsolidatedCompareSlug(CANONICAL)).toBeNull();
+      expect(
+        COMPARE_REDIRECTS.some((r) => r.source === `/compare/${CANONICAL}`),
+        "clean canonical must not be a redirect source",
+      ).toBe(false);
+    });
+
+    it("no variant still points at the archived …-performance-comparison-2026 slug", () => {
+      for (const r of COMPARE_REDIRECTS) {
+        expect(r.destination).not.toBe(
+          "/compare/ps5-pro-vs-xbox-series-x-performance-comparison-2026",
+        );
+      }
+    });
+  });
+
   it("never chains: no redirect destination is itself a redirect source (one hop)", () => {
     const sources = new Set(COMPARE_REDIRECTS.map((r) => r.source));
     for (const r of COMPARE_REDIRECTS) {
