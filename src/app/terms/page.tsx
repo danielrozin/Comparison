@@ -16,8 +16,16 @@ export const metadata: Metadata = {
     title: `Terms of Use — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Terms of Use.`,
     url: PAGE_URL,
-
-    locale: "en_US",  },
+    locale: "en_US",
+    images: [{ url: `${SITE_URL}/images/og-default.png`, width: 1200, height: 630, alt: `Terms of Use — ${SITE_NAME}` }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: `Terms of Use — ${SITE_NAME}`,
+    description: `Read the ${SITE_NAME} Terms of Use before accessing our website.`,
+    images: [`${SITE_URL}/images/og-default.png`],
+  },
 };
 
 const webPageSchema = {
@@ -42,6 +50,21 @@ const webPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  genre: "Legal",
+  abstract: `Legal terms governing access to and use of ${SITE_NAME}, including disclaimers, intellectual property rights, and user responsibilities.`,
+  alternativeHeadline: `${SITE_NAME} Terms of Use — Your Rights and Responsibilities`,
+  contentReferenceTime: "2024-01-01T00:00:00Z",
+  thumbnailUrl: `${SITE_URL}/images/og-default.png`,
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/images/og-default.png`,
+    contentUrl: `${SITE_URL}/images/og-default.png`,
+    name: `Terms of Use — ${SITE_NAME}`,
+    description: `Terms of Use page for ${SITE_NAME}`,
+    width: 1200,
+    height: 630,
+  },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

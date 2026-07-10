@@ -16,8 +16,16 @@ export const metadata: Metadata = {
     title: `Privacy Policy — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Privacy Policy.`,
     url: PAGE_URL,
-
-    locale: "en_US",  },
+    locale: "en_US",
+    images: [{ url: `${SITE_URL}/images/og-default.png`, width: 1200, height: 630, alt: `Privacy Policy — ${SITE_NAME}` }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: `Privacy Policy — ${SITE_NAME}`,
+    description: `Read the ${SITE_NAME} Privacy Policy to understand how we collect, use, and protect your personal information.`,
+    images: [`${SITE_URL}/images/og-default.png`],
+  },
 };
 
 const webPageSchema = {
@@ -42,6 +50,21 @@ const webPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  genre: "Legal",
+  abstract: `Privacy Policy explaining how ${SITE_NAME} collects, uses, stores, and protects personal information from users of the comparison platform.`,
+  alternativeHeadline: `${SITE_NAME} Privacy Policy — How We Handle Your Data`,
+  contentReferenceTime: "2024-01-01T00:00:00Z",
+  thumbnailUrl: `${SITE_URL}/images/og-default.png`,
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/images/og-default.png`,
+    contentUrl: `${SITE_URL}/images/og-default.png`,
+    name: `Privacy Policy — ${SITE_NAME}`,
+    description: `Privacy Policy page for ${SITE_NAME}`,
+    width: 1200,
+    height: 630,
+  },
+  potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

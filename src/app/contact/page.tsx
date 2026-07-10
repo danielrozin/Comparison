@@ -15,8 +15,16 @@ export const metadata: Metadata = {
     title: `Contact ${SITE_NAME}`,
     description: `Get in touch with the ${SITE_NAME} team. We respond within 2 business days.`,
     url: `${SITE_URL}/contact`,
-
-    locale: "en_US",  },
+    locale: "en_US",
+    images: [{ url: `${SITE_URL}/images/og-default.png`, width: 1200, height: 630, alt: `Contact ${SITE_NAME}` }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@aversusb",
+    title: `Contact ${SITE_NAME}`,
+    description: `Get in touch with the ${SITE_NAME} team. We respond within 2 business days.`,
+    images: [`${SITE_URL}/images/og-default.png`],
+  },
 };
 
 const contactPageSchema = {
@@ -43,7 +51,24 @@ const contactPageSchema = {
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-  potentialAction: { "@type": "ReadAction", target: `${SITE_URL}/contact` },
+  genre: "Contact",
+  abstract: `Contact page for ${SITE_NAME} — reach the team for error reports, comparison requests, partnerships, or general questions. Response within 2 business days.`,
+  alternativeHeadline: `Get in Touch with ${SITE_NAME} — Support, Requests & Partnerships`,
+  contentReferenceTime: "2024-01-01T00:00:00Z",
+  thumbnailUrl: `${SITE_URL}/images/og-default.png`,
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/images/og-default.png`,
+    contentUrl: `${SITE_URL}/images/og-default.png`,
+    name: `Contact ${SITE_NAME}`,
+    description: `Contact page for ${SITE_NAME}`,
+    width: 1200,
+    height: 630,
+  },
+  potentialAction: [
+    { "@type": "ReadAction", target: `${SITE_URL}/contact` },
+    { "@type": "CommunicateAction", target: `${SITE_URL}/contact`, recipient: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME } },
+  ],
   mainEntity: {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
