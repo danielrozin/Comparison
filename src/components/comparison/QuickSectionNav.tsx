@@ -69,6 +69,7 @@ const SECTION_CONFIGS: Array<{ id: string; label: string; icon: React.ReactNode;
 export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
   const [visible, setVisible] = useState<Section[]>([]);
   const [activeId, setActiveId] = useState<string>("");
+  const [scrolledLeft, setScrolledLeft] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pillRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
@@ -108,6 +109,15 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
     }
   }, [activeId]);
 
+  // Track horizontal scroll position to show/hide left-edge fade
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const onScroll = () => setScrolledLeft(el.scrollLeft > 8);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [visible]);
+
   if (visible.length < 2) return null;
 
   return (
@@ -116,6 +126,8 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
       className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
     >
       <div className="relative">
+      {/* Left-edge fade — appears after horizontal scroll to signal hidden pills to the left */}
+      <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10 transition-opacity duration-200 ${scrolledLeft ? "opacity-100" : "opacity-0"}`} aria-hidden="true" />
       {/* Right-edge fade — signals more pills off-screen on mobile */}
       {visible.length > 3 && (
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10" aria-hidden="true" />

@@ -59,7 +59,7 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
   // and the TL;DR question is already covered there. (DAN-410)
   return (
     <>
-      <section id="short-answer" aria-label="Quick Answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-3">
+      <section id="short-answer" aria-label="Quick Answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 scroll-mt-20">
         <div className="bg-gradient-to-br from-blue-50 via-indigo-50/60 to-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto relative overflow-hidden">
           {/* Top gradient accent stripe */}
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
