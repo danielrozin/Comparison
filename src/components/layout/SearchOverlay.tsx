@@ -4,13 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
-
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽", countries: "🌍", technology: "💻", products: "📦",
-  health: "💊", finance: "💰", entertainment: "🎬", history: "📜",
-  companies: "🏢", brands: "🏷️", celebrities: "⭐", software: "🖥️",
-  automotive: "🚗",
-};
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 function parseComparison(input: string): [string, string] | null {
   const patterns = [
@@ -275,8 +269,8 @@ export function SearchOverlay() {
                           : "hover:bg-primary-50/30 border-l-transparent"
                       }`}
                     >
-                      <span className="text-base flex-shrink-0 w-5 text-center leading-none" aria-hidden="true">
-                        {CATEGORY_ICONS[catKey] || "📊"}
+                      <span className="flex-shrink-0 w-5 flex items-center justify-center text-text-secondary/70">
+                        <CategoryIcon category={catKey} />
                       </span>
                       {parts ? (
                         <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { slugify } from "@/lib/utils/slugify";
 import { trackComparisonSearch } from "@/lib/utils/analytics";
 import Link from "next/link";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 interface PopularComparison {
   slug: string;
@@ -17,25 +18,6 @@ interface SearchResult {
   title: string;
   category: string;
 }
-
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽",
-  countries: "🌍",
-  technology: "💻",
-  products: "📦",
-  health: "💊",
-  finance: "💰",
-  education: "🎓",
-  entertainment: "🎬",
-  history: "📜",
-  military: "🎖️",
-  economy: "📈",
-  companies: "🏢",
-  brands: "🏷️",
-  celebrities: "⭐",
-  software: "🖥️",
-  automotive: "🚗",
-};
 
 const TYPING_SUGGESTIONS = [
   "Messi vs Ronaldo",
@@ -321,8 +303,8 @@ export function SearchBox() {
                       : "hover:bg-primary-50/30 border-l-transparent"
                   }`}
                 >
-                  <span className="text-base flex-shrink-0 w-5 text-center leading-none" aria-hidden="true">
-                    {CATEGORY_ICONS[catKey] || "📊"}
+                  <span className="flex-shrink-0 w-5 flex items-center justify-center text-text-secondary/70">
+                    <CategoryIcon category={catKey} />
                   </span>
                   {parts ? (
                     <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">
