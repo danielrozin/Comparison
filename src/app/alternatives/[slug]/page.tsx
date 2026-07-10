@@ -289,6 +289,46 @@ export default async function AlternativesPage({ params }: PageProps) {
           })),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": `${altPageUrl}#faqpage`,
+            name: `Alternatives to ${name} — FAQ`,
+            url: altPageUrl,
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: `What are the best alternatives to ${name}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: alternatives.length > 0
+                    ? `The top alternatives to ${name} include ${alternatives.slice(0, 5).map((a) => a.name).join(", ")}. Each has a full side-by-side comparison with specs, pros & cons, and a verdict on A Versus B.`
+                    : `A Versus B compares ${name} against its top competitors. Browse the comparisons above to find the best option for your needs.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `How is ${name} different from its competitors?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `A Versus B compares ${name} against each competitor across key attributes — features, pricing, performance, and user ratings. Click any comparison above to see a full data-driven verdict.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `Is ${name} free to use?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Pricing varies by product. See the individual comparison pages for ${name} vs each alternative for the most up-to-date pricing details.`,
+                },
+              },
+            ],
+          }),
+        }}
+      />
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-indigo-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
