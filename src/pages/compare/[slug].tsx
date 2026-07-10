@@ -368,6 +368,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
+  // DAN-1886: archived pages must not be indexed — return 404 so Google removes
+  // them from the index rather than continuing to crawl thin auto-gen content.
+  if (comparison && comparison.metadata?.status === "archived") {
+    return { notFound: true };
+  }
+
   // A record that's missing OR exists but is empty/corrupt (fewer than 2
   // entities) is treated the same: the full SSR layout assumes entityA/entityB
   // exist and throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up
