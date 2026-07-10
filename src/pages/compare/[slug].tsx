@@ -46,6 +46,8 @@ import {
 } from "@/lib/utils/slugify";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
+import { AuthorByline } from "@/components/comparison/AuthorByline";
+import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
 import { VerdictCard } from "@/components/comparison/VerdictCard";
 import { TrackComparisonCard } from "@/components/comparison/TrackComparisonCard";
 import { KeyDifferencesSummary } from "@/components/comparison/KeyDifferencesSummary";
@@ -909,6 +911,12 @@ export default function ComparisonPage(props: Props) {
       {/* Breadcrumbs */}
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
+      {/* Author byline — E-E-A-T signal */}
+      <AuthorByline
+        updatedAt={comparison.metadata.updatedAt}
+        isHumanReviewed={comparison.metadata.isHumanReviewed}
+      />
+
       {/* Table of Contents */}
       <TableOfContents
         items={[
@@ -918,6 +926,7 @@ export default function ComparisonPage(props: Props) {
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
           ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ...(comparison.expertAnalysis ? [{ id: "expert-analysis", label: "Expert Analysis" }] : []),
           { id: "resources", label: "Resources" },
           { id: "comments", label: "Comments" },
         ]}
@@ -1084,6 +1093,16 @@ export default function ComparisonPage(props: Props) {
           {/* FAQ */}
           {comparison.faqs.length > 0 && (
             <FAQBlock faqs={comparison.faqs} />
+          )}
+
+          {/* Expert Analysis — human-authored deep dive for value-add pages (DAN-1888) */}
+          {comparison.expertAnalysis && (
+            <ExpertAnalysis
+              analysis={comparison.expertAnalysis}
+              entityAName={comparison.entities[0]?.name ?? ""}
+              entityBName={comparison.entities[1]?.name ?? ""}
+              updatedAt={comparison.metadata.updatedAt}
+            />
           )}
 
           {/* Resources & Learn More */}

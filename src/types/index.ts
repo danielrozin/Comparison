@@ -44,6 +44,7 @@ export interface ComparisonPageData {
   citationStats?: CitationStats;
   quickAnswer?: QuickAnswerTLDR;
   schemaMarkup?: Record<string, unknown>;
+  expertAnalysis?: string;
 }
 
 export interface ComparisonResource {

@@ -96,6 +96,7 @@ interface PrismaComparisonRow {
   status: string;
   relatedComparisonIds: string[];
   schemaMarkup: unknown;
+  content: unknown;
   entities: {
     id: string;
     position: number;
@@ -267,6 +268,9 @@ function transformToPageData(
       status: row.status,
     },
     ...(row.schemaMarkup ? { schemaMarkup: row.schemaMarkup as Record<string, unknown> } : {}),
+    ...(row.content && typeof row.content === "object" && row.content !== null && "expertAnalysis" in (row.content as object)
+      ? { expertAnalysis: (row.content as Record<string, unknown>).expertAnalysis as string }
+      : {}),
   };
 }
 
