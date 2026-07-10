@@ -434,26 +434,28 @@ export default async function BlogPage({
         </div>
       </section>
 
-      {/* Category Filters */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <nav aria-label="Filter articles by category">
-          <div className="bg-white rounded-xl shadow-lg p-2 flex flex-wrap gap-1 justify-center">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat}
-                href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
-                aria-current={activeCategory === cat ? "page" : undefined}
-                className={`px-4 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
-                  activeCategory === cat
-                    ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
-                    : "text-text-secondary hover:bg-surface-alt hover:text-text"
-                }`}
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
-        </nav>
+      {/* Category Filters — sticky below the header (h-16 = 64 px) so users can re-filter without scrolling back */}
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-border/60 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+          <nav aria-label="Filter articles by category">
+            <div className="flex flex-wrap gap-1 justify-center">
+              {CATEGORIES.map((cat) => (
+                <Link
+                  key={cat}
+                  href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
+                  aria-current={activeCategory === cat ? "page" : undefined}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all duration-150 ${
+                    activeCategory === cat
+                      ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
+                      : "text-text-secondary hover:bg-surface-alt hover:text-text"
+                  }`}
+                >
+                  {cat}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        </div>
       </div>
 
       {/* Articles Grid */}

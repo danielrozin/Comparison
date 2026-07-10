@@ -384,52 +384,56 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+      {/* Category filter chips — sticky below the header so users can re-filter without scrolling back */}
+      {categories.length > 1 && (
+        <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-border/60 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+            <nav aria-label="Filter by category">
+              <div className="flex flex-wrap gap-2 overflow-x-auto scrollbar-hide pb-0.5">
+                <Link
+                  href="/trending"
+                  aria-current={!activeCategory ? "true" : undefined}
+                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                    !activeCategory
+                      ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
+                      : "bg-white text-text-secondary border-border hover:border-orange-300 hover:text-text hover:bg-orange-50"
+                  }`}
+                >
+                  All
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
+                    {allTrending.length}
+                  </span>
+                </Link>
+                {categories.map((cat) => {
+                  const isActive = activeCategory === cat;
+                  const colorClass = CATEGORY_COLORS[cat] || "bg-surface-alt text-text-secondary border-border ring-gray-400";
+                  const [bg, text, border, ring] = colorClass.split(" ");
+                  return (
+                    <Link
+                      key={cat}
+                      href={`/trending?category=${encodeURIComponent(cat)}`}
+                      aria-current={isActive ? "true" : undefined}
+                      className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                        isActive
+                          ? `${bg} ${text} ${border} ring-2 ${ring} shadow-sm`
+                          : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"
+                      }`}
+                    >
+                      <span aria-hidden="true">{CATEGORY_ICONS[cat] || "📊"}</span>
+                      <span className="capitalize">{cat}</span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
+                        {categoryCounts[cat]}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
 
-        {/* Category filter chips */}
-        {categories.length > 1 && (
-          <nav aria-label="Filter by category" className="mb-6 -mx-1">
-            <div className="flex flex-wrap gap-2 px-1">
-              <Link
-                href="/trending"
-                aria-current={!activeCategory ? "true" : undefined}
-                className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
-                  !activeCategory
-                    ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
-                    : "bg-white text-text-secondary border-border hover:border-orange-300 hover:text-text hover:bg-orange-50"
-                }`}
-              >
-                All
-                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${!activeCategory ? "bg-white/20 text-white" : "bg-surface-alt text-text-secondary"}`}>
-                  {allTrending.length}
-                </span>
-              </Link>
-              {categories.map((cat) => {
-                const isActive = activeCategory === cat;
-                const colorClass = CATEGORY_COLORS[cat] || "bg-surface-alt text-text-secondary border-border ring-gray-400";
-                const [bg, text, border, ring] = colorClass.split(" ");
-                return (
-                  <Link
-                    key={cat}
-                    href={`/trending?category=${encodeURIComponent(cat)}`}
-                    aria-current={isActive ? "true" : undefined}
-                    className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 ${
-                      isActive
-                        ? `${bg} ${text} ${border} ring-2 ${ring} shadow-sm`
-                        : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"
-                    }`}
-                  >
-                    <span aria-hidden="true">{CATEGORY_ICONS[cat] || "📊"}</span>
-                    <span className="capitalize">{cat}</span>
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
-                      {categoryCounts[cat]}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </nav>
-        )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 
         {/* Sort + active label row */}
         <div className="mb-4 flex items-center justify-between flex-wrap gap-3">

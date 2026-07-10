@@ -314,9 +314,20 @@ export default async function EntityPage({ params }: PageProps) {
       />
 
       {/* Entity Hero Banner */}
-      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-800 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5" />
-        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+      <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white relative overflow-hidden">
+        {/* Inline SVG grid — avoids a separate HTTP request during LCP window (same pattern as ComparisonHero) */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" aria-hidden="true">
+          <defs>
+            <pattern id="entity-hero-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
+              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#entity-hero-grid)"/>
+        </svg>
+        {/* Decorative blobs — hidden on mobile (blur-3xl forces GPU compositor layers that delay LCP paint) */}
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" aria-hidden="true" />
+        <div className="hidden sm:block absolute bottom-0 left-10 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3" aria-hidden="true" />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">
@@ -350,15 +361,19 @@ export default async function EntityPage({ params }: PageProps) {
               <li className="text-white font-medium" aria-current="page">{name}</li>
             </ol>
           </nav>
-          <div className="flex items-center gap-5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
-              <span className="text-3xl sm:text-4xl font-bold text-white" aria-hidden="true">{name.charAt(0)}</span>
+          <div className="flex items-start gap-5 sm:gap-6">
+            {/* Polished entity avatar with gradient glow */}
+            <div className="relative flex-shrink-0">
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-500 blur-xl opacity-50 scale-125" aria-hidden="true" />
+              <div className="relative w-18 h-18 sm:w-24 sm:h-24 bg-gradient-to-br from-primary-500 via-primary-600 to-indigo-700 rounded-2xl flex items-center justify-center ring-2 ring-white/25 shadow-2xl shadow-primary-900/60">
+                <span className="text-3xl sm:text-4xl font-black text-white drop-shadow-sm" aria-hidden="true">{name.charAt(0)}</span>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">{name}</h1>
-              <div className="mt-2 flex items-center gap-3 flex-wrap">
+            <div className="flex-1 min-w-0 pt-1">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">{name}</h1>
+              <div className="mt-2.5 flex items-center gap-3 flex-wrap">
                 <StarRating rating={rating} size="lg" reviewCount={reviewCount} inverted />
-                <span className="text-primary-200 text-sm">
+                <span className="text-primary-200/80 text-sm font-medium">
                   · {relatedComparisons.length} comparison{relatedComparisons.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -366,30 +381,30 @@ export default async function EntityPage({ params }: PageProps) {
           </div>
 
           {/* Inline "compare with" search — turns entity pages into comparison entry points */}
-          <div className="max-w-lg mt-2">
+          <div className="max-w-lg mt-5">
             <EntityCompareSearch entityName={name} entitySlug={slug} />
           </div>
 
-          {/* At-a-glance stat chips */}
+          {/* At-a-glance category chips */}
           {topCategories.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2" aria-label="Top comparison categories">
               {topCategories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-medium backdrop-blur-sm ring-1 ring-white/20 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold backdrop-blur-sm ring-1 ring-white/20 transition-all duration-150 hover:ring-white/40"
                 >
                   <span className="capitalize">{cat.name}</span>
-                  <span className="opacity-60">·</span>
-                  <span className="opacity-80">{cat.count}</span>
+                  <span className="opacity-50">·</span>
+                  <span className="opacity-75">{cat.count}</span>
                 </Link>
               ))}
             </div>
           )}
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
-            <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
+        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+          <svg viewBox="0 0 1440 32" fill="none" className="w-full">
+            <path d="M0 32V10C360 28 720 0 1080 16C1260 24 1380 8 1440 10V32H0Z" fill="white" />
           </svg>
         </div>
       </div>
