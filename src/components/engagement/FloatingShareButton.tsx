@@ -44,7 +44,7 @@ export function FloatingShareButton({ title, slug, path = "compare" }: Props) {
       onClick={handleShare}
       aria-label={copied ? "Link copied!" : "Share this comparison"}
       className={[
-        "fixed bottom-6 right-4 z-40",
+        "fixed bottom-20 right-4 z-40",
         "sm:hidden",
         "flex items-center justify-center gap-2",
         "h-12 rounded-full px-4",

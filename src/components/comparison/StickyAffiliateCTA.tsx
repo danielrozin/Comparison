@@ -129,7 +129,7 @@ export function StickyAffiliateCTA({
         className={`${
           placementVariant === "inline-verdict"
             ? `relative ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300`
-            : `fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
+            : `fixed bottom-14 md:bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
         }`}
         style={placementVariant !== "inline-verdict" ? { paddingBottom: "env(safe-area-inset-bottom, 0px)" } : undefined}
       >
