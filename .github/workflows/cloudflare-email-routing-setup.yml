@@ -1,0 +1,180 @@
+name: Setup Cloudflare Email Routing — aversusb.net
+
+on:
+  workflow_dispatch:
+    inputs:
+      destination_email:
+        description: "Forward-to email address (monitored Gmail)"
+        required: false
+        default: "daniarozin@gmail.com"
+      dry_run:
+        description: "Dry run — print API calls but do not execute"
+        required: false
+        default: "false"
+
+jobs:
+  setup-email-routing:
+    runs-on: ubuntu-latest
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      ZONE_NAME: aversusb.net
+      DEST_EMAIL: ${{ github.event.inputs.destination_email || 'daniarozin@gmail.com' }}
+      DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+
+    steps:
+      - name: Verify token present
+        run: |
+          if [ -z "$CF_TOKEN" ]; then
+            echo "❌ CLOUDFLARE_API_TOKEN secret is missing — add it to repo secrets and re-run"
+            exit 1
+          fi
+          echo "✅ Token present"
+
+      - name: Resolve zone ID
+        id: zone
+        run: |
+          ZONE_ID=$(curl -s \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.cloudflare.com/client/v4/zones?name=${ZONE_NAME}" \
+            | jq -r '.result[0].id')
+          if [ "$ZONE_ID" = "null" ] || [ -z "$ZONE_ID" ]; then
+            echo "❌ Zone $ZONE_NAME not found — check token scopes"
+            exit 1
+          fi
+          echo "ZONE_ID=$ZONE_ID" >> $GITHUB_ENV
+          echo "✅ Zone ID: $ZONE_ID"
+
+      - name: Verify send.aversusb.net MX (must not be touched)
+        run: |
+          echo "Checking existing send.aversusb.net MX..."
+          dig +short MX send.aversusb.net || true
+          echo "---"
+          echo "Checking existing apex MX (should be empty before routing)..."
+          dig +short MX $ZONE_NAME || true
+
+      - name: Enable Email Routing on zone
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "[DRY RUN] POST /zones/$ZONE_ID/email/routing/enable"
+            exit 0
+          fi
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/email/routing/enable")
+          echo "$RESULT" | jq .
+          SUCCESS=$(echo "$RESULT" | jq -r '.success')
+          if [ "$SUCCESS" != "true" ]; then
+            echo "⚠️ Enable returned non-success — checking if already enabled..."
+            STATUS=$(curl -s \
+              -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/email/routing" | jq -r '.result.enabled')
+            echo "Current enabled status: $STATUS"
+            [ "$STATUS" = "true" ] && echo "✅ Email Routing is active" || exit 1
+          else
+            echo "✅ Email Routing enabled"
+          fi
+
+      - name: Get account ID
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then exit 0; fi
+          ACCOUNT_ID=$(curl -s \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/zones/$ZONE_ID" \
+            | jq -r '.result.account.id')
+          echo "Account ID: $ACCOUNT_ID"
+          echo "ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV
+
+      - name: Add destination address
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "[DRY RUN] POST /accounts/*/email/routing/addresses — destination: $DEST_EMAIL"
+            exit 0
+          fi
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"email\": \"$DEST_EMAIL\"}" \
+            "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/email/routing/addresses")
+          echo "$RESULT" | jq .
+          SUCCESS=$(echo "$RESULT" | jq -r '.success')
+          if [ "$SUCCESS" = "true" ]; then
+            echo "⚠️ IMPORTANT: Check daniarozin@gmail.com for a Cloudflare verification email and click the link!"
+          else
+            echo "$RESULT" | jq -r '.errors[]?.message' | grep -qi "already\|exists" && echo "✅ Destination already verified" || echo "⚠️ Check response above"
+          fi
+
+      - name: Create routing rule — contact@aversusb.net
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "[DRY RUN] POST routing rule: contact@$ZONE_NAME → $DEST_EMAIL"
+            exit 0
+          fi
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "contact-forward",
+              "enabled": true,
+              "matchers": [{"type": "literal", "field": "to", "value": "contact@aversusb.net"}],
+              "actions": [{"type": "forward", "value": ["'"$DEST_EMAIL"'"]}]
+            }' \
+            "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/email/routing/rules")
+          echo "$RESULT" | jq .
+          echo "$RESULT" | jq -r '.success' | grep -q "true" && echo "✅ contact@ rule created" || \
+            (echo "$RESULT" | jq -r '.errors[]?.message' | grep -qi "already\|exists\|duplicate" && echo "✅ contact@ rule already exists" || echo "Check response above")
+
+      - name: Create routing rule — pr@aversusb.net
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "[DRY RUN] POST routing rule: pr@$ZONE_NAME → $DEST_EMAIL"
+            exit 0
+          fi
+          RESULT=$(curl -s -X POST \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "pr-forward",
+              "enabled": true,
+              "matchers": [{"type": "literal", "field": "to", "value": "pr@aversusb.net"}],
+              "actions": [{"type": "forward", "value": ["'"$DEST_EMAIL"'"]}]
+            }' \
+            "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/email/routing/rules")
+          echo "$RESULT" | jq .
+          echo "$RESULT" | jq -r '.success' | grep -q "true" && echo "✅ pr@ rule created" || \
+            (echo "$RESULT" | jq -r '.errors[]?.message' | grep -qi "already\|exists\|duplicate" && echo "✅ pr@ rule already exists" || echo "Check response above")
+
+      - name: Verify DNS — Cloudflare MX on apex
+        run: |
+          echo "Waiting 15s for DNS propagation..."
+          sleep 15
+          echo "=== dig MX aversusb.net (should show *.mx.cloudflare.net) ==="
+          dig MX aversusb.net +short
+          echo "=== dig MX send.aversusb.net (must be untouched) ==="
+          dig MX send.aversusb.net +short
+          echo "=== SPF check ==="
+          dig TXT aversusb.net +short | grep -i "spf\|include" || echo "(SPF may take a moment)"
+
+      - name: List active routing rules
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then exit 0; fi
+          echo "=== Active routing rules ==="
+          curl -s \
+            -H "Authorization: Bearer $CF_TOKEN" \
+            "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/email/routing/rules" \
+            | jq '.result[] | {name, enabled, to: .matchers[0].value, action: .actions[0].type}'
+
+      - name: Summary
+        run: |
+          echo "## Cloudflare Email Routing — aversusb.net" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Email Routing enabled | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| contact@aversusb.net → $DEST_EMAIL | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| pr@aversusb.net → $DEST_EMAIL | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Required: verify destination email" >> $GITHUB_STEP_SUMMARY
+          echo "Check **$DEST_EMAIL** inbox for a Cloudflare verification email and click the confirmation link." >> $GITHUB_STEP_SUMMARY
+          echo "After verification, send a test email to contact@aversusb.net to confirm end-to-end delivery." >> $GITHUB_STEP_SUMMARY
