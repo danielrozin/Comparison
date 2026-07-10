@@ -2,16 +2,17 @@ import Link from "next/link";
 import { SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { CookiePreferencesButton } from "./CookiePreferencesButton";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const FOOTER_CATEGORIES = [
-  { slug: "software", name: "Software", icon: "💻" },
-  { slug: "sports", name: "Sports", icon: "⚽" },
-  { slug: "countries", name: "Countries", icon: "🌍" },
-  { slug: "technology", name: "Technology", icon: "🔧" },
-  { slug: "products", name: "Products", icon: "📦" },
-  { slug: "companies", name: "Companies", icon: "🏢" },
-  { slug: "entertainment", name: "Entertainment", icon: "🎬" },
-  { slug: "automotive", name: "Automotive", icon: "🚗" },
+  { slug: "software", name: "Software" },
+  { slug: "sports", name: "Sports" },
+  { slug: "countries", name: "Countries" },
+  { slug: "technology", name: "Technology" },
+  { slug: "products", name: "Products" },
+  { slug: "companies", name: "Companies" },
+  { slug: "entertainment", name: "Entertainment" },
+  { slug: "automotive", name: "Automotive" },
 ];
 
 export function Footer() {
@@ -83,7 +84,7 @@ export function Footer() {
                 href={`/category/${cat.slug}`}
                 className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors group"
               >
-                <span className="text-base opacity-70 group-hover:opacity-100 transition-opacity" aria-hidden="true">{cat.icon}</span>
+                <CategoryIcon category={cat.slug} className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity text-text-secondary" />
                 {cat.name}
               </Link>
             ))}

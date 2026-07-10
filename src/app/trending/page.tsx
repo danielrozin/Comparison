@@ -8,6 +8,7 @@ import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { personAuthorNode, breadcrumbSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
 
@@ -77,12 +78,6 @@ export const metadata: Metadata = {
   },
 };
 
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽", countries: "🌍", technology: "💻", products: "📦",
-  health: "💊", finance: "💰", entertainment: "🎬", history: "📜",
-  companies: "🏢", brands: "🏷️", celebrities: "⭐", software: "🖥️",
-  automotive: "🚗",
-};
 
 const CATEGORY_COLORS: Record<string, string> = {
   sports: "bg-green-100 text-green-800 border-green-200 ring-green-400",
@@ -419,7 +414,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
                           : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"
                       }`}
                     >
-                      <span aria-hidden="true">{CATEGORY_ICONS[cat] || "📊"}</span>
+                      <CategoryIcon category={cat} />
                       <span className="capitalize">{cat}</span>
                       <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/30" : "bg-surface-alt"}`}>
                         {categoryCounts[cat]}

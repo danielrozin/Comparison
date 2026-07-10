@@ -1,20 +1,6 @@
 import Link from "next/link";
 import type { TrendingComparison } from "@/types";
-
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽",
-  countries: "🌍",
-  technology: "💻",
-  products: "📦",
-  health: "💊",
-  finance: "💰",
-  entertainment: "🎬",
-  history: "📜",
-  automotive: "🚗",
-  companies: "🏢",
-  brands: "🏷️",
-  software: "🖥️",
-};
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 export function ComparisonTicker({ items }: { items: TrendingComparison[] }) {
   if (!items.length) return null;
@@ -45,7 +31,6 @@ export function ComparisonTicker({ items }: { items: TrendingComparison[] }) {
               const parts = item.title.split(/\s+vs\.?\s+/i);
               const a = parts[0] || item.title;
               const b = parts[1] || "";
-              const icon = CATEGORY_ICONS[item.category] ?? "🔍";
               return (
                 <Link
                   key={`${item.slug}-${idx}`}
@@ -54,7 +39,9 @@ export function ComparisonTicker({ items }: { items: TrendingComparison[] }) {
                   tabIndex={idx >= items.length ? -1 : 0}
                   aria-hidden={idx >= items.length}
                 >
-                  <span className="text-sm leading-none" aria-hidden="true">{icon}</span>
+                  <span className="text-text-secondary/60">
+                    <CategoryIcon category={item.category} />
+                  </span>
                   <span className="group-hover:text-primary-600 transition-colors">{a}</span>
                   <span className="text-[10px] font-black text-text-secondary/40 mx-0.5">VS</span>
                   <span className="group-hover:text-primary-600 transition-colors">{b}</span>

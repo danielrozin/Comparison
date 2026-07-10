@@ -24,15 +24,18 @@ type CardState =
 const TRIGGERS_LABEL = (
   <>
     <span className="inline-flex items-center gap-1">
-      <span aria-hidden="true">💲</span> price change
+      <svg className="w-3 h-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      {" "}price change
     </span>
     <span aria-hidden="true" className="text-text-secondary/60">·</span>
     <span className="inline-flex items-center gap-1">
-      <span aria-hidden="true">🆕</span> new spec
+      <svg className="w-3 h-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+      {" "}new spec
     </span>
     <span aria-hidden="true" className="text-text-secondary/60">·</span>
     <span className="inline-flex items-center gap-1">
-      <span aria-hidden="true">✏️</span> verdict update
+      <svg className="w-3 h-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+      {" "}verdict update
     </span>
   </>
 );
@@ -204,17 +207,21 @@ export function TrackComparisonCard({
       <div className="bg-gradient-to-br from-primary-50 via-white to-blue-50 border border-primary-200 rounded-xl p-6 sm:p-7 shadow-sm">
         <div className="flex items-start gap-3 sm:gap-4">
           <div
-            className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-xl shadow-sm"
+            className="hidden sm:flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-600 shadow-sm"
             aria-hidden="true"
           >
-            🔔
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
           </div>
           <div className="flex-1 min-w-0">
             <h3
               id={headingId}
               className="text-base sm:text-lg font-semibold text-text flex items-center gap-2"
             >
-              <span className="sm:hidden" aria-hidden="true">🔔</span>
+              <svg className="sm:hidden w-4 h-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
               Track this comparison
             </h3>
             <p className="text-sm text-text-secondary mt-1">
