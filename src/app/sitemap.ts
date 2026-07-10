@@ -43,41 +43,65 @@ export default async function sitemap({
 }: {
   id: number | string;
 }): Promise<MetadataRoute.Sitemap> {
-  const now = new Date().toISOString();
   // Next.js 15 may pass id as a string from URL params; normalize to number
   const numId = Number(id);
 
   // ── Sitemap 0: Static + Category pages ──
   if (numId === 0) {
-    // Stable legal/about pages use their real last-edit date rather than `now`.
-    // Inflating lastmod on every build signals false freshness and wastes Google's
-    // crawl budget re-crawling pages that haven't changed.
+    // All lastmod values use real content timestamps or stable hand-authored dates.
+    // Using `new Date()` (build-time "now") causes every redeploy to signal false
+    // freshness, burning Googlebot crawl budget on unchanged pages.
     const LEGAL_DATE = "2025-01-15";
     const ABOUT_DATE = "2026-04-01";
     const STUDIES_DATE = "2026-05-01";
-
     const COMPARISONS_DATE = "2026-06-01";
     // Alternatives template received schema improvements in HB90-134 (E-E-A-T, accessibilityFeature, etc.)
     const ALTERNATIVES_DATE = "2026-06-30";
     const FAQ_DATE = "2026-06-01";
+    const CHANGELOG_DATE = "2026-07-01";
+
+    // Derive dynamic-page lastmod from the most recently updated published content.
+    // One cheap findFirst per content type — avoids N+1 per-category queries.
+    let maxComparisonDate = COMPARISONS_DATE;
+    let maxReviewDate = "2026-06-01";
+    try {
+      const prisma = getPrisma();
+      if (prisma) {
+        const [latestComparison, latestReview] = await Promise.all([
+          prisma.comparison.findFirst({
+            where: { status: "published" },
+            select: { updatedAt: true },
+            orderBy: { updatedAt: "desc" },
+          }),
+          prisma.reviewAggregation.findFirst({
+            select: { lastAggregatedAt: true },
+            orderBy: { lastAggregatedAt: "desc" },
+          }),
+        ]);
+        if (latestComparison) maxComparisonDate = latestComparison.updatedAt.toISOString();
+        if (latestReview) maxReviewDate = latestReview.lastAggregatedAt.toISOString();
+      }
+    } catch {
+      // fall back to fixed dates
+    }
 
     const staticPages: MetadataRoute.Sitemap = [
-      { url: SITE_URL, lastModified: now, changeFrequency: "daily", priority: 1.0 },
-      { url: `${SITE_URL}/trending`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
+      { url: SITE_URL, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 1.0 },
+      { url: `${SITE_URL}/trending`, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 0.9 },
       { url: `${SITE_URL}/about`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/contact`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.4 },
       { url: `${SITE_URL}/partnerships`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${SITE_URL}/search`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+      { url: `${SITE_URL}/search`, lastModified: maxComparisonDate, changeFrequency: "weekly", priority: 0.6 },
       { url: `${SITE_URL}/developers`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${SITE_URL}/reviews`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-      { url: `${SITE_URL}/feed`, lastModified: now, changeFrequency: "daily", priority: 0.3 },
-      { url: `${SITE_URL}/changelog`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
+      { url: `${SITE_URL}/reviews`, lastModified: maxReviewDate, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/feed`, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 0.3 },
+      { url: `${SITE_URL}/changelog`, lastModified: CHANGELOG_DATE, changeFrequency: "weekly", priority: 0.5 },
       { url: `${SITE_URL}/privacy`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/terms`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/disclaimer`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/acceptable-use`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
       { url: `${SITE_URL}/cookie-policy`, lastModified: LEGAL_DATE, changeFrequency: "yearly", priority: 0.2 },
-      { url: `${SITE_URL}/site-map`, lastModified: now, changeFrequency: "daily", priority: 0.6 },
+      { url: `${SITE_URL}/site-map`, lastModified: maxComparisonDate, changeFrequency: "daily", priority: 0.6 },
       { url: `${SITE_URL}/studies`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.7 },
       { url: `${SITE_URL}/studies/most-compared-brands-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/studies/b2b-saas-comparison-report-2026`, lastModified: STUDIES_DATE, changeFrequency: "weekly", priority: 0.8 },
@@ -92,7 +116,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
-      { url: `${SITE_URL}/requests`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
+      { url: `${SITE_URL}/requests`, lastModified: ABOUT_DATE, changeFrequency: "weekly", priority: 0.5 },
       // Author page
       { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       // FAQ competitor comparison pages
@@ -114,7 +138,7 @@ export default async function sitemap({
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
       url: `${SITE_URL}/category/${cat.slug}`,
-      lastModified: now,
+      lastModified: maxComparisonDate,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     }));
@@ -123,7 +147,7 @@ export default async function sitemap({
       ([catSlug, subs]) =>
         subs.map((sub) => ({
           url: `${SITE_URL}/category/${catSlug}/${sub.slug}`,
-          lastModified: now,
+          lastModified: maxComparisonDate,
           changeFrequency: "weekly" as const,
           priority: 0.85,
         }))
@@ -131,7 +155,7 @@ export default async function sitemap({
 
     const hubPages: MetadataRoute.Sitemap = Object.keys(HUB_CONFIG).map((slug) => ({
       url: `${SITE_URL}/hub/${slug}`,
-      lastModified: now,
+      lastModified: maxComparisonDate,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     }));
@@ -139,7 +163,7 @@ export default async function sitemap({
     const staticBestSlugs = new Set(Object.keys(BEST_CONFIG));
     const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
       url: `${SITE_URL}/best/${slug}`,
-      lastModified: now,
+      lastModified: COMPARISONS_DATE,
       changeFrequency: "weekly" as const,
       priority: 0.85,
     }));
@@ -260,8 +284,23 @@ export default async function sitemap({
 
   // ── Sitemap 3: Blog pages ──
   if (numId === 3) {
+    let maxBlogDate = "2026-06-01";
+    try {
+      const prisma = getPrisma();
+      if (prisma) {
+        const latest = await prisma.blogArticle.findFirst({
+          where: { status: "published" },
+          select: { updatedAt: true },
+          orderBy: { updatedAt: "desc" },
+        });
+        if (latest) maxBlogDate = latest.updatedAt.toISOString();
+      }
+    } catch {
+      // fall back to fixed date
+    }
+
     const blogListPage: MetadataRoute.Sitemap = [
-      { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+      { url: `${SITE_URL}/blog`, lastModified: maxBlogDate, changeFrequency: "daily", priority: 0.8 },
     ];
 
     let blogArticlePages: MetadataRoute.Sitemap = [];
@@ -269,7 +308,13 @@ export default async function sitemap({
       const { articles } = await listBlogArticles({ limit: MAX_URLS_PER_SITEMAP, status: "published" });
       blogArticlePages = articles.map((article) => ({
         url: `${SITE_URL}/blog/${article.slug}`,
-        lastModified: article.updatedAt ? new Date(article.updatedAt).toISOString() : now,
+        lastModified: article.updatedAt
+          ? new Date(article.updatedAt).toISOString()
+          : article.publishedAt
+            ? new Date(article.publishedAt).toISOString()
+            : article.createdAt
+              ? new Date(article.createdAt).toISOString()
+              : maxBlogDate,
         changeFrequency: "weekly" as const,
         priority: 0.7,
         images: [`${SITE_URL}/api/og?title=${encodeURIComponent(article.title)}&type=blog`],
@@ -283,12 +328,26 @@ export default async function sitemap({
 
   // ── Sitemap 4: Review pages ──
   if (numId === 4) {
+    let maxReviewDate = "2026-06-01";
+    try {
+      const prisma = getPrisma();
+      if (prisma) {
+        const latest = await prisma.reviewAggregation.findFirst({
+          select: { lastAggregatedAt: true },
+          orderBy: { lastAggregatedAt: "desc" },
+        });
+        if (latest) maxReviewDate = latest.lastAggregatedAt.toISOString();
+      }
+    } catch {
+      // fall back to fixed date
+    }
+
     let reviewCategoryPages: MetadataRoute.Sitemap = [];
     try {
       const reviewCats = await getReviewCategories();
       reviewCategoryPages = reviewCats.map((cat) => ({
         url: `${SITE_URL}/reviews/category/${cat.slug}`,
-        lastModified: now,
+        lastModified: maxReviewDate,
         changeFrequency: "weekly" as const,
         priority: 0.7,
       }));
@@ -303,7 +362,7 @@ export default async function sitemap({
         url: `${SITE_URL}/reviews/${entity.slug}`,
         lastModified: entity.reviewAggregation?.lastAggregatedAt
           ? new Date(entity.reviewAggregation.lastAggregatedAt).toISOString()
-          : now,
+          : maxReviewDate,
         changeFrequency: "weekly" as const,
         priority: 0.75,
         images: [`${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=review`],
