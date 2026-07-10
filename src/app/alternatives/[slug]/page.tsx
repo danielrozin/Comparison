@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity } from "@/lib/services/comparison-service";
-import { breadcrumbSchema, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
@@ -179,7 +179,7 @@ export default async function AlternativesPage({ params }: PageProps) {
       caption: `Alternatives to ${name} — comparison guide`,
     },
     keywords: `${name} alternatives, ${name} competitors, best ${name} alternatives ${new Date().getFullYear()}`,
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: contentAuthorArray(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getFinanceStudy } from "@/lib/services/studies-service";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, contentAuthorArray } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -156,7 +156,7 @@ export default async function InvestingStudyPage() {
     educationalUse: "research",
     keywords: "investing comparison, finance comparison report 2026, stock vs ETF, investment benchmarks, data study",
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: contentAuthorArray(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },

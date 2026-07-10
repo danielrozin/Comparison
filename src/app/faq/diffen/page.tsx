@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { contentAuthorArray } from "@/lib/seo/schema";
 
 const PAGE_TITLE = `Is Diffen.com Still Worth Using? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -109,7 +110,7 @@ function buildSchemas() {
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    author: contentAuthorArray(),
     reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     about: {
       "@type": "WebSite",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { breadcrumbSchema, contentAuthorArray } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
@@ -65,7 +65,7 @@ const howToSchema = {
   url: PAGE_URL,
   inLanguage: "en-US",
   totalTime: "PT2M",
-  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  author: contentAuthorArray(),
   step: [
     {
       "@type": "HowToStep",
@@ -147,7 +147,7 @@ const articleSchema = {
   educationalLevel: "General",
   teaches: "How A Versus B sources comparison data and writes AI-assisted verdicts with structured human editorial oversight",
   educationalUse: "guide",
-  author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  author: contentAuthorArray(),
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   mainEntityOfPage: { "@type": "WebPage", "@id": PAGE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
