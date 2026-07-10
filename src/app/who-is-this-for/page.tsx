@@ -100,11 +100,32 @@ function buildSchemas() {
     accessibilityFeature: ["readingOrder", "structuralNavigation"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    genre: "Guide",
+    contentReferenceTime: "2024-01-01T00:00:00Z",
+    datePublished: "2024-01-01",
+    dateModified: new Date().toISOString().slice(0, 10),
+    thumbnailUrl: `${SITE_URL}/images/og-default.png`,
+    image: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/images/og-default.png`,
+      contentUrl: `${SITE_URL}/images/og-default.png`,
+      name: `Who Is ${SITE_NAME} For?`,
+      description: `Audience guide for ${SITE_NAME} — who benefits from structured data-driven comparisons`,
+      width: 1200,
+      height: 630,
+    },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
-    potentialAction: { "@type": "ReadAction", target: pageUrl },
+    potentialAction: [
+      { "@type": "ReadAction", target: pageUrl },
+      {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/compare/{search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
+    ],
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: [

@@ -2965,6 +2965,26 @@ export function entitySchemaType(entityType: string): string {
     war: "Event",
     software: "SoftwareApplication",
     place: "Place",
+    // Automotive: Vehicle is the Schema.org canonical type for cars/trucks/motorcycles.
+    // Enables Google vehicle-search carousels and AI automotive-query routing.
+    automotive: "Vehicle",
+    car: "Car",
+    // Health: MedicalEntity covers drugs, supplements, procedures, and conditions.
+    health: "MedicalEntity",
+    // Finance: FinancialProduct covers credit cards, loans, investment accounts.
+    finance: "FinancialProduct",
+    // Sports activity / game type (distinct from SportsTeam / Person)
+    sport: "SportsActivity",
+    // Military: SpecialAnnouncement is a fallback; keep Event for wars above
+    military: "Thing",
+    // Economy: QuantitativeValue proxies for economic indicators
+    economy: "Thing",
+    // Education
+    education: "EducationalOrganization",
+    // Entertainment
+    entertainment: "CreativeWork",
+    // Gaming
+    gaming: "VideoGame",
   };
   return map[entityType] || "Thing";
 }
