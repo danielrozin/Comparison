@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
 const PAGE_URL = `${SITE_URL}/how-we-write-verdicts`;
@@ -159,6 +160,14 @@ const articleSchema = {
   wordCount: 800,
 };
 
+const verdictsBreadcrumb = breadcrumbSchema(
+  [
+    { name: "Home", url: SITE_URL },
+    { name: "How We Write Verdicts", url: PAGE_URL },
+  ],
+  `${PAGE_URL}#breadcrumb`
+);
+
 const faqPageSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -205,6 +214,10 @@ const faqPageSchema = {
 export default function HowWeWriteVerdictsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(verdictsBreadcrumb) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}

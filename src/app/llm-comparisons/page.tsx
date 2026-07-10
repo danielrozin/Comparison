@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
@@ -57,6 +58,14 @@ export const metadata: Metadata = {
 };
 
 const LLM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("LLM Comparison 2026")}&type=article`;
+const llmBreadcrumb = breadcrumbSchema(
+  [
+    { name: "Home", url: SITE_URL },
+    { name: "LLM Comparisons", url: PAGE_URL },
+  ],
+  `${PAGE_URL}#breadcrumb`
+);
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": ["Article", "TechArticle"],
@@ -330,7 +339,7 @@ const LLMS: LLM[] = [
 export default function LLMComparisonsPage() {
   return (
     <>
-      <JsonLd data={[articleSchema, ...productSchemas]} />
+      <JsonLd data={[llmBreadcrumb, articleSchema, ...productSchemas]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-violet-900 via-purple-900 to-indigo-900 text-white relative overflow-hidden">

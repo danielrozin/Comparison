@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { breadcrumbSchema } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -67,6 +68,15 @@ const ARTICLES = [
   },
 ];
 
+const authorBreadcrumb = breadcrumbSchema(
+  [
+    { name: "Home", url: SITE_URL },
+    { name: "Authors", url: `${SITE_URL}/authors` },
+    { name: AUTHOR_NAME, url: PAGE_URL },
+  ],
+  `${PAGE_URL}#breadcrumb`
+);
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -107,6 +117,7 @@ const personSchema = {
     SITE_URL,
     "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
     "https://www.facebook.com/daniel.rozin.94",
+    "https://twitter.com/aversusb",
   ],
   mainEntityOfPage: {
     "@type": "ProfilePage",
@@ -181,7 +192,7 @@ const profilePageSchema = {
 export default function DanielRozinPage() {
   return (
     <>
-      <JsonLd data={[personSchema, profilePageSchema]} />
+      <JsonLd data={[authorBreadcrumb, personSchema, profilePageSchema]} />
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
