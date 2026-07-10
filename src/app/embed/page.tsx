@@ -148,8 +148,8 @@ export default function EmbedLandingPage() {
       {/* Hero */}
       <section aria-labelledby="embed-hero-heading" className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-accent-600 text-white">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-300 rounded-full blur-3xl" />
+          <div className="hidden sm:block absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
+          <div className="hidden sm:block absolute bottom-10 right-10 w-96 h-96 bg-accent-300 rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm font-medium mb-6">

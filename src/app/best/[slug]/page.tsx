@@ -402,7 +402,7 @@ export default async function BestPage({ params }: PageProps) {
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-emerald-900 via-teal-800 to-primary-800 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav aria-label="breadcrumb" className="text-sm text-emerald-200 mb-5">
             <ol className="flex items-center gap-1.5 flex-wrap">

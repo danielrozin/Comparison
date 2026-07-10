@@ -329,7 +329,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       {/* Subcategory Hero Banner */}
       <section aria-labelledby="subcategory-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200 flex-wrap">

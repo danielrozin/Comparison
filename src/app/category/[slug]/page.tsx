@@ -436,8 +436,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5" />
         {/* Floating accent blobs */}
-        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4" />
+        <div className="hidden sm:block absolute bottom-0 left-0 w-56 h-56 bg-primary-400/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 relative">
           {/* Breadcrumb */}

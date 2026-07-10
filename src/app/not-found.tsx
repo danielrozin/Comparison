@@ -27,7 +27,7 @@ export default async function NotFound() {
           </defs>
           <rect width="100%" height="100%" fill="url(#notfound-grid)"/>
         </svg>
-        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
+        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
 
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 relative text-center">
           {/* 404 display */}

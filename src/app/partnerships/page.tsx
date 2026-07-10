@@ -138,7 +138,7 @@ export default function PartnershipsPage() {
       {/* Gradient Hero */}
       <section aria-labelledby="partnerships-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
+        <div className="hidden sm:block absolute top-0 right-0 w-72 h-72 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/4 pointer-events-none" aria-hidden="true" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative">
           <nav className="mb-6" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">

@@ -380,7 +380,7 @@ export default async function BlogPage({
           </defs>
           <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
         </svg>
-        <div className="absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative text-center">
           <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
