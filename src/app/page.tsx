@@ -250,7 +250,7 @@ export default async function HomePage() {
                   href={example.href}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
                 >
-                  <span className="text-[10px] text-white/40" aria-hidden="true">↗</span>
+                  <span className="text-xs text-white/40" aria-hidden="true">↗</span>
                   {example.label}
                 </Link>
               ))}

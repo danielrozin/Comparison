@@ -550,7 +550,7 @@ export default async function BlogPage({
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
                       <div className="flex items-center gap-1.5 min-w-0">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm" aria-hidden="true">
-                          <span className="text-white font-bold leading-none" style={{ fontSize: "8px" }}>DR</span>
+                          <span className="text-white font-bold leading-none text-[8px]">DR</span>
                         </div>
                         <span className="truncate">Daniel Rozin</span>
                         {article.publishedAt && (

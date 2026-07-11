@@ -528,6 +528,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                   </svg>
                   Data-backed · Free
                 </span>
+                <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white backdrop-blur-sm transition-all">
+                  <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+                    <span className="text-white font-bold leading-none text-[7px]">DR</span>
+                  </span>
+                  Curated by Daniel Rozin
+                </Link>
               </div>
             </div>
           </div>

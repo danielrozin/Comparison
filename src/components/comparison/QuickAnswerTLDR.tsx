@@ -127,6 +127,28 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
                 )}
               </div>
             )}
+
+            {/* Jump-to-verdict CTA — helps users who want the full analysis skip past the TLDR */}
+            <div className="mt-3 pt-3 border-t border-blue-200/50 flex items-center justify-between gap-3">
+              <a
+                href="#verdict"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:underline underline-offset-2 transition-colors"
+              >
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                Jump to full verdict
+              </a>
+              <a
+                href="#comparison-table"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-500 hover:text-blue-700 hover:underline underline-offset-2 transition-colors"
+              >
+                See all attributes
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </section>
