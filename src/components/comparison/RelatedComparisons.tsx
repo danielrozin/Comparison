@@ -61,7 +61,10 @@ export function RelatedComparisons({
         </div>
       </div>
 
-      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none mb-6">
+      {/* Scroll-fade wrapper — right-edge fade signals more cards off-screen on mobile */}
+      <div className="relative mb-6">
+        <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -122,6 +125,7 @@ export function RelatedComparisons({
           );
         })}
       </ul>
+      </div>
 
       {/* Browse all CTA */}
       <div className="flex justify-center">
