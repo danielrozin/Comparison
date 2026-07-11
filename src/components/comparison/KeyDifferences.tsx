@@ -116,6 +116,8 @@ function ScorecardHeader({
   );
 }
 
+const MOBILE_INITIAL_COUNT = 5;
+
 export function KeyDifferencesBlock({
   differences,
   entityA,
@@ -126,6 +128,7 @@ export function KeyDifferencesBlock({
   entityB: ComparisonEntityData;
 }) {
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [mobileExpanded, setMobileExpanded] = useState(false);
 
   const aWins = useMemo(() => differences.filter((d) => d.winner === "a").length, [differences]);
   const bWins = useMemo(() => differences.filter((d) => d.winner === "b").length, [differences]);
@@ -144,6 +147,9 @@ export function KeyDifferencesBlock({
     { id: "tie", label: "Tied", count: ties, color: "text-amber-600 border-amber-200 hover:border-amber-400 hover:bg-amber-50", activeColor: "bg-amber-500 text-white border-amber-500 shadow-sm" },
     { id: "b", label: entityB.name, count: bWins, color: "text-accent-600 border-accent-200 hover:border-accent-400 hover:bg-accent-50", activeColor: "bg-accent-600 text-white border-accent-600 shadow-sm" },
   ];
+
+  const mobileVisible = mobileExpanded ? filtered : filtered.slice(0, MOBILE_INITIAL_COUNT);
+  const mobileHidden = filtered.length - MOBILE_INITIAL_COUNT;
 
   return (
     <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
@@ -173,7 +179,7 @@ export function KeyDifferencesBlock({
             <button
               key={tab.id}
               type="button"
-              onClick={() => setFilter(tab.id)}
+              onClick={() => { setFilter(tab.id); setMobileExpanded(false); }}
               aria-pressed={filter === tab.id}
               className={`inline-flex flex-shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
                 filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
@@ -272,7 +278,7 @@ export function KeyDifferencesBlock({
       {/* Mobile: Stacked card layout */}
       {filtered.length > 0 && (
       <ul role="list" aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="sm:hidden space-y-3 list-none">
-        {filtered.map((diff, i) => (
+        {mobileVisible.map((diff, i) => (
           <li
             key={diff.label}
             className={`bg-white border border-border rounded-xl overflow-hidden motion-safe:animate-fade-in ${
@@ -330,6 +336,34 @@ export function KeyDifferencesBlock({
           </li>
         ))}
       </ul>
+      )}
+
+      {/* Mobile expand button — shown only when list is truncated */}
+      {filtered.length > MOBILE_INITIAL_COUNT && (
+        <div className="sm:hidden mt-3">
+          <button
+            type="button"
+            onClick={() => setMobileExpanded((v) => !v)}
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-border bg-white text-xs font-semibold text-text-secondary hover:text-primary-600 hover:border-primary-300 hover:bg-primary-50 transition-all duration-150"
+            aria-expanded={mobileExpanded}
+          >
+            {mobileExpanded ? (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+                Show less
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                Show {mobileHidden} more
+              </>
+            )}
+          </button>
+        </div>
       )}
     </section>
   );
