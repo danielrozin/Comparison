@@ -176,6 +176,84 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
     }),
   };
 
+  // Dataset — Google Dataset Search and AI research tools index Dataset nodes separately
+  // from CollectionPage. Emitting one here gives the reviews category page a machine-readable
+  // data anchor that ChatGPT/Perplexity can cite when answering "best {category} software" queries.
+  const datasetSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "@id": `${reviewCatUrl}#dataset`,
+    name: `${cat.name} Reviews Dataset — A Versus B SmartReview`,
+    description: `Aggregated review data for ${total} ${cat.name.toLowerCase()} products. SmartScores computed from Reddit, G2, Capterra, Trustpilot, and more.`,
+    url: reviewCatUrl,
+    inLanguage: "en-US",
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    dateModified: reviewCatToday,
+    contentReferenceTime: reviewCatToday,
+    keywords: `${cat.name} reviews, SmartScore, aggregated reviews, ${cat.name.toLowerCase()} comparison`,
+    numberOfItems: total,
+    distribution: [
+      {
+        "@type": "DataDownload",
+        encodingFormat: "application/json",
+        contentUrl: `${SITE_URL}/api/v1/entities?category=${encodeURIComponent(slug)}&format=json`,
+        potentialAction: { "@type": "ReadAction", target: reviewCatUrl },
+      },
+    ],
+    isPartOf: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    includedInDataCatalog: { "@type": "DataCatalog", "@id": `${SITE_URL}/#datacatalog`, name: `${SITE_NAME} Comparisons Dataset`, url: SITE_URL },
+    potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: reviewCatUrl } },
+  };
+
+  // FAQPage — synthetic Q&A pairs for AEO; AI answer engines extract these for "best {category}" queries.
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${reviewCatUrl}#faq`,
+    name: `${cat.name} Reviews — Frequently Asked Questions`,
+    url: reviewCatUrl,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `What are the best ${cat.name.toLowerCase()} in ${new Date().getFullYear()}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: entities.length > 0
+            ? `The top ${cat.name.toLowerCase()} by SmartScore on A Versus B include ${entities.slice(0, 5).map((e) => e.name).join(", ")}. SmartScores are computed from aggregated reviews on Reddit, G2, Capterra, Trustpilot, and more.`
+            : `Browse our ${cat.name} reviews to find the highest-rated products with aggregated SmartScores.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How is the SmartScore calculated for ${cat.name.toLowerCase()}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The SmartScore is a composite score (0–100) aggregated from verified user reviews on Reddit, G2, Capterra, Trustpilot, and Product Hunt. It weights recency, review volume, and platform authority to give a single comparable metric across ${cat.name.toLowerCase()} products.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Are the ${cat.name.toLowerCase()} reviews on A Versus B free to access?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Yes. All SmartReview scores and aggregated review data on A Versus B are completely free to access with no account required.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How often are ${cat.name.toLowerCase()} reviews updated?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Review data is refreshed regularly from source platforms. The dataset was last updated on ${reviewCatToday}. Each product page shows its last-reviewed date.`,
+        },
+      },
+    ],
+  };
+
   // ItemList — ranked product list with AggregateRating per entry.
   // Google uses ItemList + AggregateRating to surface category carousels in search
   // and AI answer engines (Perplexity, ChatGPT) use it to rank and enumerate products.
@@ -235,6 +313,14 @@ export default async function ReviewCategoryPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
         />
       )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
 
       {/* Gradient Hero */}
       <section aria-labelledby="review-category-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-violet-900 text-white relative overflow-hidden">
