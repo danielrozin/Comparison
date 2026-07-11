@@ -583,26 +583,26 @@ export default function AboutPage() {
           <h2 id="about-faq-heading" className="text-2xl font-display font-bold text-text">Frequently Asked Questions</h2>
         </div>
         <div className="space-y-2">
-          {[
+            {[
             {
               q: "Is A Versus B free to use?",
-              a: "Yes. All comparisons, verdicts, and data are completely free — no paywall, login, or usage limit.",
+              a: <span>Yes. All comparisons, verdicts, and data are completely free — no paywall, login, or usage limit.</span>,
             },
             {
               q: "How accurate are the comparison verdicts?",
-              a: "Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages below quality thresholds or covering sensitive topics. You can flag inaccuracies using the feedback widget on any comparison page.",
+              a: <span>Verdicts are AI-assisted and grounded in structured specs, pricing, and aggregated public reviews. A human editorial layer reviews pages below quality thresholds or covering sensitive topics. You can flag inaccuracies using the feedback widget on any comparison page.</span>,
             },
             {
               q: "Can I request a comparison that doesn't exist yet?",
-              a: "Yes — visit our Comparison Requests page, suggest any pairing you'd like to see, and upvote existing requests. Top-voted comparisons are built first.",
+              a: <span>Yes — visit our <Link href="/requests" className="text-primary-600 hover:underline font-medium">Comparison Requests page</Link>, suggest any pairing you'd like to see, and upvote existing requests. Top-voted comparisons are built first.</span>,
             },
             {
               q: "Does A Versus B accept paid placements or sponsored comparisons?",
-              a: "No. We don't accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.",
+              a: <span>No. We don&apos;t accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.</span>,
             },
             {
               q: "How often is comparison data updated?",
-              a: "Comparison pages refresh automatically on a rolling schedule and re-rank daily based on trending activity. You can also trigger an update by flagging outdated information via the thumbs-down widget.",
+              a: <span>Comparison pages refresh automatically on a rolling schedule and re-rank daily based on trending activity. You can also trigger an update by flagging outdated information via the thumbs-down widget.</span>,
             },
           ].map(({ q, a }) => (
             <details key={q} className="group border border-border rounded-xl overflow-hidden bg-surface-alt/40 open:bg-white open:shadow-sm transition-all">
