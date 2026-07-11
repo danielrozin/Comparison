@@ -62,7 +62,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
           </div>
         </div>
 
-        <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
+        <div className="text-xs font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
 
         {/* Entity B score */}
         <div className={`flex items-center gap-2 min-w-0 text-right transition-all duration-500 ${animated && winnerIdx === 1 ? "scale-105" : ""}`}>

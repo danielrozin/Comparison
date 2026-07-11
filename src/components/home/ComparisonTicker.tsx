@@ -43,7 +43,7 @@ export function ComparisonTicker({ items }: { items: TrendingComparison[] }) {
                     <CategoryIcon category={item.category} />
                   </span>
                   <span className="group-hover:text-primary-600 transition-colors">{a}</span>
-                  <span className="text-[10px] font-black text-text-secondary/40 mx-0.5">VS</span>
+                  <span className="text-xs font-black text-text-secondary/40 mx-0.5">VS</span>
                   <span className="group-hover:text-primary-600 transition-colors">{b}</span>
                 </Link>
               );

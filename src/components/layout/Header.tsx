@@ -95,7 +95,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl shadow-sm shadow-primary-400/40 flex items-center justify-center group-hover:shadow-md group-hover:shadow-primary-400/50 transition-all duration-200">
-              <span className="text-white font-black text-[11px] tracking-tight drop-shadow-sm">VS</span>
+              <span className="text-white font-black text-xs tracking-tight drop-shadow-sm">VS</span>
             </div>
             <span className="text-lg font-bold text-text hidden sm:block group-hover:text-primary-700 transition-colors duration-200">{SITE_NAME}</span>
           </Link>

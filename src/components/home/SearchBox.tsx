@@ -368,7 +368,7 @@ export function SearchBox() {
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-text truncate">{parsed[0]}</p>
                     </div>
-                    <span className="text-[10px] font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
+                    <span className="text-xs font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
                     <div className="flex-1 min-w-0 text-right">
                       <p className="font-semibold text-sm text-text truncate">{parsed[1]}</p>
                     </div>

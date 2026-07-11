@@ -61,7 +61,7 @@ export function AiAssistedBadge() {
           }}
           className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-yellow-400/20 hover:bg-yellow-400/40 focus:bg-yellow-400/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 transition-colors"
         >
-          <span className="text-[10px] leading-none font-bold text-yellow-200">i</span>
+          <span className="text-xs leading-none font-bold text-yellow-200">i</span>
         </button>
       </span>
 

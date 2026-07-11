@@ -10,6 +10,15 @@ const POST_GRADIENTS = [
   "from-cyan-400 to-sky-500",
 ];
 
+const POST_GRADIENT_LIGHT = [
+  "from-primary-50 to-indigo-50",
+  "from-emerald-50 to-teal-50",
+  "from-violet-50 to-purple-50",
+  "from-amber-50 to-orange-50",
+  "from-rose-50 to-pink-50",
+  "from-cyan-50 to-sky-50",
+];
+
 const CATEGORY_COLORS: Record<string, string> = {
   technology: "bg-blue-50 text-blue-700 border-blue-100",
   products: "bg-violet-50 text-violet-700 border-violet-100",
@@ -59,6 +68,8 @@ export function RelatedBlogPosts({
         {posts.map((post, idx) => {
           const catColor = getCategoryColor(post.category ?? undefined);
           const readMins = estimateReadingTime(post.excerpt || "");
+          const gradientDark = POST_GRADIENTS[idx % POST_GRADIENTS.length];
+          const gradientLight = POST_GRADIENT_LIGHT[idx % POST_GRADIENT_LIGHT.length];
           return (
             <li key={post.slug} className="flex">
             <Link
@@ -66,23 +77,38 @@ export function RelatedBlogPosts({
               style={{ animationDelay: `${idx * 40}ms` }}
               className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in w-full"
             >
-              {/* Persistent gradient accent stripe */}
-              <div className={`h-0.5 w-full bg-gradient-to-r ${POST_GRADIENTS[idx % POST_GRADIENTS.length]}`} />
+              {/* Thumbnail area — gradient placeholder with article icon */}
+              <div className={`relative h-24 bg-gradient-to-br ${gradientLight} flex items-center justify-center overflow-hidden`}>
+                {/* Decorative background pattern */}
+                <div className="absolute inset-0 opacity-20" aria-hidden="true">
+                  <svg className="w-full h-full" viewBox="0 0 100 48" fill="none">
+                    <circle cx="85" cy="10" r="20" className={`fill-current text-white`} />
+                    <circle cx="15" cy="38" r="14" className={`fill-current text-white`} />
+                  </svg>
+                </div>
+                {/* Article icon */}
+                <div className={`relative w-10 h-10 rounded-xl bg-gradient-to-br ${gradientDark} flex items-center justify-center shadow-md`}>
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                </div>
+                {/* Reading time pill */}
+                <div className="absolute top-2 right-2 flex items-center gap-1 text-xs font-semibold bg-white/80 backdrop-blur-sm text-text-secondary px-2 py-0.5 rounded-full border border-white/60">
+                  <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {readMins} min
+                </div>
+              </div>
 
               <div className="p-4 flex flex-col flex-1">
-                {/* Category + reading time row */}
-                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                {/* Category row */}
+                <div className="flex items-center gap-2 mb-2.5 flex-wrap">
                   {post.category && (
                     <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
                       {post.category}
                     </span>
                   )}
-                  <span className="flex items-center gap-1 text-xs text-text-secondary">
-                    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{readMins} min read</span>
-                  </span>
                 </div>
 
                 {/* Title */}
