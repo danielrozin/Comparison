@@ -275,7 +275,8 @@ body {
   .animate-bounce-gentle,
   .animate-shimmer,
   .animate-spin,
-  .animate-pulse {
+  .animate-pulse,
+  .animate-marquee {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
