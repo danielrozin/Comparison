@@ -138,6 +138,7 @@ export default function StudiesIndexPage() {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: teachesDefinedTerm("Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers", `${SITE_URL}/studies`),
     educationalUse: "research",

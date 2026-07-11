@@ -160,6 +160,7 @@ export default async function MostComparedStudyPage() {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: "How to identify which brands are compared most and why they dominate consumer research",
     educationalUse: "research",

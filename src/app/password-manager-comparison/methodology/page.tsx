@@ -95,6 +95,7 @@ const schema = {
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
   accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   timeRequired: "PT3M",
   wordCount: 600,
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

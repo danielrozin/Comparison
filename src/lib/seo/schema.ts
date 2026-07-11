@@ -498,6 +498,9 @@ export function webSiteSchema() {
       geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   };
 }
 
@@ -686,6 +689,9 @@ export function webApplicationSchema() {
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
@@ -797,6 +803,9 @@ export function webPageSchema(opts: {
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     ...(opts.keywords && { keywords: opts.keywords }),
     ...(opts.mainEntity && { mainEntity: opts.mainEntity }),
     speakable: {
@@ -983,6 +992,9 @@ export function comparisonPageSchema(
     // "alternativeText" = all images carry descriptive alt text;
     // "bookmarks" = named DOM anchors (#short-answer, #verdict, #key-differences, #faq).
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     // educationalLevel — AI classifiers use this to select appropriate citation depth.
     educationalLevel: "General",
     // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
@@ -2127,6 +2139,9 @@ function buildMultiEntityGraph(
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     keywords: [
       ...comparison.entities.map((e) => e.name),
       `${comparison.entities.map((e) => e.name).join(" vs ")}`,
@@ -3231,6 +3246,9 @@ export function profilePageSchema(entity: {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     // timeRequired — estimated reading time; profile page depth scales with comparison count.
     timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,

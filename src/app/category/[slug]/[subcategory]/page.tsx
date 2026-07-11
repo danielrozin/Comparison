@@ -217,6 +217,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: teachesDefinedTerm(`How to compare ${subcat.name.toLowerCase()} side by side`, subcatUrl),
     educationalUse: "comparison",

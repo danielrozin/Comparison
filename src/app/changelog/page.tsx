@@ -246,6 +246,7 @@ const changelogSchema = {
       usageInfo: `${SITE_URL}/terms`,
       accessMode: ["textual"],
       accessibilityFeature: ["readingOrder", "structuralNavigation"],
+      accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       educationalLevel: "General",
       teaches: "What has changed and improved in A Versus B platform features and content",

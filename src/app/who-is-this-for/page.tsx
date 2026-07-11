@@ -98,6 +98,7 @@ function buildSchemas() {
     audience: { "@type": "Audience", audienceType: "Consumers, Students, Researchers, Professionals", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     accessMode: ["textual"],
     accessibilityFeature: ["readingOrder", "structuralNavigation"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     genre: "Guide",

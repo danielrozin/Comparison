@@ -549,6 +549,7 @@ export default async function BlogPostPage({
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     // speakable — key sections AI voice assistants and LLMs should prioritize for extraction.
     // .article-excerpt is emitted on the excerpt <p> in the blog header (HB89 fix).
     speakable: {
@@ -741,6 +742,7 @@ export default async function BlogPostPage({
     license: "https://creativecommons.org/licenses/by/4.0/",
     accessMode: ["textual"],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
     ...(article.publishedAt && { dateCreated: new Date(article.publishedAt).toISOString() }),
     ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),

@@ -224,6 +224,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: teachesDefinedTerm("How to discover trending comparison topics and make informed decisions", `${SITE_URL}/trending`),
     educationalUse: "comparison",

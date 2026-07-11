@@ -220,6 +220,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     // teaches + educationalUse — maps this guide to the decision skill it develops
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).

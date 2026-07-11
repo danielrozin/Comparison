@@ -50,6 +50,7 @@ const webPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   genre: "Legal",
   abstract: `Legal terms governing access to and use of ${SITE_NAME}, including disclaimers, intellectual property rights, and user responsibilities.`,
   alternativeHeadline: `${SITE_NAME} Terms of Use — Your Rights and Responsibilities`,

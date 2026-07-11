@@ -115,6 +115,7 @@ export default function Q1AiBattlesPage() {
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: "How to analyze AI tool comparison search trends using quarterly US Google Search volume data and year-over-year growth rates",
     educationalUse: "research",

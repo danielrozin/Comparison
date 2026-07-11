@@ -25,6 +25,7 @@ const searchResultsPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
   teaches: "How to find and compare anything side by side on A Versus B",
   educationalUse: "comparison",
