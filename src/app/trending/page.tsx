@@ -5,7 +5,7 @@ import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { Pagination } from "@/components/ui/Pagination";
 import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
-import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm, faqSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { CategoryIcon } from "@/lib/utils/category-icons";
@@ -15,6 +15,29 @@ export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
 const ITEMS_PER_PAGE = 20;
 
 const trendingDescription = "See the most popular comparisons right now — sports, countries, products, technology, and more.";
+
+const TRENDING_FAQS = [
+  {
+    question: "What does \"trending\" mean on A Versus B?",
+    answer: "A comparison appears as trending when it accumulates a high number of page views, community votes, or social shares within a rolling 7-day window. The list refreshes every 5 minutes so it always reflects the most current reader interest.",
+  },
+  {
+    question: "How often is the trending list updated?",
+    answer: "The trending page is updated every 5 minutes using Incremental Static Regeneration (ISR). New comparisons can enter the list as soon as they accumulate enough engagement signals — view count, votes, and referral traffic are all weighted.",
+  },
+  {
+    question: "Can I filter trending comparisons by category?",
+    answer: "Yes. Use the category chips at the top of the page to filter by topic — Technology, Sports, Countries, Products, Health, and more. You can also sort by views, votes, or alphabetically using the sort selector.",
+  },
+  {
+    question: "Why do certain comparisons appear at the top of trending?",
+    answer: "Rankings combine absolute view count with recent velocity — a comparison that suddenly spiked in the last 24 hours can rank above one with higher total views but slower recent growth. Seasonal events, news stories, and social sharing all contribute to spikes.",
+  },
+  {
+    question: "How can I suggest a comparison for A Versus B?",
+    answer: "You can submit a comparison request via the Requests page. Popular community requests are prioritized for research and publication. Once published, comparisons immediately become eligible to appear in trending if they attract reader interest.",
+  },
+];
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Trending Comparisons")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -210,7 +233,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Decision Makers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#trending-description", ".trending-intro", ".faq-answer"] },
     keywords: `trending comparisons, most popular comparisons, top vs comparisons ${new Date().getFullYear()}`,
     timeRequired: "PT2M",
     wordCount: 400,
@@ -228,8 +251,11 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       { "@type": "Thing", name: "Trending Topics" },
       { "@type": "Thing", name: "Consumer Decisions" },
     ],
-    // hasPart[] — structural sub-documents: the ItemList is a formal part of this CollectionPage.
-    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` }],
+    // hasPart[] — structural sub-documents: the ItemList and FAQPage are formal parts of this CollectionPage.
+    hasPart: [
+      { "@type": "ItemList", "@id": `${SITE_URL}/trending#itemlist` },
+      { "@type": "FAQPage", "@id": `${SITE_URL}/trending#faq` },
+    ],
     locationCreated: { "@type": "Country", name: "United States" },
   };
 
@@ -302,6 +328,8 @@ export default async function TrendingPage({ searchParams }: PageProps) {
     })),
   };
 
+  const trendingFaqSchema = faqSchema(TRENDING_FAQS, `${SITE_URL}/trending#faq`);
+
   return (
     <>
       <script
@@ -319,6 +347,10 @@ export default async function TrendingPage({ searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(trendingDatasetSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trendingFaqSchema) }}
       />
 
       {/* Trending Hero */}
@@ -471,6 +503,24 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             ...(activeSort !== "views" ? { sort: activeSort } : {}),
           }}
         />
+
+        {/* FAQ section — renders structured Q&A so FAQPage JSON-LD speakable selectors resolve
+            and satisfies Google FAQ rich-result eligibility + AEO answer extraction. Page 1 only. */}
+        {safePage === 1 && (
+          <section aria-labelledby="trending-faq-heading" className="mt-14 mb-6" id="trending-faq">
+            <h2 id="trending-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+              Frequently Asked Questions
+            </h2>
+            <dl className="divide-y divide-border">
+              {TRENDING_FAQS.map((faq) => (
+                <div key={faq.question} className="py-5">
+                  <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+                  <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
 
         {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
         {safePage === 1 && (
