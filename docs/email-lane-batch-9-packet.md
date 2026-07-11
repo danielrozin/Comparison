@@ -29,7 +29,7 @@ Batches 1–8 ran citation / study asks against stats-roundup pages. Batch-9 **e
 | `/studies/b2b-saas-comparison-report-2026` | 1,352 head-to-head SaaS comparisons across 712 tools; **Email Marketing & CRM** is the single most-compared SaaS category of 2026 (107 matchups) |
 | `/studies/most-compared-brands-2026` | **Xbox Series X** most-compared product of 2026; **iPhone 17 vs Galaxy S26** most-read matchup at 2.1M reads |
 | `/studies/investing-comparison-report-2026` | **US Economy** #1 most-researched finance topic (42 comparisons); **Bitcoin vs Ethereum** most-read at 456,700 views |
-| `/compare/*` head-to-heads | chatgpt-vs-claude, cursor-vs-github-copilot, notion-vs-obsidian-vs-logseq, aws-vs-azure-vs-gcp, spotify-vs-apple-music-vs-youtube-music |
+| `/compare/*` head-to-heads | chatgpt-vs-claude, cursor-vs-copilot, notion-vs-obsidian-vs-logseq, aws-vs-azure-vs-gcp, spotify-vs-apple-music-vs-youtube-music |
 
 ---
 
