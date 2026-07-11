@@ -1,10 +1,10 @@
 {
-  "date": "2026-07-10",
-  "tPlus": 28,
+  "date": "2026-07-11",
+  "tPlus": 29,
   "measuredBuckets": {
     "top10": 0,
-    "p11_20": 23,
-    "p21_50": 494
+    "p11_20": 22,
+    "p21_50": 477
   },
   "baseline": {
     "top10": 0,
@@ -25,6 +25,6 @@
       "vol": 30
     }
   ],
-  "total": 517,
+  "total": 499,
   "upwardMigration": true
 }
