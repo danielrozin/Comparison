@@ -656,6 +656,12 @@ export default async function BlogPostPage({
     ...(article.relatedComparisonSlugs?.length && {
       significantLink: article.relatedComparisonSlugs.map((s) => `${SITE_URL}/compare/${s}`),
     }),
+    // relatedLink — same-topic related URLs for AI crawler topic cluster discovery.
+    // Complements significantLink (WebPage-level) with CreativeWork-level graph edges
+    // so AI crawlers traverse the full topic cluster from the Article node directly.
+    ...(article.relatedComparisonSlugs?.length && {
+      relatedLink: article.relatedComparisonSlugs.map((s) => `${SITE_URL}/compare/${s}`),
+    }),
   };
 
   const breadcrumbs = [

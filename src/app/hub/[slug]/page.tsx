@@ -187,6 +187,10 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
       ...spokes.slice(0, 6).map((s) => `${SITE_URL}/compare/${s.slug}`),
       ...spokes.slice(0, 3).flatMap((s) => s.entities.map((e) => `${SITE_URL}/entity/${e.slug}`)),
     ].filter((v, i, arr) => arr.indexOf(v) === i).slice(0, 15),
+    // relatedLink — CreativeWork-level graph edges for all spoke comparison pages.
+    // AI crawlers traverse relatedLink to discover the full topic cluster from the hub node,
+    // complementing significantLink (WebPage-level, top-6 only) with broader coverage.
+    relatedLink: spokes.slice(0, 12).map((s) => `${SITE_URL}/compare/${s.slug}`),
     mainEntity: {
       "@type": "ItemList",
       "@id": `${hubUrl}#comparisons`,
