@@ -21,12 +21,13 @@
  */
 
 import { PrismaClient } from '/Users/danielrozin/Comparison/node_modules/@prisma/client/index.js'
+import * as dotenv from 'dotenv'
+import * as path from 'path'
+import { fileURLToPath } from 'url'
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+dotenv.config({ path: path.resolve(__dirname, '../../.env.local'), override: true })
 
-const DATABASE_URL = 'postgresql://neondb_owner:npg_AgABP2Q9Ccun1eLPoZ1Z@ep-bold-voice-amm7gy6j-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
-
-const prisma = new PrismaClient({
-  datasources: { db: { url: DATABASE_URL } }
-})
+const prisma = new PrismaClient()
 
 // ---- Enriched content for pages that need NEW enrichment ----
 
