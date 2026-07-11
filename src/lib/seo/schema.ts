@@ -1417,6 +1417,14 @@ export function comparisonPageSchema(
   // Perplexity truth mode, ChatGPT factual validation) that this page evaluates a
   // specific factual claim, enabling the Fact Check rich result and AI trust boost.
   if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    const crClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
+    const crVerdictLower = (comparison.verdict ?? "").toLowerCase();
+    const crRating =
+      comparison.entities[0].name && crVerdictLower === comparison.entities[0].name.toLowerCase()
+        ? "TRUE"
+        : comparison.entities[1].name && crVerdictLower === comparison.entities[1].name.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
     schemas.push({
       "@context": "https://schema.org",
       "@type": "ClaimReview",
@@ -1427,16 +1435,21 @@ export function comparisonPageSchema(
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
-      claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
+      claimReviewed: crClaimText,
       reviewRating: {
         "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        alternateName: "Accurate",
-        ratingExplanation: "Data verified through multiple sources and editorial review",
+        ratingValue: crRating,
+        bestRating: "TRUE",
+        worstRating: "FALSE",
+        alternateName:
+          crRating === "TRUE"
+            ? `${comparison.entities[0].name} wins`
+            : crRating === "FALSE"
+            ? `${comparison.entities[1].name} wins`
+            : "Depends on use case — see analysis",
       },
       author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
@@ -2412,6 +2425,14 @@ function buildMultiEntityGraph(
 
   // ClaimReview — standalone node (parity with 2-entity schema).
   if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    const meCrClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
+    const meCrVerdictLower = (comparison.verdict ?? "").toLowerCase();
+    const meCrRating =
+      comparison.entities[0].name && meCrVerdictLower === comparison.entities[0].name.toLowerCase()
+        ? "TRUE"
+        : comparison.entities[1].name && meCrVerdictLower === comparison.entities[1].name.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
     graph.push({
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
@@ -2419,16 +2440,21 @@ function buildMultiEntityGraph(
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
-      claimReviewed: `${comparison.entities.map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
+      claimReviewed: meCrClaimText,
       reviewRating: {
         "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        alternateName: "Accurate",
-        ratingExplanation: "Data verified through multiple sources and editorial review",
+        ratingValue: meCrRating,
+        bestRating: "TRUE",
+        worstRating: "FALSE",
+        alternateName:
+          meCrRating === "TRUE"
+            ? `${comparison.entities[0].name} wins`
+            : meCrRating === "FALSE"
+            ? `${comparison.entities[1].name} wins`
+            : "Depends on use case — see analysis",
       },
       author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
