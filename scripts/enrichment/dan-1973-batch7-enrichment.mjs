@@ -22,10 +22,8 @@
 
 import { PrismaClient } from '/Users/danielrozin/Comparison/node_modules/@prisma/client/index.js'
 
-const DATABASE_URL = 'postgresql://neondb_owner:npg_AgABP2Q9Ccun1eLPoZ1Z@ep-bold-voice-amm7gy6j-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
-
 const prisma = new PrismaClient({
-  datasources: { db: { url: DATABASE_URL } }
+  datasources: { db: { url: process.env.DATABASE_URL } }
 })
 
 const ENRICHED_CONTENT = {
