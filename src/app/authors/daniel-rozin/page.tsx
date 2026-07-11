@@ -174,6 +174,7 @@ const profilePageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
   teaches: "Editorial methodology and expertise behind A Versus B comparison hub articles authored by Daniel Rozin",
   educationalUse: "biography",
@@ -187,12 +188,57 @@ const profilePageSchema = {
   mainEntity: { "@type": "Person", "@id": `${PAGE_URL}#person` },
   timeRequired: "PT3M",
   wordCount: 600,
+  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+};
+
+const authorFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: `${AUTHOR_NAME} — Frequently Asked Questions`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  url: `${PAGE_URL}#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: `Who is ${AUTHOR_NAME}?`,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `${AUTHOR_NAME} is the founder and editor-in-chief of A Versus B (aversusb.net), a data-driven comparison platform covering AI/LLMs, browsers, password managers, and 17+ other product categories. He writes and edits all primary comparison hub pages.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What topics does Daniel Rozin write about?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Daniel specializes in technology comparisons — including AI assistants, browsers, password managers, cloud platforms, productivity tools, and consumer products. He also covers sports, countries, and entertainment comparisons.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does A Versus B ensure accuracy?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Every comparison on A Versus B is backed by structured data, primary sources, and a documented editorial methodology. See aversusb.net/how-we-write-verdicts for our full process.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I contact Daniel Rozin?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You can reach the team via the contact page at aversusb.net/contact. For press or partnership inquiries, visit aversusb.net/partnerships.",
+      },
+    },
+  ],
 };
 
 export default function DanielRozinPage() {
   return (
     <>
-      <JsonLd data={[authorBreadcrumb, personSchema, profilePageSchema]} />
+      <JsonLd data={[authorBreadcrumb, personSchema, profilePageSchema, authorFaqSchema]} />
 
       {/* Gradient Hero */}
       <div className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
@@ -292,8 +338,8 @@ export default function DanielRozinPage() {
         </p>
         <p className="text-text-secondary leading-relaxed">
           For corrections or source disputes, contact:{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">
-            contact@aversusb.net
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">
+            daniarozin@gmail.com
           </a>
         </p>
       </section>

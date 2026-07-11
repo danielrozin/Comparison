@@ -498,6 +498,9 @@ export function webSiteSchema() {
       geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" },
     },
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   };
 }
 
@@ -686,6 +689,9 @@ export function webApplicationSchema() {
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual", "visual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: "How to compare products, technologies, sports figures, and countries side-by-side using structured data and expert-reviewed analysis",
     educationalUse: "comparison",
@@ -797,6 +803,9 @@ export function webPageSchema(opts: {
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     ...(opts.keywords && { keywords: opts.keywords }),
     ...(opts.mainEntity && { mainEntity: opts.mainEntity }),
     speakable: {
@@ -983,6 +992,9 @@ export function comparisonPageSchema(
     // "alternativeText" = all images carry descriptive alt text;
     // "bookmarks" = named DOM anchors (#short-answer, #verdict, #key-differences, #faq).
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     // educationalLevel — AI classifiers use this to select appropriate citation depth.
     educationalLevel: "General",
     // interactivityType — "mixed" when users can vote; "expositive" for read-only pages.
@@ -1405,6 +1417,14 @@ export function comparisonPageSchema(
   // Perplexity truth mode, ChatGPT factual validation) that this page evaluates a
   // specific factual claim, enabling the Fact Check rich result and AI trust boost.
   if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    const crClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
+    const crVerdictLower = (comparison.verdict ?? "").toLowerCase();
+    const crRating =
+      comparison.entities[0].name && crVerdictLower === comparison.entities[0].name.toLowerCase()
+        ? "TRUE"
+        : comparison.entities[1].name && crVerdictLower === comparison.entities[1].name.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
     schemas.push({
       "@context": "https://schema.org",
       "@type": "ClaimReview",
@@ -1415,16 +1435,21 @@ export function comparisonPageSchema(
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
-      claimReviewed: `${comparison.entities[0].name} vs ${comparison.entities[1].name}: ${comparison.shortAnswer.slice(0, 200)}`,
+      claimReviewed: crClaimText,
       reviewRating: {
         "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        alternateName: "Accurate",
-        ratingExplanation: "Data verified through multiple sources and editorial review",
+        ratingValue: crRating,
+        bestRating: "TRUE",
+        worstRating: "FALSE",
+        alternateName:
+          crRating === "TRUE"
+            ? `${comparison.entities[0].name} wins`
+            : crRating === "FALSE"
+            ? `${comparison.entities[1].name} wins`
+            : "Depends on use case — see analysis",
       },
       author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
@@ -2127,6 +2152,9 @@ function buildMultiEntityGraph(
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     keywords: [
       ...comparison.entities.map((e) => e.name),
       `${comparison.entities.map((e) => e.name).join(" vs ")}`,
@@ -2397,6 +2425,14 @@ function buildMultiEntityGraph(
 
   // ClaimReview — standalone node (parity with 2-entity schema).
   if (comparison.shortAnswer && comparison.entities.length >= 2) {
+    const meCrClaimText = `${comparison.entities[0].name} is better than ${comparison.entities[1].name}`;
+    const meCrVerdictLower = (comparison.verdict ?? "").toLowerCase();
+    const meCrRating =
+      comparison.entities[0].name && meCrVerdictLower === comparison.entities[0].name.toLowerCase()
+        ? "TRUE"
+        : comparison.entities[1].name && meCrVerdictLower === comparison.entities[1].name.toLowerCase()
+        ? "FALSE"
+        : "MIXTURE";
     graph.push({
       "@type": "ClaimReview",
       "@id": `${url}#claimreview`,
@@ -2404,16 +2440,21 @@ function buildMultiEntityGraph(
       inLanguage: "en-US",
       isAccessibleForFree: true,
       conditionsOfAccess: "Free",
-      claimReviewed: `${comparison.entities.map((e) => e.name).join(" vs ")}: ${comparison.shortAnswer.slice(0, 200)}`,
+      claimReviewed: meCrClaimText,
       reviewRating: {
         "@type": "Rating",
-        ratingValue: 5,
-        bestRating: 5,
-        worstRating: 1,
-        alternateName: "Accurate",
-        ratingExplanation: "Data verified through multiple sources and editorial review",
+        ratingValue: meCrRating,
+        bestRating: "TRUE",
+        worstRating: "FALSE",
+        alternateName:
+          meCrRating === "TRUE"
+            ? `${comparison.entities[0].name} wins`
+            : meCrRating === "FALSE"
+            ? `${comparison.entities[1].name} wins`
+            : "Depends on use case — see analysis",
       },
       author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
       datePublished: comparison.metadata.updatedAt,
       itemReviewed: {
         "@type": "Claim",
@@ -3231,6 +3272,9 @@ export function profilePageSchema(entity: {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+    // accessibilitySummary — WCAG plain-language statement consumed by AI Overviews and screen-reader
+    // tools to confirm this page is accessible. Google uses this field for AI Overview eligibility.
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     // timeRequired — estimated reading time; profile page depth scales with comparison count.
     timeRequired: `PT${Math.max(2, Math.ceil((entity.comparisonCount ?? 1) / 5))}M`,

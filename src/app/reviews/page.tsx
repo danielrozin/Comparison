@@ -148,6 +148,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     license: "https://creativecommons.org/licenses/by/4.0/",
     usageInfo: `${SITE_URL}/terms`,
     copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,

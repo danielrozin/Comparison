@@ -197,6 +197,39 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "LlamaIndexBot", allow: "/" },         // LlamaIndex (RAG data framework)
       { userAgent: "AutoGPT-Bot", allow: "/" },           // AutoGPT (autonomous AI agent)
       { userAgent: "AgentGPT-Bot", allow: "/" },          // AgentGPT (web agentic AI)
+
+      // === Mid-2026 additions — new model crawlers and agentic AI UAs ===
+      { userAgent: "SonarBot", allow: "/" },              // Perplexity Sonar API crawler
+      { userAgent: "Perplexity-Sonar", allow: "/" },      // Perplexity Sonar alternate UA
+      { userAgent: "Mistral-Crawler", allow: "/" },        // Mistral AI official web crawler
+      { userAgent: "KimiBot", allow: "/" },               // Moonshot AI / Kimi model crawler
+      { userAgent: "Manus-Bot", allow: "/" },             // Manus AI autonomous agent crawler
+      { userAgent: "AriaBot", allow: "/" },               // Opera Aria AI browser agent
+      { userAgent: "SearchGPT-User", allow: "/" },        // OpenAI SearchGPT user-side UA
+      { userAgent: "Claude-Code", allow: "/" },           // Anthropic Claude Code agent
+      { userAgent: "OpenAI-o3", allow: "/" },             // OpenAI o3/o4 model series crawler
+      { userAgent: "Suno-Bot", allow: "/" },              // Suno AI research crawler
+      { userAgent: "Ideogram-Bot", allow: "/" },          // Ideogram AI image research
+      { userAgent: "MidJourney-Bot", allow: "/" },        // Midjourney image research crawler
+      { userAgent: "StabilityBot", allow: "/" },          // Stability AI research crawler
+      { userAgent: "CopilotStudio-Bot", allow: "/" },     // Microsoft Copilot Studio (low-code AI agent builder)
+
+      // === July 2026 additions — research AI, academic crawlers, agentic IDEs ===
+      { userAgent: "ConsensusCrawler", allow: "/" },        // Consensus.app academic AI search
+      { userAgent: "ConsensusBot", allow: "/" },            // Consensus.app alternate UA
+      { userAgent: "ElicitBot", allow: "/" },               // Elicit AI research assistant
+      { userAgent: "SciteBot", allow: "/" },                // Scite.ai academic citation AI
+      { userAgent: "ResearchRabbitBot", allow: "/" },       // ResearchRabbit academic discovery
+      { userAgent: "SemanticScholarBot", allow: "/" },      // Allen Institute Semantic Scholar
+      { userAgent: "Jenni-Bot", allow: "/" },               // Jenni.ai academic writing AI
+      { userAgent: "Perplexity-Research", allow: "/" },     // Perplexity research mode
+      { userAgent: "WindsurfBot", allow: "/" },             // Windsurf (Codeium) AI IDE agent
+      { userAgent: "CursorBot", allow: "/" },               // Cursor AI IDE web access agent
+      { userAgent: "Grok-4", allow: "/" },                  // xAI Grok-4 model crawler
+      { userAgent: "Claude-Sonnet", allow: "/" },           // Anthropic Claude Sonnet series
+      { userAgent: "Claude-Opus", allow: "/" },             // Anthropic Claude Opus series
+      { userAgent: "Gemini-Flash", allow: "/" },            // Google Gemini Flash model crawler
+      { userAgent: "NotebookLM-Bot", allow: "/" },          // Google NotebookLM research AI
     ],
     sitemap: [
       "https://www.aversusb.net/api/sitemap",

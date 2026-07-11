@@ -202,6 +202,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
       accessMode: ["textual"],
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+      accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
       educationalLevel: "General",
       // speakable — voice assistants and LLM engines extract these sections first.
       // .review-score-summary targets the SmartScore/aggregate rating summary block.

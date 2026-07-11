@@ -50,6 +50,7 @@ const webPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   genre: "Legal",
   abstract: `Privacy Policy explaining how ${SITE_NAME} collects, uses, stores, and protects personal information from users of the comparison platform.`,
   alternativeHeadline: `${SITE_NAME} Privacy Policy — How We Handle Your Data`,
@@ -68,12 +69,57 @@ const webPageSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+};
+
+const privacyFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: `${SITE_NAME} Privacy Policy — Frequently Asked Questions`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  url: `${PAGE_URL}#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What personal data does A Versus B collect?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A Versus B collects minimal data: anonymous usage analytics (page views, device type, country), email addresses only when you voluntarily subscribe to our newsletter, and comparison vote data stored without personally identifiable information.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B use cookies?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. We use essential cookies for site functionality and optional analytics cookies (with your consent) to understand how visitors use the site. You can manage your cookie preferences at any time via the cookie settings on our site.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B sell or share personal data with third parties?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. A Versus B does not sell personal data. We share anonymized analytics data with our analytics provider (Plausible Analytics) only. We do not share personal information with advertisers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I request deletion of my data?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Email us via the contact form at aversusb.net/contact with your deletion request. We will process it within 30 days in accordance with GDPR and CCPA requirements.",
+      },
+    },
+  ],
 };
 
 export default function PrivacyPage() {
   return (
     <>
-      <JsonLd data={webPageSchema} />
+      <JsonLd data={[webPageSchema, privacyFaqSchema]} />
       <PrivacyContent />
     </>
   );

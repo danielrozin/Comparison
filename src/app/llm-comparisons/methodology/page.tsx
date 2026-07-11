@@ -83,6 +83,7 @@ const schema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
   teaches: "How A Versus B tests and benchmarks large language models for comparative analysis",
   educationalUse: "guide",
@@ -288,7 +289,7 @@ export default function LLMMethodologyPage() {
         </div>
         <p className="text-text-secondary leading-relaxed">
           Corrections with a primary source may be submitted to{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>.
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">daniarozin@gmail.com</a>.
           We aim to respond within 48 hours and publish corrections with a visible correction notice
           and updated <code className="text-sm bg-surface-alt px-1 rounded">dateModified</code> timestamp.
         </p>

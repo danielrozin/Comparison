@@ -156,6 +156,7 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: teachesDefinedTerm(`How to compare and choose between ${hub.h1.toLowerCase().replace(/^[^:]+:\s*/, "")}`, hubUrl),
     educationalUse: "comparison",

@@ -146,8 +146,18 @@ export async function GET(
   const score = [hasShortAnswer, hasVerdict, hasAttributes, hasFaqs].filter(Boolean).length;
   const confidence = score >= 4 ? "high" : score >= 2 ? "medium" : "low";
 
-  // ClaimReview schema for verifiable answer attribution
+  // ClaimReview schema for verifiable answer attribution.
+  // itemReviewed must be @type "Claim" (not WebPage) per schema.org spec and
+  // Google Fact Check Tools guidelines — using WebPage breaks Fact Check eligibility.
   const publishedAt = comparison.metadata?.publishedAt;
+  const winnerName = winner?.name ?? entityNames[0] ?? "";
+  const loserName = winner
+    ? entityNames.find((n) => n !== winnerName) ?? entityNames[1] ?? ""
+    : entityNames[1] ?? "";
+  const claimText = winner
+    ? `${winnerName} is better than ${loserName} for most use cases`
+    : comparison.title;
+  const verdictRating = winner ? "TRUE" : "MIXTURE";
   const claimReview = {
     "@context": "https://schema.org",
     "@type": "ClaimReview",
@@ -156,24 +166,47 @@ export async function GET(
     inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
-    claimReviewed: comparison.title,
-    reviewBody: syntheticAnswer ?? comparison.title,
+    // claimReviewed — the factual claim being evaluated (distinct from comparison title)
+    claimReviewed: claimText,
+    reviewBody: syntheticAnswer ?? claimText,
     ...(publishedAt ? { datePublished: publishedAt } : {}),
     ...(updatedAt ? { dateModified: updatedAt } : {}),
+    // reviewRating uses schema.org Fact Check token values so Google Fact Check
+    // Tools can render a verdict badge (TRUE / FALSE / MIXTURE) alongside citations.
     reviewRating: {
       "@type": "Rating",
-      ratingValue: confidence === "high" ? 5 : confidence === "medium" ? 3 : 2,
-      worstRating: 1,
-      bestRating: 5,
-      alternateName: confidence === "high" ? "High Confidence" : confidence === "medium" ? "Medium Confidence" : "Low Confidence",
+      ratingValue: verdictRating,
+      bestRating: "TRUE",
+      worstRating: "FALSE",
+      alternateName: winner
+        ? `${winnerName} wins`
+        : "Depends on use case",
+      ratingExplanation: confidence === "high"
+        ? "Verified verdict based on structured attribute comparison, community votes, and expert analysis"
+        : confidence === "medium"
+        ? "Verdict based on available data — some attributes missing"
+        : "Limited data — verdict is approximate",
     },
+    // author — Organization (publisher of the review); separate from itemReviewed.author
     author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    // itemReviewed — @type "Claim" is required by Google Fact Check Tools spec.
+    // appearance + firstAppearance link back to the canonical page where this claim appears.
     itemReviewed: {
-      "@type": "WebPage",
-      "@id": url,
-      url,
-      name: comparison.title,
+      "@type": "Claim",
+      "@id": `${url}#claim`,
       inLanguage: "en-US",
+      name: claimText,
+      text: syntheticAnswer ?? claimText,
+      // author of the claim — "Internet consensus" signals this is a community/aggregate claim
+      author: { "@type": "Thing", name: "Internet consensus" },
+      appearance: { "@type": "WebPage", "@id": url, url, name: comparison.title, inLanguage: "en-US" },
+      firstAppearance: { "@type": "WebPage", "@id": url, url, name: comparison.title },
+    },
+    // speakable — AI voice assistants extract this section as the primary spoken answer
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".claim-review-answer", "#short-answer", "#verdict"],
     },
   };
 

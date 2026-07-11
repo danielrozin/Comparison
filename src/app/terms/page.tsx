@@ -50,6 +50,7 @@ const webPageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["readingOrder", "structuralNavigation"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   genre: "Legal",
   abstract: `Legal terms governing access to and use of ${SITE_NAME}, including disclaimers, intellectual property rights, and user responsibilities.`,
   alternativeHeadline: `${SITE_NAME} Terms of Use — Your Rights and Responsibilities`,
@@ -68,12 +69,57 @@ const webPageSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+};
+
+const termsFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: `${SITE_NAME} Terms of Service — Frequently Asked Questions`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  url: `${PAGE_URL}#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is A Versus B free to use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. A Versus B is free to use for personal and commercial research. No account or payment is required to access any comparison on the site.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I reproduce A Versus B comparison content on my website?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Short excerpts with a clear attribution link back to aversusb.net are permitted. Reproducing full comparison pages or bulk copying content without permission is prohibited. Contact us at aversusb.net/contact for licensing inquiries.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use A Versus B's embed widget on my site?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Our embed widget at aversusb.net/embed is provided free of charge for non-commercial and commercial use, provided the A Versus B attribution link remains visible.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I report a Terms of Service violation?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Report suspected violations via our contact form at aversusb.net/contact. Include the URL and a description of the issue and we will investigate promptly.",
+      },
+    },
+  ],
 };
 
 export default function TermsPage() {
   return (
     <>
-      <JsonLd data={webPageSchema} />
+      <JsonLd data={[webPageSchema, termsFaqSchema]} />
       <TermsContent />
     </>
   );

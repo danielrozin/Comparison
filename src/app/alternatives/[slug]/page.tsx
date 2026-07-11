@@ -7,6 +7,29 @@ import { personAuthorNode, breadcrumbSchema, contentAuthorArray, entityWikipedia
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
 import { humanizeEntityName } from "@/lib/utils/humanize";
+import { getPrisma } from "@/lib/db/prisma";
+
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const staticSlugs = Object.keys(ENTITY_CONTENT).map((slug) => ({ slug }));
+  try {
+    const prisma = getPrisma();
+    if (!prisma) return staticSlugs;
+    const entities = await prisma.entity.findMany({
+      select: { slug: true },
+      orderBy: { id: "asc" },
+      take: 500,
+    });
+    const dbSlugs = entities.map((e) => ({ slug: e.slug }));
+    const seen = new Set(staticSlugs.map((s) => s.slug));
+    const extra = dbSlugs.filter((d) => !seen.has(d.slug));
+    return [...staticSlugs, ...extra];
+  } catch {
+    return staticSlugs;
+  }
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -197,6 +220,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     // teaches + educationalUse — maps this guide to the decision skill it develops
     // for LLM educational classifiers (Perplexity, ChatGPT "which is better" queries).

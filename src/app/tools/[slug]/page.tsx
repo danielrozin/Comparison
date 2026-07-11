@@ -250,6 +250,7 @@ function renderMarkdown(md: string): string {
 
 function toolPageSchema(slug: string, title: string, description: string, publishedAt: string, updatedAt: string) {
   const url = `${SITE_URL}/tools/${slug}`;
+  const authorUrl = `${SITE_URL}/authors/daniel-rozin`;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -288,16 +289,88 @@ function toolPageSchema(slug: string, title: string, description: string, publis
         "@id": `${url}#article`,
         name: title,
         description,
+        abstract: description,
         url,
         inLanguage: "en-US",
         isAccessibleForFree: true,
+        conditionsOfAccess: "Free",
         datePublished: publishedAt,
         dateModified: updatedAt,
+        genre: "Comparison Tool Guide",
+        contentReferenceTime: updatedAt,
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", ".tool-description", "p:first-of-type"],
+        },
+        author: {
+          "@type": "Person",
+          "@id": `${authorUrl}#author`,
+          name: "Daniel Rozin",
+          url: authorUrl,
+        },
         publisher: {
           "@type": "Organization",
+          "@id": `${SITE_URL}#organization`,
           name: SITE_NAME,
           url: SITE_URL,
         },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": url,
+        },
+        hasPart: [
+          { "@type": "FAQPage", "@id": `${url}#faq` },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        name: `${title} — Frequently Asked Questions`,
+        inLanguage: "en-US",
+        isAccessibleForFree: true,
+        url: `${url}#faq`,
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: `What is ${title}?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: description || `${title} is a free comparison tool on A Versus B that helps you make informed decisions with structured data and side-by-side analysis.`,
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is this tool free to use?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. All tools on A Versus B are completely free to use with no registration required.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How often is the data updated?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Our tool guides are reviewed and updated regularly. The last update date is shown at the top of each page.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Can I share or embed this tool?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. You can share the direct URL or use our embed feature at aversusb.net/embed to integrate the tool into your own website.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Where can I request a new comparison tool?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Submit your request at aversusb.net/requests. Community votes help us prioritize which tools to build next.",
+            },
+          },
+        ],
       },
     ],
   };
