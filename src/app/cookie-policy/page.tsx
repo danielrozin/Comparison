@@ -91,6 +91,7 @@ const webPageSchema = {
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
+  hasPart: { "@type": "FAQPage", "@id": `${PAGE_URL}#faq` },
   breadcrumb: {
     "@type": "BreadcrumbList",
     "@id": `${PAGE_URL}#breadcrumbs`,
@@ -101,10 +102,53 @@ const webPageSchema = {
   },
 };
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: `Cookie Policy FAQ — ${SITE_NAME}`,
+  url: PAGE_URL,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What cookies does A Versus B use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A Versus B uses essential cookies for site operation, analytics cookies (PostHog) to understand how visitors use the site, and preference cookies to remember your settings. We do not use advertising or third-party tracking cookies.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B share cookie data with third parties?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We share anonymised analytics data with PostHog, our analytics provider. We do not sell cookie data to advertisers or data brokers. Our analytics are configured to anonymise IP addresses and strip personal identifiers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I opt out of cookies on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You can disable non-essential cookies by adjusting your browser settings or using your browser's private/incognito mode. Blocking all cookies may affect site functionality such as theme preferences.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How long are cookies stored on my device?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Session cookies are deleted when you close your browser. Persistent preference cookies last up to 12 months. Analytics cookies set by PostHog expire after 12 months and are renewed on each visit.",
+      },
+    },
+  ],
+};
+
 export default function CookiePolicyPage() {
   return (
     <>
       <JsonLd data={webPageSchema} />
+      <JsonLd data={faqSchema} />
       <CookiePolicyContent />
     </>
   );
