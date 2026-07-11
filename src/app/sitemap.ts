@@ -139,6 +139,9 @@ export default async function sitemap({
       { url: `${SITE_URL}/alternatives/nordvpn`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/alternatives/canva`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
       { url: `${SITE_URL}/alternatives/grammarly`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/google-workspace`, lastModified: "2026-07-11", changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/monday`, lastModified: "2026-07-11", changeFrequency: "weekly", priority: 0.8 },
+      { url: `${SITE_URL}/alternatives/salesforce`, lastModified: "2026-07-11", changeFrequency: "weekly", priority: 0.8 },
     ];
 
     const categoryPages: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({

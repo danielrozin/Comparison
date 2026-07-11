@@ -31,7 +31,7 @@
   "opensearch": "https://www.aversusb.net/opensearch.xml",
   "humans_txt": "https://www.aversusb.net/humans.txt",
   "security_txt": "https://www.aversusb.net/.well-known/security.txt",
-  "last_updated": "2026-07-10",
+  "last_updated": "2026-07-11",
   "mcp_manifest": "https://www.aversusb.net/.well-known/mcp.json",
   "context_api": "https://www.aversusb.net/api/context",
   "knowledge_graph_api": "https://www.aversusb.net/api/knowledge-graph/{slug}",
