@@ -8,6 +8,57 @@ import { trackComparisonSearch } from "@/lib/utils/analytics";
 import { saveSearchContext } from "@/lib/utils/recently-viewed";
 import { Suspense } from "react";
 
+const SEARCH_PAGE_URL = "https://aversusb.net/search";
+
+const searchFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SEARCH_PAGE_URL}#faq`,
+  speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How does search work on A Versus B?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Type any topic, product, person, or concept into the search box. A Versus B searches its full library of side-by-side comparisons and returns matching results instantly. If your query matches a known \"A vs B\" pattern, you are taken directly to that comparison page.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I generate a comparison that does not exist yet?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Type your query in the format \"A vs B\" (e.g. \"MacBook Air vs Dell XPS\") and press Enter. A Versus B will route you to that comparison page. If the page does not yet exist, it is queued for research and generation.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What categories of comparisons does A Versus B cover?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A Versus B covers technology, software, products, sports, countries, people, historical events, health topics, finance, and more. Use the category filters on the home page or browse /category pages to explore by topic.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I find the most popular comparisons?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Visit the Trending page at aversusb.net/trending to see the most-viewed comparisons right now. You can filter by category and sort by views, votes, or alphabetically.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Are A Versus B comparisons updated over time?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Comparison pages are periodically reviewed and updated when product specs, pricing, or rankings change. Each page shows its last-reviewed date. You can also submit an update request via the contact page.",
+      },
+    },
+  ],
+};
+
 function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -74,6 +125,10 @@ function SearchContent() {
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchFaqSchema) }}
+      />
       {/* Search Hero */}
       <section aria-labelledby="search-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
         <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
@@ -311,6 +366,23 @@ function SearchContent() {
         </div>
       )}
       </div>
+      </div>
+
+      {/* FAQ section — static Q&A for AEO/FAQPage JSON-LD speakable selectors. */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <section aria-labelledby="search-faq-heading">
+          <h2 id="search-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+            Frequently Asked Questions
+          </h2>
+          <dl className="divide-y divide-border">
+            {searchFaqSchema.mainEntity.map((item) => (
+              <div key={item.name} className="py-5">
+                <dt className="font-semibold text-text text-base mb-2">{item.name}</dt>
+                <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{item.acceptedAnswer.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </div>
     </div>
   );
