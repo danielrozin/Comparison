@@ -25,10 +25,11 @@ const DISMISS_KEY = "ux_study_banner_dismissed";
 const BUCKET_KEY = "ux_study_banner_bucket"; // sessionStorage: "in" | "out"
 const SHOWN_KEY = "ux_study_banner_shown"; // sessionStorage: impression fired this session
 
-// Placeholder — replace with the live Google Form / Typeform once created, or set
-// NEXT_PUBLIC_UX_STUDY_FORM_URL in the environment (no redeploy of this file needed).
-const FALLBACK_FORM_URL = "https://forms.gle/aversusb-ux-study";
-const FORM_URL = process.env.NEXT_PUBLIC_UX_STUDY_FORM_URL || FALLBACK_FORM_URL;
+// Links to the on-site sign-up form by default so the banner always works even
+// before an external form exists. Override with NEXT_PUBLIC_UX_STUDY_FORM_URL to
+// point at a Google Form / Typeform instead (no redeploy of this file needed).
+const DEFAULT_FORM_URL = "/ux-study";
+const FORM_URL = process.env.NEXT_PUBLIC_UX_STUDY_FORM_URL || DEFAULT_FORM_URL;
 
 // Master kill switch. Banner is ON unless explicitly disabled, so it can go live
 // with the deploy and be switched off the moment recruitment is complete.
@@ -61,6 +62,19 @@ export function UxStudyBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // QA/reviewer preview: ?ux_study_preview=1 forces the banner regardless of
+    // the kill switch, cohort coin flip, or a prior dismissal — no impression fired.
+    let preview = false;
+    try {
+      preview = new URLSearchParams(window.location.search).get("ux_study_preview") === "1";
+    } catch {
+      /* ignore */
+    }
+    if (preview) {
+      setVisible(true);
+      return;
+    }
+
     if (!ENABLED) return;
     if (isDismissed()) return;
     if (!isInCohort()) return;
@@ -94,6 +108,8 @@ export function UxStudyBanner() {
 
   if (!visible) return null;
 
+  const isExternal = /^https?:\/\//.test(FORM_URL);
+
   return (
     <div
       role="region"
@@ -108,8 +124,7 @@ export function UxStudyBanner() {
           Got 30 minutes? Help us improve this site.{" "}
           <a
             href={FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
+            {...(isExternal ? { target: "_blank", rel: "noopener noreferrer nofollow" } : {})}
             onClick={handleClick}
             className="ml-1 inline-flex items-center gap-1 font-bold underline decoration-white/60 underline-offset-2 hover:decoration-white"
           >
