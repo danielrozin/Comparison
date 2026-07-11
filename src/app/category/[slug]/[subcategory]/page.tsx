@@ -439,12 +439,15 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                     className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                   >
                     <div className="flex items-center gap-4 mb-3">
-                      <div className="flex -space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="relative flex-shrink-0 h-11" style={{ width: "58px" }}>
+                        <div className="absolute left-0 top-0 w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
                           {(parts[0] || "A").charAt(0)}
                         </div>
-                        <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                        <div className="absolute left-5 top-0 w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
                           {(parts[1] || "B").charAt(0)}
+                        </div>
+                        <div className="absolute -bottom-0.5 left-[17px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                          <span className="text-[6px] font-black text-white leading-none">VS</span>
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">

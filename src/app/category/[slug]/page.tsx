@@ -583,12 +583,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="flex -space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
+                        <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                           {(parts[0] || "A").charAt(0)}
                         </div>
-                        <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                        <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
                           {(parts[1] || "B").charAt(0)}
+                        </div>
+                        <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                          <span className="text-[6px] font-black text-white leading-none">VS</span>
                         </div>
                       </div>
                       <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors">
@@ -630,12 +633,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     <span className="absolute top-2 right-3 text-xs font-bold text-primary-400">
                       #{idx + 1}
                     </span>
-                    <div className="flex -space-x-2 mb-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                    <div className="relative flex-shrink-0 h-9 mb-2" style={{ width: "50px" }}>
+                      <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                         {(parts[0] || "A").charAt(0)}
                       </div>
-                      <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
                         {(parts[1] || "B").charAt(0)}
+                      </div>
+                      <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                        <span className="text-[6px] font-black text-white leading-none">VS</span>
                       </div>
                     </div>
                     <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
