@@ -68,12 +68,57 @@ const webPageSchema = {
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "h2"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
+};
+
+const disclaimerFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: `${SITE_NAME} Disclaimer — Frequently Asked Questions`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  url: `${PAGE_URL}#faq`,
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is the comparison data on A Versus B accurate?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We strive for accuracy across all comparisons. Data is sourced from official manufacturers, publishers, and reputable third-party databases. However, specifications and prices change frequently — always verify with the official source before making a purchase decision.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does A Versus B earn commissions from affiliate links?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Some comparison pages contain affiliate links. When you click an affiliate link and make a purchase, A Versus B may earn a small commission at no extra cost to you. Affiliate relationships do not influence our comparison verdicts or rankings.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is A Versus B responsible for decisions made based on its comparisons?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. A Versus B provides comparison content for informational purposes only. We are not liable for any decisions, purchases, or outcomes based on our data. Always consult the official product source and relevant professionals before making significant decisions.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I report inaccurate or outdated comparison data?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Use the contact form at aversusb.net/contact to report errors. We review and update flagged comparisons as quickly as possible.",
+      },
+    },
+  ],
 };
 
 export default function DisclaimerPage() {
   return (
     <>
-      <JsonLd data={webPageSchema} />
+      <JsonLd data={[webPageSchema, disclaimerFaqSchema]} />
       <DisclaimerContent />
     </>
   );
