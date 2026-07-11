@@ -259,12 +259,13 @@ export default async function HomePage() {
             {/* Category pill links */}
             <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
               <p className="text-xs font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {CATEGORIES.slice(0, 10).map((cat) => (
+              {/* Mobile: horizontal scroll; Desktop: wrap */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1 sm:flex-wrap sm:justify-center sm:overflow-x-visible sm:pb-0 [mask-image:linear-gradient(to_right,black_80%,transparent_100%)] sm:[mask-image:none]">
+                {CATEGORIES.slice(0, 12).map((cat) => (
                   <Link
                     key={cat.slug}
                     href={`/category/${cat.slug}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
                   >
                     <span className="group-hover:scale-110 transition-transform inline-block text-white/70 group-hover:text-white" aria-hidden="true"><CategoryIcon category={cat.slug} className="w-3.5 h-3.5" /></span>
                     {cat.name}
@@ -347,6 +348,12 @@ export default async function HomePage() {
             </li>
           ))}
         </ul>
+        <div className="flex justify-center mt-6 sm:hidden">
+          <Link href="/trending" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 rounded-full hover:bg-primary-100 transition-colors">
+            View all trending
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
       </section>
       </ScrollReveal>
 
@@ -454,6 +461,12 @@ export default async function HomePage() {
               );
             })}
           </ul>
+          <div className="flex justify-center mt-6 sm:hidden">
+            <Link href="/trending" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 rounded-full hover:bg-primary-100 transition-colors">
+              View all comparisons
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
         </div>
       </section>
       </ScrollReveal>
