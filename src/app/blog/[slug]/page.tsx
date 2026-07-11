@@ -14,6 +14,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -837,14 +838,14 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
-              <div className="flex items-center gap-2 text-xs text-primary-200">
-                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/20 flex-shrink-0">
-                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
+              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
+                  <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
                 </div>
-                <span className="font-medium">{SITE_NAME} Editorial Team</span>
-              </div>
+                <span className="font-semibold">Daniel Rozin</span>
+                <span className="text-primary-300/60" aria-hidden="true">·</span>
+                <span>Editor-in-Chief</span>
+              </Link>
               {article.publishedAt && (
                 <>
                   <span className="w-px h-4 bg-white/20" aria-hidden="true" />
@@ -873,6 +874,17 @@ export default async function BlogPostPage({
             </svg>
           </div>
         </header>
+
+        {/* Author byline — E-E-A-T signal on light background */}
+        <div className="bg-white border-b border-border/50">
+          <div className="max-w-4xl mx-auto">
+            <AuthorByline
+              updatedAt={article.updatedAt ? new Date(article.updatedAt as string).toISOString() : new Date().toISOString()}
+              isHumanReviewed={true}
+              wordCount={wordCount}
+            />
+          </div>
+        </div>
 
         {/* Article Body */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
