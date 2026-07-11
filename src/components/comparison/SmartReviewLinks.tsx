@@ -60,7 +60,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-lg font-black shrink-0 ring-2 shadow-sm ${scoreColor}`}>
                   <span className="leading-none">{agg.smartScore}</span>
-                  <span className="text-[9px] font-semibold opacity-70 leading-none mt-0.5">/ 100</span>
+                  <span className="text-xs font-semibold opacity-70 leading-none mt-0.5">/ 100</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-text group-hover:text-primary-700 transition-colors truncate">

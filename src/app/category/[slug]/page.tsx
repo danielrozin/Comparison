@@ -416,8 +416,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <div className="absolute left-5 top-0 w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
               {(parts[1] || "B").charAt(0).toUpperCase()}
             </div>
-            <div className="absolute -bottom-1 left-4 z-20 w-5 h-5 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
-              <span className="text-[7px] font-black text-white leading-none">VS</span>
+            <div className="absolute -bottom-1 left-4 z-20 w-6 h-6 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white" aria-hidden="true">
+              <span className="text-xs font-black text-white leading-none">VS</span>
             </div>
           </div>
           <div className="flex-1 min-w-0 pl-4">

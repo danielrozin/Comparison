@@ -420,7 +420,7 @@ export default async function HomePage() {
                         </div>
                         <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight">{latestEntityA}</span>
                       </div>
-                      <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5 flex-shrink-0">vs</span>
+                      <span className="text-xs font-black text-text-secondary/50 uppercase px-0.5 flex-shrink-0">vs</span>
                       {latestEntityB ? (
                         <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
                           <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight text-right">{latestEntityB}</span>

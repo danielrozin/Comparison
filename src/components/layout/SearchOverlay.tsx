@@ -275,7 +275,7 @@ export function SearchOverlay() {
                       {parts ? (
                         <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">
                           <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts[1]}</span>
-                          <span className="flex-shrink-0 text-[9px] font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
+                          <span className="flex-shrink-0 text-xs font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
                           <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts[2]}</span>
                         </span>
                       ) : (

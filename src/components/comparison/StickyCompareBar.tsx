@@ -92,7 +92,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
             className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center flex-shrink-0 shadow-sm"
             aria-hidden="true"
           >
-            <span className="text-[8px] font-black text-white leading-none">VS</span>
+            <span className="text-xs font-black text-white leading-none">VS</span>
           </div>
           <span className="flex items-center gap-1">
             {winner === "b" && (

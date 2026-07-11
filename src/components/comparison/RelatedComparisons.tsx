@@ -90,7 +90,7 @@ export function RelatedComparisons({
                   <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
                     {letterA}
                   </div>
-                  <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5">vs</span>
+                  <span className="text-xs font-black text-text-secondary/50 uppercase px-0.5">vs</span>
                   <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
                     {letterB}
                   </div>

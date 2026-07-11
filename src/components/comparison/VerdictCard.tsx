@@ -129,7 +129,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                       <div className="absolute top-0 right-0" aria-hidden="true">
                         <div className="relative">
                           <div className="absolute top-0 right-0 w-0 h-0 border-t-[40px] border-r-[40px] border-t-yellow-400 border-r-transparent opacity-90" />
-                          <div className="absolute top-1 right-0.5 rotate-45 text-[8px] font-black text-indigo-900 leading-none">
+                          <div className="absolute top-1 right-0.5 rotate-45 text-xs font-black text-indigo-900 leading-none">
                             ★
                           </div>
                         </div>

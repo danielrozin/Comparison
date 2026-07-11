@@ -164,7 +164,7 @@ export function StickyAffiliateCTA({
               {linkA && linkB && (
                 <div className="flex-shrink-0 flex flex-col items-center gap-0.5" aria-hidden="true">
                   <div className="w-px h-4 bg-border" />
-                  <span className="text-[9px] font-bold text-text-secondary uppercase tracking-wider">vs</span>
+                  <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">vs</span>
                   <div className="w-px h-4 bg-border" />
                 </div>
               )}

@@ -99,7 +99,7 @@ export function TrendingCard({
             </div>
           </div>
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-200">
-            <span className="text-[9px] font-black text-white leading-none">VS</span>
+            <span className="text-xs font-black text-white leading-none">VS</span>
           </div>
         </div>
 

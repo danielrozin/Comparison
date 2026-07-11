@@ -177,7 +177,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                     <span className="absolute left-0 top-1 bottom-1 w-0.5 bg-primary-500 rounded-full" />
                   )}
                   <span
-                    className={`flex-shrink-0 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center transition-all ${
+                    className={`flex-shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
                       isActive ? "bg-gradient-to-br from-primary-500 to-accent-600 text-white shadow-sm" : "bg-surface-alt text-text-secondary"
                     }`}
                   >
