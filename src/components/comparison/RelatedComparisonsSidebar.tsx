@@ -114,12 +114,15 @@ export function RelatedComparisonsSidebar({
             </div>
             <h3 className="text-sm font-bold text-text">Related Comparisons</h3>
           </div>
-          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 -mx-4 px-4 sm:-mx-6 sm:px-6">
-            {items.map((comp, i) => (
-              <div key={comp.slug} className="snap-start min-w-[260px] max-w-[300px]">
-                <ComparisonCard comp={comp} sourceSlug={sourceSlug} isTrending={i < 2} />
-              </div>
-            ))}
+          <div className="relative -mx-4 sm:-mx-6">
+            <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-white to-transparent z-10" aria-hidden="true" />
+            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 px-4 sm:px-6">
+              {items.map((comp, i) => (
+                <div key={comp.slug} className="snap-start min-w-[260px] max-w-[300px]">
+                  <ComparisonCard comp={comp} sourceSlug={sourceSlug} isTrending={i < 2} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
