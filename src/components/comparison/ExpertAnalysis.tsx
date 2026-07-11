@@ -34,11 +34,12 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
             <div className="flex flex-wrap items-center gap-3 mt-1.5">
               <Link
                 href="/authors/daniel-rozin"
-                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors"
+                rel="author"
+                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group"
               >
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-1 ring-white shadow-sm flex-shrink-0 group-hover:shadow-md transition-all duration-150" aria-hidden="true">
+                  <span className="text-white font-bold text-xs tracking-tight select-none leading-none">DR</span>
+                </div>
                 <span>Daniel Rozin, Editor-in-Chief</span>
               </Link>
               <span className="text-border text-xs" aria-hidden="true">·</span>

@@ -135,6 +135,45 @@ export function ResourcesSection({
             </ul>
           </div>
         )}
+        {/* External Resources */}
+        {external.length > 0 && (
+          <div>
+            <h3 className="text-sm font-semibold text-text-secondary uppercase tracking-wider mb-3 flex items-center gap-2">
+              {ICON_MAP.external}
+              External Resources
+            </h3>
+            <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+              {external.map((r) => (
+                <li key={r.url}>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-indigo-300 hover:bg-indigo-50/50 transition-all"
+                >
+                  <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100 transition-colors">
+                    <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-text group-hover:text-indigo-700 transition-colors truncate">
+                      {r.label}<span className="sr-only"> (opens in new tab)</span>
+                    </p>
+                    {r.description && (
+                      <p className="text-xs text-text-secondary mt-0.5 line-clamp-1">{r.description}</p>
+                    )}
+                  </div>
+                  <svg className="w-4 h-4 text-indigo-200 group-hover:text-indigo-400 flex-shrink-0 ml-auto mt-0.5 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Videos */}
         {videos.length > 0 && (
           <div>
