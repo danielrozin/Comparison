@@ -78,8 +78,8 @@ export function MobileBottomNav() {
           }`}
         >
           <div className={`p-1.5 rounded-xl transition-all duration-150 ${isTrending ? "bg-orange-100" : ""}`}>
-            <svg className="w-[19px] h-[19px]" viewBox="0 0 24 24" fill={isTrending ? "currentColor" : "none"} stroke={isTrending ? "none" : "currentColor"} strokeWidth={1.75} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+            <svg className="w-[19px] h-[19px]" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
             </svg>
           </div>
           <span className={`text-xs font-semibold tracking-tight ${isTrending ? "text-orange-500" : "text-text-secondary/60"}`}>Trending</span>

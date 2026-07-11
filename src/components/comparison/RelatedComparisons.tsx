@@ -84,15 +84,17 @@ export function RelatedComparisons({
               {/* Subtle hover gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
 
-              {/* Avatars row — decorative; link text comes from the title below */}
+              {/* Avatars row — overlapping circles with VS badge, consistent with category + search cards */}
               <div className="relative flex items-center justify-between" aria-hidden="true">
-                <div className="flex items-center gap-1">
-                  <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+                <div className="relative h-10 flex-shrink-0" style={{ width: "58px" }}>
+                  <div className={`absolute left-0 top-0.5 w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10`}>
                     {letterA}
                   </div>
-                  <span className="text-xs font-black text-text-secondary/50 uppercase px-0.5">vs</span>
-                  <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+                  <div className={`absolute left-5 top-0.5 w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0`}>
                     {letterB}
+                  </div>
+                  <div className="absolute bottom-0 left-[18px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                    <span className="text-[7px] font-black text-white leading-none">VS</span>
                   </div>
                 </div>
                 <svg className="w-4 h-4 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

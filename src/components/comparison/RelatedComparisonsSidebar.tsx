@@ -40,12 +40,15 @@ function ComparisonCard({
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-400 to-rose-500" />
       )}
 
-      <div className="flex -space-x-2 flex-shrink-0">
-        <div className={`w-8 h-8 bg-gradient-to-br ${gradA} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+      <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
+        <div className={`absolute left-0 top-0 w-8 h-8 bg-gradient-to-br ${gradA} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10`}>
           {(parts[0] || "A").charAt(0).toUpperCase()}
         </div>
-        <div className={`w-8 h-8 bg-gradient-to-br ${gradB} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+        <div className={`absolute left-4 top-0 w-8 h-8 bg-gradient-to-br ${gradB} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0`}>
           {(parts[1] || "B").charAt(0).toUpperCase()}
+        </div>
+        <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+          <span className="text-[6px] font-black text-white leading-none">VS</span>
         </div>
       </div>
       <div className="flex-1 min-w-0">
