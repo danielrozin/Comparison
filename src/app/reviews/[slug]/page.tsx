@@ -442,6 +442,14 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <StarRating rating={aggregation.averageRating} size="lg" reviewCount={aggregation.totalReviews} inverted />
                 </div>
               )}
+              <div className="flex items-center gap-2 mt-3 text-sm text-primary-200">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border border-white/20 flex-shrink-0 shadow-sm" aria-hidden="true">
+                  <span className="text-white font-bold leading-none" style={{ fontSize: "8px" }}>DR</span>
+                </div>
+                <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold">Daniel Rozin</Link>
+                <span className="text-primary-300/60" aria-hidden="true">·</span>
+                <span>Editor-in-Chief</span>
+              </div>
             </div>
             {aggregation && (
               <div className="hidden sm:flex flex-col items-center justify-center w-20 h-20 rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur-sm shrink-0" role="meter" aria-label="SmartScore" aria-valuenow={aggregation.smartScore} aria-valuemin={0} aria-valuemax={100}>
