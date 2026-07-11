@@ -63,7 +63,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
   const winnerIdx = scores ? (scores.scoreA > scores.scoreB ? 0 : scores.scoreB > scores.scoreA ? 1 : -1) : -1;
 
   return (
-    <section id="verdict" aria-labelledby="verdict-heading" data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-20">
+    <section id="verdict" aria-labelledby="verdict-heading" data-verdict className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 scroll-mt-28">
       <div className="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 rounded-2xl p-5 sm:p-8 text-white overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative background circles */}
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-yellow-500/5 rounded-full" />
@@ -129,7 +129,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                       <div className="absolute top-0 right-0" aria-hidden="true">
                         <div className="relative">
                           <div className="absolute top-0 right-0 w-0 h-0 border-t-[40px] border-r-[40px] border-t-yellow-400 border-r-transparent opacity-90" />
-                          <div className="absolute top-1 right-0.5 rotate-45 text-[8px] font-black text-indigo-900 leading-none">
+                          <div className="absolute top-1 right-0.5 rotate-45 text-xs font-black text-indigo-900 leading-none">
                             ★
                           </div>
                         </div>
@@ -159,8 +159,11 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                             Choose {entity.name} if
                           </p>
                           {isWinner && (
-                            <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-yellow-400 text-amber-900">
-                              <span aria-hidden="true">👑</span>{" "}Best pick
+                            <span className="flex-shrink-0 inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-yellow-400 text-amber-900">
+                              <svg className="w-2.5 h-2.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                              {" "}Best pick
                             </span>
                           )}
                         </div>

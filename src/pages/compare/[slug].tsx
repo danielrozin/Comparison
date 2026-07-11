@@ -575,7 +575,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           ].join(", "),
           // mainEntity — bidirectional WebPage↔Article graph edge (HB322 fix).
           mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
-          speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+          speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
         }),
         videoMeta?.youtubeVideoId
           ? videoObjectSchema({
@@ -898,9 +898,6 @@ export default function ComparisonPage(props: Props) {
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
-      {/* Reading progress indicator */}
-      <ReadingProgressBar />
-
       {/* Floating back-to-top */}
       <BackToTop />
 
@@ -917,6 +914,14 @@ export default function ComparisonPage(props: Props) {
       <AuthorByline
         updatedAt={comparison.metadata.updatedAt}
         isHumanReviewed={comparison.metadata.isHumanReviewed}
+        wordCount={[
+          comparison.shortAnswer,
+          comparison.verdict,
+          comparison.quickAnswer?.tldr,
+          comparison.expertAnalysis,
+          ...comparison.keyDifferences.map((d) => `${d.entityAValue} ${d.entityBValue}`),
+          ...comparison.faqs.map((f) => f.answer),
+        ].filter(Boolean).join(" ").split(/\s+/).length}
       />
 
       {/* Table of Contents */}
@@ -1030,7 +1035,7 @@ export default function ComparisonPage(props: Props) {
 
       {/* Key Facts & Figures table */}
       {comparison.attributes.length > 0 && (
-        <div id="key-facts" className="scroll-mt-20">
+        <div id="key-facts" className="scroll-mt-28">
           <DataFactsTable
             attributes={comparison.attributes}
             entityA={comparison.entities[0]}
@@ -1054,7 +1059,7 @@ export default function ComparisonPage(props: Props) {
 
           {/* Comparison Table (code-split, SSR'd) */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table" className="scroll-mt-20">
+            <div id="comparison-table" className="scroll-mt-28">
               <ComparisonTable
                 attributes={comparison.attributes}
                 entityA={comparison.entities[0]}
@@ -1108,7 +1113,7 @@ export default function ComparisonPage(props: Props) {
           )}
 
           {/* Resources & Learn More */}
-          <div id="resources" className="scroll-mt-20">
+          <div id="resources" className="scroll-mt-28">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1154,7 +1159,7 @@ export default function ComparisonPage(props: Props) {
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
       {/* Comments */}
-      <div id="comments" className="scroll-mt-20">
+      <div id="comments" className="scroll-mt-28">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 
@@ -1232,18 +1237,24 @@ function MultiEntityLayout({
         </div>
       </div>
 
+      {/* Author byline — E-E-A-T signal (multi-entity) */}
+      <AuthorByline
+        updatedAt={comparison.metadata.updatedAt}
+        isHumanReviewed={comparison.metadata.isHumanReviewed}
+        wordCount={[
+          comparison.shortAnswer,
+          comparison.verdict,
+          comparison.expertAnalysis,
+          ...comparison.keyDifferences.map((d) => `${d.entityAValue} ${d.entityBValue}`),
+          ...comparison.faqs.map((f) => f.answer),
+        ].filter(Boolean).join(" ").split(/\s+/).length}
+      />
+
       {/* Multi-entity hero: title + N entity cards in a grid */}
       <section aria-labelledby="compare-hero-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         <h1 id="compare-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
           {comparison.title}
         </h1>
-        {comparison.metadata?.updatedAt && (
-          <p className="text-center text-xs sm:text-sm text-text-secondary mb-6 flex items-center justify-center gap-1.5">
-            <time dateTime={comparison.metadata.updatedAt}>
-              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-          </p>
-        )}
         <div
           className="grid gap-3 sm:gap-4"
           style={{ gridTemplateColumns: `repeat(${Math.min(n, 3)}, minmax(0, 1fr))` }}
@@ -1274,7 +1285,7 @@ function MultiEntityLayout({
                 <p className="text-xs text-text-secondary leading-snug line-clamp-2">{ent.shortDesc}</p>
               )}
               {ent.bestFor && (
-                <p className="mt-3 text-[11px] sm:text-xs font-semibold text-primary-700 bg-gradient-to-r from-primary-50 to-primary-100 px-3 py-1.5 rounded-full inline-block border border-primary-200/50">
+                <p className="mt-3 text-xs font-semibold text-primary-700 bg-gradient-to-r from-primary-50 to-primary-100 px-3 py-1.5 rounded-full inline-block border border-primary-200/50">
                   {ent.bestFor}
                 </p>
               )}
@@ -1302,7 +1313,7 @@ function MultiEntityLayout({
         <div className="flex-1 min-w-0">
           {/* MultiComparisonTable — main N-entity attribute grid */}
           {comparison.attributes.length > 0 && (
-            <div id="comparison-table" className="scroll-mt-20">
+            <div id="comparison-table" className="scroll-mt-28">
               <MultiComparisonTable attributes={comparison.attributes} entities={comparison.entities} />
             </div>
           )}
@@ -1334,7 +1345,7 @@ function MultiEntityLayout({
             <FAQBlock faqs={comparison.faqs} />
           )}
 
-          <div id="resources" className="scroll-mt-20">
+          <div id="resources" className="scroll-mt-28">
             <ResourcesSection
               resources={generateResources(comparison.slug, comparison.entities)}
               entities={comparison.entities}
@@ -1366,7 +1377,7 @@ function MultiEntityLayout({
 
       <NewsletterSignup source="comparison" referrerSlug={comparison.slug} />
 
-      <div id="comments" className="scroll-mt-20">
+      <div id="comments" className="scroll-mt-28">
         <CommentSection comparisonId={comparison.id} comparisonTitle={comparison.title} />
       </div>
 
@@ -1378,27 +1389,52 @@ function MultiEntityLayout({
 }
 
 function FreshnessFooter({ metadata }: { metadata: { updatedAt: string; isHumanReviewed: boolean; isAutoGenerated: boolean } }) {
+  const updatedLabel = new Date(metadata.updatedAt).toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric", timeZone: "UTC",
+  });
+
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-text-secondary">
-      <time dateTime={metadata.updatedAt}>
-        Last updated: {new Date(metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-      </time>
-      {metadata.isHumanReviewed && (
-        <span className="ml-2 inline-flex items-center gap-1 text-green-600">
-          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div className="bg-surface-alt/60 border border-border rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        {/* Freshness */}
+        <div className="flex items-center gap-2 text-xs text-text-secondary">
+          <svg className="w-3.5 h-3.5 flex-shrink-0 text-text-secondary/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Human reviewed
-        </span>
-      )}
-      {metadata.isAutoGenerated && (
-        <span className="ml-2 inline-flex items-center gap-1 text-amber-600">
-          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-          </svg>
-          AI generated
-        </span>
-      )}
+          <span>
+            Last updated <time dateTime={metadata.updatedAt} className="font-medium text-text">{updatedLabel}</time>
+          </span>
+        </div>
+
+        {/* Trust badges row */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {metadata.isHumanReviewed && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
+              <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              Human reviewed
+            </span>
+          )}
+          {metadata.isAutoGenerated && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+              <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+              </svg>
+              AI-assisted
+            </span>
+          )}
+          <a
+            href="/how-we-write-verdicts"
+            className="inline-flex items-center gap-1 text-xs font-medium text-text-secondary/70 hover:text-primary-600 transition-colors"
+          >
+            Our methodology
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

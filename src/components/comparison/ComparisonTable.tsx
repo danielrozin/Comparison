@@ -113,7 +113,7 @@ function ValueCell({
         {value?.valueText || "\u2014"}
         {isWinner && <><span className="sr-only">(winner)</span><TrophyIcon /></>}
         {isTie && (
-          <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
+          <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded-full">
             Tie
           </span>
         )}
@@ -144,7 +144,7 @@ function MobileValueCell({
 
   return (
     <div className={`px-3 py-2.5 ${bgClass}`}>
-      <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">
+      <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">
         {entityName}
       </p>
       <p className={`text-sm font-medium break-words ${textClass}`}>
@@ -152,7 +152,7 @@ function MobileValueCell({
           {value?.valueText || "\u2014"}
           {isWinner && <TrophyIcon />}
           {isTie && (
-            <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">
               Tie
             </span>
           )}
@@ -195,7 +195,7 @@ function GroupHeader({
       aria-label={`${isOpen ? "Collapse" : "Expand"} ${categoryName} category`}
       className="w-full flex items-center gap-3 bg-gradient-to-r from-surface-alt to-surface-alt/60 px-5 py-2.5 border-b border-border hover:from-primary-50/60 hover:to-surface-alt transition-colors cursor-pointer group/cat"
     >
-      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-text-secondary flex-shrink-0 group-hover/cat:text-primary-700 transition-colors">
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-secondary flex-shrink-0 group-hover/cat:text-primary-700 transition-colors">
         <span className="w-1.5 h-1.5 rounded-full bg-primary-400 group-hover/cat:bg-primary-600 transition-colors flex-shrink-0" />
         {categoryName}
       </span>
@@ -204,7 +204,7 @@ function GroupHeader({
         <div className="flex-1 flex items-center gap-2 min-w-0">
           {/* Win count pills */}
           {aWins > 0 && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
+            <span className="inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-500 inline-block" />
               {aWins}
             </span>
@@ -223,17 +223,17 @@ function GroupHeader({
             )}
           </div>
           {bWins > 0 && (
-            <span className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-accent-100 text-accent-700 border border-accent-200/70 whitespace-nowrap flex-shrink-0">
+            <span className="inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-accent-100 text-accent-700 border border-accent-200/70 whitespace-nowrap flex-shrink-0">
               {bWins}
               <span className="w-1.5 h-1.5 rounded-full bg-accent-500 inline-block" />
             </span>
           )}
           {leader ? (
-            <span className="text-[10px] font-medium text-text-secondary whitespace-nowrap hidden sm:block">
+            <span className="text-xs font-medium text-text-secondary whitespace-nowrap hidden sm:block">
               {leader} leads
             </span>
           ) : (
-            <span className="text-[10px] font-medium text-tie whitespace-nowrap hidden sm:block">Tied</span>
+            <span className="text-xs font-medium text-tie whitespace-nowrap hidden sm:block">Tied</span>
           )}
         </div>
       )}
@@ -305,7 +305,7 @@ function OverflowRowsMobile({
         {attrs.map((attr) => (
           <div key={attr.id} className="bg-white">
             <div className="px-3 py-1.5 bg-surface-alt/40">
-              <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
                 {attr.name}
                 {attr.unit && (
                   <span className="font-normal ml-0.5">({attr.unit})</span>
@@ -341,7 +341,7 @@ function LegacyTable({
   const categories = buildCategories(attributes);
 
   return (
-    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -425,7 +425,7 @@ function LegacyTable({
         {Array.from(categories.entries()).map(([categoryName, attrs]) => (
           <div key={categoryName}>
             <div className="bg-surface-alt px-3 py-2 rounded-lg mb-2">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
+              <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
                 {categoryName}
               </span>
             </div>
@@ -443,7 +443,7 @@ function LegacyTable({
                     </div>
                     <div className="grid grid-cols-2 divide-x divide-border/50">
                       <div className={`px-3 py-2.5 ${valA?.winner === true ? "bg-green-50" : ""}`}>
-                        <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">{entityA.name}</p>
+                        <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">{entityA.name}</p>
                         <p className={`text-sm font-medium break-words ${
                           valA?.winner === true ? "text-win" : valA?.winner === false ? "text-text-secondary" : "text-text"
                         }`}>
@@ -451,7 +451,7 @@ function LegacyTable({
                         </p>
                       </div>
                       <div className={`px-3 py-2.5 ${valB?.winner === true ? "bg-green-50" : ""}`}>
-                        <p className="text-[10px] font-semibold text-text-secondary mb-0.5 truncate">{entityB.name}</p>
+                        <p className="text-xs font-semibold text-text-secondary mb-0.5 truncate">{entityB.name}</p>
                         <p className={`text-sm font-medium break-words ${
                           valB?.winner === true ? "text-win" : valB?.winner === false ? "text-text-secondary" : "text-text"
                         }`}>
@@ -536,7 +536,7 @@ function RedesignedTable({
   }).filter(([, attrs]) => attrs.length > 0);
 
   return (
-    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -758,7 +758,7 @@ function RedesignedTable({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={entity.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30 flex-shrink-0" loading="lazy" decoding="async" />
                 ) : (
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black flex-shrink-0 ${idx === 0 ? "bg-blue-400/40" : "bg-purple-400/40"}`}>
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${idx === 0 ? "bg-blue-400/40" : "bg-purple-400/40"}`}>
                     {entity.name.charAt(0).toUpperCase()}
                   </span>
                 )}
@@ -810,7 +810,7 @@ function RedesignedTable({
                         <div key={attr.id} className={`bg-white ${winnerIndicator}`}>
                           {/* Attribute label row */}
                           <div className="px-3 py-1.5 bg-surface-alt/80">
-                            <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide">
+                            <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
                               {attr.name}
                               {attr.unit && (
                                 <span className="font-normal ml-0.5">({attr.unit})</span>
@@ -826,7 +826,7 @@ function RedesignedTable({
                                 {valA?.valueText || "\u2014"}
                                 {winner === "a" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>
@@ -837,7 +837,7 @@ function RedesignedTable({
                                 {valB?.valueText || "\u2014"}
                                 {winner === "b" && <TrophyIcon />}
                                 {winner === "tie" && (
-                                  <span className="text-[9px] font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
+                                  <span className="text-xs font-semibold bg-amber-50 text-amber-600 px-1 py-0.5 rounded-full">Tie</span>
                                 )}
                               </span>
                             </div>

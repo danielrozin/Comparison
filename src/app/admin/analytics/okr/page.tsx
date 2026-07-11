@@ -94,7 +94,7 @@ function OKRCard({ okr, isCompany = false }: { okr: OKR; isCompany?: boolean }) 
           <ProgressRing progress={okr.overallProgress} size={isCompany ? 96 : 72} strokeWidth={isCompany ? 7 : 6} />
           <div className="flex-1 min-w-0">
             {isCompany && (
-              <span className="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-wider rounded-full mb-1">
+              <span className="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider rounded-full mb-1">
                 Company OKR
               </span>
             )}
@@ -106,7 +106,7 @@ function OKRCard({ okr, isCompany = false }: { okr: OKR; isCompany?: boolean }) 
         </div>
       </div>
       <div className="border-t border-gray-100 px-5 py-2">
-        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Key Results</p>
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Key Results</p>
         {okr.keyResults.map((kr) => (
           <KeyResultRow key={kr.id} kr={kr} />
         ))}
@@ -125,7 +125,7 @@ function HealthCard({ metric }: { metric: HealthMetric }) {
         <span className={`ml-auto text-xs font-medium ${style.text}`}>{style.label}</span>
       </div>
       <p className="text-xs text-gray-600">{metric.detail}</p>
-      <p className="text-[10px] text-gray-400 mt-1">Updated {metric.lastUpdated}</p>
+      <p className="text-xs text-gray-400 mt-1">Updated {metric.lastUpdated}</p>
     </div>
   );
 }
@@ -181,11 +181,11 @@ export default function OKRDashboard() {
             <div className="flex items-center gap-6">
               <div className="text-center">
                 <p className="text-2xl font-bold text-indigo-600">{avgCompanyProgress}%</p>
-                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Company</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wider">Company</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-violet-600">{avgTeamProgress}%</p>
-                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Avg Team</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wider">Avg Team</p>
               </div>
               <div className="flex gap-1.5 items-center">
                 {healthCounts.green > 0 && <span className="flex items-center gap-1 text-xs"><span className="w-2 h-2 rounded-full bg-emerald-500" />{healthCounts.green}</span>}

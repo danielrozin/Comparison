@@ -3,6 +3,7 @@ import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
+import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
@@ -52,13 +53,14 @@ export default async function sitemap({
     // Using `new Date()` (build-time "now") causes every redeploy to signal false
     // freshness, burning Googlebot crawl budget on unchanged pages.
     const LEGAL_DATE = "2025-01-15";
-    const ABOUT_DATE = "2026-04-01";
-    const STUDIES_DATE = "2026-05-01";
+    // HB371: blog interactionStatistic (ReadAction viewCount) + llms.txt refresh (2026-07-10)
+    const ABOUT_DATE = "2026-07-10";
+    const STUDIES_DATE = "2026-07-10";
     const COMPARISONS_DATE = "2026-06-01";
     // Alternatives template received schema improvements in HB90-134 (E-E-A-T, accessibilityFeature, etc.)
     const ALTERNATIVES_DATE = "2026-06-30";
-    const FAQ_DATE = "2026-06-01";
-    const CHANGELOG_DATE = "2026-07-01";
+    const FAQ_DATE = "2026-07-10";
+    const CHANGELOG_DATE = "2026-07-10";
 
     // Derive dynamic-page lastmod from the most recently updated published content.
     // One cheap findFirst per content type — avoids N+1 per-category queries.
@@ -160,6 +162,21 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
+    const guidePages: MetadataRoute.Sitemap = [
+      {
+        url: `${SITE_URL}/guides`,
+        lastModified: "2026-07-11",
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      },
+      ...Object.keys(GUIDE_CONFIG).map((slug) => ({
+        url: `${SITE_URL}/guides/${slug}`,
+        lastModified: "2026-07-11",
+        changeFrequency: "weekly" as const,
+        priority: 0.88,
+      })),
+    ];
+
     const staticBestSlugs = new Set(Object.keys(BEST_CONFIG));
     const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
       url: `${SITE_URL}/best/${slug}`,
@@ -190,7 +207,7 @@ export default async function sitemap({
       // DB unavailable — static pages already included
     }
 
-    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
+    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...guidePages, ...bestPages];
   }
 
   // ── Sitemap 1: Comparison pages ──

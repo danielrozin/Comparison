@@ -42,14 +42,18 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
             // eslint-disable-next-line @next/next/no-img-element
             <img src={entityA.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-blue-200">
+            <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-blue-200">
               {entityA.name.charAt(0).toUpperCase()}
             </div>
           )}
           <div className="min-w-0">
             <div className="flex items-center gap-1">
               <span className="block text-xs text-blue-300/80 truncate">{entityA.name}</span>
-              {winnerIdx === 0 && <span className="text-[10px]" aria-hidden="true">👑</span>}
+              {winnerIdx === 0 && (
+                <svg className="w-3 h-3 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              )}
             </div>
             <div className="flex items-baseline gap-0.5">
               <span className={`text-2xl font-black tabular-nums transition-all duration-700 ${animated ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"} ${winnerIdx === 0 ? "text-yellow-300" : "text-white"}`}>{scoreA}</span>
@@ -58,13 +62,17 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
           </div>
         </div>
 
-        <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
+        <div className="text-xs font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
 
         {/* Entity B score */}
         <div className={`flex items-center gap-2 min-w-0 text-right transition-all duration-500 ${animated && winnerIdx === 1 ? "scale-105" : ""}`}>
           <div className="min-w-0">
             <div className="flex items-center gap-1 justify-end">
-              {winnerIdx === 1 && <span className="text-[10px]" aria-hidden="true">👑</span>}
+              {winnerIdx === 1 && (
+                <svg className="w-3 h-3 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              )}
               <span className="block text-xs text-purple-300/80 truncate text-right">{entityB.name}</span>
             </div>
             <div className="flex items-baseline gap-0.5 justify-end">
@@ -76,7 +84,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
             // eslint-disable-next-line @next/next/no-img-element
             <img src={entityB.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-[10px] font-bold text-purple-200">
+            <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-200">
               {entityB.name.charAt(0).toUpperCase()}
             </div>
           )}
@@ -97,7 +105,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
       </div>
 
       {winnerIdx === -1 && (
-        <p className="text-center text-[10px] text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
+        <p className="text-center text-xs text-white/70 mt-2 font-medium tracking-wide">TIE — neck and neck</p>
       )}
     </div>
   );

@@ -95,7 +95,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl shadow-sm shadow-primary-400/40 flex items-center justify-center group-hover:shadow-md group-hover:shadow-primary-400/50 transition-all duration-200">
-              <span className="text-white font-black text-[11px] tracking-tight drop-shadow-sm">VS</span>
+              <span className="text-white font-black text-xs tracking-tight drop-shadow-sm">VS</span>
             </div>
             <span className="text-lg font-bold text-text hidden sm:block group-hover:text-primary-700 transition-colors duration-200">{SITE_NAME}</span>
           </Link>
@@ -204,7 +204,7 @@ export function Header() {
               <span className="hidden sm:inline overflow-hidden whitespace-nowrap" aria-live="polite" aria-atomic="true">
                 {SEARCH_HINTS[searchHintIdx]}
               </span>
-              <span className="hidden md:inline-flex items-center gap-1 text-[10px] text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
+              <span className="hidden md:inline-flex items-center gap-1 text-xs text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">⌘K</kbd>
                 <span className="text-text-secondary/20">/</span>
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">/</kbd>
@@ -286,20 +286,22 @@ export function Header() {
                     )}
                   </div>
 
-                  {/* Expandable subcategories */}
-                  <div id={`mobile-subs-${item.slug}`} aria-hidden={!isExpanded} className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
-                    <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
-                      {subs.map((sub) => (
-                        <Link
-                          key={sub.slug}
-                          href={`/category/${item.slug}/${sub.slug}`}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
-                        >
-                          <span aria-hidden="true">{sub.icon}</span>
-                          <span className="truncate">{sub.name}</span>
-                        </Link>
-                      ))}
+                  {/* Expandable subcategories — grid-rows trick for smooth natural-height animation */}
+                  <div id={`mobile-subs-${item.slug}`} aria-hidden={!isExpanded} className={`grid transition-all duration-200 ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                    <div className="overflow-hidden">
+                      <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
+                        {subs.map((sub) => (
+                          <Link
+                            key={sub.slug}
+                            href={`/category/${item.slug}/${sub.slug}`}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
+                          >
+                            <span aria-hidden="true">{sub.icon}</span>
+                            <span className="truncate">{sub.name}</span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -314,25 +316,25 @@ export function Header() {
               <svg className="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
-              <span className="text-[11px] font-semibold">Trending</span>
+              <span className="text-xs font-semibold">Trending</span>
             </Link>
             <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 py-3 text-text bg-surface-alt rounded-xl active:bg-primary-50 transition-colors">
               <svg className="w-5 h-5 text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-              <span className="text-[11px] font-semibold">Blog</span>
+              <span className="text-xs font-semibold">Blog</span>
             </Link>
             <Link href="/reviews" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 py-3 text-text bg-surface-alt rounded-xl active:bg-primary-50 transition-colors">
               <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
-              <span className="text-[11px] font-semibold">Reviews</span>
+              <span className="text-xs font-semibold">Reviews</span>
             </Link>
             <Link href="/requests" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 py-3 text-accent-600 bg-accent-50 rounded-xl active:bg-accent-100 transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-              <span className="text-[11px] font-semibold">Requests</span>
+              <span className="text-xs font-semibold">Requests</span>
             </Link>
           </div>
         </div>

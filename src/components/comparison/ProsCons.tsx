@@ -61,11 +61,11 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
   const [showAllPros, setShowAllPros] = useState<boolean[]>(entities.map(() => false));
   const [showAllCons, setShowAllCons] = useState<boolean[]>(entities.map(() => false));
 
-  const totalPros = entities.reduce((s, e) => s + e.pros.length, 0);
-  const totalCons = entities.reduce((s, e) => s + e.cons.length, 0);
+  const totalPros = entities.reduce((s, e) => s + (e.pros?.length ?? 0), 0);
+  const totalCons = entities.reduce((s, e) => s + (e.cons?.length ?? 0), 0);
 
   return (
-    <section id="pros-cons" aria-labelledby="pros-cons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="pros-cons" aria-labelledby="pros-cons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -93,14 +93,14 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {entities.map((entity, idx) => {
-          const total = entity.pros.length + entity.cons.length;
-          const prosPercent = total > 0 ? Math.round((entity.pros.length / total) * 100) : 50;
+          const pros = entity.pros ?? [];
+          const cons = entity.cons ?? [];
+          const total = pros.length + cons.length;
+          const prosPercent = total > 0 ? Math.round((pros.length / total) * 100) : 50;
           const prosExpanded = showAllPros[idx] ?? false;
           const consExpanded = showAllCons[idx] ?? false;
-          const visiblePros = prosExpanded ? entity.pros : entity.pros.slice(0, INITIAL_SHOW);
-          const visibleCons = consExpanded ? entity.cons : entity.cons.slice(0, INITIAL_SHOW);
-          const hiddenPros = entity.pros.length - INITIAL_SHOW;
-          const hiddenCons = entity.cons.length - INITIAL_SHOW;
+          const hiddenPros = pros.length - INITIAL_SHOW;
+          const hiddenCons = cons.length - INITIAL_SHOW;
 
           const togglePros = () => setShowAllPros((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
           const toggleCons = () => setShowAllCons((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
@@ -130,14 +130,14 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                     </h3>
                   </div>
                   <div className="flex gap-1.5 ml-2 mt-0.5 flex-shrink-0">
-                    {entity.pros.length > 0 && (
-                      <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
-                        +{entity.pros.length}
+                    {pros.length > 0 && (
+                      <span className="text-xs font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        +{pros.length}
                       </span>
                     )}
-                    {entity.cons.length > 0 && (
-                      <span className="text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full whitespace-nowrap">
-                        -{entity.cons.length}
+                    {cons.length > 0 && (
+                      <span className="text-xs font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        -{cons.length}
                       </span>
                     )}
                   </div>
@@ -160,14 +160,14 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         style={{ width: `${prosPercent}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-semibold text-text-secondary tabular-nums" aria-hidden="true">{prosPercent}% positive</span>
+                    <span className="text-xs font-semibold text-text-secondary tabular-nums" aria-hidden="true">{prosPercent}% positive</span>
                   </div>
                 )}
               </div>
 
               <div className="p-5 space-y-5">
-                {/* Pros */}
-                {entity.pros.length > 0 && (
+                {/* Pros — all items always in DOM (AEO: crawlers see full list); overflow CSS-collapsed */}
+                {pros.length > 0 && (
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
@@ -177,33 +177,49 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-green-700 uppercase tracking-widest">Pros</h4>
                     </div>
-                    <ul aria-label={`Pros for ${entity.name}`} className="space-y-1">
-                      {visiblePros.map((pro, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
+                    <div role="list" aria-label={`Pros for ${entity.name}`} className="space-y-1">
+                      {pros.slice(0, INITIAL_SHOW).map((pro, i) => (
+                        <div key={i} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </span>
                           <span className="leading-relaxed group-hover/item:text-green-900 transition-colors duration-150">{pro}</span>
-                        </li>
+                        </div>
                       ))}
-                    </ul>
+                      {pros.length > INITIAL_SHOW && (
+                        <div className={`grid transition-all duration-300 ease-in-out ${prosExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                          <div className="overflow-hidden space-y-1">
+                            {pros.slice(INITIAL_SHOW).map((pro, i) => (
+                              <div key={i + INITIAL_SHOW} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
+                                <span className="flex-shrink-0 w-4 h-4 rounded bg-green-50 border border-green-200 flex items-center justify-center mt-0.5 group-hover/item:bg-green-100 group-hover/item:border-green-300 group-hover/item:scale-110 transition-all duration-150">
+                                  <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                </span>
+                                <span className="leading-relaxed group-hover/item:text-green-900 transition-colors duration-150">{pro}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     {hiddenPros > 0 && !prosExpanded && (
                       <ShowMoreButton hidden={hiddenPros} onToggle={togglePros} label={`Show ${hiddenPros} more pros for ${entity.name}`} />
                     )}
-                    {prosExpanded && entity.pros.length > INITIAL_SHOW && (
+                    {prosExpanded && pros.length > INITIAL_SHOW && (
                       <ShowLessButton onToggle={togglePros} />
                     )}
                   </div>
                 )}
 
-                {entity.pros.length > 0 && entity.cons.length > 0 && (
+                {pros.length > 0 && cons.length > 0 && (
                   <div className="border-t border-dashed border-border" />
                 )}
 
-                {/* Cons */}
-                {entity.cons.length > 0 && (
+                {/* Cons — all items always in DOM (AEO: crawlers see full list); overflow CSS-collapsed */}
+                {cons.length > 0 && (
                   <div>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
@@ -213,22 +229,38 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       </span>
                       <h4 className="text-xs font-bold text-red-600 uppercase tracking-widest">Cons</h4>
                     </div>
-                    <ul aria-label={`Cons for ${entity.name}`} className="space-y-1">
-                      {visibleCons.map((con, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
+                    <div role="list" aria-label={`Cons for ${entity.name}`} className="space-y-1">
+                      {cons.slice(0, INITIAL_SHOW).map((con, i) => (
+                        <div key={i} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
                           <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
                             <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                               <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                             </svg>
                           </span>
                           <span className="leading-relaxed group-hover/item:text-red-900 transition-colors duration-150">{con}</span>
-                        </li>
+                        </div>
                       ))}
-                    </ul>
+                      {cons.length > INITIAL_SHOW && (
+                        <div className={`grid transition-all duration-300 ease-in-out ${consExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                          <div className="overflow-hidden space-y-1">
+                            {cons.slice(INITIAL_SHOW).map((con, i) => (
+                              <div key={i + INITIAL_SHOW} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
+                                <span className="flex-shrink-0 w-4 h-4 rounded bg-red-50 border border-red-200 flex items-center justify-center mt-0.5 group-hover/item:bg-red-100 group-hover/item:border-red-300 group-hover/item:scale-110 transition-all duration-150">
+                                  <svg className="w-2.5 h-2.5 text-red-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                  </svg>
+                                </span>
+                                <span className="leading-relaxed group-hover/item:text-red-900 transition-colors duration-150">{con}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     {hiddenCons > 0 && !consExpanded && (
                       <ShowMoreButton hidden={hiddenCons} onToggle={toggleCons} label={`Show ${hiddenCons} more cons for ${entity.name}`} />
                     )}
-                    {consExpanded && entity.cons.length > INITIAL_SHOW && (
+                    {consExpanded && cons.length > INITIAL_SHOW && (
                       <ShowLessButton onToggle={toggleCons} />
                     )}
                   </div>

@@ -31,6 +31,11 @@ export const SearchOverlay = dynamic(
   { ssr: false, loading: () => null }
 );
 
+export const MobileBottomNav = dynamic(
+  () => import("@/components/layout/MobileBottomNav").then((m) => ({ default: m.MobileBottomNav })),
+  { ssr: false, loading: () => null }
+);
+
 // DAN-1980: paid usability-study recruitment top bar. ssr:false because its
 // visibility depends on a client-side 50% coin flip + localStorage dismissal —
 // rendering it on the server would cause a hydration mismatch.

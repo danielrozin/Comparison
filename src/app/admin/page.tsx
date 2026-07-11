@@ -549,7 +549,7 @@ export default function AdminPage() {
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={`inline-flex items-center justify-center w-5 h-5 rounded text-[10px] font-bold ${
+                          <span className={`inline-flex items-center justify-center w-5 h-5 rounded text-xs font-bold ${
                             q.platform === "reddit"
                               ? "bg-orange-100 text-orange-700"
                               : "bg-red-100 text-red-700"
@@ -557,13 +557,13 @@ export default function AdminPage() {
                             {q.platform === "reddit" ? "R" : "Q"}
                           </span>
                           {q.subreddit && (
-                            <span className="text-[10px] text-text-secondary">r/{q.subreddit}</span>
+                            <span className="text-xs text-text-secondary">r/{q.subreddit}</span>
                           )}
                           {q.upvotes !== undefined && (
-                            <span className="text-[10px] text-text-secondary">{q.upvotes} upvotes</span>
+                            <span className="text-xs text-text-secondary">{q.upvotes} upvotes</span>
                           )}
                           {q.comments !== undefined && (
-                            <span className="text-[10px] text-text-secondary">{q.comments} comments</span>
+                            <span className="text-xs text-text-secondary">{q.comments} comments</span>
                           )}
                         </div>
                         <a
@@ -596,7 +596,7 @@ export default function AdminPage() {
                             {generatingAnswerId === q.id ? "Generating..." : "Generate Answer"}
                           </button>
                         ) : (
-                          <span className="text-[10px] text-text-secondary italic">No match</span>
+                          <span className="text-xs text-text-secondary italic">No match</span>
                         )}
                       </div>
                     </div>
@@ -612,7 +612,7 @@ export default function AdminPage() {
                               onClick={() => {
                                 navigator.clipboard.writeText(outreachAnswers[q.id].answer);
                               }}
-                              className="px-2 py-0.5 bg-primary-600 text-white text-[10px] font-medium rounded hover:bg-primary-700"
+                              className="px-2 py-0.5 bg-primary-600 text-white text-xs font-medium rounded hover:bg-primary-700"
                             >
                               Copy
                             </button>
@@ -620,7 +620,7 @@ export default function AdminPage() {
                               type="button"
                               onClick={() => saveAnswerToQueue(outreachAnswers[q.id])}
                               disabled={savingQuestionId === q.id || savedQuestionIds.has(q.id)}
-                              className="px-2 py-0.5 bg-green-600 text-white text-[10px] font-medium rounded hover:bg-green-700 disabled:opacity-60"
+                              className="px-2 py-0.5 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 disabled:opacity-60"
                             >
                               {savedQuestionIds.has(q.id)
                                 ? "✓ Saved"
@@ -697,7 +697,7 @@ export default function AdminPage() {
                     {Array.isArray(event.data.tags) && (
                       <div className="flex gap-1 mt-1">
                         {event.data.tags.slice(0, 5).map((tag, ti) => (
-                          <span key={ti} className="text-[10px] bg-surface-alt text-text-secondary px-1.5 py-0.5 rounded capitalize">{String(tag)}</span>
+                          <span key={ti} className="text-xs bg-surface-alt text-text-secondary px-1.5 py-0.5 rounded capitalize">{String(tag)}</span>
                         ))}
                       </div>
                     )}

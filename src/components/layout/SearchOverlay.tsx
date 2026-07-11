@@ -4,13 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { slugify } from "@/lib/utils/slugify";
-
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽", countries: "🌍", technology: "💻", products: "📦",
-  health: "💊", finance: "💰", entertainment: "🎬", history: "📜",
-  companies: "🏢", brands: "🏷️", celebrities: "⭐", software: "🖥️",
-  automotive: "🚗",
-};
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 function parseComparison(input: string): [string, string] | null {
   const patterns = [
@@ -209,7 +203,7 @@ export function SearchOverlay() {
           />
 
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-surface-alt border border-border rounded-md px-1.5 py-0.5 font-mono">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-surface-alt border border-border rounded-md px-1.5 py-0.5 font-mono">
               Esc
             </kbd>
             <button
@@ -226,7 +220,7 @@ export function SearchOverlay() {
           <div className="mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden animate-slide-up">
             {/* Header */}
             <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
-              <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
+              <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
                 {query.trim().length >= 2 ? (
                   <>
                     <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -243,7 +237,7 @@ export function SearchOverlay() {
                   </>
                 )}
               </p>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
+              <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
                 <span aria-hidden="true">↑↓</span> navigate
               </kbd>
             </div>
@@ -275,19 +269,19 @@ export function SearchOverlay() {
                           : "hover:bg-primary-50/30 border-l-transparent"
                       }`}
                     >
-                      <span className="text-base flex-shrink-0 w-5 text-center leading-none" aria-hidden="true">
-                        {CATEGORY_ICONS[catKey] || "📊"}
+                      <span className="flex-shrink-0 w-5 flex items-center justify-center text-text-secondary/70">
+                        <CategoryIcon category={catKey} />
                       </span>
                       {parts ? (
                         <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">
                           <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts[1]}</span>
-                          <span className="flex-shrink-0 text-[9px] font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
+                          <span className="flex-shrink-0 text-xs font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
                           <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts[2]}</span>
                         </span>
                       ) : (
                         <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-text"}`}>{item.title}</span>
                       )}
-                      <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
+                      <span className={`text-xs capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                         {item.category}
                       </span>
                     </Link>
@@ -297,7 +291,7 @@ export function SearchOverlay() {
             </ul>
 
             {/* Footer */}
-            <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2.5 flex items-center gap-4 text-[11px] text-text-secondary">
+            <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2.5 flex items-center gap-4 text-xs text-text-secondary">
               <span><kbd className="font-mono bg-white border border-border rounded px-1">↵</kbd> to go</span>
               <span><kbd className="font-mono bg-white border border-border rounded px-1">↑↓</kbd> to navigate</span>
               <span><kbd className="font-mono bg-white border border-border rounded px-1">Esc</kbd> to close</span>

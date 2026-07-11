@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getReviewsByEntity, getEntityAggregation } from "@/lib/services/review-service";
-import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema } from "@/lib/seo/schema";
+import { aggregateRatingSchema, breadcrumbSchema, entityWikipediaSameAs, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { StarRating } from "@/components/ui/StarRating";
 import { humanizeEntityName } from "@/lib/utils/humanize";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": title,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B SmartReview",
       "citation_language": "en",
       "citation_abstract": description,
@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": new Date().toISOString().slice(0, 10),
       "DC.title": title,
       "DC.description": description,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${name} Reviews, Product Review`,
@@ -210,7 +210,7 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
         cssSelector: ["h1", ".review-score-summary", ".entity-rating-summary", "p.review-intro"],
       },
       // teaches — AI routers (ChatGPT/Perplexity) use this to match "[product] reviews" queries.
-      teaches: `How to evaluate ${name} based on aggregated reviews and ratings`,
+      teaches: teachesDefinedTerm(`How to evaluate ${name} based on aggregated reviews and ratings`, `${SITE_URL}/reviews/${slug}`),
       educationalUse: "review",
       keywords: `${name} reviews, ${name} rating, ${name} SmartScore, ${name} user reviews ${new Date().getFullYear()}`,
       // significantLink — links to entity profile and alternatives page for AI graph traversal.
@@ -442,11 +442,19 @@ export default async function EntityReviewPage({ params, searchParams }: PagePro
                   <StarRating rating={aggregation.averageRating} size="lg" reviewCount={aggregation.totalReviews} inverted />
                 </div>
               )}
+              <div className="flex items-center gap-2 mt-3 text-sm text-primary-200">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border border-white/20 flex-shrink-0 shadow-sm" aria-hidden="true">
+                  <span className="text-white font-bold leading-none text-[8px]">DR</span>
+                </div>
+                <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold">Daniel Rozin</Link>
+                <span className="text-primary-300/60" aria-hidden="true">·</span>
+                <span>Editor-in-Chief</span>
+              </div>
             </div>
             {aggregation && (
               <div className="hidden sm:flex flex-col items-center justify-center w-20 h-20 rounded-full bg-white/10 ring-1 ring-white/20 backdrop-blur-sm shrink-0" role="meter" aria-label="SmartScore" aria-valuenow={aggregation.smartScore} aria-valuemin={0} aria-valuemax={100}>
                 <span className="text-2xl font-black text-white">{aggregation.smartScore}</span>
-                <span className="text-[9px] text-primary-300 font-semibold uppercase tracking-wide">SmartScore</span>
+                <span className="text-xs text-primary-300 font-semibold uppercase tracking-wide">SmartScore</span>
               </div>
             )}
           </div>

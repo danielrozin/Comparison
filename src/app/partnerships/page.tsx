@@ -34,14 +34,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PARTNER_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": SITE_NAME,
     "citation_language": "en",
     "citation_abstract": PARTNER_DESC,
     "citation_publication_date": "2024-01-01",
     "citation_online_date": PARTNER_TODAY,
     "DC.title": PARTNER_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": SITE_NAME,
     "DC.language": "en",
     "DC.type": "Text",
@@ -162,7 +162,7 @@ export default function PartnershipsPage() {
     accessMode: ["textual"],
     accessibilityFeature: ["readingOrder", "structuralNavigation"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -171,6 +171,10 @@ export default function PartnershipsPage() {
     potentialAction: { "@type": "ReadAction", target: PARTNER_URL },
     timeRequired: "PT3M",
     wordCount: 600,
+    educationalLevel: "General",
+    teaches: "How to partner with A Versus B to reach decision-making audiences through sponsored content, data integrations, and API access",
+    educationalUse: "guide",
+    interactivityType: "expositive",
   };
 
   const faqSchema = {

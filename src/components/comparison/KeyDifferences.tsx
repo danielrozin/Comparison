@@ -6,6 +6,11 @@ import type { KeyDifference, ComparisonEntityData } from "@/types";
 
 type FilterTab = "all" | "a" | "tie" | "b";
 
+// Treats winner===undefined and winner==="tie" as the same bucket (no declared winner)
+function isTieOrUndefined(winner: KeyDifference["winner"]): boolean {
+  return !winner || winner === "tie";
+}
+
 function EntityMiniAvatar({ entity, variant }: { entity: ComparisonEntityData; variant: "a" | "b" }) {
   const hasImage = entity.imageUrl && !entity.imageUrl.includes("ui-avatars.com");
   const initials = entity.name.split(/\s+/).slice(0, 2).map((w) => w.charAt(0)).join("").toUpperCase();
@@ -58,7 +63,7 @@ function ScorecardHeader({
         <div className="flex flex-col items-center gap-1.5 min-w-0">
           <EntityMiniAvatar entity={entityA} variant="a" />
           <span className="block text-xl sm:text-2xl font-black text-primary-700">{aWins}</span>
-          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityA.name}</span>
+          <span className="text-xs text-text-secondary truncate max-w-[72px] text-center">{entityA.name}</span>
         </div>
 
         {/* Center: leader badge */}
@@ -76,7 +81,7 @@ function ScorecardHeader({
             </span>
           )}
           {ties > 0 && (
-            <span className="block mt-1 text-[10px] text-text-secondary">{ties} tie{ties !== 1 ? "s" : ""}</span>
+            <span className="block mt-1 text-xs text-text-secondary">{ties} tie{ties !== 1 ? "s" : ""}</span>
           )}
         </div>
 
@@ -84,7 +89,7 @@ function ScorecardHeader({
         <div className="flex flex-col items-center gap-1.5 min-w-0">
           <EntityMiniAvatar entity={entityB} variant="b" />
           <span className="block text-xl sm:text-2xl font-black text-accent-600">{bWins}</span>
-          <span className="text-[10px] text-text-secondary truncate max-w-[72px] text-center">{entityB.name}</span>
+          <span className="text-xs text-text-secondary truncate max-w-[72px] text-center">{entityB.name}</span>
         </div>
       </div>
 
@@ -104,8 +109,8 @@ function ScorecardHeader({
         />
       </div>
       <div className="flex justify-between mt-1" aria-hidden="true">
-        <span className="text-[10px] text-primary-600 font-medium">{aPercent}%</span>
-        <span className="text-[10px] text-accent-600 font-medium">{bPercent}%</span>
+        <span className="text-xs text-primary-600 font-medium">{aPercent}%</span>
+        <span className="text-xs text-accent-600 font-medium">{bPercent}%</span>
       </div>
     </div>
   );
@@ -124,13 +129,13 @@ export function KeyDifferencesBlock({
 
   const aWins = useMemo(() => differences.filter((d) => d.winner === "a").length, [differences]);
   const bWins = useMemo(() => differences.filter((d) => d.winner === "b").length, [differences]);
-  const ties = useMemo(() => differences.filter((d) => !d.winner).length, [differences]);
+  const ties = useMemo(() => differences.filter((d) => isTieOrUndefined(d.winner)).length, [differences]);
 
   const filtered = useMemo(() => {
     if (filter === "all") return differences;
     if (filter === "a") return differences.filter((d) => d.winner === "a");
     if (filter === "b") return differences.filter((d) => d.winner === "b");
-    return differences.filter((d) => !d.winner);
+    return differences.filter((d) => isTieOrUndefined(d.winner));
   }, [differences, filter]);
 
   const tabs: { id: FilterTab; label: string; count: number; color: string; activeColor: string }[] = [
@@ -141,7 +146,7 @@ export function KeyDifferencesBlock({
   ];
 
   return (
-    <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -173,7 +178,7 @@ export function KeyDifferencesBlock({
             }`}
           >
             {tab.label}
-            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[10px] font-bold ${
+            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
               filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
             }`}>
               {tab.count}
@@ -220,7 +225,7 @@ export function KeyDifferencesBlock({
                 : diff.winner === "b"
                 ? "border-l-[3px] border-l-purple-500"
                 : ""
-            } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row`}
+            } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row motion-safe:animate-fade-in`}
             style={{ animationDelay: `${i * 60}ms` }}
           >
             {/* Entity A Value */}
@@ -267,7 +272,7 @@ export function KeyDifferencesBlock({
         {filtered.map((diff, i) => (
           <li
             key={diff.label}
-            className={`bg-white border border-border rounded-xl overflow-hidden ${
+            className={`bg-white border border-border rounded-xl overflow-hidden motion-safe:animate-fade-in ${
               diff.winner === "a"
                 ? "border-l-[3px] border-l-green-500"
                 : diff.winner === "b"
@@ -287,7 +292,7 @@ export function KeyDifferencesBlock({
             <div className="grid grid-cols-2 divide-x divide-border/50">
               {/* Entity A */}
               <div className={`px-3 py-3 ${diff.winner === "a" ? "bg-green-50" : ""}`}>
-                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                <p className="text-xs font-medium text-text-secondary mb-1 truncate">
                   {entityA.name}
                 </p>
                 <p className={`text-sm font-semibold break-words ${
@@ -304,7 +309,7 @@ export function KeyDifferencesBlock({
 
               {/* Entity B */}
               <div className={`px-3 py-3 ${diff.winner === "b" ? "bg-green-50" : ""}`}>
-                <p className="text-[11px] font-medium text-text-secondary mb-1 truncate">
+                <p className="text-xs font-medium text-text-secondary mb-1 truncate">
                   {entityB.name}
                 </p>
                 <p className={`text-sm font-semibold break-words ${
@@ -331,7 +336,6 @@ function WinBadge() {
   return (
     <span className="ml-1.5 inline-flex items-center text-xs text-win">
       <span className="sr-only">(winner)</span>
-      <span className="mr-0.5" aria-hidden="true">&#x1F3C6;</span>
       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
       </svg>

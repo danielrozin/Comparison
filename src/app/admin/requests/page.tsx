@@ -143,7 +143,7 @@ export default function AdminRequestsPage() {
               >
                 <div className="flex flex-col items-center min-w-[40px]">
                   <span className="text-lg font-bold text-primary-600">{req.voteCount}</span>
-                  <span className="text-[10px] text-gray-400 uppercase">votes</span>
+                  <span className="text-xs text-gray-400 uppercase">votes</span>
                 </div>
 
                 <div className="flex-1 min-w-0">

@@ -1,12 +1,14 @@
+import type React from "react";
 import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { AffiliateButton } from "./AffiliateButton";
+import { HeroShareButton } from "./HeroShareButton";
 
 function WinnerBadge() {
   return (
     <div
-      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-[11px] font-bold bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 shadow-md shadow-amber-400/40 ring-1 ring-amber-300/60 whitespace-nowrap z-10"
+      className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-900 shadow-md shadow-amber-400/40 ring-1 ring-amber-300/60 whitespace-nowrap z-10"
       aria-label="Winner"
     >
       <svg className="w-3 h-3 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -103,8 +105,8 @@ function ScoreBar({
   return (
     <div className="mt-3 px-1">
       <div className="flex justify-between items-center mb-1">
-        <span className="text-[10px] font-semibold text-white/50 uppercase tracking-wider">Score</span>
-        <span className="text-[11px] font-bold text-white/80">{pct}%</span>
+        <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Score</span>
+        <span className="text-xs font-bold text-white/80">{pct}%</span>
       </div>
       <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
         <div
@@ -137,8 +139,8 @@ function EntityCard({
     : "border-accent-400/30 hover:border-accent-400/60";
   const pillClass =
     variant === "a"
-      ? "text-primary-200 bg-primary-600/30 border border-primary-400/30"
-      : "text-accent-200 bg-accent-600/30 border border-accent-400/30";
+      ? "text-white bg-primary-500/40 border border-primary-400/50"
+      : "text-white bg-accent-500/40 border border-accent-400/50";
 
   return (
     <div
@@ -156,10 +158,10 @@ function EntityCard({
         </Link>
       </h2>
       {entity.shortDesc && (
-        <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-2">{entity.shortDesc}</p>
+        <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>
       )}
       {entity.bestFor && (
-        <p className={`mt-3 text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full inline-block ${pillClass}`}>
+        <p className={`mt-3 text-xs font-semibold px-3 py-1.5 rounded-full inline-block ${pillClass}`}>
           {entity.bestFor}
         </p>
       )}
@@ -185,6 +187,30 @@ function resolveWinner(comparison: ComparisonPageData): "a" | "b" | null {
   return null;
 }
 
+function AttrIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  );
+}
+
+function DiffIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function ProsIcon() {
+  return (
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  );
+}
+
 function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   const attrCount = comparison.attributes?.length ?? 0;
   const diffCount = comparison.keyDifferences?.length ?? 0;
@@ -192,10 +218,10 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
   const totalCons = comparison.entities.reduce((s, e) => s + (e.cons?.length ?? 0), 0);
 
   const stats = [
-    attrCount > 0 && { label: `${attrCount} attributes`, icon: "📊" },
-    diffCount > 0 && { label: `${diffCount} differences`, icon: "⚡" },
-    (totalPros + totalCons) > 0 && { label: `${totalPros + totalCons} pros/cons`, icon: "✅" },
-  ].filter(Boolean) as { label: string; icon: string }[];
+    attrCount > 0 && { label: `${attrCount} attributes`, icon: <AttrIcon /> },
+    diffCount > 0 && { label: `${diffCount} differences`, icon: <DiffIcon /> },
+    (totalPros + totalCons) > 0 && { label: `${totalPros + totalCons} pros/cons`, icon: <ProsIcon /> },
+  ].filter(Boolean) as { label: string; icon: React.ReactNode }[];
 
   if (stats.length === 0) return null;
 
@@ -204,9 +230,9 @@ function ComparisonStats({ comparison }: { comparison: ComparisonPageData }) {
       {stats.map((s) => (
         <span
           key={s.label}
-          className="inline-flex items-center gap-1 text-[10px] font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-white/70 bg-white/10 border border-white/15 rounded-full px-2 py-0.5"
         >
-          <span aria-hidden="true">{s.icon}</span>
+          {s.icon}
           {s.label}
         </span>
       ))}
@@ -243,7 +269,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-16 sm:pb-20">
         {/* Breadcrumb category pill */}
         {comparison.category && (
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-4 motion-safe:animate-fade-in">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider">
               {comparison.category}
             </span>
@@ -251,32 +277,41 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         )}
 
         {/* Title */}
-        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight">
+        <h1 id="comparison-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-white mb-2 sm:mb-3 leading-tight motion-safe:animate-slide-up">
           {comparison.metadata?.metaTitle || comparison.title}
         </h1>
 
-        {/* Last Updated */}
-        {comparison.metadata?.updatedAt && (
-          <p className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-1.5">
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            <time dateTime={comparison.metadata.updatedAt}>
-              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
-            </time>
-          </p>
-        )}
+        {/* Author + Last Updated — E-E-A-T attribution always visible */}
+        <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+              <span className="text-white font-bold leading-none text-[8px]">DR</span>
+            </span>
+            <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold">Daniel Rozin</Link>
+          </span>
+          {comparison.metadata?.updatedAt && (
+            <>
+              <span aria-hidden="true" className="text-primary-300/40">·</span>
+              <time dateTime={comparison.metadata.updatedAt} className="flex items-center gap-1">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+              </time>
+            </>
+          )}
+        </div>
 
         {/* Short Answer preview badge — AEO/GEO snippet signal */}
         {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-          <div className="flex justify-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-6 sm:mb-8 motion-safe:animate-slide-up" style={{ animationDelay: "0.15s" }}>
             <div className="inline-flex items-start gap-2.5 max-w-2xl bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-4 py-3 text-left">
               <div className="flex-shrink-0 w-5 h-5 bg-yellow-400/20 rounded-full flex items-center justify-center mt-0.5">
                 <svg className="w-3 h-3 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
-              <p id="hero-tldr" className="text-xs sm:text-sm text-primary-100/90 leading-relaxed line-clamp-3">
+              <p id="hero-tldr" className="text-sm sm:text-base text-primary-100/90 leading-relaxed">
                 {comparison.quickAnswer?.tldr || comparison.shortAnswer}
               </p>
             </div>
@@ -285,10 +320,12 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
 
         {/* Entity VS Cards */}
         <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
-          <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
+          <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
+            <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
+          </div>
 
           {/* VS Badge */}
-          <div className="flex flex-col items-center justify-center self-center gap-2">
+          <div className="flex flex-col items-center justify-center self-center gap-2 motion-safe:animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 motion-safe:animate-pulse opacity-40 scale-125" />
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 shadow-lg shadow-accent-500/40" />
@@ -297,15 +334,19 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             </div>
           </div>
 
-          <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
+          <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
+            <EntityCard entity={entityB} variant="b" isWinner={winner === "b"} />
+          </div>
         </div>
 
         {/* Comparison stats row */}
-        <ComparisonStats comparison={comparison} />
+        <div className="motion-safe:animate-fade-in" style={{ animationDelay: "0.35s" }}>
+          <ComparisonStats comparison={comparison} />
+        </div>
 
         {/* Jump to verdict CTA — only when there's verdict content */}
         {(comparison.verdict || comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
-          <div className="flex items-center justify-center gap-3 mt-5">
+          <div className="flex items-center justify-center gap-3 mt-5 motion-safe:animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <a
               href="#verdict"
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold text-white/80 bg-white/15 hover:bg-white/25 border border-white/20 hover:border-white/40 backdrop-blur-sm transition-all duration-200 group"
@@ -320,10 +361,12 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             </a>
             <a
               href="#key-differences"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white/60 hover:text-white/80 border border-white/10 hover:border-white/25 transition-all duration-200"
+              aria-label="Jump to key differences section"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold text-white/80 hover:text-white border border-white/20 hover:border-white/40 transition-all duration-200"
             >
               See differences
             </a>
+            <HeroShareButton />
           </div>
         )}
       </div>

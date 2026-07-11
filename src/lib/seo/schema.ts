@@ -968,7 +968,8 @@ export function comparisonPageSchema(
       // #key-facts — entity-level factual claims. #comparison-table — the structured attribute
       // grid; AI data-mode crawlers extract column headers + values directly from this section.
       // #faq — Q&A pairs; Google AI Overviews cite FAQ answers verbatim for voice results.
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      // #expert-analysis — human-reviewed analysis; high E-E-A-T signal for AI content extraction.
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     // accessMode signals content type to AI classifiers and accessibility crawlers.
     accessMode: ["textual", "visual"],
@@ -1150,7 +1151,7 @@ export function comparisonPageSchema(
     timeRequired: `PT${Math.ceil(Math.max(300, (comparison.attributes.length * 40) + (hasFaqs ? comparison.faqs.length * 80 : 0)) / 200)}M`,
     // lastReviewed — freshness signal for AI fact-checkers and Google's QA systems.
     lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     // contentReferenceTime — ISO 8601 date that the data in this article is "as of".
     // LLMs (ChatGPT, Perplexity, Claude) use this to give time-qualified answers:
     // "According to A Versus B (as of June 2026), ..." instead of treating the data
@@ -1326,6 +1327,8 @@ export function comparisonPageSchema(
         // the structured entity list without loading the full page. Perplexity and ChatGPT
         // use this edge to extract the compared entities as a ranked list.
         { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
+        // Key differences ItemList — Article→ItemList graph edge for named claims.
+        ...(comparison.keyDifferences.length >= 3 ? [{ "@type": "ItemList", "@id": `${url}#key-differences` }] : []),
         ...(hasHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         // @id matches the ProfilePage's own @id so cross-document merging works correctly.
@@ -1490,7 +1493,40 @@ export function comparisonPageSchema(
     schemas.push(faqSchema(comparison.faqs, `${url}#faq`, faqAbout, comparison.metadata.publishedAt ?? undefined));
   }
 
-  // 4. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
+  // 4. ItemList for key differences — lets AI answer engines surface each difference
+  // as a named claim. Each ListItem.name is the attribute label; the description
+  // encodes entity values so a model can extract "X beats Y on Speed" without
+  // reading the full page body. Only emitted when there are 3+ key differences
+  // to ensure the list is substantive rather than a stub.
+  if (comparison.keyDifferences.length >= 3) {
+    const entityA = comparison.entities[0];
+    const entityB = comparison.entities[1];
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "@id": `${url}#key-differences`,
+      name: `Key Differences: ${entityA?.name ?? ""} vs ${entityB?.name ?? ""}`,
+      description: `The most important differences between ${entityA?.name ?? ""} and ${entityB?.name ?? ""}`,
+      numberOfItems: comparison.keyDifferences.length,
+      itemListElement: comparison.keyDifferences.map((diff, i) => {
+        const winner =
+          diff.winner === "a" ? entityA?.name
+          : diff.winner === "b" ? entityB?.name
+          : diff.winner === "tie" ? "tie"
+          : undefined;
+        const desc = [
+          entityA ? `${entityA.name}: ${diff.entityAValue}` : undefined,
+          entityB ? `${entityB.name}: ${diff.entityBValue}` : undefined,
+          winner ? `Winner: ${winner}` : undefined,
+        ]
+          .filter(Boolean)
+          .join("; ");
+        return { "@type": "ListItem", position: i + 1, name: diff.label, description: desc };
+      }),
+    });
+  }
+
+  // 5. HowTo schema for product/tech comparisons — AI answer engines use HowTo to
   // surface step-by-step decision guides in "how to choose X vs Y" query slots.
   // image on each HowToStep enables Google's Step Images rich result (shown inline
   // in SERP for "how to choose X vs Y" queries). url anchors let users jump to each
@@ -2086,7 +2122,7 @@ function buildMultiEntityGraph(
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#faq"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#key-facts", "#comparison-table", "#expert-analysis", "#faq"],
     },
     accessMode: ["textual", "visual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
@@ -2165,7 +2201,7 @@ function buildMultiEntityGraph(
     interactivityType: "expositive",
     // lastReviewed + reviewedBy — freshness signal for AI fact-checkers.
     lastReviewed: comparison.metadata.updatedAt,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     // wordCount — estimated from attribute count × avg words/attribute + FAQ words.
     wordCount: Math.max(400, (comparison.attributes.length * 40) + (comparison.faqs.length * 80)),
     // timeRequired — estimated reading time (ISO8601 duration); Google and AI engines
@@ -2212,6 +2248,8 @@ function buildMultiEntityGraph(
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
         { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
+        // Key differences ItemList — AI can traverse from Article to named claim list.
+        ...(comparison.keyDifferences.length >= 3 ? [{ "@type": "ItemList", "@id": `${url}#key-differences` }] : []),
         ...(hasMultiHowTo ? [{ "@type": "HowTo", "@id": `${url}#howto` }] : []),
         // Per-entity ProfilePage nodes — Article→ProfilePage graph edges for AI knowledge traversal.
         ...comparison.entities.filter((e) => e.slug).map((e) => ({
@@ -2571,6 +2609,30 @@ function buildMultiEntityGraph(
     });
   }
 
+  // KeyDifferences ItemList — parallel to 2-entity path; same 3+ threshold.
+  if (comparison.keyDifferences.length >= 3) {
+    const kdEntityA = comparison.entities[0];
+    const kdEntityB = comparison.entities[1];
+    graph.push({
+      "@type": "ItemList",
+      "@id": `${url}#key-differences`,
+      name: `Key Differences: ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+      description: `The most important differences between ${comparison.entities.map((e) => e.name).join(", ")}`,
+      numberOfItems: comparison.keyDifferences.length,
+      itemListElement: comparison.keyDifferences.map((diff, i) => {
+        const winner =
+          diff.winner === "a" ? kdEntityA?.name
+          : diff.winner === "b" ? kdEntityB?.name
+          : diff.winner === "tie" ? "tie"
+          : undefined;
+        const aVal = kdEntityA ? `${kdEntityA.name}: ${diff.entityAValue}` : undefined;
+        const bVal = kdEntityB ? `${kdEntityB.name}: ${diff.entityBValue}` : undefined;
+        const desc = [aVal, bVal, winner ? `Winner: ${winner}` : undefined].filter(Boolean).join("; ");
+        return { "@type": "ListItem", position: i + 1, name: diff.label, description: desc };
+      }),
+    });
+  }
+
   // WebPage node — bidirectional Article↔WebPage graph edge (matches 2-entity path).
   graph.push({
     "@type": "WebPage",
@@ -2589,7 +2651,7 @@ function buildMultiEntityGraph(
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,
-      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+      cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   });
@@ -3117,7 +3179,7 @@ export function profilePageSchema(entity: {
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#entity-speakable`,
-      cssSelector: ["h1", "#entity-intro", "#entity-about"],
+      cssSelector: ["h1", "#entity-intro", "#entity-about", ".faq-answer"],
     },
   };
 
@@ -3146,7 +3208,7 @@ export function profilePageSchema(entity: {
     dateCreated: "2024-01-01",
     dateModified: today,
     lastReviewed: today,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: today,
     locationCreated: { "@type": "Country", name: "United States" },
     inLanguage: "en-US",

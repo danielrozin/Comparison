@@ -142,7 +142,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               {["#6366f1", "#8b5cf6", "#ec4899", "#f97316", "#10b981"].map((color, i) => (
                 <div
                   key={i}
-                  className="w-6 h-6 rounded-full ring-2 ring-white flex items-center justify-center text-white text-[9px] font-bold"
+                  className="w-6 h-6 rounded-full ring-2 ring-white flex items-center justify-center text-white text-xs font-bold"
                   style={{ backgroundColor: color }}
                 >
                   {String.fromCharCode(65 + i)}

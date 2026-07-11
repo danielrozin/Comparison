@@ -241,7 +241,7 @@ export default function OutreachQueuePage() {
                   {/* Header row */}
                   <div className="flex items-start gap-3 mb-3">
                     <span
-                      className={`inline-flex items-center justify-center w-6 h-6 rounded text-[11px] font-bold flex-shrink-0 ${
+                      className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-bold flex-shrink-0 ${
                         post.platform === "reddit"
                           ? "bg-orange-100 text-orange-700"
                           : "bg-red-100 text-red-700"

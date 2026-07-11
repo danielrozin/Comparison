@@ -46,7 +46,7 @@ export function RelatedComparisons({
   sourceSlug?: string;
 }) {
   return (
-    <section aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="related-comparisons" aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-primary-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -61,7 +61,10 @@ export function RelatedComparisons({
         </div>
       </div>
 
-      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none mb-6">
+      {/* Scroll-fade wrapper — right-edge fade signals more cards off-screen on mobile */}
+      <div className="relative mb-6">
+        <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -71,7 +74,7 @@ export function RelatedComparisons({
             : null;
 
           return (
-            <li key={comp.slug} className="flex">
+            <li key={comp.slug} className="flex flex-shrink-0 snap-start w-[220px] sm:w-auto sm:flex-shrink">
             <Link
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
@@ -84,15 +87,17 @@ export function RelatedComparisons({
               {/* Subtle hover gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-50/0 group-hover:from-primary-50/60 group-hover:to-transparent transition-all duration-300 rounded-2xl pointer-events-none" />
 
-              {/* Avatars row — decorative; link text comes from the title below */}
+              {/* Avatars row — overlapping circles with VS badge, consistent with category + search cards */}
               <div className="relative flex items-center justify-between" aria-hidden="true">
-                <div className="flex items-center gap-1">
-                  <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+                <div className="relative h-10 flex-shrink-0" style={{ width: "58px" }}>
+                  <div className={`absolute left-0 top-0.5 w-9 h-9 bg-gradient-to-br ${avatarGradient(0, letterA)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10`}>
                     {letterA}
                   </div>
-                  <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5">vs</span>
-                  <div className={`w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm`}>
+                  <div className={`absolute left-5 top-0.5 w-9 h-9 bg-gradient-to-br ${avatarGradient(1, letterB)} rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0`}>
                     {letterB}
+                  </div>
+                  <div className="absolute bottom-0 left-[18px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                    <span className="text-[7px] font-black text-white leading-none">VS</span>
                   </div>
                 </div>
                 <svg className="w-4 h-4 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -110,7 +115,7 @@ export function RelatedComparisons({
               {/* Category badge */}
               {catColor && comp.category && (
                 <div className="relative">
-                  <span className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
+                  <span className={`inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full border capitalize ${catColor}`}>
                     {comp.category}
                   </span>
                 </div>
@@ -120,6 +125,7 @@ export function RelatedComparisons({
           );
         })}
       </ul>
+      </div>
 
       {/* Browse all CTA */}
       <div className="flex justify-center">

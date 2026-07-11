@@ -69,6 +69,7 @@ const SECTION_CONFIGS: Array<{ id: string; label: string; icon: React.ReactNode;
 export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
   const [visible, setVisible] = useState<Section[]>([]);
   const [activeId, setActiveId] = useState<string>("");
+  const [scrolledLeft, setScrolledLeft] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pillRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
@@ -108,6 +109,15 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
     }
   }, [activeId]);
 
+  // Track horizontal scroll position to show/hide left-edge fade
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const onScroll = () => setScrolledLeft(el.scrollLeft > 8);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [visible]);
+
   if (visible.length < 2) return null;
 
   return (
@@ -116,17 +126,19 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
       className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
     >
       <div className="relative">
+      {/* Left-edge fade — appears after horizontal scroll to signal hidden pills to the left */}
+      <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10 transition-opacity duration-200 ${scrolledLeft ? "opacity-100" : "opacity-0"}`} aria-hidden="true" />
       {/* Right-edge fade — signals more pills off-screen on mobile */}
       {visible.length > 3 && (
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10" aria-hidden="true" />
       )}
       <div ref={scrollContainerRef} className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1">
-        <span className="flex-shrink-0 text-[11px] font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
+        <span className="flex-shrink-0 text-xs font-bold text-text-secondary uppercase tracking-wider mr-1 whitespace-nowrap">
           Jump to:
         </span>
         {winnerName && (
           <>
-            <span className="flex-shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-400/15 text-amber-700 border border-amber-300/50 whitespace-nowrap">
+            <span className="flex-shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-400/15 text-amber-700 border border-amber-300/50 whitespace-nowrap">
               <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>

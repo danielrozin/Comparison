@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { contentAuthorArray } from "@/lib/seo/schema";
+import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
 
 const PAGE_TITLE = `Are G2 and Capterra Reviews Unbiased? | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -111,7 +111,7 @@ function buildSchemas() {
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: PAGE_URL },
     author: contentAuthorArray(),
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     about: [
       { "@type": "WebSite", name: "G2", url: "https://www.g2.com" },
       { "@type": "WebSite", name: "Capterra", url: "https://www.capterra.com" },

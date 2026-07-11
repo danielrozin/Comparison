@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
 
 const SITE_URL = "https://www.aversusb.net";
 const SITE_NAME = "A Versus B";
@@ -51,6 +52,7 @@ const searchResultsPageSchema = {
   dateCreated: "2024-01-01",
   dateModified: new Date().toISOString().slice(0, 10),
   contentReferenceTime: new Date().toISOString(),
+  author: contentAuthorArray(),
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -145,7 +147,7 @@ const faqSchema = {
         text: "Type the names of the two things in the search box separated by 'vs' — for example 'iPhone vs Samsung' or 'Messi vs Ronaldo'. A Versus B will instantly show you a structured side-by-side comparison with attributes, a verdict, and FAQs.",
         inLanguage: "en-US",
         upvoteCount: 1,
-        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        author: personAuthorNode(),
       },
     },
     {
@@ -162,7 +164,7 @@ const faqSchema = {
         text: "A Versus B covers 3,000+ comparisons across 17 categories: technology, sports, countries, products, software, automotive, health, finance, entertainment, gaming, brands, companies, history, celebrities, and more. You can compare AI models (ChatGPT vs Claude), smartphones (iPhone vs Samsung), athletes (Messi vs Ronaldo), countries (USA vs China), cloud platforms (AWS vs Azure), and virtually anything else.",
         inLanguage: "en-US",
         upvoteCount: 1,
-        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        author: personAuthorNode(),
       },
     },
     {
@@ -179,7 +181,7 @@ const faqSchema = {
         text: "Yes — all comparisons on A Versus B are completely free to access with no registration required. The data is licensed under CC BY 4.0, meaning you can cite and share it freely with attribution to aversusb.net.",
         inLanguage: "en-US",
         upvoteCount: 1,
-        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        author: personAuthorNode(),
       },
     },
     {
@@ -196,7 +198,7 @@ const faqSchema = {
         text: "Each comparison on A Versus B is researched and structured by our editorial team using verified data sources. Comparisons include attribute-by-attribute breakdowns with per-attribute winners, a structured verdict, community votes from real users, and FAQ pairs — all backed by cited sources and published with Schema.org JSON-LD markup for AI and search engine discoverability.",
         inLanguage: "en-US",
         upvoteCount: 1,
-        author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        author: personAuthorNode(),
       },
     },
   ],
@@ -239,14 +241,14 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": "Search Comparisons — A Versus B",
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_ABSTRACT,
     "citation_publication_date": "2024-01-01",
     "citation_online_date": "2024-01-01",
     "DC.title": "Search Comparisons — A Versus B",
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.subject": "Comparison Search, Side-by-Side Search Tool",

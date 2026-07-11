@@ -1,41 +1,49 @@
 import type { KeyDifference, ComparisonEntityData } from "@/types";
 
-const CATEGORY_EMOJIS: Record<string, string> = {
-  display: "📱",
-  screen: "📱",
-  camera: "📷",
-  photo: "📷",
-  battery: "🔋",
-  price: "💰",
-  cost: "💰",
-  performance: "⚡",
-  speed: "⚡",
-  processor: "🧠",
-  ai: "🧠",
-  intelligence: "🧠",
-  storage: "💾",
-  memory: "💾",
-  weight: "⚖️",
-  size: "📏",
-  design: "🎨",
-  sound: "🔊",
-  audio: "🔊",
-  population: "👥",
-  area: "🌍",
-  gdp: "💵",
-  economy: "💵",
-  goals: "⚽",
-  trophies: "🏆",
-  height: "📏",
-  age: "📅",
-};
-
-function getEmoji(label: string): string {
+function CategoryIcon({ label }: { label: string }) {
   const lower = label.toLowerCase();
-  for (const [key, emoji] of Object.entries(CATEGORY_EMOJIS)) {
-    if (lower.includes(key)) return emoji;
+
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("gdp") || lower.includes("economy")) {
+    return (
+      <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    );
   }
-  return "🔹";
+  if (lower.includes("performance") || lower.includes("speed") || lower.includes("processor") || lower.includes("battery")) {
+    return (
+      <svg className="w-3.5 h-3.5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+      </svg>
+    );
+  }
+  if (lower.includes("display") || lower.includes("screen") || lower.includes("camera") || lower.includes("design")) {
+    return (
+      <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    );
+  }
+  if (lower.includes("storage") || lower.includes("memory") || lower.includes("weight") || lower.includes("size") || lower.includes("area") || lower.includes("population") || lower.includes("height")) {
+    return (
+      <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    );
+  }
+  if (lower.includes("sound") || lower.includes("audio")) {
+    return (
+      <svg className="w-3.5 h-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0l-3.536-3.536M12 18l3.536-3.536M6.464 8.464a5 5 0 000 7.072" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg className="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+  );
 }
 
 
@@ -82,14 +90,14 @@ export function KeyDifferencesSummary({
 
             return (
               <li key={diff.label} className="flex items-center gap-2.5 text-sm">
-                <span className="w-7 h-7 flex-shrink-0 bg-white border border-indigo-100 rounded-lg flex items-center justify-center text-sm shadow-sm" aria-hidden="true">
-                  {getEmoji(diff.label)}
+                <span className="w-7 h-7 flex-shrink-0 bg-white border border-indigo-100 rounded-lg flex items-center justify-center shadow-sm">
+                  <CategoryIcon label={diff.label} />
                 </span>
                 <div className="min-w-0 flex-1 flex flex-wrap items-center gap-1.5">
                   <span className="font-semibold text-text">{diff.label}:</span>
                   {winnerName ? (
                     <>
-                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 border border-green-200/60">
+                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200/60">
                         ✓ {winnerName} wins
                       </span>
                       <span className="text-text-secondary text-xs">({winnerVal} vs {loserVal})</span>

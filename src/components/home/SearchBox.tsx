@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { slugify } from "@/lib/utils/slugify";
 import { trackComparisonSearch } from "@/lib/utils/analytics";
 import Link from "next/link";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 interface PopularComparison {
   slug: string;
@@ -17,25 +18,6 @@ interface SearchResult {
   title: string;
   category: string;
 }
-
-const CATEGORY_ICONS: Record<string, string> = {
-  sports: "⚽",
-  countries: "🌍",
-  technology: "💻",
-  products: "📦",
-  health: "💊",
-  finance: "💰",
-  education: "🎓",
-  entertainment: "🎬",
-  history: "📜",
-  military: "🎖️",
-  economy: "📈",
-  companies: "🏢",
-  brands: "🏷️",
-  celebrities: "⭐",
-  software: "🖥️",
-  automotive: "🚗",
-};
 
 const TYPING_SUGGESTIONS = [
   "Messi vs Ronaldo",
@@ -269,7 +251,7 @@ export function SearchBox() {
         >
           {/* Header */}
           <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
-            <p className="text-[11px] font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
+            <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
               {showingLive ? (
                 <>
                   <svg className="w-3.5 h-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -286,7 +268,7 @@ export function SearchBox() {
                 </>
               )}
             </p>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 text-xs text-text-secondary bg-white border border-border rounded-md px-1.5 py-0.5 font-mono">
               <span aria-hidden="true">↑↓</span> navigate
             </kbd>
           </div>
@@ -321,19 +303,19 @@ export function SearchBox() {
                       : "hover:bg-primary-50/30 border-l-transparent"
                   }`}
                 >
-                  <span className="text-base flex-shrink-0 w-5 text-center leading-none" aria-hidden="true">
-                    {CATEGORY_ICONS[catKey] || "📊"}
+                  <span className="flex-shrink-0 w-5 flex items-center justify-center text-text-secondary/70">
+                    <CategoryIcon category={catKey} />
                   </span>
                   {parts ? (
                     <span className="text-sm text-text flex-1 min-w-0 flex items-center gap-1.5">
                       <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.a}</span>
-                      <span className="flex-shrink-0 text-[9px] font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
+                      <span className="flex-shrink-0 text-xs font-black text-white bg-gradient-to-r from-primary-500 to-accent-500 px-1.5 py-0.5 rounded leading-none">VS</span>
                       <span className={`font-semibold truncate max-w-[calc(50%-20px)] ${isActive ? "text-primary-800" : ""}`}>{parts.b}</span>
                     </span>
                   ) : (
                     <span className={`text-sm flex-1 truncate font-medium ${isActive ? "text-primary-800" : "text-text"}`}>{item.title}</span>
                   )}
-                  <span className={`text-[10px] capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
+                  <span className={`text-xs capitalize flex-shrink-0 border px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                     {item.category}
                   </span>
                 </Link>
@@ -345,7 +327,7 @@ export function SearchBox() {
           <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2 flex items-center justify-between">
             {showingLive ? (
               <>
-                <span className="text-[11px] text-text-secondary font-medium">
+                <span className="text-xs text-text-secondary font-medium">
                   {liveResults.length} result{liveResults.length !== 1 ? "s" : ""}
                 </span>
                 <button
@@ -354,7 +336,7 @@ export function SearchBox() {
                     setShowDropdown(false);
                     router.push(`/search?q=${encodeURIComponent(query.trim())}`);
                   }}
-                  className="text-[11px] font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1"
+                  className="text-xs font-semibold text-primary-600 hover:text-primary-700 flex items-center gap-1"
                 >
                   See all results
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
@@ -363,7 +345,7 @@ export function SearchBox() {
                 </button>
               </>
             ) : (
-              <span className="text-[11px] text-text-secondary/70">Press Enter to search</span>
+              <span className="text-xs text-text-secondary/70">Press Enter to search</span>
             )}
           </div>
         </div>
@@ -378,7 +360,7 @@ export function SearchBox() {
             if (parsed) {
               return (
                 <div className="px-4 py-4">
-                  <p className="text-[10px] font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
+                  <p className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Generate new comparison</p>
                   <div className="flex items-center gap-2 p-3 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-100 rounded-xl">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                       {parsed[0].charAt(0).toUpperCase()}
@@ -386,7 +368,7 @@ export function SearchBox() {
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-text truncate">{parsed[0]}</p>
                     </div>
-                    <span className="text-[10px] font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
+                    <span className="text-xs font-black text-white bg-gradient-to-r from-primary-600 to-accent-600 px-2 py-1 rounded-full flex-shrink-0">VS</span>
                     <div className="flex-1 min-w-0 text-right">
                       <p className="font-semibold text-sm text-text truncate">{parsed[1]}</p>
                     </div>
@@ -395,7 +377,7 @@ export function SearchBox() {
                     </div>
                   </div>
                   <p className="text-xs text-text-secondary/70 mt-2 text-center">
-                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-[10px] font-mono">Enter</kbd> to generate this comparison
+                    Press <kbd className="px-1.5 py-0.5 bg-surface-alt border border-border rounded text-xs font-mono">Enter</kbd> to generate this comparison
                   </p>
                 </div>
               );

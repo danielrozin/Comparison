@@ -53,3 +53,8 @@ hyperframes/**/.hyperframes/
 .env.prod
 .env.vercel.production
 .env.local
+.env.vercel.prod
+.env.production
+
+# Local data snapshots (large JSON, not for version control)
+scripts/data/*.json

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
   sports: "from-orange-50 to-amber-50 group-hover:from-orange-100 group-hover:to-amber-100",
@@ -60,14 +61,14 @@ export function CategoryCard({
       <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
       <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:shadow-sm`}>
-        <span className="text-2xl leading-none" aria-hidden="true">{category.icon}</span>
+        <CategoryIcon category={category.slug} className="w-6 h-6" />
       </div>
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">
         {category.name}
       </span>
 
-      {/* Arrow that slides in on hover */}
-      <div className="flex items-center gap-1 text-[10px] font-semibold text-primary-500 opacity-0 -mt-1 group-hover:opacity-100 group-hover:mt-0 transition-all duration-200">
+      {/* Arrow — always visible on mobile (no hover on touch), fade-in on desktop hover */}
+      <div className="flex items-center gap-1 text-xs font-semibold text-primary-500 sm:opacity-0 sm:-mt-1 sm:group-hover:opacity-100 sm:group-hover:mt-0 sm:transition-all sm:duration-200">
         Browse
         <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />

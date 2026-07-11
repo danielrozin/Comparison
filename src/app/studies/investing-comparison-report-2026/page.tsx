@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getFinanceStudy } from "@/lib/services/studies-service";
-import { breadcrumbSchema, contentAuthorArray } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, contentAuthorArray } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": DESCRIPTION,
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     "citation_keywords": "investing, stock comparison, investment platforms, brokerage comparison, financial research 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -158,7 +158,7 @@ export default async function InvestingStudyPage() {
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
     author: contentAuthorArray(),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.png` } },
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: { "@type": "ReadAction", target: CANONICAL },
     timeRequired: "PT7M",

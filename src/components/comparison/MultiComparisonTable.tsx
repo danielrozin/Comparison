@@ -94,7 +94,7 @@ export function MultiComparisonTable({
   const attrColWidth = n >= 5 ? "30%" : n === 4 ? "32%" : "36%";
 
   return (
-    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-20">
+    <section id="comparison-table" aria-labelledby="full-comparison-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -231,7 +231,7 @@ export function MultiComparisonTable({
                 aria-label={`${openGroups.has(categoryName) ? "Collapse" : "Expand"} ${categoryName} category`}
                 className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
               >
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
+                <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                   {categoryName}
                 </span>
                 <ChevronIcon open={isOpen} />
@@ -242,7 +242,7 @@ export function MultiComparisonTable({
                     const winnerIdx = getWinnerIndex(attr);
                     return (
                       <div key={attr.id} className="p-3">
-                        <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wide mb-2">
+                        <p className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-2">
                           {attr.name}
                           {attr.unit && <span className="font-normal ml-1">({attr.unit})</span>}
                         </p>
@@ -260,7 +260,7 @@ export function MultiComparisonTable({
                                 key={`${attr.id}-${eIdx}`}
                                 className={`text-center px-2 py-1.5 rounded border ${bg}`}
                               >
-                                <p className="text-[10px] text-text-secondary truncate mb-0.5" title={ent.name}>
+                                <p className="text-xs text-text-secondary truncate mb-0.5" title={ent.name}>
                                   {ent.name}
                                 </p>
                                 <p className={`text-sm break-words ${fg}`}>

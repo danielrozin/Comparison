@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
@@ -14,6 +14,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
 // Infers schema.org @type from a blog tag name for typed mentions[] — same pattern
@@ -523,7 +524,7 @@ export default async function BlogPostPage({
     ...(isRecent && { dateline: "Online, United States" }),
     // lastReviewed / reviewedBy — explicit freshness signal for AI crawlers.
     lastReviewed: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     // contentReferenceTime — tells LLMs the "as of" date for data in this article,
     // enabling time-qualified citations instead of treating content as timeless.
     contentReferenceTime: article.updatedAt ? new Date(article.updatedAt).toISOString() : undefined,
@@ -601,6 +602,16 @@ export default async function BlogPostPage({
         name: comparisonTitles?.[s] ?? s,
         url: `${SITE_URL}/compare/${s}`,
       })),
+    }),
+    // interactionStatistic — ReadAction counter exposes viewCount to AI crawlers and
+    // Google Dataset Search so engagement signals are machine-readable (not just GA).
+    // Feeds AEO citation-confidence scoring: a widely-read article is cited more often.
+    ...((article.viewCount ?? 0) > 0 && {
+      interactionStatistic: {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/ReadAction",
+        userInteractionCount: article.viewCount,
+      },
     }),
     // correction — when updatedAt differs from publishedAt, emit a CorrectionComment.
     // Google E-E-A-T evaluators treat `correction` as a strong content-maintenance signal:
@@ -827,14 +838,14 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
-              <div className="flex items-center gap-2 text-xs text-primary-200">
-                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center border border-white/20 flex-shrink-0">
-                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
+              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
+                  <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
                 </div>
-                <span className="font-medium">{SITE_NAME} Editorial Team</span>
-              </div>
+                <span className="font-semibold">Daniel Rozin</span>
+                <span className="text-primary-300/60" aria-hidden="true">·</span>
+                <span>Editor-in-Chief</span>
+              </Link>
               {article.publishedAt && (
                 <>
                   <span className="w-px h-4 bg-white/20" aria-hidden="true" />
@@ -863,6 +874,17 @@ export default async function BlogPostPage({
             </svg>
           </div>
         </header>
+
+        {/* Author byline — E-E-A-T signal on light background */}
+        <div className="bg-white border-b border-border/50">
+          <div className="max-w-4xl mx-auto">
+            <AuthorByline
+              updatedAt={article.updatedAt ? new Date(article.updatedAt as string).toISOString() : new Date().toISOString()}
+              isHumanReviewed={true}
+              wordCount={wordCount}
+            />
+          </div>
+        </div>
 
         {/* Article Body */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -945,12 +967,15 @@ export default async function BlogPostPage({
                         href={`/compare/${compSlug}`}
                         className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                       >
-                        <div className="flex -space-x-2 flex-shrink-0">
-                          <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                        <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
+                          <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                             {(parts[0] || "A").charAt(0).toUpperCase()}
                           </div>
-                          <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                          <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
                             {(parts[1] || "B").charAt(0).toUpperCase()}
+                          </div>
+                          <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                            <span className="text-[6px] font-black text-white leading-none">VS</span>
                           </div>
                         </div>
                         <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors flex-1 min-w-0 truncate">

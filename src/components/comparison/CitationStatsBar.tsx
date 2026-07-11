@@ -78,7 +78,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <span className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider hidden sm:inline">Research-backed</span>
+              <span className="text-xs font-bold text-indigo-700 uppercase tracking-wider hidden sm:inline">Research-backed</span>
             </div>
 
             {/* Divider */}
@@ -99,14 +99,14 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
             ))}
 
             {/* Research date */}
-            <time dateTime={new Date(stats.lastResearched).toISOString()} className="text-[10px] text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
+            <time dateTime={new Date(stats.lastResearched).toISOString()} className="text-xs text-indigo-400/80 ml-auto hidden sm:block whitespace-nowrap">
               Updated {researchDate}
             </time>
           </div>
 
           {/* Source attribution row */}
           {stats.sources.length > 0 && (
-            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-[10px] text-indigo-400 border-t border-indigo-100/80 pt-2">
+            <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-xs text-indigo-400 border-t border-indigo-100/80 pt-2">
               <span className="font-semibold text-indigo-500 mr-0.5">Sources:</span>
               {stats.sources.slice(0, 5).map((source, i) => (
                 <span key={i}>

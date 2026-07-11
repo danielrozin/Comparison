@@ -77,7 +77,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
           {emoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] text-white/60 leading-none mb-0.5">
+          <p className="text-xs text-white/60 leading-none mb-0.5">
             <span className="font-semibold text-white/80">{people} people</span> comparing now
           </p>
           <p className="text-xs font-semibold text-white truncate group-hover:text-white/90">
@@ -85,7 +85,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
             <span className="mx-1 text-white/40 font-normal">vs</span>
             {b}
           </p>
-          <p className="text-[10px] text-white/40 mt-0.5">{fmtViews(item.viewCount)} total views</p>
+          <p className="text-xs text-white/40 mt-0.5">{fmtViews(item.viewCount)} total views</p>
         </div>
         <svg className="w-3.5 h-3.5 text-white/30 flex-shrink-0 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

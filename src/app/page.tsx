@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema } from "@/lib/seo/schema";
+import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -19,6 +19,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { AnimatedStats } from "@/components/home/AnimatedStats";
 import { ComparisonTicker } from "@/components/home/ComparisonTicker";
 import { LiveActivityToast } from "@/components/home/LiveActivityToast";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 
 const HOME_TITLE = `${SITE_NAME} — Compare Anything`;
 const HOME_DESC = "The internet's most comprehensive comparison platform. Side-by-side comparisons across sports, technology, products, countries, software, and more — data-driven, free, and instant.";
@@ -26,14 +27,14 @@ const HOME_DESC = "The internet's most comprehensive comparison platform. Side-b
 export const metadata: Metadata = {
   other: {
     "citation_title": HOME_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": HOME_DESC,
       "citation_publication_date": "2024-01-01",
       "citation_online_date": "2024-01-01",
     "DC.title": HOME_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.description": HOME_DESC,
@@ -131,7 +132,7 @@ export default async function HomePage() {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
-    teaches: "How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables",
+    teaches: teachesDefinedTerm("How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables", SITE_URL),
     educationalUse: "reference",
     keywords: "compare anything, side-by-side comparison, product comparison, technology comparison, country comparison, sports comparison",
     speakable: {
@@ -249,7 +250,7 @@ export default async function HomePage() {
                   href={example.href}
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
                 >
-                  <span className="text-[10px] text-white/40" aria-hidden="true">↗</span>
+                  <span className="text-xs text-white/40" aria-hidden="true">↗</span>
                   {example.label}
                 </Link>
               ))}
@@ -257,15 +258,16 @@ export default async function HomePage() {
 
             {/* Category pill links */}
             <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-              <p className="text-[11px] font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {CATEGORIES.slice(0, 10).map((cat) => (
+              <p className="text-xs font-semibold text-primary-300 uppercase tracking-wider mb-3">Browse by category</p>
+              {/* Mobile: horizontal scroll; Desktop: wrap */}
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1 sm:flex-wrap sm:justify-center sm:overflow-x-visible sm:pb-0 [mask-image:linear-gradient(to_right,black_80%,transparent_100%)] sm:[mask-image:none]">
+                {CATEGORIES.slice(0, 12).map((cat) => (
                   <Link
                     key={cat.slug}
                     href={`/category/${cat.slug}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
                   >
-                    <span className="text-sm leading-none group-hover:scale-110 transition-transform inline-block" aria-hidden="true">{cat.icon}</span>
+                    <span className="group-hover:scale-110 transition-transform inline-block text-white/70 group-hover:text-white" aria-hidden="true"><CategoryIcon category={cat.slug} className="w-3.5 h-3.5" /></span>
                     {cat.name}
                   </Link>
                 ))}
@@ -280,7 +282,7 @@ export default async function HomePage() {
         {/* Scroll down indicator — absolutely positioned so it sits above the wave without adding height */}
         <div className="absolute bottom-[88px] left-0 right-0 flex justify-center animate-fade-in pointer-events-none" style={{ animationDelay: "0.7s" }} aria-hidden="true">
           <div className="flex flex-col items-center gap-1 motion-safe:animate-bounce-gentle">
-            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
             <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
@@ -346,6 +348,12 @@ export default async function HomePage() {
             </li>
           ))}
         </ul>
+        <div className="flex justify-center mt-6 sm:hidden">
+          <Link href="/trending" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 rounded-full hover:bg-primary-100 transition-colors">
+            View all trending
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+        </div>
       </section>
       </ScrollReveal>
 
@@ -401,11 +409,11 @@ export default async function HomePage() {
                   <div className="relative p-4 pt-5 flex flex-col flex-1 gap-3">
                     {/* Category + date row */}
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100 capitalize">
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700 border border-primary-100 capitalize">
                         {item.category}
                       </span>
                       {item.updatedAt && (
-                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-[10px] text-text-secondary">
+                        <time dateTime={new Date(item.updatedAt).toISOString()} className="text-xs text-text-secondary">
                           {new Date(item.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </time>
                       )}
@@ -419,7 +427,7 @@ export default async function HomePage() {
                         </div>
                         <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight">{latestEntityA}</span>
                       </div>
-                      <span className="text-[8px] font-black text-text-secondary/50 uppercase px-0.5 flex-shrink-0">vs</span>
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center text-[8px] font-black text-white ring-1 ring-white shadow-sm">VS</span>
                       {latestEntityB ? (
                         <div className="flex items-center gap-2 min-w-0 flex-1 justify-end">
                           <span className="text-xs font-semibold text-text truncate group-hover:text-primary-700 transition-colors leading-tight text-right">{latestEntityB}</span>
@@ -453,6 +461,12 @@ export default async function HomePage() {
               );
             })}
           </ul>
+          <div className="flex justify-center mt-6 sm:hidden">
+            <Link href="/trending" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-600 bg-primary-50 border border-primary-200 rounded-full hover:bg-primary-100 transition-colors">
+              View all comparisons
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
         </div>
       </section>
       </ScrollReveal>

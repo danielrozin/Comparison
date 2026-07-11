@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 10, 2026 (HB367)*
+*Last updated: July 10, 2026 (HB373)*
 
 ## What We Do
 
@@ -222,6 +222,11 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB356: `LearningResource additionalType` + `learningResourceType: "Comparison Guide"` on compare (2-entity + multi-entity) and category/[slug] + category/[slug]/[subcategory] pages — the highest-traffic page types (~50,000+ comparison pages + 17+ category pages) now all signal educational intent; complete site-wide LearningResource rollout
 - HB357: `LearningResource additionalType` + `learningResourceType` extended to entity ProfilePage (2,500+ entity pages, `learningResourceType: "Entity Profile"`) and reviews/[slug] ReviewPage (500+ review pages, `learningResourceType: "Review"`) — 100% LearningResource coverage across all public page types; `llms.txt` freshness updated to July 10, 2026
 - HB367: `Article.author` upgraded from `Organization`-only to `[Person, Organization]` array on all comparison pages (2-entity + multi-entity paths) — named Person author (Daniel Rozin, Founder & Editor-in-Chief, `authors/daniel-rozin#person`) now emitted alongside Organization for E-E-A-T; AI crawlers match named-author expertise to query topic, improving citation confidence on subject-matched queries; parity with blog/[slug] pages which already used Person authorship
+- HB369: Named `Person` authorship (E-E-A-T) added to all standalone pages — `author`, `reviewedBy`, `lastReviewed` upgraded from Organization-only to `[Person (Daniel Rozin), Organization]` on all remaining page types (blog listing, hub, category, entity pages, reviews listing, etc.); complete 100% E-E-A-T author graph coverage across the site
+- HB370: Speakable selector depth upgrade + `reviewedBy Person` sweep — 11 pages upgraded from `["h1"]` to `["h1", "p:first-of-type"]` for voice/LLM lead-paragraph extraction; 25 schema nodes upgraded with named Person reviewedBy; sitemap `lastmod` dates refreshed to 2026-07-10
+- HB371: Blog `Article.interactionStatistic` (ReadAction / viewCount) — blog article JSON-LD now emits a machine-readable `InteractionCounter` with real view counts from the DB; AI crawlers and Google Dataset Search can score citation confidence by reader engagement volume; `llms.txt` freshness updated to 2026-07-10
+- HB372: `educationalLevel`/`teaches` added to audience pages (partnerships, who-is-this-for, developers, about, contact, privacy, disclaimer) + 21 new AI crawler user agents in robots.ts (TogetherAI, FireworksAI, OpenRouter, Anyscale, Replicate, Groq, Cerebras, SambaNova, LMSYS, EleutherAI, MosaicML, Nomic, W&B, LangChain, LlamaIndex, AutoGPT, AgentGPT, OpenAI-Operator, Poe, CharacterAI, CohereForAI)
+- HB373: `teaches` upgraded from plain string to typed `DefinedTerm` node (via `teachesDefinedTerm()`) on 6 high-traffic page types: category, subcategory, hub, alternatives, best-of, and trending — creates `teaches→DefinedTermSet` graph edge enabling AI KGs to traverse learning outcomes across documents; `llms.txt` freshness updated to 2026-07-10
 
 ## Categories & Scale
 

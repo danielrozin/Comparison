@@ -7,6 +7,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
+import { personAuthorNode, teachesDefinedTerm } from "@/lib/seo/schema";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -300,7 +301,7 @@ function bestPageSchema(entry: BestEntry) {
           ...(entry.authorUrl ? { url: `${SITE_URL}${entry.authorUrl}` } : {}),
         },
         publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-        reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+        reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
         alternativeHeadline: `Top ${entry.h1} — Expert Picks ${new Date().getFullYear()}`,
         license: "https://creativecommons.org/licenses/by/4.0/",
         usageInfo: `${SITE_URL}/terms`,
@@ -326,7 +327,7 @@ function bestPageSchema(entry: BestEntry) {
         educationalLevel: "General",
         // teaches — explicit learning outcome for AI classifiers routing "best X" queries.
         // ChatGPT and Perplexity route decision queries to pages with a `teaches` field.
-        teaches: `How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`,
+        teaches: teachesDefinedTerm(`How to choose the best ${entry.h1.toLowerCase().replace(/^best\s+/i, "")}`, url),
         // educationalUse — signals this is a ranked guide, not a review or comparison.
         educationalUse: "guide",
         timeRequired: `PT${Math.max(4, Math.ceil(entry.listItems.length * 1.5))}M`,
@@ -434,12 +435,25 @@ export default async function BestPage({ params }: PageProps) {
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-emerald-200">
                 {entry.authorName && (
-                  <span className="flex items-center gap-1.5">
-                    <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    {entry.authorUrl ? (
-                      <Link href={entry.authorUrl} className="hover:text-white transition-colors">{entry.authorName}</Link>
-                    ) : entry.authorName}
-                  </span>
+                  entry.authorUrl ? (
+                    <Link href={entry.authorUrl} rel="author" className="flex items-center gap-2 hover:text-white transition-colors group">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all" aria-hidden="true">
+                        <span className="text-white font-bold text-xs tracking-tight select-none leading-none">
+                          {entry.authorName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="font-semibold">{entry.authorName}</span>
+                    </Link>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm" aria-hidden="true">
+                        <span className="text-white font-bold text-xs tracking-tight select-none leading-none">
+                          {entry.authorName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="font-semibold">{entry.authorName}</span>
+                    </span>
+                  )
                 )}
                 {entry.updatedAt && (
                   <time dateTime={new Date(entry.updatedAt).toISOString()} className="flex items-center gap-1.5">

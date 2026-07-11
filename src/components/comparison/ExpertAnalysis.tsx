@@ -17,7 +17,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
     <section
       id="expert-analysis"
       aria-labelledby="expert-analysis-heading"
-      className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 scroll-mt-20"
+      className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 scroll-mt-28"
     >
       <div className="bg-white border border-border rounded-2xl shadow-sm overflow-hidden">
         {/* Header */}
@@ -34,11 +34,12 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
             <div className="flex flex-wrap items-center gap-3 mt-1.5">
               <Link
                 href="/authors/daniel-rozin"
-                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors"
+                rel="author"
+                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group"
               >
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-1 ring-white shadow-sm flex-shrink-0 group-hover:shadow-md transition-all duration-150" aria-hidden="true">
+                  <span className="text-white font-bold text-xs tracking-tight select-none leading-none">DR</span>
+                </div>
                 <span>Daniel Rozin, Editor-in-Chief</span>
               </Link>
               <span className="text-border text-xs" aria-hidden="true">·</span>
@@ -52,13 +53,40 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
           </div>
         </div>
 
-        {/* Analysis body */}
+        {/* Analysis body — first 3 paragraphs always visible; rest in a <details> fold.
+            Using native <details> keeps the full text in SSR HTML (crawlable by AI/SEO)
+            while preventing an overwhelming wall of text on first load. */}
         <div className="px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-          {paragraphs.map((para, i) => (
+          {paragraphs.slice(0, 3).map((para, i) => (
             <p key={i} className="text-base text-text leading-relaxed">
               {para}
             </p>
           ))}
+          {paragraphs.length > 3 && (
+            <details className="group">
+              <summary className="list-none cursor-pointer select-none">
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-600 hover:text-primary-700 group-open:hidden transition-colors">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Read {paragraphs.length - 3} more paragraph{paragraphs.length - 3 !== 1 ? "s" : ""}
+                </span>
+                <span className="hidden group-open:inline-flex items-center gap-1.5 text-sm font-semibold text-text-secondary hover:text-text transition-colors">
+                  <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Show less
+                </span>
+              </summary>
+              <div className="space-y-4 mt-4">
+                {paragraphs.slice(3).map((para, i) => (
+                  <p key={i + 3} className="text-base text-text leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </details>
+          )}
         </div>
 
         {/* Footer: E-E-A-T badge */}

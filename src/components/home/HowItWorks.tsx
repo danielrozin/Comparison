@@ -80,11 +80,11 @@ export function HowItWorks() {
         {STEPS.map((step, idx) => (
           <div
             key={step.number}
-            className={`relative flex flex-col items-center text-center p-6 bg-white border ${step.accent} rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 z-10`}
-            style={{ animationDelay: `${idx * 80}ms` }}
+            className={`relative flex flex-col items-center text-center p-6 bg-white border ${step.accent} rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 z-10 motion-safe:animate-fade-in`}
+            style={{ animationDelay: `${idx * 120}ms` }}
           >
             {/* Step tag */}
-            <span className="absolute top-3 right-3 text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest">
+            <span className="absolute top-3 right-3 text-xs font-bold text-text-secondary/40 uppercase tracking-widest">
               {step.tag}
             </span>
 

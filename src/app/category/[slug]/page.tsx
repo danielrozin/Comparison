@@ -6,12 +6,14 @@ import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
 import { getFeaturedForCategory } from "@/lib/data/featured-comparisons";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { getCategoryFaqs } from "@/lib/data/category-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
 import type { SortOption, RatingFilter } from "@/components/ui/CategoryFilters";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { CategoryIcon } from "@/lib/utils/category-icons";
 const ITEMS_PER_PAGE = 16;
 
 interface PageProps {
@@ -67,7 +69,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     twitter: { card: "summary_large_image", site: "@aversusb", images: [{ url: ogImage, alt: `${category.name} Comparisons on A Versus B` }] },
     other: {
       "citation_title": `${category.name} Comparisons — A Versus B`,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": desc,
@@ -76,7 +78,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
       "citation_online_date": "2024-01-01",
       "DC.title": `${category.name} Comparisons`,
       "DC.description": desc,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${category.name} Comparisons, Side-by-Side Analysis`,
@@ -228,7 +230,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     dateCreated: "2024-01-01",
     dateModified: categoryToday,
     lastReviewed: categoryToday,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: categoryToday,
     thumbnailUrl: categoryOgImage,
     image: {
@@ -280,11 +282,11 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
     educationalLevel: "General",
-    teaches: `How to compare ${category.name.toLowerCase()} side by side`,
+    teaches: teachesDefinedTerm(`How to compare ${category.name.toLowerCase()} side by side`, categoryUrl),
     educationalUse: "comparison",
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2"],
+      cssSelector: ["h1", "h2", ".faq-answer"],
     },
     keywords: `${category.name} comparison, ${category.name} vs, best ${category.name} ${new Date().getFullYear()}`,
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -304,6 +306,9 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         name: c.title,
         url: `${SITE_URL}/compare/${c.slug}`,
       })),
+      // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage
+      // schema node, resolving structured Q&A without re-parsing the full CollectionPage.
+      { "@type": "FAQPage", "@id": `${categoryUrl}#faq`, name: `${category.name} FAQ`, url: categoryUrl },
     ],
     timeRequired: "PT2M",
     wordCount: 400,
@@ -371,7 +376,21 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
       target: { "@type": "EntryPoint", urlTemplate: categoryUrl },
     },
   };
-  const schemaData = [breadcrumbData, categorySchemaObj, categoryDatasetObj];
+  const categoryFaqs = getCategoryFaqs(slug);
+  const categoryFaqSchema = categoryFaqs.length > 0
+    ? faqSchema(
+        categoryFaqs,
+        `${categoryUrl}#faq`,
+        [{ "@type": "Thing", "@id": categoryUrl, name: `${category.name} Comparisons`, url: categoryUrl }],
+        "2024-01-01",
+      )
+    : null;
+  const schemaData = [
+    breadcrumbData,
+    categorySchemaObj,
+    categoryDatasetObj,
+    ...(categoryFaqSchema ? [categoryFaqSchema] : []),
+  ];
 
   const basePath = `/category/${slug}`;
 
@@ -397,8 +416,8 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <div className="absolute left-5 top-0 w-9 h-9 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
               {(parts[1] || "B").charAt(0).toUpperCase()}
             </div>
-            <div className="absolute -bottom-1 left-4 z-20 w-5 h-5 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
-              <span className="text-[7px] font-black text-white leading-none">VS</span>
+            <div className="absolute -bottom-1 left-4 z-20 w-6 h-6 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white" aria-hidden="true">
+              <span className="text-xs font-black text-white leading-none">VS</span>
             </div>
           </div>
           <div className="flex-1 min-w-0 pl-4">
@@ -475,7 +494,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
             <div className="relative flex-shrink-0">
               <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary-400 to-accent-500 blur-xl opacity-50 scale-125" aria-hidden="true" />
               <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary-600/80 via-primary-700/80 to-indigo-800/80 rounded-2xl sm:rounded-3xl flex items-center justify-center backdrop-blur-sm ring-2 ring-white/25 shadow-2xl shadow-primary-900/60">
-                <span className="text-4xl sm:text-5xl" aria-hidden="true">{category.icon}</span>
+                <CategoryIcon category={category.slug} className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
               </div>
             </div>
 
@@ -509,6 +528,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                   </svg>
                   Data-backed · Free
                 </span>
+                <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/15 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white backdrop-blur-sm transition-all">
+                  <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+                    <span className="text-white font-bold leading-none text-[7px]">DR</span>
+                  </span>
+                  Curated by Daniel Rozin
+                </Link>
               </div>
             </div>
           </div>
@@ -517,7 +542,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         {/* Scroll indicator */}
         <div className="absolute bottom-[44px] left-0 right-0 flex justify-center pointer-events-none" aria-hidden="true">
           <div className="flex flex-col items-center gap-1 animate-bounce-gentle">
-            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
+            <span className="text-xs font-semibold text-white/40 uppercase tracking-widest">Scroll</span>
             <svg className="w-5 h-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
@@ -558,12 +583,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     className="group flex flex-col p-4 bg-gradient-to-br from-accent-50 to-white border border-accent-200 rounded-xl hover:border-accent-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 w-full"
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="flex -space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
+                        <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                           {(parts[0] || "A").charAt(0)}
                         </div>
-                        <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                        <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
                           {(parts[1] || "B").charAt(0)}
+                        </div>
+                        <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                          <span className="text-[6px] font-black text-white leading-none">VS</span>
                         </div>
                       </div>
                       <span className="font-semibold text-sm text-text group-hover:text-primary-700 transition-colors">
@@ -605,12 +633,15 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
                     <span className="absolute top-2 right-3 text-xs font-bold text-primary-400">
                       #{idx + 1}
                     </span>
-                    <div className="flex -space-x-2 mb-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                    <div className="relative flex-shrink-0 h-9 mb-2" style={{ width: "50px" }}>
+                      <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                         {(parts[0] || "A").charAt(0)}
                       </div>
-                      <div className="w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
                         {(parts[1] || "B").charAt(0)}
+                      </div>
+                      <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                        <span className="text-[6px] font-black text-white leading-none">VS</span>
                       </div>
                     </div>
                     <h3 className="text-sm font-semibold text-text group-hover:text-primary-700 transition-colors line-clamp-2">
@@ -707,6 +738,24 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           <div className="mt-16">
             <NewsletterSignup source={`category-${category.slug}`} />
           </div>
+        )}
+
+        {/* FAQ Section — renders FAQ HTML so FAQPage JSON-LD speakable selectors resolve,
+            satisfying Google FAQ rich-result eligibility and AEO answer extraction. */}
+        {page === 1 && categoryFaqs.length > 0 && (
+          <section className="mt-14" aria-labelledby="category-faq-heading" id="category-faq">
+            <h2 id="category-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+              Frequently Asked Questions: {category.name} Comparisons
+            </h2>
+            <dl className="space-y-5">
+              {categoryFaqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-border rounded-xl p-5" id={`q${i + 1}`}>
+                  <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+                  <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         )}
       </div>
     </>

@@ -20,7 +20,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
   ];
 
   return (
-    <section aria-labelledby="partner-reviews-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section id="partner-reviews" aria-labelledby="partner-reviews-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
           <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -56,7 +56,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             <div className="flex items-center gap-3 mb-3">
               <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-lg font-black shrink-0 ring-2 shadow-sm ${scoreColor}`}>
                 <span className="leading-none text-sm">{review.smartScore}</span>
-                <span className="text-[7px] font-semibold opacity-60 leading-none mt-0.5">/ 100</span>
+                <span className="text-xs font-semibold opacity-70 leading-none mt-0.5">/ 100</span>
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-semibold text-text truncate group-hover:text-primary-700 transition-colors">

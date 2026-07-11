@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   other: {
     "citation_title": PAGE_TITLE,
-    "citation_author": "A Versus B",
+    "citation_author": "Daniel Rozin",
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "citation_keywords": "LLM comparison, large language models, AI chatbots, ChatGPT vs Claude, GPT-4 benchmark 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
-    "DC.creator": "A Versus B",
+    "DC.creator": "Daniel Rozin",
     "DC.publisher": "A Versus B",
     "DC.language": "en",
     "DC.type": "Text",
@@ -104,7 +104,7 @@ const articleSchema = {
     sameAs: ["https://www.linkedin.com/in/daniel-rozin-56a066b0/"],
   },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-  reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+  reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
@@ -116,13 +116,14 @@ const articleSchema = {
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
   educationalLevel: "General",
-  teaches: "How to choose the best large language model for your use case",
+  teaches: teachesDefinedTerm("How to choose the best large language model for your use case", PAGE_URL),
   educationalUse: "comparison",
   alternativeHeadline: `Best Large Language Models in ${new Date().getFullYear()} — LLM Comparison Guide`,
   keywords: `LLM comparison, large language models, GPT-4o, Claude, Gemini, AI models ${new Date().getFullYear()}`,
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", ".faq-answer"] },
+  hasPart: { "@type": "FAQPage", "@id": `${PAGE_URL}#faq` },
   about: { "@type": "Thing", name: "Large language models", sameAs: "https://en.wikipedia.org/wiki/Large_language_model" },
   mentions: [
     { "@type": "SoftwareApplication", name: "GPT-4o", url: "https://openai.com" },
@@ -336,10 +337,42 @@ const LLMS: LLM[] = [
   },
 ];
 
+const LLM_FAQS = [
+  {
+    question: "What is the best large language model in 2026?",
+    answer:
+      "The best LLM depends on your use case. Claude claude-sonnet-5 and GPT-4.1 lead on instruction following, long-context coding, and complex reasoning. Gemini 2.5 Pro excels at multimodal tasks and document analysis. Llama 4 Scout and DeepSeek-V3 are the top open-weight alternatives for self-hosted deployments. This comparison table ranks each model by context window, input modality, and license type so you can match the right model to your workload.",
+  },
+  {
+    question: "What does context window mean for LLMs?",
+    answer:
+      "The context window is the maximum number of tokens (roughly 0.75 words each) an LLM can process in a single request — both the input prompt and the generated output combined. Models with larger context windows (200K–1M tokens) can process entire books, long codebases, or lengthy conversation histories without losing earlier context. GPT-4.1 and Gemini 2.5 Pro offer the largest publicly documented context windows in this comparison at 1M tokens.",
+  },
+  {
+    question: "What is the difference between proprietary and open-weight LLMs?",
+    answer:
+      "Proprietary LLMs (GPT-4o, Claude, Gemini) are accessible only via API or product interface; their weights are not publicly released. Open-weight LLMs (Llama 4, Mistral, DeepSeek, Falcon) publish model weights for download, allowing self-hosting, fine-tuning, and offline deployment. Open-weight models are preferred for privacy-sensitive workloads, cost-sensitive high-volume use, and research contexts requiring full reproducibility.",
+  },
+  {
+    question: "How are LLM benchmarks like MMLU and HumanEval used to compare models?",
+    answer:
+      "MMLU (Massive Multitask Language Understanding) measures knowledge breadth across 57 academic subjects — a proxy for general knowledge quality. HumanEval measures code generation accuracy on 164 Python programming problems. GPQA tests graduate-level science reasoning. These benchmarks allow apples-to-apples comparison across labs, but real-world performance often diverges from benchmark scores, so this table pairs them with modality, context, and license data for a fuller picture.",
+  },
+  {
+    question: "How often is this LLM comparison table updated?",
+    answer:
+      "We update this table when major model releases or significant specification changes occur — typically monthly during active periods in the AI landscape. The page header and JSON-LD dateModified field show the date of the most recent data revision. Each row links to the primary vendor documentation source so you can verify specifications independently.",
+  },
+];
+
+const llmFaqSchema = faqSchema(LLM_FAQS, `${PAGE_URL}#faq`, [
+  { "@type": "Thing", "@id": PAGE_URL, name: "Large Language Model Comparison 2026", url: PAGE_URL },
+]);
+
 export default function LLMComparisonsPage() {
   return (
     <>
-      <JsonLd data={[llmBreadcrumb, articleSchema, ...productSchemas]} />
+      <JsonLd data={[llmBreadcrumb, articleSchema, llmFaqSchema, ...productSchemas]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-violet-900 via-purple-900 to-indigo-900 text-white relative overflow-hidden">
@@ -502,6 +535,27 @@ export default function LLMComparisonsPage() {
         <Link href="/llm-comparisons/methodology" className="text-sm text-primary-600 hover:underline font-medium">
           Read the methodology <span aria-hidden="true">→</span>
         </Link>
+      </section>
+
+      {/* FAQ Section — renders FAQ HTML so FAQPage JSON-LD speakable selectors resolve.
+          Satisfies Google FAQ rich-result eligibility and AEO answer extraction. */}
+      <section aria-labelledby="llm-faq-heading" className="mb-12" id="llm-faq">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 id="llm-faq-heading" className="text-xl font-display font-bold text-text">Frequently Asked Questions: LLM Comparisons</h2>
+        </div>
+        <dl className="space-y-5">
+          {LLM_FAQS.map((faq, i) => (
+            <div key={i} className="bg-white border border-border rounded-xl p-5" id={`llm-q${i + 1}`}>
+              <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+              <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* Citations */}

@@ -31,7 +31,7 @@ export function VerdictShareStrip({
 
   return (
     <div className="mt-5 pt-4 border-t border-white/10">
-      <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2.5 text-center">
+      <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2.5 text-center">
         Share this verdict
       </p>
       <div className="flex items-center justify-center gap-2 flex-wrap">

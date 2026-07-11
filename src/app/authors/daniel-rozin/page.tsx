@@ -177,7 +177,7 @@ const profilePageSchema = {
   educationalLevel: "General",
   teaches: "Editorial methodology and expertise behind A Versus B comparison hub articles authored by Daniel Rozin",
   educationalUse: "biography",
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,

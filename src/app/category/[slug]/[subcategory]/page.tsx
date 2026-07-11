@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
-import { breadcrumbSchema } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -189,8 +190,11 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: subcatToday,
     lastReviewed: subcatToday,
-    reviewedBy: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+    reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: subcatToday,
     thumbnailUrl: subcatOgImage,
     image: {
@@ -214,7 +218,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     educationalLevel: "General",
-    teaches: `How to compare ${subcat.name.toLowerCase()} side by side`,
+    teaches: teachesDefinedTerm(`How to compare ${subcat.name.toLowerCase()} side by side`, subcatUrl),
     educationalUse: "comparison",
     locationCreated: { "@type": "Country", name: "United States" },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
@@ -234,7 +238,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       url: `${SITE_URL}/compare/${c.slug}`,
     })),
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro", ".faq-answer"] },
     mainEntity: {
       "@type": "ItemList",
       "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`,
@@ -261,7 +265,11 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       { "@type": "Thing", name: "Consumer Decision Research" },
     ],
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
-    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
+    // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage schema node.
+    hasPart: [
+      { "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` },
+      { "@type": "FAQPage", "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl },
+    ],
   };
   // Dataset node — parity with parent category pages (HB347).
   // Google Dataset Search and AI research tools index Dataset nodes separately from
@@ -302,7 +310,21 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       target: { "@type": "EntryPoint", urlTemplate: subcatUrl },
     },
   };
-  const schemaData = [breadcrumbs, collectionSchema, subcatDatasetObj];
+  const subcatFaqs = getSubcategoryFaqs(slug, subcategory);
+  const subcatFaqSchema = subcatFaqs.length > 0
+    ? faqSchema(
+        subcatFaqs,
+        `${subcatUrl}#faq`,
+        [{ "@type": "Thing", "@id": subcatUrl, name: `${subcat.name} Comparisons`, url: subcatUrl }],
+        "2024-01-01",
+      )
+    : null;
+  const schemaData = [
+    breadcrumbs,
+    collectionSchema,
+    subcatDatasetObj,
+    ...(subcatFaqSchema ? [subcatFaqSchema] : []),
+  ];
 
   const basePath = `/category/${slug}/${subcategory}`;
   // schemaData is now used below
@@ -417,12 +439,15 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
                     className="flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
                   >
                     <div className="flex items-center gap-4 mb-3">
-                      <div className="flex -space-x-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                      <div className="relative flex-shrink-0 h-11" style={{ width: "58px" }}>
+                        <div className="absolute left-0 top-0 w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
                           {(parts[0] || "A").charAt(0)}
                         </div>
-                        <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                        <div className="absolute left-5 top-0 w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
                           {(parts[1] || "B").charAt(0)}
+                        </div>
+                        <div className="absolute -bottom-0.5 left-[17px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                          <span className="text-[6px] font-black text-white leading-none">VS</span>
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
@@ -495,6 +520,24 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           <div className="mt-16">
             <NewsletterSignup source={`subcategory-${slug}-${subcategory}`} />
           </div>
+        )}
+
+        {/* FAQ Section — renders FAQ HTML so FAQPage JSON-LD speakable selectors resolve.
+            Satisfies Google FAQ rich-result eligibility and AEO answer extraction. */}
+        {page === 1 && subcatFaqs.length > 0 && (
+          <section className="mt-14" aria-labelledby="subcategory-faq-heading" id="subcategory-faq">
+            <h2 id="subcategory-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+              Frequently Asked Questions: {subcat.name} Comparisons
+            </h2>
+            <dl className="space-y-5">
+              {subcatFaqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-border rounded-xl p-5" id={`subcat-q${i + 1}`}>
+                  <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+                  <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         )}
       </div>
     </>

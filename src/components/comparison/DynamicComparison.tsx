@@ -319,7 +319,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
       )}
 
       {comparison.attributes.length > 0 && (
-        <div id="comparison-table" className="scroll-mt-20">
+        <div id="comparison-table" className="scroll-mt-28">
           <ComparisonTable
             attributes={comparison.attributes}
             entityA={comparison.entities[0]}

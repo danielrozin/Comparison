@@ -107,7 +107,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     other: {
       "citation_title": title,
-      "citation_author": "A Versus B",
+      "citation_author": "Daniel Rozin",
       "citation_journal_title": "A Versus B",
       "citation_language": "en",
       "citation_abstract": description,
@@ -116,7 +116,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       "citation_online_date": "2024-01-01",
       "DC.title": title,
       "DC.description": description,
-      "DC.creator": "A Versus B",
+      "DC.creator": "Daniel Rozin",
       "DC.publisher": "A Versus B",
       "DC.language": "en",
       "DC.subject": `${name} Comparisons, ${name} vs Alternatives`,
@@ -234,7 +234,7 @@ export default async function EntityPage({ params }: PageProps) {
       ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["#entity-intro", "#entity-about"],
+        cssSelector: ["#entity-intro", "#entity-about", ".faq-answer"],
       },
     },
   ];
@@ -491,7 +491,7 @@ export default async function EntityPage({ params }: PageProps) {
                         </svg>
                       </summary>
                       <div className="px-5 pb-4">
-                        <p className="text-sm text-text-secondary leading-relaxed">{faq.answer}</p>
+                        <p className="text-sm text-text-secondary leading-relaxed faq-answer">{faq.answer}</p>
                       </div>
                     </details>
                   ))}
@@ -579,12 +579,15 @@ export default async function EntityPage({ params }: PageProps) {
                   href={`/compare/${comp.slug}`}
                   className="flex items-center gap-4 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
                 >
-                  <div className="flex -space-x-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                  <div className="relative flex-shrink-0 h-11" style={{ width: "58px" }}>
+                    <div className="absolute left-0 top-0 w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
                       {(parts[0] || "A").charAt(0)}
                     </div>
-                    <div className="w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
+                    <div className="absolute left-5 top-0 w-10 h-10 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-0">
                       {(parts[1] || "B").charAt(0)}
+                    </div>
+                    <div className="absolute -bottom-0.5 left-[17px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
+                      <span className="text-[6px] font-black text-white leading-none">VS</span>
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">

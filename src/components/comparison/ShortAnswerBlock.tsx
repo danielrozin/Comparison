@@ -28,7 +28,7 @@ export function ShortAnswerBlock({
   // per URL, and a near-duplicate single-Q schema can dilute the indexed one. (DAN-410)
   return (
     <>
-      <section id="short-answer" aria-labelledby="short-answer-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+      <section id="short-answer" aria-labelledby="short-answer-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2 scroll-mt-28">
         <div className="relative max-w-3xl mx-auto overflow-hidden">
           {/* Gradient border via wrapper */}
           <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-amber-300 to-orange-400 rounded-2xl" />
@@ -50,7 +50,7 @@ export function ShortAnswerBlock({
                   <h2 id="short-answer-heading" className="text-xs font-bold text-amber-700 uppercase tracking-widest">
                     Quick Answer
                   </h2>
-                  <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
                     <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
                     AI Summary
                   </span>
@@ -58,6 +58,15 @@ export function ShortAnswerBlock({
                 <p className="text-amber-900 leading-relaxed text-sm sm:text-base font-medium">
                   {text}
                 </p>
+                <a
+                  href="#verdict"
+                  className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-amber-700 hover:text-amber-800 underline underline-offset-2 decoration-amber-400/50 hover:decoration-amber-600 transition-colors group"
+                >
+                  Read full verdict
+                  <svg className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>

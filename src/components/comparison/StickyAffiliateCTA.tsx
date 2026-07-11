@@ -129,7 +129,7 @@ export function StickyAffiliateCTA({
         className={`${
           placementVariant === "inline-verdict"
             ? `relative ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300`
-            : `fixed bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
+            : `fixed bottom-14 md:bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
         }`}
         style={placementVariant !== "inline-verdict" ? { paddingBottom: "env(safe-area-inset-bottom, 0px)" } : undefined}
       >
@@ -152,7 +152,7 @@ export function StickyAffiliateCTA({
                         : "bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700"
                   }`}
                 >
-                  <span className="text-[10px] font-medium text-white/70 truncate max-w-full leading-none">
+                  <span className="text-xs font-medium text-white/70 truncate max-w-full leading-none">
                     {entityA.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">
@@ -164,7 +164,7 @@ export function StickyAffiliateCTA({
               {linkA && linkB && (
                 <div className="flex-shrink-0 flex flex-col items-center gap-0.5" aria-hidden="true">
                   <div className="w-px h-4 bg-border" />
-                  <span className="text-[9px] font-bold text-text-secondary uppercase tracking-wider">vs</span>
+                  <span className="text-xs font-bold text-text-secondary uppercase tracking-wider">vs</span>
                   <div className="w-px h-4 bg-border" />
                 </div>
               )}
@@ -184,7 +184,7 @@ export function StickyAffiliateCTA({
                         : "bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700"
                   }`}
                 >
-                  <span className="text-[10px] font-medium text-white/70 truncate max-w-full leading-none">
+                  <span className="text-xs font-medium text-white/70 truncate max-w-full leading-none">
                     {entityB.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">

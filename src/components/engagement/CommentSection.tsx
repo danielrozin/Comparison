@@ -199,7 +199,7 @@ export function CommentSection({
               )}
             </div>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-[11px] text-text-secondary/50 leading-tight">Be respectful · No spam</p>
+              <p className="text-xs text-text-secondary/50 leading-tight">Be respectful · No spam</p>
               <button
                 type="submit"
                 disabled={isSubmitting}
@@ -255,7 +255,7 @@ export function CommentSection({
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-sm font-semibold text-text truncate">{comment.name}</span>
-                    <time dateTime={new Date(comment.timestamp).toISOString()} className="text-[11px] text-text-secondary/60 flex-shrink-0">
+                    <time dateTime={new Date(comment.timestamp).toISOString()} className="text-xs text-text-secondary/60 flex-shrink-0">
                       {new Date(comment.timestamp).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -266,7 +266,7 @@ export function CommentSection({
                   <button
                     type="button"
                     onClick={() => likeComment(comment.id)}
-                    className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold text-text-secondary hover:text-primary-600 bg-surface-alt hover:bg-primary-50 border border-transparent hover:border-primary-200 rounded-full px-2 py-0.5 transition-all duration-150 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-text-secondary hover:text-primary-600 bg-surface-alt hover:bg-primary-50 border border-transparent hover:border-primary-200 rounded-full px-2 py-0.5 transition-all duration-150 opacity-0 group-hover:opacity-100 focus:opacity-100"
                     aria-label="Like this comment"
                   >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">

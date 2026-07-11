@@ -334,7 +334,7 @@ export function InterceptSurvey({
                     </button>
                   ))}
                 </div>
-                <div className="flex justify-between text-[11px] text-text-secondary mt-1.5 px-0.5">
+                <div className="flex justify-between text-xs text-text-secondary mt-1.5 px-0.5">
                   <span>Not helpful</span>
                   <span>Very helpful</span>
                 </div>
