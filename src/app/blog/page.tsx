@@ -548,8 +548,19 @@ export default async function BlogPage({
 
                     {/* Footer */}
                     <div className="flex items-center justify-between text-xs text-text-secondary pt-3 border-t border-border">
-                      <time dateTime={article.publishedAt ? new Date(article.publishedAt).toISOString() : undefined}>{formatDate(article.publishedAt)}</time>
-                      <span className="text-primary-600 font-medium group-hover:underline">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm" aria-hidden="true">
+                          <span className="text-white font-bold leading-none" style={{ fontSize: "8px" }}>DR</span>
+                        </div>
+                        <span className="truncate">Daniel Rozin</span>
+                        {article.publishedAt && (
+                          <>
+                            <span aria-hidden="true" className="flex-shrink-0">·</span>
+                            <time dateTime={new Date(article.publishedAt).toISOString()} className="flex-shrink-0">{formatDate(article.publishedAt)}</time>
+                          </>
+                        )}
+                      </div>
+                      <span className="text-primary-600 font-medium group-hover:underline flex-shrink-0 ml-2">
                         Read more <span aria-hidden="true">&rarr;</span>
                       </span>
                     </div>
