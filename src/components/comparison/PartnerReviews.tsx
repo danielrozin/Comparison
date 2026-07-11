@@ -1,3 +1,5 @@
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
+
 interface PartnerReview {
   productName: string;
   url: string;
@@ -44,6 +46,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             : "bg-rose-50 text-rose-700 ring-rose-200";
           return (
           <li key={review.url} className="flex">
+          <ScrollReveal delay={idx * 80} className="w-full flex">
           <a
             href={review.url}
             target="_blank"
@@ -76,6 +79,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
               </span>
             </div>
           </a>
+          </ScrollReveal>
           </li>
         );
         })}

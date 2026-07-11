@@ -38,7 +38,9 @@ export function SearchOverlay() {
   const [activeIdx, setActiveIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxRef = useRef<HTMLUListElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const priorFocusRef = useRef<HTMLElement | null>(null);
   const router = useRouter();
 
   const close = useCallback(() => {
@@ -74,15 +76,41 @@ export function SearchOverlay() {
     };
   }, []);
 
-  // Focus input when overlay opens
+  // Focus input when overlay opens; restore focus when it closes
   useEffect(() => {
     if (open) {
+      priorFocusRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
       setTimeout(() => inputRef.current?.focus(), 60);
     } else {
       document.body.style.overflow = "";
+      priorFocusRef.current?.focus();
+      priorFocusRef.current = null;
     }
     return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  // Focus trap: keep Tab / Shift+Tab within the dialog panel
+  useEffect(() => {
+    if (!open) return;
+    function onTab(e: KeyboardEvent) {
+      if (e.key !== "Tab" || !panelRef.current) return;
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => !el.closest('[aria-hidden="true"]'));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    document.addEventListener("keydown", onTab);
+    return () => document.removeEventListener("keydown", onTab);
   }, [open]);
 
   // Fetch popular on mount
@@ -167,7 +195,7 @@ export function SearchOverlay() {
       />
 
       {/* Panel */}
-      <div className="relative w-full max-w-2xl">
+      <div ref={panelRef} className="relative w-full max-w-2xl">
         {/* Search form */}
         <form
           onSubmit={handleSubmit}

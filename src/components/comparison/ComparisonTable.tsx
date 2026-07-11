@@ -583,7 +583,7 @@ function RedesignedTable({
           </div>
           <h2 id="full-comparison-heading" className="text-2xl font-display font-bold text-text">Full Comparison</h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div role="toolbar" aria-label="Table controls" className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setWinnersOnly((v) => !v)}
@@ -613,6 +613,7 @@ function RedesignedTable({
           <button
             type="button"
             onClick={() => downloadCSV(attributes, entityA.name, entityB.name)}
+            aria-label={`Download ${entityA.name} vs ${entityB.name} comparison as CSV`}
             title="Download comparison as CSV"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text transition-all bg-surface-alt hover:bg-border border border-transparent px-3 py-1.5 rounded-lg"
           >
@@ -622,6 +623,15 @@ function RedesignedTable({
             CSV
           </button>
         </div>
+      </div>
+
+      {/* Screen-reader live region announces filter result counts */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {filterNormalized
+          ? visibleCategories.length === 0
+            ? `No attributes match "${filterQuery}"`
+            : `${visibleCategories.reduce((n, [, attrs]) => n + attrs.length, 0)} attribute${visibleCategories.reduce((n, [, attrs]) => n + attrs.length, 0) === 1 ? "" : "s"} match "${filterQuery}"`
+          : ""}
       </div>
 
       {/* Live attribute filter — only shown when table has enough rows to warrant it */}

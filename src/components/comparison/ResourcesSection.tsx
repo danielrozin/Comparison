@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ComparisonResource, AffiliateLink } from "@/types";
 import { WhereToBuySection, AffiliateDisclosure } from "./AffiliateButton";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const ICON_MAP = {
   wikipedia: (
@@ -40,6 +41,7 @@ export function ResourcesSection({
   const videos = resources.filter((r) => r.type === "video");
 
   return (
+    <ScrollReveal>
     <section aria-labelledby="resources-heading" className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
       <div className="h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
       <div className="px-6 py-5 border-b border-border bg-gradient-to-r from-blue-50/70 to-indigo-50/70">
@@ -216,5 +218,6 @@ export function ResourcesSection({
         )}
       </div>
     </section>
+    </ScrollReveal>
   );
 }
