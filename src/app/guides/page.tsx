@@ -52,6 +52,59 @@ export default function GuidesIndexPage() {
     { name: "Guides", url: `${SITE_URL}/guides` },
   ]);
 
+  const guidesUrl = `${SITE_URL}/guides`;
+  const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Topic Guides")}&type=guides`;
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${guidesUrl}#faqpage`,
+    name: "Topic Guides — FAQ",
+    url: guidesUrl,
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What are the A Versus B topic guides?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A Versus B topic guides are structured decision hubs that organize our in-depth comparisons and articles by subject area — personal finance, cooking, travel, technology, and more. Each guide walks you through the key decisions in a topic from start to finish.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How do the guides help me make better decisions?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Each guide groups related comparisons and explainer articles by decision stage. Instead of searching one-by-one, you can follow a structured path — understand your options, compare the top alternatives, and read a data-driven verdict — all within a single topic hub.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Are the guides free to use?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. All guides, comparisons, and articles on A Versus B are free to read. No account or subscription is required.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How often are the guides updated?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Guides are reviewed and updated regularly — at minimum annually, and more frequently when a category sees significant market changes. Each guide page shows a last-reviewed date so you know how current the information is.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Can I suggest a new guide topic?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Use the search bar on the homepage to look up any comparison. If we don't have it yet, you can submit a suggestion and we'll prioritize based on demand.",
+        },
+      },
+    ],
+  };
+
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -77,11 +130,30 @@ export default function GuidesIndexPage() {
         url: `${SITE_URL}/guides/${g.slug}`,
       })),
     },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", "h2", ".faq-answer"],
+    },
+    thumbnailUrl: ogImage,
+    image: {
+      "@type": "ImageObject",
+      url: ogImage,
+      contentUrl: ogImage,
+      width: 1200,
+      height: 630,
+      caption: "A Versus B Topic Guides — structured decision hubs",
+    },
+    inLanguage: "en-US",
+    genre: "Topic Guide Index",
+    contentReferenceTime: today,
+    hasPart: [
+      { "@type": "FAQPage", "@id": `${guidesUrl}#faqpage`, name: "Topic Guides — FAQ" },
+    ],
   };
 
   return (
     <>
-      {[breadcrumbs, collectionSchema].map((schema, i) => (
+      {[breadcrumbs, collectionSchema, faqSchema].map((schema, i) => (
         <script
           key={i}
           type="application/ld+json"
@@ -218,6 +290,19 @@ export default function GuidesIndexPage() {
             );
           })}
         </ul>
+
+        {/* FAQ section — AEO / FAQPage structured answer blocks */}
+        <section aria-labelledby="guides-faq-heading" className="mt-12 border-t border-border pt-10">
+          <h2 id="guides-faq-heading" className="text-2xl font-display font-bold text-text mb-6">Frequently Asked Questions</h2>
+          <dl className="space-y-6">
+            {faqSchema.mainEntity.map((item, idx) => (
+              <div key={idx} className="bg-surface-alt rounded-xl p-5 border border-border">
+                <dt className="font-semibold text-text mb-2">{item.name}</dt>
+                <dd className="faq-answer text-sm text-text-secondary leading-relaxed">{item.acceptedAnswer.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         <div className="mt-12">
           <NewsletterSignup source="guides-index" />

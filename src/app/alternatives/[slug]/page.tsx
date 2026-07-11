@@ -185,7 +185,7 @@ export default async function AlternativesPage({ params }: PageProps) {
     mainEntityOfPage: { "@type": "WebPage", "@id": altPageUrl },
     speakable: {
       "@type": "SpeakableSpecification",
-      cssSelector: ["h1", "h2", "#alternatives-intro"],
+      cssSelector: ["h1", "h2", "#alternatives-intro", ".faq-answer"],
     },
     alternativeHeadline: `Best ${name} Alternatives in ${new Date().getFullYear()}`,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -323,6 +323,24 @@ export default async function AlternativesPage({ params }: PageProps) {
                 acceptedAnswer: {
                   "@type": "Answer",
                   text: `Pricing varies by product. See the individual comparison pages for ${name} vs each alternative for the most up-to-date pricing details.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `How do I choose between ${name} and its competitors?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Start by identifying the attributes most important to you — pricing, features, integrations, or performance. A Versus B compares ${name} against each competitor across these dimensions and provides a data-driven verdict to help you decide quickly.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `Which ${name} alternative is the most popular?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: alternatives.length > 0
+                    ? `Based on search volume and user engagement on A Versus B, ${alternatives[0].name} is the most-compared alternative to ${name}. See the full side-by-side comparison above.`
+                    : `Explore the comparison pages above to see which alternatives draw the most attention from users evaluating ${name}.`,
                 },
               },
             ],
@@ -475,6 +493,47 @@ export default async function AlternativesPage({ params }: PageProps) {
           </div>
         </div>
       )}
+
+      {/* FAQ section — AEO / FAQPage structured answer blocks */}
+      <section aria-labelledby="alternatives-faq-heading" className="mt-12 border-t border-border pt-10">
+        <h2 id="alternatives-faq-heading" className="text-2xl font-display font-bold text-text mb-6">Frequently Asked Questions</h2>
+        <dl className="space-y-5">
+          <div className="bg-surface-alt rounded-xl p-5 border border-border">
+            <dt className="font-semibold text-text mb-2">What are the best alternatives to {name}?</dt>
+            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
+              {alternatives.length > 0
+                ? `The top alternatives to ${name} include ${alternatives.slice(0, 5).map((a) => a.name).join(", ")}. Each has a full side-by-side comparison with specs, pros & cons, and a verdict on A Versus B.`
+                : `A Versus B compares ${name} against its top competitors. Browse the comparisons above to find the best option for your needs.`}
+            </dd>
+          </div>
+          <div className="bg-surface-alt rounded-xl p-5 border border-border">
+            <dt className="font-semibold text-text mb-2">How is {name} different from its competitors?</dt>
+            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
+              A Versus B compares {name} against each competitor across key attributes — features, pricing, performance, and user ratings. Click any comparison above to see a full data-driven verdict.
+            </dd>
+          </div>
+          <div className="bg-surface-alt rounded-xl p-5 border border-border">
+            <dt className="font-semibold text-text mb-2">Is {name} free to use?</dt>
+            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
+              Pricing varies by product. See the individual comparison pages for {name} vs each alternative for the most up-to-date pricing details.
+            </dd>
+          </div>
+          <div className="bg-surface-alt rounded-xl p-5 border border-border">
+            <dt className="font-semibold text-text mb-2">How do I choose between {name} and its competitors?</dt>
+            <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
+              Start by identifying the attributes most important to you — pricing, features, integrations, or performance. A Versus B compares {name} against each competitor across these dimensions and provides a data-driven verdict to help you decide quickly.
+            </dd>
+          </div>
+          {alternatives.length > 0 && (
+            <div className="bg-surface-alt rounded-xl p-5 border border-border">
+              <dt className="font-semibold text-text mb-2">Which {name} alternative is the most popular?</dt>
+              <dd className="faq-answer text-sm text-text-secondary leading-relaxed">
+                Based on search volume and user engagement on A Versus B, {alternatives[0].name} is the most-compared alternative to {name}. See the full side-by-side comparison above.
+              </dd>
+            </div>
+          )}
+        </dl>
+      </section>
 
       {/* Newsletter Signup */}
       <div className="mt-12">
