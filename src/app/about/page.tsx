@@ -594,11 +594,11 @@ export default function AboutPage() {
             },
             {
               q: "Can I request a comparison that doesn't exist yet?",
-              a: <span>Yes — visit our <Link href="/requests" className="text-primary-600 hover:underline font-medium">Comparison Requests page</Link>, suggest any pairing you'd like to see, and upvote existing requests. Top-voted comparisons are built first.</span>,
+              a: <span>Yes — visit our <Link href="/requests" className="text-primary-600 hover:underline font-medium">Comparison Requests page</Link>, suggest any pairing you would like to see, and upvote existing requests. Top-voted comparisons are built first.</span>,
             },
             {
               q: "Does A Versus B accept paid placements or sponsored comparisons?",
-              a: <span>No. We don&apos;t accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.</span>,
+              a: <span>No. We do not accept payment to influence verdicts or rankings. All verdicts are produced by our AI and editorial process without commercial interference.</span>,
             },
             {
               q: "How often is comparison data updated?",
