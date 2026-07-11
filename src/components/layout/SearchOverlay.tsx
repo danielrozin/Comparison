@@ -219,7 +219,13 @@ export function SearchOverlay() {
           <input
             ref={inputRef}
             type="text"
+            role="combobox"
             aria-label="Search comparisons"
+            aria-haspopup="listbox"
+            aria-expanded={items.length > 0}
+            aria-controls="search-listbox"
+            aria-autocomplete="list"
+            aria-activedescendant={activeIdx >= 0 ? `search-option-${activeIdx}` : undefined}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -270,7 +276,7 @@ export function SearchOverlay() {
               </kbd>
             </div>
 
-            <ul ref={listboxRef} role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
+            <ul ref={listboxRef} id="search-listbox" role="listbox" aria-label="Search suggestions" className="max-h-72 overflow-y-auto">
               {items.map((item, idx) => {
                 const parts = item.title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
                 const isActive = idx === activeIdx;
@@ -286,7 +292,7 @@ export function SearchOverlay() {
                 };
                 const catStyle = catColors[catKey] || "bg-surface-alt text-text-secondary border-border";
                 return (
-                  <li key={item.slug} role="option" aria-selected={isActive}>
+                  <li key={item.slug} id={`search-option-${idx}`} role="option" aria-selected={isActive}>
                     <Link
                       href={`/compare/${item.slug}`}
                       onClick={close}

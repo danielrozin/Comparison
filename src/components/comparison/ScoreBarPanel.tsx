@@ -16,6 +16,10 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAnimated(true);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
