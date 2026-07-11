@@ -61,7 +61,7 @@ export function RelatedComparisons({
         </div>
       </div>
 
-      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-none mb-6">
+      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none mb-6">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -71,7 +71,7 @@ export function RelatedComparisons({
             : null;
 
           return (
-            <li key={comp.slug} className="flex">
+            <li key={comp.slug} className="flex flex-shrink-0 snap-start w-[220px] sm:w-auto sm:flex-shrink">
             <Link
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
