@@ -74,7 +74,7 @@ export function InternalLinks({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
         {/* Entity links */}
         {entities.length > 0 && (
-          <div className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+          <div style={{ animationDelay: "0ms" }} className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden motion-safe:animate-fade-in">
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-accent-500 opacity-100" />
             <CardHeader
               title="Explore Entities"
@@ -117,7 +117,7 @@ export function InternalLinks({
         )}
 
         {/* Category links */}
-        <div className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+        <div style={{ animationDelay: "40ms" }} className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden motion-safe:animate-fade-in">
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-100" />
           <CardHeader
             title={currentCategory ? `More ${currentCategory.name}` : "Browse Categories"}
@@ -161,7 +161,7 @@ export function InternalLinks({
         </div>
 
         {/* People also compare */}
-        <div className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+        <div style={{ animationDelay: "80ms" }} className="group relative bg-white border border-border rounded-2xl p-4 sm:p-5 hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden motion-safe:animate-fade-in">
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent-500 to-pink-500 opacity-100" />
           <CardHeader
             title="People Also Compare"
