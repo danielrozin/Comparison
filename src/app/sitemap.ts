@@ -52,7 +52,8 @@ export default async function sitemap({
     // All lastmod values use real content timestamps or stable hand-authored dates.
     // Using `new Date()` (build-time "now") causes every redeploy to signal false
     // freshness, burning Googlebot crawl budget on unchanged pages.
-    const LEGAL_DATE = "2025-01-15";
+    // HB384-385: FAQPage schema added to all 5 legal pages — bump lastmod to signal freshness
+    const LEGAL_DATE = "2026-07-11";
     // HB371: blog interactionStatistic (ReadAction viewCount) + llms.txt refresh (2026-07-10)
     const ABOUT_DATE = "2026-07-10";
     const STUDIES_DATE = "2026-07-10";

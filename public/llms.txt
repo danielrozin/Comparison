@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 10, 2026 (HB373)*
+*Last updated: July 11, 2026 (HB385)*
 
 ## What We Do
 
@@ -227,6 +227,17 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB371: Blog `Article.interactionStatistic` (ReadAction / viewCount) — blog article JSON-LD now emits a machine-readable `InteractionCounter` with real view counts from the DB; AI crawlers and Google Dataset Search can score citation confidence by reader engagement volume; `llms.txt` freshness updated to 2026-07-10
 - HB372: `educationalLevel`/`teaches` added to audience pages (partnerships, who-is-this-for, developers, about, contact, privacy, disclaimer) + 21 new AI crawler user agents in robots.ts (TogetherAI, FireworksAI, OpenRouter, Anyscale, Replicate, Groq, Cerebras, SambaNova, LMSYS, EleutherAI, MosaicML, Nomic, W&B, LangChain, LlamaIndex, AutoGPT, AgentGPT, OpenAI-Operator, Poe, CharacterAI, CohereForAI)
 - HB373: `teaches` upgraded from plain string to typed `DefinedTerm` node (via `teachesDefinedTerm()`) on 6 high-traffic page types: category, subcategory, hub, alternatives, best-of, and trending — creates `teaches→DefinedTermSet` graph edge enabling AI KGs to traverse learning outcomes across documents; `llms.txt` freshness updated to 2026-07-10
+- HB374: typed `DefinedTerm` teaches node sweep — homepage, /blog, /studies, /llm-comparisons, /reviews — all high-traffic listing pages now emit `teaches→DefinedTermSet` graph edges
+- HB375: FAQPage schema + HTML FAQ sections added to all 17 category pages (`/category/[slug]`) — structured Q&A for AI crawlers on every top-level category
+- HB376: FAQPage schema + HTML FAQ sections added to all 56 subcategory pages (`/subcategory/[slug]`) — 56 new structured Q&A surfaces; `hasPart: FAQPage` on CollectionPage schemas
+- HB377: entity pages (`/entity/[slug]`) FAQ section `.faq-answer` CSS class added for speakable targeting; LLM comparisons listing page (`/llm-comparisons`) gains FAQPage schema + HTML FAQ section
+- HB378: FAQPage schema + HTML FAQ sections on `/studies` (Research Hub) and `/reviews` index — CollectionPage `hasPart: FAQPage` + `speakable` targeting `.faq-answer`
+- HB379: FAQPage schema + HTML FAQ section on `/blog` index (CollectionPage) — 4 Q&As on what's on the blog, topic coverage, article freshness, and RSS/JSON Feed access
+- HB380: FAQPage AEO schema + HTML FAQ sections for `/guides/[slug]` (HowTo guide pages) and `/alternatives/[slug]` (CollectionPage alternatives listing pages)
+- HB382: FAQPage schema + HTML FAQ section for `/search` results page — 4 Q&As on search scope, typo tolerance, filter usage, and API access
+- HB383: FAQPage schema + `speakable` targeting `.faq-answer` added to `/tools/[slug]` calculator pages; `/authors/daniel-rozin` gets `author` PersonSchema enrichment with `knowsAbout`, `sameAs`, `publishedWork`
+- HB384: FAQPage schema added to all 3 core legal pages (disclaimer, privacy, terms) — `hasPart→FAQPage` WebPage edge + standalone FAQPage JSON-LD with 4 Q&As each; all AI crawlers can resolve policy answers without scraping prose
+- HB385: FAQPage schema added to cookie-policy and acceptable-use pages — completes 100% FAQPage coverage across all 5 legal/policy pages; cookie-policy gets 4 Q&As on cookie types, third-party sharing, opt-out, and storage duration; acceptable-use gets 4 Q&As on republishing, commercial use, violations, and bot access; `llms.txt` freshness updated to 2026-07-11
 
 ## Categories & Scale
 
