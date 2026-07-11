@@ -128,6 +128,16 @@ function hubSchemas(hub: (typeof HUB_CONFIG)[string], spokes: ComparisonPageData
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+    // subjectOf — declares this hub as a sub-dataset of the site's DataCatalog.
+    // AI knowledge graph crawlers (ChatGPT, Perplexity, Gemini) follow subjectOf edges
+    // to traverse entity → hub → DataCatalog, strengthening topical authority signals
+    // for "[category] comparison" queries without requiring separate page visits.
+    subjectOf: {
+      "@type": "DataCatalog",
+      "@id": `${SITE_URL}/#datacatalog`,
+      name: `${SITE_NAME} Comparison Database`,
+      url: SITE_URL,
+    },
     potentialAction: [
       { "@type": "ReadAction", target: hubUrl },
       {
