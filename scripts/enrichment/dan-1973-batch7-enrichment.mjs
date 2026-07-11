@@ -22,13 +22,8 @@
 
 import { PrismaClient } from '/Users/danielrozin/Comparison/node_modules/@prisma/client/index.js'
 
-// Read from env — never hardcode DB credentials in tracked files (tripped the
-// Secret Scan CI check). The previously-committed Neon credential is exposed in
-// git history and must be rotated separately.
-const DATABASE_URL = process.env.DATABASE_URL
-
 const prisma = new PrismaClient({
-  datasources: { db: { url: DATABASE_URL } }
+  datasources: { db: { url: process.env.DATABASE_URL } }
 })
 
 const ENRICHED_CONTENT = {
