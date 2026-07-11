@@ -3189,6 +3189,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-10T08:35:31.396Z"
+    },
+    {
+      "slug": "peloton-vs-nordictrack",
+      "title": "Peloton vs Nordictrack",
+      "entityA": "Peloton",
+      "entityB": "Nordictrack",
+      "category": "General",
+      "videoFile": "Peloton vs Nordictrack.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Peloton vs Nordictrack — Full Comparison 2026",
+      "youtubeDescription": "NordicTrack offers better value with lower costs, more features, and automatic adjustments. Peloton provides premium studio experience but requires expensive subscription.\n\n#peloton #nordictrack #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-11T07:16:42.061Z"
+    },
+    {
+      "slug": "uk-vs-usa",
+      "title": "Uk vs Usa",
+      "entityA": "Uk",
+      "entityB": "Usa",
+      "category": "Countries",
+      "videoFile": "Uk vs Usa.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uk vs Usa — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Uk vs Usa.\n\n#uk #usa #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-11T07:20:39.857Z"
+    },
+    {
+      "slug": "coca-cola-vs-pepsi",
+      "title": "Coca Cola vs Pepsi",
+      "entityA": "Coca Cola",
+      "entityB": "Pepsi",
+      "category": "General",
+      "videoFile": "Coca Cola vs Pepsi.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Coca Cola vs Pepsi — Full Comparison 2026",
+      "youtubeDescription": "Compare Coca-Cola (46% market share) vs Pepsi (29%). Caffeine, sugar, brand value, and which cola wins head-to-head.\n\n#cocacola #pepsi #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-11T07:24:35.633Z"
     }
   ]
 }
