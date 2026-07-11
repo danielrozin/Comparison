@@ -22,7 +22,10 @@
 
 import { PrismaClient } from '/Users/danielrozin/Comparison/node_modules/@prisma/client/index.js'
 
-const DATABASE_URL = 'postgresql://neondb_owner:npg_AgABP2Q9Ccun1eLPoZ1Z@ep-bold-voice-amm7gy6j-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+// Read from env — never hardcode DB credentials in tracked files (tripped the
+// Secret Scan CI check). The previously-committed Neon credential is exposed in
+// git history and must be rotated separately.
+const DATABASE_URL = process.env.DATABASE_URL
 
 const prisma = new PrismaClient({
   datasources: { db: { url: DATABASE_URL } }
