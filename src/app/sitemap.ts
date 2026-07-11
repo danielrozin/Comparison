@@ -3,6 +3,7 @@ import { CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { getReviewCategories, getReviewedEntities } from "@/lib/services/review-service";
 import { HUB_CONFIG } from "@/lib/data/hubs";
+import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
@@ -161,6 +162,21 @@ export default async function sitemap({
       priority: 0.85,
     }));
 
+    const guidePages: MetadataRoute.Sitemap = [
+      {
+        url: `${SITE_URL}/guides`,
+        lastModified: "2026-07-11",
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      },
+      ...Object.keys(GUIDE_CONFIG).map((slug) => ({
+        url: `${SITE_URL}/guides/${slug}`,
+        lastModified: "2026-07-11",
+        changeFrequency: "weekly" as const,
+        priority: 0.88,
+      })),
+    ];
+
     const staticBestSlugs = new Set(Object.keys(BEST_CONFIG));
     const bestPages: MetadataRoute.Sitemap = Object.keys(BEST_CONFIG).map((slug) => ({
       url: `${SITE_URL}/best/${slug}`,
@@ -191,7 +207,7 @@ export default async function sitemap({
       // DB unavailable — static pages already included
     }
 
-    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...bestPages];
+    return [...staticPages, ...categoryPages, ...subcategoryPages, ...hubPages, ...guidePages, ...bestPages];
   }
 
   // ── Sitemap 1: Comparison pages ──
