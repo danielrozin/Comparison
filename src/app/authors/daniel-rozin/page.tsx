@@ -338,8 +338,8 @@ export default function DanielRozinPage() {
         </p>
         <p className="text-text-secondary leading-relaxed">
           For corrections or source disputes, contact:{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">
-            contact@aversusb.net
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">
+            daniarozin@gmail.com
           </a>
         </p>
       </section>

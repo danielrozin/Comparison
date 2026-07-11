@@ -289,7 +289,7 @@ export default function LLMMethodologyPage() {
         </div>
         <p className="text-text-secondary leading-relaxed">
           Corrections with a primary source may be submitted to{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>.
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">daniarozin@gmail.com</a>.
           We aim to respond within 48 hours and publish corrections with a visible correction notice
           and updated <code className="text-sm bg-surface-alt px-1 rounded">dateModified</code> timestamp.
         </p>
