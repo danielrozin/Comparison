@@ -154,7 +154,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
     copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     acquireLicensePage: `${SITE_URL}/terms`,
     audience: { "@type": "Audience", audienceType: "Consumers, Researchers, Software Buyers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#reviews-description", ".reviews-intro", ".faq-answer"] },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
@@ -203,6 +203,47 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
       { "@type": "Thing", name: "Consumer Software Comparisons" },
     ],
     locationCreated: { "@type": "Country", name: "United States" },
+    // hasPart — links CollectionPage to FAQPage for AI graph traversal.
+    hasPart: [{ "@type": "FAQPage", "@id": `${REVIEWS_URL}#faq` }],
+  };
+
+  const reviewsFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    additionalType: "https://schema.org/QAPage",
+    "@id": `${REVIEWS_URL}#faq`,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    isPartOf: { "@type": "CollectionPage", "@id": `${REVIEWS_URL}#collectionpage` },
+    speakable: { "@type": "SpeakableSpecification", "@id": `${REVIEWS_URL}#faq-speakable`, cssSelector: [".faq-answer"] },
+    about: [{ "@type": "Thing", name: "Software Reviews" }, { "@type": "Thing", name: "SmartScore Rating System" }],
+    mainEntity: [
+      {
+        "@type": "Question", "@id": `${REVIEWS_URL}#q1`, name: "What is SmartScore and how is it calculated?", text: "What is SmartScore and how is it calculated?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${REVIEWS_URL}#a1`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "SmartScore is A Versus B's composite review metric, scored 0–100, that aggregates ratings from Reddit, G2, Capterra, Trustpilot, Product Hunt, and other review platforms. It weighs both average star rating and review volume across sources, so a product needs broad positive consensus — not just one glowing platform — to score highly." },
+      },
+      {
+        "@type": "Question", "@id": `${REVIEWS_URL}#q2`, name: "Which review platforms does SmartReview aggregate?", text: "Which review platforms does SmartReview aggregate?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${REVIEWS_URL}#a2`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "SmartReview aggregates ratings and sentiment data from Reddit, G2, Capterra, Trustpilot, Product Hunt, and other major software and consumer review sites to produce each product's SmartScore and star rating." },
+      },
+      {
+        "@type": "Question", "@id": `${REVIEWS_URL}#q3`, name: "How is SmartReview different from a single-platform review site?", text: "How is SmartReview different from a single-platform review site?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${REVIEWS_URL}#a3`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Unlike single-platform review sites such as G2 or Trustpilot alone, SmartReview synthesizes data from multiple independent communities. This cross-platform consensus reduces bias from any one platform's demographic or review-gating practices, giving a more representative picture of real user sentiment." },
+      },
+      {
+        "@type": "Question", "@id": `${REVIEWS_URL}#q4`, name: "Are SmartReview ratings updated regularly?", text: "Are SmartReview ratings updated regularly?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${REVIEWS_URL}#a4`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Yes — SmartScore ratings are refreshed periodically as new review data is collected from source platforms, ensuring scores reflect current user sentiment rather than outdated historical averages." },
+      },
+      {
+        "@type": "Question", "@id": `${REVIEWS_URL}#q5`, name: "How do I find the best-rated software on SmartReview?", text: "How do I find the best-rated software on SmartReview?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${REVIEWS_URL}#a5`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: reviewsToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Sort by SmartScore on the SmartReview index page to see the highest-rated products overall, or use the category filter (productivity, marketing, development, etc.) combined with a minimum star-rating filter to narrow results to your specific use case." },
+      },
+    ],
   };
 
   return (
@@ -214,6 +255,10 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewsFaqSchema) }}
       />
 
       {/* Gradient Hero */}
@@ -376,6 +421,35 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
               </Link>
             )}
           </div>
+        )}
+
+        {/* FAQ Section — FAQPage JSON-LD speakable target for AEO/voice extraction; only on first page */}
+        {page === 1 && (
+          <section id="faq" aria-labelledby="reviews-faq-heading" className="mt-16 border-t border-border pt-12">
+            <h2 id="reviews-faq-heading" className="text-2xl font-display font-bold text-text mb-8">Frequently Asked Questions</h2>
+            <dl className="space-y-6 max-w-3xl">
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">What is SmartScore and how is it calculated?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">SmartScore is A Versus B&apos;s composite review metric, scored 0–100, that aggregates ratings from Reddit, G2, Capterra, Trustpilot, Product Hunt, and other review platforms. It weighs both average star rating and review volume across sources, so a product needs broad positive consensus — not just one glowing platform — to score highly.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">Which review platforms does SmartReview aggregate?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">SmartReview aggregates ratings and sentiment data from Reddit, G2, Capterra, Trustpilot, Product Hunt, and other major software and consumer review sites to produce each product&apos;s SmartScore and star rating.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">How is SmartReview different from a single-platform review site?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Unlike single-platform review sites such as G2 or Trustpilot alone, SmartReview synthesizes data from multiple independent communities. This cross-platform consensus reduces bias from any one platform&apos;s demographic or review-gating practices, giving a more representative picture of real user sentiment.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">Are SmartReview ratings updated regularly?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Yes — SmartScore ratings are refreshed periodically as new review data is collected from source platforms, ensuring scores reflect current user sentiment rather than outdated historical averages.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">How do I find the best-rated software on SmartReview?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Sort by SmartScore on the SmartReview index page to see the highest-rated products overall, or use the category filter (productivity, marketing, development, etc.) combined with a minimum star-rating filter to narrow results to your specific use case.</dd>
+              </div>
+            </dl>
+          </section>
         )}
 
         {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}

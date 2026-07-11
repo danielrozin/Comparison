@@ -234,7 +234,7 @@ export default async function EntityPage({ params }: PageProps) {
       ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["#entity-intro", "#entity-about"],
+        cssSelector: ["#entity-intro", "#entity-about", ".faq-answer"],
       },
     },
   ];
@@ -491,7 +491,7 @@ export default async function EntityPage({ params }: PageProps) {
                         </svg>
                       </summary>
                       <div className="px-5 pb-4">
-                        <p className="text-sm text-text-secondary leading-relaxed">{faq.answer}</p>
+                        <p className="text-sm text-text-secondary leading-relaxed faq-answer">{faq.answer}</p>
                       </div>
                     </details>
                   ))}

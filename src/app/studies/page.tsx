@@ -142,19 +142,17 @@ export default function StudiesIndexPage() {
     teaches: teachesDefinedTerm("Original data studies on which brands, SaaS tools, and investment products are compared most frequently by consumers", `${SITE_URL}/studies`),
     educationalUse: "research",
     keywords: `comparison data study, brand comparison report, SaaS comparison data ${new Date().getFullYear()}, comparison trends`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type", ".faq-answer"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
     ethicsPolicy: `${SITE_URL}/disclaimer`,
     correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
     potentialAction: { "@type": "ReadAction", target: STUDIES_URL },
-    hasPart: STUDIES.map((s) => ({
-      "@type": "Article",
-      name: s.title,
-      url: `${STUDIES_URL}/${s.slug}`,
-      description: s.blurb,
-    })),
+    hasPart: [
+      ...STUDIES.map((s) => ({ "@type": "Article", name: s.title, url: `${STUDIES_URL}/${s.slug}`, description: s.blurb })),
+      { "@type": "FAQPage", "@id": `${STUDIES_URL}#faq` },
+    ],
     timeRequired: "PT2M",
     wordCount: 400,
     // datePublished + dateCreated — stable creation timestamps for E-E-A-T freshness.
@@ -170,10 +168,50 @@ export default function StudiesIndexPage() {
     },
   };
 
+  const studiesFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    additionalType: "https://schema.org/QAPage",
+    "@id": `${STUDIES_URL}#faq`,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    isPartOf: { "@type": "CollectionPage", "@id": `${STUDIES_URL}#collectionpage` },
+    speakable: { "@type": "SpeakableSpecification", "@id": `${STUDIES_URL}#faq-speakable`, cssSelector: [".faq-answer"] },
+    about: [{ "@type": "Thing", name: "Consumer Comparison Research" }, { "@type": "Thing", name: "Brand Comparison Data" }],
+    mainEntity: [
+      {
+        "@type": "Question", "@id": `${STUDIES_URL}#q1`, name: "What are the A Versus B data studies?", text: "What are the A Versus B data studies?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a1`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "A Versus B data studies are original research reports built from our database of 1,600+ head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by real comparison-query data rather than surveys." },
+      },
+      {
+        "@type": "Question", "@id": `${STUDIES_URL}#q2`, name: "Can I cite or republish findings from A Versus B data studies?", text: "Can I cite or republish findings from A Versus B data studies?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a2`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Yes. All A Versus B data studies are published under the Creative Commons CC BY 4.0 license. You can freely cite, quote, and republish findings as long as you credit A Versus B and include a link back to the original study URL." },
+      },
+      {
+        "@type": "Question", "@id": `${STUDIES_URL}#q3`, name: "What methodology does A Versus B use for its data studies?", text: "What methodology does A Versus B use for its data studies?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a3`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Each study is built from our internal database of structured head-to-head comparison pages. We analyze search volume, comparison frequency, and on-page engagement signals across thousands of matchups to identify which rivalries attract the most consumer research activity in a given category or year." },
+      },
+      {
+        "@type": "Question", "@id": `${STUDIES_URL}#q4`, name: "What topics do the current A Versus B data studies cover?", text: "What topics do the current A Versus B data studies cover?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a4`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Current studies cover B2B SaaS comparison trends (384 matchups analyzed), the most-compared brands of 2026 (1,600+ comparisons ranked), and investing & finance products (247 head-to-head finance comparisons). New topics are added as our database grows." },
+      },
+      {
+        "@type": "Question", "@id": `${STUDIES_URL}#q5`, name: "How often does A Versus B publish new data studies?", text: "How often does A Versus B publish new data studies?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a5`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "New studies are published periodically — typically when enough comparison data accumulates to support statistically meaningful insights, or when major market shifts create a timely research opportunity. Subscribe to the A Versus B newsletter to be notified when a new study is published." },
+      },
+    ],
+  };
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(studiesFaqSchema) }} />
 
       {/* Gradient Hero */}
       <section aria-labelledby="studies-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-700 to-accent-700 text-white relative overflow-hidden">
@@ -258,6 +296,33 @@ export default function StudiesIndexPage() {
             </li>
           ))}
         </ul>
+
+        {/* FAQ Section — FAQPage JSON-LD speakable target for AEO/voice extraction */}
+        <section id="faq" aria-labelledby="studies-faq-heading" className="mt-16 border-t border-border pt-12">
+          <h2 id="studies-faq-heading" className="text-2xl font-display font-bold text-text mb-8">Frequently Asked Questions</h2>
+          <dl className="space-y-6">
+            <div>
+              <dt className="text-base font-semibold text-text mb-1">What are the A Versus B data studies?</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">A Versus B data studies are original research reports built from our database of 1,600+ head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by real comparison-query data rather than surveys.</dd>
+            </div>
+            <div>
+              <dt className="text-base font-semibold text-text mb-1">Can I cite or republish findings from A Versus B data studies?</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Yes. All A Versus B data studies are published under the Creative Commons CC BY 4.0 license. You can freely cite, quote, and republish findings as long as you credit A Versus B and include a link back to the original study URL.</dd>
+            </div>
+            <div>
+              <dt className="text-base font-semibold text-text mb-1">What methodology does A Versus B use for its data studies?</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Each study is built from our internal database of structured head-to-head comparison pages. We analyze search volume, comparison frequency, and on-page engagement signals across thousands of matchups to identify which rivalries attract the most consumer research activity in a given category or year.</dd>
+            </div>
+            <div>
+              <dt className="text-base font-semibold text-text mb-1">What topics do the current A Versus B data studies cover?</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Current studies cover B2B SaaS comparison trends (384 matchups analyzed), the most-compared brands of 2026 (1,600+ comparisons ranked), and investing &amp; finance products (247 head-to-head finance comparisons). New topics are added as our database grows.</dd>
+            </div>
+            <div>
+              <dt className="text-base font-semibold text-text mb-1">How often does A Versus B publish new data studies?</dt>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">New studies are published periodically — typically when enough comparison data accumulates to support statistically meaningful insights, or when major market shifts create a timely research opportunity. Subscribe to the A Versus B newsletter to be notified when a new study is published.</dd>
+            </div>
+          </dl>
+        </section>
 
         <div className="mt-16">
           <NewsletterSignup source="studies-listing" />

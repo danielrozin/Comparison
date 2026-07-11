@@ -3179,7 +3179,7 @@ export function profilePageSchema(entity: {
     speakable: {
       "@type": "SpeakableSpecification",
       "@id": `${url}#entity-speakable`,
-      cssSelector: ["h1", "#entity-intro", "#entity-about"],
+      cssSelector: ["h1", "#entity-intro", "#entity-about", ".faq-answer"],
     },
   };
 

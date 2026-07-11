@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { CATEGORIES, SITE_URL, SITE_NAME, getSubcategoriesForSlug } from "@/lib/utils/constants";
 import type { SubcategoryDef } from "@/lib/utils/constants";
 import { getComparisonsByCategory } from "@/lib/services/comparison-service";
-import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { getSubcategoryFaqs } from "@/lib/data/subcategory-faqs";
 import { StarRating } from "@/components/ui/StarRating";
 import { Pagination } from "@/components/ui/Pagination";
 import { CategoryFilters } from "@/components/ui/CategoryFilters";
@@ -189,6 +190,9 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
     interactivityType: "expositive",
+    datePublished: "2024-01-01",
+    dateCreated: "2024-01-01",
+    dateModified: subcatToday,
     lastReviewed: subcatToday,
     reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
     contentReferenceTime: subcatToday,
@@ -234,7 +238,7 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       url: `${SITE_URL}/compare/${c.slug}`,
     })),
     discussionUrl: `https://www.reddit.com/search/?q=${encodeURIComponent(subcat.name)}+comparison&type=link&sort=relevance`,
-    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro"] },
+    speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#subcategory-intro", ".faq-answer"] },
     mainEntity: {
       "@type": "ItemList",
       "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`,
@@ -261,7 +265,11 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       { "@type": "Thing", name: "Consumer Decision Research" },
     ],
     // hasPart[] — ItemList is a formal structural part of this CollectionPage.
-    hasPart: [{ "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` }],
+    // FAQPage hasPart reference — AI crawlers follow this edge to the typed FAQPage schema node.
+    hasPart: [
+      { "@type": "ItemList", "@id": `${SITE_URL}/category/${slug}/${subcategory}#comparisons`, name: `${subcat.name} Comparisons`, url: `${SITE_URL}/category/${slug}/${subcategory}` },
+      { "@type": "FAQPage", "@id": `${subcatUrl}#faq`, name: `${subcat.name} FAQ`, url: subcatUrl },
+    ],
   };
   // Dataset node — parity with parent category pages (HB347).
   // Google Dataset Search and AI research tools index Dataset nodes separately from
@@ -302,7 +310,21 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
       target: { "@type": "EntryPoint", urlTemplate: subcatUrl },
     },
   };
-  const schemaData = [breadcrumbs, collectionSchema, subcatDatasetObj];
+  const subcatFaqs = getSubcategoryFaqs(slug, subcategory);
+  const subcatFaqSchema = subcatFaqs.length > 0
+    ? faqSchema(
+        subcatFaqs,
+        `${subcatUrl}#faq`,
+        [{ "@type": "Thing", "@id": subcatUrl, name: `${subcat.name} Comparisons`, url: subcatUrl }],
+        "2024-01-01",
+      )
+    : null;
+  const schemaData = [
+    breadcrumbs,
+    collectionSchema,
+    subcatDatasetObj,
+    ...(subcatFaqSchema ? [subcatFaqSchema] : []),
+  ];
 
   const basePath = `/category/${slug}/${subcategory}`;
   // schemaData is now used below
@@ -495,6 +517,24 @@ export default async function SubcategoryPage({ params, searchParams }: PageProp
           <div className="mt-16">
             <NewsletterSignup source={`subcategory-${slug}-${subcategory}`} />
           </div>
+        )}
+
+        {/* FAQ Section — renders FAQ HTML so FAQPage JSON-LD speakable selectors resolve.
+            Satisfies Google FAQ rich-result eligibility and AEO answer extraction. */}
+        {page === 1 && subcatFaqs.length > 0 && (
+          <section className="mt-14" aria-labelledby="subcategory-faq-heading" id="subcategory-faq">
+            <h2 id="subcategory-faq-heading" className="text-xl font-display font-bold text-text mb-6">
+              Frequently Asked Questions: {subcat.name} Comparisons
+            </h2>
+            <dl className="space-y-5">
+              {subcatFaqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-border rounded-xl p-5" id={`subcat-q${i + 1}`}>
+                  <dt className="font-semibold text-text text-base mb-2">{faq.question}</dt>
+                  <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         )}
       </div>
     </>

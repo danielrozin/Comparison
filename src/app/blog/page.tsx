@@ -311,10 +311,6 @@ export default async function BlogPage({
     educationalLevel: "General",
     teaches: teachesDefinedTerm("How to compare anything side by side using expert-written guides", `${SITE_URL}/blog`),
     educationalUse: "guide",
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["h1", ".blog-hero-description"],
-    },
     mainEntity: {
       "@type": "ItemList",
       name: "Latest Articles",
@@ -350,9 +346,56 @@ export default async function BlogPage({
       { "@type": "Thing", name: "Product Reviews" },
       { "@type": "Thing", name: "Decision Making" },
     ],
-    // hasPart[] — ItemList is a formal structural part of this CollectionPage.
-    hasPart: [{ "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` }],
+    // hasPart[] — ItemList + FAQPage edges for AI graph traversal.
+    hasPart: [
+      { "@type": "ItemList", name: "Latest Articles", url: `${SITE_URL}/blog` },
+      { "@type": "FAQPage", "@id": `${SITE_URL}/blog#faq` },
+    ],
+    // speakable — upgraded to include .faq-answer so voice assistants can extract structured answers.
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["h1", ".blog-hero-description", ".faq-answer"],
+    },
     locationCreated: { "@type": "Country", name: "United States" },
+  };
+
+  const blogFaqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    additionalType: "https://schema.org/QAPage",
+    "@id": `${SITE_URL}/blog#faq`,
+    inLanguage: "en-US",
+    isAccessibleForFree: true,
+    isPartOf: { "@type": "CollectionPage", "@id": `${SITE_URL}/blog#collectionpage` },
+    speakable: { "@type": "SpeakableSpecification", "@id": `${SITE_URL}/blog#faq-speakable`, cssSelector: [".faq-answer"] },
+    about: [{ "@type": "Thing", name: "Comparison Guides" }, { "@type": "Thing", name: "Product Decision Making" }],
+    mainEntity: [
+      {
+        "@type": "Question", "@id": `${SITE_URL}/blog#q1`, name: "What kind of articles does A Versus B publish?", text: "What kind of articles does A Versus B publish?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${SITE_URL}/blog#a1`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "A Versus B publishes expert comparison guides, buyer's guides, head-to-head product analyses, and data-driven decision articles across technology, software, sports, countries, health, finance, and consumer products. Each article is designed to help readers make better, faster decisions with structured evidence." },
+      },
+      {
+        "@type": "Question", "@id": `${SITE_URL}/blog#q2`, name: "How does A Versus B research its comparison articles?", text: "How does A Versus B research its comparison articles?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${SITE_URL}/blog#a2`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Each article draws on the A Versus B structured comparison database, which contains side-by-side attribute tables, sourced data points, and aggregated review signals. Articles also reference official product documentation, independent benchmarks, and consumer review platforms to ensure accuracy." },
+      },
+      {
+        "@type": "Question", "@id": `${SITE_URL}/blog#q3`, name: "Can I republish or cite articles from A Versus B?", text: "Can I republish or cite articles from A Versus B?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${SITE_URL}/blog#a3`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Yes — A Versus B blog content is published under the Creative Commons CC BY 4.0 license. You may cite, quote, and republish articles freely as long as you credit A Versus B and link back to the original article URL." },
+      },
+      {
+        "@type": "Question", "@id": `${SITE_URL}/blog#q4`, name: "How often does A Versus B publish new blog articles?", text: "How often does A Versus B publish new blog articles?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${SITE_URL}/blog#a4`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "A Versus B publishes new comparison guides and decision articles on a regular basis, typically multiple times per week. Topics are selected based on trending comparison queries, reader demand, and gaps in existing coverage across the site's core categories." },
+      },
+      {
+        "@type": "Question", "@id": `${SITE_URL}/blog#q5`, name: "What categories does the A Versus B blog cover?", text: "What categories does the A Versus B blog cover?",
+        answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday,
+        acceptedAnswer: { "@type": "Answer", "@id": `${SITE_URL}/blog#a5`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: blogToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "The A Versus B blog covers technology, software & SaaS, sports, countries & geography, health & wellness, finance & investing, consumer products, automotive, entertainment, and food. Each category has dedicated comparison guides written to help readers understand key differences and make the right choice." },
+      },
+    ],
   };
 
   const blogBase = `${SITE_URL}/blog${category ? `?category=${category}` : ""}`;
@@ -374,6 +417,10 @@ export default async function BlogPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogFaqSchema) }}
       />
       {page > 1 && (
         <link rel="prev" href={page === 2 ? blogBase : `${blogBase}${sep}page=${page - 1}`} />
@@ -612,6 +659,35 @@ export default async function BlogPage({
               </nav>
             )}
           </>
+        )}
+
+        {/* FAQ Section — FAQPage JSON-LD speakable target for AEO/voice extraction; first page only */}
+        {page === 1 && (
+          <section id="faq" aria-labelledby="blog-faq-heading" className="mt-16 border-t border-border pt-12">
+            <h2 id="blog-faq-heading" className="text-2xl font-display font-bold text-text mb-8">Frequently Asked Questions</h2>
+            <dl className="space-y-6 max-w-3xl">
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">What kind of articles does A Versus B publish?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">A Versus B publishes expert comparison guides, buyer&apos;s guides, head-to-head product analyses, and data-driven decision articles across technology, software, sports, countries, health, finance, and consumer products. Each article is designed to help readers make better, faster decisions with structured evidence.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">How does A Versus B research its comparison articles?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Each article draws on the A Versus B structured comparison database, which contains side-by-side attribute tables, sourced data points, and aggregated review signals. Articles also reference official product documentation, independent benchmarks, and consumer review platforms to ensure accuracy.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">Can I republish or cite articles from A Versus B?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Yes — A Versus B blog content is published under the Creative Commons CC BY 4.0 license. You may cite, quote, and republish articles freely as long as you credit A Versus B and link back to the original article URL.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">How often does A Versus B publish new blog articles?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">A Versus B publishes new comparison guides and decision articles on a regular basis, typically multiple times per week. Topics are selected based on trending comparison queries, reader demand, and gaps in existing coverage across the site&apos;s core categories.</dd>
+              </div>
+              <div>
+                <dt className="text-base font-semibold text-text mb-1">What categories does the A Versus B blog cover?</dt>
+                <dd className="text-sm text-text-secondary leading-relaxed faq-answer">The A Versus B blog covers technology, software &amp; SaaS, sports, countries &amp; geography, health &amp; wellness, finance &amp; investing, consumer products, automotive, entertainment, and food. Each category has dedicated comparison guides written to help readers understand key differences and make the right choice.</dd>
+              </div>
+            </dl>
+          </section>
         )}
 
         {/* Newsletter CTA — only on first page to avoid duplicate on pagination */}
