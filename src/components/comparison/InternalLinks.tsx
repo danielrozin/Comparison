@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/utils/constants";
 import { CategoryIcon } from "@/lib/utils/category-icons";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 // Category affinity map (synced with internal-linking-engine.ts)
 const RELATED_CATEGORIES: Record<string, string[]> = {
@@ -58,6 +59,7 @@ export function InternalLinks({
   );
 
   return (
+    <ScrollReveal delay={60}>
     <section aria-labelledby="explore-more-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -212,5 +214,6 @@ export function InternalLinks({
         </div>
       </div>
     </section>
+    </ScrollReveal>
   );
 }

@@ -24,6 +24,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [searchHintIdx, setSearchHintIdx] = useState(0);
   const navRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLElement>(null);
 
   const SEARCH_HINTS = [
     "iPhone vs Android…",
@@ -78,6 +79,29 @@ export function Header() {
     document.addEventListener("keydown", fn);
     return () => document.removeEventListener("keydown", fn);
   }, [openDropdown, mobileMenuOpen]);
+
+  // WCAG 2.1 SC 2.1.2 — Focus trap for mobile menu overlay.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    function onTab(e: KeyboardEvent) {
+      if (e.key !== "Tab" || !mobileMenuRef.current) return;
+      const focusable = Array.from(
+        mobileMenuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    document.addEventListener("keydown", onTab);
+    return () => document.removeEventListener("keydown", onTab);
+  }, [mobileMenuOpen]);
 
   function handleEnter(slug: string) {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
@@ -235,7 +259,7 @@ export function Header() {
 
       {/* ─── Mobile menu — only mounted when open, removes ~18KB of subcategory HTML from initial SSR ─── */}
       {mobileMenuOpen && (
-      <nav id="mobile-menu" aria-label="Mobile navigation" className="lg:hidden">
+      <nav id="mobile-menu" ref={mobileMenuRef} aria-label="Mobile navigation" className="lg:hidden">
         <div className="bg-white border-t border-border overflow-y-auto max-h-[80vh]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">

@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav, UxStudyBanner } from "@/components/layout/GlobalClientWidgets";
 import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <MetaPixel />
       <ClarityTags />
       <ExperimentProvider initialCookie="">
+        <UxStudyBanner />
         <Header />
         <main id="main-content" className="flex-1">
           <Component {...pageProps} />
@@ -40,6 +41,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <BackToTop />
         <FeedbackWidget />
         <CookieConsentBanner />
+        <SearchOverlay />
+        <MobileBottomNav />
+        {/* Spacer so footer content doesn't hide behind the fixed mobile bottom nav */}
+        <div className="md:hidden h-14" style={{ paddingBottom: "env(safe-area-inset-bottom)" }} aria-hidden="true" />
       </ExperimentProvider>
       {/* DAN-1645: Vercel Speed Insights (RUM) — real-user LCP/INP/CLS for
           /compare/[slug] and every Pages Router route, so we can certify the

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { AggregationData } from "@/lib/services/review-service";
 import { StarRating } from "@/components/ui/StarRating";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const SMARTREVIEW_URL = process.env.NEXT_PUBLIC_SMARTREVIEW_URL || "https://smartreview.com";
 
@@ -27,6 +28,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
   if (withReviews.length === 0) return null;
 
   return (
+    <ScrollReveal delay={50}>
     <section id="smart-review-links" aria-labelledby="smart-review-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-2">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -92,5 +94,6 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
         })}
       </ul>
     </section>
+    </ScrollReveal>
   );
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { RelatedBlogPost } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const POST_GRADIENTS = [
   "from-primary-400 to-indigo-500",
@@ -50,6 +51,7 @@ export function RelatedBlogPosts({
   if (posts.length === 0) return null;
 
   return (
+    <ScrollReveal delay={50}>
     <section id="related-articles" aria-labelledby="related-articles-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       {/* Section header */}
       <div className="flex items-center gap-3 mb-6">
@@ -144,5 +146,6 @@ export function RelatedBlogPosts({
         })}
       </ul>
     </section>
+    </ScrollReveal>
   );
 }
