@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import type { FAQData } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const INITIAL_FAQ_SHOW = 5;
 
@@ -100,8 +101,31 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [search, setSearch] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const allOpen = openIndex === -1;
   const isSearching = search.trim().length > 0;
+
+  useEffect(() => {
+    if (faqs.length < 4) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key !== "/" ||
+        e.ctrlKey ||
+        e.metaKey ||
+        e.altKey ||
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.isContentEditable
+      ) return;
+      if (searchInputRef.current) {
+        e.preventDefault();
+        searchInputRef.current.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [faqs.length]);
 
   const handleExpandAll = () => setOpenIndex(allOpen ? null : -1);
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,6 +155,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
   const overflowExpanded = showAll || isSearching;
 
   return (
+    <ScrollReveal delay={80}>
     <section id="faq" aria-labelledby="faq-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       {/* Section header */}
       <div className="flex items-center justify-between mb-4">
@@ -174,13 +199,25 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
+            ref={searchInputRef}
             type="search"
             value={search}
             onChange={handleSearch}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
             placeholder="Search questions…"
             aria-label="Filter FAQ questions"
-            className="w-full pl-9 pr-4 py-2.5 text-sm bg-white border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 placeholder:text-text-secondary/60 transition-all duration-150"
+            className="w-full pl-9 pr-16 py-2.5 text-sm bg-white border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 placeholder:text-text-secondary/60 transition-all duration-150"
           />
+          {/* Keyboard shortcut hint — hidden when focused or searching */}
+          {!searchFocused && !isSearching && (
+            <kbd
+              aria-hidden="true"
+              className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-5 px-1.5 text-[10px] font-semibold text-text-secondary/60 bg-surface-alt border border-border rounded pointer-events-none select-none"
+            >
+              /
+            </kbd>
+          )}
           {isSearching && (
             <button
               type="button"
@@ -274,5 +311,6 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         </button>
       )}
     </section>
+    </ScrollReveal>
   );
 }
