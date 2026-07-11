@@ -914,6 +914,14 @@ export default function ComparisonPage(props: Props) {
       <AuthorByline
         updatedAt={comparison.metadata.updatedAt}
         isHumanReviewed={comparison.metadata.isHumanReviewed}
+        wordCount={[
+          comparison.shortAnswer,
+          comparison.verdict,
+          comparison.quickAnswer?.tldr,
+          comparison.expertAnalysis,
+          ...comparison.keyDifferences.map((d) => `${d.entityAValue} ${d.entityBValue}`),
+          ...comparison.faqs.map((f) => f.answer),
+        ].filter(Boolean).join(" ").split(/\s+/).length}
       />
 
       {/* Table of Contents */}
