@@ -815,6 +815,12 @@ export function webPageSchema(opts: {
     },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),
+    // contentReferenceTime — GEO signal telling LLMs (ChatGPT, Perplexity, Claude) when
+    // the data on this page was last verified, enabling time-qualified citations
+    // ("as of <date>") and reducing hallucination risk on stale content.
+    ...((opts.dateModified || opts.datePublished) && {
+      contentReferenceTime: opts.dateModified ?? opts.datePublished,
+    }),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: {
