@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 11, 2026 (HB385)*
+*Last updated: July 11, 2026 (HB387)*
 
 ## What We Do
 
@@ -238,6 +238,8 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB383: FAQPage schema + `speakable` targeting `.faq-answer` added to `/tools/[slug]` calculator pages; `/authors/daniel-rozin` gets `author` PersonSchema enrichment with `knowsAbout`, `sameAs`, `publishedWork`
 - HB384: FAQPage schema added to all 3 core legal pages (disclaimer, privacy, terms) — `hasPart→FAQPage` WebPage edge + standalone FAQPage JSON-LD with 4 Q&As each; all AI crawlers can resolve policy answers without scraping prose
 - HB385: FAQPage schema added to cookie-policy and acceptable-use pages — completes 100% FAQPage coverage across all 5 legal/policy pages; cookie-policy gets 4 Q&As on cookie types, third-party sharing, opt-out, and storage duration; acceptable-use gets 4 Q&As on republishing, commercial use, violations, and bot access; `llms.txt` freshness updated to 2026-07-11
+- HB386: `sitemap.ts` LEGAL_DATE bump to 2026-07-11 — stale 2025-01-15 date was suppressing Googlebot recrawl of legal pages that now carry rich FAQPage schema; `llms.txt` changelog updated with HB374–HB385 entries so AI crawlers have a complete record of AEO coverage
+- HB387: 15 new AI crawler user agents added to `robots.ts` + `ai.txt` (SonarBot/Perplexity-Sonar, Mistral-Crawler, KimiBot, Manus-Bot, AriaBot, SearchGPT-User, Claude-Code, OpenAI-o3, Suno-Bot, Ideogram-Bot, MidJourney-Bot, StabilityBot, CopilotStudio-Bot) — covers mid-2026 model + agentic AI crawlers not previously listed
 
 ## Categories & Scale
 
