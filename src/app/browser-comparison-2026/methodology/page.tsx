@@ -80,6 +80,7 @@ const schema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
   teaches: "How A Versus B tests and benchmarks web browsers for speed, privacy, and compatibility",
   educationalUse: "guide",
@@ -241,7 +242,7 @@ export default function BrowserMethodologyPage() {
         <h2 id="browsmethod-5-correction-policy" className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
         <p className="text-text-secondary leading-relaxed">
           Errors can be reported to{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>.
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">daniarozin@gmail.com</a>.
           Please include the specific claim, your correction, and a primary source. We aim to respond
           within 48 hours and publish corrections with a visible notice and updated{" "}
           <code className="text-sm bg-surface-alt px-1 rounded">dateModified</code>.

@@ -174,6 +174,7 @@ const profilePageSchema = {
   accessMode: ["textual"],
   accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
   accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   educationalLevel: "General",
   teaches: "Editorial methodology and expertise behind A Versus B comparison hub articles authored by Daniel Rozin",
   educationalUse: "biography",
@@ -337,8 +338,8 @@ export default function DanielRozinPage() {
         </p>
         <p className="text-text-secondary leading-relaxed">
           For corrections or source disputes, contact:{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">
-            contact@aversusb.net
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">
+            daniarozin@gmail.com
           </a>
         </p>
       </section>

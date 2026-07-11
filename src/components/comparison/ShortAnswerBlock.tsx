@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import type { ComparisonEntityData } from "@/types";
 
 interface ShortAnswerBlockProps {
@@ -18,9 +21,20 @@ export function ShortAnswerBlock({
   entityA: _entityA,
   entityB: _entityB,
 }: ShortAnswerBlockProps) {
+  const [copied, setCopied] = useState(false);
   // Primary: shortAnswer field. Fallback: first 2 sentences of verdict.
   const text = shortAnswer || extractFirstSentences(verdict, 2);
   if (!text) return null;
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(text!);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
 
   // FAQPage JSON-LD for the implicit "What is the difference" Q&A is intentionally
   // NOT emitted here. The canonical FAQPage is built by comparisonPageSchema()
@@ -46,14 +60,37 @@ export function ShortAnswerBlock({
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <h2 id="short-answer-heading" className="text-xs font-bold text-amber-700 uppercase tracking-widest">
-                    Quick Answer
-                  </h2>
-                  <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
-                    <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
-                    AI Summary
-                  </span>
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <h2 id="short-answer-heading" className="text-xs font-bold text-amber-700 uppercase tracking-widest">
+                      Quick Answer
+                    </h2>
+                    <span className="inline-flex items-center gap-1 text-xs font-bold px-1.5 py-0.5 rounded-full bg-amber-200/60 text-amber-700 border border-amber-300/50">
+                      <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" /></svg>
+                      AI Summary
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    aria-label={copied ? "Copied!" : "Copy quick answer"}
+                    title={copied ? "Copied!" : "Copy"}
+                    className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${
+                      copied
+                        ? "bg-emerald-100 text-emerald-600"
+                        : "bg-amber-100/60 text-amber-600 hover:bg-amber-200/70 hover:text-amber-700"
+                    }`}
+                  >
+                    {copied ? (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
                 <p className="text-amber-900 leading-relaxed text-sm sm:text-base font-medium">
                   {text}

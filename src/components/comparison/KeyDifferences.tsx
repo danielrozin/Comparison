@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import type { KeyDifference, ComparisonEntityData } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 type FilterTab = "all" | "a" | "tie" | "b";
 
@@ -116,6 +117,8 @@ function ScorecardHeader({
   );
 }
 
+const MOBILE_INITIAL_COUNT = 5;
+
 export function KeyDifferencesBlock({
   differences,
   entityA,
@@ -126,6 +129,7 @@ export function KeyDifferencesBlock({
   entityB: ComparisonEntityData;
 }) {
   const [filter, setFilter] = useState<FilterTab>("all");
+  const [mobileExpanded, setMobileExpanded] = useState(false);
 
   const aWins = useMemo(() => differences.filter((d) => d.winner === "a").length, [differences]);
   const bWins = useMemo(() => differences.filter((d) => d.winner === "b").length, [differences]);
@@ -145,7 +149,11 @@ export function KeyDifferencesBlock({
     { id: "b", label: entityB.name, count: bWins, color: "text-accent-600 border-accent-200 hover:border-accent-400 hover:bg-accent-50", activeColor: "bg-accent-600 text-white border-accent-600 shadow-sm" },
   ];
 
+  const mobileVisible = mobileExpanded ? filtered : filtered.slice(0, MOBILE_INITIAL_COUNT);
+  const mobileHidden = filtered.length - MOBILE_INITIAL_COUNT;
+
   return (
+    <ScrollReveal delay={50}>
     <section id="key-differences" aria-labelledby="key-differences-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -165,26 +173,29 @@ export function KeyDifferencesBlock({
 
       <ScorecardHeader differences={differences} entityA={entityA} entityB={entityB} />
 
-      {/* Filter tabs */}
-      <div className="flex items-center gap-2 flex-wrap mb-4" role="group" aria-label="Filter by winner">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setFilter(tab.id)}
-            aria-pressed={filter === tab.id}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
-              filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
-            }`}
-          >
-            {tab.label}
-            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
-              filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
-            }`}>
-              {tab.count}
-            </span>
-          </button>
-        ))}
+      {/* Filter tabs — horizontal scroll on mobile to handle long entity names; wraps on sm+ */}
+      <div className="relative mb-4">
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1 -mb-1 sm:flex-wrap sm:overflow-x-visible sm:pb-0 sm:mb-0" role="group" aria-label="Filter by winner">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => { setFilter(tab.id); setMobileExpanded(false); }}
+              aria-pressed={filter === tab.id}
+              className={`inline-flex flex-shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
+                filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
+              }`}
+            >
+              {tab.label}
+              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
+                filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
+              }`}>
+                {tab.count}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 && (
@@ -269,7 +280,7 @@ export function KeyDifferencesBlock({
       {/* Mobile: Stacked card layout */}
       {filtered.length > 0 && (
       <ul role="list" aria-label={`${entityA.name} vs ${entityB.name} key differences`} className="sm:hidden space-y-3 list-none">
-        {filtered.map((diff, i) => (
+        {mobileVisible.map((diff, i) => (
           <li
             key={diff.label}
             className={`bg-white border border-border rounded-xl overflow-hidden motion-safe:animate-fade-in ${
@@ -328,7 +339,36 @@ export function KeyDifferencesBlock({
         ))}
       </ul>
       )}
+
+      {/* Mobile expand button — shown only when list is truncated */}
+      {filtered.length > MOBILE_INITIAL_COUNT && (
+        <div className="sm:hidden mt-3">
+          <button
+            type="button"
+            onClick={() => setMobileExpanded((v) => !v)}
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-border bg-white text-xs font-semibold text-text-secondary hover:text-primary-600 hover:border-primary-300 hover:bg-primary-50 transition-all duration-150"
+            aria-expanded={mobileExpanded}
+          >
+            {mobileExpanded ? (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+                Show less
+              </>
+            ) : (
+              <>
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                Show {mobileHidden} more
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </section>
+    </ScrollReveal>
   );
 }
 

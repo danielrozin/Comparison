@@ -173,6 +173,7 @@ const siteMapPageSchema = {
       interactivityType: "expositive",
       accessMode: ["textual"],
       accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText", "bookmarks"],
+      accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
       accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
       // datePublished + dateModified — temporal anchors for AI crawlers and Google freshness signals
       datePublished: "2024-01-01",

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { RelatedComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const CARD_GRADIENTS = [
   "from-primary-400 to-indigo-500",
@@ -46,6 +47,7 @@ export function RelatedComparisons({
   sourceSlug?: string;
 }) {
   return (
+    <ScrollReveal delay={40}>
     <section id="related-comparisons" aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -61,7 +63,10 @@ export function RelatedComparisons({
         </div>
       </div>
 
-      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none mb-6">
+      {/* Scroll-fade wrapper — right-edge fade signals more cards off-screen on mobile */}
+      <div className="relative mb-6">
+        <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -122,6 +127,7 @@ export function RelatedComparisons({
           );
         })}
       </ul>
+      </div>
 
       {/* Browse all CTA */}
       <div className="flex justify-center">
@@ -136,5 +142,6 @@ export function RelatedComparisons({
         </Link>
       </div>
     </section>
+    </ScrollReveal>
   );
 }

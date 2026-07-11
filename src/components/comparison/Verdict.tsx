@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ComparisonEntityData } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 function SparkleIcon({ className }: { className?: string }) {
   return (
@@ -46,6 +47,7 @@ export function VerdictBlock({
   }
 
   return (
+    <ScrollReveal>
     <section id="verdict" data-verdict aria-labelledby="verdict-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="relative bg-gradient-to-br from-indigo-950 via-purple-900 to-indigo-900 rounded-2xl overflow-hidden shadow-xl shadow-purple-900/30 border border-purple-700/30">
         {/* Decorative mesh overlay */}
@@ -150,5 +152,6 @@ export function VerdictBlock({
         </div>
       </div>
     </section>
+    </ScrollReveal>
   );
 }

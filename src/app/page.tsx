@@ -131,6 +131,7 @@ export default async function HomePage() {
     accessMode: ["textual"],
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     educationalLevel: "General",
     teaches: teachesDefinedTerm("How to compare any two things side-by-side using structured data, expert-reviewed verdicts, and visual attribute tables", SITE_URL),
     educationalUse: "reference",

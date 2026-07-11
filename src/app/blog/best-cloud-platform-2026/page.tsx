@@ -106,6 +106,7 @@ const articleSchema = {
   audience: { "@type": "Audience", audienceType: "Developers, DevOps Engineers, CTOs, Businesses", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
   accessMode: ["textual"],
   accessibilityFeature: ["tableOfContents", "readingOrder", "structuralNavigation", "alternativeText"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1"] },
   author: {
     "@type": "Person",

@@ -161,6 +161,7 @@ export default function PartnershipsPage() {
     audience: { "@type": "Audience", audienceType: "Publishers, Brands, Agencies, Researchers", geographicArea: { "@type": "AdministrativeArea", name: "Worldwide" } },
     accessMode: ["textual"],
     accessibilityFeature: ["readingOrder", "structuralNavigation"],
+    accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "p:first-of-type"] },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },

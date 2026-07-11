@@ -312,6 +312,7 @@ function bestPageSchema(entry: BestEntry) {
         accessMode: ["textual"],
         accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
         accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
+        accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
         publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
         ethicsPolicy: `${SITE_URL}/disclaimer`,

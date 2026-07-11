@@ -243,4 +243,22 @@ export function trackVerdictFeedbackVote(slug: string, vote: "up" | "down") {
 export function trackVerdictFeedbackReasonSubmit(slug: string, vote: "up" | "down") {
   trackEvent("verdict_feedback_reason_submit", { comparison_slug: slug, vote });
 }
+
+/* UX study recruitment banner (DAN-1980) — recruit n=5 usability-study participants */
+export function trackUxStudyBannerShown(page: string) {
+  trackEvent("ux_study_banner_shown", { page });
+  posthog.capture("ux_study_banner_shown", { page });
+}
+
+export function trackUxStudyBannerClick(page: string) {
+  trackEvent("ux_study_banner_click", { page });
+  trackEvent("generate_lead", { lead_source: "ux_study", page });
+  posthog.capture("ux_study_banner_clicked", { page });
+}
+
+export function trackUxStudyBannerDismiss(page: string) {
+  trackEvent("ux_study_banner_dismiss", { page });
+  posthog.capture("ux_study_banner_dismissed", { page });
+}
+
 export { trackEvent };

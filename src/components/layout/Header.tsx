@@ -286,20 +286,22 @@ export function Header() {
                     )}
                   </div>
 
-                  {/* Expandable subcategories */}
-                  <div id={`mobile-subs-${item.slug}`} aria-hidden={!isExpanded} className={`overflow-hidden transition-all duration-200 ${isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
-                    <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
-                      {subs.map((sub) => (
-                        <Link
-                          key={sub.slug}
-                          href={`/category/${item.slug}/${sub.slug}`}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
-                        >
-                          <span aria-hidden="true">{sub.icon}</span>
-                          <span className="truncate">{sub.name}</span>
-                        </Link>
-                      ))}
+                  {/* Expandable subcategories — grid-rows trick for smooth natural-height animation */}
+                  <div id={`mobile-subs-${item.slug}`} aria-hidden={!isExpanded} className={`grid transition-all duration-200 ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                    <div className="overflow-hidden">
+                      <div className="grid grid-cols-2 gap-0.5 pb-2 pl-2">
+                        {subs.map((sub) => (
+                          <Link
+                            key={sub.slug}
+                            href={`/category/${item.slug}/${sub.slug}`}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
+                          >
+                            <span aria-hidden="true">{sub.icon}</span>
+                            <span className="truncate">{sub.name}</span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>

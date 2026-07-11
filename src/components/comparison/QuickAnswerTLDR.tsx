@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type { QuickAnswerTLDR as QuickAnswerData, ComparisonEntityData } from "@/types";
 
 interface QuickAnswerTLDRProps {
@@ -51,6 +51,22 @@ function CopyTldrButton({ text }: { text: string }) {
 }
 
 export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _entityB }: QuickAnswerTLDRProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   if (!quickAnswer.tldr) return null;
 
   // FAQPage JSON-LD for the TL;DR Q&A is intentionally NOT emitted here.
@@ -60,7 +76,7 @@ export function QuickAnswerTLDR({ quickAnswer, entityA: _entityA, entityB: _enti
   return (
     <>
       <section id="short-answer" aria-label="Quick Answer" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-3 scroll-mt-28">
-        <div className="bg-gradient-to-br from-blue-50 via-indigo-50/60 to-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto relative overflow-hidden">
+        <div ref={cardRef} className={`bg-gradient-to-br from-blue-50 via-indigo-50/60 to-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-6 max-w-3xl mx-auto relative overflow-hidden transition-[opacity,transform] duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
           {/* Top gradient accent stripe */}
           <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-indigo-500 to-violet-400" />
           {/* Left accent bar */}

@@ -95,6 +95,7 @@ const schema = {
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
   license: "https://creativecommons.org/licenses/by/4.0/",
   accessibilityFeature: ["readingOrder", "structuralNavigation", "alternativeText"],
+  accessibilitySummary: "Structured comparison content with table of contents, heading navigation, alternative text for images, and logical reading order. All data tables include captions and row/column headers.",
   timeRequired: "PT3M",
   wordCount: 600,
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -255,7 +256,7 @@ export default function PasswordManagerMethodologyPage() {
         <h2 id="method-corrections-heading" className="text-2xl font-display font-bold text-text">5. Correction policy</h2>
         <p className="text-text-secondary leading-relaxed">
           If you identify an error — factual, numerical, or attributional — email{" "}
-          <a href="mailto:contact@aversusb.net" className="text-primary-600 hover:underline">contact@aversusb.net</a>{" "}
+          <a href="mailto:daniarozin@gmail.com" className="text-primary-600 hover:underline">daniarozin@gmail.com</a>{" "}
           with the claim, your proposed correction, and a primary source. We aim to respond within
           48 hours and publish corrections with a visible correction notice and updated{" "}
           <code className="text-sm bg-surface-alt px-1 rounded">dateModified</code> timestamp.

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE_URL } from "@/lib/utils/constants";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 interface ExpertAnalysisProps {
   analysis: string;
@@ -14,6 +15,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
   const paragraphs = analysis.split(/\n\n+/).filter(Boolean);
 
   return (
+    <ScrollReveal delay={60}>
     <section
       id="expert-analysis"
       aria-labelledby="expert-analysis-heading"
@@ -103,5 +105,6 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
         </div>
       </div>
     </section>
+    </ScrollReveal>
   );
 }

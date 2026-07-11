@@ -206,9 +206,11 @@ export function VersionHistory({
           </div>
         </button>
 
-        {/* Expanded timeline */}
-        {isExpanded && (
-          <div id="version-history-panel" className="px-6 pb-6 pt-2 border-t border-indigo-100 dark:border-indigo-800/40">
+        {/* Expanded timeline — always in DOM for smooth animation; grid-rows collapses visually */}
+        <div className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+          <div id="version-history-panel" className="overflow-hidden">
+            <div className="h-px bg-indigo-100 dark:bg-indigo-800/40 mx-0" />
+            <div className="px-6 pb-6 pt-2">
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <div aria-hidden="true" className="animate-spin rounded-full h-6 w-6 border-2 border-indigo-300 border-t-indigo-600" />
@@ -372,8 +374,9 @@ export function VersionHistory({
                 </div>
               </div>
             )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

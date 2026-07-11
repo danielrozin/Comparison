@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { ComparisonEntityData } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const INITIAL_SHOW = 5;
 
@@ -65,6 +66,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
   const totalCons = entities.reduce((s, e) => s + (e.cons?.length ?? 0), 0);
 
   return (
+    <ScrollReveal delay={50}>
     <section id="pros-cons" aria-labelledby="pros-cons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -271,5 +273,6 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
         })}
       </div>
     </section>
+    </ScrollReveal>
   );
 }
