@@ -435,12 +435,25 @@ export default async function BestPage({ params }: PageProps) {
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-emerald-200">
                 {entry.authorName && (
-                  <span className="flex items-center gap-1.5">
-                    <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    {entry.authorUrl ? (
-                      <Link href={entry.authorUrl} className="hover:text-white transition-colors">{entry.authorName}</Link>
-                    ) : entry.authorName}
-                  </span>
+                  entry.authorUrl ? (
+                    <Link href={entry.authorUrl} rel="author" className="flex items-center gap-2 hover:text-white transition-colors group">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all" aria-hidden="true">
+                        <span className="text-white font-bold text-xs tracking-tight select-none leading-none">
+                          {entry.authorName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="font-semibold">{entry.authorName}</span>
+                    </Link>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm" aria-hidden="true">
+                        <span className="text-white font-bold text-xs tracking-tight select-none leading-none">
+                          {entry.authorName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="font-semibold">{entry.authorName}</span>
+                    </span>
+                  )
                 )}
                 {entry.updatedAt && (
                   <time dateTime={new Date(entry.updatedAt).toISOString()} className="flex items-center gap-1.5">
