@@ -280,17 +280,26 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           {comparison.metadata?.metaTitle || comparison.title}
         </h1>
 
-        {/* Last Updated */}
-        {comparison.metadata?.updatedAt && (
-          <p className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-1.5 motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
-            <time dateTime={comparison.metadata.updatedAt}>
-              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
-            </time>
-          </p>
-        )}
+        {/* Author + Last Updated — E-E-A-T attribution always visible */}
+        <div className="text-center text-xs sm:text-sm text-primary-200/80 mb-6 sm:mb-8 flex items-center justify-center gap-2 flex-wrap motion-safe:animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
+              <span className="text-white font-bold leading-none" style={{ fontSize: "8px" }}>DR</span>
+            </span>
+            <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold">Daniel Rozin</Link>
+          </span>
+          {comparison.metadata?.updatedAt && (
+            <>
+              <span aria-hidden="true" className="text-primary-300/40">·</span>
+              <time dateTime={comparison.metadata.updatedAt} className="flex items-center gap-1">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+              </time>
+            </>
+          )}
+        </div>
 
         {/* Short Answer preview badge — AEO/GEO snippet signal */}
         {(comparison.quickAnswer?.tldr || comparison.shortAnswer) && (
