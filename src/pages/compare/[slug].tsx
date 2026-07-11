@@ -1237,18 +1237,24 @@ function MultiEntityLayout({
         </div>
       </div>
 
+      {/* Author byline — E-E-A-T signal (multi-entity) */}
+      <AuthorByline
+        updatedAt={comparison.metadata.updatedAt}
+        isHumanReviewed={comparison.metadata.isHumanReviewed}
+        wordCount={[
+          comparison.shortAnswer,
+          comparison.verdict,
+          comparison.expertAnalysis,
+          ...comparison.keyDifferences.map((d) => `${d.entityAValue} ${d.entityBValue}`),
+          ...comparison.faqs.map((f) => f.answer),
+        ].filter(Boolean).join(" ").split(/\s+/).length}
+      />
+
       {/* Multi-entity hero: title + N entity cards in a grid */}
       <section aria-labelledby="compare-hero-heading" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         <h1 id="compare-hero-heading" className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-center text-text mb-3">
           {comparison.title}
         </h1>
-        {comparison.metadata?.updatedAt && (
-          <p className="text-center text-xs sm:text-sm text-text-secondary mb-6 flex items-center justify-center gap-1.5">
-            <time dateTime={comparison.metadata.updatedAt}>
-              Updated {new Date(comparison.metadata.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </time>
-          </p>
-        )}
         <div
           className="grid gap-3 sm:gap-4"
           style={{ gridTemplateColumns: `repeat(${Math.min(n, 3)}, minmax(0, 1fr))` }}
