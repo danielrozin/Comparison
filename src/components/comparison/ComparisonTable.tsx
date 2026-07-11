@@ -3,6 +3,43 @@
 import { useState, useRef, useEffect } from "react";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
+function downloadCSV(
+  attributes: ComparisonAttribute[],
+  entityAName: string,
+  entityBName: string
+) {
+  const rows: string[][] = [
+    ["Category", "Attribute", entityAName, entityBName, "Winner"],
+    ...attributes.map((attr) => {
+      const winner =
+        attr.values[0]?.winner === true
+          ? entityAName
+          : attr.values[1]?.winner === true
+          ? entityBName
+          : attr.values[0]?.winner === false && attr.values[1]?.winner === false
+          ? "Tie"
+          : "";
+      return [
+        attr.category || "General",
+        attr.name + (attr.unit ? ` (${attr.unit})` : ""),
+        attr.values[0]?.valueText || "",
+        attr.values[1]?.valueText || "",
+        winner,
+      ];
+    }),
+  ];
+  const csv = rows
+    .map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(","))
+    .join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${entityAName.replace(/\s+/g, "-").toLowerCase()}-vs-${entityBName.replace(/\s+/g, "-").toLowerCase()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // Feature flag for A/B testing the redesigned table
 const TABLE_REDESIGN =
   typeof window !== "undefined"
@@ -572,6 +609,17 @@ function RedesignedTable({
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
             {allOpen ? "Collapse all" : "Expand all"}
+          </button>
+          <button
+            type="button"
+            onClick={() => downloadCSV(attributes, entityA.name, entityB.name)}
+            title="Download comparison as CSV"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text transition-all bg-surface-alt hover:bg-border border border-transparent px-3 py-1.5 rounded-lg"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            CSV
           </button>
         </div>
       </div>

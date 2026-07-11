@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { RelatedComparison } from "@/types";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 const CARD_GRADIENTS = [
   "from-primary-400 to-indigo-500",
@@ -46,6 +47,7 @@ export function RelatedComparisons({
   sourceSlug?: string;
 }) {
   return (
+    <ScrollReveal delay={40}>
     <section id="related-comparisons" aria-labelledby="related-comparisons-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -140,5 +142,6 @@ export function RelatedComparisons({
         </Link>
       </div>
     </section>
+    </ScrollReveal>
   );
 }
