@@ -118,18 +118,18 @@ export function TrendingCard({
               Trending
             </span>
           ) : (
-            <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+            <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-primary-500 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-150">
               Compare
-              <svg className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <svg className="w-2.5 h-2.5 sm:group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </span>
           )}
         </div>
 
-        {/* "Read" CTA — appears on hover for non-top-three */}
+        {/* CTA — always visible on mobile (no hover on touch), hover-expand on desktop */}
         {!isTopThree && (
-          <div className="overflow-hidden max-h-0 group-hover:max-h-8 transition-all duration-200 mt-0 group-hover:mt-2">
+          <div className="mt-2 sm:overflow-hidden sm:max-h-0 sm:group-hover:max-h-8 sm:transition-all sm:duration-200 sm:mt-0 sm:group-hover:mt-2">
             <div className="flex items-center justify-center gap-1 text-xs font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 rounded-lg py-1.5">
               View Comparison
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">

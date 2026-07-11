@@ -28,6 +28,7 @@ export function MobileBottomNav() {
   const isTrending = pathname === "/trending";
   const isBlog = pathname?.startsWith("/blog") ?? false;
   const isReviews = pathname?.startsWith("/reviews") ?? false;
+  const isComparePage = pathname?.startsWith("/compare/") ?? false;
 
   return (
     <nav
@@ -66,7 +67,7 @@ export function MobileBottomNav() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
           </div>
-          <span className="text-xs font-semibold tracking-tight text-text-secondary/60">Search</span>
+          <span className="text-xs font-semibold tracking-tight text-text-secondary/60">{isComparePage ? "Compare" : "Search"}</span>
         </button>
 
         {/* Trending */}

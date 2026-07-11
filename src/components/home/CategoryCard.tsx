@@ -67,8 +67,8 @@ export function CategoryCard({
         {category.name}
       </span>
 
-      {/* Arrow that slides in on hover */}
-      <div className="flex items-center gap-1 text-xs font-semibold text-primary-500 opacity-0 -mt-1 group-hover:opacity-100 group-hover:mt-0 transition-all duration-200">
+      {/* Arrow — always visible on mobile (no hover on touch), fade-in on desktop hover */}
+      <div className="flex items-center gap-1 text-xs font-semibold text-primary-500 sm:opacity-0 sm:-mt-1 sm:group-hover:opacity-100 sm:group-hover:mt-0 sm:transition-all sm:duration-200">
         Browse
         <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />

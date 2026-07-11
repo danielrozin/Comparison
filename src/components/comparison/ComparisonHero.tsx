@@ -3,6 +3,7 @@ import type { ComparisonPageData, ComparisonEntityData } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { AffiliateButton } from "./AffiliateButton";
+import { HeroShareButton } from "./HeroShareButton";
 
 function WinnerBadge() {
   return (
@@ -365,6 +366,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             >
               See differences
             </a>
+            <HeroShareButton />
           </div>
         )}
       </div>
