@@ -9,7 +9,7 @@ const PAGE_TITLE = `How We Compare Large Language Models — Methodology | ${SIT
 const LLM_METHOD_OG = `${SITE_URL}/api/og?title=${encodeURIComponent("LLM Comparison Methodology")}&type=trending`;
 const PAGE_DESCRIPTION =
   "Our column definitions, source tier hierarchy, recency policy, COI disclosure, and correction process for the A Versus B LLM comparison guide — structured to mirror the Wikipedia Comparison of large language models table.";
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -66,7 +66,7 @@ const schema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

@@ -60,6 +60,18 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    date: "2026-07-11",
+    version: "1.9.0",
+    title: "GEO/AEO Schema Freshness Sweep & topai.tools JSON-LD Rollout",
+    type: "improvement",
+    items: [
+      "Updated dateModified, contentReferenceTime, and lastReviewed across 17 pages (llm-comparisons, browser-comparison-2026, password-manager-comparison, alternatives, faq pages) — all freshness signals now reflect July 2026",
+      "Completed topai.tools JSON-LD structured data rollout across all 9 major page types (home, blog, tool pages, categories, alternatives, reviews, compare, trending, about)",
+      "Shipped WebPage + CollectionPage + BlogPosting ItemList + BreadcrumbList schema on topai.tools blog listing",
+      "Added speakable selectors and SearchAction potentialAction to topai.tools home page",
+    ],
+  },
+  {
     date: "2026-06-30",
     version: "1.8.0",
     title: "Accessibility Pass, Skip Navigation & Reduced-Motion Support",

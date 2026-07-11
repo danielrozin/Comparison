@@ -256,8 +256,8 @@ const collectionPageSchema = {
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   datePublished: "2026-05-01",
-  dateModified: "2026-05-22",
-  contentReferenceTime: "2026-05-22",
+  dateModified: "2026-07-11",
+  contentReferenceTime: "2026-07-11",
   thumbnailUrl: OG_IMAGE,
   image: {
     "@type": "ImageObject",

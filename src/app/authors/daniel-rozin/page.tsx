@@ -52,19 +52,19 @@ const ARTICLES = [
     title: "Best Password Managers Compared (2026)",
     url: "/password-manager-comparison",
 
-    locale: "en_US",    date: "2026-05-22",
+    locale: "en_US",    date: "2026-07-11",
   },
   {
     title: "Best Browsers Compared (2026)",
     url: "/browser-comparison-2026",
 
-    locale: "en_US",    date: "2026-05-22",
+    locale: "en_US",    date: "2026-07-11",
   },
   {
     title: "LLM Comparison: GPT-4o vs Claude vs Gemini (2026)",
     url: "/llm-comparisons",
 
-    locale: "en_US",    date: "2026-05-22",
+    locale: "en_US",    date: "2026-07-11",
   },
 ];
 
