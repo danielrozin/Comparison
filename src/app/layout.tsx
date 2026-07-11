@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav, UxStudyBanner } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
 
@@ -218,6 +218,7 @@ export default async function RootLayout({
         <MetaPixel />
         <ClarityTags />
         <ExperimentProviderServer>
+          <UxStudyBanner />
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />

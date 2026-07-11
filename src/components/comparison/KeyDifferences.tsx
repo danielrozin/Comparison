@@ -165,26 +165,29 @@ export function KeyDifferencesBlock({
 
       <ScorecardHeader differences={differences} entityA={entityA} entityB={entityB} />
 
-      {/* Filter tabs */}
-      <div className="flex items-center gap-2 flex-wrap mb-4" role="group" aria-label="Filter by winner">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setFilter(tab.id)}
-            aria-pressed={filter === tab.id}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
-              filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
-            }`}
-          >
-            {tab.label}
-            <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
-              filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
-            }`}>
-              {tab.count}
-            </span>
-          </button>
-        ))}
+      {/* Filter tabs — horizontal scroll on mobile to handle long entity names; wraps on sm+ */}
+      <div className="relative mb-4">
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-1 -mb-1 sm:flex-wrap sm:overflow-x-visible sm:pb-0 sm:mb-0" role="group" aria-label="Filter by winner">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setFilter(tab.id)}
+              aria-pressed={filter === tab.id}
+              className={`inline-flex flex-shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
+                filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
+              }`}
+            >
+              {tab.label}
+              <span className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold ${
+                filter === tab.id ? "bg-white/25 text-inherit" : "bg-surface-alt text-text-secondary"
+              }`}>
+                {tab.count}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 && (

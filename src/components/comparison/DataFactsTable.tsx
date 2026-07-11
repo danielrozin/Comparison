@@ -32,7 +32,7 @@ export function DataFactsTable({ attributes, entityA, entityB }: DataFactsTableP
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border shadow-sm" role="region" aria-label="Key facts table — scroll to see all columns">
+      <div className="overflow-x-auto rounded-xl border border-border shadow-sm" tabIndex={0} role="region" aria-label="Key facts table — scroll to see all columns">
           <table className="w-full text-sm" aria-label={`${entityA.name} vs ${entityB.name} — key numeric facts`}>
             <thead>
               <tr className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-white">
