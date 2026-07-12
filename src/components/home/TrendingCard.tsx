@@ -1,12 +1,6 @@
 import Link from "next/link";
 import type { TrendingComparison } from "@/types";
 
-function formatViews(count: number): string {
-  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
-  if (count >= 1_000) return `${(count / 1_000).toFixed(0)}K`;
-  return count.toString();
-}
-
 const RANK_COLORS = [
   "from-amber-400 to-orange-500",   // #1
   "from-gray-300 to-gray-400",      // #2
@@ -103,13 +97,13 @@ export function TrendingCard({
           </div>
         </div>
 
-        {/* View count with trending arrow */}
+        {/* Category — NOT a view count. `viewCount` is seed data, not analytics,
+            so it must never be rendered as traffic (DAN-2037). */}
         <div className="flex items-center gap-1.5 text-xs text-text-secondary mt-auto pt-2 border-t border-border/50">
           <svg className="w-3 h-3 text-text-secondary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
           </svg>
-          <span>{formatViews(comparison.viewCount)} views</span>
+          <span className="truncate capitalize">{comparison.category}</span>
           {isTopThree ? (
             <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-orange-600 bg-orange-50 border border-orange-100 px-1.5 py-0.5 rounded-full">
               <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
