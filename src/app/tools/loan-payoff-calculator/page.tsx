@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", site: "@aversusb", title: TITLE, description: DESCRIPTION },
 };
 
+const TODAY = new Date().toISOString().slice(0, 10);
+
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -40,6 +42,34 @@ const schema = {
         { "@type": "ListItem", position: 2, name: "Tools", item: { "@type": "WebPage", "@id": `${SITE_URL}/tools`, url: `${SITE_URL}/tools` } },
         { "@type": "ListItem", position: 3, name: "Loan Payoff Calculator", item: { "@type": "WebPage", "@id": CANONICAL, url: CANONICAL } },
       ],
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${CANONICAL}#webpage`,
+      url: CANONICAL,
+      name: TITLE,
+      description: DESCRIPTION,
+      abstract: "Free online loan payoff calculator. Enter your loan balance, interest rate, and monthly payment to see your exact payoff date, total interest paid, and full amortization schedule — no account required.",
+      inLanguage: "en-US",
+      genre: "Financial Calculator",
+      interactivityType: "active",
+      isAccessibleForFree: true,
+      datePublished: "2026-07-01",
+      dateModified: TODAY,
+      contentReferenceTime: TODAY,
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      breadcrumb: { "@id": `${CANONICAL}#breadcrumbs` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["h1", "h2", "dl dt", "dl dd", "[data-speakable]"],
+        xpath: [
+          "//h1",
+          "//h2",
+          "//section[contains(@class,'faq')]//dt",
+          "//section[contains(@class,'faq')]//dd",
+        ],
+      },
+      mainEntity: { "@id": `${CANONICAL}#app` },
     },
     {
       "@type": "WebApplication",
@@ -54,6 +84,14 @@ const schema = {
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      potentialAction: [
+        {
+          "@type": "UseAction",
+          target: CANONICAL,
+          name: "Calculate Loan Payoff",
+          description: "Enter loan balance, interest rate, and monthly payment to see payoff date and amortization schedule.",
+        },
+      ],
     },
     {
       "@type": "FAQPage",
