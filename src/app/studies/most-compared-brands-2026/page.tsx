@@ -71,11 +71,19 @@ function fmt(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+// The entity taxonomy carries singular and plural forms of the same type, plus
+// several ways of saying "streaming service". Both spellings need a label or the
+// table prints a raw slug.
 const TYPE_LABELS: Record<string, string> = {
   software: "SaaS",
   company: "Company",
   product: "Product",
+  products: "Product",
   brand: "Brand",
+  technology: "Technology",
+  platform: "Platform",
+  streaming: "Streaming",
+  entertainment: "Streaming",
   team: "Sports team",
 };
 
