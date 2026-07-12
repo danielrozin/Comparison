@@ -45,6 +45,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setSearchHintIdx((i) => (i + 1) % SEARCH_HINTS.length), 2800);
     return () => clearInterval(id);
   }, [SEARCH_HINTS.length]);

@@ -52,6 +52,7 @@ export function CategoryCard({
   return (
     <Link
       href={`/category/${category.slug}`}
+      aria-label={`Browse ${category.name} comparisons`}
       className={`group relative flex flex-col items-center gap-3 p-5 bg-gradient-to-br ${gradient} border border-border rounded-2xl hover:border-primary-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-center overflow-hidden`}
     >
       {/* Shine sweep on hover */}

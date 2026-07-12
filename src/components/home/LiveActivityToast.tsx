@@ -38,6 +38,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
 
   useEffect(() => {
     if (!visible) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const interval = setInterval(next, 6000);
     return () => clearInterval(interval);
   }, [visible, next]);
