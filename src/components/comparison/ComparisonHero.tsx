@@ -82,7 +82,7 @@ function EntityAvatar({
       <div
         className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
       >
-        <span className="text-2xl sm:text-4xl font-black text-white drop-shadow">
+        <span aria-hidden="true" className="text-2xl sm:text-4xl font-black text-white drop-shadow">
           {initials || entity.name.charAt(0)}
         </span>
       </div>
@@ -148,7 +148,7 @@ function EntityCard({
     >
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
-      <h2 className="text-base sm:text-xl font-bold text-white mb-1">
+      <h3 className="text-base sm:text-xl font-bold text-white mb-1">
         <Link
           href={`/entity/${entity.slug}`}
           className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30"
@@ -156,7 +156,7 @@ function EntityCard({
         >
           {entity.name}
         </Link>
-      </h2>
+      </h3>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>
       )}

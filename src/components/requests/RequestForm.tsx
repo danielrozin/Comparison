@@ -112,6 +112,8 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             placeholder="e.g. Python"
             maxLength={200}
             required
+            aria-invalid={error ? "true" : undefined}
+            aria-describedby={error ? "request-form-error" : undefined}
             className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           />
         </div>
@@ -128,6 +130,8 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
             placeholder="e.g. JavaScript"
             maxLength={200}
             required
+            aria-invalid={error ? "true" : undefined}
+            aria-describedby={error ? "request-form-error" : undefined}
             className="w-full px-4 py-2.5 border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
           />
         </div>

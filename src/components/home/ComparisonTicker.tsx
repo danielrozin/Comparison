@@ -37,7 +37,7 @@ export function ComparisonTicker({ items }: { items: TrendingComparison[] }) {
                   href={`/compare/${item.slug}`}
                   className="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-medium text-text hover:text-primary-700 group transition-colors duration-150 border-r border-border/40 last:border-r-0"
                   tabIndex={idx >= items.length ? -1 : 0}
-                  aria-hidden={idx >= items.length}
+                  aria-hidden={idx >= items.length ? "true" : undefined}
                 >
                   <span className="text-text-secondary/60">
                     <CategoryIcon category={item.category} />

@@ -163,6 +163,9 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
             </svg>
           )}
         </button>
+        <span role="status" aria-live="polite" className="sr-only">
+          {copied ? "Copied to clipboard" : ""}
+        </span>
       </div>
     </nav>
   );

@@ -26,7 +26,7 @@ function EntityAvatar({ entity, variant }: { entity: ComparisonEntityData; varia
   );
 }
 
-function ShowMoreButton({ hidden, onToggle, label }: { hidden: number; onToggle: () => void; label: string }) {
+function ShowMoreButton({ hidden, onToggle, label, controlsId }: { hidden: number; onToggle: () => void; label: string; controlsId?: string }) {
   return (
     <button
       type="button"
@@ -34,6 +34,7 @@ function ShowMoreButton({ hidden, onToggle, label }: { hidden: number; onToggle:
       className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
       aria-label={label}
       aria-expanded={false}
+      aria-controls={controlsId}
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -43,7 +44,7 @@ function ShowMoreButton({ hidden, onToggle, label }: { hidden: number; onToggle:
   );
 }
 
-function ShowLessButton({ onToggle }: { onToggle: () => void }) {
+function ShowLessButton({ onToggle, controlsId }: { onToggle: () => void; controlsId?: string }) {
   return (
     <button
       type="button"
@@ -51,6 +52,7 @@ function ShowLessButton({ onToggle }: { onToggle: () => void }) {
       className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
       aria-label="Show less"
       aria-expanded={true}
+      aria-controls={controlsId}
     >
       <svg className="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -108,6 +110,8 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
 
           const togglePros = () => setShowAllPros((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
           const toggleCons = () => setShowAllCons((prev) => { const next = [...prev]; next[idx] = !prev[idx]; return next; });
+          const prosOverflowId = `pros-overflow-${entity.id ?? idx}`;
+          const consOverflowId = `cons-overflow-${entity.id ?? idx}`;
 
           return (
             <div
@@ -193,7 +197,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         </div>
                       ))}
                       {pros.length > INITIAL_SHOW && (
-                        <div className={`grid transition-all duration-300 ease-in-out ${prosExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                        <div id={prosOverflowId} className={`grid transition-all duration-300 ease-in-out ${prosExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                           <div className="overflow-hidden space-y-1">
                             {pros.slice(INITIAL_SHOW).map((pro, i) => (
                               <div key={i + INITIAL_SHOW} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-green-50/70 transition-colors duration-150 cursor-default">
@@ -210,10 +214,10 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       )}
                     </div>
                     {hiddenPros > 0 && !prosExpanded && (
-                      <ShowMoreButton hidden={hiddenPros} onToggle={togglePros} label={`Show ${hiddenPros} more pros for ${entity.name}`} />
+                      <ShowMoreButton hidden={hiddenPros} onToggle={togglePros} label={`Show ${hiddenPros} more pros for ${entity.name}`} controlsId={prosOverflowId} />
                     )}
                     {prosExpanded && pros.length > INITIAL_SHOW && (
-                      <ShowLessButton onToggle={togglePros} />
+                      <ShowLessButton onToggle={togglePros} controlsId={prosOverflowId} />
                     )}
                   </div>
                 )}
@@ -245,7 +249,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                         </div>
                       ))}
                       {cons.length > INITIAL_SHOW && (
-                        <div className={`grid transition-all duration-300 ease-in-out ${consExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                        <div id={consOverflowId} className={`grid transition-all duration-300 ease-in-out ${consExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                           <div className="overflow-hidden space-y-1">
                             {cons.slice(INITIAL_SHOW).map((con, i) => (
                               <div key={i + INITIAL_SHOW} role="listitem" className="flex items-start gap-2.5 text-sm text-text group/item -mx-2 px-2 py-1 rounded-lg hover:bg-red-50/70 transition-colors duration-150 cursor-default">
@@ -262,10 +266,10 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                       )}
                     </div>
                     {hiddenCons > 0 && !consExpanded && (
-                      <ShowMoreButton hidden={hiddenCons} onToggle={toggleCons} label={`Show ${hiddenCons} more cons for ${entity.name}`} />
+                      <ShowMoreButton hidden={hiddenCons} onToggle={toggleCons} label={`Show ${hiddenCons} more cons for ${entity.name}`} controlsId={consOverflowId} />
                     )}
                     {consExpanded && cons.length > INITIAL_SHOW && (
-                      <ShowLessButton onToggle={toggleCons} />
+                      <ShowLessButton onToggle={toggleCons} controlsId={consOverflowId} />
                     )}
                   </div>
                 )}

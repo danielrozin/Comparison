@@ -71,7 +71,7 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
               <button
                 type="button"
                 onClick={() => scrollTo(h.id)}
-                aria-current={activeId === h.id ? "true" : undefined}
+                aria-current={activeId === h.id ? "location" : undefined}
                 className={`w-full text-left leading-snug transition-colors duration-100 rounded px-2 py-1 ${
                   h.level === 3 ? "ml-3 text-xs" : "text-sm"
                 } ${

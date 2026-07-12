@@ -106,7 +106,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                   <a
                     href={`#${item.id}`}
                     onClick={() => setIsOpen(false)}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "location" : undefined}
                     className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
                       isActive
                         ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
