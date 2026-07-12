@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
 import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
@@ -1265,15 +1266,12 @@ function MultiEntityLayout({
               className="bg-white border border-border rounded-xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow"
             >
               {ent.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={ent.imageUrl}
                   alt={ent.name}
                   width={80}
                   height={80}
                   className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover mx-auto mb-3 ring-2 ring-white shadow"
-                  loading="lazy"
-                  decoding="async"
                 />
               ) : (
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 bg-gradient-to-br from-primary-100 to-accent-100 text-primary-700 flex items-center justify-center font-bold text-2xl">

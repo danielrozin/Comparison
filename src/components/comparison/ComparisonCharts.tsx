@@ -246,9 +246,8 @@ function BarChartView({
               border: "1px solid #e5e7eb",
               boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
             }}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            formatter={(value, _name, props: any) => {
-              const unit = (props?.payload?.unit as string) || "";
+            formatter={(value, _name, props: { payload?: { unit?: string } }) => {
+              const unit = props?.payload?.unit ?? "";
               return [`${value}${unit ? ` ${unit}` : ""}`, _name];
             }}
           />
