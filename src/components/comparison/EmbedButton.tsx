@@ -113,7 +113,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
         type="button"
         ref={triggerRef}
         onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
         title="Embed this comparison"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">

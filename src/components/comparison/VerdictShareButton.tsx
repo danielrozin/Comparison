@@ -30,7 +30,7 @@ export function VerdictShareButton({
   const tweetHref = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
   const linkedInHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
 
-  const btnBase = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200";
+  const btnBase = "inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] rounded-full text-xs font-semibold border transition-all duration-200";
   const btnDefault = "bg-white/10 border-white/20 text-white/70 hover:bg-white/20 hover:text-white";
 
   return (
