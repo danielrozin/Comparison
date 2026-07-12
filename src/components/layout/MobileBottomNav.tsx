@@ -43,7 +43,7 @@ export function MobileBottomNav() {
         <Link
           href="/"
           aria-current={isHome ? "page" : undefined}
-          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 ${
+          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset rounded-lg ${
             isHome ? "text-primary-600" : "text-text-secondary/70"
           }`}
         >
@@ -60,7 +60,7 @@ export function MobileBottomNav() {
           type="button"
           onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
           aria-label="Open search"
-          className="flex flex-col items-center justify-center gap-0.5 text-text-secondary/70 transition-colors duration-150 active:text-primary-600"
+          className="flex flex-col items-center justify-center gap-0.5 text-text-secondary/70 transition-colors duration-150 active:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset rounded-lg"
         >
           <div className="p-1.5 rounded-xl">
             <svg className="w-[19px] h-[19px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} aria-hidden="true">
@@ -74,7 +74,7 @@ export function MobileBottomNav() {
         <Link
           href="/trending"
           aria-current={isTrending ? "page" : undefined}
-          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 ${
+          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset rounded-lg ${
             isTrending ? "text-orange-500" : "text-text-secondary/70"
           }`}
         >
@@ -90,7 +90,7 @@ export function MobileBottomNav() {
         <Link
           href="/blog"
           aria-current={isBlog || isReviews ? "page" : undefined}
-          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 ${
+          className={`flex flex-col items-center justify-center gap-0.5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset rounded-lg ${
             isBlog || isReviews ? "text-violet-600" : "text-text-secondary/70"
           }`}
         >
