@@ -319,7 +319,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
         )}
 
         {/* Entity VS Cards */}
-        <div className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
+        <div role="group" aria-label={`${entityA.name} versus ${entityB.name}`} className="grid grid-cols-[1fr_auto_1fr] gap-3 sm:gap-6 items-start">
           <div className="motion-safe:animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <EntityCard entity={entityA} variant="a" isWinner={winner === "a"} />
           </div>

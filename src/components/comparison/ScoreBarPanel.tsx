@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import type { ComparisonEntityData } from "@/types";
 
 interface ScoreBarPanelProps {
@@ -43,8 +44,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
         {/* Entity A score */}
         <div className={`flex items-center gap-2 min-w-0 transition-all duration-500 ${animated && winnerIdx === 0 ? "scale-105" : ""}`}>
           {entityA.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={entityA.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
+            <Image src={entityA.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
           ) : (
             <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-blue-200">
               {entityA.name.charAt(0).toUpperCase()}
@@ -85,8 +85,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
             </div>
           </div>
           {entityB.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={entityB.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" loading="lazy" decoding="async" />
+            <Image src={entityB.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
           ) : (
             <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-200">
               {entityB.name.charAt(0).toUpperCase()}
