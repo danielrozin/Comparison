@@ -8,7 +8,7 @@ const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 const BROWSER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison 2026")}&type=article`;
 
 export const metadata: Metadata = {
@@ -70,7 +70,7 @@ const articleSchema = {
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   interactivityType: "expositive",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

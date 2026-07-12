@@ -157,6 +157,7 @@ export async function GET() {
   lines.push("- /category/{slug}/{subcategory}: CollectionPage, ItemList, BreadcrumbList, Dataset (DataCatalog member), SpeakableSpecification");
   lines.push("- /alternatives/{slug}: Article (TechArticle), ItemList, BreadcrumbList, SpeakableSpecification");
   lines.push("- /reviews/{slug}: ReviewPage (WebPage additionalType), AggregateRating, Product (with Review items), FAQPage (QAPage additionalType, synthetic Q&A from aggregation data), SpeakableSpecification");
+  lines.push("- /reviews/category/{slug}: CollectionPage, ItemList (SoftwareApplication items with AggregateRating), Dataset (DataCatalog member, distribution endpoint), FAQPage (synthetic Q&A for 'best {category}' queries), BreadcrumbList, SpeakableSpecification");
   lines.push("- /hub/{slug}: CollectionPage, Dataset, ItemList, FAQPage, BreadcrumbList, DefinedTermSet, SpeakableSpecification");
   lines.push("- /search: SearchResultsPage (with thumbnailUrl, image.contentUrl, contentReferenceTime, copyrightNotice, speakable, significantLink), BreadcrumbList, FAQPage (QAPage additionalType, 4 Q&A pairs covering search UX) — all with citation meta tags");
   lines.push("- /trending: CollectionPage, Dataset, ItemList");

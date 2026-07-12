@@ -8,7 +8,7 @@ const PAGE_URL = `${SITE_URL}/password-manager-comparison`;
 const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of the top 10 password managers in 2026 — encryption, zero-knowledge architecture, independent audits, pricing, and platform support. All data cited to primary sources.";
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 const PM_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Best Password Managers Compared 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ const articleSchema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

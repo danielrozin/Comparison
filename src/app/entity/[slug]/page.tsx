@@ -232,6 +232,16 @@ export default async function EntityPage({ params }: PageProps) {
       // use hasPart to discover which structured FAQ content belongs to this profile,
       // enabling FAQ rich results for "[entity] questions" queries.
       ...(hasCuratedFaqs && { hasPart: [{ "@type": "FAQPage", "@id": faqNodeId }] }),
+      // subjectOf — entity → DataCatalog edge. AI knowledge graph crawlers follow
+      // subjectOf from entity ProfilePages to the site's DataCatalog, establishing
+      // that this entity profile is part of a larger structured comparison dataset.
+      // This completes the entity → hub → DataCatalog traversal chain.
+      subjectOf: {
+        "@type": "DataCatalog",
+        "@id": `${SITE_URL}/#datacatalog`,
+        name: `${SITE_NAME} Comparison Database`,
+        url: SITE_URL,
+      },
       speakable: {
         "@type": "SpeakableSpecification",
         cssSelector: ["#entity-intro", "#entity-about", ".faq-answer"],

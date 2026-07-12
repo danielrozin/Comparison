@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 
 const schema = {
   "@context": "https://schema.org",
@@ -67,7 +67,7 @@ const schema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

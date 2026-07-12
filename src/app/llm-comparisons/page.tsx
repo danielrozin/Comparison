@@ -8,7 +8,7 @@ const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 const PAGE_TITLE = `LLM Comparison 2026: GPT-4o vs Claude vs Gemini vs Llama | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 12 leading large language models — parameters, context window, modality, license, and knowledge cutoff. Column structure mirrors Wikipedia's Comparison of large language models. All data cited to primary sources.";
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     "citation_journal_title": "A Versus B",
     "citation_language": "en",
     "citation_abstract": PAGE_DESCRIPTION,
-    "citation_publication_date": "2026-05-22",
-    "citation_online_date": "2026-05-22",
+    "citation_publication_date": "2026-07-11",
+    "citation_online_date": "2026-07-11",
     "citation_keywords": "LLM comparison, large language models, AI chatbots, ChatGPT vs Claude, GPT-4 benchmark 2026",
     "citation_fulltext_world_readable": "",
     "DC.title": PAGE_TITLE,
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     "DC.type": "Text",
     "DC.format": "text/html",
     "DC.identifier": PAGE_URL,
-    "DC.date": "2026-05-22",
+    "DC.date": "2026-07-11",
     "DC.subject": "Artificial Intelligence; Large Language Models; AI Comparison; ChatGPT; Claude; Gemini",
     "DC.rights": "https://creativecommons.org/licenses/by/4.0/",
     "DC.coverage": "United States; Global",
@@ -80,7 +80,7 @@ const articleSchema = {
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
   interactivityType: "expositive",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

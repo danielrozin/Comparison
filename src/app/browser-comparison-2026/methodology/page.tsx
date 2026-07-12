@@ -9,7 +9,7 @@ const PAGE_TITLE = `How We Test Browsers — Methodology | ${SITE_NAME}`;
 const BROWSER_METHOD_OG = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison Methodology")}&type=trending`;
 const PAGE_DESCRIPTION =
   "Our scoring rubric, data sources, recency policy, conflict-of-interest disclosure, and correction process for the A Versus B browser comparison guide 2026.";
-const LAST_UPDATED = "2026-05-22";
+const LAST_UPDATED = "2026-07-11";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -63,7 +63,7 @@ const schema = {
   creativeWorkStatus: "Published",
   isAccessibleForFree: true,
   conditionsOfAccess: "Free",
-  datePublished: "2026-05-22",
+  datePublished: "2026-07-11",
   dateModified: LAST_UPDATED,
   lastReviewed: LAST_UPDATED,
   contentReferenceTime: LAST_UPDATED,

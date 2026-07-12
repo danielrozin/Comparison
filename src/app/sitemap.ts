@@ -55,13 +55,14 @@ export default async function sitemap({
     // HB384-385: FAQPage schema added to all 5 legal pages — bump lastmod to signal freshness
     const LEGAL_DATE = "2026-07-11";
     // HB371: blog interactionStatistic (ReadAction viewCount) + llms.txt refresh (2026-07-10)
-    const ABOUT_DATE = "2026-07-10";
-    const STUDIES_DATE = "2026-07-10";
-    const COMPARISONS_DATE = "2026-06-01";
-    // Alternatives template received schema improvements in HB90-134 (E-E-A-T, accessibilityFeature, etc.)
-    const ALTERNATIVES_DATE = "2026-06-30";
-    const FAQ_DATE = "2026-07-10";
-    const CHANGELOG_DATE = "2026-07-10";
+    // HB-DAN1578: dateModified/contentReferenceTime freshness sweep across 17 pages (2026-07-11)
+    const ABOUT_DATE = "2026-07-11";
+    const STUDIES_DATE = "2026-07-11";
+    const COMPARISONS_DATE = "2026-07-11";
+    // Alternatives pages: dateModified/contentReferenceTime updated to 2026-07-11
+    const ALTERNATIVES_DATE = "2026-07-11";
+    const FAQ_DATE = "2026-07-11";
+    const CHANGELOG_DATE = "2026-07-11";
 
     // Derive dynamic-page lastmod from the most recently updated published content.
     // One cheap findFirst per content type — avoids N+1 per-category queries.
