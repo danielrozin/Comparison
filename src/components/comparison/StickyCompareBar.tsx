@@ -14,7 +14,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
   const [activeId, setActiveId] = useState("");
   const [entered, setEntered] = useState(false);
   const [copied, setCopied] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
 
   const handleCopy = useCallback(async () => {
@@ -65,8 +65,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
   if (!entered) return null;
 
   return (
-    <div
-      role="navigation"
+    <nav
       aria-label="Comparison quick navigation"
       className={`fixed top-16 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-border shadow-sm transition-all duration-300 ${
         visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
@@ -113,10 +112,11 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
         <div className="w-px h-5 bg-border flex-shrink-0" aria-hidden="true" />
 
         {/* Section jump links */}
-        <nav
+        <div
           ref={navRef}
-          className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-1"
+          role="group"
           aria-label="Jump to section"
+          className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide flex-1"
         >
           {sections.map((s) => {
             const isActive = activeId === s.id;
@@ -139,7 +139,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
               </a>
             );
           })}
-        </nav>
+        </div>
 
         {/* Copy link */}
         <button
@@ -164,6 +164,6 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
           )}
         </button>
       </div>
-    </div>
+    </nav>
   );
 }

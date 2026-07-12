@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ComparisonEntityData } from "@/types";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 
 interface ShortAnswerBlockProps {
   shortAnswer: string;
@@ -41,7 +42,7 @@ export function ShortAnswerBlock({
   // in lib/seo/schema.ts from comparison.faqs — Google allows only one FAQPage
   // per URL, and a near-duplicate single-Q schema can dilute the indexed one. (DAN-410)
   return (
-    <>
+    <ScrollReveal delay={40}>
       <section id="short-answer" aria-labelledby="short-answer-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2 scroll-mt-28">
         <div className="relative max-w-3xl mx-auto overflow-hidden">
           {/* Gradient border via wrapper */}
@@ -109,7 +110,7 @@ export function ShortAnswerBlock({
           </div>
         </div>
       </section>
-    </>
+    </ScrollReveal>
   );
 }
 

@@ -169,7 +169,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             <h2 id="faq-heading" className="text-2xl font-display font-bold text-text">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs text-text-secondary mt-0.5">
+            <p aria-live="polite" aria-atomic="true" className="text-xs text-text-secondary mt-0.5">
               {isSearching && filteredCount !== faqs.length
                 ? `${filteredCount} of ${faqs.length} questions`
                 : `${faqs.length} question${faqs.length !== 1 ? "s" : ""}`}
