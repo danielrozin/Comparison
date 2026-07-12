@@ -24,10 +24,24 @@ interface DailyRow {
   engagements: number;
 }
 
-interface TopComparison {
-  slug: string;
-  title: string;
-  viewCount: number;
+interface TopPage {
+  page: string;
+  slug: string | null;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+interface OrganicSearch {
+  available: boolean;
+  source: string;
+  windowDays: number;
+  clicks: number;
+  impressions: number;
+  avgPosition: number;
+  pagesWithImpressions: number;
+  note: string;
 }
 
 interface ReportData {
@@ -41,11 +55,11 @@ interface ReportData {
     totalComparisons: number;
     entities: number;
     blogArticles: number;
-    totalViewCount: number;
   };
   funnel: FunnelStep[];
   dailyBreakdown: DailyRow[];
-  topComparisons: TopComparison[];
+  organicSearch: OrganicSearch;
+  topPages: TopPage[];
   topCategories: Array<{ category: string; count: number }>;
   revenue: {
     totalAffiliateClicks: number;
@@ -261,16 +275,28 @@ export default function WeeklyReportPage() {
             {/* Top Pages + Categories */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <section className="bg-white border border-gray-200 rounded-xl p-5">
-                <h3 className="text-sm font-bold text-gray-700 mb-3">Top 10 Pages by Views</h3>
+                <h3 className="text-sm font-bold text-gray-700 mb-1">
+                  Top 10 Pages by Organic Clicks
+                </h3>
+                <p className="text-[11px] text-gray-400 mb-3">
+                  Google Search Console · last {data.organicSearch.windowDays}d
+                </p>
                 <div className="space-y-1.5">
-                  {data.topComparisons.length === 0 ? (
-                    <p className="text-xs text-gray-400">No published comparisons yet</p>
+                  {data.topPages.length === 0 ? (
+                    <p className="text-xs text-gray-400">
+                      {data.organicSearch.available
+                        ? "No pages with organic clicks in this window"
+                        : `No GSC data — ${data.organicSearch.note}`}
+                    </p>
                   ) : (
-                    data.topComparisons.map((c, i) => (
-                      <div key={c.slug} className="flex items-center gap-2 text-xs">
+                    data.topPages.map((p, i) => (
+                      <div key={p.page} className="flex items-center gap-2 text-xs">
                         <span className="w-5 text-gray-400 font-medium">{i + 1}.</span>
-                        <span className="flex-1 text-gray-700 truncate">{c.title || c.slug}</span>
-                        <span className="text-gray-500 font-medium">{c.viewCount}</span>
+                        <span className="flex-1 text-gray-700 truncate">
+                          {p.slug ? `/compare/${p.slug}` : p.page}
+                        </span>
+                        <span className="text-gray-400">{p.impressions.toLocaleString()} impr</span>
+                        <span className="text-gray-700 font-semibold">{p.clicks}</span>
                       </div>
                     ))
                   )}
@@ -343,16 +369,40 @@ export default function WeeklyReportPage() {
               </section>
             </div>
 
+            {/* Organic Search (real traffic — GSC) */}
+            <section className="bg-white border border-gray-200 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-gray-700 mb-1">Organic Search</h3>
+              <p className="text-[11px] text-gray-400 mb-3">
+                Google Search Console · last {data.organicSearch.windowDays}d · GSC lags ~2 days
+              </p>
+              {data.organicSearch.available ? (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {[
+                    { label: "Organic Clicks", value: data.organicSearch.clicks.toLocaleString() },
+                    { label: "Impressions", value: data.organicSearch.impressions.toLocaleString() },
+                    { label: "Avg Position", value: String(data.organicSearch.avgPosition) },
+                    { label: "Pages w/ Impressions", value: data.organicSearch.pagesWithImpressions.toLocaleString() },
+                  ].map((item) => (
+                    <div key={item.label} className="text-center">
+                      <p className="text-2xl font-bold text-gray-900">{item.value}</p>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400">No GSC data — {data.organicSearch.note}</p>
+              )}
+            </section>
+
             {/* Content Inventory */}
             <section className="bg-white border border-gray-200 rounded-xl p-5">
               <h3 className="text-sm font-bold text-gray-700 mb-3">Content Inventory</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
                   { label: "Published Comparisons", value: data.content.publishedComparisons },
                   { label: "Total Comparisons", value: data.content.totalComparisons },
                   { label: "Entities", value: data.content.entities },
                   { label: "Blog Articles", value: data.content.blogArticles },
-                  { label: "Total Views", value: data.content.totalViewCount },
                 ].map((item) => (
                   <div key={item.label} className="text-center">
                     <p className="text-2xl font-bold text-gray-900">{item.value.toLocaleString()}</p>

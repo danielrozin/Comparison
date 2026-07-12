@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { getPrisma } from "@/lib/db/prisma";
+import { getGSCTrafficSummary } from "@/lib/services/gsc-service";
 
 /**
  * AARRR Pirate Metrics API for AversusB
@@ -10,6 +11,12 @@ import { getPrisma } from "@/lib/db/prisma";
  * Metrics sourced from:
  * - PostgreSQL (Prisma): affiliate clicks, votes, subscribers, surveys, API keys, embed partners
  * - Redis: real-time events (searches, views, engagements)
+ * - Google Search Console: organic traffic (clicks/impressions/position)
+ *
+ * `comparisons.view_count` is deliberately NOT aggregated here: it is seed data
+ * from the 2026-03-19 import, not analytics (DAN-2037 / DAN-2048). Organic
+ * traffic comes from GSC; when GSC is unavailable the dashboard reports "no
+ * data" rather than a database number that looks like traffic.
  */
 
 interface AdminEvent {
@@ -65,11 +72,12 @@ export async function GET() {
   const sixtyDaysAgo = new Date(now);
   sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
-  // Fetch Redis data
-  const [events7d, events30d, recentSearches] = await Promise.all([
+  // Fetch Redis data + real organic traffic (GSC)
+  const [events7d, events30d, recentSearches, organicSearch] = await Promise.all([
     getRedisEvents(7),
     getRedisEvents(30),
     getRecentSearches(),
+    getGSCTrafficSummary(30),
   ]);
 
   // Daily breakdown for charts (last 30 days)
@@ -156,7 +164,6 @@ export async function GET() {
     comparisonRequestsThisWeek: 0,
     comparisonsThisWeek: 0,
     comparisonsPrevWeek: 0,
-    totalViewCount: 0,
     uniqueVoteSessions: 0,
     uniqueVoteSessionsThisWeek: 0,
   };
@@ -226,7 +233,6 @@ export async function GET() {
         apiKeysByTier,
         embedPartnersByTier,
         surveyRatings,
-        viewCountAgg,
         syndicatedReferralAgg,
         uniqueVoteSessions,
         uniqueVoteSessionsThisWeek,
@@ -236,7 +242,6 @@ export async function GET() {
         prisma.apiKey.groupBy({ by: ["tier"], _count: true }),
         prisma.embedPartner.groupBy({ by: ["tier"], _count: true }),
         prisma.interceptSurvey.aggregate({ _avg: { q3Rating: true }, where: { q3Rating: { not: null } } }),
-        prisma.comparison.aggregate({ _sum: { viewCount: true } }),
         prisma.syndicatedContent.aggregate({ _sum: { referralClicks: true }, where: { status: "published" } }),
         prisma.comparisonVote.findMany({ select: { sessionId: true }, distinct: ["sessionId"] }).then((r) => r.length),
         prisma.comparisonVote.findMany({ select: { sessionId: true }, distinct: ["sessionId"], where: { createdAt: { gte: weekAgo } } }).then((r) => r.length),
@@ -294,7 +299,6 @@ export async function GET() {
         comparisonRequestsThisWeek,
         comparisonsThisWeek,
         comparisonsPrevWeek,
-        totalViewCount: viewCountAgg._sum.viewCount || 0,
         uniqueVoteSessions,
         uniqueVoteSessionsThisWeek,
       };
@@ -350,7 +354,16 @@ export async function GET() {
       searchToViewRate,
       totalComparisons: dbMetrics.totalComparisons,
       publishedComparisons: dbMetrics.publishedComparisons,
-      totalViewCount: dbMetrics.totalViewCount,
+      organicSearch: {
+        available: organicSearch.available,
+        source: organicSearch.source,
+        windowDays: organicSearch.windowDays,
+        clicks: organicSearch.clicks,
+        impressions: organicSearch.impressions,
+        avgPosition: organicSearch.avgPosition,
+        pagesWithImpressions: organicSearch.pagesWithImpressions,
+        note: organicSearch.note,
+      },
       comparisonsThisWeek: dbMetrics.comparisonsThisWeek,
       comparisonsPrevWeek: dbMetrics.comparisonsPrevWeek,
       contentGrowth: wowChange(dbMetrics.comparisonsThisWeek, dbMetrics.comparisonsPrevWeek),
