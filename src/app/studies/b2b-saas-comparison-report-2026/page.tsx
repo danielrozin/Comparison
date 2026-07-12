@@ -11,7 +11,7 @@ const PATH = "/studies/b2b-saas-comparison-report-2026";
 const CANONICAL = `${SITE_URL}${PATH}`;
 const TITLE = "The B2B SaaS Comparison Report 2026 — Data Study";
 const DESCRIPTION =
-  "We analyzed 384 head-to-head SaaS comparisons to rank the most-compared B2B software tools, the hottest category rivalries, and where challengers are out-pacing incumbents in 2026.";
+  "We analyzed every published head-to-head SaaS comparison in our database to rank the most-compared B2B software tools, the hottest category rivalries, and where challengers are out-pacing incumbents in 2026.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("B2B SaaS Comparison Report 2026")}&type=trending`;
 
 export const metadata: Metadata = {

@@ -11,7 +11,7 @@ const PATH = "/studies/most-compared-brands-2026";
 const CANONICAL = `${SITE_URL}${PATH}`;
 const TITLE = "The Most-Compared Brands of 2026 — Data Study";
 const DESCRIPTION =
-  "We analyzed 1,600+ head-to-head comparisons to rank the brands, SaaS tools, and matchups people research most in 2026. See the full data study and methodology.";
+  "We analyzed every published head-to-head comparison in our database to rank the brands, SaaS tools, and matchups people research most in 2026. See the full data study and methodology.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Most-Compared Brands of 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -355,10 +355,11 @@ export default async function MostComparedStudyPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h2 id="brands-readership-heading" className="text-2xl font-display font-bold text-text">Biggest matchups by readership</h2>
+            <h2 id="brands-readership-heading" className="text-2xl font-display font-bold text-text">The most-connected matchups</h2>
           </div>
           <p className="text-text-secondary mb-5">
-            The single comparisons readers pull up most often — the marquee rivalries of 2026.
+            The marquee rivalries of 2026 — the matchups whose two sides are each compared against the
+            widest field of rivals, so they sit at the centre of the most buyer research.
           </p>
           <ol className="space-y-2">
             {study.topMatchups.map((m) => (
@@ -371,7 +372,9 @@ export default async function MostComparedStudyPage() {
                     <span className="text-text-secondary mr-2">{m.rank}.</span>
                     {m.title}
                   </span>
-                  <span className="text-sm text-text-secondary">{fmt(m.viewCount)} reads</span>
+                  <span className="text-sm text-text-secondary whitespace-nowrap">
+                    {fmt(m.centrality)} linked comparisons
+                  </span>
                 </Link>
               </li>
             ))}
@@ -431,8 +434,11 @@ export default async function MostComparedStudyPage() {
             </p>
             <p>
               The &ldquo;brands&rdquo; ranking is limited to companies, products, software, and teams;
-              countries, people, and historical entities are excluded. The &ldquo;biggest matchups&rdquo;
-              ranking is ordered by on-site readership. Data is refreshed daily from our live database.
+              countries, people, and historical entities are excluded. The &ldquo;most-connected
+              matchups&rdquo; ranking is ordered by comparison centrality — the combined number of
+              published comparisons the two sides each appear in. All rankings are counts of published
+              comparison pages; we do not publish traffic or readership figures. Data is refreshed daily
+              from our live database.
             </p>
             <p className="text-xs">
               {study.fromSnapshot
