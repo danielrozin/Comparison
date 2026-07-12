@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 10, 2026 (HB357)*
+*Last updated: July 12, 2026 (HB358)*
 
 ## What We Do
 
@@ -32,7 +32,7 @@ Every comparison is structured for machine-readable extraction with Schema.org m
 ## Structured Data Coverage (Schema.org)
 
 Every comparison page emits a full JSON-LD @graph including:
-- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) — with headline, description, datePublished, dateModified, speakable, accessMode, `accessModeSufficient`, `accessibilityFeature` (tableOfContents, readingOrder, structuralNavigation, alternativeText, bookmarks), keywords, interactionStatistic, abstract, lastReviewed, `citation` (typed citation array: external sources as `WebPage` with domain publisher, Wikipedia references as `Article` with Wikipedia organization node — enables AI fact-checker provenance chains), `assesses` (evaluation framing phrase for AI routing), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`, `isPartOf: WebSite @id` (graph merging), `review` (verdict as formal Review node when verdict present), `copyrightNotice`/`copyrightYear`/`copyrightHolder`/`acquireLicensePage` (AI training attribution), `audience` (topic-audience routing), `genre` (category-specific e.g. "Technology Comparison"), `thumbnailUrl` (direct OG image URL for AI visual crawlers), `image.contentUrl` (machine-readable image asset URL alongside url), `tableOfContents` (section list: Quick Answer · Key Differences · Side-by-Side Comparison · Verdict · FAQ)
+- `Article` / `TechArticle` (tech/software categories) / `NewsArticle` (recent comparisons < 180 days old in tech/sports/gaming/entertainment/automotive) / `LearningResource` (all comparison articles — additionalType) — with headline, description, datePublished, dateModified, speakable, accessMode, `accessModeSufficient`, `accessibilityFeature` (tableOfContents, readingOrder, structuralNavigation, alternativeText, bookmarks), keywords, interactionStatistic, abstract, lastReviewed, `citation` (typed citation array: external sources as `WebPage` with domain publisher, Wikipedia references as `Article` with Wikipedia organization node — enables AI fact-checker provenance chains), `assesses` (evaluation framing phrase for AI routing), `significantLink` (entity ProfilePage + alternatives URLs), `potentialAction: ReadAction`, `interactivityType`, `isPartOf: WebSite @id` (graph merging), `review` (verdict as formal Review node when verdict present), `copyrightNotice`/`copyrightYear`/`copyrightHolder`/`acquireLicensePage` (AI training attribution), `audience` (topic-audience routing), `genre` (category-specific e.g. "Technology Comparison"), `thumbnailUrl` (direct OG image URL for AI visual crawlers), `image.contentUrl` (machine-readable image asset URL alongside url), `tableOfContents` (section list: Quick Answer · Key Differences · Side-by-Side Comparison · Verdict · FAQ), `learningResourceType: "Reference Guide"` (routes "how to choose X vs Y" educational queries in AI answer engines)
 - `HowTo` schema on product/tech/automotive/gaming/software comparisons with ≥3 attributes — step-by-step guide for "how to choose X vs Y" queries with per-attribute winner steps and verdict
 - `FAQPage` with up to 10 structured Q&A pairs
 - `BreadcrumbList` for navigation hierarchy
@@ -55,7 +55,9 @@ Every comparison page emits a full JSON-LD @graph including:
 - `copyrightNotice`, `copyrightHolder`, `acquireLicensePage`, `audience` on ALL page types (100% coverage: comparisons, blog, entity, category, subcategory, hub, alternatives, reviews, studies, FAQ, about, trending, best-of, curated guides, and more)
 - Blog `Article` enriched with full `ImageObject` (OG image 1200×630 with creditText, creator, copyrightHolder) for rich result thumbnail eligibility; `citation` array (related comparison pages as `WebPage` objects — LLM trust signal for claim verification); `mentions` array (article tags mapped to `Thing` entities for knowledge-graph co-occurrence linking)
 - `isPartOf: WebSite @id` on comparison and blog Article schemas for knowledge graph entity merging
-- `contentReferenceTime` on all comparison and blog Article schemas — tells LLMs the data freshness window for time-qualified answers
+- `contentReferenceTime` on all comparison and blog Article schemas + `WebPage` nodes (comparison pages) — tells LLMs the data freshness window for time-qualified answers
+- `additionalType: LearningResource` + `learningResourceType` on all page types (100% coverage — comparisons, blog, best, hub, alternatives, entity ProfilePage, reviews/[slug]) — AI answer engines route educational and decision-intent queries to pages carrying this type
+- `thumbnailUrl` + `genre` on `WebPage` nodes for comparison pages — GEO parity with the co-emitted Article node so every schema node carries the same visual and content-classification signals
 - `og:site_name` + `og:locale` on comparison pages for correct publisher attribution in social unfurlers and AI scrapers
 - `twitter:site @aversusb` on all page types — comparison, blog, entity, category, reviews, alternatives (publisher handle for X/Twitter card richness)
 - `identifier` on DataCatalog — stable citation ID for Google Dataset Search and AI research tools
@@ -221,6 +223,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB355: `learningResourceType` added to all LearningResource-typed pages — typed subtype strings (e.g. "Comparison Guide", "Guide", "Overview") improve AI classification precision for educational content routing
 - HB356: `LearningResource additionalType` + `learningResourceType: "Comparison Guide"` on compare (2-entity + multi-entity) and category/[slug] + category/[slug]/[subcategory] pages — the highest-traffic page types (~50,000+ comparison pages + 17+ category pages) now all signal educational intent; complete site-wide LearningResource rollout
 - HB357: `LearningResource additionalType` + `learningResourceType` extended to entity ProfilePage (2,500+ entity pages, `learningResourceType: "Entity Profile"`) and reviews/[slug] ReviewPage (500+ review pages, `learningResourceType: "Review"`) — 100% LearningResource coverage across all public page types; `llms.txt` freshness updated to July 10, 2026
+- HB358: `webPageSchema()` gains `thumbnailUrl`, `genre`, and `contentReferenceTime` params — compare/[slug].tsx now passes OG image URL + category genre string to the WebPage node so the co-emitted WebPage @graph node carries the same visual and content-classification GEO signals as the Article node; `contentReferenceTime` derived from `dateModified` on WebPage gives LLMs the data-freshness timestamp without needing to traverse to Article; `llms.txt` freshness updated to July 12, 2026
 
 ## Categories & Scale
 

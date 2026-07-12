@@ -576,6 +576,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           // mainEntity — bidirectional WebPage↔Article graph edge (HB322 fix).
           mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
           speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+          // thumbnailUrl + genre — GEO parity with Article node so WebPage carries
+          // the same visual and content-classification signals as the co-emitted Article.
+          thumbnailUrl: ogImage,
+          genre: enrichedComparison.category
+            ? `${enrichedComparison.category.charAt(0).toUpperCase()}${enrichedComparison.category.slice(1)} Comparison`
+            : "Comparison",
         }),
         videoMeta?.youtubeVideoId
           ? videoObjectSchema({

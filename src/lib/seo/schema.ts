@@ -735,6 +735,12 @@ export function webPageSchema(opts: {
   // crawlers can traverse WebPage→Article without a separate stub node.
   mainEntity?: Record<string, string>;
   speakableCssSelector?: string[];
+  // thumbnailUrl — direct OG image URL; AI visual crawlers (Lens, Perplexity image
+  // carousels, Google AI Overviews) use this alongside the Article thumbnailUrl.
+  thumbnailUrl?: string;
+  // genre — content classification matching the Article genre; ensures WebPage node
+  // and Article node agree on content type for AI indexers and Google Discover routing.
+  genre?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -754,6 +760,8 @@ export function webPageSchema(opts: {
     accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(opts.keywords && { keywords: opts.keywords }),
+    ...(opts.genre && { genre: opts.genre }),
+    ...(opts.thumbnailUrl && { thumbnailUrl: opts.thumbnailUrl }),
     ...(opts.mainEntity && { mainEntity: opts.mainEntity }),
     speakable: {
       "@type": "SpeakableSpecification",
@@ -762,6 +770,10 @@ export function webPageSchema(opts: {
     },
     ...(opts.datePublished && { datePublished: opts.datePublished }),
     ...(opts.dateModified && { dateModified: opts.dateModified }),
+    // contentReferenceTime — "as of" timestamp mirrored from dateModified so the WebPage
+    // node carries the same data-freshness signal as the co-emitted Article node.
+    // LLMs use this for time-qualified citations without having to traverse to Article.
+    ...(opts.dateModified && { contentReferenceTime: opts.dateModified }),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     potentialAction: {
@@ -819,6 +831,10 @@ export function comparisonPageSchema(
   const additionalArticleTypes: string[] = [
     ...(comparison.category && TECH_CATEGORIES.has(comparison.category) ? ["https://schema.org/TechArticle"] : []),
     ...(isRecent && isNewsCategory ? ["https://schema.org/NewsArticle"] : []),
+    // LearningResource — all comparison Articles are decision-support reference guides.
+    // Educational AI classifiers (Google AI Overviews, Perplexity, ChatGPT) use this
+    // additionalType to route "how to choose X vs Y" and "which is better" queries
+    // to structured comparison content, improving AI Overview eligibility.
     "https://schema.org/LearningResource",
   ];
 
@@ -1989,14 +2005,17 @@ function buildMultiEntityGraph(
   // the article node with n["@type"] === "Article" without breaking SEO signals.
   const MULTI_TECH_CATEGORIES = new Set(["technology", "software", "gaming", "automotive", "science"]);
   const multiArticleType = "Article";
-  const multiAdditionalTypes = (comparison.category && MULTI_TECH_CATEGORIES.has(comparison.category))
-    ? ["https://schema.org/TechArticle"]
-    : [];
+  const multiAdditionalTypes = [
+    ...(comparison.category && MULTI_TECH_CATEGORIES.has(comparison.category) ? ["https://schema.org/TechArticle"] : []),
+    // LearningResource parity with 2-entity path — all multi-entity comparisons are
+    // decision-support reference guides eligible for educational AI query routing.
+    "https://schema.org/LearningResource",
+  ];
 
   const article: Record<string, unknown> = {
     "@type": multiArticleType,
     "@id": `${url}#article`,
-    additionalType: [...multiAdditionalTypes, "https://schema.org/LearningResource"],
+    additionalType: multiAdditionalTypes,
     learningResourceType: "Comparison Guide",
     headline: comparison.title,
     description: comparison.shortAnswer || comparison.metadata.metaDescription,
