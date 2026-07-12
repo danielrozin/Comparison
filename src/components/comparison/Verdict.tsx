@@ -89,7 +89,7 @@ export function VerdictBlock({
               onClick={handleCopy}
               aria-label={copied ? "Verdict copied!" : "Copy verdict to clipboard"}
               title={copied ? "Copied!" : "Copy verdict"}
-              className={`absolute top-3 right-3 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 opacity-0 group-hover/verdict:opacity-100 focus:opacity-100 ${
+              className={`absolute top-3 right-3 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 sm:opacity-0 sm:group-hover/verdict:opacity-100 focus:opacity-100 ${
                 copied
                   ? "bg-emerald-500/30 text-emerald-300"
                   : "bg-white/10 text-white/50 hover:bg-white/20 hover:text-white/80"

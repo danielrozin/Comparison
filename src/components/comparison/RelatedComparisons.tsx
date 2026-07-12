@@ -109,9 +109,9 @@ export function RelatedComparisons({
 
               {/* Title */}
               <div className="relative flex-1">
-                <p className="text-sm font-semibold text-text leading-snug group-hover:text-primary-700 transition-colors line-clamp-2">
+                <h3 className="text-sm font-semibold text-text leading-snug group-hover:text-primary-700 transition-colors line-clamp-2 m-0">
                   {comp.title}
-                </p>
+                </h3>
               </div>
 
               {/* Category badge */}

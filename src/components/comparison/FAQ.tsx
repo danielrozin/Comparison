@@ -31,6 +31,7 @@ interface FAQItemProps {
 
 function FAQItem({ faq, index, listPosition, isOpen, search, isHidden, onToggle }: FAQItemProps) {
   const answerId = `faq-answer-${index}`;
+  const btnId = `faq-btn-${index}`;
   return (
     <li
       style={{ animationDelay: `${listPosition * 40}ms` }}
@@ -41,6 +42,7 @@ function FAQItem({ faq, index, listPosition, isOpen, search, isHidden, onToggle 
       }`}
     >
       <button
+        id={btnId}
         type="button"
         onClick={() => onToggle(index)}
         className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
@@ -79,7 +81,7 @@ function FAQItem({ faq, index, listPosition, isOpen, search, isHidden, onToggle 
       <div
         id={answerId}
         role="region"
-        aria-label={faq.question}
+        aria-labelledby={btnId}
         className={`grid transition-all duration-300 ease-in-out ${
           isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}

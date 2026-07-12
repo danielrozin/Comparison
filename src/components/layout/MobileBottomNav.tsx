@@ -59,7 +59,7 @@ export function MobileBottomNav() {
         <button
           type="button"
           onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
-          aria-label="Open search"
+          aria-label={isComparePage ? "Open compare search" : "Open search"}
           className="flex flex-col items-center justify-center gap-0.5 text-text-secondary/70 transition-colors duration-150 active:text-primary-600"
         >
           <div className="p-1.5 rounded-xl">
@@ -67,7 +67,7 @@ export function MobileBottomNav() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
           </div>
-          <span className="text-xs font-semibold tracking-tight text-text-secondary/60">{isComparePage ? "Compare" : "Search"}</span>
+          <span className="text-xs font-semibold tracking-tight text-text-secondary/60" aria-hidden="true">{isComparePage ? "Compare" : "Search"}</span>
         </button>
 
         {/* Trending */}
