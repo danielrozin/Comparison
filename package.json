@@ -13,7 +13,9 @@
     "cleanup:consent": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/cleanup-consent-records.ts",
     "cleanup:slugs": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/dan1819-cleanup-malformed-slugs.ts",
     "audit:blog-dupes": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/audit-blog-dupes.ts",
-    "backfill:blog-embeddings": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/backfill-blog-embeddings.ts"
+    "backfill:blog-embeddings": "ts-node --compiler-options {\"module\":\"CommonJS\"} scripts/backfill-blog-embeddings.ts",
+    "lint:aliases": "tsx --env-file=.env.local scripts/lint-entity-aliases.ts",
+    "studies:snapshot": "tsx --env-file=.env.local scripts/dan2037-snapshot.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

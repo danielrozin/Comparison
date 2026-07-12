@@ -9,6 +9,13 @@
  */
 
 import { SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
+import {
+  canonicalSlug,
+  canonicalName,
+  canonicalMembers,
+  rivalryKey,
+  CONSUMER_MEDIA_SLUGS,
+} from "@/lib/services/entity-aliases";
 
 // Lazy-import prisma to avoid crashing when DATABASE_URL is not set.
 function getPrismaClient() {
@@ -22,11 +29,32 @@ function getPrismaClient() {
 }
 
 export interface StudyBrand {
+  /**
+   * Competition rank — tied entities share a rank (1, 1, 1, 4, …). The corpus
+   * has no stable outright leader, and a dense 1,2,3 ranking would invent one
+   * (DAN-2047/DAN-2059).
+   */
   rank: number;
   name: string;
   slug: string;
   type: string;
+  /**
+   * Number of DISTINCT RIVALS — how many other entities this one is matched
+   * against, after reverse-duplicate pages and alias entities are collapsed.
+   *
+   * This is not a page count. Netflix appears on 9 published pages but has 5
+   * distinct rivals, because `disney-plus-vs-netflix` / `netflix-vs-disney` are
+   * one rivalry and `netflix-inc` is the same entity as `netflix`. Publishing
+   * the page count as a rivalry count is what put a false "#1 most-compared
+   * brand" on the study (DAN-2047).
+   */
   count: number;
+}
+
+/** How many entities have exactly N distinct rivals — the shape of the corpus. */
+export interface RivalBucket {
+  rivals: number;
+  entities: number;
 }
 
 export interface StudyMatchup {
@@ -55,12 +83,24 @@ export interface StudyCategory {
 }
 
 export interface MostComparedStudy {
+  /** Published comparison PAGES. Not the number of distinct matchups. */
   totalComparisons: number;
+  /** Head-to-head pages, after the multi-way pages are set aside. */
+  headToHeadPages: number;
+  /** Pages comparing 3+ entities. Counted separately — they are not head-to-head. */
+  multiWayPages: number;
+  /** Distinct head-to-head matchups, after reverse-duplicate + alias collapse. */
+  distinctRivalries: number;
+  /** Distinct canonical entities, after alias collapse. */
   distinctBrands: number;
+  /** Entity rows before alias collapse — the difference is the alias inflation. */
+  rawEntityRows: number;
   topBrands: StudyBrand[];
   topSaaS: StudyBrand[];
   topMatchups: StudyMatchup[];
   categories: StudyCategory[];
+  /** Distribution of distinct-rival counts across brand entities. */
+  rivalSpread: RivalBucket[];
   /** ISO timestamp of when the underlying data was read. */
   updatedAt: string;
   /** true when served from the baked-in snapshot rather than a live query. */
@@ -69,7 +109,14 @@ export interface MostComparedStudy {
 
 // Entity types that count as a "brand" for the headline ranking.
 // Country economies, people, and historical entities are intentionally excluded.
-const BRAND_TYPES = ["company", "brand", "product", "software", "team"];
+// The taxonomy carries both singular and plural forms of the same type
+// ("product" 85 entities / "products" 137), and streaming services are split
+// across `streaming`, `entertainment` and `software` — so all of these have to
+// be listed or whole classes of brand silently miss the leaderboard (DAN-2047).
+const BRAND_TYPES = [
+  "company", "brand", "product", "products", "software", "technology",
+  "platform", "streaming", "entertainment", "team",
+];
 
 const CATEGORY_LABELS: Record<string, string> = {
   software: "B2B SaaS & Software",
@@ -98,8 +145,9 @@ function labelFor(category: string): string {
 }
 
 /**
- * Baked-in snapshot — refreshed 2026-07-12 from the production Neon DB
- * (491 published comparisons across 704 entities).
+ * Baked-in snapshot — refreshed 2026-07-12 from the production Neon DB:
+ * 491 published comparison pages (483 head-to-head + 8 three-way), which
+ * collapse to 442 distinct rivalries across 666 canonical entities.
  * Used only when a live query is unavailable so the page always renders.
  * Keep in sync with the live corpus: a stale snapshot here is what let the
  * /studies/ index overstate the dataset by up to 11x (DAN-2037). Regenerate
@@ -107,51 +155,55 @@ function labelFor(category: string): string {
  */
 const SNAPSHOT: MostComparedStudy = {
   totalComparisons: 491,
-  distinctBrands: 704,
+  headToHeadPages: 483,
+  multiWayPages: 8,
+  distinctRivalries: 442,
+  distinctBrands: 666,
+  rawEntityRows: 704,
   updatedAt: "2026-07-12T00:00:00.000Z",
   fromSnapshot: true,
   topBrands: [
-    { rank: 1, name: "Netflix", slug: "netflix", type: "company", count: 8 },
-    { rank: 2, name: "Xbox Series X", slug: "xbox-series-x", type: "product", count: 7 },
-    { rank: 3, name: "Spotify", slug: "spotify", type: "software", count: 7 },
-    { rank: 4, name: "Squarespace", slug: "squarespace", type: "software", count: 7 },
-    { rank: 5, name: "Notion", slug: "notion", type: "software", count: 6 },
-    { rank: 6, name: "Microsoft Teams", slug: "microsoft-teams", type: "software", count: 6 },
-    { rank: 7, name: "Hulu", slug: "hulu", type: "company", count: 6 },
-    { rank: 8, name: "Zoom", slug: "zoom", type: "software", count: 6 },
-    { rank: 9, name: "Disney+", slug: "disney", type: "software", count: 5 },
-    { rank: 10, name: "Mailchimp", slug: "mailchimp", type: "software", count: 5 },
-    { rank: 11, name: "Peacock", slug: "peacock", type: "software", count: 5 },
-    { rank: 12, name: "PlayStation 5", slug: "playstation-5", type: "product", count: 4 },
-    { rank: 13, name: "ChatGPT", slug: "chatgpt", type: "software", count: 4 },
-    { rank: 14, name: "Apple Music", slug: "apple-music", type: "software", count: 4 },
-    { rank: 15, name: "Booking.com", slug: "booking-com", type: "company", count: 4 },
+    { rank: 1, name: "Xbox Series X", slug: "xbox-series-x", type: "product", count: 6 },
+    { rank: 2, name: "Disney+", slug: "disney", type: "software", count: 5 },
+    { rank: 2, name: "Mailchimp", slug: "mailchimp", type: "software", count: 5 },
+    { rank: 2, name: "Netflix", slug: "netflix", type: "company", count: 5 },
+    { rank: 2, name: "Samsung", slug: "samsung-electronics", type: "brand", count: 5 },
+    { rank: 2, name: "Spotify", slug: "spotify", type: "software", count: 5 },
+    { rank: 2, name: "Squarespace", slug: "squarespace", type: "software", count: 5 },
+    { rank: 2, name: "YouTube Music", slug: "youtube-music", type: "entertainment", count: 5 },
+    { rank: 9, name: "1Password", slug: "1password", type: "software", count: 4 },
+    { rank: 9, name: "Amazon", slug: "amazon", type: "company", count: 4 },
+    { rank: 9, name: "Booking.com", slug: "booking-com", type: "company", count: 4 },
+    { rank: 9, name: "Expedia", slug: "expedia", type: "platform", count: 4 },
+    { rank: 9, name: "Ford", slug: "ford-motor-company", type: "company", count: 4 },
+    { rank: 9, name: "Geico", slug: "geico", type: "products", count: 4 },
+    { rank: 9, name: "Hulu", slug: "hulu", type: "company", count: 4 },
   ],
   topSaaS: [
-    { rank: 1, name: "Spotify", slug: "spotify", type: "software", count: 7 },
-    { rank: 2, name: "Squarespace", slug: "squarespace", type: "software", count: 7 },
-    { rank: 3, name: "Notion", slug: "notion", type: "software", count: 6 },
-    { rank: 4, name: "Microsoft Teams", slug: "microsoft-teams", type: "software", count: 6 },
-    { rank: 5, name: "Zoom", slug: "zoom", type: "software", count: 6 },
-    { rank: 6, name: "Disney+", slug: "disney", type: "software", count: 5 },
-    { rank: 7, name: "Mailchimp", slug: "mailchimp", type: "software", count: 5 },
-    { rank: 8, name: "Peacock", slug: "peacock", type: "software", count: 5 },
-    { rank: 9, name: "ChatGPT", slug: "chatgpt", type: "software", count: 4 },
-    { rank: 10, name: "Apple Music", slug: "apple-music", type: "software", count: 4 },
-    { rank: 11, name: "ClickUp", slug: "clickup", type: "software", count: 4 },
-    { rank: 12, name: "1Password", slug: "1password", type: "software", count: 4 },
+    { rank: 1, name: "Mailchimp", slug: "mailchimp", type: "software", count: 5 },
+    { rank: 1, name: "Squarespace", slug: "squarespace", type: "software", count: 5 },
+    { rank: 3, name: "1Password", slug: "1password", type: "software", count: 4 },
+    { rank: 3, name: "Microsoft Teams", slug: "microsoft-teams", type: "software", count: 4 },
+    { rank: 3, name: "Notion", slug: "notion", type: "software", count: 4 },
+    { rank: 3, name: "Zoom", slug: "zoom", type: "software", count: 4 },
+    { rank: 7, name: "ClickUp", slug: "clickup", type: "software", count: 3 },
+    { rank: 7, name: "Google Drive", slug: "google-drive", type: "software", count: 3 },
+    { rank: 7, name: "Jira", slug: "jira", type: "software", count: 3 },
+    { rank: 7, name: "Klaviyo", slug: "klaviyo", type: "software", count: 3 },
+    { rank: 7, name: "QuickBooks Online", slug: "quickbooks-online", type: "software", count: 3 },
+    { rank: 12, name: "Brave", slug: "brave", type: "software", count: 2 },
   ],
   topMatchups: [
-    { rank: 1, title: "Spotify vs Apple Music vs YouTube Music: Which Streaming Service Is Best in 2026?", slug: "spotify-vs-apple-music-vs-youtube-music", category: "technology", centrality: 17 },
-    { rank: 2, title: "Zoom vs Google Meet vs Microsoft Teams (2026): Video Conferencing Compared", slug: "zoom-vs-google-meet-vs-teams", category: "software", centrality: 16 },
-    { rank: 3, title: "Netflix vs Hulu", slug: "netflix-vs-hulu", category: "entertainment", centrality: 14 },
-    { rank: 4, title: "Disney+ vs Netflix", slug: "disney-vs-netflix", category: "entertainment", centrality: 13 },
-    { rank: 5, title: "Spotify vs YouTube Music", slug: "spotify-vs-youtube-music", category: "entertainment", centrality: 13 },
-    { rank: 6, title: "United States Economy vs China Economy", slug: "china-economy-size-vs-us", category: "economy", centrality: 12 },
-    { rank: 7, title: "Zoom vs Microsoft Teams", slug: "zoom-vs-microsoft-teams", category: "software", centrality: 12 },
-    { rank: 8, title: "Apple Music vs Spotify", slug: "apple-music-vs-spotify", category: "entertainment", centrality: 11 },
-    { rank: 9, title: "Disney+ vs Hulu", slug: "disney-plus-vs-hulu", category: "entertainment", centrality: 11 },
-    { rank: 10, title: "HBO Max vs Netflix", slug: "hbo-max-vs-netflix", category: "entertainment", centrality: 11 },
+    { rank: 1, title: "Netflix vs Disney Plus", slug: "disney-plus-vs-netflix", category: "companies", centrality: 10 },
+    { rank: 2, title: "Spotify vs YouTube Music", slug: "spotify-vs-youtube-music", category: "entertainment", centrality: 10 },
+    { rank: 3, title: "Disney+ vs Hulu", slug: "disney-plus-vs-hulu", category: "entertainment", centrality: 9 },
+    { rank: 4, title: "Netflix vs Hulu", slug: "netflix-vs-hulu", category: "entertainment", centrality: 9 },
+    { rank: 5, title: "PlayStation 5 vs Xbox Series X", slug: "playstation-5-vs-xbox-series-x", category: "entertainment", centrality: 9 },
+    { rank: 6, title: "Steam Deck vs Xbox Series X", slug: "steam-deck-vs-xbox-series-x", category: "gaming", centrality: 9 },
+    { rank: 7, title: "Booking.com vs Expedia", slug: "booking-com-vs-expedia", category: "software", centrality: 8 },
+    { rank: 8, title: "Disney+ vs HBO Max", slug: "disney-vs-hbo-max", category: "entertainment", centrality: 8 },
+    { rank: 9, title: "State Farm vs Geico", slug: "geico-vs-state-farm", category: "insurance", centrality: 8 },
+    { rank: 10, title: "HBO Max vs Netflix", slug: "hbo-max-vs-netflix", category: "entertainment", centrality: 8 },
   ],
   categories: [
     { category: "products", label: "Consumer Products", count: 109 },
@@ -165,28 +217,29 @@ const SNAPSHOT: MostComparedStudy = {
     { category: "food_and_drink", label: "Food And Drink", count: 14 },
     { category: "finance", label: "Finance", count: 13 },
   ],
+  rivalSpread: [
+    { rivals: 1, entities: 379 },
+    { rivals: 2, entities: 76 },
+    { rivals: 3, entities: 24 },
+    { rivals: 4, entities: 13 },
+    { rivals: 5, entities: 7 },
+    { rivals: 6, entities: 1 },
+  ],
 };
-
-/**
- * Stable key for the set of entities a comparison is about, so that pages
- * covering the same pairing under different slugs ("us-vs-china-gdp",
- * "chinese-vs-us-economy", …) collapse to a single row in a matchup ranking.
- * Without this the finance top-10 is five copies of one rivalry (DAN-2037).
- */
-function matchupKey(members: string[]): string {
-  return [...new Set(members)].sort().join("|");
-}
 
 /**
  * Collapses comparisons that cover the same entity pairing, keeping the most
  * central one. Ties break on slug so the ranking is stable between builds.
+ * Keyed on `rivalryKey`, so both reverse-duplicate slugs and alias entities
+ * collapse ("us-vs-china-gdp" / "chinese-vs-us-economy" are one rivalry, and so
+ * are "netflix-vs-hulu" and a page built on the `netflix-inc` entity row).
  */
 function dedupeMatchups<T extends { slug: string; centrality: number; members: string[] }>(
   rows: T[]
 ): T[] {
   const best = new Map<string, T>();
   for (const r of rows) {
-    const key = matchupKey(r.members);
+    const key = rivalryKey(r.members);
     const cur = best.get(key);
     if (!cur || r.centrality > cur.centrality || (r.centrality === cur.centrality && r.slug < cur.slug)) {
       best.set(key, r);
@@ -197,6 +250,24 @@ function dedupeMatchups<T extends { slug: string; centrality: number; members: s
   );
 }
 
+/**
+ * Competition ranking: equal scores share a rank and the next rank skips
+ * (1, 1, 1, 4). Dense 1-2-3 ranking would present a tie as an outright winner,
+ * which is exactly how "Netflix — most-compared brand" got published.
+ */
+function competitionRank<T extends { count: number }>(rows: T[]): (T & { rank: number })[] {
+  return rows.map((r, i) => {
+    let rank = i + 1;
+    for (let j = 0; j < i; j++) {
+      if (rows[j].count === r.count) {
+        rank = j + 1;
+        break;
+      }
+    }
+    return { ...r, rank };
+  });
+}
+
 /** One (comparison, entity) pair for every published comparison. */
 interface PairRow {
   cslug: string;
@@ -205,6 +276,98 @@ interface PairRow {
   name: string;
   eslug: string;
   type: string | null;
+}
+
+/** A comparison page, with its entities resolved to canonical slugs. */
+interface CanonPage {
+  slug: string;
+  title: string;
+  category: string;
+  members: string[];
+}
+
+interface RivalryGraph {
+  /** Canonical slug -> display name + type. */
+  entities: Map<string, { name: string; type: string | null }>;
+  pages: CanonPage[];
+  headToHead: CanonPage[];
+  multiWayPages: number;
+  /** rivalryKey -> the two canonical entities. One entry per distinct matchup. */
+  rivalries: Map<string, string[]>;
+  /** Canonical slug -> the distinct entities it is matched against. */
+  rivalsOf: Map<string, Set<string>>;
+  /** Distinct entity slugs seen BEFORE alias collapse. */
+  rawEntityRows: number;
+}
+
+/**
+ * Builds the rivalry graph every study ranking is derived from.
+ *
+ * The three studies all used to count comparison PAGES per entity, which
+ * double-counts a rivalry published under two slugs and triple-counts an entity
+ * that exists under two rows. This collapses both before anything is counted,
+ * so "how many rivals does X have" is answered from distinct matchups
+ * (DAN-2047).
+ */
+function buildRivalryGraph(rows: PairRow[]): RivalryGraph {
+  const entities = new Map<string, { name: string; type: string | null }>();
+  const comps = new Map<string, { title: string; category: string | null; members: string[] }>();
+
+  for (const r of rows) {
+    const slug = canonicalSlug(r.eslug);
+    const existing = entities.get(slug);
+    // Prefer the canonical row's own metadata over an alias row's.
+    if (!existing || slug === r.eslug) {
+      entities.set(slug, { name: canonicalName(slug, r.name), type: r.type });
+    }
+    const c = comps.get(r.cslug) || { title: r.ctitle, category: r.ccategory, members: [] };
+    c.members.push(slug);
+    comps.set(r.cslug, c);
+  }
+
+  const pages: CanonPage[] = [...comps.entries()].map(([slug, c]) => ({
+    slug,
+    title: c.title,
+    category: c.category || "general",
+    members: canonicalMembers(c.members),
+  }));
+
+  // A 3-way page is not a head-to-head matchup and must not be counted as one.
+  const headToHead = pages.filter((p) => p.members.length === 2);
+
+  const rivalries = new Map<string, string[]>();
+  for (const p of headToHead) rivalries.set(rivalryKey(p.members), p.members);
+
+  const rivalsOf = new Map<string, Set<string>>();
+  for (const members of rivalries.values()) {
+    for (const m of members) {
+      const set = rivalsOf.get(m) || new Set<string>();
+      for (const other of members) if (other !== m) set.add(other);
+      rivalsOf.set(m, set);
+    }
+  }
+
+  return {
+    entities,
+    pages,
+    headToHead,
+    multiWayPages: pages.length - headToHead.length,
+    rivalries,
+    rivalsOf,
+    rawEntityRows: new Set(rows.map((r) => r.eslug)).size,
+  };
+}
+
+/** Entities ranked by distinct-rival count, highest first, stable on slug. */
+function rankByRivals(g: RivalryGraph) {
+  return [...g.rivalsOf.entries()]
+    .map(([slug, rivals]) => ({
+      slug,
+      name: g.entities.get(slug)?.name ?? slug,
+      type: g.entities.get(slug)?.type ?? "brand",
+      count: rivals.size,
+    }))
+    .sort((a, b) => b.count - a.count || a.slug.localeCompare(b.slug));
 }
 
 /**
@@ -230,40 +393,50 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
     const rows = pairs as PairRow[];
     if (rows.length === 0 || totalComparisons === 0) return SNAPSHOT;
 
-    // How many published comparisons each entity appears in.
-    const entities = new Map<string, { name: string; type: string | null; n: number }>();
-    // The entities that make up each comparison, for the centrality score.
-    const comps = new Map<string, { title: string; category: string | null; members: string[] }>();
+    const g = buildRivalryGraph(rows);
+    const { entities, headToHead, multiWayPages, rivalries, rivalsOf } = g;
 
-    for (const r of rows) {
-      const e = entities.get(r.eslug) || { name: r.name, type: r.type, n: 0 };
-      e.n++;
-      entities.set(r.eslug, e);
+    const isBrand = (slug: string) =>
+      BRAND_TYPES.includes((entities.get(slug)?.type || "").toLowerCase());
 
-      const c = comps.get(r.cslug) || { title: r.ctitle, category: r.ccategory, members: [] };
-      c.members.push(r.eslug);
-      comps.set(r.cslug, c);
+    const scoredEntities = rankByRivals(g);
+
+    const topBrands: StudyBrand[] = competitionRank(
+      scoredEntities.filter((e) => isBrand(e.slug)).slice(0, 15)
+    ).map((e) => ({ rank: e.rank, name: e.name, slug: e.slug, type: e.type || "brand", count: e.count }));
+
+    // B2B SaaS list: software-typed, minus consumer streaming services. `disney`
+    // is typed `software` in the entity table, which is why Disney+ was ranked
+    // as a B2B SaaS tool next to Notion and Zoom (DAN-2047).
+    const topSaaS: StudyBrand[] = competitionRank(
+      scoredEntities
+        .filter(
+          (e) =>
+            (e.type || "").toLowerCase() === "software" &&
+            !CONSUMER_MEDIA_SLUGS.has(e.slug)
+        )
+        .slice(0, 12)
+    ).map((e) => ({ rank: e.rank, name: e.name, slug: e.slug, type: "software", count: e.count }));
+
+    // How many brands sit at each distinct-rival count. This is the claim that
+    // survives every dedup rule — unlike a #1, which does not (DAN-2059).
+    const spread = new Map<number, number>();
+    for (const e of scoredEntities) {
+      if (!isBrand(e.slug)) continue;
+      spread.set(e.count, (spread.get(e.count) || 0) + 1);
     }
+    const rivalSpread: RivalBucket[] = [...spread.entries()]
+      .map(([rivals, count]) => ({ rivals, entities: count }))
+      .sort((a, b) => a.rivals - b.rivals);
 
-    const ranked = [...entities.entries()].sort((a, b) => b[1].n - a[1].n);
-
-    const topBrands: StudyBrand[] = ranked
-      .filter(([, e]) => BRAND_TYPES.includes((e.type || "").toLowerCase()))
-      .slice(0, 15)
-      .map(([slug, e], i) => ({ rank: i + 1, name: e.name, slug, type: e.type || "brand", count: e.n }));
-
-    const topSaaS: StudyBrand[] = ranked
-      .filter(([, e]) => (e.type || "").toLowerCase() === "software")
-      .slice(0, 12)
-      .map(([slug, e], i) => ({ rank: i + 1, name: e.name, slug, type: "software", count: e.n }));
-
-    // Centrality — how connected a matchup's entities are across the dataset.
-    const scored = [...comps.entries()].map(([slug, c]) => ({
-      slug,
-      title: c.title,
-      category: c.category || "general",
-      members: c.members,
-      centrality: c.members.reduce((sum, m) => sum + (entities.get(m)?.n ?? 0), 0),
+    // Centrality — how connected a matchup's two sides are across the dataset,
+    // measured in distinct rivals, not pages.
+    const scored = headToHead.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      members: p.members,
+      centrality: p.members.reduce((sum, m) => sum + (rivalsOf.get(m)?.size ?? 0), 0),
     }));
 
     const topMatchups: StudyMatchup[] = dedupeMatchups(scored)
@@ -276,10 +449,10 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
         centrality: m.centrality,
       }));
 
+    // Category counts are page counts — they describe the catalog, not rivalries.
     const catCount = new Map<string, number>();
-    for (const c of comps.values()) {
-      const key = c.category || "general";
-      catCount.set(key, (catCount.get(key) || 0) + 1);
+    for (const p of g.pages) {
+      catCount.set(p.category, (catCount.get(p.category) || 0) + 1);
     }
     const categories: StudyCategory[] = [...catCount.entries()]
       .map(([category, count]) => ({ category, label: labelFor(category), count }))
@@ -291,11 +464,16 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
 
     return {
       totalComparisons,
+      headToHeadPages: headToHead.length,
+      multiWayPages,
+      distinctRivalries: rivalries.size,
       distinctBrands: entities.size,
+      rawEntityRows: g.rawEntityRows,
       topBrands,
       topSaaS,
       topMatchups,
       categories,
+      rivalSpread,
       updatedAt: new Date().toISOString(),
       fromSnapshot: false,
     };
@@ -311,9 +489,11 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
 // ============================================================
 
 export interface SaaSTool {
+  /** Competition rank — ties share a rank. See StudyBrand.rank. */
   rank: number;
   name: string;
   slug: string;
+  /** Distinct rivals, not comparison pages. See StudyBrand.count. */
   count: number;
 }
 
@@ -387,54 +567,46 @@ const CHALLENGER_CANDIDATES: ChallengerCandidate[] = [
  */
 const SAAS_SNAPSHOT: B2BSaaSStudy = {
   totalSaaSComparisons: 96,
-  distinctTools: 99,
+  distinctTools: 95,
   updatedAt: "2026-07-12T00:00:00.000Z",
   fromSnapshot: true,
   topTools: [
-    { rank: 1, name: "Squarespace", slug: "squarespace", count: 7 },
-    { rank: 2, name: "Microsoft Teams", slug: "microsoft-teams", count: 6 },
-    { rank: 3, name: "Mailchimp", slug: "mailchimp", count: 5 },
-    { rank: 4, name: "Notion", slug: "notion", count: 5 },
-    { rank: 5, name: "Zoom", slug: "zoom", count: 4 },
-    { rank: 6, name: "1Password", slug: "1password", count: 4 },
-    { rank: 7, name: "Google Meet", slug: "google-meet", count: 3 },
-    { rank: 8, name: "Wix", slug: "wix", count: 3 },
-    { rank: 9, name: "Klaviyo", slug: "klaviyo", count: 3 },
-    { rank: 10, name: "QuickBooks Online", slug: "quickbooks-online", count: 3 },
-    { rank: 11, name: "ClickUp", slug: "clickup", count: 3 },
-    { rank: 12, name: "Firefox", slug: "firefox", count: 3 },
-    { rank: 13, name: "MySQL", slug: "mysql", count: 2 },
-    { rank: 14, name: "Stripe", slug: "stripe", count: 2 },
-    { rank: 15, name: "Xero", slug: "xero", count: 2 },
+    { rank: 1, name: "Mailchimp", slug: "mailchimp", count: 5 },
+    { rank: 1, name: "Squarespace", slug: "squarespace", count: 5 },
+    { rank: 3, name: "1Password", slug: "1password", count: 4 },
+    { rank: 3, name: "Microsoft Teams", slug: "microsoft-teams", count: 4 },
+    { rank: 3, name: "Notion", slug: "notion", count: 4 },
+    { rank: 6, name: "Klaviyo", slug: "klaviyo", count: 3 },
+    { rank: 6, name: "QuickBooks Online", slug: "quickbooks-online", count: 3 },
+    { rank: 6, name: "Zoom", slug: "zoom", count: 3 },
+    { rank: 9, name: "Brave", slug: "brave", count: 2 },
+    { rank: 9, name: "ClickUp", slug: "clickup", count: 2 },
+    { rank: 9, name: "Confluence", slug: "confluence", count: 2 },
+    { rank: 9, name: "Cursor", slug: "cursor", count: 2 },
+    { rank: 9, name: "Firefox", slug: "firefox", count: 2 },
+    { rank: 9, name: "FreshBooks", slug: "freshbooks", count: 2 },
+    { rank: 9, name: "Google Meet", slug: "google-meet", count: 2 },
   ],
   clusters: [
     { slug: "email-crm", label: "Email Marketing & CRM", icon: "\ud83d\udce7", count: 11, topMatchup: { title: "Mailchimp vs HubSpot", slug: "mailchimp-vs-hubspot" } },
     { slug: "communication", label: "Communication & Collaboration", icon: "\ud83d\udcac", count: 9, topMatchup: { title: "Zoom vs Google Meet vs Microsoft Teams (2026): Video Conferencing Compared", slug: "zoom-vs-google-meet-vs-teams" } },
-    { slug: "website-builders", label: "Website Builders & eCommerce", icon: "\ud83c\udfea", count: 9, topMatchup: { title: "Squarespace vs Wix", slug: "squarespace-vs-wix" } },
+    { slug: "website-builders", label: "Website Builders & eCommerce", icon: "\ud83c\udfea", count: 9, topMatchup: { title: "Squarespace vs Shopify", slug: "shopify-vs-squarespace" } },
     { slug: "finance-accounting", label: "Finance & Accounting", icon: "\ud83d\udcb3", count: 8, topMatchup: { title: "FreshBooks vs QuickBooks Online", slug: "freshbooks-vs-quickbooks" } },
     { slug: "password-privacy", label: "Password & Privacy", icon: "\ud83d\udd11", count: 7, topMatchup: { title: "1Password vs Bitwarden", slug: "1password-vs-bitwarden" } },
     { slug: "productivity", label: "Productivity & PM", icon: "\ud83d\udccb", count: 7, topMatchup: { title: "Notion vs ClickUp", slug: "clickup-vs-notion" } },
-    { slug: "ai-tools", label: "AI Tools", icon: "\ud83e\udd16", count: 4, topMatchup: { title: "Microsoft Copilot vs ChatGPT", slug: "chatgpt-vs-copilot" } },
+    { slug: "ai-tools", label: "AI Tools", icon: "\ud83e\udd16", count: 4, topMatchup: { title: "Cursor vs Claude Code", slug: "cursor-vs-claude-code" } },
     { slug: "vpn-security", label: "VPN & Security", icon: "\ud83d\udd12", count: 3, topMatchup: { title: "Bitdefender vs Kaspersky", slug: "bitdefender-vs-kaspersky" } },
-    { slug: "design-creative", label: "Design & Creative", icon: "\ud83c\udfa8", count: 3, topMatchup: { title: "Figma vs Sketch vs Adobe XD (2026): Design Tool 3-Way Comparison", slug: "figma-vs-sketch-vs-adobe-xd" } },
+    { slug: "design-creative", label: "Design & Creative", icon: "\ud83c\udfa8", count: 3, topMatchup: { title: "Canva vs Photoshop", slug: "canva-vs-photoshop" } },
     { slug: "office-tools", label: "Office & Documents", icon: "\ud83d\udcc4", count: 2, topMatchup: { title: "Dropbox vs Google Drive", slug: "dropbox-vs-google-drive" } },
   ],
   challengers: [
-    { challenger: "Notion", challengerSlug: "notion", challengerCount: 5, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis" },
-    { challenger: "ClickUp", challengerSlug: "clickup", challengerCount: 3, incumbent: "Jira", incumbentSlug: "jira", incumbentCount: 1, category: "Project management" },
-    { challenger: "Wix", challengerSlug: "wix", challengerCount: 3, incumbent: "WordPress", incumbentSlug: "wordpress", incumbentCount: 1, category: "Website builders" },
+    { challenger: "Notion", challengerSlug: "notion", challengerCount: 4, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis" },
     { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 2, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 1, category: "CRM" },
+    { challenger: "ClickUp", challengerSlug: "clickup", challengerCount: 2, incumbent: "Jira", incumbentSlug: "jira", incumbentCount: 1, category: "Project management" },
+    { challenger: "Wix", challengerSlug: "wix", challengerCount: 2, incumbent: "WordPress", incumbentSlug: "wordpress", incumbentCount: 1, category: "Website builders" },
     { challenger: "Pipedrive", challengerSlug: "pipedrive", challengerCount: 1, incumbent: "Zoho CRM", incumbentSlug: "zoho", incumbentCount: 0, category: "CRM (SMB)" },
   ],
 };
-
-interface SaaSEntityRow {
-  cslug: string;
-  ctitle: string;
-  name: string;
-  eslug: string;
-  type: string | null;
-}
 
 /** Classify a software comparison into a SaaS subcategory by keyword match. */
 function classifyCluster(entityText: string): string | null {
@@ -466,63 +638,61 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
       where: { status: "published", category: "software" },
     });
 
-    const rows = (await prisma.$queryRaw<SaaSEntityRow[]>`
-      SELECT c.slug AS cslug, c.title AS ctitle,
+    const rows = (await prisma.$queryRaw<PairRow[]>`
+      SELECT c.slug AS cslug, c.title AS ctitle, c.category AS ccategory,
              e.name, e.slug AS eslug, et.slug AS type
       FROM comparison_entities ce
       JOIN comparisons c ON c.id = ce.comparison_id
         AND c.status = 'published' AND c.category = 'software'
       JOIN entities e ON e.id = ce.entity_id
-      LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as SaaSEntityRow[];
+      LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as PairRow[];
 
     if (rows.length === 0 || totalSaaSComparisons === 0) return SAAS_SNAPSHOT;
 
-    // Tool leaderboard — software-typed entities, excluding languages/frameworks.
-    const toolCounts = new Map<string, { name: string; slug: string; n: number }>();
-    // Appearance count for every entity, used for the centrality score below.
-    const entityCounts = new Map<string, number>();
-    // Per-comparison aggregation for cluster classification.
-    const comps = new Map<string, { title: string; text: string; members: string[] }>();
+    const g = buildRivalryGraph(rows);
 
-    for (const r of rows) {
-      if ((r.type || "").toLowerCase() === "software" && !NON_SAAS_SLUGS.has(r.eslug)) {
-        const t = toolCounts.get(r.eslug) || { name: r.name, slug: r.eslug, n: 0 };
-        t.n++;
-        toolCounts.set(r.eslug, t);
-      }
-      entityCounts.set(r.eslug, (entityCounts.get(r.eslug) || 0) + 1);
+    // Tool leaderboard — software-typed entities, ranked by distinct rivals.
+    // Excludes programming languages, and consumer streaming services: `disney`
+    // is typed `software` in the entity table, which is how Disney+ ended up
+    // ranked as a B2B SaaS tool between Zoom and Mailchimp (DAN-2047).
+    const isTool = (slug: string, type: string | null) =>
+      (type || "").toLowerCase() === "software" &&
+      !NON_SAAS_SLUGS.has(slug) &&
+      !CONSUMER_MEDIA_SLUGS.has(slug);
 
-      const c = comps.get(r.cslug) || { title: r.ctitle, text: "", members: [] };
-      c.text += ` ${r.name} ${r.eslug}`.toLowerCase();
-      c.members.push(r.eslug);
-      comps.set(r.cslug, c);
-    }
+    const rankedTools = rankByRivals(g).filter((t) => isTool(t.slug, t.type));
 
-    // Centrality — combined appearance count of a comparison's entities.
-    const centrality = (members: string[]) =>
-      members.reduce((sum, m) => sum + (entityCounts.get(m) || 0), 0);
-
-    const sortedTools = [...toolCounts.values()].sort((a, b) => b.n - a.n);
-    const topTools: SaaSTool[] = sortedTools.slice(0, 15).map((t, i) => ({
-      rank: i + 1,
+    const topTools: SaaSTool[] = competitionRank(rankedTools.slice(0, 15)).map((t) => ({
+      rank: t.rank,
       name: t.name,
       slug: t.slug,
-      count: t.n,
+      count: t.count,
     }));
-    const distinctTools = toolCounts.size;
+    const distinctTools = rankedTools.length;
+
+    // Rival count for a canonical entity — the SaaS centrality score.
+    const rivals = (slug: string) => g.rivalsOf.get(slug)?.size ?? 0;
+    const centrality = (members: string[]) =>
+      members.reduce((sum, m) => sum + rivals(m), 0);
+
+    // Text blob per page, for cluster classification.
+    const textOf = new Map<string, string>();
+    for (const r of rows) {
+      textOf.set(r.cslug, `${textOf.get(r.cslug) ?? ""} ${r.name} ${r.eslug}`.toLowerCase());
+    }
 
     // Cluster classification + marquee matchup per cluster (by centrality).
     const subMeta = new Map(SOFTWARE_SUBCATEGORIES.map((s) => [s.slug, s]));
     const clusterCount = new Map<string, number>();
     const clusterTop = new Map<string, { title: string; slug: string; score: number }>();
-    for (const [slug, c] of comps) {
-      const cl = classifyCluster(c.text);
+    for (const p of g.pages) {
+      const cl = classifyCluster(textOf.get(p.slug) ?? "");
       if (!cl) continue;
       clusterCount.set(cl, (clusterCount.get(cl) || 0) + 1);
-      const score = centrality(c.members);
+      const score = centrality(p.members);
       const cur = clusterTop.get(cl);
-      if (!cur || score > cur.score || (score === cur.score && slug < cur.slug)) {
-        clusterTop.set(cl, { title: c.title, slug, score });
+      if (!cur || score > cur.score || (score === cur.score && p.slug < cur.slug)) {
+        clusterTop.set(cl, { title: p.title, slug: p.slug, score });
       }
     }
     const clusters: SaaSCategoryCluster[] = [...clusterCount.entries()]
@@ -539,8 +709,9 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
         };
       });
 
-    // Challenger vs incumbent — keep only data-backed upsets.
-    const lookup = (slug: string) => toolCounts.get(slug)?.n ?? 0;
+    // Challenger vs incumbent — keep only data-backed upsets. Compared on
+    // distinct rivals, so a challenger cannot "win" on a reverse-duplicate page.
+    const lookup = (slug: string) => rivals(canonicalSlug(slug));
     const challengers: ChallengerPair[] = CHALLENGER_CANDIDATES.map((c) => ({
       challenger: c.challenger.name,
       challengerSlug: c.challenger.slug,
@@ -627,51 +798,43 @@ const FINANCE_CLUSTERS: { slug: string; name: string; icon: string; keywords: st
  */
 const FINANCE_SNAPSHOT: FinanceStudy = {
   totalFinanceComparisons: 22,
-  distinctTopics: 33,
+  distinctTopics: 29,
   updatedAt: "2026-07-12T00:00:00.000Z",
   fromSnapshot: true,
   topTopics: [
-    { rank: 1, name: "China Economy", slug: "china-economy", count: 6, category: "Economy & Finance" },
-    { rank: 2, name: "United States Economy", slug: "united-states-economy", count: 6, category: "Economy & Finance" },
-    { rank: 3, name: "Vanguard", slug: "vanguard", count: 2, category: "Finance" },
-    { rank: 4, name: "Fidelity", slug: "fidelity", count: 1, category: "Finance" },
-    { rank: 5, name: "Credit Card", slug: "credit-card", count: 1, category: "Finance" },
-    { rank: 6, name: "Debit Card", slug: "debit-card", count: 1, category: "Finance" },
-    { rank: 7, name: "Checking Account", slug: "checking-account", count: 1, category: "Finance" },
-    { rank: 8, name: "Savings Account", slug: "savings-account", count: 1, category: "Finance" },
-    { rank: 9, name: "US Economy", slug: "us-economy", count: 1, category: "Economy & Finance" },
-    { rank: 10, name: "JPMorgan Chase & Co.", slug: "jpmorgan-chase-co", count: 1, category: "Finance" },
-    { rank: 11, name: "The Goldman Sachs Group, Inc.", slug: "the-goldman-sachs-group-inc", count: 1, category: "Finance" },
-    { rank: 12, name: "China's Economy", slug: "china-s-economy", count: 1, category: "Economy & Finance" },
+    { rank: 1, name: "Charles Schwab", slug: "charles-schwab", count: 2, category: "Finance" },
+    { rank: 1, name: "Fidelity", slug: "fidelity", count: 2, category: "Finance" },
+    { rank: 1, name: "Vanguard", slug: "vanguard", count: 2, category: "Finance" },
+    { rank: 4, name: "Bank of America", slug: "bank-of-america", count: 1, category: "Finance" },
+    { rank: 4, name: "Bitcoin", slug: "bitcoin", count: 1, category: "Economy & Finance" },
+    { rank: 4, name: "Cash App", slug: "cash-app", count: 1, category: "Finance" },
+    { rank: 4, name: "Chase", slug: "chase", count: 1, category: "Finance" },
+    { rank: 4, name: "Checking Account", slug: "checking-account", count: 1, category: "Finance" },
+    { rank: 4, name: "Chime", slug: "chime", count: 1, category: "Finance" },
+    { rank: 4, name: "China Economy", slug: "china-economy", count: 1, category: "Economy & Finance" },
+    { rank: 4, name: "Credit Card", slug: "credit-card", count: 1, category: "Finance" },
+    { rank: 4, name: "Debit Card", slug: "debit-card", count: 1, category: "Finance" },
   ],
   clusters: [
-    { label: "Brokerages & Trading Platforms", slug: "brokerages", count: 4, icon: "\ud83d\udcc8", topMatchup: { title: "Schwab vs Vanguard", slug: "schwab-vs-vanguard" } },
+    { label: "Brokerages & Trading Platforms", slug: "brokerages", count: 4, icon: "\ud83d\udcc8", topMatchup: { title: "Charles Schwab vs Fidelity Investments", slug: "charles-schwab-vs-fidelity" } },
     { label: "Credit Cards", slug: "credit-cards", count: 3, icon: "\ud83d\udcb3", topMatchup: { title: "Chase vs Bank of America", slug: "bank-of-america-vs-chase" } },
     { label: "Mortgages & Real Estate", slug: "mortgages", count: 2, icon: "\ud83c\udfe0", topMatchup: { title: "State Farm vs Progressive", slug: "state-farm-vs-progressive" } },
     { label: "Banks & Savings", slug: "banking", count: 1, icon: "\ud83c\udfdb\ufe0f", topMatchup: { title: "Checking Account vs Savings Account", slug: "checking-account-vs-savings-account" } },
     { label: "Crypto & Digital Assets", slug: "crypto", count: 1, icon: "\u20bf", topMatchup: { title: "Bitcoin vs Ethereum", slug: "bitcoin-vs-ethereum" } },
   ],
   topMatchups: [
-    { rank: 1, title: "United States Economy vs China Economy", slug: "china-economy-size-vs-us", centrality: 12, insight: "" },
-    { rank: 2, title: "US Economy vs China Economy", slug: "america-vs-china-economy", centrality: 7, insight: "" },
-    { rank: 3, title: "US Economy vs China Economy", slug: "us-economy-vs-china-economy", centrality: 7, insight: "" },
+    { rank: 1, title: "Charles Schwab vs Fidelity Investments", slug: "charles-schwab-vs-fidelity", centrality: 4, insight: "" },
+    { rank: 2, title: "Vanguard vs Fidelity", slug: "vanguard-vs-fidelity", centrality: 4, insight: "" },
+    { rank: 3, title: "Charles Schwab vs Robinhood", slug: "charles-schwab-vs-robinhood", centrality: 3, insight: "" },
     { rank: 4, title: "Schwab vs Vanguard", slug: "schwab-vs-vanguard", centrality: 3, insight: "" },
-    { rank: 5, title: "Vanguard vs Fidelity", slug: "vanguard-vs-fidelity", centrality: 3, insight: "" },
+    { rank: 5, title: "US Economy vs China Economy", slug: "america-vs-china-economy", centrality: 2, insight: "" },
     { rank: 6, title: "Chase vs Bank of America", slug: "bank-of-america-vs-chase", centrality: 2, insight: "" },
     { rank: 7, title: "Bitcoin vs Ethereum", slug: "bitcoin-vs-ethereum", centrality: 2, insight: "" },
     { rank: 8, title: "Chime vs Cash App", slug: "cash-app-vs-chime", centrality: 2, insight: "" },
-    { rank: 9, title: "Charles Schwab vs Fidelity Investments", slug: "charles-schwab-vs-fidelity", centrality: 2, insight: "" },
-    { rank: 10, title: "Charles Schwab vs Robinhood", slug: "charles-schwab-vs-robinhood", centrality: 2, insight: "" },
+    { rank: 9, title: "Checking Account vs Savings Account", slug: "checking-account-vs-savings-account", centrality: 2, insight: "" },
+    { rank: 10, title: "Credit Card vs Debit Card", slug: "credit-card-vs-debit-card", centrality: 2, insight: "" },
   ],
 };
-
-interface FinanceEntityRow {
-  name: string;
-  eslug: string;
-  cslug: string;
-  ctitle: string;
-  cat: string | null;
-}
 
 function classifyFinanceCluster(text: string): string | null {
   for (const cl of FINANCE_CLUSTERS) {
@@ -691,52 +854,53 @@ export async function getFinanceStudy(): Promise<FinanceStudy> {
 
     if (totalFinanceComparisons === 0) return FINANCE_SNAPSHOT;
 
-    const rows = (await prisma.$queryRaw<FinanceEntityRow[]>`
+    const rows = (await prisma.$queryRaw<PairRow[]>`
       SELECT e.name, e.slug AS eslug, c.slug AS cslug, c.title AS ctitle,
-             c.category AS cat
+             c.category AS ccategory, et.slug AS type
       FROM comparison_entities ce
       JOIN comparisons c ON c.id = ce.comparison_id
         AND c.status = 'published' AND c.category IN ('finance','economy')
-      JOIN entities e ON e.id = ce.entity_id`) as FinanceEntityRow[];
+      JOIN entities e ON e.id = ce.entity_id
+      LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as PairRow[];
 
     if (rows.length === 0) return FINANCE_SNAPSHOT;
 
-    const topicCounts = new Map<string, { name: string; count: number; category: string }>();
-    const compMap = new Map<string, { title: string; text: string; members: string[] }>();
+    // The finance corpus is the worst-hit by duplicate slugs: the US-vs-China
+    // economy rivalry alone is published as five separate pages, and appears as
+    // two entities each (`us-economy`/`united-states-economy`). Counting pages
+    // made one rivalry look like the whole category (DAN-2047).
+    const g = buildRivalryGraph(rows);
+    const rivals = (slug: string) => g.rivalsOf.get(slug)?.size ?? 0;
+    const centrality = (members: string[]) =>
+      members.reduce((sum, m) => sum + rivals(m), 0);
 
+    const categoryOf = new Map<string, string>();
+    const textOf = new Map<string, string>();
     for (const r of rows) {
-      const t = topicCounts.get(r.eslug) || { name: r.name, count: 0, category: r.cat || "finance" };
-      t.count++;
-      topicCounts.set(r.eslug, t);
-      const c = compMap.get(r.cslug) || { title: r.ctitle, text: "", members: [] };
-      c.text += ` ${r.name} ${r.eslug}`.toLowerCase();
-      c.members.push(r.eslug);
-      compMap.set(r.cslug, c);
+      categoryOf.set(canonicalSlug(r.eslug), r.ccategory || "finance");
+      textOf.set(r.cslug, `${textOf.get(r.cslug) ?? ""} ${r.name} ${r.eslug}`.toLowerCase());
     }
 
-    // Centrality — combined appearance count of a comparison's entities.
-    const centrality = (members: string[]) =>
-      members.reduce((sum, m) => sum + (topicCounts.get(m)?.count ?? 0), 0);
-
-    const sortedTopics = [...topicCounts.entries()].sort((a, b) => b[1].count - a[1].count);
-    const topTopics: FinanceTopic[] = sortedTopics.slice(0, 12).map(([slug, t], i) => ({
-      rank: i + 1,
+    const topTopics: FinanceTopic[] = competitionRank(
+      rankByRivals(g).slice(0, 12)
+    ).map((t) => ({
+      rank: t.rank,
       name: t.name,
-      slug,
+      slug: t.slug,
       count: t.count,
-      category: labelFor(t.category),
+      category: labelFor(categoryOf.get(t.slug) || "finance"),
     }));
 
     const clusterCount = new Map<string, number>();
     const clusterTop = new Map<string, { title: string; slug: string; score: number }>();
-    for (const [slug, c] of compMap) {
-      const cl = classifyFinanceCluster(c.text);
+    for (const p of g.pages) {
+      const cl = classifyFinanceCluster(textOf.get(p.slug) ?? "");
       if (!cl) continue;
       clusterCount.set(cl, (clusterCount.get(cl) || 0) + 1);
-      const score = centrality(c.members);
+      const score = centrality(p.members);
       const cur = clusterTop.get(cl);
-      if (!cur || score > cur.score || (score === cur.score && slug < cur.slug)) {
-        clusterTop.set(cl, { title: c.title, slug, score });
+      if (!cur || score > cur.score || (score === cur.score && p.slug < cur.slug)) {
+        clusterTop.set(cl, { title: p.title, slug: p.slug, score });
       }
     }
     const clusters: FinanceCluster[] = FINANCE_CLUSTERS.map((fc) => ({
@@ -749,11 +913,13 @@ export async function getFinanceStudy(): Promise<FinanceStudy> {
         : null,
     })).filter((c) => c.count > 0).sort((a, b) => b.count - a.count);
 
-    const scored = [...compMap.entries()].map(([slug, c]) => ({
-      slug,
-      title: c.title,
-      members: c.members,
-      centrality: centrality(c.members),
+    // Head-to-head only, then deduped — otherwise the same US/China rivalry
+    // fills the top three rows of the table.
+    const scored = g.headToHead.map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      members: p.members,
+      centrality: centrality(p.members),
     }));
 
     const topMatchups: FinanceMatchup[] = dedupeMatchups(scored)
@@ -764,7 +930,7 @@ export async function getFinanceStudy(): Promise<FinanceStudy> {
 
     return {
       totalFinanceComparisons,
-      distinctTopics: topicCounts.size,
+      distinctTopics: g.entities.size,
       topTopics,
       clusters: clusters.length > 0 ? clusters : FINANCE_SNAPSHOT.clusters,
       topMatchups: topMatchups.length > 0 ? topMatchups : FINANCE_SNAPSHOT.topMatchups,

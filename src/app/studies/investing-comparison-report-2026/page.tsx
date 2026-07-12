@@ -265,7 +265,9 @@ export default async function InvestingStudyPage() {
             <h2 id="investing-top-heading" className="text-2xl font-bold text-text">Most-Compared Finance Topics</h2>
           </div>
           <p className="text-text-secondary text-sm mb-5">
-            Ranked by number of published head-to-head comparisons on aversusb.net.
+            Ranked by distinct rivals — how many different products each one is actually weighed
+            against, after pages covering the same matchup twice are collapsed into one. Ties share a
+            rank.
           </p>
           <div className="overflow-x-auto rounded-xl border border-border" tabIndex={0} role="region" aria-label="Investing comparison table — scroll to see all columns">
             <table className="min-w-full divide-y divide-gray-100 text-sm">
@@ -351,7 +353,8 @@ export default async function InvestingStudyPage() {
             <h2 id="investing-matchups-heading" className="text-2xl font-bold text-text">Most-Connected Finance Matchups</h2>
           </div>
           <p className="text-text-secondary text-sm mb-5">
-            Ranked by comparison centrality — the matchups whose two sides are each weighed against the
+            Ranked by comparison centrality — each rivalry counted once, however many pages we have
+            published about it — the matchups whose two sides are each weighed against the
             widest field of alternatives.
           </p>
           <div className="space-y-3">
@@ -366,7 +369,7 @@ export default async function InvestingStudyPage() {
                 </div>
                 {m.centrality > 0 && (
                   <span className="text-xs text-text-secondary/60 shrink-0 whitespace-nowrap">
-                    {fmt(m.centrality)} linked comparisons
+                    {fmt(m.centrality)} combined rivals
                   </span>
                 )}
               </div>
