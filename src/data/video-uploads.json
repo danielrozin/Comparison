@@ -3231,6 +3231,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-11T07:24:35.633Z"
+    },
+    {
+      "slug": "iron-dome-vs-s-400",
+      "title": "Iron Dome vs S 400",
+      "entityA": "Iron Dome",
+      "entityB": "S 400",
+      "category": "General",
+      "videoFile": "Iron Dome vs S 400.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Iron Dome vs S 400 — Full Comparison 2026",
+      "youtubeDescription": "Iron Dome is Israel&#x27;s short-range rocket defense system with a 90%+ interception rate against rockets and mortars. The S-400 Triumf is Russia&#x27;s long-range air…\n\n#irondome #s400 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-12T07:33:22.975Z"
+    },
+    {
+      "slug": "dyson-vs-shark-vacuum",
+      "title": "Dyson vs Shark Vacuum",
+      "entityA": "Dyson",
+      "entityB": "Shark Vacuum",
+      "category": "General",
+      "videoFile": "Dyson vs Shark Vacuum.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Dyson vs Shark Vacuum — Full Comparison 2026",
+      "youtubeDescription": "Compare Dyson and Shark cordless vacuums: Dyson offers 150 air watts power; Shark costs 56% less. Find which suits your budget and home.\n\n#dyson #sharkvacuum #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-12T07:37:21.466Z"
+    },
+    {
+      "slug": "mercedes-vs-lexus",
+      "title": "Mercedes vs Lexus",
+      "entityA": "Mercedes",
+      "entityB": "Lexus",
+      "category": "Automotive",
+      "videoFile": "Mercedes vs Lexus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mercedes vs Lexus — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Mercedes vs Lexus.\n\n#mercedes #lexus #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-12T07:41:18.759Z"
     }
   ]
 }
