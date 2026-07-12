@@ -587,6 +587,110 @@ export async function getGSCStats(): Promise<GSCStats> {
 }
 
 // ---------------------------------------------------------------------------
+// Site-wide organic traffic summary (real-traffic source for internal dashboards)
+// ---------------------------------------------------------------------------
+//
+// `comparisons.view_count` is seed data from the 2026-03-19 import, not
+// analytics (DAN-2037 / DAN-2048). Nothing increments it on a page view, so it
+// must never be aggregated and reported as traffic. The internal AARRR and
+// weekly-report dashboards read organic traffic from here instead.
+
+export interface GSCTopPage {
+  page: string;
+  slug: string | null;
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}
+
+export interface GSCTrafficSummary {
+  available: boolean;
+  source: "google_search_console";
+  windowDays: number;
+  clicks: number;
+  impressions: number;
+  avgPosition: number;
+  pagesWithImpressions: number;
+  topPages: GSCTopPage[];
+  note: string;
+}
+
+function emptyTrafficSummary(windowDays: number, note: string): GSCTrafficSummary {
+  return {
+    available: false,
+    source: "google_search_console",
+    windowDays,
+    clicks: 0,
+    impressions: 0,
+    avgPosition: 0,
+    pagesWithImpressions: 0,
+    topPages: [],
+    note,
+  };
+}
+
+/**
+ * Real site-wide organic traffic for internal dashboards: totals plus top pages
+ * by clicks, from GSC page-level search analytics.
+ *
+ * Returns `available: false` (and zeros) when GSC credentials are missing or the
+ * window has no data — callers must render that as "no data", never fall back to
+ * a database view-count aggregate.
+ */
+export async function getGSCTrafficSummary(
+  windowDays = 28,
+  topN = 10
+): Promise<GSCTrafficSummary> {
+  let pages: GSCPageData[];
+  try {
+    pages = await fetchGSCPageData(windowDays);
+  } catch (err) {
+    console.error("GSC: traffic summary fetch error:", err);
+    return emptyTrafficSummary(windowDays, "GSC fetch failed — no organic traffic data available.");
+  }
+
+  if (pages.length === 0) {
+    return emptyTrafficSummary(
+      windowDays,
+      "No GSC data — credentials missing or no impressions in window."
+    );
+  }
+
+  const clicks = pages.reduce((s, p) => s + p.clicks, 0);
+  const impressions = pages.reduce((s, p) => s + p.impressions, 0);
+  // Impression-weighted so a single zero-traffic page can't drag the average.
+  const avgPosition =
+    impressions > 0
+      ? Math.round((pages.reduce((s, p) => s + p.position * p.impressions, 0) / impressions) * 100) / 100
+      : 0;
+
+  const topPages: GSCTopPage[] = [...pages]
+    .sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions)
+    .slice(0, topN)
+    .map((p) => ({
+      page: p.page,
+      slug: slugFromComparePage(p.page),
+      clicks: p.clicks,
+      impressions: p.impressions,
+      ctr: Math.round(p.ctr * 10000) / 100,
+      position: Math.round(p.position * 100) / 100,
+    }));
+
+  return {
+    available: true,
+    source: "google_search_console",
+    windowDays,
+    clicks,
+    impressions,
+    avgPosition,
+    pagesWithImpressions: pages.length,
+    topPages,
+    note: `Google Search Console organic clicks/impressions, last ${windowDays} days.`,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // /compare/* weekly organic traffic (gate metric for H6 — DAN-1014 / DAN-1008)
 // ---------------------------------------------------------------------------
 //
