@@ -278,7 +278,7 @@ export default async function HomePage() {
         </div>
 
         {/* Live activity toast — shows popular trending comparisons with simulated viewer count */}
-        <LiveActivityToast items={trending.slice(0, 8).map((t) => ({ slug: t.slug, title: t.title, viewCount: t.viewCount }))} />
+        <LiveActivityToast items={trending.slice(0, 8).map((t) => ({ slug: t.slug, title: t.title }))} />
 
         {/* Scroll down indicator — absolutely positioned so it sits above the wave without adding height */}
         <div className="absolute bottom-[88px] left-0 right-0 flex justify-center animate-fade-in pointer-events-none" style={{ animationDelay: "0.7s" }} aria-hidden="true">

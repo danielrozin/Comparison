@@ -6,16 +6,9 @@ import Link from "next/link";
 interface Notification {
   slug: string;
   title: string;
-  viewCount: number;
 }
 
 const VIEWS_EMOJIS = ["👀", "🔍", "⚡", "🔥"];
-
-function fmtViews(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
-  return n.toString();
-}
 
 function randomBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -85,7 +78,6 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
             <span className="mx-1 text-white/40 font-normal">vs</span>
             {b}
           </p>
-          <p className="text-xs text-white/40 mt-0.5">{fmtViews(item.viewCount)} total views</p>
         </div>
         <svg className="w-3.5 h-3.5 text-white/30 flex-shrink-0 group-hover:text-white/60 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
