@@ -2,7 +2,7 @@
 
 > A Versus B (aversusb.net) is the internet's most comprehensive structured comparison platform — helping users make informed decisions by comparing anything side-by-side across 17+ categories including sports, countries, technology, products, software, automotive, health, finance, and more.
 
-*Last updated: July 12, 2026 (HB358)*
+*Last updated: July 12, 2026 (HB359)*
 
 ## What We Do
 
@@ -224,6 +224,7 @@ Every comparison page emits a full JSON-LD @graph including:
 - HB356: `LearningResource additionalType` + `learningResourceType: "Comparison Guide"` on compare (2-entity + multi-entity) and category/[slug] + category/[slug]/[subcategory] pages — the highest-traffic page types (~50,000+ comparison pages + 17+ category pages) now all signal educational intent; complete site-wide LearningResource rollout
 - HB357: `LearningResource additionalType` + `learningResourceType` extended to entity ProfilePage (2,500+ entity pages, `learningResourceType: "Entity Profile"`) and reviews/[slug] ReviewPage (500+ review pages, `learningResourceType: "Review"`) — 100% LearningResource coverage across all public page types; `llms.txt` freshness updated to July 10, 2026
 - HB358: `webPageSchema()` gains `thumbnailUrl`, `genre`, and `contentReferenceTime` params — compare/[slug].tsx now passes OG image URL + category genre string to the WebPage node so the co-emitted WebPage @graph node carries the same visual and content-classification GEO signals as the Article node; `contentReferenceTime` derived from `dateModified` on WebPage gives LLMs the data-freshness timestamp without needing to traverse to Article; `llms.txt` freshness updated to July 12, 2026
+- HB359: blog `WebPage` node GEO parity — 6 missing fields added to `/blog/[slug]` WebPage node: `thumbnailUrl` (direct OG image URL for AI visual crawlers), `genre` (e.g. "Technology Guide" matching Article genre), `contentReferenceTime` (data-freshness timestamp for LLM time-qualified citations), `description` (excerpt/metaDescription), `creativeWorkStatus: "Published"`, `accessModeSufficient`; `primaryImageOfPage.contentUrl` + `name` + `creditText` added to upgrade from bare ImageObject to full GEO-enriched node
 
 ## Categories & Scale
 

@@ -723,22 +723,44 @@ export default async function BlogPostPage({
     "@type": "WebPage",
     "@id": `${articleUrl}#webpage`,
     name: article.title,
+    description: article.excerpt || article.metaDescription || undefined,
     url: articleUrl,
     inLanguage: "en-US",
     isAccessibleForFree: true,
     conditionsOfAccess: "Free",
+    creativeWorkStatus: "Published",
     license: "https://creativecommons.org/licenses/by/4.0/",
     accessMode: ["textual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
     accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     ...(article.publishedAt && { datePublished: new Date(article.publishedAt).toISOString() }),
     ...(article.publishedAt && { dateCreated: new Date(article.publishedAt).toISOString() }),
     ...(article.updatedAt && { dateModified: new Date(article.updatedAt).toISOString() }),
+    // contentReferenceTime — GEO parity with Article node; LLMs read this from WebPage
+    // without needing to traverse to the Article for time-qualified citations.
+    ...(article.updatedAt && { contentReferenceTime: new Date(article.updatedAt).toISOString() }),
+    // genre — content classification matching the Article genre so AI indexers and
+    // Google Discover carousels see consistent classification across @graph nodes.
+    genre: article.category
+      ? `${article.category.charAt(0).toUpperCase()}${article.category.slice(1)} Guide`
+      : "Comparison Guide",
+    // thumbnailUrl — direct OG image URL for AI visual crawlers (Google Lens, Perplexity
+    // image carousels); GEO parity with compare WebPage nodes (HB358).
+    thumbnailUrl: ogImage,
     // mainEntity — bidirectional WebPage↔Article edge; Article.mainEntityOfPage points
     // here, this WebPage.mainEntity points back. Mirrors compare + alternatives pages.
     mainEntity: { "@type": "Article", "@id": `${articleUrl}#article` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
-    primaryImageOfPage: { "@type": "ImageObject", url: ogImage, width: 1200, height: 630 },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: ogImage,
+      contentUrl: ogImage,
+      width: 1200,
+      height: 630,
+      name: article.title,
+      creditText: SITE_NAME,
+    },
     potentialAction: { "@type": "ReadAction", target: { "@type": "EntryPoint", urlTemplate: articleUrl } },
     speakable: {
       "@type": "SpeakableSpecification",
