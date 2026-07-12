@@ -33,6 +33,7 @@ function ShowMoreButton({ hidden, onToggle, label }: { hidden: number; onToggle:
       onClick={onToggle}
       className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
       aria-label={label}
+      aria-expanded={false}
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -49,6 +50,7 @@ function ShowLessButton({ onToggle }: { onToggle: () => void }) {
       onClick={onToggle}
       className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
       aria-label="Show less"
+      aria-expanded={true}
     >
       <svg className="w-3.5 h-3.5 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />

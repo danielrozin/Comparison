@@ -554,10 +554,9 @@ function RedesignedTable({
   // When a filter is active, auto-expand all groups so results are visible
   useEffect(() => {
     if (filterNormalized) {
-      setOpenGroups(new Set(categoryEntries.map(([name]) => name)));
+      setOpenGroups(new Set(Array.from(buildCategories(attributes).keys())));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterNormalized]);
+  }, [filterNormalized, attributes]);
 
   // Filter attributes per category when winnersOnly or filterQuery is active
   const visibleCategories = categoryEntries.map(([name, attrs]) => {
@@ -680,7 +679,7 @@ function RedesignedTable({
       )}
 
       {/* Desktop: Table layout with sticky header */}
-      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
+      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "!hidden" : ""}`}>
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
