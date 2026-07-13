@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 import { SITE_URL } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 
@@ -181,12 +182,17 @@ export async function GET(request: NextRequest) {
   }
 
   // Comparisons sitemap (default)
+  // DAN-2067: `total` and `urls` both exclude redirect sources. Counting published
+  // rows alone reported 491 pages when only 469 URLs return 200 — the other 22 are
+  // 308s. `total` is what /studies/ and outreach quote as the corpus size, so it
+  // has to mean "pages that exist", not "rows with status=published".
+  const comparisonWhere = category
+    ? canonicalComparisonWhere({ category })
+    : canonicalComparisonWhere();
   const [total, comparisons] = await Promise.all([
-    prisma.comparison.count({
-      where: { status: "published", ...(category ? { category } : {}) },
-    }),
+    prisma.comparison.count({ where: comparisonWhere }),
     prisma.comparison.findMany({
-      where: { status: "published", ...(category ? { category } : {}) },
+      where: comparisonWhere,
       select: {
         slug: true,
         title: true,

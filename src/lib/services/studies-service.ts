@@ -9,6 +9,7 @@
  */
 
 import { SOFTWARE_SUBCATEGORIES } from "@/lib/utils/constants";
+import { canonicalComparisonWhere, excludeRedirectedComparisons } from "@/lib/db/canonical-comparisons";
 import {
   canonicalSlug,
   canonicalName,
@@ -145,22 +146,27 @@ function labelFor(category: string): string {
 }
 
 /**
- * Baked-in snapshot — refreshed 2026-07-12 from the production Neon DB:
- * 491 published comparison pages (483 head-to-head + 8 three-way), which
- * collapse to 442 distinct rivalries across 666 canonical entities.
+ * Baked-in snapshot — refreshed 2026-07-13 from the production Neon DB:
+ * 469 published comparison *pages* (461 head-to-head + 8 three-way), which
+ * collapse to 437 distinct rivalries across 659 canonical entities.
+ *
+ * DAN-2067: this said 491 (483 + 8). 491 is the number of published *rows*; 22
+ * of them are redirect sources that 308 at the edge, so they are not pages. The
+ * corpus is 469. Anything quoting 491 externally is overstating the catalog.
+ *
  * Used only when a live query is unavailable so the page always renders.
  * Keep in sync with the live corpus: a stale snapshot here is what let the
  * /studies/ index overstate the dataset by up to 11x (DAN-2037). Regenerate
  * with `npx tsx --env-file=.env.local scripts/dan2037-snapshot.ts`.
  */
 const SNAPSHOT: MostComparedStudy = {
-  totalComparisons: 491,
-  headToHeadPages: 483,
+  totalComparisons: 469,
+  headToHeadPages: 461,
   multiWayPages: 8,
-  distinctRivalries: 442,
-  distinctBrands: 666,
-  rawEntityRows: 704,
-  updatedAt: "2026-07-12T00:00:00.000Z",
+  distinctRivalries: 437,
+  distinctBrands: 659,
+  rawEntityRows: 692,
+  updatedAt: "2026-07-13T00:00:00.000Z",
   fromSnapshot: true,
   topBrands: [
     { rank: 1, name: "Xbox Series X", slug: "xbox-series-x", type: "product", count: 6 },
@@ -194,7 +200,8 @@ const SNAPSHOT: MostComparedStudy = {
     { rank: 12, name: "Brave", slug: "brave", type: "software", count: 2 },
   ],
   topMatchups: [
-    { rank: 1, title: "Netflix vs Disney Plus", slug: "disney-plus-vs-netflix", category: "companies", centrality: 10 },
+    // DAN-2067: was `disney-plus-vs-netflix`, which 308s — the snapshot was linking a redirect.
+    { rank: 1, title: "Disney+ vs Netflix", slug: "disney-vs-netflix", category: "entertainment", centrality: 10 },
     { rank: 2, title: "Spotify vs YouTube Music", slug: "spotify-vs-youtube-music", category: "entertainment", centrality: 10 },
     { rank: 3, title: "Disney+ vs Hulu", slug: "disney-plus-vs-hulu", category: "entertainment", centrality: 9 },
     { rank: 4, title: "Netflix vs Hulu", slug: "netflix-vs-hulu", category: "entertainment", centrality: 9 },
@@ -206,20 +213,20 @@ const SNAPSHOT: MostComparedStudy = {
     { rank: 10, title: "HBO Max vs Netflix", slug: "hbo-max-vs-netflix", category: "entertainment", centrality: 8 },
   ],
   categories: [
-    { category: "products", label: "Consumer Products", count: 109 },
-    { category: "software", label: "B2B SaaS & Software", count: 96 },
-    { category: "technology", label: "Consumer Technology", count: 46 },
-    { category: "entertainment", label: "Entertainment", count: 40 },
+    { category: "products", label: "Consumer Products", count: 108 },
+    { category: "software", label: "B2B SaaS & Software", count: 90 },
+    { category: "technology", label: "Consumer Technology", count: 43 },
+    { category: "entertainment", label: "Entertainment", count: 35 },
     { category: "sports", label: "Sports", count: 32 },
-    { category: "automotive", label: "Automotive", count: 32 },
-    { category: "companies", label: "Companies", count: 19 },
+    { category: "automotive", label: "Automotive", count: 29 },
+    { category: "companies", label: "Companies", count: 16 },
     { category: "travel", label: "Travel", count: 15 },
     { category: "food_and_drink", label: "Food And Drink", count: 14 },
     { category: "finance", label: "Finance", count: 13 },
   ],
   rivalSpread: [
-    { rivals: 1, entities: 379 },
-    { rivals: 2, entities: 76 },
+    { rivals: 1, entities: 375 },
+    { rivals: 2, entities: 73 },
     { rivals: 3, entities: 24 },
     { rivals: 4, entities: 13 },
     { rivals: 5, entities: 7 },
@@ -380,7 +387,7 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
 
   try {
     const [totalComparisons, pairs] = await Promise.all([
-      prisma.comparison.count({ where: { status: "published" } }),
+      prisma.comparison.count({ where: canonicalComparisonWhere() }),
       prisma.$queryRaw<PairRow[]>`
         SELECT c.slug AS cslug, c.title AS ctitle, c.category AS ccategory,
                e.name, e.slug AS eslug, et.slug AS type
@@ -390,7 +397,11 @@ export async function getMostComparedStudy(): Promise<MostComparedStudy> {
         LEFT JOIN entity_types et ON et.id = e.entity_type_id`,
     ]);
 
-    const rows = pairs as PairRow[];
+    // DAN-2067: a redirect source keeps its published row, so the raw join above
+    // still hands back its entity pairs. Left in, a rivalry published under both
+    // slug orderings gets counted twice and inflates the leaderboard — the true
+    // root cause of DAN-2047's phantom #1.
+    const rows = excludeRedirectedComparisons(pairs as PairRow[], (r) => r.cslug);
     if (rows.length === 0 || totalComparisons === 0) return SNAPSHOT;
 
     const g = buildRivalryGraph(rows);
@@ -566,7 +577,7 @@ const CHALLENGER_CANDIDATES: ChallengerCandidate[] = [
  * Used only when a live query is unavailable so the page always renders.
  */
 const SAAS_SNAPSHOT: B2BSaaSStudy = {
-  totalSaaSComparisons: 96,
+  totalSaaSComparisons: 90,
   distinctTools: 95,
   updatedAt: "2026-07-12T00:00:00.000Z",
   fromSnapshot: true,
@@ -635,10 +646,10 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
 
   try {
     const totalSaaSComparisons = await prisma.comparison.count({
-      where: { status: "published", category: "software" },
+      where: canonicalComparisonWhere({ category: "software" }),
     });
 
-    const rows = (await prisma.$queryRaw<PairRow[]>`
+    const raw = (await prisma.$queryRaw<PairRow[]>`
       SELECT c.slug AS cslug, c.title AS ctitle, c.category AS ccategory,
              e.name, e.slug AS eslug, et.slug AS type
       FROM comparison_entities ce
@@ -647,6 +658,8 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
       JOIN entities e ON e.id = ce.entity_id
       LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as PairRow[];
 
+    // DAN-2067 — drop redirect sources; see getMostComparedStudy.
+    const rows = excludeRedirectedComparisons(raw, (r) => r.cslug);
     if (rows.length === 0 || totalSaaSComparisons === 0) return SAAS_SNAPSHOT;
 
     const g = buildRivalryGraph(rows);
@@ -849,12 +862,12 @@ export async function getFinanceStudy(): Promise<FinanceStudy> {
 
   try {
     const totalFinanceComparisons = await prisma.comparison.count({
-      where: { status: "published", category: { in: ["finance", "economy"] } },
+      where: canonicalComparisonWhere({ category: { in: ["finance", "economy"] } }),
     });
 
     if (totalFinanceComparisons === 0) return FINANCE_SNAPSHOT;
 
-    const rows = (await prisma.$queryRaw<PairRow[]>`
+    const raw = (await prisma.$queryRaw<PairRow[]>`
       SELECT e.name, e.slug AS eslug, c.slug AS cslug, c.title AS ctitle,
              c.category AS ccategory, et.slug AS type
       FROM comparison_entities ce
@@ -863,6 +876,8 @@ export async function getFinanceStudy(): Promise<FinanceStudy> {
       JOIN entities e ON e.id = ce.entity_id
       LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as PairRow[];
 
+    // DAN-2067 — drop redirect sources; see getMostComparedStudy.
+    const rows = excludeRedirectedComparisons(raw, (r) => r.cslug);
     if (rows.length === 0) return FINANCE_SNAPSHOT;
 
     // The finance corpus is the worst-hit by duplicate slugs: the US-vs-China
