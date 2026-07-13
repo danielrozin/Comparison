@@ -34,7 +34,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
           Prev
         </Link>
       ) : (
-        <span role="button" aria-disabled="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
+        <span aria-hidden="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
@@ -82,7 +82,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
           </svg>
         </Link>
       ) : (
-        <span role="button" aria-disabled="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
+        <span aria-hidden="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
           Next
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
