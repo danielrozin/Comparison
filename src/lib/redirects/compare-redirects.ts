@@ -180,3 +180,24 @@ export const COMPARE_REDIRECTS: BlogRedirect[] = Object.entries(
 export function getConsolidatedCompareSlug(slug: string): string | null {
   return safeConsolidations[slug] ?? null;
 }
+
+/**
+ * DAN-2067 — every slug that 308s at the edge. A retired slug is *supposed* to be
+ * archived in the DB too, but archiving is a separate script from adding the
+ * redirect, so the two drift: on 2026-07-13 the live sitemap shipped 491 URLs of
+ * which 22 were redirect sources still marked `status="published"`. Google was
+ * being handed 22 redirects as if they were pages, and every corpus figure we
+ * published counted them as pages.
+ *
+ * `status="published"` is therefore NOT sufficient to mean "this is a real page".
+ * The redirect map is the edge's own source of truth, so deriving the exclusion
+ * from it cannot drift the way a DB status column can. Anything that counts or
+ * emits comparison pages must exclude these — use `canonicalComparisonWhere()`
+ * (src/lib/db/canonical-comparisons.ts) rather than filtering by status alone.
+ */
+export const REDIRECTED_COMPARE_SLUGS: string[] = Object.keys(safeConsolidations);
+
+/** True when `slug` 308s at the edge — i.e. it is a redirect, not a page. */
+export function isRedirectedCompareSlug(slug: string): boolean {
+  return slug in safeConsolidations;
+}
