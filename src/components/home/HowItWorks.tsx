@@ -73,18 +73,18 @@ export function HowItWorks() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative">
+      <ol role="list" aria-label="How A Versus B works" className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative list-none">
         {/* Connector line (desktop only) */}
-        <div className="hidden sm:block absolute top-8 left-1/6 right-1/6 h-px bg-gradient-to-r from-primary-200 via-accent-200 to-emerald-200 z-0 mx-16" aria-hidden="true" />
+        <div className="hidden sm:block absolute top-8 left-[16.7%] right-[16.7%] h-px bg-gradient-to-r from-primary-200 via-accent-200 to-emerald-200 z-0 mx-16" aria-hidden="true" />
 
         {STEPS.map((step, idx) => (
-          <div
+          <li
             key={step.number}
             className={`relative flex flex-col items-center text-center p-6 bg-white border ${step.accent} rounded-2xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 z-10 motion-safe:animate-fade-in`}
             style={{ animationDelay: `${idx * 120}ms` }}
           >
             {/* Step tag */}
-            <span className="absolute top-3 right-3 text-xs font-bold text-text-secondary/40 uppercase tracking-widest">
+            <span className="absolute top-3 right-3 text-xs font-bold text-text-secondary/40 uppercase tracking-widest" aria-hidden="true">
               {step.tag}
             </span>
 
@@ -99,9 +99,9 @@ export function HowItWorks() {
             <p className="text-sm text-text-secondary leading-relaxed">
               {step.description}
             </p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   );
 }

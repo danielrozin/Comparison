@@ -53,7 +53,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
             : "bg-surface-alt text-text ring-border";
 
           return (
-            <li key={slug} className="flex flex-col gap-2">
+            <li key={slug} role="group" aria-label={`Reviews for ${name}`} className="flex flex-col gap-2">
               {/* Internal review page link */}
               <Link
                 href={`/reviews/${slug}`}

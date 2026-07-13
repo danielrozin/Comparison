@@ -14,19 +14,21 @@ interface StatItem {
 function StatCard({ stat }: { stat: StatItem }) {
   const liRef = useRef<HTMLLIElement>(null);
   const { value } = useCountUp(stat.value, 1400, liRef);
+  const finalText = `${stat.value.toLocaleString()}${stat.suffix ?? ""} ${stat.label}`;
 
   return (
     <li
       ref={liRef}
+      aria-label={finalText}
       className="bg-white rounded-2xl p-5 shadow-sm border border-border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col items-center text-center"
     >
       <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-sm mb-3`}>
         {stat.icon}
       </div>
-      <div className="text-2xl font-black text-text tabular-nums">
+      <div className="text-2xl font-black text-text tabular-nums" aria-hidden="true">
         {value.toLocaleString()}{stat.suffix ?? ""}
       </div>
-      <div className="text-xs text-text-secondary mt-1 font-medium">{stat.label}</div>
+      <div className="text-xs text-text-secondary mt-1 font-medium" aria-hidden="true">{stat.label}</div>
     </li>
   );
 }
@@ -84,7 +86,7 @@ export function AnimatedStats({ totalCount, categoryCount }: AnimatedStatsProps)
   ];
 
   return (
-    <ul role="list" className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 list-none">
+    <ul role="list" aria-label="Site statistics" className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 list-none">
       {stats.map((stat) => (
         <StatCard key={stat.label} stat={stat} />
       ))}
