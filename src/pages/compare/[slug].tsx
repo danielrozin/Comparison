@@ -427,38 +427,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = await generateComparisonForSSR(slug, slugParts.entities);
   }
 
-  // Still no usable comparison → client-side dynamic generation (same fallback
-  // as before).
+  // Still no usable comparison after DB lookup + SSR generation → 404.
+  // Returning a client-side "dynamic" shell here (the prior behaviour) caused
+  // every arbitrary slug (e.g. banana-vs-stapler) to return HTTP 200, creating
+  // an unbounded crawl surface and getting thin/nonsensical pages indexed by
+  // Google. DAN-2065: unknown slugs must 404.
   if (!comparison || !comparison.entities || comparison.entities.length < 2) {
-    const override = META_OVERRIDES[slug];
-    const nameParts = slug
-      .split("-vs-")
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map(humanizeEntityName);
-    const title = nameParts.join(" vs ");
-    const isMulti = nameParts.length > 2;
-    const ogImage = isMulti
-      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
-      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
-    // buildPageTitle appends the brand suffix exactly once (DAN-1145 Bug 1);
-    // clampDescription enforces the meta-length / word-boundary invariant (Bug 3).
-    return {
-      props: {
-        kind: "dynamic",
-        slug,
-        meta: {
-          title: buildPageTitle(override?.title ?? title),
-          description: clampDescription(
-            override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
-          ),
-          canonical: `${SITE_URL}/compare/${slug}`,
-          ogImage,
-          ogType: "website",
-        },
-      },
-      revalidate: 3600,
-    };
+    return { notFound: true };
   }
 
   const voteData = await getComparisonVotes(comparison.id);
