@@ -35,12 +35,14 @@ export function VerdictBlock({
 }) {
   const winner = extractWinner(verdict, entities);
   const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(verdict);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopyStatus("Verdict copied to clipboard");
+      setTimeout(() => { setCopied(false); setCopyStatus(""); }, 2000);
     } catch {
       /* clipboard unavailable */
     }
