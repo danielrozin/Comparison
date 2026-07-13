@@ -8,6 +8,7 @@ import {
   isComparisonDbConfigured,
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
+import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import {
   startAttempt,
   finishAttemptSuccess,
@@ -366,7 +367,15 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       } catch {
         canonical = null;
       }
-      if (isRenderableComparison(canonical)) {
+      // DAN-2065: never 308 to a slug the edge map itself redirects away — the
+      // edge would bounce it straight back here and the two rules would ping-pong.
+      // That is a real loop, not a hypothetical: the generated ordering map picked
+      // its survivors by (seeded) viewCount, so for 18 clusters it points the
+      // opposite way to this alphabetical sort. starbucks-vs-dunkin ⇄
+      // dunkin-vs-starbucks hit curl's 10-redirect ceiling in prod.
+      const edgeRedirectsTarget = getConsolidatedCompareSlug(sortedSlug) !== null;
+
+      if (!edgeRedirectsTarget && isRenderableComparison(canonical)) {
         return {
           redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
         };
