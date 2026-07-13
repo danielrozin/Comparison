@@ -186,7 +186,9 @@ export async function GET(request: NextRequest) {
   // rows alone reported 491 pages when only 469 URLs return 200 — the other 22 are
   // 308s. `total` is what /studies/ and outreach quote as the corpus size, so it
   // has to mean "pages that exist", not "rows with status=published".
-  const comparisonWhere = canonicalComparisonWhere(category ? { category } : undefined);
+  const comparisonWhere = category
+    ? canonicalComparisonWhere({ category })
+    : canonicalComparisonWhere();
   const [total, comparisons] = await Promise.all([
     prisma.comparison.count({ where: comparisonWhere }),
     prisma.comparison.findMany({

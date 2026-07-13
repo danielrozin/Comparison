@@ -17,9 +17,15 @@ import { REDIRECTED_COMPARE_SLUGS, isRedirectedCompareSlug } from "@/lib/redirec
  * Prisma `where` clause matching only canonical (200-returning) comparison pages.
  * Merge extra constraints in via the argument — e.g. `canonicalComparisonWhere({ category: "software" })`.
  */
-export function canonicalComparisonWhere<T extends Record<string, unknown>>(extra?: T) {
+type CanonicalComparisonWhere = { status: "published"; slug: { notIn: string[] } };
+
+export function canonicalComparisonWhere(): CanonicalComparisonWhere;
+export function canonicalComparisonWhere<T extends Record<string, unknown>>(
+  extra: T
+): CanonicalComparisonWhere & T;
+export function canonicalComparisonWhere(extra?: Record<string, unknown>) {
   return {
-    status: "published",
+    status: "published" as const,
     slug: { notIn: REDIRECTED_COMPARE_SLUGS },
     ...(extra ?? {}),
   };
