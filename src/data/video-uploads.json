@@ -3273,6 +3273,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-12T07:41:18.759Z"
+    },
+    {
+      "slug": "tesla-model-3-vs-bmw-i4",
+      "title": "Tesla Model 3 vs BMW i4",
+      "entityA": "Tesla Model 3",
+      "entityB": "BMW i4",
+      "category": "Automotive",
+      "videoFile": "Tesla Model 3 vs BMW i4.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Tesla Model 3 vs BMW i4 — Full Comparison 2026",
+      "youtubeDescription": "The Tesla Model 3 offers superior range (358 miles), Supercharger network access, and Autopilot. The BMW i4 delivers a more luxurious interior, better ride quality, and the classic BMW driving experience in electric form.\n\n#teslamodel3 #bmwi4 #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-13T08:22:18.028Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "General",
+      "videoFile": "Uber vs Lyft.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Uber vs Lyft — Full Comparison 2026",
+      "youtubeDescription": "Compare Uber (71% US market share, 72 countries) vs Lyft (29% share, US/Canada only). Analyze revenue, driver rates, and service differences in 2026.\n\n#uber #lyft #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-13T08:26:54.059Z"
+    },
+    {
+      "slug": "ww1-vs-ww2",
+      "title": "Ww1 vs Ww2",
+      "entityA": "Ww1",
+      "entityB": "Ww2",
+      "category": "General",
+      "videoFile": "Ww1 vs Ww2.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Ww1 vs Ww2 — Full Comparison 2026",
+      "youtubeDescription": "WW2 was significantly more deadly than WW1, with 70-85 million deaths vs ~20 million. WW2 had far greater civilian casualties and expanded to the Pacific Theatre.\n\n#ww1 #ww2 #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-13T08:31:48.930Z"
     }
   ]
 }
