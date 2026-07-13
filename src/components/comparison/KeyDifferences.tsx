@@ -237,7 +237,7 @@ export function KeyDifferencesBlock({
                 ? "border-l-[3px] border-l-purple-500"
                 : ""
             } hover:bg-primary-50/20 hover:shadow-[inset_0_0_0_1px_rgba(99,102,241,0.08)] transition-all duration-150 group/row motion-safe:animate-fade-in`}
-            style={{ animationDelay: `${i * 60}ms` }}
+            style={{ animationDelay: `${Math.min(i, 6) * 60}ms` }}
           >
             {/* Entity A Value */}
             <div
@@ -290,7 +290,7 @@ export function KeyDifferencesBlock({
                 ? "border-l-[3px] border-l-purple-500"
                 : ""
             }`}
-            style={{ animationDelay: `${i * 60}ms` }}
+            style={{ animationDelay: `${Math.min(i, 6) * 60}ms` }}
           >
             {/* Attribute label */}
             <div className="bg-surface-alt px-4 py-2">

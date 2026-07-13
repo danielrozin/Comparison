@@ -81,7 +81,7 @@ export function FeaturedComparisons({
 
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="flex -space-x-2 flex-shrink-0">
+                  <div className="flex -space-x-2 flex-shrink-0" aria-hidden="true">
                     <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm">
                       {(parts[0] || "A").charAt(0).toUpperCase()}
                     </div>

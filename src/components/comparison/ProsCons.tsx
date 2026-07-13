@@ -113,9 +113,12 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
           const prosOverflowId = `pros-overflow-${entity.id ?? idx}`;
           const consOverflowId = `cons-overflow-${entity.id ?? idx}`;
 
+          const entityHeadingId = `pros-cons-heading-${entity.id ?? idx}`;
+
           return (
             <div
               key={entity.id}
+              aria-labelledby={entityHeadingId}
               className="bg-white border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               {/* Entity header */}
@@ -130,6 +133,7 @@ export function ProsConsBlock({ entities }: { entities: ComparisonEntityData[] }
                   <div className="flex items-center gap-2.5 min-w-0">
                     <EntityAvatar entity={entity} variant={idx === 0 ? "a" : "b"} />
                     <h3
+                      id={entityHeadingId}
                       className={`font-bold text-lg leading-tight truncate ${
                         idx === 0 ? "text-primary-800" : "text-accent-700"
                       }`}
