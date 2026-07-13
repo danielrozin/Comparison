@@ -8,9 +8,11 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<{ slug: string; title: string }[]>([]);
   const [focused, setFocused] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const listboxId = "entity-compare-listbox";
 
   useEffect(() => {
     if (query.length < 2) {
@@ -52,6 +54,7 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
           }
         }
         setSuggestions(opponents.slice(0, 5));
+        setActiveIdx(-1);
       } catch {
         // ignore
       }
@@ -96,9 +99,23 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => setFocused(true)}
-            onBlur={() => setTimeout(() => setFocused(false), 150)}
+            onBlur={() => setTimeout(() => { setFocused(false); setActiveIdx(-1); }, 150)}
+            onKeyDown={(e) => {
+              const len = suggestions.length;
+              if (!len) return;
+              if (e.key === "ArrowDown") { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, len - 1)); }
+              else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, -1)); }
+              else if (e.key === "Enter" && activeIdx >= 0) { e.preventDefault(); handleSelect(suggestions[activeIdx]!.slug); }
+              else if (e.key === "Escape") { setFocused(false); setActiveIdx(-1); }
+            }}
             placeholder={`e.g. ${entityName === "iPhone" ? "Samsung" : "Android"}, Tesla, Germany…`}
             aria-label={`Compare ${entityName} with`}
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded={focused && suggestions.length > 0}
+            aria-controls={listboxId}
+            aria-autocomplete="list"
+            aria-activedescendant={activeIdx >= 0 ? `entity-compare-option-${activeIdx}` : undefined}
             className="w-full pl-10 pr-24 py-2.5 rounded-xl text-sm bg-white text-text placeholder:text-text-secondary/40 focus:ring-2 focus:ring-primary-400/50 outline-none border border-border focus:border-primary-400 transition-all"
           />
           <button
@@ -113,18 +130,24 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
       {/* Suggestions dropdown */}
       {focused && suggestions.length > 0 && (
         <ul
+          id={listboxId}
           role="listbox"
-          aria-label="Suggestions"
+          aria-label={`Compare ${entityName} with suggestions`}
           className="absolute top-full left-0 right-0 mt-1 bg-white border border-border rounded-xl shadow-lg z-50 overflow-hidden list-none"
         >
-          {suggestions.map((s) => (
-            <li key={s.slug} role="option" aria-selected={false}>
+          {suggestions.map((s, idx) => (
+            <li
+              key={s.slug}
+              id={`entity-compare-option-${idx}`}
+              role="option"
+              aria-selected={activeIdx === idx}
+            >
               <button
                 type="button"
                 onMouseDown={() => handleSelect(s.slug)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-primary-50 transition-colors text-sm"
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors text-sm ${activeIdx === idx ? "bg-primary-50" : "hover:bg-primary-50"}`}
               >
-                <div className="flex -space-x-1.5 flex-shrink-0">
+                <div aria-hidden="true" className="flex -space-x-1.5 flex-shrink-0">
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs font-bold text-white ring-1 ring-white">
                     {entityName.charAt(0)}
                   </div>

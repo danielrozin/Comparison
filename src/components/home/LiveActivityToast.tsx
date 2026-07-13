@@ -65,9 +65,10 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
     >
       <Link
         href={`/compare/${item.slug}`}
+        aria-label={`${people} people comparing ${a} vs ${b} now — view comparison`}
         className="group flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 hover:border-white/30 rounded-xl px-3 py-2.5 max-w-[280px] sm:max-w-[320px] transition-all duration-200 shadow-lg"
       >
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-base">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-base" aria-hidden="true">
           {emoji}
         </div>
         <div className="min-w-0 flex-1">
