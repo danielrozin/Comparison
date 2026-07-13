@@ -67,8 +67,9 @@ export function SearchBox() {
   const router = useRouter();
   const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Cycle typing suggestions
+  // Cycle typing suggestions — paused when user prefers reduced motion
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const interval = setInterval(() => {
       setSuggestionIndex((prev) => (prev + 1) % TYPING_SUGGESTIONS.length);
     }, 3000);
@@ -205,6 +206,7 @@ export function SearchBox() {
             type="text"
             role="combobox"
             aria-label="Search comparisons"
+            aria-haspopup="listbox"
             aria-expanded={showDropdown && hasResults}
             aria-autocomplete="list"
             aria-controls={listboxId}
@@ -249,8 +251,8 @@ export function SearchBox() {
           aria-label="Search suggestions"
           className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl shadow-black/15 border border-border/80 overflow-hidden z-50 animate-slide-up"
         >
-          {/* Header */}
-          <div className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
+          {/* Header — aria-hidden: non-option content must not appear inside role="listbox" */}
+          <div aria-hidden="true" className="px-4 py-2.5 border-b border-border/50 flex items-center justify-between bg-surface-alt/60">
             <p className="text-xs font-bold text-text-secondary uppercase tracking-wider flex items-center gap-1.5">
               {showingLive ? (
                 <>
@@ -323,8 +325,8 @@ export function SearchBox() {
             })}
           </div>
 
-          {/* Footer */}
-          <div className="border-t border-border/50 bg-surface-alt/60 px-4 py-2 flex items-center justify-between">
+          {/* Footer — aria-hidden: non-option content must not appear inside role="listbox" */}
+          <div aria-hidden="true" className="border-t border-border/50 bg-surface-alt/60 px-4 py-2 flex items-center justify-between">
             {showingLive ? (
               <>
                 <span className="text-xs text-text-secondary font-medium">

@@ -253,7 +253,7 @@ export function VerdictFeedbackWidget({ comparisonSlug }: VerdictFeedbackWidgetP
       <div
         role="status"
         aria-live="polite"
-        className={`pointer-events-none mt-3 transition-opacity duration-300 ${
+        className={`pointer-events-none mt-3 transition-opacity duration-300 motion-reduce:transition-none ${
           toastVisible ? "opacity-100" : "opacity-0 h-0 overflow-hidden mt-0"
         }`}
       >

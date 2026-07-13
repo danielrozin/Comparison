@@ -128,7 +128,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
                   else linkRefs.current.delete(s.id);
                 }}
                 href={`#${s.id}`}
-                aria-current={isActive ? "true" : undefined}
+                aria-current={isActive ? "location" : undefined}
                 className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
                   isActive
                     ? "bg-primary-100 text-primary-700 font-semibold"
@@ -163,6 +163,9 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
             </svg>
           )}
         </button>
+        <span role="status" aria-live="polite" className="sr-only">
+          {copied ? "Copied to clipboard" : ""}
+        </span>
       </div>
     </nav>
   );

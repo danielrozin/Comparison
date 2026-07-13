@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import Image from "next/image";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
 function TrophyIcon() {
@@ -133,15 +134,12 @@ export function MultiComparisonTable({
                   >
                     <div className="flex items-center justify-center gap-2">
                       {ent.imageUrl && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={ent.imageUrl}
                           alt=""
                           width={24}
                           height={24}
                           className="w-6 h-6 rounded-full object-cover border border-white/30 flex-shrink-0"
-                          loading="lazy"
-                          decoding="async"
                         />
                       )}
                       <span className="truncate" title={ent.name}>

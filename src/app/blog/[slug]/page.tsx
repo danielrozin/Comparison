@@ -604,16 +604,9 @@ export default async function BlogPostPage({
         url: `${SITE_URL}/compare/${s}`,
       })),
     }),
-    // interactionStatistic — ReadAction counter exposes viewCount to AI crawlers and
-    // Google Dataset Search so engagement signals are machine-readable (not just GA).
-    // Feeds AEO citation-confidence scoring: a widely-read article is cited more often.
-    ...((article.viewCount ?? 0) > 0 && {
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/ReadAction",
-        userInteractionCount: article.viewCount,
-      },
-    }),
+    // No ReadAction counter: blog `view_count` is not analytics either — nothing
+    // increments it on a page view (all 228 published articles sit at 0), so emitting
+    // it would report invented engagement to Google (DAN-2037).
     // correction — when updatedAt differs from publishedAt, emit a CorrectionComment.
     // Google E-E-A-T evaluators treat `correction` as a strong content-maintenance signal:
     // it proves editorial accountability and active fact-checking, not a set-and-forget page.

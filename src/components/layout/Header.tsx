@@ -45,6 +45,7 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setSearchHintIdx((i) => (i + 1) % SEARCH_HINTS.length), 2800);
     return () => clearInterval(id);
   }, [SEARCH_HINTS.length]);
@@ -151,6 +152,7 @@ export function Header() {
                     aria-current={pathname?.startsWith(`/category/${item.slug}`) ? "page" : undefined}
                     aria-haspopup={hasSubs ? "menu" : undefined}
                     aria-expanded={hasSubs ? isOpen : undefined}
+                    aria-controls={hasSubs ? `dropdown-${item.slug}` : undefined}
                     className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                       isOpen || pathname?.startsWith(`/category/${item.slug}`) ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                     }`}
@@ -165,7 +167,7 @@ export function Header() {
 
                   {/* Dropdown — only mounted when this dropdown is open, removes ~16KB of eager-rendered subcategory HTML from SSR */}
                   {hasSubs && isOpen && (
-                    <div role="menu" aria-label={`${item.name} subcategories`} className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-border ${
+                    <div id={`dropdown-${item.slug}`} role="menu" aria-label={`${item.name} subcategories`} className={`absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-white rounded-xl shadow-xl border border-border ${
                       subs.length > 6 ? "w-[480px]" : "w-[260px]"
                     }`}>
                       <div className={`p-2 ${subs.length > 6 ? "grid grid-cols-2 gap-0.5" : ""}`}>

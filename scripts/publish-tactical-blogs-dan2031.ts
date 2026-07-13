@@ -572,7 +572,7 @@ async function main() {
 
   for (const post of POSTS) {
     const { relatedComparisonSlugs, ...rest } = post;
-    const result = await prisma.blogPost.upsert({
+    const result = await prisma.blogArticle.upsert({
       where: { slug: post.slug },
       update: {
         ...rest,

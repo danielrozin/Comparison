@@ -878,7 +878,6 @@ export function comparisonPageSchema(
   // 1. Article schema
   const hasFaqs = comparison.faqs.length > 0;
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`;
-  const viewCount = comparison.metadata.viewCount;
   schemas.push({
     "@context": "https://schema.org",
     "@type": articleType,
@@ -1010,8 +1009,9 @@ export function comparisonPageSchema(
     ].join(", "),
     // interactionStatistic — ReadAction (views) + VoteAction (community votes) for AI engagement signals
     ...(() => {
+      // No ReadAction counter: `comparisons.view_count` is seed data, not analytics,
+      // so emitting it as an engagement signal misrepresents traffic to Google (DAN-2037).
       const counters = [];
-      if (viewCount > 0) counters.push({ "@type": "InteractionCounter", interactionType: "https://schema.org/ReadAction", userInteractionCount: viewCount });
       if (voteData && voteData.total >= 1) counters.push({ "@type": "InteractionCounter", interactionType: "https://schema.org/VoteAction", userInteractionCount: voteData.total });
       return counters.length > 0 ? { interactionStatistic: counters.length === 1 ? counters[0] : counters } : {};
     })(),
@@ -1753,13 +1753,6 @@ export function comparisonPageSchema(
       // and AI data-pipeline crawlers that this dataset has real human engagement.
       // Indexed alongside view counts on the Article; kept separate so dataset-specific
       // crawlers (Kaggle AI, Semantic Scholar, Perplexity data mode) also see the signal.
-      ...(viewCount > 0 && {
-        interactionStatistic: {
-          "@type": "InteractionCounter",
-          interactionType: "https://schema.org/ReadAction",
-          userInteractionCount: viewCount,
-        },
-      }),
     });
   }
 
@@ -1920,7 +1913,6 @@ function buildMultiEntityGraph(
   const citation = comparison.citationStats;
   const realVotes = voteData && voteData.total >= 10 ? voteData : null;
   const multiOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`;
-  const multiViewCount = comparison.metadata.viewCount;
 
   const itemNodes = comparison.entities.map((entity, i) => {
     const schemaType = entitySchemaType(entity.entityType);
@@ -2318,13 +2310,6 @@ function buildMultiEntityGraph(
         publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
       })),
     ],
-    ...(multiViewCount > 0 && {
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/ReadAction",
-        userInteractionCount: multiViewCount,
-      },
-    }),
     mainEntity: { "@id": itemListId },
     // about[] — primary subjects of this comparison article; @id matches ProfilePage mainEntity.
     about: comparison.entities.map((e) => {
@@ -2589,13 +2574,6 @@ function buildMultiEntityGraph(
           name: s.name,
           url: s.url,
         })),
-      }),
-      ...(multiViewCount > 0 && {
-        interactionStatistic: {
-          "@type": "InteractionCounter",
-          interactionType: "https://schema.org/ReadAction",
-          userInteractionCount: multiViewCount,
-        },
       }),
       educationalLevel: "General",
       educationalUse: "research",
@@ -3354,14 +3332,9 @@ export function profilePageSchema(entity: {
         numberOfItems: entity.comparisonCount,
         url: `${SITE_URL}/entity/${entity.slug}`,
       },
-      // interactionStatistic — signals community engagement volume to AI answer engines
-      // that use engagement as a proxy for topical authority and citation confidence.
-      interactionStatistic: {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/ReadAction",
-        userInteractionCount: entity.comparisonCount,
-        description: `This entity appears in ${entity.comparisonCount} comparisons on A Versus B`,
-      },
+      // No ReadAction counter here either: comparisonCount is how many comparisons
+      // the entity appears in, not how many times it was read. `about.numberOfItems`
+      // above already carries that (accurate) signal (DAN-2037).
     }),
     // citation — links this ProfilePage to the comparison articles that discuss this entity.
     // AI answer engines use citation to build entity attribution chains: when a user asks

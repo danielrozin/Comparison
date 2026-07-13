@@ -11,7 +11,7 @@ const PATH = "/studies/most-compared-brands-2026";
 const CANONICAL = `${SITE_URL}${PATH}`;
 const TITLE = "The Most-Compared Brands of 2026 — Data Study";
 const DESCRIPTION =
-  "We analyzed 1,600+ head-to-head comparisons to rank the brands, SaaS tools, and matchups people research most in 2026. See the full data study and methodology.";
+  "We mapped every published head-to-head comparison in our database into a rivalry graph to see which brands, SaaS tools, and matchups sit at the centre of the most buyer research in 2026. Full data study and methodology.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Most-Compared Brands of 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -71,11 +71,19 @@ function fmt(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+// The entity taxonomy carries singular and plural forms of the same type, plus
+// several ways of saying "streaming service". Both spellings need a label or the
+// table prints a raw slug.
 const TYPE_LABELS: Record<string, string> = {
   software: "SaaS",
   company: "Company",
   product: "Product",
+  products: "Product",
   brand: "Brand",
+  technology: "Technology",
+  platform: "Platform",
+  streaming: "Streaming",
+  entertainment: "Streaming",
   team: "Sports team",
 };
 
@@ -89,7 +97,16 @@ export default async function MostComparedStudyPage() {
   });
 
   const maxCat = Math.max(...study.categories.map((c) => c.count), 1);
-  const topBrand = study.topBrands[0];
+
+  // The distribution, not a winner. Every dedup rule we tried produced a
+  // different "#1" — the spread is the finding that survives all of them
+  // (DAN-2047 / DAN-2059).
+  const spreadTotal = study.rivalSpread.reduce((n, b) => n + b.entities, 0);
+  const narrowRivals = study.rivalSpread
+    .filter((b) => b.rivals <= 2)
+    .reduce((n, b) => n + b.entities, 0);
+  const narrowPct = spreadTotal ? Math.round((narrowRivals / spreadTotal) * 100) : 0;
+  const maxSpread = Math.max(...study.rivalSpread.map((b) => b.entities), 1);
 
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
@@ -113,8 +130,9 @@ export default async function MostComparedStudyPage() {
     datePublished: "2026-05-15",
     dateModified: study.updatedAt,
     measurementTechnique:
-      "Aggregation of published head-to-head comparison pages on aversusb.net",
-    variableMeasured: "Number of comparison pages each brand appears in",
+      "Published head-to-head comparison pages on aversusb.net, normalised to an order-insensitive pair of canonical entities so that reverse-duplicate pages and alias entity records collapse to a single rivalry. Pages comparing three or more entities are excluded.",
+    variableMeasured:
+      "Number of distinct rivals each brand is matched against (not the number of comparison pages it appears on)",
     encodingFormat: ["text/html", "application/ld+json"],
     spatialCoverage: { "@type": "Place", name: "Global" },
     temporalCoverage: "2026",
@@ -233,10 +251,11 @@ export default async function MostComparedStudyPage() {
                 The Most-Compared Brands of 2026
               </h1>
               <p id="page-intro" className="mt-2 text-primary-100 text-sm sm:text-base leading-relaxed">
-                Which brands does the internet argue about most? We analyzed{" "}
-                <strong>{fmt(study.totalComparisons)}</strong> published head-to-head comparisons across{" "}
-                <strong>{fmt(study.distinctBrands)}</strong> distinct entities to find the brands, SaaS
-                tools, and matchups people research most this year.
+                Which brands does the internet argue about most? We took{" "}
+                <strong>{fmt(study.totalComparisons)}</strong> published comparison pages, collapsed the
+                duplicates, and mapped what is left — <strong>{fmt(study.distinctRivalries)}</strong>{" "}
+                distinct rivalries between <strong>{fmt(study.distinctBrands)}</strong> entities — into a
+                single graph of who gets compared against whom.
               </p>
             </div>
           </div>
@@ -253,19 +272,30 @@ export default async function MostComparedStudyPage() {
         {/* Key stat cards */}
         <section aria-label="Study statistics" className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
           <div className="rounded-xl border border-border bg-surface p-5">
-            <div className="text-3xl font-black text-text">{fmt(study.totalComparisons)}</div>
-            <div className="text-sm text-text-secondary mt-1">Comparisons analyzed</div>
+            <div className="text-3xl font-black text-text">{fmt(study.distinctRivalries)}</div>
+            <div className="text-sm text-text-secondary mt-1">
+              Distinct rivalries
+              <span className="block text-xs mt-0.5">
+                from {fmt(study.totalComparisons)} published pages
+              </span>
+            </div>
           </div>
           <div className="rounded-xl border border-border bg-surface p-5">
             <div className="text-3xl font-black text-text">{fmt(study.distinctBrands)}</div>
-            <div className="text-sm text-text-secondary mt-1">Distinct brands &amp; entities</div>
+            <div className="text-sm text-text-secondary mt-1">
+              Distinct brands &amp; entities
+              <span className="block text-xs mt-0.5">
+                after merging alias entries
+              </span>
+            </div>
           </div>
           <div className="rounded-xl border border-border bg-surface p-5">
-            <div className="text-3xl font-black text-text">
-              {topBrand ? topBrand.name : "—"}
-            </div>
+            <div className="text-3xl font-black text-text">{narrowPct}%</div>
             <div className="text-sm text-text-secondary mt-1">
-              Most-compared brand{topBrand ? ` (${topBrand.count} matchups)` : ""}
+              of brands have only 1&ndash;2 rivals
+              <span className="block text-xs mt-0.5">
+                comparison demand is a long tail, not a top 10
+              </span>
             </div>
           </div>
         </section>
@@ -278,39 +308,89 @@ export default async function MostComparedStudyPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
               </svg>
             </div>
-            <h2 id="brands-overall-heading" className="text-2xl font-display font-bold text-text">Most-compared brands overall</h2>
+            <h2 id="brands-overall-heading" className="text-2xl font-display font-bold text-text">Brands with the widest rivalry webs</h2>
           </div>
           <p className="text-text-secondary mb-5">
-            Ranked by how many distinct comparison pages each brand appears in. Gaming consoles and
-            major SaaS platforms dominate — they sit at the center of the widest webs of rivalry.
+            Ranked by <strong>distinct rivals</strong> — how many different brands each one is actually
+            matched against, once pages covering the same rivalry twice are collapsed into one. The
+            top of this table is a cluster, not a winner: seven brands tie on five rivals, and we do
+            not name a single &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how
+            finely each market is modelled (see methodology).
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm" aria-label="Most-compared brands overall — rank, brand, type, comparison count">
+            <table className="w-full text-sm" aria-label="Brands with the widest rivalry webs — rank, brand, type, distinct rival count">
               <thead className="bg-surface text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>
                   <th scope="col" className="text-left font-semibold px-4 py-3">Brand</th>
                   <th scope="col" className="text-left font-semibold px-4 py-3 hidden sm:table-cell">Type</th>
-                  <th scope="col" className="text-right font-semibold px-4 py-3">Comparisons</th>
+                  <th scope="col" className="text-right font-semibold px-4 py-3">Distinct rivals</th>
                 </tr>
               </thead>
               <tbody>
-                {study.topBrands.map((b) => (
-                  <tr key={b.slug} className="border-t border-border">
-                    <td className="px-4 py-3 text-text-secondary font-medium">{b.rank}</td>
-                    <td className="px-4 py-3">
-                      <Link href={`/entity/${b.slug}`} className="font-medium text-text hover:text-primary-600">
-                        {b.name}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-text-secondary hidden sm:table-cell">
-                      {TYPE_LABELS[b.type] || b.type}
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold text-text">{b.count}</td>
-                  </tr>
-                ))}
+                {study.topBrands.map((b, i) => {
+                  const tied =
+                    (i > 0 && study.topBrands[i - 1].count === b.count) ||
+                    (i < study.topBrands.length - 1 && study.topBrands[i + 1].count === b.count);
+                  return (
+                    <tr key={b.slug} className="border-t border-border">
+                      <td className="px-4 py-3 text-text-secondary font-medium">
+                        {b.rank}
+                        {tied && <span className="ml-1 text-xs font-normal">(tie)</span>}
+                      </td>
+                      <td className="px-4 py-3">
+                        <Link href={`/entity/${b.slug}`} className="font-medium text-text hover:text-primary-600">
+                          {b.name}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3 text-text-secondary hidden sm:table-cell">
+                        {TYPE_LABELS[b.type] || b.type}
+                      </td>
+                      <td className="px-4 py-3 text-right font-semibold text-text">{b.count}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
+          </div>
+        </section>
+
+        {/* Distribution — the claim that survives every dedup rule */}
+        <section aria-labelledby="brands-spread-heading" className="mb-12">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-sm flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h2 id="brands-spread-heading" className="text-2xl font-display font-bold text-text">How many rivals does a brand actually have?</h2>
+          </div>
+          <p className="text-text-secondary mb-5">
+            Almost all of them have one. <strong>{narrowPct}%</strong> of the{" "}
+            {fmt(spreadTotal)} brands in the dataset are compared against just one or two rivals; only
+            a handful reach five. Comparison demand is a long tail of two-horse races, not a
+            leaderboard — which is the most robust thing this dataset says, and the finding we would
+            stand behind over any individual ranking.
+          </p>
+          <div className="space-y-3">
+            {study.rivalSpread.map((b) => (
+              <div key={b.rivals}>
+                <div className="flex items-center justify-between text-sm mb-1">
+                  <span className="font-medium text-text">
+                    {b.rivals} {b.rivals === 1 ? "rival" : "rivals"}
+                  </span>
+                  <span className="text-text-secondary">
+                    {fmt(b.entities)} {b.entities === 1 ? "brand" : "brands"}
+                  </span>
+                </div>
+                <div className="h-2 rounded-full bg-surface overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-sky-600"
+                    style={{ width: `${Math.max(2, Math.round((b.entities / maxSpread) * 100))}%` }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -326,8 +406,10 @@ export default async function MostComparedStudyPage() {
               <h2 id="brands-saas-heading" className="text-2xl font-display font-bold text-text">Most-compared B2B SaaS tools</h2>
             </div>
             <p className="text-text-secondary mb-5">
-              Software buyers comparison-shop harder than anyone. These are the SaaS products that
-              show up in the most head-to-head evaluations.
+              Software buyers comparison-shop harder than anyone. These are the SaaS products matched
+              against the widest field of rivals. Consumer streaming services are excluded here even
+              where our database types them as software — they belong in the brands table above, not
+              in a B2B tool ranking.
             </p>
             <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
               {study.topSaaS.map((b) => (
@@ -340,7 +422,9 @@ export default async function MostComparedStudyPage() {
                     <span className="text-text-secondary mr-2">{b.rank}.</span>
                     {b.name}
                   </span>
-                  <span className="text-sm font-semibold text-primary-600">{b.count} matchups</span>
+                  <span className="text-sm font-semibold text-primary-600">
+                    {b.count} {b.count === 1 ? "rival" : "rivals"}
+                  </span>
                 </Link>
                 </li>
               ))}
@@ -356,10 +440,12 @@ export default async function MostComparedStudyPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h2 id="brands-readership-heading" className="text-2xl font-display font-bold text-text">Biggest matchups by readership</h2>
+            <h2 id="brands-readership-heading" className="text-2xl font-display font-bold text-text">The most-connected matchups</h2>
           </div>
           <p className="text-text-secondary mb-5">
-            The single comparisons readers pull up most often — the marquee rivalries of 2026.
+            The marquee rivalries of 2026 — the matchups whose two sides are each compared against the
+            widest field of rivals, so they sit at the centre of the most buyer research. Each rivalry
+            appears once, however many pages we have published about it.
           </p>
           <ol className="space-y-2">
             {study.topMatchups.map((m) => (
@@ -372,7 +458,9 @@ export default async function MostComparedStudyPage() {
                     <span className="text-text-secondary mr-2">{m.rank}.</span>
                     {m.title}
                   </span>
-                  <span className="text-sm text-text-secondary">{fmt(m.viewCount)} reads</span>
+                  <span className="text-sm text-text-secondary whitespace-nowrap">
+                    {fmt(m.centrality)} combined rivals
+                  </span>
                 </Link>
               </li>
             ))}
@@ -425,15 +513,48 @@ export default async function MostComparedStudyPage() {
           </div>
           <div className="prose-sm text-text-secondary space-y-3">
             <p>
-              We took every published comparison on {SITE_NAME} as of {updatedLabel} —{" "}
-              {fmt(study.totalComparisons)} head-to-head pages — and counted how many distinct
-              comparisons each brand or entity appears in. A brand that is matched against many
-              rivals scores higher because it sits at the center of a wider web of buyer research.
+              We started from every published comparison on {SITE_NAME} as of {updatedLabel}:{" "}
+              <strong>{fmt(study.totalComparisons)}</strong> pages. Of those,{" "}
+              {fmt(study.multiWayPages)} compare three or more things at once and are set aside — they
+              are not head-to-head matchups — leaving {fmt(study.headToHeadPages)} two-way pages.
             </p>
             <p>
-              The &ldquo;brands&rdquo; ranking is limited to companies, products, software, and teams;
-              countries, people, and historical entities are excluded. The &ldquo;biggest matchups&rdquo;
-              ranking is ordered by on-site readership. Data is refreshed daily from our live database.
+              Those pages are then reduced to <strong>rivalries</strong>, because a page count is not a
+              rivalry count. Two things inflate it. First, we publish some matchups in both directions:{" "}
+              <em>Netflix vs Disney+</em> and <em>Disney+ vs Netflix</em> are two pages about one
+              rivalry. Second, some brands exist in our database under more than one entry (Netflix and
+              &ldquo;Netflix, Inc.&rdquo;; HBO Max and &ldquo;Max&rdquo;). We normalise each page to an
+              order-insensitive pair of canonical entities and count each pair once. That takes{" "}
+              {fmt(study.headToHeadPages)} pages down to <strong>{fmt(study.distinctRivalries)}</strong>{" "}
+              distinct rivalries, and {fmt(study.rawEntityRows)} database entries down to{" "}
+              <strong>{fmt(study.distinctBrands)}</strong> entities.
+            </p>
+            <p>
+              A brand&rsquo;s score is its number of <strong>distinct rivals</strong> in that graph — the
+              brands it is actually matched against, not the pages it appears on. Netflix, for example,
+              appears on nine published pages but has five distinct rivals. The brands ranking covers
+              companies, products, software, platforms, streaming services and teams; countries, people
+              and historical entities are excluded.
+            </p>
+            <p>
+              <strong>Why we don&rsquo;t name a single most-compared brand.</strong> We deliberately do
+              not merge product generations — PlayStation 5, PS5 Pro and PlayStation 6 stay three
+              entities, as do iPhone 16 and iPhone 16 Pro. That means a brand&rsquo;s rival count partly
+              reflects how finely its market happens to be modelled in our catalog: the console at the
+              top of the table reaches its total via three PlayStation models, its own sibling console
+              and a &ldquo;PC gaming&rdquo; category, while Netflix reaches five via five separate
+              services. Those are not the same measurement, so we publish the table with ties visible
+              and no &ldquo;#1&rdquo;. The distribution — that {narrowPct}% of brands have only one or
+              two rivals — is stable under every deduplication rule we tested, and is the number we
+              would defend.
+            </p>
+            <p>
+              All figures are counts of published comparison content. We do not publish traffic or
+              readership figures. Data is refreshed daily from our live database, and the
+              deduplication rules above are applied at query time — you can reproduce any number here
+              by pulling{" "}
+              <Link href="/sitemap.xml" className="text-primary-600 hover:underline">our sitemap</Link>{" "}
+              and collapsing reversed pairs.
             </p>
             <p className="text-xs">
               {study.fromSnapshot

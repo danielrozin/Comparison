@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import type { ComparisonAttribute, ComparisonEntityData } from "@/types";
 
 function downloadCSV(
@@ -553,10 +554,9 @@ function RedesignedTable({
   // When a filter is active, auto-expand all groups so results are visible
   useEffect(() => {
     if (filterNormalized) {
-      setOpenGroups(new Set(categoryEntries.map(([name]) => name)));
+      setOpenGroups(new Set(Array.from(buildCategories(attributes).keys())));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterNormalized]);
+  }, [filterNormalized, attributes]);
 
   // Filter attributes per category when winnersOnly or filterQuery is active
   const visibleCategories = categoryEntries.map(([name, attrs]) => {
@@ -679,7 +679,7 @@ function RedesignedTable({
       )}
 
       {/* Desktop: Table layout with sticky header */}
-      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "hidden" : ""}`}>
+      <div className={`hidden md:block bg-white border border-border rounded-xl overflow-hidden ${filterNormalized && visibleCategories.length === 0 ? "!hidden" : ""}`}>
         <div className="overflow-x-auto max-h-[80vh] overflow-y-auto" tabIndex={0} role="region" aria-label="Comparison table — scroll to see all columns">
           <table className="w-full border-collapse">
             <caption className="sr-only">{entityA.name} vs {entityB.name} — attribute comparison table</caption>
@@ -694,14 +694,12 @@ function RedesignedTable({
                 <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityA.imageUrl && (
-                      <img
+                      <Image
                         src={entityA.imageUrl}
                         alt=""
                         width={24}
                         height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
-                        loading="lazy"
-                        decoding="async"
                       />
                     )}
                     <span>{entityA.name}</span>
@@ -710,14 +708,12 @@ function RedesignedTable({
                 <th scope="col" className="px-5 py-3.5 text-center text-sm font-semibold w-[30%]">
                   <div className="flex items-center justify-center gap-2">
                     {entityB.imageUrl && (
-                      <img
+                      <Image
                         src={entityB.imageUrl}
                         alt=""
                         width={24}
                         height={24}
                         className="w-6 h-6 rounded-full object-cover border border-white/30"
-                        loading="lazy"
-                        decoding="async"
                       />
                     )}
                     <span>{entityB.name}</span>
@@ -813,8 +809,7 @@ function RedesignedTable({
             >
               <div className="flex items-center justify-center gap-1.5">
                 {entity.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={entity.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30 flex-shrink-0" loading="lazy" decoding="async" />
+                  <Image src={entity.imageUrl} alt="" width={20} height={20} className="w-5 h-5 rounded-full object-cover border border-white/30 flex-shrink-0" />
                 ) : (
                   <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${idx === 0 ? "bg-blue-400/40" : "bg-purple-400/40"}`}>
                     {entity.name.charAt(0).toUpperCase()}

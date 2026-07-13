@@ -82,7 +82,7 @@ function EntityAvatar({
       <div
         className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
       >
-        <span className="text-2xl sm:text-4xl font-black text-white drop-shadow">
+        <span aria-hidden="true" className="text-2xl sm:text-4xl font-black text-white drop-shadow">
           {initials || entity.name.charAt(0)}
         </span>
       </div>
@@ -148,7 +148,7 @@ function EntityCard({
     >
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
-      <h2 className="text-base sm:text-xl font-bold text-white mb-1">
+      <h3 className="text-base sm:text-xl font-bold text-white mb-1">
         <Link
           href={`/entity/${entity.slug}`}
           className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30"
@@ -156,7 +156,7 @@ function EntityCard({
         >
           {entity.name}
         </Link>
-      </h2>
+      </h3>
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>
       )}
@@ -267,12 +267,15 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
       <div className="hidden sm:block absolute bottom-10 right-10 w-72 h-72 bg-accent-500/15 rounded-full blur-3xl" aria-hidden="true" />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-16 sm:pb-20">
-        {/* Breadcrumb category pill */}
+        {/* Breadcrumb category pill — links to category page for discoverability */}
         {comparison.category && (
           <div className="flex justify-center mb-4 motion-safe:animate-fade-in">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider">
+            <Link
+              href={`/category/${comparison.category.toLowerCase().replace(/\s+/g, "-")}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider hover:bg-white/20 hover:border-white/40 hover:text-white transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900"
+            >
               {comparison.category}
-            </span>
+            </Link>
           </div>
         )}
 

@@ -43,7 +43,10 @@ export async function GET(request: NextRequest) {
       answerUrl: `${SITE_URL}/api/answer/${c.slug}`,
       knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${c.slug}`,
       category: c.category,
-      viewCount: c.viewCount,
+      // No viewCount: `view_count` is 2026-03-19 seed data, not analytics. This
+      // endpoint is advertised to AI crawlers in llms.txt, so returning it shipped
+      // invented traffic figures straight into their indexes (DAN-2037). Ordering
+      // still uses it internally; it is just no longer published.
       updatedAt: c.updatedAt,
     }));
 

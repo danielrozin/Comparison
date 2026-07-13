@@ -23,6 +23,7 @@ export function ShortAnswerBlock({
   entityB: _entityB,
 }: ShortAnswerBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
   // Primary: shortAnswer field. Fallback: first 2 sentences of verdict.
   const text = shortAnswer || extractFirstSentences(verdict, 2);
   if (!text) return null;
@@ -31,7 +32,8 @@ export function ShortAnswerBlock({
     try {
       await navigator.clipboard.writeText(text!);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopyStatus("Quick answer copied to clipboard");
+      setTimeout(() => { setCopied(false); setCopyStatus(""); }, 2000);
     } catch {
       /* clipboard unavailable */
     }
@@ -71,6 +73,7 @@ export function ShortAnswerBlock({
                       AI Summary
                     </span>
                   </div>
+                  <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">{copyStatus}</span>
                   <button
                     type="button"
                     onClick={handleCopy}

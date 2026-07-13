@@ -11,7 +11,7 @@ const PATH = "/studies/investing-comparison-report-2026";
 const CANONICAL = `${SITE_URL}${PATH}`;
 const TITLE = "The Investing & Finance Comparison Report 2026 — Data Study";
 const DESCRIPTION =
-  "We analyzed 247 head-to-head finance comparisons to rank the most-researched brokerages, retirement accounts, credit cards, and investment products in 2026.";
+  "We analyzed every published head-to-head finance comparison in our database to rank the most-researched brokerages, retirement accounts, credit cards, and investment products in 2026.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Investing & Finance Comparison Report 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -265,7 +265,9 @@ export default async function InvestingStudyPage() {
             <h2 id="investing-top-heading" className="text-2xl font-bold text-text">Most-Compared Finance Topics</h2>
           </div>
           <p className="text-text-secondary text-sm mb-5">
-            Ranked by number of published head-to-head comparisons on aversusb.net.
+            Ranked by distinct rivals — how many different products each one is actually weighed
+            against, after pages covering the same matchup twice are collapsed into one. Ties share a
+            rank.
           </p>
           <div className="overflow-x-auto rounded-xl border border-border" tabIndex={0} role="region" aria-label="Investing comparison table — scroll to see all columns">
             <table className="min-w-full divide-y divide-gray-100 text-sm">
@@ -348,10 +350,12 @@ export default async function InvestingStudyPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
-            <h2 id="investing-matchups-heading" className="text-2xl font-bold text-text">Most-Read Finance Matchups</h2>
+            <h2 id="investing-matchups-heading" className="text-2xl font-bold text-text">Most-Connected Finance Matchups</h2>
           </div>
           <p className="text-text-secondary text-sm mb-5">
-            Ranked by reader traffic — the specific comparisons people research most.
+            Ranked by comparison centrality — each rivalry counted once, however many pages we have
+            published about it — the matchups whose two sides are each weighed against the
+            widest field of alternatives.
           </p>
           <div className="space-y-3">
             {study.topMatchups.map((m) => (
@@ -363,8 +367,10 @@ export default async function InvestingStudyPage() {
                   </Link>
                   {m.insight && <p className="text-sm text-text-secondary mt-1">{m.insight}</p>}
                 </div>
-                {m.viewCount > 0 && (
-                  <span className="text-xs text-text-secondary/60 shrink-0">{fmt(m.viewCount)} views</span>
+                {m.centrality > 0 && (
+                  <span className="text-xs text-text-secondary/60 shrink-0 whitespace-nowrap">
+                    {fmt(m.centrality)} combined rivals
+                  </span>
                 )}
               </div>
             ))}
@@ -393,7 +399,11 @@ export default async function InvestingStudyPage() {
             <li>
               Category clusters are determined by keyword matching against entity slugs and comparison titles.
             </li>
-            <li>Readership figures are cumulative page views since publication.</li>
+            <li>
+              Matchup rankings use comparison centrality — the combined number of published comparisons
+              each side appears in. Every figure on this page is a count of published comparison pages;
+              we do not publish traffic or readership numbers.
+            </li>
             <li>
               Data refreshes daily. The live dataset may differ slightly from this snapshot.
             </li>

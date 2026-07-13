@@ -24,7 +24,16 @@ interface AARRRData {
     searchToViewRate: number;
     totalComparisons: number;
     publishedComparisons: number;
-    totalViewCount: number;
+    organicSearch: {
+      available: boolean;
+      source: string;
+      windowDays: number;
+      clicks: number;
+      impressions: number;
+      avgPosition: number;
+      pagesWithImpressions: number;
+      note: string;
+    };
     comparisonsThisWeek: number;
     comparisonsPrevWeek: number;
     contentGrowth: string;
@@ -341,7 +350,39 @@ export default function AARRRDashboard() {
             <StatCard label="Searches (7d)" value={data.acquisition.totalSearches7d} />
             <StatCard label="Views (7d)" value={data.acquisition.totalViews7d} />
             <StatCard label="Search->View Rate" value={`${data.acquisition.searchToViewRate}%`} subtitle="Target: >60%" />
-            <StatCard label="Total Page Views" value={data.acquisition.totalViewCount.toLocaleString()} subtitle="All-time" />
+            <StatCard
+              label="Organic Clicks"
+              value={data.acquisition.organicSearch.available ? data.acquisition.organicSearch.clicks.toLocaleString() : "—"}
+              subtitle={
+                data.acquisition.organicSearch.available
+                  ? `Google Search Console · last ${data.acquisition.organicSearch.windowDays}d`
+                  : "No GSC data"
+              }
+            />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <StatCard
+              label="Organic Impressions"
+              value={data.acquisition.organicSearch.available ? data.acquisition.organicSearch.impressions.toLocaleString() : "—"}
+              subtitle={`Google Search Console · last ${data.acquisition.organicSearch.windowDays}d`}
+            />
+            <StatCard
+              label="Avg Position"
+              value={data.acquisition.organicSearch.available ? data.acquisition.organicSearch.avgPosition : "—"}
+              subtitle="Impression-weighted"
+            />
+            <StatCard
+              label="Pages With Impressions"
+              value={data.acquisition.organicSearch.available ? data.acquisition.organicSearch.pagesWithImpressions.toLocaleString() : "—"}
+              subtitle="Distinct URLs in GSC"
+            />
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Traffic Source</p>
+              <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+                Organic numbers come from Google Search Console. Seeded <code>view_count</code> is not reported as
+                traffic (DAN-2037 / DAN-2048).
+              </p>
+            </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <StatCard label="Total Comparisons" value={data.acquisition.totalComparisons} />

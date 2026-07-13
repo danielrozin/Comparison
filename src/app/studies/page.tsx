@@ -3,6 +3,11 @@ import Link from "next/link";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import {
+  getMostComparedStudy,
+  getB2BSaaSStudy,
+  getFinanceStudy,
+} from "@/lib/services/studies-service";
 
 export const revalidate = 86400;
 
@@ -69,32 +74,48 @@ interface StudyEntry {
   badge: string;
 }
 
-// Published studies. Add new entries here as the program scales.
-const STUDIES: StudyEntry[] = [
-  {
-    slug: "b2b-saas-comparison-report-2026",
-    title: "The B2B SaaS Comparison Report 2026",
-    blurb:
-      "384 head-to-head SaaS comparisons analyzed: the most-compared software tools, the hottest category rivalries, and where challengers are out-pacing incumbents.",
-    badge: "Data Study",
-  },
-  {
-    slug: "most-compared-brands-2026",
-    title: "The Most-Compared Brands of 2026",
-    blurb:
-      "1,600+ head-to-head comparisons analyzed to rank the brands, SaaS tools, and matchups people research most this year.",
-    badge: "Data Study",
-  },
-  {
-    slug: "investing-comparison-report-2026",
-    title: "The Investing & Finance Comparison Report 2026",
-    blurb:
-      "247 head-to-head finance comparisons analyzed: the most-researched brokerages, retirement accounts, credit cards, and investment products of 2026.",
-    badge: "Data Study",
-  },
-];
+const fmt = (n: number) => n.toLocaleString("en-US");
 
-export default function StudiesIndexPage() {
+export default async function StudiesIndexPage() {
+  // Every count on this page comes from the same services that render the study
+  // pages themselves, so the index can never contradict the study it links to.
+  // Hardcoded copy here previously overstated the corpus by up to 11x (DAN-2037).
+  const [brands, saas, finance] = await Promise.all([
+    getMostComparedStudy(),
+    getB2BSaaSStudy(),
+    getFinanceStudy(),
+  ]);
+
+  const totalComparisons = brands.totalComparisons;
+  const saasCount = saas.totalSaaSComparisons;
+  const financeCount = finance.totalFinanceComparisons;
+
+  // Published studies. Add new entries here as the program scales.
+  const STUDIES: StudyEntry[] = [
+    {
+      slug: "b2b-saas-comparison-report-2026",
+      title: "The B2B SaaS Comparison Report 2026",
+      blurb: `${fmt(saasCount)} head-to-head SaaS comparisons analyzed: the most-compared software tools, the hottest category rivalries, and where challengers are out-pacing incumbents.`,
+      badge: "Data Study",
+    },
+    {
+      slug: "most-compared-brands-2026",
+      title: "The Most-Compared Brands of 2026",
+      blurb: `${fmt(totalComparisons)} head-to-head comparisons analyzed to rank the brands, SaaS tools, and matchups people research most this year.`,
+      badge: "Data Study",
+    },
+    {
+      slug: "investing-comparison-report-2026",
+      title: "The Investing & Finance Comparison Report 2026",
+      blurb: `${fmt(financeCount)} head-to-head finance comparisons analyzed: the most-researched brokerages, retirement accounts, credit cards, and investment products of 2026.`,
+      badge: "Data Study",
+    },
+  ];
+
+  const faqCorpusAnswer = `A Versus B data studies are original research reports built from our database of ${fmt(totalComparisons)} published head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by our own comparison corpus rather than surveys.`;
+  const faqMethodologyAnswer = `Each study is built from our internal database of structured head-to-head comparison pages. Before counting anything we reduce those pages to rivalries: a matchup published in both directions (Netflix vs Disney+ and Disney+ vs Netflix) is one rivalry, brands that exist under more than one database entry are merged, and pages comparing three or more things are excluded from head-to-head figures. A brand's score is then its number of distinct rivals — the brands it is actually matched against — not the number of pages it appears on. Rankings show ties rather than naming a single winner, because rival counts are sensitive to how finely each market is modelled in our catalog. All figures are counts of published comparison content; we do not publish traffic or readership numbers.`;
+  const faqTopicsAnswer = `Current studies cover B2B SaaS comparison trends (${fmt(saasCount)} matchups analyzed), the most-compared brands of 2026 (${fmt(totalComparisons)} comparisons ranked), and investing & finance products (${fmt(financeCount)} head-to-head finance comparisons). Counts are read live from our database and grow as we publish. New topics are added as the corpus grows.`;
+
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
     { name: "Studies", url: `${SITE_URL}/studies` },
@@ -161,12 +182,9 @@ export default function StudiesIndexPage() {
     datePublished: "2024-01-01",
     dateModified: studiesToday,
     // interactionStatistic — study-page engagement signal for AI citation authority.
-    interactionStatistic: {
-      "@type": "InteractionCounter",
-      interactionType: "https://schema.org/ReadAction",
-      userInteractionCount: STUDIES.length,
-      description: `${STUDIES.length} original data studies published on A Versus B`,
-    },
+    // No ReadAction counter: STUDIES.length is how many studies we publish, not
+    // how many times they were read. Typing it as a read count overstates
+    // engagement to Google (DAN-2037).
   };
 
   const studiesFaqSchema = {
@@ -183,7 +201,7 @@ export default function StudiesIndexPage() {
       {
         "@type": "Question", "@id": `${STUDIES_URL}#q1`, name: "What are the A Versus B data studies?", text: "What are the A Versus B data studies?",
         answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
-        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a1`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "A Versus B data studies are original research reports built from our database of 1,600+ head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by real comparison-query data rather than surveys." },
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a1`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: faqCorpusAnswer },
       },
       {
         "@type": "Question", "@id": `${STUDIES_URL}#q2`, name: "Can I cite or republish findings from A Versus B data studies?", text: "Can I cite or republish findings from A Versus B data studies?",
@@ -193,12 +211,12 @@ export default function StudiesIndexPage() {
       {
         "@type": "Question", "@id": `${STUDIES_URL}#q3`, name: "What methodology does A Versus B use for its data studies?", text: "What methodology does A Versus B use for its data studies?",
         answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
-        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a3`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Each study is built from our internal database of structured head-to-head comparison pages. We analyze search volume, comparison frequency, and on-page engagement signals across thousands of matchups to identify which rivalries attract the most consumer research activity in a given category or year." },
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a3`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: faqMethodologyAnswer },
       },
       {
         "@type": "Question", "@id": `${STUDIES_URL}#q4`, name: "What topics do the current A Versus B data studies cover?", text: "What topics do the current A Versus B data studies cover?",
         answerCount: 1, upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday,
-        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a4`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: "Current studies cover B2B SaaS comparison trends (384 matchups analyzed), the most-compared brands of 2026 (1,600+ comparisons ranked), and investing & finance products (247 head-to-head finance comparisons). New topics are added as our database grows." },
+        acceptedAnswer: { "@type": "Answer", "@id": `${STUDIES_URL}#a4`, inLanguage: "en-US", upvoteCount: 1, dateCreated: "2024-01-01", dateModified: studiesToday, author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME }, text: faqTopicsAnswer },
       },
       {
         "@type": "Question", "@id": `${STUDIES_URL}#q5`, name: "How often does A Versus B publish new data studies?", text: "How often does A Versus B publish new data studies?",
@@ -304,7 +322,7 @@ export default function StudiesIndexPage() {
           <dl className="space-y-6">
             <div>
               <dt className="text-base font-semibold text-text mb-1">What are the A Versus B data studies?</dt>
-              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">A Versus B data studies are original research reports built from our database of 1,600+ head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by real comparison-query data rather than surveys.</dd>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">{faqCorpusAnswer}</dd>
             </div>
             <div>
               <dt className="text-base font-semibold text-text mb-1">Can I cite or republish findings from A Versus B data studies?</dt>
@@ -312,11 +330,11 @@ export default function StudiesIndexPage() {
             </div>
             <div>
               <dt className="text-base font-semibold text-text mb-1">What methodology does A Versus B use for its data studies?</dt>
-              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Each study is built from our internal database of structured head-to-head comparison pages. We analyze search volume, comparison frequency, and on-page engagement signals across thousands of matchups to identify which rivalries attract the most consumer research activity in a given category or year.</dd>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">{faqMethodologyAnswer}</dd>
             </div>
             <div>
               <dt className="text-base font-semibold text-text mb-1">What topics do the current A Versus B data studies cover?</dt>
-              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">Current studies cover B2B SaaS comparison trends (384 matchups analyzed), the most-compared brands of 2026 (1,600+ comparisons ranked), and investing &amp; finance products (247 head-to-head finance comparisons). New topics are added as our database grows.</dd>
+              <dd className="text-sm text-text-secondary leading-relaxed faq-answer">{faqTopicsAnswer}</dd>
             </div>
             <div>
               <dt className="text-base font-semibold text-text mb-1">How often does A Versus B publish new data studies?</dt>

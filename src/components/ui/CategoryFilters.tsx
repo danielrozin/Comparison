@@ -42,7 +42,7 @@ export function CategoryFilters({
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 p-4 bg-surface-alt rounded-xl border border-border">
-      <p className="text-sm text-text-secondary">
+      <p className="text-sm text-text-secondary" aria-live="polite" aria-atomic="true">
         {totalResults} result{totalResults !== 1 ? "s" : ""}
       </p>
 

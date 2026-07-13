@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { getPrisma } from "@/lib/db/prisma";
-import { getGSCCompareWeekly, type GSCCompareWeeklyReport } from "@/lib/services/gsc-service";
+import {
+  getGSCCompareWeekly,
+  getGSCTrafficSummary,
+  type GSCCompareWeeklyReport,
+} from "@/lib/services/gsc-service";
 
 /**
  * Weekly Metrics Report API for AversusB
@@ -9,6 +13,10 @@ import { getGSCCompareWeekly, type GSCCompareWeeklyReport } from "@/lib/services
  * GET /api/analytics/weekly-report — generates a structured weekly report
  *
  * Returns JSON with markdown report + raw metrics for dashboard rendering.
+ *
+ * Traffic (site totals + top pages) is sourced from Google Search Console.
+ * `comparisons.view_count` is seed data from the 2026-03-19 import, not
+ * analytics (DAN-2037 / DAN-2048), so it is never summed or ranked here.
  */
 
 interface AdminEvent {
@@ -85,6 +93,11 @@ export async function GET() {
     };
   }
 
+  // Real site-wide organic traffic for the reporting week + top pages by clicks.
+  // Replaces the seeded view_count aggregate (DAN-2048). GSC lags ~2 days, so
+  // the tail of this window can still be filling in.
+  const organicSearch = await getGSCTrafficSummary(7, 10);
+
   const countEvents = (events: AdminEvent[], type: string) => events.filter((e) => e.type === type).length;
   const eventsPrevWeek = events14d.filter((e) => {
     const t = new Date(e.timestamp);
@@ -132,8 +145,7 @@ export async function GET() {
     totalApiRequests: 0, apiRequestsThisWeek: 0,
     totalSurveys: 0, surveysThisWeek: 0, avgSurveyRating: 0,
     npsScore: 0, comparisonRequests: 0, comparisonRequestsThisWeek: 0,
-    comparisonsThisWeek: 0, comparisonsPrevWeek: 0, totalViewCount: 0,
-    topComparisons: [] as Array<{ slug: string; title: string; viewCount: number }>,
+    comparisonsThisWeek: 0, comparisonsPrevWeek: 0,
     topCategories: [] as Array<{ category: string; count: number }>,
   };
 
@@ -149,8 +161,7 @@ export async function GET() {
         totalSurveys, surveysThisWeek,
         comparisonRequests, comparisonRequestsThisWeek,
         comparisonsThisWeek, comparisonsPrevWeek,
-        topComparisons, topCategories,
-        viewCountAgg, surveyRatings,
+        topCategories, surveyRatings,
       ] = await Promise.all([
         prisma.comparison.count(),
         prisma.comparison.count({ where: { status: "published" } }),
@@ -177,12 +188,6 @@ export async function GET() {
         prisma.comparisonRequest.count({ where: { createdAt: { gte: weekAgo } } }),
         prisma.comparison.count({ where: { createdAt: { gte: weekAgo } } }),
         prisma.comparison.count({ where: { createdAt: { gte: twoWeeksAgo, lt: weekAgo } } }),
-        prisma.comparison.findMany({
-          where: { status: "published" },
-          orderBy: { viewCount: "desc" },
-          take: 10,
-          select: { slug: true, title: true, viewCount: true },
-        }),
         prisma.comparison.groupBy({
           by: ["category"],
           _count: true,
@@ -190,7 +195,6 @@ export async function GET() {
           orderBy: { _count: { category: "desc" } },
           take: 10,
         }),
-        prisma.comparison.aggregate({ _sum: { viewCount: true } }),
         prisma.interceptSurvey.aggregate({ _avg: { q3Rating: true }, where: { q3Rating: { not: null } } }),
       ]);
 
@@ -215,8 +219,6 @@ export async function GET() {
         avgSurveyRating: Math.round((surveyRatings._avg.q3Rating || 0) * 10) / 10,
         npsScore, comparisonRequests, comparisonRequestsThisWeek,
         comparisonsThisWeek, comparisonsPrevWeek,
-        totalViewCount: viewCountAgg._sum.viewCount || 0,
-        topComparisons,
         topCategories: topCategories.map((c) => ({ category: c.category || "uncategorized", count: c._count })),
       };
     } catch (err) {
@@ -294,7 +296,23 @@ ${compareSection}
 | Total Comparisons | ${db.totalComparisons} |
 | Entities | ${db.totalEntities} |
 | Blog Articles | ${db.totalBlogArticles} |
-| Total Page Views (all-time) | ${db.totalViewCount.toLocaleString()} |
+
+---
+
+## Organic Search (Google Search Console, last ${organicSearch.windowDays}d)
+
+${
+  organicSearch.available
+    ? `| Metric | Value |
+|--------|-------|
+| Organic Clicks | ${organicSearch.clicks.toLocaleString()} |
+| Impressions | ${organicSearch.impressions.toLocaleString()} |
+| Avg Position (impression-weighted) | ${organicSearch.avgPosition} |
+| Pages With Impressions | ${organicSearch.pagesWithImpressions.toLocaleString()} |
+
+GSC data lags ~2 days, so the last days of this window may still be filling in.`
+    : `_No GSC traffic data available (${organicSearch.note})._ The database \`view_count\` column is seed data from the 2026-03-19 import and is deliberately not reported as traffic (DAN-2037 / DAN-2048).`
+}
 
 ---
 
@@ -310,11 +328,17 @@ ${compareSection}
 
 ---
 
-## Top 10 Pages by Views
+## Top 10 Pages by Organic Clicks (GSC, last ${organicSearch.windowDays}d)
 
-| # | Comparison | Views |
-|---|-----------|-------|
-${db.topComparisons.map((c, i) => `| ${i + 1} | ${c.title || c.slug} | ${c.viewCount} |`).join("\n")}
+${
+  organicSearch.topPages.length === 0
+    ? "_No pages with organic clicks in this window._"
+    : `| # | Page | Clicks | Impressions | Avg Position |
+|---|------|--------|-------------|--------------|
+${organicSearch.topPages
+  .map((p, i) => `| ${i + 1} | ${p.slug ? `/compare/${p.slug}` : p.page} | ${p.clicks} | ${p.impressions} | ${p.position} |`)
+  .join("\n")}`
+}
 
 ---
 
@@ -387,12 +411,12 @@ ${searches7d === 0 && views7d === 0 ? "- **Low traffic alert:** No searches or v
       totalComparisons: db.totalComparisons,
       entities: db.totalEntities,
       blogArticles: db.totalBlogArticles,
-      totalViewCount: db.totalViewCount,
     },
     funnel,
     comparePages: compareWeekly,
     dailyBreakdown,
-    topComparisons: db.topComparisons,
+    organicSearch,
+    topPages: organicSearch.topPages,
     topCategories: db.topCategories,
     revenue: {
       totalAffiliateClicks: db.totalAffiliateClicks,

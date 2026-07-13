@@ -11,7 +11,7 @@ const PATH = "/studies/b2b-saas-comparison-report-2026";
 const CANONICAL = `${SITE_URL}${PATH}`;
 const TITLE = "The B2B SaaS Comparison Report 2026 — Data Study";
 const DESCRIPTION =
-  "We analyzed 384 head-to-head SaaS comparisons to rank the most-compared B2B software tools, the hottest category rivalries, and where challengers are out-pacing incumbents in 2026.";
+  "We analyzed every published head-to-head SaaS comparison in our database to rank the most-compared B2B software tools, the hottest category rivalries, and where challengers are out-pacing incumbents in 2026.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent("B2B SaaS Comparison Report 2026")}&type=trending`;
 
 export const metadata: Metadata = {
@@ -82,6 +82,9 @@ export default async function B2BSaaSStudyPage() {
 
   const maxCluster = Math.max(...study.clusters.map((c) => c.count), 1);
   const topTool = study.topTools[0];
+  // Every tool tied at the top, not just the first one the sort happened to
+  // return — the leaders here are a tie and the page must not hide it (DAN-2047).
+  const topTools = study.topTools.filter((t) => topTool && t.count === topTool.count);
   const topChallenger = study.challengers[0];
 
   const breadcrumb = breadcrumbSchema([
@@ -227,11 +230,11 @@ export default async function B2BSaaSStudyPage() {
                 The B2B SaaS Comparison Report 2026
               </h1>
               <p id="page-intro" className="mt-2 text-primary-100 text-sm sm:text-base leading-relaxed">
-                Software buyers comparison-shop harder than anyone. We analyzed{" "}
+                Software buyers comparison-shop harder than anyone. We mapped{" "}
                 <strong>{fmt(study.totalSaaSComparisons)}</strong> published head-to-head SaaS comparisons
-                across <strong>{fmt(study.distinctTools)}</strong> distinct tools to find the products
-                buyers evaluate most, the category rivalries driving demand, and where younger challengers
-                are out-pacing the incumbents in 2026.
+                across <strong>{fmt(study.distinctTools)}</strong> distinct tools into a rivalry graph — one
+                edge per matchup, however many pages we have published about it — to find the products
+                buyers weigh against the widest field of alternatives in 2026.
               </p>
             </div>
           </div>
@@ -256,9 +259,18 @@ export default async function B2BSaaSStudyPage() {
             <div className="text-sm text-text-secondary mt-1">Distinct SaaS tools</div>
           </div>
           <div className="rounded-xl border border-border bg-surface p-5">
-            <div className="text-3xl font-black text-text">{topTool ? topTool.name : "—"}</div>
+            <div className="text-3xl font-black text-text">
+              {topTool ? topTool.count : "—"}
+            </div>
             <div className="text-sm text-text-secondary mt-1">
-              Most-compared tool{topTool ? ` (${topTool.count} matchups)` : ""}
+              Most rivals faced by one tool
+              <span className="block text-xs mt-0.5">
+                {topTools.length > 1
+                  ? `${topTools.map((t) => t.name).join(" and ")} tie at the top`
+                  : topTool
+                    ? topTool.name
+                    : ""}
+              </span>
             </div>
           </div>
         </section>
@@ -274,16 +286,18 @@ export default async function B2BSaaSStudyPage() {
             <h2 id="b2b-saas-top-heading" className="text-2xl font-display font-bold text-text">Most-compared B2B SaaS tools</h2>
           </div>
           <p className="text-text-secondary mb-5">
-            Ranked by how many distinct comparison pages each tool appears in. CRM and marketing
-            platforms dominate — they sit at the center of the widest webs of buyer research.
+            Ranked by <strong>distinct rivals</strong> — how many different tools each one is actually
+            evaluated against, after pages covering the same matchup twice are collapsed into one.
+            Website builders and marketing platforms sit at the centre of the widest webs of buyer
+            research. Ties share a rank.
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
-            <table className="w-full text-sm" aria-label="Most-compared B2B SaaS tools — rank, tool name, comparison count">
+            <table className="w-full text-sm" aria-label="Most-compared B2B SaaS tools — rank, tool name, distinct rival count">
               <thead className="bg-surface text-text-secondary">
                 <tr>
                   <th scope="col" className="text-left font-semibold px-4 py-3 w-12">#</th>
                   <th scope="col" className="text-left font-semibold px-4 py-3">SaaS tool</th>
-                  <th scope="col" className="text-right font-semibold px-4 py-3">Comparisons</th>
+                  <th scope="col" className="text-right font-semibold px-4 py-3">Distinct rivals</th>
                 </tr>
               </thead>
               <tbody>
@@ -364,10 +378,10 @@ export default async function B2BSaaSStudyPage() {
               <h2 id="b2b-saas-challengers-heading" className="text-2xl font-display font-bold text-text">Challengers out-pacing the incumbents</h2>
             </div>
             <p className="text-text-secondary mb-5">
-              In these categories a newer entrant now shows up in more buyer comparisons than the
-              established player it was built to unseat — a leading signal of a shifting market.
+              In these categories a newer entrant is now weighed against a wider field of rivals than
+              the established player it was built to unseat — a leading signal of a shifting market.
               {topChallenger
-                ? ` ${topChallenger.challenger} leads, appearing in ${topChallenger.challengerCount} matchups vs ${topChallenger.incumbent}'s ${topChallenger.incumbentCount}.`
+                ? ` ${topChallenger.challenger} leads, facing ${topChallenger.challengerCount} distinct rivals vs ${topChallenger.incumbent}'s ${topChallenger.incumbentCount}.`
                 : ""}
             </p>
             <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
@@ -410,17 +424,24 @@ export default async function B2BSaaSStudyPage() {
           <div className="prose-sm text-text-secondary space-y-3">
             <p>
               We took every published comparison in the software vertical on {SITE_NAME} as of{" "}
-              {updatedLabel} — {fmt(study.totalSaaSComparisons)} head-to-head SaaS pages — and counted
-              how many distinct comparisons each tool appears in. A tool matched against many rivals
-              ranks higher because it sits at the center of a wider web of buyer research.
+              {updatedLabel} — {fmt(study.totalSaaSComparisons)} head-to-head SaaS pages — and reduced
+              them to <strong>rivalries</strong> before counting anything. A page count is not a rivalry
+              count: we publish some matchups in both directions (<em>Notion vs ClickUp</em> and{" "}
+              <em>ClickUp vs Notion</em> are one rivalry, not two), and a few tools exist in our
+              database under more than one entry. Each matchup is normalised to an order-insensitive
+              pair and counted once.
             </p>
             <p>
-              The tool leaderboard counts software products only; programming languages and frameworks
-              are excluded. Category clusters are assigned by keyword-matching each comparison&rsquo;s
-              tools to our software subcategories (CRM, project management, AI tools, and so on). The
-              &ldquo;challengers&rdquo; cut surfaces categories where a newer entrant appears in more
-              comparisons than the incumbent it competes against. Data is refreshed daily from our live
-              database.
+              A tool&rsquo;s score is its number of <strong>distinct rivals</strong> — the other tools it
+              is actually evaluated against, not the pages it appears on. Ties share a rank; where the
+              leaders tie, we say so rather than picking one. The leaderboard counts B2B software only:
+              programming languages and frameworks are excluded, and so are consumer streaming services,
+              which our database types as &ldquo;software&rdquo; but which are not tools a software buyer
+              is choosing between. Category clusters are assigned by keyword-matching each
+              comparison&rsquo;s tools to our software subcategories (CRM, project management, AI tools,
+              and so on). The &ldquo;challengers&rdquo; cut surfaces categories where a newer entrant
+              faces a wider field of rivals than the incumbent it competes against. Data is refreshed
+              daily from our live database.
             </p>
             <p className="text-xs">
               {study.fromSnapshot

@@ -59,6 +59,8 @@ export default async function sitemap({
     const ABOUT_DATE = "2026-07-11";
     const STUDIES_DATE = "2026-07-11";
     const COMPARISONS_DATE = "2026-07-11";
+    // HB-DAN1578: calculator tools — WebPage+speakable+potentialAction added (2026-07-12)
+    const TOOLS_DATE = "2026-07-12";
     // Alternatives pages: dateModified/contentReferenceTime updated to 2026-07-11
     const ALTERNATIVES_DATE = "2026-07-11";
     const FAQ_DATE = "2026-07-11";
@@ -131,6 +133,10 @@ export default async function sitemap({
       // Static blog article pages (hand-authored, not in DB)
       { url: `${SITE_URL}/blog/best-ai-assistant-2026`, lastModified: "2026-06-13", changeFrequency: "monthly", priority: 0.85 },
       { url: `${SITE_URL}/blog/best-cloud-platform-2026`, lastModified: "2026-06-27", changeFrequency: "monthly", priority: 0.85 },
+      // Interactive calculator tools (WebApplication + FAQPage schema)
+      { url: `${SITE_URL}/tools/roi-calculator`, lastModified: TOOLS_DATE, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${SITE_URL}/tools/loan-payoff-calculator`, lastModified: TOOLS_DATE, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${SITE_URL}/tools/days-between-dates`, lastModified: TOOLS_DATE, changeFrequency: "monthly", priority: 0.8 },
       // Static alternatives landing pages (high-traffic curated)
       { url: `${SITE_URL}/alternatives/chatgpt`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/alternatives/figma`, lastModified: ALTERNATIVES_DATE, changeFrequency: "weekly", priority: 0.8 },
