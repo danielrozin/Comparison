@@ -153,7 +153,7 @@ export function Header() {
                     aria-haspopup={hasSubs ? "menu" : undefined}
                     aria-expanded={hasSubs ? isOpen : undefined}
                     aria-controls={hasSubs ? `dropdown-${item.slug}` : undefined}
-                    className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                       isOpen || pathname?.startsWith(`/category/${item.slug}`) ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
                     }`}
                   >
@@ -202,16 +202,16 @@ export function Header() {
 
             <div className="w-px h-5 bg-border mx-1 flex-shrink-0" />
 
-            <Link href="/trending" aria-current={pathname === "/trending" ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname === "/trending" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+            <Link href="/trending" aria-current={pathname === "/trending" ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname === "/trending" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Trending
             </Link>
-            <Link href="/blog" aria-current={pathname?.startsWith("/blog") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname?.startsWith("/blog") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+            <Link href="/blog" aria-current={pathname?.startsWith("/blog") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/blog") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Blog
             </Link>
-            <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+            <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Reviews
             </Link>
-            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap">
+            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
               Requests
             </Link>
           </nav>
@@ -222,7 +222,7 @@ export function Header() {
               type="button"
               onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
               aria-label="Search (⌘K or /)"
-              className="group flex items-center gap-2 px-4 py-2 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200"
+              className="group flex items-center gap-2 px-4 py-2 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -240,7 +240,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden flex items-center justify-center w-11 h-11 rounded-full hover:bg-surface-alt transition-colors"
+              className="lg:hidden flex items-center justify-center w-11 h-11 rounded-full hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"

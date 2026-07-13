@@ -103,7 +103,7 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
           />
           <button
             type="submit"
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg text-xs transition-all shadow-sm"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-2 min-h-[36px] bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg text-xs transition-all shadow-sm"
           >
             Compare
           </button>

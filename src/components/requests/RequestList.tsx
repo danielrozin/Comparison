@@ -235,7 +235,7 @@ export function RequestList() {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             aria-label="Go to previous page"
-            className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
+            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Previous
           </button>
@@ -247,7 +247,7 @@ export function RequestList() {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             aria-label="Go to next page"
-            className="px-3 py-1.5 text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
+            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
           >
             Next
           </button>

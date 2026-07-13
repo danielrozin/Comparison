@@ -9,13 +9,65 @@ import { saveSearchContext } from "@/lib/utils/recently-viewed";
 import { Suspense } from "react";
 
 const SEARCH_PAGE_URL = "https://aversusb.net/search";
+const SITE_OG_IMAGE = "https://aversusb.net/api/og?title=Search+Comparisons&type=page";
 
-const searchFaqSchema = {
+const SITE_URL = "https://aversusb.net";
+const SITE_NAME = "A Versus B";
+const TODAY = new Date().toISOString().slice(0, 10);
+
+const searchPageSchema = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${SEARCH_PAGE_URL}#faq`,
-  speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
-  mainEntity: [
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": `${SEARCH_PAGE_URL}#webpage`,
+      url: SEARCH_PAGE_URL,
+      name: "Search Comparisons — A Versus B",
+      description: "Search A Versus B's full library of side-by-side comparisons. Find comparisons by topic, product, person, or concept.",
+      abstract: "A Versus B's search tool lets you find any of 10,000+ side-by-side comparisons instantly. Type a topic, product, person, or concept to get structured comparison results.",
+      alternativeHeadline: "Find Any Comparison — A Versus B Search",
+      inLanguage: "en-US",
+      genre: "Search Results",
+      contentReferenceTime: TODAY,
+      datePublished: "2024-01-01",
+      dateModified: TODAY,
+      isAccessibleForFree: true,
+      creativeWorkStatus: "Published",
+      thumbnailUrl: SITE_OG_IMAGE,
+      image: {
+        "@type": "ImageObject",
+        url: SITE_OG_IMAGE,
+        contentUrl: SITE_OG_IMAGE,
+        name: "Search Comparisons — A Versus B",
+        creditText: SITE_NAME,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+      },
+      // speakable — marks the page heading and FAQ answers for voice assistants and AI extraction.
+      speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".faq-answer"] },
+      publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+      potentialAction: [
+        { "@type": "ReadAction", target: SEARCH_PAGE_URL },
+        { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SEARCH_PAGE_URL}?q={search_term_string}` }, "query-input": "required name=search_term_string" },
+      ],
+      hasPart: [{ "@type": "FAQPage", "@id": `${SEARCH_PAGE_URL}#faq` }],
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${SEARCH_PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: { "@type": "WebPage", "@id": SITE_URL, url: SITE_URL } },
+        { "@type": "ListItem", position: 2, name: "Search", item: { "@type": "WebPage", "@id": SEARCH_PAGE_URL, url: SEARCH_PAGE_URL } },
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SEARCH_PAGE_URL}#faq`,
+      inLanguage: "en-US",
+      isPartOf: { "@type": "WebPage", "@id": `${SEARCH_PAGE_URL}#webpage` },
+      speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
+      mainEntity: [
     {
       "@type": "Question",
       name: "How does search work on A Versus B?",
@@ -56,8 +108,13 @@ const searchFaqSchema = {
         text: "Yes. Comparison pages are periodically reviewed and updated when product specs, pricing, or rankings change. Each page shows its last-reviewed date. You can also submit an update request via the contact page.",
       },
     },
+      ],
+    },
   ],
 };
+
+// Legacy alias kept for JSX reference below
+const searchFaqSchema = searchPageSchema["@graph"][1] as { mainEntity: { name: string; acceptedAnswer: { text: string } }[] };
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -127,7 +184,7 @@ function SearchContent() {
     <div>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchFaqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchPageSchema) }}
       />
       {/* Search Hero */}
       <section aria-labelledby="search-hero-heading" className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white relative overflow-hidden">
