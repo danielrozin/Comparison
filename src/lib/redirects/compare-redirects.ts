@@ -83,6 +83,45 @@ const ALIAS_CONSOLIDATIONS: Record<string, string> = {
   "peacock-vs-paramount-plus": "paramount-vs-peacock",
 };
 
+/**
+ * DAN-2065 — 18 clusters where ORDERING_CONSOLIDATIONS kept the wrong survivor.
+ *
+ * The generated map picked each cluster's survivor by viewCount — but view_count
+ * is seed data, not traffic (DAN-2037). In 18 clusters that retired the slug that
+ * is actually `published` and kept the one that is `archived`. Archived rows 404
+ * (DAN-1886), so each of those 18 live pages was 301'ing at the edge straight into
+ * a 404: /compare/zoom-vs-microsoft-teams, tesla-vs-rivian, india-vs-china,
+ * netflix-vs-apple-tv-plus … all verified dead in prod. The ordering-canonicalizer
+ * in [slug].tsx then bounced the archived target back to the published one, so some
+ * clusters also formed a redirect loop (starbucks-vs-dunkin ⇄ dunkin-vs-starbucks).
+ *
+ * Exactly the failure the PS5-Pro cluster hit in DAN-1908, so the same remedy: fold
+ * each cluster INTO the slug that is actually published. Keyed retired -> survivor
+ * and applied after the merge, because this has to *remove* the inverted source key,
+ * which a later spread cannot do (it could only overwrite its value, and mapping a
+ * slug to itself is a self-loop).
+ */
+const SURVIVOR_OVERRIDES: Record<string, string> = {
+  "apple-tv-plus-vs-netflix": "netflix-vs-apple-tv-plus",
+  "bmw-x5-vs-mercedes-gle": "mercedes-gle-vs-bmw-x5",
+  "china-gdp-vs-us": "us-vs-china-gdp",
+  "china-vs-india": "india-vs-china",
+  "convertkit-vs-mailchimp": "mailchimp-vs-convertkit",
+  "doordash-vs-instacart": "instacart-vs-doordash",
+  "f-22-vs-f-35": "f-35-vs-f-22",
+  "fidelity-vs-robinhood": "robinhood-vs-fidelity",
+  "fidelity-vs-vanguard": "vanguard-vs-fidelity",
+  "honda-cr-v-vs-toyota-rav4": "toyota-rav4-vs-honda-cr-v",
+  "hubspot-vs-mailchimp": "mailchimp-vs-hubspot",
+  "microsoft-teams-vs-zoom": "zoom-vs-microsoft-teams",
+  "nordictrack-vs-peloton": "peloton-vs-nordictrack",
+  "rivian-vs-tesla": "tesla-vs-rivian",
+  "roborock-vs-roomba": "roomba-vs-roborock",
+  "shein-vs-temu": "temu-vs-shein",
+  "spotify-vs-tidal": "tidal-vs-spotify",
+  "starbucks-vs-dunkin": "dunkin-vs-starbucks",
+};
+
 // Merge order: DAN-1265 ordering first, then the DAN-1800 ordering sweep, then
 // alias, then manual overrides win. The loop/chain guard below drops any source
 // that collides with a survivor across all layers, so later layers can safely
@@ -93,6 +132,13 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...ALIAS_CONSOLIDATIONS,
   ...MANUAL_CONSOLIDATIONS,
 };
+
+// DAN-2065: re-point the inverted clusters. Deleting the survivor's own key is the
+// point — that slug is the live page and must not redirect anywhere.
+for (const [retired, survivor] of Object.entries(SURVIVOR_OVERRIDES)) {
+  delete COMPARE_CONSOLIDATIONS[survivor];
+  COMPARE_CONSOLIDATIONS[retired] = survivor;
+}
 
 // Loop / chain guard: a survivor (destination) must never also be a retired
 // source — that would 301-chain or loop at the edge. Drop any such source and
