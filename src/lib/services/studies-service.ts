@@ -146,9 +146,14 @@ function labelFor(category: string): string {
 }
 
 /**
- * Baked-in snapshot — refreshed 2026-07-12 from the production Neon DB:
- * 491 published comparison pages (483 head-to-head + 8 three-way), which
- * collapse to 442 distinct rivalries across 666 canonical entities.
+ * Baked-in snapshot — refreshed 2026-07-13 from the production Neon DB:
+ * 469 published comparison *pages* (461 head-to-head + 8 three-way), which
+ * collapse to 437 distinct rivalries across 659 canonical entities.
+ *
+ * DAN-2067: this said 491 (483 + 8). 491 is the number of published *rows*; 22
+ * of them are redirect sources that 308 at the edge, so they are not pages. The
+ * corpus is 469. Anything quoting 491 externally is overstating the catalog.
+ *
  * Used only when a live query is unavailable so the page always renders.
  * Keep in sync with the live corpus: a stale snapshot here is what let the
  * /studies/ index overstate the dataset by up to 11x (DAN-2037). Regenerate
