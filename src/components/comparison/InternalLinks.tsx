@@ -87,7 +87,7 @@ export function InternalLinks({
                 </svg>
               }
             />
-            <ul className="space-y-2">
+            <ul aria-label="Entity pages" className="space-y-2">
               {entities.map((entity) => (
                 <li key={entity.slug}>
                   <Link
@@ -130,7 +130,7 @@ export function InternalLinks({
               </svg>
             }
           />
-          <ul className="space-y-2">
+          <ul aria-label="Category navigation" className="space-y-2">
             {currentCategory && (
               <li>
                 <Link
@@ -174,7 +174,7 @@ export function InternalLinks({
               </svg>
             }
           />
-          <ul className="space-y-2">
+          <ul aria-label="People also compare" className="space-y-2">
             {filteredRelated.slice(0, 5).map((comp) => {
               const parts = comp.title.match(/^(.+?)\s+vs\.?\s+(.+)$/i);
               return (
