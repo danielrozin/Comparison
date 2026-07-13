@@ -35,6 +35,10 @@ const LIVE_SURVIVORS = [
   'temu-vs-shein',
   'tidal-vs-spotify',
   'dunkin-vs-starbucks',
+  // DAN-1365 kept `kobe-vs-lebron` for its keyword match, but a later archive
+  // sweep set that row to archived — so the survivor 404'd and this published page
+  // was being redirected into it. Same class, MANUAL layer rather than generated.
+  'kobe-bryant-vs-lebron-james',
 ]
 
 describe('DAN-2065: compare consolidation map', () => {

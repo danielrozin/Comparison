@@ -58,11 +58,17 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-pro-specs": "ps5-pro-vs-xbox-series-x",
   "iphone-15-vs-16": "iphone-15-vs-iphone-16",
   // DAN-1365 §A: Kobe/LeBron cannibalization. Two self-canonical live pages with
-  // an identical "Kobe Bryant vs LeBron James" H1 split authority. The survivor is
-  // `kobe-vs-lebron` — its slug token-matches the dominant short query
-  // ("kobe vs lebron", 1,600 vol, pos 27), 4× the dup's keyword. Fold the
-  // full-name slug in; its full-name query stays covered by the survivor's H1.
-  "kobe-bryant-vs-lebron-james": "kobe-vs-lebron",
+  // an identical "Kobe Bryant vs LeBron James" H1 split authority. DAN-1365 kept
+  // `kobe-vs-lebron`, whose slug token-matches the dominant short query ("kobe vs
+  // lebron", 1,600 vol, pos 27).
+  //
+  // DAN-2065: a later archive sweep set `kobe-vs-lebron` to status="archived", and
+  // archived rows 404 (DAN-1886) — so the chosen survivor is dead and this redirect
+  // was sending the still-published full-name page into a 404. Flipped to fold into
+  // the slug that is actually published, per the DAN-1908 precedent. To restore the
+  // keyword-aligned slug, re-publish its DB row first; do not re-point a redirect at
+  // an archived slug.
+  "kobe-vs-lebron": "kobe-bryant-vs-lebron-james",
   // DAN-1747: Bloomberg/WSJ duplicate canonical. Two self-canonical live pages
   // (both 200) split link equity for "bloomberg vs wsj" (DAN-1176/DAN-1169 watch
   // keyword, baseline pos 17). Survivor is the full-name slug
