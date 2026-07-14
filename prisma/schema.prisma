@@ -1047,3 +1047,27 @@ model BestPage {
   @@index([category])
   @@map("best_pages")
 }
+
+// ============================================================
+// CONTACT SUBMISSIONS — DAN-2146
+// Server-side conversion signal for the PPC restart gate (DAN-2140) and for
+// offline conversion import into Google Ads. The client still fires the GA4
+// `contact_form_submit` / `generate_lead` events — this table is the durable
+// copy, not a replacement.
+// ============================================================
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  source    String   @default("direct") // paid | organic | referral | direct
+  sessionId String?  @map("session_id")
+  pageUrl   String?  @map("page_url")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([source])
+  @@index([email])
+  @@map("contact_submissions")
+}

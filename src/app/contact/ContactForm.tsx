@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { trackContactFormSubmit } from "@/lib/utils/analytics";
+import { deriveConversionSource, getSessionId } from "@/lib/utils/attribution";
 
 const SUBJECTS = [
   "General Inquiry",
@@ -33,16 +34,22 @@ export function ContactForm() {
     e.preventDefault();
     setStatus("submitting");
     try {
-      await fetch("/api/feedback", {
+      // /api/contact persists the submission (PPC conversion signal, DAN-2146)
+      // and sends the same admin notification the old /api/feedback call did.
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type: `contact-${form.subject}`,
-          message: `Name: ${form.name}\nSubject: ${form.subject}\n\n${form.message}`,
+          name: form.name,
           email: form.email,
+          subject: form.subject,
+          message: form.message,
+          source: deriveConversionSource(window.location.search, document.referrer),
+          sessionId: getSessionId(),
           url: window.location.href,
         }),
       });
+      if (!res.ok) throw new Error(`contact submit failed: ${res.status}`);
       trackContactFormSubmit(form.subject || "Unknown");
       setStatus("success");
     } catch {
