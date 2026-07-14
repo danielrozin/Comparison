@@ -64,6 +64,14 @@ export const ENTITY_ALIASES: Readonly<Record<string, string>> = {
 
   // --- same product, two rows
   "amazon-web-services-aws": "aws",
+  // hubspot-vs-salesforce and hubspot-vs-zoho-crm use "hubspot-crm" as the entity
+  // slug while hubspot-vs-pipedrive and mailchimp-vs-hubspot use "hubspot". Alias
+  // the CRM-suffixed variant so all four rivalries collapse to one entity (DAN-2068).
+  "hubspot-crm": "hubspot",
+  // hubspot-vs-zoho-crm stores the Zoho entity as "zoho-crm"; CHALLENGER_CANDIDATES
+  // uses "zoho" as the canonical slug — alias the DB variant so the rival count and
+  // entity link both resolve correctly (DAN-2068).
+  "zoho-crm": "zoho",
 
   // --- identical display name under two slugs
   "delta-airlines": "delta-air-lines",

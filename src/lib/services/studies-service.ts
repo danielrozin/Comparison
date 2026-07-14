@@ -610,12 +610,13 @@ const SAAS_SNAPSHOT: B2BSaaSStudy = {
     { slug: "design-creative", label: "Design & Creative", icon: "\ud83c\udfa8", count: 3, topMatchup: { title: "Canva vs Photoshop", slug: "canva-vs-photoshop" } },
     { slug: "office-tools", label: "Office & Documents", icon: "\ud83d\udcc4", count: 2, topMatchup: { title: "Dropbox vs Google Drive", slug: "dropbox-vs-google-drive" } },
   ],
+  // DAN-2068: 3 of the original 5 rows were ties (ClickUp 3:Jira 3, Wix 2:WordPress 2,
+  // Pipedrive 1:Zoho 1) and HubSpot was understated (2 instead of 4 — hubspot-vs-salesforce
+  // and hubspot-vs-zoho-crm used the "hubspot-crm" entity slug, now aliased to "hubspot").
+  // Only keep pairs where challenger strictly out-paces the incumbent.
   challengers: [
-    { challenger: "Notion", challengerSlug: "notion", challengerCount: 4, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis" },
-    { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 2, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 1, category: "CRM" },
-    { challenger: "ClickUp", challengerSlug: "clickup", challengerCount: 2, incumbent: "Jira", incumbentSlug: "jira", incumbentCount: 1, category: "Project management" },
-    { challenger: "Wix", challengerSlug: "wix", challengerCount: 2, incumbent: "WordPress", incumbentSlug: "wordpress", incumbentCount: 1, category: "Website builders" },
-    { challenger: "Pipedrive", challengerSlug: "pipedrive", challengerCount: 1, incumbent: "Zoho CRM", incumbentSlug: "zoho", incumbentCount: 0, category: "CRM (SMB)" },
+    { challenger: "Notion", challengerSlug: "notion", challengerCount: 5, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis" },
+    { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 4, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 1, category: "CRM" },
   ],
 };
 
