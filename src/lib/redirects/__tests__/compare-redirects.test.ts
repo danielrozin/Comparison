@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 
 import { COMPARE_REDIRECTS, getConsolidatedCompareSlug } from "../compare-redirects";
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "../compare-ordering-redirects.dan1800.generated";
+import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "../compare-rivalry-redirects.dan2078.generated";
 
 describe("COMPARE_REDIRECTS", () => {
   it("308s the DAN-1281 shared-model-number legacy stub straight to the sitemap canonical", () => {
@@ -101,11 +102,55 @@ describe("COMPARE_REDIRECTS", () => {
   });
 
   describe("DAN-1800 ordering sweep (84 clusters)", () => {
-    it("folds every DAN-1800 retired ordering into its survivor (one hop, permanent)", () => {
+    it("folds every DAN-1800 retired ordering into a terminal survivor (one hop, permanent)", () => {
       for (const [from, to] of Object.entries(ORDERING_CONSOLIDATIONS_DAN1800)) {
-        expect(getConsolidatedCompareSlug(from), `${from} should fold`).toBe(to);
-        // survivor must not itself be a source — that would chain/loop
-        expect(getConsolidatedCompareSlug(to), `${to} is a survivor`).toBeNull();
+        const resolved = getConsolidatedCompareSlug(from);
+        expect(resolved, `${from} should fold`).not.toBeNull();
+
+        // NOT `.toBe(to)`. DAN-2078 supersedes some DAN-1800 survivors: this layer
+        // picked survivors by seed `viewCount` (DAN-2037), DAN-2078 re-picked them by
+        // real GSC impressions, and where they disagree the later, better-informed
+        // layer wins and the chain collapses through it. `burger-king-vs-mcdonalds`
+        // is a live example: DAN-1800 sent it to `mcdonalds-vs-burger-king`, which
+        // DAN-2078 then retired, so it now resolves past it to `burger-king-vs-mcdonald-s`.
+        //
+        // What must hold in every case is the invariant the original assertion was
+        // really protecting: the destination is a REAL PAGE, reached in ONE hop.
+        expect(
+          getConsolidatedCompareSlug(resolved as string),
+          `${from} -> ${resolved} must land on a page, not another redirect`,
+        ).toBeNull();
+        expect(resolved, "self-redirect").not.toBe(from);
+      }
+    });
+
+    it("DAN-2078: every rivalry consolidation actually applies (not silently dropped)", () => {
+      // The bug this locks down: the old loop guard DROPPED any source that was also
+      // a survivor of another layer. Three of DAN-2078's 14 consolidations collided
+      // that way, so they vanished from the edge map while the ticket was marked done
+      // — the duplicate stayed live and the ordering layer kept 308ing INTO it.
+      for (const [from, survivor] of Object.entries(RIVALRY_CONSOLIDATIONS_DAN2078)) {
+        expect(
+          getConsolidatedCompareSlug(from),
+          `${from} must 308 to ${survivor} — a dropped entry leaves the duplicate live`,
+        ).toBe(survivor);
+        expect(
+          getConsolidatedCompareSlug(survivor),
+          `${survivor} is the survivor and must stay a live page`,
+        ).toBeNull();
+      }
+    });
+
+    it("DAN-2078: no redirect lands on a slug that is itself retired (chains collapse)", () => {
+      // Every destination must be terminal. If `a -> b` and `b -> c` both ship, `a`
+      // spends a hop of link equity landing on a page we retired — and if `b` is ever
+      // archived, `a` 308s into a 404 (DAN-1908 / DAN-2065, three times over).
+      for (const r of COMPARE_REDIRECTS) {
+        const dest = r.destination.replace("/compare/", "");
+        expect(
+          getConsolidatedCompareSlug(dest),
+          `${r.source} -> ${r.destination}, but ${dest} is itself a redirect source`,
+        ).toBeNull();
       }
     });
 
