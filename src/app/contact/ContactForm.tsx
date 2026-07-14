@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { trackContactFormSubmit } from "@/lib/utils/analytics";
-import { deriveConversionSource, getSessionId } from "@/lib/utils/attribution";
+import { getAttributedSource, getSessionId } from "@/lib/utils/attribution";
 
 const SUBJECTS = [
   "General Inquiry",
@@ -44,7 +44,7 @@ export function ContactForm() {
           email: form.email,
           subject: form.subject,
           message: form.message,
-          source: deriveConversionSource(window.location.search, document.referrer),
+          source: getAttributedSource(),
           sessionId: getSessionId(),
           url: window.location.href,
         }),
