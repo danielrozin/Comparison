@@ -528,6 +528,22 @@ export interface ChallengerPair {
   incumbentCount: number;
   /** Human label for the category they compete in. */
   category: string;
+  /**
+   * true only when the challenger faces strictly MORE distinct rivals than the
+   * incumbent. Equal counts are a tie and must render as one — three of the five
+   * rows this panel used to publish as upsets were level (DAN-2068).
+   */
+  outpacing: boolean;
+}
+
+/** How much of the corpus the ten displayed category bars actually account for. */
+export interface ClusterCoverage {
+  /** Comparisons falling in the clusters shown on the page. */
+  shown: number;
+  /** Comparisons the classifier placed in any cluster, shown or not. */
+  clustered: number;
+  /** Comparisons in the study corpus. `shown` will not equal this. */
+  total: number;
 }
 
 export interface B2BSaaSStudy {
@@ -537,25 +553,49 @@ export interface B2BSaaSStudy {
   distinctTools: number;
   topTools: SaaSTool[];
   clusters: SaaSCategoryCluster[];
+  /** Reconciles the ten bars against the headline count — they do not sum to it. */
+  clusterCoverage: ClusterCoverage;
   challengers: ChallengerPair[];
   updatedAt: string;
   fromSnapshot: boolean;
 }
 
-// Software-typed entities that are programming languages / frameworks rather
-// than B2B SaaS products — excluded from the "tools" leaderboard so the study
-// reads as a software-buyer report, not a developer-language ranking.
+// Entities our database types as `software` that are not B2B SaaS products.
+// Excluded from the tools leaderboard so the study reads as a software-buyer
+// report. Three classes, each of which had put a non-purchasable "tool" on the
+// leaderboard:
+//
+//   languages/frameworks — a developer-language ranking, not a buyer's shortlist
+//   web browsers         — Firefox ranked #12 as a "B2B SaaS tool" (DAN-2068)
+//   database engines     — MySQL ranked #13; an open-source RDBMS is not a SaaS
+//                          purchase. Managed cloud services (AWS, Azure) stay.
 const NON_SAAS_SLUGS = new Set([
+  // languages & frameworks
   "typescript", "python", "next-js", "go-golang", "java", "javascript",
   "react", "rust", "kotlin", "node-js", "nodejs", "angular", "vue", "svelte",
   "php", "ruby", "swift", "scala", "c", "c-plus-plus", "cpp", "perl",
   "html", "css", "sql", "dart", "elixir", "haskell", "r",
+  // web browsers
+  "google-chrome", "chrome", "firefox", "mozilla-firefox", "safari", "brave",
+  "brave-browser", "microsoft-edge", "edge", "opera", "arc-browser", "vivaldi",
+  "tor-browser",
+  // database engines (self-hostable; the managed services are kept)
+  "mysql", "postgresql", "mariadb", "sqlite", "mongodb", "redis", "cassandra",
+  "elasticsearch", "oracle-database", "microsoft-sql-server", "sql-server",
+  "amazon-aurora",
 ]);
 
-// Curated "challenger vs incumbent" candidates: a newer entrant paired with the
-// established player it competes against. We only surface a pair when the
-// challenger actually out-appears the incumbent in our comparison data, so the
-// "challenger is winning the comparison battle" framing is data-backed.
+/**
+ * Curated "challenger vs incumbent" candidates: a newer entrant paired with the
+ * established player it competes against.
+ *
+ * Every candidate is published with its real counts, including the ones where the
+ * challenger does NOT lead. The panel used to filter to `challengerCount >
+ * incumbentCount` and print only the survivors, which turned three ties into
+ * three upsets — a tie passes that filter whenever the incumbent's rivals have
+ * been under-counted, and they had been (DAN-2068). A cut that can only ever
+ * produce evidence for its own headline is not a finding. Ties are labelled.
+ */
 interface ChallengerCandidate {
   challenger: { name: string; slug: string };
   incumbent: { name: string; slug: string };
@@ -568,55 +608,68 @@ const CHALLENGER_CANDIDATES: ChallengerCandidate[] = [
   { challenger: { name: "Wix", slug: "wix" }, incumbent: { name: "WordPress", slug: "wordpress" }, category: "Website builders" },
   { challenger: { name: "Notion", slug: "notion" }, incumbent: { name: "Confluence", slug: "confluence" }, category: "Docs & wikis" },
   { challenger: { name: "Bitwarden", slug: "bitwarden" }, incumbent: { name: "LastPass", slug: "lastpass" }, category: "Password managers" },
-  { challenger: { name: "Pipedrive", slug: "pipedrive" }, incumbent: { name: "Zoho CRM", slug: "zoho" }, category: "CRM (SMB)" },
+  // DAN-2068: was `zoho`, which is not an entity in our database — the row is
+  // `zoho-crm`. A missing slug scored 0, so the page asserted "Zoho CRM 0" while
+  // publishing /compare/hubspot-vs-zoho-crm. Any candidate slug that resolves to
+  // zero rivals is now dropped rather than printed as a zero (see below).
+  { challenger: { name: "Pipedrive", slug: "pipedrive" }, incumbent: { name: "Zoho CRM", slug: "zoho-crm" }, category: "CRM (SMB)" },
 ];
 
 /**
- * Baked-in snapshot — refreshed 2026-07-12 from the production Neon DB
- * (96 published software comparisons across 99 distinct SaaS tools).
+ * Baked-in snapshot — refreshed 2026-07-14 from the production Neon DB
+ * (90 published software comparisons; rival counts taken catalog-wide).
  * Used only when a live query is unavailable so the page always renders.
+ *
+ * DAN-2068: the numbers this replaces are the ones that shipped publicly, and
+ * three of their five challenger rows were false — including `Zoho CRM 0` on a
+ * page that also links /compare/hubspot-vs-zoho-crm. Regenerate with
+ * `npx tsx --env-file=.env.local scripts/dan2068-verify.ts` after any change to
+ * the alias map or the exclusion sets; a stale snapshot here republishes the bug.
  */
 const SAAS_SNAPSHOT: B2BSaaSStudy = {
   totalSaaSComparisons: 90,
-  distinctTools: 95,
-  updatedAt: "2026-07-12T00:00:00.000Z",
+  distinctTools: 88,
+  updatedAt: "2026-07-14T00:00:00.000Z",
   fromSnapshot: true,
   topTools: [
     { rank: 1, name: "Mailchimp", slug: "mailchimp", count: 5 },
     { rank: 1, name: "Squarespace", slug: "squarespace", count: 5 },
     { rank: 3, name: "1Password", slug: "1password", count: 4 },
+    { rank: 3, name: "HubSpot", slug: "hubspot", count: 4 },
     { rank: 3, name: "Microsoft Teams", slug: "microsoft-teams", count: 4 },
     { rank: 3, name: "Notion", slug: "notion", count: 4 },
-    { rank: 6, name: "Klaviyo", slug: "klaviyo", count: 3 },
-    { rank: 6, name: "QuickBooks Online", slug: "quickbooks-online", count: 3 },
-    { rank: 6, name: "Zoom", slug: "zoom", count: 3 },
-    { rank: 9, name: "Brave", slug: "brave", count: 2 },
-    { rank: 9, name: "ClickUp", slug: "clickup", count: 2 },
-    { rank: 9, name: "Confluence", slug: "confluence", count: 2 },
-    { rank: 9, name: "Cursor", slug: "cursor", count: 2 },
-    { rank: 9, name: "Firefox", slug: "firefox", count: 2 },
-    { rank: 9, name: "FreshBooks", slug: "freshbooks", count: 2 },
-    { rank: 9, name: "Google Meet", slug: "google-meet", count: 2 },
+    { rank: 3, name: "Zoom", slug: "zoom", count: 4 },
+    { rank: 8, name: "ClickUp", slug: "clickup", count: 3 },
+    { rank: 8, name: "Google Drive", slug: "google-drive", count: 3 },
+    { rank: 8, name: "Jira", slug: "jira", count: 3 },
+    { rank: 8, name: "Klaviyo", slug: "klaviyo", count: 3 },
+    { rank: 8, name: "QuickBooks Online", slug: "quickbooks-online", count: 3 },
+    { rank: 13, name: "ChatGPT", slug: "chatgpt", count: 2 },
+    { rank: 13, name: "Confluence", slug: "confluence", count: 2 },
+    { rank: 13, name: "Cursor", slug: "cursor", count: 2 },
   ],
   clusters: [
     { slug: "email-crm", label: "Email Marketing & CRM", icon: "\ud83d\udce7", count: 11, topMatchup: { title: "Mailchimp vs HubSpot", slug: "mailchimp-vs-hubspot" } },
-    { slug: "communication", label: "Communication & Collaboration", icon: "\ud83d\udcac", count: 9, topMatchup: { title: "Zoom vs Google Meet vs Microsoft Teams (2026): Video Conferencing Compared", slug: "zoom-vs-google-meet-vs-teams" } },
-    { slug: "website-builders", label: "Website Builders & eCommerce", icon: "\ud83c\udfea", count: 9, topMatchup: { title: "Squarespace vs Shopify", slug: "shopify-vs-squarespace" } },
+    { slug: "communication", label: "Communication & Collaboration", icon: "\ud83d\udcac", count: 8, topMatchup: { title: "Zoom vs Google Meet vs Microsoft Teams (2026): Video Conferencing Compared", slug: "zoom-vs-google-meet-vs-teams" } },
     { slug: "finance-accounting", label: "Finance & Accounting", icon: "\ud83d\udcb3", count: 8, topMatchup: { title: "FreshBooks vs QuickBooks Online", slug: "freshbooks-vs-quickbooks" } },
+    { slug: "website-builders", label: "Website Builders & eCommerce", icon: "\ud83c\udfea", count: 7, topMatchup: { title: "Squarespace vs Shopify", slug: "shopify-vs-squarespace" } },
     { slug: "password-privacy", label: "Password & Privacy", icon: "\ud83d\udd11", count: 7, topMatchup: { title: "1Password vs Bitwarden", slug: "1password-vs-bitwarden" } },
-    { slug: "productivity", label: "Productivity & PM", icon: "\ud83d\udccb", count: 7, topMatchup: { title: "Notion vs ClickUp", slug: "clickup-vs-notion" } },
-    { slug: "ai-tools", label: "AI Tools", icon: "\ud83e\udd16", count: 4, topMatchup: { title: "Cursor vs Claude Code", slug: "cursor-vs-claude-code" } },
-    { slug: "vpn-security", label: "VPN & Security", icon: "\ud83d\udd12", count: 3, topMatchup: { title: "Bitdefender vs Kaspersky", slug: "bitdefender-vs-kaspersky" } },
+    { slug: "productivity", label: "Productivity & PM", icon: "\ud83d\udccb", count: 6, topMatchup: { title: "Notion vs ClickUp", slug: "clickup-vs-notion" } },
     { slug: "design-creative", label: "Design & Creative", icon: "\ud83c\udfa8", count: 3, topMatchup: { title: "Canva vs Photoshop", slug: "canva-vs-photoshop" } },
-    { slug: "office-tools", label: "Office & Documents", icon: "\ud83d\udcc4", count: 2, topMatchup: { title: "Dropbox vs Google Drive", slug: "dropbox-vs-google-drive" } },
+    { slug: "vpn-security", label: "VPN & Security", icon: "\ud83d\udd12", count: 3, topMatchup: { title: "Bitdefender vs Kaspersky", slug: "bitdefender-vs-kaspersky" } },
+    { slug: "ai-tools", label: "AI Tools", icon: "\ud83e\udd16", count: 3, topMatchup: { title: "ChatGPT vs Copilot", slug: "chatgpt-vs-copilot" } },
+    { slug: "cloud-devtools", label: "Cloud & DevTools", icon: "\u2601\ufe0f", count: 2, topMatchup: { title: "AWS vs Azure", slug: "aws-vs-azure" } },
   ],
-  // DAN-2068: 3 of the original 5 rows were ties (ClickUp 3:Jira 3, Wix 2:WordPress 2,
-  // Pipedrive 1:Zoho 1) and HubSpot was understated (2 instead of 4 — hubspot-vs-salesforce
-  // and hubspot-vs-zoho-crm used the "hubspot-crm" entity slug, now aliased to "hubspot").
-  // Only keep pairs where challenger strictly out-paces the incumbent.
+  clusterCoverage: { shown: 58, clustered: 61, total: 90 },
+  // Two of the six candidate rivalries show a real lead. The other four are level
+  // and say so — the panel is the finding, not a filter that hides its own misses.
   challengers: [
-    { challenger: "Notion", challengerSlug: "notion", challengerCount: 5, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis" },
-    { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 4, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 1, category: "CRM" },
+    { challenger: "HubSpot", challengerSlug: "hubspot", challengerCount: 4, incumbent: "Salesforce", incumbentSlug: "salesforce", incumbentCount: 1, category: "CRM", outpacing: true },
+    { challenger: "Notion", challengerSlug: "notion", challengerCount: 4, incumbent: "Confluence", incumbentSlug: "confluence", incumbentCount: 2, category: "Docs & wikis", outpacing: true },
+    { challenger: "ClickUp", challengerSlug: "clickup", challengerCount: 3, incumbent: "Jira", incumbentSlug: "jira", incumbentCount: 3, category: "Project management", outpacing: false },
+    { challenger: "Wix", challengerSlug: "wix", challengerCount: 2, incumbent: "WordPress", incumbentSlug: "wordpress", incumbentCount: 2, category: "Website builders", outpacing: false },
+    { challenger: "Bitwarden", challengerSlug: "bitwarden", challengerCount: 1, incumbent: "LastPass", incumbentSlug: "lastpass", incumbentCount: 1, category: "Password managers", outpacing: false },
+    { challenger: "Pipedrive", challengerSlug: "pipedrive", challengerCount: 1, incumbent: "Zoho CRM", incumbentSlug: "zoho", incumbentCount: 1, category: "CRM (SMB)", outpacing: false },
   ],
 };
 
@@ -650,12 +703,23 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
       where: canonicalComparisonWhere({ category: "software" }),
     });
 
+    /**
+     * DAN-2068: the rivalry graph is built from the WHOLE catalog, not from
+     * `category = 'software'`.
+     *
+     * A tool's rival count is a fact about the tool, and it must not change
+     * because of how a page happened to be filed. `clickup-vs-jira` and
+     * `jira-vs-monday` are categorised `products`, so a software-only graph could
+     * not see them: it scored Jira at 1 rival and published "ClickUp 3 · Jira 1"
+     * as an upset. Counted across the catalog, both face 3 — it is a tie. The
+     * study still *reports* on the software vertical; it just no longer counts
+     * rivals through a keyhole.
+     */
     const raw = (await prisma.$queryRaw<PairRow[]>`
       SELECT c.slug AS cslug, c.title AS ctitle, c.category AS ccategory,
              e.name, e.slug AS eslug, et.slug AS type
       FROM comparison_entities ce
-      JOIN comparisons c ON c.id = ce.comparison_id
-        AND c.status = 'published' AND c.category = 'software'
+      JOIN comparisons c ON c.id = ce.comparison_id AND c.status = 'published'
       JOIN entities e ON e.id = ce.entity_id
       LEFT JOIN entity_types et ON et.id = e.entity_type_id`) as PairRow[];
 
@@ -666,13 +730,15 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
     const g = buildRivalryGraph(rows);
 
     // Tool leaderboard — software-typed entities, ranked by distinct rivals.
-    // Excludes programming languages, and consumer streaming services: `disney`
-    // is typed `software` in the entity table, which is how Disney+ ended up
-    // ranked as a B2B SaaS tool between Zoom and Mailchimp (DAN-2047).
+    // Excludes programming languages, browsers and database engines (DAN-2068),
+    // and consumer streaming services: `disney` is typed `software` in the entity
+    // table, which is how Disney+ ended up ranked as a B2B SaaS tool between Zoom
+    // and Mailchimp (DAN-2047).
     const isTool = (slug: string, type: string | null) =>
       (type || "").toLowerCase() === "software" &&
       !NON_SAAS_SLUGS.has(slug) &&
       !CONSUMER_MEDIA_SLUGS.has(slug);
+    const entitiesOf = (slug: string) => g.entities.get(slug);
 
     const rankedTools = rankByRivals(g).filter((t) => isTool(t.slug, t.type));
 
@@ -689,6 +755,10 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
     const centrality = (members: string[]) =>
       members.reduce((sum, m) => sum + rivals(m), 0);
 
+    // Clusters describe the software vertical itself, so they are counted over
+    // the software pages only — unlike rival counts, which are catalog-wide.
+    const softwarePages = g.pages.filter((p) => p.category === "software");
+
     // Text blob per page, for cluster classification.
     const textOf = new Map<string, string>();
     for (const r of rows) {
@@ -699,10 +769,16 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
     const subMeta = new Map(SOFTWARE_SUBCATEGORIES.map((s) => [s.slug, s]));
     const clusterCount = new Map<string, number>();
     const clusterTop = new Map<string, { title: string; slug: string; score: number }>();
-    for (const p of g.pages) {
+    for (const p of softwarePages) {
       const cl = classifyCluster(textOf.get(p.slug) ?? "");
       if (!cl) continue;
       clusterCount.set(cl, (clusterCount.get(cl) || 0) + 1);
+      // A cluster's marquee matchup has to be a matchup between SaaS tools. The
+      // software vertical also holds consumer fintech (`cash-app-vs-venmo`, both
+      // typed `company`), and on centrality alone it wins the Finance cluster —
+      // putting a P2P payments app forward as this report's exemplar B2B finance
+      // rivalry. It still counts toward the cluster; it just cannot represent it.
+      if (!p.members.every((m) => isTool(m, entitiesOf(m)?.type ?? null))) continue;
       const score = centrality(p.members);
       const cur = clusterTop.get(cl);
       if (!cur || score > cur.score || (score === cur.score && p.slug < cur.slug)) {
@@ -723,20 +799,42 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
         };
       });
 
-    // Challenger vs incumbent — keep only data-backed upsets. Compared on
-    // distinct rivals, so a challenger cannot "win" on a reverse-duplicate page.
+    // The ten bars do not add up to the headline: the classifier leaves some
+    // comparisons unassigned, and only the ten largest clusters are drawn. The
+    // page has to say so — a reader adding the bars gets a smaller number and no
+    // way to tell whether we lost 30 pages or invented them (DAN-2068).
+    const clusterCoverage: ClusterCoverage = {
+      shown: clusters.reduce((sum, c) => sum + c.count, 0),
+      clustered: [...clusterCount.values()].reduce((sum, n) => sum + n, 0),
+      total: totalSaaSComparisons,
+    };
+
+    // Challenger vs incumbent — every candidate, with its real counts. A pair is
+    // dropped only when neither side has a rivalry to report (a slug that matches
+    // nothing scores 0, and a 0 must never be published as a finding).
     const lookup = (slug: string) => rivals(canonicalSlug(slug));
-    const challengers: ChallengerPair[] = CHALLENGER_CANDIDATES.map((c) => ({
-      challenger: c.challenger.name,
-      challengerSlug: c.challenger.slug,
-      challengerCount: lookup(c.challenger.slug),
-      incumbent: c.incumbent.name,
-      incumbentSlug: c.incumbent.slug,
-      incumbentCount: lookup(c.incumbent.slug),
-      category: c.category,
-    }))
-      .filter((c) => c.challengerCount > c.incumbentCount && c.challengerCount > 0)
-      .sort((a, b) => b.challengerCount - a.challengerCount);
+    const challengers: ChallengerPair[] = CHALLENGER_CANDIDATES.map((c) => {
+      const challengerCount = lookup(c.challenger.slug);
+      const incumbentCount = lookup(c.incumbent.slug);
+      return {
+        challenger: c.challenger.name,
+        challengerSlug: canonicalSlug(c.challenger.slug),
+        challengerCount,
+        incumbent: c.incumbent.name,
+        incumbentSlug: canonicalSlug(c.incumbent.slug),
+        incumbentCount,
+        category: c.category,
+        outpacing: challengerCount > incumbentCount,
+      };
+    })
+      .filter((c) => c.challengerCount > 0 && c.incumbentCount > 0)
+      // Upsets first, then by margin — ties still render, below the leads.
+      .sort(
+        (a, b) =>
+          Number(b.outpacing) - Number(a.outpacing) ||
+          b.challengerCount - b.incumbentCount - (a.challengerCount - a.incumbentCount) ||
+          b.challengerCount - a.challengerCount
+      );
 
     // Guard against a hollow result.
     if (topTools.length === 0) return SAAS_SNAPSHOT;
@@ -746,6 +844,7 @@ export async function getB2BSaaSStudy(): Promise<B2BSaaSStudy> {
       distinctTools,
       topTools,
       clusters,
+      clusterCoverage,
       challengers: challengers.length > 0 ? challengers : SAAS_SNAPSHOT.challengers,
       updatedAt: new Date().toISOString(),
       fromSnapshot: false,

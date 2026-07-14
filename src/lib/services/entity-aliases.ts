@@ -64,13 +64,27 @@ export const ENTITY_ALIASES: Readonly<Record<string, string>> = {
 
   // --- same product, two rows
   "amazon-web-services-aws": "aws",
-  // hubspot-vs-salesforce and hubspot-vs-zoho-crm use "hubspot-crm" as the entity
-  // slug while hubspot-vs-pipedrive and mailchimp-vs-hubspot use "hubspot". Alias
-  // the CRM-suffixed variant so all four rivalries collapse to one entity (DAN-2068).
+  /**
+   * DAN-2068. Four more of these, found by asking why the SaaS study reported
+   * "HubSpot 2 · Salesforce 1" when HubSpot is on four pages. The evidence is in
+   * the comparison slugs, which all name one product while pointing at two rows:
+   *
+   *   hubspot-vs-pipedrive, mailchimp-vs-hubspot   -> entity `hubspot`
+   *   hubspot-vs-salesforce, hubspot-vs-zoho-crm   -> entity `hubspot-crm`
+   *   wordpress-vs-wix                             -> entity `wordpress`
+   *   squarespace-vs-wordpress, wordpress-vs-squarespace -> `wordpress-self-hosted`
+   *   chrome-vs-firefox                            -> entity `mozilla-firefox`
+   *   firefox-vs-safari, firefox-vs-brave          -> entity `firefox`
+   *
+   * Split across two rows, each product's rivals are split too — which is how
+   * Salesforce ended up with exactly one rival (a HubSpot row that no other
+   * HubSpot page used), and how a Wix/WordPress tie stayed hidden long enough to
+   * be published as an upset twice.
+   */
   "hubspot-crm": "hubspot",
-  // hubspot-vs-zoho-crm stores the Zoho entity as "zoho-crm"; CHALLENGER_CANDIDATES
-  // uses "zoho" as the canonical slug — alias the DB variant so the rival count and
-  // entity link both resolve correctly (DAN-2068).
+  "wordpress-self-hosted": "wordpress",
+  "mozilla-firefox": "firefox",
+  // The Zoho entity row is `zoho-crm`; CHALLENGER_CANDIDATES keys on `zoho`.
   "zoho-crm": "zoho",
 
   // --- identical display name under two slugs
