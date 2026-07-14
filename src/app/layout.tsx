@@ -8,11 +8,20 @@ import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, Search
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 
 // DAN-2112: this fed `numberOfItems` in the site-wide Organization/DataCatalog
 // JSON-LD. Counting `status: "published"` alone included the 22 redirect sources,
 // so every page on the site told Google Dataset Search we had 491 comparisons when
 // 468 exist. Count canonical pages only — see @/lib/db/canonical-comparisons.
+//
+// DAN-2067: the cache key is versioned by the size of the consolidation map. This
+// value lives in Vercel's Data Cache, which SURVIVES DEPLOYS — after DAN-2078 folded
+// 14 rivalries the DB count fell to 454, but a plain `["published-comparison-count"]`
+// key kept serving the cached 468 to every page's JSON-LD, and shipping the corrected
+// fallback did not dislodge it. Retiring a slug is exactly when this number changes,
+// so keying on the map size makes any consolidation batch bust the cache on deploy
+// instead of advertising a stale corpus for up to an hour.
 const getPublishedComparisonCount = unstable_cache(
   async () => {
     try {
@@ -21,7 +30,7 @@ const getPublishedComparisonCount = unstable_cache(
       return CANONICAL_COMPARISON_COUNT_FALLBACK;
     }
   },
-  ["published-comparison-count"],
+  ["published-comparison-count", `redirects:${REDIRECTED_COMPARE_SLUGS.length}`],
   { revalidate: 3600 }
 );
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
