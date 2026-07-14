@@ -67,6 +67,39 @@ describe("COMPARE_REDIRECTS", () => {
     expect(getConsolidatedCompareSlug("iphone-15-vs-iphone-16")).toBeNull();
   });
 
+  describe("DAN-2115 title-derived slugs", () => {
+    // The URL a reader/journalist/LLM builds from the title we printed on the
+    // SaaS study, mapped to the slug that actually serves it. Both DAN-2112 and
+    // DAN-2115 were filed on 404s reached exactly this way.
+    const TITLE_ALIASES: Record<string, string> = {
+      "freshbooks-vs-quickbooks-online": "freshbooks-vs-quickbooks",
+      "quickbooks-online-vs-freshbooks": "freshbooks-vs-quickbooks",
+      "amazon-web-services-vs-microsoft-azure": "aws-vs-azure",
+      "aws-vs-microsoft-azure": "aws-vs-azure",
+      "microsoft-copilot-vs-chatgpt": "chatgpt-vs-copilot",
+      "zoom-vs-google-meet-vs-microsoft-teams": "zoom-vs-google-meet-vs-teams",
+    };
+
+    it("folds each title-derived slug onto the canonical page in one hop", () => {
+      for (const [from, to] of Object.entries(TITLE_ALIASES)) {
+        expect(getConsolidatedCompareSlug(from), `${from} should fold`).toBe(to);
+        // the page we send them to must be a real page, not another redirect
+        expect(getConsolidatedCompareSlug(to), `${to} must be a live page`).toBeNull();
+      }
+    });
+
+    it("never makes a live page a redirect source", () => {
+      // Each canonical below is a verified live 200. Aliasing must add routes for
+      // dead slugs only — a source that is also a live page would shadow it.
+      for (const to of new Set(Object.values(TITLE_ALIASES))) {
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${to}`),
+          `${to} is a live page and must not redirect`,
+        ).toBe(false);
+      }
+    });
+  });
+
   describe("DAN-1800 ordering sweep (84 clusters)", () => {
     it("folds every DAN-1800 retired ordering into its survivor (one hop, permanent)", () => {
       for (const [from, to] of Object.entries(ORDERING_CONSOLIDATIONS_DAN1800)) {

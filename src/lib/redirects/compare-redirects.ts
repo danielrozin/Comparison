@@ -93,6 +93,39 @@ const ALIAS_CONSOLIDATIONS: Record<string, string> = {
 };
 
 /**
+ * DAN-2115 — title-derived slugs. A comparison's display title and its slug are
+ * allowed to disagree ("FreshBooks vs QuickBooks Online" lives at
+ * /compare/freshbooks-vs-quickbooks; "Amazon Web Services (AWS) vs Microsoft
+ * Azure" at /compare/aws-vs-azure). Anyone who builds the URL from the title we
+ * printed — a reader, a journalist citing the SaaS study, an LLM summarising the
+ * page — lands on a 404 for a page we do publish.
+ *
+ * That is not hypothetical: DAN-2112 was filed claiming the study "links to 404s
+ * incl. flagship Mailchimp vs HubSpot", and DAN-2115 that
+ * /compare/freshbooks-vs-quickbooks-online is a dead exemplar link. Neither is a
+ * link on the page — both were title-constructed URLs. The hrefs were 200 all
+ * along, but the 404s the reporters hit are real and every study reader can hit
+ * them the same way. So: alias the title-derived form onto the canonical slug.
+ *
+ * Every source below was verified 404 in prod (never shadow a live page) and
+ * every destination 200. `copilot-vs-chatgpt` is deliberately absent — it already
+ * 308s via the ordering layer.
+ */
+const TITLE_ALIAS_CONSOLIDATIONS: Record<string, string> = {
+  "freshbooks-vs-quickbooks-online": "freshbooks-vs-quickbooks",
+  "quickbooks-online-vs-freshbooks": "freshbooks-vs-quickbooks",
+  "amazon-web-services-vs-microsoft-azure": "aws-vs-azure",
+  "amazon-web-services-vs-azure": "aws-vs-azure",
+  "aws-vs-microsoft-azure": "aws-vs-azure",
+  "microsoft-azure-vs-amazon-web-services": "aws-vs-azure",
+  "microsoft-copilot-vs-chatgpt": "chatgpt-vs-copilot",
+  "chatgpt-vs-microsoft-copilot": "chatgpt-vs-copilot",
+  "zoom-vs-google-meet-vs-microsoft-teams": "zoom-vs-google-meet-vs-teams",
+  "zoom-vs-google-meet-vs-microsoft-teams-video-conferencing-compared":
+    "zoom-vs-google-meet-vs-teams",
+};
+
+/**
  * DAN-2065 — 18 clusters where ORDERING_CONSOLIDATIONS kept the wrong survivor.
  *
  * The generated map picked each cluster's survivor by viewCount — but view_count
@@ -139,6 +172,7 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...ORDERING_CONSOLIDATIONS,
   ...ORDERING_CONSOLIDATIONS_DAN1800,
   ...ALIAS_CONSOLIDATIONS,
+  ...TITLE_ALIAS_CONSOLIDATIONS,
   ...MANUAL_CONSOLIDATIONS,
 };
 
