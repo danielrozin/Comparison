@@ -121,7 +121,7 @@ export function VerdictCard({ verdict, shortAnswer, entities, attributes, compar
                 return (
                   <div
                     key={entity.id}
-                    className={`relative rounded-xl overflow-hidden backdrop-blur-sm transition-all hover:scale-[1.02] hover:brightness-110 ${
+                    className={`relative rounded-xl overflow-hidden backdrop-blur-sm ${
                       idx === 0
                         ? "bg-blue-500/15 border border-blue-400/30"
                         : "bg-purple-500/15 border border-purple-400/30"

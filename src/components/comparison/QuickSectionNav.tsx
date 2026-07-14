@@ -160,7 +160,7 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
               }}
               href={`#${section.id}`}
               aria-current={isActive ? "location" : undefined}
-              className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap ${
+              className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 ${
                 isActive
                   ? "bg-primary-600 text-white border-primary-600 shadow-sm shadow-primary-300"
                   : section.color

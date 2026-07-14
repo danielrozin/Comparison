@@ -129,7 +129,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
                 }}
                 href={`#${s.id}`}
                 aria-current={isActive ? "location" : undefined}
-                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap ${
+                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 ${
                   isActive
                     ? "bg-primary-100 text-primary-700 font-semibold"
                     : "text-text-secondary hover:text-text hover:bg-surface-alt"
