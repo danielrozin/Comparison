@@ -11,7 +11,7 @@ export function HeroCTA() {
           const input = document.querySelector<HTMLInputElement>('#search input[type="text"]');
           input?.focus();
         }}
-        className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 bg-white text-primary-700 font-bold rounded-full hover:bg-primary-50 transition-all shadow-lg shadow-black/10 text-base hover:scale-105 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-primary-800"
+        className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 bg-white text-primary-700 font-bold rounded-full hover:bg-primary-50 transition-all shadow-lg shadow-black/10 text-base hover:scale-105 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
