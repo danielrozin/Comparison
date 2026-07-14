@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 // /.well-known/mcp.json — Model Context Protocol discovery manifest
 //
@@ -15,14 +16,14 @@ export const revalidate = 86400;
 export async function GET() {
   const manifest = {
     name: SITE_NAME,
-    description: "Structured comparison data platform — 500+ X vs Y comparisons across technology, sports, products, countries, software, and more.",
+    description: `Structured comparison data platform — ${CANONICAL_COMPARISON_COUNT_FALLBACK} X vs Y comparisons across technology, sports, products, countries, software, and more.`,
     version: "1.0.0",
     homepage: SITE_URL,
     openapi: `${SITE_URL}/api/openapi`,
     tools: [
       {
         name: "get_changes",
-        description: "Get recently added or updated comparisons and blog articles since a given timestamp. Enables incremental indexing — poll daily with the last-poll timestamp to discover new content without re-crawling 500+ pages. Supports ETag conditional GET.",
+        description: `Get recently added or updated comparisons and blog articles since a given timestamp. Enables incremental indexing — poll daily with the last-poll timestamp to discover new content without re-crawling ${CANONICAL_COMPARISON_COUNT_FALLBACK} pages. Supports ETag conditional GET.`,
         endpoint: `${SITE_URL}/api/v1/changes`,
         method: "GET",
         parameters: {
@@ -189,7 +190,7 @@ export async function GET() {
     resources: [
       {
         name: "full_catalog",
-        description: "Complete catalog of all 500+ comparisons with slug, title, entities, shortAnswer, category.",
+        description: `Complete catalog of all ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons with slug, title, entities, shortAnswer, category.`,
         url: `${SITE_URL}/api/llms-full`,
         format: "application/json",
       },

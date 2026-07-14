@@ -2,10 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL, CATEGORIES, CATEGORY_SUBCATEGORIES } from "@/lib/utils/constants";
 import { getRecentSitemapContent } from "@/lib/services/sitemap-service";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 const SITEMAP_TITLE = `Site Map — ${SITE_NAME}`;
 const SITEMAP_DESC = `Browse all content on ${SITE_NAME} — comparisons, blog articles, reviews, and categories organized by date and topic.`;
-const SITEMAP_ABSTRACT = "Complete directory of all content on A Versus B: 3,000+ X vs Y comparisons, 370+ blog articles, 2,500+ entity profiles, hub pages, best-of lists, and reviews — organized by date and category.";
+// DAN-2112: this claimed "3,000+ comparisons, 370+ blog articles, 2,500+ entity
+// profiles" — comparisons and entities were transposed. Live counts (sitemap, 2026-07-14):
+// 468 comparisons, 236 blog articles, 3,243 entity profiles. The non-comparison figures
+// are stated as floors that are true today and only grow.
+const SITEMAP_ABSTRACT = `Complete directory of all content on A Versus B: ${CANONICAL_COMPARISON_COUNT_FALLBACK} X vs Y comparisons, 200+ blog articles, 3,000+ entity profiles, hub pages, best-of lists, and reviews — organized by date and category.`;
 const SITEMAP_URL = `${SITE_URL}/site-map`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Site Map — A Versus B")}&type=sitemap`;
 

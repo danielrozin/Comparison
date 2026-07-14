@@ -7,13 +7,18 @@ import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav, UxStudyBanner } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
+// DAN-2112: this fed `numberOfItems` in the site-wide Organization/DataCatalog
+// JSON-LD. Counting `status: "published"` alone included the 22 redirect sources,
+// so every page on the site told Google Dataset Search we had 491 comparisons when
+// 468 exist. Count canonical pages only — see @/lib/db/canonical-comparisons.
 const getPublishedComparisonCount = unstable_cache(
   async () => {
     try {
-      return await prisma.comparison.count({ where: { status: "published" } });
+      return await prisma.comparison.count({ where: canonicalComparisonWhere() });
     } catch {
-      return 500;
+      return CANONICAL_COMPARISON_COUNT_FALLBACK;
     }
   },
   ["published-comparison-count"],
@@ -184,7 +189,7 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(webSiteSchema()),
+            __html: JSON.stringify(webSiteSchema(comparisonCount)),
           }}
         />
         <script

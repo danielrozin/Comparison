@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { personAuthorNode, contentAuthorArray } from "@/lib/seo/schema";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 const SITE_URL = "https://www.aversusb.net";
 const SITE_NAME = "A Versus B";
 const PAGE_URL = `${SITE_URL}/search`;
 const OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Search Comparisons")}&type=search`;
 const PAGE_DESCRIPTION = "Search and compare anything — sports players, countries, products, technology, and more. Type any two things to get an instant, data-driven comparison.";
-const PAGE_ABSTRACT = "Instant search across 3,000+ X vs Y comparisons — find any comparison by topic, product, person, or category. Type 'A vs B' to generate any comparison instantly.";
+const PAGE_ABSTRACT = `Instant search across ${CANONICAL_COMPARISON_COUNT_FALLBACK} X vs Y comparisons — find any comparison by topic, product, person, or category. Type 'A vs B' to generate any comparison instantly.`;
 
 const searchResultsPageSchema = {
   "@context": "https://schema.org",
@@ -38,7 +39,7 @@ const searchResultsPageSchema = {
     url: OG_IMAGE,
     contentUrl: OG_IMAGE,
     name: "Search Comparisons — A Versus B",
-    description: "Search across 3,000+ side-by-side comparisons on A Versus B",
+    description: `Search across ${CANONICAL_COMPARISON_COUNT_FALLBACK} side-by-side comparisons on A Versus B`,
     width: 1200,
     height: 630,
     creditText: SITE_NAME,
@@ -162,7 +163,7 @@ const faqSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         "@id": `${PAGE_URL}#a2`,
-        text: "A Versus B covers 3,000+ comparisons across 17 categories: technology, sports, countries, products, software, automotive, health, finance, entertainment, gaming, brands, companies, history, celebrities, and more. You can compare AI models (ChatGPT vs Claude), smartphones (iPhone vs Samsung), athletes (Messi vs Ronaldo), countries (USA vs China), cloud platforms (AWS vs Azure), and virtually anything else.",
+        text: `A Versus B covers ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons across 17 categories: technology, sports, countries, products, software, automotive, health, finance, entertainment, gaming, brands, companies, history, celebrities, and more. You can compare AI models (ChatGPT vs Claude), smartphones (iPhone vs Samsung), athletes (Messi vs Ronaldo), countries (USA vs China), cloud platforms (AWS vs Azure), and virtually anything else.`,
         inLanguage: "en-US",
         upvoteCount: 1,
         author: personAuthorNode(),
@@ -263,7 +264,7 @@ export const metadata: Metadata = {
     "thumbnail": OG_IMAGE,
     "abstract": PAGE_ABSTRACT,
     "twitter:label1": "Comparisons Available",
-    "twitter:data1": "3,000+",
+    "twitter:data1": String(CANONICAL_COMPARISON_COUNT_FALLBACK),
     "twitter:label2": "License",
     "twitter:data2": "CC BY 4.0",
   },

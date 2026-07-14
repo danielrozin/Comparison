@@ -39,3 +39,18 @@ export function canonicalComparisonWhere(extra?: Record<string, unknown>) {
 export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => string): T[] {
   return rows.filter((row) => !isRedirectedCompareSlug(slugOf(row)));
 }
+
+/**
+ * DAN-2112 — the count to fall back on when the DB is unreachable, and the count
+ * the static (pages-router) schema emits.
+ *
+ * Verified 2026-07-14: all 468 `/compare/` URLs in sitemap/1.xml return a direct
+ * 200 (no redirects, no 404s). This is the number we may state publicly.
+ *
+ * It is a FLOOR, never a ceiling: understating the corpus costs us nothing, but
+ * overstating it puts a number in front of a journalist that they can disprove by
+ * clicking. The site previously advertised `491+` (raw published rows, 22 of them
+ * redirect sources) and `500+` (invented) in JSON-LD. Never write a corpus literal
+ * anywhere else — import this, or better, count with `canonicalComparisonWhere()`.
+ */
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 468;

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 // GET /api/openapi — OpenAPI 3.0.3 specification for the A Versus B public API.
 //
@@ -20,7 +21,7 @@ export async function GET() {
     info: {
       title: `${SITE_NAME} Public API`,
       version: "1.0.0",
-      description: `The ${SITE_NAME} API provides structured access to 500+ side-by-side comparisons, entity profiles, FAQs, and category data. All endpoints return JSON. No authentication required for read endpoints.`,
+      description: `The ${SITE_NAME} API provides structured access to ${CANONICAL_COMPARISON_COUNT_FALLBACK} side-by-side comparisons, entity profiles, FAQs, and category data. All endpoints return JSON. No authentication required for read endpoints.`,
       contact: { name: `${SITE_NAME} Team`, email: "daniarozin@gmail.com", url: `${SITE_URL}/contact` },
       license: { name: "CC BY 4.0", url: "https://creativecommons.org/licenses/by/4.0/" },
       termsOfService: `${SITE_URL}/terms`,
@@ -374,7 +375,7 @@ export async function GET() {
           operationId: "getChanges",
           tags: ["Discovery"],
           summary: "Incremental indexing feed — content added/updated since a timestamp",
-          description: "Returns comparisons and blog articles changed since the given timestamp. Use for incremental crawling — poll daily with ?since=<last-poll-time> to discover new content without re-crawling all 500+ pages. Supports ETag conditional GET for efficient polling. X-Change-Count header shows the total count upfront.",
+          description: `Returns comparisons and blog articles changed since the given timestamp. Use for incremental crawling — poll daily with ?since=<last-poll-time> to discover new content without re-crawling all ${CANONICAL_COMPARISON_COUNT_FALLBACK} pages. Supports ETag conditional GET for efficient polling. X-Change-Count header shows the total count upfront.`,
           parameters: [
             { name: "since", in: "query", description: "ISO8601 cutoff timestamp (default: 24 hours ago)", schema: { type: "string", format: "date-time" }, example: "2026-06-30T00:00:00Z" },
             { name: "type", in: "query", description: "Content type filter (default: all)", schema: { type: "string", enum: ["comparisons", "blog", "all"], default: "all" } },

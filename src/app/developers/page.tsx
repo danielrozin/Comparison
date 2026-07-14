@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 // WebAPI + DataFeed schema for GEO: AI answer engines like Perplexity and
 // ChatGPT browse structured schema to discover machine-readable data sources.
@@ -11,7 +12,7 @@ const apiSchema = {
   "@type": "WebAPI",
   "@id": `${SITE_URL}/developers#webapi`,
   name: `${SITE_NAME} Comparison API`,
-  description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 500+ comparisons in 17+ categories.",
+  description: `REST API providing structured comparison data, entity profiles, trending topics, and search across ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons in 17+ categories.`,
   url: `${SITE_URL}/developers`,
 
   locale: "en_US",  documentation: `${SITE_URL}/developers`,
@@ -57,7 +58,7 @@ const apiSchema = {
   hasPart: {
     "@type": "DataFeed",
     name: "A Versus B Comparison Dataset",
-    description: `Structured comparison data for ${SITE_NAME}'s full catalog: 500+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
+    description: `Structured comparison data for ${SITE_NAME}'s full catalog: ${CANONICAL_COMPARISON_COUNT_FALLBACK} X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
 
     locale: "en_US",    encodingFormat: "text/plain",
@@ -71,7 +72,7 @@ const apiSchema = {
 };
 
 const DEV_TITLE = `${SITE_NAME} Developer API — Comparison Data REST API`;
-const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for 500+ comparisons, entity profiles, and search.`;
+const DEV_DESC = `Access ${SITE_NAME}'s comparison data via our REST API. Free tier with 100 requests/day, Pro and Enterprise plans available. JSON endpoints for ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons, entity profiles, and search.`;
 const DEV_URL = `${SITE_URL}/developers`;
 const DEV_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Developer API")}&type=home`;
 const DEV_TODAY = new Date().toISOString().split("T")[0];
@@ -220,7 +221,7 @@ const devFaqSchema = {
       name: "What data does the A Versus B comparison API return?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across 500+ comparisons in 17+ categories.",
+        text: `The API returns structured comparison data including entity profiles, attribute tables, AI-generated verdicts, key differences, FAQs, trending scores, and related comparisons across ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons in 17+ categories.`,
       },
     },
     {

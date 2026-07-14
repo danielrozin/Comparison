@@ -22,6 +22,7 @@ import {
   getMockLatest,
 } from "./mock-data";
 import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
+import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
 
@@ -1189,15 +1190,22 @@ export async function getComparisonsForEntity(
   return results;
 }
 
+/**
+ * Corpus size for public display and JSON-LD. Canonical pages only.
+ *
+ * DAN-2112: this counted `status: "published"` and so returned 491 — the 22 redirect
+ * sources are published rows that 308 at the edge, not pages. The homepage schema and
+ * FAQ quote this number, so it has to mean "pages a visitor can actually open".
+ */
 export async function getTotalComparisonsCount(): Promise<number> {
   const prisma = getPrismaClient();
-  if (!prisma) return 107; // fallback
+  if (!prisma) return CANONICAL_COMPARISON_COUNT_FALLBACK;
   try {
     return await prisma.comparison.count({
-      where: { status: "published" },
+      where: canonicalComparisonWhere(),
     });
   } catch {
-    return 107;
+    return CANONICAL_COMPARISON_COUNT_FALLBACK;
   }
 }
 

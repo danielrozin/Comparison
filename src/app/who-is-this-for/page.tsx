@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 
 const WHO_TITLE = `Who Is This For? | ${SITE_NAME}`;
 const WHO_DESC = `Find out if ${SITE_NAME} is the right comparison tool for you. Structured data comparisons across 17 categories for consumers, students, sports fans, tech professionals, and business decision-makers.`;
@@ -64,7 +65,7 @@ const FAQ_DATA = [
   {
     question: "How many comparisons does A Versus B have?",
     answer:
-      "A Versus B has over 500+ comparisons across 17 categories including sports, countries, technology, products, software, automotive, health, finance, education, entertainment, and more. New comparisons are added daily.",
+      `A Versus B has over ${CANONICAL_COMPARISON_COUNT_FALLBACK} comparisons across 17 categories including sports, countries, technology, products, software, automotive, health, finance, education, entertainment, and more. New comparisons are added daily.`,
   },
   {
     question: "What's the difference between A Versus B and a product review site?",
@@ -362,7 +363,7 @@ export default function WhoIsThisForPage() {
             Who Is {SITE_NAME} For?
           </h1>
           <p className="text-primary-100 text-sm sm:text-base max-w-2xl leading-relaxed">
-            {SITE_NAME} is a free comparison platform with 500+ structured comparisons across 17 categories. Here&apos;s how to know if
+            {SITE_NAME} is a free comparison platform with {CANONICAL_COMPARISON_COUNT_FALLBACK} structured comparisons across 17 categories. Here&apos;s how to know if
           it&apos;s the right tool for what you need.
           </p>
         </div>
@@ -523,7 +524,7 @@ export default function WhoIsThisForPage() {
         <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 list-none">
           <li className="bg-gradient-to-br from-primary-50 to-accent-50 border border-primary-100 rounded-2xl p-6 text-center hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
             <p className="text-4xl font-display font-black text-primary-600 mb-2">
-              500+
+              {CANONICAL_COMPARISON_COUNT_FALLBACK}
             </p>
             <p className="text-sm text-text-secondary font-medium">
               Structured comparisons
