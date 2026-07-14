@@ -42,6 +42,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
+  /* Consistent native form element rendering across browsers */
+  color-scheme: light;
 }
 
 /* Fix blurry text on Android Chrome */
@@ -60,6 +62,13 @@ body {
    Supported in Chrome 114+, Firefox 121+, Safari 17.4+; silently ignored in older browsers. */
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+}
+
+/* Prettier body text wrapping — avoids single-word orphans in paragraphs/list items.
+   `pretty` is more conservative than `balance` (no reflow on every keystroke).
+   Supported in Chrome 117+, Firefox 128+; no-op in older browsers. */
+p, li {
+  text-wrap: pretty;
 }
 
 /* Brand-color text selection — highlights selected text in the primary palette */
@@ -280,6 +289,7 @@ h1, h2, h3, h4, h5, h6 {
   .animate-border-gradient,
   .animate-bounce-gentle,
   .animate-shimmer,
+  .animate-marquee,
   .animate-spin,
   .animate-pulse {
     animation: none !important;
@@ -296,21 +306,54 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Print styles for legal pages */
+/* Print styles — hides chrome, preserves comparison content */
 @media print {
-  header, footer, .print\\:hidden {
+  /* Navigation and structural chrome */
+  header,
+  footer,
+  nav[aria-label="Mobile bottom navigation"],
+  nav[aria-label="Jump to section"],
+  nav[aria-label="Primary navigation"],
+  /* Engagement widgets and feedback */
+  [data-verdict-feedback],
+  /* Cookie banner */
+  [aria-label="Cookie consent"],
+  /* Utility class for opting out */
+  .print\\:hidden {
     display: none !important;
   }
+
   body {
     font-size: 12pt;
     line-height: 1.6;
     color: #000;
     background: #fff;
   }
+
+  /* Ensure comparison hero gradient prints */
+  section[aria-labelledby="comparison-hero-heading"] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Avoid orphaned section headings */
+  h2, h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Keep pros/cons cards together on one page */
+  #pros-cons > div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
   a {
     color: #000;
     text-decoration: underline;
   }
+
+  /* Show full URL for external links only */
   a[href]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
