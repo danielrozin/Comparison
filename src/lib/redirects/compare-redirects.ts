@@ -27,6 +27,7 @@
 import type { BlogRedirect } from "./blog-redirects";
 import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated";
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.dan1800.generated";
+import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "./compare-rivalry-redirects.dan2078.generated";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -165,16 +166,33 @@ const SURVIVOR_OVERRIDES: Record<string, string> = {
 };
 
 // Merge order: DAN-1265 ordering first, then the DAN-1800 ordering sweep, then
-// alias, then manual overrides win. The loop/chain guard below drops any source
-// that collides with a survivor across all layers, so later layers can safely
-// re-map a slug an earlier layer used as a destination.
+// alias, then rivalry, then manual overrides win. The loop/chain guard below drops
+// any source that collides with a survivor across all layers, so later layers can
+// safely re-map a slug an earlier layer used as a destination.
+//
+// DAN-2078 sits after the ordering layers on purpose: it is keyed by ENTITY PAIR,
+// not slug shape, so it is the only layer that can see a duplicate whose two slugs
+// share no tokens (`us-economy-vs-china-economy` / `china-economy-size-vs-us`). Where
+// it overlaps an ordering entry it is the better-informed of the two — its survivor
+// comes from real GSC impressions, not the seed `viewCount` that misled DAN-1265.
 const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...ORDERING_CONSOLIDATIONS,
   ...ORDERING_CONSOLIDATIONS_DAN1800,
   ...ALIAS_CONSOLIDATIONS,
   ...TITLE_ALIAS_CONSOLIDATIONS,
+  ...RIVALRY_CONSOLIDATIONS_DAN2078,
   ...MANUAL_CONSOLIDATIONS,
 };
+
+// DAN-2078: the rivalry layer's survivor is authoritative over an earlier layer that
+// retired that same slug. Without this, a slug we just chose to KEEP (because GSC says
+// it carries the impressions) could still be sitting as a redirect *source* in the
+// ordering map — and the merge above cannot remove it, only overwrite its value. That
+// is the exact shape of the DAN-2065 inversion: a live page 308ing away to a page we
+// meant to retire. Same remedy as SURVIVOR_OVERRIDES below: delete the survivor's key.
+for (const survivor of Object.values(RIVALRY_CONSOLIDATIONS_DAN2078)) {
+  delete COMPARE_CONSOLIDATIONS[survivor];
+}
 
 // DAN-2065: re-point the inverted clusters. Deleting the survivor's own key is the
 // point — that slug is the live page and must not redirect anywhere.
@@ -183,16 +201,40 @@ for (const [retired, survivor] of Object.entries(SURVIVOR_OVERRIDES)) {
   COMPARE_CONSOLIDATIONS[retired] = survivor;
 }
 
-// Loop / chain guard: a survivor (destination) must never also be a retired
-// source — that would 301-chain or loop at the edge. Drop any such source and
-// fail loudly in dev so a bad regen can't ship a redirect loop.
-const survivors = new Set(Object.values(COMPARE_CONSOLIDATIONS));
+/**
+ * Chain resolver: collapse a -> b -> c into a -> c, so every source 308s to its
+ * TERMINAL survivor in exactly one hop.
+ *
+ * This used to be a guard that simply DROPPED any source which was also a survivor.
+ * For a self-loop that is right, but for a chain it is actively harmful: given
+ * `disney-plus-vs-netflix -> netflix-vs-disney-plus` (DAN-1265 ordering layer) and
+ * `netflix-vs-disney-plus -> disney-vs-netflix` (DAN-2078 rivalry layer), it dropped
+ * the SECOND and kept the first — leaving a live 308 pointing straight at a page we
+ * had just decided to retire, and the duplicate uncollapsed. Three of DAN-2078's 14
+ * consolidations were silently voided that way (disney, burger-king, mercedes-gle).
+ *
+ * Resolving instead of dropping also fixes the pre-existing 2-hop chains, which cost
+ * a redirect hop of link equity each. Cycles are still dropped and shout in dev — a
+ * cycle means two layers disagree about the survivor and neither may win by accident.
+ */
+const MAX_CHAIN_HOPS = 8;
 const safeConsolidations: Record<string, string> = {};
-for (const [from, to] of Object.entries(COMPARE_CONSOLIDATIONS)) {
-  if (from === to || survivors.has(from)) {
+for (const [from] of Object.entries(COMPARE_CONSOLIDATIONS)) {
+  const seen = new Set<string>([from]);
+  let to = COMPARE_CONSOLIDATIONS[from];
+  let hops = 0;
+  while (COMPARE_CONSOLIDATIONS[to] !== undefined && hops < MAX_CHAIN_HOPS) {
+    if (seen.has(to)) break; // cycle — fall through to the guard below
+    seen.add(to);
+    to = COMPARE_CONSOLIDATIONS[to];
+    hops++;
+  }
+
+  const unresolved = COMPARE_CONSOLIDATIONS[to] !== undefined; // cycle or too deep
+  if (from === to || unresolved) {
     if (process.env.NODE_ENV !== "production") {
       console.warn(
-        `[compare-redirects] skipping unsafe consolidation ${from} -> ${to} (self-loop or chained survivor)`,
+        `[compare-redirects] skipping unsafe consolidation ${from} -> ${to} (self-loop or unresolvable chain)`,
       );
     }
     continue;
