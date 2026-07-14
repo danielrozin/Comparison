@@ -273,6 +273,13 @@ export function getConsolidatedCompareSlug(slug: string): string | null {
  * from it cannot drift the way a DB status column can. Anything that counts or
  * emits comparison pages must exclude these — use `canonicalComparisonWhere()`
  * (src/lib/db/canonical-comparisons.ts) rather than filtering by status alone.
+ *
+ * ADDING A SLUG HERE SHRINKS THE PUBLISHED CATALOG. DAN-2078 folded 14 rivalries into
+ * their survivors and left CANONICAL_COMPARISON_COUNT_FALLBACK at 468 while the live
+ * catalog fell to 454, so every page's JSON-LD overstated the corpus by 14. If you add
+ * to `safeConsolidations`, re-run `scripts/dan2067-verify.ts` and lower that constant in
+ * the same PR — the guard in src/lib/seo/__tests__/corpus-count-truthfulness.test.ts
+ * will fail the build until you do.
  */
 export const REDIRECTED_COMPARE_SLUGS: string[] = Object.keys(safeConsolidations);
 
