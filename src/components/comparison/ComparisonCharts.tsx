@@ -226,6 +226,25 @@ function BarChartView({
       <p className="text-sm text-text-secondary mb-4 text-center">
         Side-by-side comparison of numeric attributes
       </p>
+      {/* Screen-reader data table — same data as the bar chart */}
+      <table className="sr-only" aria-label={`${entityAName} vs ${entityBName} numeric comparison`}>
+        <thead>
+          <tr>
+            <th scope="col">Attribute</th>
+            <th scope="col">{entityAName}</th>
+            <th scope="col">{entityBName}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row) => (
+            <tr key={String(row.name)}>
+              <th scope="row">{String(row.name)}</th>
+              <td>{row[entityAName] != null ? `${row[entityAName]}${row.unit ? ` ${row.unit}` : ""}` : "—"}</td>
+              <td>{row[entityBName] != null ? `${row[entityBName]}${row.unit ? ` ${row.unit}` : ""}` : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <ResponsiveContainer width="100%" height={chartHeight}>
         <BarChart
           data={data}
@@ -352,31 +371,31 @@ function ScoreCardView({
         Category wins across {data.total} numeric attributes
       </p>
 
-      <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto list-none">
+      <ul role="list" aria-label={`Score breakdown: ${entityAName} vs ${entityBName}`} className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto list-none">
         {/* Entity A */}
-        <li className="flex flex-col items-center">
+        <li className="flex flex-col items-center" aria-label={`${entityAName}: ${data.winsA} win${data.winsA !== 1 ? "s" : ""}, ${data.pctA}%`}>
           <CircularProgress
             percentage={data.pctA}
             color={ENTITY_A_COLOR}
             size={120}
           />
-          <h3 className="mt-3 font-semibold text-text text-center">
+          <h3 className="mt-3 font-semibold text-text text-center" aria-hidden="true">
             {entityAName}
           </h3>
-          <p className="text-sm text-text-secondary">
+          <p className="text-sm text-text-secondary" aria-hidden="true">
             {data.winsA} win{data.winsA !== 1 ? "s" : ""}
           </p>
         </li>
 
         {/* Ties */}
-        <li className="flex flex-col items-center justify-center">
-          <div className="w-20 h-20 rounded-full bg-surface-alt flex items-center justify-center">
+        <li className="flex flex-col items-center justify-center" aria-label={`Ties: ${data.ties}`}>
+          <div className="w-20 h-20 rounded-full bg-surface-alt flex items-center justify-center" aria-hidden="true">
             <span className="text-2xl font-bold text-text-secondary">
               {data.ties}
             </span>
           </div>
-          <h3 className="mt-3 font-semibold text-text-secondary">Ties</h3>
-          <p className="text-sm text-text-secondary">
+          <h3 className="mt-3 font-semibold text-text-secondary" aria-hidden="true">Ties</h3>
+          <p className="text-sm text-text-secondary" aria-hidden="true">
             {data.total > 0
               ? Math.round((data.ties / data.total) * 100)
               : 0}
@@ -385,16 +404,16 @@ function ScoreCardView({
         </li>
 
         {/* Entity B */}
-        <li className="flex flex-col items-center">
+        <li className="flex flex-col items-center" aria-label={`${entityBName}: ${data.winsB} win${data.winsB !== 1 ? "s" : ""}, ${data.pctB}%`}>
           <CircularProgress
             percentage={data.pctB}
             color={ENTITY_B_COLOR}
             size={120}
           />
-          <h3 className="mt-3 font-semibold text-text text-center">
+          <h3 className="mt-3 font-semibold text-text text-center" aria-hidden="true">
             {entityBName}
           </h3>
-          <p className="text-sm text-text-secondary">
+          <p className="text-sm text-text-secondary" aria-hidden="true">
             {data.winsB} win{data.winsB !== 1 ? "s" : ""}
           </p>
         </li>

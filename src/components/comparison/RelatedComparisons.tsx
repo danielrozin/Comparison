@@ -66,7 +66,7 @@ export function RelatedComparisons({
       {/* Scroll-fade wrapper — right-edge fade signals more cards off-screen on mobile */}
       <div className="relative mb-6">
         <div className="pointer-events-none absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-white to-transparent z-10 sm:hidden" aria-hidden="true" />
-      <ul role="list" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none">
+      <ul role="list" aria-label="Related comparisons" className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-2 sm:grid sm:grid-cols-2 sm:overflow-x-visible sm:snap-none sm:pb-0 lg:grid-cols-4 list-none">
         {comparisons.map((comp, cardIdx) => {
           const parts = comp.title.split(/\s+vs\.?\s+/i);
           const letterA = (parts[0] || "A").charAt(0).toUpperCase();
@@ -80,7 +80,7 @@ export function RelatedComparisons({
             <Link
               href={`/compare/${comp.slug}`}
               onClick={() => trackRelatedComparisonClick(sourceSlug || "", comp.slug)}
-              style={{ animationDelay: `${cardIdx * 40}ms` }}
+              style={{ animationDelay: `${Math.min(cardIdx, 5) * 40}ms` }}
               className="group relative flex flex-col gap-3 p-4 pt-5 bg-white border border-border rounded-2xl hover:border-primary-200 hover:shadow-md hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 overflow-hidden animate-fade-in w-full"
             >
               {/* Gradient accent stripe */}

@@ -42,7 +42,7 @@ export function RecentlyViewed() {
               href={`/compare/${item.slug}`}
               className="group flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-[260px] sm:min-w-0 sm:flex-1 sm:basis-[calc(33.333%-0.75rem)] sm:max-w-[calc(33.333%-0.5rem)]"
             >
-              <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
+              <div aria-hidden="true" className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
                 <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                   {(parts[0] || "A").charAt(0).toUpperCase()}
                 </div>

@@ -58,11 +58,17 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-pro-specs": "ps5-pro-vs-xbox-series-x",
   "iphone-15-vs-16": "iphone-15-vs-iphone-16",
   // DAN-1365 §A: Kobe/LeBron cannibalization. Two self-canonical live pages with
-  // an identical "Kobe Bryant vs LeBron James" H1 split authority. The survivor is
-  // `kobe-vs-lebron` — its slug token-matches the dominant short query
-  // ("kobe vs lebron", 1,600 vol, pos 27), 4× the dup's keyword. Fold the
-  // full-name slug in; its full-name query stays covered by the survivor's H1.
-  "kobe-bryant-vs-lebron-james": "kobe-vs-lebron",
+  // an identical "Kobe Bryant vs LeBron James" H1 split authority. DAN-1365 kept
+  // `kobe-vs-lebron`, whose slug token-matches the dominant short query ("kobe vs
+  // lebron", 1,600 vol, pos 27).
+  //
+  // DAN-2065: a later archive sweep set `kobe-vs-lebron` to status="archived", and
+  // archived rows 404 (DAN-1886) — so the chosen survivor is dead and this redirect
+  // was sending the still-published full-name page into a 404. Flipped to fold into
+  // the slug that is actually published, per the DAN-1908 precedent. To restore the
+  // keyword-aligned slug, re-publish its DB row first; do not re-point a redirect at
+  // an archived slug.
+  "kobe-vs-lebron": "kobe-bryant-vs-lebron-james",
   // DAN-1747: Bloomberg/WSJ duplicate canonical. Two self-canonical live pages
   // (both 200) split link equity for "bloomberg vs wsj" (DAN-1176/DAN-1169 watch
   // keyword, baseline pos 17). Survivor is the full-name slug
@@ -83,6 +89,45 @@ const ALIAS_CONSOLIDATIONS: Record<string, string> = {
   "peacock-vs-paramount-plus": "paramount-vs-peacock",
 };
 
+/**
+ * DAN-2065 — 18 clusters where ORDERING_CONSOLIDATIONS kept the wrong survivor.
+ *
+ * The generated map picked each cluster's survivor by viewCount — but view_count
+ * is seed data, not traffic (DAN-2037). In 18 clusters that retired the slug that
+ * is actually `published` and kept the one that is `archived`. Archived rows 404
+ * (DAN-1886), so each of those 18 live pages was 301'ing at the edge straight into
+ * a 404: /compare/zoom-vs-microsoft-teams, tesla-vs-rivian, india-vs-china,
+ * netflix-vs-apple-tv-plus … all verified dead in prod. The ordering-canonicalizer
+ * in [slug].tsx then bounced the archived target back to the published one, so some
+ * clusters also formed a redirect loop (starbucks-vs-dunkin ⇄ dunkin-vs-starbucks).
+ *
+ * Exactly the failure the PS5-Pro cluster hit in DAN-1908, so the same remedy: fold
+ * each cluster INTO the slug that is actually published. Keyed retired -> survivor
+ * and applied after the merge, because this has to *remove* the inverted source key,
+ * which a later spread cannot do (it could only overwrite its value, and mapping a
+ * slug to itself is a self-loop).
+ */
+const SURVIVOR_OVERRIDES: Record<string, string> = {
+  "apple-tv-plus-vs-netflix": "netflix-vs-apple-tv-plus",
+  "bmw-x5-vs-mercedes-gle": "mercedes-gle-vs-bmw-x5",
+  "china-gdp-vs-us": "us-vs-china-gdp",
+  "china-vs-india": "india-vs-china",
+  "convertkit-vs-mailchimp": "mailchimp-vs-convertkit",
+  "doordash-vs-instacart": "instacart-vs-doordash",
+  "f-22-vs-f-35": "f-35-vs-f-22",
+  "fidelity-vs-robinhood": "robinhood-vs-fidelity",
+  "fidelity-vs-vanguard": "vanguard-vs-fidelity",
+  "honda-cr-v-vs-toyota-rav4": "toyota-rav4-vs-honda-cr-v",
+  "hubspot-vs-mailchimp": "mailchimp-vs-hubspot",
+  "microsoft-teams-vs-zoom": "zoom-vs-microsoft-teams",
+  "nordictrack-vs-peloton": "peloton-vs-nordictrack",
+  "rivian-vs-tesla": "tesla-vs-rivian",
+  "roborock-vs-roomba": "roomba-vs-roborock",
+  "shein-vs-temu": "temu-vs-shein",
+  "spotify-vs-tidal": "tidal-vs-spotify",
+  "starbucks-vs-dunkin": "dunkin-vs-starbucks",
+};
+
 // Merge order: DAN-1265 ordering first, then the DAN-1800 ordering sweep, then
 // alias, then manual overrides win. The loop/chain guard below drops any source
 // that collides with a survivor across all layers, so later layers can safely
@@ -93,6 +138,13 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...ALIAS_CONSOLIDATIONS,
   ...MANUAL_CONSOLIDATIONS,
 };
+
+// DAN-2065: re-point the inverted clusters. Deleting the survivor's own key is the
+// point — that slug is the live page and must not redirect anywhere.
+for (const [retired, survivor] of Object.entries(SURVIVOR_OVERRIDES)) {
+  delete COMPARE_CONSOLIDATIONS[survivor];
+  COMPARE_CONSOLIDATIONS[retired] = survivor;
+}
 
 // Loop / chain guard: a survivor (destination) must never also be a retired
 // source — that would 301-chain or loop at the edge. Drop any such source and
@@ -127,4 +179,25 @@ export const COMPARE_REDIRECTS: BlogRedirect[] = Object.entries(
  */
 export function getConsolidatedCompareSlug(slug: string): string | null {
   return safeConsolidations[slug] ?? null;
+}
+
+/**
+ * DAN-2067 — every slug that 308s at the edge. A retired slug is *supposed* to be
+ * archived in the DB too, but archiving is a separate script from adding the
+ * redirect, so the two drift: on 2026-07-13 the live sitemap shipped 491 URLs of
+ * which 22 were redirect sources still marked `status="published"`. Google was
+ * being handed 22 redirects as if they were pages, and every corpus figure we
+ * published counted them as pages.
+ *
+ * `status="published"` is therefore NOT sufficient to mean "this is a real page".
+ * The redirect map is the edge's own source of truth, so deriving the exclusion
+ * from it cannot drift the way a DB status column can. Anything that counts or
+ * emits comparison pages must exclude these — use `canonicalComparisonWhere()`
+ * (src/lib/db/canonical-comparisons.ts) rather than filtering by status alone.
+ */
+export const REDIRECTED_COMPARE_SLUGS: string[] = Object.keys(safeConsolidations);
+
+/** True when `slug` 308s at the edge — i.e. it is a redirect, not a page. */
+export function isRedirectedCompareSlug(slug: string): boolean {
+  return slug in safeConsolidations;
 }

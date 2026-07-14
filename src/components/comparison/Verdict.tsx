@@ -85,6 +85,9 @@ export function VerdictBlock({
 
           {/* Verdict text */}
           <div className="relative bg-white/5 border border-white/10 rounded-xl p-4 sm:p-5 mb-6 group/verdict">
+            <span role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+              {copyStatus}
+            </span>
             <p className="text-white/90 leading-relaxed text-base sm:text-lg pr-8">{verdict}</p>
             <button
               type="button"
@@ -111,13 +114,15 @@ export function VerdictBlock({
 
           {/* Who should choose cards */}
           {entities.some((e) => e.bestFor) && (
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Who should choose each?</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div role="group" aria-label="Who should choose each option">
+              <p id="verdict-choice-label" className="text-xs font-bold uppercase tracking-widest text-white/60 mb-3">Who should choose each?</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3" role="list">
                 {entities.map((entity, idx) =>
                   entity.bestFor ? (
                     <div
                       key={entity.id}
+                      role="listitem"
+                      aria-label={`Choose ${entity.name} if: ${entity.bestFor}`}
                       className={`relative rounded-xl p-4 backdrop-blur-sm border overflow-hidden ${
                         idx === 0
                           ? "bg-primary-600/15 border-primary-500/30"

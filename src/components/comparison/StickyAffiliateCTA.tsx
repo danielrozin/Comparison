@@ -126,6 +126,8 @@ export function StickyAffiliateCTA({
 
       {/* CTA bar — sticky-bottom or inline depending on experiment */}
       <div
+        role="region"
+        aria-label="Comparison purchase options"
         className={`${
           placementVariant === "inline-verdict"
             ? `relative ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300`

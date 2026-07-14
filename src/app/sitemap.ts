@@ -6,6 +6,7 @@ import { HUB_CONFIG } from "@/lib/data/hubs";
 import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
@@ -75,7 +76,7 @@ export default async function sitemap({
       if (prisma) {
         const [latestComparison, latestReview] = await Promise.all([
           prisma.comparison.findFirst({
-            where: { status: "published" },
+            where: canonicalComparisonWhere(),
             select: { updatedAt: true },
             orderBy: { updatedAt: "desc" },
           }),
@@ -235,8 +236,11 @@ export default async function sitemap({
       const prisma = getPrisma();
       if (!prisma) return [];
 
+      // DAN-2067: canonicalComparisonWhere, not `status: "published"` — 22 published
+      // rows are redirect sources that 308 at the edge, and we were submitting them
+      // to Google as pages.
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         select: {
           slug: true,
           title: true,

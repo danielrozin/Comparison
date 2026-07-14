@@ -2,8 +2,13 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { getComparisonBySlug, getTrendingComparisons, saveComparison } from "@/lib/services/comparison-service";
-import { generateComparison, generateMultiComparison } from "@/lib/services/ai-comparison-generator";
+import {
+  getComparisonBySlug,
+  getTrendingComparisons,
+  isComparisonDbConfigured,
+  isComparisonDbReachable,
+} from "@/lib/services/comparison-service";
+import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import {
   startAttempt,
   finishAttemptSuccess,
@@ -21,14 +26,6 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
-// DAN-1724: DynamicComparison is a pure client widget (generates content via
-// fetch, uses Math.random for fun facts). Loading it ssr:false eliminates the
-// SSR → hydration mismatch that caused "Application error" when Prisma was
-// unavailable and getStaticProps fell back to kind:"dynamic".
-const DynamicComparison = dynamic(
-  () => import("@/components/comparison/DynamicComparison").then((m) => ({ default: m.DynamicComparison })),
-  { ssr: false, loading: () => null }
-);
 import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
 import { ResourcesSection } from "@/components/comparison/ResourcesSection";
@@ -37,7 +34,6 @@ import { generateResources } from "@/lib/services/resources";
 import { getPartnerReviews } from "@/lib/data/partner-reviews";
 import { enrichEntitiesWithAffiliateLinks } from "@/lib/services/affiliate";
 import { enrichEntitiesWithImages } from "@/lib/services/image-service";
-import { getAllMockSlugs } from "@/lib/services/mock-data";
 import {
   parseComparisonSlug,
   sortComparisonSlug,
@@ -45,7 +41,6 @@ import {
   isCleanSlug,
   cleanComparisonSlug,
 } from "@/lib/utils/slugify";
-import { humanizeEntityName } from "@/lib/utils/humanize";
 import { Breadcrumbs } from "@/components/comparison/Breadcrumbs";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 import { ExpertAnalysis } from "@/components/comparison/ExpertAnalysis";
@@ -168,24 +163,18 @@ interface PageMeta {
   seeAlsoUrls?: string[];
 }
 
-type Props =
-  | {
-      kind: "comparison";
-      slug: string;
-      comparison: Comparison;
-      sidebarComparisons: RelatedComparison[];
-      smartReviews: SmartReviewEntry[];
-      videoMeta: ReturnType<typeof getVideoMetadata>;
-      hasSelfHostedVideo: boolean;
-      jsonLd: string;
-      claimReviewJsonLd: string | null;
-      meta: PageMeta;
-    }
-  | {
-      kind: "dynamic";
-      slug: string;
-      meta: PageMeta;
-    };
+type Props = {
+  kind: "comparison";
+  slug: string;
+  comparison: Comparison;
+  sidebarComparisons: RelatedComparison[];
+  smartReviews: SmartReviewEntry[];
+  videoMeta: ReturnType<typeof getVideoMetadata>;
+  hasSelfHostedVideo: boolean;
+  jsonLd: string;
+  claimReviewJsonLd: string | null;
+  meta: PageMeta;
+};
 
 // Hand-written CTR rewrites for high-volume defective pages (DAN-1144 Bug 4).
 // These slugs had weak/auto-generated titles (and sometimes descriptions); the
@@ -249,72 +238,55 @@ async function getComparisonVotes(comparisonId: string): Promise<ComparisonVoteD
   }
 }
 
-// Budget for on-demand server-side generation inside getStaticProps. Kept under
-// Vercel's function ceiling; on timeout we fall back to the client-only shell so
-// the request never hangs. Matches the route's 60s `maxDuration` headroom.
-const SSR_GENERATION_BUDGET_MS = 45000;
-
 /**
- * DAN-1146 — Defense-in-depth SSR for un-ingested `/compare/*` slugs.
+ * DAN-2065 — the published set is the ONLY thing `/compare/*` may render.
  *
- * When `getComparisonBySlug` returns null (no DB row), the page previously
- * shipped a `"use client"` shell with an empty SSR DOM — crawler-invisible thin
- * content and $0 SSR monetization on the highest-affiliate-value category.
+ * A comparison renders iff it has a DB row with `status: "published"` and at
+ * least two entities. This is the same predicate the sitemap uses
+ * (`where: { status: "published" }`), so "in the sitemap" and "returns 200" are
+ * now the same set by construction — which is what makes a claim like "page X
+ * does not exist on our site" verifiable with one curl.
  *
- * Here we generate the comparison server-side (same generator the client
- * `/api/comparisons/generate` route uses), persist it best-effort so the next
- * crawl is DB-backed and fully linked, and return a `ComparisonPageData` so the
- * full SSR layout (incl. the DAN-1140 brand-homepage affiliate CTAs) renders in
- * raw HTML. Any failure (missing API key, timeout, generation error) returns
- * null and the caller falls back to the existing client shell — so this strictly
- * improves on the prior behavior and never regresses it.
+ * Everything else — unknown slugs, drafts, review, archived, and empty/corrupt
+ * rows — 404s. Notably this replaces the DAN-1146 on-demand SSR generator, which
+ * AI-generated *and persisted* a comparison for any slug a crawler invented. That
+ * gave `/compare/{anything}` an HTTP 200 on first hit (an unbounded soft-404
+ * crawl space) and minted a DB row per novel URL — 2,859 such rows had already
+ * accumulated. On-demand generation now happens only through the vetted
+ * ingestion pipeline, never from an inbound request.
  *
- * Runs only at request time: `getStaticPaths` uses `fallback: "blocking"`, so
- * un-ingested slugs are never generated during `next build`.
+ * The mock fixtures are the one wrinkle. `getComparisonBySlug` falls back to them
+ * whenever Prisma misses OR throws, and they carry no `status` — so they are held
+ * to the published gate too, which also closes a second, quieter leak: ~30 fixture
+ * slugs (f-35-vs-su-57, medicaid-vs-medicare, …) are archived or absent from the
+ * DB entirely, yet were serving 200s outside the catalog. They stay renderable
+ * only where no database is configured at all (local dev, DB-less CI), because
+ * there they *are* the dataset.
  */
-async function generateComparisonForSSR(
-  slug: string,
-  entitySlugParts: string[]
-): Promise<Comparison | null> {
-  if (process.env.DISABLE_SSR_FALLBACK_GENERATION === "1") return null;
-
-  const entityNames = entitySlugParts.map((p) => p.replace(/-/g, " "));
-  const isMulti = entityNames.length > 2;
-
-  try {
-    const result = await Promise.race([
-      isMulti
-        ? generateMultiComparison(entityNames, slug)
-        : generateComparison(entityNames[0], entityNames[1], slug),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), SSR_GENERATION_BUDGET_MS)),
-    ]);
-
-    if (!result || !result.success || !result.comparison) return null;
-
-    // Persist best-effort so the next request is DB-backed (self-healing
-    // ingestion). A save failure (e.g. read-only clone DB) is non-fatal — we
-    // still return the generated comparison for a one-shot full SSR render.
-    try {
-      await saveComparison(result.comparison);
-      // Re-fetch so the comparison carries linking-engine relatedComparisons +
-      // relatedBlogPosts, identical to the natively DB-backed path.
-      const refetched = (await getComparisonBySlug(slug)) as Comparison | null;
-      if (refetched) return refetched;
-    } catch (saveErr) {
-      console.warn("SSR-fallback: saveComparison failed, serving generated copy:", saveErr);
-    }
-
-    return result.comparison as Comparison;
-  } catch (err) {
-    console.warn("SSR-fallback generation failed, using client shell:", err);
-    return null;
-  }
+function isRenderableComparison(c: Comparison | null): c is Comparison {
+  if (!c || (c.entities?.length ?? 0) < 2) return false;
+  if (!isComparisonDbConfigured()) return true;
+  return c.metadata?.status === "published";
 }
 
+// A 404 is still revalidated: a slug that is later published through the
+// pipeline heals into a 200 on the next revalidation without a redeploy.
+const NOT_FOUND_REVALIDATE_SECONDS = 3600;
+
+/**
+ * DAN-2065: prerender nothing at build time.
+ *
+ * This previously prerendered `getAllMockSlugs()` — baking the dev fixtures into
+ * prod as static 200s regardless of whether they were published, and coupling the
+ * build to the DB (a fixture slug whose canonical ordering lives in the DB tried
+ * to return a redirect during prerendering, which Next rejects outright). With an
+ * empty path list every `/compare/*` URL resolves through getStaticProps against
+ * the real database and is then cached by ISR, so the published set is the single
+ * source of truth for what renders — including at build time.
+ */
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = getAllMockSlugs();
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
+    paths: [],
     fallback: "blocking",
   };
 };
@@ -371,94 +343,57 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     comparison = null;
   }
 
-  // DAN-1886: archived pages must not be indexed — return 404 so Google removes
-  // them from the index rather than continuing to crawl thin auto-gen content.
-  if (comparison && comparison.metadata?.status === "archived") {
-    return { notFound: true };
-  }
-
-  // A record that's missing OR exists but is empty/corrupt (fewer than 2
-  // entities) is treated the same: the full SSR layout assumes entityA/entityB
-  // exist and throws a hard 500 on an empty record (DAN-1201/DAN-1262 follow-up
-  // — 25 such records were live in prod). Server-side generation for these slugs
-  // is hoisted into the generateComparisonForSSR() helper, invoked below AFTER
-  // the DAN-1265 canonical-ordering redirect so non-canonical orderings aren't
-  // minted as their own URL. The helper supersedes the older inline DAN-1201
-  // block (it adds N-way support, a timeout budget, and the env kill-switch).
-  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
-    // DAN-1265: a non-canonical ordering (B-vs-A) — whether brand-new or backed
-    // by an empty/corrupt record — must never be generated/indexed as its own
-    // URL. Send it to the canonical alphabetically-sorted ordering BEFORE any
-    // generation so only one page per comparison can exist. (Known retired
-    // duplicates are already 301'd at the edge by next.config redirects(); this
-    // catches orderings not yet in that map.)
+  // DAN-2065: anything that is not a published row is a 404 — unknown slugs,
+  // drafts, review, archived (DAN-1886), and empty/corrupt rows alike. The
+  // empty/corrupt case matters independently: the SSR layout assumes
+  // entityA/entityB exist and throws a hard 500 on a record with <2 entities
+  // (DAN-1201/DAN-1262 — 25 such records were live in prod).
+  if (!isRenderableComparison(comparison)) {
+    // DAN-1265: a non-canonical ordering (B-vs-A) must never become its own URL.
+    // Fold it into the canonical alphabetically-sorted ordering — but only when
+    // that ordering is itself published. sortComparisonSlug() sorts the raw
+    // "-vs-" tokens, so a slug whose last entity carries a keyword suffix (e.g.
+    // "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the suffix
+    // into the middle and yields a slug that does not exist. 308-ing there would
+    // strand the variant's link equity on a dead URL, so an unpublished target
+    // falls through to the 404 below instead. (Known retired duplicates are
+    // already 301'd at the edge by next.config redirects(); this catches
+    // orderings not yet in that map.)
     const sortedSlug = sortComparisonSlug(slug);
     if (sortedSlug !== slug) {
-      // DAN-1265 regression guard: only consolidate into the sorted ordering
-      // when that ordering is a REAL comparison. sortComparisonSlug() sorts the
-      // raw "-vs-" tokens, so a slug whose last entity carries a keyword suffix
-      // (e.g. "xbox-series-x-vs-ps5-pro-performance-comparison-2026") sorts the
-      // suffix into the middle and yields a non-existent slug
-      // ("ps5-pro-performance-comparison-2026-vs-xbox-series-x"). 308-ing there
-      // mints a self-canonicalizing thin-shell dead-end and permanently strands
-      // the variant's link equity instead of folding it into the canonical. If
-      // the sorted target has no valid record, fall through to the dynamic
-      // fallback (which self-canonicals at the requested URL) rather than 308 to
-      // a slug that does not exist. Genuine B-vs-A reorderings still redirect,
-      // because their sorted target resolves to a real page here.
       let canonical: Comparison | null = null;
       try {
         canonical = (await getComparisonBySlug(sortedSlug)) as Comparison | null;
       } catch {
         canonical = null;
       }
-      if (canonical && canonical.entities && canonical.entities.length >= 2) {
+      // DAN-2065: never 308 to a slug the edge map itself redirects away — the
+      // edge would bounce it straight back here and the two rules would ping-pong.
+      // That is a real loop, not a hypothetical: the generated ordering map picked
+      // its survivors by (seeded) viewCount, so for 18 clusters it points the
+      // opposite way to this alphabetical sort. starbucks-vs-dunkin ⇄
+      // dunkin-vs-starbucks hit curl's 10-redirect ceiling in prod.
+      const edgeRedirectsTarget = getConsolidatedCompareSlug(sortedSlug) !== null;
+
+      if (!edgeRedirectsTarget && isRenderableComparison(canonical)) {
         return {
           redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
         };
       }
     }
 
-    // Canonical ordering but unknown/empty → attempt server-side generation so
-    // crawlers get a full SSR body + affiliate CTAs (DAN-1146). On success we
-    // fall through to the normal comparison render path below; on failure we
-    // degrade to the crawlable client shell, which also lets the client
-    // re-generation path heal the record.
-    comparison = await generateComparisonForSSR(slug, slugParts.entities);
-  }
+    // Never bake a 404 over a live page just because the DB blinked. An empty
+    // lookup during an outage is indistinguishable from "not published", and
+    // getStaticProps runs on ISR revalidation too — returning notFound here would
+    // quietly 404 all 491 published comparisons until the next successful
+    // revalidation. Throwing instead keeps the last good render in the ISR cache.
+    if (isComparisonDbConfigured() && !(await isComparisonDbReachable())) {
+      throw new Error(
+        `DAN-2065: refusing to 404 /compare/${slug} — comparison DB is unreachable`
+      );
+    }
 
-  // Still no usable comparison → client-side dynamic generation (same fallback
-  // as before).
-  if (!comparison || !comparison.entities || comparison.entities.length < 2) {
-    const override = META_OVERRIDES[slug];
-    const nameParts = slug
-      .split("-vs-")
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map(humanizeEntityName);
-    const title = nameParts.join(" vs ");
-    const isMulti = nameParts.length > 2;
-    const ogImage = isMulti
-      ? `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&entities=${encodeURIComponent(nameParts.join("|"))}&type=multi`
-      : `${SITE_URL}/api/og?title=${encodeURIComponent(title)}&a=${encodeURIComponent(nameParts[0] || "")}&b=${encodeURIComponent(nameParts[1] || "")}&type=comparison`;
-    // buildPageTitle appends the brand suffix exactly once (DAN-1145 Bug 1);
-    // clampDescription enforces the meta-length / word-boundary invariant (Bug 3).
-    return {
-      props: {
-        kind: "dynamic",
-        slug,
-        meta: {
-          title: buildPageTitle(override?.title ?? title),
-          description: clampDescription(
-            override?.description ?? `Compare ${nameParts.join(", ")} — key differences, pros & cons, and verdict.`,
-          ),
-          canonical: `${SITE_URL}/compare/${slug}`,
-          ogImage,
-          ogType: "website",
-        },
-      },
-      revalidate: 3600,
-    };
+    return { notFound: true, revalidate: NOT_FOUND_REVALIDATE_SECONDS };
   }
 
   const voteData = await getComparisonVotes(comparison.id);
@@ -856,15 +791,6 @@ function MetaHead({ meta }: { meta: PageMeta }) {
 }
 
 export default function ComparisonPage(props: Props) {
-  if (props.kind === "dynamic") {
-    return (
-      <>
-        <MetaHead meta={props.meta} />
-        <DynamicComparison slug={props.slug} />
-      </>
-    );
-  }
-
   // N-entity (3+): multi-entity layout (parity with the App Router version).
   if (props.comparison.entities.length > 2) {
     return (

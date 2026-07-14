@@ -42,15 +42,18 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
     <div ref={ref} className="mb-6 bg-white/5 rounded-xl p-3 sm:p-4 border border-white/10">
       <div className="flex items-center justify-between mb-3 gap-2">
         {/* Entity A score */}
-        <div className={`flex items-center gap-2 min-w-0 transition-all duration-500 ${animated && winnerIdx === 0 ? "scale-105" : ""}`}>
+        <div
+          className={`flex items-center gap-2 min-w-0 transition-all duration-500 ${animated && winnerIdx === 0 ? "scale-105" : ""}`}
+          aria-label={`${entityA.name}: ${scoreA} out of 10${winnerIdx === 0 ? " — winner" : ""}`}
+        >
           {entityA.imageUrl ? (
             <Image src={entityA.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-blue-200">
+            <div className="w-6 h-6 rounded-full bg-blue-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-blue-200" aria-hidden="true">
               {entityA.name.charAt(0).toUpperCase()}
             </div>
           )}
-          <div className="min-w-0">
+          <div className="min-w-0" aria-hidden="true">
             <div className="flex items-center gap-1">
               <span className="block text-xs text-blue-300/80 truncate">{entityA.name}</span>
               {winnerIdx === 0 && (
@@ -69,8 +72,11 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
         <div className="text-xs font-bold text-white/30 uppercase tracking-widest" aria-hidden="true">vs</div>
 
         {/* Entity B score */}
-        <div className={`flex items-center gap-2 min-w-0 text-right transition-all duration-500 ${animated && winnerIdx === 1 ? "scale-105" : ""}`}>
-          <div className="min-w-0">
+        <div
+          className={`flex items-center gap-2 min-w-0 text-right transition-all duration-500 ${animated && winnerIdx === 1 ? "scale-105" : ""}`}
+          aria-label={`${entityB.name}: ${scoreB} out of 10${winnerIdx === 1 ? " — winner" : ""}`}
+        >
+          <div className="min-w-0" aria-hidden="true">
             <div className="flex items-center gap-1 justify-end">
               {winnerIdx === 1 && (
                 <svg className="w-3 h-3 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -87,7 +93,7 @@ export function ScoreBarPanel({ scoreA, scoreB, winnerIdx, entityA, entityB }: S
           {entityB.imageUrl ? (
             <Image src={entityB.imageUrl} alt="" width={24} height={24} className="w-6 h-6 rounded-full object-cover ring-1 ring-white/20 flex-shrink-0" />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-200">
+            <div className="w-6 h-6 rounded-full bg-purple-500/30 flex items-center justify-center flex-shrink-0 text-xs font-bold text-purple-200" aria-hidden="true">
               {entityB.name.charAt(0).toUpperCase()}
             </div>
           )}

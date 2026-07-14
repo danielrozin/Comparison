@@ -298,6 +298,42 @@ const COMPARISON_INCLUDE = {
 // Public API
 // ---------------------------------------------------------------------------
 
+/**
+ * DAN-2065 — is a real database backing this process, or are the bundled mock
+ * fixtures the entire dataset?
+ *
+ * `/compare/[slug]` renders only `status: "published"` rows, but the mock
+ * fixtures carry no status at all (they are a dev convenience, not DB rows).
+ * Without this distinction the published-only gate would 404 every page on a
+ * machine with no DATABASE_URL, making local dev and a DB-less CI build useless.
+ */
+export function isComparisonDbConfigured(): boolean {
+  return getPrismaClient() !== null;
+}
+
+/**
+ * DAN-2065 — did the database actually answer, or is it just unreachable?
+ *
+ * `getComparisonBySlug` swallows Prisma errors and degrades to mock/null, so
+ * "this slug is not published" and "the DB is down" are indistinguishable at the
+ * call site. That is fine for a content query and catastrophic for a 404 gate:
+ * during a transient outage every lookup would come back empty, and ISR would
+ * bake a 404 over all 491 live comparisons. The page therefore probes here before
+ * committing to a `notFound`, and throws instead when the DB is unreachable so
+ * Next keeps serving the last good render.
+ */
+export async function isComparisonDbReachable(): Promise<boolean> {
+  const prisma = getPrismaClient();
+  if (!prisma) return false;
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    return true;
+  } catch (e) {
+    console.warn("Comparison DB unreachable:", e);
+    return false;
+  }
+}
+
 export async function getComparisonBySlug(
   slug: string
 ): Promise<ComparisonPageData | null> {

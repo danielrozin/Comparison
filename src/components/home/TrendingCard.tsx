@@ -44,13 +44,14 @@ export function TrendingCard({
         {/* Rank badge + category */}
         <div className="flex items-center gap-2 mb-3">
           <div
+            aria-label={`Rank ${rank}`}
             className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
               rankGradient
                 ? `bg-gradient-to-br ${rankGradient} text-white shadow-sm`
                 : "bg-gradient-to-br from-primary-100 to-primary-200 text-primary-600 shadow-sm"
             }`}
           >
-            {rank}
+            <span aria-hidden="true">{rank}</span>
           </div>
           {rank === 1 && (
             <svg className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">

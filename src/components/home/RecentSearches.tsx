@@ -58,8 +58,8 @@ export function RecentSearches() {
               href={`/compare/${search.slug}`}
               className="group flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
             >
-              {/* Entity avatars with VS badge */}
-              <div className="relative flex-shrink-0 h-10" style={{ width: "54px" }}>
+              {/* Entity avatars with VS badge — decorative, title text carries the label */}
+              <div aria-hidden="true" className="relative flex-shrink-0 h-10" style={{ width: "54px" }}>
                 <div className="absolute left-0 top-0 w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
                   {(parts[0] || "A").charAt(0).toUpperCase()}
                 </div>

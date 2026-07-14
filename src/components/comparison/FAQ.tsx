@@ -35,6 +35,7 @@ function FAQItem({ faq, index, listPosition, isOpen, search, isHidden, onToggle 
   return (
     <li
       style={{ animationDelay: `${listPosition * 40}ms` }}
+      aria-hidden={isHidden ? true : undefined}
       className={`bg-white rounded-xl overflow-hidden transition-all duration-300 ease-in-out animate-fade-in ${isHidden ? "hidden" : ""} ${
         isOpen
           ? "border border-primary-200 shadow-md shadow-primary-100/50 border-l-[3px] border-l-primary-500 translate-y-0"
