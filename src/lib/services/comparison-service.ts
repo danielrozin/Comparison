@@ -26,6 +26,7 @@ import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
 
 import { getRedis } from "./redis";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 
 // Lazy-import prisma to avoid crash when DATABASE_URL is not set
 function getPrismaClient() {
@@ -476,7 +477,7 @@ export async function getTrendingComparisons(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         orderBy: { viewCount: "desc" },
         take: limit,
         include: {
@@ -578,7 +579,7 @@ async function getRelatedFromDb(
   // Fallback: same category
   if (comp.category) {
     const related = await prisma.comparison.findMany({
-      where: { category: comp.category, status: "published" },
+      where: canonicalComparisonWhere({ category: comp.category }),
       select: { slug: true, title: true, category: true },
       take: limit,
     });
@@ -1013,7 +1014,7 @@ export async function getLatestComparisons(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         orderBy: { createdAt: "desc" },
         take: limit,
         include: {
@@ -1151,13 +1152,12 @@ export async function getComparisonsForEntity(
   if (prisma) {
     try {
       const comparisons = await prisma.comparison.findMany({
-        where: {
-          status: "published",
+        where: canonicalComparisonWhere({
           OR: [
             { entities: { some: { entity: { slug: entitySlug } } } },
             { slug: { contains: entitySlug } },
           ],
-        },
+        }),
         select: { slug: true, title: true, category: true },
         orderBy: { viewCount: "desc" },
       });
@@ -1194,7 +1194,7 @@ export async function getTotalComparisonsCount(): Promise<number> {
   if (!prisma) return 107; // fallback
   try {
     return await prisma.comparison.count({
-      where: { status: "published" },
+      where: canonicalComparisonWhere(),
     });
   } catch {
     return 107;
@@ -1214,7 +1214,7 @@ export async function getAllSitemapData(): Promise<{
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         select: {
           slug: true,
           updatedAt: true,
@@ -1272,7 +1272,7 @@ export async function getRecentComparisonsForFeed(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         select: { slug: true, title: true, category: true, shortAnswer: true, updatedAt: true },
         orderBy: { updatedAt: "desc" },
         take: limit,
@@ -1322,13 +1322,13 @@ export async function listAllComparisons(
     try {
       const [rows, total] = await Promise.all([
         prisma.comparison.findMany({
-          where: { status: "published" },
+          where: canonicalComparisonWhere(),
           select: { slug: true, title: true, category: true },
           orderBy: { viewCount: "desc" },
           skip: offset,
           take: limit,
         }),
-        prisma.comparison.count({ where: { status: "published" } }),
+        prisma.comparison.count({ where: canonicalComparisonWhere() }),
       ]);
       return {
         comparisons: rows.map((r: { slug: string; title: string; category: string | null }) => ({ slug: r.slug, title: r.title, category: r.category || "general" })),

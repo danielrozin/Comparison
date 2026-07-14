@@ -7,11 +7,12 @@ import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav, UxStudyBanner } from "@/components/layout/GlobalClientWidgets";
 import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 
 const getPublishedComparisonCount = unstable_cache(
   async () => {
     try {
-      return await prisma.comparison.count({ where: { status: "published" } });
+      return await prisma.comparison.count({ where: canonicalComparisonWhere() });
     } catch {
       return 500;
     }
