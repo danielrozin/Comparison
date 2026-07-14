@@ -14,6 +14,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // DAN-2157: generation freeze — algorithmic suppression recovery.
+  // Set GENERATION_FREEZE=false to re-enable blog generation.
+  if ((process.env.GENERATION_FREEZE ?? "true").toLowerCase() !== "false") {
+    return NextResponse.json(
+      { status: "frozen", error: "Blog generation is paused for site recovery (DAN-2157). Set GENERATION_FREEZE=false to re-enable." },
+      { status: 503 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { topic, sourceQuery, sourceImpressions } = body;
