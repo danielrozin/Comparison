@@ -9,22 +9,37 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 const apiSchema = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
+  "@id": `${SITE_URL}/developers#webapi`,
   name: `${SITE_NAME} Comparison API`,
   description: "REST API providing structured comparison data, entity profiles, trending topics, and search across 3,000+ comparisons in 17+ categories.",
+  abstract: "A Versus B REST API — free JSON endpoints for structured X vs Y comparison data, entity profiles, FAQs, and trending topics. Supports AI citation pipelines, RAG retrieval, and research datasets.",
   url: `${SITE_URL}/developers`,
-
-  locale: "en_US",  documentation: `${SITE_URL}/developers`,
+  // inLanguage replaces the previous invalid `locale: "en_US"` (not a Schema.org property).
+  // Google Structured Data Testing Tool and AI schema validators reject unknown properties;
+  // inLanguage is the correct Schema.org field for language-scoping a CreativeWork.
+  inLanguage: "en-US",
+  documentation: `${SITE_URL}/developers`,
+  genre: "API Documentation",
+  thumbnailUrl: `${SITE_URL}/api/og?title=Comparison+API+Documentation&type=home`,
+  image: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/api/og?title=Comparison+API+Documentation&type=home`,
+    contentUrl: `${SITE_URL}/api/og?title=Comparison+API+Documentation&type=home`,
+    width: 1200,
+    height: 630,
+  },
   provider: {
     "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
-
-    locale: "en_US",  },
+  },
   license: "https://creativecommons.org/licenses/by/4.0/",
   usageInfo: `${SITE_URL}/terms`,
   creativeWorkStatus: "Published",
   datePublished: "2024-06-01",
   dateModified: new Date().toISOString().slice(0, 10),
+  contentReferenceTime: new Date().toISOString().slice(0, 10),
   copyrightNotice: `© ${new Date().getFullYear()} ${SITE_NAME}. Licensed under CC BY 4.0.`,
   copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   acquireLicensePage: `${SITE_URL}/terms`,
@@ -33,6 +48,25 @@ const apiSchema = {
   educationalLevel: "Intermediate",
   teaches: "How to integrate the A Versus B REST API to access structured comparison data, entity profiles, and search results",
   educationalUse: "guide",
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
+  // potentialAction — UseAction tells AI agents and RAG pipelines that this API
+  // can be invoked directly. Perplexity, ChatGPT plugins, and LLM toolkits use
+  // potentialAction to discover callable endpoints without reading prose docs.
+  potentialAction: [
+    {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/developers` },
+    },
+    {
+      "@type": "UseAction",
+      name: "Query comparison data",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/api/v1/compare?slug={slug}`,
+        actionPlatform: ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"],
+      },
+    },
+  ],
   offers: [
     {
       "@type": "Offer",
@@ -54,13 +88,13 @@ const apiSchema = {
   ethicsPolicy: `${SITE_URL}/disclaimer`,
   hasPart: {
     "@type": "DataFeed",
+    "@id": `${SITE_URL}/#datafeed`,
     name: "A Versus B Comparison Dataset",
     description: `Structured comparison data for ${SITE_NAME}'s full catalog: 3,000+ X vs Y comparisons with attributes, verdicts, FAQs, and entity profiles across 17+ categories.`,
     url: `${SITE_URL}/api/llms?format=txt`,
-
-    locale: "en_US",    encodingFormat: "text/plain",
+    encodingFormat: "text/plain",
     inLanguage: "en-US",
-    provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    provider: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
     about: {
       "@type": "Thing",
       name: "Product and entity comparisons",

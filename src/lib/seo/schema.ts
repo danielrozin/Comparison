@@ -2523,11 +2523,41 @@ function buildMultiEntityGraph(
     "@type": "WebPage",
     "@id": `${url}#webpage`,
     name: comparison.title,
+    description: comparison.shortAnswer || comparison.metadata.metaDescription,
     url,
     inLanguage: "en-US",
     isAccessibleForFree: true,
+    conditionsOfAccess: "Free",
+    creativeWorkStatus: "Published",
     datePublished: comparison.metadata.publishedAt,
     dateModified: comparison.metadata.updatedAt,
+    // thumbnailUrl + image.contentUrl — AI visual crawlers (Google Lens, Perplexity,
+    // AI Overviews, Bing) read these on the WebPage node when the Article node is
+    // not immediately found during incremental graph traversal.
+    thumbnailUrl: multiOgImage,
+    image: {
+      "@type": "ImageObject",
+      url: multiOgImage,
+      contentUrl: multiOgImage,
+      width: 1200,
+      height: 630,
+      name: comparison.title,
+    },
+    // genre — mirrors Article.genre so AI crawlers classify this WebPage as comparison
+    // content even when they extract the WebPage node without traversing to Article.
+    genre: comparison.category
+      ? `${comparison.category.charAt(0).toUpperCase()}${comparison.category.slice(1)} Comparison`
+      : "Comparison Article",
+    // keywords — topic signals for Bing/Yandex and AI classifiers reading the WebPage node.
+    keywords: [
+      ...comparison.entities.map((e) => e.name),
+      "comparison",
+      "versus",
+      ...(comparison.category ? [comparison.category] : []),
+    ].join(", "),
+    accessMode: ["textual", "visual"],
+    accessModeSufficient: [{ "@type": "ItemList", itemListElement: ["textual"] }],
+    accessibilityFeature: ["tableOfContents", "structuralNavigation", "alternativeText", "readingOrder", "bookmarks"],
     mainEntity: { "@type": "Article", "@id": `${url}#article` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
     // breadcrumb — WebPage→BreadcrumbList graph edge; @id must match the BreadcrumbList node's
@@ -2538,6 +2568,10 @@ function buildMultiEntityGraph(
       "@type": "SpeakableSpecification",
       "@id": `${url}#speakable`,
       cssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table"],
+    },
+    potentialAction: {
+      "@type": "ReadAction",
+      target: { "@type": "EntryPoint", urlTemplate: url },
     },
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL },
   });
