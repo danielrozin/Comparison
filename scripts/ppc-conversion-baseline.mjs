@@ -17,6 +17,12 @@ import { PrismaClient } from "@prisma/client";
 const REQUIRED_DAYS = 30;
 const prisma = new PrismaClient();
 
+// Seed/QA rows carry a marker in `source` (e.g. "dan-323-test"). They must never
+// anchor the baseline: one test row dated 30+ days back is enough to satisfy the
+// span check on its own, which would restart paid spend against a baseline that
+// contains no real user behaviour at all.
+const TEST_SOURCE = /test|seed|qa|dummy|sample/i;
+
 function daysBetween(a, b) {
   return Math.floor((b.getTime() - a.getTime()) / 86_400_000);
 }
@@ -38,10 +44,13 @@ async function main() {
 
   // Normalise both tables onto one timeline — the gate cares about conversions,
   // not about which form produced them.
-  const conversions = [
+  const allRows = [
     ...signupRows.map((r) => ({ at: r.subscribedAt, kind: "newsletter", source: r.source || "unknown" })),
     ...contactRows.map((r) => ({ at: r.createdAt, kind: "contact_form", source: r.source || "unknown" })),
   ].sort((a, b) => a.at.getTime() - b.at.getTime());
+
+  const excluded = allRows.filter((r) => TEST_SOURCE.test(r.source));
+  const conversions = allRows.filter((r) => !TEST_SOURCE.test(r.source));
 
   const total = conversions.length;
   const inWindow = (days, rows = conversions) => rows.filter((r) => r.at >= since(days)).length;
@@ -64,6 +73,10 @@ async function main() {
   const contactConversions = conversions.filter((r) => r.kind === "contact_form");
 
   console.log("=== PPC restart gate — criterion #2: organic conversion baseline ===\n");
+  if (excluded.length > 0) {
+    const sources = [...new Set(excluded.map((r) => r.source))].join(", ");
+    console.log(`Excluded ${excluded.length} test/seed row(s) from the count (source: ${sources})\n`);
+  }
   console.log(`Total server-side conversions (all time): ${total}`);
   console.log(`  newsletter signups:   ${newsletterRows.length} (last 30d: ${inWindow(30, newsletterRows)})`);
   console.log(`  contact-form submits: ${contactConversions.length} (last 30d: ${inWindow(30, contactConversions)})`);
