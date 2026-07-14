@@ -87,6 +87,9 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
 const ALIAS_CONSOLIDATIONS: Record<string, string> = {
   "paramount-plus-vs-peacock": "paramount-vs-peacock",
   "peacock-vs-paramount-plus": "paramount-vs-peacock",
+  // DAN-2078: "mercedes" and "mercedes-benz" resolve to the same brand.
+  // bmw-vs-mercedes is the shorter/dominant slug; fold the full-name variant in.
+  "bmw-vs-mercedes-benz": "bmw-vs-mercedes",
 };
 
 /**
