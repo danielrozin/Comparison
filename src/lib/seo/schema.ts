@@ -2306,6 +2306,12 @@ function buildMultiEntityGraph(
       "@id": `${url}#faq`,
       inLanguage: "en-US",
       isAccessibleForFree: true,
+      datePublished: faqDatePublished,
+      dateModified: faqDateModified,
+      // contentReferenceTime — freshness signal for AI fact-checkers; mirrors 2-entity faqSchema path.
+      // AI engines (Perplexity, ChatGPT) use this to qualify citations with a freshness date,
+      // ensuring time-qualified comparison queries surface the most recently-reviewed FAQPage.
+      contentReferenceTime: faqDateModified,
       // about[] — primary subjects this FAQ covers; mirrors 2-entity path so AI engines
       // can attribute individual Q&A pairs to the correct entities without re-parsing Article.
       about: comparison.entities
@@ -2472,6 +2478,44 @@ function buildMultiEntityGraph(
         },
       ],
     });
+  }
+
+  // SportsEvent for multi-entity (3+) sports comparisons — mirrors 2-entity SportsEvent path.
+  // Gates on category==="sports" and ≥2 sport-typed entities (Person or SportsTeam).
+  // Google Sports and AI sports-mode carousels prefer Event nodes with `competitor` arrays
+  // over plain Article nodes; emitting this for multi-athlete/multi-team comparisons broadens
+  // rich-result eligibility beyond 2-entity head-to-head matchups.
+  if (comparison.category === "sports" && comparison.entities.length >= 3) {
+    const sportsEntities = comparison.entities.filter((e) => {
+      const t = entitySchemaType(e.entityType);
+      return t === "Person" || t === "SportsTeam" || t === "SportsOrganization";
+    });
+    if (sportsEntities.length >= 2) {
+      graph.push({
+        "@type": "SportsEvent",
+        "@id": `${url}#event`,
+        name: comparison.title,
+        description: comparison.shortAnswer || comparison.metadata.metaDescription,
+        url,
+        inLanguage: "en-US",
+        startDate: comparison.metadata.publishedAt ?? comparison.metadata.updatedAt,
+        eventStatus: "https://schema.org/EventScheduled",
+        eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+        competitor: sportsEntities.map((e) => ({
+          "@type": entitySchemaType(e.entityType) === "Person" ? "Person" : "SportsTeam",
+          "@id": `${SITE_URL}/entity/${e.slug}`,
+          name: e.name,
+          url: `${SITE_URL}/entity/${e.slug}`,
+          ...(e.imageUrl && { image: e.imageUrl }),
+          sameAs: entityWikipediaSameAs(e.name),
+        })),
+        organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
+        location: { "@type": "VirtualLocation", url },
+        isAccessibleForFree: true,
+        conditionsOfAccess: "Free",
+        image: multiOgImage,
+      });
+    }
   }
 
   // WebPage node — bidirectional Article↔WebPage graph edge (matches 2-entity path).
@@ -2650,6 +2694,13 @@ export function faqSchema(faqs: FAQData[], id?: string, about?: { "@type": strin
     // Google's Knowledge Graph and AI crawlers use this edge to confirm that
     // the FAQ answers belong to the comparison article and attribute them correctly.
     ...(articleId && { isPartOf: { "@type": "Article", "@id": articleId } }),
+    // contentReferenceTime — freshness signal for AI fact-checkers (Perplexity, ChatGPT).
+    // Without it, AI engines treat FAQPage as undated content and may deprioritize
+    // it in time-qualified queries ("current X vs Y", "latest comparison"). Maps to
+    // the most recent modification date so freshly-reviewed FAQ pairs surface first.
+    datePublished: datePublished ?? today,
+    dateModified: today,
+    contentReferenceTime: today,
     // speakable on FAQPage — voice assistants extract answers from .faq-answer
     // elements; AI Overviews pull directly from FAQ structured data.
     speakable: {
@@ -2865,17 +2916,101 @@ export function aggregateRatingSchema(entity: {
 
 export function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
+    // Core entity types
     person: "Person",
+    athlete: "Person",
     country: "Country",
+    state: "AdministrativeArea",
+    city: "City",
     product: "Product",
     team: "SportsTeam",
+    "sports-team": "SportsTeam",
+    "sports-league": "SportsOrganization",
     company: "Organization",
+    organization: "Organization",
+    alliance: "Organization",
+    institution: "Organization",
+    branch: "Organization",
+    military: "Organization",
+    airline: "Airline",
     technology: "SoftwareApplication",
+    software: "SoftwareApplication",
+    platform: "SoftwareApplication",
+    framework: "SoftwareApplication",
+    "programming-language": "ComputerLanguage",
+    "social-media": "WebApplication",
+    streaming: "WebApplication",
     brand: "Brand",
     event: "Event",
     war: "Event",
-    software: "SoftwareApplication",
     place: "Place",
+    destination: "TouristDestination",
+    accommodation: "LodgingBusiness",
+    flight: "Flight",
+    // Media & entertainment
+    anime: "TVSeries",
+    cinema: "Movie",
+    music: "MusicGroup",
+    audio: "AudioObject",
+    audiobook: "Book",
+    reading: "Book",
+    gaming: "VideoGame",
+    // Finance
+    investment: "FinancialProduct",
+    asset: "FinancialProduct",
+    banking: "FinancialService",
+    brokerage: "FinancialService",
+    insurance: "FinancialService",
+    mortgage: "LoanOrCredit",
+    savings: "BankAccount",
+    "index": "FinancialProduct",
+    retirement: "FinancialProduct",
+    payment: "PaymentService",
+    // Health / medical
+    medication: "Drug",
+    vaccine: "Drug",
+    supplement: "Drug",
+    treatment: "MedicalProcedure",
+    surgery: "MedicalProcedure",
+    dental: "MedicalProcedure",
+    "mental-health": "MedicalCondition",
+    diet: "Diet",
+    exercise: "ExercisePlan",
+    fitness: "ExercisePlan",
+    // Education
+    university: "EducationalOrganization",
+    school: "EducationalOrganization",
+    education: "EducationalOrganization",
+    degree: "EducationalOccupationalCredential",
+    // Vehicles
+    car: "Vehicle",
+    "sports-car": "Vehicle",
+    suv: "Vehicle",
+    truck: "Vehicle",
+    aircraft: "Vehicle",
+    vessel: "Vehicle",
+    // Misc
+    food: "Food",
+    language: "Language",
+    civilization: "Thing",
+    concept: "Thing",
+    service: "Service",
+    transport: "Service",
+    rideshare: "Service",
+    smartphone: "Product",
+    eyewear: "Product",
+    wellness: "Service",
+    vision: "Service",
+    sleep: "Thing",
+    style: "Thing",
+    rank: "Thing",
+    type: "Thing",
+    test: "Thing",
+    program: "EducationalOccupationalProgram",
+    career: "Occupation",
+    vacation: "TouristTrip",
+    "drivetrain": "Thing",
+    "nfl-team": "SportsTeam",
   };
   return map[entityType] || "Thing";
 }
