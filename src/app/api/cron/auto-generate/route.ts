@@ -45,13 +45,19 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // DAN-1891 spam recovery: hard pause until domain recovers from Google June 2026 Spam Update.
-  // Remove this gate (or set SPAM_RECOVERY_PAUSE=false) only after GSC clicks recover to baseline
-  // and DAN-1740 recovery routine confirms re-assessment.
+  // DAN-1891 + DAN-2157: hard pause — domain under algorithmic suppression.
+  // Set SPAM_RECOVERY_PAUSE=false AND GENERATION_FREEZE=false to re-enable.
+  // Do not re-enable until GSC clicks recover and CEO/DAN-2141 clears the freeze.
   if ((process.env.SPAM_RECOVERY_PAUSE ?? "true").toLowerCase() !== "false") {
     return NextResponse.json({
       status: "paused",
-      reason: "SPAM_RECOVERY_PAUSE — auto-generation suspended for Google Spam Update recovery (DAN-1891)",
+      reason: "SPAM_RECOVERY_PAUSE — auto-generation suspended for algorithmic suppression recovery (DAN-1891/DAN-2157)",
+    });
+  }
+  if ((process.env.GENERATION_FREEZE ?? "true").toLowerCase() !== "false") {
+    return NextResponse.json({
+      status: "frozen",
+      reason: "GENERATION_FREEZE — net-new page generation frozen per CEO directive (DAN-2157)",
     });
   }
 

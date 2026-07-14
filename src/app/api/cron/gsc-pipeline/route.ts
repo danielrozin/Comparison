@@ -47,6 +47,11 @@ export async function GET(request: NextRequest) {
     topIssues: [] as string[],
   };
 
+  // DAN-2157: generation freeze — algorithmic suppression recovery.
+  // Set GENERATION_FREEZE=false to re-enable. Technical SEO analysis still runs.
+  const generationFrozen =
+    (process.env.GENERATION_FREEZE ?? "true").toLowerCase() !== "false";
+
   try {
     // Run content opportunities and technical SEO analysis in parallel
     const [opportunities, technicalIssues] = await Promise.all([
@@ -91,46 +96,54 @@ export async function GET(request: NextRequest) {
     report.blogOpportunities = blogOpps.length;
 
     // --- Generate comparison pages ---
-    for (const opp of comparisonOpps.slice(0, MAX_COMPARISONS)) {
-      try {
-        const slug = `${slugify(opp.entityA!)}-vs-${slugify(opp.entityB!)}`;
-        const result = await generateComparison(
-          opp.entityA!,
-          opp.entityB!,
-          slug
-        );
-        if (result.success && result.comparison) {
-          await saveComparison(result.comparison);
-          report.comparisonsCreated.push(slug);
-        } else {
+    if (generationFrozen) {
+      report.errors.push(
+        `Generation frozen (DAN-2157): ${comparisonOpps.length} comparison opportunities collected but not generated. Set GENERATION_FREEZE=false to re-enable.`
+      );
+    } else {
+      for (const opp of comparisonOpps.slice(0, MAX_COMPARISONS)) {
+        try {
+          const slug = `${slugify(opp.entityA!)}-vs-${slugify(opp.entityB!)}`;
+          const result = await generateComparison(
+            opp.entityA!,
+            opp.entityB!,
+            slug
+          );
+          if (result.success && result.comparison) {
+            await saveComparison(result.comparison);
+            report.comparisonsCreated.push(slug);
+          } else {
+            report.errors.push(
+              `Comparison gen failed: ${opp.query} — ${result.error || "unknown"}`
+            );
+          }
+        } catch (err) {
           report.errors.push(
-            `Comparison gen failed: ${opp.query} — ${result.error || "unknown"}`
+            `Comparison error: ${opp.query} — ${err instanceof Error ? err.message : String(err)}`
           );
         }
-      } catch (err) {
-        report.errors.push(
-          `Comparison error: ${opp.query} — ${err instanceof Error ? err.message : String(err)}`
-        );
       }
     }
 
     // --- Generate blog articles ---
-    for (const opp of blogOpps.slice(0, MAX_BLOG_ARTICLES)) {
-      try {
-        const { generateBlogArticle } = await import(
-          "@/lib/services/blog-generator"
-        );
-        const article = await generateBlogArticle(opp.query, {
-          query: opp.query,
-          impressions: opp.impressions,
-        });
-        if (article) {
-          report.blogArticlesCreated.push(opp.query);
+    if (!generationFrozen) {
+      for (const opp of blogOpps.slice(0, MAX_BLOG_ARTICLES)) {
+        try {
+          const { generateBlogArticle } = await import(
+            "@/lib/services/blog-generator"
+          );
+          const article = await generateBlogArticle(opp.query, {
+            query: opp.query,
+            impressions: opp.impressions,
+          });
+          if (article) {
+            report.blogArticlesCreated.push(opp.query);
+          }
+        } catch (err) {
+          report.errors.push(
+            `Blog skipped: "${opp.query}" — ${err instanceof Error ? err.message : String(err)}`
+          );
         }
-      } catch (err) {
-        report.errors.push(
-          `Blog skipped: "${opp.query}" — ${err instanceof Error ? err.message : String(err)}`
-        );
       }
     }
 

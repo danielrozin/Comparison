@@ -42,6 +42,15 @@ const generateSchema = z.object({
  *     silently dropped.
  */
 export async function POST(request: NextRequest) {
+  // DAN-2157: generation freeze — algorithmic suppression recovery.
+  // Set GENERATION_FREEZE=false to re-enable on-demand comparison generation.
+  if ((process.env.GENERATION_FREEZE ?? "true").toLowerCase() !== "false") {
+    return NextResponse.json(
+      { status: "frozen", error: "Comparison generation is paused for site recovery (DAN-2157). Set GENERATION_FREEZE=false to re-enable." },
+      { status: 503 }
+    );
+  }
+
   try {
     const body = await request.json();
     const parsed = generateSchema.safeParse(body);
