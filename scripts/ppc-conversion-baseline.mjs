@@ -6,9 +6,9 @@
  * "30+ days of organic conversion baseline data". This script answers that
  * from our own Postgres instead of requiring a human to read the GA4 UI.
  *
- * Signup conversions (newsletter) are persisted to `newsletter_subscribers`.
- * Contact-form submits are GA4-only (no server-side row), so they are not
- * measurable here — see NOTE at the bottom of the output.
+ * Two server-side conversion signals are counted:
+ *   - newsletter signups   -> `newsletter_subscribers`
+ *   - contact-form submits -> `contact_submissions` (DAN-2146)
  *
  * Usage: DATABASE_URL=... node scripts/ppc-conversion-baseline.mjs
  */
@@ -25,35 +25,56 @@ async function main() {
   const now = new Date();
   const since = (days) => new Date(now.getTime() - days * 86_400_000);
 
-  const rows = await prisma.newsletterSubscriber.findMany({
-    select: { subscribedAt: true, source: true, referrerSlug: true },
-    orderBy: { subscribedAt: "asc" },
-  });
+  const [signupRows, contactRows] = await Promise.all([
+    prisma.newsletterSubscriber.findMany({
+      select: { subscribedAt: true, source: true },
+      orderBy: { subscribedAt: "asc" },
+    }),
+    prisma.contactSubmission.findMany({
+      select: { createdAt: true, source: true },
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
 
-  const total = rows.length;
-  const inWindow = (days) => rows.filter((r) => r.subscribedAt >= since(days)).length;
+  // Normalise both tables onto one timeline — the gate cares about conversions,
+  // not about which form produced them.
+  const conversions = [
+    ...signupRows.map((r) => ({ at: r.subscribedAt, kind: "newsletter", source: r.source || "unknown" })),
+    ...contactRows.map((r) => ({ at: r.createdAt, kind: "contact_form", source: r.source || "unknown" })),
+  ].sort((a, b) => a.at.getTime() - b.at.getTime());
 
-  const first = rows[0]?.subscribedAt ?? null;
-  const last = rows[total - 1]?.subscribedAt ?? null;
+  const total = conversions.length;
+  const inWindow = (days, rows = conversions) => rows.filter((r) => r.at >= since(days)).length;
+
+  const first = conversions[0]?.at ?? null;
+  const last = conversions[total - 1]?.at ?? null;
   const spanDays = first && last ? daysBetween(first, last) : 0;
 
-  // Distinct calendar days that produced at least one signup.
-  const activeDays = new Set(rows.map((r) => r.subscribedAt.toISOString().slice(0, 10))).size;
+  // Distinct calendar days that produced at least one conversion.
+  const activeDays = new Set(conversions.map((r) => r.at.toISOString().slice(0, 10))).size;
 
   const bySource = {};
-  for (const r of rows) {
-    const key = r.source || "unknown";
-    bySource[key] = (bySource[key] || 0) + 1;
+  const byKind = {};
+  for (const r of conversions) {
+    bySource[r.source] = (bySource[r.source] || 0) + 1;
+    byKind[r.kind] = (byKind[r.kind] || 0) + 1;
   }
 
+  const newsletterRows = conversions.filter((r) => r.kind === "newsletter");
+  const contactConversions = conversions.filter((r) => r.kind === "contact_form");
+
   console.log("=== PPC restart gate — criterion #2: organic conversion baseline ===\n");
-  console.log(`Total newsletter signups (all time): ${total}`);
+  console.log(`Total server-side conversions (all time): ${total}`);
+  console.log(`  newsletter signups:   ${newsletterRows.length} (last 30d: ${inWindow(30, newsletterRows)})`);
+  console.log(`  contact-form submits: ${contactConversions.length} (last 30d: ${inWindow(30, contactConversions)})`);
+  console.log("\nCombined:");
   console.log(`  last 30 days: ${inWindow(30)}`);
   console.log(`  last 60 days: ${inWindow(60)}`);
   console.log(`  last 90 days: ${inWindow(90)}`);
-  console.log(`First signup: ${first ? first.toISOString().slice(0, 10) : "n/a"}`);
-  console.log(`Last  signup: ${last ? last.toISOString().slice(0, 10) : "n/a"}`);
-  console.log(`Collection span: ${spanDays} days across ${activeDays} day(s) with >=1 signup`);
+  console.log(`First conversion: ${first ? first.toISOString().slice(0, 10) : "n/a"}`);
+  console.log(`Last  conversion: ${last ? last.toISOString().slice(0, 10) : "n/a"}`);
+  console.log(`Collection span: ${spanDays} days across ${activeDays} day(s) with >=1 conversion`);
+  console.log(`By kind:   ${JSON.stringify(byKind)}`);
   console.log(`By source: ${JSON.stringify(bySource)}`);
 
   // The gate needs a real behavioural baseline: >=REQUIRED_DAYS of collection
@@ -64,14 +85,18 @@ async function main() {
 
   console.log(`\nCriterion #2 (${REQUIRED_DAYS}+ days of conversion data): ${pass ? "PASS" : "FAIL"}`);
   if (!hasSpan) console.log(`  - span is ${spanDays}d, need >=${REQUIRED_DAYS}d`);
-  if (!hasVolume) console.log(`  - zero signups in the last 30 days: no live conversion signal to optimise against`);
+  if (!hasVolume) {
+    console.log("  - zero conversions in the last 30 days: no live signal to optimise bids against");
+  }
 
-  console.log(
-    "\nNOTE: contact-form submits fire GA4 `generate_lead` but are not persisted to Postgres,",
-  );
-  console.log(
-    "so they are invisible to this check. Newsletter signups are the only server-side conversion.",
-  );
+  if (contactConversions.length === 0) {
+    console.log(
+      "\nNOTE: no contact_submissions rows yet. The table ships with DAN-2146, so rows only",
+    );
+    console.log(
+      "accumulate from the first real submission after that deploy — expect the span to lag.",
+    );
+  }
 
   await prisma.$disconnect();
   process.exit(pass ? 0 : 1);
