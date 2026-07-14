@@ -56,6 +56,12 @@ body {
   overflow-wrap: break-word;
 }
 
+/* Balance heading wraps — prevents awkward single-word orphans on the last line.
+   Supported in Chrome 114+, Firefox 121+, Safari 17.4+; silently ignored in older browsers. */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
 /* Brand-color text selection — highlights selected text in the primary palette */
 ::selection {
   background-color: var(--color-primary-100);

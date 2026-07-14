@@ -30,7 +30,8 @@ export function TrendingCard({
   return (
     <Link
       href={`/compare/${comparison.slug}`}
-      className={`group relative flex flex-col bg-white border ${borderClass} rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200`}
+      aria-label={`${comparison.title} — rank ${rank}`}
+      className={`group relative flex flex-col bg-white border ${borderClass} rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2`}
     >
       <h3 className="sr-only">{comparison.title}</h3>
       {/* Top color strip */}

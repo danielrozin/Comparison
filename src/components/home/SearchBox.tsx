@@ -229,9 +229,10 @@ export function SearchBox() {
           />
           <button
             type="submit"
+            aria-label="Search or compare"
             className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 active:from-primary-800 active:to-primary-700 text-white font-semibold rounded-xl transition-all duration-150 text-sm sm:text-base shadow-md hover:shadow-lg"
           >
-            Compare
+            <span aria-hidden="true">Compare</span>
           </button>
         </div>
       </form>

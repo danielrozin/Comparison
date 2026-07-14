@@ -239,7 +239,7 @@ function GroupHeader({
       </span>
 
       {total > 0 && (
-        <div className="flex-1 flex items-center gap-2 min-w-0">
+        <div aria-hidden="true" className="flex-1 flex items-center gap-2 min-w-0">
           {/* Win count pills */}
           {aWins > 0 && (
             <span className="inline-flex items-center gap-0.5 text-xs font-bold px-1.5 py-0.5 rounded-full bg-primary-100 text-primary-700 border border-primary-200/70 whitespace-nowrap flex-shrink-0">
