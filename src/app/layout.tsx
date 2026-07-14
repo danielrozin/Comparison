@@ -28,6 +28,7 @@ import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderSe
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
+import { FirstTouchAttribution } from "@/components/tracking/FirstTouchAttribution";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
@@ -222,6 +223,7 @@ export default async function RootLayout({
         <GoogleTagManager />
         <MetaPixel />
         <ClarityTags />
+        <FirstTouchAttribution />
         <ExperimentProviderServer>
           <UxStudyBanner />
           <Header />

@@ -1,5 +1,16 @@
-import { describe, it, expect } from "vitest";
-import { deriveConversionSource, isConversionSource } from "../attribution";
+import { describe, it, expect, beforeEach } from "vitest";
+import {
+  captureFirstTouch,
+  deriveConversionSource,
+  getAttributedSource,
+  isConversionSource,
+} from "../attribution";
+
+/** Land on `path` with `referrer`, the way a real visit starts. */
+function land(path: string, referrer: string) {
+  window.history.replaceState({}, "", path);
+  Object.defineProperty(document, "referrer", { value: referrer, configurable: true });
+}
 
 describe("deriveConversionSource", () => {
   it("treats ad click IDs as paid even without utm tags", () => {
@@ -35,6 +46,46 @@ describe("deriveConversionSource", () => {
 
   it("accepts a search string with or without the leading ?", () => {
     expect(deriveConversionSource("gclid=abc", "")).toBe("paid");
+  });
+});
+
+describe("first-touch attribution", () => {
+  beforeEach(() => {
+    window.sessionStorage.clear();
+  });
+
+  // The journeys that matter: ads and search land people on a comparison page,
+  // not on /contact. Deriving at submit time saw an empty query string and our
+  // own host as the referrer, and logged every one of these as "direct".
+  it("keeps the paid source across a landing page -> /contact journey", () => {
+    land("/compare/a-vs-b?gclid=abc123", "https://www.google.com/");
+    captureFirstTouch();
+
+    land("/contact", "https://aversusb.net/compare/a-vs-b");
+    expect(getAttributedSource()).toBe("paid");
+  });
+
+  it("keeps the organic source across a landing page -> /contact journey", () => {
+    land("/compare/a-vs-b", "https://www.google.com/");
+    captureFirstTouch();
+
+    land("/contact", "https://aversusb.net/compare/a-vs-b");
+    expect(getAttributedSource()).toBe("organic");
+  });
+
+  it("does not let a later in-session page view overwrite the first touch", () => {
+    land("/compare/a-vs-b?gclid=abc123", "");
+    captureFirstTouch();
+
+    land("/contact", "https://aversusb.net/compare/a-vs-b");
+    captureFirstTouch();
+
+    expect(getAttributedSource()).toBe("paid");
+  });
+
+  it("falls back to live derivation when nothing was captured", () => {
+    land("/contact?gclid=abc123", "");
+    expect(getAttributedSource()).toBe("paid");
   });
 });
 

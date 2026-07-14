@@ -63,6 +63,41 @@ export function deriveConversionSource(
   return "referral";
 }
 
+const FIRST_TOUCH_KEY = "avsb_first_touch";
+
+/**
+ * Attribution has to be captured on the landing page, not at submit time. Ads
+ * and search send people to a comparison page, so by the time they reach
+ * /contact the gclid is gone from the URL and the referrer is our own host —
+ * which classifies a real paid or organic lead as "direct". First touch wins;
+ * later page views in the same session must not overwrite it.
+ */
+export function captureFirstTouch(): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (window.sessionStorage.getItem(FIRST_TOUCH_KEY)) return;
+    window.sessionStorage.setItem(
+      FIRST_TOUCH_KEY,
+      deriveConversionSource(window.location.search, document.referrer)
+    );
+  } catch {
+    // sessionStorage throws in private mode / when storage is blocked. Falling
+    // through is fine: getAttributedSource() derives live instead.
+  }
+}
+
+/** The source to record on a conversion — first touch when we captured one. */
+export function getAttributedSource(): ConversionSource {
+  if (typeof window === "undefined") return "direct";
+  try {
+    const stored = window.sessionStorage.getItem(FIRST_TOUCH_KEY);
+    if (isConversionSource(stored)) return stored;
+  } catch {
+    // ignore and derive live
+  }
+  return deriveConversionSource(window.location.search, document.referrer);
+}
+
 /** Browser-side helper: same `avsb_session` cookie the poll/request forms use. */
 export function getSessionId(): string {
   if (typeof window === "undefined") return "";
