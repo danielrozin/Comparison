@@ -85,7 +85,26 @@ export default async function B2BSaaSStudyPage() {
   // Every tool tied at the top, not just the first one the sort happened to
   // return — the leaders here are a tie and the page must not hide it (DAN-2047).
   const topTools = study.topTools.filter((t) => topTool && t.count === topTool.count);
-  const topChallenger = study.challengers[0];
+
+  // The panel prints every candidate rivalry, leads and ties alike. Only the
+  // leads may be described as out-pacing anything (DAN-2068).
+  const leads = study.challengers.filter((c) => c.outpacing);
+  const level = study.challengers.filter((c) => !c.outpacing);
+  const topChallenger = leads[0];
+  const outsideClusters = study.clusterCoverage.total - study.clusterCoverage.shown;
+
+  // One string, not interleaved JSX text nodes — those inject a space before every
+  // comma and full stop ("HubSpot by the widest margin , 4 distinct rivals").
+  const challengerLede = [
+    leads.length === 1 ? "challenger does" : "challengers do",
+    " so",
+    topChallenger
+      ? `, ${topChallenger.challenger} by the widest margin — ${topChallenger.challengerCount} distinct rivals to ${topChallenger.incumbent}'s ${topChallenger.incumbentCount}`
+      : "",
+    level.length > 0
+      ? `. The other ${level.length} ${level.length === 1 ? "is" : "are"} level.`
+      : ".",
+  ].join("");
 
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
@@ -325,12 +344,27 @@ export default async function B2BSaaSStudyPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
               </svg>
             </div>
-            <h2 id="b2b-saas-where-heading" className="text-2xl font-display font-bold text-text">Where SaaS buyers compare most</h2>
+            <h2 id="b2b-saas-where-heading" className="text-2xl font-display font-bold text-text">
+              Where SaaS buyers compare most — the {study.clusters.length} largest clusters
+            </h2>
           </div>
           <p className="text-text-secondary mb-5">
             Comparison demand by software category. Email marketing &amp; CRM and website builders
             draw the most head-to-head research — the categories where switching costs bite and the
             choice actually changes the business.
+          </p>
+          {/*
+            These bars do not sum to the headline, and saying so is the whole point:
+            a reader who adds them up gets a smaller number and cannot tell whether
+            we dropped comparisons or invented them (DAN-2068).
+          */}
+          <p className="text-sm text-text-secondary mb-5 rounded-lg border border-border bg-surface px-4 py-3">
+            These {study.clusters.length} clusters cover{" "}
+            <strong>{fmt(study.clusterCoverage.shown)}</strong> of the{" "}
+            <strong>{fmt(study.clusterCoverage.total)}</strong> comparisons in this study. The bars are
+            not meant to add up to the headline: {fmt(outsideClusters)} comparisons sit outside them —
+            either in a smaller cluster than the {study.clusters.length} shown, or in no cluster at
+            all, because a matchup is only assigned to one when its tools clearly belong there.
           </p>
           <div className="space-y-3">
             {study.clusters.map((c) => (
@@ -375,29 +409,46 @@ export default async function B2BSaaSStudyPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h2 id="b2b-saas-challengers-heading" className="text-2xl font-display font-bold text-text">Challengers out-pacing the incumbents</h2>
+              <h2 id="b2b-saas-challengers-heading" className="text-2xl font-display font-bold text-text">Challenger vs incumbent</h2>
             </div>
             <p className="text-text-secondary mb-5">
-              In these categories a newer entrant is now weighed against a wider field of rivals than
-              the established player it was built to unseat — a leading signal of a shifting market.
-              {topChallenger
-                ? ` ${topChallenger.challenger} leads, facing ${topChallenger.challengerCount} distinct rivals vs ${topChallenger.incumbent}'s ${topChallenger.incumbentCount}.`
-                : ""}
+              For each rivalry a challenger was built to win, we counted the distinct rivals both
+              sides are actually weighed against. A challenger facing the wider field is a leading
+              signal of a shifting market.{" "}
+              <strong>
+                {leads.length} of {study.challengers.length}
+              </strong>{" "}
+              {challengerLede}
             </p>
             <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
               {study.challengers.map((c) => (
                 <li
                   key={`${c.challengerSlug}-${c.incumbentSlug}`}
-                  className="rounded-lg border border-border bg-surface px-4 py-3"
+                  className={`rounded-lg border px-4 py-3 ${
+                    c.outpacing ? "border-primary-600/40 bg-primary-600/5" : "border-border bg-surface"
+                  }`}
                 >
-                  <div className="text-xs font-semibold text-primary-600 uppercase tracking-wide mb-2">
-                    {c.category}
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-xs font-semibold text-primary-600 uppercase tracking-wide">
+                      {c.category}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 ${
+                        c.outpacing
+                          ? "bg-primary-600 text-white"
+                          : "bg-surface text-text-secondary ring-1 ring-border"
+                      }`}
+                    >
+                      {c.outpacing ? "Out-pacing" : "Level"}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <Link href={`/entity/${c.challengerSlug}`} className="font-semibold text-text hover:text-primary-600">
                       {c.challenger}
                     </Link>
-                    <span className="font-bold text-primary-600">{c.challengerCount}</span>
+                    <span className={c.outpacing ? "font-bold text-primary-600" : "font-semibold text-text"}>
+                      {c.challengerCount}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between text-sm text-text-secondary mt-1">
                     <Link href={`/entity/${c.incumbentSlug}`} className="hover:text-primary-600">
@@ -405,9 +456,20 @@ export default async function B2BSaaSStudyPage() {
                     </Link>
                     <span>{c.incumbentCount}</span>
                   </div>
+                  <p className="text-xs text-text-secondary mt-2">
+                    {c.outpacing
+                      ? `${c.challenger} faces ${c.challengerCount - c.incumbentCount} more distinct rival${c.challengerCount - c.incumbentCount === 1 ? "" : "s"}.`
+                      : `Both face ${c.challengerCount} distinct rival${c.challengerCount === 1 ? "" : "s"} — no gap in our data.`}
+                  </p>
                 </li>
               ))}
             </ul>
+            {level.length > 0 && (
+              <p className="text-xs text-text-secondary mt-4">
+                Tied rows are published deliberately. A cut that shows only the challengers that are
+                ahead would report an upset in every category it looked at, whether or not one exists.
+              </p>
+            )}
           </section>
         )}
 
@@ -435,13 +497,23 @@ export default async function B2BSaaSStudyPage() {
               A tool&rsquo;s score is its number of <strong>distinct rivals</strong> — the other tools it
               is actually evaluated against, not the pages it appears on. Ties share a rank; where the
               leaders tie, we say so rather than picking one. The leaderboard counts B2B software only:
-              programming languages and frameworks are excluded, and so are consumer streaming services,
-              which our database types as &ldquo;software&rdquo; but which are not tools a software buyer
-              is choosing between. Category clusters are assigned by keyword-matching each
-              comparison&rsquo;s tools to our software subcategories (CRM, project management, AI tools,
-              and so on). The &ldquo;challengers&rdquo; cut surfaces categories where a newer entrant
-              faces a wider field of rivals than the incumbent it competes against. Data is refreshed
-              daily from our live database.
+              programming languages and frameworks are excluded, and so are web browsers, database
+              engines and consumer streaming services — all of which our database types as
+              &ldquo;software&rdquo;, and none of which is a tool a software buyer is choosing between.
+              Category clusters are assigned by keyword-matching each comparison&rsquo;s tools to our
+              software subcategories (CRM, project management, AI tools, and so on); the ten largest are
+              charted, and they are not expected to sum to the corpus.
+            </p>
+            <p>
+              <strong>Rival counts are taken across our whole catalog, not just the software vertical.</strong>{" "}
+              How many rivals a tool is compared against is a fact about the tool, and it must not change
+              because of how we happened to file a page: <em>ClickUp vs Jira</em> and <em>Jira vs Monday</em>{" "}
+              are filed under consumer products, and counting only the software vertical made Jira look
+              like it faced a single rival when it faces three. The{" "}
+              <strong>challenger vs incumbent</strong> cut compares those catalog-wide counts for each
+              rivalry, and publishes the result whichever way it falls — including the {level.length} of{" "}
+              {study.challengers.length} that come out level. Data is refreshed daily from our live
+              database.
             </p>
             <p className="text-xs">
               {study.fromSnapshot
