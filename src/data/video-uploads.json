@@ -3315,6 +3315,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-13T08:31:48.930Z"
+    },
+    {
+      "slug": "mercedes-vs-lexus",
+      "title": "Mercedes vs Lexus",
+      "entityA": "Mercedes",
+      "entityB": "Lexus",
+      "category": "Automotive",
+      "videoFile": "Mercedes vs Lexus.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Mercedes vs Lexus — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Mercedes vs Lexus.\n\n#mercedes #lexus #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-14T07:21:00.837Z"
+    },
+    {
+      "slug": "us-military-vs-china-military",
+      "title": "US Military vs China Military",
+      "entityA": "US Military",
+      "entityB": "China Military",
+      "category": "military",
+      "videoFile": "US Military vs China Military.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "US Military vs China Military — Full Comparison 2026",
+      "youtubeDescription": "The US has the world's most powerful military with $877B budget, 11 aircraft carriers, and global force projection. China has the largest military by personnel (2M active), is rapidly modernizing, and has the second largest budget ($292B).\n\n#usmilitary #chinamilitary #military #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-14T07:30:55.148Z"
+    },
+    {
+      "slug": "tesla-model-3-vs-bmw-i4",
+      "title": "Tesla Model 3 vs BMW i4",
+      "entityA": "Tesla Model 3",
+      "entityB": "BMW i4",
+      "category": "Automotive",
+      "videoFile": "Tesla Model 3 vs BMW i4.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Tesla Model 3 vs BMW i4 — Full Comparison 2026",
+      "youtubeDescription": "The Tesla Model 3 offers superior range (358 miles), Supercharger network access, and Autopilot. The BMW i4 delivers a more luxurious interior, better ride quality, and the classic BMW driving experience in electric form.\n\n#teslamodel3 #bmwi4 #automotive #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-14T07:40:52.643Z"
     }
   ]
 }
