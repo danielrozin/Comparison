@@ -53,6 +53,7 @@ export function FloatingShareButton({ title, slug, path = "compare" }: Props) {
         copied
           ? "bg-emerald-500 text-white pl-4 pr-5"
           : "bg-primary-600 hover:bg-primary-700 active:scale-95 text-white",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600",
       ].join(" ")}
     >
       {copied ? (

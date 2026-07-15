@@ -29,7 +29,7 @@ function CopyTldrButton({ text }: { text: string }) {
         onClick={handleCopy}
         aria-label={copied ? "Copied!" : "Copy quick answer"}
         title={copied ? "Copied!" : "Copy quick answer"}
-        className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold border transition-all duration-150 ${
+        className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
           copied
             ? "bg-green-50 text-green-700 border-green-200"
             : "bg-white/60 text-blue-600 border-blue-200 hover:bg-blue-50 hover:border-blue-300"
