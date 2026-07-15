@@ -98,6 +98,9 @@ export default async function MostComparedStudyPage() {
 
   const maxCat = Math.max(...study.categories.map((c) => c.count), 1);
 
+  const topCount = study.topBrands[0]?.count ?? 0;
+  const topTiedBrands = study.topBrands.filter((b) => b.count === topCount);
+
   // The distribution, not a winner. Every dedup rule we tried produced a
   // different "#1" — the spread is the finding that survives all of them
   // (DAN-2047 / DAN-2059).
@@ -312,10 +315,11 @@ export default async function MostComparedStudyPage() {
           </div>
           <p className="text-text-secondary mb-5">
             Ranked by <strong>distinct rivals</strong> — how many different brands each one is actually
-            matched against, once pages covering the same rivalry twice are collapsed into one. The
-            top of this table is a cluster, not a winner: seven brands tie on five rivals, and we do
-            not name a single &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how
-            finely each market is modelled (see methodology).
+            matched against, once pages covering the same rivalry twice are collapsed into one.{" "}
+            {topTiedBrands.length > 1
+              ? <>The top of this table is a cluster, not a winner: <strong>{topTiedBrands.length} brands</strong> tie on <strong>{topCount} rivals</strong>, and we do not name a single &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how finely each market is modelled (see methodology).</>
+              : <>The leader, <strong>{study.topBrands[0]?.name}</strong>, reaches <strong>{topCount} distinct rivals</strong> — but we caution against naming a single &ldquo;most-compared brand&rdquo; because the count is sensitive to how finely each market is modelled (see methodology).</>
+            }
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-sm" aria-label="Brands with the widest rivalry webs — rank, brand, type, distinct rival count">
