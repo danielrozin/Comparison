@@ -31,7 +31,7 @@ function ShowMoreButton({ hidden, onToggle, label, controlsId }: { hidden: numbe
     <button
       type="button"
       onClick={onToggle}
-      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
+      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
       aria-label={label}
       aria-expanded={false}
       aria-controls={controlsId}
@@ -49,7 +49,7 @@ function ShowLessButton({ onToggle, controlsId }: { onToggle: () => void; contro
     <button
       type="button"
       onClick={onToggle}
-      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150"
+      className="mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold text-text-secondary hover:text-text rounded-lg hover:bg-surface-alt border border-dashed border-border hover:border-border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
       aria-label="Show less"
       aria-expanded={true}
       aria-controls={controlsId}

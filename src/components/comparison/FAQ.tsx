@@ -46,7 +46,7 @@ function FAQItem({ faq, index, listPosition, isOpen, search, isHidden, onToggle 
         id={btnId}
         type="button"
         onClick={() => onToggle(index)}
-        className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
+        className={`w-full flex items-center gap-3 px-5 py-4 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset ${isOpen ? "bg-primary-50/50" : "hover:bg-surface-alt/70"}`}
         aria-expanded={isOpen}
         aria-controls={answerId}
       >

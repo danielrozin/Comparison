@@ -231,7 +231,7 @@ function GroupHeader({
       onClick={onToggle}
       aria-expanded={isOpen}
       aria-label={`${isOpen ? "Collapse" : "Expand"} ${categoryName} category`}
-      className="w-full flex items-center gap-3 bg-gradient-to-r from-surface-alt to-surface-alt/60 px-5 py-2.5 border-b border-border hover:from-primary-50/60 hover:to-surface-alt transition-colors cursor-pointer group/cat"
+      className="w-full flex items-center gap-3 bg-gradient-to-r from-surface-alt to-surface-alt/60 px-5 py-2.5 border-b border-border hover:from-primary-50/60 hover:to-surface-alt transition-colors cursor-pointer group/cat focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset"
     >
       <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-text-secondary flex-shrink-0 group-hover/cat:text-primary-700 transition-colors">
         <span className="w-1.5 h-1.5 rounded-full bg-primary-400 group-hover/cat:bg-primary-600 transition-colors flex-shrink-0" />
@@ -296,7 +296,7 @@ function OverflowRowsDesktop({
     <tr>
       <td colSpan={3} className="p-0">
         <details className="border-t border-border/30">
-          <summary className="px-5 py-2.5 text-xs font-medium text-primary-600 hover:bg-primary-50/40 cursor-pointer select-none">
+          <summary className="px-5 py-2.5 text-xs font-medium text-primary-600 hover:bg-primary-50/40 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
             Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
           </summary>
           <div role="rowgroup">
@@ -336,7 +336,7 @@ function OverflowRowsMobile({
   if (attrs.length === 0) return null;
   return (
     <details className="border-t border-border/30">
-      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-surface-alt/80">
+      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-surface-alt/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
         Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
       </summary>
       <div className="divide-y divide-border/30">

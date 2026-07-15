@@ -292,7 +292,7 @@ export function Header() {
                     <Link
                       href={`/category/${item.slug}`}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex-1 px-3 py-3 text-[15px] font-medium text-text active:bg-surface-alt rounded-lg"
+                      className="flex-1 px-3 py-3 text-[15px] font-medium text-text active:bg-surface-alt rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
                     >
                       {item.name}
                     </Link>
@@ -303,7 +303,7 @@ export function Header() {
                         aria-expanded={isExpanded}
                         aria-controls={`mobile-subs-${item.slug}`}
                         aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
-                        className="flex items-center justify-center w-11 h-11 rounded-lg active:bg-surface-alt"
+                        className="flex items-center justify-center w-11 h-11 rounded-lg active:bg-surface-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
                       >
                         <svg className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -321,7 +321,7 @@ export function Header() {
                             key={sub.slug}
                             href={`/category/${item.slug}/${sub.slug}`}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt"
+                            className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
                           >
                             <span aria-hidden="true">{sub.icon}</span>
                             <span className="truncate">{sub.name}</span>
