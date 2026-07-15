@@ -146,13 +146,14 @@ function labelFor(category: string): string {
 }
 
 /**
- * Baked-in snapshot — refreshed 2026-07-13 from the production Neon DB:
- * 469 published comparison *pages* (461 head-to-head + 8 three-way), which
- * collapse to 437 distinct rivalries across 659 canonical entities.
+ * Baked-in snapshot — refreshed 2026-07-15 from the production Neon DB:
+ * 454 published comparison *pages* (446 head-to-head + 8 three-way), which
+ * collapse to 437 distinct rivalries across 656 canonical entities.
  *
  * DAN-2067: this said 491 (483 + 8). 491 is the number of published *rows*; 22
  * of them are redirect sources that 308 at the edge, so they are not pages. The
- * corpus is 469. Anything quoting 491 externally is overstating the catalog.
+ * corpus shrinks with every consolidation batch (469 → 454 after DAN-2078 /
+ * DAN-2161). Anything quoting 491 externally is overstating the catalog.
  *
  * Used only when a live query is unavailable so the page always renders.
  * Keep in sync with the live corpus: a stale snapshot here is what let the
@@ -160,13 +161,13 @@ function labelFor(category: string): string {
  * with `npx tsx --env-file=.env.local scripts/dan2037-snapshot.ts`.
  */
 const SNAPSHOT: MostComparedStudy = {
-  totalComparisons: 469,
-  headToHeadPages: 461,
+  totalComparisons: 454,
+  headToHeadPages: 446,
   multiWayPages: 8,
   distinctRivalries: 437,
-  distinctBrands: 659,
-  rawEntityRows: 692,
-  updatedAt: "2026-07-13T00:00:00.000Z",
+  distinctBrands: 656,
+  rawEntityRows: 683,
+  updatedAt: "2026-07-15T00:00:00.000Z",
   fromSnapshot: true,
   topBrands: [
     { rank: 1, name: "Xbox Series X", slug: "xbox-series-x", type: "product", count: 6 },
@@ -183,52 +184,52 @@ const SNAPSHOT: MostComparedStudy = {
     { rank: 9, name: "Expedia", slug: "expedia", type: "platform", count: 4 },
     { rank: 9, name: "Ford", slug: "ford-motor-company", type: "company", count: 4 },
     { rank: 9, name: "Geico", slug: "geico", type: "products", count: 4 },
-    { rank: 9, name: "Hulu", slug: "hulu", type: "company", count: 4 },
+    { rank: 9, name: "HubSpot", slug: "hubspot", type: "software", count: 4 },
   ],
   topSaaS: [
     { rank: 1, name: "Mailchimp", slug: "mailchimp", type: "software", count: 5 },
     { rank: 1, name: "Squarespace", slug: "squarespace", type: "software", count: 5 },
     { rank: 3, name: "1Password", slug: "1password", type: "software", count: 4 },
+    { rank: 3, name: "HubSpot", slug: "hubspot", type: "software", count: 4 },
     { rank: 3, name: "Microsoft Teams", slug: "microsoft-teams", type: "software", count: 4 },
     { rank: 3, name: "Notion", slug: "notion", type: "software", count: 4 },
     { rank: 3, name: "Zoom", slug: "zoom", type: "software", count: 4 },
-    { rank: 7, name: "ClickUp", slug: "clickup", type: "software", count: 3 },
-    { rank: 7, name: "Google Drive", slug: "google-drive", type: "software", count: 3 },
-    { rank: 7, name: "Jira", slug: "jira", type: "software", count: 3 },
-    { rank: 7, name: "Klaviyo", slug: "klaviyo", type: "software", count: 3 },
-    { rank: 7, name: "QuickBooks Online", slug: "quickbooks-online", type: "software", count: 3 },
-    { rank: 12, name: "Brave", slug: "brave", type: "software", count: 2 },
+    { rank: 8, name: "ClickUp", slug: "clickup", type: "software", count: 3 },
+    { rank: 8, name: "Firefox", slug: "firefox", type: "software", count: 3 },
+    { rank: 8, name: "Google Drive", slug: "google-drive", type: "software", count: 3 },
+    { rank: 8, name: "Jira", slug: "jira", type: "software", count: 3 },
+    { rank: 8, name: "Klaviyo", slug: "klaviyo", type: "software", count: 3 },
   ],
   topMatchups: [
     // DAN-2067: was `disney-plus-vs-netflix`, which 308s — the snapshot was linking a redirect.
     { rank: 1, title: "Disney+ vs Netflix", slug: "disney-vs-netflix", category: "entertainment", centrality: 10 },
     { rank: 2, title: "Spotify vs YouTube Music", slug: "spotify-vs-youtube-music", category: "entertainment", centrality: 10 },
     { rank: 3, title: "Disney+ vs Hulu", slug: "disney-plus-vs-hulu", category: "entertainment", centrality: 9 },
-    { rank: 4, title: "Netflix vs Hulu", slug: "netflix-vs-hulu", category: "entertainment", centrality: 9 },
-    { rank: 5, title: "PlayStation 5 vs Xbox Series X", slug: "playstation-5-vs-xbox-series-x", category: "entertainment", centrality: 9 },
-    { rank: 6, title: "Steam Deck vs Xbox Series X", slug: "steam-deck-vs-xbox-series-x", category: "gaming", centrality: 9 },
-    { rank: 7, title: "Booking.com vs Expedia", slug: "booking-com-vs-expedia", category: "software", centrality: 8 },
-    { rank: 8, title: "Disney+ vs HBO Max", slug: "disney-vs-hbo-max", category: "entertainment", centrality: 8 },
-    { rank: 9, title: "State Farm vs Geico", slug: "geico-vs-state-farm", category: "insurance", centrality: 8 },
-    { rank: 10, title: "HBO Max vs Netflix", slug: "hbo-max-vs-netflix", category: "entertainment", centrality: 8 },
+    { rank: 4, title: "Mailchimp vs HubSpot", slug: "mailchimp-vs-hubspot", category: "software", centrality: 9 },
+    { rank: 5, title: "Netflix vs Hulu", slug: "netflix-vs-hulu", category: "entertainment", centrality: 9 },
+    { rank: 6, title: "PlayStation 5 vs Xbox Series X", slug: "ps5-vs-xbox-series-x", category: "gaming", centrality: 9 },
+    { rank: 7, title: "Steam Deck vs Xbox Series X", slug: "steam-deck-vs-xbox-series-x", category: "gaming", centrality: 9 },
+    { rank: 8, title: "Booking.com vs Expedia", slug: "booking-com-vs-expedia", category: "software", centrality: 8 },
+    { rank: 9, title: "Disney+ vs HBO Max", slug: "disney-vs-hbo-max", category: "entertainment", centrality: 8 },
+    { rank: 10, title: "State Farm vs Geico", slug: "geico-vs-state-farm", category: "insurance", centrality: 8 },
   ],
   categories: [
-    { category: "products", label: "Consumer Products", count: 108 },
+    { category: "products", label: "Consumer Products", count: 106 },
     { category: "software", label: "B2B SaaS & Software", count: 90 },
-    { category: "technology", label: "Consumer Technology", count: 43 },
-    { category: "entertainment", label: "Entertainment", count: 35 },
-    { category: "sports", label: "Sports", count: 32 },
-    { category: "automotive", label: "Automotive", count: 29 },
-    { category: "companies", label: "Companies", count: 16 },
+    { category: "technology", label: "Consumer Technology", count: 42 },
+    { category: "entertainment", label: "Entertainment", count: 33 },
+    { category: "sports", label: "Sports", count: 29 },
+    { category: "automotive", label: "Automotive", count: 27 },
     { category: "travel", label: "Travel", count: 15 },
     { category: "food_and_drink", label: "Food And Drink", count: 14 },
+    { category: "companies", label: "Companies", count: 13 },
     { category: "finance", label: "Finance", count: 13 },
   ],
   rivalSpread: [
-    { rivals: 1, entities: 375 },
-    { rivals: 2, entities: 73 },
-    { rivals: 3, entities: 24 },
-    { rivals: 4, entities: 13 },
+    { rivals: 1, entities: 372 },
+    { rivals: 2, entities: 71 },
+    { rivals: 3, entities: 25 },
+    { rivals: 4, entities: 14 },
     { rivals: 5, entities: 7 },
     { rivals: 6, entities: 1 },
   ],
