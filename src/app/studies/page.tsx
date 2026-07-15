@@ -95,26 +95,29 @@ export default async function StudiesIndexPage() {
     {
       slug: "b2b-saas-comparison-report-2026",
       title: "The B2B SaaS Comparison Report 2026",
-      blurb: `${fmt(saasCount)} head-to-head SaaS comparisons analyzed: the most-compared software tools, the hottest category rivalries, and where challengers are out-pacing incumbents.`,
+      blurb: `${fmt(saasCount)} SaaS comparison pages analyzed: the most-compared software tools, the hottest category rivalries, and where challengers are out-pacing incumbents.`,
       badge: "Data Study",
     },
     {
       slug: "most-compared-brands-2026",
       title: "The Most-Compared Brands of 2026",
-      blurb: `${fmt(totalComparisons)} head-to-head comparisons analyzed to rank the brands, SaaS tools, and matchups people research most this year.`,
+      // "published comparison pages", not "head-to-head": 8 of these pages compare
+      // three or more things (aws-vs-azure-vs-gcp, chatgpt-vs-claude-vs-gemini …),
+      // so the total is a page count, not a head-to-head count (DAN-2150).
+      blurb: `${fmt(totalComparisons)} published comparison pages analyzed to rank the brands, SaaS tools, and matchups people research most this year.`,
       badge: "Data Study",
     },
     {
       slug: "investing-comparison-report-2026",
       title: "The Investing & Finance Comparison Report 2026",
-      blurb: `${fmt(financeCount)} head-to-head finance comparisons analyzed: the most-researched brokerages, retirement accounts, credit cards, and investment products of 2026.`,
+      blurb: `${fmt(financeCount)} finance comparison pages analyzed: the most-researched brokerages, retirement accounts, credit cards, and investment products of 2026.`,
       badge: "Data Study",
     },
   ];
 
-  const faqCorpusAnswer = `A Versus B data studies are original research reports built from our database of ${fmt(totalComparisons)} published head-to-head comparisons. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by our own comparison corpus rather than surveys.`;
+  const faqCorpusAnswer = `A Versus B data studies are original research reports built from our database of ${fmt(totalComparisons)} published comparison pages. Each study reveals which brands, SaaS tools, and products consumers research most frequently, backed by our own comparison corpus rather than surveys.`;
   const faqMethodologyAnswer = `Each study is built from our internal database of structured head-to-head comparison pages. Before counting anything we reduce those pages to rivalries: a matchup published in both directions (Netflix vs Disney+ and Disney+ vs Netflix) is one rivalry, brands that exist under more than one database entry are merged, and pages comparing three or more things are excluded from head-to-head figures. A brand's score is then its number of distinct rivals — the brands it is actually matched against — not the number of pages it appears on. Rankings show ties rather than naming a single winner, because rival counts are sensitive to how finely each market is modelled in our catalog. All figures are counts of published comparison content; we do not publish traffic or readership numbers.`;
-  const faqTopicsAnswer = `Current studies cover B2B SaaS comparison trends (${fmt(saasCount)} matchups analyzed), the most-compared brands of 2026 (${fmt(totalComparisons)} comparisons ranked), and investing & finance products (${fmt(financeCount)} head-to-head finance comparisons). Counts are read live from our database and grow as we publish. New topics are added as the corpus grows.`;
+  const faqTopicsAnswer = `Current studies cover B2B SaaS comparison trends (${fmt(saasCount)} comparison pages analyzed), the most-compared brands of 2026 (${fmt(totalComparisons)} comparison pages ranked), and investing & finance products (${fmt(financeCount)} finance comparison pages). Counts are read live from our database and grow as we publish. New topics are added as the corpus grows.`;
 
   const breadcrumb = breadcrumbSchema([
     { name: "Home", url: SITE_URL },
