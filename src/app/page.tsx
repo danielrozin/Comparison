@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CATEGORIES, SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getTrendingComparisons, getLatestComparisons, getTotalComparisonsCount } from "@/lib/services/comparison-service";
 import { listBlogArticles } from "@/lib/services/blog-generator";
-import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
+import { webApplicationSchema, organizationSchema, dataCatalogSchema, webSiteSchema, faqSchema, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -113,11 +113,10 @@ export default async function HomePage() {
       `${SITE_URL}/entity`,
       `${SITE_URL}/developers`,
     ],
-    hasPart: trending.slice(0, 5).map((t) => ({
-      "@type": "Article",
-      name: t.title,
-      url: `${SITE_URL}/compare/${t.slug}`,
-    })),
+    hasPart: [
+      { "@type": "WebPage", "@id": `${SITE_URL}/#webpage` },
+      { "@type": "ItemList", "@id": `${SITE_URL}/#top-comparisons` },
+    ],
     // speakable — marks the hero headline and description for voice assistants and AEO.
     // Google Assistant and AI answer engines read these CSS selectors to extract the
     // page's primary answer when responding to conversational queries.
@@ -175,6 +174,45 @@ export default async function HomePage() {
           { question: "How accurate are the comparisons on A Versus B?", answer: "Each comparison is researched from multiple sources and reviewed editorially. We cite our sources and publish our methodology at aversusb.net/how-we-write-verdicts. Data is updated regularly as products and information change." },
           { question: "What categories does A Versus B cover?", answer: "A Versus B covers 17+ categories including technology, software, sports, countries, automotive, companies, health, finance, entertainment, gaming, products, and brands — with more being added regularly." },
         ])) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema({
+          title: `${SITE_NAME} — Compare Anything`,
+          description: HOME_DESC,
+          url: SITE_URL,
+          datePublished: "2024-01-01",
+          dateModified: homeToday,
+          keywords: "compare anything, side-by-side comparison, product comparison, technology comparison, country comparison, sports comparison",
+          speakableCssSelector: ["h1", ".hero-description"],
+        })) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "@id": `${SITE_URL}/#top-comparisons`,
+          name: `Top Comparisons on ${SITE_NAME}`,
+          description: `The ${trending.length} most-viewed side-by-side comparisons on A Versus B right now.`,
+          url: SITE_URL,
+          numberOfItems: trending.length,
+          itemListOrder: "https://schema.org/ItemListOrderDescending",
+          isPartOf: { "@type": "WebPage", "@id": `${SITE_URL}/#webpage` },
+          itemListElement: trending.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.title,
+            url: `${SITE_URL}/compare/${item.slug}`,
+            item: {
+              "@type": "Article",
+              "@id": `${SITE_URL}/compare/${item.slug}#article`,
+              url: `${SITE_URL}/compare/${item.slug}`,
+              name: item.title,
+              isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+            },
+          })),
+        }) }}
       />
       {/* Hero Section */}
       <section aria-labelledby="hero-heading" className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
