@@ -71,6 +71,16 @@ function fmt(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+// Small-integer number words so the leaderboard prose reads naturally
+// ("a seven-brand cluster", not "a 7-brand cluster"). Falls back to the digit.
+const NUMBER_WORDS = [
+  "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+  "ten", "eleven", "twelve",
+];
+function numberWord(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n);
+}
+
 // The entity taxonomy carries singular and plural forms of the same type, plus
 // several ways of saying "streaming service". Both spellings need a label or the
 // table prints a raw slug.
@@ -310,13 +320,50 @@ export default async function MostComparedStudyPage() {
             </div>
             <h2 id="brands-overall-heading" className="text-2xl font-display font-bold text-text">Brands with the widest rivalry webs</h2>
           </div>
-          <p className="text-text-secondary mb-5">
-            Ranked by <strong>distinct rivals</strong> — how many different brands each one is actually
-            matched against, once pages covering the same rivalry twice are collapsed into one. The
-            top of this table is a cluster, not a winner: seven brands tie on five rivals, and we do
-            not name a single &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how
-            finely each market is modelled (see methodology).
-          </p>
+          {(() => {
+            // Keep this prose honest against whatever the table actually shows.
+            // The leaderboard is data-driven (study.topBrands), so the intro has
+            // to be too — hardcoding "seven brands tie" contradicted a unique #1
+            // once the data shifted (DAN-2149). Derive the shape from the data:
+            // either there is an outright leader, or the top is a genuine tie.
+            const rank1 = study.topBrands.filter((b) => b.rank === 1);
+            const preamble = (
+              <>
+                Ranked by <strong>distinct rivals</strong> — how many different brands each one is
+                actually matched against, once pages covering the same rivalry twice are collapsed
+                into one.{" "}
+              </>
+            );
+
+            if (rank1.length === 1) {
+              const leader = rank1[0];
+              const nextCount = Math.max(
+                0,
+                ...study.topBrands.filter((b) => b.count < leader.count).map((b) => b.count),
+              );
+              const cluster = study.topBrands.filter((b) => b.count === nextCount);
+              return (
+                <p className="text-text-secondary mb-5">
+                  {preamble}
+                  <strong>{leader.name}</strong> tops the table with {leader.count} distinct rivals,
+                  ahead of a {numberWord(cluster.length)}-brand cluster tied at {nextCount}. We
+                  publish the rank as it falls, but treat the gap as soft: rival counts are sensitive
+                  to how finely each market is modelled (see methodology).
+                </p>
+              );
+            }
+
+            // No outright leader — the top of the table is a real tie.
+            return (
+              <p className="text-text-secondary mb-5">
+                {preamble}
+                The top of this table is a cluster, not a winner: {numberWord(rank1.length)} brands
+                tie on {rank1[0]?.count ?? 0} rivals, and we do not name a single{" "}
+                &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how finely each
+                market is modelled (see methodology).
+              </p>
+            );
+          })()}
           <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-sm" aria-label="Brands with the widest rivalry webs — rank, brand, type, distinct rival count">
               <thead className="bg-surface text-text-secondary">
