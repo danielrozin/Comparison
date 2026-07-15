@@ -25,7 +25,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
       {currentPage > 1 ? (
         <Link
           href={pageUrl(currentPage - 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
+          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           rel="prev"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -62,7 +62,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
             key={page}
             href={pageUrl(page)}
             aria-label={`Page ${page}`}
-            className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
+            className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             {page}
           </Link>
@@ -73,7 +73,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
       {currentPage < totalPages ? (
         <Link
           href={pageUrl(currentPage + 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors"
+          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           rel="next"
         >
           Next

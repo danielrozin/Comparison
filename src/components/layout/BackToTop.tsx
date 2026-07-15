@@ -21,7 +21,7 @@ export function BackToTop() {
         window.scrollTo({ top: 0, behavior: reduceMotion ? "instant" : "smooth" });
       }}
       aria-label="Back to top"
-      className="fixed bottom-[88px] right-4 md:bottom-8 md:right-6 z-40 group w-11 h-11 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-lg shadow-primary-500/30 flex items-center justify-center text-white hover:shadow-xl hover:shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all duration-200 animate-fade-in"
+      className="fixed bottom-[88px] right-4 md:bottom-8 md:right-6 z-40 group w-11 h-11 bg-gradient-to-br from-primary-500 to-accent-600 rounded-full shadow-lg shadow-primary-500/30 flex items-center justify-center text-white hover:shadow-xl hover:shadow-primary-500/40 hover:scale-110 active:scale-95 transition-all duration-200 animate-fade-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
     >
       <div className="absolute inset-0 rounded-full ring-2 ring-primary-400/30 ring-offset-1 ring-offset-white group-hover:ring-primary-400/60 transition-all duration-200" />
       <svg className="w-4 h-4 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
