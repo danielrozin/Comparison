@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRedis } from "@/lib/services/redis";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 import {
   getGSCCompareWeekly,
   getGSCTrafficSummary,
@@ -164,7 +165,7 @@ export async function GET() {
         topCategories, surveyRatings,
       ] = await Promise.all([
         prisma.comparison.count(),
-        prisma.comparison.count({ where: { status: "published" } }),
+        prisma.comparison.count({ where: canonicalComparisonWhere() }),
         prisma.entity.count(),
         prisma.blogArticle.count(),
         prisma.comparisonVote.count(),
