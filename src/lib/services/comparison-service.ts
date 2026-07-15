@@ -23,6 +23,7 @@ import {
 } from "./mock-data";
 import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
 
@@ -477,7 +478,7 @@ export async function getTrendingComparisons(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         orderBy: { viewCount: "desc" },
         take: limit,
         include: {
@@ -570,7 +571,7 @@ async function getRelatedFromDb(
   // First try explicit related IDs
   if (comp.relatedComparisonIds && comp.relatedComparisonIds.length > 0) {
     const related = await prisma.comparison.findMany({
-      where: { id: { in: comp.relatedComparisonIds } },
+      where: { id: { in: comp.relatedComparisonIds }, slug: { notIn: REDIRECTED_COMPARE_SLUGS } },
       select: { slug: true, title: true, category: true },
       take: limit,
     });
@@ -579,7 +580,7 @@ async function getRelatedFromDb(
   // Fallback: same category
   if (comp.category) {
     const related = await prisma.comparison.findMany({
-      where: { category: comp.category, status: "published" },
+      where: canonicalComparisonWhere({ category: comp.category }),
       select: { slug: true, title: true, category: true },
       take: limit,
     });
@@ -695,14 +696,14 @@ export async function getComparisonsByCategory(
     try {
       const [rows, total] = await Promise.all([
         prisma.comparison.findMany({
-          where: { category: { equals: category, mode: "insensitive" } },
+          where: canonicalComparisonWhere({ category: { equals: category, mode: "insensitive" } }),
           select: { slug: true, title: true, category: true },
           orderBy: { viewCount: "desc" },
           skip: offset,
           take: limit,
         }),
         prisma.comparison.count({
-          where: { category: { equals: category, mode: "insensitive" } },
+          where: canonicalComparisonWhere({ category: { equals: category, mode: "insensitive" } }),
         }),
       ]);
       if (rows.length > 0 || total > 0) {
@@ -1014,7 +1015,7 @@ export async function getLatestComparisons(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         orderBy: { createdAt: "desc" },
         take: limit,
         include: {
@@ -1152,13 +1153,12 @@ export async function getComparisonsForEntity(
   if (prisma) {
     try {
       const comparisons = await prisma.comparison.findMany({
-        where: {
-          status: "published",
+        where: canonicalComparisonWhere({
           OR: [
             { entities: { some: { entity: { slug: entitySlug } } } },
             { slug: { contains: entitySlug } },
           ],
-        },
+        }),
         select: { slug: true, title: true, category: true },
         orderBy: { viewCount: "desc" },
       });
@@ -1222,7 +1222,7 @@ export async function getAllSitemapData(): Promise<{
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         select: {
           slug: true,
           updatedAt: true,
@@ -1280,7 +1280,7 @@ export async function getRecentComparisonsForFeed(
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { status: "published" },
+        where: canonicalComparisonWhere(),
         select: { slug: true, title: true, category: true, shortAnswer: true, updatedAt: true },
         orderBy: { updatedAt: "desc" },
         take: limit,
@@ -1330,13 +1330,13 @@ export async function listAllComparisons(
     try {
       const [rows, total] = await Promise.all([
         prisma.comparison.findMany({
-          where: { status: "published" },
+          where: canonicalComparisonWhere(),
           select: { slug: true, title: true, category: true },
           orderBy: { viewCount: "desc" },
           skip: offset,
           take: limit,
         }),
-        prisma.comparison.count({ where: { status: "published" } }),
+        prisma.comparison.count({ where: canonicalComparisonWhere() }),
       ]);
       return {
         comparisons: rows.map((r: { slug: string; title: string; category: string | null }) => ({ slug: r.slug, title: r.title, category: r.category || "general" })),
@@ -1393,7 +1393,11 @@ export async function getComparisonsForRefresh(
     const rows = await prisma.comparison.findMany({
       where: {
         status: "published",
-        ...(onlySlugs && onlySlugs.length > 0 ? { slug: { in: onlySlugs } } : {}),
+        // DAN-2116: never spend a generation refreshing a redirect source (it 308s at the edge).
+        slug: {
+          notIn: REDIRECTED_COMPARE_SLUGS,
+          ...(onlySlugs && onlySlugs.length > 0 ? { in: onlySlugs } : {}),
+        },
         // Only refresh pages whose cooldown has elapsed (or was never set)
         OR: [{ nextRefreshAt: null }, { nextRefreshAt: { lte: now } }],
         ...(minImpressions > 0 ? { searchImpressions: { gte: minImpressions } } : {}),

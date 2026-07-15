@@ -17,6 +17,10 @@ import {
   getMockComparison,
   getAllMockSlugs,
 } from "./mock-data";
+import {
+  REDIRECTED_COMPARE_SLUGS,
+  isRedirectedCompareSlug,
+} from "@/lib/redirects/compare-redirects";
 
 // Category affinity map (same as InternalLinks component)
 const RELATED_CATEGORIES: Record<string, string[]> = {
@@ -165,7 +169,9 @@ async function getLinksFromDb(
         where: {
           entity: { slug: { in: input.entitySlugs } },
           comparison: {
-            slug: { not: input.slug },
+            // DAN-2116: exclude redirect sources — they 308 at the edge, so linking
+            // to them burns a hop back to the canonical page. See canonical-comparisons.
+            slug: { not: input.slug, notIn: REDIRECTED_COMPARE_SLUGS },
             status: "published",
           },
         },
@@ -222,7 +228,7 @@ async function getLinksFromDb(
       const sameCat = await prisma.comparison.findMany({
         where: {
           category: input.category,
-          slug: { not: input.slug },
+          slug: { not: input.slug, notIn: REDIRECTED_COMPARE_SLUGS },
           status: "published",
         },
         select: { slug: true, title: true, category: true, viewCount: true },
@@ -251,7 +257,7 @@ async function getLinksFromDb(
       const relCat = await prisma.comparison.findMany({
         where: {
           category: { in: relatedCats },
-          slug: { not: input.slug },
+          slug: { not: input.slug, notIn: REDIRECTED_COMPARE_SLUGS },
           status: "published",
         },
         select: { slug: true, title: true, category: true, viewCount: true },
@@ -339,6 +345,10 @@ function getLinksFromMock(input: LinkingEngineInput, limit: number): ScoredLink[
 
 function rankAndLimit(scored: Map<string, ScoredLink>, limit: number): ScoredLink[] {
   return Array.from(scored.values())
+    // DAN-2116: final belt-and-suspenders — a redirect source must never surface as a
+    // related link, no matter which signal produced it (explicit InternalLink records
+    // and the mock fallback bypass the query-level filters above).
+    .filter((link) => !isRedirectedCompareSlug(link.slug))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
