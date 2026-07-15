@@ -114,6 +114,17 @@ export const ENTITY_ALIASES: Readonly<Record<string, string>> = {
   "monday-com": "monday",
   "real-madrid-cf": "real-madrid",
   samsung: "samsung-electronics",
+  // --- Samsung product-family variants → parent brand (DAN-2150 / DAN-2068)
+  // 17 pages across these 8 slugs all represent the Samsung brand; the leaderboard
+  // was showing samsung=5 because the other 12 appearances were fragmented.
+  "samsung-galaxy": "samsung-electronics",
+  "samsung-galaxy-s24": "samsung-electronics",
+  "samsung-galaxy-s25": "samsung-electronics",
+  "samsung-galaxy-s25-ultra": "samsung-electronics",
+  "samsung-galaxy-s26": "samsung-electronics",
+  "samsung-galaxy-tab-s10": "samsung-electronics",
+  "samsung-s26": "samsung-electronics",
+  "samsung-tablet": "samsung-electronics",
   "target-corporation": "target",
   "neymar-da-silva-santos-j-nior": "neymar",
 
