@@ -101,7 +101,7 @@ export function RequestList() {
           type="button"
           aria-pressed={sort === "votes"}
           onClick={() => { setSort("votes"); setPage(1); }}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
             sort === "votes"
               ? "bg-primary-100 text-primary-700"
               : "text-text-secondary hover:bg-surface-alt"
@@ -113,7 +113,7 @@ export function RequestList() {
           type="button"
           aria-pressed={sort === "newest"}
           onClick={() => { setSort("newest"); setPage(1); }}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
             sort === "newest"
               ? "bg-primary-100 text-primary-700"
               : "text-text-secondary hover:bg-surface-alt"
@@ -159,7 +159,7 @@ export function RequestList() {
                   onClick={() => handleVote(req.id)}
                   disabled={hasVoted || req.status === "generated"}
                   aria-label={hasVoted ? `Voted — ${req.voteCount} vote${req.voteCount !== 1 ? "s" : ""} for ${req.entityA} vs ${req.entityB}` : `Upvote ${req.entityA} vs ${req.entityB} — ${req.voteCount} vote${req.voteCount !== 1 ? "s" : ""}`}
-                  className={`flex flex-col items-center min-w-[52px] py-2 px-2 rounded-lg border transition-all ${
+                  className={`flex flex-col items-center min-w-[52px] py-2 px-2 rounded-lg border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                     hasVoted
                       ? "bg-primary-50 border-primary-200 text-primary-600"
                       : "bg-surface-alt border-border text-text-secondary hover:border-primary-300 hover:bg-primary-50 hover:text-primary-600"
@@ -235,7 +235,7 @@ export function RequestList() {
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
             aria-label="Go to previous page"
-            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
+            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           >
             Previous
           </button>
@@ -247,7 +247,7 @@ export function RequestList() {
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
             aria-label="Go to next page"
-            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors"
+            className="px-3 py-1.5 min-h-[44px] text-sm border border-border rounded-lg disabled:opacity-50 hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           >
             Next
           </button>

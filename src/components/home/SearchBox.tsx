@@ -230,7 +230,7 @@ export function SearchBox() {
           <button
             type="submit"
             aria-label="Search or compare"
-            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 active:from-primary-800 active:to-primary-700 text-white font-semibold rounded-xl transition-all duration-150 text-sm sm:text-base shadow-md hover:shadow-lg"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 active:from-primary-800 active:to-primary-700 text-white font-semibold rounded-xl transition-all duration-150 text-sm sm:text-base shadow-md hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
           >
             <span aria-hidden="true">Compare</span>
           </button>
@@ -300,7 +300,7 @@ export function SearchBox() {
                   aria-selected={isActive}
                   href={`/compare/${item.slug}`}
                   onClick={() => setShowDropdown(false)}
-                  className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 ${
+                  className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${
                     isActive
                       ? "bg-primary-50/80 border-l-primary-500"
                       : "hover:bg-primary-50/30 border-l-transparent"

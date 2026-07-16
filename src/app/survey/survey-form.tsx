@@ -523,7 +523,7 @@ export function SurveyForm() {
           <button
             type="button"
             onClick={handlePrev}
-            className="px-7 py-3 bg-surface-alt text-text-secondary font-semibold rounded-lg hover:bg-border transition-colors"
+            className="px-7 py-3 bg-surface-alt text-text-secondary font-semibold rounded-lg hover:bg-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           >
             Back
           </button>
@@ -534,7 +534,7 @@ export function SurveyForm() {
           type="button"
           onClick={handleNext}
           disabled={submitting}
-          className="px-7 py-3 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-7 py-3 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
         >
           {submitting
             ? "Submitting..."
@@ -744,7 +744,7 @@ function ScaleRow({
             key={n}
             type="button"
             onClick={() => onChange(n)}
-            className={`flex-1 py-2 text-sm border border-border transition-all cursor-pointer ${
+            className={`flex-1 py-2 text-sm border border-border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500 ${
               i === 0
                 ? "rounded-l-lg"
                 : i === 4
