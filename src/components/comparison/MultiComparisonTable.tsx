@@ -109,7 +109,7 @@ export function MultiComparisonTable({
           type="button"
           onClick={allOpen ? collapseAll : expandAll}
           aria-pressed={allOpen}
-          className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+          className="text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:rounded"
         >
           {allOpen ? "Collapse all" : "Expand all"}
         </button>
@@ -162,7 +162,7 @@ export function MultiComparisonTable({
                           onClick={() => toggleGroup(categoryName)}
                           aria-expanded={isOpen}
                           aria-label={`${isOpen ? "Collapse" : "Expand"} ${categoryName} category`}
-                          className="w-full flex items-center justify-between bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
+                          className="w-full flex items-center justify-between bg-surface-alt px-5 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500"
                         >
                           <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                             {categoryName}
@@ -227,7 +227,7 @@ export function MultiComparisonTable({
                 onClick={() => toggleGroup(categoryName)}
                 aria-expanded={openGroups.has(categoryName)}
                 aria-label={`${openGroups.has(categoryName) ? "Collapse" : "Expand"} ${categoryName} category`}
-                className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between bg-surface-alt px-3 py-2.5 border-b border-border hover:bg-primary-50/40 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500"
               >
                 <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary" aria-hidden="true">
                   {categoryName}
