@@ -11,6 +11,7 @@ import { fetchEntityImages } from "@/lib/services/image-service";
 import { setPostHogDistinctId } from "@/lib/posthog-otel";
 import { COMPARISON_CATEGORIES, validateComparisonCategory } from "@/lib/utils/categories";
 import { assessComparisonQuality } from "@/lib/services/comparison-quality";
+import { findSelfContradictions, describeContradictions } from "@/lib/services/numeric-claim-guard";
 
 // Cap each Claude call at 45s so a slow upstream can't blow past the
 // 60s Vercel function budget and leave the user-facing route hanging
@@ -102,8 +103,13 @@ Requirements:
 - citationStats.reviewsAnalyzed = estimate of reviews/sources analyzed (use null if unknown)
 - citationStats.preferencePercent = if data suggests a preference, include % (null otherwise)
 - Be factual and balanced — present both sides fairly
-- Use real statistics and data where possible — every claim should cite a number
-- Keep the year current (2026)`;
+- Keep the year current (2026)
+
+NUMERIC CLAIM RULES (DAN-2188 — these override "cite a number" wherever they conflict):
+- keyDifferences is the SINGLE SOURCE OF NUMBERS. Any figure you restate in shortAnswer, verdict, or quickAnswer MUST be copied from a keyDifferences entityAValue/entityBValue — never re-derived or re-estimated. If a figure is not in keyDifferences, do not put it in the prose.
+- Never contradict your own numbers. If you write that one side is larger/higher/more and then quote "(A vs B)", A must be the bigger number. For ranks/positions ("ranked higher"), the better side has the SMALLER ordinal.
+- Every numeric claim needs an as-of anchor — name the year the figure is from, e.g. "$27.4 trillion (2025)" or "as of 2025". Put the anchor on the keyDifferences value and carry it into the prose.
+- If you cannot anchor a figure to a specific year, DO NOT invent a precise number. Use directional/qualitative language instead ("substantially larger", "roughly double") and leave the precise figure out.`;
 
 export type GenerationErrorStage =
   | "tavily"
@@ -112,6 +118,7 @@ export type GenerationErrorStage =
   | "save"
   | "timeout"
   | "quality"
+  | "contradiction"
   | "unknown";
 
 export interface GenerationResult {
@@ -339,6 +346,19 @@ export async function generateComparison(
       };
     }
 
+    const contradictions = findSelfContradictions(comparison);
+    if (contradictions.length > 0) {
+      console.warn(
+        `Contradiction gate rejected ${slug}: ${describeContradictions(contradictions)}`
+      );
+      return {
+        success: false,
+        comparison: null,
+        error: `Generation self-contradicts: ${describeContradictions(contradictions)}`,
+        errorStage: "contradiction",
+      };
+    }
+
     return { success: true, comparison };
   } catch (error) {
     console.error("AI comparison generation failed:", error);
@@ -452,7 +472,13 @@ Critical requirements:
 - Include 5-7 key differences and 6-10 attributes with specific, real data — never vague values like "Good".
 - 3-5 pros and 2-3 cons per entity. Be specific and honest.
 - Verdict must give a per-entity recommendation covering all ${n} options.
-- Keep the year current (2026).`;
+- Keep the year current (2026).
+
+NUMERIC CLAIM RULES (DAN-2188):
+- keyDifferences is the SINGLE SOURCE OF NUMBERS. Any figure restated in shortAnswer, verdict, or quickAnswer MUST be copied from a keyDifferences values[] entry — never re-derived. If a figure is not in keyDifferences, keep it out of the prose.
+- Never contradict your own numbers. If you say one option is larger/higher/more and then quote "(A vs B)", A must be the bigger number. For ranks/positions, the better option has the SMALLER ordinal.
+- Every numeric claim needs an as-of year, e.g. "$27.4 trillion (2025)". Put it on the keyDifferences value and carry it into the prose.
+- If a figure cannot be anchored to a year, DO NOT invent a precise number — use directional language ("substantially larger", "roughly double") instead.`;
 }
 
 /**
@@ -671,6 +697,19 @@ export async function generateMultiComparison(
         comparison: null,
         error: `Generation failed quality gate: ${quality.reasons.join("; ")}`,
         errorStage: "quality",
+      };
+    }
+
+    const contradictions = findSelfContradictions(comparison);
+    if (contradictions.length > 0) {
+      console.warn(
+        `Contradiction gate rejected ${slug}: ${describeContradictions(contradictions)}`
+      );
+      return {
+        success: false,
+        comparison: null,
+        error: `Generation self-contradicts: ${describeContradictions(contradictions)}`,
+        errorStage: "contradiction",
       };
     }
 

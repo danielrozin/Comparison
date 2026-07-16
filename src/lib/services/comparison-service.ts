@@ -22,6 +22,7 @@ import {
   getMockLatest,
 } from "./mock-data";
 import { getLinkedComparisons, getRelatedBlogPosts } from "./internal-linking-engine";
+import { findSelfContradictions, describeContradictions } from "./numeric-claim-guard";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
@@ -737,6 +738,19 @@ export async function saveComparison(
     console.error("saveComparison: refusing to persist comparison with fewer than 2 entities", {
       slug: data.slug,
       entityCount: data.entities?.length ?? 0,
+    });
+    return null;
+  }
+
+  // DAN-2188: last line of defense before a page goes live. The generator gates
+  // on this too, but saveComparison is the chokepoint every write path shares
+  // (cron auto-generate, content refresh, backfill scripts), so a page that
+  // refutes its own numbers can never be persisted from any of them.
+  const contradictions = findSelfContradictions(data);
+  if (contradictions.length > 0) {
+    console.error("saveComparison: refusing to persist self-contradicting comparison", {
+      slug: data.slug,
+      detail: describeContradictions(contradictions),
     });
     return null;
   }
