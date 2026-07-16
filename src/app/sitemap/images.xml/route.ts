@@ -2,9 +2,17 @@
  * Image sitemap — /sitemap/images.xml
  *
  * Serves Google's image extension namespace for:
- *  - Top 3,000 comparison pages (by viewCount)
+ *  - Every canonical comparison page (the same set sitemap/1.xml emits)
  *  - All published blog articles (~370 pages)
  *  - Top 1,000 entity profile pages
+ *
+ * DAN-2045: this route used to take the top 3,000 comparison rows by `viewCount`
+ * with no status filter, so it submitted 2,707 URLs that 404 (90% of its
+ * `/compare/` entries) while omitting 163 pages that are real — `viewCount` is
+ * seed data, mostly 0, so the ordering was arbitrary and the 3,000 cut fell
+ * across unpublished rows. It must derive its comparison set from
+ * `canonicalComparisonWhere()` exactly like `sitemap.ts` shard 1 does; filtering
+ * on `status: "published"` alone is not sufficient (see canonical-comparisons.ts).
  *
  * Each <url> entry contains an <image:image> block pointing to the OG image
  * for that page. Google Images and AI visual search (Lens, SGE) use this to
@@ -19,8 +27,10 @@
  */
 
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_URL } from "@/lib/utils/constants";
+import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 21600; // rebuild every 6 hours
@@ -57,6 +67,7 @@ export async function GET() {
 
   if (prisma) {
     comparisons = await prisma.comparison.findMany({
+      where: canonicalComparisonWhere(),
       select: {
         slug: true,
         title: true,
@@ -70,12 +81,15 @@ export async function GET() {
           take: 2,
         },
       },
-      orderBy: { viewCount: "desc" },
-      take: 3000,
+      orderBy: { slug: "asc" },
     });
   }
 
-  const comparisonEntries = comparisons.map((c) => {
+  const comparisonEntries = comparisons
+    // Mirrors sitemap.ts shard 1: degenerate (X-vs-X) slugs 404 by design and
+    // corrupt slugs 301 away, so neither is a page we may submit to Google.
+    .filter((c) => isCleanSlug(c.slug) && !isDegenerateComparisonSlug(c.slug))
+    .map((c) => {
     const entityA = c.entities[0]?.entity.name ?? "";
     const entityB = c.entities[1]?.entity.name ?? c.entities[0]?.entity.name ?? "";
     const imageUrl = ogImageUrl(c.title, entityA, entityB, c.category ?? "");

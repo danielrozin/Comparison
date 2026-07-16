@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { COMPARE_REDIRECTS, getConsolidatedCompareSlug } from "../compare-redirects";
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "../compare-ordering-redirects.dan1800.generated";
 import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "../compare-rivalry-redirects.dan2078.generated";
+import { DEAD_REDIRECT_SOURCES_DAN2045 } from "../compare-dead-redirects.dan2045.generated";
 
 describe("COMPARE_REDIRECTS", () => {
   it("308s the DAN-1281 shared-model-number legacy stub straight to the sitemap canonical", () => {
@@ -104,6 +105,11 @@ describe("COMPARE_REDIRECTS", () => {
   describe("DAN-1800 ordering sweep (84 clusters)", () => {
     it("folds every DAN-1800 retired ordering into a terminal survivor (one hop, permanent)", () => {
       for (const [from, to] of Object.entries(ORDERING_CONSOLIDATIONS_DAN1800)) {
+        // DAN-2045: a cluster whose survivor was later archived has no page left to
+        // fold into, so the redirect is dropped and the slug 404s directly rather
+        // than 308ing onto a 404. Those are asserted in compare-dead-redirects.test.ts.
+        if (DEAD_REDIRECT_SOURCES_DAN2045.includes(from)) continue;
+
         const resolved = getConsolidatedCompareSlug(from);
         expect(resolved, `${from} should fold`).not.toBeNull();
 

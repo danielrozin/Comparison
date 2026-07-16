@@ -1,5 +1,7 @@
 import videoUploads from "@/data/video-uploads.json";
 import { selfHostedVideoExists, selfHostedVideoUploadDate } from "@/lib/services/self-hosted-video";
+import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 
 const SITE_URL = "https://www.aversusb.net";
 
@@ -166,8 +168,34 @@ function renderEntry(e: VideoSitemapEntry): string {
  * `sitemap.xml/route.ts` pattern. Referenced from the sitemap index in
  * `sitemap.xml/route.ts`. Served at `/sitemap/video.xml`.
  */
+/**
+ * DAN-2045: `video-uploads.json` is an append-only render log, not a page index —
+ * a slug keeps its record after the page behind it is archived or consolidated
+ * away, so 24 of the 63 `<loc>`s here pointed at a 404 (38%). Restrict the set to
+ * slugs that are canonical comparison pages today.
+ *
+ * A DB blip must not empty the sitemap, so an unreachable/empty lookup falls back
+ * to the unfiltered set (same reasoning as the getStaticProps guard in
+ * src/pages/compare/[slug].tsx — stale is recoverable, deleted is not).
+ */
+async function canonicalSlugSet(): Promise<Set<string> | null> {
+  const prisma = getPrisma();
+  if (!prisma) return null;
+  try {
+    const rows = await prisma.comparison.findMany({
+      where: canonicalComparisonWhere(),
+      select: { slug: true },
+    });
+    if (rows.length === 0) return null;
+    return new Set(rows.map((r: { slug: string }) => r.slug));
+  } catch {
+    return null;
+  }
+}
+
 export async function GET() {
-  const entries = buildVideoEntries();
+  const canonical = await canonicalSlugSet();
+  const entries = buildVideoEntries().filter((e) => !canonical || canonical.has(e.slug));
   const body = entries.map(renderEntry).join("\n");
 
   const xml =
