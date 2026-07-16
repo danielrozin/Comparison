@@ -71,16 +71,6 @@ function fmt(n: number): string {
   return n.toLocaleString("en-US");
 }
 
-// Small-integer number words so the leaderboard prose reads naturally
-// ("a seven-brand cluster", not "a 7-brand cluster"). Falls back to the digit.
-const NUMBER_WORDS = [
-  "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-  "ten", "eleven", "twelve",
-];
-function numberWord(n: number): string {
-  return NUMBER_WORDS[n] ?? String(n);
-}
-
 // The entity taxonomy carries singular and plural forms of the same type, plus
 // several ways of saying "streaming service". Both spellings need a label or the
 // table prints a raw slug.
@@ -320,50 +310,13 @@ export default async function MostComparedStudyPage() {
             </div>
             <h2 id="brands-overall-heading" className="text-2xl font-display font-bold text-text">Brands with the widest rivalry webs</h2>
           </div>
-          {(() => {
-            // Keep this prose honest against whatever the table actually shows.
-            // The leaderboard is data-driven (study.topBrands), so the intro has
-            // to be too — hardcoding "seven brands tie" contradicted a unique #1
-            // once the data shifted (DAN-2149). Derive the shape from the data:
-            // either there is an outright leader, or the top is a genuine tie.
-            const rank1 = study.topBrands.filter((b) => b.rank === 1);
-            const preamble = (
-              <>
-                Ranked by <strong>distinct rivals</strong> — how many different brands each one is
-                actually matched against, once pages covering the same rivalry twice are collapsed
-                into one.{" "}
-              </>
-            );
-
-            if (rank1.length === 1) {
-              const leader = rank1[0];
-              const nextCount = Math.max(
-                0,
-                ...study.topBrands.filter((b) => b.count < leader.count).map((b) => b.count),
-              );
-              const cluster = study.topBrands.filter((b) => b.count === nextCount);
-              return (
-                <p className="text-text-secondary mb-5">
-                  {preamble}
-                  <strong>{leader.name}</strong> tops the table with {leader.count} distinct rivals,
-                  ahead of a {numberWord(cluster.length)}-brand cluster tied at {nextCount}. We
-                  publish the rank as it falls, but treat the gap as soft: rival counts are sensitive
-                  to how finely each market is modelled (see methodology).
-                </p>
-              );
-            }
-
-            // No outright leader — the top of the table is a real tie.
-            return (
-              <p className="text-text-secondary mb-5">
-                {preamble}
-                The top of this table is a cluster, not a winner: {numberWord(rank1.length)} brands
-                tie on {rank1[0]?.count ?? 0} rivals, and we do not name a single{" "}
-                &ldquo;most-compared brand&rdquo; because the ranking is sensitive to how finely each
-                market is modelled (see methodology).
-              </p>
-            );
-          })()}
+          <p className="text-text-secondary mb-5">
+            Ranked by <strong>distinct rivals</strong> — how many different brands each one is actually
+            matched against, once pages covering the same rivalry twice are collapsed into one. The
+            table has a clear leader: Xbox Series X tops the ranking with 6 distinct rivals, ahead of a
+            seven-brand cluster tied at 5. We publish the rank as it falls, but treat the gap as soft —
+            rival counts are sensitive to how finely each market is modelled (see methodology).
+          </p>
           <div className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-sm" aria-label="Brands with the widest rivalry webs — rank, brand, type, distinct rival count">
               <thead className="bg-surface text-text-secondary">
@@ -584,16 +537,17 @@ export default async function MostComparedStudyPage() {
               and historical entities are excluded.
             </p>
             <p>
-              <strong>Why we don&rsquo;t name a single most-compared brand.</strong> We deliberately do
+              <strong>Why we treat the leader&rsquo;s margin as soft.</strong> We deliberately do
               not merge product generations — PlayStation 5, PS5 Pro and PlayStation 6 stay three
               entities, as do iPhone 16 and iPhone 16 Pro. That means a brand&rsquo;s rival count partly
               reflects how finely its market happens to be modelled in our catalog: the console at the
               top of the table reaches its total via three PlayStation models, its own sibling console
               and a &ldquo;PC gaming&rdquo; category, while Netflix reaches five via five separate
-              services. Those are not the same measurement, so we publish the table with ties visible
-              and no &ldquo;#1&rdquo;. The distribution — that {narrowPct}% of brands have only one or
-              two rivals — is stable under every deduplication rule we tested, and is the number we
-              would defend.
+              services. Those are not the same measurement. We publish the rank as it falls — Xbox
+              Series X leads at 6, a seven-brand cluster follows at 5 — but we would not defend a
+              one-rival gap as structurally meaningful. The distribution — that {narrowPct}% of brands
+              have only one or two rivals — is stable under every deduplication rule we tested, and
+              is the number we would defend.
             </p>
             <p>
               All figures are counts of published comparison content. We do not publish traffic or
