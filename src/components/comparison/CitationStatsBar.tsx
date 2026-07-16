@@ -115,7 +115,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="underline decoration-indigo-200 hover:text-indigo-600 hover:decoration-indigo-400 transition-colors"
+                      className="underline decoration-indigo-200 hover:text-indigo-600 hover:decoration-indigo-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:rounded"
                     >
                       {source.name}<span className="sr-only"> (opens in new tab)</span>
                     </a>

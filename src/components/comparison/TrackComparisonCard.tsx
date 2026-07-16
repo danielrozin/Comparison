@@ -240,7 +240,7 @@ export function TrackComparisonCard({
                   <button
                     type="button"
                     onClick={stopTracking}
-                    className="text-xs text-text-secondary underline underline-offset-2 hover:text-text"
+                    className="text-xs text-text-secondary underline underline-offset-2 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:rounded"
                   >
                     Stop tracking
                   </button>
@@ -254,7 +254,7 @@ export function TrackComparisonCard({
                   <button
                     type="button"
                     onClick={oneClickTrack}
-                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150"
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
                     Track
                   </button>
@@ -288,7 +288,7 @@ export function TrackComparisonCard({
                   <button
                     type="submit"
                     disabled={state === "loading"}
-                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150 disabled:opacity-60 whitespace-nowrap"
+                    className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg hover:shadow-md transition-all duration-150 disabled:opacity-60 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
                     {state === "loading" ? "Saving…" : "Track"}
                   </button>
