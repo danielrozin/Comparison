@@ -8,7 +8,9 @@
  * Exit 0 = all 5 pass (PPC restart unblocked). Exit 1 = one or more failing.
  *
  * Criteria:
- *   #1  5+ keywords at Google US positions 1–10 (DataForSEO ranked_keywords)
+ *   #1  5+ keywords at Google US positions 1–10 (GSC primary; DataForSEO fallback)
+ *       GSC is Google's authoritative data; DataForSEO's ranked_keywords DB covers
+ *       only a sample of tracked keywords and updates every 1-4 weeks.
  *   #2  30+ days of organic conversion baseline data (newsletter + contact)
  *   #3  Conversion tracking live (contact_submissions table has rows post-DAN-2146)
  *   #4  At least 1 published comparison in each of the 3 top revenue categories
@@ -29,17 +31,70 @@ function pass(label) { console.log(`  ✅ PASS  ${label}`); }
 function fail(label) { console.log(`  ❌ FAIL  ${label}`); }
 function info(label) { console.log(`         ${label}`); }
 
-// ── criterion #1 — 5+ page-1 keywords ────────────────────────────────────────
+// ── criterion #1 — 5+ page-1 keywords (GSC primary) ────────────────────────
 
-async function checkKeywords() {
-  const login = process.env.DATAFORSEO_LOGIN;
-  const pw    = process.env.DATAFORSEO_PASSWORD;
-  if (!login || !pw) {
-    console.log("  ⚠️  SKIP  #1 — DATAFORSEO_LOGIN / DATAFORSEO_PASSWORD not set");
+async function gscJwt() {
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+  if (!raw) return null;
+  let sa;
+  try { sa = JSON.parse(raw); } catch { return null; }
+  const now = Math.floor(Date.now() / 1000);
+  const b64 = (o) => Buffer.from(JSON.stringify(o)).toString("base64url");
+  const hdr = b64({ alg: "RS256", typ: "JWT" });
+  const pay = b64({
+    iss: sa.client_email,
+    scope: "https://www.googleapis.com/auth/webmasters.readonly",
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now, exp: now + 3600,
+  });
+  const { createSign } = await import("crypto");
+  const s = createSign("RSA-SHA256");
+  s.update(`${hdr}.${pay}`);
+  const jwt = `${hdr}.${pay}.${s.sign(sa.private_key, "base64url")}`;
+  const r = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
+  });
+  const d = await r.json();
+  return d.access_token || null;
+}
+
+async function checkKeywordsGsc() {
+  const token = await gscJwt();
+  if (!token) return null;
+
+  const endDate   = new Date();
+  const startDate = new Date(endDate.getTime() - 28 * 86_400_000);
+  const fmt = (d) => d.toISOString().slice(0, 10);
+
+  try {
+    const res = await fetch(
+      "https://www.googleapis.com/webmasters/v3/sites/sc-domain%3Aaversusb.net/searchAnalytics/query",
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          startDate: fmt(startDate),
+          endDate:   fmt(endDate),
+          dimensions: ["query"],
+          rowLimit: 500,
+        }),
+      }
+    );
+    const j = await res.json();
+    if (j.error) return null;
+    return (j.rows || []).map(r => ({ kw: r.keys[0], pos: r.position, imp: r.impressions, clicks: r.clicks }));
+  } catch {
     return null;
   }
+}
+
+async function checkKeywordsDataForSeo() {
+  const login = process.env.DATAFORSEO_LOGIN;
+  const pw    = process.env.DATAFORSEO_PASSWORD;
+  if (!login || !pw) return null;
   const auth = "Basic " + Buffer.from(`${login}:${pw}`).toString("base64");
-  let items = [];
   try {
     const res = await fetch(
       "https://api.dataforseo.com/v3/dataforseo_labs/google/ranked_keywords/live",
@@ -57,36 +112,63 @@ async function checkKeywords() {
       }
     );
     const j = await res.json();
-    items = (j.tasks?.[0]?.result?.[0]?.items || []).map(it => ({
+    return (j.tasks?.[0]?.result?.[0]?.items || []).map(it => ({
       kw:  it.keyword_data?.keyword,
       vol: it.keyword_data?.keyword_info?.search_volume || 0,
       pos: it.ranked_serp_element?.serp_item?.rank_group || 0,
-      url: (it.ranked_serp_element?.serp_item?.url || "")
-            .replace("https://www.aversusb.net", "")
-            .replace("https://aversusb.net", ""),
     }));
-  } catch (e) {
-    console.log(`  ⚠️  SKIP  #1 — DataForSEO fetch failed: ${e.message}`);
+  } catch {
     return null;
   }
+}
 
-  const page1 = items.filter(i => i.pos >= 1 && i.pos <= 10);
-  const str   = items.filter(i => i.pos >= 11 && i.pos <= 20);
+async function checkKeywords() {
+  // Primary: GSC (Google's own data, covers all queries, updated daily)
+  const gscRows = await checkKeywordsGsc();
+  if (gscRows !== null) {
+    const page1 = gscRows.filter(r => r.pos >= 1 && r.pos <= 10);
+    const str   = gscRows.filter(r => r.pos > 10 && r.pos <= 20);
+    const ok    = page1.length >= 5;
+    if (ok) pass(`#1  Page-1 keywords: ${page1.length} (need ≥5) [GSC, last 28d]`);
+    else    fail(`#1  Page-1 keywords: ${page1.length} (need ≥5) — striking-distance: ${str.length} at pos 11–20 [GSC, last 28d]`);
+    info(`    Source: Google Search Console (authoritative)`);
+    if (page1.length > 0) {
+      info(`    Top page-1 hits (by impressions):`);
+      page1.sort((a, b) => b.imp - a.imp).slice(0, 10).forEach(k =>
+        info(`    pos${k.pos.toFixed(1).padStart(5)}  ${String(k.imp).padStart(5)}imp  "${k.kw}"`)
+      );
+    }
+    if (!ok && str.length > 0) {
+      info(`    Striking-distance (pos 11–20, by impressions):`);
+      str.sort((a, b) => b.imp - a.imp).slice(0, 10).forEach(k =>
+        info(`    pos${k.pos.toFixed(1).padStart(5)}  ${String(k.imp).padStart(5)}imp  "${k.kw}"`)
+      );
+    }
+    return ok;
+  }
 
-  const ok = page1.length >= 5;
-  if (ok) pass(`#1  Page-1 keywords: ${page1.length} (need ≥5)`);
-  else    fail(`#1  Page-1 keywords: ${page1.length} (need ≥5) — striking-distance: ${str.length} at pos 11–20`);
-
+  // Fallback: DataForSEO (partial DB, updated 1-4 weeks; may undercount)
+  const dfsItems = await checkKeywordsDataForSeo();
+  if (dfsItems === null) {
+    console.log("  ⚠️  SKIP  #1 — both GSC and DataForSEO unavailable");
+    return null;
+  }
+  const page1 = dfsItems.filter(i => i.pos >= 1 && i.pos <= 10);
+  const str   = dfsItems.filter(i => i.pos >= 11 && i.pos <= 20);
+  const ok    = page1.length >= 5;
+  if (ok) pass(`#1  Page-1 keywords: ${page1.length} (need ≥5) [DataForSEO fallback]`);
+  else    fail(`#1  Page-1 keywords: ${page1.length} (need ≥5) — striking-distance: ${str.length} at pos 11–20 [DataForSEO fallback]`);
+  info(`    Source: DataForSEO ranked_keywords (partial — check GSC for full picture)`);
   if (page1.length > 0) {
-    info(`Top page-1 hits (by volume):`);
-    page1.sort((a,b) => b.vol - a.vol).slice(0, 10).forEach(k =>
+    info(`    Top page-1 hits (by volume):`);
+    page1.sort((a, b) => b.vol - a.vol).slice(0, 10).forEach(k =>
       info(`    pos${String(k.pos).padStart(2)}  vol${String(k.vol).padStart(6)}  "${k.kw}"`)
     );
   }
   if (!ok && str.length > 0) {
-    info(`Striking-distance (pos 11–20, by volume):`);
-    str.sort((a,b) => b.vol - a.vol).slice(0, 10).forEach(k =>
-      info(`    pos${String(k.pos).padStart(2)}  vol${String(k.vol).padStart(6)}  "${k.kw}"  ${k.url}`)
+    info(`    Striking-distance (pos 11–20, by volume):`);
+    str.sort((a, b) => b.vol - a.vol).slice(0, 10).forEach(k =>
+      info(`    pos${String(k.pos).padStart(2)}  vol${String(k.vol).padStart(6)}  "${k.kw}"`)
     );
   }
   return ok;
