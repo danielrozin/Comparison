@@ -63,3 +63,4 @@ hyperframes/**/.hyperframes/
 
 # Local data snapshots (large JSON, not for version control)
 scripts/data/*.json
+gsc-recovery-daily.json
