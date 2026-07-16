@@ -82,7 +82,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           <button
             type="submit"
             disabled={status === "loading"}
-            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap"
+            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
           >
             {status === "loading" ? "…" : "Subscribe"}
           </button>
@@ -129,7 +129,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             <button
               type="submit"
               disabled={status === "loading"}
-              className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap"
+              className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe Free"}
             </button>

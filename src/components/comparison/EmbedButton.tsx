@@ -113,7 +113,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
         type="button"
         ref={triggerRef}
         onClick={() => { trackEmbedCtaClick(slug, window.location.pathname); setIsOpen(true); }}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200"
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[44px] text-sm font-medium text-text-secondary bg-surface-alt hover:bg-primary-50 hover:text-primary-600 border border-border rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
         title="Embed this comparison"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
@@ -137,7 +137,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
               type="button"
               onClick={handleClose}
               aria-label="Close embed dialog"
-              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full text-text-secondary hover:text-text hover:bg-surface-alt transition-colors z-10"
+              className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full text-text-secondary hover:text-text hover:bg-surface-alt transition-colors z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -174,7 +174,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                     tabIndex={activeTab === tab ? 0 : -1}
                     onClick={() => setActiveTab(tab)}
                     onKeyDown={(e) => handleEmbedTabKeyDown(e, i)}
-                    className={`flex-1 text-sm font-medium py-2 px-3 rounded-md transition-all duration-200 ${
+                    className={`flex-1 text-sm font-medium py-2 px-3 rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                       activeTab === tab
                         ? "bg-white text-primary-600 shadow-sm"
                         : "text-text-secondary hover:text-text"
@@ -200,7 +200,7 @@ export function EmbedButton({ slug, title }: EmbedButtonProps) {
                   type="button"
                   onClick={() => handleCopy(activeTab)}
                   aria-label={copiedTab === activeTab ? "Copied to clipboard" : "Copy embed code"}
-                  className={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
+                  className={`absolute top-2 right-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                     copiedTab === activeTab
                       ? "bg-green-100 text-green-700 border border-green-200"
                       : "bg-white text-text-secondary border border-border hover:bg-primary-50 hover:text-primary-600 hover:border-primary-200"

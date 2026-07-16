@@ -57,7 +57,7 @@ export function AffiliateButton({
   const isBrand = link.partner === "brand";
 
   const baseClasses =
-    "inline-flex items-center gap-1.5 font-semibold rounded-lg transition-all duration-200 no-underline";
+    "inline-flex items-center gap-1.5 font-semibold rounded-lg transition-all duration-200 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1";
   const sizeClasses =
     size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2.5 text-sm";
 
@@ -125,7 +125,7 @@ export function AffiliateDisclosure() {
       extra cost to you.{" "}
       <a
         href="/disclaimer"
-        className="underline hover:text-text-secondary"
+        className="underline hover:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:rounded-sm"
       >
         Learn more about our affiliate disclosure
       </a>
@@ -193,7 +193,7 @@ export function WhereToBuySection({
                 href={link.url}
                 target="_blank"
                 rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
-                className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all ${
+                className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                   isGeneric
                     ? "hover:border-blue-300 hover:bg-blue-50/50"
                     : "hover:border-amber-300 hover:bg-amber-50/50"

@@ -43,7 +43,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full flex items-center gap-3 px-4 py-3 border rounded-xl text-sm font-semibold transition-all duration-200 ${
+          className={`w-full flex items-center gap-3 px-4 py-3 border rounded-xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
             isOpen
               ? "bg-white border-primary-300 text-primary-700 shadow-sm"
               : "bg-surface-alt border-border text-text hover:border-primary-300"
@@ -107,7 +107,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                     href={`#${item.id}`}
                     onClick={() => setIsOpen(false)}
                     aria-current={isActive ? "location" : undefined}
-                    className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden ${
+                    className={`relative flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all duration-150 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                       isActive
                         ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
                         : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
@@ -167,7 +167,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
                 <a
                   href={`#${item.id}`}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden ${
+                  className={`relative flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                     isActive
                       ? "bg-primary-50 text-primary-700 font-semibold shadow-sm"
                       : "text-text-secondary hover:text-text hover:bg-surface-alt/60"
