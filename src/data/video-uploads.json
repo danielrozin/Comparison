@@ -3357,6 +3357,48 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-14T07:40:52.643Z"
+    },
+    {
+      "slug": "virat-kohli-vs-sachin-tendulkar",
+      "title": "Virat Kohli vs Sachin Tendulkar",
+      "entityA": "Virat Kohli",
+      "entityB": "Sachin Tendulkar",
+      "category": "General",
+      "videoFile": "Virat Kohli vs Sachin Tendulkar.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Virat Kohli vs Sachin Tendulkar — Full Comparison 2026",
+      "youtubeDescription": "Compare Virat Kohli vs Sachin Tendulkar: 15,921 Test runs, centuries, averages, and career stats analysis\n\n#viratkohli #sachintendulkar #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-16T07:32:41.023Z"
+    },
+    {
+      "slug": "nike-vs-adidas",
+      "title": "Nike vs Adidas",
+      "entityA": "Nike",
+      "entityB": "Adidas",
+      "category": "General",
+      "videoFile": "Nike vs Adidas.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "Nike vs Adidas — Full Comparison 2026",
+      "youtubeDescription": "A detailed comparison of Nike vs Adidas.\n\n#nike #adidas #general #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-16T07:42:18.869Z"
+    },
+    {
+      "slug": "usa-vs-china",
+      "title": "USA vs China",
+      "entityA": "United States",
+      "entityB": "China",
+      "category": "countries",
+      "videoFile": "United States vs China.mp4",
+      "renderer": "hyperframes",
+      "youtubeTitle": "United States vs China — Full Comparison 2026",
+      "youtubeDescription": "The USA has the world's largest economy ($25.5T GDP), highest military spending, and leads in technology innovation. China has the largest population (1.4B), second largest economy ($17.7T), and is the world's manufacturing hub.\n\n#unitedstates #china #countries #comparison #versus",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-07-16T07:52:21.264Z"
     }
   ]
 }
