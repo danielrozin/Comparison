@@ -37,7 +37,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
               <Link
                 href="/authors/daniel-rozin"
                 rel="author"
-                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group"
+                className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-primary-700 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
               >
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-1 ring-white shadow-sm flex-shrink-0 group-hover:shadow-md transition-all duration-150" aria-hidden="true">
                   <span className="text-white font-bold text-xs tracking-tight select-none leading-none">DR</span>

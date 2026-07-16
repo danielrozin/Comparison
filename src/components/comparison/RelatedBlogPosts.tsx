@@ -77,7 +77,7 @@ export function RelatedBlogPosts({
             <Link
               href={`/blog/${post.slug}`}
               style={{ animationDelay: `${idx * 40}ms` }}
-              className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in w-full"
+              className="group relative flex flex-col bg-white border border-border rounded-xl overflow-hidden hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 animate-fade-in w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
             >
               {/* Thumbnail area — gradient placeholder with article icon */}
               <div className={`relative h-24 bg-gradient-to-br ${gradientLight} flex items-center justify-center overflow-hidden`}>

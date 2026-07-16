@@ -28,7 +28,7 @@ export function AuthorByline({ updatedAt, isHumanReviewed, wordCount }: AuthorBy
           href="/authors/daniel-rozin"
           rel="author"
           aria-label="Author: Daniel Rozin"
-          className="flex-shrink-0"
+          className="flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded-full"
         >
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center ring-2 ring-white shadow-sm hover:shadow-md hover:ring-primary-200 transition-all duration-200">
             <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
@@ -41,7 +41,7 @@ export function AuthorByline({ updatedAt, isHumanReviewed, wordCount }: AuthorBy
             <Link
               href="/authors/daniel-rozin"
               rel="author"
-              className="text-sm font-semibold text-text hover:text-primary-700 transition-colors leading-none"
+              className="text-sm font-semibold text-text hover:text-primary-700 transition-colors leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
             >
               Daniel Rozin
             </Link>
