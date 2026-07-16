@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { entitySchemaType } from "@/lib/seo/schema";
 
@@ -42,7 +42,7 @@ export async function HEAD(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+  const comparison = await getPublishedComparisonBySlug(slug);
   if (!comparison) return new Response(null, { status: 404, headers: HEADERS });
 
   const url = `${SITE_URL}/compare/${slug}`;
@@ -74,7 +74,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+  const comparison = await getPublishedComparisonBySlug(slug);
 
   if (!comparison) {
     return new Response(JSON.stringify({ error: "Not found" }), {
