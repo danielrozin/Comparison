@@ -86,7 +86,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                   type="button"
                   onClick={() => setIsPlaying(true)}
                   aria-label={`Play video: ${title}`}
-                  className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
+                  className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
                 >
                   {ytId && (
                     <img
@@ -129,7 +129,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
                   type="button"
                   onClick={() => setIsPlaying(true)}
                   aria-label={`Play video: ${title}`}
-                  className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer"
+                  className="relative w-full aspect-video flex items-center justify-center bg-gradient-to-b from-slate-800 to-slate-900 group cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
                 >
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-600 to-accent-600 rounded-full flex items-center justify-center shadow-lg group-hover:from-primary-500 group-hover:to-accent-500 transition-all group-hover:scale-110">

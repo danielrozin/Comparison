@@ -21,7 +21,7 @@ export function HeroShareButton() {
         type="button"
         onClick={handleCopy}
         aria-label={copied ? "Link copied!" : "Copy link to share this comparison"}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white/70 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 backdrop-blur-sm transition-all duration-200"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white/70 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 backdrop-blur-sm transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
       >
         {copied ? (
           <>
