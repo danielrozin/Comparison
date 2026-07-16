@@ -21,9 +21,18 @@ import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
  * 0 redirects, 0 404s — and 286 slugs were retired into the consolidation map.
  * Re-run `scripts/dan2067-verify.ts` and move both numbers together after any
  * consolidation batch.
+ *
+ * DAN-2045 (2026-07-16) lowered the redirect baseline 286 -> 123 without touching the
+ * catalog. That is the one legitimate way this number falls: 163 of the 286 redirects
+ * pointed at a page that no longer exists (both ends archived by DAN-1890 Phase B), so
+ * they 308'd into a 404 and were dropped. Un-retiring an ARCHIVED source cannot grow
+ * the catalog — archived rows are excluded by status, not by the redirect map — and
+ * the live count was verified unchanged at 457 canonical rows either side of the drop.
+ * A drop is only ever safe under that proof; scripts/dan2045-generate-dead-redirects.ts
+ * refuses to list a source that is still published, which is what keeps it true.
  */
 const CATALOG_AT_LAST_SWEEP = 454;
-const REDIRECTS_AT_LAST_SWEEP = 286;
+const REDIRECTS_AT_LAST_SWEEP = 123;
 const LIVE_CATALOG_CEILING = CATALOG_AT_LAST_SWEEP;
 
 // Every string in a schema object, however deeply nested.

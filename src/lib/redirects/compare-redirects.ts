@@ -25,6 +25,7 @@
  */
 
 import type { BlogRedirect } from "./blog-redirects";
+import { DEAD_REDIRECT_SOURCES_DAN2045 } from "./compare-dead-redirects.dan2045.generated";
 import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated";
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.dan1800.generated";
 import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "./compare-rivalry-redirects.dan2078.generated";
@@ -217,9 +218,22 @@ for (const [retired, survivor] of Object.entries(SURVIVOR_OVERRIDES)) {
  * a redirect hop of link equity each. Cycles are still dropped and shout in dev — a
  * cycle means two layers disagree about the survivor and neither may win by accident.
  */
+// DAN-2045: a redirect may only be emitted when its destination is a live page.
+// The ordering layers paired A-vs-B with B-vs-A while both were published; DAN-1890
+// Phase B later archived BOTH members of 163 clusters, leaving redirects that 308
+// onto a 404. Bouncing a crawler through a hop to reach a dead end is strictly worse
+// than serving the 404 directly, so drop the source entirely.
+//
+// Destination liveness is a DB fact and this map is built synchronously (it feeds
+// next.config redirects() and canonicalComparisonWhere()), so the list is generated
+// rather than queried — see scripts/dan2045-generate-dead-redirects.ts, which
+// refuses to list a source that is still published.
+const DEAD_REDIRECT_SOURCES = new Set(DEAD_REDIRECT_SOURCES_DAN2045);
+
 const MAX_CHAIN_HOPS = 8;
 const safeConsolidations: Record<string, string> = {};
 for (const [from] of Object.entries(COMPARE_CONSOLIDATIONS)) {
+  if (DEAD_REDIRECT_SOURCES.has(from)) continue;
   const seen = new Set<string>([from]);
   let to = COMPARE_CONSOLIDATIONS[from];
   let hops = 0;
