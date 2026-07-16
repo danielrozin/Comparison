@@ -25,6 +25,7 @@ export type AttemptStage =
   | "save"
   | "timeout"
   | "quality"
+  | "contradiction"
   | "unknown";
 
 export interface AttemptRow {
