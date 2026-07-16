@@ -16,24 +16,27 @@ const AMAZON_TAG = process.env.NEXT_PUBLIC_AMAZON_AFFILIATE_TAG || "";
 const AFFILIATE_ENABLED = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED === "true";
 
 // Entity types that are eligible for affiliate links (products people can buy)
+// "software" intentionally excluded: SaaS/subscription software cannot be purchased
+// on Amazon as a "/dp/" product — emitting an /s?k= search link earns ~$0 and
+// damages credibility on B2B comparison pages. See DAN-2208.
 const AFFILIATE_ELIGIBLE_TYPES = new Set([
   "product",
   "technology",
-  "software",
   "brand",
   "device",
   "gadget",
   "appliance",
   "vehicle",
   "supplement",
-  "service",
 ]);
 
 // Categories where affiliate links make commercial sense
+// "software" intentionally excluded: the software comparison category covers SaaS/
+// subscription tools (CRMs, project management, productivity apps) that are not
+// sold on Amazon. See DAN-2208.
 const AFFILIATE_ELIGIBLE_CATEGORIES = new Set([
   "technology",
   "products",
-  "software",
   "automotive",
   "health",
   "entertainment",
@@ -147,6 +150,91 @@ const DIGITAL_ENTITY_PATTERNS: RegExp = new RegExp(
     "\\bgemini\\b",
     "perplexity",
     "midjourney",
+    // CRM / sales platforms (DAN-2208)
+    "salesforce",
+    "hubspot",
+    "pipedrive",
+    "zoho\\s*crm|\\bzoho\\b",
+    "microsoft\\s*dynamics",
+    "freshsales",
+    "keap|infusionsoft",
+    "\\bclose\\s*crm\\b|\\bclose\\.io\\b",
+    // Project management / work OS (DAN-2208)
+    "confluence",
+    "\\bjira\\b",
+    "atlassian",
+    "\\basana\\b",
+    "\\bmonday\\.com\\b|\\bmonday\\s*\\.com\\b",
+    "clickup",
+    "\\btrello\\b",
+    "basecamp",
+    "\\blinear\\.app\\b|\\blinear\\b(?!\\s*tv)",
+    "\\bheight\\.app\\b",
+    "teamwork",
+    "wrike",
+    "smartsheet",
+    "\\bairtable\\b",
+    "\\bcoda\\.io\\b|\\bcoda\\b(?!\\s*cola)",
+    // Customer support / helpdesk (DAN-2208)
+    "zendesk",
+    "intercom",
+    "freshdesk",
+    "freshworks",
+    "servicenow",
+    "helpscout|help\\s*scout",
+    "gorgias",
+    "\\bfront\\b(?=\\s*app|\\s*\\.com|\\s*help|$)",
+    // Marketing / email automation (DAN-2208)
+    "mailchimp",
+    "klaviyo",
+    "convertkit",
+    "\\bbrevo\\b|sendinblue",
+    "\\bactivecampaign\\b",
+    "marketo",
+    "pardot",
+    "constant\\s*contact",
+    // HR / payroll SaaS (DAN-2208)
+    "workday",
+    "bamboohr|bamboo\\s*hr",
+    "gusto\\s*payroll|\\bgusto\\b",
+    "rippling",
+    "\\bceridian\\b",
+    "\\badp\\b(?!\\s*receptor)",
+    // Developer / DevOps tooling (DAN-2208)
+    "\\bgithub\\b",
+    "\\bgitlab\\b",
+    "bitbucket",
+    "\\bdatadog\\b",
+    "\\bgrafana\\b",
+    "new\\s*relic",
+    "pagerduty",
+    "\\bsentry\\.io\\b|\\bsentry\\b(?=\\s*error)",
+    "\\bpostman\\b",
+    "\\btwilio\\b",
+    "\\bsendgrid\\b",
+    "\\bsegment\\.com\\b|\\bsegment\\b(?=\\s*cdp|\\s*analytics)",
+    "\\bmixpanel\\b",
+    "\\bamplitude\\.com\\b|\\bamplitude\\b(?=\\s*analytics)",
+    "\\bhotjar\\b",
+    "\\bfullstory\\b",
+    // Cloud & infra platforms (DAN-2208)
+    "\\bvercel\\b",
+    "\\bnetlify\\b",
+    "\\bheroku\\b",
+    "\\bdigitalocean\\b",
+    "\\bsupabase\\b",
+    "\\bfirebase\\b",
+    "\\bmongodb\\b",
+    // Accounting / finance SaaS (DAN-2208)
+    "quickbooks",
+    "\\bxero\\b",
+    "freshbooks",
+    "wave\\s*accounting",
+    // E-commerce platforms (DAN-2208)
+    "\\bshopify\\b",
+    "bigcommerce",
+    "woocommerce",
+    "\\bmagento\\b",
     // VPNs / web services
     "nordvpn|surfshark|expressvpn",
     "\\b1password\\b|lastpass|bitwarden",
