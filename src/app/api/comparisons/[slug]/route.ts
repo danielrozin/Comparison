@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL } from "@/lib/utils/constants";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
-  const comparison = await getComparisonBySlug(slug);
+  const comparison = await getPublishedComparisonBySlug(slug);
 
   if (!comparison) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { getEmbedPartnerByKey, incrementEmbedViews, type EmbedPartnerConfig } from "@/lib/services/embed-partner-service";
 import { SITE_URL } from "@/lib/utils/constants";
 
@@ -44,7 +44,7 @@ export async function GET(
     }
   }
 
-  const comparison = await getComparisonBySlug(slug);
+  const comparison = await getPublishedComparisonBySlug(slug);
 
   if (!comparison) {
     return new NextResponse(
