@@ -242,7 +242,7 @@ export function SearchOverlay() {
             </kbd>
             <button
               type="submit"
-              className="px-4 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white font-semibold rounded-xl text-sm shadow-md hover:shadow-lg transition-all"
+              className="px-4 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white font-semibold rounded-xl text-sm shadow-md hover:shadow-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
             >
               Compare
             </button>

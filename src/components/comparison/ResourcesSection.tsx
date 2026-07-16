@@ -76,7 +76,7 @@ export function ResourcesSection({
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-blue-300 hover:bg-blue-50/50 transition-all"
+                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-blue-300 hover:bg-blue-50/50 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                 >
                   <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition-colors">
                     <span className="text-blue-500 group-hover:text-blue-600 text-xs font-bold">W</span>
@@ -113,7 +113,7 @@ export function ResourcesSection({
                 <li key={r.url}>
                 <Link
                   href={r.url}
-                  className="group flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50/50 transition-all"
+                  className="group flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary-300 hover:bg-primary-50/50 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                 >
                   <div className="w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary-100 transition-colors">
                     <span className="text-primary-600 text-xs font-bold">B</span>
@@ -151,7 +151,7 @@ export function ResourcesSection({
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-indigo-300 hover:bg-indigo-50/50 transition-all"
+                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-indigo-300 hover:bg-indigo-50/50 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-1"
                 >
                   <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100 transition-colors">
                     <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -190,7 +190,7 @@ export function ResourcesSection({
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-red-300 hover:bg-red-50/50 transition-all"
+                  className="group flex items-start gap-3 p-3 rounded-lg border border-border hover:border-red-300 hover:bg-red-50/50 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
                 >
                   <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
                     <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
