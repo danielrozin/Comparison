@@ -40,7 +40,7 @@ export function TrendingSortSelect({ activeSort }: { activeSort: SortValue }) {
           id="trending-sort"
           defaultValue={activeSort}
           onChange={handleChange}
-          className="appearance-none pl-3 pr-8 py-1.5 text-sm font-medium border border-border rounded-lg bg-white text-text hover:border-primary-300 focus:border-primary-400 focus:ring-2 focus:ring-primary-100 focus:outline-none transition-colors cursor-pointer"
+          className="appearance-none pl-3 pr-8 py-1.5 text-sm font-medium border border-border rounded-lg bg-white text-text hover:border-primary-300 focus:outline-none focus-visible:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 transition-colors cursor-pointer"
         >
           {SORT_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
