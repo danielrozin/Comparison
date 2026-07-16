@@ -33,7 +33,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
           <li>
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-text-secondary hover:text-primary-600 transition-colors font-medium"
+              className="flex items-center gap-1.5 text-text-secondary hover:text-primary-600 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
               aria-label="Home"
             >
               <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -49,7 +49,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
               <li>
                 <Link
                   href={`/category/${category}`}
-                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium capitalize"
+                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
                 >
                   {category}
                 </Link>
@@ -63,7 +63,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
               <li>
                 <Link
                   href={`/category/${category}/${subcat.slug}`}
-                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium"
+                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
                 >
                   {subcat.name}
                 </Link>

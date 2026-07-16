@@ -92,7 +92,7 @@ export function InternalLinks({
                 <li key={entity.slug}>
                   <Link
                     href={`/entity/${entity.slug}`}
-                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
+                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     <span>All about <span className="font-medium">{entity.name}</span></span>
                     <svg className="w-3.5 h-3.5 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -105,7 +105,7 @@ export function InternalLinks({
                 <li key={`alt-${entity.slug}`}>
                   <Link
                     href={`/alternatives/${entity.slug}`}
-                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
+                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     <span>Alternatives to <span className="font-medium">{entity.name}</span></span>
                     <svg className="w-3.5 h-3.5 text-text-secondary/40 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -135,7 +135,7 @@ export function InternalLinks({
               <li>
                 <Link
                   href={`/category/${currentCategory.slug}`}
-                  className="group flex items-center justify-between gap-2 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
+                  className="group flex items-center justify-between gap-2 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                 >
                   <span className="text-sm font-semibold text-primary-700 flex items-center gap-1.5">
                     <CategoryIcon category={currentCategory.slug} className="w-4 h-4" /> All {currentCategory.name}
@@ -150,7 +150,7 @@ export function InternalLinks({
               <li key={cat.slug}>
                 <Link
                   href={`/category/${cat.slug}`}
-                  className="group flex items-center justify-between gap-2 text-sm text-text-secondary hover:text-primary-600 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
+                  className="group flex items-center justify-between gap-2 text-sm text-text-secondary hover:text-primary-600 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                 >
                   <span className="flex items-center gap-1.5"><CategoryIcon category={cat.slug} className="w-3.5 h-3.5" /> {cat.name}</span>
                   <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -181,7 +181,7 @@ export function InternalLinks({
                 <li key={comp.slug}>
                   <Link
                     href={`/compare/${comp.slug}`}
-                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all"
+                    className="group flex items-center justify-between gap-2 text-sm text-text hover:text-primary-700 py-1 rounded-lg hover:bg-primary-50/50 px-1 -mx-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     <span className="truncate">
                       {parts ? (
@@ -202,7 +202,7 @@ export function InternalLinks({
             <li className="pt-1 border-t border-border/50">
               <Link
                 href={currentCategory ? `/category/${currentCategory.slug}` : "/trending"}
-                className="group flex items-center gap-1.5 text-xs font-semibold text-accent-600 hover:text-accent-700 transition-colors"
+                className="group flex items-center gap-1.5 text-xs font-semibold text-accent-600 hover:text-accent-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-1 rounded"
               >
                 See more {currentCategory?.name.toLowerCase() || "trending"}
                 <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

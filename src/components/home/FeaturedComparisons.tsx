@@ -42,7 +42,7 @@ export function FeaturedComparisons({
         </div>
         <Link
           href="/trending"
-          className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+          className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
         >
           View all <span aria-hidden="true">&rarr;</span>
         </Link>
@@ -65,7 +65,7 @@ export function FeaturedComparisons({
             <Link
               key={item.slug}
               href={`/compare/${item.slug}`}
-              className={`group relative flex flex-col bg-white border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 ${isTop ? "border-amber-200 hover:border-amber-300 ring-1 ring-amber-100" : "border-border hover:border-primary-200"}`}
+              className={`group relative flex flex-col bg-white border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${isTop ? "border-amber-200 hover:border-amber-300 ring-1 ring-amber-100" : "border-border hover:border-primary-200"}`}
             >
               {/* Gradient accent header */}
               <div className={`h-1.5 bg-gradient-to-r ${grad}`} />
