@@ -33,7 +33,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
           <li>
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-text-secondary hover:text-primary-600 transition-colors font-medium"
+              className="flex items-center gap-1.5 text-text-secondary hover:text-primary-600 transition-colors font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 rounded-sm"
               aria-label="Home"
             >
               <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -49,7 +49,7 @@ export function Breadcrumbs({ title, slug, category }: BreadcrumbsProps) {
               <li>
                 <Link
                   href={`/category/${category}`}
-                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium capitalize"
+                  className="text-text-secondary hover:text-primary-600 transition-colors font-medium capitalize focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500 rounded-sm"
                 >
                   {category}
                 </Link>

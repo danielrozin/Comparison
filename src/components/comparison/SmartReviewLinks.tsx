@@ -57,7 +57,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
               {/* Internal review page link */}
               <Link
                 href={`/reviews/${slug}`}
-                className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden relative"
+                className="flex items-center gap-4 p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden relative focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
               >
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 <div className={`w-12 h-12 rounded-xl flex flex-col items-center justify-center text-lg font-black shrink-0 ring-2 shadow-sm ${scoreColor}`}>
@@ -84,7 +84,7 @@ export function SmartReviewLinks({ reviews }: SmartReviewLinksProps) {
                 href={`${SMARTREVIEW_URL}/search?q=${encodeURIComponent(name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline"
+                className="flex items-center gap-2 px-4 py-2 text-xs text-purple-600 hover:text-purple-700 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 rounded-sm"
               >
                 <span className="w-5 h-5 bg-purple-100 rounded flex items-center justify-center text-xs font-bold shrink-0">SR</span>
                 Read {name} reviews on SmartReview<span className="sr-only"> (opens in new tab)</span> <span aria-hidden="true">&rarr;</span>
