@@ -349,9 +349,9 @@ export default async function B2BSaaSStudyPage() {
             </h2>
           </div>
           <p className="text-text-secondary mb-5">
-            Comparison demand by software category. Email marketing &amp; CRM and website builders
-            draw the most head-to-head research — the categories where switching costs bite and the
-            choice actually changes the business.
+            Comparison demand by software category. Email marketing &amp; CRM draws the most
+            head-to-head research — the category where switching costs bite and the choice actually
+            changes the business.
           </p>
           {/*
             These bars do not sum to the headline, and saying so is the whole point:
