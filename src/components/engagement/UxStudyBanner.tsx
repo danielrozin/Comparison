@@ -126,7 +126,7 @@ export function UxStudyBanner() {
             href={FORM_URL}
             {...(isExternal ? { target: "_blank", rel: "noopener noreferrer nofollow" } : {})}
             onClick={handleClick}
-            className="ml-1 inline-flex items-center gap-1 font-bold underline decoration-white/60 underline-offset-2 hover:decoration-white"
+            className="ml-1 inline-flex items-center gap-1 font-bold underline decoration-white/60 underline-offset-2 hover:decoration-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600 rounded"
           >
             Sign up
             <span aria-hidden="true">&rarr;</span>
@@ -136,7 +136,7 @@ export function UxStudyBanner() {
           type="button"
           onClick={handleDismiss}
           aria-label="Dismiss study invitation"
-          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/30"
+          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-white/15 transition-colors hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
         >
           <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

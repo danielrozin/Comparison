@@ -23,7 +23,7 @@ export function BackToResults() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3">
       <Link
         href={`/search?q=${encodeURIComponent(query)}`}
-        className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-700 px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-100 transition-all duration-150"
+        className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-700 px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-100 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >
         <svg className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />

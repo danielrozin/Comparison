@@ -46,7 +46,7 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
       <button
         type="button"
         onClick={() => setIsCollapsed((p) => !p)}
-        className="flex w-full items-center justify-between gap-2 font-semibold text-text mb-3 hover:text-primary-600 transition-colors"
+        className="flex w-full items-center justify-between gap-2 font-semibold text-text mb-3 hover:text-primary-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded"
         aria-expanded={!isCollapsed}
         aria-controls="blog-toc-list"
       >
@@ -72,7 +72,7 @@ export function BlogTableOfContents({ headings }: { headings: TocHeading[] }) {
                 type="button"
                 onClick={() => scrollTo(h.id)}
                 aria-current={activeId === h.id ? "location" : undefined}
-                className={`w-full text-left leading-snug transition-colors duration-100 rounded px-2 py-1 ${
+                className={`w-full text-left leading-snug transition-colors duration-100 rounded px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                   h.level === 3 ? "ml-3 text-xs" : "text-sm"
                 } ${
                   activeId === h.id

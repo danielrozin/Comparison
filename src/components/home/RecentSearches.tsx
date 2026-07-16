@@ -56,7 +56,7 @@ export function RecentSearches() {
             <Link
               key={search.slug}
               href={`/compare/${search.slug}`}
-              className="group flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
+              className="group flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               {/* Entity avatars with VS badge — decorative, title text carries the label */}
               <div aria-hidden="true" className="relative flex-shrink-0 h-10" style={{ width: "54px" }}>
@@ -109,7 +109,7 @@ export function RecentSearches() {
               <Link
                 key={tag}
                 href={`/search?q=${encodeURIComponent(tag)}`}
-                className={`px-3 py-1 text-xs font-medium rounded-full transition-all hover:-translate-y-0.5 capitalize ${
+                className={`px-3 py-1 text-xs font-medium rounded-full transition-all hover:-translate-y-0.5 capitalize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                   i < 3
                     ? "bg-gradient-to-r from-primary-100 to-accent-100 text-primary-700 border border-primary-200/60 hover:from-primary-200 hover:to-accent-200"
                     : "bg-surface-alt text-text-secondary border border-border hover:bg-primary-50 hover:text-primary-700 hover:border-primary-200"

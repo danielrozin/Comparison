@@ -22,7 +22,7 @@ export function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label="Back to top"
-      className="fixed bottom-20 right-6 md:bottom-6 z-50 w-11 h-11 rounded-full bg-white border border-border shadow-lg flex items-center justify-center text-text-secondary hover:text-primary-600 hover:border-primary-300 hover:shadow-primary-100/60 transition-all duration-200 active:scale-95 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75"
+      className="fixed bottom-20 right-6 md:bottom-6 z-50 w-11 h-11 rounded-full bg-white border border-border shadow-lg flex items-center justify-center text-text-secondary hover:text-primary-600 hover:border-primary-300 hover:shadow-primary-100/60 transition-all duration-200 active:scale-95 motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
