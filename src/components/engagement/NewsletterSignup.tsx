@@ -77,12 +77,12 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             aria-describedby={status === "error" ? "nl-inline-error" : undefined}
             aria-invalid={status === "error" ? "true" : undefined}
             required
-            className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-400"
+            className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus-visible:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-400"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
+            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
           >
             {status === "loading" ? "…" : "Subscribe"}
           </button>
@@ -124,12 +124,12 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               aria-describedby={status === "error" ? "nl-banner-error" : undefined}
               aria-invalid={status === "error" ? "true" : undefined}
               required
-              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
+              className="flex-1 px-4 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus-visible:border-primary-500 focus-visible:ring-2 focus-visible:ring-primary-500"
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
+              className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe Free"}
             </button>
@@ -137,9 +137,22 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
           {status === "error" && (
             <p id="nl-banner-error" role="alert" className="text-red-600 text-xs mt-2">Something went wrong. Please try again.</p>
           )}
-          <p className="text-xs text-text-secondary text-center mt-3">
-            Unsubscribe anytime.
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <div className="flex -space-x-2" aria-hidden="true">
+              {["#6366f1", "#8b5cf6", "#ec4899", "#f97316", "#10b981"].map((color, i) => (
+                <div
+                  key={i}
+                  className="w-6 h-6 rounded-full ring-2 ring-white flex items-center justify-center text-white text-xs font-bold"
+                  style={{ backgroundColor: color }}
+                >
+                  {String.fromCharCode(65 + i)}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-text-secondary">
+              Join <span className="font-semibold text-text">1,000+</span> readers · Unsubscribe anytime
+            </p>
+          </div>
         </div>
       </div>
     </div>

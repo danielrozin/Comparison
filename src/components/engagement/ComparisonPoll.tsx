@@ -239,12 +239,12 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                     required
                     aria-describedby={emailCaptureStatus === "error" ? "poll-email-error" : undefined}
                     aria-invalid={emailCaptureStatus === "error" ? "true" : undefined}
-                    className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
+                    className="flex-1 px-3 py-1.5 border border-border rounded-lg text-sm focus:outline-none focus-visible:border-primary-500 focus-visible:ring-2 focus-visible:ring-primary-500"
                   />
                   <button
                     type="submit"
                     disabled={emailCaptureStatus === "loading"}
-                    className="px-3 py-1.5 min-h-[44px] bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-xs font-semibold rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                    className="px-3 py-1.5 min-h-[44px] bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-xs font-semibold rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
                     {emailCaptureStatus === "loading" ? "..." : "Subscribe"}
                   </button>
@@ -290,7 +290,7 @@ function VoteButton({
       onClick={onClick}
       disabled={loading}
       aria-label={`Vote for ${entity.name}`}
-      className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}
+      className={`group relative flex flex-col items-center justify-center gap-2 p-5 border-2 border-border rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${bgHover} disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}
     >
       {entity.imageUrl ? (
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-alt">
