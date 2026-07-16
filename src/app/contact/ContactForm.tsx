@@ -82,7 +82,7 @@ export function ContactForm() {
             setStatus("idle");
             setForm({ name: "", email: "", subject: "", message: "" });
           }}
-          className="text-sm text-primary-600 hover:underline"
+          className="text-sm text-primary-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded"
         >
           Send another message
         </button>
@@ -176,7 +176,7 @@ export function ContactForm() {
         type="submit"
         disabled={status === "submitting"}
         aria-describedby={status === "error" ? "contact-form-error" : undefined}
-        className="w-full py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
       </button>

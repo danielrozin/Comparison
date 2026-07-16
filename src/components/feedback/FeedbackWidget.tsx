@@ -94,7 +94,7 @@ export function FeedbackWidget() {
         onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
-        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
+        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
           isOpen
             ? "bg-text/60 hover:bg-text/80 rotate-45"
             : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"
@@ -127,7 +127,7 @@ export function FeedbackWidget() {
               type="button"
               onClick={handleClose}
               aria-label="Close feedback"
-              className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors mt-0.5"
+              className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors mt-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-primary-600"
             >
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -166,7 +166,7 @@ export function FeedbackWidget() {
                       type="button"
                       aria-pressed={type === opt.value}
                       onClick={() => setType(opt.value)}
-                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors ${
+                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                         type === opt.value
                           ? "bg-primary-50 border-primary-300 text-primary-700"
                           : "bg-white border-border text-text-secondary hover:border-primary-200"
@@ -227,7 +227,7 @@ export function FeedbackWidget() {
               <button
                 type="submit"
                 disabled={isSubmitting || !message.trim()}
-                className="w-full py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold text-sm rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+                className="w-full py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold text-sm rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
                 {isSubmitting ? "Sending..." : "Send"}
               </button>
