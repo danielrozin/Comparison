@@ -88,7 +88,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
         <button
           type="button"
           onClick={() => setSuccess(false)}
-          className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+          className="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2"
         >
           Submit Another
         </button>
@@ -192,7 +192,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           {existingSlug && (
             <a
               href={`/compare/${existingSlug}`}
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-1 inline-block"
+              className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-1 inline-block rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
             >
               View the comparison <span aria-hidden="true">&rarr;</span>
             </a>
@@ -204,7 +204,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
         type="submit"
         disabled={loading || !entityA.trim() || !entityB.trim()}
         aria-describedby={error ? "request-form-error" : undefined}
-        className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm"
+        className="w-full py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
       >
         {loading ? "Submitting..." : "Submit Comparison Request"}
       </button>
