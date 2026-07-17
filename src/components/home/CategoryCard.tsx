@@ -53,7 +53,7 @@ export function CategoryCard({
     <Link
       href={`/category/${category.slug}`}
       aria-label={`Browse ${category.name} comparisons`}
-      className={`group relative flex flex-col items-center gap-3 p-5 bg-gradient-to-br ${gradient} border border-border rounded-2xl hover:border-primary-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 text-center overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2`}
+      className={`group relative flex flex-col items-center gap-3 p-5 bg-gradient-to-br ${gradient} border border-border rounded-2xl hover:border-primary-200 hover:shadow-lg motion-safe:hover:-translate-y-1 transition-all duration-200 text-center overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2`}
     >
       {/* Shine sweep on hover */}
       <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/50 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -61,7 +61,7 @@ export function CategoryCard({
       {/* Glow dot in corner */}
       <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary-400/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:shadow-sm`}>
+      <div className={`relative w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center transition-all duration-200 motion-safe:group-hover:scale-110 group-hover:shadow-sm`}>
         <CategoryIcon category={category.slug} className="w-6 h-6" />
       </div>
       <span className="relative text-sm font-semibold text-text group-hover:text-primary-700 transition-colors leading-snug">

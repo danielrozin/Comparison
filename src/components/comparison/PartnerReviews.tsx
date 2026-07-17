@@ -52,7 +52,7 @@ export function PartnerReviews({ reviews }: PartnerReviewsProps) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Read ${review.productName} review on ${review.source} — SmartScore ${review.smartScore}/100 (opens in new tab)`}
-            className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+            className="relative flex flex-col p-5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md motion-safe:hover:-translate-y-0.5 transition-all duration-200 group overflow-hidden w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           >
             {/* Gradient accent stripe */}
             <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${CARD_GRADIENTS[idx % CARD_GRADIENTS.length]}`} />

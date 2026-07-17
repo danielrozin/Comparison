@@ -161,7 +161,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
         <div className="text-center max-w-lg">
           <div className="relative w-24 h-24 mx-auto mb-8">
             {/* Animated VS badge */}
-            <div className="absolute inset-0 bg-primary-100 rounded-full animate-ping opacity-30" />
+            <div className="absolute inset-0 bg-primary-100 rounded-full motion-safe:animate-ping opacity-30" />
             <div className="relative w-24 h-24 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center shadow-xl">
               <span className="text-white font-display font-black text-2xl">VS</span>
             </div>
@@ -200,13 +200,13 @@ export function DynamicComparison({ slug }: { slug: string }) {
 
           <div className="bg-surface-alt rounded-xl p-4 text-left text-sm text-text-secondary space-y-2">
             <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-green-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <svg className="w-4 h-4 text-green-500 motion-safe:animate-pulse" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               Researching entities...
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-green-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20" style={{ animationDelay: "0.3s" }} aria-hidden="true">
+              <svg className="w-4 h-4 text-green-500 motion-safe:animate-pulse" fill="currentColor" viewBox="0 0 20 20" style={{ animationDelay: "0.3s" }} aria-hidden="true">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               Comparing attributes...
