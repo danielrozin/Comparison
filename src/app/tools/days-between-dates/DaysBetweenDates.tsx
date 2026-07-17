@@ -135,7 +135,7 @@ export function DaysBetweenDates() {
               <button
                 key={days}
                 onClick={() => setPreset(days)}
-                className="px-3 py-1.5 text-xs font-medium border border-border rounded-full hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 text-text-secondary transition-colors"
+                className="px-3 py-1.5 text-xs font-medium border border-border rounded-full hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 text-text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
               >
                 {label}
               </button>
@@ -148,7 +148,7 @@ export function DaysBetweenDates() {
         )}
         <button
           onClick={calculate}
-          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
+          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           Calculate
         </button>

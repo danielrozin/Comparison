@@ -114,7 +114,7 @@ export function RoiCalculator() {
         )}
         <button
           onClick={calculate}
-          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
+          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           Calculate ROI
         </button>
