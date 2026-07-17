@@ -163,7 +163,7 @@ export function ComparisonCharts({
                 tabIndex={activeTab === tab.key ? 0 : -1}
                 onClick={() => setActiveTab(tab.key)}
                 onKeyDown={(e) => handleTabKeyDown(e, i)}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 ${
+                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                   activeTab === tab.key
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md"
                     : "text-text-secondary hover:text-text hover:bg-surface-alt"
