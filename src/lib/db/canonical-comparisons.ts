@@ -61,5 +61,13 @@ export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => s
  * stayed at 468, so for the life of that deploy the site-wide JSON-LD overstated the
  * corpus by 14 pages. Any PR that adds to `safeConsolidations` must re-run
  * `scripts/dan2067-verify.ts` and bring this number down with it.
+ *
+ * DAN-346 (2026-07-17) folded the 10-slug "PS5 vs Xbox Series X" keyword-permutation
+ * cluster into `ps5-vs-xbox-series-x` (see compare-redirects.ts), retiring 10 more
+ * slugs into REDIRECTED_COMPARE_SLUGS. Per the floor invariant in
+ * corpus-count-truthfulness.test.ts (`FALLBACK <= 454 - retiredSinceSweep`), the
+ * ceiling drops 454 -> 444, so this comes down to 444. It stays a conservative
+ * floor: dan2067-verify.ts reports the live canonical catalog at 472 after the fold
+ * (the publish cron has grown it well above the pinned sweep), so 444 is safely below.
  */
-export const CANONICAL_COMPARISON_COUNT_FALLBACK = 454;
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 444;
