@@ -1,14 +1,14 @@
 /**
- * DAN-2336: Week 34 Blog Batch 34 — Keyword discovery + 5 blog drafts (Jan 2-6, 2027)
+ * DAN-2336: Week 34 Blog Batch 34 — Keyword discovery + 5 blog drafts (Jan 1-5, 2027)
  *
  * Keyword discovery results (DataForSEO keyword_ideas, US, vol>100, KD<45):
- *   - waffle-house-menu            (KD 24,  3,350,000 vol, CPC $0.80) — Jan 2 [food/breakfast]
- *   - popeyes-menu                 (KD 25,    450,000 vol, CPC $0.05) — Jan 3 [food/fast-food]
- *   - cava-menu                    (KD 10,    301,000 vol, CPC $0.05) — Jan 4 [food/fast-casual]
- *   - dunkin-menu                  (KD  9,    246,000 vol, CPC $0.15) — Jan 5 [food/coffee]
- *   - chick-fil-a-breakfast-menu   (KD  6,    246,000 vol, CPC $0.07) — Jan 6 [food/breakfast]
+ *   - whataburger-menu      (KD 27,   550,000 vol, CPC $0.05) — Jan 1 [food/fast-food]
+ *   - popeyes-menu          (KD 25,   450,000 vol, CPC $0.05) — Jan 2 [food/fast-food]
+ *   - dunkin-donuts-menu    (KD 19,   450,000 vol, CPC $0.13) — Jan 3 [food/coffee]
+ *   - jimmy-johns-menu      (KD 12,   301,000 vol, CPC $0.06) — Jan 4 [food/fast-food]
+ *   - five-guys-menu        (KD 23,   246,000 vol, CPC $0.07) — Jan 5 [food/fast-food]
  *
- * Combined monthly search volume: ~4,593,000/mo
+ * Combined monthly search volume: ~1,997,000/mo
  * All slugs verified: no overlap with Batches 1–33.
  * Each draft: 900-1,300 words, clear direct answer first paragraph,
  * authoritative facts, author byline, internal links to /compare/* pages.
@@ -33,815 +33,727 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const JAN2 = new Date("2027-01-02T10:00:00.000Z");
-const JAN3 = new Date("2027-01-03T10:00:00.000Z");
-const JAN4 = new Date("2027-01-04T10:00:00.000Z");
-const JAN5 = new Date("2027-01-05T10:00:00.000Z");
-const JAN6 = new Date("2027-01-06T10:00:00.000Z");
+const JAN1  = new Date("2027-01-01T10:00:00.000Z");
+const JAN2  = new Date("2027-01-02T10:00:00.000Z");
+const JAN3  = new Date("2027-01-03T10:00:00.000Z");
+const JAN4  = new Date("2027-01-04T10:00:00.000Z");
+const JAN5  = new Date("2027-01-05T10:00:00.000Z");
 
 const POSTS = [
-  // ── POST 1: Waffle House Menu ─────────────────────────────────────────────
+  // ── POST 1: Whataburger Menu ──────────────────────────────────────────────
   {
-    slug: "waffle-house-menu",
-    title: "Waffle House Menu: Full Prices, Best Items & What to Order (2027)",
+    slug: "whataburger-menu",
+    title: "Whataburger Menu: Full Prices, Best Burgers & Deals (2026)",
     excerpt:
-      "Waffle House is an American institution with over 1,900 locations across 25 states, operating 24/7/365. The menu centers on waffles, eggs, hash browns, bacon, sausage, and grits. A waffle costs $3.35, All-Star Special is $9.45, a T-Bone steak is $14.99, and hash browns start at $2.45. Waffle House is famous for hash browns — ordered by the handful of modifiers: scattered (on grill), smothered (onions), covered (cheese), chunked (ham), topped (chili), diced (tomato), peppered (jalapeños), and capped (mushrooms).",
+      "Whataburger is a Texas-born fast food chain with roughly 1,000 locations across the South and Sun Belt. Founded in 1950 in Corpus Christi, Whataburger is known for its 5-inch buns, 100% fresh beef, and \"just like you like it\" customization. A classic Whataburger costs $5.39, a Double Meat Whataburger is $7.39, and the Whatachick'n Sandwich is $5.29. Many locations serve breakfast 24 hours a day. Whataburger is fiercely loved in Texas — it consistently beats national chains in regional preference surveys.",
     category: "food",
     tags: [
-      "waffle house menu",
-      "waffle house prices",
-      "waffle house hash browns",
-      "waffle house menu 2027",
-      "waffle house all star",
-      "waffle house breakfast",
+      "whataburger menu",
+      "whataburger prices",
+      "whataburger menu 2026",
+      "whataburger breakfast",
+      "whataburger burger",
+      "whataburger deals",
     ],
-    metaTitle: "Waffle House Menu: Full Prices & Best Items (2027) | aversusb",
+    metaTitle: "Whataburger Menu: Full Prices & Best Items (2026)",
     metaDescription:
-      "See the full Waffle House menu with 2027 prices, hash brown modifiers, All-Star Special, and best items. What should you order at Waffle House?",
+      "See the full Whataburger menu with 2026 prices, best burgers, breakfast items, and deals. What should you order at Whataburger? Find out here.",
     relatedComparisonSlugs: [
-      "ihop-vs-denny-s",
       "mcdonald-s-vs-burger-king",
-      "dunkin-vs-starbucks",
+      "chick-fil-a-vs-popeyes",
+      "mcdonald-s-vs-wendy-s",
     ],
-    sourceQuery: "waffle house menu",
-    sourceImpressions: 3350000,
-    publishedAt: JAN2,
-    content: `# Waffle House Menu: Full Prices, Best Items & What to Order (2027)
+    sourceQuery: "whataburger menu",
+    sourceImpressions: 550000,
+    publishedAt: JAN1,
+    content: `# Whataburger Menu: Full Prices, Best Burgers & Deals (2026)
 
-*By Daniel Rozin | A Versus B | January 2, 2027*
+*By Daniel Rozin | A Versus B | January 1, 2027*
 
-Waffle House is one of the most iconic American dining institutions, with over 1,900 locations across 25 states — open 24 hours a day, 7 days a week, 365 days a year. No holidays. Founded in Avondale Estates, Georgia in 1955 by Joe Rogers Sr. and Tom Forkner, Waffle House serves a focused menu of waffles, eggs, hash browns, bacon, sausage, grits, and T-bone steaks. A plain waffle costs $3.35, the All-Star Special is $9.45, a T-bone steak is $14.99, and hash browns start at $2.45. Waffle House is particularly famous for its hash brown modifier system: eight customizations that range from scattered (spread on grill) to "all the way" (every modifier applied). Here is the full Waffle House menu with 2027 prices.
+Whataburger is a Texas-born fast food chain with approximately 1,000 locations across the South and Sun Belt states. Founded in 1950 in Corpus Christi by Harmon Dobson, Whataburger built its identity on freshly prepared burgers served on 5-inch toasted buns — larger than any standard fast food bun at the time. Every burger is made to order, which means longer wait times than McDonald's or Burger King, but noticeably better quality. A classic Whataburger costs $5.39, a Double Meat Whataburger is $7.39, and the Whatachick'n Sandwich is $5.29. Here is the full Whataburger menu with 2026 prices.
 
 ---
 
-## Waffle House Menu Prices (2027)
+## Whataburger Menu Prices (2026)
 
-### Waffles
+### Burgers
 
 | Item | Price | Calories |
 |------|-------|----------|
-| Waffle (plain) | $3.35 | 350 cal |
-| Pecan Waffle | $4.15 | 410 cal |
-| Blueberry Waffle | $4.15 | 380 cal |
-| Chocolate Chip Waffle | $4.35 | 440 cal |
-| Peanut Butter Waffle | $4.35 | 460 cal |
+| Whataburger | $5.39 | 590 cal |
+| Double Meat Whataburger | $7.39 | 860 cal |
+| Triple Meat Whataburger | $9.19 | 1,130 cal |
+| Jalapeño & Cheese Whataburger | $6.29 | 680 cal |
+| Bacon & Cheese Whataburger | $6.49 | 720 cal |
+| Avocado Bacon Burger | $7.29 | 760 cal |
+| Patty Melt | $6.99 | 660 cal |
+| Green Chile Double | $7.99 | 890 cal |
 
-Waffle House waffles are made from a proprietary batter mix in a dedicated iron that produces a thick, crisp-edged, slightly sweet waffle. The **Pecan Waffle** ($4.15) is the most popular upgrade — chopped pecans embedded in the batter add texture and a nutty richness that makes it worth the extra $0.80.
+The **Whataburger** is the foundation: a 4-oz fresh beef patty on a 5-inch toasted bun with mustard, lettuce, tomatoes, pickles, and diced onion by default. "Just like you like it" means every modification is free — add jalapeños, swap mustard for mayo, go all-beef no-bun. Whataburger's kitchen genuinely accommodates long custom orders without attitude.
 
-### Eggs & Plates
+### Chicken Sandwiches
 
-| Item | Price | What's Included |
-|------|-------|-----------------|
-| 2 Eggs (any style) | $3.15 | Two eggs, your choice of style |
-| All-Star Special | $9.45 | Waffle + 2 eggs + hash browns + bacon or sausage |
-| Breakfast Plate | $7.25 | 2 eggs + hash browns + toast |
-| Country Ham & Eggs | $9.95 | Country ham + 2 eggs + hash browns |
-| Pork Chop & Eggs | $10.95 | Two pork chops + 2 eggs |
-| T-Bone Steak & Eggs | $18.95 | T-bone steak + 2 eggs + hash browns |
+| Item | Price | Calories |
+|------|-------|----------|
+| Whatachick'n Sandwich | $5.29 | 540 cal |
+| Spicy Whatachick'n Sandwich | $5.29 | 550 cal |
+| Grilled Chicken Sandwich | $5.99 | 440 cal |
+| Whatachick'n Strips (3 pc) | $7.49 | 450 cal |
+| Whatachick'n Strips (5 pc) | $10.49 | 750 cal |
 
-The **All-Star Special** ($9.45) is the definitive Waffle House order: a waffle, two eggs, hash browns, and your choice of bacon or sausage for under $10. This is the full Waffle House experience in a single meal.
+### Breakfast (Available 11 PM – 11 AM, many 24-hr locations)
 
-### Hash Browns
+| Item | Price | Calories |
+|------|-------|----------|
+| Breakfast on a Bun | $4.99 | 510 cal |
+| Egg & Cheese Biscuit | $3.49 | 390 cal |
+| Biscuit & Gravy | $2.29 | 310 cal |
+| Pancake Platter | $4.79 | 480 cal |
+| Honey Butter Chicken Biscuit | $4.49 | 500 cal |
+| Breakfast Platter | $6.99 | 840 cal |
+| Taquito with Cheese | $4.99 | 430 cal |
+| Hash Browns | $2.49 | 250 cal |
+| Cinnamon Roll | $2.29 | 360 cal |
 
-Waffle House hash browns are the most customizable item on any major fast food menu. Base price: $2.45 for a regular.
+Whataburger's **Honey Butter Chicken Biscuit** is one of the most beloved regional fast food breakfast items — crispy fried chicken on a flaky biscuit with honey butter. It has a genuine cult following in Texas.
 
-| Size | Price |
-|------|-------|
-| Regular hash browns | $2.45 |
-| Large hash browns | $3.45 |
-| Double hash browns | $4.45 |
+### Sides & Extras
 
-**The 8 Hash Brown Modifiers** (each $0.60 extra):
-
-| Modifier | Code | What it means |
-|----------|------|---------------|
-| Scattered | — | Spread thin across grill for maximum crispiness |
-| Smothered | S | Topped with sautéed onions |
-| Covered | C | Smothered with melted cheese |
-| Chunked | K | Diced ham pieces added |
-| Topped | T | Covered with Waffle House chili |
-| Diced | D | Topped with fresh tomato pieces |
-| Peppered | P | Jalapeño peppers added |
-| Capped | M | Topped with mushrooms |
-
-**"All the way"** = all 8 modifiers applied. This is the maximal Waffle House hash brown experience — a mountain of crispy potatoes buried under onions, cheese, ham, chili, tomatoes, jalapeños, and mushrooms. It costs significantly more but is a complete meal by itself.
-
-**Best hash brown order for a first-timer:** Scattered, Smothered, and Covered (SSC) — spread on grill, onions, cheese. The classic gateway combination.
-
-### Bacon & Sausage
-
-| Item | Price |
-|------|-------|
-| Bacon (3 strips) | $3.45 |
-| Sausage Patties (2 pc) | $3.45 |
-| Country Sausage Links (2 pc) | $3.45 |
-| City Ham (2 slices) | $3.45 |
-| Country Ham (1 slice) | $4.45 |
-
-Waffle House cooks bacon and sausage on the same flat-top grill as everything else — the flavor absorption from the shared surface is part of what makes Waffle House breakfast taste distinct from any other diner.
-
-### Steaks
-
-| Item | Price |
-|------|-------|
-| T-Bone Steak | $14.99 |
-| T-Bone & Eggs | $18.95 |
-| Pork Chops (2) | $7.99 |
-| Pork Chops & Eggs | $10.95 |
-
-The **T-bone steak** at Waffle House ($14.99) is one of the most unexpected menu items in fast food: a full bone-in T-bone cooked on the flat-top grill alongside the hash browns and eggs. It is cooked to your requested temperature (medium-well recommended on a flat-top). Not a steakhouse experience, but a genuinely good cut of beef at a reasonable price.
-
-### Sides, Grits & Toast
-
-| Item | Price |
-|------|-------|
-| Grits (regular) | $2.45 |
-| Grits (large) | $3.15 |
-| Toast (2 slices) | $1.75 |
-| Biscuit | $1.95 |
-| Biscuit with Butter | $2.25 |
-| Apple Butter (add-on) | $0.35 |
-
-Waffle House grits are Southern-style stone-ground grits, served thick and buttered. Add cheese (+$0.60) for the classic Southern preparation. At $2.45, they're the cheapest hot side item on the menu.
+| Item | Price | Calories |
+|------|-------|----------|
+| French Fries (medium) | $3.29 | 370 cal |
+| Onion Rings (medium) | $3.49 | 390 cal |
+| Apple Slices | $1.29 | 35 cal |
+| Jalapeño Pepper (per pepper) | $0.30 | 5 cal |
 
 ### Beverages
 
 | Item | Price |
 |------|-------|
-| Coffee (regular, unlimited) | $2.25 |
-| Sweet Tea (large) | $2.25 |
-| Orange Juice (small) | $2.75 |
-| Milk (glass) | $2.25 |
-| Chocolate Milk | $2.45 |
+| Medium Soft Drink | $2.49 |
+| Sweet Tea (medium) | $1.99 |
+| Milk Shake (medium) | $4.49 |
+| Unsweetened Iced Tea | $1.99 |
 
-Waffle House coffee is diner coffee — unfussy, hot, and refilled automatically by attentive servers. The $2.25 price for unlimited refills makes it one of the best coffee values in chain dining.
+### Desserts
 
----
-
-## Best Items at Waffle House
-
-**1. All-Star Special** — $9.45. The definitive Waffle House meal: waffle, two eggs your way, hash browns, and bacon or sausage. Under $10, hot, fast, and filling. The standard order for anyone who knows what they're doing at Waffle House.
-
-**2. Pecan Waffle** — $4.15. The best waffle on the menu. Pecans embedded in the batter, crispy edges, thick center. Worth the $0.80 upgrade over the plain waffle.
-
-**3. Hash Browns Scattered, Smothered, Covered** — $2.45 + $1.20 in modifiers. The gateway hash brown order: spread thin on the grill for crisp edges, topped with sautéed onions and melted cheese. The Waffle House signature experience.
-
-**4. T-Bone Steak & Eggs** — $18.95. The most surprising value on the menu. A full T-bone steak cooked on the flat-top alongside eggs and hash browns. An unexpected but satisfying way to eat steak at 3 AM.
-
-**5. Country Ham & Eggs** — $9.95. Salty, thick-cut Southern-style country ham with two eggs and hash browns. Country ham is salt-cured and has a more intense flavor than city ham — a regional specialty that Waffle House does well.
+| Item | Price | Calories |
+|------|-------|----------|
+| Hot Apple Pie | $1.99 | 260 cal |
+| Chocolate Chunk Cookie | $1.29 | 220 cal |
 
 ---
 
-## The Waffle House Index
+## Best Items at Whataburger
 
-Waffle House is so operationally resilient that FEMA created the unofficial "Waffle House Index" to measure disaster severity: if a Waffle House is closed, the area has likely suffered major damage. In nearly 70 years, Waffle House has rarely closed — they maintain backup generators, fly-in emergency staff, and limited disaster menus to keep operating through hurricanes, snowstorms, and power outages. This is less a menu note and more context for why Waffle House locations are dense in the southeastern US — the chain was built for reliability above all else.
+**1. Whataburger (classic)** — $5.39. Order it with mustard, pickles, and fresh onion, add a jalapeño for $0.30. The 5-inch bun holds everything without collapsing — this is the structural engineering advantage of Whataburger over smaller-bun competitors. The beef is fresh, not frozen. At $5.39, it is the most honest value proposition on the menu.
+
+**2. Double Meat Whataburger** — $7.39. Two 4-oz beef patties, same bun, everything doubled. More beef-to-bread ratio than a single. This is the correct order for anyone who finds single-patty burgers insufficient. Still cheaper than most premium double burgers.
+
+**3. Honey Butter Chicken Biscuit** — $4.49. Breakfast only (available 11 PM – 11 AM). A fried chicken filet on a flaky biscuit with house-made honey butter sauce. Sweet, salty, crispy, soft. The best breakfast item at Whataburger by a significant margin and arguably the best chain breakfast biscuit in the South.
+
+**4. Patty Melt** — $6.99. Two 4-oz beef patties on Texas toast with grilled onions and creamy pepper sauce. Whataburger's Texas toast patty melt is a regional classic — a full meal that requires both hands and about 20 napkins. Highly recommended.
+
+**5. Whatachick'n Strips (3 pc)** — $7.49. White meat chicken strips with crispy, well-seasoned breading. Best paired with Whataburger's signature Creamy Pepper sauce for dipping. More satisfying than a standalone sandwich if you prefer a platter format.
 
 ---
 
-## Is Waffle House Worth It in 2027?
+## Whataburger Deals & Value Tips
 
-At $9.45 for the All-Star Special (waffle + eggs + hash browns + protein), Waffle House is the best value full-breakfast deal in American chain dining. No comparable meal at IHOP, Denny's, or any fast food breakfast comes close in terms of quantity and quality for the price. The 24/7/365 availability adds practical value — Waffle House is open when nothing else is. The hash brown modifier system makes it customizable in a way that rewards repeat visits. If you're in one of the 25 states where Waffle House operates, a visit is essentially mandatory at least once — particularly the 2 AM variant, which is a distinct cultural experience. Order the All-Star Special, add a pecan waffle upgrade, and get hash browns scattered, smothered, and covered.
+**Download the Whataburger app.** The Whataburger app consistently offers BOGO Whataburgers, $1 breakfast items, and free sides with purchase. App loyalty rewards accumulate faster than competitors' at casual ordering frequency.
 
-*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2027 US national averages and may vary by location.*`,
+**Order during breakfast hours for the best value.** A Taquito with Cheese ($4.99) or Honey Butter Chicken Biscuit ($4.49) + small coffee is a complete meal under $7.
+
+**Customize to your order.** No-charge customizations include: extra pickles, no onion, mustard-only (skip mayo entirely), add jalapeños ($0.30 each), add extra tomato. Whataburger's kitchen actually executes custom orders — use this.
+
+**Late night is prime Whataburger time.** Many Texas Whataburger locations are 24-hour. Late-night quality is consistent because the kitchen rotates stock frequently — you will not get a burger that has been sitting under a heat lamp.
+
+---
+
+## Is Whataburger Worth It in 2026?
+
+Whataburger is the best regional fast food chain in the US. If you are in Texas, Oklahoma, Alabama, Florida, or any of its ~15 states, Whataburger competes directly with McDonald's and Burger King and wins on quality. The fresh-beef, made-to-order model means a 3–5 minute wait versus the 90-second drive-through of McDonald's — but the gap in burger quality is proportional to that difference. For non-Texans visiting the South: try the Honey Butter Chicken Biscuit for breakfast and a Patty Melt for lunch. You will understand why Texans treat Whataburger as a point of state pride.
+
+*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2026 US national averages and may vary by location.*`,
   },
 
-  // ── POST 2: Popeyes Menu ─────────────────────────────────────────────────
+  // ── POST 2: Popeyes Menu ──────────────────────────────────────────────────
   {
     slug: "popeyes-menu",
-    title: "Popeyes Menu: Full Prices, Best Chicken & Deals (2027)",
+    title: "Popeyes Menu: Full Prices, Best Chicken & Deals (2026)",
     excerpt:
-      "Popeyes Louisiana Kitchen is a fast food chicken chain with over 3,700 US locations. Popeyes serves Louisiana-style fried chicken, chicken sandwiches, tenders, red beans and rice, and Cajun fries. A 3-piece Chicken Tender Combo is $11.99, the Chicken Sandwich is $5.99, and a 2-piece Mixed Chicken is $5.99. Popeyes became a cultural phenomenon in 2019 when its chicken sandwich went viral and sold out nationwide. The Popeyes Chicken Sandwich is widely regarded as the best fast food chicken sandwich in the US.",
+      "Popeyes Louisiana Kitchen is a fast food chain specializing in Southern-style fried chicken, chicken sandwiches, and Cajun-spiced sides. Founded in 1972 in New Orleans, Popeyes has over 3,700 US locations. The Popeyes Chicken Sandwich costs $4.99–$5.99, Classic Chicken Tenders (3 pc) are $8.29, a 3-piece Chicken leg quarter combo is $7.49, and Red Beans and Rice is $3.29. Popeyes became the most talked-about fast food chain in 2019 when its Chicken Sandwich went viral and sparked a cultural moment in fast food.",
     category: "food",
     tags: [
       "popeyes menu",
       "popeyes prices",
+      "popeyes menu 2026",
       "popeyes chicken sandwich",
-      "popeyes menu 2027",
       "popeyes chicken",
       "popeyes deals",
     ],
-    metaTitle: "Popeyes Menu: Full Prices & Best Chicken (2027) | aversusb",
+    metaTitle: "Popeyes Menu: Full Prices & Best Chicken (2026)",
     metaDescription:
-      "See the full Popeyes menu with 2027 prices, chicken sandwich, tenders, and deals. What's the best thing to order at Popeyes? Find out here.",
+      "See the full Popeyes menu with 2026 prices, best chicken sandwiches, tenders, and deals. What's worth ordering at Popeyes? Find out here.",
     relatedComparisonSlugs: [
       "chick-fil-a-vs-popeyes",
-      "popeyes-vs-raising-canes",
-      "kfc-vs-popeyes",
+      "mcdonald-s-vs-burger-king",
+      "mcdonald-s-vs-wendy-s",
     ],
     sourceQuery: "popeyes menu",
     sourceImpressions: 450000,
-    publishedAt: JAN3,
-    content: `# Popeyes Menu: Full Prices, Best Chicken & Deals (2027)
+    publishedAt: JAN2,
+    content: `# Popeyes Menu: Full Prices, Best Chicken & Deals (2026)
 
-*By Daniel Rozin | A Versus B | January 3, 2027*
+*By Daniel Rozin | A Versus B | January 2, 2027*
 
-Popeyes Louisiana Kitchen is a fast food chain specializing in Louisiana-style fried chicken, with over 3,700 US locations and more than 3,000 international locations. Founded in New Orleans in 1972 by Al Copeland, Popeyes built its identity on bold Cajun and Creole-inspired seasoning, bone-in chicken, biscuits, red beans and rice, and Cajun sides. Popeyes achieved cultural phenomenon status in 2019 when its chicken sandwich launched, went viral, and sold out nationwide within two weeks. A 3-piece Chicken Tender Combo is $11.99, the Chicken Sandwich is $5.99, and a 2-piece Mixed Chicken is $5.99. Here is the full Popeyes menu with 2027 prices.
+Popeyes Louisiana Kitchen is a fast food chain founded in 1972 in New Orleans by Al Copeland. With over 3,700 US locations and 4,000+ internationally, Popeyes specializes in Southern-style fried chicken marinated in Louisiana seasonings for at least 12 hours before cooking. The Chicken Sandwich costs $4.99–$5.99 and was the center of the most-discussed fast food moment of the 2010s. Classic Chicken Tenders (3 pc) are $8.29, and the signature Red Beans and Rice — a Louisiana staple — is $3.29. Here is the full Popeyes menu with 2026 prices.
 
 ---
 
-## Popeyes Menu Prices (2027)
+## Popeyes Menu Prices (2026)
 
-### Chicken Sandwich
-
-| Item | Price | Calories |
-|------|-------|----------|
-| Chicken Sandwich (classic) | $5.99 | 700 cal |
-| Spicy Chicken Sandwich | $5.99 | 700 cal |
-| Deluxe Sandwich (with bacon) | $7.49 | 800 cal |
-| Spicy Deluxe Sandwich | $7.49 | 800 cal |
-| Combo (sandwich + fries + drink) | $10.49 | — |
-
-The **Popeyes Chicken Sandwich** ($5.99) is the most discussed fast food item of the last decade. A thick, brioche-bun-sized fried chicken breast with a two-day marinade, pickles, and either classic (mayo) or spicy (house spread) sauce. The chicken breast is noticeably thicker and juicier than competitors — the marinade creates a genuinely different texture. At $5.99, it's priced slightly below Chick-fil-A's classic sandwich ($6.09) and consistently rated superior in blind taste tests by major food publications.
-
-### Bone-In Chicken (Classic vs. Spicy)
+### Chicken Sandwiches
 
 | Item | Price | Calories |
 |------|-------|----------|
-| 2-piece Mixed (1 thigh + 1 leg) | $5.99 | 690 cal |
-| 3-piece Tenders | $8.49 | 560 cal |
-| 4-piece Chicken | $9.99 | 940 cal |
-| 8-piece Chicken | $16.99 | 1,880 cal |
-| 12-piece Chicken | $24.99 | 2,820 cal |
+| Classic Chicken Sandwich | $4.99 | 700 cal |
+| Spicy Chicken Sandwich | $4.99 | 700 cal |
+| Classic Chicken Sandwich (Combo) | $8.99 | — |
+| Spicy Chicken Sandwich (Combo) | $8.99 | — |
+| Blackened Ranch Chicken Sandwich | $5.99 | 680 cal |
 
-Popeyes bone-in chicken comes in **Classic** (mild, buttery) or **Spicy** (Cajun-forward, genuine heat). The spicy version uses a Cayenne-forward seasoning that is noticeably hot without being overwhelming. Always order a mix — two spicy pieces and one classic to appreciate the contrast.
+The **Popeyes Chicken Sandwich** uses a buttermilk-marinated, pressure-fried chicken filet on a brioche bun with barrel-cured pickles and either Classic (mayo) or Spicy (spicy mayo) sauce. When it launched in 2019 it sold out nationwide within two weeks and generated more media coverage than any other fast food product in history.
 
-**Recommended pieces:** Thigh > Leg > Breast > Wing, in that order. The thigh has the highest fat content and absorbs the most seasoning. The breast is the leanest but also the driest — pick the thigh for Popeyes if you want the best piece.
-
-### Chicken Tenders & Strips
+### Fried Chicken
 
 | Item | Price | Calories |
 |------|-------|----------|
-| 3-piece Tenders (classic or spicy) | $8.49 | 560 cal |
-| 5-piece Tenders | $12.49 | 930 cal |
-| 3-piece Tenders Combo (+ fries + drink) | $11.99 | — |
-| 12-piece Tenders Family Meal | $26.99 | — |
+| 2 pc Chicken (leg + thigh) | $5.29 | 510 cal |
+| 3 pc Chicken | $7.49 | 700 cal |
+| 4 pc Chicken | $10.49 | 950 cal |
+| 8 pc Chicken | $19.99 | — |
+| 12 pc Chicken | $26.99 | — |
 
-Popeyes tenders are hand-battered strips of white-meat chicken breast — thicker and juicier than McDonald's McNuggets or Chick-fil-A's strips. The spicy tenders in particular are one of the best chicken tender options in fast food.
+Popeyes chicken is marinated for a minimum of 12 hours in a blend of Louisiana seasonings, then hand-battered and cooked to order. The result is a deeply flavored, crispy exterior with juicy dark and white meat. Dark meat cuts (thigh, leg) are particularly well-suited to the marinating process.
+
+### Chicken Tenders
+
+| Item | Price | Calories |
+|------|-------|----------|
+| 3 pc Chicken Tenders | $8.29 | 490 cal |
+| 5 pc Chicken Tenders | $10.99 | 820 cal |
+| 3 pc Tenders Combo | $12.29 | — |
+
+Chicken Tenders at Popeyes are whole-muscle white meat strips — not formed or pressed chicken. Each tender is hand-breaded and marinated before frying. Pair with Bayou Buffalo or BoldBQ dipping sauce.
+
+### Shrimp
+
+| Item | Price | Calories |
+|------|-------|----------|
+| Butterfly Shrimp (6 pc) | $4.99 | 380 cal |
+| Butterfly Shrimp (12 pc) | $8.99 | 760 cal |
 
 ### Sides
 
-| Side | Price | Calories |
-|------|-------|----------|
-| Cajun Fries (regular) | $3.29 | 380 cal |
-| Red Beans & Rice (regular) | $3.49 | 230 cal |
-| Mashed Potatoes & Gravy (regular) | $2.99 | 220 cal |
-| Coleslaw (regular) | $2.49 | 290 cal |
-| Mac & Cheese (regular) | $3.49 | 280 cal |
-| Corn on the Cob | $2.99 | 190 cal |
-| Green Beans | $2.99 | 50 cal |
-
-**Red Beans and Rice** ($3.49) is Popeyes' most distinctive side — a Louisiana Cajun staple of slow-cooked red kidney beans with Andouille sausage and seasoned rice. No other major fast food chain serves a comparable item. It is a must-order on every Popeyes visit, particularly alongside the spicy chicken.
-
-**Cajun Fries** ($3.29) are seasoned with Cajun spice blend before frying — meaningfully different from McDonald's or Burger King fries and among the best fast food fries when fresh.
-
-### Biscuits
-
 | Item | Price | Calories |
 |------|-------|----------|
-| Biscuit (1 pc) | $1.99 | 260 cal |
-| Biscuit (2 pc) | $3.49 | 520 cal |
+| Red Beans and Rice (regular) | $3.29 | 230 cal |
+| Mashed Potatoes & Gravy (regular) | $3.29 | 220 cal |
+| Cajun Fries (regular) | $3.29 | 310 cal |
+| Coleslaw (regular) | $3.29 | 230 cal |
+| Corn on the Cob | $2.99 | 170 cal |
+| Mac & Cheese (regular) | $3.99 | 280 cal |
 
-Popeyes biscuits are buttermilk biscuits baked fresh per order — flaky, buttery, slightly sweet. They are consistently rated among the best fast food biscuits and are a must-add to any Popeyes order.
+**Red Beans and Rice** is the most authentic item on the Popeyes menu relative to the Louisiana tradition. Kidney beans cooked with Andouille sausage, bay leaves, and Cajun seasonings, served over rice. An actual Louisiana comfort food item executed correctly.
 
-### Po'Boys & Limited Items
+### Beverages & Desserts
 
 | Item | Price |
 |------|-------|
-| Shrimp Po'Boy | $7.99 |
-| Surf & Turf Po'Boy | $8.99 |
-| Chicken Po'Boy | $7.49 |
-
-Popeyes Po'Boy sandwiches use Cajun-seasoned french bread rolls — a nod to the New Orleans origin of the chain. The **Shrimp Po'Boy** ($7.99) is available year-round and features crispy breaded shrimp with tartar sauce on toasted bread.
-
-### Combos & Family Meals
-
-| Item | Price | Includes |
-|------|-------|----------|
-| 2-piece Combo | $8.99 | 2 chicken pieces + side + biscuit + drink |
-| 3-piece Tender Combo | $11.99 | 3 tenders + fries + drink |
-| 8-piece Family Meal | $23.99 | 8 pieces + 3 large sides + 4 biscuits |
-| 12-piece Family Meal | $32.99 | 12 pieces + 4 large sides + 6 biscuits |
+| Medium Soft Drink | $2.49 |
+| Sweet Tea (medium) | $1.99 |
+| Strawberry Lemonade (medium) | $2.99 |
+| Cinnamon Apple Pie | $1.99 |
+| Mardi Gras Cheesecake | $2.49 |
 
 ---
 
 ## Best Items at Popeyes
 
-**1. Chicken Sandwich (Spicy)** — $5.99. The best fast food chicken sandwich in the US by most objective measures. Thick-cut fried chicken breast on a brioche bun with pickles and a house spicy spread. Get it spicy — the mild mayo version is fine, but the spicy version is what the original viral buzz was about.
+**1. Spicy Chicken Sandwich** — $4.99. The Spicy version is better than Classic: the spicy mayo adds heat and richness that the plain mayo doesn't provide. The pickles are essential to the balance. Eat it immediately — the brioche bun starts to steam after 5 minutes and loses its structural integrity.
 
-**2. Red Beans and Rice** — $3.49. The most irreplaceable side in fast food. Slow-cooked Louisiana-style red kidney beans with Andouille sausage and seasoned rice. Nothing else in fast food matches this — it is a genuine Cajun dish, not a restaurant approximation. Order it every time.
+**2. Chicken Thigh (individual)** — $2.39 (approx., as part of a piece order). The chicken thigh is the best cut at Popeyes. The dark meat absorbs the 12-hour marinade more thoroughly than white meat, and the fat content makes every bite juicier. Order this over breast if given the choice.
 
-**3. Spicy Chicken Thigh** — (part of any chicken order). The best piece of chicken at Popeyes. More fat, more seasoning, more flavor. Order the 2-piece mixed spicy and specify thigh + leg.
+**3. Red Beans and Rice (regular)** — $3.29. Popeyes' most Louisiana-authentic item. The Andouille sausage is not an afterthought — it genuinely flavors the beans. This side costs $3.29 and adds a complete carb-and-protein component to any meal.
 
-**4. Buttermilk Biscuit** — $1.99. Fresh-baked, buttery, and flaky. Better than KFC's biscuit and comparable to Chick-fil-A's. Always add at least one biscuit to any Popeyes order.
+**4. Classic Chicken Tenders (3 pc)** — $8.29. Better than the chicken sandwich for texture variety — the tenders are all crust-to-meat ratio, no bun dilution. Dip in the Bayou Buffalo sauce for the closest approximation of an upscale wing experience at fast food prices.
 
-**5. Cajun Fries** — $3.29. The best seasoned fast food fries when ordered fresh. The Cajun blend gives them a paprika-forward heat that improves significantly over standard unseasoned fries.
-
----
-
-## Popeyes vs. Chick-fil-A vs. KFC
-
-| Category | Popeyes | Chick-fil-A | KFC |
-|----------|---------|-------------|-----|
-| Best sandwich | ✅ (unanimous) | Competitive | ❌ |
-| Bone-in chicken | ✅ Spicy is best | ❌ No bone-in | ✅ Original Recipe |
-| Sides quality | ✅ Red beans is unique | ✅ Waffle fries | ✅ Mashed potatoes |
-| Biscuits | ✅ Excellent | ✅ Excellent | ✅ Good |
-| Hours | Standard | Closed Sunday | Standard |
-| Price | $5.99 sandwich | $6.09 sandwich | $5.99 sandwich |
-
-See the full comparison: [Chick-fil-A vs. Popeyes](/compare/chick-fil-a-vs-popeyes) and [KFC vs. Popeyes](/compare/kfc-vs-popeyes)
+**5. Cajun Fries (regular)** — $3.29. Popeyes' Cajun Fries are seasoned with paprika, garlic, and cayenne before frying. The coating is crispier than McDonald's fries and holds heat longer. One of the best fast food side fries available.
 
 ---
 
-## Is Popeyes Worth It in 2027?
+## Popeyes Deals & Value Tips
 
-At $5.99 for the chicken sandwich and $11.99 for a 3-piece tender combo, Popeyes is mid-tier fast food pricing. The chicken sandwich is widely regarded as the best in fast food at this price point — a statement that has held up across five years of market competition. The Red Beans and Rice side and the bone-in spicy chicken make Popeyes distinct from every other fast food chicken chain. For bone-in fried chicken, Popeyes is the best quality-to-price option in fast food. For chicken sandwiches, it is the highest-rated option at under $6. **Order the spicy chicken sandwich, add red beans and rice and a biscuit, and you have the best fast food meal for around $12.**
+**The 2-piece meal is the best value entry.** A 2-piece chicken (leg + thigh) with a side and a biscuit is a full meal for under $8 at most locations. This is the cheapest route to the core Popeyes chicken experience.
 
-*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2027 US national averages and may vary by location.*`,
+**Check the app for monthly chicken deals.** Popeyes frequently runs 2-for-$5 or BOGO Chicken Sandwich deals via the app. The deals rotate monthly and can halve the effective per-meal cost.
+
+**Family meals scale efficiently.** The 8-piece chicken for $19.99 feeds a family of 4 when paired with two shared sides ($6.58). Total: ~$26.57 for four people — significantly cheaper than individual orders.
+
+**Avoid peak hours for freshness.** Popeyes chicken is best at lunch (11 AM – 1 PM) and early dinner (5–7 PM) when throughput is high and the kitchen is frying continuously. Avoid mid-afternoon when chicken sits under heat lamps.
+
+---
+
+## Is Popeyes Worth It in 2026?
+
+Popeyes is the best fried chicken in fast food. The 12-hour marinade is real and the difference is detectable compared to other chains. The Chicken Sandwich at $4.99 is competitive against Chick-fil-A's Original Chicken Sandwich ($4.99) and Raising Cane's Chicken Fingers ($9.49 for a combo). The Red Beans and Rice side is genuinely Louisiana food rather than a chain approximation. The main weaknesses are inconsistent wait times at peak hours and location quality variability. When Popeyes is on, it is the most satisfying fast food chicken experience in the US. The Spicy Chicken Sandwich at $4.99 may be the best dollar-for-dollar fast food item in 2026.
+
+*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2026 US national averages and may vary by location.*`,
   },
 
-  // ── POST 3: Cava Menu ────────────────────────────────────────────────────
+  // ── POST 3: Dunkin' Menu ──────────────────────────────────────────────────
   {
-    slug: "cava-menu",
-    title: "Cava Menu: Full Prices, Best Bowls & What to Order (2027)",
+    slug: "dunkin-donuts-menu",
+    title: "Dunkin' Menu: Full Prices, Best Drinks & Food (2026)",
     excerpt:
-      "Cava is a fast-casual Mediterranean restaurant chain with over 350 locations across the US. Cava serves build-your-own grain bowls, pitas, salads, and pita chips with house-made dips. A grain bowl starts at $10.99, a pita is $10.99, and a salad is $10.99. Cava is known for its hummus, crazy feta (whipped feta cheese with jalapeño), harissa (roasted red pepper sauce), and pita chips. Founded in 2006 in Bethesda, Maryland, Cava has grown to become one of the fastest-expanding fast-casual chains in the US.",
-    category: "food",
-    tags: [
-      "cava menu",
-      "cava prices",
-      "cava grain bowl",
-      "cava menu 2027",
-      "cava restaurant",
-      "cava mediterranean",
-    ],
-    metaTitle: "Cava Menu: Full Prices & Best Bowls (2027) | aversusb",
-    metaDescription:
-      "See the full Cava menu with 2027 prices, grain bowls, pitas, best toppings, and what to order. What's the best bowl at Cava? Find out here.",
-    relatedComparisonSlugs: [
-      "chipotle-vs-sweetgreen",
-      "panera-vs-sweetgreen",
-      "chipotle-menu",
-    ],
-    sourceQuery: "cava menu",
-    sourceImpressions: 301000,
-    publishedAt: JAN4,
-    content: `# Cava Menu: Full Prices, Best Bowls & What to Order (2027)
-
-*By Daniel Rozin | A Versus B | January 4, 2027*
-
-Cava is a fast-casual Mediterranean restaurant chain founded in 2006 in Bethesda, Maryland, with over 350 US locations as of 2027 — one of the fastest-growing fast-casual chains in the country. Cava's model mirrors Chipotle's build-your-own format but uses Mediterranean ingredients: grain bowls, pitas, and salads built on a base of greens or grains, topped with house-made proteins, dips, toppings, and sauces. A grain bowl or pita starts at $10.99, and a salad starts at $10.99. Cava is particularly known for its house-made hummus, crazy feta (whipped feta with jalapeño), harissa (roasted red pepper chili sauce), and rotating seasonal ingredients. Here is the full Cava menu with 2027 prices.
-
----
-
-## Cava Menu Prices (2027)
-
-### Build-Your-Own Bowls & Pitas
-
-Every Cava bowl or pita follows this build sequence:
-1. **Base** (greens, grains, or both — included)
-2. **Dip** (choose up to 3 — included, extras +$1)
-3. **Protein** (choose one — included)
-4. **Toppings** (unlimited free toppings from the toppings bar)
-5. **Dressings** (choose 1 — included)
-6. **Finishing touches** (pita chips, pita bread — included)
-
-| Format | Starting Price |
-|--------|---------------|
-| Grain Bowl | $10.99 |
-| Pita | $10.99 |
-| Salad | $10.99 |
-| Kids Bowl/Pita | $6.99 |
-
-The base price includes one protein, up to three dips, unlimited toppings, one dressing, and finishing bread/chips. This is a complete meal — no sides necessary.
-
-### Bases
-
-| Base | Calories | Notes |
-|------|----------|-------|
-| SuperGreens (salad mix) | 35 cal | Arugula, spinach, chicory blend |
-| Saffron Basmati Rice | 210 cal | Aromatic long-grain rice, mild |
-| Lentils | 230 cal | French green lentils, peppery |
-| Pita Wrap | 290 cal | Pocket pita bread instead of bowl |
-| Half & Half (greens + grains) | Varies | Most popular base combination |
-
-The **Half Greens + Half Saffron Rice** combination is the most popular base at Cava — it balances volume, nutrition, and flavor. The lentils are worth trying for their earthy, protein-dense quality.
-
-### Dips (choose up to 3, house-made daily)
-
-| Dip | Calories | Flavor Profile |
-|-----|----------|----------------|
-| Hummus | 50 cal | Classic chickpea, tahini, lemon — the foundational dip |
-| Crazy Feta | 90 cal | Whipped feta + jalapeño — spicy, creamy, addictive |
-| Roasted Red Pepper Hummus | 60 cal | Smoky, slightly sweet hummus variant |
-| Eggplant & Red Pepper Htipiti | 45 cal | Greek-style roasted eggplant dip, smoky and mild |
-| Tzatziki | 30 cal | Greek yogurt + cucumber + dill — cooling and fresh |
-| Harissa | 25 cal | Roasted red pepper chili paste — the spicy option |
-| Lemon Herb Tahini | 70 cal | Sesame tahini + lemon, bright and nutty |
-
-**Recommended dip trio:** Crazy Feta + Hummus + Harissa. This combination covers creamy, savory, and spicy. The Crazy Feta is Cava's most distinctive item — the jalapeño-whipped feta is a flavor you cannot get anywhere else in fast-casual dining.
-
-### Proteins
-
-| Protein | Calories | Style |
-|---------|----------|-------|
-| Grilled Chicken | 190 cal | Herb-marinated, grilled on flat-top |
-| Braised Lamb | 260 cal | Slow-braised shoulder with Middle Eastern spices |
-| Spicy Lamb Meatballs | 210 cal | Hand-rolled lamb meatballs in tomato sauce |
-| Falafel | 300 cal | Crispy fried chickpea patties (vegan) |
-| Harissa Honey Chicken | 240 cal | Chicken in harissa-honey glaze — sweet and spicy |
-| Roasted Vegetables | 90 cal | Seasonal vegetables, roasted (vegan) |
-| Salmon | +$3.50 | Atlantic salmon, pan-seared — upcharge applies |
-
-**Best protein:** **Braised Lamb** ($10.99 inclusive). Slow-cooked lamb shoulder with turmeric, cumin, and coriander. Tender, richly flavored, and significantly more interesting than any fast food protein. The braised lamb is the signature protein that separates Cava from other fast-casual chains.
-
-**For spice seekers:** The **Spicy Lamb Meatballs** are a compelling second choice — hand-rolled with chili and served in a spiced tomato sauce.
-
-**For vegetarians:** Falafel at Cava is excellent — crispy exterior, soft and herby interior, properly seasoned. Among the best falafel available in a fast-casual format.
-
-### Free Toppings
-
-Unlimited, included in the base price:
-
-| Category | Items |
-|----------|-------|
-| Vegetables (pickled) | Pickled onions, banana peppers, pickled cucumbers |
-| Vegetables (fresh) | Tomato + cucumber salad, arugula, cherry tomatoes |
-| Grains/Legumes | Farro, lentils (as a topping), cabbage slaw |
-| Cheese | Feta crumbles |
-| Crunch | Pita chips, pita crisps |
-
-### Dressings
-
-| Dressing | Calories |
-|----------|----------|
-| Lemon Herb Tahini | 100 cal |
-| Silan & Amba (date + mango pickle) | 80 cal |
-| Greek Vinaigrette | 90 cal |
-| Lemon Vinaigrette | 60 cal |
-| Harissa Vinaigrette | 70 cal |
-
-**Lemon Herb Tahini** is the most popular dressing and pairs with every protein. The **Silan & Amba** is the most distinctive — a sweet-sour combination of date syrup and pickled mango that is unlike anything at other chains.
-
-### Sides & Extras
-
-| Item | Price |
-|------|-------|
-| Side of Pita Bread | $1.99 |
-| Side of Hummus | $2.99 |
-| Side of Chips (pita chips) | $2.99 |
-| Kids Juice Box | $1.99 |
-| Sparkling Water | $2.49 |
-
-### Pita Chips & Dips (Snack)
-
-| Item | Price |
-|------|-------|
-| Pita Chips + Hummus | $5.99 |
-| Pita Chips + Crazy Feta | $6.99 |
-| Pita Chips + Tzatziki | $5.99 |
-| Trio Dip (3 dips + chips) | $8.99 |
-
-The **Trio Dip + Pita Chips** ($8.99) is an excellent shareable snack — three house-made dips with a full bag of baked pita chips. Works as a light meal or a starter for two.
-
----
-
-## The Best Cava Bowl Build
-
-Based on toppings popularity and flavor balance, the optimal Cava grain bowl:
-
-**Base:** Half SuperGreens + Half Saffron Basmati Rice
-**Dips:** Crazy Feta + Hummus + Harissa
-**Protein:** Braised Lamb (or Harissa Honey Chicken)
-**Toppings:** Pickled onions + tomato-cucumber salad + feta crumbles + pita chips
-**Dressing:** Lemon Herb Tahini
-
-This build delivers: creamy (hummus, crazy feta), spicy (harissa), savory-rich (braised lamb), fresh-acidic (pickled onions, tomatoes), and crunchy (pita chips, feta). All flavor components are present.
-
----
-
-## Cava vs. Chipotle vs. Sweetgreen
-
-| Category | Cava | Chipotle | Sweetgreen |
-|----------|------|----------|------------|
-| Starting price | $10.99 | $9.75 | $12.95 |
-| Protein quality | ✅ Braised lamb | ✅ Barbacoa | ✅ Blackened chicken |
-| Unique items | ✅ Crazy feta, harissa | Rice bowls | ✅ Seasonal produce |
-| Vegetarian | ✅ Excellent falafel | ✅ Sofritas | ✅ Many options |
-| Customization | ✅ 3 dips + unlimited toppings | Standard | Limited |
-| Speed | Fast | Fast | Moderate |
-
----
-
-## Is Cava Worth It in 2027?
-
-At $10.99 for a complete grain bowl with protein, Cava is priced slightly above Chipotle ($9.75) but below Sweetgreen ($12.95+). The value is strong: the bowl includes a protein, three house-made dips, unlimited toppings, and a dressing in a single price. The Crazy Feta alone justifies a Cava visit — it is not available at any comparable chain. Cava has expanded aggressively because its food genuinely earns its following: Mediterranean flavors, real slow-cooked proteins, and a variety of toppings that make every visit customizable. For health-conscious fast-casual eating with genuinely bold flavors, Cava is the best option in its category.
-
-*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2027 US national averages and may vary by location.*`,
-  },
-
-  // ── POST 4: Dunkin' Menu ─────────────────────────────────────────────────
-  {
-    slug: "dunkin-menu",
-    title: "Dunkin' Menu: Full Prices, Best Drinks & Food (2027)",
-    excerpt:
-      "Dunkin' (formerly Dunkin' Donuts) is one of the largest coffee and donut chains in the US, with over 9,500 US locations. Dunkin' serves coffee, espresso drinks, cold brew, donuts, breakfast sandwiches, bagels, and muffins. A medium hot coffee costs $2.79, a medium iced coffee is $3.29, a medium latte is $4.49, and a classic glazed donut is $1.69. Dunkin' is the most popular iced coffee chain in the northeastern US and competes directly with Starbucks and McDonald's McCafé on price and convenience.",
+      "Dunkin' (formerly Dunkin' Donuts) is a coffee and donut chain with over 13,000 US locations. Founded in 1950 in Quincy, Massachusetts, Dunkin' rebranded in 2019 to emphasize its coffee and beverage line. A medium hot coffee costs $2.49, a Glazed Donut is $1.29, a medium Iced Latte is $4.49, and a Wake-Up Wrap is $2.99. Dunkin' serves over 3 million customers daily in the US and is the #2 coffee chain by revenue after Starbucks.",
     category: "food",
     tags: [
       "dunkin menu",
-      "dunkin prices",
       "dunkin donuts menu",
-      "dunkin menu 2027",
+      "dunkin prices",
+      "dunkin donuts menu 2026",
       "dunkin coffee",
-      "dunkin breakfast",
+      "dunkin donuts deals",
     ],
-    metaTitle: "Dunkin' Menu: Full Prices & Best Drinks (2027) | aversusb",
+    metaTitle: "Dunkin' Menu: Full Prices & Best Drinks (2026)",
     metaDescription:
-      "See the full Dunkin' menu with 2027 prices, best iced coffee, donuts, and breakfast sandwiches. What's the best thing to order at Dunkin'?",
+      "See the full Dunkin' menu with 2026 prices, best coffee drinks, donuts, and breakfast deals. What should you order at Dunkin'? Find out here.",
     relatedComparisonSlugs: [
-      "dunkin-vs-starbucks",
-      "mcdonald-s-vs-starbucks",
-      "starbucks-menu",
+      "starbucks-vs-dunkin-donuts",
+      "mcdonald-s-vs-burger-king",
+      "mcdonald-s-vs-wendy-s",
     ],
-    sourceQuery: "dunkin menu",
-    sourceImpressions: 246000,
-    publishedAt: JAN5,
-    content: `# Dunkin' Menu: Full Prices, Best Drinks & Food (2027)
+    sourceQuery: "dunkin donuts menu",
+    sourceImpressions: 450000,
+    publishedAt: JAN3,
+    content: `# Dunkin' Menu: Full Prices, Best Drinks & Food (2026)
 
-*By Daniel Rozin | A Versus B | January 5, 2027*
+*By Daniel Rozin | A Versus B | January 3, 2027*
 
-Dunkin' (rebranded from Dunkin' Donuts in 2019) is one of the largest coffee and donut chains in the US, with over 9,500 US locations and 12,500+ worldwide. Founded in Quincy, Massachusetts in 1950, Dunkin' originally built its identity on coffee and donuts, then expanded into a full breakfast chain serving espresso drinks, cold brew, bagels, muffins, and breakfast sandwiches. A medium hot coffee costs $2.79, a medium iced coffee is $3.29, a medium latte is $4.49, and a glazed donut is $1.69. Dunkin' is the dominant coffee chain in the northeastern US and competes directly with Starbucks and McDonald's McCafé on price, convenience, and drive-through speed. Here is the full Dunkin' menu with 2027 prices.
+Dunkin' (officially rebranded from Dunkin' Donuts in 2019) is the second-largest coffee chain in the US by revenue, with over 13,000 domestic locations and 11,300 internationally. Founded in 1950 in Quincy, Massachusetts, Dunkin' originally built its business on donuts but has shifted significantly toward beverages — coffee, espresso drinks, refreshers, and frozen beverages now represent the majority of transactions. A medium hot coffee costs $2.49, a medium Iced Latte is $4.49, and a Glazed Donut is $1.29. Here is the full Dunkin' menu with 2026 prices.
 
 ---
 
-## Dunkin' Menu Prices (2027)
+## Dunkin' Menu Prices (2026)
 
 ### Hot Coffee & Espresso
 
-| Item | Small | Medium | Large |
-|------|-------|--------|-------|
-| Hot Coffee | $2.29 | $2.79 | $3.29 |
-| Americano | $3.29 | $3.99 | $4.49 |
-| Latte | $3.99 | $4.49 | $4.99 |
-| Cappuccino | $3.99 | $4.49 | $4.99 |
-| Macchiato | $4.49 | $4.99 | $5.49 |
-| Mocha Latte | $4.49 | $4.99 | $5.49 |
+| Item | Price (Medium) | Calories |
+|------|---------------|----------|
+| Hot Coffee | $2.49 | 5 cal (black) |
+| Americano | $3.49 | 10 cal |
+| Latte | $4.49 | 120 cal |
+| Cappuccino | $4.49 | 80 cal |
+| Macchiato | $4.49 | 140 cal |
+| Espresso (single) | $2.29 | 5 cal |
+| Espresso (double) | $2.79 | 10 cal |
 
-**Dunkin' Hot Coffee** ($2.29–$3.29) uses a medium-roast Colombian blend — straightforward, reliable diner-style coffee that is brewed throughout the day. Free refills during the same visit at participating locations. At $2.79 for a medium, it's the best-value medium hot coffee at any major US chain.
+Dunkin's **Hot Coffee** at $2.49 for a medium is the best price-to-quality ratio for hot coffee in American chain dining. Made from 100% Arabica beans, brewed fresh every 18 minutes (per brand standard). Add cream and sugar at no charge. The coffee is not specialty-grade, but it is consistent and honest.
 
-**Dunkin' Lattes:** Less sweet by default than Starbucks lattes, and can be customized with any flavor shot (French Vanilla, Hazelnut, Caramel, Blueberry, Raspberry, Coconut) or any swirl (Caramel, French Vanilla, Mocha, Toasted Almond, Peppermint).
+### Iced Coffee & Cold Brew
 
-### Iced Coffee & Cold Drinks
+| Item | Price (Medium) | Calories |
+|------|---------------|----------|
+| Iced Coffee | $3.49 | 10 cal (black) |
+| Cold Brew | $4.49 | 5 cal |
+| Iced Latte | $4.49 | 120 cal |
+| Iced Americano | $3.99 | 10 cal |
+| Iced Macchiato | $4.49 | 140 cal |
+| Frozen Coffee | $4.99 | 350 cal |
 
-| Item | Small | Medium | Large |
-|------|-------|--------|-------|
-| Iced Coffee | $2.99 | $3.29 | $3.79 |
-| Iced Latte | $4.29 | $4.99 | $5.49 |
-| Iced Americano | $3.49 | $4.19 | $4.69 |
-| Iced Macchiato | $4.99 | $5.49 | $5.99 |
-| Cold Brew | $3.99 | $4.49 | $4.99 |
-| Nitro Cold Brew | $4.49 | $4.99 | — |
-| Iced Matcha Latte | $4.29 | $4.99 | $5.49 |
-| Refresher (Strawberry Dragonfruit, etc.) | $3.99 | $4.49 | $4.99 |
+**Cold Brew** at Dunkin' steeps for 12 hours and is served undiluted over ice. At $4.49 for a medium, it is $1–$2 cheaper than Starbucks Cold Brew and comparably smooth. Worth the upgrade from regular iced coffee if you want lower acidity.
 
-**Dunkin' Iced Coffee** is the chain's signature product in the Northeast — medium-roast brewed coffee poured over ice with optional cream and sweetener. At $3.29 for a medium, it's approximately $1.50 cheaper than a comparable Starbucks iced coffee with no meaningful quality difference for black-coffee drinkers. **The best everyday value iced coffee in the US for anyone who doesn't need syrup shots.**
+### Frozen & Specialty Drinks
 
-**Cold Brew** ($4.49/medium) is steeped for 12+ hours in cold water — smooth, low-acid, stronger than iced coffee. Dunkin's cold brew is comparable in quality to Starbucks' at a lower price.
+| Item | Price (Medium) | Calories |
+|------|---------------|----------|
+| Frozen Matcha Latte | $5.49 | 290 cal |
+| Strawberry Dragon Fruit Refresher | $4.49 | 60 cal |
+| Mango Pineapple Refresher | $4.49 | 70 cal |
+| Dunkin' Refreshers (all flavors) | $4.49 | 60–90 cal |
+| Charged Lemonade | $4.99 | 100 cal |
 
-**Refreshers** (Dunkin's version of Starbucks Refreshers) are fruit-flavored drinks with green tea caffeine — available in Strawberry Dragonfruit, Peach Passion Fruit, and Golden Mango. At $4.49, they're priced competitively against Starbucks Refreshers ($5.25+).
-
-### Frozen & Blended
-
-| Item | Small | Medium | Large |
-|------|-------|--------|-------|
-| Frozen Coffee | $4.29 | $4.79 | $5.29 |
-| Frozen Chocolate | $4.29 | $4.79 | $5.29 |
-| Coolatta (limited) | $4.49 | $4.99 | $5.49 |
-| Frozen Matcha | $4.99 | $5.49 | — |
-
-### Donuts
+### Donuts & Pastries
 
 | Item | Price | Calories |
 |------|-------|----------|
-| Classic Glazed Donut | $1.69 | 260 cal |
-| Boston Kreme Donut | $1.99 | 310 cal |
-| Chocolate Frosted Donut | $1.69 | 290 cal |
-| Strawberry Frosted | $1.69 | 270 cal |
-| Jelly Donut | $1.69 | 280 cal |
-| Blueberry Cake Donut | $1.89 | 340 cal |
-| Old Fashioned Donut | $1.89 | 300 cal |
-| Munchkins (10 pc) | $3.29 | 500 cal total |
-| Half Dozen Donuts | $7.99 | — |
-| Dozen Donuts | $13.99 | — |
+| Glazed Donut | $1.29 | 260 cal |
+| Boston Kreme Donut | $1.49 | 300 cal |
+| Jelly Donut | $1.49 | 270 cal |
+| Chocolate Frosted Donut | $1.29 | 270 cal |
+| Strawberry Frosted Donut | $1.29 | 270 cal |
+| Munchkins (10 pc) | $3.99 | 420 cal |
+| Croissant | $1.99 | 310 cal |
+| Bagel (plain) | $1.99 | 290 cal |
+| Muffin (blueberry) | $2.29 | 460 cal |
 
-The **Boston Kreme Donut** ($1.99) is Dunkin's most iconic donut: a yeast donut filled with vanilla custard cream and topped with chocolate glaze. It is the best-selling and most distinctive Dunkin' donut. At $1.99, it's the single highest-value item on the Dunkin' food menu.
+A **dozen assorted donuts** at Dunkin' runs $12.99–$14.99, making Dunkin' significantly cheaper than specialty donut shops ($40+) and competitive with Krispy Kreme ($12.99 dozen original glazed).
 
-**Munchkins** ($3.29/10 pc) are donut holes — small, bite-sized, available in glazed, powdered, cinnamon, and jelly. A standard add-on for any Dunkin' coffee order.
-
-### Breakfast Sandwiches & Food
+### Breakfast Sandwiches & Wraps
 
 | Item | Price | Calories |
 |------|-------|----------|
-| Bacon, Egg & Cheese on Croissant | $5.29 | 560 cal |
-| Sausage, Egg & Cheese on Bagel | $5.79 | 700 cal |
-| Egg & Cheese Wake-Up Wrap | $3.49 | 190 cal |
-| Avocado Toast | $4.49 | 350 cal |
-| Grilled Cheese | $4.99 | 540 cal |
-| Chicken Bacon Ranch Wrap | $5.99 | 620 cal |
-| Hash Browns (6 pc) | $2.29 | 230 cal |
-| Bagel with Cream Cheese | $2.99 | 430 cal |
-| Muffin (Blueberry, Corn, etc.) | $2.49 | 410–450 cal |
+| Egg & Cheese on Croissant | $4.49 | 460 cal |
+| Bacon, Egg & Cheese Croissant | $4.99 | 540 cal |
+| Sausage, Egg & Cheese Bagel | $4.99 | 600 cal |
+| Wake-Up Wrap (egg & cheese) | $2.99 | 200 cal |
+| Wake-Up Wrap (bacon, egg & cheese) | $3.49 | 250 cal |
+| Avocado Toast | $3.99 | 220 cal |
+| Sourdough Breakfast Sandwich | $5.49 | 530 cal |
+| Hash Browns (6 pc) | $2.49 | 210 cal |
 
-The **Bacon, Egg & Cheese Croissant** ($5.29) is Dunkin's best breakfast sandwich — a real butter croissant, fried egg, American cheese, and crispy bacon. At $5.29, it's priced similarly to Starbucks' egg bites but is more filling and a more recognizable breakfast format.
+The **Wake-Up Wrap** at $2.99–$3.49 is Dunkin's best value breakfast item: a flour tortilla wrapped around scrambled eggs, cheese, and optional bacon. Under 300 calories and ready in 90 seconds. The perfect add-on to a coffee.
 
-The **Wake-Up Wrap** ($3.49) is Dunkin's most affordable hot food item — a small flour tortilla wrap with egg and cheese (add bacon or sausage for $1). At 190 calories and $3.49, the best low-calorie breakfast item in fast food.
+### Lunch & Snacks
 
----
-
-## Dunkin' Customization: Flavor Shots & Swirls
-
-Dunkin' offers two types of coffee customizers:
-
-**Flavor Shots** (unsweetened, sugar-free): French Vanilla, Hazelnut, Caramel, Coconut, Blueberry, Raspberry, Toasted Almond. +$0.60/shot.
-
-**Swirls** (sweetened flavored syrup): French Vanilla, Caramel, Mocha, Toasted Almond, Peppermint (seasonal). +$0.80/swirl.
-
-The standard "Dunkin' regular" in the Northeast = medium coffee with 2 sugars and 2 creams — a cultural shorthand that has been consistent for 70 years.
+| Item | Price | Calories |
+|------|-------|----------|
+| Grilled Cheese | $4.99 | 490 cal |
+| Stuffed Bagel Minis (pack of 4) | $3.49 | 490 cal |
+| Snackin' Bacon (8 strips) | $2.99 | 180 cal |
 
 ---
 
 ## Best Items at Dunkin'
 
-**1. Iced Coffee (medium, any shot)** — $3.29. The definitive Dunkin' product. Brewed coffee over ice, available with any flavor shot or swirl. The best-value iced coffee in the US at this price.
+**1. Medium Iced Coffee with Cream and Sugar** — $3.49. Dunkin's core product and the right order for most customers. The coffee is brewed strong specifically to hold up against ice dilution. Add liquid cane sugar (not granular) for cleaner sweetness. Dunkin's iced coffee has more caffeine per ounce than Starbucks iced coffee at a lower price.
 
-**2. Boston Kreme Donut** — $1.99. The iconic Dunkin' donut. Vanilla custard filling, chocolate glaze, yeast dough. No equivalent at any other major chain.
+**2. Cold Brew** — $4.49 (medium). The best coffee product at Dunkin' for coffee quality seekers. Smooth, low-acid, full-bodied. At $4.49 medium, it is the most accessible premium cold brew in US chain coffee.
 
-**3. Bacon, Egg & Cheese Croissant** — $5.29. The best breakfast sandwich on the Dunkin' menu. Real butter croissant, fried egg, American cheese, and bacon. Hot and filling.
+**3. Bacon, Egg & Cheese Croissant** — $4.99. Buttery croissant, scrambled eggs, American cheese, crispy bacon. A complete breakfast sandwich for under $5. The croissant is bakery-style (not the dense croissant-style roll of McDonald's) and holds up to the filling.
 
-**4. Cold Brew (medium)** — $4.49. 12-hour cold steep, smooth and low-acid. Comparable quality to Starbucks cold brew at a lower price.
+**4. Wake-Up Wrap (Bacon, Egg & Cheese)** — $3.49. The best fast food breakfast when you want something light and fast. 250 calories, protein-forward, fits in one hand while driving. Pair with a medium hot coffee ($2.49) for a $5.98 complete breakfast.
 
-**5. Wake-Up Wrap** — $3.49. Under 200 calories, hot, portable. The best fast breakfast add-on for a coffee order.
-
----
-
-## Dunkin' vs. Starbucks vs. McDonald's McCafé
-
-| Category | Dunkin' | Starbucks | McDonald's |
-|----------|---------|-----------|------------|
-| Medium iced coffee | $3.29 | ~$4.95 | $3.39 |
-| Medium latte | $4.49 | $6.25 | $3.99 |
-| Cold brew | $4.49 | $5.45 | $3.49 |
-| Donut quality | ✅ Good | ❌ None | ❌ None |
-| Breakfast sandwich | ✅ $5.29 | ✅ $5.25 | ✅ $4.49 |
-| App deals | ✅ Active | ✅ Active | ✅ Active |
-
-Full comparison: [Dunkin' vs. Starbucks](/compare/dunkin-vs-starbucks)
+**5. Munchkins (10 pc)** — $3.99. Dunkin's donut holes — original glazed, chocolate glazed, powdered sugar, cinnamon — in a shareable 10-piece box. At $3.99, the best value snack in the Dunkin' lineup and the most consistent product across all locations.
 
 ---
 
-## Is Dunkin' Worth It in 2027?
+## Dunkin' Deals & Value Tips
 
-Dunkin' is the best-value coffee chain in the US for iced coffee and hot coffee at every size. The medium iced coffee at $3.29 is consistently $1.50–$2.00 cheaper than Starbucks for a comparable drink. The donut quality is genuinely good — Boston Kreme and Old Fashioned are legitimate pastries, not commodity chain donuts. The breakfast sandwiches are solid, and the Wake-Up Wrap is the best under-$4 hot breakfast item in the fast food breakfast category. **For daily coffee needs without the Starbucks premium, Dunkin' is the correct choice.** Download the Dunkin' app — it regularly offers free drinks, buy-one-get-one, and point multiplier promotions that compound the already-strong base value.
+**The Dunkin' app rewards are among the best in fast food.** DD Perks gives 5 points per $1 spent. 200 points = free beverage. At that rate, every $40 in spending earns one free drink. The app also unlocks monthly "Sip Club" membership ($10/month) for one daily drink at $3.00 or less.
 
-*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2027 US national averages and may vary by location.*`,
+**Medium is almost always the right size.** Dunkin's medium (24 oz) to large (32 oz) price difference is ~$0.50 — the medium provides better calorie efficiency per dollar for caffeinated drinks.
+
+**Hash Browns (6 pc) + Wake-Up Wrap = best sub-$6 breakfast.** Total: $5.48. More protein and carbs than a $4.99 McMuffin at McDonald's.
+
+**Order ahead via the app to skip the line.** Dunkin' drive-throughs during the 7–9 AM rush have 3–5 minute waits. Mobile order picks up in-store are typically ready in 90 seconds from arrival.
+
+---
+
+## Is Dunkin' Worth It in 2026?
+
+Dunkin' is the best value coffee chain in the US. The core product — hot or iced coffee — is consistently priced $1–$2 cheaper than Starbucks for equivalent sizes and caffeine content. The food lineup is functional rather than inspired: the Wake-Up Wrap and Bacon Egg & Cheese Croissant are legitimately good fast breakfast options, while the donuts remain a strong brand anchor. For specialty drinks and customization depth, Starbucks wins. For everyday coffee at 13,000 locations at a price that does not require a financial plan, Dunkin' is the answer.
+
+*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2026 US national averages and may vary by location.*`,
   },
 
-  // ── POST 5: Chick-fil-A Breakfast Menu ───────────────────────────────────
+  // ── POST 4: Jimmy John's Menu ─────────────────────────────────────────────
   {
-    slug: "chick-fil-a-breakfast-menu",
-    title: "Chick-fil-A Breakfast Menu: Full Prices, Best Items & Hours (2027)",
+    slug: "jimmy-johns-menu",
+    title: "Jimmy John's Menu: Full Prices, Best Subs & Deals (2026)",
     excerpt:
-      "Chick-fil-A serves breakfast at all US locations until 10:30 AM Monday through Saturday (closed Sunday). The breakfast menu includes chicken biscuits, chicken minis, egg white grills, hash browns, and cold brew coffee. A Chicken Biscuit costs $4.69, Chick-n-Minis (4 pc) is $5.09, the Egg White Grill is $5.99, and Hash Browns are $1.89. Chick-fil-A breakfast is consistently ranked as one of the best fast food breakfast menus — the Spicy Chicken Biscuit and Chick-n-Minis are among the most iconic breakfast items in fast food.",
+      "Jimmy John's is a fast food sub chain famous for fresh-baked French bread and \"Freaky Fast\" delivery. Founded in 1983 in Charleston, Illinois, Jimmy John's has over 2,800 US locations. An 8-inch sub (\"slim\") ranges from $7.49 to $9.99, and a Giant (16-inch) runs $12.49 to $14.99. All bread is baked in-store daily and all meats are sliced to order. Jimmy John's is one of the few national chains that still advertises delivery-first as a core differentiator.",
     category: "food",
     tags: [
-      "chick-fil-a breakfast",
-      "chick-fil-a breakfast menu",
-      "chick-fil-a breakfast hours",
-      "chicken biscuit",
-      "chick-n-minis",
-      "chick-fil-a breakfast 2027",
+      "jimmy johns menu",
+      "jimmy john's menu",
+      "jimmy johns prices",
+      "jimmy johns menu 2026",
+      "jimmy johns subs",
+      "jimmy johns delivery",
     ],
-    metaTitle: "Chick-fil-A Breakfast Menu: Full Prices & Hours (2027) | aversusb",
+    metaTitle: "Jimmy John's Menu: Full Prices & Best Subs (2026)",
     metaDescription:
-      "See the full Chick-fil-A breakfast menu with 2027 prices, Chicken Biscuit, Chick-n-Minis, and breakfast hours. What's the best Chick-fil-A breakfast?",
+      "See the full Jimmy John's menu with 2026 prices, best subs, and deals. What's worth ordering at Jimmy John's? Find out here.",
     relatedComparisonSlugs: [
-      "chick-fil-a-vs-popeyes",
+      "subway-vs-jersey-mike-s",
       "mcdonald-s-vs-burger-king",
-      "dunkin-vs-starbucks",
+      "mcdonald-s-vs-wendy-s",
     ],
-    sourceQuery: "chick fil a breakfast menu",
-    sourceImpressions: 246000,
-    publishedAt: JAN6,
-    content: `# Chick-fil-A Breakfast Menu: Full Prices, Best Items & Hours (2027)
+    sourceQuery: "jimmy john's menu",
+    sourceImpressions: 301000,
+    publishedAt: JAN4,
+    content: `# Jimmy John's Menu: Full Prices, Best Subs & Deals (2026)
 
-*By Daniel Rozin | A Versus B | January 6, 2027*
+*By Daniel Rozin | A Versus B | January 4, 2027*
 
-Chick-fil-A serves breakfast at all US locations — over 3,000 restaurants — every Monday through Saturday from open (usually 6:00 AM) until **10:30 AM**. The chain is closed on Sundays. Chick-fil-A's breakfast menu is built around its signature marinated chicken in a breakfast context: Chicken Biscuits, Chick-n-Minis, egg-based sandwiches, and hot sides. A Chicken Biscuit costs $4.69, Chick-n-Minis (4-count) is $5.09, the Egg White Grill is $5.99, and Hash Browns are $1.89. Chick-fil-A breakfast is consistently ranked among the best in fast food — particularly the Spicy Chicken Biscuit and the Chick-n-Minis, which are not available at any other major chain. Here is the full Chick-fil-A breakfast menu with 2027 prices.
+Jimmy John's is a sub sandwich chain founded in 1983 in Charleston, Illinois by Jimmy John Liautaud. With over 2,800 US locations, Jimmy John's built its brand on two pillars: fresh-baked French bread and "Freaky Fast" delivery — a delivery speed so reliable that the chain used to claim 15-minute delivery windows before staffing realities made that a liability. Every loaf of bread is baked in-store each morning, and meats are sliced to order rather than pre-sliced at a central facility. An 8-inch sub runs $7.49–$9.99 and a Giant (16-inch) runs $12.49–$14.99. Here is the full Jimmy John's menu with 2026 prices.
 
 ---
 
-## Chick-fil-A Breakfast Menu Prices (2027)
+## Jimmy John's Menu Prices (2026)
 
-### Chicken Biscuits
+### Subs (8-inch)
 
-| Item | Price | Calories |
-|------|-------|----------|
-| Chicken Biscuit | $4.69 | 450 cal |
-| Spicy Chicken Biscuit | $4.69 | 450 cal |
-| Chicken, Egg & Cheese Biscuit | $5.69 | 580 cal |
-| Spicy Chicken, Egg & Cheese Biscuit | $5.69 | 590 cal |
-| Bacon, Egg & Cheese Biscuit | $5.29 | 470 cal |
-| Sausage, Egg & Cheese Biscuit | $5.29 | 590 cal |
-| Egg & Cheese Biscuit | $3.99 | 380 cal |
+Jimmy John's numbers its subs — ordering by number is standard practice.
 
-The **Spicy Chicken Biscuit** ($4.69) is the definitive Chick-fil-A breakfast item — a fried and seasoned spicy chicken breast fillet (the same filet used in the classic Spicy Deluxe sandwich) served on Chick-fil-A's signature buttermilk biscuit. The combination of the spicy-marinated chicken and the buttery, flaky biscuit is what sets Chick-fil-A breakfast apart from every other chain's chicken biscuit. At $4.69, it's one of the best breakfast sandwiches in fast food at this price point.
+| # | Name | Price | Description |
+|---|------|-------|-------------|
+| 1 | Pepe | $7.49 | Ham, provolone, mayo, lettuce, tomato |
+| 2 | Big John | $8.49 | Roast beef, mayo, lettuce, tomato |
+| 3 | Totally Tuna | $7.99 | Hand-packed tuna salad, provolone, cucumber, lettuce, tomato |
+| 4 | Turkey Tom | $8.99 | Turkey breast, provolone, mayo, lettuce, tomato |
+| 5 | Vito | $8.99 | Salami, capicola, provolone, onion, oil & vinegar, oregano, lettuce, tomato |
+| 6 | Vegetarian | $7.49 | Provolone, avocado spread, cucumber, lettuce, tomato |
+| 7 | Gourmet Smoked Ham & Brie | $9.49 | Smoked ham, brie cheese, dijon, cucumber, lettuce, tomato |
+| 8 | Billy Club | $9.49 | Roast beef, capicola, provolone, oil, dijon, onion, oregano, lettuce, tomato |
+| 9 | Italian Night Club | $9.49 | Salami, capicola, ham, provolone, oil, dijon, onion, oregano, lettuce, tomato |
+| 10 | Hunter's Club | $9.49 | Roast beef, provolone, dijon, onion, mayo, lettuce, tomato |
+| 11 | Country Club | $9.49 | Turkey, ham, provolone, dijon, mayo, lettuce, tomato |
+| 12 | Beach Club | $9.99 | Albacore tuna, turkey, provolone, mayo, cucumber, lettuce, tomato |
+| 13 | Gourmet Veggie Club | $8.99 | Provolone, avocado spread, cucumber, lettuce, tomato, onion, oil & vinegar |
+| 14 | Bootlegger Club | $9.49 | Roast beef, turkey, provolone, mayo, lettuce, tomato |
+| 15 | Club Tuna | $8.99 | Tuna salad, turkey, provolone, mayo, cucumber, lettuce, tomato |
+| 16 | Club Lulu | $9.49 | Turkey, bacon, mayo, lettuce, tomato |
+| 17 | Ultimate Porker | $9.99 | Ham, bacon, mayo, lettuce, tomato |
+| J.J.B.L.T. | BLT | $8.49 | Bacon, lettuce, tomato, mayo |
 
-The **Chicken, Egg & Cheese Biscuit** ($5.69) adds a folded egg and American cheese to the chicken biscuit for a more complete breakfast experience — recommended for those who want more protein.
+### Giant Subs (16-inch)
 
-### Chick-n-Minis (Unique to Chick-fil-A)
+| Name | Price |
+|------|-------|
+| Giant sub (based on 8" counterpart) | $12.49–$14.99 |
 
-| Item | Price | Calories |
-|------|-------|----------|
-| Chick-n-Minis (4-count) | $5.09 | 360 cal |
-| Chick-n-Minis (6-count) | $7.29 | 540 cal |
-| Chick-n-Minis Tray (30-count) | $29.99 | — |
+Giant subs are exactly 16 inches — double the bread, double the meat. Priced roughly $4–$5 more than the 8-inch equivalent and serve two adults comfortably.
 
-**Chick-n-Minis** are miniature yeast rolls (slightly sweet and soft) each containing a small nugget-sized piece of marinated Chick-fil-A chicken. No other chain has a comparable item — the combination of the sweet mini roll and the savory, marinated chicken creates a distinctive sweet-savory breakfast. They are available only during breakfast hours (until 10:30 AM, Monday–Saturday) and cannot be ordered at any other time.
+### Slim Subs (No Cheese or Veggies)
 
-Chick-n-Minis are the most-requested Chick-fil-A breakfast item to make available all day — a perennial social media campaign that Chick-fil-A has not acted on. **If you want Chick-n-Minis, arrive before 10:30 AM.**
+| # | Name | Price | Description |
+|---|------|-------|-------------|
+| Slim 1 | Ham | $6.49 | Ham on French bread |
+| Slim 2 | Roast Beef | $7.49 | Roast beef on French bread |
+| Slim 3 | Tuna Salad | $6.99 | Tuna salad on French bread |
+| Slim 4 | Turkey | $6.99 | Turkey on French bread |
+| Slim 5 | Salami | $6.49 | Salami on French bread |
+| Slim 6 | Double Provolone | $5.99 | Double provolone on French bread |
 
-### Egg White Grill & Other Breakfast Sandwiches
+Slim subs are "protein plus bread only" — no cheese, no veggies, no condiments. The cleanest version of each protein and ~$1.50 cheaper than the full sub equivalent.
 
-| Item | Price | Calories |
-|------|-------|----------|
-| Egg White Grill | $5.99 | 300 cal |
-| Hash Brown Scramble Burrito | $5.49 | 700 cal |
-| Hash Brown Scramble Bowl | $6.29 | 590 cal |
-| Sausage Breakfast Burrito | $5.29 | 650 cal |
-
-The **Egg White Grill** ($5.99) is Chick-fil-A's most nutritionally lean breakfast offering — a grilled chicken filet (not fried), egg whites only, and American cheese on a toasted multigrain English muffin. 300 calories, 25g protein. The best low-calorie high-protein fast food breakfast in the US. The chicken is grilled, not fried — a meaningfully different texture from the biscuit options.
-
-The **Hash Brown Scramble Bowl** ($6.29) is a more filling option: crispy hash browns, scrambled eggs, cheese, and your choice of protein (grilled chicken, sausage, or bacon) — served as a bowl instead of a burrito. 590 calories and customizable protein makes it a strong full-meal option.
-
-### Hash Browns & Sides
-
-| Item | Price | Calories |
-|------|-------|----------|
-| Hash Browns | $1.89 | 270 cal |
-| Fruit Cup (small) | $3.49 | 60 cal |
-| Greek Yogurt Parfait | $4.49 | 230 cal |
-
-**Chick-fil-A Hash Browns** ($1.89) are round, formed potato bites — similar in concept to McDonald's hash browns but smaller and bite-sized. At $1.89, they're priced among the cheapest breakfast sides in fast food. They are a must-add to any Chick-fil-A breakfast order.
-
-The **Greek Yogurt Parfait** ($4.49) uses Chick-fil-A's yogurt base with granola and berries — one of the few fast food breakfast yogurt options that uses full-fat Greek yogurt rather than a sweetened regular yogurt.
-
-### Beverages & Coffee
+### Add-Ons
 
 | Item | Price |
 |------|-------|
-| Coffee (medium, hot) | $2.39 |
-| Iced Coffee (medium) | $3.49 |
-| Cold Brew (medium) | $3.99 |
-| Caramel Cold Brew | $4.49 |
-| Vanilla Latte (medium) | $4.99 |
-| Iced Tea (large) | $2.49 |
-| Lemonade (large) | $3.49 |
+| Extra meat | $1.50 |
+| Extra cheese | $0.75 |
+| Avocado spread | $1.00 |
+| Bacon | $1.50 |
+| Jalapeño peppers | free |
+| Hot peppers | free |
+| Extra vegetables | free |
 
-Chick-fil-A coffee is sourced from THRIVE Farmers — a specialty coffee cooperative that provides direct profit-sharing to farmers. The hot coffee ($2.39/medium) is well-regarded for a fast food chain, using medium-roast Arabica beans. The **Caramel Cold Brew** ($4.49) is the most popular beverage during breakfast hours.
+### Sides & Extras
 
----
+| Item | Price | Calories |
+|------|-------|----------|
+| Chips (variety) | $1.29 | 150–160 cal |
+| Pickle Spear | $0.50 | 5 cal |
+| Cookie (chocolate chip) | $1.00 | 220 cal |
+| Jimmy Chips (kettle) | $1.49 | 150 cal |
+| Jumbo Kosher Dill Pickle | $0.99 | 15 cal |
 
-## Chick-fil-A Breakfast Hours
+### Drinks
 
-| Day | Hours |
-|-----|-------|
-| Monday–Friday | 6:00 AM – 10:30 AM |
-| Saturday | 6:00 AM – 10:30 AM |
-| Sunday | **Closed** |
-
-Chick-fil-A closes at **10:30 AM sharp** on weekdays and Saturday. There is no exception to this — popular items like Chick-n-Minis can sell out 10–15 minutes before cutoff at high-volume locations. The Sunday closure is company policy across all locations.
-
----
-
-## Best Chick-fil-A Breakfast Items
-
-**1. Spicy Chicken Biscuit** — $4.69. The best chicken breakfast sandwich in fast food. The spicy-marinated filet on a buttery buttermilk biscuit is a genuinely great combination. The spicy version is strongly recommended over the classic — the heat from the marinade is balanced and not overwhelming.
-
-**2. Chick-n-Minis (4-count)** — $5.09. The most distinctive breakfast item at any major fast food chain. Sweet mini yeast rolls with marinated chicken nuggets. Exclusively available until 10:30 AM, Monday–Saturday.
-
-**3. Egg White Grill** — $5.99. The best high-protein, low-calorie fast food breakfast sandwich. 300 calories, 25g protein, grilled chicken. For anyone focused on nutrition, this is the top option across all fast food breakfast menus.
-
-**4. Hash Brown Scramble Bowl** — $6.29. A complete breakfast bowl: crispy hash browns, scrambled eggs, cheese, and your choice of protein. The most filling single Chick-fil-A breakfast item.
-
-**5. Cold Brew** — $3.99. Smooth, strong cold brew at a fair price. Consistently good across locations — sourced from THRIVE Farmers specialty roasters.
+| Item | Price |
+|------|-------|
+| 22 oz fountain drink | $1.99 |
+| 32 oz fountain drink | $2.29 |
+| Bottled water | $2.29 |
+| Unsweetened iced tea | $1.99 |
 
 ---
 
-## Is Chick-fil-A Breakfast Worth It in 2027?
+## Best Items at Jimmy John's
 
-At $4.69 for the Spicy Chicken Biscuit and $5.09 for the Chick-n-Minis, Chick-fil-A breakfast is competitive with McDonald's and Burger King's breakfast pricing. The quality gap is real: Chick-fil-A's chicken is marinated and hand-breaded to the same standard as its lunch menu, and the biscuits are made from scratch at each location. The Egg White Grill is the best macronutrient-optimized breakfast item in fast food. The Chick-n-Minis are a completely unique product that no other chain offers. **The one practical constraint: weekday/Saturday morning only, 6:00–10:30 AM, and Sunday is never.** Plan accordingly — the Spicy Chicken Biscuit alone is worth setting an alarm for.
+**1. Vito (#5)** — $8.99. Salami, capicola, provolone, onion, oil & vinegar, and oregano on French bread with lettuce and tomato. This is the Italian cold cut sub. The combination of two pork cured meats with oil-and-vinegar dressing is the most complex flavor on the menu. The French bread holds up to the oil without becoming soggy — a genuine advantage over softer sub breads.
 
-*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2027 US national averages and may vary by location.*`,
+**2. Turkey Tom (#4)** — $8.99. Turkey breast, provolone, mayo, lettuce, and tomato. Simplest club sub on the menu and consistently the best-selling item at Jimmy John's. The turkey is thinly sliced real turkey breast (not formed turkey log) and the bread is the real differentiator versus Subway.
+
+**3. Italian Night Club (#9)** — $9.49. Salami, capicola, ham, provolone, oil, dijon mustard, onion, oregano, lettuce, and tomato. Three pork meats plus provolone, Italian-dressed. The most flavor-per-dollar sub on the menu and the most likely to convert someone who thinks Jimmy John's is just a mediocre chain.
+
+**4. Ultimate Porker (#17)** — $9.99. Ham, bacon, mayo, lettuce, and tomato. The name is accurate: two pork proteins on French bread. The bacon is crispy and the ham is thick-sliced. Simpler than the Italian Night Club but satisfying for a pork-forward preference.
+
+**5. Bootlegger Club (#14)** — $9.49. Roast beef and turkey, provolone, mayo, lettuce, and tomato. The combination of roast beef and turkey is unexpected and works — the beef adds umami depth to the turkey's lightness. A sleeper pick that most first-time customers overlook.
+
+---
+
+## Jimmy John's Deals & Value Tips
+
+**Order online for accurate pickup timing.** In-store orders at peak lunch hours can have 5–10 minute waits. App and online orders are queued and ready faster during rush because they do not compete for counter attention.
+
+**The Slim Subs are the best value.** A Slim 4 (Turkey) at $6.99 is the same turkey breast on the same bread as the Turkey Tom ($8.99) minus the cheese and vegetables. If you are price-sensitive, order Slim and add jalapeños (free) and hot peppers (free) for flavor.
+
+**Add avocado spread ($1.00) to any club sub.** The avocado spread — a simple mashed avocado preparation — adds creaminess that significantly improves the Turkey Tom, Country Club, and any club sub that uses mayo as the primary fat. One of the best $1 upgrades in fast food.
+
+**Giant subs for groups are efficient.** At $12.49–$14.99, a Giant feeds two people for $6.25–$7.50 per person — meaningfully less than two individual 8-inch subs at $8.99–$9.49 each.
+
+---
+
+## Is Jimmy John's Worth It in 2026?
+
+Jimmy John's is the best fast food chain for cold sub sandwiches in the US, ahead of Subway on bread quality and Jersey Mike's on price. The fresh-baked French bread is the product differentiator — it has a chewy crust, soft interior, and handles oil-and-vinegar dressing without disintegrating. The meats are genuinely sliced to order at most locations. The weakness of Jimmy John's is the condiment and vegetable selection, which is narrower than Subway's: no ranch, no chipotle sauce, no banana peppers. If you want customization depth, Subway wins. If you want the best sub bread and actual speed, Jimmy John's wins.
+
+*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2026 US national averages and may vary by location.*`,
+  },
+
+  // ── POST 5: Five Guys Menu ────────────────────────────────────────────────
+  {
+    slug: "five-guys-menu",
+    title: "Five Guys Menu: Full Prices, Best Burgers & Tips (2026)",
+    excerpt:
+      "Five Guys is a premium fast-casual burger chain founded in 1986 in Arlington, Virginia by Jerry Murrell and his five sons. With over 1,700 US locations, Five Guys is known for fresh (never-frozen) beef, hand-cut fries, and free peanuts in the waiting area. A regular Hamburger costs $9.89, a Bacon Cheeseburger is $11.89, and Cajun Fries (regular) cost $4.99. Five Guys does not have a fryer for any protein — everything is cooked on a flat-top grill, which means no fried chicken.",
+    category: "food",
+    tags: [
+      "five guys menu",
+      "five guys prices",
+      "five guys menu 2026",
+      "five guys burger",
+      "five guys fries",
+      "five guys deals",
+    ],
+    metaTitle: "Five Guys Menu: Full Prices & Best Items (2026)",
+    metaDescription:
+      "See the full Five Guys menu with 2026 prices, best burgers, fries, and toppings. Is Five Guys worth the price? Find out here.",
+    relatedComparisonSlugs: [
+      "mcdonald-s-vs-burger-king",
+      "chick-fil-a-vs-popeyes",
+      "mcdonald-s-vs-wendy-s",
+    ],
+    sourceQuery: "five guys menu",
+    sourceImpressions: 246000,
+    publishedAt: JAN5,
+    content: `# Five Guys Menu: Full Prices, Best Burgers & Tips (2026)
+
+*By Daniel Rozin | A Versus B | January 5, 2027*
+
+Five Guys is a premium fast-casual burger chain founded in 1986 in Arlington, Virginia by Jerry Murrell and his five sons (hence the name). With over 1,700 US locations, Five Guys built its reputation on four commitments: fresh beef never frozen, hand-cut Boardwalk-style fries cooked in 100% peanut oil, free peanuts in the restaurant while you wait, and 15 standard free toppings. A regular Hamburger costs $9.89, a Bacon Cheeseburger is $11.89, a regular Cajun Fries is $4.99, and milkshakes run $6.99–$8.99. Here is the full Five Guys menu with 2026 prices.
+
+---
+
+## Five Guys Menu Prices (2026)
+
+### Burgers
+
+Five Guys distinguishes between "Little" (single patty) and standard (double patty) burgers. The standard burger at Five Guys is already a double — ordering a "Hamburger" means two patties.
+
+| Item | Price | Patties |
+|------|-------|---------|
+| Little Hamburger | $7.89 | 1 patty |
+| Hamburger | $9.89 | 2 patties |
+| Little Cheeseburger | $8.49 | 1 patty + cheese |
+| Cheeseburger | $10.49 | 2 patties + cheese |
+| Little Bacon Burger | $9.09 | 1 patty + bacon |
+| Bacon Burger | $11.29 | 2 patties + bacon |
+| Little Bacon Cheeseburger | $9.69 | 1 patty + bacon + cheese |
+| Bacon Cheeseburger | $11.89 | 2 patties + bacon + cheese |
+
+**Free toppings (15 options):** mayo, lettuce, pickles, tomatoes, grilled onions, grilled mushrooms, ketchup, mustard, relish, onions, jalapeño peppers, green peppers, A1 sauce, hot sauce, BBQ sauce.
+
+The **Hamburger** at Five Guys is a double-patty burger — this catches first-timers off guard. If you want a single patty, order the Little Hamburger. The double is the intended experience: two 3.5-oz hand-formed beef patties, cooked to a slight char on the flat-top grill.
+
+### Hot Dogs
+
+| Item | Price |
+|------|-------|
+| Little Hot Dog | $4.99 |
+| Kosher-Style Hot Dog | $6.49 |
+| Bacon Dog | $8.99 |
+| Cheese Dog | $7.49 |
+| Bacon Cheese Dog | $9.99 |
+
+Five Guys hot dogs are all-beef, split and grilled on the flat-top. The Kosher-Style Hot Dog uses a natural casing frank — the snap on the casing sets it apart from competitor hot dogs.
+
+### Veggie Sandwich
+
+| Item | Price |
+|------|-------|
+| Veggie Sandwich | $6.49 |
+| Grilled Cheese | $5.49 |
+
+The Veggie Sandwich is every free topping piled on a bun — essentially a fully loaded veggie burger without a patty. Not a protein replacement but a legitimate option.
+
+### Fries
+
+| Size | Regular Fries | Cajun Fries | Calories (Cajun) |
+|------|--------------|-------------|------------------|
+| Little (single serving) | $3.99 | $3.99 | 530 cal |
+| Regular | $4.99 | $4.99 | 940 cal |
+| Large | $6.49 | $6.49 | 1,310 cal |
+
+**A key Five Guys fact:** the "regular" fries are intended to feed 2 people. The portion is enormous — hand-cut fresh potatoes fried in peanut oil, then another scoop added on top of the bag. A "regular" order arrives overfilling the container.
+
+**Cajun Fries** use the same potatoes and oil as regular fries, seasoned with Cajun spice blend (paprika, cayenne, garlic, onion). The Cajun fries are slightly crispier because the seasoning creates additional surface texture.
+
+### Milkshakes
+
+| Flavor | Price (regular) | Calories |
+|--------|----------------|----------|
+| Chocolate | $7.49 | 890 cal |
+| Vanilla | $7.49 | 790 cal |
+| Strawberry | $7.49 | 840 cal |
+| Banana | $7.49 | 870 cal |
+| Coffee | $7.49 | 800 cal |
+| Salted Caramel | $7.49 | 910 cal |
+| Oreo | $7.99 | 1,020 cal |
+| Peanut Butter | $7.99 | 1,110 cal |
+
+Five Guys milkshakes are made with hand-mixed ice cream (not soft serve) and real milk. The Oreo and Peanut Butter shakes are hand-mixed with actual Oreo cookies and peanut butter — not syrups. At $7.49–$7.99, the shakes are expensive but genuinely thick.
+
+### Drinks
+
+| Item | Price |
+|------|-------|
+| Coca-Cola Freestyle (any flavor, all sizes) | $2.99 |
+| Bottled water | $1.49 |
+
+Five Guys locations feature Coca-Cola Freestyle machines with 100+ drink variations. One price ($2.99) covers unlimited refills on any Freestyle drink selection.
+
+---
+
+## Best Items at Five Guys
+
+**1. Bacon Cheeseburger** — $11.89. Two 3.5-oz fresh beef patties, American cheese, applewood-smoked bacon, on a sesame seed bun with your choice of up to 15 free toppings. This is the full Five Guys experience in one item. Order with grilled onions, grilled mushrooms, jalapeños, and hot sauce for the most complete flavor profile.
+
+**2. Cajun Fries (Little size, split between two)** — $3.99. The Little size is a single generous serving. The Cajun seasoning provides heat and complexity that plain fries do not. Order "Little" rather than "Regular" unless feeding 2–3 people — the Regular is genuinely excessive for one person.
+
+**3. Little Hamburger** — $7.89. A single 3.5-oz patty with free toppings. The correct order if you want a complete meal without committing to the 2-patty standard Hamburger. The single patty is the right protein-to-bread ratio for average appetites.
+
+**4. Peanut Butter Milkshake** — $7.99. Made with real peanut butter hand-mixed into vanilla ice cream. At 1,110 calories and $7.99, it is the most indulgent item on the menu and the most distinctly Five Guys experience. Not for the health-conscious; genuinely for the dessert-committed.
+
+**5. Grilled Cheese** — $5.49. Two slices of American cheese grilled on the flat-top inside a sesame bun, with any free toppings. The cheapest item that demonstrates why Five Guys' bread and grill quality matter: a grilled cheese at Five Guys is materially better than the equivalent at most diners because the flat-top produces a proper crust.
+
+---
+
+## Five Guys Tips & Value
+
+**Order a "Little" size first.** First-timers often order the standard Hamburger (2 patties) and find it larger than expected. The Little Hamburger (1 patty) is sufficient for most appetites and saves $2.
+
+**Share fries.** A "regular" fries order ($4.99) is designed for 2 people. Order one regular to split rather than two "littles" — you save $3 and get more fries.
+
+**Free peanuts are the fastest meal hack.** While waiting (Five Guys takes 5–10 minutes), shelled peanuts in the restaurant are unlimited and free. This is a genuine differentiator — most guests eat $1–$2 worth of free peanuts before their meal arrives.
+
+**Customize aggressively.** The 15 free toppings include grilled mushrooms, grilled onions, jalapeños, and A1 sauce — options that cost $1–$2 extra at competitors. Use them. The burger customization at Five Guys is the best in fast-casual.
+
+**Five Guys is not cheap — plan accordingly.** A Bacon Cheeseburger ($11.89) + Cajun Fries ($4.99) + drink ($2.99) = $19.87. This is approximately 2× the price of McDonald's and 40% more than Shake Shack. The premium is real beef, real customization, and real portion size. If budget is the primary constraint, McDonald's wins. If quality is the primary constraint, Five Guys wins.
+
+---
+
+## Is Five Guys Worth It in 2026?
+
+Five Guys is the best chain burger in the US for customers who prioritize beef quality and customization over price and convenience. The fresh-never-frozen beef is detectable — the patties have a different texture and fat content than McDonald's or Burger King frozen beef. The 15 free toppings genuinely differentiate the menu from competitors who charge for premium toppings. The Cajun Fries are among the best fries in US fast food. The price premium ($11.89 for a Bacon Cheeseburger vs. $5.49 at McDonald's) is real and sustainable only if quality matters to the buyer. For a weekly or occasional burger that exceeds fast food standards without crossing into full sit-down pricing, Five Guys is the right choice.
+
+*A Versus B covers menus, prices, and comparisons across the most popular restaurant chains. All prices reflect 2026 US national averages and may vary by location.*`,
   },
 ];
 
