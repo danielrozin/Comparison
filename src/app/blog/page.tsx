@@ -446,7 +446,7 @@ export default async function BlogPage({
           <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
               <li>
-                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
+                <Link href="/" className="hover:text-white transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
                   <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
@@ -492,7 +492,7 @@ export default async function BlogPage({
                   key={cat}
                   href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
                   aria-current={activeCategory === cat ? "page" : undefined}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all duration-150 ${
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                     activeCategory === cat
                       ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
                       : "text-text-secondary hover:bg-surface-alt hover:text-text"
@@ -626,7 +626,7 @@ export default async function BlogPage({
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page - 1}`}
                     aria-label="Go to previous page"
-                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors"
+                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     Previous
                   </Link>
@@ -638,7 +638,7 @@ export default async function BlogPage({
                       href={`/blog?${category ? `category=${category}&` : ""}page=${p}`}
                       aria-label={`Page ${p}`}
                       aria-current={p === page ? "page" : undefined}
-                      className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                      className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                         p === page
                           ? "bg-gradient-to-br from-primary-600 to-accent-600 text-white shadow-sm"
                           : "border border-border hover:border-primary-300"
@@ -652,7 +652,7 @@ export default async function BlogPage({
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page + 1}`}
                     aria-label="Go to next page"
-                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors"
+                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     Next
                   </Link>
