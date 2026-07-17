@@ -192,7 +192,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           {existingSlug && (
             <a
               href={`/compare/${existingSlug}`}
-              className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-1 inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:rounded"
+              className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-1 inline-block rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
             >
               View the comparison <span aria-hidden="true">&rarr;</span>
             </a>

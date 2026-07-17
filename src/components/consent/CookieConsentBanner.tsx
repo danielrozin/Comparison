@@ -131,7 +131,7 @@ export function CookieConsentBanner() {
                     You can choose which cookies to allow.{" "}
                     <a
                       href="/cookie-policy"
-                      className="text-primary-600 underline underline-offset-2 hover:text-primary-700"
+                      className="text-primary-600 underline underline-offset-2 hover:text-primary-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                     >
                       Cookie Policy
                     </a>
@@ -171,7 +171,7 @@ export function CookieConsentBanner() {
                   type="button"
                   onClick={() => setShowPreferences(false)}
                   aria-label="Close cookie preferences"
-                  className="p-1 text-text-secondary hover:text-text transition-colors rounded"
+                  className="p-1 text-text-secondary hover:text-text transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

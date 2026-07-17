@@ -401,6 +401,49 @@ export async function getComparisonBySlug(
 }
 
 /**
+ * DAN-2106 — the published-only gate DAN-2065 put on `/compare/[slug]`, reused
+ * for the public read APIs.
+ *
+ * The gate landed on the page alone, so the same slug 404'd as HTML while every
+ * read API still returned it as a 200 with full JSON — including
+ * `X-Source-URL`/`rel="canonical"` headers pointing at the URL that 404s, and
+ * `X-Robots-Tag: all`. 2,842 archived rows were reachable that way against 519
+ * published ones. DAN-2099's outreach verification read the API, concluded the
+ * pages should exist, and filed 10 slugs as a frontend bug; they were archived
+ * on purpose.
+ *
+ * Predicate is deliberately identical to the page's `isRenderableComparison`:
+ * published set == 200 set, across HTML and JSON. Mock fixtures carry no status,
+ * so as on the page they pass only where no DB is configured (local dev, DB-less
+ * CI), where they are the dataset.
+ *
+ * Internal callers (ingestion, enrichment, cron, admin, history) intentionally
+ * keep using `getComparisonBySlug` — they must see archived rows.
+ *
+ * `dbConfigured` is injectable purely so the predicate is testable as a pure
+ * function: callers within this module cannot stub their own siblings.
+ */
+export function isPublishedComparison(
+  c: ComparisonPageData | null,
+  dbConfigured: boolean = isComparisonDbConfigured()
+): c is ComparisonPageData {
+  if (!c || (c.entities?.length ?? 0) < 2) return false;
+  if (!dbConfigured) return true;
+  return c.metadata?.status === "published";
+}
+
+/**
+ * DAN-2106 — `getComparisonBySlug` narrowed to the publicly renderable set.
+ * Returns null for anything the `/compare/[slug]` page would 404 on.
+ */
+export async function getPublishedComparisonBySlug(
+  slug: string
+): Promise<ComparisonPageData | null> {
+  const comparison = await getComparisonBySlug(slug);
+  return isPublishedComparison(comparison) ? comparison : null;
+}
+
+/**
  * Batch check which slugs exist in the comparisons table.
  * Returns only the slugs that have matching records — single query, no N+1.
  */

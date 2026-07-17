@@ -297,7 +297,7 @@ export function SearchOverlay() {
                       href={`/compare/${item.slug}`}
                       onClick={close}
                       onMouseEnter={() => setActiveIdx(idx)}
-                      className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 ${
+                      className={`flex items-center gap-3 px-4 py-3 transition-all duration-100 border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${
                         isActive
                           ? "bg-primary-50/80 border-l-primary-500"
                           : "hover:bg-primary-50/30 border-l-transparent"

@@ -140,7 +140,7 @@ export function VersionHistory({
           aria-expanded={isExpanded}
           aria-controls="version-history-panel"
           aria-label={isExpanded ? "Collapse version history" : "Expand version history"}
-          className="w-full px-6 py-4 flex items-center justify-between hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+          className="w-full px-6 py-4 flex items-center justify-between hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset"
         >
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
@@ -253,7 +253,7 @@ export function VersionHistory({
                             onClick={() => toggleEntry(entry.id)}
                             aria-expanded={isEntryExpanded}
                             aria-controls={`version-entry-${entry.id}`}
-                            className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+                            className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-surface-alt dark:hover:bg-white/5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-inset"
                           >
                             <div className="flex items-center gap-3">
                               <span

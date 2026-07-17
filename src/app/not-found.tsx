@@ -67,7 +67,7 @@ export default async function NotFound() {
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md text-sm"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
               >
                 Search
               </button>
@@ -77,13 +77,13 @@ export default async function NotFound() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <Link
               href="/"
-              className="px-6 py-2.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors"
+              className="px-6 py-2.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800"
             >
               <span aria-hidden="true">← </span>Go Home
             </Link>
             <Link
               href="/trending"
-              className="px-6 py-2.5 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm ring-1 ring-white/20"
+              className="px-6 py-2.5 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm ring-1 ring-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800"
             >
               Browse Trending
             </Link>
@@ -111,7 +111,7 @@ export default async function NotFound() {
                   <li key={item.slug}>
                   <Link
                     href={`/compare/${item.slug}`}
-                    className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+                    className="flex items-center gap-3 p-4 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   >
                     <div className="relative shrink-0 h-10" style={{ width: "54px" }}>
                       <div className="absolute left-0 top-0 w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-sm font-bold text-white ring-2 ring-white shadow-sm z-10">
@@ -150,7 +150,7 @@ export default async function NotFound() {
               <li key={cat.slug}>
               <Link
                 href={`/category/${cat.slug}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-primary-50 border border-border hover:border-primary-300 rounded-full text-sm font-medium text-text-secondary hover:text-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
               >
                 <CategoryIcon category={cat.slug} className="w-4 h-4" />
                 {cat.name}

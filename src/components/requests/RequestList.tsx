@@ -215,7 +215,7 @@ export function RequestList() {
                   {req.status === "generated" && req.comparisonSlug && (
                     <Link
                       href={`/compare/${req.comparisonSlug}`}
-                      className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-primary-600 hover:text-primary-700"
+                      className="inline-flex items-center gap-1 mt-2 text-sm font-medium text-primary-600 hover:text-primary-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                     >
                       View comparison <span aria-hidden="true">&rarr;</span>
                     </Link>

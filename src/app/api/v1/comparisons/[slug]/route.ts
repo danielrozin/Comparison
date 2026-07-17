@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getComparisonBySlug, incrementViewCount } from "@/lib/services/comparison-service";
+import { getPublishedComparisonBySlug, incrementViewCount } from "@/lib/services/comparison-service";
 import { withApiKey, AuthenticatedRequest } from "@/lib/services/api-middleware";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -27,7 +27,7 @@ export async function GET(
 
   return withApiKey(request, async (_req: NextRequest, _auth: AuthenticatedRequest) => {
     try {
-      const comparison = await getComparisonBySlug(slug);
+      const comparison = await getPublishedComparisonBySlug(slug);
 
       if (!comparison) {
         return NextResponse.json({ error: "Comparison not found" }, { status: 404 });

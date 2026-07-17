@@ -48,13 +48,13 @@ export default function Error({
           <button
             type="button"
             onClick={reset}
-            className="px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150"
+            className="px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-xl hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             Try again
           </button>
           <Link
             href="/"
-            className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors"
+            className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             Go home
           </Link>

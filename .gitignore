@@ -24,6 +24,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+# Catch-all: `.env*.local` missed suffixed dumps like `.env.vercel.local.fresh`
+# (a `vercel env pull` target holding live Neon credentials). DAN-1513 was that
+# leak. Ignore every .env* and re-admit the one committed template.
+.env*
+!.env.example
 .env*.local
 .env
 
@@ -58,3 +63,4 @@ hyperframes/**/.hyperframes/
 
 # Local data snapshots (large JSON, not for version control)
 scripts/data/*.json
+gsc-recovery-daily.json

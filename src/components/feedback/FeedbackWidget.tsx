@@ -94,7 +94,7 @@ export function FeedbackWidget() {
         onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
-        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
+        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
           isOpen
             ? "bg-text/60 hover:bg-text/80 rotate-45"
             : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"

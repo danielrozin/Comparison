@@ -143,7 +143,7 @@ export function LoanPayoffCalculator() {
         )}
         <button
           onClick={calculate}
-          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors"
+          className="mt-5 w-full sm:w-auto px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         >
           Calculate Payoff
         </button>
@@ -199,7 +199,7 @@ export function LoanPayoffCalculator() {
           <div className="bg-white border border-border rounded-xl overflow-hidden">
             <button
               onClick={() => setShowSchedule((s) => !s)}
-              className="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-text hover:bg-surface-alt transition-colors"
+              className="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-text hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500"
             >
               <span>Amortization Schedule (first 24 payments)</span>
               <span className="text-text-secondary text-lg">{showSchedule ? "−" : "+"}</span>
