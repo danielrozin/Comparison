@@ -773,7 +773,7 @@ export default async function BlogPostPage({
         <div className="bg-surface-alt border-b border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
             <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs sm:text-sm text-text-secondary overflow-x-auto scrollbar-none whitespace-nowrap">
-              <Link href="/" className="flex items-center gap-1 hover:text-primary-600 transition-colors font-medium flex-shrink-0">
+              <Link href="/" className="flex items-center gap-1 hover:text-primary-600 transition-colors font-medium flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded">
                 <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
@@ -782,7 +782,7 @@ export default async function BlogPostPage({
               <svg className="w-3 h-3 text-text-secondary/30 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
               </svg>
-              <Link href="/blog" className="hover:text-primary-600 transition-colors font-medium flex-shrink-0">
+              <Link href="/blog" className="hover:text-primary-600 transition-colors font-medium flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 rounded">
                 Blog
               </Link>
               <svg className="w-3 h-3 text-text-secondary/30 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -833,7 +833,7 @@ export default async function BlogPostPage({
             )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
-              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group">
+              <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
                   <span className="text-white font-bold text-xs tracking-tight select-none">DR</span>
                 </div>
@@ -904,7 +904,7 @@ export default async function BlogPostPage({
                 <Link
                   key={tag}
                   href={`/blog?category=${encodeURIComponent(tag)}`}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-surface-alt text-text-secondary border border-border hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   #{tag}
                 </Link>
@@ -960,7 +960,7 @@ export default async function BlogPostPage({
                       <li key={compSlug} className="flex">
                       <Link
                         href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full"
+                        className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                       >
                         <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
                           <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
@@ -997,7 +997,7 @@ export default async function BlogPostPage({
           <div className="mt-10 text-center">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold hover:shadow-md transition-all duration-150"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white rounded-lg font-semibold hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
               <span aria-hidden="true">&larr;</span> Back to Blog
             </Link>

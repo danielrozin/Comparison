@@ -56,7 +56,7 @@ export function CategoryFilters({
             id="sort"
             value={currentSort}
             onChange={(e) => updateParams("sort", e.target.value)}
-            className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:border-primary-500"
           >
             <option value="trending">Trending</option>
             <option value="rating">Highest Rated</option>
@@ -73,7 +73,7 @@ export function CategoryFilters({
             id="rating"
             value={currentRating}
             onChange={(e) => updateParams("rating", e.target.value)}
-            className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="text-sm px-3 py-1.5 bg-white border border-border rounded-lg text-text focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:border-primary-500"
           >
             <option value="all">All Ratings</option>
             <option value="4+">4+ Stars</option>

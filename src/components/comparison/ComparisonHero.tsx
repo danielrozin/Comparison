@@ -152,7 +152,7 @@ function EntityCard({
       <h3 className="text-base sm:text-xl font-bold text-white mb-1">
         <Link
           href={`/entity/${entity.slug}`}
-          className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30"
+          className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"
           title={`All comparisons featuring ${entity.name}`}
         >
           {entity.name}
@@ -291,7 +291,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
               <span className="text-white font-bold leading-none text-[8px]">DR</span>
             </span>
-            <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold">Daniel Rozin</Link>
+            <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
           </span>
           {comparison.metadata?.updatedAt && (
             <>

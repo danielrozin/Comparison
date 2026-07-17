@@ -121,7 +121,7 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
           <button
             type="submit"
             aria-label={query.trim() ? `Compare ${entityName} vs ${query.trim()}` : `Compare ${entityName} with another`}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-2 min-h-[36px] bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg text-xs transition-all shadow-sm"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 px-4 py-2 min-h-[36px] bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg text-xs transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
           >
             Compare
           </button>
@@ -146,7 +146,7 @@ export function EntityCompareSearch({ entityName, entitySlug }: { entityName: st
               <button
                 type="button"
                 onMouseDown={() => handleSelect(s.slug)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors text-sm ${activeIdx === idx ? "bg-primary-50" : "hover:bg-primary-50"}`}
+                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-500 ${activeIdx === idx ? "bg-primary-50" : "hover:bg-primary-50"}`}
               >
                 <div aria-hidden="true" className="flex -space-x-1.5 flex-shrink-0">
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xs font-bold text-white ring-1 ring-white">

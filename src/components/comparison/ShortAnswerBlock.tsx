@@ -79,7 +79,7 @@ export function ShortAnswerBlock({
                     onClick={handleCopy}
                     aria-label={copied ? "Copied!" : "Copy quick answer"}
                     title={copied ? "Copied!" : "Copy"}
-                    className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 ${
+                    className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 ${
                       copied
                         ? "bg-emerald-100 text-emerald-600"
                         : "bg-amber-100/60 text-amber-600 hover:bg-amber-200/70 hover:text-amber-700"
