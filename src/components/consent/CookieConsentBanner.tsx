@@ -131,7 +131,7 @@ export function CookieConsentBanner() {
                     You can choose which cookies to allow.{" "}
                     <a
                       href="/cookie-policy"
-                      className="text-primary-600 underline underline-offset-2 hover:text-primary-700"
+                      className="text-primary-600 underline underline-offset-2 hover:text-primary-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                     >
                       Cookie Policy
                     </a>
