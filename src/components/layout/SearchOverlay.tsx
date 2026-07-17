@@ -230,7 +230,7 @@ export function SearchOverlay() {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search anything — e.g. iPhone vs Samsung…"
-            className="w-full pl-12 pr-24 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent outline-none transition-all duration-200"
+            className="w-full pl-12 pr-24 py-4 sm:py-5 rounded-2xl bg-white text-text text-base sm:text-lg placeholder:text-text-secondary/50 border-2 border-transparent outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-300/60 transition-all duration-200"
             autoComplete="off"
             spellCheck={false}
             inputMode="search"
