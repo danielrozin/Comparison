@@ -77,6 +77,39 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   // `bloomberg-vs-the-wall-street-journal` — DAN-1288 gave it the better on-page
   // optimization. Fold the short `bloomberg-vs-wsj` slug into it (308 at edge).
   "bloomberg-vs-wsj": "bloomberg-vs-the-wall-street-journal",
+
+  // DAN-346 (traffic-first SEO / DAN-1800 spam-recovery): the standard
+  // "PlayStation 5 vs Xbox Series X" matchup existed as ELEVEN live self-canonical
+  // 200 pages — the clean canonical plus ten keyword-permutation long-tail slugs
+  // (…-specs-performance-2026, …-performance-comparison-2026-games-differences, …).
+  // All eleven carry the IDENTICAL entity pair [playstation-5 + xbox-series-x] and
+  // rehash the same specs/performance/Game-Pass ground (their shortAnswers overlap
+  // and even contradict — one claims "16.7 TFLOPS"), so they are duplicates, not
+  // distinct facets. Combined they drew ~12.7k GSC impressions over 28d at ~0 CTR:
+  // the exact scaled-content-abuse fingerprint the June 2026 spam update demotes.
+  //
+  // DAN-2078's generator could not see them — it groups by reverse-ORDER pairs
+  // (A-vs-B / B-vs-A), not keyword permutations that share the same tokens in the
+  // same order. Fold all ten into the clean, un-stuffed canonical `ps5-vs-xbox-series-x`
+  // (a live 200 and already a DAN-2078 survivor: `playstation-5-vs-xbox-series-x`
+  // 308s into it). Choosing the clean slug over the highest-impression keyword-stuffed
+  // one follows the DAN-1908 PS5-Pro precedent above — a spam-recovery consolidation
+  // must not enshrine a scaled-content URL as the survivor.
+  //
+  // Deliberately NOT folded: `xbox-series-x-vs-ps5-performance-comparison-latest-2026`
+  // is entity pair [playstation-5-pro + xbox-series-x] (a distinct PS5 *Pro* matchup),
+  // and the `ps5-pro-vs-xbox-series-x` cluster is handled by MANUAL_CONSOLIDATIONS above.
+  "xbox-series-x-vs-ps5-specs-performance-2026": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-performance-comparison-2026-games-differences":
+    "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-performance-comparison-2026": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-specs-performance-comparison-2026": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-specs-2026": "ps5-vs-xbox-series-x",
+  "playstation-5-vs-xbox-series-x-2026-comparison": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-performance-specs-comparison-2026": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-specs-performance-games-2026": "ps5-vs-xbox-series-x",
+  "xbox-series-x-vs-ps5-performance-games-comparison-2026": "ps5-vs-xbox-series-x",
+  "ps5-vs-xbox-series-x-comparison-specs-2026": "ps5-vs-xbox-series-x",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
