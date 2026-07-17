@@ -203,7 +203,7 @@ export function CommentSection({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-xl hover:shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+                className="inline-flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-xl hover:shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
               >
                 {isSubmitting ? (
                   <>
@@ -266,7 +266,7 @@ export function CommentSection({
                   <button
                     type="button"
                     onClick={() => likeComment(comment.id)}
-                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-text-secondary hover:text-primary-600 bg-surface-alt hover:bg-primary-50 border border-transparent hover:border-primary-200 rounded-full px-2 py-0.5 transition-all duration-150 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    className="flex-shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-text-secondary hover:text-primary-600 bg-surface-alt hover:bg-primary-50 border border-transparent hover:border-primary-200 rounded-full px-2 py-0.5 transition-all duration-150 opacity-0 group-hover:opacity-100 focus:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 focus-visible:opacity-100"
                     aria-label="Like this comment"
                   >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -285,7 +285,7 @@ export function CommentSection({
               <button
                 type="button"
                 onClick={() => setShowAll(true)}
-                className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-primary-600 hover:text-primary-700 rounded-2xl border border-dashed border-primary-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-150"
+                className="w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-primary-600 hover:text-primary-700 rounded-2xl border border-dashed border-primary-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 aria-label={`Show ${comments.length - 5} more comments`}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">

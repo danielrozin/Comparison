@@ -216,7 +216,7 @@ export function InterceptSurvey({
             type="button"
             onClick={close}
             aria-label="Close survey"
-            className="text-text-secondary hover:text-text transition-colors -mr-1 p-1"
+            className="text-text-secondary hover:text-text transition-colors -mr-1 p-1 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -272,7 +272,7 @@ export function InterceptSurvey({
                       setAnswers((a) => ({ ...a, q2Found: true }));
                       advance();
                     }}
-                    className="flex-1 py-2.5 text-sm font-medium rounded-lg border border-border hover:border-primary-600 hover:bg-primary-50 transition-colors"
+                    className="flex-1 py-2.5 text-sm font-medium rounded-lg border border-border hover:border-primary-600 hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                   >
                     Yes
                   </button>
@@ -280,7 +280,7 @@ export function InterceptSurvey({
                     type="button"
                     aria-pressed={answers.q2Found === false}
                     onClick={() => setAnswers((a) => ({ ...a, q2Found: false }))}
-                    className={`flex-1 py-2.5 text-sm font-medium rounded-lg border transition-colors ${
+                    className={`flex-1 py-2.5 text-sm font-medium rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
                       answers.q2Found === false
                         ? "border-primary-600 bg-primary-50"
                         : "border-border hover:border-primary-600 hover:bg-primary-50"
@@ -303,7 +303,7 @@ export function InterceptSurvey({
                     <button
                       type="button"
                       onClick={advance}
-                      className="mt-2 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150"
+                      className="mt-2 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
                     >
                       Continue
                     </button>
@@ -328,7 +328,7 @@ export function InterceptSurvey({
                         setAnswers((a) => ({ ...a, q3Rating: n }));
                         advance();
                       }}
-                      className="flex-1 py-3 text-base font-semibold rounded-lg border border-border hover:border-primary-600 hover:bg-primary-50 transition-colors"
+                      className="flex-1 py-3 text-base font-semibold rounded-lg border border-border hover:border-primary-600 hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                     >
                       {n}
                     </button>
@@ -368,7 +368,7 @@ export function InterceptSurvey({
                 <button
                   type="button"
                   onClick={advance}
-                  className="mt-3 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150"
+                  className="mt-3 w-full py-2 text-sm font-semibold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 rounded-lg hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-600"
                 >
                   Continue
                 </button>
@@ -411,7 +411,7 @@ function SingleChoice({
             key={opt}
             aria-pressed={value === opt}
             onClick={() => onSelect(opt)}
-            className={`w-full text-left px-3 py-2 text-sm rounded-lg border transition-colors ${
+            className={`w-full text-left px-3 py-2 text-sm rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
               value === opt
                 ? "border-primary-600 bg-primary-50"
                 : "border-border hover:border-primary-600 hover:bg-primary-50"
