@@ -102,6 +102,38 @@ describe("COMPARE_REDIRECTS", () => {
     });
   });
 
+  describe("DAN-2323 cron-drift keyword-suffixed near-duplicates", () => {
+    // Post-2026-07-14 enrichment-cron drift: keyword-suffixed variants of matchups
+    // that already have a clean canonical 200. Each folds into the clean canonical
+    // (never the keyword-stuffed slug), per the DAN-346/DAN-1908 spam-recovery rule.
+    const CLUSTERS: Record<string, string> = {
+      "california-population-vs-texas-2026": "california-vs-texas",
+      "japan-vs-china-economic-comparison-2026": "japan-vs-china",
+      "disney-vs-netflix-2026": "disney-vs-netflix",
+      "nfl-vs-nba-revenue-comparison-2026": "nfl-vs-nba-revenue",
+    };
+
+    it("folds each keyword-suffixed variant into its clean canonical in one hop", () => {
+      for (const [from, to] of Object.entries(CLUSTERS)) {
+        expect(getConsolidatedCompareSlug(from), `${from} should fold`).toBe(to);
+        // Destination must be a real page, not another redirect.
+        expect(
+          getConsolidatedCompareSlug(to),
+          `${to} must be a live page`,
+        ).toBeNull();
+      }
+    });
+
+    it("never makes the clean canonical a redirect source (it is a live 200)", () => {
+      for (const to of new Set(Object.values(CLUSTERS))) {
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${to}`),
+          `${to} is a live page and must not redirect`,
+        ).toBe(false);
+      }
+    });
+  });
+
   describe("DAN-1800 ordering sweep (84 clusters)", () => {
     it("folds every DAN-1800 retired ordering into a terminal survivor (one hop, permanent)", () => {
       for (const [from, to] of Object.entries(ORDERING_CONSOLIDATIONS_DAN1800)) {

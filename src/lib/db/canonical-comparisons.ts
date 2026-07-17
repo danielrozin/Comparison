@@ -75,5 +75,12 @@ export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => s
  * survivors, 5 genuinely facet-distinct pages kept live. That took REDIRECTED_COMPARE_SLUGS
  * 133 -> 138, so per the floor invariant the ceiling drops 444 -> 439 and this comes down
  * to 439. Still conservative: the live canonical catalog is ~472 (publish cron), well above.
+ *
+ * DAN-2323 (2026-07-17) folded 4 more keyword-suffixed near-duplicates that the
+ * enrichment cron minted after the 2026-07-14 sweep (california/texas, japan/china,
+ * disney/netflix, nfl-vs-nba-revenue — see compare-redirects.ts). That took
+ * REDIRECTED_COMPARE_SLUGS 138 -> 142, so per the floor invariant in
+ * corpus-count-truthfulness.test.ts (`FALLBACK <= 454 - (REDIRECTS - 123)`) the
+ * ceiling drops 439 -> 435 and this comes down to 435. Still a conservative floor.
  */
-export const CANONICAL_COMPARISON_COUNT_FALLBACK = 439;
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 435;

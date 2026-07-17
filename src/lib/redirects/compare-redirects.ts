@@ -110,6 +110,25 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "xbox-series-x-vs-ps5-specs-performance-games-2026": "ps5-vs-xbox-series-x",
   "xbox-series-x-vs-ps5-performance-games-comparison-2026": "ps5-vs-xbox-series-x",
   "ps5-vs-xbox-series-x-comparison-specs-2026": "ps5-vs-xbox-series-x",
+
+  // DAN-2323 (2026-07-17): post-2026-07-14 enrichment-cron drift. The cron minted
+  // NEW keyword-suffixed near-duplicates of matchups that already have a clean
+  // canonical 200 page — the same self-cannibalization DAN-2078/DAN-346 fixed, but
+  // out of DAN-2078's scope (it groups by reverse-ORDER entity pairs; a
+  // keyword-suffixed slug parses as a DISTINCT entity pair, e.g.
+  // [california-population + texas-2026], so its generator's ONLY_NEW_CLUSTERS
+  // allowlist deliberately excluded them). These are keyword-permutation spam
+  // variants, so the DAN-346 remedy applies: fold each …-2026 / …-comparison-2026
+  // variant INTO its clean, un-stuffed canonical — never enshrine a scaled-content
+  // URL as the survivor, even when it carries more impressions (california). All
+  // four survivors verified live 200 in prod 2026-07-17; all four sources verified
+  // live 200 (net-new pages, not archived), so each is a valid redirect per DAN-2045.
+  "california-population-vs-texas-2026": "california-vs-texas",
+  "japan-vs-china-economic-comparison-2026": "japan-vs-china",
+  "disney-vs-netflix-2026": "disney-vs-netflix",
+  // nfl-vs-nba-revenue is the FACET DAN-2078 deliberately kept live; fold this
+  // keyword-suffixed variant into that facet, not into the base nfl-vs-nba.
+  "nfl-vs-nba-revenue-comparison-2026": "nfl-vs-nba-revenue",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
