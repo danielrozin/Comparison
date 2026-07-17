@@ -6,6 +6,7 @@ import { discoverTopics } from "@/lib/services/content-discovery";
 import { generateBlogArticle, saveBlogArticle } from "@/lib/services/blog-generator";
 import { generateComparison } from "@/lib/services/ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "@/lib/services/comparison-service";
+import { stripKeywordSuffixSlug } from "@/lib/utils/slugify";
 import { enqueueBatch, processQueue } from "@/lib/services/generation-queue";
 import { storeKeywordOpportunities } from "@/lib/services/keyword-service";
 import { refreshStaleComparisons } from "@/lib/services/content-refresh";
@@ -193,6 +194,13 @@ export async function GET(request: NextRequest) {
         const slug = a <= b ? `${a}-vs-${b}` : `${b}-vs-${a}`;
         const existing = await getComparisonBySlug(slug);
         if (existing) continue;
+        // DAN-2324: skip minting a keyword/year-suffixed near-duplicate when the
+        // clean canonical for the stripped base pair already exists.
+        const baseSlug = stripKeywordSuffixSlug(slug);
+        if (baseSlug) {
+          const baseExisting = await getComparisonBySlug(baseSlug);
+          if (baseExisting) continue;
+        }
         const result = await generateComparison(topic.entityA!, topic.entityB!, slug);
         if (result.success && result.comparison) {
           try {

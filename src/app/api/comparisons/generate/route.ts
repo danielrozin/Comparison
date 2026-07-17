@@ -5,7 +5,7 @@ import {
   generateMultiComparison,
   type GenerationErrorStage,
 } from "@/lib/services/ai-comparison-generator";
-import { parseComparisonSlug, sortComparisonSlug } from "@/lib/utils/slugify";
+import { parseComparisonSlug, sortComparisonSlug, stripKeywordSuffixSlug } from "@/lib/utils/slugify";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
 import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
 import { warmCacheForSlug } from "@/lib/services/cache-warming";
@@ -98,6 +98,19 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ status: "ready", comparison: canonicalExisting, canonicalSlug });
       }
     }
+    // DAN-2324: keyword/year-suffix dedupe guard. A slug whose entity token
+    // carries a tail (`china-economic-comparison-2026-vs-united-states`) parses
+    // into a distinct entity pair that both the consolidation map and the
+    // ordering-sort miss. Strip the known tails and, if a clean canonical exists
+    // for the base pair, serve it instead of minting the near-duplicate.
+    const baseSlug = stripKeywordSuffixSlug(canonicalSlug);
+    if (baseSlug && baseSlug !== canonicalSlug) {
+      const baseExisting = await getComparisonBySlug(baseSlug).catch(() => null);
+      if (baseExisting) {
+        return NextResponse.json({ status: "ready", comparison: baseExisting, canonicalSlug: baseSlug });
+      }
+    }
+
     // From here on, generate and persist under the canonical ordering only.
     const genSlug = canonicalSlug;
     const genSlugParts = parseComparisonSlug(genSlug) ?? slugParts;

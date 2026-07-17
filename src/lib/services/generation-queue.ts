@@ -18,7 +18,7 @@ import { generateComparison } from "./ai-comparison-generator";
 import { saveComparison, getComparisonBySlug } from "./comparison-service";
 import { warmCacheForSlug } from "./cache-warming";
 import { checkAndAlert } from "./pipeline-alerting";
-import { cleanComparisonSlug } from "@/lib/utils/slugify";
+import { cleanComparisonSlug, stripKeywordSuffixSlug } from "@/lib/utils/slugify";
 
 // Redis keys
 const QUEUE_PENDING = "genqueue:pending";
@@ -80,6 +80,17 @@ export async function enqueueJob(
   // Skip if comparison already exists
   const existing = await getComparisonBySlug(slug);
   if (existing) return null;
+
+  // DAN-2324: keyword/year-suffix dedupe guard. A discovery topic whose entity
+  // name carries a tail ("China economic comparison 2026") parses into a DISTINCT
+  // token, so makeSlug()'s ordering-sort won't recognise it as the existing base
+  // pair. Strip the known tails and, if a clean canonical already exists for the
+  // base pair, skip minting the near-duplicate (root cause of the DAN-2323 drift).
+  const baseSlug = stripKeywordSuffixSlug(slug);
+  if (baseSlug) {
+    const baseExisting = await getComparisonBySlug(baseSlug);
+    if (baseExisting) return null;
+  }
 
   // Skip if already in queue
   const inQueue = await isInQueue(slug);
