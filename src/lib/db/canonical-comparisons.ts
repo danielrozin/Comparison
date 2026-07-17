@@ -69,5 +69,11 @@ export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => s
  * ceiling drops 454 -> 444, so this comes down to 444. It stays a conservative
  * floor: dan2067-verify.ts reports the live canonical catalog at 472 after the fold
  * (the publish cron has grown it well above the pinned sweep), so 444 is safely below.
+ *
+ * DAN-2078 (2026-07-17) resolved the two held rivalry clusters (NFL/NBA, US/China) by
+ * data (scripts/dan2078-facet-check.ts): 5 pure-synonym duplicates retired into their
+ * survivors, 5 genuinely facet-distinct pages kept live. That took REDIRECTED_COMPARE_SLUGS
+ * 133 -> 138, so per the floor invariant the ceiling drops 444 -> 439 and this comes down
+ * to 439. Still conservative: the live canonical catalog is ~472 (publish cron), well above.
  */
-export const CANONICAL_COMPARISON_COUNT_FALLBACK = 444;
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 439;

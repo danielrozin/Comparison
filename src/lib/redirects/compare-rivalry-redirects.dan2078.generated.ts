@@ -12,8 +12,10 @@
  * seed data, not traffic (DAN-2037). Impressions at decision time are recorded inline
  * so a future reader can see the call rather than re-derive it.
  *
- * The NFL/NBA (4 pages) and US/China-economy (7 pages) clusters are deliberately absent
- * — their slugs promise facets, so they are held for the DAN-2078 board call.
+ * The NFL/NBA and US/China clusters are PARTIALLY consolidated: pure-synonym duplicates
+ * of the same matchup are folded in, while genuinely facet-distinct slugs (…-gdp,
+ * …-economic-growth, …-revenue, and the general nfl-vs-nba) are kept live per the
+ * facet-check split. See KEEP_FACET_SLUGS in the generator.
  */
 export const RIVALRY_CONSOLIDATIONS_DAN2078: Record<string, string> = {
   // 2026-bmw-x5 | 2026-mercedes-benz-gle — mercedes-gle-vs-bmw-x5 (96) > mercedes-benz-gle-vs-bmw-x5 (87)
@@ -57,4 +59,14 @@ export const RIVALRY_CONSOLIDATIONS_DAN2078: Record<string, string> = {
 
   // playstation-5 | xbox-series-x — ps5-vs-xbox-series-x (2362) > playstation-5-vs-xbox-series-x (112)
   "playstation-5-vs-xbox-series-x": "ps5-vs-xbox-series-x",
+
+  // --- DAN-2078 held-cluster resolution (2026-07-17) — see KEEP_FACET_SLUGS ---
+  // china-economy | united-states-economy — us-economy-vs-china-economy (777) > chinese-vs-us-economy (88) > china-economy-vs-united-states (59) > america-vs-china-economy (50) > china-economy-size-vs-us (36)
+  "chinese-vs-us-economy": "us-economy-vs-china-economy",
+  "china-economy-vs-united-states": "us-economy-vs-china-economy",
+  "america-vs-china-economy": "us-economy-vs-china-economy",
+  "china-economy-size-vs-us": "us-economy-vs-china-economy",
+
+  // national-basketball-association-nba | national-football-league-nfl — nfl-vs-nba-viewership (498) > nba-vs-nfl-viewership-globally (382)
+  "nba-vs-nfl-viewership-globally": "nfl-vs-nba-viewership",
 };
