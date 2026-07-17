@@ -232,6 +232,7 @@ export function ComparisonPoll({ comparisonId, comparisonSlug, entities }: Compa
                   <input
                     id="poll-email-capture"
                     autoComplete="email"
+                    enterKeyHint="go"
                     type="email"
                     value={emailCaptureEmail}
                     onChange={(e) => { setEmailCaptureEmail(e.target.value); setEmailCaptureStatus("idle"); }}

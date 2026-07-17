@@ -77,7 +77,7 @@ export function LiveActivityToast({ items }: { items: Notification[] }) {
           </p>
           <p className="text-xs font-semibold text-white truncate group-hover:text-white/90">
             {a}
-            <span className="mx-1 text-white/40 font-normal">vs</span>
+            <span className="mx-1 text-white/60 font-normal">vs</span>
             {b}
           </p>
         </div>

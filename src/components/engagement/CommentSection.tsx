@@ -161,6 +161,7 @@ export function CommentSection({
               </label>
               <input
                 autoComplete="name"
+                enterKeyHint="next"
                 id="comment-name"
                 type="text"
                 value={name}

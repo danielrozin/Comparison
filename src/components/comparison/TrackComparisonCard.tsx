@@ -275,6 +275,7 @@ export function TrackComparisonCard({
                     type="email"
                     inputMode="email"
                     autoComplete="email"
+                    enterKeyHint="go"
                     required
                     value={email}
                     onChange={(e) => {

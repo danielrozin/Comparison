@@ -124,9 +124,9 @@ export function RequestList() {
       </div>
 
       {loading ? (
-        <div className="space-y-4">
+        <div role="status" aria-label="Loading comparison requests" aria-live="polite" className="space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="bg-white border border-border rounded-xl p-5 animate-pulse">
+            <div key={i} aria-hidden="true" className="bg-white border border-border rounded-xl p-5 animate-pulse">
               <div className="h-5 bg-surface-alt rounded w-2/3 mb-3" />
               <div className="h-4 bg-surface-alt rounded w-1/3" />
             </div>

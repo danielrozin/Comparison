@@ -69,7 +69,7 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
   return (
     <section ref={containerRef} aria-labelledby="video-player-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {!isVisible ? (
-        <div className="aspect-video bg-surface-alt rounded-xl animate-pulse" />
+        <div aria-hidden="true" className="aspect-video bg-surface-alt rounded-xl animate-pulse" />
       ) : (
         <>
           <h2 id="video-player-heading" className="text-xl font-display font-bold text-text mb-4 flex items-center gap-2">

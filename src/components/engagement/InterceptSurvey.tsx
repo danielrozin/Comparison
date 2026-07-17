@@ -359,6 +359,7 @@ export function InterceptSurvey({
                 <input
                   id="intercept-opt-in-email"
                   autoComplete="email"
+                  enterKeyHint="go"
                   type="email"
                   value={answers.optInEmail || ""}
                   onChange={(e) => setAnswers((a) => ({ ...a, optInEmail: e.target.value }))}

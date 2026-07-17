@@ -215,6 +215,7 @@ export function FeedbackWidget() {
                 </label>
                 <input
                   autoComplete="email"
+                  enterKeyHint="send"
                   id="fb-email"
                   type="email"
                   value={email}

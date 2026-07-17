@@ -105,6 +105,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           </label>
           <input
             autoComplete="off"
+            enterKeyHint="next"
             id="entityA"
             type="text"
             value={entityA}
@@ -123,6 +124,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           </label>
           <input
             autoComplete="off"
+            enterKeyHint="next"
             id="entityB"
             type="text"
             value={entityB}
@@ -179,6 +181,7 @@ export function RequestForm({ onSuccess }: { onSuccess?: () => void }) {
           id="email"
           type="email"
           autoComplete="email"
+          enterKeyHint="send"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
