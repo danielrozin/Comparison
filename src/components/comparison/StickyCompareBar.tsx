@@ -147,7 +147,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
           onClick={handleCopy}
           aria-label={copied ? "Link copied!" : "Copy link to this comparison"}
           title={copied ? "Copied!" : "Copy link"}
-          className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-150 ml-1 ${
+          className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-150 ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
             copied
               ? "bg-emerald-100 text-emerald-600"
               : "text-text-secondary hover:text-primary-600 hover:bg-primary-50"

@@ -185,7 +185,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
             onClick={handleExpandAll}
             aria-pressed={allOpen}
             aria-label={allOpen ? "Collapse all FAQ answers" : "Expand all FAQ answers"}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors px-3 py-1.5 rounded-lg hover:bg-primary-50 border border-transparent hover:border-primary-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           >
             <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${allOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -226,7 +226,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
               type="button"
               onClick={() => { setSearch(""); setOpenIndex(0); setShowAll(false); }}
               aria-label="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface-alt flex items-center justify-center text-text-secondary hover:bg-border hover:text-text transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-surface-alt flex items-center justify-center text-text-secondary hover:bg-border hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -291,7 +291,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         <button
           type="button"
           onClick={() => setShowAll(true)}
-          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-primary-600 hover:text-primary-700 rounded-xl border border-dashed border-primary-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-150"
+          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-primary-600 hover:text-primary-700 rounded-xl border border-dashed border-primary-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
           aria-label={`Show ${hiddenCount} more questions`}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
@@ -304,7 +304,7 @@ export function FAQBlock({ faqs }: { faqs: FAQData[] }) {
         <button
           type="button"
           onClick={() => { setShowAll(false); setOpenIndex(0); }}
-          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-text-secondary hover:text-text rounded-xl border border-dashed border-border hover:border-border transition-all duration-150"
+          className="mt-4 w-full flex items-center justify-center gap-2 py-3 text-sm font-semibold text-text-secondary hover:text-text rounded-xl border border-dashed border-border hover:border-border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1"
           aria-label="Show fewer questions"
         >
           <svg className="w-4 h-4 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
