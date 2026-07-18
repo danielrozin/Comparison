@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav, UxStudyBanner } from "@/components/layout/GlobalClientWidgets";
+import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav } from "@/components/layout/GlobalClientWidgets";
 import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
@@ -31,7 +31,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <MetaPixel />
       <ClarityTags />
       <ExperimentProvider initialCookie="">
-        <UxStudyBanner />
         <Header />
         <main id="main-content" className="flex-1">
           <Component {...pageProps} />
