@@ -50,7 +50,7 @@ function EntityAvatar({
 
   if (hasImage) {
     return (
-      <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
+      <div className={`relative w-16 h-16 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
         <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-50`} />
         <div className={`relative w-full h-full rounded-full overflow-hidden ring-2 ${palette.ring} ${palette.shadow}`}>
           <Image
@@ -58,7 +58,7 @@ function EntityAvatar({
             alt={entity.name}
             width={112}
             height={112}
-            sizes="(min-width: 640px) 112px, 80px"
+            sizes="(min-width: 640px) 112px, 64px"
             priority={true}
             fetchPriority="high"
             className="w-full h-full object-cover"
@@ -76,14 +76,14 @@ function EntityAvatar({
     .toUpperCase();
 
   return (
-    <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
+    <div className={`relative w-16 h-16 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
       {/* Pulsing outer glow ring for fallback avatars */}
       <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-xl opacity-40 motion-safe:animate-pulse scale-125`} />
       <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-60`} />
       <div
         className={`relative w-full h-full bg-gradient-to-br ${palette.bg} rounded-full flex items-center justify-center ring-2 ${palette.ring} ${palette.shadow}`}
       >
-        <span aria-hidden="true" className="text-2xl sm:text-4xl font-black text-white drop-shadow">
+        <span aria-hidden="true" className="text-xl sm:text-4xl font-black text-white drop-shadow">
           {initials || entity.name.charAt(0)}
         </span>
       </div>
@@ -145,11 +145,11 @@ function EntityCard({
 
   return (
     <div
-      className={`relative bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-4 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200`}
+      className={`relative bg-white/10 backdrop-blur-sm border ${borderClass} rounded-2xl p-3 sm:p-6 text-center hover:bg-white/15 hover:-translate-y-1 transition-all duration-200 min-w-0 overflow-hidden`}
     >
       {isWinner && <WinnerBadge />}
       <EntityAvatar entity={entity} variant={variant} />
-      <h3 className="text-base sm:text-xl font-bold text-white mb-1">
+      <h3 className="text-sm sm:text-xl font-bold text-white mb-1 break-words">
         <Link
           href={`/entity/${entity.slug}`}
           className="hover:text-primary-200 transition-colors duration-150 underline-offset-2 hover:underline decoration-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900 rounded"

@@ -44,6 +44,9 @@ html {
   -webkit-text-size-adjust: 100%;
   /* Consistent native form element rendering across browsers */
   color-scheme: light;
+  /* Prevent horizontal scroll on mobile — body overflow-x-hidden alone is
+     insufficient on Android Chrome because the scrollable root is <html> */
+  overflow-x: hidden;
 }
 
 /* Fix blurry text on Android Chrome */

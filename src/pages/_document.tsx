@@ -15,7 +15,7 @@ const ADSENSE_PUB_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="en" className="overflow-x-hidden">
       <Head>
         {/* theme-color + color-scheme — parity with layout.tsx */}
         <meta name="theme-color" content="#1a56db" />

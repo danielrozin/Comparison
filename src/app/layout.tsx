@@ -120,7 +120,7 @@ export default async function RootLayout({
 }) {
   const comparisonCount = await getPublishedComparisonCount();
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} overflow-x-hidden`}>
       <head>
         {/* theme-color — browser chrome and Android home-screen splash color */}
         <meta name="theme-color" content="#1a56db" />
