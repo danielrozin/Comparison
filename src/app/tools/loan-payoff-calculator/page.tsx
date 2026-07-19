@@ -175,7 +175,7 @@ export default function LoanPayoffCalculatorPage() {
       </div>
 
       {/* Main content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         <LoanPayoffCalculator />
 
         {/* How it works */}
@@ -248,7 +248,7 @@ export default function LoanPayoffCalculatorPage() {
             ))}
           </ul>
         </aside>
-      </main>
+      </div>
     </>
   );
 }

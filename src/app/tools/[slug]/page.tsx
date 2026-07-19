@@ -182,8 +182,10 @@ function renderMarkdown(md: string): string {
     if (line.startsWith("# ")) {
       if (inUl) { processed.push("</ul>"); inUl = false; }
       if (inOl) { processed.push("</ol>"); inOl = false; }
+      const text = line.slice(2);
+      const id = slugifyHeading(text);
       processed.push(
-        `<h1 class="text-3xl font-bold text-text mt-4 mb-6">${line.slice(2)}</h1>`
+        `<h2 id="${id}" class="text-3xl font-bold text-text mt-4 mb-6">${text}</h2>`
       );
       continue;
     }
@@ -476,7 +478,7 @@ export default async function ToolPage({ params }: PageProps) {
       </div>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <article
           className="prose-custom"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
@@ -506,7 +508,7 @@ export default async function ToolPage({ params }: PageProps) {
         )}
 
         <NewsletterSignup source={`tools-${slug}`} />
-      </main>
+      </div>
 
       <BackToTop />
     </>
