@@ -256,6 +256,16 @@ def archive_routine():
     known to accept a write, echo it back, and silently drop the field. If the status
     write does not stick, fall back to disabling the schedule trigger, which is the
     thing that actually causes the 2027 re-fire.
+
+    MEASURED 2026-07-20 (T-25h) against a throwaway scratch routine, not assumed:
+    `PATCH {"status": "archived"}` → 200 and an independent GET reads back
+    `status == "archived"`. The primary path works; the trigger-disable fallback is a
+    backstop that has NOT been exercised (the create route silently dropped triggers[]
+    on the scratch routine, so there was nothing to disable). Note also that GET can
+    return `triggers: []` — `disarmed()` then returns False on the fallback branch even
+    if the routine is in fact dead. That mis-fires toward a false "STILL ARMED" warning,
+    never a false success, which is the correct direction. `DELETE /api/routines/{id}`
+    404s, so scratch routines can only be archived, never removed.
     """
     api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
     if not (api and key):
