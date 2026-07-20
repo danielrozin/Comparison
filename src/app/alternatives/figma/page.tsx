@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CompareLink } from "@/components/comparison/CompareLink";
+import { CompareLink, RelatedComparisons } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -970,6 +970,15 @@ export default function FigmaAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
+        <RelatedComparisons
+          hrefs={[
+            "/compare/figma-vs-sketch",
+            "/compare/figma-vs-adobe-xd",
+            "/compare/figma-vs-sketch-vs-adobe-xd",
+            "/compare/figma-vs-framer",
+            "/compare/figma-vs-canva",
+          ]}
+        >
         <section aria-labelledby="figma-related-comparisons" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -1027,6 +1036,7 @@ export default function FigmaAlternativesPage() {
             </li>
           </ul>
         </section>
+        </RelatedComparisons>
 
         <div className="mt-12">
           <NewsletterSignup source="alternatives" referrerSlug="figma" />

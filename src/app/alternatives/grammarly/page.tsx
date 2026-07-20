@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CompareLink } from "@/components/comparison/CompareLink";
+import { CompareLink, RelatedComparisons } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -1076,6 +1076,15 @@ export default function GrammarlyAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
+        <RelatedComparisons
+          hrefs={[
+            "/compare/grammarly-vs-prowritingaid",
+            "/compare/grammarly-vs-quillbot",
+            "/compare/grammarly-vs-languagetool",
+            "/compare/grammarly-vs-hemingway",
+            "/compare/quillbot-vs-wordtune",
+          ]}
+        >
         <section aria-labelledby="grammarly-related" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -1133,6 +1142,7 @@ export default function GrammarlyAlternativesPage() {
             </li>
           </ul>
         </section>
+        </RelatedComparisons>
 
         <div className="mt-12">
           <NewsletterSignup source="alternatives" referrerSlug="grammarly" />
