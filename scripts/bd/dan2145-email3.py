@@ -140,7 +140,13 @@ def reply_check(targets):
         print("REPLY CHECK: GMAIL_APP_PASSWORD unset (DAN-2513 not landed) — ladder path 3.")
         return set(), False
 
-    user = os.environ.get("GMAIL_ADDR") or REPLY
+    # GMAIL_EMAIL is the var DevOps actually populates (confirmed present in the
+    # fire-time env 2026-07-20); GMAIL_ADDR was a guess and has never been set.
+    # REPLY stays last because it happens to be the same mailbox today, but it is
+    # the Resend reply-to, not by definition the inbox we sweep.
+    user = (os.environ.get("GMAIL_EMAIL")
+            or os.environ.get("GMAIL_ADDR")
+            or REPLY)
     try:
         import imaplib
         M = imaplib.IMAP4_SSL("imap.gmail.com", timeout=30)
