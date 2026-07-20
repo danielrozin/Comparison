@@ -959,4 +959,13 @@ if __name__ == "__main__":
         # so a retry built only from the sent rows would re-include them.
         retry_drop = [r["to"] for r in results if r.get("status") != "ERROR"] + sorted(drop)
         print(f"      --send --drop {' '.join(retry_drop)}")
-        sys.exit(5)
+        # Exit 6, NOT 5. These two states are opposites and used to share code 5:
+        #   5 = a typo'd --drop address, NOTHING was sent, re-run freely after fixing it.
+        #   6 = SOME editors were emailed and some were not; the guard file now exists and
+        #       a clean re-run is forbidden.
+        # The firing routine's body documents 5 as the typo case only, so a partial send
+        # exiting 5 would be read as "fix the address and re-run" at the exact moment
+        # three editors are half-emailed. The idempotency guard would catch the re-run
+        # (exit 2), but the operator's diagnosis would be wrong for the one failure mode
+        # where being wrong costs a duplicate to a real prospect.
+        sys.exit(6)
