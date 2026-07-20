@@ -186,6 +186,51 @@ LOG_ISSUES = [("DAN-2145", "ea3872fb-0f64-438e-a23d-7f82889a4add"),
               ("DAN-1737", "4e85951b-769b-4c63-bd12-b334b10610ef")]
 
 
+def alert_abort(reason, detail):
+    """Post a pre-send ABORT to DAN-2145 so a dead fire is visible on the board.
+
+    Every abort path below only printed to stdout. That is fine for a hand-run, and
+    useless for the 09:00Z routine, which fires headless with nobody reading the log:
+    the sequence would simply never close, and the board would show DAN-2145 sitting
+    in_progress with no indication that the one scheduled attempt had already come and
+    gone. A missed send is recoverable ONLY if someone learns it was missed.
+
+    This is not hypothetical. On 2026-07-20 the instance-level .env on disk was found
+    carrying the reverted DAN-2547 identity (`hello@aversusb.net`) and the pre-rotation
+    key — values that trip the DAN-1991 lock. If the fire-time run inherits that file,
+    assert_identity() aborts, correctly, and silently.
+
+    Best-effort: never let the alert path itself become a reason the send fails.
+    """
+    api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
+    if not (api and key):
+        print(f"WARN: PAPERCLIP_API_URL/KEY unset — abort NOT reported to the board.")
+        return False
+    body = "\n".join([
+        f"## ⛔ DAN-2145 Email-3 ABORTED before sending — {reason}",
+        "", "**Nothing was sent. No recipient received Email-3.**", "",
+        "```", detail.strip(), "```", "",
+        f"The firing routine `{ROUTINE_ID}` has now used its scheduled slot, so this "
+        "will NOT retry on its own. Email-3 is unsent until someone re-runs it by hand:",
+        "", "```", "python3 scripts/bd/dan2145-email3.py --preflight   # confirm the fix",
+        "python3 scripts/bd/dan2145-email3.py --send", "```", "",
+        "Do **not** mark DAN-2145 done on the strength of the routine having fired.",
+    ])
+    try:
+        req = urllib.request.Request(
+            f"{api}/api/issues/{LOG_ISSUES[0][1]}/comments", method="POST",
+            data=json.dumps({"body": body}).encode(),
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+                     "User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            json.load(r)
+        print("ABORT reported on DAN-2145.")
+        return True
+    except Exception as e:
+        print(f"WARN: could not report abort on DAN-2145 ({e}).")
+        return False
+
+
 def log_msgids(results, reply_note, archived, preview=False, only=None):
     """Runbook step 4, automated: post the returned msg-ids to DAN-2145 + DAN-1737.
 
@@ -610,7 +655,21 @@ if __name__ == "__main__":
                               ("RESEND_REPLY_TO", REPLY)) if not v]
     if missing:
         print(f"ABORT: unset env var(s): {', '.join(missing)}. Cannot send.")
+        alert_abort("send credentials missing from the environment",
+                    f"unset env var(s): {', '.join(missing)}\n"
+                    "The fire-time process did not inherit the BD Resend credentials.")
         sys.exit(3)
+
+    # The identity lock is asserted here rather than inside send(), so a violation is
+    # reported to the board BEFORE the idempotency guard and reply-check run. Verified
+    # at fire time because the on-disk instance .env and the injected env have been
+    # observed to disagree (2026-07-20) — see alert_abort().
+    try:
+        assert_identity()
+    except SystemExit as e:
+        print(str(e))
+        alert_abort("sender identity violates the DAN-1991 lock", str(e))
+        raise
 
     # Idempotency guard (runbook step 4 / guardrail): never double-send.
     if os.path.exists(RESULTS_FILE):
@@ -675,6 +734,10 @@ if __name__ == "__main__":
 
     if not preflight():
         print("ABORT: preflight failed. Fix the URL(s) and re-run.")
+        alert_abort("preflight failed — a comparison URL did not return a direct 200",
+                    "One or more recipient URLs failed the re-curl/H1 check, or the "
+                    "banana-vs-stapler soft-200 control regressed. Slugs have flipped "
+                    "before (07-05, 07-14); re-check and use the direct-200 form.")
         sys.exit(1)
 
     reply_note = ("VERIFIED against a live inbox (control query non-zero)" if reply_verified
