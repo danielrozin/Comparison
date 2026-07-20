@@ -341,13 +341,21 @@ def check_archive_reporting(m):
           "render distinctly and pending never claims a settled outcome.")
 
 
+# Every suite this harness is expected to run. The count is asserted below so that a
+# suite which silently stops running (early return, lost call, renamed function) fails
+# loudly instead of shrinking the PASS list by one line that nobody counts. The fire-time
+# routine tells the operator to match the printed tally against this number.
+EXPECTED_SUITES = 6
+
+
 def main():
     m = load()
-    check_reply_fail_open(m)
-    check_unknown_drop_aborts(m)
-    check_unknown_flag_aborts(m)
-    check_lbs_unblock_guards(m)
-    check_archive_reporting(m)
+    ran = 0
+    for suite in (check_reply_fail_open, check_unknown_drop_aborts,
+                  check_unknown_flag_aborts, check_lbs_unblock_guards,
+                  check_archive_reporting):
+        suite(m)
+        ran += 1
     captured = []
 
     class FakeResp:
@@ -412,6 +420,13 @@ def main():
 
     print(f"PASS — 3 sends rehearsed, identity {m.LOCKED_FROM}, "
           f"per-recipient guard, 45s spacing, copy clean. Nothing was sent.")
+    ran += 1
+
+    if ran != EXPECTED_SUITES:
+        print(f"FAIL — {ran}/{EXPECTED_SUITES} suites ran. A suite silently stopped "
+              f"running; the PASS lines above do NOT cover the whole send path.")
+        return 1
+    print(f"{ran}/{EXPECTED_SUITES} suites PASS")
     return 0
 
 
