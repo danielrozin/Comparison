@@ -331,7 +331,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (!isCleanSlug(slug)) {
     const cleaned = cleanComparisonSlug(slug);
     if (cleaned && cleaned !== slug && cleaned.includes("-vs-")) {
-      return { redirect: { destination: `/compare/${cleaned}`, permanent: true } };
+      // DAN-2518: explicit 301, not `permanent: true` (which Next serves as 308).
+      // Matches the edge map in compare-redirects.ts so a slug never changes
+      // status code depending on which layer catches it.
+      return { redirect: { destination: `/compare/${cleaned}`, statusCode: 301 } };
     }
     return { notFound: true };
   }
@@ -377,7 +380,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
       if (!edgeRedirectsTarget && isRenderableComparison(canonical)) {
         return {
-          redirect: { destination: `/compare/${sortedSlug}`, permanent: true },
+          // DAN-2518: 301, consistent with the edge map (see note above).
+          redirect: { destination: `/compare/${sortedSlug}`, statusCode: 301 },
         };
       }
     }

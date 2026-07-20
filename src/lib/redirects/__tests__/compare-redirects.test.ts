@@ -6,14 +6,16 @@ import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "../compare-rivalry-redirects.dan
 import { DEAD_REDIRECT_SOURCES_DAN2045 } from "../compare-dead-redirects.dan2045.generated";
 
 describe("COMPARE_REDIRECTS", () => {
-  it("308s the DAN-1281 shared-model-number legacy stub straight to the sitemap canonical", () => {
+  it("301s the DAN-1281 shared-model-number legacy stub straight to the sitemap canonical", () => {
     const hit = COMPARE_REDIRECTS.find(
       (r) => r.source === "/compare/iphone-15-vs-16",
     );
     expect(hit, "missing redirect for /compare/iphone-15-vs-16").toBeDefined();
     // One hop to the REAL canonical — never to the mangled `16-vs-iphone-15`.
     expect(hit?.destination).toBe("/compare/iphone-15-vs-iphone-16");
-    expect(hit?.permanent).toBe(true);
+    // DAN-2518: the compare layer emits an explicit 301 (was `permanent: true`,
+    // which Next serves as 308).
+    expect(hit?.statusCode).toBe(301);
   });
 
   describe("DAN-1908 PS5 Pro vs Xbox Series X cluster", () => {

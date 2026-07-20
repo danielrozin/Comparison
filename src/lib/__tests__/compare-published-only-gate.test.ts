@@ -129,7 +129,8 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
     )
 
     expect(await run('notion-vs-clickup')).toMatchObject({
-      redirect: { destination: '/compare/clickup-vs-notion', permanent: true },
+      // DAN-2518: explicit 301 rather than `permanent: true` (Next's 308).
+      redirect: { destination: '/compare/clickup-vs-notion', statusCode: 301 },
     })
   })
 
