@@ -735,6 +735,21 @@ def send(targets, persist):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+
+    # An unrecognised FLAG was the mirror image of the unrecognised --drop ADDRESS fixed
+    # below, and the more dangerous half: `--sned` contains no "--send", so it fell through
+    # to the preflight branch, printed "=== PREFLIGHT PASS ===" and exited 0. A cron or
+    # routine firing with a typo would report success having sent nothing at all — the one
+    # outcome that must never be silent, because Email-3 is the final touch and nobody
+    # re-checks a green run. Whitelist the flags we accept and refuse anything else.
+    KNOWN_FLAGS = {"--send", "--reply-check", "--drop"}
+    bad_flags = sorted({a for a in args if a.startswith("-") and a not in KNOWN_FLAGS})
+    if bad_flags:
+        print(f"ABORT: unrecognised flag(s): {', '.join(bad_flags)}")
+        print(f"  Known flags: {', '.join(sorted(KNOWN_FLAGS))}")
+        print("  Nothing was sent and no preflight ran. Fix the flag and re-run.")
+        sys.exit(6)
+
     if "--reply-check" in args:
         _, verified = reply_check(TARGETS)
         sys.exit(0 if verified else 4)

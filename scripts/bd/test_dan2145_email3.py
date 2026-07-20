@@ -166,6 +166,39 @@ def check_unknown_drop_aborts(m):
           f"flag order --drop/--send still parses.")
 
 
+def check_unknown_flag_aborts(m):
+    """A typo'd FLAG must not be able to masquerade as a completed send.
+
+    `--sned` contains no "--send", so it used to fall through to the preflight branch,
+    print "=== PREFLIGHT PASS ===" and exit 0 — the same output and the same exit code
+    as a clean dry run, from an invocation that intended to send and sent nothing. This
+    is the more dangerous twin of the unknown --drop above: Email-3 is the final touch,
+    so a green run that mailed nobody is never revisited.
+    """
+    import subprocess
+
+    env = dict(os.environ, RESEND_API_KEY="dummy-not-a-real-key",
+               RESEND_FROM_EMAIL=m.LOCKED_FROM, RESEND_REPLY_TO=m.LOCKED_REPLY_TO)
+
+    for typo in ("--sned", "--send-all", "-send"):
+        r = subprocess.run([sys.executable, SCRIPT, typo],
+                           capture_output=True, text=True, env=env, timeout=60)
+        assert r.returncode == 6, f"{typo} did not abort (exit {r.returncode})"
+        assert "unrecognised flag" in r.stdout, f"abort reason not surfaced:\n{r.stdout}"
+        assert "PREFLIGHT PASS" not in r.stdout, f"{typo} still printed a reassuring pass"
+        assert "SENDING" not in r.stdout, f"{typo} reached the send stage"
+
+    # The bare dry run is the invocation we re-run every heartbeat — it must keep its
+    # exit 0, or the guard has traded one false signal for another.
+    r2 = subprocess.run([sys.executable, SCRIPT], capture_output=True, text=True,
+                        env=env, timeout=120)
+    assert r2.returncode == 0, f"bare preflight wrongly aborted:\n{r2.stdout}"
+    assert "PREFLIGHT PASS" in r2.stdout, f"bare preflight lost its pass line:\n{r2.stdout}"
+
+    print("PASS — typo'd flags abort (exit 6) without printing a pass line; "
+          "bare preflight still exits 0.")
+
+
 def check_lbs_unblock_guards(m):
     """unblock_lbs must issue NO write unless the send landed AND the msg-ids posted.
 
@@ -292,6 +325,7 @@ def main():
     m = load()
     check_reply_fail_open(m)
     check_unknown_drop_aborts(m)
+    check_unknown_flag_aborts(m)
     check_lbs_unblock_guards(m)
     check_archive_reporting(m)
     captured = []
