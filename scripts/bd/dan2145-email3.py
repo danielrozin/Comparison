@@ -734,6 +734,24 @@ if __name__ == "__main__":
         else:
             print(f"SEND VARS: all three set, DAN-1991 identity lock PASSES (from={FROM}).")
 
+        # Key provenance. The inline check above mirrors assert_identity()'s FROM/REPLY
+        # rules but NOT assert_key_from_canonical_source(), which assert_identity() calls
+        # and which is a hard SystemExit. That guard is only ever reached on the --send
+        # path, so preflight could print "identity lock PASSES" while --send aborted
+        # instantly on provenance — the precise failure preflight exists to predict, and
+        # the newest of the send-time aborts (DAN-2564, landed 2026-07-20). Non-fatal
+        # here for the same reason the cred check is: a preflight from a shell without
+        # the BD env is still a legitimate URL/H1 check.
+        if not KEY:
+            pass  # already reported as missing above
+        elif _KEY_SRC.startswith(INSTANCE_ENV):
+            print(f"KEY PROVENANCE: OK — {_KEY_SRC}.")
+        else:
+            print(f"KEY PROVENANCE: ⚠️ RESEND_API_KEY came from {_KEY_SRC}, not "
+                  f"{INSTANCE_ENV} — --send would ABORT before sending anything.")
+            print("  An ambient key is whatever the spawning supervisor started with and "
+                  "goes stale silently on rotation (DAN-2564).")
+
         # Post-send credential readiness. RESEND_* only gates step 3; PAPERCLIP_API_*
         # gates steps 4 and 5 — and step 5 is the irreversible one. `0 9 21 7 *` is a
         # YEARLY cron, so if auto-archive silently no-ops the routine re-arms and
