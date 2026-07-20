@@ -68,6 +68,44 @@ def _load_env_fallback(paths=ENV_FILE_CANDIDATES,
 
 _ENV_SRC = _load_env_fallback()
 
+# The instance .env is the CANONICAL outreach identity store (DAN-1991 lock), and for
+# RESEND_API_KEY it OVERRIDES the ambient environment. That inverts the "existing env
+# always wins" rule above, deliberately, because the ambient value is the one that goes
+# stale: a long-lived supervisor injects whatever key it was started with, so every
+# process it spawns inherits a pre-rotation key even after the file on disk is fixed.
+#
+# Measured 2026-07-20 (DAN-2564). Ambient env carried the pre-rotation re_Fd1z17fC while
+# FROM was the correct hello@aversusb-mail.com. That combination is the dangerous one:
+#   ambient key + locked FROM -> HTTP 403 "not authorized to send from aversusb-mail.com"
+#   disk key    + locked FROM -> passes auth (422 only on a deliberately bad recipient)
+# assert_identity() checks FROM and REPLY_TO but never the key, so the stale key sails
+# through the lock and dies at send time. Not a loud abort — a 403 mid-send, on a
+# one-shot yearly routine, with nobody watching. Sourcing the key from disk removes the
+# dependency on who spawned us and on when they were started.
+INSTANCE_ENV = os.path.expanduser("~/.paperclip/instances/default/.env")
+_KEY_SRC = "ambient env"
+try:
+    with open(INSTANCE_ENV) as fh:
+        for line in fh:
+            line = line.strip()
+            # Comments matter here: this file documents the retired key by value in its
+            # header. DAN-2564 was filed because a grep matched those comment lines and
+            # read them as live config. Parse assignments only.
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, _, v = line.partition("=")
+            if k.strip() == "RESEND_API_KEY":
+                v = v.strip().strip('"').strip("'")
+                if v and v != os.environ.get("RESEND_API_KEY"):
+                    os.environ["RESEND_API_KEY"] = v
+                    _KEY_SRC = f"{INSTANCE_ENV} (overrode a differing ambient value)"
+                elif v:
+                    _KEY_SRC = f"{INSTANCE_ENV} (matched ambient)"
+except FileNotFoundError:
+    print(f"WARN: {INSTANCE_ENV} not found — falling back to ambient RESEND_API_KEY.")
+except Exception as e:
+    print(f"WARN: could not read {INSTANCE_ENV} ({type(e).__name__}: {e})")
+
 # Read lazily, not at import — --preflight must work with no credentials in the env.
 KEY = os.environ.get("RESEND_API_KEY")
 FROM = os.environ.get("RESEND_FROM_EMAIL")
@@ -574,6 +612,63 @@ def assert_identity():
                          + "\n  - ".join(problems)
                          + "\nFix the environment; do NOT edit the lock to match.")
     print(f"IDENTITY OK: from={FROM} reply_to={REPLY} (DAN-1991 lock)")
+    print(f"KEY SOURCE: {_KEY_SRC}")
+    assert_key_from_canonical_source()
+
+
+def assert_key_from_canonical_source():
+    """Refuse to send under an API key we did not read from the canonical identity file.
+
+    There is deliberately NO live authorization probe here. The obvious one — POST with
+    a malformed recipient and read 403-vs-422 — does not work: Resend validates
+    recipient *format* before domain authorization, so a key that genuinely 403s on a
+    real recipient still returns 422 on a malformed one. Measured both ways on
+    2026-07-20 with the pre-rotation key. A probe that returns "OK" for a key that
+    cannot send is worse than no probe, so it is not shipped.
+
+    Authorization cannot be tested without actually sending, so the pre-send guard
+    instead asserts *provenance*: the key must have come from INSTANCE_ENV, which is
+    the file the DAN-1991 lock is maintained in. That is the exact DAN-2564 regression
+    — an ambient, pre-rotation key inherited from a long-lived supervisor while the
+    file on disk was already correct. Genuine send-time authorization failures are
+    caught after the fact by report_send_failures().
+    """
+    if not _KEY_SRC.startswith(INSTANCE_ENV):
+        raise SystemExit(
+            f"ABORT: RESEND_API_KEY came from {_KEY_SRC}, not the canonical "
+            f"{INSTANCE_ENV}.\n"
+            "  That file is where the DAN-1991 outreach identity is maintained; an\n"
+            "  ambient key is whatever the spawning supervisor happened to start with\n"
+            "  and goes stale silently on rotation (DAN-2564).\n"
+            f"  Set RESEND_API_KEY in {INSTANCE_ENV}; do NOT change LOCKED_FROM.")
+    print(f"KEY PROVENANCE OK: {_KEY_SRC}")
+
+
+def report_send_failures(results):
+    """Escalate a wholly-failed send to the board instead of leaving it in a log.
+
+    The per-recipient except-block records status ERROR and prints FAIL, which is fine
+    for a hand-run and invisible for a one-shot routine firing at 09:00Z with nobody
+    watching. An auth-scoped key fails EVERY recipient identically, so the run "ends"
+    having sent nothing and having consumed its scheduled slot.
+    """
+    failed = [r for r in results if r.get("status") == "ERROR"]
+    if not failed:
+        return
+    auth = [r for r in failed if "403" in str(r.get("error", ""))
+            or "not authorized" in str(r.get("error", "")).lower()]
+    if len(failed) == len(results):
+        reason = ("every recipient failed authorization" if auth
+                  else "every recipient failed")
+        alert_abort(reason,
+                    f"{len(failed)}/{len(results)} sends failed.\n"
+                    f"Key source: {_KEY_SRC}\nFrom: {FROM}\n\n"
+                    + "\n".join(f"- {r['to']}: {r.get('error')}" for r in failed[:10])
+                    + ("\n\nAll failures are Resend authorization errors — the API key "
+                       f"is not authorized to send as {LOCKED_FROM}. This is DAN-2564; "
+                       f"fix RESEND_API_KEY in {INSTANCE_ENV}." if auth else ""))
+    else:
+        print(f"WARN: {len(failed)}/{len(results)} recipients failed (partial send).")
 
 
 def send(targets, persist):
@@ -609,6 +704,7 @@ def send(targets, persist):
         persist(results)
         if i < len(targets) - 1:
             time.sleep(45)
+    report_send_failures(results)
     return results
 
 

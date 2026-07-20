@@ -102,6 +102,42 @@ trusted, because a stale FROM still returns HTTP 200 and delivers — the failur
 the env or the domain permission. Never route around the helper, and never read a key from
 another agent's `.resend-credentials`.**
 
+### The env file is right; the *ambient* key is what goes stale (2026-07-20, DAN-2564)
+
+Two traps, both hit on the same day. Read this before filing "the .env was reverted".
+
+**1. The file documents the retired key by value, in comments.** `~/.paperclip/instances/
+default/.env` carries a header block naming `re_Fd1z17fC…` and `hello@aversusb.net` to
+explain why they are banned. A `grep` for either string matches those comment lines and
+looks exactly like a reverted config. DAN-2564 was filed on that misread; the file was
+correct the whole time (`mtime` 10:52Z, and only lines 12–14 are assignments). **Parse
+assignments, not the file text** — and check `mtime` against the write you suspect.
+
+**2. The real bug: precedence.** The ambient environment is set once, when the supervisor
+starts, and every process it spawns inherits it. After a key rotation the file on disk is
+fixed but long-lived processes keep injecting the **pre-rotation** key. Measured 2026-07-20:
+ambient `RESEND_API_KEY=re_Fd1z17fC…` alongside the *correct* `FROM=hello@aversusb-mail.com`.
+
+That pairing is the dangerous one, because `assert_identity()` checks FROM and REPLY_TO but
+**never the key**:
+
+| Combination | Result |
+|---|---|
+| ambient (pre-rotation) key + locked FROM | **HTTP 403** — passes the lock, dies at send |
+| disk key + locked FROM | authorized ✅ |
+
+So the identity lock reports OK and then every recipient 403s — not a loud abort, a silent
+zero-send on a one-shot routine. `dan2145-email3.py` now reads `RESEND_API_KEY` from the
+instance `.env` and lets it **override** ambient (the one var that inverts the usual
+"existing env wins" rule), asserts the key's provenance before sending, and escalates an
+all-failed send to the board via `alert_abort`.
+
+**Do not add a "probe the key with a malformed recipient" check.** Resend validates
+recipient *format* before domain authorization, so a key that genuinely 403s on a real
+address still returns 422 on a malformed one. That probe reports OK for a key that cannot
+send. Authorization cannot be verified without actually sending; provenance + post-send
+escalation is the honest substitute.
+
 ## Historical (2026-07-11) — superseded by the block above
 
 - `RESEND_API_KEY` is injected via `/Users/danielrozin/.paperclip/instances/default/.env`
