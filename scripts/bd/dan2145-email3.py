@@ -484,6 +484,24 @@ if __name__ == "__main__":
             print(f"  RESEND_REPLY_TO={REPLY!r} (want {LOCKED_REPLY_TO!r})")
         else:
             print(f"SEND VARS: all three set, DAN-1991 identity lock PASSES (from={FROM}).")
+
+        # Post-send credential readiness. RESEND_* only gates step 3; PAPERCLIP_API_*
+        # gates steps 4 and 5 — and step 5 is the irreversible one. `0 9 21 7 *` is a
+        # YEARLY cron, so if auto-archive silently no-ops the routine re-arms and
+        # re-sends Email-3 to all three editors on 2027-07-21 with nobody watching.
+        # Both post-send paths degrade to a WARN on stdout, which the headless 09:00Z
+        # run prints into a log no human reads. Surfacing it here — the check we
+        # actually re-run before the fire — is the only place it gets seen in time.
+        print()
+        if os.environ.get("PAPERCLIP_API_URL") and os.environ.get("PAPERCLIP_API_KEY"):
+            print("POST-SEND VARS: PAPERCLIP_API_URL/KEY set — step-4 msg-id logging and "
+                  f"step-5 auto-archive of routine {ROUTINE_ID} can run.")
+        else:
+            print("POST-SEND VARS: ⚠️ PAPERCLIP_API_URL/KEY unset — the send still works, "
+                  "but msg-ids will NOT be logged and the routine will NOT be archived.")
+            print(f"  Then archive {ROUTINE_ID} BY HAND, same day: "
+                  "PATCH /api/routines/{id} {\"status\":\"archived\"} and re-read it back. "
+                  "Left armed, the yearly cron re-sends on 2027-07-21.")
         sys.exit(0 if ok else 1)
 
     missing = [n for n, v in (("RESEND_API_KEY", KEY), ("RESEND_FROM_EMAIL", FROM),
