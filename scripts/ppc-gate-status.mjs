@@ -37,7 +37,10 @@ async function gscJwt() {
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
   if (!raw) return null;
   let sa;
-  try { sa = JSON.parse(raw); } catch { return null; }
+  try {
+    // dotenv may embed literal \n chars inside the private_key value; JSON requires \\n
+    sa = JSON.parse(raw.replace(/\n/g, "\\n"));
+  } catch { return null; }
   const now = Math.floor(Date.now() / 1000);
   const b64 = (o) => Buffer.from(JSON.stringify(o)).toString("base64url");
   const hdr = b64({ alg: "RS256", typ: "JWT" });
