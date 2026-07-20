@@ -13,6 +13,61 @@ DAN-2145 done, hand 7-14d live-link verification to LBS.
 """
 import os, sys, json, time, urllib.request, urllib.error
 
+# Repo .env.local, as a FALLBACK for vars the ambient environment does not supply.
+# This is not belt-and-braces. Of the three send vars, only RESEND_API_KEY and
+# RESEND_FROM_EMAIL are persisted anywhere; RESEND_REPLY_TO exists solely because the
+# harness injects it at runtime. It is in no shell profile and no dotenv file, so a
+# fire-time run under any launcher that does not inject it hits the step-3 abort
+# ("ABORT: unset env var(s): RESEND_REPLY_TO") and the send never happens — on a
+# one-shot routine, with nobody watching. Sourcing the file removes the dependency on
+# who spawns us. Existing env always wins, so this can never override a live value.
+# Anchored absolutely, not relative to __file__: this script exists as TWO copies (the
+# repo backup at scripts/bd/ and the BD-workspace copy that actually fires), and only
+# the repo copy sits two levels under .env.local. A __file__-relative path would
+# silently resolve to nothing for the copy that matters.
+ENV_FILE_CANDIDATES = (
+    os.path.expanduser(
+        "~/.paperclip/instances/default/projects/"
+        "3bac00ef-9dd8-442f-8e07-9176d1e1c247/"
+        "8af50701-a454-4b0c-98ee-b2bb66b2dfa2/Comparison/.env.local"),
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".env.local"),
+)
+
+
+# STRICT ALLOWLIST — do not widen. .env.local is the *web app's* config, not BD's.
+# Its RESEND_FROM_EMAIL is `A Versus B <noreply@aversusb.net>` (plus a literal \n),
+# which is plausibly right for the app's transactional mail and catastrophic for
+# outreach: aversusb.net is a domain the DAN-1991 identity lock explicitly refuses,
+# and a stale FROM still returns HTTP 200 and delivers, so the failure is silent. That
+# exact mistake already sent prospect mail from a retired address once. Falling back
+# for FROM or the API key would trade a loud abort for a silent identity break, so
+# only REPLY_TO — the one var no file or profile persists — is sourced here.
+ENV_FALLBACK_ALLOWLIST = ("RESEND_REPLY_TO",)
+
+
+def _load_env_fallback(paths=ENV_FILE_CANDIDATES,
+                       allow=ENV_FALLBACK_ALLOWLIST):
+    for path in paths:
+        try:
+            with open(path) as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    k, _, v = line.partition("=")
+                    k, v = k.strip(), v.strip().strip('"').strip("'")
+                    if k in allow and v:
+                        os.environ.setdefault(k, v)
+            return path
+        except FileNotFoundError:
+            continue
+        except Exception as e:
+            print(f"WARN: could not read {path} ({type(e).__name__}: {e})")
+    return None
+
+
+_ENV_SRC = _load_env_fallback()
+
 # Read lazily, not at import — --preflight must work with no credentials in the env.
 KEY = os.environ.get("RESEND_API_KEY")
 FROM = os.environ.get("RESEND_FROM_EMAIL")
@@ -239,7 +294,34 @@ def preflight():
     return ok
 
 
+# DAN-1991 identity lock. Asserted, not assumed: Resend returns HTTP 200 and delivers
+# happily from a stale FROM, so a wrong sender is invisible at send time and only shows
+# up on the recipient's screen. This already happened once — prospect mail went out from
+# the retired dani@revieweriq.com, both delivered, nothing alerted. Env is not trusted.
+LOCKED_FROM = "A Versus B <hello@aversusb-mail.com>"
+LOCKED_REPLY_TO = "daniarozin@gmail.com"
+
+
+def assert_identity():
+    """Refuse to send under a non-canonical sender. Raises; never warns."""
+    problems = []
+    if (FROM or "").strip() != LOCKED_FROM:
+        problems.append(f"RESEND_FROM_EMAIL is {FROM!r}, must be {LOCKED_FROM!r}")
+    if (REPLY or "").strip() != LOCKED_REPLY_TO:
+        problems.append(f"RESEND_REPLY_TO is {REPLY!r}, must be {LOCKED_REPLY_TO!r}")
+    for bad in ("revieweriq.com", "aversusb.net"):
+        if bad in (FROM or ""):
+            problems.append(f"FROM contains banned outreach domain {bad!r} "
+                            "(DAN-1991 lock) — this is the web app's address, not BD's")
+    if problems:
+        raise SystemExit("ABORT: sender identity violates the DAN-1991 lock:\n  - "
+                         + "\n  - ".join(problems)
+                         + "\nFix the environment; do NOT edit the lock to match.")
+    print(f"IDENTITY OK: from={FROM} reply_to={REPLY} (DAN-1991 lock)")
+
+
 def send(targets, persist):
+    assert_identity()
     # `persist` is called after EVERY recipient, before the 45s spacing sleep. The results
     # file is the idempotency guard, so it has to exist the moment the first email is
     # actually in flight — not after the whole loop. Otherwise a kill during the ~90s of
