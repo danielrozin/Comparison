@@ -390,6 +390,17 @@ def preflight():
 # happily from a stale FROM, so a wrong sender is invisible at send time and only shows
 # up on the recipient's screen. This already happened once — prospect mail went out from
 # the retired dani@revieweriq.com, both delivered, nothing alerted. Env is not trusted.
+#
+# DAN-2547's "interim fix" (aversusb.net) was REVERTED 2026-07-20 by live probe, not by
+# argument. Both domains were POSTed to the real Resend API with the key actually in env
+# (re_MmBBZs...zWZT), recipient daniarozin@gmail.com:
+#   from aversusb-mail.com -> HTTP 200, id 9a151ce2-3338-42d2-90e3-5a0d56b8eba8
+#   from aversusb.net      -> HTTP 403 "This API key is not authorized to send emails
+#                             from aversusb.net"
+# DAN-2547 reasoned from the OLD key (re_Fd1z17fC_), which rotated on 2026-07-13. Under
+# the interim value this script aborts on the env mismatch, and would 403 even if env
+# matched — i.e. zero Email-3 sends. aversusb.net is also the WEB APP's address, which
+# the DAN-1991 lock exists to keep out of outreach.
 LOCKED_FROM = "A Versus B <hello@aversusb-mail.com>"
 LOCKED_REPLY_TO = "daniarozin@gmail.com"
 
