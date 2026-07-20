@@ -37,8 +37,96 @@ def load():
     return mod
 
 
+class FakeIMAP:
+    """Stands in for imaplib.IMAP4_SSL. `script` maps a search term to a hit count;
+    the SINCE-only control query is keyed under "__control__"."""
+
+    def __init__(self, script, fail_on_login=False):
+        self.script, self.fail_on_login = script, fail_on_login
+        self.logged_out = False
+
+    def login(self, user, pw):
+        if self.fail_on_login:
+            raise OSError("[AUTHENTICATIONFAILED] Invalid credentials (Failure)")
+
+    def select(self, box, readonly=False):
+        pass
+
+    def search(self, charset, *criteria):
+        key = "__control__" if criteria[0] == "SINCE" else criteria[1]
+        n = self.script.get(key, 0)
+        return "OK", [b" ".join(b"%d" % i for i in range(1, n + 1))]
+
+    def logout(self):
+        self.logged_out = True
+
+
+def check_reply_fail_open(m):
+    """reply_check() auto-selects at fire time the moment GMAIL_APP_PASSWORD lands
+    (DAN-2513). It must FAIL OPEN on every error: a broken reply check means send
+    reply-blind and log it, never block and never crash the run.
+
+    The control-query branch is the one that cannot be exercised against a live inbox
+    (it needs a reachable-but-empty mailbox), and it is the most dangerous to get wrong:
+    a dead connection and a genuinely empty inbox both return zero, so a zero control
+    must degrade to UNVERIFIED rather than being reported as "0 responders".
+    """
+    import types
+
+    def run(script=None, fail_on_login=False, pw="app-password"):
+        box = {}
+        fake = types.ModuleType("imaplib")
+        fake.IMAP4_SSL = lambda host, timeout=None: box.setdefault(
+            "c", FakeIMAP(script or {}, fail_on_login))
+        sys.modules["imaplib"] = fake
+        prev = os.environ.get("GMAIL_APP_PASSWORD")
+        if pw is None:
+            os.environ.pop("GMAIL_APP_PASSWORD", None)
+        else:
+            os.environ["GMAIL_APP_PASSWORD"] = pw
+        try:
+            return m.reply_check(m.TARGETS), box.get("c")
+        finally:
+            sys.modules.pop("imaplib", None)
+            if prev is None:
+                os.environ.pop("GMAIL_APP_PASSWORD", None)
+            else:
+                os.environ["GMAIL_APP_PASSWORD"] = prev
+
+    a, b, c = m.TARGETS[0]["to"], m.TARGETS[1]["to"], m.TARGETS[2]["to"]
+
+    # 1. Var unset -> ladder path 3, no connection attempted.
+    (resp, ver), conn = run(pw=None)
+    assert (resp, ver) == (set(), False), f"unset must be blind, got {resp} {ver}"
+    assert conn is None, "must not dial IMAP without a password"
+
+    # 2. Bad/expired app password -> fail open, not an exception. Verified live against
+    #    imap.gmail.com on 2026-07-20: real AUTHENTICATIONFAILED lands here.
+    (resp, ver), _ = run(fail_on_login=True)
+    assert (resp, ver) == (set(), False), f"auth failure must be blind, got {resp} {ver}"
+
+    # 3. Connected but control query is ZERO -> indistinguishable from a dead pipe.
+    #    Must be UNVERIFIED even though the per-recipient searches also returned clean.
+    (resp, ver), _ = run({"__control__": 0})
+    assert (resp, ver) == (set(), False), f"zero control must be blind, got {resp} {ver}"
+
+    # 4. Live inbox, nobody replied -> VERIFIED, full recipient list retained.
+    (resp, ver), conn = run({"__control__": 201})
+    assert (resp, ver) == (set(), True), f"clean live sweep must verify, got {resp} {ver}"
+    assert conn.logged_out, "IMAP connection leaked on the success path"
+
+    # 5. Live inbox with a responder -> that address drops, and ONLY that one.
+    (resp, ver), _ = run({"__control__": 201, b: 2})
+    assert ver is True and resp == {b.lower()}, f"responder not isolated: {resp} {ver}"
+    assert a.lower() not in resp and c.lower() not in resp, "dropped a non-responder"
+
+    print("PASS — reply_check fails open on unset/auth-failure/zero-control, "
+          "verifies only against a non-zero control, drops only real responders.")
+
+
 def main():
     m = load()
+    check_reply_fail_open(m)
     captured = []
 
     class FakeResp:
