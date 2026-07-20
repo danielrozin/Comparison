@@ -219,6 +219,19 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
                  "⚠️ **STILL ARMED** — archive by hand or it re-sends 2027-07-21."),
               "", "Email-3 is the FINAL touch. No Email-4. Remaining work: 7–14d live-link "
               "verification (LBS)."]
+    if failed:
+        # The routine fires headless with nobody watching stdout, so the "do not close
+        # this out" instruction has to live in the comment or it reaches no one. Without
+        # it the board sees an archived routine and a msg-id table and reads the
+        # sequence as finished, while a real recipient never got Email-3.
+        lines += ["", f"### ⚠️ {len(failed)} send(s) FAILED — not delivered",
+                  "", "**Do NOT mark DAN-2145 done and do NOT report Email-3 as fully "
+                  "sent.** These addresses received nothing: "
+                  + ", ".join(f"`{r.get('to')}`" for r in failed) + ".",
+                  "", "The routine is already archived (correct — it must never re-fire "
+                  "wholesale), so the only path for these is a deliberate manual re-run: "
+                  "move the results file aside and re-run with `--send --drop` listing "
+                  "every address that already received it *and* every responder."]
     if "UNVERIFIED" in reply_note:
         lines += ["", "⚠️ Gmail was dark at send time (ladder path 3). These sends must "
                   "NEVER be counted toward a \"0 replies\" claim — 0 replies is a floor, "
@@ -477,7 +490,15 @@ if __name__ == "__main__":
         done = [s["to"] for s in prior.get("sends", []) if s.get("status") != "ERROR"]
         failed = [s["to"] for s in prior.get("sends", []) if s.get("status") == "ERROR"]
         print(f"ABORT: {RESULTS_FILE} exists — Email-3 already fired. Never re-send blind.")
-        remaining = [t["to"] for t in TARGETS if t["to"] not in done]
+        # Responders dropped by the prior run are NOT "still owed" — they are the one
+        # group the guardrail forbids emailing. Without this, a run that dropped a
+        # responder AND had a send failure listed that responder under "Still owed" and
+        # emitted a retry command that would deliver Email-3 straight to them.
+        prior_dropped = {a.lower() for a in prior.get("dropped", [])}
+        remaining = [t["to"] for t in TARGETS
+                     if t["to"] not in done and t["to"].lower() not in prior_dropped]
+        if prior_dropped:
+            print(f"  Dropped as RESPONDERS — never email: {', '.join(sorted(prior_dropped))}")
         if prior.get("complete") and not failed:
             print(f"  Run COMPLETED: {len(done)}/{prior.get('expected')} recipients.")
         else:
@@ -490,7 +511,7 @@ if __name__ == "__main__":
             print(f"  Already sent (do NOT repeat): {', '.join(done) or 'none'}")
             print(f"  Still owed: {', '.join(remaining) or 'none'}")
             print("  To finish, move the results file aside and re-run with:")
-            print(f"    --send --drop {' '.join(done)}")
+            print(f"    --send --drop {' '.join(done + sorted(prior_dropped))}")
         print(json.dumps(prior, indent=2))
         sys.exit(2)
 
@@ -515,10 +536,15 @@ if __name__ == "__main__":
 
     # Persist the reply-blind flag next to the msg-ids so the provenance survives the run
     # and can never be silently rounded up to a '0 replies' measurement later.
+    # `dropped` is persisted, not just printed: it is the only record that these
+    # addresses were withheld deliberately (responders) rather than left unsent. A later
+    # guard run that cannot see it treats them as still-owed and hands out a retry
+    # command that emails the very people we must not email.
     def persist(results, complete=False):
         json.dump({"reply_status": reply_note, "reply_verified": reply_verified,
                    "complete": complete, "expected": len(targets),
-                   "sends": results}, open(RESULTS_FILE, "w"), indent=2)
+                   "dropped": sorted(drop), "sends": results},
+                  open(RESULTS_FILE, "w"), indent=2)
 
     results = send(targets, persist)
     # "complete" means the loop ran to the end, NOT that every send succeeded — those are
@@ -526,7 +552,8 @@ if __name__ == "__main__":
     failed_sends = [r["to"] for r in results if r.get("status") == "ERROR"]
     payload = {"reply_status": reply_note, "reply_verified": reply_verified,
                "complete": True, "all_delivered": not failed_sends,
-               "failed": failed_sends, "expected": len(targets), "sends": results}
+               "failed": failed_sends, "expected": len(targets),
+               "dropped": sorted(drop), "sends": results}
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
     print(f"\n--- written to {RESULTS_FILE} ---")
     # Runbook step 5, automated. Deliberately AFTER the results file is written: that file
@@ -552,5 +579,8 @@ if __name__ == "__main__":
         print(f"\n⚠️  {len(failed_sends)} SEND(S) FAILED — NOT delivered: {', '.join(failed_sends)}")
         print("    Do NOT report Email-3 as fully sent and do NOT mark DAN-2145 done yet.")
         print("    To retry ONLY the failures, move the results file aside and re-run with:")
-        print(f"      --send --drop {' '.join(r['to'] for r in results if r.get('status') != 'ERROR')}")
+        # Must carry the responder drops too — they are absent from `results` entirely,
+        # so a retry built only from the sent rows would re-include them.
+        retry_drop = [r["to"] for r in results if r.get("status") != "ERROR"] + sorted(drop)
+        print(f"      --send --drop {' '.join(retry_drop)}")
         sys.exit(5)
