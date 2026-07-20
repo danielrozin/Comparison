@@ -471,14 +471,22 @@ if __name__ == "__main__":
     # Idempotency guard (runbook step 4 / guardrail): never double-send.
     if os.path.exists(RESULTS_FILE):
         prior = json.load(open(RESULTS_FILE))
-        done = [s["to"] for s in prior.get("sends", [])]
+        # Only a non-ERROR status means the email actually left. Counting ERROR rows as
+        # "done" would silently retire a recipient who never received anything — a
+        # transient Resend 429 on one address used to read back as "COMPLETED 3/3".
+        done = [s["to"] for s in prior.get("sends", []) if s.get("status") != "ERROR"]
+        failed = [s["to"] for s in prior.get("sends", []) if s.get("status") == "ERROR"]
         print(f"ABORT: {RESULTS_FILE} exists — Email-3 already fired. Never re-send blind.")
-        if prior.get("complete"):
+        remaining = [t["to"] for t in TARGETS if t["to"] not in done]
+        if prior.get("complete") and not failed:
             print(f"  Run COMPLETED: {len(done)}/{prior.get('expected')} recipients.")
         else:
-            # Partial file = the previous run died mid-loop. These addresses ARE sent.
-            remaining = [t["to"] for t in TARGETS if t["to"] not in done]
-            print(f"  Run was PARTIAL: {len(done)}/{prior.get('expected')} sent before it died.")
+            # Either the run died mid-loop, or it finished with per-recipient failures.
+            # Both cases leave real addresses unsent. These addresses ARE sent.
+            why = "finished with FAILURES" if prior.get("complete") else "died mid-loop (PARTIAL)"
+            print(f"  Run {why}: {len(done)}/{prior.get('expected')} actually sent.")
+            if failed:
+                print(f"  Send FAILED for (never delivered): {', '.join(failed)}")
             print(f"  Already sent (do NOT repeat): {', '.join(done) or 'none'}")
             print(f"  Still owed: {', '.join(remaining) or 'none'}")
             print("  To finish, move the results file aside and re-run with:")
@@ -513,8 +521,12 @@ if __name__ == "__main__":
                    "sends": results}, open(RESULTS_FILE, "w"), indent=2)
 
     results = send(targets, persist)
+    # "complete" means the loop ran to the end, NOT that every send succeeded — those are
+    # different facts and conflating them is how a failed recipient reads back as sent.
+    failed_sends = [r["to"] for r in results if r.get("status") == "ERROR"]
     payload = {"reply_status": reply_note, "reply_verified": reply_verified,
-               "complete": True, "expected": len(targets), "sends": results}
+               "complete": True, "all_delivered": not failed_sends,
+               "failed": failed_sends, "expected": len(targets), "sends": results}
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
     print(f"\n--- written to {RESULTS_FILE} ---")
     # Runbook step 5, automated. Deliberately AFTER the results file is written: that file
@@ -533,3 +545,12 @@ if __name__ == "__main__":
               "(0 replies is a floor, not a measurement — report raw counts, never rates).")
     print("      Then CONFIRM routine 2caeede7 is archived (yearly cron — re-arms for 2027 if left"
           "active) and mark DAN-2145 done; hand 7-14d link verification to LBS.")
+    if failed_sends:
+        # Do NOT let a partial failure close out as a clean sequence. The routine is
+        # already archived by this point (correct — it must never re-fire wholesale),
+        # so the only path for these addresses is a deliberate manual re-run.
+        print(f"\n⚠️  {len(failed_sends)} SEND(S) FAILED — NOT delivered: {', '.join(failed_sends)}")
+        print("    Do NOT report Email-3 as fully sent and do NOT mark DAN-2145 done yet.")
+        print("    To retry ONLY the failures, move the results file aside and re-run with:")
+        print(f"      --send --drop {' '.join(r['to'] for r in results if r.get('status') != 'ERROR')}")
+        sys.exit(5)
