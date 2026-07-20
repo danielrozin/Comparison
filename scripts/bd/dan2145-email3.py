@@ -186,7 +186,7 @@ LOG_ISSUES = [("DAN-2145", "ea3872fb-0f64-438e-a23d-7f82889a4add"),
               ("DAN-1737", "4e85951b-769b-4c63-bd12-b334b10610ef")]
 
 
-def log_msgids(results, reply_note, archived):
+def log_msgids(results, reply_note, archived, preview=False, only=None):
     """Runbook step 4, automated: post the returned msg-ids to DAN-2145 + DAN-1737.
 
     This was the last step still depending on a human/agent being alive after the send.
@@ -224,11 +224,17 @@ def log_msgids(results, reply_note, archived):
                   "NEVER be counted toward a \"0 replies\" claim — 0 replies is a floor, "
                   "not a measurement. Report raw counts, never rates."]
     body = "\n".join(lines)
+    if preview:
+        # --preview-log: exercise the step-4 POST ahead of the fire with an unmistakably
+        # non-real body, so a broken endpoint/auth/markdown round-trip surfaces now rather
+        # than after three irreversible sends. Never let this be mistaken for a send log.
+        body = ("> 🧪 **DRY RUN — NOTHING WAS SENT.** Step-4 logging-path rehearsal only. "
+                "The msg-ids below are placeholders.\n\n" + body)
 
     hdrs = {"Authorization": f"Bearer {key}", "Content-Type": "application/json",
             "User-Agent": UA}
     ok = True
-    for name, issue_id in LOG_ISSUES:
+    for name, issue_id in (only or LOG_ISSUES):
         try:
             req = urllib.request.Request(
                 f"{api}/api/issues/{issue_id}/comments", method="POST",
