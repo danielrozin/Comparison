@@ -124,9 +124,51 @@ def check_reply_fail_open(m):
           "verifies only against a non-zero control, drops only real responders.")
 
 
+def check_unknown_drop_aborts(m):
+    """A hand-typed --drop is the last thing protecting a responder from an email we
+    promised not to send. An address matching no recipient must ABORT, not be accepted
+    in silence — the old code printed "DROPPED (responder): <typo>" and then emailed
+    that very person, which is worse than no drop at all because it reads as success.
+
+    Runs the real script in a subprocess (the parsing lives in __main__). Creds are set
+    to the locked identity with a dummy key so we reach the drop check rather than
+    exiting 3 first; the abort happens before reply_check/preflight/send, so no network
+    call and no email are possible on either path below.
+    """
+    import subprocess
+
+    env = dict(os.environ, RESEND_API_KEY="dummy-not-a-real-key",
+               RESEND_FROM_EMAIL=m.LOCKED_FROM, RESEND_REPLY_TO=m.LOCKED_REPLY_TO)
+    real = m.TARGETS[0]["to"]
+    typo = real.split(".", 1)[1] if "." in real.split("@")[0] else "nobody@example.com"
+
+    r = subprocess.run([sys.executable, SCRIPT, "--send", "--drop", typo],
+                       capture_output=True, text=True, env=env, timeout=60)
+    assert r.returncode == 5, f"typo'd --drop {typo} did not abort (exit {r.returncode})"
+    assert "match no recipient" in r.stdout, f"abort reason not surfaced:\n{r.stdout}"
+    assert "DROPPED (responder)" not in r.stdout, "still printed a reassuring drop line"
+    assert "SENDING" not in r.stdout, "reached the send stage after a bad --drop"
+
+    # The reversed flag order the runbook does not document must still parse, not be
+    # mistaken for an address: --send is a flag, and flagging it as "unknown recipient"
+    # would abort a legitimate invocation. Dropping ALL THREE recipients is what keeps
+    # this case honest — it exits at "nothing to send" before preflight and before the
+    # send loop, so a live email is not reachable from this test even though it carries
+    # a --send flag and a real recipient list.
+    r2 = subprocess.run([sys.executable, SCRIPT, "--drop", *[t["to"] for t in m.TARGETS],
+                         "--send"], capture_output=True, text=True, env=env, timeout=60)
+    assert r2.returncode == 0, f"valid --drop before --send wrongly aborted:\n{r2.stdout}"
+    assert "Nothing to send" in r2.stdout, f"did not reach the all-dropped exit:\n{r2.stdout}"
+    assert "SENDING" not in r2.stdout, "reached the send stage with every recipient dropped"
+
+    print(f"PASS — unknown --drop aborts (exit 5) before any send; "
+          f"flag order --drop/--send still parses.")
+
+
 def main():
     m = load()
     check_reply_fail_open(m)
+    check_unknown_drop_aborts(m)
     captured = []
 
     class FakeResp:

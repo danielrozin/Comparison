@@ -544,7 +544,24 @@ if __name__ == "__main__":
         print(json.dumps(prior, indent=2))
         sys.exit(2)
 
-    drop = {a.lower() for a in args[args.index("--drop") + 1:]} if "--drop" in args else set()
+    # A hand-typed --drop address is the ONLY thing standing between a responder and an
+    # email we promised not to send them. Until now an address that matched no recipient
+    # was accepted in silence and still printed "DROPPED (responder): <addr>" below — so a
+    # typo (kob@ for kob.monney@) read back as a successful drop and then emailed Kob
+    # anyway. Fail loud instead: an unrecognised drop means the operator's intent and the
+    # recipient list disagree, and guessing which one is right is not our call.
+    # Flags are skipped so `--drop <addr> --send` (reversed order) still parses.
+    if "--drop" in args:
+        drop = {a.lower() for a in args[args.index("--drop") + 1:] if not a.startswith("--")}
+    else:
+        drop = set()
+    known = {t["to"].lower() for t in TARGETS}
+    unknown = sorted(drop - known)
+    if unknown:
+        print(f"ABORT: --drop address(es) match no recipient: {', '.join(unknown)}")
+        print(f"  Recipients are: {', '.join(sorted(known))}")
+        print("  Nothing was sent. Fix the address and re-run.")
+        sys.exit(5)
     auto_drop, reply_verified = reply_check(TARGETS)
     drop |= auto_drop
     targets = [t for t in TARGETS if t["to"].lower() not in drop]
