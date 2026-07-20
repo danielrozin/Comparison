@@ -179,6 +179,69 @@ def reply_check(targets):
 ROUTINE_ID = "2caeede7-c403-416a-961c-2295c4653f76"
 TRIGGER_ID = "b4d6bbec-f0ba-436f-b1c4-b0a4e7d594bc"  # the `0 9 21 7 *` schedule trigger
 
+# Runbook step 4 targets. Resolved by UUID, not by DAN-identifier: the issue list route
+# caps at 1000 items and DAN-2145 already falls off the end of it, so an identifier
+# lookup at fire time would silently find nothing.
+LOG_ISSUES = [("DAN-2145", "ea3872fb-0f64-438e-a23d-7f82889a4add"),
+              ("DAN-1737", "4e85951b-769b-4c63-bd12-b334b10610ef")]
+
+
+def log_msgids(results, reply_note, archived):
+    """Runbook step 4, automated: post the returned msg-ids to DAN-2145 + DAN-1737.
+
+    This was the last step still depending on a human/agent being alive after the send.
+    The routine fires headless at 09:00Z with nobody watching; if that run died between
+    step 3 and step 4 the msg-ids survived only in a local JSON file that nothing else
+    reads, and the sequence would look unsent from the board.
+
+    Best-effort by design — a failure here must never look like a failed send, so it
+    only warns and the results file remains the source of truth.
+    """
+    api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
+    if not (api and key):
+        print("WARN: PAPERCLIP_API_URL/KEY unset — msg-ids NOT auto-logged. "
+              f"Post them from {RESULTS_FILE} by hand.")
+        return False
+
+    sent = [r for r in results if r.get("id")]
+    failed = [r for r in results if not r.get("id")]
+    lines = [f"## DAN-2145 Email-3 SENT — {len(sent)}/{len(results)} delivered to Resend",
+             "", f"**Reply status: {reply_note}**", ""]
+    if not results or not sent:
+        lines[0] = "## DAN-2145 Email-3 — NO SENDS SUCCEEDED"
+    lines += ["| Recipient | Page | Resend msg-id |", "|---|---|---|"]
+    for r in results:
+        lines.append(f"| {r.get('to')} | {r.get('url', '—')} | "
+                     f"`{r.get('id') or 'FAILED: ' + str(r.get('error'))}` |")
+    lines += ["", f"Firing routine `{ROUTINE_ID}`: "
+              + ("**archived** — cannot re-fire 2027-07-21."
+                 if archived else
+                 "⚠️ **STILL ARMED** — archive by hand or it re-sends 2027-07-21."),
+              "", "Email-3 is the FINAL touch. No Email-4. Remaining work: 7–14d live-link "
+              "verification (LBS)."]
+    if "UNVERIFIED" in reply_note:
+        lines += ["", "⚠️ Gmail was dark at send time (ladder path 3). These sends must "
+                  "NEVER be counted toward a \"0 replies\" claim — 0 replies is a floor, "
+                  "not a measurement. Report raw counts, never rates."]
+    body = "\n".join(lines)
+
+    hdrs = {"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+            "User-Agent": UA}
+    ok = True
+    for name, issue_id in LOG_ISSUES:
+        try:
+            req = urllib.request.Request(
+                f"{api}/api/issues/{issue_id}/comments", method="POST",
+                data=json.dumps({"body": body}).encode(), headers=hdrs)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                json.load(r)
+            print(f"LOGGED msg-ids on {name}.")
+        except Exception as e:
+            ok = False
+            print(f"WARN: could not log msg-ids on {name} ({e}). "
+                  f"Post them from {RESULTS_FILE} by hand.")
+    return ok
+
 
 def archive_routine():
     """Disarm the firing routine immediately after a successful send.
@@ -426,7 +489,13 @@ if __name__ == "__main__":
     # is the idempotency guard, so it must land first even if archiving fails.
     payload["routine_archived"] = archive_routine()
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
-    print(f"NEXT: log msg-ids on DAN-2145 + DAN-1737, and record 'reply status {reply_note}'.")
+    # Runbook step 4, automated. Last, and best-effort: by this point the send is done,
+    # the results file is on disk and the routine is disarmed, so nothing here can
+    # corrupt the outcome — it only decides whether the board finds out automatically.
+    payload["msgids_logged"] = log_msgids(results, reply_note, payload["routine_archived"])
+    json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
+    print(f"NEXT: verify the msg-id comment landed on DAN-2145 + DAN-1737 "
+          f"(reply status: {reply_note}).")
     if not reply_verified:
         print("      These sends must NEVER be counted toward a '0 replies' claim "
               "(0 replies is a floor, not a measurement — report raw counts, never rates).")
