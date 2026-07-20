@@ -742,7 +742,13 @@ if __name__ == "__main__":
     # routine firing with a typo would report success having sent nothing at all — the one
     # outcome that must never be silent, because Email-3 is the final touch and nobody
     # re-checks a green run. Whitelist the flags we accept and refuse anything else.
-    KNOWN_FLAGS = {"--send", "--reply-check", "--drop"}
+    # --preflight is explicit-form of the bare dry run. It MUST be in this set: line 5 of
+    # this file documents it, the routine body tells the fire-time operator "safe to run
+    # --preflight first", and the URL-failure board comment this script writes itself
+    # (see alert_abort) hands out `--preflight` as the retry command. Leaving
+    # it out made the whitelist reject the one invocation we tell people to run first —
+    # tomorrow that reads as "the send script is broken" minutes before the actual send.
+    KNOWN_FLAGS = {"--send", "--preflight", "--reply-check", "--drop"}
     bad_flags = sorted({a for a in args if a.startswith("-") and a not in KNOWN_FLAGS})
     if bad_flags:
         print(f"ABORT: unrecognised flag(s): {', '.join(bad_flags)}")

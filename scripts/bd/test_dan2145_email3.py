@@ -195,8 +195,28 @@ def check_unknown_flag_aborts(m):
     assert r2.returncode == 0, f"bare preflight wrongly aborted:\n{r2.stdout}"
     assert "PREFLIGHT PASS" in r2.stdout, f"bare preflight lost its pass line:\n{r2.stdout}"
 
+    # ...and so must the EXPLICIT form. The whitelist originally omitted --preflight, so
+    # the one command we tell the fire-time operator to run first (line 5 of the script,
+    # the routine body, and the script's own URL-abort board comment all hand it out)
+    # aborted with "unrecognised flag". Checking only the bare form missed that entirely:
+    # the two invocations mean the same thing to a reader and different things to argv.
+    r3 = subprocess.run([sys.executable, SCRIPT, "--preflight"], capture_output=True,
+                        text=True, env=env, timeout=120)
+    assert r3.returncode == 0, f"--preflight wrongly aborted:\n{r3.stdout}"
+    assert "PREFLIGHT PASS" in r3.stdout, f"--preflight lost its pass line:\n{r3.stdout}"
+    assert "unrecognised flag" not in r3.stdout, "--preflight rejected by the whitelist"
+
+    # Every invocation this repo documents must be accepted. If someone adds a flag to the
+    # docstring without whitelisting it, that is the same defect again under a new name.
+    with open(SCRIPT) as fh:
+        docstring_flags = set(re.findall(r"dan2145-email3\.py ((?:--[a-z-]+))", fh.read()))
+    known = set(re.search(r"KNOWN_FLAGS = \{([^}]*)\}",
+                          open(SCRIPT).read()).group(1).replace('"', "").split(", "))
+    undocumented = docstring_flags - known
+    assert not undocumented, f"documented but not whitelisted: {sorted(undocumented)}"
+
     print("PASS — typo'd flags abort (exit 6) without printing a pass line; "
-          "bare preflight still exits 0.")
+          "bare AND --preflight forms still exit 0; every documented flag is whitelisted.")
 
 
 def check_lbs_unblock_guards(m):
