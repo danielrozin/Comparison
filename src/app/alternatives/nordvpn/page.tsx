@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -574,12 +575,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-proton-vpn"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs Proton VPN
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -622,12 +623,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-mullvad"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs Mullvad
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -669,12 +670,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-expressvpn"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs ExpressVPN
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -715,12 +716,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-surfshark"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs Surfshark
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -761,12 +762,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-ivpn"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs IVPN
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -810,12 +811,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-private-internet-access"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs Private Internet Access
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -856,12 +857,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-windscribe"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs Windscribe
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -903,12 +904,12 @@ export default function NordVPNAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/nordvpn-vs-airvpn"
               className="text-primary-600 font-semibold hover:underline"
             >
               NordVPN vs AirVPN
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -1009,12 +1010,12 @@ export default function NordVPNAlternativesPage() {
                 VPN edges ahead on open-source apps across all platforms, Secure Core
                 multi-hop, and a free tier that means you never have to give up payment
                 details. NordVPN edges ahead on raw server count and bundled features. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/nordvpn-vs-proton-vpn"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   NordVPN vs Proton VPN
-                </Link>
+                </CompareLink>
                 .
               </p>
             </div>
@@ -1073,48 +1074,48 @@ export default function NordVPNAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/nordvpn-vs-expressvpn"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 NordVPN vs ExpressVPN
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-asked 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/nordvpn-vs-proton-vpn"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 NordVPN vs Proton VPN
-              </Link>{" "}
+              </CompareLink>{" "}
               — Swiss privacy-first head-to-head
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/nordvpn-vs-surfshark"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 NordVPN vs Surfshark
-              </Link>{" "}
+              </CompareLink>{" "}
               — same-parent value play
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/nordvpn-vs-mullvad"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 NordVPN vs Mullvad
-              </Link>{" "}
+              </CompareLink>{" "}
               — mainstream vs anonymous flat-rate
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/nordvpn-vs-private-internet-access"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 NordVPN vs Private Internet Access
-              </Link>{" "}
+              </CompareLink>{" "}
               — server fleet and port forwarding
             </li>
             <li>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -561,12 +562,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-microsoft-teams"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Microsoft Teams
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -606,12 +607,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-google-chat"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Google Chat
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -652,12 +653,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-discord"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Discord
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -697,12 +698,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-mattermost"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Mattermost
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -741,12 +742,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-rocketchat"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Rocket.Chat
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -786,12 +787,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-zoom"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Zoom Team Chat
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -833,12 +834,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-element"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Element Matrix
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -879,12 +880,12 @@ export default function SlackAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/slack-vs-zulip"
               className="text-primary-600 font-semibold hover:underline"
             >
               Slack vs Zulip
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -987,12 +988,12 @@ export default function SlackAlternativesPage() {
                 &lsquo;free&rsquo; relative to Slack&rsquo;s $7.25/user/mo Pro tier. Teams
                 also includes built-in HD video meetings where Slack requires bolting on
                 Huddles or Zoom/Meet. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/slack-vs-microsoft-teams"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   Slack vs Microsoft Teams
-                </Link>
+                </CompareLink>
                 .
               </p>
             </div>
@@ -1052,48 +1053,48 @@ export default function SlackAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/slack-vs-microsoft-teams"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Slack vs Microsoft Teams
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-asked 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/slack-vs-discord"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Slack vs Discord
-              </Link>{" "}
+              </CompareLink>{" "}
               — paid B2B vs free community
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/slack-vs-google-chat"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Slack vs Google Chat
-              </Link>{" "}
+              </CompareLink>{" "}
               — ecosystem-bundle play
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/slack-vs-mattermost"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Slack vs Mattermost
-              </Link>{" "}
+              </CompareLink>{" "}
               — SaaS vs self-hosted
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/slack-vs-zoom"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Slack vs Zoom Team Chat
-              </Link>{" "}
+              </CompareLink>{" "}
               — chat-first vs video-first
             </li>
             <li>

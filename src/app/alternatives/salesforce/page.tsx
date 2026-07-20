@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -531,12 +532,12 @@ export default function SalesforceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/salesforce-vs-hubspot"
               className="text-primary-600 font-semibold hover:underline"
             >
               Salesforce vs HubSpot
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -576,12 +577,12 @@ export default function SalesforceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/salesforce-vs-pipedrive"
               className="text-primary-600 font-semibold hover:underline"
             >
               Salesforce vs Pipedrive
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -622,12 +623,12 @@ export default function SalesforceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/salesforce-vs-zoho-crm"
               className="text-primary-600 font-semibold hover:underline"
             >
               Salesforce vs Zoho CRM
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -667,12 +668,12 @@ export default function SalesforceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/salesforce-vs-microsoft-dynamics"
               className="text-primary-600 font-semibold hover:underline"
             >
               Salesforce vs Microsoft Dynamics 365
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -879,9 +880,9 @@ export default function SalesforceAlternativesPage() {
                 The trade-off: HubSpot&rsquo;s advanced tiers (Professional $500/mo, Enterprise
                 $1,500/mo) can approach or exceed Salesforce costs at scale, so evaluate total
                 cost at your projected user count. See{" "}
-                <Link href="/compare/salesforce-vs-hubspot" className="text-primary-600 font-semibold hover:underline">
+                <CompareLink href="/compare/salesforce-vs-hubspot" className="text-primary-600 font-semibold hover:underline">
                   Salesforce vs HubSpot
-                </Link>{" "}
+                </CompareLink>{" "}
                 for a full breakdown.
               </p>
             </div>
@@ -934,27 +935,27 @@ export default function SalesforceAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link href="/compare/salesforce-vs-hubspot" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/salesforce-vs-hubspot" className="text-primary-600 font-semibold hover:underline">
                 Salesforce vs HubSpot
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-asked CRM 2-way
             </li>
             <li>
-              <Link href="/compare/salesforce-vs-pipedrive" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/salesforce-vs-pipedrive" className="text-primary-600 font-semibold hover:underline">
                 Salesforce vs Pipedrive
-              </Link>{" "}
+              </CompareLink>{" "}
               — enterprise depth vs pipeline simplicity
             </li>
             <li>
-              <Link href="/compare/salesforce-vs-zoho-crm" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/salesforce-vs-zoho-crm" className="text-primary-600 font-semibold hover:underline">
                 Salesforce vs Zoho CRM
-              </Link>{" "}
+              </CompareLink>{" "}
               — market leader vs best value
             </li>
             <li>
-              <Link href="/compare/salesforce-vs-microsoft-dynamics" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/salesforce-vs-microsoft-dynamics" className="text-primary-600 font-semibold hover:underline">
                 Salesforce vs Microsoft Dynamics 365
-              </Link>{" "}
+              </CompareLink>{" "}
               — the enterprise CRM battle
             </li>
           </ul>

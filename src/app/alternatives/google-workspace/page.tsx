@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -513,12 +514,12 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/google-workspace-vs-microsoft-365"
               className="text-primary-600 font-semibold hover:underline"
             >
               Google Workspace vs Microsoft 365
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -558,12 +559,12 @@ export default function GoogleWorkspaceAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/google-workspace-vs-zoho"
               className="text-primary-600 font-semibold hover:underline"
             >
               Google Workspace vs Zoho Workplace
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -819,9 +820,9 @@ export default function GoogleWorkspaceAlternativesPage() {
                 on browser-native real-time collaboration, ease of use, and Gmail-first
                 workflows. The 2026 price difference is minor — both are $6/user/mo at
                 entry-level business tiers. See{" "}
-                <Link href="/compare/google-workspace-vs-microsoft-365" className="text-primary-600 font-semibold hover:underline">
+                <CompareLink href="/compare/google-workspace-vs-microsoft-365" className="text-primary-600 font-semibold hover:underline">
                   Google Workspace vs Microsoft 365
-                </Link>{" "}
+                </CompareLink>{" "}
                 for a full feature-by-feature breakdown.
               </p>
             </div>
@@ -873,15 +874,15 @@ export default function GoogleWorkspaceAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link href="/compare/google-workspace-vs-microsoft-365" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/google-workspace-vs-microsoft-365" className="text-primary-600 font-semibold hover:underline">
                 Google Workspace vs Microsoft 365
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-asked productivity suite 2-way
             </li>
             <li>
-              <Link href="/compare/google-workspace-vs-zoho" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/google-workspace-vs-zoho" className="text-primary-600 font-semibold hover:underline">
                 Google Workspace vs Zoho Workplace
-              </Link>{" "}
+              </CompareLink>{" "}
               — market leader vs best-value challenger
             </li>
           </ul>

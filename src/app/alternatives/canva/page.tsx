@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -1100,30 +1101,30 @@ export default function CanvaAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/canva-vs-adobe-express"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Canva vs Adobe Express
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-searched 2-way design tool comparison
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/canva-vs-figma"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Canva vs Figma
-              </Link>{" "}
+              </CompareLink>{" "}
               — template tool vs professional design
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/canva-vs-google-slides"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Canva vs Google Slides
-              </Link>{" "}
+              </CompareLink>{" "}
               — design-forward vs collaboration-first presentations
             </li>
             <li>
@@ -1136,12 +1137,12 @@ export default function CanvaAlternativesPage() {
               — if you need professional design tools
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/adobe-express-vs-visme"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Adobe Express vs Visme
-              </Link>{" "}
+              </CompareLink>{" "}
               — AI design vs interactive presentations
             </li>
           </ul>
