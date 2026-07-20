@@ -438,6 +438,22 @@ if __name__ == "__main__":
         ok = preflight()
         print()
         reply_check(TARGETS)
+        # Credential readiness. Until 2026-07-20 T-25h --preflight never looked at the
+        # send vars, so it could print PREFLIGHT PASS while --send would die instantly on
+        # "ABORT: unset env var(s)". Preflight is the confidence check we actually re-run,
+        # so it has to be predictive of the send. Reported, not fatal: a preflight from a
+        # shell without the BD creds is still a legitimate URL/H1 check.
+        print()
+        cred_missing = [n for n, v in (("RESEND_API_KEY", KEY), ("RESEND_FROM_EMAIL", FROM),
+                                       ("RESEND_REPLY_TO", REPLY)) if not v]
+        if cred_missing:
+            print(f"SEND VARS: MISSING {', '.join(cred_missing)} — --send would ABORT (exit 3).")
+        elif FROM != LOCKED_FROM or REPLY != LOCKED_REPLY_TO:
+            print("SEND VARS: set, but DAN-1991 identity lock FAILS — --send would ABORT.")
+            print(f"  RESEND_FROM_EMAIL={FROM!r} (want {LOCKED_FROM!r})")
+            print(f"  RESEND_REPLY_TO={REPLY!r} (want {LOCKED_REPLY_TO!r})")
+        else:
+            print(f"SEND VARS: all three set, DAN-1991 identity lock PASSES (from={FROM}).")
         sys.exit(0 if ok else 1)
 
     missing = [n for n, v in (("RESEND_API_KEY", KEY), ("RESEND_FROM_EMAIL", FROM),
