@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CompareLink } from "@/components/comparison/CompareLink";
+import { CompareLink, RelatedComparisons } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -929,6 +929,14 @@ export default function MondayAlternativesPage() {
         </section>
 
         {/* Related comparisons */}
+        <RelatedComparisons
+          hrefs={[
+            "/compare/monday-vs-asana",
+            "/compare/monday-vs-clickup",
+            "/compare/monday-vs-trello",
+            "/compare/monday-vs-notion",
+          ]}
+        >
         <section aria-labelledby="monday-related-comparisons" className="mt-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 flex items-center justify-center shadow-sm flex-shrink-0">
@@ -965,6 +973,7 @@ export default function MondayAlternativesPage() {
             </li>
           </ul>
         </section>
+        </RelatedComparisons>
 
         <div className="mt-12">
           <NewsletterSignup source="alternatives" referrerSlug="monday" />

@@ -26,6 +26,40 @@ const resolveOne = cache(async (slug: string): Promise<boolean> => {
   return live.has(slug);
 });
 
+/** `/compare/a-vs-b` (or a bare slug) -> the survivor slug the redirect map folds it into. */
+function toCanonicalSlug(href: string): string {
+  const slug = href.replace(/^\/compare\//, "").replace(/\/$/, "");
+  return getConsolidatedCompareSlug(slug) ?? slug;
+}
+
+/**
+ * DAN-2567 — hide a "Related comparisons" section that resolves to zero live links.
+ *
+ * Fallout from DAN-2565: once dead targets stop rendering as anchors, a section whose
+ * items are *all* dead degrades into a heading promising comparisons above a list of
+ * unlinked plain text. Wrap those sections in this component so they disappear cleanly
+ * instead.
+ *
+ * Only for sections whose items are exclusively `<CompareLink>` — a section that also
+ * carries an `/alternatives` link can never resolve to zero and must not be wrapped.
+ *
+ * `hrefs` must list every `<CompareLink href>` inside `children`; keep the two adjacent.
+ */
+export async function RelatedComparisons({
+  hrefs,
+  children,
+}: {
+  hrefs: string[];
+  children: React.ReactNode;
+}) {
+  const slugs = hrefs.map(toCanonicalSlug);
+  const live = await resolveCanonicalComparisonSlugs(slugs);
+
+  if (!slugs.some((slug) => live.has(slug))) return null;
+
+  return <>{children}</>;
+}
+
 export async function CompareLink({
   href,
   className,
@@ -35,8 +69,7 @@ export async function CompareLink({
   className?: string;
   children: React.ReactNode;
 }) {
-  const slug = href.replace(/^\/compare\//, "").replace(/\/$/, "");
-  const canonical = getConsolidatedCompareSlug(slug) ?? slug;
+  const canonical = toCanonicalSlug(href);
 
   if (!(await resolveOne(canonical))) {
     // Keep the label as plain text — no link styling, so it does not read as a
