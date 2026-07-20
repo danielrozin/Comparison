@@ -239,7 +239,11 @@ def preflight():
     return ok
 
 
-def send(targets):
+def send(targets, persist):
+    # `persist` is called after EVERY recipient, before the 45s spacing sleep. The results
+    # file is the idempotency guard, so it has to exist the moment the first email is
+    # actually in flight — not after the whole loop. Otherwise a kill during the ~90s of
+    # sleeps leaves recipient 1 sent with no guard on disk, and the next run re-sends them.
     results = []
     for i, t in enumerate(targets):
         payload = {
@@ -264,6 +268,7 @@ def send(targets):
             detail = e.read().decode()[:300] if hasattr(e, "read") else str(e)
             results.append({"to": t["to"], "status": "ERROR", "error": detail})
             print(f"FAIL {t['to']}: {detail}")
+        persist(results)
         if i < len(targets) - 1:
             time.sleep(45)
     return results
@@ -288,8 +293,20 @@ if __name__ == "__main__":
 
     # Idempotency guard (runbook step 4 / guardrail): never double-send.
     if os.path.exists(RESULTS_FILE):
-        print(f"ABORT: {RESULTS_FILE} already exists — Email-3 has already been sent.")
-        print(open(RESULTS_FILE).read())
+        prior = json.load(open(RESULTS_FILE))
+        done = [s["to"] for s in prior.get("sends", [])]
+        print(f"ABORT: {RESULTS_FILE} exists — Email-3 already fired. Never re-send blind.")
+        if prior.get("complete"):
+            print(f"  Run COMPLETED: {len(done)}/{prior.get('expected')} recipients.")
+        else:
+            # Partial file = the previous run died mid-loop. These addresses ARE sent.
+            remaining = [t["to"] for t in TARGETS if t["to"] not in done]
+            print(f"  Run was PARTIAL: {len(done)}/{prior.get('expected')} sent before it died.")
+            print(f"  Already sent (do NOT repeat): {', '.join(done) or 'none'}")
+            print(f"  Still owed: {', '.join(remaining) or 'none'}")
+            print("  To finish, move the results file aside and re-run with:")
+            print(f"    --send --drop {' '.join(done)}")
+        print(json.dumps(prior, indent=2))
         sys.exit(2)
 
     drop = {a.lower() for a in args[args.index("--drop") + 1:]} if "--drop" in args else set()
@@ -310,11 +327,17 @@ if __name__ == "__main__":
                   else "UNVERIFIED at send time — Gmail dark")
     print(f"\n=== SENDING {len(targets)} ===")
     print(f"reply status: {reply_note}")
-    results = send(targets)
+
     # Persist the reply-blind flag next to the msg-ids so the provenance survives the run
     # and can never be silently rounded up to a '0 replies' measurement later.
+    def persist(results, complete=False):
+        json.dump({"reply_status": reply_note, "reply_verified": reply_verified,
+                   "complete": complete, "expected": len(targets),
+                   "sends": results}, open(RESULTS_FILE, "w"), indent=2)
+
+    results = send(targets, persist)
     payload = {"reply_status": reply_note, "reply_verified": reply_verified,
-               "sends": results}
+               "complete": True, "expected": len(targets), "sends": results}
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
     print(f"\n--- written to {RESULTS_FILE} ---")
     # Runbook step 5, automated. Deliberately AFTER the results file is written: that file
