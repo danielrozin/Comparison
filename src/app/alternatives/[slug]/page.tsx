@@ -1,5 +1,6 @@
 
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { getAlternativesForEntity, resolveCanonicalComparisonSlugs } from "@/lib/services/comparison-service";
@@ -116,6 +117,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function AlternativesPage({ params }: PageProps) {
   const { slug } = await params;
   const name = humanizeEntityName(slug);
+
+  // DAN-2551: gate on entity status. Draft/archived entities are not canonical
+  // pages — same reasoning as the /entity gate added in the same PR.
+  try {
+    const prisma = getPrisma();
+    if (prisma) {
+      const entityRow = await prisma.entity.findUnique({
+        where: { slug },
+        select: { status: true },
+      });
+      if (!entityRow || entityRow.status !== "published") notFound();
+    }
+  } catch {
+    // DB unavailable — allow render; worst case a draft renders once.
+  }
 
   // Find all comparisons that include this entity (DB + mock)
   const alternatives = await getAlternativesForEntity(slug);

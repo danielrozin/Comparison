@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME, CATEGORIES } from "@/lib/utils/constants";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
@@ -39,15 +40,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // DAN-1169: prefer curated SEO meta from the DB when present (CTR tuning for
   // striking-distance entity pages). Falls back to the generated defaults below
   // for the long tail of entities that have no curated meta.
+  //
+  // DAN-2551: also read `status` here. Draft entities (status !== "published")
+  // have no canonical comparisons and must not be indexed. Return noindex so
+  // even if a draft URL is crawled, Google drops it immediately. The page
+  // component will call notFound() for these slugs, which is the definitive gate.
   let dbMetaTitle: string | null = null;
   let dbMetaDescription: string | null = null;
+  let entityStatus: string = "published"; // optimistic; notFound() gates the render
   try {
     const entity = await prisma.entity.findUnique({
       where: { slug },
-      select: { metaTitle: true, metaDescription: true },
+      select: { metaTitle: true, metaDescription: true, status: true },
     });
     dbMetaTitle = entity?.metaTitle ?? null;
     dbMetaDescription = entity?.metaDescription ?? null;
+    entityStatus = entity?.status ?? "draft";
   } catch {
     // DB unavailable (build-time / offline) — fall through to generated defaults.
   }
@@ -70,11 +78,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const , "max-video-preview": -1 },
-    },
+    robots: entityStatus === "published"
+      ? {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" as const, "max-video-preview": -1 },
+        }
+      : {
+          index: false,
+          follow: false,
+        },
     alternates: {
       canonical: `${SITE_URL}/entity/${slug}`,
       languages: {
@@ -142,6 +155,20 @@ export default async function EntityPage({ params }: PageProps) {
   const rating = getEntityRating(slug);
   const reviewCount = getReviewCount(slug);
   const entityContent = ENTITY_CONTENT[slug];
+
+  // DAN-2551: gate on entity status. Draft/archived entities are not canonical
+  // pages — the sitemap no longer includes them (DAN-2551 task 4), but a direct
+  // URL or a stale crawl would still hit this route without a 404 gate.
+  // notFound() emits HTTP 404 so Google removes the URL from its index.
+  try {
+    const entityRow = await prisma.entity.findUnique({
+      where: { slug },
+      select: { status: true },
+    });
+    if (!entityRow || entityRow.status !== "published") notFound();
+  } catch {
+    // DB unavailable — allow render; worst case a draft renders once.
+  }
 
   // DAN-1289: every entity page gets a real intro <p> + a "vs" lede H2. Curated
   // copy (ENTITY_LEDE) wins; otherwise a templated fallback keeps the 200+

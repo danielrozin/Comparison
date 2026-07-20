@@ -6,7 +6,8 @@ import { HUB_CONFIG } from "@/lib/data/hubs";
 import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
-import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
@@ -279,16 +280,45 @@ export default async function sitemap({
   }
 
   // ── Sitemap 2: Entity + Alternatives pages ──
-  // Uses a direct Prisma query so entity names are available for OG image URL
-  // construction. Entity OG images (/api/og?title={name}&type=entity) are added
-  // to entity entries; alternatives entries share the same entity OG image since
-  // the page is visually "Alternatives to {entity}".
+  //
+  // DAN-2551: the original query returned ALL 3,243 entities with no filter,
+  // including 858 in status="draft" and 1,972 published entities with zero
+  // canonical comparisons. That submitted ~6,486 thin-content URLs to Google —
+  // the same scaled-content footprint the June 2026 spam update demoted (DAN-1799).
+  //
+  // Fix: only emit entity and alternatives pages for entities that:
+  //   (a) have status="published", AND
+  //   (b) have ≥1 canonical comparison (published + not a redirect source).
+  //
+  // This drops sitemap 2 from ~5,000 (after .slice) to ~826 URLs (413 entities × 2),
+  // which is the honest set of entity pages that actually have content to show.
+  //
+  // The .slice(0, MAX_URLS_PER_SITEMAP) also silently truncated 1,486 alternatives
+  // pages out of the sitemap while leaving them as live 200s — a crawl budget leak
+  // caught during this audit. The new query is small enough that truncation doesn't
+  // apply; all canonical entity+alternatives pages now fit in one sitemap.
   if (numId === 2) {
     try {
       const prisma = getPrisma();
       if (!prisma) return [];
 
+      // Entities that have at least one canonical comparison.
+      // The `comparisonsA` relation is "ComparisonEntity where this entity is
+      // position A or linked to the comparison" — cross-check: the entity model
+      // uses a junction table via ComparisonEntity; comparisonsA covers all
+      // comparisons this entity participates in regardless of A/B position.
       const entities = await prisma.entity.findMany({
+        where: {
+          status: "published",
+          comparisonsA: {
+            some: {
+              comparison: {
+                status: "published",
+                slug: { notIn: REDIRECTED_COMPARE_SLUGS },
+              },
+            },
+          },
+        },
         select: { slug: true, name: true, updatedAt: true },
         orderBy: { id: "asc" },
         take: MAX_URLS_PER_SITEMAP,
@@ -310,7 +340,10 @@ export default async function sitemap({
         images: [`${SITE_URL}/api/og?title=${encodeURIComponent(e.name)}&type=entity`],
       }));
 
-      return [...entityPages, ...alternativesPages].slice(0, MAX_URLS_PER_SITEMAP);
+      // No .slice() needed: with ≥1-comparison filter, the total is well under 5,000.
+      // Both entity and alternatives pages for the same entity go into the same
+      // sitemap so Googlebot sees the complete picture in one fetch.
+      return [...entityPages, ...alternativesPages];
     } catch {
       return [];
     }
