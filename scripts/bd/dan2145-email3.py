@@ -14,17 +14,30 @@ DAN-2145 done, hand 7-14d live-link verification to LBS.
 import os, sys, json, time, urllib.request, urllib.error
 
 # Repo .env.local, as a FALLBACK for vars the ambient environment does not supply.
-# This is not belt-and-braces. Of the three send vars, only RESEND_API_KEY and
-# RESEND_FROM_EMAIL are persisted anywhere; RESEND_REPLY_TO exists solely because the
-# harness injects it at runtime. It is in no shell profile and no dotenv file, so a
-# fire-time run under any launcher that does not inject it hits the step-3 abort
-# ("ABORT: unset env var(s): RESEND_REPLY_TO") and the send never happens — on a
-# one-shot routine, with nobody watching. Sourcing the file removes the dependency on
-# who spawns us. Existing env always wins, so this can never override a live value.
-# Anchored absolutely, not relative to __file__: this script exists as TWO copies (the
-# repo backup at scripts/bd/ and the BD-workspace copy that actually fires), and only
-# the repo copy sits two levels under .env.local. A __file__-relative path would
-# silently resolve to nothing for the copy that matters.
+# This is not belt-and-braces. RESEND_REPLY_TO is the fragile one: the harness injects
+# it at runtime, so a fire-time run under any launcher that does NOT inject it hits the
+# step-3 abort ("ABORT: unset env var(s): RESEND_REPLY_TO") and the send never happens
+# — on a one-shot routine, with nobody watching. Sourcing the file removes the
+# dependency on who spawns us. Existing env always wins, so this can never override a
+# live value.
+# Verified 2026-07-20 (T-19h preflight), against the actual files rather than assumed:
+#   ambient RESEND_REPLY_TO ........ daniarozin@gmail.com == LOCKED_REPLY_TO ✅
+#   .env.local:46 RESEND_REPLY_TO .. daniarozin@gmail.com == LOCKED_REPLY_TO ✅
+# An earlier revision of this comment asserted REPLY_TO was "in no shell profile and no
+# dotenv file". That was WRONG at the time it was read — .env.local carries it — which
+# would have made this whole fallback look like dead code someone could delete. Re-check
+# by reading the files; do not trust this block's claims once they are more than a few
+# days old.
+# Anchored absolutely, not relative to __file__. Keep it that way, but note the reason
+# recorded here was wrong: this is NOT two independent copies. Verified 2026-07-20 by
+# inode/ls -li — the BD-workspace path that fires
+#   ~/.paperclip/instances/default/workspaces/<agent-id>/dan2145-email3.py
+# is a SYMLINK to the repo file at scripts/bd/, so the two cannot drift and an edit to
+# either reaches the copy that actually sends. (The stale claim mattered: it implied a
+# manual sync step before fire time that does not exist and would waste a heartbeat.)
+# The absolute anchor is still correct — Python resolves __file__ through the symlink to
+# the repo path, but relying on that is a silent single-point failure if the workspace
+# ever holds a real copy again, and an absolute path costs nothing.
 ENV_FILE_CANDIDATES = (
     os.path.expanduser(
         "~/.paperclip/instances/default/projects/"
