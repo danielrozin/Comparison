@@ -84,6 +84,22 @@ _ENV_SRC = _load_env_fallback()
 # dependency on who spawned us and on when they were started.
 INSTANCE_ENV = os.path.expanduser("~/.paperclip/instances/default/.env")
 _KEY_SRC = "ambient env"
+
+# GMAIL_* is read from this file too, and the reason is specific. DAN-2513 asks DevOps
+# for GMAIL_APP_PASSWORD, and THIS file is where every other credential on this machine
+# already lives — so it is the overwhelmingly likely place the fix lands. Until now the
+# script read GMAIL_APP_PASSWORD from the ambient environment only, which means a landed
+# DAN-2513 would still print "GMAIL_APP_PASSWORD unset (DAN-2513 not landed)" and drop to
+# ladder path 3. That failure is invisible: a credential that exists but is not read is
+# indistinguishable from one DevOps never delivered, and the cost is sending reply-blind
+# on the one touch where a responder most deserves not to get this email.
+#
+# Ambient wins for these (setdefault), unlike RESEND_API_KEY above. The key inverts that
+# rule because a long-lived supervisor injects a STALE key; there is no such staleness
+# story for an app password, and IMAP here is read-only and fails open, so the safe
+# default is "never override something live".
+_GMAIL_FALLBACK = ("GMAIL_APP_PASSWORD", "GMAIL_EMAIL")
+_GMAIL_SRC = {}
 try:
     with open(INSTANCE_ENV) as fh:
         for line in fh:
@@ -94,13 +110,19 @@ try:
             if not line or line.startswith("#") or "=" not in line:
                 continue
             k, _, v = line.partition("=")
-            if k.strip() == "RESEND_API_KEY":
+            k = k.strip()
+            if k == "RESEND_API_KEY":
                 v = v.strip().strip('"').strip("'")
                 if v and v != os.environ.get("RESEND_API_KEY"):
                     os.environ["RESEND_API_KEY"] = v
                     _KEY_SRC = f"{INSTANCE_ENV} (overrode a differing ambient value)"
                 elif v:
                     _KEY_SRC = f"{INSTANCE_ENV} (matched ambient)"
+            elif k in _GMAIL_FALLBACK:
+                v = v.strip().strip('"').strip("'")
+                if v and not os.environ.get(k):
+                    os.environ[k] = v
+                    _GMAIL_SRC[k] = INSTANCE_ENV
 except FileNotFoundError:
     print(f"WARN: {INSTANCE_ENV} not found — falling back to ambient RESEND_API_KEY.")
 except Exception as e:
@@ -175,8 +197,11 @@ def reply_check(targets):
     """
     pw = os.environ.get("GMAIL_APP_PASSWORD")
     if not pw:
-        print("REPLY CHECK: GMAIL_APP_PASSWORD unset (DAN-2513 not landed) — ladder path 3.")
+        print(f"REPLY CHECK: GMAIL_APP_PASSWORD unset in both the ambient env and "
+              f"{INSTANCE_ENV} (DAN-2513 not landed) — ladder path 3.")
         return set(), False
+    print(f"REPLY CHECK: GMAIL_APP_PASSWORD from "
+          f"{_GMAIL_SRC.get('GMAIL_APP_PASSWORD', 'ambient env')} — ladder path 2.")
 
     # GMAIL_EMAIL is the var DevOps actually populates (confirmed present in the
     # fire-time env 2026-07-20); GMAIL_ADDR was a guess and has never been set.
