@@ -251,6 +251,13 @@ TRIGGER_ID = "b4d6bbec-f0ba-436f-b1c4-b0a4e7d594bc"  # the `0 9 21 7 *` schedule
 # Runbook step 4 targets. Resolved by UUID, not by DAN-identifier: the issue list route
 # caps at 1000 items and DAN-2145 already falls off the end of it, so an identifier
 # lookup at fire time would silently find nothing.
+# Banner that marks a --preview-log comment. cleanup_preview verifies removal by the
+# ABSENCE OF THIS STRING from the thread, not by the comment row disappearing: DELETE
+# tombstones the row (it stays in the list with the body cleared) and returns 200 either
+# way. What has to be gone is the rendered msg-id table, since that is what the
+# "stop if msg-ids are already logged" guardrail pattern-matches on.
+PREVIEW_MARKER = "🧪 **DRY RUN — NOTHING WAS SENT.**"
+
 LOG_ISSUES = [("DAN-2145", "ea3872fb-0f64-438e-a23d-7f82889a4add"),
               ("DAN-1737", "4e85951b-769b-4c63-bd12-b334b10610ef")]
 
@@ -300,7 +307,7 @@ def alert_abort(reason, detail):
         return False
 
 
-def log_msgids(results, reply_note, archived, preview=False, only=None):
+def log_msgids(results, reply_note, archived, preview=False, only=None, created=None):
     """Runbook step 4, automated: post the returned msg-ids to DAN-2145 + DAN-1737.
 
     This was the last step still depending on a human/agent being alive after the send.
@@ -359,7 +366,7 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
         # --preview-log: exercise the step-4 POST ahead of the fire with an unmistakably
         # non-real body, so a broken endpoint/auth/markdown round-trip surfaces now rather
         # than after three irreversible sends. Never let this be mistaken for a send log.
-        body = ("> 🧪 **DRY RUN — NOTHING WAS SENT.** Step-4 logging-path rehearsal only. "
+        body = (f"> {PREVIEW_MARKER} Step-4 logging-path rehearsal only. "
                 "The msg-ids below are placeholders.\n\n" + body)
 
     hdrs = {"Authorization": f"Bearer {key}", "Content-Type": "application/json",
@@ -371,13 +378,61 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
                 f"{api}/api/issues/{issue_id}/comments", method="POST",
                 data=json.dumps({"body": body}).encode(), headers=hdrs)
             with urllib.request.urlopen(req, timeout=30) as r:
-                json.load(r)
+                got = json.load(r)
+            if created is not None:
+                cid = (got.get("comment") or got.get("data") or got).get("id")
+                if cid:
+                    created.append((issue_id, cid))
             print(f"LOGGED msg-ids on {name}.")
         except Exception as e:
             ok = False
             print(f"WARN: could not log msg-ids on {name} ({e}). "
                   f"Post them from {RESULTS_FILE} by hand.")
     return ok
+
+
+def cleanup_preview(created):
+    """Delete the comments a --preview-log run just created. Returns those still present.
+
+    Verified by an independent GET of the thread, not by the DELETE status: this API is
+    known to accept a write, return 200, and not apply it (see archive_routine). A
+    surviving placeholder msg-id table is worse than no rehearsal at all, so the check
+    has to be positive — confirm absence, don't infer it.
+    """
+    api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
+    if not (api and key):
+        return list(created)
+    hdrs = {"Authorization": f"Bearer {key}", "User-Agent": UA}
+    for issue_id, cid in created:
+        try:
+            req = urllib.request.Request(
+                f"{api}/api/issues/{issue_id}/comments/{cid}", method="DELETE",
+                headers=hdrs)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                r.read()
+        except Exception as e:
+            print(f"WARN: DELETE failed for comment {cid} ({e}).")
+    leftover = []
+    for issue_id in {i for i, _ in created}:
+        try:
+            req = urllib.request.Request(
+                f"{api}/api/issues/{issue_id}/comments", headers=hdrs)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                got = json.load(r)
+            rows = got if isinstance(got, list) else (got.get("comments")
+                                                      or got.get("data") or [])
+            # Match on the banner, not the row id — see PREVIEW_MARKER.
+            leftover += [(issue_id, c.get("id")) for c in rows
+                         if PREVIEW_MARKER in (c.get("body") or "")]
+        except Exception as e:
+            # Could not confirm removal — report every comment we made on this issue as
+            # leftover. Erring toward "still there" costs a manual check; erring the
+            # other way arms the trap.
+            print(f"WARN: could not confirm deletion on {issue_id} ({e}).")
+            leftover += [(i, c) for i, c in created if i == issue_id]
+    if created and not leftover:
+        print(f"CLEANED UP {len(created)} dry-run comment(s) — confirmed gone by re-read.")
+    return leftover
 
 
 def log_archive_result(archived):
@@ -748,7 +803,7 @@ if __name__ == "__main__":
     # (see alert_abort) hands out `--preflight` as the retry command. Leaving
     # it out made the whitelist reject the one invocation we tell people to run first —
     # tomorrow that reads as "the send script is broken" minutes before the actual send.
-    KNOWN_FLAGS = {"--send", "--preflight", "--reply-check", "--drop"}
+    KNOWN_FLAGS = {"--send", "--preflight", "--reply-check", "--drop", "--preview-log"}
     bad_flags = sorted({a for a in args if a.startswith("-") and a not in KNOWN_FLAGS})
     if bad_flags:
         print(f"ABORT: unrecognised flag(s): {', '.join(bad_flags)}")
@@ -759,6 +814,36 @@ if __name__ == "__main__":
     if "--reply-check" in args:
         _, verified = reply_check(TARGETS)
         sys.exit(0 if verified else 4)
+
+    # --preview-log: rehearse step 4 (the msg-id POST) against the REAL board API before
+    # the irreversible sends. Step 4 is the only step whose failure mode is unrecoverable
+    # in kind: by the time it runs, three emails are gone and the msg-ids exist nowhere
+    # but a local JSON file that nothing else reads. Every other step can be re-run.
+    # The `preview` branch of log_msgids existed for exactly this since T-25h but no flag
+    # ever reached it — dead code guarding the highest-consequence untested path.
+    # DAN-2145 only: DAN-1737 is a shared wave issue and must not carry rehearsal noise.
+    if "--preview-log" in args:
+        placeholder = [{"to": t["to"], "status": 200, "id": f"PLACEHOLDER-{i+1}",
+                        "subject": t["subject"], "url": t["url"]}
+                       for i, t in enumerate(TARGETS)]
+        created = []
+        ok = log_msgids(placeholder, "reply status UNVERIFIED (dry run)", None,
+                        preview=True, only=LOG_ISSUES[:1], created=created)
+        # The rehearsal MUST remove its own comment. The standing guardrail on this issue
+        # is "whoever fires reads this thread first and STOPS if Email-3 msg-ids are
+        # already logged" — and a preview renders the same msg-id table. Left behind, this
+        # dry run is a live trap that aborts tomorrow's real send. The DRY RUN banner is
+        # not enough: the stop-condition is the table, and a headless agent pattern-matches
+        # it. Deleted and confirmed by an independent re-read, never by the DELETE status.
+        leftover = cleanup_preview(created)
+        print("\nStep-4 POST path: " + ("OK — endpoint, auth and markdown round-trip all "
+              "work." if ok else "FAILED — fix before the fire, or the msg-ids land nowhere."))
+        if leftover:
+            print("⚠️ COULD NOT DELETE the dry-run comment(s): "
+                  + ", ".join(f"{i}/{c}" for i, c in leftover)
+                  + "\n   DELETE THEM BY HAND before 09:00Z. A placeholder msg-id table on "
+                    "this thread reads as 'already sent' and will abort the real send.")
+        sys.exit(0 if ok and not leftover else 7)
     if "--send" not in args:
         ok = preflight()
         print()

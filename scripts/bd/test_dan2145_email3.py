@@ -341,11 +341,91 @@ def check_archive_reporting(m):
           "render distinctly and pending never claims a settled outcome.")
 
 
+def check_preview_cleans_up(m):
+    """--preview-log must never leave a msg-id table on the thread.
+
+    The guardrail on DAN-2145 says whoever fires STOPS if Email-3 msg-ids are already
+    logged. A preview renders that same table, so a leftover rehearsal comment is a trap
+    that aborts the real send. Two things are asserted: the preview posts only to
+    DAN-2145 (never the shared wave issue DAN-1737), and removal is confirmed by the
+    banner being gone from the thread — NOT by the row disappearing, because DELETE
+    tombstones the row and returns 200 regardless.
+    """
+    os.environ.setdefault("PAPERCLIP_API_URL", "http://test.invalid")
+    os.environ.setdefault("PAPERCLIP_API_KEY", "test-key")
+    real = m.urllib.request.urlopen
+    thread = []          # server-side comment list
+    deleted = set()
+
+    class Resp(io.BytesIO):
+        def __enter__(s):
+            return s
+
+        def __exit__(s, *a):
+            return False
+
+    def fake(req, timeout=None):
+        method, url = req.get_method(), req.full_url
+        if method == "POST":
+            cid = f"c{len(thread)}"
+            thread.append({"id": cid, "body": json.loads(req.data.decode())["body"]})
+            return Resp(json.dumps({"id": cid}).encode())
+        if method == "DELETE":
+            cid = url.rstrip("/").rsplit("/", 1)[-1]
+            deleted.add(cid)
+            # Tombstone, exactly like the real API: row stays, body is cleared.
+            for c in thread:
+                if c["id"] == cid:
+                    c["body"] = ""
+            return Resp(b"{}")
+        return Resp(json.dumps(thread).encode())
+
+    m.urllib.request.urlopen = fake
+    try:
+        created = []
+        m.log_msgids([{"to": "kob.monney@trustedreviews.com", "id": "PLACEHOLDER-1",
+                       "url": "u"}], "reply status UNVERIFIED (dry run)", None,
+                     preview=True, only=m.LOG_ISSUES[:1], created=created)
+        assert len(created) == 1, f"preview did not record its comment id: {created}"
+        assert created[0][0] == m.LOG_ISSUES[0][1], "preview posted to the wrong issue"
+        assert m.PREVIEW_MARKER in thread[0]["body"], "preview comment lacks the banner"
+
+        leftover = m.cleanup_preview(created)
+        assert deleted, "cleanup issued no DELETE"
+        assert not leftover, f"cleanup reported leftovers after a real delete: {leftover}"
+        assert not any(m.PREVIEW_MARKER in c["body"] for c in thread), "banner survived"
+        # The tombstoned row is still in the thread — a row-id check would have called
+        # this a failure. Confirm the marker-based check tolerates it.
+        assert any(c["id"] in deleted for c in thread), \
+            "test bug: tombstone not simulated, so row-vs-banner is not exercised"
+
+        # And the inverse: a delete that silently does nothing must be caught.
+        thread.clear()
+        deleted.clear()
+        created2 = []
+        m.log_msgids([{"to": "x@y.com", "id": "PLACEHOLDER-1", "url": "u"}],
+                     "dry run", None, preview=True, only=m.LOG_ISSUES[:1],
+                     created=created2)
+
+        def fake_no_delete(req, timeout=None):
+            if req.get_method() == "DELETE":
+                return Resp(b"{}")      # 200, but does not apply
+            return fake(req, timeout)
+
+        m.urllib.request.urlopen = fake_no_delete
+        assert m.cleanup_preview(created2), \
+            "a DELETE that returned 200 without applying was reported as clean"
+    finally:
+        m.urllib.request.urlopen = real
+    print("PASS — --preview-log posts only to DAN-2145 and its comment is removed, "
+          "verified by banner absence (tombstone-safe); a no-op DELETE is caught.")
+
+
 # Every suite this harness is expected to run. The count is asserted below so that a
 # suite which silently stops running (early return, lost call, renamed function) fails
 # loudly instead of shrinking the PASS list by one line that nobody counts. The fire-time
 # routine tells the operator to match the printed tally against this number.
-EXPECTED_SUITES = 6
+EXPECTED_SUITES = 7
 
 
 def main():
@@ -353,7 +433,7 @@ def main():
     ran = 0
     for suite in (check_reply_fail_open, check_unknown_drop_aborts,
                   check_unknown_flag_aborts, check_lbs_unblock_guards,
-                  check_archive_reporting):
+                  check_archive_reporting, check_preview_cleans_up):
         suite(m)
         ran += 1
     captured = []
