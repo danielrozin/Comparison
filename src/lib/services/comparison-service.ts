@@ -1130,15 +1130,19 @@ export async function getAlternativesForEntity(
   const prisma = getPrismaClient();
   if (prisma) {
     try {
-      // Find all comparisons where this entity appears
+      // Find all comparisons where this entity appears.
+      // DAN-2551: must be canonical-only. Without this filter the page rendered
+      // alternative cards pointing at archived/draft comparisons, which 404 via
+      // getStaticProps (DAN-1886/DAN-2065) — 2,381 /alternatives pages linked to
+      // at least one dead /compare URL, and every consolidation batch made it worse.
       const comparisons = await prisma.comparison.findMany({
-        where: {
+        where: canonicalComparisonWhere({
           entities: {
             some: {
               entity: { slug: entitySlug },
             },
           },
-        },
+        }),
         select: {
           slug: true,
           title: true,
@@ -1194,6 +1198,50 @@ export async function getAlternativesForEntity(
 
   await setCache(cacheKey, results, CACHE_TTL_COMPARISON);
   return results;
+}
+
+/**
+ * DAN-2551 — which of `candidates` are canonical (200-returning) comparison slugs.
+ *
+ * The /alternatives page merges curated ENTITY_CONTENT alternatives on top of the
+ * comparison-derived ones, and used to *synthesise* the link target as
+ * `${entity}-vs-${alternative}` without ever checking that slug exists. Those
+ * fabricated URLs went into the visible cards, the ItemList schema, and
+ * `significantLink` — pointing crawlers at 404s. Resolve real slugs instead.
+ *
+ * One indexed `IN` query; callers pass both orderings of each pair.
+ */
+export async function resolveCanonicalComparisonSlugs(
+  candidates: string[]
+): Promise<Set<string>> {
+  const unique = Array.from(new Set(candidates));
+  if (unique.length === 0) return new Set();
+
+  const mockSlugs = new Set(getAllMockSlugs());
+  const prisma = getPrismaClient();
+  if (!prisma) {
+    // No DB: fall back to the mock catalog so local/dev rendering stays honest.
+    return new Set(unique.filter((s) => mockSlugs.has(s)));
+  }
+
+  try {
+    const rows = await prisma.comparison.findMany({
+      // The `in` goes in an AND clause, NOT the extra-arg spread:
+      // canonicalComparisonWhere spreads `extra` last, so a top-level `slug` key
+      // would silently overwrite its `slug: { notIn: REDIRECTED_COMPARE_SLUGS }`
+      // and let retired redirect sources back in.
+      where: canonicalComparisonWhere({ AND: [{ slug: { in: unique } }] }),
+      select: { slug: true },
+    });
+    const found = new Set<string>(rows.map((r: { slug: string }) => r.slug));
+    for (const s of unique) {
+      if (!found.has(s) && mockSlugs.has(s)) found.add(s);
+    }
+    return found;
+  } catch (e) {
+    console.warn("Prisma resolveCanonicalComparisonSlugs failed:", e);
+    return new Set(unique.filter((s) => mockSlugs.has(s)));
+  }
 }
 
 export async function getComparisonsForEntity(
