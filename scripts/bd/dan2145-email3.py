@@ -338,6 +338,73 @@ def archive_routine():
     return False
 
 
+LBS_ISSUE = ("DAN-2553", "6ee21d1b-dfaa-4489-89e0-b842971d08d8")
+
+
+def unblock_lbs(delivered, msgids_logged):
+    """Runbook step 5's last limb: flip the LBS live-link verification issue to `todo`.
+
+    Same failure shape as the archive this function sits next to — step 5 asked a human
+    to remember it, and the routine fires headless at 09:00Z with nobody watching. If the
+    fire-time run dies after step 4, DAN-2553 stays `blocked` forever, its D+7 window
+    (2026-07-28) passes unobserved, and the wave closes with nobody ever checking whether
+    a link went live. Nothing else in the system flips it: there is no blockers route, so
+    the unblock condition lives in prose in the issue body and only a status write clears
+    it.
+
+    Two guards, both deliberate:
+    * `delivered` — if not a single send succeeded there is nothing to verify. Unblocking
+      then sends LBS hunting for links from a pitch no editor ever received.
+    * `msgids_logged` — DAN-2553's body says "do not start until DAN-2145 shows the
+      Email-3 msg-id table". Unblocking before that comment lands would hand LBS a task
+      whose own stated precondition is still unmet, and LBS has no way to tell the
+      difference between "not posted yet" and "never posted".
+
+    Best-effort and verified by an independent GET, never the PATCH echo — this API is
+    known to accept a write, echo it, and drop the field.
+    """
+    name, issue_id = LBS_ISSUE
+    if not delivered:
+        print(f"NOTE: no send succeeded — leaving {name} blocked (nothing to verify).")
+        return False
+    if not msgids_logged:
+        print(f"WARN: msg-ids did not land on the board — leaving {name} blocked, since "
+              f"its stated precondition is the DAN-2145 msg-id table. Post the table from "
+              f"{RESULTS_FILE}, then flip {name} to todo by hand.")
+        return False
+
+    api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
+    if not (api and key):
+        print(f"WARN: PAPERCLIP_API_URL/KEY unset — could not unblock {name}. "
+              "Flip it blocked→todo by hand or the D+7 link check never happens.")
+        return False
+
+    hdrs = {"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+            "User-Agent": UA}
+    url = f"{api}/api/issues/{issue_id}"
+    try:
+        req = urllib.request.Request(url, method="PATCH",
+                                     data=json.dumps({"status": "todo"}).encode(),
+                                     headers=hdrs)
+        with urllib.request.urlopen(req, timeout=30) as r:
+            json.load(r)
+        req = urllib.request.Request(url, headers=hdrs)
+        with urllib.request.urlopen(req, timeout=30) as r:
+            got = json.load(r)
+        status = (got.get("issue") or got).get("status")
+        if status == "todo":
+            print(f"UNBLOCKED {name} (blocked→todo) — verified by read-back. "
+                  "LBS owns D+7 2026-07-28 / D+14 2026-08-04 live-link verification.")
+            return True
+        print(f"WARN: {name} still reads status={status!r} after the write — the API "
+              "dropped it. Flip it blocked→todo by hand or the D+7 link check never "
+              "happens.")
+    except Exception as e:
+        print(f"WARN: could not unblock {name} ({e}). Flip it blocked→todo by hand "
+              "or the D+7 link check never happens.")
+    return False
+
+
 def fetch(url, follow=False):
     """Return (status, body). follow=False surfaces 3xx instead of chasing it."""
     class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -611,13 +678,22 @@ if __name__ == "__main__":
     # corrupt the outcome — it only decides whether the board finds out automatically.
     payload["msgids_logged"] = log_msgids(results, reply_note, payload["routine_archived"])
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
+    # Step 5's remaining limb. Last of all, and gated on the msg-id table actually landing
+    # — that table is DAN-2553's stated precondition, so unblocking ahead of it would hand
+    # LBS a task it has been told not to start.
+    payload["lbs_unblocked"] = unblock_lbs(
+        delivered=bool([r for r in results if r.get("id")]),
+        msgids_logged=payload["msgids_logged"])
+    json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
     print(f"NEXT: verify the msg-id comment landed on DAN-2145 + DAN-1737 "
           f"(reply status: {reply_note}).")
     if not reply_verified:
         print("      These sends must NEVER be counted toward a '0 replies' claim "
               "(0 replies is a floor, not a measurement — report raw counts, never rates).")
     print("      Then CONFIRM routine 2caeede7 is archived (yearly cron — re-arms for 2027 if left"
-          "active) and mark DAN-2145 done; hand 7-14d link verification to LBS.")
+          "active), CONFIRM DAN-2553 reads todo (LBS owns D+7/D+14 link verification — this "
+          "script flips it, but only if the send landed AND the msg-ids posted), and mark "
+          "DAN-2145 done. Do NOT file a second LBS issue; DAN-2553 already exists.")
     if failed_sends:
         # Do NOT let a partial failure close out as a clean sequence. The routine is
         # already archived by this point (correct — it must never re-fire wholesale),

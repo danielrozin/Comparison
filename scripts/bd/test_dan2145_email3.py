@@ -165,10 +165,76 @@ def check_unknown_drop_aborts(m):
           f"flag order --drop/--send still parses.")
 
 
+def check_lbs_unblock_guards(m):
+    """unblock_lbs must issue NO write unless the send landed AND the msg-ids posted.
+
+    Both guards protect a live agent from being dispatched on a false premise: LBS
+    verifying links for a pitch nobody received, or starting a task whose own stated
+    precondition (the DAN-2145 msg-id table) is still missing from the board.
+    """
+    os.environ.setdefault("PAPERCLIP_API_URL", "https://example.invalid")
+    os.environ.setdefault("PAPERCLIP_API_KEY", "test-key")
+    calls = []
+
+    class Resp:
+        def __init__(self, payload):
+            self._p, self.status = payload, 200
+
+        def read(self):
+            return json.dumps(self._p).encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    real = m.urllib.request.urlopen
+
+    def fake(req, timeout=None):
+        calls.append(req.get_method())
+        return Resp({"status": "todo"})
+
+    m.urllib.request.urlopen = fake
+    try:
+        assert m.unblock_lbs(delivered=False, msgids_logged=True) is False, \
+            "unblocked LBS with zero successful sends"
+        assert not calls, f"issued a write despite no delivery: {calls}"
+
+        assert m.unblock_lbs(delivered=True, msgids_logged=False) is False, \
+            "unblocked LBS before the msg-id table landed"
+        assert not calls, f"issued a write before msg-ids were logged: {calls}"
+
+        assert m.unblock_lbs(delivered=True, msgids_logged=True) is True, \
+            "did not unblock LBS on the happy path"
+        assert calls == ["PATCH", "GET"], \
+            f"expected PATCH then an independent GET read-back, got {calls}"
+    finally:
+        m.urllib.request.urlopen = real
+
+    # A PATCH the API silently drops must never report success.
+    calls.clear()
+
+    def fake_dropped(req, timeout=None):
+        calls.append(req.get_method())
+        return Resp({"status": "blocked"})
+
+    m.urllib.request.urlopen = fake_dropped
+    try:
+        assert m.unblock_lbs(delivered=True, msgids_logged=True) is False, \
+            "reported success while the issue still reads blocked"
+    finally:
+        m.urllib.request.urlopen = real
+
+    print("PASS — unblock_lbs writes only after a real send AND a landed msg-id table, "
+          "and trusts the read-back over the PATCH echo.")
+
+
 def main():
     m = load()
     check_reply_fail_open(m)
     check_unknown_drop_aborts(m)
+    check_lbs_unblock_guards(m)
     captured = []
 
     class FakeResp:
