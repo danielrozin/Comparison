@@ -261,6 +261,16 @@ PREVIEW_MARKER = "🧪 **DRY RUN — NOTHING WAS SENT.**"
 LOG_ISSUES = [("DAN-2145", "ea3872fb-0f64-438e-a23d-7f82889a4add"),
               ("DAN-1737", "4e85951b-769b-4c63-bd12-b334b10610ef")]
 
+# Set True by test_dan2145_email3.py, which stubs urllib.request.urlopen so nothing
+# reaches the board. Without it the suite prints bare "LOGGED msg-ids on DAN-2145."
+# lines while logging nothing — and step 2 of the runbook has the firing agent run that
+# suite BEFORE sending. The guardrail it then applies is "STOP if Email-3 msg-ids are
+# already logged", so an unattended agent can read its own test output as proof the
+# send already happened and never send. That is a silent no-send: the same failure
+# class as the early archive that killed Email-2. Verified 2026-07-20 T-19.6h that the
+# suite creates 0 real comments, so these lines were purely misleading, never writes.
+SIMULATED = False
+
 
 def alert_abort(reason, detail):
     """Post a pre-send ABORT to DAN-2145 so a dead fire is visible on the board.
@@ -383,7 +393,8 @@ def log_msgids(results, reply_note, archived, preview=False, only=None, created=
                 cid = (got.get("comment") or got.get("data") or got).get("id")
                 if cid:
                     created.append((issue_id, cid))
-            print(f"LOGGED msg-ids on {name}.")
+            print(f"SIMULATED log_msgids -> {name}: stubbed transport, NOTHING posted."
+                  if SIMULATED else f"LOGGED msg-ids on {name}.")
         except Exception as e:
             ok = False
             print(f"WARN: could not log msg-ids on {name} ({e}). "
@@ -459,7 +470,8 @@ def log_archive_result(archived):
                      "User-Agent": UA})
         with urllib.request.urlopen(req, timeout=30) as r:
             json.load(r)
-        print("LOGGED archive outcome on DAN-2145.")
+        print("SIMULATED log_archive_result -> DAN-2145: stubbed transport, "
+              "NOTHING posted." if SIMULATED else "LOGGED archive outcome on DAN-2145.")
         return True
     except Exception as e:
         print(f"WARN: could not log archive outcome on DAN-2145 ({e}).")

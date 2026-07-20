@@ -450,6 +450,12 @@ EXPECTED_SUITES = 7
 
 def main():
     m = load()
+    # Every suite below stubs m.urllib.request.urlopen, so no board write ever leaves
+    # this process. Say so in the production log lines: the runbook runs this suite at
+    # step 2, immediately BEFORE the send, and a bare "LOGGED msg-ids on DAN-2145."
+    # here reads as the send having already logged its msg-ids — which is exactly the
+    # condition the "STOP if msg-ids are already logged" guardrail aborts on.
+    m.SIMULATED = True
     ran = 0
     for suite in (check_reply_fail_open, check_unknown_drop_aborts,
                   check_unknown_flag_aborts, check_lbs_unblock_guards,
