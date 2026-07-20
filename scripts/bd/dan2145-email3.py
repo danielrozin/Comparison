@@ -215,8 +215,12 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
                      f"`{r.get('id') or 'FAILED: ' + str(r.get('error'))}` |")
     lines += ["", f"Firing routine `{ROUTINE_ID}`: "
               + ("**archived** — cannot re-fire 2027-07-21."
-                 if archived else
-                 "⚠️ **STILL ARMED** — archive by hand or it re-sends 2027-07-21."),
+                 if archived is True else
+                 "⚠️ **STILL ARMED** — archive by hand or it re-sends 2027-07-21."
+                 if archived is False else
+                 "archive runs immediately after this comment. **If no ARCHIVED/STILL-ARMED "
+                 "follow-up comment appears below, assume it did not run** — check the routine "
+                 "and archive it by hand, or it re-sends to all three editors 2027-07-21."),
               "", "Email-3 is the FINAL touch. No Email-4. Remaining work: 7–14d live-link "
               "verification (LBS)."]
     if failed:
@@ -228,7 +232,7 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
                   "", "**Do NOT mark DAN-2145 done and do NOT report Email-3 as fully "
                   "sent.** These addresses received nothing: "
                   + ", ".join(f"`{r.get('to')}`" for r in failed) + ".",
-                  "", "The routine is already archived (correct — it must never re-fire "
+                  "", "The routine is being archived (correct — it must never re-fire "
                   "wholesale), so the only path for these is a deliberate manual re-run: "
                   "move the results file aside and re-run with `--send --drop` listing "
                   "every address that already received it *and* every responder."]
@@ -260,6 +264,37 @@ def log_msgids(results, reply_note, archived, preview=False, only=None):
             print(f"WARN: could not log msg-ids on {name} ({e}). "
                   f"Post them from {RESULTS_FILE} by hand.")
     return ok
+
+
+def log_archive_result(archived):
+    """Post the archive outcome as a short follow-up to the msg-id comment on DAN-2145.
+
+    Exists because the msg-id comment is now written BEFORE the archive (see the tail of
+    __main__), so it can only say "archive pending". This closes that loop. Best-effort
+    and DAN-2145 only — DAN-1737 needs the msg-ids, not the routine bookkeeping.
+    """
+    api, key = os.environ.get("PAPERCLIP_API_URL"), os.environ.get("PAPERCLIP_API_KEY")
+    if not (api and key):
+        return False
+    body = (f"Routine `{ROUTINE_ID}` — **archived**, verified by read-back. Cannot re-fire "
+            "2027-07-21." if archived else
+            f"⚠️ Routine `{ROUTINE_ID}` — **archive FAILED, it is STILL ARMED.** Its cron "
+            "`0 9 21 7 *` is a yearly pattern: left as-is it re-sends Email-3 to all three "
+            "editors on 2027-07-21. Archive it by hand today — `PATCH /api/routines/{id}` "
+            "`{\"status\":\"archived\"}`, then confirm with an independent GET.")
+    try:
+        req = urllib.request.Request(
+            f"{api}/api/issues/{LOG_ISSUES[0][1]}/comments", method="POST",
+            data=json.dumps({"body": body}).encode(),
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+                     "User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            json.load(r)
+        print("LOGGED archive outcome on DAN-2145.")
+        return True
+    except Exception as e:
+        print(f"WARN: could not log archive outcome on DAN-2145 ({e}).")
+    return False
 
 
 def archive_routine():
@@ -669,22 +704,33 @@ if __name__ == "__main__":
                "dropped": sorted(drop), "sends": results}
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
     print(f"\n--- written to {RESULTS_FILE} ---")
-    # Runbook step 5, automated. Deliberately AFTER the results file is written: that file
-    # is the idempotency guard, so it must land first even if archiving fails.
-    payload["routine_archived"] = archive_routine()
+    # ORDER MATTERS, and it is the reverse of the runbook's numbering. Step 4 (msg-ids)
+    # and step 5's LBS flip run BEFORE the archive.
+    #
+    # This routine archives ITSELF while its own run is still in flight. Whether the
+    # control plane terminates an in-flight run when its routine is archived is not
+    # something we can test against the live one-shot without burning it, and the
+    # blast radii are wildly asymmetric:
+    #   archive first, and the run IS killed  -> three editors emailed, nothing on the
+    #       board, DAN-2553 blocked past its D+7 window. Silent and unrecoverable in time.
+    #   log first, and the run dies pre-archive -> everything recorded, and the routine
+    #       stays armed for 2027-07-21 — flagged in the comment we just posted, a year of
+    #       lead time to fix.
+    # So the irreversible-if-lost bookkeeping goes first and the self-destruct goes last.
+    # `archived=None` renders the comment's routine line as "archive pending" plus an
+    # instruction to check by hand if no follow-up appears.
+    payload["msgids_logged"] = log_msgids(results, reply_note, None)
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
-    # Runbook step 4, automated. Last, and best-effort: by this point the send is done,
-    # the results file is on disk and the routine is disarmed, so nothing here can
-    # corrupt the outcome — it only decides whether the board finds out automatically.
-    payload["msgids_logged"] = log_msgids(results, reply_note, payload["routine_archived"])
-    json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
-    # Step 5's remaining limb. Last of all, and gated on the msg-id table actually landing
-    # — that table is DAN-2553's stated precondition, so unblocking ahead of it would hand
-    # LBS a task it has been told not to start.
+    # Gated on the msg-id table actually landing — that table is DAN-2553's stated
+    # precondition, so unblocking ahead of it would hand LBS a task it was told not to start.
     payload["lbs_unblocked"] = unblock_lbs(
         delivered=bool([r for r in results if r.get("id")]),
         msgids_logged=payload["msgids_logged"])
     json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
+    # Last: disarm. Anything after this line may not execute if the archive kills the run.
+    payload["routine_archived"] = archive_routine()
+    json.dump(payload, open(RESULTS_FILE, "w"), indent=2)
+    log_archive_result(payload["routine_archived"])
     print(f"NEXT: verify the msg-id comment landed on DAN-2145 + DAN-1737 "
           f"(reply status: {reply_note}).")
     if not reply_verified:

@@ -16,6 +16,7 @@ does NOT touch the canonical results file — running this never arms the idempo
 guard and never suppresses the real send.
 """
 import importlib.util
+import io
 import json
 import os
 import re
@@ -230,11 +231,69 @@ def check_lbs_unblock_guards(m):
           "and trusts the read-back over the PATCH echo.")
 
 
+def check_archive_reporting(m):
+    """The archive now runs LAST, after the msg-id comment, so that comment can no longer
+    state the outcome — it says "pending" and promises a follow-up. Three renderings have
+    to stay distinct, or a run that never archived reads as one that did.
+
+    This is the limb that matters most if it rots: a routine reported as archived but
+    still armed re-sends Email-3 to all three editors on 2027-07-21, unattended.
+    """
+    real = m.urllib.request.urlopen
+    os.environ.setdefault("PAPERCLIP_API_URL", "http://test.invalid")
+    os.environ.setdefault("PAPERCLIP_API_KEY", "test-key")
+    bodies = []
+
+    class Resp:
+        def __enter__(s):
+            return io.BytesIO(b"{}")
+
+        def __exit__(s, *a):
+            return False
+
+    def capture(req, timeout=None):
+        bodies.append(json.loads(req.data.decode())["body"])
+        return Resp()
+
+    m.urllib.request.urlopen = capture
+    try:
+        rows = [{"to": "kob.monney@trustedreviews.com", "id": "m1", "url": "u"}]
+        rendered = {}
+        for state in (True, False, None):
+            bodies.clear()
+            m.log_msgids(rows, "reply status VERIFIED", state,
+                         only=[("DAN-2145", "test-id")])
+            rendered[state] = [l for l in bodies[0].split("\n") if "Firing routine" in l][0]
+
+        assert "**archived**" in rendered[True], rendered[True]
+        assert "STILL ARMED" in rendered[False], rendered[False]
+        # The pending line must NOT claim either outcome, and must tell a reader what to
+        # do when the follow-up comment is missing — that is its whole job.
+        assert "STILL ARMED" not in rendered[None] and "**archived**" not in rendered[None], \
+            f"pending line claims a settled outcome: {rendered[None]}"
+        assert "assume it did not run" in rendered[None], rendered[None]
+        assert len(set(rendered.values())) == 3, "archive states render identically"
+
+        # The follow-up itself must distinguish success from failure loudly.
+        bodies.clear()
+        m.log_archive_result(True)
+        assert bodies and "**archived**" in bodies[0], "archive success not reported"
+        bodies.clear()
+        m.log_archive_result(False)
+        assert bodies and "STILL ARMED" in bodies[0], "archive failure not reported loudly"
+    finally:
+        m.urllib.request.urlopen = real
+
+    print("PASS — archive outcome is reported in a follow-up; pending/archived/still-armed "
+          "render distinctly and pending never claims a settled outcome.")
+
+
 def main():
     m = load()
     check_reply_fail_open(m)
     check_unknown_drop_aborts(m)
     check_lbs_unblock_guards(m)
+    check_archive_reporting(m)
     captured = []
 
     class FakeResp:
