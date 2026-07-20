@@ -1,8 +1,9 @@
 
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
-import { getAlternativesForEntity } from "@/lib/services/comparison-service";
+import { getAlternativesForEntity, resolveCanonicalComparisonSlugs } from "@/lib/services/comparison-service";
 import { personAuthorNode, breadcrumbSchema, contentAuthorArray, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ENTITY_CONTENT } from "@/lib/data/entity-content";
@@ -117,23 +118,50 @@ export default async function AlternativesPage({ params }: PageProps) {
   const { slug } = await params;
   const name = humanizeEntityName(slug);
 
+  // DAN-2551: gate on entity status. Draft/archived entities are not canonical
+  // pages — same reasoning as the /entity gate added in the same PR.
+  try {
+    const prisma = getPrisma();
+    if (prisma) {
+      const entityRow = await prisma.entity.findUnique({
+        where: { slug },
+        select: { status: true },
+      });
+      if (!entityRow || entityRow.status !== "published") notFound();
+    }
+  } catch {
+    // DB unavailable — allow render; worst case a draft renders once.
+  }
+
   // Find all comparisons that include this entity (DB + mock)
   const alternatives = await getAlternativesForEntity(slug);
 
-  // Merge curated alternatives (from entity-content) with comparison-derived ones
+  // Merge curated alternatives (from entity-content) with comparison-derived ones.
+  //
+  // DAN-2551: this used to synthesise `${slug}-vs-${curated.slug}` as the link target
+  // without checking the comparison exists. Most did not, so the cards, the ItemList
+  // schema and significantLink all pointed crawlers at 404s. Resolve against the real
+  // canonical catalog (both orderings) and drop curated entries with no live page.
   const entityContent = ENTITY_CONTENT[slug];
   if (entityContent) {
     const existingSlugs = new Set(alternatives.map((a) => a.slug));
-    for (const curated of entityContent.alternatives) {
-      if (!existingSlugs.has(curated.slug)) {
-        alternatives.push({
-          name: curated.name,
-          slug: curated.slug,
-          comparisonSlug: `${slug}-vs-${curated.slug}`,
-          comparisonTitle: `${name} vs ${curated.name}`,
-        });
-        existingSlugs.add(curated.slug);
-      }
+    const pending = entityContent.alternatives.filter((c) => !existingSlugs.has(c.slug));
+    const liveSlugs = await resolveCanonicalComparisonSlugs(
+      pending.flatMap((c) => [`${slug}-vs-${c.slug}`, `${c.slug}-vs-${slug}`])
+    );
+
+    for (const curated of pending) {
+      const comparisonSlug = [`${slug}-vs-${curated.slug}`, `${curated.slug}-vs-${slug}`].find(
+        (candidate) => liveSlugs.has(candidate)
+      );
+      if (!comparisonSlug) continue;
+      alternatives.push({
+        name: curated.name,
+        slug: curated.slug,
+        comparisonSlug,
+        comparisonTitle: `${name} vs ${curated.name}`,
+      });
+      existingSlugs.add(curated.slug);
     }
   }
 
