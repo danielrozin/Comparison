@@ -24,11 +24,11 @@
  * map each retired slug to the canonical slug it should consolidate into.
  */
 
-import type { BlogRedirect } from "./blog-redirects";
 import { DEAD_REDIRECT_SOURCES_DAN2045 } from "./compare-dead-redirects.dan2045.generated";
 import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated";
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.dan1800.generated";
 import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "./compare-rivalry-redirects.dan2078.generated";
+import { BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518 } from "./compare-batch-archive-redirects.generated";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -235,6 +235,9 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   ...TITLE_ALIAS_CONSOLIDATIONS,
   ...RIVALRY_CONSOLIDATIONS_DAN2078,
   ...MANUAL_CONSOLIDATIONS,
+  // DAN-2518: PATH A batch-archive decisions are the most recent judgement about
+  // a cluster's survivor, so they merge last and override any earlier layer.
+  ...BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518,
 };
 
 // DAN-2078: the rivalry layer's survivor is authoritative over an earlier layer that
@@ -308,12 +311,33 @@ for (const [from] of Object.entries(COMPARE_CONSOLIDATIONS)) {
   safeConsolidations[from] = to;
 }
 
-export const COMPARE_REDIRECTS: BlogRedirect[] = Object.entries(
+/**
+ * DAN-2518 — emit an explicit 301, not Next's `permanent: true` (which compiles
+ * to 308).
+ *
+ * Google treats 301 and 308 identically for canonicalisation, so this is not an
+ * SEO fix; it is a compatibility one. 308 preserves the request method and body,
+ * which is meaningless for a GET-only content move, and the long tail of
+ * crawlers, link-graph tools and CDNs that consolidation reporting depends on
+ * still handle 301 more predictably than 308. A retired comparison slug is the
+ * textbook 301 case, so say 301.
+ *
+ * `permanent` and `statusCode` are mutually exclusive in a Next redirect entry —
+ * setting both throws at config load — hence the local type rather than
+ * BlogRedirect (which pins `permanent: true` for the /blog and /vs layers).
+ */
+export type CompareRedirect = {
+  source: string;
+  destination: string;
+  statusCode: 301;
+};
+
+export const COMPARE_REDIRECTS: CompareRedirect[] = Object.entries(
   safeConsolidations,
 ).map(([from, to]) => ({
   source: `/compare/${from}`,
   destination: `/compare/${to}`,
-  permanent: true as const,
+  statusCode: 301 as const,
 }));
 
 /**

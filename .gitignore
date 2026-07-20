@@ -64,3 +64,6 @@ hyperframes/**/.hyperframes/
 # Local data snapshots (large JSON, not for version control)
 scripts/data/*.json
 gsc-recovery-daily.json
+
+# DAN-2518 batch archive audit trail + rollback files (run artifacts, not source)
+archive-batches/
