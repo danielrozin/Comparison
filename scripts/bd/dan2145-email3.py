@@ -809,7 +809,16 @@ if __name__ == "__main__":
         print(f"ABORT: unrecognised flag(s): {', '.join(bad_flags)}")
         print(f"  Known flags: {', '.join(sorted(KNOWN_FLAGS))}")
         print("  Nothing was sent and no preflight ran. Fix the flag and re-run.")
-        sys.exit(6)
+        # Exit 8, NOT 6. This abort originally used 6 — which the firing routine's body
+        # documents as "PARTIAL SEND: some editors got Email-3, some did NOT, the guard
+        # file exists, do NOT re-run clean, do NOT mark DAN-2145 done." That is the exact
+        # inverse of what actually happened here: NOTHING was sent, no guard file exists,
+        # and a clean re-run is not just safe, it is the required next step. An operator
+        # (or a headless agent) matching the exit code against that table would conclude
+        # three editors are half-emailed and stop — leaving the final touch unsent on the
+        # one day the one-shot fires. Same collision the partial-send branch below was
+        # written to fix between 5 and 6; reusing 6 here recreated it one layer over.
+        sys.exit(8)
 
     if "--reply-check" in args:
         _, verified = reply_check(TARGETS)

@@ -183,7 +183,11 @@ def check_unknown_flag_aborts(m):
     for typo in ("--sned", "--send-all", "-send"):
         r = subprocess.run([sys.executable, SCRIPT, typo],
                            capture_output=True, text=True, env=env, timeout=60)
-        assert r.returncode == 6, f"{typo} did not abort (exit {r.returncode})"
+        # 8, not 6. 6 is PARTIAL SEND in the firing routine's exit-code table (some
+        # editors mailed, guard file exists, clean re-run FORBIDDEN). Nothing was sent
+        # here and a clean re-run is exactly what should happen next, so sharing the
+        # code points the fire-time reader at the opposite recovery action.
+        assert r.returncode == 8, f"{typo} did not abort with 8 (exit {r.returncode})"
         assert "unrecognised flag" in r.stdout, f"abort reason not surfaced:\n{r.stdout}"
         assert "PREFLIGHT PASS" not in r.stdout, f"{typo} still printed a reassuring pass"
         assert "SENDING" not in r.stdout, f"{typo} reached the send stage"
@@ -215,8 +219,24 @@ def check_unknown_flag_aborts(m):
     undocumented = docstring_flags - known
     assert not undocumented, f"documented but not whitelisted: {sorted(undocumented)}"
 
-    print("PASS — typo'd flags abort (exit 6) without printing a pass line; "
-          "bare AND --preflight forms still exit 0; every documented flag is whitelisted.")
+    # Exit-code collision guard. Twice now a new abort has been given a code that was
+    # already spoken for (--drop typo vs partial send on 5; flag typo vs partial send on
+    # 6), and both times the two states had OPPOSITE recovery actions — the failure mode
+    # is not a wrong number, it is a fire-time operator confidently doing the wrong thing.
+    # The exit codes are the routine body's whole interface to this script, so assert the
+    # distinct-code invariant directly rather than trusting the next author to notice.
+    src = open(SCRIPT).read()
+    body = src[src.index('if __name__ == "__main__":'):]
+    codes = [int(c) for c in re.findall(r"sys\.exit\((\d+)\)", body)]
+    dupes = sorted({c for c in codes if codes.count(c) > 1})
+    assert not dupes, (
+        f"exit code(s) {dupes} are used by more than one abort path. Each code is a "
+        f"distinct instruction in the routine's EXIT CODES table; two paths sharing one "
+        f"means the operator is told the wrong recovery for at least one of them.")
+
+    print("PASS — typo'd flags abort (exit 8, distinct from PARTIAL SEND's 6) without "
+          "printing a pass line; bare AND --preflight forms still exit 0; every "
+          f"documented flag is whitelisted; {len(codes)} exit paths, all distinct.")
 
 
 def check_lbs_unblock_guards(m):
