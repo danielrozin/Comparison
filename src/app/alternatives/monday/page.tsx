@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -528,12 +529,12 @@ export default function MondayAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/monday-vs-asana"
               className="text-primary-600 font-semibold hover:underline"
             >
               Monday.com vs Asana
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -573,12 +574,12 @@ export default function MondayAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/monday-vs-clickup"
               className="text-primary-600 font-semibold hover:underline"
             >
               Monday.com vs ClickUp
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -617,12 +618,12 @@ export default function MondayAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/monday-vs-trello"
               className="text-primary-600 font-semibold hover:underline"
             >
               Monday.com vs Trello
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -662,12 +663,12 @@ export default function MondayAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/monday-vs-notion"
               className="text-primary-600 font-semibold hover:underline"
             >
               Monday.com vs Notion
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -881,9 +882,9 @@ export default function MondayAlternativesPage() {
                 paid level, Asana Teams starts at $13.49/user/mo vs Monday&rsquo;s Pro at
                 $19/user/mo (billed annually, min 3 seats). The savings compound quickly past
                 10 seats. See{" "}
-                <Link href="/compare/monday-vs-asana" className="text-primary-600 font-semibold hover:underline">
+                <CompareLink href="/compare/monday-vs-asana" className="text-primary-600 font-semibold hover:underline">
                   Monday.com vs Asana
-                </Link>{" "}
+                </CompareLink>{" "}
                 for a full price breakdown.
               </p>
             </div>
@@ -918,9 +919,9 @@ export default function MondayAlternativesPage() {
                 trade-off is complexity: ClickUp&rsquo;s flexibility means more setup time.
                 Monday.com is more opinionated and easier to deploy quickly, especially for
                 non-technical teams. See{" "}
-                <Link href="/compare/monday-vs-clickup" className="text-primary-600 font-semibold hover:underline">
+                <CompareLink href="/compare/monday-vs-clickup" className="text-primary-600 font-semibold hover:underline">
                   Monday.com vs ClickUp
-                </Link>{" "}
+                </CompareLink>{" "}
                 for a full breakdown.
               </p>
             </div>
@@ -939,27 +940,27 @@ export default function MondayAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link href="/compare/monday-vs-asana" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/monday-vs-asana" className="text-primary-600 font-semibold hover:underline">
                 Monday.com vs Asana
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-asked 2-way for teams leaving Monday
             </li>
             <li>
-              <Link href="/compare/monday-vs-clickup" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/monday-vs-clickup" className="text-primary-600 font-semibold hover:underline">
                 Monday.com vs ClickUp
-              </Link>{" "}
+              </CompareLink>{" "}
               — visual simplicity vs all-in-one depth
             </li>
             <li>
-              <Link href="/compare/monday-vs-trello" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/monday-vs-trello" className="text-primary-600 font-semibold hover:underline">
                 Monday.com vs Trello
-              </Link>{" "}
+              </CompareLink>{" "}
               — full work OS vs pure Kanban
             </li>
             <li>
-              <Link href="/compare/monday-vs-notion" className="text-primary-600 font-semibold hover:underline">
+              <CompareLink href="/compare/monday-vs-notion" className="text-primary-600 font-semibold hover:underline">
                 Monday.com vs Notion
-              </Link>{" "}
+              </CompareLink>{" "}
               — structured PM vs flexible docs + databases
             </li>
           </ul>

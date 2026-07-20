@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -1086,48 +1087,48 @@ export default function GrammarlyAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/grammarly-vs-prowritingaid"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Grammarly vs ProWritingAid
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-searched 2-way grammar tool comparison
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/grammarly-vs-quillbot"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Grammarly vs QuillBot
-              </Link>{" "}
+              </CompareLink>{" "}
               — grammar checker vs AI paraphraser
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/grammarly-vs-languagetool"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Grammarly vs LanguageTool
-              </Link>{" "}
+              </CompareLink>{" "}
               — paid polish vs free open-source
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/grammarly-vs-hemingway"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Grammarly vs Hemingway Editor
-              </Link>{" "}
+              </CompareLink>{" "}
               — real-time checking vs post-draft readability
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/quillbot-vs-wordtune"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 QuillBot vs Wordtune
-              </Link>{" "}
+              </CompareLink>{" "}
               — AI paraphrasing tools compared
             </li>
           </ul>

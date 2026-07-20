@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -932,48 +933,48 @@ export default function NotionAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/notion-vs-obsidian"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Notion vs Obsidian
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-searched 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/notion-vs-coda"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Notion vs Coda
-              </Link>{" "}
+              </CompareLink>{" "}
               — databases + automation head-to-head
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/notion-vs-confluence"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Notion vs Confluence
-              </Link>{" "}
+              </CompareLink>{" "}
               — startup vs enterprise wiki
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/notion-vs-clickup"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Notion vs ClickUp
-              </Link>{" "}
+              </CompareLink>{" "}
               — docs-only vs all-in-one
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/obsidian-vs-logseq"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Obsidian vs Logseq
-              </Link>{" "}
+              </CompareLink>{" "}
               — local PKM apps compared
             </li>
           </ul>

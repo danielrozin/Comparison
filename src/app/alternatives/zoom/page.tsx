@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -549,19 +550,19 @@ export default function ZoomAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/zoom-vs-google-meet"
               className="text-primary-600 font-semibold hover:underline"
             >
               Zoom vs Google Meet
-            </Link>{" "}
+            </CompareLink>{" "}
             ·{" "}
-            <Link
+            <CompareLink
               href="/compare/zoom-vs-google-meet-vs-teams"
               className="text-primary-600 font-semibold hover:underline"
             >
               Zoom vs Google Meet vs Teams
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -600,19 +601,19 @@ export default function ZoomAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/zoom-vs-microsoft-teams"
               className="text-primary-600 font-semibold hover:underline"
             >
               Zoom vs Microsoft Teams
-            </Link>{" "}
+            </CompareLink>{" "}
             ·{" "}
-            <Link
+            <CompareLink
               href="/compare/zoom-vs-google-meet-vs-teams"
               className="text-primary-600 font-semibold hover:underline"
             >
               Zoom vs Google Meet vs Teams
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -914,12 +915,12 @@ export default function ZoomAlternativesPage() {
                 no download, integrates natively with Google Calendar and Gmail, and includes
                 live captions by default. For large enterprise deployments, webinar hosting,
                 or advanced recording features, Zoom still leads. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/zoom-vs-google-meet"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   Zoom vs Google Meet
-                </Link>{" "}
+                </CompareLink>{" "}
                 for the full comparison.
               </p>
             </div>
@@ -933,12 +934,12 @@ export default function ZoomAlternativesPage() {
                 Business Basic ($6/u/mo) and above, so you&rsquo;re not paying twice. Teams
                 integrates calendar, chat, file sharing, and video into one client where
                 Zoom requires bolting on a separate chat app. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/zoom-vs-google-meet-vs-teams"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   Zoom vs Google Meet vs Teams
-                </Link>{" "}
+                </CompareLink>{" "}
                 for the full 3-way.
               </p>
             </div>
@@ -982,39 +983,39 @@ export default function ZoomAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/zoom-vs-google-meet"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Zoom vs Google Meet
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-searched 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/zoom-vs-microsoft-teams"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Zoom vs Microsoft Teams
-              </Link>{" "}
+              </CompareLink>{" "}
               — video-first vs collaboration suite
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/zoom-vs-google-meet-vs-teams"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Zoom vs Google Meet vs Teams
-              </Link>{" "}
+              </CompareLink>{" "}
               — 3-way video conferencing shootout
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/zoom-vs-webex"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Zoom vs Webex
-              </Link>{" "}
+              </CompareLink>{" "}
               — SMB vs enterprise compliance
             </li>
             <li>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -579,12 +580,12 @@ export default function ChatGPTAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/chatgpt-vs-claude"
               className="text-primary-600 font-semibold hover:underline"
             >
               ChatGPT vs Claude
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -629,19 +630,19 @@ export default function ChatGPTAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/chatgpt-vs-gemini"
               className="text-primary-600 font-semibold hover:underline"
             >
               ChatGPT vs Gemini
-            </Link>{" "}
+            </CompareLink>{" "}
             ·{" "}
-            <Link
+            <CompareLink
               href="/compare/chatgpt-vs-claude-vs-gemini"
               className="text-primary-600 font-semibold hover:underline"
             >
               ChatGPT vs Claude vs Gemini
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -684,12 +685,12 @@ export default function ChatGPTAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/chatgpt-vs-perplexity"
               className="text-primary-600 font-semibold hover:underline"
             >
               ChatGPT vs Perplexity
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -932,12 +933,12 @@ export default function ChatGPTAlternativesPage() {
                 Verified and has a 1M-token context window. For ecosystem breadth, image
                 generation, and voice mode, ChatGPT is stronger. At $20/mo they&rsquo;re
                 the same price; the right pick depends on your primary use case. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/chatgpt-vs-claude"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   ChatGPT vs Claude
-                </Link>{" "}
+                </CompareLink>{" "}
                 for the full comparison.
               </p>
             </div>
@@ -964,12 +965,12 @@ export default function ChatGPTAlternativesPage() {
                 are structurally better than ChatGPT&rsquo;s web search for this use case.
                 For creative writing, image generation, and general-purpose chat, ChatGPT
                 is stronger. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/chatgpt-vs-perplexity"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   ChatGPT vs Perplexity
-                </Link>
+                </CompareLink>
                 .
               </p>
             </div>
@@ -992,39 +993,39 @@ export default function ChatGPTAlternativesPage() {
           <h2 id="chatgpt-related-comparisons" className="text-2xl font-bold text-text mb-4">Related comparisons</h2>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/chatgpt-vs-claude"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 ChatGPT vs Claude
-              </Link>{" "}
+              </CompareLink>{" "}
               — detailed 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/chatgpt-vs-gemini"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 ChatGPT vs Gemini
-              </Link>{" "}
+              </CompareLink>{" "}
               — ecosystem vs. Search grounding
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/chatgpt-vs-perplexity"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 ChatGPT vs Perplexity
-              </Link>{" "}
+              </CompareLink>{" "}
               — when citations matter
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/chatgpt-vs-claude-vs-gemini"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 ChatGPT vs Claude vs Gemini
-              </Link>{" "}
+              </CompareLink>{" "}
               — 3-way frontier model comparison
             </li>
             <li>

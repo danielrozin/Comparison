@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareLink } from "@/components/comparison/CompareLink";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 
@@ -548,19 +549,19 @@ export default function FigmaAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/figma-vs-sketch"
               className="text-primary-600 font-semibold hover:underline"
             >
               Figma vs Sketch
-            </Link>{" "}
+            </CompareLink>{" "}
             ·{" "}
-            <Link
+            <CompareLink
               href="/compare/figma-vs-sketch-vs-adobe-xd"
               className="text-primary-600 font-semibold hover:underline"
             >
               Figma vs Sketch vs Adobe XD
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -604,19 +605,19 @@ export default function FigmaAlternativesPage() {
           </p>
           <p className="text-text">
             Compare:{" "}
-            <Link
+            <CompareLink
               href="/compare/figma-vs-adobe-xd"
               className="text-primary-600 font-semibold hover:underline"
             >
               Figma vs Adobe XD
-            </Link>{" "}
+            </CompareLink>{" "}
             ·{" "}
-            <Link
+            <CompareLink
               href="/compare/figma-vs-sketch-vs-adobe-xd"
               className="text-primary-600 font-semibold hover:underline"
             >
               Figma vs Sketch vs Adobe XD
-            </Link>
+            </CompareLink>
           </p>
         </section>
 
@@ -914,12 +915,12 @@ export default function FigmaAlternativesPage() {
                 experience with offline capability. Figma leads on collaboration (real-time
                 multi-cursor), browser-based access, and cross-platform support. Sketch is
                 $10/editor/mo vs Figma&rsquo;s $15/editor/mo. See{" "}
-                <Link
+                <CompareLink
                   href="/compare/figma-vs-sketch"
                   className="text-primary-600 font-semibold hover:underline"
                 >
                   Figma vs Sketch
-                </Link>{" "}
+                </CompareLink>{" "}
                 for the full comparison.
               </p>
             </div>
@@ -980,48 +981,48 @@ export default function FigmaAlternativesPage() {
           </div>
           <ul className="space-y-2 text-text">
             <li>
-              <Link
+              <CompareLink
                 href="/compare/figma-vs-sketch"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Figma vs Sketch
-              </Link>{" "}
+              </CompareLink>{" "}
               — the most-searched 2-way
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/figma-vs-adobe-xd"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Figma vs Adobe XD
-              </Link>{" "}
+              </CompareLink>{" "}
               — after the blocked acquisition
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/figma-vs-sketch-vs-adobe-xd"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Figma vs Sketch vs Adobe XD
-              </Link>{" "}
+              </CompareLink>{" "}
               — 3-way design tool shootout
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/figma-vs-framer"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Figma vs Framer
-              </Link>{" "}
+              </CompareLink>{" "}
               — design vs design + publish
             </li>
             <li>
-              <Link
+              <CompareLink
                 href="/compare/figma-vs-canva"
                 className="text-primary-600 font-semibold hover:underline"
               >
                 Figma vs Canva
-              </Link>{" "}
+              </CompareLink>{" "}
               — pro design tool vs all-purpose creator
             </li>
           </ul>
