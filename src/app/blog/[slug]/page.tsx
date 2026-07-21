@@ -6,6 +6,7 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
+import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -383,7 +384,9 @@ export default async function BlogPostPage({
   }
 
   const readTime = estimateReadTime(article.content);
-  const renderedContent = renderMarkdown(article.content);
+  // DAN-2581: markdown bodies hardcode /compare targets that the consolidation
+  // batches retire out from under them — resolve them at render, never trust them.
+  const renderedContent = await resolveCompareLinksInHtml(renderMarkdown(article.content));
   const toc = extractTOC(article.content);
 
   // Fetch actual comparison titles for related comparisons

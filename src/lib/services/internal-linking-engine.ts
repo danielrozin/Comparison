@@ -21,6 +21,7 @@ import {
   REDIRECTED_COMPARE_SLUGS,
   isRedirectedCompareSlug,
 } from "@/lib/redirects/compare-redirects";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
 
 // Category affinity map (same as InternalLinks component)
 const RELATED_CATEGORIES: Record<string, string[]> = {
@@ -279,7 +280,7 @@ async function getLinksFromDb(
     }
   }
 
-  return rankAndLimit(scored, limit);
+  return rankPruneAndLimit(scored, limit);
 }
 
 // ---------------------------------------------------------------------------
@@ -351,6 +352,42 @@ function rankAndLimit(scored: Map<string, ScoredLink>, limit: number): ScoredLin
     .filter((link) => !isRedirectedCompareSlug(link.slug))
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
+}
+
+/**
+ * DAN-2581 — drop ranked links whose target will not render.
+ *
+ * Signal 2 reads `internalLink.toPath` verbatim: no status filter, no existence check.
+ * So a seeded row pointing at a since-archived slug went straight into the related rail
+ * and `/compare/[slug]` 404'd it (macbook-air-vs-macbook-pro-difference-2026-specs,
+ * sat-vs-act, gre-vs-gmat …). Rank a wider shortlist, prune it against the canonical
+ * catalog, then cut to `limit` — so a dropped link is backfilled rather than leaving a
+ * short rail.
+ *
+ * Queries `canonicalComparisonWhere` directly rather than going through
+ * comparison-service, which imports this module.
+ */
+async function rankPruneAndLimit(
+  scored: Map<string, ScoredLink>,
+  limit: number
+): Promise<ScoredLink[]> {
+  const shortlist = rankAndLimit(scored, limit * 3);
+  if (shortlist.length === 0) return shortlist;
+
+  const prisma = getPrismaClient();
+  if (!prisma) return shortlist.slice(0, limit);
+
+  try {
+    const rows = await prisma.comparison.findMany({
+      where: canonicalComparisonWhere({ AND: [{ slug: { in: shortlist.map((l) => l.slug) } }] }),
+      select: { slug: true },
+    });
+    const live = new Set<string>(rows.map((r: { slug: string }) => r.slug));
+    return shortlist.filter((l) => live.has(l.slug)).slice(0, limit);
+  } catch (e) {
+    console.warn("Linking engine: canonical prune failed:", e);
+    return shortlist.slice(0, limit);
+  }
 }
 
 // ---------------------------------------------------------------------------

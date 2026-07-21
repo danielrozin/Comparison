@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
+import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 import { breadcrumbSchema, faqSchema, entitySchemaType, entityWikipediaSameAs, webPageSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import type { ComparisonPageData } from "@/types";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
@@ -315,9 +316,14 @@ export default async function HubPage({ params }: PageProps) {
   const hub = HUB_CONFIG[slug];
   if (!hub) notFound();
 
-  // Fetch spoke comparisons, soft-failing missing slugs
+  // DAN-2581: "did getComparisonBySlug return a row?" is not the same question as
+  // "will /compare/{slug} render?". That service call has no status filter and falls
+  // back to the mock catalog, so archived rows and fixtures passed this guard and the
+  // hub linked them straight into the DAN-2065 404 gate. Resolve against the canonical
+  // catalog first, then hydrate only the survivors.
+  const liveSlugs = await filterLiveCompareSlugs(hub.comparisonSlugs);
   const spokeResults = await Promise.allSettled(
-    hub.comparisonSlugs.map((s) => getComparisonBySlug(s))
+    liveSlugs.map((s) => getComparisonBySlug(s))
   );
   const spokes = spokeResults
     .map((r) => (r.status === "fulfilled" ? r.value : null))
@@ -386,12 +392,12 @@ export default async function HubPage({ params }: PageProps) {
             <p className="text-text-secondary">Comparisons are being generated. Check back soon.</p>
           ) : (
             <ul role="list" className="grid grid-cols-1 md:grid-cols-2 gap-4 list-none">
-              {hub.comparisonSlugs.map((compSlug) => {
-                const comp = spokes.find((s) => s.slug === compSlug);
-                if (!comp) return null;
+              {/* Iterate the resolved spokes, not the raw config slugs: a retired slug
+                  is folded onto its survivor, so a config-slug lookup would miss it. */}
+              {spokes.map((comp) => {
                 const parts = comp.title.split(/\s+vs\.?\s+/i);
                 return (
-                  <li key={compSlug} className="flex">
+                  <li key={comp.slug} className="flex">
                   <Link
                     href={`/compare/${comp.slug}`}
                     className="flex items-start gap-4 p-5 rounded-xl border border-border hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 bg-white group relative overflow-hidden w-full"

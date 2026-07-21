@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { LoanPayoffCalculator } from "./LoanPayoffCalculator";
+import { filterLiveInternalLinks } from "@/lib/seo/resolve-internal-links";
 
 const SLUG = "loan-payoff-calculator";
 const TITLE = "Free Loan Payoff Calculator — See Exactly When You'll Be Debt-Free";
@@ -133,7 +134,10 @@ const RELATED_LINKS = [
   { href: "/blog/best-strategies-to-pay-off-debt-faster", label: "Best Strategies to Pay Off Debt Faster" },
 ];
 
-export default function LoanPayoffCalculatorPage() {
+export default async function LoanPayoffCalculatorPage() {
+  // DAN-2581: these related links are hardcoded targets; consolidation batches
+  // retire /compare slugs and the crawl found dead /blog slugs here too.
+  const relatedLinks = await filterLiveInternalLinks(RELATED_LINKS);
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -238,7 +242,7 @@ export default function LoanPayoffCalculatorPage() {
         <aside className="p-6 bg-surface-alt rounded-xl border border-border">
           <h2 className="text-lg font-bold text-text mb-4">Related Comparisons</h2>
           <ul className="grid sm:grid-cols-2 gap-3">
-            {RELATED_LINKS.map(({ href, label }) => (
+            {relatedLinks.map(({ href, label }) => (
               <li key={href}>
                 <Link href={href} className="flex items-center gap-2 text-primary-600 hover:text-primary-700 text-sm font-medium group">
                   <span className="text-primary-400 group-hover:translate-x-0.5 transition-transform">→</span>
