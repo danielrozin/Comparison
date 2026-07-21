@@ -18,5 +18,15 @@
  * prints the required new floor at the end of every `--apply` run.
  */
 export const BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518: Record<string, string> = {
-  // (no batches applied yet — Phase 1 archive runs against this file)
+  "copilot-vs-chatgpt": "chatgpt-vs-copilot",
+  "macbook-air-vs-dell-xps-13": "dell-xps-13-vs-macbook-air",
+  "microsoft-teams-vs-slack": "slack-vs-microsoft-teams",
+  "netflix-vs-disney": "disney-vs-netflix",
+  "notion-vs-clickup": "clickup-vs-notion",
+  "peacock-vs-hulu": "hulu-vs-peacock",
+  "samsung-galaxy-vs-google-pixel": "google-pixel-vs-samsung-galaxy",
+  "shein-vs-amazon-haul": "amazon-haul-vs-shein",
+  "spotify-vs-apple-music": "apple-music-vs-spotify",
+  "uber-vs-lyft": "lyft-vs-uber",
+  "wix-vs-squarespace": "squarespace-vs-wix",
 };

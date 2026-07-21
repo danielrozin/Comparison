@@ -90,5 +90,12 @@ export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => s
  * DAN-2520 (2026-07-21): PATH A Phase 2 archived 4 low-signal pages (score 20, noindex
  * tier: netflix-vs-disney, notion-vs-clickup, shein-vs-amazon-haul, spotify-vs-apple-music).
  * 174 - 4 = 170. Ceiling unchanged at 435.
+ *
+ * DAN-2522 (2026-07-21): PATH A Phase 3 — 11 reverse-dup pairs resolved via 301 redirects.
+ * First restored 4 survivor slugs (disney-vs-netflix, clickup-vs-notion, amazon-haul-vs-shein,
+ * apple-music-vs-spotify) that Phase 1 accidentally archived (they scored 20/noindex but are
+ * redirect targets). Then archived 7 newly-retired redirect sources; the 4 Phase-2 slugs were
+ * already archived. Net: 170 + 4 restored − 7 newly archived = 167. REDIRECTED_COMPARE_SLUGS
+ * grows 131 → 142 (+11), so ceiling drops 435 → 424 per the floor invariant. 167 ≤ 424 ✓
  */
-export const CANONICAL_COMPARISON_COUNT_FALLBACK = 170;
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 167;
