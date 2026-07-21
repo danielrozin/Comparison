@@ -8,6 +8,7 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { personAuthorNode, teachesDefinedTerm } from "@/lib/seo/schema";
+import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -388,7 +389,9 @@ export default async function BestPage({ params }: PageProps) {
   if (!entry) notFound();
 
   const schema = bestPageSchema(entry);
-  const bodyHtml = renderMarkdown(entry.bodyMarkdown);
+  // DAN-2581: same render-time resolve as /blog — the curated bodyMarkdown points at
+  // /compare slugs that later consolidation batches archived.
+  const bodyHtml = await resolveCompareLinksInHtml(renderMarkdown(entry.bodyMarkdown));
 
   return (
     <>

@@ -1277,11 +1277,13 @@ export async function resolveCanonicalComparisonSlugs(
       where: canonicalComparisonWhere({ AND: [{ slug: { in: unique } }] }),
       select: { slug: true },
     });
-    const found = new Set<string>(rows.map((r: { slug: string }) => r.slug));
-    for (const s of unique) {
-      if (!found.has(s) && isLinkableMock(s)) found.add(s);
-    }
-    return found;
+    // DAN-2581: with a DB configured, the DB answer is the whole answer. This used
+    // to re-add any mock slug the query missed — but `/compare/[slug]` renders a mock
+    // fixture only when no DB is configured (isRenderableComparison), so every mock
+    // slug absent from the published catalog was resolved "live" here and then 404'd.
+    // That is how /entity and /compare pages kept emitting dead links (react-vs-angular,
+    // federer-vs-nadal, curry-vs-lebron, …) after DAN-2551/DAN-2565.
+    return new Set<string>(rows.map((r: { slug: string }) => r.slug));
   } catch (e) {
     console.warn("Prisma resolveCanonicalComparisonSlugs failed:", e);
     return new Set(unique.filter(isLinkableMock));
@@ -1297,6 +1299,7 @@ export async function getComparisonsForEntity(
 
   const results: { slug: string; title: string; category: string | null }[] = [];
   const seenSlugs = new Set<string>();
+  let dbAnswered = false;
 
   const prisma = getPrismaClient();
   if (prisma) {
@@ -1311,6 +1314,7 @@ export async function getComparisonsForEntity(
         select: { slug: true, title: true, category: true },
         orderBy: { viewCount: "desc" },
       });
+      dbAnswered = true;
 
       for (const comp of comparisons) {
         if (!seenSlugs.has(comp.slug)) {
@@ -1323,8 +1327,11 @@ export async function getComparisonsForEntity(
     }
   }
 
-  // Merge mock data
-  const allMockSlugs = getAllMockSlugs();
+  // DAN-2581: the query above is canonical-aware, but this merge was not conditional —
+  // it appended mock fixtures on top of a perfectly good DB answer, and /compare renders
+  // fixtures only when no DB is configured. 16 entity pages linked 404s this way.
+  // Merge the fixtures only when the database did not answer.
+  const allMockSlugs = dbAnswered ? [] : getAllMockSlugs();
   for (const compSlug of allMockSlugs) {
     if (seenSlugs.has(compSlug)) continue;
     const comp = getMockComparison(compSlug);

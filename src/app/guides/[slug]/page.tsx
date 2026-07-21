@@ -5,6 +5,7 @@ import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { GUIDE_CONFIG } from "@/lib/data/guides";
 import { breadcrumbSchema, faqSchema, webPageSchema } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { filterLiveInternalLinks } from "@/lib/seo/resolve-internal-links";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -184,8 +185,35 @@ function guideSchemas(guide: (typeof GUIDE_CONFIG)[string]) {
 
 export default async function GuidePage({ params }: PageProps) {
   const { slug } = await params;
-  const guide = GUIDE_CONFIG[slug];
-  if (!guide) notFound();
+  const configured = GUIDE_CONFIG[slug];
+  if (!configured) notFound();
+
+  // DAN-2581: the curated section links are hardcoded slugs, and consolidation
+  // batches retire /compare slugs out from under them. Resolve once, up front, so the
+  // filtered guide drives the schema graph and the rendered lists alike — a dead link
+  // must not survive in JSON-LD either.
+  const liveSections = await Promise.all(
+    configured.sections.map(async (section) => ({
+      ...section,
+      links: (
+        await filterLiveInternalLinks(
+          section.links.map((l) => ({
+            ...l,
+            href: l.type === "blog" ? `/blog/${l.slug}` : `/compare/${l.slug}`,
+          }))
+        )
+      ).map(({ href, ...l }) => ({
+        // Re-derive the slug: a retired /compare slug comes back folded onto its
+        // survivor, and the renderer + schema builder both key off `slug`.
+        ...l,
+        slug: href.replace(/^\/(?:compare|blog)\//, ""),
+      })),
+    }))
+  );
+  const guide = {
+    ...configured,
+    sections: liveSections.filter((s) => s.links.length > 0),
+  };
 
   const schemas = guideSchemas(guide);
   const totalLinks = guide.sections.reduce((n, s) => n + s.links.length, 0);
