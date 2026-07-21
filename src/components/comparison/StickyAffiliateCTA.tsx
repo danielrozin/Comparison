@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import type { ComparisonEntityData } from "@/types";
 import { trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
+import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 
 const PRODUCT_CATEGORIES = new Set([
   "technology",
@@ -59,6 +60,12 @@ export function StickyAffiliateCTA({
     (entityA?.affiliateLinks?.length ?? 0) > 0 ||
     (entityB?.affiliateLinks?.length ?? 0) > 0;
   const isGeneric = entityA ? isGenericLink(entityA) : false;
+
+  const linkA = entityA?.affiliateLinks?.[0];
+  const linkB = entityB?.affiliateLinks?.[0];
+  // Hooks must run before the early returns below, so resolve both hrefs here.
+  const hrefA = usePaidAffiliateHref(linkA?.url ?? "");
+  const hrefB = usePaidAffiliateHref(linkB?.url ?? "");
 
   useEffect(() => {
     if (!hasLinks) return;
@@ -116,9 +123,6 @@ export function StickyAffiliateCTA({
     });
   };
 
-  const linkA = entityA?.affiliateLinks?.[0];
-  const linkB = entityB?.affiliateLinks?.[0];
-
   return (
     <>
       {/* Sentinel element placed near verdict for IntersectionObserver */}
@@ -141,7 +145,7 @@ export function StickyAffiliateCTA({
             <div className="flex-1 flex items-center gap-2">
               {linkA && entityA && (
                 <a
-                  href={linkA.url}
+                  href={hrefA}
                   target="_blank"
                   rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   aria-label={ctaLabel(entityA, isTreatment)}
@@ -173,7 +177,7 @@ export function StickyAffiliateCTA({
 
               {linkB && entityB && (
                 <a
-                  href={linkB.url}
+                  href={hrefB}
                   target="_blank"
                   rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   aria-label={ctaLabel(entityB, isTreatment)}

@@ -3,6 +3,7 @@
 import type { AffiliateLink } from "@/types";
 import { trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
+import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 
 const PARTNER_ICONS: Record<string, React.ReactNode> = {
   amazon: (
@@ -47,6 +48,7 @@ export function AffiliateButton({
   size?: "sm" | "md";
 }) {
   const icon = PARTNER_ICONS[link.partner];
+  const href = usePaidAffiliateHref(link.url);
   const { variant: ctaVariant } = useExperiment("cta-button-style");
   const isTreatment = ctaVariant === "treatment";
 
@@ -85,7 +87,7 @@ export function AffiliateButton({
 
   return (
     <a
-      href={link.url}
+      href={href}
       target="_blank"
       rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
       aria-label={`${ctaText} — ${link.label}`}
@@ -130,6 +132,96 @@ export function AffiliateDisclosure() {
         Learn more about our affiliate disclosure
       </a>
     </p>
+  );
+}
+
+/**
+ * One "Where to Buy" card. Extracted so each outbound href can run through the
+ * paid-attribution hook — hooks cannot be called inside a .map body. (DAN-2591)
+ */
+function WhereToBuyCard({
+  entityName,
+  link,
+}: {
+  entityName: string;
+  link: AffiliateLink;
+}) {
+  const href = usePaidAffiliateHref(link.url);
+  const isGeneric = link.partner === "generic";
+
+  return (
+    <a
+        href={href}
+      target="_blank"
+      rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
+      className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+        isGeneric
+          ? "hover:border-blue-300 hover:bg-blue-50/50"
+          : "hover:border-amber-300 hover:bg-amber-50/50"
+      }`}
+      onClick={() => {
+        trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
+          affiliate_partner: link.partner,
+          affiliate_label: link.label,
+          cta_type: isGeneric ? "learn_more" : "affiliate",
+        });
+      }}
+    >
+      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+        isGeneric
+          ? "bg-blue-50 group-hover:bg-blue-100"
+          : "bg-amber-50 group-hover:bg-amber-100"
+      }`}>
+        {isGeneric ? (
+          <svg
+            className="w-4 h-4 text-blue-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            />
+          </svg>
+        ) : (
+          PARTNER_ICONS[link.partner] || (
+            <svg
+              className="w-4 h-4 text-amber-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+          )
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className={`text-sm font-medium text-text transition-colors truncate ${
+          isGeneric ? "group-hover:text-blue-700" : "group-hover:text-amber-700"
+        }`}>
+          {entityName}
+        </p>
+        <p className="text-xs text-text-secondary">
+          {partnerLabel(link.partner)}
+        </p>
+      </div>
+      <span className={`text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ${
+        isGeneric ? "text-blue-600" : "text-amber-600"
+      }`}>
+        {isGeneric ? "Explore" : "Shop"} <span aria-hidden="true">&rarr;</span>
+      </span>
+    </a>
   );
 }
 
@@ -185,84 +277,13 @@ export function WhereToBuySection({
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {entities.map((entity) =>
-          entity.affiliateLinks?.map((link) => {
-            const isGeneric = link.partner === "generic";
-            return (
-              <a
-                key={`${entity.name}-${link.partner}`}
-                href={link.url}
-                target="_blank"
-                rel={isGeneric ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
-                className={`group flex items-center gap-3 p-3 rounded-lg border border-border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
-                  isGeneric
-                    ? "hover:border-blue-300 hover:bg-blue-50/50"
-                    : "hover:border-amber-300 hover:bg-amber-50/50"
-                }`}
-                onClick={() => {
-                  trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
-                    affiliate_partner: link.partner,
-                    affiliate_label: link.label,
-                    cta_type: isGeneric ? "learn_more" : "affiliate",
-                  });
-                }}
-              >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
-                  isGeneric
-                    ? "bg-blue-50 group-hover:bg-blue-100"
-                    : "bg-amber-50 group-hover:bg-amber-100"
-                }`}>
-                  {isGeneric ? (
-                    <svg
-                      className="w-4 h-4 text-blue-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  ) : (
-                    PARTNER_ICONS[link.partner] || (
-                      <svg
-                        className="w-4 h-4 text-amber-600"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                        />
-                      </svg>
-                    )
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className={`text-sm font-medium text-text transition-colors truncate ${
-                    isGeneric ? "group-hover:text-blue-700" : "group-hover:text-amber-700"
-                  }`}>
-                    {entity.name}
-                  </p>
-                  <p className="text-xs text-text-secondary">
-                    {partnerLabel(link.partner)}
-                  </p>
-                </div>
-                <span className={`text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ${
-                  isGeneric ? "text-blue-600" : "text-amber-600"
-                }`}>
-                  {isGeneric ? "Explore" : "Shop"} <span aria-hidden="true">&rarr;</span>
-                </span>
-              </a>
-            );
-          }),
+          entity.affiliateLinks?.map((link) => (
+            <WhereToBuyCard
+              key={`${entity.name}-${link.partner}`}
+              entityName={entity.name}
+              link={link}
+            />
+          )),
         )}
       </div>
       {!isAllGeneric && <AffiliateDisclosure />}
