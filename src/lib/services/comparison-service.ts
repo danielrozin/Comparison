@@ -486,12 +486,17 @@ export async function getComparisonTitlesBySlugs(
   const result: Record<string, string> = {};
   const prisma = getPrismaClient();
 
+  let dbAnswered = false;
   if (prisma) {
     try {
       const rows = await prisma.comparison.findMany({
-        where: { slug: { in: slugs } },
+        // DAN-2581: canonical-only. The sole caller (/blog) turns each returned slug
+        // into a link and five JSON-LD edges, so an archived or redirect-source row
+        // here becomes a 404 on the page.
+        where: canonicalComparisonWhere({ AND: [{ slug: { in: slugs } }] }),
         select: { slug: true, title: true },
       });
+      dbAnswered = true;
       for (const r of rows) {
         result[r.slug] = r.title;
       }
@@ -500,11 +505,15 @@ export async function getComparisonTitlesBySlugs(
     }
   }
 
-  // Fill in any missing from mock data
-  for (const slug of slugs) {
-    if (!result[slug]) {
-      const mock = getMockComparison(slug);
-      if (mock) result[slug] = mock.title;
+  // Fill in any missing from mock data — but only when the database did not answer.
+  // With a DB configured, /compare renders published rows only, so a fixture title
+  // here would name a page that 404s.
+  if (!dbAnswered) {
+    for (const slug of slugs) {
+      if (!result[slug]) {
+        const mock = getMockComparison(slug);
+        if (mock) result[slug] = mock.title;
+      }
     }
   }
 

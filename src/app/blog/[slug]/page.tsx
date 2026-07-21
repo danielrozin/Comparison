@@ -6,7 +6,7 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
+import { resolveCompareLinksInHtml, filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -377,11 +377,21 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = await getBlogBySlug(slug);
+  const rawArticle = await getBlogBySlug(slug);
 
-  if (!article) {
+  if (!rawArticle) {
     notFound();
   }
+
+  // DAN-2581: `relatedComparisonSlugs` is a stored column — it was written when those
+  // comparisons were live and nothing prunes it when a consolidation batch archives
+  // one. It feeds the visible related rail AND five JSON-LD edges (about, citation,
+  // isBasedOn, mentions, significantLink), so resolve it once here and let the filtered
+  // list drive all six. This rail was the bulk of the 764 dead /blog links.
+  const article = {
+    ...rawArticle,
+    relatedComparisonSlugs: await filterLiveCompareSlugs(rawArticle.relatedComparisonSlugs ?? []),
+  };
 
   const readTime = estimateReadTime(article.content);
   // DAN-2581: markdown bodies hardcode /compare targets that the consolidation
