@@ -11,7 +11,7 @@ import { getTrendingComparisons } from "./comparison-service";
 import { SITE_URL } from "@/lib/utils/constants";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || "A Versus B <digest@aversusb.net>";
+const RESEND_FROM = process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
 
 interface DigestComparison {
   title: string;

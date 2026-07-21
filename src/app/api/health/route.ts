@@ -31,7 +31,7 @@ async function checkEmail(): Promise<{ status: string; latencyMs: number; from?:
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return { status: "not_configured", latencyMs: 0 };
 
-  const from = process.env.RESEND_FROM_EMAIL || "A Versus B <noreply@aversusb.net>";
+  const from = process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
   const start = Date.now();
   try {
     const resend = new Resend(apiKey);

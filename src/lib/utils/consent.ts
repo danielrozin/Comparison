@@ -50,11 +50,26 @@ export function hasConsentBeenGiven(): boolean {
   return getConsentFromCookie() !== null;
 }
 
+/**
+ * Global Privacy Control (https://globalprivacycontrol.org/) — a browser-level
+ * "do not sell/share my personal information" signal that CPRA, CPA and CTDPA
+ * require us to treat as a valid opt-out of targeted advertising.
+ *
+ * DAN-2603: the privacy policy now states that we honor GPC, so the signal has
+ * to actually suppress the marketing category. It is deliberately scoped to
+ * `marketing` only — GPC is an opt-out of sale/sharing for ad targeting, not a
+ * blanket ban on first-party analytics or functional storage.
+ */
+export function isGlobalPrivacyControlEnabled(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true;
+}
+
 export function acceptAll(): ConsentState {
   const state: ConsentState = {
     necessary: true,
     analytics: true,
-    marketing: true,
+    marketing: !isGlobalPrivacyControlEnabled(),
     functional: true,
     timestamp: new Date().toISOString(),
     version: CONSENT_VERSION,
@@ -78,7 +93,7 @@ export function savePreferences(prefs: Pick<ConsentState, "analytics" | "marketi
   const state: ConsentState = {
     necessary: true,
     analytics: prefs.analytics,
-    marketing: prefs.marketing,
+    marketing: prefs.marketing && !isGlobalPrivacyControlEnabled(),
     functional: prefs.functional,
     timestamp: new Date().toISOString(),
     version: CONSENT_VERSION,

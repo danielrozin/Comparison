@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { BATTLES, HEADLINE_TOTAL, BATTLE_COUNT } from "./data";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { personAuthorNode } from "@/lib/seo/schema";
@@ -625,8 +625,8 @@ export default function Q1AiBattlesPage() {
             <li>Methodology version: 1.1 (US-only scope reconciled with press release).</li>
             <li>
               Corrections: contact{" "}
-              <a href="mailto:pr@aversusb.net" className="text-primary-600 hover:underline">
-                pr@aversusb.net
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">
+                {CONTACT_EMAIL}
               </a>
               . Material corrections trigger a new methodology version + dated changelog entry on
               this page.

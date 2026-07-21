@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { ContactForm } from "./ContactForm";
 import { JsonLd } from "@/components/schema/JsonLd";
 
@@ -80,7 +80,9 @@ const contactPageSchema = {
       {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "daniel@adgpt.com",
+        // Must match the address the page renders — DAN-2603 found the two had
+        // drifted apart, so the schema advertised a mailbox the page never showed.
+        email: CONTACT_EMAIL,
         availableLanguage: "English",
         areaServed: "Worldwide",
       },
@@ -212,10 +214,10 @@ export default function ContactPage() {
                 Email
               </h3>
               <a
-                href="mailto:contact@comparison.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="text-primary-600 hover:underline text-sm"
               >
-                contact@comparison.com
+                {CONTACT_EMAIL}
               </a>
             </div>
 
