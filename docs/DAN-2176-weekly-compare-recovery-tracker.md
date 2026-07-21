@@ -21,23 +21,32 @@
 | **2026-06-22** | **19,561** | **0.0%** | 42 | 806 | **baseline (W26)** |
 | 2026-06-29 | 433 | −97.8% | 0 | 116 | **W27 — collapse** |
 | 2026-07-06 | 454 | −97.7% | 0 | 151 | W28 — flat at floor |
-| 2026-07-13 | 125 | (partial) | 0 | 67 | W29 — incomplete, GSC ~2-day lag |
+| 2026-07-13 | 397 | −98.0% | 0 | 153 | W29 — still suppressed (updated from 125 partial on 07-16) |
 
-## Read — 2026-07-16 (W29 check)
+## Read — 2026-07-21 (W29 complete + W30 start)
+
+**Still suppressed. No reversal. Four post-collapse weeks, all pinned to floor.**
+
+- **W29 final (397)** vs W28 (454) is **−12.6% WoW** — a slight decline, not improvement.
+- Three post-collapse complete weeks: W27 433 → W28 454 → W29 397. All within noise range of each other, all at ~−98% vs baseline.
+- **Clicks remain 0** all three post-collapse weeks (down from 42/wk at baseline).
+- Pages with impressions: W27 116 → W28 151 → W29 153 — marginally wider corpus but still 81% fewer than baseline (806).
+- Dead-link fix ([DAN-2581](/DAN/issues/DAN-2581), PR #238 merged 2026-07-21) eliminated 680 internal 404s across 23% of the site — this should improve crawl quality signals once Googlebot re-crawls, but will not manifest in GSC impressions until a SpamBrain algorithm refresh fires.
+
+**Levers shipped:** 84-cluster consolidation + 301s, generator quality gate, neymar deepening, subsequent consolidation batches (DAN-2519/DAN-2520/DAN-2532 archived low-signal pages), 680 dead internal links resolved (DAN-2581). All fixes must be in place and crawled *before* the SpamBrain refresh to benefit from it — which they now are.
+
+**Disposition:** DAN-1800 stays `done`. Tracking continues weekly here. Close-out condition unchanged: a **sustained multi-week impression climb** post-refresh, at which point report recovery to DAN-1799.
+
+## Read — 2026-07-16 (W29 check — partial)
 
 **Still suppressed. No reversal.** Third consecutive week pinned to the floor.
 
 - W28 (454) vs W27 (433) is **+4.8% WoW**, but that is noise at this magnitude, not recovery — both weeks are ~−98% against baseline.
-- **Clicks are 0** for both post-collapse weeks (down from 42/wk at baseline).
-- Pages with any impressions fell **806 → 116 → 151**, i.e. the corpus is broadly suppressed rather than a few pages losing rank.
-- W29 partial run-rate (125 over ~2 elapsed GSC days ≈ 62/day) tracks W28 (454/7 ≈ 65/day) — **flat, not climbing**.
-
-**Levers already shipped and live** (84-cluster consolidation + 301s, grubhub 404, generator quality gate, neymar deepening DAN-1812, subsequent consolidation batches). None have moved impressions yet. This is expected: spam-update suppression typically lifts only on a **SpamBrain refresh**, not on a crawl of the fixes. The fixes must be in place and crawled *before* the refresh to benefit from it — which they now are.
-
-**Disposition:** DAN-1800 stays `done` (the recovery levers shipped; the ticket was scoped to shipping them, not to the algorithmic outcome). Tracking continues weekly here. Close-out condition unchanged: a **sustained multi-week impression climb** post-refresh, at which point report recovery to DAN-1799.
+- W29 partial run-rate (125 over ~2 elapsed GSC days ≈ 62/day) tracked W28 (454/7 ≈ 65/day) — flat.
 
 ## Log
 
 | Date | Weeks checked | Verdict |
 |---|---|---|
+| 2026-07-21 | W27–W29 | Still suppressed, W29 final 397 (−12.6% WoW). DAN-2581 dead-link fix live. No reversal. Continue. |
 | 2026-07-16 | W27–W29 | Still suppressed, flat at ~−98%. No reversal. Continue. |
