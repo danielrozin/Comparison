@@ -53,6 +53,44 @@
 # Also: do not grep these bodies with a leading-wildcard alternation such as
 # `.{60}(a|b|c).{60}` — they are ~100KB on a handful of lines and it backtracks
 # until it times out. Anchor on a literal prefix instead.
+#
+# ---------------------------------------------------------------------------
+# CHANNEL 2 — the WordPress REST search (added 2026-07-21, pre-D+7)
+# ---------------------------------------------------------------------------
+# Yanko Design's HTML search has returned 403 on 07-14, 07-16 and 07-21 and had
+# never once been DOM-verified, so row 2 was on course to be UNVERIFIED at D+7
+# AND D+14 — i.e. wave-1 would end with no verdict for that outlet at all.
+#
+# All three outlets run WordPress and expose /wp-json/wp/v2/search. On Yanko that
+# endpoint returns 200 JSON even while /?s= returns the Cloudflare wall — it is
+# not behind the same rule. It is also structurally immune to two of the traps
+# above: there is no HTML to echo the query back (T1) and the count is an array
+# length rather than a card count (T3).
+#
+# Validated on 2026-07-21 before being trusted — an empty [] means nothing until
+# the endpoint is shown to find things that ARE there:
+#   substring semantics  ?search=ickstarter -> 20, ?search=amsung -> 20
+#                        so matching is LIKE %term%, and the TLD-less term
+#                        `aversusb` therefore does match the string aversusb.net
+#   URL-in-body matching ?search=kickstarter.com -> 20 (yanko)
+#                        ?search=amazon.co.uk    -> 20 (trustedreviews)
+#                        ?search=netflix.com     -> 20 (cordcutters)
+#                        so a bare domain inside article copy IS matched — which
+#                        is exactly the shape of the placement we are looking for
+#   negative control     ?search=zzqqxxnotarealterm -> 0 on all three, so the
+#                        endpoint is not simply ignoring the search parameter
+#
+# C1/C2 — BOTH controls are load-bearing and re-run on every sweep, because an
+# endpoint that dies or starts ignoring ?search would otherwise hand back a
+# permanent, confident 0. A target 0 is trusted ONLY when the positive control
+# returns >0 AND the negative control returns 0 on that same run. Cord Cutters
+# already threw a transient http=000 on a control during validation, so this is
+# a live failure mode, not a hypothetical one. The counts are always printed.
+#
+# Scope limit, stated honestly: /wp/v2/search covers public, REST-exposed post
+# content. It would not see a link placed only in a sidebar widget, a theme
+# template or a comment. It is authoritative for an in-article placement, which
+# is what was pitched — so a REST zero is reported as VERIFIED-ZERO (REST).
 
 set -uo pipefail
 
@@ -63,8 +101,21 @@ UA='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, l
 MIN_BYTES=500
 
 # T1 — the query term is TLD-less on purpose; the hit pattern demands the TLD.
-QUERY_TERM='aversusb'
-HIT_RE='aversusb\.net'
+#
+# Both are overridable ONLY so the harness can be fire-drilled against a term
+# that is known to be present (see FIRE DRILL below). A sweep that has only ever
+# printed "zero" has not been shown to be capable of printing anything else, and
+# an always-zero detector is indistinguishable from a working one until the day
+# a link actually lands and it silently misses it. Leave the defaults alone for
+# a real sweep — overriding QUERY_TERM to `aversusb.net` re-arms trap T1.
+#
+#   FIRE DRILL (re-run after ANY edit to the matching logic):
+#     SWEEP_QUERY_TERM=kickstarter SWEEP_HIT_RE='kickstarter\.com' \
+#       bash scripts/bd/dan2583-link-sweep.sh firedrill
+#   Expect LINKED on Yanko Design and exit 10. If that prints VERIFIED-ZERO,
+#   the detector is broken and every past zero in this issue is worthless.
+QUERY_TERM="${SWEEP_QUERY_TERM:-aversusb}"
+HIT_RE="${SWEEP_HIT_RE:-aversusb\.net}"
 
 # R5 — both PS5 slug forms listed explicitly for per-target attribution.
 declare -a TARGET_FORMS=(
@@ -84,6 +135,36 @@ declare -a OUTLETS=(
   "Yanko Design|https://www.yankodesign.com/?s=${QUERY_TERM}|Nothing Found|No results found"
   "Cord Cutters News|https://cordcuttersnews.com/?s=${QUERY_TERM}|nothing matched your search terms"
 )
+
+# Channel 2 — outlet | WP REST origin | positive-control term (known present)
+declare -a REST_OUTLETS=(
+  "Trusted Reviews|https://www.trustedreviews.com|amazon.co.uk"
+  "Yanko Design|https://www.yankodesign.com|kickstarter.com"
+  "Cord Cutters News|https://cordcuttersnews.com|netflix.com"
+)
+NEG_CONTROL='zzqqxxnotarealterm'
+
+# Count results from /wp/v2/search. Echoes a bare integer, or -1 on any failure
+# (non-2xx, unparseable, or a JSON shape that is not the expected array) so a
+# broken read can never be mistaken for a zero.
+rest_count () { # origin, term
+  local f code
+  f="$(mktemp -t dan2583restXXXXXX)"   # R3 — fresh file here too.
+  code="$(curl -sS -L --max-time 30 -A "$UA" -H 'Accept: application/json' \
+            -o "$f" -w '%{http_code}' \
+            "${1}/wp-json/wp/v2/search?search=${2}&per_page=20" 2>/dev/null)"
+  if [ "$?" -ne 0 ] || [ "${code:-0}" -lt 200 ] || [ "${code:-0}" -ge 300 ]; then
+    echo -1; return
+  fi
+  python3 -c "
+import json,sys
+try:
+    d=json.load(open('$f'))
+    print(len(d) if isinstance(d,list) else -1)
+except Exception:
+    print(-1)
+" 2>/dev/null || echo -1
+}
 
 LINKED=0
 VERIFIED_ZERO=0
@@ -112,44 +193,95 @@ for row in "${OUTLETS[@]}"; do
   echo "   url:   ${url}"
   echo "   curl:  rc=${rc} http=${http_code} bytes=${bytes} file=${body}"
 
+  # Channel 1 sets a verdict; it no longer scores the row on its own. The row is
+  # scored once, after channel 2 has also reported. HTML=UNVERIFIED + REST=zero
+  # is precisely the Yanko Design case this second channel was added to rescue.
+  html_verdict="UNVERIFIED"
+
   # R4 — the trust gate. Everything downstream is gated on this single boolean.
   if ! { [ "$rc" -eq 0 ] && [ "${http_code:-0}" -ge 200 ] && [ "${http_code:-0}" -lt 300 ] \
          && [ "${bytes:-0}" -gt "$MIN_BYTES" ]; }; then
     # R6 — a block, a timeout, or a stub body is NOT a zero.
-    echo "   VERDICT: UNVERIFIED (fetch failed the trust gate: rc=${rc} http=${http_code} bytes=${bytes})"
-    UNVERIFIED=$((UNVERIFIED+1))
-    continue
-  fi
+    echo "   html:  UNVERIFIED (fetch failed the trust gate: rc=${rc} http=${http_code} bytes=${bytes})"
 
   # T2 — a bot wall can still be served with a 2xx.
-  if grep -qiE "$INTERSTITIAL_RE" "$body"; then
-    echo "   VERDICT: UNVERIFIED (bot-wall interstitial — not a zero)"
-    UNVERIFIED=$((UNVERIFIED+1))
-    continue
-  fi
+  elif grep -qiE "$INTERSTITIAL_RE" "$body"; then
+    echo "   html:  UNVERIFIED (bot-wall interstitial — not a zero)"
 
   # T1 — requires the TLD, so the page's own query echo cannot trigger this.
-  if grep -qi "$HIT_RE" "$body"; then
-    echo "   VERDICT: LINKED — aversusb.net reference observed"
+  elif grep -qi "$HIT_RE" "$body"; then
+    html_verdict="LINKED"
+    echo "   html:  LINKED — aversusb.net reference observed"
     for form in "${TARGET_FORMS[@]}"; do
       grep -qi "$form" "$body" && echo "     ↳ target form matched: ${form}"
     done
+    grep -o "aversusb\.net.\{0,100\}" "$body" | head -5 | sed 's/^/       ctx: /'
+
+  # T3 — only the outlet's own explicit zero marker earns VERIFIED-ZERO. A 2xx
+  # page that says neither yes nor no is ambiguous and stays UNVERIFIED.
+  elif grep -qiE "$zero_re" "$body"; then
+    html_verdict="ZERO"
+    echo "   html:  VERIFIED-ZERO — outlet search returned its explicit no-results marker"
+  else
+    echo "   html:  UNVERIFIED (2xx body, but neither a ${HIT_RE} hit nor a zero-result marker)"
+  fi
+
+  # ---- Channel 2: WP REST search, gated on BOTH controls (C1/C2) ----------
+  rest_verdict="UNVERIFIED"
+  origin=""
+  pos_term=""
+  for rrow in "${REST_OUTLETS[@]}"; do
+    if [ "${rrow%%|*}" = "$outlet" ]; then
+      rrest="${rrow#*|}"; origin="${rrest%%|*}"; pos_term="${rrest#*|}"
+    fi
+  done
+
+  if [ -n "$origin" ]; then
+    pos_n="$(rest_count "$origin" "$pos_term")"
+    neg_n="$(rest_count "$origin" "$NEG_CONTROL")"
+    tgt_n="$(rest_count "$origin" "$QUERY_TERM")"
+    # Controls are always printed — a bare target count is not evidence.
+    echo "   rest:  control+(${pos_term})=${pos_n}  control-(${NEG_CONTROL})=${neg_n}  target(${QUERY_TERM})=${tgt_n}"
+
+    if [ "$pos_n" -le 0 ] || [ "$neg_n" -ne 0 ]; then
+      echo "          UNVERIFIED — controls failed, so the target count is not evidence"
+    elif [ "$tgt_n" -lt 0 ]; then
+      echo "          UNVERIFIED — target read failed"
+    elif [ "$tgt_n" -gt 0 ]; then
+      rest_verdict="LINKED"
+      echo "          LINKED — ${tgt_n} REST result(s) match ${QUERY_TERM}"
+      curl -sS -L --max-time 30 -A "$UA" -H 'Accept: application/json' \
+        "${origin}/wp-json/wp/v2/search?search=${QUERY_TERM}&per_page=20" 2>/dev/null \
+        | python3 -c "
+import json,sys
+try:
+    for it in json.load(sys.stdin)[:10]:
+        print('       hit: %s  %s' % (it.get('url',''), (it.get('title') or '')[:70]))
+except Exception:
+    print('       (could not list hits — open the search URL by hand)')
+"
+    else
+      rest_verdict="ZERO"
+      echo "          VERIFIED-ZERO (REST) — controls passed and the target count is 0"
+    fi
+  else
+    echo "   rest:  UNVERIFIED (no REST origin configured for this outlet)"
+  fi
+
+  # ---- Merge. A hit on EITHER channel is a placement; a zero needs only one
+  # trustworthy channel to say so; anything else stays UNVERIFIED. ------------
+  if [ "$html_verdict" = "LINKED" ] || [ "$rest_verdict" = "LINKED" ]; then
+    echo "   VERDICT: LINKED (html=${html_verdict} rest=${rest_verdict})"
     echo "     ↳ MANUAL FOLLOW-UP REQUIRED: open the linking article and record"
     echo "       article URL / anchor text / rel attribute / first-seen date."
     echo "       A nofollow or ugc mention still counts as a placement, but must"
     echo "       be labelled as such in the report table."
-    grep -o "aversusb\.net.\{0,100\}" "$body" | head -5 | sed 's/^/       ctx: /'
     LINKED=$((LINKED+1))
-    continue
-  fi
-
-  # T3 — only the outlet's own explicit zero marker earns VERIFIED-ZERO. A 2xx
-  # page that says neither yes nor no is ambiguous and stays UNVERIFIED.
-  if grep -qiE "$zero_re" "$body"; then
-    echo "   VERDICT: VERIFIED-ZERO — outlet search returned its explicit no-results marker"
+  elif [ "$html_verdict" = "ZERO" ] || [ "$rest_verdict" = "ZERO" ]; then
+    echo "   VERDICT: VERIFIED-ZERO (html=${html_verdict} rest=${rest_verdict})"
     VERIFIED_ZERO=$((VERIFIED_ZERO+1))
   else
-    echo "   VERDICT: UNVERIFIED (2xx body, but neither an aversusb.net hit nor a zero-result marker)"
+    echo "   VERDICT: UNVERIFIED (html=${html_verdict} rest=${rest_verdict}) — not a zero"
     UNVERIFIED=$((UNVERIFIED+1))
   fi
 done
