@@ -86,5 +86,9 @@ export function excludeRedirectedComparisons<T>(rows: T[], slugOf: (row: T) => s
  * DAN-2519 (2026-07-21): PATH A Phase 1 archived 261 zero-signal pages (score 20-30,
  * zero views, auto-generated). 435 - 261 = 174. Ceiling at this point is still 435
  * (454 - 19 retiredSinceSweep), so 174 is well within bounds.
+ *
+ * DAN-2520 (2026-07-21): PATH A Phase 2 archived 4 low-signal pages (score 20, noindex
+ * tier: netflix-vs-disney, notion-vs-clickup, shein-vs-amazon-haul, spotify-vs-apple-music).
+ * 174 - 4 = 170. Ceiling unchanged at 435.
  */
-export const CANONICAL_COMPARISON_COUNT_FALLBACK = 174;
+export const CANONICAL_COMPARISON_COUNT_FALLBACK = 170;
