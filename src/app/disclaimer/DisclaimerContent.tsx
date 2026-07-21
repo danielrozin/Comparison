@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SITE_NAME } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_DOMAIN, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { LegalPageLayout } from "@/components/layout/LegalPageLayout";
 
 const SECTIONS = [
@@ -22,15 +22,15 @@ export function DisclaimerContent() {
   return (
     <LegalPageLayout
       title="Disclaimer"
-      lastUpdated="March 2026"
-      lastUpdatedISO="2026-03"
+      lastUpdated="July 2026"
+      lastUpdatedISO="2026-07"
       sections={SECTIONS}
     >
       {/* Intro */}
       <section aria-label="Introduction">
         <p>
           The following disclaimer governs your use of {SITE_NAME} (&ldquo;the Site&rdquo;), accessible at{" "}
-          <a href="https://comparison.com" className="text-primary-600 hover:underline">comparison.com</a>.
+          <a href={SITE_URL} className="text-primary-600 hover:underline">{SITE_DOMAIN}</a>.
           By using the Site, you acknowledge and agree to these terms. Please also read our{" "}
           <Link href="/terms" className="text-primary-600 hover:underline">Terms of Use</Link> and{" "}
           <Link href="/privacy" className="text-primary-600 hover:underline">Privacy Policy</Link>.
@@ -102,6 +102,15 @@ export function DisclaimerContent() {
           Some links on our Site may be affiliate links. The presence of affiliate links does not influence
           our editorial content. We do not accept payment to favor any product or service.
         </p>
+        <p className="mb-4">
+          {SITE_NAME} is a participant in the Amazon Services LLC Associates Program, an affiliate
+          advertising program designed to provide a means for sites to earn advertising fees by
+          advertising and linking to Amazon.com and its international storefronts.{" "}
+          <strong className="text-text">
+            As an Amazon Associate I earn from qualifying purchases.
+          </strong>{" "}
+          Qualifying purchases cost you nothing extra.
+        </p>
         <p>Affiliate relationships are disclosed in accordance with FTC guidelines.</p>
       </section>
 
@@ -142,8 +151,8 @@ export function DisclaimerContent() {
         <p className="mb-4">If you have questions about this Disclaimer, please contact us:</p>
         <div className="bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>
-          <p>Email: <a href="mailto:contact@comparison.com" className="text-primary-600 hover:underline">contact@comparison.com</a></p>
-          <p>Website: comparison.com</p>
+          <p>Email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">{CONTACT_EMAIL}</a></p>
+          <p>Website: {SITE_DOMAIN}</p>
         </div>
       </section>
     </LegalPageLayout>

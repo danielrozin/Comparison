@@ -13,6 +13,22 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.aversu
   .replace(/\s+/g, "")
   .replace(/\/+$/, "");
 
+// Bare hostname for legal/contact copy that prints the site rather than links it
+// ("Website: www.aversusb.net"). Derived from SITE_URL so it can never drift.
+export const SITE_DOMAIN = SITE_URL.replace(/^https?:\/\//, "");
+
+// The single public contact address. DAN-2603: every legal template used to
+// hardcode contact@comparison.com — a domain a third party owns and parks, so
+// every contact route the site advertised was undeliverable to us. This is
+// env-driven so the address can be repointed the moment a mailbox exists on a
+// domain we control (aversusb.net has no MX today; see the ticket). Only change
+// the default to an address whose MX has been probed and answers 250.
+export const CONTACT_EMAIL = (
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL || "daniarozin@gmail.com"
+)
+  .replace(/\s+/g, "")
+  .toLowerCase();
+
 export const COMPARISON_PATTERNS = [
   "vs",
   "versus",

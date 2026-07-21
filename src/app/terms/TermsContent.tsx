@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SITE_NAME } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_DOMAIN, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { LegalPageLayout } from "@/components/layout/LegalPageLayout";
 
 const SECTIONS = [
@@ -34,7 +34,7 @@ export function TermsContent() {
         <p>
           Please read these Terms of Use (&ldquo;Terms&rdquo;) carefully before using the {SITE_NAME} website
           located at{" "}
-          <a href="https://comparison.com" className="text-primary-600 hover:underline">comparison.com</a>{" "}
+          <a href={SITE_URL} className="text-primary-600 hover:underline">{SITE_DOMAIN}</a>{" "}
           (&ldquo;the Site&rdquo;). By accessing or using the Site, you agree to be bound by these Terms. If you
           do not agree to all of these Terms, you must not use the Site.
         </p>
@@ -187,8 +187,8 @@ export function TermsContent() {
         <p className="mb-4">If you have any questions about these Terms, please contact us:</p>
         <div className="bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>
-          <p>Email: <a href="mailto:contact@comparison.com" className="text-primary-600 hover:underline">contact@comparison.com</a></p>
-          <p>Website: comparison.com</p>
+          <p>Email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">{CONTACT_EMAIL}</a></p>
+          <p>Website: {SITE_DOMAIN}</p>
         </div>
       </section>
     </LegalPageLayout>

@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/lib/utils/constants";
+
 export type BestFAQ = { q: string; a: string };
 export type BestListItem = { position: number; name: string; anchor: string };
 
@@ -193,7 +195,7 @@ For the deeper three-way analysis, see [AWS vs Azure vs GCP](/compare/aws-vs-azu
 
 ---
 
-*Sources verified 2026-05-28 against each provider's published rate sheet. We update this guide quarterly and re-check the pricing rows before each refresh. Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Sources verified 2026-05-28 against each provider's published rate sheet. We update this guide quarterly and re-check the pricing rows before each refresh. Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const NOISE_CANCELING_HEADPHONES_BODY = `Noise-canceling headphones have become essential gear — whether you're blocking out open-plan office chatter, long-haul cabin drone, or a noisy commute. In 2026 the technology has matured to the point where every pick in this guide offers genuinely good ANC, but the right choice still depends on whether you prioritize maximum noise isolation, the most neutral sound tuning, all-day comfort, or the best price for what you get.
 
@@ -319,7 +321,7 @@ JBL's Tour One M2 addresses a specific gap in the market: four-device simultaneo
 
 ---
 
-*Prices verified against Amazon, Best Buy, and manufacturer pages on **2026-07-10**. Sources: RTINGS.com, TechRadar, Tom's Guide, What Hi-Fi? (2026 reviews). Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Prices verified against Amazon, Best Buy, and manufacturer pages on **2026-07-10**. Sources: RTINGS.com, TechRadar, Tom's Guide, What Hi-Fi? (2026 reviews). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const LAPTOPS_FOR_STUDENTS_BODY = `Buying a laptop for college or high school in 2026 means navigating a market that's added AI co-processors, longer battery life, and noticeably better displays at the same price points — but also one where the "right" answer depends heavily on your major, your budget, and which ecosystem you're already inside.
 
@@ -432,7 +434,7 @@ HP's Pavilion 15 has historically been the default recommendation for "nothing s
 
 ---
 
-*Specs and prices verified against manufacturer pages, Best Buy, and Amazon on **2026-07-10**. Sources: PCWorld, Tom's Guide, Laptop Mag, The Wirecutter/NYT (2026 reviews). Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Specs and prices verified against manufacturer pages, Best Buy, and Amazon on **2026-07-10**. Sources: PCWorld, Tom's Guide, Laptop Mag, The Wirecutter/NYT (2026 reviews). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const TRAVEL_CREDIT_CARDS_BODY = `The best travel credit cards in 2026 share two things: no foreign transaction fees, and a rewards currency that transfers to airlines or hotels. Everything beyond that — annual fee, welcome bonus, lounge access, travel credits — is a tradeoff you have to make against how often you fly and how you spend.
 
@@ -556,7 +558,7 @@ Discover's cash-back match in the first year turns the Discover it Miles into th
 
 ---
 
-*Card terms, benefits, and APRs verified against issuer websites on **2026-07-10**. Welcome bonus values calculated using NerdWallet's July 2026 point valuations. Card terms change frequently — confirm details with the issuer before applying. Sources: NerdWallet, CNBC Select, CNN Underscored, Experian, Bankrate (2026). Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Card terms, benefits, and APRs verified against issuer websites on **2026-07-10**. Welcome bonus values calculated using NerdWallet's July 2026 point valuations. Card terms change frequently — confirm details with the issuer before applying. Sources: NerdWallet, CNBC Select, CNN Underscored, Experian, Bankrate (2026). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const VPN_SERVICES_BODY = `The VPN market in 2026 looks very different from five years ago. The industry has consolidated around a handful of serious privacy-first providers, while the discount-bin VPNs that flooded the market in the early 2020s have mostly exited or been absorbed. What changed: WireGuard is now the default protocol on every serious provider, speeds have improved dramatically even on mobile, and no-log audits conducted by independent firms have become a differentiating signal rather than a marketing checkbox.
 
@@ -702,7 +704,7 @@ Yes, but the extent depends on protocol and server load. WireGuard-based VPNs (N
 
 ---
 
-*Pricing verified against each VPN provider's published rate sheet on **2026-07-11**. Speed benchmarks sourced from PCMag, Tom's Guide, and Wirecutter (2026 testing cycles). Audit reports cited are linked from each provider's official transparency page. Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Pricing verified against each VPN provider's published rate sheet on **2026-07-11**. Speed benchmarks sourced from PCMag, Tom's Guide, and Wirecutter (2026 testing cycles). Audit reports cited are linked from each provider's official transparency page. Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const PASSWORD_MANAGERS_BODY = `Password reuse is still the single most common root cause of consumer account takeovers in 2026, and a good password manager remains the clearest security ROI for most people — more impactful than any other single security change, including MFA on secondary accounts. The category has matured: all six options in this guide generate strong random passwords, offer browser autofill, and sync across devices. The decision comes down to how much you trust cloud storage of your vault, how much you want to pay, and whether passkey management matters to you.
 
@@ -833,7 +835,7 @@ Browser built-ins (Chrome, Safari, Firefox, Edge password managers) are fine for
 
 ---
 
-*Pricing verified against each vendor's published pricing page on **2026-07-11**. Security audit reports cited are publicly linked from each vendor's official security or compliance page. Sources: PCMag, Wirecutter/NYT, AV-TEST (2026 reviews), Cure53 audit reports. Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Pricing verified against each vendor's published pricing page on **2026-07-11**. Security audit reports cited are publicly linked from each vendor's official security or compliance page. Sources: PCMag, Wirecutter/NYT, AV-TEST (2026 reviews), Cure53 audit reports. Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const EMAIL_MARKETING_TOOLS_BODY = `Email marketing ROI in 2026 is still one of the highest in digital marketing — estimates from Litmus and HubSpot consistently show $36–$42 returned per dollar spent — but the platform you use to achieve that ROI matters more than it used to. In the past 12 months, the deliverability gap between platforms widened: Google and Yahoo's 2024 sender policy changes (DKIM, SPF, DMARC requirements, 0.1% spam rate threshold) hit poorly configured senders hard, and the platforms best positioned to help — Klaviyo for e-commerce, ActiveCampaign for B2B automation — have pulled further ahead of the mid-tier tools.
 
@@ -961,7 +963,7 @@ For B2B companies with defined sales funnels and multi-step nurture sequences: y
 
 ---
 
-*Pricing verified against each vendor's published pricing page on **2026-07-11**. Deliverability benchmarks sourced from EmailToolTester (April 2026 test cycle) and Emailout.com (June 2026). Sources: Litmus Email Analytics 2026, HubSpot Email Marketing Benchmarks 2026. Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Pricing verified against each vendor's published pricing page on **2026-07-11**. Deliverability benchmarks sourced from EmailToolTester (April 2026 test cycle) and Emailout.com (June 2026). Sources: Litmus Email Analytics 2026, HubSpot Email Marketing Benchmarks 2026. Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const PROJECT_MANAGEMENT_TOOLS_BODY = `Small teams have an unusual problem with project management software: the tools designed for enterprises impose overhead that doesn't scale down well, while the lightweight tools designed for freelancers often lack the structure needed once you have 5–15 people working on multiple concurrent projects. In 2026, the best tools for small teams sit in the middle — powerful enough to handle real complexity, simple enough that a new hire doesn't need a two-hour onboarding session to figure out where to log a task.
 
@@ -1093,7 +1095,7 @@ Linear is the dominant choice for modern software engineering teams in 2026, hav
 
 ---
 
-*Pricing verified against each vendor's published pricing page on **2026-07-11**. Sources: G2 Project Management category rankings (Q2 2026), Capterra Best Project Management Software (2026), PCMag Business Software reviews (2026). Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Pricing verified against each vendor's published pricing page on **2026-07-11**. Sources: G2 Project Management category rankings (Q2 2026), Capterra Best Project Management Software (2026), PCMag Business Software reviews (2026). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 const CRM_SMALL_BUSINESS_BODY = `The CRM market for small businesses in 2026 has a clear bifurcation: tools designed for growth-stage teams that prioritize ease of setup and low initial cost (HubSpot, Pipedrive), and tools that trade simplicity for customization depth (Zoho CRM, Salesforce). The third category — tools designed specifically for small businesses at the intersection of marketing and sales (Monday Sales CRM, Freshsales) — has strengthened considerably.
 
@@ -1214,7 +1216,7 @@ Pipedrive has the most consistently praised mobile CRM app in 2026 — fast, rel
 
 ---
 
-*Pricing verified against each vendor's published pricing page on **2026-07-11**. AI feature availability confirmed from each vendor's feature comparison pages. Sources: G2 CRM Software category rankings (Q2 2026), Capterra Best CRM Software (2026), PCMag Best CRM Systems (2026). Have a correction? [Email corrections@aversusb.net](mailto:corrections@aversusb.net).*`;
+*Pricing verified against each vendor's published pricing page on **2026-07-11**. AI feature availability confirmed from each vendor's feature comparison pages. Sources: G2 CRM Software category rankings (Q2 2026), Capterra Best CRM Software (2026), PCMag Best CRM Systems (2026). Have a correction? [Email ${CONTACT_EMAIL}](mailto:${CONTACT_EMAIL}).*`;
 
 export const BEST_CONFIG: Record<string, BestEntry> = {
   "cloud-platforms-2026": {

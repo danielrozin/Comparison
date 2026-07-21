@@ -39,7 +39,7 @@ function getResend(): Resend | null {
 }
 
 const RESEND_FROM =
-  process.env.RESEND_FROM_EMAIL || "A Versus B <noreply@aversusb.net>";
+  process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
 
 // Admin/transactional notifications MUST send from a domain that is VERIFIED on
 // the Resend key, or Resend rejects the send with a 403 ("domain is not

@@ -1,11 +1,13 @@
 "use client";
 
-import { SITE_NAME } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_DOMAIN, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { LegalPageLayout } from "@/components/layout/LegalPageLayout";
 
 const SECTIONS = [
   { id: "information-we-collect", title: "Information We Collect" },
   { id: "cookies", title: "Cookies and Tracking" },
+  { id: "advertising-retargeting", title: "Advertising, Retargeting and Remarketing" },
+  { id: "affiliate-relationships", title: "Affiliate Relationships" },
   { id: "analytics", title: "Analytics" },
   { id: "third-party-services", title: "Third-Party Services" },
   { id: "how-we-use", title: "How We Use Your Information" },
@@ -23,16 +25,16 @@ export function PrivacyContent() {
   return (
     <LegalPageLayout
       title="Privacy Policy"
-      lastUpdated="March 2026"
-      lastUpdatedISO="2026-03"
+      lastUpdated="July 2026"
+      lastUpdatedISO="2026-07"
       sections={SECTIONS}
     >
       {/* Intro */}
       <section aria-label="Introduction">
         <p>
           Welcome to {SITE_NAME} (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). We operate the website at{" "}
-          <a href="https://comparison.com" className="text-primary-600 hover:underline">
-            comparison.com
+          <a href={SITE_URL} className="text-primary-600 hover:underline">
+            {SITE_DOMAIN}
           </a>
           . This Privacy Policy explains how we collect, use, disclose, and safeguard your
           information when you visit our website. Please read this policy carefully. If you disagree
@@ -85,13 +87,100 @@ export function PrivacyContent() {
           <li><strong className="text-text">Analytics cookies:</strong> Used to collect information about how visitors use the site. This data is aggregated and anonymous.</li>
           <li><strong className="text-text">Preference cookies:</strong> Remember your settings to personalize your experience.</li>
           <li><strong className="text-text">Advertising cookies:</strong> Where applicable, used to serve relevant advertisements with your consent.</li>
+          <li><strong className="text-text">Retargeting cookies:</strong> Set by advertising partners so the ads you later see on other websites can reflect the pages you viewed here. See the section below.</li>
         </ul>
         <p>You can control or delete cookies through your browser settings. Disabling cookies may affect certain features of the site.</p>
       </section>
 
+      {/* 2b. Advertising, Retargeting and Remarketing */}
+      <section id="advertising-retargeting" aria-labelledby="advertising-retargeting-heading">
+        <h2 id="advertising-retargeting-heading" className="text-2xl font-display font-bold text-text mb-4">3. Advertising, Retargeting and Remarketing</h2>
+        <p className="mb-4">
+          {SITE_NAME} advertises on third-party networks and works with advertising partners who use
+          cookies, pixels, and similar technologies for{" "}
+          <strong className="text-text">retargeting (also called remarketing)</strong>. Retargeting
+          means that after you visit {SITE_NAME}, you may later be shown our advertisements on other
+          websites, apps, or social platforms you use.
+        </p>
+        <p className="mb-3">To do this, our advertising partners may collect and process:</p>
+        <ul className="list-disc pl-6 space-y-1 mb-4">
+          <li>A pseudonymous cookie or device identifier</li>
+          <li>The pages you viewed on {SITE_NAME} and when you viewed them</li>
+          <li>IP address, browser, and device characteristics</li>
+          <li>Whether you clicked one of our advertisements</li>
+        </ul>
+        <p className="mb-4">
+          These partners act as independent controllers of the data they collect and process it under
+          their own privacy policies. Retargeting data is not used to build profiles about sensitive
+          characteristics, and we do not sell it.
+        </p>
+        <h3 className="text-lg font-semibold text-text mb-2">How to opt out of retargeting</h3>
+        <ul className="list-disc pl-6 space-y-2 mb-4">
+          <li>
+            Adjust or reject advertising cookies in our cookie banner, or block third-party cookies in
+            your browser settings.
+          </li>
+          <li>
+            Use the industry opt-out tools at{" "}
+            <a href="https://optout.aboutads.info/" className="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              YourAdChoices (DAA)<span className="sr-only"> (opens in new tab)</span>
+            </a>{" "}
+            or{" "}
+            <a href="https://optout.networkadvertising.org/" className="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              the NAI opt-out page<span className="sr-only"> (opens in new tab)</span>
+            </a>
+            . EU/UK visitors can use{" "}
+            <a href="https://www.youronlinechoices.eu/" className="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">
+              Your Online Choices<span className="sr-only"> (opens in new tab)</span>
+            </a>
+            .
+          </li>
+          <li>
+            Enable a Global Privacy Control (GPC) signal in your browser — we honor it as an opt-out of
+            targeted advertising where applicable law requires.
+          </li>
+        </ul>
+        <p>
+          Opting out stops advertising being tailored to you. It does not stop you seeing
+          advertising, and it does not affect your access to any part of {SITE_NAME}.
+        </p>
+      </section>
+
+      {/* 2c. Affiliate Relationships */}
+      <section id="affiliate-relationships" aria-labelledby="affiliate-relationships-heading">
+        <h2 id="affiliate-relationships-heading" className="text-2xl font-display font-bold text-text mb-4">4. Affiliate Relationships</h2>
+        <p className="mb-4">
+          {SITE_NAME} is funded in part by affiliate commissions. Some outbound links to retailers and
+          software vendors are affiliate links, which means we may earn a commission if you make a
+          purchase after clicking one — at no additional cost to you.
+        </p>
+        <p className="mb-4">
+          {SITE_NAME} is a participant in the{" "}
+          <strong className="text-text">Amazon Services LLC Associates Program</strong>, an affiliate
+          advertising program designed to provide a means for sites to earn advertising fees by
+          advertising and linking to Amazon.com and its international storefronts.{" "}
+          <strong className="text-text">
+            As an Amazon Associate I earn from qualifying purchases.
+          </strong>{" "}
+          We also participate in other affiliate and partner programs on the same terms.
+        </p>
+        <p className="mb-4">
+          When you click an affiliate link, the destination retailer receives a referral identifier
+          that lets it attribute the visit — and any resulting purchase — to us. The retailer may set
+          its own cookies and will process your data under its own privacy policy. We receive only
+          aggregate commission reporting; we do not receive your name, address, or payment details,
+          and we cannot see what you bought as an identified individual.
+        </p>
+        <p>
+          Affiliate relationships never influence our editorial rankings or verdicts. See our{" "}
+          <a href="/disclaimer" className="text-primary-600 hover:underline">affiliate disclosure</a>{" "}
+          for the full statement.
+        </p>
+      </section>
+
       {/* 3. Analytics */}
       <section id="analytics" aria-labelledby="analytics-heading">
-        <h2 id="analytics-heading" className="text-2xl font-display font-bold text-text mb-4">3. Analytics</h2>
+        <h2 id="analytics-heading" className="text-2xl font-display font-bold text-text mb-4">5. Analytics</h2>
         <p className="mb-4">
           We use third-party analytics services, which may include Google Analytics, to understand
           traffic patterns and usage behavior. These services may set their own cookies.
@@ -107,7 +196,7 @@ export function PrivacyContent() {
 
       {/* 4. Third-Party Services */}
       <section id="third-party-services" aria-labelledby="third-party-services-heading">
-        <h2 id="third-party-services-heading" className="text-2xl font-display font-bold text-text mb-4">4. Third-Party Services</h2>
+        <h2 id="third-party-services-heading" className="text-2xl font-display font-bold text-text mb-4">6. Third-Party Services</h2>
         <p className="mb-4">Our website may include integrations with or links to third-party services including:</p>
         <ul className="list-disc pl-6 space-y-1 mb-4">
           <li>Analytics providers (e.g., Google Analytics)</li>
@@ -120,7 +209,7 @@ export function PrivacyContent() {
 
       {/* 5. How We Use Your Information */}
       <section id="how-we-use" aria-labelledby="how-we-use-heading">
-        <h2 id="how-we-use-heading" className="text-2xl font-display font-bold text-text mb-4">5. How We Use Your Information</h2>
+        <h2 id="how-we-use-heading" className="text-2xl font-display font-bold text-text mb-4">7. How We Use Your Information</h2>
         <p className="mb-3">We use the information we collect to:</p>
         <ul className="list-disc pl-6 space-y-1">
           <li>Operate and improve the {SITE_NAME} website and its features</li>
@@ -134,7 +223,7 @@ export function PrivacyContent() {
 
       {/* 6. Data Sharing */}
       <section id="data-sharing" aria-labelledby="data-sharing-heading">
-        <h2 id="data-sharing-heading" className="text-2xl font-display font-bold text-text mb-4">6. Data Sharing and Disclosure</h2>
+        <h2 id="data-sharing-heading" className="text-2xl font-display font-bold text-text mb-4">8. Data Sharing and Disclosure</h2>
         <p className="mb-4">We do not sell, trade, or rent your personal information. We may share information in these limited circumstances:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li><strong className="text-text">Service providers:</strong> Trusted vendors who assist in operating the site, subject to confidentiality obligations.</li>
@@ -146,7 +235,7 @@ export function PrivacyContent() {
 
       {/* 7. User Rights */}
       <section id="your-rights" aria-labelledby="your-rights-heading">
-        <h2 id="your-rights-heading" className="text-2xl font-display font-bold text-text mb-4">7. Your Rights</h2>
+        <h2 id="your-rights-heading" className="text-2xl font-display font-bold text-text mb-4">9. Your Rights</h2>
         <p className="mb-4">Depending on your location, you may have certain rights regarding your personal data:</p>
         <ul className="list-disc pl-6 space-y-2 mb-4">
           <li><strong className="text-text">Right of access:</strong> Request a copy of the personal data we hold about you.</li>
@@ -158,13 +247,13 @@ export function PrivacyContent() {
         </ul>
         <p>
           To exercise any of these rights, contact us at{" "}
-          <a href="mailto:contact@comparison.com" className="text-primary-600 hover:underline">contact@comparison.com</a>. We will respond within 30 days.
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">{CONTACT_EMAIL}</a>. We will respond within 30 days.
         </p>
       </section>
 
       {/* 8. Data Retention */}
       <section id="data-retention" aria-labelledby="data-retention-heading">
-        <h2 id="data-retention-heading" className="text-2xl font-display font-bold text-text mb-4">8. Data Retention</h2>
+        <h2 id="data-retention-heading" className="text-2xl font-display font-bold text-text mb-4">10. Data Retention</h2>
         <p className="mb-4">We retain personal data only for as long as necessary:</p>
         <ul className="list-disc pl-6 space-y-1 mb-4">
           <li>Contact form submissions are retained for up to 24 months.</li>
@@ -176,7 +265,7 @@ export function PrivacyContent() {
 
       {/* 9. Security */}
       <section id="data-security" aria-labelledby="data-security-heading">
-        <h2 id="data-security-heading" className="text-2xl font-display font-bold text-text mb-4">9. Data Security</h2>
+        <h2 id="data-security-heading" className="text-2xl font-display font-bold text-text mb-4">11. Data Security</h2>
         <p>
           We implement industry-standard technical and organizational measures to protect your
           information. These include HTTPS encryption, access controls, and regular security reviews.
@@ -186,18 +275,18 @@ export function PrivacyContent() {
 
       {/* 10. Children */}
       <section id="childrens-privacy" aria-labelledby="childrens-privacy-heading">
-        <h2 id="childrens-privacy-heading" className="text-2xl font-display font-bold text-text mb-4">10. Children&apos;s Privacy</h2>
+        <h2 id="childrens-privacy-heading" className="text-2xl font-display font-bold text-text mb-4">12. Children&apos;s Privacy</h2>
         <p>
           {SITE_NAME} is not directed to children under 13, and we do not knowingly collect personal
           information from children. If you believe we have collected information from a child under 13,
           contact us at{" "}
-          <a href="mailto:contact@comparison.com" className="text-primary-600 hover:underline">contact@comparison.com</a>.
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">{CONTACT_EMAIL}</a>.
         </p>
       </section>
 
       {/* 11. International Transfers */}
       <section id="international-transfers" aria-labelledby="international-transfers-heading">
-        <h2 id="international-transfers-heading" className="text-2xl font-display font-bold text-text mb-4">11. International Data Transfers</h2>
+        <h2 id="international-transfers-heading" className="text-2xl font-display font-bold text-text mb-4">13. International Data Transfers</h2>
         <p>
           Your information may be transferred to and processed in countries other than your own.
           We take appropriate steps to ensure compliance with applicable data protection laws.
@@ -206,7 +295,7 @@ export function PrivacyContent() {
 
       {/* 12. Changes */}
       <section id="changes" aria-labelledby="changes-heading">
-        <h2 id="changes-heading" className="text-2xl font-display font-bold text-text mb-4">12. Changes to This Policy</h2>
+        <h2 id="changes-heading" className="text-2xl font-display font-bold text-text mb-4">14. Changes to This Policy</h2>
         <p className="mb-4">
           We may update this Privacy Policy from time to time. When we make material changes, we
           will update the &ldquo;Last updated&rdquo; date at the top of this page.
@@ -216,12 +305,12 @@ export function PrivacyContent() {
 
       {/* 13. Contact */}
       <section id="contact" aria-labelledby="contact-heading">
-        <h2 id="contact-heading" className="text-2xl font-display font-bold text-text mb-4">13. Contact Us</h2>
+        <h2 id="contact-heading" className="text-2xl font-display font-bold text-text mb-4">15. Contact Us</h2>
         <p>If you have any questions about this Privacy Policy, please contact us:</p>
         <div className="mt-4 bg-surface-alt border border-border rounded-xl p-5 text-sm">
           <p className="font-semibold text-text mb-1">{SITE_NAME}</p>
-          <p>Email: <a href="mailto:contact@comparison.com" className="text-primary-600 hover:underline">contact@comparison.com</a></p>
-          <p>Website: comparison.com</p>
+          <p>Email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 hover:underline">{CONTACT_EMAIL}</a></p>
+          <p>Website: {SITE_DOMAIN}</p>
         </div>
       </section>
     </LegalPageLayout>
