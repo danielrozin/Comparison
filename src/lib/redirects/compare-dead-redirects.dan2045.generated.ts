@@ -11,6 +11,8 @@
  * `canonicalComparisonWhere()`.
  *
  * Generated 2026-07-16 against prod: 163 of 286 redirects were broken.
+ * Updated 2026-07-26 (DAN-2660): removed wegovy-vs-ozempic and windsurf-vs-cursor
+ * after restoring ozempic-vs-wegovy and cursor-vs-windsurf to published status.
  */
 export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   // -> airpods-4-vs-airpods-pro-2 (archived); source is archived
@@ -315,8 +317,6 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "weaviate-vs-chroma",
   // -> google-meet-vs-webex (archived); source is archived
   "webex-vs-google-meet",
-  // -> ozempic-vs-wegovy (archived); source is archived
-  "wegovy-vs-ozempic",
   // -> mlflow-vs-weights-biases (archived); source is archived
   "weights-biases-vs-mlflow",
   // -> telegram-vs-whatsapp (archived); source is archived
@@ -325,8 +325,6 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "whoop-vs-apple-watch",
   // -> fitbit-vs-whoop (archived); source is archived
   "whoop-vs-fitbit",
-  // -> cursor-vs-windsurf (archived); source is archived
-  "windsurf-vs-cursor",
   // -> github-copilot-vs-windsurf (archived); source is archived
   "windsurf-vs-github-copilot",
   // -> godaddy-vs-wix (archived); source is archived
