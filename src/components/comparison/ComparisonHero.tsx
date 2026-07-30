@@ -161,8 +161,12 @@ function EntityCard({
       {entity.shortDesc && (
         <p className="text-xs sm:text-sm text-primary-100/80 leading-snug line-clamp-3">{entity.shortDesc}</p>
       )}
+      {/* bestFor is authored as a full sentence, not a keyword. As a
+          rounded-full inline pill it collapsed to one or two words per line in
+          the ~160px mobile card and ran past the card's bottom edge. A block
+          with a normal radius and a line clamp reads correctly at any length. */}
       {entity.bestFor && (
-        <p className={`mt-3 text-xs font-semibold px-3 py-1.5 rounded-full inline-block ${pillClass}`}>
+        <p className={`mt-3 block text-xs font-semibold leading-snug px-3 py-1.5 rounded-xl line-clamp-4 ${pillClass}`}>
           {entity.bestFor}
         </p>
       )}
