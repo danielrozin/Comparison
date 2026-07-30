@@ -121,6 +121,7 @@ export default async function sitemap({
       { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/password-manager-comparison`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
+      { url: `${SITE_URL}/probability-vs-statistics`, lastModified: "2026-07-30", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/q1-2026-ai-battles`, lastModified: "2026-06-12", changeFrequency: "monthly", priority: 0.8 },
       { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
