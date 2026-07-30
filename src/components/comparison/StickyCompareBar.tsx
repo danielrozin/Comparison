@@ -87,8 +87,11 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
       }`}
     >
       <div className="max-w-5xl mx-auto px-4 h-11 flex items-center gap-3 overflow-hidden">
-        {/* Entity A vs B compact */}
-        <div className="flex items-center gap-2 flex-shrink-0 min-w-0 mr-2">
+        {/* Entity A vs B compact — hidden below sm. At 390px the two names plus
+            the VS badge took ~300px of the bar, leaving a 61px window for the
+            section links, which made the jump nav unusable. The names are
+            already in the hero and the page title, so the nav wins the space. */}
+        <div className="hidden sm:flex items-center gap-2 flex-shrink-0 min-w-0 mr-2">
           <span className="flex items-center gap-1">
             <span
               className={`font-bold text-[13px] truncate max-w-[100px] sm:max-w-[160px] ${winner === "a" ? "text-amber-600" : "text-primary-700"}`}
@@ -124,7 +127,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
         </div>
 
         {/* Divider */}
-        <div className="w-px h-5 bg-border flex-shrink-0" aria-hidden="true" />
+        <div className="hidden sm:block w-px h-5 bg-border flex-shrink-0" aria-hidden="true" />
 
         {/* Section jump links */}
         <div
@@ -162,7 +165,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
           onClick={handleCopy}
           aria-label={copied ? "Link copied!" : "Copy link to this comparison"}
           title={copied ? "Copied!" : "Copy link"}
-          className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-150 ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
+          className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-150 ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${
             copied
               ? "bg-emerald-100 text-emerald-600"
               : "text-text-secondary hover:text-primary-600 hover:bg-primary-50"

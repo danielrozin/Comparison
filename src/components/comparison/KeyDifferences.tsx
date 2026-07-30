@@ -183,7 +183,7 @@ export function KeyDifferencesBlock({
               type="button"
               onClick={() => { setFilter(tab.id); setMobileExpanded(false); }}
               aria-pressed={filter === tab.id}
-              className={`inline-flex flex-shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+              className={`inline-flex flex-shrink-0 items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                 filter === tab.id ? tab.activeColor : `bg-white ${tab.color}`
               }`}
             >

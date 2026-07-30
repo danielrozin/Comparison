@@ -79,7 +79,7 @@ export function ShortAnswerBlock({
                     onClick={handleCopy}
                     aria-label={copied ? "Copied!" : "Copy quick answer"}
                     title={copied ? "Copied!" : "Copy"}
-                    className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 ${
+                    className={`flex-shrink-0 w-9 h-9 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 ${
                       copied
                         ? "bg-emerald-100 text-emerald-600"
                         : "bg-amber-100/60 text-amber-600 hover:bg-amber-200/70 hover:text-amber-700"
@@ -101,7 +101,7 @@ export function ShortAnswerBlock({
                 </p>
                 <a
                   href="#verdict"
-                  className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-amber-700 hover:text-amber-800 underline underline-offset-2 decoration-amber-400/50 hover:decoration-amber-600 transition-colors group"
+                  className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 mt-3 text-xs font-semibold text-amber-700 hover:text-amber-800 underline underline-offset-2 decoration-amber-400/50 hover:decoration-amber-600 transition-colors group"
                 >
                   Read full verdict
                   <svg className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">

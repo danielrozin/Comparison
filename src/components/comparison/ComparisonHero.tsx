@@ -273,7 +273,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
           <div className="flex justify-center mb-4 motion-safe:animate-fade-in">
             <Link
               href={`/category/${comparison.category.toLowerCase().replace(/\s+/g, "-")}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider hover:bg-white/20 hover:border-white/40 hover:text-white transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900"
+              className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/20 text-primary-100 uppercase tracking-wider hover:bg-white/20 hover:border-white/40 hover:text-white transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-primary-900"
             >
               {comparison.category}
             </Link>
@@ -291,7 +291,7 @@ export function ComparisonHero({ comparison }: { comparison: ComparisonPageData 
             <span className="inline-flex w-4 h-4 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 items-center justify-center flex-shrink-0" aria-hidden="true">
               <span className="text-white font-bold leading-none text-[8px]">DR</span>
             </span>
-            <Link href="/authors/daniel-rozin" rel="author" className="hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
+            <Link href="/authors/daniel-rozin" rel="author" className="inline-flex items-center min-h-11 sm:min-h-0 hover:text-white transition-colors font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">Daniel Rozin</Link>
           </span>
           {comparison.metadata?.updatedAt && (
             <>
