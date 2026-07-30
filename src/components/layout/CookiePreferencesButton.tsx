@@ -7,7 +7,7 @@ export function CookiePreferencesButton() {
       onClick={() => {
         window.dispatchEvent(new CustomEvent("open-cookie-preferences"));
       }}
-      className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 rounded-sm"
+      className="inline-flex items-center min-h-10 sm:min-h-0 text-xs text-white/50 hover:text-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 rounded-sm"
     >
       Cookie Preferences
     </button>

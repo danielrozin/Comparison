@@ -20,25 +20,26 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
   }
 
   return (
-    <nav aria-label="Pagination" className="flex items-center justify-center gap-1 mt-10">
+    <nav aria-label="Pagination" className="flex flex-wrap items-center justify-center gap-1 mt-10">
       {/* Prev */}
       {currentPage > 1 ? (
         <Link
           href={pageUrl(currentPage - 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          aria-label="Previous page"
+          className="flex items-center justify-center gap-1 min-h-11 min-w-11 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           rel="prev"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Prev
+          <span className="hidden sm:inline">Prev</span>
         </Link>
       ) : (
-        <span aria-hidden="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
+        <span aria-hidden="true" className="flex items-center justify-center gap-1 min-h-11 min-w-11 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Prev
+          <span className="hidden sm:inline">Prev</span>
         </span>
       )}
 
@@ -51,7 +52,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
         ) : page === currentPage ? (
           <span
             key={page}
-            className="flex items-center justify-center w-10 h-10 text-sm font-bold text-white bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg shadow-sm"
+            className="flex items-center justify-center w-11 h-11 text-sm font-bold text-white bg-gradient-to-br from-primary-600 to-accent-600 rounded-lg shadow-sm"
             aria-current="page"
             aria-label={`Page ${page}, current`}
           >
@@ -62,7 +63,7 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
             key={page}
             href={pageUrl(page)}
             aria-label={`Page ${page}`}
-            className="flex items-center justify-center w-10 h-10 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+            className="flex items-center justify-center w-11 h-11 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             {page}
           </Link>
@@ -73,17 +74,18 @@ export function Pagination({ currentPage, totalPages, basePath, extraParams }: P
       {currentPage < totalPages ? (
         <Link
           href={pageUrl(currentPage + 1)}
-          className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+          aria-label="Next page"
+          className="flex items-center justify-center gap-1 min-h-11 min-w-11 px-3 py-2 text-sm font-medium text-text-secondary hover:text-text hover:bg-surface-alt rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           rel="next"
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </Link>
       ) : (
-        <span aria-hidden="true" className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
-          Next
+        <span aria-hidden="true" className="flex items-center justify-center gap-1 min-h-11 min-w-11 px-3 py-2 text-sm font-medium text-text-secondary/40 cursor-not-allowed select-none">
+          <span className="hidden sm:inline">Next</span>
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

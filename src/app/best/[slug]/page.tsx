@@ -4,7 +4,6 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { BackToTop } from "@/components/ui/BackToTop";
 import { BEST_CONFIG, type BestEntry } from "@/lib/data/best-entries";
 import { getPrisma } from "@/lib/db/prisma";
 import { personAuthorNode, teachesDefinedTerm } from "@/lib/seo/schema";
@@ -487,7 +486,6 @@ export default async function BestPage({ params }: PageProps) {
           <NewsletterSignup source={`best-${slug}`} />
         </div>
       </div>
-      <BackToTop />
     </>
   );
 }

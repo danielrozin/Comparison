@@ -326,7 +326,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
               <Link
                 href="/reviews"
                 aria-current={!category ? "true" : undefined}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                className={`inline-flex items-center min-h-11 sm:min-h-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
               >
                 All ({categories.reduce((s, c) => s + c.count, 0)})
               </Link>
@@ -335,7 +335,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
                   key={cat.slug}
                   href={`/reviews?category=${cat.slug}`}
                   aria-current={category === cat.slug ? "true" : undefined}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
+                  className={`inline-flex items-center min-h-11 sm:min-h-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm" : "bg-white border border-border text-text-secondary hover:border-primary-300"}`}
                 >
                   {cat.name} ({cat.count})
                 </Link>
@@ -345,14 +345,14 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
         )}
 
         {/* Sort & Filter Bar */}
-        <div className="flex flex-wrap items-center gap-4 mb-6 text-sm" role="group" aria-label="Sort and filter options">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-0 sm:gap-y-4 mb-6 text-sm" role="group" aria-label="Sort and filter options">
           <span className="text-text-secondary">Sort by:</span>
           {(["smartscore", "rating", "reviews", "alphabetical"] as const).map((s) => (
             <Link
               key={s}
               href={`/reviews?sort=${s}${category ? `&category=${category}` : ""}${sp.rating ? `&rating=${sp.rating}` : ""}`}
               aria-current={sort === s ? "true" : undefined}
-              className={`font-medium ${sort === s ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
+              className={`inline-flex items-center justify-center min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 font-medium ${sort === s ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
             >
               {s === "smartscore" ? "SmartScore" : s === "rating" ? "Rating" : s === "reviews" ? "Most Reviewed" : "A-Z"}
             </Link>
@@ -364,7 +364,7 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
               key={r}
               href={`/reviews?sort=${sort}${category ? `&category=${category}` : ""}${r !== "all" ? `&rating=${r}` : ""}`}
               aria-current={(sp.rating || "all") === r ? "true" : undefined}
-              className={`font-medium ${(sp.rating || "all") === r ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
+              className={`inline-flex items-center justify-center min-h-11 min-w-11 sm:min-h-0 sm:min-w-0 font-medium ${(sp.rating || "all") === r ? "text-primary-600 underline" : "text-text-secondary hover:text-text"}`}
             >
               {r === "all" ? "All" : r}
             </Link>

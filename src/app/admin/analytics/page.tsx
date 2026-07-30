@@ -569,7 +569,7 @@ export default function AnalyticsDashboard() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                     <div>
                       <p className="text-xs text-gray-500">Goal Metric</p>
                       <p className="text-sm font-medium text-indigo-600">{exp.goalMetric}</p>

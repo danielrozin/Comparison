@@ -339,7 +339,7 @@ export default function DeveloperDashboard() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div className="p-4 rounded-lg bg-surface-alt text-center">
                   <div className="text-2xl font-black text-text">{selectedKeyStats.key.requestsToday}</div>
                   <div className="text-xs text-text-secondary">Requests Today</div>

@@ -218,13 +218,13 @@ export function PartnershipForm() {
           {GOALS.map((goal) => (
             <label
               key={goal}
-              className="flex items-center gap-2 cursor-pointer text-sm text-text-secondary"
+              className="flex items-center gap-2 min-h-11 cursor-pointer text-sm text-text-secondary"
             >
               <input
                 type="checkbox"
                 checked={form.goals.includes(goal)}
                 onChange={() => handleGoalToggle(goal)}
-                className="rounded border-border text-primary-600 focus:ring-primary-600"
+                className="w-5 h-5 shrink-0 rounded border-border text-primary-600 focus:ring-primary-600"
               />
               {goal}
             </label>

@@ -421,7 +421,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
                 <Link
                   href="/trending"
                   aria-current={!activeCategory ? "true" : undefined}
-                  className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                  className={`inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
                     !activeCategory
                       ? "bg-orange-500 text-white border-orange-500 shadow-sm shadow-orange-200"
                       : "bg-white text-text-secondary border-border hover:border-orange-300 hover:text-text hover:bg-orange-50"
@@ -441,7 +441,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
                       key={cat}
                       href={`/trending?category=${encodeURIComponent(cat)}`}
                       aria-current={isActive ? "true" : undefined}
-                      className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
+                      className={`inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
                         isActive
                           ? `${bg} ${text} ${border} ring-2 ${ring} shadow-sm`
                           : "bg-white text-text-secondary border-border hover:border-current hover:bg-opacity-50"

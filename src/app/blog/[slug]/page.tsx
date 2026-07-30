@@ -14,7 +14,6 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
-import { BackToTop } from "@/components/ui/BackToTop";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
@@ -1026,7 +1025,6 @@ export default async function BlogPostPage({
           </div>
         </div>
       </div>
-      <BackToTop />
     </>
   );
 }

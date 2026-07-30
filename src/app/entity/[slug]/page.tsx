@@ -429,7 +429,7 @@ export default async function EntityPage({ params }: PageProps) {
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold backdrop-blur-sm ring-1 ring-white/20 transition-all duration-150 hover:ring-white/40"
+                  className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-semibold backdrop-blur-sm ring-1 ring-white/20 transition-all duration-150 hover:ring-white/40"
                 >
                   <span className="capitalize">{cat.name}</span>
                   <span className="opacity-50">·</span>
@@ -567,7 +567,7 @@ export default async function EntityPage({ params }: PageProps) {
                 <div className="mt-3 text-center">
                   <Link
                     href={`/alternatives/${slug}`}
-                    className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    className="inline-flex items-center min-h-11 sm:min-h-0 text-sm text-primary-600 hover:text-primary-700 font-medium"
                   >
                     View all alternatives to {name} <span aria-hidden="true">&rarr;</span>
                   </Link>

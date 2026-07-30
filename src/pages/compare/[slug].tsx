@@ -115,11 +115,6 @@ const ReadingProgressBar = dynamic(
   { ssr: false, loading: () => null }
 );
 
-const BackToTop = dynamic(
-  () => import("@/components/ui/BackToTop").then((m) => ({ default: m.BackToTop })),
-  { ssr: false, loading: () => null }
-);
-
 // Interactive/tracking widgets — kept out of SSR HTML (ssr:false shim, shared
 // verbatim with the former App Router route).
 import {
@@ -829,8 +824,8 @@ export default function ComparisonPage(props: Props) {
       {/* ClaimReview — fact-check schema for verdict pages; boosts E-E-A-T and AI citation confidence */}
       {claimReviewJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: claimReviewJsonLd }} />}
 
-      {/* Floating back-to-top */}
-      <BackToTop />
+      {/* Floating back-to-top is mounted globally in _app.tsx — a second copy
+          here stacked two buttons on top of each other in the same corner. */}
 
       {/* Track recently viewed */}
       <TrackRecentView slug={slug} title={comparison.title} category={comparison.category || ""} />
@@ -890,7 +885,9 @@ export default function ComparisonPage(props: Props) {
       )}
 
       {/* Share + Like Bar */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+      {/* flex-wrap: at 390px the share icons + embed + like exceeded the row and
+          pushed the document 51px wider than the viewport on every compare page. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex flex-wrap items-center justify-between gap-y-2">
         <ShareBar title={comparison.title} slug={comparison.slug} />
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />
@@ -1160,7 +1157,9 @@ function MultiEntityLayout({
       />
 
       {/* Share bar */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+      {/* flex-wrap: at 390px the share icons + embed + like exceeded the row and
+          pushed the document 51px wider than the viewport on every compare page. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex flex-wrap items-center justify-between gap-y-2">
         <ShareBar title={comparison.title} slug={comparison.slug} />
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />

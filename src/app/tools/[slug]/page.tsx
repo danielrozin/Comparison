@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
-import { BackToTop } from "@/components/ui/BackToTop";
 import { getPrisma } from "@/lib/db/prisma";
 
 interface PageProps {
@@ -510,7 +509,6 @@ export default async function ToolPage({ params }: PageProps) {
         <NewsletterSignup source={`tools-${slug}`} />
       </div>
 
-      <BackToTop />
     </>
   );
 }

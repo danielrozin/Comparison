@@ -118,8 +118,10 @@ export function CookieConsentBanner() {
       className="fixed bottom-0 left-0 right-0 z-[60]"
       style={{ animation: "slide-up 0.4s ease-out forwards" }}
     >
-      <div className="mx-auto max-w-3xl px-4 pb-4 sm:px-6 sm:pb-6">
-        <div className="rounded-xl border border-border bg-surface shadow-2xl shadow-black/10">
+      <div className="mx-auto max-w-3xl px-3 pb-[calc(4.5rem+env(safe-area-inset-bottom))] sm:px-6 md:pb-6">
+        {/* The preferences view is taller than a short phone viewport; without a
+            cap it grew off the top of the screen with no way to reach the top. */}
+        <div className="rounded-xl border border-border bg-surface shadow-2xl shadow-black/10 max-h-[calc(100dvh-8rem)] overflow-y-auto overscroll-contain">
           {!showPreferences ? (
             <div className="p-4 sm:p-6">
               <div className="flex items-start gap-3">
@@ -143,21 +145,21 @@ export function CookieConsentBanner() {
                 <button
                   type="button"
                   onClick={handleAcceptAll}
-                  className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Accept All
                 </button>
                 <button
                   type="button"
                   onClick={handleRejectAll}
-                  className="px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Reject All
                 </button>
                 <button
                   type="button"
                   onClick={handleManageClick}
-                  className="px-4 py-2 text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
                 >
                   Manage Preferences
                 </button>
@@ -171,7 +173,7 @@ export function CookieConsentBanner() {
                   type="button"
                   onClick={() => setShowPreferences(false)}
                   aria-label="Close cookie preferences"
-                  className="p-1 text-text-secondary hover:text-text transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                  className="inline-flex items-center justify-center w-11 h-11 -m-2 text-text-secondary hover:text-text transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                     <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -214,14 +216,14 @@ export function CookieConsentBanner() {
                 <button
                   type="button"
                   onClick={handleSavePreferences}
-                  className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Save Preferences
                 </button>
                 <button
                   type="button"
                   onClick={handleAcceptAll}
-                  className="px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Accept All
                 </button>

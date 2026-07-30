@@ -135,7 +135,7 @@ export function DaysBetweenDates() {
               <button
                 key={days}
                 onClick={() => setPreset(days)}
-                className="px-3 py-1.5 text-xs font-medium border border-border rounded-full hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 text-text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                className="inline-flex items-center min-h-11 sm:min-h-0 px-3 py-1.5 text-xs font-medium border border-border rounded-full hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 text-text-secondary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
               >
                 {label}
               </button>
@@ -165,7 +165,9 @@ export function DaysBetweenDates() {
           {/* Hero stat */}
           <div className="bg-gradient-to-br from-emerald-600 to-teal-600 text-white rounded-xl p-6 text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-emerald-200 mb-1">Total Days</p>
-            <p className="text-6xl font-extrabold">{result.totalDays.toLocaleString()}</p>
+            {/* text-6xl alone overflowed the card on a 390px screen once the
+                day count reached seven digits (e.g. a 3,000-year span). */}
+            <p className="text-4xl sm:text-6xl font-extrabold tabular-nums break-all">{result.totalDays.toLocaleString()}</p>
             <p className="text-emerald-200 mt-1">
               {result.years > 0 && `${result.years} year${result.years !== 1 ? "s" : ""}, `}
               {result.months > 0 && `${result.months} month${result.months !== 1 ? "s" : ""}, `}

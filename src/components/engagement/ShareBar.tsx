@@ -31,15 +31,17 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-xs font-medium text-text-secondary mr-1">Share:</span>
+    <div className="flex flex-wrap items-center gap-2">
+      {/* Label is dropped below sm — with it the six 44px targets could not
+          fit a 390px row and the whole page picked up a horizontal scroll. */}
+      <span className="hidden sm:inline text-xs font-medium text-text-secondary mr-1">Share:</span>
 
       {/* Twitter/X */}
       <a
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-black hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-black hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label="Share on X (opens in new tab)"
         onClick={() => trackShareClick("twitter", slug)}
       >
@@ -53,7 +55,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-blue-600 hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-blue-600 hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label="Share on Facebook (opens in new tab)"
         onClick={() => trackShareClick("facebook", slug)}
       >
@@ -67,7 +69,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#0077B5] hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#0077B5] hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label="Share on LinkedIn (opens in new tab)"
         onClick={() => trackShareClick("linkedin", slug)}
       >
@@ -81,7 +83,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#25D366] hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-[#25D366] hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label="Share on WhatsApp (opens in new tab)"
         onClick={() => trackShareClick("whatsapp", slug)}
       >
@@ -95,7 +97,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
         href={`https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-orange-500 hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-orange-500 hover:text-white transition-all duration-150 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label="Share on Reddit (opens in new tab)"
         onClick={() => trackShareClick("reddit", slug)}
       >
@@ -108,7 +110,7 @@ export function ShareBar({ title, slug, path = "compare" }: { title: string; slu
       <button
         type="button"
         onClick={copyLink}
-        className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-alt hover:bg-primary-100 hover:text-primary-700 transition-all duration-150 hover:scale-110 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+        className="w-11 h-11 sm:w-10 sm:h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-surface-alt hover:bg-primary-100 hover:text-primary-700 transition-all duration-150 hover:scale-110 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
         aria-label={copied ? "Link copied" : "Copy link"}
       >
         <span role="status" aria-live="polite" className="sr-only">

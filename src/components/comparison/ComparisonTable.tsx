@@ -296,7 +296,7 @@ function OverflowRowsDesktop({
     <tr>
       <td colSpan={3} className="p-0">
         <details className="border-t border-border/30">
-          <summary className="px-5 py-2.5 text-xs font-medium text-primary-600 hover:bg-primary-50/40 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
+          <summary className="flex items-center min-h-11 px-5 py-2.5 text-xs font-medium text-primary-600 hover:bg-primary-50/40 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
             Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
           </summary>
           <div role="rowgroup">
@@ -336,7 +336,7 @@ function OverflowRowsMobile({
   if (attrs.length === 0) return null;
   return (
     <details className="border-t border-border/30">
-      <summary className="px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-surface-alt/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
+      <summary className="flex items-center min-h-11 px-3 py-2 text-xs font-medium text-primary-600 cursor-pointer select-none bg-surface-alt/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-inset">
         Show {attrs.length} more attribute{attrs.length === 1 ? "" : "s"}
       </summary>
       <div className="divide-y divide-border/30">

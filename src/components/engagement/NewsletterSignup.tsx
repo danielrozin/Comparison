@@ -77,12 +77,12 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
             aria-describedby={status === "error" ? "nl-inline-error" : undefined}
             aria-invalid={status === "error" ? "true" : undefined}
             required
-            className="flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus-visible:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-400"
+            className="flex-1 min-w-0 px-3 py-2 min-h-11 sm:min-h-0 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-white/60 focus:outline-none focus-visible:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-400"
           />
           <button
             type="submit"
             disabled={status === "loading"}
-            className="px-4 py-2 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
+            className="px-4 py-2 min-h-11 sm:min-h-0 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-medium rounded-lg transition-all duration-150 disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2"
           >
             {status === "loading" ? "…" : "Subscribe"}
           </button>

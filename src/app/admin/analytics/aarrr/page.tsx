@@ -194,7 +194,7 @@ export default function AARRRDashboard() {
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-gray-200 rounded w-1/3" />
           <div className="h-4 bg-gray-200 rounded w-1/4" />
-          <div className="grid grid-cols-5 gap-4 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
             {[...Array(5)].map((_, i) => <div key={i} className="h-24 bg-gray-200 rounded-xl" />)}
           </div>
           <div className="h-64 bg-gray-200 rounded-xl mt-6" />
@@ -279,7 +279,7 @@ export default function AARRRDashboard() {
           <div className="bg-white border border-gray-200 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">AARRR Funnel (7-day)</h3>
             {data.funnel.some((f) => f.value > 0) ? (
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 {data.funnel.map((f, i) => {
                   const maxVal = Math.max(...data.funnel.map((x) => x.value), 1);
                   const heightPct = Math.max((f.value / maxVal) * 100, 10);

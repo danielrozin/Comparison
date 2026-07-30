@@ -81,6 +81,15 @@ export function Header() {
     return () => document.removeEventListener("keydown", fn);
   }, [openDropdown, mobileMenuOpen]);
 
+  // Lock the page behind the mobile menu. Without this the body scrolled under
+  // the open panel on touch, so a flick meant to scroll the menu moved the page.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [mobileMenuOpen]);
+
   // WCAG 2.1 SC 2.1.2 — Focus trap for mobile menu overlay.
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -118,7 +127,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
+          <Link href="/" aria-label="A Versus B — home" className="flex items-center gap-2 flex-shrink-0 h-11 -my-1 group">
             <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-600 rounded-xl shadow-sm shadow-primary-400/40 flex items-center justify-center group-hover:shadow-md group-hover:shadow-primary-400/50 transition-all duration-200">
               <span className="text-white font-black text-xs tracking-tight drop-shadow-sm">VS</span>
             </div>
@@ -222,7 +231,7 @@ export function Header() {
               type="button"
               onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
               aria-label="Search (⌘K or /)"
-              className="group flex items-center gap-2 px-4 py-2 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+              className="group flex items-center justify-center gap-2 min-w-11 h-11 px-3 sm:px-4 bg-surface-alt hover:bg-white border border-border hover:border-primary-200 hover:ring-2 hover:ring-primary-100 rounded-full text-sm text-text-secondary/60 hover:text-text-secondary hover:shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -261,8 +270,18 @@ export function Header() {
 
       {/* ─── Mobile menu — only mounted when open, removes ~18KB of subcategory HTML from initial SSR ─── */}
       {mobileMenuOpen && (
-      <nav id="mobile-menu" ref={mobileMenuRef} aria-label="Mobile navigation" className="lg:hidden">
-        <div className="bg-white border-t border-border overflow-y-auto max-h-[80vh]">
+      <>
+        {/* Backdrop — tapping outside closes, and it stops the menu from reading
+            as part of the page content on a small screen. */}
+        <div
+          className="lg:hidden fixed inset-0 top-16 bg-black/40 backdrop-blur-[1px] z-40"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      <nav id="mobile-menu" ref={mobileMenuRef} aria-label="Mobile navigation" className="lg:hidden absolute top-full inset-x-0 z-50 shadow-xl">
+        {/* absolute + dvh: previously this sat in flow inside the sticky header,
+            so opening the menu shoved the whole page down by its height. */}
+        <div className="bg-white border-t border-border overflow-y-auto overscroll-contain max-h-[calc(100dvh-4rem)] pb-[calc(1rem+env(safe-area-inset-bottom))]">
           {/* Search */}
           <div className="p-4 pb-2 sm:hidden">
             <button
@@ -321,7 +340,7 @@ export function Header() {
                             key={sub.slug}
                             href={`/category/${item.slug}/${sub.slug}`}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
+                            className="flex items-center gap-2 min-h-11 px-3 py-2 text-[13px] text-text-secondary rounded-lg active:bg-surface-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400"
                           >
                             <span aria-hidden="true">{sub.icon}</span>
                             <span className="truncate">{sub.name}</span>
@@ -365,6 +384,7 @@ export function Header() {
           </div>
         </div>
       </nav>
+      </>
       )}
     </header>
   );

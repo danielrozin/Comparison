@@ -127,7 +127,7 @@ export function LegalPageLayout({
         <div className="max-w-4xl">
           {/* Mobile TOC — collapsible */}
           <details className="lg:hidden mb-8 bg-surface-alt border border-border rounded-xl p-4 print:hidden">
-            <summary className="text-sm font-semibold text-text cursor-pointer select-none">
+            <summary className="flex items-center min-h-11 -my-1 text-sm font-semibold text-text cursor-pointer select-none">
               Table of Contents
             </summary>
             <nav className="mt-3" aria-label="Table of contents">
@@ -136,7 +136,7 @@ export function LegalPageLayout({
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
-                      className="text-sm text-primary-600 hover:underline"
+                      className="inline-flex items-center min-h-10 text-sm text-primary-600 hover:underline"
                     >
                       {i + 1}. {section.title}
                     </a>

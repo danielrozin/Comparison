@@ -298,7 +298,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
       </div>
 
       {/* Share + Like + Embed */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex flex-wrap items-center justify-between gap-y-2">
         <ShareBar title={comparison.title} slug={comparison.slug} />
         <div className="flex items-center gap-2">
           <EmbedButton slug={comparison.slug} title={comparison.title} />

@@ -37,6 +37,21 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
     return () => window.removeEventListener("scroll", onScroll);
   }, [entered]);
 
+  // globals.css reserves 80px of scroll padding for the 64px header. While this
+  // bar is showing it adds another 44px on top, so every in-page jump (the TOC,
+  // this bar's own links) landed with the heading hidden underneath it.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (!visible) {
+      root.style.removeProperty("scroll-padding-top");
+      return;
+    }
+    root.style.scrollPaddingTop = "124px";
+    return () => {
+      root.style.removeProperty("scroll-padding-top");
+    };
+  }, [visible]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -71,7 +86,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
         visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       }`}
     >
-      <div className="max-w-5xl mx-auto px-4 h-10 flex items-center gap-3 overflow-hidden">
+      <div className="max-w-5xl mx-auto px-4 h-11 flex items-center gap-3 overflow-hidden">
         {/* Entity A vs B compact */}
         <div className="flex items-center gap-2 flex-shrink-0 min-w-0 mr-2">
           <span className="flex items-center gap-1">
@@ -129,7 +144,7 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
                 }}
                 href={`#${s.id}`}
                 aria-current={isActive ? "location" : undefined}
-                className={`flex-shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 ${
+                className={`flex-shrink-0 inline-flex items-center min-h-9 px-3 py-1 rounded-full text-xs font-medium transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2 ${
                   isActive
                     ? "bg-primary-100 text-primary-700 font-semibold"
                     : "text-text-secondary hover:text-text hover:bg-surface-alt"

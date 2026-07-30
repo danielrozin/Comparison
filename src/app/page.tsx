@@ -287,7 +287,7 @@ export default async function HomePage() {
                 <Link
                   key={example.href}
                   href={example.href}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
+                  className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
                 >
                   <span className="text-xs text-white/40" aria-hidden="true">↗</span>
                   {example.label}
@@ -304,7 +304,7 @@ export default async function HomePage() {
                   <Link
                     key={cat.slug}
                     href={`/category/${cat.slug}`}
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm group"
                   >
                     <span className="group-hover:scale-110 transition-transform inline-block text-white/70 group-hover:text-white" aria-hidden="true"><CategoryIcon category={cat.slug} className="w-3.5 h-3.5" /></span>
                     {cat.name}
@@ -661,7 +661,7 @@ export default async function HomePage() {
           <div className="flex justify-center mt-8 sm:hidden">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+              className="inline-flex items-center gap-2 min-h-11 sm:min-h-0 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
               View all articles
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

@@ -492,7 +492,7 @@ export default async function BlogPage({
                   key={cat}
                   href={cat === "all" ? "/blog" : `/blog?category=${cat}`}
                   aria-current={activeCategory === cat ? "page" : undefined}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+                  className={`inline-flex items-center min-h-11 sm:min-h-0 px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                     activeCategory === cat
                       ? "bg-gradient-to-r from-primary-600 to-accent-600 text-white shadow-sm"
                       : "text-text-secondary hover:bg-surface-alt hover:text-text"
@@ -626,7 +626,7 @@ export default async function BlogPage({
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page - 1}`}
                     aria-label="Go to previous page"
-                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                    className="inline-flex items-center min-h-11 px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     Previous
                   </Link>
@@ -652,7 +652,7 @@ export default async function BlogPage({
                   <Link
                     href={`/blog?${category ? `category=${category}&` : ""}page=${page + 1}`}
                     aria-label="Go to next page"
-                    className="px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                    className="inline-flex items-center min-h-11 px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
                   >
                     Next
                   </Link>

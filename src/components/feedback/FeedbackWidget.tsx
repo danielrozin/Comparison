@@ -94,7 +94,9 @@ export function FeedbackWidget() {
         onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
         aria-expanded={isOpen}
         aria-controls="feedback-panel"
-        className={`fixed bottom-20 sm:bottom-6 right-6 z-[55] w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
+        // fab-slot-2 — see globals.css. Sits directly above back-to-top (slot 1)
+        // so the two never overlap at any breakpoint.
+        className={`fixed fab-slot-2 right-4 md:right-6 z-[55] w-14 h-14 rounded-full shadow-lg ${isOpen ? "hidden sm:flex" : "flex"} items-center justify-center transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700 ${
           isOpen
             ? "bg-text/60 hover:bg-text/80 rotate-45"
             : "bg-gradient-to-br from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 hover:scale-105"
@@ -114,7 +116,23 @@ export function FeedbackWidget() {
 
       {/* Panel */}
       {isOpen && (
-        <div ref={dialogRef} id="feedback-panel" role="dialog" aria-modal="true" aria-labelledby="feedback-dialog-title" className="fixed bottom-36 sm:bottom-24 right-6 z-[55] w-[360px] max-w-[calc(100vw-48px)] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4">
+        <div
+          className="sm:hidden fixed inset-0 z-[54] bg-black/40"
+          onClick={handleClose}
+          aria-hidden="true"
+        />
+      )}
+      {/* Mobile: a full-width sheet anchored above the bottom nav — a 360px card
+          pinned to one corner left the form fields too narrow to type in.
+          sm and up: the original floating card, lifted clear of the slot-2 FAB. */}
+      {isOpen && (
+        <div
+          ref={dialogRef}
+          id="feedback-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="feedback-dialog-title"
+          className="fixed z-[55] inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] max-h-[72vh] overflow-y-auto sm:inset-x-auto sm:right-6 sm:bottom-[9.5rem] md:bottom-[9rem] sm:w-[360px] sm:max-h-[70vh] bg-white border border-border rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary-600 to-accent-600 text-white px-5 py-4 flex items-start justify-between gap-3">
             <div>
@@ -127,7 +145,7 @@ export function FeedbackWidget() {
               type="button"
               onClick={handleClose}
               aria-label="Close feedback"
-              className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors mt-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-primary-600"
+              className="flex-shrink-0 w-11 h-11 -mr-2 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors mt-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-primary-600"
             >
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -166,7 +184,7 @@ export function FeedbackWidget() {
                       type="button"
                       aria-pressed={type === opt.value}
                       onClick={() => setType(opt.value)}
-                      className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+                      className={`inline-flex items-center justify-center min-h-11 px-3 py-2 rounded-lg text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
                         type === opt.value
                           ? "bg-primary-50 border-primary-300 text-primary-700"
                           : "bg-white border-border text-text-secondary hover:border-primary-200"

@@ -603,7 +603,7 @@ function RadioQuestion({
               value={opt}
               checked={value === opt}
               onChange={() => onChange(opt)}
-              className="mr-2.5 mt-0.5 accent-indigo-500 shrink-0"
+              className="w-5 h-5 mr-2.5 mt-0.5 accent-indigo-500 shrink-0"
             />
             {opt}
           </label>
@@ -667,7 +667,7 @@ function CheckboxQuestion({
               type="checkbox"
               checked={values.includes(opt)}
               onChange={() => onChange(opt)}
-              className="mr-2.5 mt-0.5 accent-indigo-500 shrink-0"
+              className="w-5 h-5 mr-2.5 mt-0.5 accent-indigo-500 shrink-0"
             />
             {opt}
           </label>

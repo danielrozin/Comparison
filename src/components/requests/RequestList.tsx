@@ -101,7 +101,7 @@ export function RequestList() {
           type="button"
           aria-pressed={sort === "votes"}
           onClick={() => { setSort("votes"); setPage(1); }}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+          className={`inline-flex items-center min-h-11 sm:min-h-0 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
             sort === "votes"
               ? "bg-primary-100 text-primary-700"
               : "text-text-secondary hover:bg-surface-alt"
@@ -113,7 +113,7 @@ export function RequestList() {
           type="button"
           aria-pressed={sort === "newest"}
           onClick={() => { setSort("newest"); setPage(1); }}
-          className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
+          className={`inline-flex items-center min-h-11 sm:min-h-0 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
             sort === "newest"
               ? "bg-primary-100 text-primary-700"
               : "text-text-secondary hover:bg-surface-alt"

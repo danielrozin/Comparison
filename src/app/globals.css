@@ -58,6 +58,79 @@ body {
   overflow-wrap: break-word;
 }
 
+/* ─── Mobile form controls ──────────────────────────────────────────────────
+   iOS Safari auto-zooms the viewport whenever a focused input renders below
+   16px, and there is no way back out except a pinch. Dozens of fields across
+   the site use `text-sm` (14px) or `text-xs` (12px), so enforce the 16px floor
+   globally below the md breakpoint rather than patching each one. Checkboxes,
+   radios and ranges have no text and are excluded so their sizing is untouched.
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* The Pages Router (/compare/[slug]) wraps everything in #__next. body's
+   overflow-x:hidden propagates to the viewport but does not clip that wrapper,
+   so any child wider than the screen made the whole page scroll sideways.
+   `clip` rather than `hidden`: it blocks the scroll without turning #__next
+   into a scroll container, which would break the sticky header inside it. */
+#__next {
+  overflow-x: clip;
+}
+
+/* ─── Breadcrumb touch targets ──────────────────────────────────────────────
+   Breadcrumb trails are inline text, and the leading "Home" crumb collapses to
+   an icon below sm — a 14x14 tap target. Give every crumb link a 44px hit area
+   on touch screens; the negative margin keeps the trail's visual height intact.
+   Applies to all 64 breadcrumb navs site-wide without touching each page.
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  nav[aria-label="Breadcrumb"] a,
+  nav[aria-label="breadcrumb"] a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -0.5rem;
+  }
+}
+
+/* Footnote/citation superscripts render at ~10.5px, giving a 13x13 tap target.
+   They are inline links so WCAG exempts them, but padding makes them usable. */
+@media (max-width: 767px) {
+  sup > a {
+    display: inline-block;
+    padding: 0.3rem 0.25rem;
+    margin: -0.3rem -0.25rem;
+  }
+}
+
+/* ─── Floating action button stack ──────────────────────────────────────────
+   Back-to-top, the feedback FAB and the compare-page share pill are all
+   position:fixed in the bottom-right. Hard-coded offsets had them overlapping
+   each other (and the mobile bottom nav) on every page. These two slots are the
+   only vertical positions any bottom-right FAB may use, so they can never
+   collide. Slot 1 clears the 56px mobile bottom nav; slot 2 clears slot 1.
+   ────────────────────────────────────────────────────────────────────────── */
+.fab-slot-1 {
+  bottom: calc(4.5rem + env(safe-area-inset-bottom));
+}
+.fab-slot-2 {
+  bottom: calc(8.25rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 768px) {
+  /* No bottom nav on desktop — drop the stack back down to the viewport edge. */
+  .fab-slot-1 {
+    bottom: 1.5rem;
+  }
+  .fab-slot-2 {
+    bottom: 5.25rem;
+  }
+}
+
 /* Balance heading wraps — prevents awkward single-word orphans on the last line.
    Supported in Chrome 114+, Firefox 121+, Safari 17.4+; silently ignored in older browsers. */
 h1, h2, h3, h4, h5, h6 {
