@@ -4,6 +4,7 @@ import { listBlogArticles } from "@/lib/services/blog-generator";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { Pagination } from "@/components/ui/Pagination";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
@@ -619,46 +620,17 @@ export default async function BlogPage({
               })}
             </ul>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <nav aria-label="Blog pagination" className="flex justify-center items-center gap-2 mt-12">
-                {page > 1 && (
-                  <Link
-                    href={`/blog?${category ? `category=${category}&` : ""}page=${page - 1}`}
-                    aria-label="Go to previous page"
-                    className="inline-flex items-center min-h-11 px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
-                  >
-                    Previous
-                  </Link>
-                )}
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (p) => (
-                    <Link
-                      key={p}
-                      href={`/blog?${category ? `category=${category}&` : ""}page=${p}`}
-                      aria-label={`Page ${p}`}
-                      aria-current={p === page ? "page" : undefined}
-                      className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1 ${
-                        p === page
-                          ? "bg-gradient-to-br from-primary-600 to-accent-600 text-white shadow-sm"
-                          : "border border-border hover:border-primary-300"
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  )
-                )}
-                {page < totalPages && (
-                  <Link
-                    href={`/blog?${category ? `category=${category}&` : ""}page=${page + 1}`}
-                    aria-label="Go to next page"
-                    className="inline-flex items-center min-h-11 px-4 py-2 rounded-lg border border-border hover:border-primary-300 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
-                  >
-                    Next
-                  </Link>
-                )}
-              </nav>
-            )}
+            {/* Pagination — the shared component windows the page numbers
+                (1 … n-1, n, n+1 … last) and wraps. The bespoke version here
+                rendered every page in one non-wrapping row, which pushed the
+                document 199px wider than a 390px screen once the blog grew
+                past a handful of pages. */}
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              basePath="/blog"
+              extraParams={category ? { category } : undefined}
+            />
           </>
         )}
 
