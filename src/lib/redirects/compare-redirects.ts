@@ -129,6 +129,25 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   // nfl-vs-nba-revenue is the FACET DAN-2078 deliberately kept live; fold this
   // keyword-suffixed variant into that facet, not into the base nfl-vs-nba.
   "nfl-vs-nba-revenue-comparison-2026": "nfl-vs-nba-revenue",
+
+  // 2026-08-02 GSC audit (June-27 traffic-collapse recovery): three of the top-25
+  // June-traffic /compare/ URLs were archived (rows 404 per DAN-1886) with NO
+  // redirect registered, so their residual GSC equity dead-ends at a 404 while
+  // Google is re-evaluating the section post-DAN-1656. Each folds into the live
+  // 200 canonical covering the same intent (all three targets verified 200 in
+  // prod 2026-08-02):
+  //   - both Real Madrid/Barcelona trophy-count permutations → the surviving
+  //     trophy-facet page (1,133 + 810 June impressions);
+  //   - nfl-ratings-vs-nba-ratings ("ratings" = viewership intent) → the
+  //     viewership facet, same target nba-vs-nfl-viewership-globally already
+  //     redirects to (392 June impressions).
+  // messi-vs-maradona (21 impr) was deliberately left 404: no live page covers
+  // that matchup, and an off-intent redirect is a soft-404 to Google.
+  "real-madrid-vs-barcelona-trophies-all-time-2026":
+    "real-madrid-vs-barcelona-total-trophies-comparison-2026",
+  "real-madrid-vs-barcelona-total-titles-comparison-2026":
+    "real-madrid-vs-barcelona-total-trophies-comparison-2026",
+  "nfl-ratings-vs-nba-ratings": "nfl-vs-nba-viewership",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
