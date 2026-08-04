@@ -22,7 +22,20 @@
 | 2026-06-29 | 433 | −97.8% | 0 | 116 | **W27 — collapse** |
 | 2026-07-06 | 454 | −97.7% | 0 | 151 | W28 — flat at floor |
 | 2026-07-13 | 397 | −98.0% | 0 | 153 | W29 — still suppressed (updated from 125 partial on 07-16) |
-| 2026-07-20 | 416 | −97.9% | 0 | 148 | W30 — still suppressed, flat at floor |
+| 2026-07-20 | ~~416~~ → **523** | −97.3% | 0 | 176 | W30 — GSC retroactive revision (+26%); still at floor |
+| 2026-07-27 | 302 | −98.5% | 0 | 102 | W31 — continued suppression, −42.3% WoW (vs W30 revised) |
+
+## Read — 2026-08-04 (W31 complete)
+
+**Still suppressed. No reversal. Six post-collapse weeks, all pinned to floor.**
+
+- **W31 (302)** vs W30 revised (523) is **−42.3% WoW** — decline, not improvement. Both weeks are ~−97–98% vs baseline. Note: W30 was retroactively revised by GSC from 416 → 523 since the last check (2026-07-28); this is normal GSC latency, not a real prior-week spike.
+- Five post-collapse complete weeks: W27 433 → W28 454 → W29 397 → W30 523 → W31 302. Oscillating in the 300–523 band, all ≥−97% vs baseline.
+- **Clicks remain 0** for all five post-collapse weeks (down from 42/wk at baseline).
+- Pages with impressions: W31 **102** — lowest since the collapse (W27 baseline was 806). Slight downward drift in crawl exposure.
+- No SpamBrain refresh signal. All shipped levers (84-cluster consolidation, generator quality gate, neymar deepening, dead-link purge) remain indexed and awaiting the refresh.
+
+**Recovery condition unchanged:** suppression lifts on a SpamBrain algorithm refresh, not a crawl of the fixes. Continue weekly tracking.
 
 ## Read — 2026-07-28 (W30 complete)
 
@@ -61,6 +74,7 @@
 
 | Date | Weeks checked | Verdict |
 |---|---|---|
-| 2026-07-28 | W27–W30 | Still suppressed, W30 416 (+4.8% WoW, noise). Five weeks at floor. No reversal. Continue. |
+| 2026-08-04 | W27–W31 | Still suppressed, W31 302 (−42.3% WoW vs W30 revised 523). W30 GSC-revised 416→523. Six weeks at floor. No reversal. Continue. |
+| 2026-07-28 | W27–W30 | Still suppressed, W30 416 (later revised to 523 by GSC). Five weeks at floor. No reversal. Continue. |
 | 2026-07-21 | W27–W29 | Still suppressed, W29 final 397 (−12.6% WoW). DAN-2581 dead-link fix live. No reversal. Continue. |
 | 2026-07-16 | W27–W29 | Still suppressed, flat at ~−98%. No reversal. Continue. |
