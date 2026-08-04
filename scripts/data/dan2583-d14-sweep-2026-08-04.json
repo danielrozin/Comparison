@@ -1,0 +1,103 @@
+{
+  "run": "2026-08-04T17:21:10Z",
+  "label": "d14",
+  "campaign": "wave1-email3",
+  "placements": [
+    {
+      "outlet": "Trusted Reviews",
+      "email_contact": "kob.monney@trustedreviews.com",
+      "target_page": "/compare/bose-vs-jbl",
+      "html_search": {
+        "url": "https://www.trustedreviews.com/?s=aversusb",
+        "curl_rc": 0,
+        "http_status": 200,
+        "body_bytes": 102679,
+        "verdict": "VERIFIED-ZERO"
+      },
+      "rest_search": {
+        "endpoint": "https://www.trustedreviews.com/wp-json/wp/v2/search",
+        "control_positive": {
+          "query": "amazon.co.uk",
+          "result_count": 20
+        },
+        "control_negative": {
+          "query": "zzqqxxnotarealterm",
+          "result_count": 0
+        },
+        "target": {
+          "query": "aversusb",
+          "result_count": 0
+        },
+        "verdict": "VERIFIED-ZERO"
+      },
+      "final_verdict": "VERIFIED-ZERO (html=ZERO rest=ZERO)"
+    },
+    {
+      "outlet": "Yanko Design",
+      "email_contact": "aki@yankodesign.com",
+      "target_page": "/compare/ps5-pro-vs-xbox-series-x",
+      "html_search": {
+        "url": "https://www.yankodesign.com/?s=aversusb",
+        "curl_rc": 0,
+        "http_status": 403,
+        "body_bytes": 5714,
+        "verdict": "UNVERIFIED",
+        "reason": "Cloudflare block (403 at the trust gate)"
+      },
+      "rest_search": {
+        "endpoint": "https://www.yankodesign.com/wp-json/wp/v2/search",
+        "control_positive": {
+          "query": "kickstarter.com",
+          "result_count": 20
+        },
+        "control_negative": {
+          "query": "zzqqxxnotarealterm",
+          "result_count": 0
+        },
+        "target": {
+          "query": "aversusb",
+          "result_count": 0
+        },
+        "verdict": "VERIFIED-ZERO"
+      },
+      "final_verdict": "VERIFIED-ZERO (html=UNVERIFIED rest=ZERO)"
+    },
+    {
+      "outlet": "Cord Cutters News",
+      "email_contact": "jess@cordcuttersnews.com",
+      "target_page": "/compare/paramount-vs-peacock",
+      "html_search": {
+        "url": "https://cordcuttersnews.com/?s=aversusb",
+        "curl_rc": 0,
+        "http_status": 200,
+        "body_bytes": 114085,
+        "verdict": "VERIFIED-ZERO"
+      },
+      "rest_search": {
+        "endpoint": "https://cordcuttersnews.com/wp-json/wp/v2/search",
+        "control_positive": {
+          "query": "netflix.com",
+          "result_count": 20
+        },
+        "control_negative": {
+          "query": "zzqqxxnotarealterm",
+          "result_count": 0
+        },
+        "target": {
+          "query": "aversusb",
+          "result_count": 0
+        },
+        "verdict": "VERIFIED-ZERO"
+      },
+      "final_verdict": "VERIFIED-ZERO (html=ZERO rest=ZERO)"
+    }
+  ],
+  "summary": {
+    "total_placements": 3,
+    "linked_count": 0,
+    "verified_zero_count": 3,
+    "unverified_count": 0,
+    "status": "All Email-3 placements remain unlinked after 14 days"
+  },
+  "notes": "Reply status for these three sends is UNVERIFIED — Gmail dark (DAN-2513 / DAN-2546). Never count toward '0 replies' claims without manual verification of received/read status."
+}
