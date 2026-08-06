@@ -24,6 +24,16 @@
 | 2026-07-13 | 397 | −98.0% | 0 | 153 | W29 — still suppressed (updated from 125 partial on 07-16) |
 | 2026-07-20 | ~~416~~ → **523** | −97.3% | 0 | 176 | W30 — GSC retroactive revision (+26%); still at floor |
 | 2026-07-27 | 302 | −98.5% | 0 | 102 | W31 — continued suppression, −42.3% WoW (vs W30 revised) |
+| 2026-08-03 | ~45 | −99.8% | 0 | — | W32 partial (2 days only, 2026-08-06 read) |
+
+## Read — 2026-08-06 (W32 start check)
+
+**Still suppressed. W32 partial data trending lower. No SpamBrain refresh signal.**
+
+- W32 partial (45 impressions in 2 days = ~22/day run-rate) is on pace for ~158/week — further decline from W31 (302/7 = 43/day). Partial data; interpret cautiously.
+- **No new technical levers available.** All fixes shipped and crawled (consolidation, quality gate, dead-link removal, redirects). Suppression is algorithm-level; lift requires SpamBrain refresh.
+
+**Recovery condition unchanged:** suppression lifts on a SpamBrain algorithm refresh, not on a crawl of the fixes. Continue weekly tracking.
 
 ## Read — 2026-08-04 (W31 complete)
 
@@ -41,10 +51,7 @@
 
 **Still suppressed. No reversal. Five post-collapse weeks, all pinned to floor.**
 
-- **W30 (416)** vs W29 (397) is **+4.8% WoW** — noise-level fluctuation, not recovery. Both weeks are ~−98% vs baseline.
-- Four post-collapse complete weeks: W27 433 → W28 454 → W29 397 → W30 416. All within a 433–454 band, all at −97.8% to −98.0%.
-- **Clicks remain 0** for all four post-collapse weeks (down from 42/wk at baseline).
-- Pages with impressions: W27 116 → W28 151 → W29 153 → W30 148 — marginally stable, still 82% fewer than baseline (806).
+- **W30 (416 at time of read, later revised to 523 by GSC)** vs W29 (397) — noise-level fluctuation at time of read.
 - Levers shipped and indexed: 84-cluster consolidation + 301s, generator quality gate, neymar deepening, archival batches (DAN-2519/2520/2532), 680 dead internal links resolved (DAN-2581, PR #238). All fixes in place and crawled before next SpamBrain refresh.
 
 **Recovery condition unchanged:** suppression lifts on a SpamBrain algorithm refresh, not on a crawl of the fixes. Continue weekly tracking.
@@ -74,6 +81,7 @@
 
 | Date | Weeks checked | Verdict |
 |---|---|---|
+| 2026-08-06 | W27–W32 | Still suppressed. W32 partial trending lower (~22/day vs W31's 43/day). Six weeks at floor. No reversal. |
 | 2026-08-04 | W27–W31 | Still suppressed, W31 302 (−42.3% WoW vs W30 revised 523). W30 GSC-revised 416→523. Six weeks at floor. No reversal. Continue. |
 | 2026-07-28 | W27–W30 | Still suppressed, W30 416 (later revised to 523 by GSC). Five weeks at floor. No reversal. Continue. |
 | 2026-07-21 | W27–W29 | Still suppressed, W29 final 397 (−12.6% WoW). DAN-2581 dead-link fix live. No reversal. Continue. |
