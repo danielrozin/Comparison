@@ -23,8 +23,18 @@
 | 2026-07-06 | 454 | −97.7% | 0 | 151 | W28 — flat at floor |
 | 2026-07-13 | 397 | −98.0% | 0 | 153 | W29 — still suppressed (updated from 125 partial on 07-16) |
 | 2026-07-20 | ~~416~~ → **523** | −97.3% | 0 | 176 | W30 — GSC retroactive revision (+26%); still at floor |
-| 2026-07-27 | 302 | −98.5% | 0 | 102 | W31 — continued suppression, −42.3% WoW (vs W30 revised) |
-| 2026-08-03 | ~45 | −99.8% | 0 | — | W32 partial (2 days only, 2026-08-06 read) |
+| 2026-07-27 | ~~302~~ → **343** | −98.2% | 0 | 102 | W31 — GSC retroactively revised 302→343 (+13.6%); still at floor |
+| 2026-08-03 | ~115 | −99.4% | 0 | — | W32 partial (3 days only, 2026-08-08 read) |
+
+## Read — 2026-08-08 (W32 mid-week check)
+
+**Still suppressed. W31 revised upward 302→343 (GSC latency). W32 partial shows ~38/day rate. No SpamBrain refresh signal.**
+
+- W31 revised: 302 → 343 (GSC retroactive correction, consistent with prior pattern). Still −98.2% vs baseline.
+- W32 partial (115 impressions in 3 days = ~38/day run-rate) — slightly below W31's 343/7 = 49/day. Partial data; interpret cautiously. Will be revised upward next read.
+- **No new technical levers available.** All fixes shipped and crawled (consolidation, quality gate, dead-link removal, redirects). Suppression is algorithm-level; lift requires SpamBrain refresh.
+
+**Recovery condition unchanged:** suppression lifts on a SpamBrain algorithm refresh, not on a crawl of the fixes. Continue weekly tracking.
 
 ## Read — 2026-08-06 (W32 start check)
 
@@ -81,6 +91,7 @@
 
 | Date | Weeks checked | Verdict |
 |---|---|---|
+| 2026-08-08 | W27–W32 | Still suppressed. W31 revised 302→343 (GSC latency). W32 partial 115/3days (~38/day). Seven weeks at floor. No reversal. |
 | 2026-08-06 | W27–W32 | Still suppressed. W32 partial trending lower (~22/day vs W31's 43/day). Six weeks at floor. No reversal. |
 | 2026-08-04 | W27–W31 | Still suppressed, W31 302 (−42.3% WoW vs W30 revised 523). W30 GSC-revised 416→523. Six weeks at floor. No reversal. Continue. |
 | 2026-07-28 | W27–W30 | Still suppressed, W30 416 (later revised to 523 by GSC). Five weeks at floor. No reversal. Continue. |
