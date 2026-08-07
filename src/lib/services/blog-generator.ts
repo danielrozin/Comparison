@@ -221,6 +221,24 @@ export async function saveBlogArticle(
   }
 }
 
+/**
+ * Never expose a future publish date. Batch publish scripts have written
+ * drip-scheduled publishedAt values (up to Sep 2027) that rendered as fake
+ * dates on /blog cards and article bylines. Clamp at the data layer so every
+ * consumer (listing, article page, JSON-LD, feeds) shows a real date.
+ */
+function clampPublishedAt<T extends { publishedAt: Date | string | null; createdAt: Date | string }>(
+  article: T,
+): T {
+  if (
+    article.publishedAt &&
+    new Date(article.publishedAt).getTime() > Date.now()
+  ) {
+    return { ...article, publishedAt: article.createdAt };
+  }
+  return article;
+}
+
 export async function getBlogBySlug(
   slug: string
 ): Promise<BlogArticle | null> {
@@ -234,7 +252,7 @@ export async function getBlogBySlug(
       where: { slug },
     });
     if (article) {
-      return {
+      return clampPublishedAt({
         id: article.id,
         slug: article.slug,
         title: article.title,
@@ -252,7 +270,7 @@ export async function getBlogBySlug(
         createdAt: article.createdAt,
         updatedAt: article.updatedAt,
         viewCount: article.viewCount,
-      };
+      });
     }
   } catch (e) {
     console.error("Failed to get blog article:", e);
@@ -696,7 +714,7 @@ export async function listBlogArticles(params: {
             createdAt: Date;
             updatedAt: Date;
             viewCount: number;
-          }) => ({
+          }) => clampPublishedAt({
             id: a.id,
             slug: a.slug,
             title: a.title,

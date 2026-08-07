@@ -79,13 +79,13 @@ export function AffiliateButton({
 
   // Brand homepage links use the entity-specific label ("Get NordVPN"); generic
   // links are informational; everything else is a priced affiliate offer.
+  // "Buy Now" is intentionally never used — hard-sell wording reads as
+  // unprofessional on an editorial comparison page.
   const ctaText = isBrand
     ? link.label
     : isGeneric
       ? "Learn More"
-      : isTreatment
-        ? "Buy Now"
-        : "Check Price";
+      : "Check Price";
 
   return (
     <a

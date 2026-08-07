@@ -27,13 +27,19 @@ function isBrandLink(entity: ComparisonEntityData): boolean {
   return entity.affiliateLinks?.[0]?.partner === "brand";
 }
 
-function ctaLabel(
-  entity: ComparisonEntityData,
-  isTreatment: boolean,
-): string {
+function ctaLabel(entity: ComparisonEntityData): string {
   if (isGenericLink(entity)) return `Learn about ${entity.name}`;
-  if (isBrandLink(entity)) return `Get ${entity.name}`;
-  return `${isTreatment ? "Get" : "Buy"} ${entity.name}`;
+  if (isBrandLink(entity)) return `Visit the official ${entity.name} site`;
+  return `Check ${entity.name} price`;
+}
+
+// "Buy Now" reads as a hard-sell on a comparison page (and is simply wrong for
+// entities like cars that aren't sold at the destination). Partner-aware,
+// professional wording instead.
+function ctaText(entity: ComparisonEntityData): string {
+  if (isGenericLink(entity)) return "Learn More";
+  if (isBrandLink(entity)) return "Official Site";
+  return "Check Price";
 }
 
 export function StickyAffiliateCTA({
@@ -148,7 +154,7 @@ export function StickyAffiliateCTA({
                   href={hrefA}
                   target="_blank"
                   rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
-                  aria-label={ctaLabel(entityA, isTreatment)}
+                  aria-label={ctaLabel(entityA)}
                   onClick={() => handleClick(entityA, "left")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                     isGenericLink(entityA)
@@ -162,7 +168,7 @@ export function StickyAffiliateCTA({
                     {entityA.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">
-                    {isGenericLink(entityA) ? "Learn More" : isTreatment ? "Get Deal" : "Buy Now"}
+                    {ctaText(entityA)}
                   </span>
                 </a>
               )}
@@ -180,7 +186,7 @@ export function StickyAffiliateCTA({
                   href={hrefB}
                   target="_blank"
                   rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
-                  aria-label={ctaLabel(entityB, isTreatment)}
+                  aria-label={ctaLabel(entityB)}
                   onClick={() => handleClick(entityB, "right")}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                     isGenericLink(entityB)
@@ -194,7 +200,7 @@ export function StickyAffiliateCTA({
                     {entityB.name}
                   </span>
                   <span className="text-sm font-bold truncate max-w-full leading-tight">
-                    {isGenericLink(entityB) ? "Learn More" : isTreatment ? "Get Deal" : "Buy Now"}
+                    {ctaText(entityB)}
                   </span>
                 </a>
               )}

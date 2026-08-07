@@ -20,6 +20,11 @@ export default function Document() {
         {/* theme-color + color-scheme — parity with layout.tsx */}
         <meta name="theme-color" content="#1a56db" />
         <meta name="color-scheme" content="light" />
+        {/* Favicons — Pages Router pages emit no icon links by default, so
+            /compare/* tabs showed the browser's blank-page glyph. */}
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* Identity + license link relations — matches layout.tsx for E-E-A-T parity on Pages Router */}
         <link rel="me" href="https://x.com/aversusb" />
         <link rel="me" href="https://www.linkedin.com/company/aversusb" />

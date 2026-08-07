@@ -49,19 +49,22 @@ function EntityAvatar({
   const isPrimary = variant === "a";
 
   if (hasImage) {
+    // Rectangular frame with object-contain: entity photos (cars, gadgets,
+    // boxes) must be shown whole, never cropped into a circle. (User feedback
+    // on /compare/honda-accord-vs-toyota-camry — the cars were cut off.)
     return (
-      <div className={`relative w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-3 sm:mb-4`}>
-        <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${palette.bg} blur-md opacity-50`} />
-        <div className={`relative w-full h-full rounded-full overflow-hidden ring-2 ${palette.ring} ${palette.shadow}`}>
+      <div className={`relative w-40 h-28 sm:w-52 sm:h-36 mx-auto mb-3 sm:mb-4`}>
+        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${palette.bg} blur-md opacity-40`} />
+        <div className={`relative w-full h-full rounded-2xl overflow-hidden ring-2 ${palette.ring} ${palette.shadow} bg-white/10 backdrop-blur-sm`}>
           <Image
             src={entity.imageUrl!}
             alt={entity.name}
-            width={112}
-            height={112}
-            sizes="(min-width: 640px) 112px, 80px"
+            width={208}
+            height={144}
+            sizes="(min-width: 640px) 208px, 160px"
             priority={true}
             fetchPriority="high"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain p-1.5"
           />
         </div>
       </div>

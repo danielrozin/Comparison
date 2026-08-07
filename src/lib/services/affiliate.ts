@@ -19,6 +19,9 @@ const AFFILIATE_ENABLED = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED === "true";
 // "software" intentionally excluded: SaaS/subscription software cannot be purchased
 // on Amazon as a "/dp/" product — emitting an /s?k= search link earns ~$0 and
 // damages credibility on B2B comparison pages. See DAN-2208.
+// "vehicle" intentionally excluded: cars are not sold on Amazon — an
+// /s?k=Toyota+Camry search link points at floor mats and toy models, not the
+// car. Vehicles route to the manufacturer's official site instead.
 const AFFILIATE_ELIGIBLE_TYPES = new Set([
   "product",
   "technology",
@@ -26,7 +29,6 @@ const AFFILIATE_ELIGIBLE_TYPES = new Set([
   "device",
   "gadget",
   "appliance",
-  "vehicle",
   "supplement",
 ]);
 
@@ -34,10 +36,11 @@ const AFFILIATE_ELIGIBLE_TYPES = new Set([
 // "software" intentionally excluded: the software comparison category covers SaaS/
 // subscription tools (CRMs, project management, productivity apps) that are not
 // sold on Amazon. See DAN-2208.
+// "automotive" intentionally excluded: the automotive category compares car
+// models, which cannot be bought on Amazon (see vehicle note above).
 const AFFILIATE_ELIGIBLE_CATEGORIES = new Set([
   "technology",
   "products",
-  "automotive",
   "health",
   "entertainment",
   "brands",
@@ -241,6 +244,98 @@ const DIGITAL_ENTITY_PATTERNS: RegExp = new RegExp(
   ].join("|"),
   "i",
 );
+
+// Vehicles cannot be bought on Amazon. An /s?k= search for a car model returns
+// accessories and toys — not the product being compared. Route these to the
+// manufacturer's official site instead.
+const VEHICLE_ENTITY_TYPES = new Set([
+  "vehicle",
+  "car",
+  "truck",
+  "suv",
+  "motorcycle",
+  "automobile",
+  "ev",
+]);
+
+// Car / motorcycle manufacturer homepages, matched against the entity name
+// ("Toyota Camry" → toyota.com). First match wins; keep specific before broad.
+const VEHICLE_MAKE_HOMEPAGES: ReadonlyArray<readonly [RegExp, string]> = [
+  [/\btoyota\b/i, "https://www.toyota.com"],
+  [/\bhonda\b/i, "https://automobiles.honda.com"],
+  [/\bford\b/i, "https://www.ford.com"],
+  [/\bchevrolet\b|\bchevy\b/i, "https://www.chevrolet.com"],
+  [/\btesla\b/i, "https://www.tesla.com"],
+  [/\bnissan\b/i, "https://www.nissanusa.com"],
+  [/\bhyundai\b/i, "https://www.hyundaiusa.com"],
+  [/\bkia\b/i, "https://www.kia.com/us"],
+  [/\bmazda\b/i, "https://www.mazdausa.com"],
+  [/\bsubaru\b/i, "https://www.subaru.com"],
+  [/\bvolkswagen\b|\bvw\b/i, "https://www.vw.com"],
+  [/\bbmw\b/i, "https://www.bmwusa.com"],
+  [/mercedes/i, "https://www.mbusa.com"],
+  [/\baudi\b/i, "https://www.audiusa.com"],
+  [/\blexus\b/i, "https://www.lexus.com"],
+  [/\bacura\b/i, "https://www.acura.com"],
+  [/\binfiniti\b/i, "https://www.infinitiusa.com"],
+  [/\bvolvo\b/i, "https://www.volvocars.com/us"],
+  [/\bporsche\b/i, "https://www.porsche.com/usa"],
+  [/\bjeep\b/i, "https://www.jeep.com"],
+  [/\bram\b\s*\d|\bram\s*truck/i, "https://www.ramtrucks.com"],
+  [/\bgmc\b/i, "https://www.gmc.com"],
+  [/\bcadillac\b/i, "https://www.cadillac.com"],
+  [/\bbuick\b/i, "https://www.buick.com"],
+  [/\bdodge\b/i, "https://www.dodge.com"],
+  [/\bchrysler\b/i, "https://www.chrysler.com"],
+  [/\blincoln\b/i, "https://www.lincoln.com"],
+  [/\bgenesis\b/i, "https://www.genesis.com/us"],
+  [/\bmitsubishi\b/i, "https://www.mitsubishicars.com"],
+  [/\brivian\b/i, "https://rivian.com"],
+  [/\blucid\b/i, "https://lucidmotors.com"],
+  [/\bpolestar\b/i, "https://www.polestar.com"],
+  [/land\s*rover|range\s*rover/i, "https://www.landroverusa.com"],
+  [/\bjaguar\b/i, "https://www.jaguarusa.com"],
+  [/\bmini\b\s*cooper|\bmini\b/i, "https://www.miniusa.com"],
+  [/\bfiat\b/i, "https://www.fiatusa.com"],
+  [/alfa\s*romeo/i, "https://www.alfaromeousa.com"],
+  [/\bferrari\b/i, "https://www.ferrari.com"],
+  [/lamborghini/i, "https://www.lamborghini.com"],
+  [/\bmaserati\b/i, "https://www.maserati.com"],
+  [/\bbentley\b/i, "https://www.bentleymotors.com"],
+  [/rolls[\s-]*royce/i, "https://www.rolls-roycemotorcars.com"],
+  [/aston\s*martin/i, "https://www.astonmartin.com"],
+  [/mclaren/i, "https://cars.mclaren.com"],
+  [/\bharley\b|harley[\s-]*davidson/i, "https://www.harley-davidson.com"],
+  [/\bducati\b/i, "https://www.ducati.com"],
+  [/\bkawasaki\b/i, "https://www.kawasaki.com"],
+  [/\byamaha\b/i, "https://www.yamahamotorsports.com"],
+];
+
+/**
+ * Detect vehicles (cars, trucks, SUVs, motorcycles) — physical products that
+ * still cannot be purchased on Amazon. They get a manufacturer-site CTA, never
+ * an Amazon search link.
+ */
+export function isVehicleEntity(
+  entity: ComparisonEntityData,
+  category: string | null,
+): boolean {
+  const type = entity.entityType?.toLowerCase?.() ?? "";
+  if (VEHICLE_ENTITY_TYPES.has(type)) return true;
+  if (category?.toLowerCase() === "automotive") return true;
+  return false;
+}
+
+/**
+ * Resolve a vehicle entity to its manufacturer's official homepage.
+ * Returns null when the make is not recognized.
+ */
+export function resolveVehicleHomepage(entityName: string): string | null {
+  for (const [pattern, url] of VEHICLE_MAKE_HOMEPAGES) {
+    if (pattern.test(entityName)) return url;
+  }
+  return null;
+}
 
 /**
  * Detect digital / non-physical entities (streaming services, browsers, OSes,
@@ -468,7 +563,19 @@ export function generateAffiliateLinks(
 
   const links: AffiliateLink[] = [];
 
-  if (isDigitalEntity(entity)) {
+  if (isVehicleEntity(entity, category)) {
+    // Cars/trucks/motorcycles: an Amazon search for "Toyota Camry" returns
+    // floor mats and toy models — never the vehicle. Send the click to the
+    // manufacturer's official site (build & price / local inventory) instead.
+    const home = resolveVehicleHomepage(entity.name);
+    if (home) {
+      links.push({
+        url: home,
+        partner: "brand",
+        label: `Explore ${entity.name}`,
+      });
+    }
+  } else if (isDigitalEntity(entity)) {
     // Software / SaaS / VPN / streaming: not buyable on Amazon. Point at the
     // brand's official homepage instead of leaking a sponsored click to a
     // Google SERP or emitting an irrelevant Amazon search. DAN-1140.
