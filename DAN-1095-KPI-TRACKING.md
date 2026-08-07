@@ -30,3 +30,5 @@ Harness: `node scripts/dan1026-remeasure.mjs` (weekly). Re-crawl + backlink-disc
 | 2026-07-11 | T+29 | 0 | 22 | 477 | 2 | 2 keyword(s) gained ≥3 |
 | 2026-07-17 | T+35 | 0 | 22 | 477 | 2 | 2 keyword(s) gained ≥3 |
 | 2026-07-24 | T+42 | 0 | 19 | 402 | 2 | 2 keyword(s) gained ≥3 |
+| 2026-07-31 | T+49 | 0 | 25 | 326 | 2 | 2 keyword(s) gained ≥3 |
+| 2026-08-07 | T+56 | 0 | 24 | 273 | 2 | 2 keyword(s) gained ≥3 |
