@@ -129,8 +129,10 @@ describe('resolveBrandHomepage — fallback CTA points to brand homepage, never 
     }
   })
 
-  it('falls back to a best-effort {brand}.com for unmapped digital brands', () => {
-    expect(resolveBrandHomepage('Acme Cloud App')).toBe('https://www.acmecloudapp.com')
-    expect(resolveBrandHomepage('Acme Cloud App')).not.toContain('google.com/search')
+  it('returns "" for unmapped brands — never a guessed {brand}.com domain', () => {
+    // Guessed domains ("PC Gaming" → pcgaming.com) can be parked or malicious;
+    // unknown brands must fall through to the informational Learn More CTA.
+    expect(resolveBrandHomepage('Acme Cloud App')).toBe('')
+    expect(resolveBrandHomepage('PC Gaming')).toBe('')
   })
 })

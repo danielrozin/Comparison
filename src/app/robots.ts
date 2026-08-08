@@ -28,6 +28,12 @@ export default function robots(): MetadataRoute.Robots {
           "/api/sitemap",
           "/api/answer/",
           "/.well-known/",
+          // JS/CSS bundles + image optimizer MUST stay crawlable — Google
+          // renders pages before indexing, and a blanket /_next/ block makes
+          // every page render broken in its eyes (hurts mobile-friendliness
+          // and CWV assessment). Longest-match wins over the /_next/ disallow.
+          "/_next/static/",
+          "/_next/image",
         ],
         disallow: [
           "/api/",
@@ -62,16 +68,16 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PerplexityBot", allow: "/" },
       { userAgent: "Perplexity-User", allow: "/" },
 
+      // NOTE: classic search-engine bots (Googlebot, bingbot, DuckDuckBot,
+      // Applebot, YandexBot, BaiduSpider, …) intentionally have NO dedicated
+      // group. A robots.txt group like "User-Agent: Googlebot / Allow: /"
+      // OVERRIDES the * group entirely — meaning none of the disallows above
+      // (/admin/, /api/, ?utm_ dupes) applied to Google, wasting crawl budget
+      // on parameter duplicates. Search bots now inherit the * group.
       { userAgent: "Google-Extended", allow: "/" },
-      { userAgent: "Googlebot", allow: "/" },
-      { userAgent: "Googlebot-Image", allow: "/" },
-      { userAgent: "Googlebot-News", allow: "/" },
 
       { userAgent: "CopilotBot", allow: "/" },
       { userAgent: "Microsoft-AI", allow: "/" },
-      { userAgent: "bingbot", allow: "/" },
-      { userAgent: "BingPreview", allow: "/" },
-      { userAgent: "MicrosoftPreview", allow: "/" },
 
       { userAgent: "YouBot", allow: "/" },
       { userAgent: "You.com", allow: "/" },
@@ -81,10 +87,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "cohere-ai", allow: "/" },
       { userAgent: "Meta-ExternalAgent", allow: "/" },
       { userAgent: "Meta-ExternalFetcher", allow: "/" },
-      { userAgent: "Applebot", allow: "/" },
       { userAgent: "Applebot-Extended", allow: "/" },
       { userAgent: "AwsBot", allow: "/" },
-      { userAgent: "DuckDuckBot", allow: "/" },
       { userAgent: "FacebookBot", allow: "/" },
       { userAgent: "iaskSpider", allow: "/" },
       { userAgent: "Kangaroo Bot", allow: "/" },
@@ -119,24 +123,16 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "ChatGLM-Spider", allow: "/" },     // Zhipu AI / GLM models
       { userAgent: "PanguBot", allow: "/" },           // Huawei PanGu model
       { userAgent: "Meltwater", allow: "/" },          // Meltwater media intelligence
-      { userAgent: "KagiBot", allow: "/" },            // Kagi search engine crawler
       { userAgent: "AwarioSmartBot", allow: "/" },     // Awario brand monitoring
       { userAgent: "img2dataset", allow: "/" },        // Common Crawl image dataset
       { userAgent: "GeminiBot", allow: "/" },          // Google Gemini crawler
       { userAgent: "Gemini-Web", allow: "/" },         // Google Gemini web access
-      { userAgent: "PetalBot", allow: "/" },           // Huawei Petal Search
       { userAgent: "SemrushSiteAudit", allow: "/" },   // Semrush technical audit
       { userAgent: "TurnitinBot", allow: "/" },        // Academic citation indexer
       { userAgent: "HuggingFaceBot", allow: "/" },     // HuggingFace dataset crawler
       { userAgent: "OpenAI-SearchBot", allow: "/" },   // OpenAI search product
 
       // === 2026 additions — major search engines + new AI crawlers ===
-      { userAgent: "BraveBot", allow: "/" },            // Brave Search + Leo AI assistant
-      { userAgent: "brave-search-bot", allow: "/" },    // Brave Search alternate UA
-      { userAgent: "YandexBot", allow: "/" },           // Yandex Search (Russia/Eastern Europe)
-      { userAgent: "YaDirectFetcher", allow: "/" },     // Yandex Direct fetcher
-      { userAgent: "NaverBot", allow: "/" },            // Naver Search (South Korea)
-      { userAgent: "BaiduSpider", allow: "/" },         // Baidu Search (China)
       { userAgent: "QwenBot", allow: "/" },             // Alibaba Qwen AI model crawler
       { userAgent: "TongYiBot", allow: "/" },           // Alibaba Tongyi/Qwen alternate UA
       { userAgent: "Firecrawl", allow: "/" },           // Firecrawl AI scraping tool (RAG pipelines)
@@ -147,7 +143,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "jina-ai", allow: "/" },             // Jina AI alternate UA
       { userAgent: "ZyteBot", allow: "/" },             // Zyte / Scrapy Cloud crawler
       { userAgent: "ScrapingBee", allow: "/" },         // ScrapingBee (used in many AI apps)
-      { userAgent: "MojeekBot", allow: "/" },           // Mojeek privacy search
       { userAgent: "SpiderBot", allow: "/" },           // Spider.cloud RAG web crawler
       { userAgent: "SearchGPT-Bot", allow: "/" },       // OpenAI SearchGPT alternate UA
       { userAgent: "NovaCrawler", allow: "/" },         // Nova AI search
@@ -231,25 +226,14 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Gemini-Flash", allow: "/" },            // Google Gemini Flash model crawler
       { userAgent: "NotebookLM-Bot", allow: "/" },          // Google NotebookLM research AI
     ],
+    // Sitemap: lines must reference valid sitemap formats only (XML sitemap /
+    // sitemap index). The previous list included JSON (/api/sitemap, feed/json)
+    // and markdown (llms.txt, ai.txt) URLs, which Search Console reports as
+    // fetch errors. Child sitemaps 0-4/images/video are already referenced by
+    // the sitemap.xml index and must not be double-listed.
     sitemap: [
-      "https://www.aversusb.net/api/sitemap",
-      "https://www.aversusb.net/api/sitemap?type=blog",
-      "https://www.aversusb.net/api/sitemap?type=hubs",
-      "https://www.aversusb.net/api/sitemap?type=best",
       "https://www.aversusb.net/sitemap.xml",
-      "https://www.aversusb.net/sitemap/0.xml",
-      "https://www.aversusb.net/sitemap/1.xml",
-      "https://www.aversusb.net/sitemap/2.xml",
-      "https://www.aversusb.net/sitemap/3.xml",
-      "https://www.aversusb.net/sitemap/4.xml",
-      "https://www.aversusb.net/sitemap/images.xml",
-      "https://www.aversusb.net/sitemap/video.xml",
       "https://www.aversusb.net/sitemap/news.xml",
-      "https://www.aversusb.net/llms.txt",
-      "https://www.aversusb.net/.well-known/ai.txt",
-      "https://www.aversusb.net/feed",
-      "https://www.aversusb.net/feed/atom",
-      "https://www.aversusb.net/feed/json",
     ],
   };
 }

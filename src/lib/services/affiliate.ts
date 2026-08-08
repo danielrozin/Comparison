@@ -24,12 +24,18 @@ const AFFILIATE_ENABLED = process.env.NEXT_PUBLIC_AFFILIATE_ENABLED === "true";
 // car. Vehicles route to the manufacturer's official site instead.
 const AFFILIATE_ELIGIBLE_TYPES = new Set([
   "product",
+  "products",
   "technology",
   "brand",
   "device",
   "gadget",
   "appliance",
   "supplement",
+  "smartphone",
+  "medication",
+  "gaming",
+  "audio",
+  "beverage/product",
 ]);
 
 // Categories where affiliate links make commercial sense
@@ -65,8 +71,14 @@ const DIGITAL_ENTITY_TYPES = new Set([
   "website",
   "app",
   "social_media",
+  "social-media",
   "search_engine",
   "vpn",
+  // The bulk "software" type (SaaS tools, dev frameworks, cloud platforms —
+  // AWS, React, Google Meet) is digital: never Amazon-buyable. DAN-2208.
+  "software",
+  "framework",
+  "platform",
 ]);
 
 // Name patterns for well-known digital/non-physical entities that live inside
@@ -88,6 +100,7 @@ const DIGITAL_ENTITY_PATTERNS: RegExp = new RegExp(
     "paramount\\s*\\+|paramount\\s*plus",
     "prime\\s*video",
     "crunchyroll",
+    "funimation",
     "sling\\s*tv",
     "fubo",
     "youtube\\s*tv",
@@ -241,9 +254,156 @@ const DIGITAL_ENTITY_PATTERNS: RegExp = new RegExp(
     // VPNs / web services
     "nordvpn|surfshark|expressvpn",
     "\\b1password\\b|lastpass|bitwarden",
+    // Social networks (typed inconsistently in the DB — gate by name too)
+    "facebook|\\breddit\\b|instagram|tiktok|snapchat|pinterest|linkedin|\\btwitter\\b|\\bx\\b\\s*\\(formerly",
+    // Cloud platforms
+    "\\baws\\b|amazon\\s*web\\s*services|\\bazure\\b|google\\s*cloud|\\bgcp\\b",
+    // Game stores / gaming subscriptions (codes ≠ the service itself)
+    "\\bsteam\\b(?!\\s*(cleaner|mop|iron))|game\\s*pass|playstation\\s*plus|epic\\s*games",
+    // Online marketplaces / retailers / listing platforms — the destination
+    // IS their own site, never an Amazon competitor search
+    "\\bchewy\\b|\\bebay\\b|\\betsy\\b|\\btemu\\b|\\bshein\\b|aliexpress|\\bwayfair\\b|\\bikea\\b|best\\s*buy|\\blowe'?s\\b|home\\s*depot|\\bwalmart\\b|\\btarget\\b(?=\\s*(store|corp|retail|vs|$))|\\bcostco\\b|\\bzillow\\b|realtor\\.com|\\bkayak\\b|expedia|booking\\.com|\\bairbnb\\b|\\bvrbo\\b|tripadvisor",
+    // News / media subscriptions
+    "wall\\s*street\\s*journal|\\bwsj\\b|bloomberg|new\\s*york\\s*times|\\bnyt\\b|washington\\s*post|the\\s*economist|financial\\s*times",
+    // Meal-kit subscriptions
+    "hellofresh|hello\\s*fresh|home\\s*chef|blue\\s*apron|factor\\s*meals",
+    // Office / productivity suites (SaaS these days, never a /dp/ product)
+    "google\\s*(sheets|docs|slides|drive|flights|maps|photos)|\\bexcel\\b|powerpoint|microsoft\\s*(office|365|word)",
+    // Travel booking platforms
+    "hotels\\.com|priceline|orbitz|travelocity|skyscanner",
+    // Amazon's own sub-brands — an Amazon search FOR Amazon is circular junk
+    "amazon\\s*(haul|fresh|prime|basics)?$|amazon\\s*haul",
   ].join("|"),
   "i",
 );
+
+// Entity types that are organizations, places, people, or abstract concepts —
+// never purchasable on Amazon regardless of which category the comparison
+// lives in. The category fallback used to grant Amazon /s?k= links to banks
+// ("Ally Bank" in the products category), fast-food chains, diets, and
+// airlines. The link must sell the actual entity or not exist at all.
+const NON_BUYABLE_ENTITY_TYPES = new Set([
+  "company",
+  "banking",
+  "bank",
+  "finance",
+  "financial_product",
+  "financial_option",
+  "financial_decision",
+  "financial_metric",
+  "insurance",
+  "investment",
+  "brokerage",
+  "retirement",
+  "savings",
+  "mortgage",
+  "payment",
+  "index",
+  "currency",
+  "market",
+  "economy",
+  "person",
+  "athlete",
+  "team",
+  "sports-team",
+  "sports team",
+  "sports league",
+  "country",
+  "place",
+  "city",
+  "destination",
+  "travel",
+  "travel mode",
+  "vacation",
+  "flight",
+  "airline",
+  "hotel",
+  "accommodation",
+  "restaurant",
+  "food_and_drink",
+  "institution",
+  "school",
+  "education",
+  "degree",
+  "career",
+  "profession",
+  "work arrangement",
+  "event",
+  "history",
+  "military",
+  "military_branch",
+  "branch",
+  "rank",
+  "military rank/position",
+  "diet",
+  "diet/lifestyle",
+  "diet/health",
+  "dietary philosophy",
+  "concept",
+  "approach",
+  "practice",
+  "activity",
+  "language",
+  "linguistic_term",
+  "anatomy",
+  "surgery",
+  "treatment",
+  "test",
+  "organization",
+  "industry",
+  "business structure",
+  "alliance",
+  "animal",
+]);
+
+// Name patterns for entities that slip through type/category gates but are
+// clearly not products sold on Amazon: financial institutions, airlines,
+// hotel chains, restaurant/fast-food chains, and luxury houses that do not
+// distribute through Amazon (a search there surfaces counterfeits).
+const NON_BUYABLE_NAME_PATTERNS: RegExp = new RegExp(
+  [
+    // Corporate suffixes — "Nike Inc.", "Netflix, Inc.", "Blue Origin LLC"
+    "\\b(inc\\.?|incorporated|corp\\.?|corporation|llc|ltd\\.?|plc|holdings|group)\\b",
+    // Financial institutions & products
+    "\\b(bank|banking|credit union|capital one|chase|wells fargo|citibank|goldman sachs|fidelity|vanguard|schwab|credit card|debit card|american express|amex|mastercard|\\bvisa\\b|discover card)\\b",
+    // Airlines / travel
+    "airlines?|airways|\\bdelta\\b|\\bunited air|lufthansa|emirates\\b",
+    // Hotels
+    "\\b(marriott|hilton|hyatt|sheraton|resort|hostel)\\b",
+    // Restaurant / fast-food chains
+    "mcdonald|burger king|\\bwendy'?s\\b|\\bkfc\\b|taco bell|subway\\b|chipotle|chick-?fil-?a|popeyes|domino'?s|pizza hut|starbucks|dunkin|five guys|in-?n-?out|panera|olive garden|applebee|chili'?s|cheesecake factory|texas roadhouse|outback steakhouse|jimmy john",
+    // Luxury fashion houses (not officially on Amazon; searches surface fakes)
+    "\\b(gucci|louis vuitton|chanel|herm[eè]s|prada|dior|cartier|rolex|patek philippe)\\b",
+    // Diets / fitness regimes / abstract health
+    "\\b(diet|fasting|keto(genic)?|paleo|veganism|crossfit|pilates|yoga|gym)\\b",
+    // Degrees / education credentials
+    "\\b(mba|bachelor'?s?|master'?s|ph\\.?d|degree|diploma|bootcamp)\\b",
+    // Abstract finance / economy terms
+    "stock\\s*market|real\\s*estate|\\beconomy\\b|\\binflation\\b|\\brecession\\b",
+    // Insurance carriers
+    "\\binsurance\\b|\\bgeico\\b|\\ballstate\\b|state\\s*farm|progressive\\b|nationwide\\b|liberty\\s*mutual|\\baetna\\b|\\bcigna\\b|humana\\b",
+    // Universities / schools
+    "\\buniversity\\b|\\bcollege\\b|harvard|stanford|\\bmit\\b|\\byale\\b|princeton|\\boxford\\b|berkeley",
+    // Grocery / supermarket / restaurant chains
+    "\\bkroger\\b|safeway|albertsons|publix|whole\\s*foods|trader\\s*joe|\\baldi\\b|wegmans|\\bqdoba\\b|\\bmoe'?s\\b|panda\\s*express|\\bwingstop\\b|\\bsonic\\b\\s*(drive|menu|vs|$)|golden\\s*corral|buffalo\\s*wild\\s*wings|red\\s*lobster|\\bihop\\b|denny'?s|waffle\\s*house|cracker\\s*barrel",
+    // Military hardware (fighter jets, warships — comparison pages, not products)
+    "\\bf-?1[456]\\b|\\bf-?22\\b|\\bf-?35\\b|fighter\\s*(jet|falcon)|\\bbomber\\b|warship|destroyer|aircraft\\s*carrier|\\bmissile\\b",
+  ].join("|"),
+  "i",
+);
+
+/**
+ * Entities that are organizations, places, concepts, or otherwise not a
+ * concrete product — an Amazon search link would point at merchandise or
+ * junk, never the entity itself. See user directive: "Always check that the
+ * product is the actual product we are talking about."
+ */
+export function isNonBuyableEntity(entity: ComparisonEntityData): boolean {
+  const type = entity.entityType?.toLowerCase?.() ?? "";
+  if (NON_BUYABLE_ENTITY_TYPES.has(type)) return true;
+  if (NON_BUYABLE_NAME_PATTERNS.test(entity.name)) return true;
+  return false;
+}
 
 // Vehicles cannot be bought on Amazon. An /s?k= search for a car model returns
 // accessories and toys — not the product being compared. Route these to the
@@ -359,7 +519,12 @@ function isAffiliateEligible(
   // Digital/non-physical entities are never Amazon-eligible — suppress the
   // dead search link and let the generic "Learn more" CTA take over. (DAN-1053)
   if (isDigitalEntity(entity)) return false;
-  if (AFFILIATE_ELIGIBLE_TYPES.has(entity.entityType)) return true;
+  // Organizations, places, people, concepts: an Amazon search would return
+  // merchandise, not the entity. Blocks the category fallback below from
+  // granting links to banks/restaurants/diets that share a product category.
+  if (isNonBuyableEntity(entity)) return false;
+  if (AFFILIATE_ELIGIBLE_TYPES.has(entity.entityType?.toLowerCase?.() ?? ""))
+    return true;
   if (category && AFFILIATE_ELIGIBLE_CATEGORIES.has(category.toLowerCase()))
     return true;
   return false;
@@ -405,6 +570,70 @@ function generateGenericLink(entityName: string): AffiliateLink {
  * DIGITAL_ENTITY_PATTERNS above.
  */
 const BRAND_HOMEPAGES: ReadonlyArray<readonly [RegExp, string]> = [
+  // Social networks
+  [/facebook/i, "https://www.facebook.com"],
+  [/\breddit\b/i, "https://www.reddit.com"],
+  [/instagram/i, "https://www.instagram.com"],
+  [/tiktok/i, "https://www.tiktok.com"],
+  [/linkedin/i, "https://www.linkedin.com"],
+  [/\btwitter\b|\bx\b\s*\(formerly/i, "https://x.com"],
+  // Cloud platforms
+  [/\baws\b|amazon\s*web\s*services/i, "https://aws.amazon.com"],
+  [/\bazure\b/i, "https://azure.microsoft.com"],
+  [/google\s*cloud|\bgcp\b/i, "https://cloud.google.com"],
+  // Game stores / subscriptions
+  [/\bsteam\b/i, "https://store.steampowered.com"],
+  [/game\s*pass/i, "https://www.xbox.com/xbox-game-pass"],
+  [/playstation\s*plus/i, "https://www.playstation.com/ps-plus/"],
+  [/epic\s*games/i, "https://store.epicgames.com"],
+  // Marketplaces / retailers / listing platforms
+  [/\bchewy\b/i, "https://www.chewy.com"],
+  [/\bebay\b/i, "https://www.ebay.com"],
+  [/\betsy\b/i, "https://www.etsy.com"],
+  [/\btemu\b/i, "https://www.temu.com"],
+  [/\bshein\b/i, "https://www.shein.com"],
+  [/aliexpress/i, "https://www.aliexpress.com"],
+  [/\bwayfair\b/i, "https://www.wayfair.com"],
+  [/\bikea\b/i, "https://www.ikea.com"],
+  [/best\s*buy/i, "https://www.bestbuy.com"],
+  [/\blowe'?s\b/i, "https://www.lowes.com"],
+  [/home\s*depot/i, "https://www.homedepot.com"],
+  [/\bwalmart\b/i, "https://www.walmart.com"],
+  [/\bcostco\b/i, "https://www.costco.com"],
+  [/\bzillow\b/i, "https://www.zillow.com"],
+  [/realtor\.com/i, "https://www.realtor.com"],
+  [/\bkayak\b/i, "https://www.kayak.com"],
+  [/expedia/i, "https://www.expedia.com"],
+  [/booking\.com/i, "https://www.booking.com"],
+  [/\bairbnb\b/i, "https://www.airbnb.com"],
+  [/\bvrbo\b/i, "https://www.vrbo.com"],
+  [/tripadvisor/i, "https://www.tripadvisor.com"],
+  // News / media
+  [/wall\s*street\s*journal|\bwsj\b/i, "https://www.wsj.com"],
+  [/bloomberg/i, "https://www.bloomberg.com"],
+  [/new\s*york\s*times|\bnyt\b/i, "https://www.nytimes.com"],
+  [/washington\s*post/i, "https://www.washingtonpost.com"],
+  [/the\s*economist/i, "https://www.economist.com"],
+  [/financial\s*times/i, "https://www.ft.com"],
+  // Office / travel platforms
+  [/google\s*flights/i, "https://www.google.com/travel/flights"],
+  [/google\s*(sheets|docs|slides)/i, "https://workspace.google.com"],
+  [/\bexcel\b|microsoft\s*(office|365|word)|powerpoint/i, "https://www.microsoft.com/microsoft-365"],
+  [/hotels\.com/i, "https://www.hotels.com"],
+  [/priceline/i, "https://www.priceline.com"],
+  [/amazon\s*haul/i, "https://www.amazon.com/haul"],
+  [/^amazon$|amazon\s*(fresh|prime|basics)/i, "https://www.amazon.com"],
+  // Meal kits
+  [/hellofresh|hello\s*fresh/i, "https://www.hellofresh.com"],
+  [/home\s*chef/i, "https://www.homechef.com"],
+  [/blue\s*apron/i, "https://www.blueapron.com"],
+  // Dev frameworks (comparison staples)
+  [/\breact\b(?!\s*native)/i, "https://react.dev"],
+  [/react\s*native/i, "https://reactnative.dev"],
+  [/\bvue(\.js)?\b/i, "https://vuejs.org"],
+  [/\bangular\b/i, "https://angular.dev"],
+  [/\bsvelte\b/i, "https://svelte.dev"],
+  [/next\.?js/i, "https://nextjs.org"],
   // VPNs — highest affiliate value ($30–100/sale)
   [/nordvpn/i, "https://nordvpn.com"],
   [/surfshark/i, "https://surfshark.com"],
@@ -456,6 +685,7 @@ const BRAND_HOMEPAGES: ReadonlyArray<readonly [RegExp, string]> = [
   [/paramount\s*\+|paramount\s*plus/i, "https://www.paramountplus.com"],
   [/prime\s*video/i, "https://www.primevideo.com"],
   [/crunchyroll/i, "https://www.crunchyroll.com"],
+  [/funimation/i, "https://www.crunchyroll.com"],
   [/youtube\s*tv/i, "https://tv.youtube.com"],
   [/apple\s*tv\s*\+|apple\s*tv\s*plus/i, "https://tv.apple.com"],
   // Streaming music
@@ -489,17 +719,16 @@ const BRAND_HOMEPAGES: ReadonlyArray<readonly [RegExp, string]> = [
 
 /**
  * Resolve an entity name to its official brand homepage. Returns a curated URL
- * for known digital brands, otherwise a best-effort {brand}.com guess for the
- * long tail — still strictly better than a Google SERP (captures direct-referral
- * intent, no competitor ads) and trivially swappable for a tracked affiliate
- * URL once approved. See DAN-1140.
+ * for known digital brands, or "" when unknown. The previous {brand}.com guess
+ * for the long tail is gone: unverified domain guesses ("PC Gaming" →
+ * pcgaming.com) can point at parked/junk/malicious domains — worse than no
+ * link. Unknown brands fall through to the informational "Learn More" CTA.
  */
 export function resolveBrandHomepage(entityName: string): string {
   for (const [pattern, url] of BRAND_HOMEPAGES) {
     if (pattern.test(entityName)) return url;
   }
-  const slug = entityName.toLowerCase().replace(/[^a-z0-9]/g, "");
-  return slug ? `https://www.${slug}.com` : "";
+  return "";
 }
 
 /**
