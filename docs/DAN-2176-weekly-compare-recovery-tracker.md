@@ -24,7 +24,21 @@
 | 2026-07-13 | 397 | −98.0% | 0 | 153 | W29 — still suppressed (updated from 125 partial on 07-16) |
 | 2026-07-20 | ~~416~~ → **523** | −97.3% | 0 | 176 | W30 — GSC retroactive revision (+26%); still at floor |
 | 2026-07-27 | ~~302~~ → **343** | −98.2% | 0 | 102 | W31 — GSC retroactively revised 302→343 (+13.6%); still at floor |
-| 2026-08-03 | ~115 | −99.4% | 0 | — | W32 partial (3 days only, 2026-08-08 read) |
+| 2026-08-03 | ~~115~~ → **181** | −99.1% | 0 | 71 | W32 complete (2026-08-11 read); GSC revised 115→181 |
+
+## Read — 2026-08-11 (W32 complete)
+
+**Still suppressed. No reversal. Seven post-collapse weeks. Deepening week-over-week decline.**
+
+- **W32 final: 181 impressions**, −99.1% vs baseline. GSC revised up from the 2026-08-08 partial read of ~115 (3 days), consistent with latency correction pattern.
+- Script reading today (2026-08-11): W31 = 302 (script shows lower than the 343 noted on 2026-08-08; GSC data fluctuates slightly with latency windows — treat W31 as ~302–343, both at −98%). W32 = 181 (complete).
+- **Pages with impressions: 71** — new low since the collapse. W30 had 176, W31 had 102, W32 has 71. The visible crawl footprint is shrinking within the already-suppressed set.
+- **Clicks: 0** for all seven post-collapse weeks (down from 42/wk at baseline).
+- **WoW trend: deepening.** W31 (~302–343) → W32 (181) = approximately −40% to −47% WoW. Not noise.
+- **vs baseline (19,561): −99.1%** — worst week on record.
+- **No new technical levers available.** All fixes shipped and indexed before next SpamBrain refresh. Recovery awaits an algorithm update, not a crawl event.
+
+**Verdict: Still suppressed. No SpamBrain refresh signal. Continue weekly tracking.**
 
 ## Read — 2026-08-08 (W32 mid-week check)
 
@@ -91,6 +105,7 @@
 
 | Date | Weeks checked | Verdict |
 |---|---|---|
+| 2026-08-11 | W27–W32 | Still suppressed. W32 final 181 (GSC revised from 115 partial). Pages=71 (new low). WoW ~−40%. Seven weeks at floor. No reversal. |
 | 2026-08-08 | W27–W32 | Still suppressed. W31 revised 302→343 (GSC latency). W32 partial 115/3days (~38/day). Seven weeks at floor. No reversal. |
 | 2026-08-06 | W27–W32 | Still suppressed. W32 partial trending lower (~22/day vs W31's 43/day). Six weeks at floor. No reversal. |
 | 2026-08-04 | W27–W31 | Still suppressed, W31 302 (−42.3% WoW vs W30 revised 523). W30 GSC-revised 416→523. Six weeks at floor. No reversal. Continue. |
