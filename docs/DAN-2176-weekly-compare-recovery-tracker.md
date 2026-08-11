@@ -25,6 +25,19 @@
 | 2026-07-20 | ~~416~~ → **523** | −97.3% | 0 | 176 | W30 — GSC retroactive revision (+26%); still at floor |
 | 2026-07-27 | ~~302~~ → **343** | −98.2% | 0 | 102 | W31 — GSC retroactively revised 302→343 (+13.6%); still at floor |
 | 2026-08-03 | ~~115~~ → **181** | −99.1% | 0 | 71 | W32 complete (2026-08-11 read); GSC revised 115→181 |
+| 2026-08-10 | (partial) | — | 0 | — | W33 in progress — 2026-08-11 mid-week check; no reversal |
+
+## Read — 2026-08-11 (W33 mid-week check)
+
+**Still suppressed. W32 confirmed at 181 (−99.1%). W33 in progress — no reversal signal.**
+
+- **W32 final: 181 impressions**, −99.1% vs baseline, WoW −40.1% from W31. New post-collapse low.
+- **Pages with impressions: 71** — the visible footprint within the suppressed set continues to shrink (W30=176, W31=102, W32=71).
+- **Clicks: 0** — eight consecutive post-collapse weeks with zero clicks.
+- **W33 partial:** script run on 2026-08-11 (Monday); W33 (week of Aug 10) data not yet complete. Current week will be read next Tuesday.
+- **No new technical levers.** All fixes shipped and crawled pre-refresh. Suppression is SpamBrain algorithm-level; recovery requires a Google algorithm update, not further crawls.
+
+**Verdict: Still suppressed. No SpamBrain refresh signal. W33 full read scheduled 2026-08-19.**
 
 ## Read — 2026-08-11 (W32 complete)
 
