@@ -57,7 +57,7 @@ export const ORDERING_CONSOLIDATIONS: Record<string, string> = {
   "mercedes-s-class-vs-bmw-7-series": "bmw-7-series-vs-mercedes-s-class",
   "genesis-vs-bmw": "bmw-vs-genesis",
   "mercedes-gle-vs-bmw-x5": "bmw-x5-vs-mercedes-gle",
-  "khan-academy-vs-brilliant": "brilliant-vs-khan-academy",
+  "brilliant-vs-khan-academy": "khan-academy-vs-brilliant",
   "rollbar-vs-bugsnag": "bugsnag-vs-rollbar",
   "chase-vs-capital-one": "capital-one-vs-chase",
   "prefect-vs-celery": "celery-vs-prefect",
