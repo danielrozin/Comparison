@@ -64,15 +64,15 @@
   },
   "lines": {
     "hook": "One of these two has 166 more goal contributions. It isn't the winger.",
-    "tape": "Pure striker versus pure forward. The numbers say one of them does everything better.",
+    "tape": "The pure number nine against the pure highlight reel. The numbers pick a side.",
     "rounds": [
-      "374 to 299. Seventy five goals is a whole career for most strikers.",
-      "151 assists to 60. The battering ram out-created the playmaker. Two and a half times over.",
-      "89.42 against 81.51 one on one. Eight points of separation is not close.",
-      "525 goal contributions to 359. That gap is bigger than most players' entire output.",
-      "28.8 percent of his output is assists. Mbappe sits at 16.7. The tall guy passes."
+      "374 to 299. A 75-goal gap is not a rounding error.",
+      "151 assists to 60. The striker is the better passer. Read that again.",
+      "89.42 against 81.51. Even the head-to-head rating refuses to argue.",
+      "525 goal involvements to 359. That's a whole extra season of damage.",
+      "28.8% of Haaland's output is assists. Mbappe sits at 16.7%."
     ],
-    "verdict": "Haaland sweeps it five nil. Take Mbappe if you want the ball carried, not finished."
+    "verdict": "Haaland sweeps it 5-0. Pick Mbappe if you want a game broken open alone."
   },
   "audio": {
     "cold": "video-assets/haaland-vs-mbappe/audio/cold.mp3",
@@ -87,20 +87,20 @@
     "verdict": "video-assets/haaland-vs-mbappe/audio/verdict.mp3"
   },
   "timings": {
-    "cold": 183,
-    "tape": 172,
+    "cold": 204,
+    "tape": 192,
     "rounds": [
-      207,
-      233,
+      236,
       226,
-      232,
-      226
+      252,
+      245,
+      233
     ],
-    "verdict": 195,
+    "verdict": 199,
     "leadInFrames": 9
   },
-  "youtubeTitle": "Haaland vs Mbappe: The Stat Gap Nobody Talks About",
-  "youtubeDescription": "Erling Haaland and Kylian Mbappe compared across career goals, assists, one on one rating, total goal contributions and assist rate. Haaland takes all five categories, including a surprising edge in creation. Here's what the numbers actually say about both forwards.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/haaland-vs-mbappe",
+  "youtubeTitle": "Haaland vs Mbappe: The Numbers Are Not Close",
+  "youtubeDescription": "A stat-by-stat breakdown of Erling Haaland against Kylian Mbappe, covering career goals, assists, total goal contributions, assist rate and head-to-head rating. One of them sweeps every category, and it may not be the one you expect.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/haaland-vs-mbappe",
   "asOf": "August 2026",
   "narrationSrc": null,
   "musicSrc": null,

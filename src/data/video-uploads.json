@@ -3414,6 +3414,21 @@
       "youtubeVideoId": "hNl5baG3sGA",
       "youtubeUrl": "https://www.youtube.com/watch?v=hNl5baG3sGA",
       "uploadedAt": "2026-08-20T10:21:32.407Z"
+    },
+    {
+      "slug": "haaland-vs-mbappe",
+      "title": "Haaland vs Mbappe",
+      "entityA": "Haaland",
+      "entityB": "Mbappe",
+      "category": "General",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "haaland-vs-mbappe.mp4",
+      "youtubeTitle": "Haaland vs Mbappe: The Numbers Are Not Close",
+      "youtubeDescription": "A stat-by-stat breakdown of Erling Haaland against Kylian Mbappe, covering career goals, assists, total goal contributions, assist rate and head-to-head rating. One of them sweeps every category, and it may not be the one you expect.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/haaland-vs-mbappe\n\nImage credits:\nImage A by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg\nImage B by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg\n\nFull comparison: https://www.aversusb.net/compare/haaland-vs-mbappe",
+      "youtubeVideoId": "AU-KuOty9mA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=AU-KuOty9mA",
+      "uploadedAt": "2026-08-20T11:05:24.938Z"
     }
   ]
 }
