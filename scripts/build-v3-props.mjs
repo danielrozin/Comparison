@@ -45,12 +45,41 @@ const SRC = path.join(ROOT, 'remotion/data', `${slug}.json`);
 const OUT_DIR = path.join(ROOT, 'remotion/v3/data');
 const ASSET_DIR = path.join(ROOT, 'public/video-assets', slug);
 
-if (!fs.existsSync(SRC)) {
-  console.error(`No comparison data at ${SRC}`);
-  process.exit(1);
+/**
+ * Comparison data, local fixture first, live site second.
+ *
+ * Only 64 of the 141 slugs the pipeline is offered have a fixture in
+ * remotion/data/, so requiring one failed on 55% of the catalogue. The API
+ * serves the same source /slugs is derived from, which keeps the list of what
+ * exists and the data for it from disagreeing.
+ */
+async function loadComparisonData() {
+  if (fs.existsSync(SRC)) {
+    const local = JSON.parse(fs.readFileSync(SRC, 'utf-8'));
+    if (local.entityA && local.entityB) {
+      console.log('  data: local fixture');
+      return local;
+    }
+  }
+
+  const url = `https://www.aversusb.net/api/video-pipeline/data?slug=${encodeURIComponent(slug)}`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(20_000) });
+  if (!res.ok) {
+    throw new Error(`No comparison data for "${slug}" (local fixture missing, API returned ${res.status})`);
+  }
+  const remote = await res.json();
+  if (!remote.entityA || !remote.entityB) {
+    throw new Error(`API data for "${slug}" is missing entities`);
+  }
+  console.log('  data: fetched from site');
+
+  // Cache it so a re-render does not depend on the site being up.
+  fs.mkdirSync(path.dirname(SRC), { recursive: true });
+  fs.writeFileSync(SRC, JSON.stringify(remote, null, 2));
+  return remote;
 }
 
-const data = JSON.parse(fs.readFileSync(SRC, 'utf-8'));
+const data = await loadComparisonData();
 
 /** Download a remote image next to the render so the render never hits the network. */
 async function localise(image, name) {
