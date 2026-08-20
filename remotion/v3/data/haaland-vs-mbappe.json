@@ -1,0 +1,111 @@
+{
+  "title": "Haaland vs Mbappe",
+  "entityA": "Haaland",
+  "entityB": "Mbappe",
+  "category": "General",
+  "shortAnswer": "Mbappé leads in overall goals and assists with superior playmaking ability, while Haaland excels as a pure goalscorer with better conversion rates.",
+  "stats": [
+    {
+      "label": "Career Goals",
+      "valueA": "374 (avg)",
+      "valueB": "299 (avg)",
+      "winner": "a"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "151",
+      "valueB": "60",
+      "winner": "a"
+    },
+    {
+      "label": "1vs1 Score",
+      "valueA": "89.42",
+      "valueB": "81.51",
+      "winner": "a"
+    },
+    {
+      "label": "Goal Contribution",
+      "valueA": "525 total",
+      "valueB": "359 total",
+      "winner": "a"
+    },
+    {
+      "label": "Assist Rate",
+      "valueA": "28.8%",
+      "valueB": "16.7%",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Mbappé currently holds the edge with more goals, significantly more assists, and better current form. However, Haaland's superior conversion rate and pure striking ability make him extremely dangerous. Both are generational talents with different strengths.",
+  "slug": "haaland-vs-mbappe",
+  "imageA": {
+    "url": "video-assets/haaland-vs-mbappe/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/4/43/Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3333,
+    "height": 5000,
+    "credit": "Bryan Berlin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/4/43/Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/haaland-vs-mbappe/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/9/95/Kylian_Mbappe_France_v_Senegal_16_June_2026-391_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2201,
+    "height": 3301,
+    "credit": "Bryan Berlin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/9/95/Kylian_Mbappe_France_v_Senegal_16_June_2026-391_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One of these two has 166 more goal contributions. It isn't the winger.",
+    "tape": "Pure striker versus pure forward. The numbers say one of them does everything better.",
+    "rounds": [
+      "374 to 299. Seventy five goals is a whole career for most strikers.",
+      "151 assists to 60. The battering ram out-created the playmaker. Two and a half times over.",
+      "89.42 against 81.51 one on one. Eight points of separation is not close.",
+      "525 goal contributions to 359. That gap is bigger than most players' entire output.",
+      "28.8 percent of his output is assists. Mbappe sits at 16.7. The tall guy passes."
+    ],
+    "verdict": "Haaland sweeps it five nil. Take Mbappe if you want the ball carried, not finished."
+  },
+  "audio": {
+    "cold": "video-assets/haaland-vs-mbappe/audio/cold.mp3",
+    "tape": "video-assets/haaland-vs-mbappe/audio/tape.mp3",
+    "rounds": [
+      "video-assets/haaland-vs-mbappe/audio/round-1.mp3",
+      "video-assets/haaland-vs-mbappe/audio/round-2.mp3",
+      "video-assets/haaland-vs-mbappe/audio/round-3.mp3",
+      "video-assets/haaland-vs-mbappe/audio/round-4.mp3",
+      "video-assets/haaland-vs-mbappe/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/haaland-vs-mbappe/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 183,
+    "tape": 172,
+    "rounds": [
+      207,
+      233,
+      226,
+      232,
+      226
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "youtubeTitle": "Haaland vs Mbappe: The Stat Gap Nobody Talks About",
+  "youtubeDescription": "Erling Haaland and Kylian Mbappe compared across career goals, assists, one on one rating, total goal contributions and assist rate. Haaland takes all five categories, including a surprising edge in creation. Here's what the numbers actually say about both forwards.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/haaland-vs-mbappe",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Erling_Haaland_Morocco_v_Norway_7_June_2026-51.jpg",
+    "Image B by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg"
+  ]
+}

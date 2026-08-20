@@ -3399,6 +3399,21 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-07-16T07:52:21.264Z"
+    },
+    {
+      "slug": "messi-vs-ronaldo",
+      "title": "Messi vs Ronaldo",
+      "entityA": "Lionel Messi",
+      "entityB": "Cristiano Ronaldo",
+      "category": "Sports",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "messi-vs-ronaldo.mp4",
+      "youtubeTitle": "Messi vs Ronaldo: The Numbers Finally Settle It",
+      "youtubeDescription": "A stat-by-stat head-to-head between Lionel Messi and Cristiano Ronaldo, covering Ballon d'Or awards, career goals, assists, Champions League titles and the World Cup. Messi edges it on points, but Ronaldo's scoring record and European Cup haul remain untouchable. Here's where each man actually wins.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/messi-vs-ronaldo\n\nImage credits:\nImage A by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg\nImage B by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg\n\nFull comparison: https://www.aversusb.net/compare/messi-vs-ronaldo",
+      "youtubeVideoId": "hNl5baG3sGA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=hNl5baG3sGA",
+      "uploadedAt": "2026-08-20T10:21:32.407Z"
     }
   ]
 }
