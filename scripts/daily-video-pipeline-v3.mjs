@@ -111,34 +111,52 @@ function youtubeClient() {
  * silently dead. Finding that out after rendering ten videos is expensive.
  */
 async function checkYouTubeAuth() {
-  const youtube = youtubeClient();
-  if (!youtube) {
+  const clientId = process.env.YOUTUBE_CLIENT_ID;
+  const clientSecret = process.env.YOUTUBE_CLIENT_SECRET;
+  const refreshToken = process.env.YOUTUBE_REFRESH_TOKEN;
+  if (!clientId || !clientSecret || !refreshToken) {
     console.error('FAIL: YouTube credentials missing (need CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)');
     return false;
   }
+
+  const oauth2 = new google.auth.OAuth2(clientId, clientSecret);
+  oauth2.setCredentials({ refresh_token: refreshToken });
+
+  // The authoritative test is whether the refresh token still mints an access
+  // token. Deliberately not channels.list: the stored grant only carries
+  // `youtube.upload`, so a channel read fails on scope even when the token is
+  // perfectly healthy — which would report a false failure and block uploads.
   try {
-    const res = await youtube.channels.list({ part: 'snippet,statistics', mine: true });
-    const ch = res.data.items?.[0];
-    if (!ch) {
-      console.error('FAIL: token valid but no channel is associated with this account');
-      return false;
-    }
-    console.log(`OK: authenticated as "${ch.snippet.title}"`);
-    console.log(`    channel   ${ch.id}`);
-    console.log(`    videos    ${ch.statistics?.videoCount ?? '?'}`);
-    console.log(`    subs      ${ch.statistics?.subscriberCount ?? '?'}`);
-    return true;
+    const { token } = await oauth2.getAccessToken();
+    if (!token) throw new Error('no access token returned');
+    console.log('OK: refresh token is valid');
   } catch (err) {
-    console.error(`FAIL: ${err.message}`);
-    if (/invalid_grant/i.test(err.message)) {
+    const msg = err?.response?.data?.error_description || err.message;
+    console.error(`FAIL: ${msg}`);
+    if (/invalid_grant/i.test(JSON.stringify(err?.response?.data || err.message))) {
       console.error(
         '      invalid_grant means the refresh token is dead. Usual cause: the Google Cloud\n' +
           '      OAuth consent screen is still in "Testing", which expires refresh tokens after\n' +
-          '      7 days. Publish the app, then re-issue the token.'
+          '      7 days. Publish the app (Console > APIs & Services > OAuth consent screen >\n' +
+          '      Publish app), then re-issue with: node scripts/youtube-auth.mjs'
       );
     }
     return false;
   }
+
+  // Channel details are a nice-to-have; absence of scope is not a failure.
+  try {
+    const youtube = google.youtube({ version: 'v3', auth: oauth2 });
+    const res = await youtube.channels.list({ part: 'snippet,statistics', mine: true });
+    const ch = res.data.items?.[0];
+    if (ch) {
+      console.log(`    channel   ${ch.snippet.title} (${ch.id})`);
+      console.log(`    videos    ${ch.statistics?.videoCount ?? '?'}`);
+    }
+  } catch {
+    console.log('    (channel details unavailable — grant covers upload scope only)');
+  }
+  return true;
 }
 
 async function uploadToYouTube(videoPath, meta) {

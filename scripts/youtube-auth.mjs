@@ -42,7 +42,13 @@ const oauth2Client = new google.auth.OAuth2(
 
 const authUrl = oauth2Client.generateAuthUrl({
   access_type: "offline",
-  scope: ["https://www.googleapis.com/auth/youtube.upload"],
+  // youtube.readonly is added alongside upload so the pipeline's auth probe can
+  // also report which channel the token belongs to. Uploading alone would work
+  // without it, but a probe that cannot name the channel is easy to misread.
+  scope: [
+    "https://www.googleapis.com/auth/youtube.upload",
+    "https://www.googleapis.com/auth/youtube.readonly",
+  ],
   prompt: "consent",
 });
 
