@@ -1,0 +1,85 @@
+{
+  "title": "Messi vs Ronaldo",
+  "entityA": "Lionel Messi",
+  "entityB": "Cristiano Ronaldo",
+  "category": "Sports",
+  "shortAnswer": "Messi is widely regarded as the more naturally gifted player with superior dribbling and playmaking, while Ronaldo is celebrated for his athleticism, goal-scoring consistency, and aerial dominance. Messi has won 8 Ballon d'Or awards to Ronaldo's 5.",
+  "stats": [
+    {
+      "label": "Ballon d'Or Awards",
+      "valueA": "8",
+      "valueB": "5",
+      "winner": "a"
+    },
+    {
+      "label": "Career Goals",
+      "valueA": "838",
+      "valueB": "899",
+      "winner": "b"
+    },
+    {
+      "label": "Career Assists",
+      "valueA": "369",
+      "valueB": "262",
+      "winner": "a"
+    },
+    {
+      "label": "Champions League",
+      "valueA": "4 titles",
+      "valueB": "5 titles",
+      "winner": "b"
+    },
+    {
+      "label": "World Cup Titles",
+      "valueA": "1",
+      "valueB": "0",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Both are all-time greats. Messi edges it for overall ability and the 2022 World Cup, while Ronaldo's longevity and Champions League record is unmatched.",
+  "slug": "messi-vs-ronaldo",
+  "imageA": {
+    "url": "video-assets/messi-vs-ronaldo/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3333,
+    "height": 5000,
+    "credit": "Bryan Berlin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/messi-vs-ronaldo/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2812,
+    "height": 4215,
+    "credit": "Bryan Berlin",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Lionel Messi or Cristiano Ronaldo? The numbers settle it.",
+    "tape": "Five categories. One winner. Here is how they actually compare.",
+    "rounds": [
+      "Lionel Messi takes ballon d'or awards.",
+      "Cristiano Ronaldo takes career goals.",
+      "Lionel Messi takes career assists.",
+      "Cristiano Ronaldo takes champions league.",
+      "Lionel Messi takes world cup titles."
+    ],
+    "verdict": "Lionel Messi wins it 3 to 2."
+  },
+  "youtubeTitle": "Lionel Messi vs Cristiano Ronaldo: Full Comparison",
+  "youtubeDescription": "Messi is widely regarded as the more naturally gifted player with superior dribbling and playmaking, while Ronaldo is celebrated for his athleticism, goal-scoring consistency, and aerial dominance. Messi has won 8 Ballon d'Or awards to Ronaldo's 5.",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg",
+    "Image B by Bryan Berlin (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"
+  ]
+}
