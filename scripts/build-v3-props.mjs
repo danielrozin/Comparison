@@ -18,6 +18,7 @@ import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { resolveComparisonImagery, attributionLines } from './lib/imagery.mjs';
 import { writeScript } from './lib/scriptwriter.mjs';
+import { narrateComparison } from './lib/narration.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -117,6 +118,25 @@ const [imageA, imageB] = await Promise.all([
   localise(imagery.b, 'entity-b'),
 ]);
 
+// Narration drives the edit: each scene lasts as long as its line needs.
+const lines = {
+  hook: script.hook,
+  tape: script.tape,
+  rounds: script.rounds,
+  verdict: script.verdict,
+};
+
+console.log('  narrating...');
+const narration = await narrateComparison(lines, {
+  outDir: path.join(ASSET_DIR, 'audio'),
+  publicPrefix: `video-assets/${slug}/audio`,
+});
+if (narration) {
+  console.log(`  narration: ${narration.totalSeconds.toFixed(1)}s across ${1 + 1 + rounds.length + 1} beats (${narration.modelUsed})`);
+} else {
+  console.log('  narration: none — silent render with default timings');
+}
+
 const props = {
   title: data.title || `${data.entityA} vs ${data.entityB}`,
   entityA: data.entityA,
@@ -128,12 +148,9 @@ const props = {
   slug,
   imageA,
   imageB,
-  lines: {
-    hook: script.hook,
-    tape: script.tape,
-    rounds: script.rounds,
-    verdict: script.verdict,
-  },
+  lines,
+  audio: narration?.audio ?? null,
+  timings: narration?.timings ?? null,
   youtubeTitle: script.youtubeTitle,
   youtubeDescription: script.youtubeDescription,
   narrationSrc: null,

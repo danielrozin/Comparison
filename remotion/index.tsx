@@ -79,26 +79,26 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="ComparisonV3"
         component={ComparisonV3}
-        durationInFrames={getV3TotalFrames(V3_DEMO_PROPS.stats.length)}
+        durationInFrames={getV3TotalFrames(V3_DEMO_PROPS.stats.length, V3_DEMO_PROPS.timings)}
         fps={FPS}
         width={1080}
         height={1920}
         defaultProps={V3_DEMO_PROPS}
         calculateMetadata={({ props }: { props: ComparisonV3Props }) => ({
-          durationInFrames: getV3TotalFrames(props.stats?.length ?? 5),
+          durationInFrames: getV3TotalFrames(props.stats?.length ?? 5, props.timings),
         })}
       />
       {/* V3 landscape — YouTube main feed. */}
       <Composition
         id="ComparisonV3Landscape"
         component={ComparisonV3}
-        durationInFrames={getV3TotalFrames(V3_DEMO_PROPS.stats.length)}
+        durationInFrames={getV3TotalFrames(V3_DEMO_PROPS.stats.length, V3_DEMO_PROPS.timings)}
         fps={FPS}
         width={1920}
         height={1080}
         defaultProps={V3_DEMO_PROPS}
         calculateMetadata={({ props }: { props: ComparisonV3Props }) => ({
-          durationInFrames: getV3TotalFrames(props.stats?.length ?? 5),
+          durationInFrames: getV3TotalFrames(props.stats?.length ?? 5, props.timings),
         })}
       />
     </>

@@ -35,6 +35,28 @@ export const SAFE = {
   bottomPct: 0.2, // captions live here — no content may overlap
 } as const;
 
+/**
+ * Uniform scale factor for both orientations.
+ *
+ * This was `width / 1080`, which is right for the 1080x1920 vertical cut and
+ * badly wrong for 1920x1080: it scaled every size by 1.78 in a frame that is
+ * *shorter*, so type overflowed its box, the score chip landed on the round
+ * label, and the verdict CTA sat underneath the caption. Keying off the
+ * smaller edge gives both cuts the same physical type size.
+ */
+export function uiScale(width: number, height: number) {
+  return Math.min(width, height) / 1080;
+}
+
+/**
+ * Where scene content may start. Never above the score chip — in landscape the
+ * chip and the round label were drawing on the same pixels.
+ */
+export function topSafe(height: number, s: number) {
+  const chipBottom = 28 * s + 72 * s; // chip offset + chip height
+  return Math.max(height * SAFE.topPct, chipBottom + 30 * s);
+}
+
 /** Deterministic per-scene Ken Burns move (no Math.random — renders must be stable). */
 export function kenBurns(seed: number) {
   const dirs = [

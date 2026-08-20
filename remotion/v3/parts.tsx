@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
-import { C, FONT_BODY, FONT_DISPLAY, formatCount, kenBurns, SAFE, splitValue } from './theme';
+import { C, FONT_BODY, FONT_DISPLAY, formatCount, kenBurns, SAFE, splitValue, topSafe, uiScale } from './theme';
 
 /* ------------------------------------------------------------------ */
 /* Backgrounds                                                         */
@@ -20,16 +20,20 @@ export const PhotoPlate: React.FC<{
   dim?: number;
 }> = ({ src, tint, seed = 0, durationInFrames, focus = 'top', dim = 0.42 }) => {
   const frame = useCurrentFrame();
+  const { width: fw, height: fh } = useVideoConfig();
   const kb = kenBurns(seed);
+  // Landscape already crops hard to cover the frame; stacking a big Ken Burns
+  // push on top pulls the subject in further still. Damp the move there.
+  const damp = fw > fh ? 0.45 : 1;
   // Props carry either a remote URL or a path inside public/ — resolve the
   // latter through staticFile so renders work headless with --public-dir.
   const resolved = src && !/^(https?:|data:)/.test(src) ? staticFile(src) : src;
   const t = interpolate(frame, [0, Math.max(1, durationInFrames)], [0, 1], {
     extrapolateRight: 'clamp',
   });
-  const scale = interpolate(t, [0, 1], [kb.sx, kb.ex]);
-  const x = interpolate(t, [0, 1], [0, kb.tx]);
-  const y = interpolate(t, [0, 1], [0, kb.ty]);
+  const scale = interpolate(t, [0, 1], [1 + (kb.sx - 1) * damp, 1 + (kb.ex - 1) * damp]);
+  const x = interpolate(t, [0, 1], [0, kb.tx * damp]);
+  const y = interpolate(t, [0, 1], [0, kb.ty * damp]);
 
   return (
     <AbsoluteFill style={{ overflow: 'hidden', backgroundColor: C.ink }}>
@@ -40,7 +44,7 @@ export const PhotoPlate: React.FC<{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: focus === 'top' ? '50% 22%' : '50% 50%',
+            objectPosition: focus === 'top' ? (fw > fh ? '50% 30%' : '50% 22%') : '50% 50%',
             transform: `scale(${scale}) translate(${x}%, ${y}%)`,
             filter: 'saturate(1.05) contrast(1.06)',
           }}
@@ -83,7 +87,7 @@ export const SplitPlate: React.FC<{
   lean?: number; // -1 = favour A, +1 = favour B, 0 = even
 }> = ({ srcA, srcB, durationInFrames, lean = 0 }) => {
   const frame = useCurrentFrame();
-  const { width } = useVideoConfig();
+  const { width, height } = useVideoConfig();
   const t = interpolate(frame, [0, Math.max(1, durationInFrames)], [0, 1], {
     extrapolateRight: 'clamp',
   });
@@ -93,13 +97,31 @@ export const SplitPlate: React.FC<{
   const clipA = `polygon(0 0, ${seam + 6}% 0, ${seam - 6}% 100%, 0 100%)`;
   const clipB = `polygon(${seam + 6}% 0, 100% 0, 100% 100%, ${seam - 6}% 100%)`;
 
+  /**
+   * In landscape each side gets its own ~58%-wide box rather than a full-frame
+   * image that is merely clipped. Clipping does not change how `object-fit:
+   * cover` crops — the image still covers 1920x1080 — so a 2:3 portrait was
+   * being cropped to a band across the subject's mouth on both sides. Sizing
+   * the image to the half it actually occupies makes that box nearly square,
+   * and the face survives. Vertical keeps full-frame plates, which already
+   * frame portraits well.
+   */
+  const isLandscape = width > height;
+  const halfStyle: React.CSSProperties = isLandscape
+    ? { position: 'absolute', top: 0, bottom: 0, width: '58%' }
+    : { position: 'absolute', inset: 0 };
+
   return (
     <AbsoluteFill style={{ backgroundColor: C.ink }}>
       <AbsoluteFill style={{ clipPath: clipA }}>
-        <PhotoPlate src={srcA} tint={C.a} seed={1} durationInFrames={durationInFrames} />
+        <div style={{ ...halfStyle, left: 0 }}>
+          <PhotoPlate src={srcA} tint={C.a} seed={1} durationInFrames={durationInFrames} />
+        </div>
       </AbsoluteFill>
       <AbsoluteFill style={{ clipPath: clipB }}>
-        <PhotoPlate src={srcB} tint={C.b} seed={2} durationInFrames={durationInFrames} />
+        <div style={{ ...halfStyle, right: 0 }}>
+          <PhotoPlate src={srcB} tint={C.b} seed={2} durationInFrames={durationInFrames} />
+        </div>
       </AbsoluteFill>
       {/* the seam itself — a thin blade of light */}
       <AbsoluteFill
@@ -133,7 +155,7 @@ export const ScoreChip: React.FC<{
   const frame = useCurrentFrame();
   const { height, width } = useVideoConfig();
   const pop = interpolate(frame % 1000, [0, 6, 14], [1, 1.16, 1], { extrapolateRight: 'clamp' });
-  const s = width / 1080;
+  const s = uiScale(width, height);
 
   const side = (name: string, score: number, colour: string, isPulsing: boolean) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 * s }}>
@@ -170,7 +192,7 @@ export const ScoreChip: React.FC<{
     <div
       style={{
         position: 'absolute',
-        top: height * SAFE.topPct * 0.42,
+        top: 28 * s,
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
@@ -201,8 +223,8 @@ export const EntityLabel: React.FC<{ name: string; colour: string; size?: number
   colour,
   size = 28,
 }) => {
-  const { width } = useVideoConfig();
-  const s = width / 1080;
+  const { width, height } = useVideoConfig();
+  const s = uiScale(width, height);
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', maxWidth: '100%' }}>
       <span
@@ -256,8 +278,8 @@ export const Eyebrow: React.FC<{ children: React.ReactNode; colour?: string }> =
   children,
   colour = C.muted,
 }) => {
-  const { width } = useVideoConfig();
-  const s = width / 1080;
+  const { width, height } = useVideoConfig();
+  const s = uiScale(width, height);
   return (
     <div
       style={{
@@ -326,7 +348,7 @@ export const CountUp: React.FC<{
  */
 export const CaptionBand: React.FC<{ text?: string | null }> = ({ text }) => {
   const { height, width } = useVideoConfig();
-  const s = width / 1080;
+  const s = uiScale(width, height);
   if (!text) return null;
   return (
     <div
@@ -356,7 +378,7 @@ export const CaptionBand: React.FC<{ text?: string | null }> = ({ text }) => {
 /** Persistent channel mark — small, bottom, out of the caption's way. */
 export const Wordmark: React.FC = () => {
   const { height, width } = useVideoConfig();
-  const s = width / 1080;
+  const s = uiScale(width, height);
   return (
     <div
       style={{
