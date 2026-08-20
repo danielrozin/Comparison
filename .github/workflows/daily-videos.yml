@@ -1,147 +1,173 @@
 name: Daily Video Pipeline
 
+# Produces V3 "Head to Head" comparison videos: Wikimedia photography, a
+# Claude-written script, ElevenLabs narration, a running scoreboard, and the
+# data date stamped on every frame. Renders a landscape cut for YouTube and the
+# on-page player plus a vertical cut for Shorts, then uploads and commits the
+# web assets.
+#
+# The DAN-1198 gate that forced every scheduled run to --dry-run is gone: it
+# existed because renders were silent without ELEVENLABS_API_KEY, and that
+# secret is now set. The pipeline itself refuses to produce a silent video, so
+# the guarantee is enforced where it belongs rather than by disabling uploads.
+
 on:
   schedule:
-    # Runs every day at 08:00 Jerusalem time (IDT = UTC+3, so 05:00 UTC)
+    # 08:00 Jerusalem (IDT = UTC+3)
     - cron: "0 5 * * *"
-  # Allow manual trigger from GitHub UI
   workflow_dispatch:
     inputs:
       count:
-        description: "Number of videos to generate"
+        description: "How many videos to produce"
         required: false
         default: "3"
       slugs:
-        description: "Space/comma-separated slugs to publish explicitly (overrides count; e.g. 'usa-vs-china ww1-vs-ww2'). Leave blank for auto-pick."
+        description: "Explicit slugs (space or comma separated). Overrides count."
         required: false
         default: ""
+      mode:
+        description: "new = pages with no video; backfill = replace pre-V3 videos"
+        required: false
+        default: "new"
+        type: choice
+        options: ["new", "backfill"]
+      privacy:
+        description: "YouTube privacy for this run"
+        required: false
+        default: "public"
+        type: choice
+        options: ["public", "unlisted", "private"]
       dry_run:
-        description: "Dry run (render only, no upload)"
+        description: "Render only, no upload"
         required: false
         default: "false"
         type: choice
         options: ["false", "true"]
-      renderer:
-        description: "Renderer (hyperframes is the default; remotion remains as fallback)"
-        required: false
-        default: "hyperframes"
-        type: choice
-        options: ["hyperframes", "remotion"]
+
+concurrency:
+  # Two runs would fight over video-uploads.json and the same git branch.
+  group: daily-videos
+  cancel-in-progress: false
 
 jobs:
-  generate-and-upload:
+  check-auth:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-
-    permissions:
-      contents: write # Needed to commit updated video-uploads.json
-
+    timeout-minutes: 5
+    outputs:
+      ok: ${{ steps.probe.outputs.ok }}
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
-
-      - name: Install system dependencies (Chromium + ffmpeg)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            ffmpeg \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libxkbcommon0 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxfixes3 \
-            libxrandr2 \
-            libgbm1 \
-            libpango-1.0-0 \
-            libcairo2 \
-            libasound2t64 \
-            fonts-liberation \
-            libappindicator3-1 \
-            libnspr4 \
-            xdg-utils
-
-      - name: Install npm dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Run daily video pipeline
+      - run: npm install --no-audit --no-fund
+      - name: Probe YouTube credentials
+        id: probe
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          # Cheap read-only call. A dead refresh token is worth discovering in
+          # 30 seconds rather than after an hour of rendering.
+          if node scripts/daily-video-pipeline-v3.mjs --check-auth; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::YouTube auth failed — the run will render but not upload."
+          fi
+
+  produce:
+    needs: check-auth
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install ffmpeg and Chromium libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ffmpeg libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+            libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 \
+            libgbm1 libpango-1.0-0 libcairo2 libasound2t64 fonts-liberation \
+            libappindicator3-1 libnspr4 xdg-utils
+
+      - run: npm install --no-audit --no-fund
+
+      - name: Produce videos
+        env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
-          ELEVENLABS_MODEL_ID: ${{ secrets.ELEVENLABS_MODEL_ID }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          HIGGSFIELD_API_KEY_ID: ${{ secrets.HIGGSFIELD_API_KEY_ID }}
+          HIGGSFIELD_API_KEY_SECRET: ${{ secrets.HIGGSFIELD_API_KEY_SECRET }}
         run: |
           COUNT="${{ github.event.inputs.count || '3' }}"
-          SLUGS="${{ github.event.inputs.slugs || '' }}"
-          DRY_RUN_FLAG=""
-          # DAN-1198 (interim brand-quality gate): force dry-run on the daily
-          # scheduled cron until ELEVENLABS_API_KEY is provisioned (DAN-1197).
-          # Without narration the renders are silent + caption-less, which we
-          # must not auto-upload to the brand's public YouTube channel.
-          # Manual workflow_dispatch still honors the dry_run input so operators
-          # can test-render (or test-upload once the secret lands).
-          # REVERT when DAN-1197 lands: delete this schedule branch so cron
-          # uploads again (or simply leave it and re-render slugs manually).
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            DRY_RUN_FLAG="--dry-run"
-            echo "::notice::DAN-1198 — scheduled run forced to dry-run (no YouTube upload) until ELEVENLABS_API_KEY is provisioned (DAN-1197)."
-          elif [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            DRY_RUN_FLAG="--dry-run"
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          PRIVACY="${{ github.event.inputs.privacy || 'public' }}"
+
+          FLAGS=""
+          # Upload only when auth actually passed; otherwise fall back to a
+          # render-only run rather than failing the whole job.
+          if [ "${{ needs.check-auth.outputs.ok }}" != "true" ] || \
+             [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            FLAGS="--dry-run"
+            echo "::notice::Running render-only (no upload)."
           fi
-          RENDERER="${{ github.event.inputs.renderer || 'hyperframes' }}"
-          if [ "$RENDERER" = "remotion" ]; then
-            SCRIPT="scripts/daily-video-pipeline.mjs"
-            echo "Using Remotion renderer (fallback)"
-          else
-            SCRIPT="scripts/daily-video-pipeline-hf.mjs"
-            echo "Using HyperFrames renderer (default — Data Drift style + ElevenLabs v3 narration)"
-          fi
-          # Normalize commas to spaces so either separator works.
-          SLUGS="$(echo "$SLUGS" | tr ',' ' ')"
-          if [ -n "$SLUGS" ]; then
-            echo "Explicit slug mode: $SLUGS"
-            FAILED=""
-            for s in $SLUGS; do
-              echo "::group::Publishing $s"
-              if node "$SCRIPT" --slug "$s" $DRY_RUN_FLAG; then
-                echo "OK: $s"
-              else
-                echo "FAILED: $s"
-                FAILED="$FAILED $s"
-              fi
-              echo "::endgroup::"
-            done
-            if [ -n "$FAILED" ]; then
-              echo "::warning::Some slugs failed:$FAILED"
-            fi
-          else
-            node "$SCRIPT" --count $COUNT $DRY_RUN_FLAG
+          if [ "${{ github.event.inputs.mode }}" = "backfill" ]; then
+            FLAGS="$FLAGS --backfill"
           fi
 
-      - name: Commit and push updated video upload log
+          if [ -n "$SLUGS" ]; then
+            FAILED=""
+            for s in $SLUGS; do
+              echo "::group::$s"
+              node scripts/daily-video-pipeline-v3.mjs --slug "$s" --privacy "$PRIVACY" $FLAGS \
+                || FAILED="$FAILED $s"
+              echo "::endgroup::"
+            done
+            [ -n "$FAILED" ] && echo "::warning::Failed:$FAILED"
+          else
+            node scripts/daily-video-pipeline-v3.mjs --count "$COUNT" --privacy "$PRIVACY" $FLAGS
+          fi
+
+      - name: Commit video assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/video-uploads.json remotion/data/
+          # Web-sized page assets and the upload log only. Masters under
+          # "Videos For Website/" and the downloaded source photography in
+          # public/video-assets/ are gitignored.
+          git add src/data/video-uploads.json public/videos remotion/v3/data || true
           if git diff --staged --quiet; then
-            echo "No new uploads to commit"
+            echo "Nothing new to commit"
           else
-            git commit -m "chore: daily video upload $(date -u +%Y-%m-%d)
-
-            Auto-generated by GitHub Actions daily-videos workflow."
+            git commit -m "chore(video): daily V3 videos $(date -u +%Y-%m-%d)"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
             git push
           fi
+
+      - name: Upload masters as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-masters
+          path: Videos For Website/v3/*.mp4
+          retention-days: 7
+          if-no-files-found: ignore
