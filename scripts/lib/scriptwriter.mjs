@@ -12,6 +12,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk';
+import './env.mjs';
 
 const MODEL = 'claude-opus-5';
 
@@ -191,4 +192,51 @@ export function templateScript(data, rounds) {
     youtubeTitle: `${a} vs ${b}: Full Comparison`,
     youtubeDescription: data.shortAnswer || `${a} vs ${b} compared across ${rounds.length} categories.`,
   };
+}
+
+/**
+ * Write a photographic scene description for an entity that has no usable
+ * photograph, for Higgsfield Soul to render.
+ *
+ * Two failures drove this. Soul has no negative-prompt parameter, so a
+ * "Negative: no collage, no grid, no borders" tail is read as a *positive*
+ * instruction and returns a moodboard with a colour-palette strip. And an
+ * abstract framing ("a photograph representing Japan") invites a conceptual
+ * montage rather than a picture. The fix for both is the same: hand Soul one
+ * concrete scene that a real photographer could have shot, and nothing else.
+ */
+export async function writeImagePrompt(entity, category = '') {
+  const fallback = `Wide cinematic night photograph of ${entity}, single continuous frame, dramatic low-key lighting, deep shadows, cool colour grade, volumetric haze, shot on 85mm, vertical composition with clean empty space in the lower third.`;
+
+  const anthropic = client();
+  if (!anthropic) return fallback;
+
+  try {
+    const res = await anthropic.messages.create({
+      model: MODEL,
+      max_tokens: 700,
+      thinking: { type: 'adaptive' },
+      output_config: { effort: 'low' },
+      system: `You write prompts for a text-to-image model that has no negative-prompt support.
+
+Rules:
+- Describe ONE concrete scene a real photographer could have shot. Not a concept, not a montage.
+- Name a specific place, object or moment. For a country, pick its single most recognisable skyline or landmark and name it. For an abstract idea, pick one physical scene that embodies it.
+- Never use the words collage, grid, panel, border, split, diptych, montage, moodboard, or the word "no" - this model reads every word as something to draw.
+- Never ask for text, captions, labels or logos.
+- Vertical 9:16 framing, subject in the upper two thirds, lower third clean and dark so captions can sit there.
+- Cinematic, low-key, deep shadows, cool grade. One sentence to three. Output the prompt only.`,
+      messages: [
+        {
+          role: 'user',
+          content: `Entity: ${entity}${category ? `\nCategory: ${category}` : ''}`,
+        },
+      ],
+    });
+    const text = res.content.find((b) => b.type === 'text')?.text?.trim();
+    return text && text.length > 30 ? text.replace(/\s+/g, ' ') : fallback;
+  } catch (err) {
+    console.warn(`    [imagery] scene prompt failed for "${entity}": ${err.message}`);
+    return fallback;
+  }
 }

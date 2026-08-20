@@ -357,11 +357,9 @@ async function generativeOrWeak(entity, cat, allowGenerative, weak, asResult) {
   try {
     const { hasCredentials, soulImage } = await import('./higgsfield.mjs');
     if (!hasCredentials()) return weakResult();
-    const url = await soulImage({
-      prompt: generativePrompt(entity, cat),
-      aspectRatio: '9:16',
-      resolution: '2K',
-    });
+    const { writeImagePrompt } = await import('./scriptwriter.mjs');
+    const scene = await writeImagePrompt(entity, cat);
+    const url = await soulImage({ prompt: scene, aspectRatio: '9:16', resolution: '2K' });
     if (!url) return weakResult();
     return {
       url,
@@ -380,15 +378,28 @@ async function generativeOrWeak(entity, cat, allowGenerative, weak, asResult) {
   }
 }
 
-/** Prompt used when nothing photographic exists (abstract comparisons). */
+/**
+ * Prompt used when nothing photographic exists (countries, concepts, crypto).
+ *
+ * Two rules are load-bearing, both learned from a failed generation:
+ * name exactly ONE subject, and forbid panels explicitly. Asking Soul for
+ * "Tokyo skyline with Mount Fuji on the horizon" returned a stacked diptych —
+ * two photographs in one file — because the prompt described two subjects.
+ * A diptych is unusable as a full-bleed plate: the Ken Burns crop lands on
+ * the seam between the panels.
+ */
 export function generativePrompt(entity, category = '') {
   return [
     `Editorial cinematic photograph representing "${entity}".`,
     category ? `Subject area: ${category}.` : '',
-    'Single clear subject, shallow depth of field, dramatic low-key lighting,',
-    'deep near-black background, cool colour grade with subtle purple and cyan rim light,',
-    'volumetric haze, shot on 85mm, high detail, no text, no logos, no watermarks,',
-    'vertical composition with the subject in the upper two thirds so the lower third stays clean.',
+    'ONE single subject filling one continuous frame.',
+    'Shallow depth of field, dramatic low-key lighting, deep near-black background,',
+    'cool colour grade with subtle purple and cyan rim light, volumetric haze,',
+    'shot on 85mm, high detail.',
+    'Vertical composition with the subject in the upper two thirds so the lower third stays clean.',
+    'Negative: no diptych, no triptych, no split screen, no collage, no grid,',
+    'no multiple panels, no borders, no frames within the image,',
+    'no text, no captions, no logos, no watermarks, no people looking at camera.',
   ]
     .filter(Boolean)
     .join(' ');
