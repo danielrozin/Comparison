@@ -16,6 +16,26 @@ import './env.mjs';
 
 const MODEL = 'claude-opus-5';
 
+/** Claude Opus 5 list price, USD per token. */
+const PRICE = { input: 5 / 1_000_000, output: 25 / 1_000_000 };
+
+/**
+ * Token spend accumulated across this process, so the pipeline can report what
+ * a video actually cost instead of estimating it.
+ */
+export const usage = { inputTokens: 0, outputTokens: 0, calls: 0 };
+
+function record(res) {
+  if (!res?.usage) return;
+  usage.calls += 1;
+  usage.inputTokens += res.usage.input_tokens ?? 0;
+  usage.outputTokens += res.usage.output_tokens ?? 0;
+}
+
+export function usageCostUsd() {
+  return usage.inputTokens * PRICE.input + usage.outputTokens * PRICE.output;
+}
+
 /** Word budgets per beat — these are read aloud, and the band clamps at 2 lines. */
 const BUDGET = {
   hook: 14,
@@ -131,6 +151,7 @@ Write:
       messages: [{ role: 'user', content: prompt }],
     });
 
+    record(res);
     const text = res.content.find((b) => b.type === 'text')?.text;
     if (!text) throw new Error('no text block in response');
     const parsed = JSON.parse(text);
@@ -233,6 +254,7 @@ Rules:
         },
       ],
     });
+    record(res);
     const text = res.content.find((b) => b.type === 'text')?.text?.trim();
     return text && text.length > 30 ? text.replace(/\s+/g, ' ') : fallback;
   } catch (err) {

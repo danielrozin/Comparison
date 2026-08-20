@@ -63,16 +63,16 @@
     "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   "lines": {
-    "hook": "Between them, 1,737 career goals. Two men rewrote what a career could be.",
-    "tape": "One was built by nature. The other was built by obsession. Both broke football.",
+    "hook": "Between them, 1,737 goals. One argument that still refuses to die.",
+    "tape": "One built the perfect machine. The other was just born different.",
     "rounds": [
-      "Eight times voted the best alive. Nobody else in history has five.",
-      "899 goals. More than any human being who has ever played the game.",
-      "369 assists. He didn't just score the goals, he handed out more than anyone.",
-      "Five European Cups. Ronaldo owns the biggest nights football has to offer.",
-      "One trophy Ronaldo never got. Messi lifted it and closed the argument."
+      "Eight times voted the best alive. Nobody else has ever reached six.",
+      "899 goals. More than any human being who has ever played football.",
+      "369 assists. Messi didn't just score the goals, he handed them out.",
+      "Five European Cups. Ronaldo owns the biggest nights the sport has.",
+      "One World Cup, and it settles the only trophy Ronaldo never got."
     ],
-    "verdict": "Messi takes it three rounds to two. Want relentless goals and big-night nerve? Ronaldo."
+    "verdict": "Messi takes it 3-2. Pick Ronaldo if you rate longevity and pure goalscoring above all."
   },
   "audio": {
     "cold": "video-assets/messi-vs-ronaldo/audio/cold.mp3",
@@ -87,20 +87,21 @@
     "verdict": "video-assets/messi-vs-ronaldo/audio/verdict.mp3"
   },
   "timings": {
-    "cold": 221,
-    "tape": 177,
+    "cold": 201,
+    "tape": 150,
     "rounds": [
-      150,
+      161,
       158,
-      179,
-      166,
-      173
+      190,
+      158,
+      150
     ],
-    "verdict": 208,
+    "verdict": 198,
     "leadInFrames": 9
   },
-  "youtubeTitle": "Messi vs Ronaldo: The Numbers That Finally Settle It",
-  "youtubeDescription": "A head-to-head breakdown of Lionel Messi and Cristiano Ronaldo across five career stats: Ballon d'Or awards, career goals, assists, Champions League titles and the World Cup. Messi's 8 Ballons d'Or and 2022 World Cup against Ronaldo's 899 goals and five European Cups.",
+  "youtubeTitle": "Messi vs Ronaldo: The Numbers Finally Pick a Winner",
+  "youtubeDescription": "A head-to-head breakdown of Lionel Messi and Cristiano Ronaldo across Ballon d'Or awards, career goals, assists, Champions League titles and the World Cup. Ronaldo leads on goals and European Cups, Messi leads on individual awards, creation and the one trophy that decided it. Full stat-by-stat comparison and a verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/messi-vs-ronaldo",
+  "asOf": "August 2026",
   "narrationSrc": null,
   "musicSrc": null,
   "attribution": [

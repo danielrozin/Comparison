@@ -10,6 +10,7 @@ import {
 } from 'remotion';
 import { C, FONT_BODY, FONT_DISPLAY, FPS, SAFE, topSafe, uiScale } from './theme';
 import {
+  AsOfNote,
   CaptionBand,
   CountUp,
   EntityLabel,
@@ -75,6 +76,12 @@ export type ComparisonV3Props = {
     leadInFrames?: number;
   } | null;
   musicSrc?: string | null;
+  /**
+   * Month/year the statistics were compiled, e.g. "August 2026". Stamped on
+   * every frame so a viewer finding this in six months knows the vintage of
+   * the numbers rather than assuming they are current.
+   */
+  asOf?: string | null;
 };
 
 /* ------------------------------------------------------------------ */
@@ -208,7 +215,8 @@ const ColdOpen: React.FC<{
   caption?: string;
   duration: number;
   audioSrc?: string | null;
-}> = ({ entityA, entityB, imageA, imageB, caption, duration, audioSrc }) => {
+  asOf?: string | null;
+}> = ({ entityA, entityB, imageA, imageB, caption, duration, audioSrc, asOf }) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
   const s = uiScale(width, height);
@@ -292,7 +300,7 @@ const ColdOpen: React.FC<{
       <div style={{ opacity: content }}>
         <CaptionBand text={caption} />
       </div>
-      <Wordmark />
+      <Wordmark asOf={asOf} />
       <SceneAudio src={audioSrc} />
     </AbsoluteFill>
   );
@@ -307,7 +315,8 @@ const TaleOfTheTape: React.FC<{
   caption?: string;
   duration: number;
   audioSrc?: string | null;
-}> = ({ entityA, entityB, imageA, imageB, headline, caption, duration, audioSrc }) => {
+  asOf?: string | null;
+}> = ({ entityA, entityB, imageA, imageB, headline, caption, duration, audioSrc, asOf }) => {
   const { width, height } = useVideoConfig();
   const s = uiScale(width, height);
   const opacity = useSceneFade(duration);
@@ -369,7 +378,7 @@ const TaleOfTheTape: React.FC<{
       <div style={{ opacity: content }}>
         <CaptionBand text={caption} />
       </div>
-      <Wordmark />
+      <Wordmark asOf={asOf} />
       <SceneAudio src={audioSrc} />
     </AbsoluteFill>
   );
@@ -387,7 +396,8 @@ const Round: React.FC<{
   caption?: string;
   duration: number;
   audioSrc?: string | null;
-}> = ({ index, stat, entityA, entityB, imageA, imageB, scoreA, scoreB, caption, duration, audioSrc }) => {
+  asOf?: string | null;
+}> = ({ index, stat, entityA, entityB, imageA, imageB, scoreA, scoreB, caption, duration, audioSrc, asOf }) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
   const s = uiScale(width, height);
@@ -519,7 +529,7 @@ const Round: React.FC<{
       <div style={{ opacity: content }}>
         <CaptionBand text={caption} />
       </div>
-      <Wordmark />
+      <Wordmark asOf={asOf} />
       <SceneAudio src={audioSrc} />
     </AbsoluteFill>
   );
@@ -535,7 +545,8 @@ const VerdictScene: React.FC<{
   caption?: string;
   duration: number;
   audioSrc?: string | null;
-}> = ({ entityA, entityB, imageA, imageB, scoreA, scoreB, caption, duration, audioSrc }) => {
+  asOf?: string | null;
+}> = ({ entityA, entityB, imageA, imageB, scoreA, scoreB, caption, duration, audioSrc, asOf }) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
   const s = uiScale(width, height);
@@ -553,9 +564,24 @@ const VerdictScene: React.FC<{
     extrapolateRight: 'clamp',
   });
 
+  // Same constraint as the rounds: a single 2:3 portrait cannot hero a 16:9
+  // frame without cropping to a close-up of the winner's mouth. Landscape
+  // shows the split, leaned toward the winner, which still reads as "this one
+  // won" because the name, score and colour all say so.
+  const isLandscape = width > height;
+
   return (
     <AbsoluteFill style={{ opacity }}>
-      <PhotoPlate src={winnerImage?.url} tint={winnerTint} seed={9} durationInFrames={duration} />
+      {isLandscape ? (
+        <SplitPlate
+          srcA={imageA?.url}
+          srcB={imageB?.url}
+          durationInFrames={duration}
+          lean={tie ? 0 : scoreA > scoreB ? -0.7 : 0.7}
+        />
+      ) : (
+        <PhotoPlate src={winnerImage?.url} tint={winnerTint} seed={9} durationInFrames={duration} />
+      )}
       <AbsoluteFill
         style={{
           justifyContent: 'center',
@@ -629,6 +655,7 @@ const VerdictScene: React.FC<{
         >
           FULL BREAKDOWN → AVERSUSB.NET
         </div>
+        <AsOfNote asOf={asOf} />
       </AbsoluteFill>
       <div style={{ opacity: content }}>
         <CaptionBand text={caption} />
@@ -672,6 +699,7 @@ export const ComparisonV3: React.FC<ComparisonV3Props> = ({
   audio = null,
   timings = null,
   musicSrc = null,
+  asOf = null,
 }) => {
   const rounds = stats.slice(0, MAX_ROUNDS);
   const durations = resolveDurations(rounds.length, timings);
@@ -700,6 +728,7 @@ export const ComparisonV3: React.FC<ComparisonV3Props> = ({
           caption={lines.hook}
           duration={durations.cold}
           audioSrc={audio?.cold}
+          asOf={asOf}
         />
       </Sequence>
 
@@ -713,6 +742,7 @@ export const ComparisonV3: React.FC<ComparisonV3Props> = ({
           caption={lines.tape}
           duration={durations.tape}
           audioSrc={audio?.tape}
+          asOf={asOf}
         />
       </Sequence>
 
@@ -730,6 +760,7 @@ export const ComparisonV3: React.FC<ComparisonV3Props> = ({
             caption={lines.rounds?.[i]}
             duration={durations.rounds[i]}
             audioSrc={audio?.rounds?.[i]}
+            asOf={asOf}
           />
         </Sequence>
       ))}
@@ -745,6 +776,7 @@ export const ComparisonV3: React.FC<ComparisonV3Props> = ({
           caption={lines.verdict}
           duration={durations.verdict}
           audioSrc={audio?.verdict}
+          asOf={asOf}
         />
       </Sequence>
 

@@ -38,6 +38,12 @@ const MIN_SECONDS = {
   verdict: 6.5,
 };
 
+/**
+ * Characters billed to ElevenLabs this process. Cached beats cost nothing, so
+ * this counts only what was actually synthesised.
+ */
+export const usage = { characters: 0, cachedCharacters: 0, beats: 0 };
+
 export function hasCredentials() {
   return Boolean(process.env.ELEVENLABS_API_KEY);
 }
@@ -94,6 +100,8 @@ export async function narrateComparison(lines, { outDir, publicPrefix, voiceId }
       const cachedSeconds = audioDuration(file);
       if (cachedSeconds) {
         const held = Math.max(MIN_SECONDS[beat.kind], cachedSeconds + LEAD_IN + TAIL_OUT);
+        usage.cachedCharacters += beat.text.length;
+        usage.beats += 1;
         results.push({ ...beat, file, seconds: cachedSeconds, held, modelUsed: 'cached', voiceId });
         console.log(`    [tts] ${beat.id.padEnd(9)} ${cachedSeconds.toFixed(2)}s speech -> ${held.toFixed(2)}s scene (cached)`);
         continue;
@@ -114,6 +122,8 @@ export async function narrateComparison(lines, { outDir, publicPrefix, voiceId }
       return null;
     }
     const held = Math.max(MIN_SECONDS[beat.kind], seconds + LEAD_IN + TAIL_OUT);
+    usage.characters += beat.text.length;
+    usage.beats += 1;
     results.push({ ...beat, file, seconds, held, modelUsed: meta.modelUsed, voiceId: meta.voiceId });
     console.log(`    [tts] ${beat.id.padEnd(9)} ${seconds.toFixed(2)}s speech -> ${held.toFixed(2)}s scene`);
   }

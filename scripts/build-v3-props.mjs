@@ -18,7 +18,8 @@ import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { resolveComparisonImagery, attributionLines } from './lib/imagery.mjs';
 import { writeScript } from './lib/scriptwriter.mjs';
-import { narrateComparison } from './lib/narration.mjs';
+import { narrateComparison, usage as ttsUsage } from './lib/narration.mjs';
+import { usage as claudeUsage, usageCostUsd } from './lib/scriptwriter.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -137,6 +138,13 @@ if (narration) {
   console.log('  narration: none — silent render with default timings');
 }
 
+/**
+ * The date the figures in this video were compiled. Every stat here is a
+ * snapshot — career goals, GDP, prices and market share all move — so the
+ * video says when it was true rather than implying it is true forever.
+ */
+const asOf = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
 const props = {
   title: data.title || `${data.entityA} vs ${data.entityB}`,
   entityA: data.entityA,
@@ -152,7 +160,12 @@ const props = {
   audio: narration?.audio ?? null,
   timings: narration?.timings ?? null,
   youtubeTitle: script.youtubeTitle,
-  youtubeDescription: script.youtubeDescription,
+  youtubeDescription: [
+    script.youtubeDescription,
+    '',
+    `Figures accurate as of ${asOf}. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/${slug}`,
+  ].join('\n'),
+  asOf,
   narrationSrc: null,
   musicSrc: null,
   attribution: attributionLines({ a: imagery.a, b: imagery.b }),
@@ -166,3 +179,18 @@ if (props.attribution.length) {
   console.log('Attribution:');
   props.attribution.forEach((l) => console.log(`  ${l}`));
 }
+
+// --- what this video actually cost -----------------------------------------
+const claudeUsd = usageCostUsd();
+const billedChars = ttsUsage.characters;
+console.log('\nCost');
+console.log(
+  `  Claude       ${claudeUsage.calls} calls · ${claudeUsage.inputTokens.toLocaleString()} in / ${claudeUsage.outputTokens.toLocaleString()} out tokens · $${claudeUsd.toFixed(4)}`
+);
+console.log(
+  `  ElevenLabs   ${billedChars.toLocaleString()} chars billed` +
+    (ttsUsage.cachedCharacters ? ` (${ttsUsage.cachedCharacters.toLocaleString()} served from cache)` : '')
+);
+const genImages = [imagery.a, imagery.b].filter((i) => i?.tier === 2).length;
+console.log(`  Higgsfield   ${genImages} generated still(s) · ${(genImages * 0.12).toFixed(2)} credits`);
+console.log(`  Figures as of ${asOf}`);

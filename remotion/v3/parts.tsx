@@ -375,8 +375,16 @@ export const CaptionBand: React.FC<{ text?: string | null }> = ({ text }) => {
   );
 };
 
-/** Persistent channel mark — small, bottom, out of the caption's way. */
-export const Wordmark: React.FC = () => {
+/**
+ * Persistent channel mark plus the data date.
+ *
+ * Every number in these videos is a snapshot. "899 career goals" is true the
+ * week it is captured and wrong the week after, and a viewer who finds the
+ * video six months later has no way to tell which. Stamping the date on every
+ * frame makes the claim honest without the narration having to hedge, and it
+ * is the difference between a figure being outdated and a figure being wrong.
+ */
+export const Wordmark: React.FC<{ asOf?: string | null }> = ({ asOf }) => {
   const { height, width } = useVideoConfig();
   const s = uiScale(width, height);
   return (
@@ -392,9 +400,41 @@ export const Wordmark: React.FC = () => {
         fontWeight: 800,
         letterSpacing: 6 * s,
         color: 'rgba(255,255,255,0.42)',
+        whiteSpace: 'nowrap',
       }}
     >
       AVERSUSB.NET
+      {asOf ? (
+        <span style={{ fontWeight: 600, letterSpacing: 3 * s, color: 'rgba(255,255,255,0.34)' }}>
+          {`  \u00b7  FIGURES AS OF ${asOf.toUpperCase()}`}
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
+/**
+ * Explicit dated disclaimer for the verdict, where a viewer decides whether to
+ * trust the result. Says plainly that the numbers move.
+ */
+export const AsOfNote: React.FC<{ asOf?: string | null }> = ({ asOf }) => {
+  const { width, height } = useVideoConfig();
+  const s = uiScale(width, height);
+  if (!asOf) return null;
+  return (
+    <div
+      style={{
+        marginTop: 22 * s,
+        fontFamily: FONT_BODY,
+        fontSize: 23 * s,
+        fontWeight: 600,
+        letterSpacing: 1.4 * s,
+        color: 'rgba(255,255,255,0.62)',
+        textAlign: 'center',
+        textShadow: '0 2px 14px rgba(0,0,0,0.9)',
+      }}
+    >
+      {`Figures accurate as of ${asOf}. Stats change \u2014 check the page for current numbers.`}
     </div>
   );
 };
