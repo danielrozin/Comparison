@@ -42,12 +42,15 @@ const oauth2Client = new google.auth.OAuth2(
 
 const authUrl = oauth2Client.generateAuthUrl({
   access_type: "offline",
-  // youtube.readonly is added alongside upload so the pipeline's auth probe can
-  // also report which channel the token belongs to. Uploading alone would work
-  // without it, but a probe that cannot name the channel is easy to misread.
+  // upload alone is not enough. readonly lets the auth probe name the channel,
+  // and force-ssl is required for videos.update - without it, changing a
+  // video's privacy or fixing its title returns 403
+  // ACCESS_TOKEN_SCOPE_INSUFFICIENT, which is only discoverable after the
+  // grant already exists.
   scope: [
     "https://www.googleapis.com/auth/youtube.upload",
     "https://www.googleapis.com/auth/youtube.readonly",
+    "https://www.googleapis.com/auth/youtube.force-ssl",
   ],
   prompt: "consent",
 });
