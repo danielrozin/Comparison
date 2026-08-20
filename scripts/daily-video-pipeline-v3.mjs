@@ -248,17 +248,26 @@ async function produce(slug, log) {
   }
 
   // 2. render masters
+  //
+  // `--props` is not optional. Without it every render silently falls back to
+  // the composition's defaultProps — which are the messi-vs-ronaldo demo — so
+  // the pipeline produces the same video under every slug's filename. It only
+  // showed up in CI because that box had no cached messi assets to 404 on.
+  const propsArg = `--props=${propsFile}`;
+
   const landscapeMaster = path.join(MASTER_DIR, `${slug}-landscape.mp4`);
   console.log('  rendering landscape...');
   run('npx', ['remotion', 'render', 'remotion/index.tsx', 'ComparisonV3Landscape',
-              landscapeMaster, '--public-dir=public', '--log=error', '--crf=20'], { quiet: true });
+              landscapeMaster, propsArg, '--public-dir=public', '--log=error', '--crf=20'],
+      { quiet: true });
 
   let verticalMaster = null;
   if (verticalToo) {
     verticalMaster = path.join(MASTER_DIR, `${slug}-vertical.mp4`);
     console.log('  rendering vertical...');
     run('npx', ['remotion', 'render', 'remotion/index.tsx', 'ComparisonV3',
-                verticalMaster, '--public-dir=public', '--log=error', '--crf=20'], { quiet: true });
+                verticalMaster, propsArg, '--public-dir=public', '--log=error', '--crf=20'],
+        { quiet: true });
   }
 
   // 3. web copies for the comparison page (its player is a 16:9 box)
