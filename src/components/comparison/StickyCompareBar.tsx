@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { scrollPillIntoView } from "@/lib/utils/scroll-pill-into-view";
 
 interface StickyCompareBarProps {
   entityA: string;
@@ -68,13 +69,11 @@ export function StickyCompareBar({ entityA, entityB, sections, winner }: StickyC
     return () => observer.disconnect();
   }, [sections]);
 
-  // Auto-scroll active section link into view in the horizontal nav
+  // Auto-scroll active section link into view in the horizontal nav.
+  // Horizontal only — scrollIntoView here used to drag the whole page upward.
   useEffect(() => {
-    if (!activeId || !navRef.current) return;
-    const activeLink = linkRefs.current.get(activeId);
-    if (activeLink) {
-      activeLink.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-    }
+    if (!activeId) return;
+    scrollPillIntoView(navRef.current, linkRefs.current.get(activeId));
   }, [activeId]);
 
   if (!entered) return null;

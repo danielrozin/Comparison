@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { scrollPillIntoView } from "@/lib/utils/scroll-pill-into-view";
 
 interface Section {
   id: string;
@@ -100,13 +101,11 @@ export function QuickSectionNav({ winnerName }: { winnerName?: string }) {
     return () => observer.disconnect();
   }, [visible]);
 
-  // Auto-scroll active pill into view in the horizontal nav
+  // Auto-scroll active pill into view in the horizontal nav.
+  // Horizontal only — scrollIntoView here used to drag the whole page upward.
   useEffect(() => {
-    if (!activeId || !scrollContainerRef.current) return;
-    const activePill = pillRefs.current.get(activeId);
-    if (activePill) {
-      activePill.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
-    }
+    if (!activeId) return;
+    scrollPillIntoView(scrollContainerRef.current, pillRefs.current.get(activeId));
   }, [activeId]);
 
   // Track horizontal scroll position to show/hide left-edge fade
