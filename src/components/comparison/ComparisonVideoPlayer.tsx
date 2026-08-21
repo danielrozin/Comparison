@@ -22,12 +22,24 @@ function extractYouTubeId(url: string): string | null {
 
 export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: ComparisonVideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [videoSource, setVideoSource] = useState<"mp4" | "youtube" | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const videoSrc = `/videos/${slug}.mp4`;
   const ytId = youtubeVideoId ? extractYouTubeId(youtubeVideoId) : null;
+
+  // A YouTube id is known at render time — there is nothing to look up, so seed
+  // the state with it instead of waiting for an effect. Previously this started
+  // null and was filled in by an effect that only ran after `isVisible` flipped,
+  // which left one commit where `isVisible && !videoSource` was true and the
+  // component returned null, unmounting the very element its observer was
+  // watching. The player never appeared on any page.
+  const [videoSource, setVideoSource] = useState<"mp4" | "youtube" | null>(
+    ytId ? "youtube" : null
+  );
+  // Only the self-hosted path needs an async probe; track whether it finished so
+  // a pending request is never mistaken for "no video here".
+  const [sourceChecked, setSourceChecked] = useState<boolean>(Boolean(ytId));
 
   // Lazy loading: only render when visible in viewport
   useEffect(() => {
@@ -46,25 +58,29 @@ export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: Compariso
     return () => observer.disconnect();
   }, []);
 
-  // Check which video source is available
+  // Check which video source is available. YouTube is already resolved above;
+  // this only probes for a self-hosted mp4.
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || ytId) return;
 
-    if (ytId) {
-      setVideoSource("youtube");
-      return;
-    }
-
-    // Check if self-hosted MP4 exists
+    let cancelled = false;
     fetch(videoSrc, { method: "HEAD" })
       .then((res) => {
+        if (cancelled) return;
         if (res.ok) setVideoSource("mp4");
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setSourceChecked(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [isVisible, ytId, videoSrc]);
 
-  // Don't render anything if no video source available after check
-  if (isVisible && !videoSource) return null;
+  // Render nothing only once we actually know there is no video — not while the
+  // probe is still in flight.
+  if (isVisible && sourceChecked && !videoSource) return null;
 
   return (
     <section ref={containerRef} aria-labelledby="video-player-heading" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

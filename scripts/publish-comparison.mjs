@@ -128,6 +128,18 @@ async function publish(slug) {
     return 'published';
   }
 
+  // Never write entities into a comparison that already has some. Entity slugs
+  // are not stable across sources — the DB had "kylian-mbapp" (accent mangled)
+  // where the fixture has "kylian-mbappe", so upserting by slug added a second
+  // Mbappé instead of matching the first, and the page rendered three cards for
+  // a two-way comparison. If a row has entities, the status-only path above
+  // handles it; anything else is a data-repair job, not a publish.
+  if (existing && existing._count.entities > 0) {
+    throw new Error(
+      `has ${existing._count.entities} entities but fewer than 2 — repair the row rather than publishing over it`
+    );
+  }
+
   const data = await fetchComparison(slug);
   const [a, b] = data.entities ?? [];
   if (!a || !b) throw new Error('fewer than two entities');
