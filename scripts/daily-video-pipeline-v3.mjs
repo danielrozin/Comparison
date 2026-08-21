@@ -204,6 +204,39 @@ async function fetchSlugs() {
 }
 
 /**
+ * Does this comparison actually have a page?
+ *
+ * The slug list comes from getAllMockSlugs(), but /compare/<slug> is rendered
+ * from a different source, and the two disagree badly: 73 of the 141 slugs
+ * offered have no live page. A video for one of those is worse than no video —
+ * its description, its end card and its whole reason for existing point at a
+ * 404, so it costs money to make, cannot drive the traffic it was built to
+ * drive, and sends viewers to a dead end.
+ */
+async function pageIsLive(slug) {
+  try {
+    const res = await fetch(`https://www.aversusb.net/compare/${slug}`, {
+      method: 'HEAD',
+      signal: AbortSignal.timeout(15_000),
+    });
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+}
+
+/** Filter to slugs with a live page, a few at a time. */
+async function withLivePages(slugs) {
+  const live = [];
+  for (let i = 0; i < slugs.length; i += 10) {
+    const batch = slugs.slice(i, i + 10);
+    const results = await Promise.all(batch.map(async (s) => [s, await pageIsLive(s)]));
+    results.forEach(([s, ok]) => ok && live.push(s));
+  }
+  return live;
+}
+
+/**
  * Which slugs to make videos for.
  *
  * Ordinary runs take pages that have no video yet. `--backfill` takes pages
@@ -219,18 +252,20 @@ async function pickSlugs(log) {
   const uploaded = new Set(log.uploads.filter((u) => u.youtubeVideoId).map((u) => u.slug));
   const v3Done = new Set(log.uploads.filter((u) => u.renderer === 'v3').map((u) => u.slug));
 
-  if (backfill) {
-    // Pages that already have a legacy asset on disk but no V3 render.
-    const legacy = all.filter(
-      (s) => fs.existsSync(path.join(PUBLIC_VIDEO_DIR, `${s}.mp4`)) && !v3Done.has(s)
-    );
-    console.log(`${legacy.length} pages have a pre-V3 video to replace`);
-    return legacy.slice(0, count);
-  }
+  const candidates = backfill
+    ? all.filter((s) => fs.existsSync(path.join(PUBLIC_VIDEO_DIR, `${s}.mp4`)) && !v3Done.has(s))
+    : all.filter((s) => !uploaded.has(s) && !v3Done.has(s));
 
-  const fresh = all.filter((s) => !uploaded.has(s) && !v3Done.has(s));
-  console.log(`${fresh.length} comparisons without a V3 video`);
-  return fresh.slice(0, count);
+  console.log(`${candidates.length} candidate${candidates.length === 1 ? '' : 's'} (${backfill ? 'pre-V3 video to replace' : 'no V3 video yet'})`);
+  console.log('  checking which have a live page...');
+
+  // Only check as far down the list as needed to fill the batch.
+  const live = await withLivePages(candidates.slice(0, Math.max(count * 4, 20)));
+  const skipped = Math.min(candidates.length, Math.max(count * 4, 20)) - live.length;
+  if (skipped > 0) {
+    console.log(`  skipped ${skipped} with no /compare page (nothing to send viewers to)`);
+  }
+  return live.slice(0, count);
 }
 
 // ---------------------------------------------------------------------------
@@ -249,6 +284,13 @@ function encodeForWeb(master, dest, scale) {
 
 async function produce(slug, log) {
   console.log(`\n=== ${slug} ===`);
+
+  // Guards explicit --slug runs, which bypass pickSlugs entirely.
+  if (!(await pageIsLive(slug))) {
+    throw new Error(
+      `https://www.aversusb.net/compare/${slug} is not live — refusing to publish a video that links to a 404`
+    );
+  }
   fs.mkdirSync(MASTER_DIR, { recursive: true });
   fs.mkdirSync(PUBLIC_VIDEO_DIR, { recursive: true });
 
