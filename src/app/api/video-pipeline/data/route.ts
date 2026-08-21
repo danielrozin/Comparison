@@ -59,6 +59,21 @@ export async function GET(request: NextRequest) {
         consA: a.cons ?? [],
         prosB: b.pros ?? [],
         consB: b.cons ?? [],
+        metaTitle: comparison.metadata?.metaTitle ?? null,
+        metaDescription: comparison.metadata?.metaDescription ?? null,
+        // Full entity records, so a fixture can be promoted into the database
+        // as a real published comparison without re-deriving slugs or types.
+        entities: [a, b].map((e, position) => ({
+          slug: e.slug,
+          name: e.name,
+          shortDesc: e.shortDesc ?? null,
+          imageUrl: e.imageUrl ?? null,
+          entityType: e.entityType ?? "thing",
+          position,
+          pros: e.pros ?? [],
+          cons: e.cons ?? [],
+          bestFor: (e as { bestFor?: string }).bestFor ?? null,
+        })),
       },
       {
         headers: {

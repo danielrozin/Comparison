@@ -1,0 +1,60 @@
+name: Publish Comparison
+
+# Promotes a mock fixture into the real catalogue so its /compare page renders.
+#
+# Needed because /api/video-pipeline/slugs advertises 141 slugs while only 68
+# have a published Comparison row, so the other 73 return 404 — including
+# haaland-vs-mbappe, which already has a public YouTube video pointing at it.
+#
+# Runs here rather than locally because the working DATABASE_URL is a repo
+# secret; the local one is stale.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Slugs to publish (space or comma separated)"
+        required: true
+      dry_run:
+        description: "Report what would change, write nothing"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+concurrency:
+  group: publish-comparison
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install --no-audit --no-fund
+      - run: npx prisma generate
+
+      - name: Publish
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          FLAG=""
+          [ "${{ github.event.inputs.dry_run }}" = "true" ] && FLAG="--dry-run"
+          node scripts/publish-comparison.mjs $FLAG $SLUGS
+
+      - name: Verify the page now renders
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        run: |
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          for s in $SLUGS; do
+            # ISR: the 404 is cached with a 1h revalidate, so the first hit
+            # after publishing may still serve the stale miss.
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://www.aversusb.net/compare/$s")
+            echo "  $s -> HTTP $CODE"
+          done
