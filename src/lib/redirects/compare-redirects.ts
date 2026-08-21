@@ -29,6 +29,8 @@ import { ORDERING_CONSOLIDATIONS } from "./compare-ordering-redirects.generated"
 import { ORDERING_CONSOLIDATIONS_DAN1800 } from "./compare-ordering-redirects.dan1800.generated";
 import { RIVALRY_CONSOLIDATIONS_DAN2078 } from "./compare-rivalry-redirects.dan2078.generated";
 import { BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518 } from "./compare-batch-archive-redirects.generated";
+import { RECOVERY_CONSOLIDATIONS_404 } from "./compare-404-recovery.generated";
+import { BACKWARDS_REDIRECT_SOURCES } from "./compare-backwards-redirects.generated";
 
 // DAN-1169: PS5 Pro vs Xbox Series X intent split across two live pages; keep the
 // keyword-aligned page (the one Semrush shows ranking) and fold the short dup in.
@@ -257,6 +259,10 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
   // DAN-2518: PATH A batch-archive decisions are the most recent judgement about
   // a cluster's survivor, so they merge last and override any earlier layer.
   ...BATCH_ARCHIVE_CONSOLIDATIONS_DAN2518,
+  // Recovery mappings merge last: they are derived from URLs people actually
+  // requested and 404'd on, with each destination verified to return 200. That
+  // is stronger evidence than a slug-shape rule, so it wins on collision.
+  ...RECOVERY_CONSOLIDATIONS_404,
 };
 
 // DAN-2078: the rivalry layer's survivor is authoritative over an earlier layer that
@@ -305,9 +311,16 @@ for (const [retired, survivor] of Object.entries(SURVIVOR_OVERRIDES)) {
 const DEAD_REDIRECT_SOURCES = new Set(DEAD_REDIRECT_SOURCES_DAN2045);
 
 const MAX_CHAIN_HOPS = 8;
+/**
+ * Rules that would take a live page off the map by 301ing it at a slug that
+ * 404s. Dropped before anything else so the working page simply serves.
+ */
+const BACKWARDS_SOURCES = new Set(BACKWARDS_REDIRECT_SOURCES);
+
 const safeConsolidations: Record<string, string> = {};
 for (const [from] of Object.entries(COMPARE_CONSOLIDATIONS)) {
   if (DEAD_REDIRECT_SOURCES.has(from)) continue;
+  if (BACKWARDS_SOURCES.has(from)) continue;
   const seen = new Set<string>([from]);
   let to = COMPARE_CONSOLIDATIONS[from];
   let hops = 0;
