@@ -272,6 +272,15 @@ async function pickSlugs(log) {
 // Per-slug production
 // ---------------------------------------------------------------------------
 
+/** Exact duration of a rendered master, in whole seconds. */
+function durationSeconds(file) {
+  const out = run('ffprobe',
+    ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file],
+    { quiet: true });
+  const n = Number(String(out).trim());
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
+}
+
 function encodeForWeb(master, dest, scale) {
   run(
     'ffmpeg',
@@ -363,6 +372,11 @@ async function produce(slug, log) {
   }
 
   // 5. log
+  // Recorded so the page's VideoObject can state the real length. The schema
+  // helper otherwise falls back to a hardcoded PT36S, which no longer matches
+  // anything the pipeline produces now that scene timings follow the narration.
+  const seconds = durationSeconds(landscapeMaster);
+
   log.uploads.push({
     slug,
     title: props.title,
@@ -372,6 +386,7 @@ async function produce(slug, log) {
     renderer: 'v3',
     asOf: props.asOf,
     videoFile: `${slug}.mp4`,
+    durationSeconds: seconds,
     youtubeTitle: meta.title,
     youtubeDescription: meta.description,
     youtubeVideoId: upload?.videoId ?? null,

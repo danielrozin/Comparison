@@ -286,6 +286,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+/**
+ * Seconds -> ISO 8601 duration for schema.org. Returns undefined when the
+ * length is unknown, so the schema helper's default applies rather than a
+ * fabricated figure.
+ */
+function isoDuration(seconds?: number | null): string | undefined {
+  if (!seconds || !Number.isFinite(seconds) || seconds <= 0) return undefined;
+  const total = Math.round(seconds);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `PT${m ? `${m}M` : ""}${s ? `${s}S` : m ? "" : "0S"}`;
+}
+
 // DAN-1285: append a VideoObject node into an existing @graph JSON-LD document
 // (editorial schemaMarkup or the multi-entity @graph) without disturbing its
 // other nodes. The node's @context is stripped since it lives inside @graph.
@@ -504,6 +517,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         uploadDate: videoMeta.uploadedAt,
         entityA: videoMeta.entityA,
         entityB: videoMeta.entityB,
+        duration: isoDuration(videoMeta.durationSeconds),
       })
     : selfHostedVideo;
 

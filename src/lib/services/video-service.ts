@@ -17,6 +17,8 @@ interface VideoUpload {
   youtubeVideoId: string | null;
   youtubeUrl: string | null;
   uploadedAt: string;
+  /** Real runtime of the published cut, in seconds. Absent on pre-V3 entries. */
+  durationSeconds?: number | null;
 }
 
 interface UploadLog {
