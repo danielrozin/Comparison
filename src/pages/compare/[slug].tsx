@@ -101,9 +101,13 @@ const ComparisonCharts = dynamic(
 // emitted separately in JSON-LD), so it carries no SEO weight. Load client-only
 // (ssr:false) and gate behind DeferUntilVisible so its chunk downloads + mounts
 // only near the viewport, off the initial hydration / LCP path (recharts pattern).
+// Server-rendered on purpose. With `ssr: false` plus `loading: () => null`,
+// any failure to resolve this chunk is completely silent — no error, no
+// fallback, just an empty wrapper — and the player was missing from every
+// comparison page with no trace in the console. SSR also puts the video
+// section in the HTML, so crawlers see it rather than only the JSON-LD.
 const ComparisonVideoPlayer = dynamic(
   () => import("@/components/comparison/ComparisonVideoPlayer").then((m) => ({ default: m.ComparisonVideoPlayer })),
-  { ssr: false, loading: () => null }
 );
 const RelatedComparisonsSidebar = dynamic(
   () => import("@/components/comparison/RelatedComparisonsSidebar").then((m) => ({ default: m.RelatedComparisonsSidebar })),
@@ -1036,9 +1040,7 @@ export default function ComparisonPage(props: Props) {
               video exists, skip the wrapper entirely to avoid reserving 320px that
               would collapse to 0 on visibility and cause CLS (HB179). */}
           {(videoMeta?.youtubeVideoId || hasSelfHostedVideo) && (
-            <DeferUntilVisible minHeight={320}>
-              <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
-            </DeferUntilVisible>
+            <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
           )}
 
           {/* Pros & Cons */}

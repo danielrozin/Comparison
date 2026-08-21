@@ -22,7 +22,9 @@ function extractYouTubeId(url: string): string | null {
 
 export function ComparisonVideoPlayer({ slug, title, youtubeVideoId }: ComparisonVideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  // Starts true when server-rendered: the section and its heading should exist
+  // in the HTML. The iframe itself is still only created on click.
+  const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const videoSrc = `/videos/${slug}.mp4`;
