@@ -487,11 +487,31 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // comparisonPageSchema (schema-3way v1), so emit it directly; 2-entity pages get
   // the DAN-432 jsonLdGraph consolidation. The self-hosted VideoObject (DAN-1285)
   // is folded into whichever document the page emits.
+  //
+  // One video node, used by every branch. Previously the YouTube VideoObject
+  // was built inline in the third branch only, while the first two appended
+  // `selfHostedVideo` — which is null by construction whenever a YouTube upload
+  // exists. So any page carrying editorial schemaMarkup, or any multi-entity
+  // page, emitted no VideoObject at all once its video was on YouTube, losing
+  // exactly the Google Video / AI Overviews eligibility the video was made for.
+  const videoNode = videoMeta?.youtubeVideoId
+    ? videoObjectSchema({
+        slug,
+        title: enrichedComparison.title,
+        description:
+          enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
+        youtubeVideoId: videoMeta.youtubeVideoId,
+        uploadDate: videoMeta.uploadedAt,
+        entityA: videoMeta.entityA,
+        entityB: videoMeta.entityB,
+      })
+    : selfHostedVideo;
+
   let jsonLd: string;
   if (enrichedComparison.schemaMarkup) {
-    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, selfHostedVideo));
+    jsonLd = JSON.stringify(appendVideoToGraph(enrichedComparison.schemaMarkup, videoNode));
   } else if (isMultiEntity) {
-    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], selfHostedVideo));
+    jsonLd = JSON.stringify(appendVideoToGraph(schemas[0], videoNode));
   } else {
     jsonLd = JSON.stringify(
       jsonLdGraph([
@@ -512,17 +532,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
           speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
         }),
-        videoMeta?.youtubeVideoId
-          ? videoObjectSchema({
-              slug,
-              title: enrichedComparison.title,
-              description: enrichedComparison.shortAnswer || enrichedComparison.metadata.metaDescription || "",
-              youtubeVideoId: videoMeta.youtubeVideoId,
-              uploadDate: videoMeta.uploadedAt,
-              entityA: videoMeta.entityA,
-              entityB: videoMeta.entityB,
-            })
-          : selfHostedVideo,
+        videoNode,
       ])
     );
   }
