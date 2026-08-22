@@ -552,7 +552,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           ].join(", "),
           // mainEntity — bidirectional WebPage↔Article graph edge (HB322 fix).
           mainEntity: { "@type": "Article", "@id": `${SITE_URL}/compare/${slug}#article` },
-          speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
+          speakableCssSelector: ["h1", "#hero-tldr", "#short-answer", "#video", "#verdict", "#key-differences", "#comparison-table", "#key-facts", "#expert-analysis", "#faq"],
         }),
         videoNode,
       ])
@@ -961,6 +961,35 @@ export default function ComparisonPage(props: Props) {
         </div>
       )}
 
+      {/*
+        Video sits directly after the answer text and before the verdict.
+
+        Not higher: the Quick Answer / Short Answer must remain the first
+        content block, because that is what wins the featured snippet and what
+        an answer engine reads as the direct response. Burying it under a video
+        would trade the snippet for an embed.
+
+        Not lower: it was previously below the comparison table and charts,
+        roughly 87% of the way down a 15,000px page. Google's video guidance
+        asks for the video to be prominent rather than buried, and retrieval
+        systems chunk a document top-down — a transcript that far down is
+        unlikely to survive into the chunk that gets cited.
+
+        Here it is the second thing a reader meets, one short scroll from the
+        top, at the exact moment they have just read the short answer and are
+        primed for the 60-second version. The verdict then follows, which is
+        also how the video itself ends.
+      */}
+      {(videoMeta?.youtubeVideoId || hasSelfHostedVideo) && (
+        <div id="video" className="scroll-mt-28">
+          <ComparisonVideoPlayer
+            slug={comparison.slug}
+            title={comparison.title}
+            youtubeVideoId={videoMeta?.youtubeVideoId || undefined}
+          />
+        </div>
+      )}
+
       {/* VERDICT CARD — above the fold */}
       {(comparison.verdict || comparison.shortAnswer) && (
         <VerdictCard
@@ -1039,13 +1068,7 @@ export default function ComparisonPage(props: Props) {
             </DeferUntilVisible>
           )}
 
-          {/* Video Comparison (client-only, viewport-deferred — DAN-1645).
-              Gate on actual video existence: if neither a YouTube nor a self-hosted
-              video exists, skip the wrapper entirely to avoid reserving 320px that
-              would collapse to 0 on visibility and cause CLS (HB179). */}
-          {(videoMeta?.youtubeVideoId || hasSelfHostedVideo) && (
-            <ComparisonVideoPlayer slug={comparison.slug} title={comparison.title} youtubeVideoId={videoMeta?.youtubeVideoId || undefined} />
-          )}
+
 
           {/* Pros & Cons */}
           <ProsConsBlock entities={comparison.entities} />

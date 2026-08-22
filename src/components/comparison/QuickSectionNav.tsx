@@ -58,8 +58,17 @@ function FAQIcon() {
   );
 }
 
+function VideoIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+    </svg>
+  );
+}
+
 const SECTION_CONFIGS: Array<{ id: string; label: string; icon: React.ReactNode; color: string }> = [
   { id: "short-answer", label: "TL;DR", icon: <TLDRIcon />, color: "text-blue-600 bg-blue-50 border-blue-200 hover:bg-blue-100" },
+  { id: "video", label: "Video", icon: <VideoIcon />, color: "text-red-600 bg-red-50 border-red-200 hover:bg-red-100" },
   { id: "key-differences", label: "Key Differences", icon: <KeyDiffIcon />, color: "text-indigo-600 bg-indigo-50 border-indigo-200 hover:bg-indigo-100" },
   { id: "comparison-table", label: "Attributes", icon: <TableIcon />, color: "text-blue-600 bg-blue-50 border-blue-200 hover:bg-blue-100" },
   { id: "pros-cons", label: "Pros & Cons", icon: <ProsConsIcon />, color: "text-emerald-600 bg-emerald-50 border-emerald-200 hover:bg-emerald-100" },
