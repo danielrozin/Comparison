@@ -133,7 +133,19 @@ export async function narrateComparison(lines, { outDir, publicPrefix, voiceId }
 
   const rel = (r) => (publicPrefix ? `${publicPrefix}/${path.basename(r.file)}` : r.file);
 
+  // Cumulative start/end seconds per beat, for schema.org Clip chapters and
+  // for the transcript. Built here because this is the only place that knows
+  // the measured length of each line.
+  let cursor = 0;
+  const chapters = results.map((r) => {
+    const startOffset = cursor;
+    cursor += r.held;
+    return { id: r.id, kind: r.kind, text: r.text, startOffset, endOffset: cursor };
+  });
+
   return {
+    chapters,
+    transcript: results.map((r) => r.text).join(' '),
     audio: {
       cold: byId('cold') ? rel(byId('cold')) : null,
       tape: byId('tape') ? rel(byId('tape')) : null,

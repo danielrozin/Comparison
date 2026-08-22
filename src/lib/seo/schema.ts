@@ -2706,6 +2706,17 @@ function buildMultiEntityGraph(
 // VideoObject schema for comparison videos
 // ============================================================
 
+/**
+ * A chapter of the video: one narrated beat with its start and end second.
+ * Emitted as schema.org Clip, which is what powers Google's "Key Moments"
+ * result and gives answer engines a citable segment rather than a whole file.
+ */
+export type VideoChapter = {
+  name: string;
+  startOffset: number;
+  endOffset?: number;
+};
+
 export function videoObjectSchema(opts: {
   slug: string;
   title: string;
@@ -2715,22 +2726,102 @@ export function videoObjectSchema(opts: {
   entityA: string;
   entityB: string;
   duration?: string;
+  /** Full narration, verbatim. */
+  transcript?: string | null;
+  /** Narrated beats with timings. */
+  chapters?: VideoChapter[] | null;
+  /** Month/year the figures were compiled, e.g. "August 2026". */
+  asOf?: string | null;
+  category?: string | null;
 }) {
+  const watchUrl = `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`;
+  const pageUrl = `${SITE_URL}/compare/${opts.slug}`;
+
+  // Google wants several thumbnail aspect ratios; YouTube serves them all.
+  const thumbnails = [
+    `https://img.youtube.com/vi/${opts.youtubeVideoId}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${opts.youtubeVideoId}/hqdefault.jpg`,
+    `https://img.youtube.com/vi/${opts.youtubeVideoId}/mqdefault.jpg`,
+  ];
+
+  /**
+   * Key Moments. Each Clip needs its own url with a ?t= deep link, otherwise
+   * Google ignores the chapter list. SeekToAction additionally lets Google
+   * derive moments it was not given.
+   */
+  const clips = (opts.chapters ?? [])
+    .filter((c) => c && c.name && Number.isFinite(c.startOffset))
+    .map((c, i) => ({
+      "@type": "Clip",
+      "@id": `${pageUrl}#video-clip-${i + 1}`,
+      name: c.name,
+      startOffset: Math.max(0, Math.round(c.startOffset)),
+      ...(Number.isFinite(c.endOffset as number)
+        ? { endOffset: Math.round(c.endOffset as number) }
+        : {}),
+      url: `${watchUrl}&t=${Math.max(0, Math.round(c.startOffset))}s`,
+    }));
+
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    "@id": `${SITE_URL}/compare/${opts.slug}#video`,
+    "@id": `${pageUrl}#video`,
     name: `${opts.entityA} vs ${opts.entityB} — Full Comparison`,
     description: opts.description,
-    thumbnailUrl: `https://img.youtube.com/vi/${opts.youtubeVideoId}/maxresdefault.jpg`,
+    thumbnailUrl: thumbnails,
     uploadDate: opts.uploadDate,
-    contentUrl: `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`,
+    contentUrl: watchUrl,
     embedUrl: `https://www.youtube-nocookie.com/embed/${opts.youtubeVideoId}`,
     duration: opts.duration ?? "PT36S",
     inLanguage: "en-US",
+    isFamilyFriendly: true,
     isAccessibleForFree: true,
     license: "https://creativecommons.org/licenses/by/4.0/",
     acquireLicensePage: `${SITE_URL}/terms`,
+
+    /**
+     * The transcript is the single highest-value field here for answer engines.
+     * An LLM summarising this comparison cannot watch the video; given the
+     * narration verbatim it can quote and attribute it, which is how a video
+     * earns a citation in an AI answer rather than being skipped.
+     */
+    ...(opts.transcript ? { transcript: opts.transcript } : {}),
+
+    /**
+     * Ground the video in the two things it actually compares, by name and by
+     * the page that defines each. This is what lets a retrieval system connect
+     * "Haaland vs Mbappé" the video to the entities, instead of treating the
+     * title as an opaque string.
+     */
+    about: [opts.entityA, opts.entityB].map((name) => ({
+      "@type": "Thing",
+      name,
+    })),
+    mentions: [opts.entityA, opts.entityB].map((name) => ({
+      "@type": "Thing",
+      name,
+    })),
+    keywords: [
+      `${opts.entityA} vs ${opts.entityB}`,
+      opts.entityA,
+      opts.entityB,
+      "comparison",
+      ...(opts.category ? [opts.category] : []),
+    ].join(", "),
+
+    /** Bidirectional edge to the page, so neither is an orphan in the graph. */
+    isPartOf: { "@type": "WebPage", "@id": pageUrl },
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+
+    /**
+     * State when the figures were true. A stat-driven video is only as
+     * trustworthy as its vintage, and an answer engine has no other way to
+     * tell whether "899 goals" is current.
+     */
+    ...(opts.asOf ? { creditText: `Figures as of ${opts.asOf}` } : {}),
+
+    ...(clips.length ? { hasPart: clips } : {}),
+
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -2741,10 +2832,17 @@ export function videoObjectSchema(opts: {
         url: `${SITE_URL}/images/logo.png`,
       },
     },
-    potentialAction: {
-      "@type": "WatchAction",
-      target: `https://www.youtube.com/watch?v=${opts.youtubeVideoId}`,
-    },
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
+
+    potentialAction: [
+      { "@type": "WatchAction", target: watchUrl },
+      /** Lets Google surface moments beyond the ones we declared. */
+      {
+        "@type": "SeekToAction",
+        target: `${watchUrl}&t={seek_to_second_number}`,
+        "startOffset-input": "required name=seek_to_second_number",
+      },
+    ],
   };
 }
 

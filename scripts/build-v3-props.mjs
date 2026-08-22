@@ -188,6 +188,11 @@ const props = {
   lines,
   audio: narration?.audio ?? null,
   timings: narration?.timings ?? null,
+  // Persisted for the page's VideoObject: the transcript is what lets an
+  // answer engine quote the video, and the chapters become schema.org Clips
+  // (Google "Key Moments"). Both are free here — we already measured them.
+  transcript: narration?.transcript ?? null,
+  chapters: narration?.chapters ?? null,
   youtubeTitle: script.youtubeTitle,
   youtubeDescription: [
     script.youtubeDescription,

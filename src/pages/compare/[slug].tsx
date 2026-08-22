@@ -522,6 +522,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         entityA: videoMeta.entityA,
         entityB: videoMeta.entityB,
         duration: isoDuration(videoMeta.durationSeconds),
+        transcript: videoMeta.transcript,
+        chapters: videoMeta.chapters,
+        asOf: videoMeta.asOf,
+        category: enrichedComparison.category,
       })
     : selfHostedVideo;
 

@@ -272,6 +272,29 @@ async function pickSlugs(log) {
 // Per-slug production
 // ---------------------------------------------------------------------------
 
+/**
+ * Human-readable chapter titles for the video's beats. "Round 3: Career
+ * Assists" is what a viewer scanning Google's Key Moments needs to see; the
+ * raw beat id is not.
+ */
+function buildChapterList(props) {
+  const chapters = props.chapters ?? [];
+  if (!chapters.length) return null;
+  const stats = props.stats ?? [];
+  return chapters.map((c) => {
+    let name;
+    if (c.kind === 'cold') name = `${props.entityA} vs ${props.entityB}`;
+    else if (c.kind === 'tape') name = 'Tale of the tape';
+    else if (c.kind === 'verdict') name = 'The verdict';
+    else {
+      const roundIndex = Number(String(c.id).split('-')[1]) - 1;
+      const label = stats[roundIndex]?.label;
+      name = label ? `Round ${roundIndex + 1}: ${label}` : `Round ${roundIndex + 1}`;
+    }
+    return { name, startOffset: Math.round(c.startOffset), endOffset: Math.round(c.endOffset) };
+  });
+}
+
 /** Exact duration of a rendered master, in whole seconds. */
 function durationSeconds(file) {
   const out = run('ffprobe',
@@ -387,6 +410,8 @@ async function produce(slug, log) {
     asOf: props.asOf,
     videoFile: `${slug}.mp4`,
     durationSeconds: seconds,
+    transcript: props.transcript ?? null,
+    chapters: buildChapterList(props),
     youtubeTitle: meta.title,
     youtubeDescription: meta.description,
     youtubeVideoId: upload?.videoId ?? null,
@@ -394,7 +419,32 @@ async function produce(slug, log) {
     uploadedAt: new Date().toISOString(),
   });
   saveUploadLog(log);
+
+  // Rebuild the page now. The log is committed by CI and Vercel redeploys, but
+  // the comparison page is ISR-cached, so without this the video stays
+  // invisible until the cache happens to expire — which is exactly why
+  // usa-vs-china had a published video and an empty page.
+  if (upload) await revalidate(slug);
+
   return upload;
+}
+
+/** Ask production to rebuild a comparison page after its video changes. */
+async function revalidate(slug) {
+  try {
+    const res = await fetch('https://www.aversusb.net/api/revalidate-pages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paths: [`/compare/${slug}`],
+        secret: process.env.REVALIDATION_SECRET,
+      }),
+      signal: AbortSignal.timeout(30_000),
+    });
+    console.log(`  revalidated /compare/${slug}: ${res.status}`);
+  } catch (err) {
+    console.warn(`  revalidate failed for ${slug}: ${err.message}`);
+  }
 }
 
 // ---------------------------------------------------------------------------

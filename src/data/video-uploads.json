@@ -3414,7 +3414,50 @@
       "youtubeVideoId": "hNl5baG3sGA",
       "youtubeUrl": "https://www.youtube.com/watch?v=hNl5baG3sGA",
       "uploadedAt": "2026-08-20T10:21:32.407Z",
-      "durationSeconds": 43
+      "durationSeconds": 43,
+      "transcript": "Between them, 1,737 career goals. And people still argue about who was better. One built the game around him. The other built himself into a machine. Eight times the world voted him the best player alive. Nobody else has five. 899 goals. More than anyone who has ever played the sport. 369 assists means Messi didn't just finish moves, he invented them. Five European Cups, at three different clubs. Ronaldo owns that competition. One World Cup to zero. The trophy that ends every argument. Messi takes it 3-2. Pick Ronaldo if you value goals and longevity above all.",
+      "chapters": [
+        {
+          "name": "Lionel Messi vs Cristiano Ronaldo",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Ballon d'Or Awards",
+          "startOffset": 12,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Career Goals",
+          "startOffset": 17,
+          "endOffset": 22
+        },
+        {
+          "name": "Round 3: Career Assists",
+          "startOffset": 22,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 4: Champions League",
+          "startOffset": 28,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 5: World Cup Titles",
+          "startOffset": 34,
+          "endOffset": 39
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 39,
+          "endOffset": 46
+        }
+      ]
     },
     {
       "slug": "haaland-vs-mbappe",
@@ -3430,7 +3473,50 @@
       "youtubeVideoId": "AU-KuOty9mA",
       "youtubeUrl": "https://www.youtube.com/watch?v=AU-KuOty9mA",
       "uploadedAt": "2026-08-20T11:05:24.938Z",
-      "durationSeconds": 57
+      "durationSeconds": 57,
+      "transcript": "One of these two has 166 more goal contributions. It isn't the winger. The pure number nine against the pure highlight reel. The numbers pick a side. 374 to 299. A 75-goal gap is not a rounding error. 151 assists to 60. The striker is the better passer. Read that again. 89.42 against 81.51. Even the head-to-head rating refuses to argue. 525 goal involvements to 359. That's a whole extra season of damage. 28.8% of Haaland's output is assists. Mbappe sits at 16.7%. Haaland sweeps it 5-0. Pick Mbappe if you want a game broken open alone.",
+      "chapters": [
+        {
+          "name": "Haaland vs Mbappe",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Career Goals",
+          "startOffset": 13,
+          "endOffset": 21
+        },
+        {
+          "name": "Round 2: Career Assists",
+          "startOffset": 21,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 3: 1vs1 Score",
+          "startOffset": 29,
+          "endOffset": 37
+        },
+        {
+          "name": "Round 4: Goal Contribution",
+          "startOffset": 37,
+          "endOffset": 45
+        },
+        {
+          "name": "Round 5: Assist Rate",
+          "startOffset": 45,
+          "endOffset": 53
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 53,
+          "endOffset": 60
+        }
+      ]
     },
     {
       "slug": "ali-vs-tyson",
@@ -3446,7 +3532,45 @@
       "youtubeDescription": "Ali went 56-5 with three heavyweight titles. Tyson knocked out 76 percent of his opponents and won the belt at 20, younger than anyone. We break down the four numbers that decide the greatest heavyweight argument.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ali-vs-tyson\n\nImage credits:\nImage A by Ira Rosenberg (Public domain) — https://commons.wikimedia.org/wiki/File:Muhammad_Ali_NYWTS.jpg\nImage B by Super Festivals (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg\n\nFull comparison: https://www.aversusb.net/compare/ali-vs-tyson",
       "youtubeVideoId": "qhgI02xyFDw",
       "youtubeUrl": "https://www.youtube.com/watch?v=qhgI02xyFDw",
-      "uploadedAt": "2026-08-22T05:35:37.985Z"
+      "uploadedAt": "2026-08-22T05:35:37.985Z",
+      "transcript": "One man won the heavyweight title three times. The other took it at twenty. Ali outlasted everyone. Tyson never needed the time. That's the whole fight. 56 and 5 against 50 and 6. Ali beat more men and lost less. 76 percent of Tyson's wins ended early. He wasn't boxing, he was ending things. Three separate titles means Ali came back twice from losing everything. Tyson never did. Champion at 20. Ali needed two more years, and nobody has beaten Tyson's number since. Two apiece, so it's honest to call it even. Take Ali for legacy, Tyson for fear.",
+      "chapters": [
+        {
+          "name": "Muhammad Ali vs Mike Tyson",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Career Record",
+          "startOffset": 13,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 2: KO Percentage",
+          "startOffset": 20,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 3: Heavyweight Titles",
+          "startOffset": 28,
+          "endOffset": 35
+        },
+        {
+          "name": "Round 4: Youngest Champion",
+          "startOffset": 35,
+          "endOffset": 43
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 43,
+          "endOffset": 50
+        }
+      ]
     },
     {
       "slug": "tiger-woods-vs-jack-nicklaus",
@@ -3462,7 +3586,50 @@
       "youtubeDescription": "A head-to-head breakdown of Tiger Woods and Jack Nicklaus across major wins, major starts, win percentage, PGA Tour victories and net worth. Jack has 18 majors from 164 starts, Tiger has 15 from just 88, and the win rate gap is the whole debate. Five stats, one verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tiger-woods-vs-jack-nicklaus\n\nImage credits:\nImage A by The White House (Public domain) — https://commons.wikimedia.org/wiki/File:President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_(54341713089)_(cropped).jpg\nImage B by PantherNational (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Panther_National_Jack_and_Justin-8452_(3x4_cropped).jpg\n\nFull comparison: https://www.aversusb.net/compare/tiger-woods-vs-jack-nicklaus",
       "youtubeVideoId": "boWSgRF1tHk",
       "youtubeUrl": "https://www.youtube.com/watch?v=boWSgRF1tHk",
-      "uploadedAt": "2026-08-22T05:43:39.951Z"
+      "uploadedAt": "2026-08-22T05:43:39.951Z",
+      "transcript": "Jack played 76 more majors than Tiger. He only won three more. One man showed up longer. The other one won more often while he was there. Tiger won one in four majors he entered. Nobody sustains that. He did. Eighteen is still the number everyone chases. Fifteen isn't close enough to argue. 164 starts versus 88. Jack's body let him keep answering the bell. A billion-plus against 400 million. Tiger didn't just win, he changed the business. More PGA Tour wins for Tiger, and he got there in far less time. Tiger takes it 3-2 on the numbers. Pick Jack if durability counts as greatness.",
+      "chapters": [
+        {
+          "name": "Tiger Woods vs Jack Nicklaus",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Major Win Percentage",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Major Championships Won",
+          "startOffset": 18,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Major Championship Starts",
+          "startOffset": 24,
+          "endOffset": 31
+        },
+        {
+          "name": "Round 4: Net Worth",
+          "startOffset": 31,
+          "endOffset": 38
+        },
+        {
+          "name": "Round 5: PGA Tour Wins",
+          "startOffset": 38,
+          "endOffset": 43
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 43,
+          "endOffset": 50
+        }
+      ]
     },
     {
       "slug": "usa-vs-china",
@@ -3478,7 +3645,50 @@
       "youtubeDescription": "A head-to-head breakdown of the US and China across GDP, military spending, life expectancy, per capita wealth, and 2026 economic projections. The US leads on points today, but China takes the top economy line by 2026. Full numbers, one clear verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/usa-vs-china\n\nFull comparison: https://www.aversusb.net/compare/usa-vs-china",
       "youtubeVideoId": "pdNszEGAlkw",
       "youtubeUrl": "https://www.youtube.com/watch?v=pdNszEGAlkw",
-      "uploadedAt": "2026-08-22T05:50:08.820Z"
+      "uploadedAt": "2026-08-22T05:50:08.820Z",
+      "transcript": "America spends three times more on defense. China still outlives it. One country is richer per person. The other is catching up faster. A $7.8 trillion gap. Still the biggest economy anyone has ever built. $877 billion buys reach. China's $292 billion buys a neighborhood, not a planet. Americans die younger than the people they call a developing rival. That stings. By 2026 China takes the top line. The crown finally changes hands. $89,000 versus $13,000. Seven times the wealth per human being. United States wins on points. Pick China if you're betting on the next twenty years.",
+      "chapters": [
+        {
+          "name": "United States vs China",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: GDP (USD trillions)",
+          "startOffset": 11,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Military Budget (USD)",
+          "startOffset": 17,
+          "endOffset": 27
+        },
+        {
+          "name": "Round 3: Life Expectancy (Years)",
+          "startOffset": 27,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 4: Total GDP (2026 Projection) (Trillion USD)",
+          "startOffset": 34,
+          "endOffset": 41
+        },
+        {
+          "name": "Round 5: Per Capita GDP (USD)",
+          "startOffset": 41,
+          "endOffset": 48
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 48,
+          "endOffset": 55
+        }
+      ]
     }
   ]
 }

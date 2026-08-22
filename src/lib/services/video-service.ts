@@ -19,6 +19,11 @@ interface VideoUpload {
   uploadedAt: string;
   /** Real runtime of the published cut, in seconds. Absent on pre-V3 entries. */
   durationSeconds?: number | null;
+  /** Verbatim narration — feeds VideoObject.transcript. */
+  transcript?: string | null;
+  /** Narrated beats with second offsets — become schema.org Clip chapters. */
+  chapters?: { name: string; startOffset: number; endOffset?: number }[] | null;
+  asOf?: string | null;
 }
 
 interface UploadLog {
