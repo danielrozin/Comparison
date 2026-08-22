@@ -3431,6 +3431,54 @@
       "youtubeUrl": "https://www.youtube.com/watch?v=AU-KuOty9mA",
       "uploadedAt": "2026-08-20T11:05:24.938Z",
       "durationSeconds": 57
+    },
+    {
+      "slug": "ali-vs-tyson",
+      "title": "Ali vs Tyson",
+      "entityA": "Muhammad Ali",
+      "entityB": "Mike Tyson",
+      "category": "sports",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "ali-vs-tyson.mp4",
+      "durationSeconds": 47,
+      "youtubeTitle": "Muhammad Ali vs Mike Tyson: Who Was Really Better?",
+      "youtubeDescription": "Ali went 56-5 with three heavyweight titles. Tyson knocked out 76 percent of his opponents and won the belt at 20, younger than anyone. We break down the four numbers that decide the greatest heavyweight argument.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ali-vs-tyson\n\nImage credits:\nImage A by Ira Rosenberg (Public domain) — https://commons.wikimedia.org/wiki/File:Muhammad_Ali_NYWTS.jpg\nImage B by Super Festivals (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg\n\nFull comparison: https://www.aversusb.net/compare/ali-vs-tyson",
+      "youtubeVideoId": "qhgI02xyFDw",
+      "youtubeUrl": "https://www.youtube.com/watch?v=qhgI02xyFDw",
+      "uploadedAt": "2026-08-22T05:35:37.985Z"
+    },
+    {
+      "slug": "tiger-woods-vs-jack-nicklaus",
+      "title": "Tiger Woods vs Jack Nicklaus",
+      "entityA": "Tiger Woods",
+      "entityB": "Jack Nicklaus",
+      "category": "General",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "tiger-woods-vs-jack-nicklaus.mp4",
+      "durationSeconds": 47,
+      "youtubeTitle": "Tiger Woods vs Jack Nicklaus: The Numbers Nobody Argues About",
+      "youtubeDescription": "A head-to-head breakdown of Tiger Woods and Jack Nicklaus across major wins, major starts, win percentage, PGA Tour victories and net worth. Jack has 18 majors from 164 starts, Tiger has 15 from just 88, and the win rate gap is the whole debate. Five stats, one verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tiger-woods-vs-jack-nicklaus\n\nImage credits:\nImage A by The White House (Public domain) — https://commons.wikimedia.org/wiki/File:President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_(54341713089)_(cropped).jpg\nImage B by PantherNational (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Panther_National_Jack_and_Justin-8452_(3x4_cropped).jpg\n\nFull comparison: https://www.aversusb.net/compare/tiger-woods-vs-jack-nicklaus",
+      "youtubeVideoId": "boWSgRF1tHk",
+      "youtubeUrl": "https://www.youtube.com/watch?v=boWSgRF1tHk",
+      "uploadedAt": "2026-08-22T05:43:39.951Z"
+    },
+    {
+      "slug": "usa-vs-china",
+      "title": "USA vs China",
+      "entityA": "United States",
+      "entityB": "China",
+      "category": "countries",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "usa-vs-china.mp4",
+      "durationSeconds": 52,
+      "youtubeTitle": "United States vs China: Who Actually Wins on the Numbers?",
+      "youtubeDescription": "A head-to-head breakdown of the US and China across GDP, military spending, life expectancy, per capita wealth, and 2026 economic projections. The US leads on points today, but China takes the top economy line by 2026. Full numbers, one clear verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/usa-vs-china\n\nFull comparison: https://www.aversusb.net/compare/usa-vs-china",
+      "youtubeVideoId": "pdNszEGAlkw",
+      "youtubeUrl": "https://www.youtube.com/watch?v=pdNszEGAlkw",
+      "uploadedAt": "2026-08-22T05:50:08.820Z"
     }
   ]
 }

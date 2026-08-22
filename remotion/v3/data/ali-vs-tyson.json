@@ -1,0 +1,102 @@
+{
+  "title": "Ali vs Tyson",
+  "entityA": "Muhammad Ali",
+  "entityB": "Mike Tyson",
+  "category": "sports",
+  "shortAnswer": "Muhammad Ali is considered the greatest boxer of all time with 56 wins, legendary charisma, and victories over every top heavyweight of his era. Mike Tyson was the most devastating puncher, becoming the youngest heavyweight champion at 20.",
+  "stats": [
+    {
+      "label": "Career Record",
+      "valueA": "56-5",
+      "valueB": "50-6",
+      "winner": "a"
+    },
+    {
+      "label": "KO Percentage",
+      "valueA": "60%",
+      "valueB": "76%",
+      "winner": "b"
+    },
+    {
+      "label": "Heavyweight Titles",
+      "valueA": "3",
+      "valueB": "1",
+      "winner": "a"
+    },
+    {
+      "label": "Youngest Champion",
+      "valueA": "22",
+      "valueB": "20",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Ali for legacy, longevity, and cultural impact. Tyson for raw power and intimidation. Ali wins the all-time debate.",
+  "slug": "ali-vs-tyson",
+  "imageA": {
+    "url": "video-assets/ali-vs-tyson/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Muhammad_Ali_NYWTS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2932,
+    "height": 3669,
+    "credit": "Ira Rosenberg",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Muhammad_Ali_NYWTS.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Muhammad_Ali_NYWTS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/ali-vs-tyson/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 844,
+    "height": 1126,
+    "credit": "Super Festivals",
+    "license": "CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One man won the heavyweight title three times. The other took it at twenty.",
+    "tape": "Ali outlasted everyone. Tyson never needed the time. That's the whole fight.",
+    "rounds": [
+      "56 and 5 against 50 and 6. Ali beat more men and lost less.",
+      "76 percent of Tyson's wins ended early. He wasn't boxing, he was ending things.",
+      "Three separate titles means Ali came back twice from losing everything. Tyson never did.",
+      "Champion at 20. Ali needed two more years, and nobody has beaten Tyson's number since."
+    ],
+    "verdict": "Two apiece, so it's honest to call it even. Take Ali for legacy, Tyson for fear."
+  },
+  "audio": {
+    "cold": "video-assets/ali-vs-tyson/audio/cold.mp3",
+    "tape": "video-assets/ali-vs-tyson/audio/tape.mp3",
+    "rounds": [
+      "video-assets/ali-vs-tyson/audio/round-1.mp3",
+      "video-assets/ali-vs-tyson/audio/round-2.mp3",
+      "video-assets/ali-vs-tyson/audio/round-3.mp3",
+      "video-assets/ali-vs-tyson/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/ali-vs-tyson/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 188,
+    "tape": 216,
+    "rounds": [
+      209,
+      226,
+      209,
+      233
+    ],
+    "verdict": 204,
+    "leadInFrames": 9
+  },
+  "youtubeTitle": "Muhammad Ali vs Mike Tyson: Who Was Really Better?",
+  "youtubeDescription": "Ali went 56-5 with three heavyweight titles. Tyson knocked out 76 percent of his opponents and won the belt at 20, younger than anyone. We break down the four numbers that decide the greatest heavyweight argument.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ali-vs-tyson",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Ira Rosenberg (Public domain) — https://commons.wikimedia.org/wiki/File:Muhammad_Ali_NYWTS.jpg",
+    "Image B by Super Festivals (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Mike_Tyson_Photo_Op_GalaxyCon_Austin_2023.jpg"
+  ]
+}

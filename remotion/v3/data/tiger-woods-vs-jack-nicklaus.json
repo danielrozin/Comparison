@@ -1,0 +1,111 @@
+{
+  "title": "Tiger Woods vs Jack Nicklaus",
+  "entityA": "Tiger Woods",
+  "entityB": "Jack Nicklaus",
+  "category": "General",
+  "shortAnswer": "Tiger Woods dominates in win percentage (26% vs 14%) and net worth ($1.3-1.5B vs $400M), while Jack Nicklaus leads in major championships and career longevity without injuries.",
+  "stats": [
+    {
+      "label": "Major Win Percentage",
+      "valueA": "26%",
+      "valueB": "14%",
+      "winner": "a"
+    },
+    {
+      "label": "Major Championships Won",
+      "valueA": "15",
+      "valueB": "18",
+      "winner": "b"
+    },
+    {
+      "label": "Major Championship Starts",
+      "valueA": "88",
+      "valueB": "164",
+      "winner": "b"
+    },
+    {
+      "label": "Net Worth",
+      "valueA": "$1.3-1.5B",
+      "valueB": "$400M",
+      "winner": "a"
+    },
+    {
+      "label": "PGA Tour Wins",
+      "valueA": "Higher",
+      "valueB": "Lower",
+      "winner": "a"
+    }
+  ],
+  "verdict": "While Jack Nicklaus holds the edge in total major championships and career durability, Tiger Woods demonstrates superior efficiency with a much higher win rate and has built a far larger business empire. Tiger's 26% major win rate versus Jack's 14% shows remarkable dominance, though injuries have limited his longevity compared to Nicklaus's injury-free career.",
+  "slug": "tiger-woods-vs-jack-nicklaus",
+  "imageA": {
+    "url": "video-assets/tiger-woods-vs-jack-nicklaus/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a7/President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_%2854341713089%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 806,
+    "height": 1126,
+    "credit": "The White House",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_(54341713089)_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a7/President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_%2854341713089%29_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/tiger-woods-vs-jack-nicklaus/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Panther_National_Jack_and_Justin-8452_%283x4_cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1325,
+    "height": 1766,
+    "credit": "PantherNational",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Panther_National_Jack_and_Justin-8452_(3x4_cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Panther_National_Jack_and_Justin-8452_%283x4_cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Jack played 76 more majors than Tiger. He only won three more.",
+    "tape": "One man showed up longer. The other one won more often while he was there.",
+    "rounds": [
+      "Tiger won one in four majors he entered. Nobody sustains that. He did.",
+      "Eighteen is still the number everyone chases. Fifteen isn't close enough to argue.",
+      "164 starts versus 88. Jack's body let him keep answering the bell.",
+      "A billion-plus against 400 million. Tiger didn't just win, he changed the business.",
+      "More PGA Tour wins for Tiger, and he got there in far less time."
+    ],
+    "verdict": "Tiger takes it 3-2 on the numbers. Pick Jack if durability counts as greatness."
+  },
+  "audio": {
+    "cold": "video-assets/tiger-woods-vs-jack-nicklaus/audio/cold.mp3",
+    "tape": "video-assets/tiger-woods-vs-jack-nicklaus/audio/tape.mp3",
+    "rounds": [
+      "video-assets/tiger-woods-vs-jack-nicklaus/audio/round-1.mp3",
+      "video-assets/tiger-woods-vs-jack-nicklaus/audio/round-2.mp3",
+      "video-assets/tiger-woods-vs-jack-nicklaus/audio/round-3.mp3",
+      "video-assets/tiger-woods-vs-jack-nicklaus/audio/round-4.mp3",
+      "video-assets/tiger-woods-vs-jack-nicklaus/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/tiger-woods-vs-jack-nicklaus/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 175,
+    "tape": 161,
+    "rounds": [
+      197,
+      180,
+      211,
+      207,
+      159
+    ],
+    "verdict": 199,
+    "leadInFrames": 9
+  },
+  "youtubeTitle": "Tiger Woods vs Jack Nicklaus: The Numbers Nobody Argues About",
+  "youtubeDescription": "A head-to-head breakdown of Tiger Woods and Jack Nicklaus across major wins, major starts, win percentage, PGA Tour victories and net worth. Jack has 18 majors from 164 starts, Tiger has 15 from just 88, and the win rate gap is the whole debate. Five stats, one verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tiger-woods-vs-jack-nicklaus",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by The White House (Public domain) — https://commons.wikimedia.org/wiki/File:President_Donald_Trump_hosts_a_reception_honoring_Black_History_Month_(54341713089)_(cropped).jpg",
+    "Image B by PantherNational (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Panther_National_Jack_and_Justin-8452_(3x4_cropped).jpg"
+  ]
+}

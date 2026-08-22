@@ -1,0 +1,86 @@
+{
+  "title": "USA vs China",
+  "entityA": "United States",
+  "entityB": "China",
+  "category": "countries",
+  "shortAnswer": "The USA has the world's largest economy ($25.5T GDP), highest military spending, and leads in technology innovation. China has the largest population (1.4B), second largest economy ($17.7T), and is the world's manufacturing hub.",
+  "stats": [
+    {
+      "label": "GDP (USD trillions)",
+      "valueA": "$25.5 Trillion",
+      "valueB": "$17.7 Trillion",
+      "winner": "a"
+    },
+    {
+      "label": "Military Budget (USD)",
+      "valueA": "$877 Billion",
+      "valueB": "$292 Billion",
+      "winner": "a"
+    },
+    {
+      "label": "Life Expectancy (Years)",
+      "valueA": "77.5",
+      "valueB": "78.2",
+      "winner": "b"
+    },
+    {
+      "label": "Total GDP (2026 Projection) (Trillion USD)",
+      "valueA": "$30+ trillion",
+      "valueB": "$33-34 trillion",
+      "winner": "b"
+    },
+    {
+      "label": "Per Capita GDP (USD)",
+      "valueA": "$89,000+",
+      "valueB": "$~12,000-13,000",
+      "winner": "a"
+    }
+  ],
+  "verdict": "The USA leads in per-capita wealth, military, and tech. China leads in manufacturing, population, and growth rate. The rivalry defines the 21st century.",
+  "slug": "usa-vs-china",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "America spends three times more on defense. China still outlives it.",
+    "tape": "One country is richer per person. The other is catching up faster.",
+    "rounds": [
+      "A $7.8 trillion gap. Still the biggest economy anyone has ever built.",
+      "$877 billion buys reach. China's $292 billion buys a neighborhood, not a planet.",
+      "Americans die younger than the people they call a developing rival. That stings.",
+      "By 2026 China takes the top line. The crown finally changes hands.",
+      "$89,000 versus $13,000. Seven times the wealth per human being."
+    ],
+    "verdict": "United States wins on points. Pick China if you're betting on the next twenty years."
+  },
+  "audio": {
+    "cold": "video-assets/usa-vs-china/audio/cold.mp3",
+    "tape": "video-assets/usa-vs-china/audio/tape.mp3",
+    "rounds": [
+      "video-assets/usa-vs-china/audio/round-1.mp3",
+      "video-assets/usa-vs-china/audio/round-2.mp3",
+      "video-assets/usa-vs-china/audio/round-3.mp3",
+      "video-assets/usa-vs-china/audio/round-4.mp3",
+      "video-assets/usa-vs-china/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/usa-vs-china/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 190,
+    "tape": 150,
+    "rounds": [
+      180,
+      303,
+      192,
+      207,
+      224
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "youtubeTitle": "United States vs China: Who Actually Wins on the Numbers?",
+  "youtubeDescription": "A head-to-head breakdown of the US and China across GDP, military spending, life expectancy, per capita wealth, and 2026 economic projections. The US leads on points today, but China takes the top economy line by 2026. Full numbers, one clear verdict.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/usa-vs-china",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
