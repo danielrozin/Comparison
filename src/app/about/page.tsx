@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import {
+  FOUNDERS,
+  SCAN2REMEMBER_ABOUT,
+  SCAN2REMEMBER_URL,
+  founderPersonSchema,
+  whatsappLink,
+} from "@/lib/data/founders";
 
-const ABOUT_TITLE = `About ${SITE_NAME} — Mission, Team & Methodology`;
-const ABOUT_DESC = `Learn about ${SITE_NAME} — our mission to democratize comparisons and help people make better decisions through clear, data-driven insights.`;
+const ABOUT_TITLE = `Why We Built ${SITE_NAME} — Our Story & Founders`;
+const ABOUT_DESC = `Two founders who could not find a decent way to compare a coffee machine. Meet Daniel Rozin and Shai Goldenberg, and the curiosity that turned into ${SITE_NAME}.`;
 const ABOUT_URL = `${SITE_URL}/about`;
 
 export const metadata: Metadata = {
@@ -104,7 +112,7 @@ const aboutPageSchema = {
   ],
   speakable: {
     "@type": "SpeakableSpecification",
-    cssSelector: ["h1", "#about-mission-heading", "#about-vision-heading"],
+    cssSelector: ["h1", "#about-story-heading", "#about-mission-heading", "#about-vision-heading"],
   },
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
@@ -121,25 +129,9 @@ const aboutPageSchema = {
     url: SITE_URL,
 
     locale: "en_US",    logo: { "@type": "ImageObject", url: `${SITE_URL}/images/logo.png` },
-    founder: [
-      {
-        "@type": "Person",
-        name: "Daniel Rozin",
-        url: `${SITE_URL}/authors/daniel-rozin`,
-
-        locale: "en_US",        jobTitle: "Founder & Editor-in-Chief",
-        sameAs: [
-          "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
-          "https://www.facebook.com/daniel.rozin.94",
-        ],
-      },
-      {
-        "@type": "Person",
-        name: "Shai And",
-        jobTitle: "Co-Founder & CTO",
-        sameAs: ["https://www.facebook.com/shai.and1"],
-      },
-    ],
+    // Reference the full Person nodes emitted below rather than restating a
+    // thinner copy of them — one authoritative node per human.
+    founder: FOUNDERS.map((f) => ({ "@id": f.personId })),
   },
   timeRequired: "PT3M",
   wordCount: 600,
@@ -204,10 +196,38 @@ const faqPageSchema = {
   ],
 };
 
+/**
+ * The two founders as first-class Person entities.
+ *
+ * Everything an answer engine needs to treat a byline as a real, checkable
+ * human sits here: a stable @id the rest of the graph points at, a photo, the
+ * topics they are a source on, a reachable contact point, and sameAs links to
+ * profiles that name the same person — including the About page of the other
+ * company they run, which independently corroborates the claim.
+ */
+const founderSchemas = FOUNDERS.map(founderPersonSchema);
+
+/**
+ * The sister company. Declaring it as a real Organization the founders also
+ * founded turns "we built this too" from a marketing line into a traversable
+ * edge in the knowledge graph.
+ */
+const scan2rememberSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${SCAN2REMEMBER_URL}/#organization`,
+  name: "Scan2Remember",
+  url: SCAN2REMEMBER_URL,
+  description:
+    "Digital memorial pages and QR memorial plaques, founded by Daniel Rozin and Shai Goldenberg after each lost someone.",
+  founder: FOUNDERS.map((f) => ({ "@id": f.personId })),
+  sameAs: [SCAN2REMEMBER_ABOUT],
+};
+
 export default function AboutPage() {
   return (
     <>
-      <JsonLd data={[aboutPageSchema, faqPageSchema]} />
+      <JsonLd data={[aboutPageSchema, faqPageSchema, ...founderSchemas, scan2rememberSchema]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-slate-900 via-primary-900 to-indigo-900 text-white relative overflow-hidden">
@@ -246,14 +266,19 @@ export default function AboutPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
-              About {SITE_NAME}
-            </h1>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-300 mb-1.5">
+                Our Story
+              </p>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight">
+                Why We Built {SITE_NAME}
+              </h1>
+            </div>
           </div>
           <p className="text-primary-100 text-base sm:text-lg leading-relaxed max-w-2xl">
-            We believe everyone deserves clear, unbiased information to make confident decisions —
-            whether you&apos;re choosing a smartphone, understanding world history, or settling a
-            debate with friends.
+            We spent years comparing things for the fun of it — economies, empires, athletes. Then we
+            tried to buy a coffee machine, and found there was no decent way to compare anything you
+            actually buy. So we built one.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
@@ -264,6 +289,175 @@ export default function AboutPage() {
       </div>
 
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* Founders — cards first, the way a reader wants it: who is behind this? */}
+      <section aria-labelledby="about-team-heading" className="mb-12">
+        <h2 id="about-team-heading" className="sr-only">The founders of {SITE_NAME}</h2>
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
+          {FOUNDERS.map((founder) => (
+            <li
+              key={founder.id}
+              id={founder.id}
+              className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md transition-all duration-150"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <Image
+                  src={founder.image}
+                  alt={founder.imageAlt}
+                  width={640}
+                  height={640}
+                  sizes="80px"
+                  className="w-20 h-20 rounded-full object-cover ring-2 ring-white shadow-sm shrink-0"
+                />
+                <div>
+                  <p className="font-display font-bold text-text text-lg leading-tight">{founder.name}</p>
+                  <p className="text-sm text-primary-600 font-semibold">{founder.jobTitle}</p>
+                  <p className="text-xs text-text-secondary mt-0.5">{founder.role}</p>
+                </div>
+              </div>
+
+              <p className="text-sm text-text-secondary leading-relaxed mb-5">{founder.bio}</p>
+
+              <a
+                href={whatsappLink(founder)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1eb959] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1eb959] transition-colors"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.174.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.896 9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885m8.413-18.297A11.82 11.82 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.88 11.88 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.82 11.82 0 0 0 20.464 3.488" />
+                </svg>
+                Connect on WhatsApp
+              </a>
+              <p className="text-[11px] text-text-secondary text-center mt-2">{founder.whatsappDisplay}</p>
+
+              <div className="flex items-center justify-center gap-3 mt-4 flex-wrap">
+                <a
+                  href={founder.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="text-xs text-primary-600 hover:underline font-medium"
+                >
+                  Facebook<span className="sr-only"> (opens in new tab)</span>
+                </a>
+                {founder.linkedin && (
+                  <>
+                    <span className="text-text-secondary text-xs" aria-hidden="true">·</span>
+                    <a
+                      href={founder.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer me"
+                      className="text-xs text-primary-600 hover:underline font-medium"
+                    >
+                      LinkedIn<span className="sr-only"> (opens in new tab)</span>
+                    </a>
+                  </>
+                )}
+                {founder.email && (
+                  <>
+                    <span className="text-text-secondary text-xs" aria-hidden="true">·</span>
+                    <a href={`mailto:${founder.email}`} className="text-xs text-primary-600 hover:underline font-medium">
+                      Email
+                    </a>
+                  </>
+                )}
+                {founder.authorPage && (
+                  <>
+                    <span className="text-text-secondary text-xs" aria-hidden="true">·</span>
+                    <Link href={founder.authorPage} className="text-xs text-primary-600 hover:underline font-medium">
+                      Author page
+                    </Link>
+                  </>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Origin story */}
+      <section aria-labelledby="about-story-heading" className="mb-12">
+        <h2 id="about-story-heading" className="text-2xl font-display font-bold text-text mb-5">
+          It started as an argument we kept having
+        </h2>
+
+        <div className="space-y-4 text-text-secondary leading-relaxed">
+          <p>
+            We have been comparing things our whole lives. Which economy actually grew faster once you
+            look past the headline. Whether the Roman empire really outlasted the Ottoman one. Whether
+            Messi or Ronaldo has the better record when you strip out the noise. GDP against GDP, era
+            against era, player against player. None of it was work — it was the argument we kept
+            having, and the reason we kept opening twenty tabs to settle it.
+          </p>
+          <p>
+            Then one of us went to buy a coffee machine.
+          </p>
+          <p>
+            That is where curiosity turned into frustration. Two espresso machines, an hour of
+            reading, and still no way to put them side by side and see what actually differed. The
+            same thing happened with a phone. Then a laptop, a monitor, a pair of headphones. Every
+            search returned the same three things: a review that was really an affiliate pitch, a
+            forum thread from four years ago, or a spec sheet with no opinion attached to it.
+          </p>
+        </div>
+
+        <blockquote className="my-7 border-l-4 border-primary-500 pl-5 py-1">
+          <p className="text-lg sm:text-xl font-display font-semibold text-text leading-snug">
+            The comparisons we found for free were never honest, and the honest ones were never free.
+          </p>
+        </blockquote>
+
+        <div className="space-y-4 text-text-secondary leading-relaxed">
+          <p>
+            So we built the thing we kept looking for. {SITE_NAME} puts two things next to each other —
+            the specs, the price, the trade-offs — and then commits to an answer. Not a ranked list of
+            affiliate links. An actual verdict, with the reasoning shown, on whatever you want to put
+            head to head: coffee machines and phones, but also countries, athletes, empires and ideas.
+          </p>
+          <p>
+            It is free, and it stays free. We are not going to gate the answer to a question we spent
+            years being annoyed we could not answer ourselves.
+          </p>
+        </div>
+      </section>
+
+      {/* Scan2Remember — the other company, and why it belongs on this page */}
+      <section aria-labelledby="about-s2r-heading" className="mb-12">
+        <div className="bg-surface-alt border border-border rounded-2xl p-6 sm:p-7">
+          <h2 id="about-s2r-heading" className="text-xl font-display font-bold text-text mb-3">
+            Every site we build starts with something personal
+          </h2>
+          <p className="text-text-secondary leading-relaxed mb-4">
+            {SITE_NAME} is the second company we have built together. The first is{" "}
+            <a
+              href={SCAN2REMEMBER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 font-medium hover:underline"
+            >
+              Scan2Remember
+            </a>
+            , which gives families a free digital memorial page and a QR plaque for a grave or urn.
+            That one came from loss — Daniel had lost his mother, Shai his grandfather, and neither of
+            us could find a way to keep a whole life in one place.
+          </p>
+          <p className="text-text-secondary leading-relaxed">
+            Same instinct, different feeling. Scan2Remember came out of grief. {SITE_NAME} came out of
+            curiosity. Both exist because we went looking for something, could not find it, and were
+            stubborn enough to build it.{" "}
+            <a
+              href={SCAN2REMEMBER_ABOUT}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 font-medium hover:underline"
+            >
+              Read that story
+              <span className="sr-only"> on Scan2Remember (opens in new tab)</span>
+            </a>
+            .
+          </p>
+        </div>
+      </section>
 
       {/* Mission */}
       <section aria-labelledby="about-mission-heading" className="mb-12">
@@ -287,7 +481,7 @@ export default function AboutPage() {
           on any topic that matters to them.
         </p>
         <p className="text-text-secondary leading-relaxed">
-          From Messi vs. Ronaldo to Japan vs. China, from the iPhone to the latest Android flagship,
+          From Messi vs. Ronaldo to Japan vs. China, from the iPhone to the latest Android flagship,{" "}
           {SITE_NAME} surfaces the facts that matter most — organized, visual, and instantly understandable.
         </p>
       </section>
@@ -458,94 +652,6 @@ export default function AboutPage() {
               <span className="text-sm font-medium text-text">{item.label}</span>
             </li>
           ))}
-        </ul>
-      </section>
-
-      {/* Founders */}
-      <section aria-labelledby="about-team-heading" className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-          <h2 id="about-team-heading" className="text-2xl font-display font-bold text-text">Who We Are</h2>
-        </div>
-        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-6 list-none">
-          {/* Daniel */}
-          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
-                DR
-              </div>
-              <div>
-                <p className="font-semibold text-text">Daniel Rozin</p>
-                <p className="text-sm text-text-secondary">Founder &amp; Editor-in-Chief</p>
-              </div>
-            </div>
-            <p className="text-sm text-text-secondary leading-relaxed mb-4">
-              Daniel started {SITE_NAME} out of a lifelong curiosity about comparing things — from economics
-              and history to sports, technology, and products. When he couldn&apos;t find a single tool that
-              let him explore all those comparisons in one place, he decided to build it himself.
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://www.linkedin.com/in/daniel-rozin-56a066b0/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                LinkedIn<span className="sr-only"> (opens in new tab)</span>
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <a
-                href="https://www.facebook.com/daniel.rozin.94"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Facebook<span className="sr-only"> (opens in new tab)</span>
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <Link href="/authors/daniel-rozin" className="text-xs text-primary-600 hover:underline font-medium">
-                Author page
-              </Link>
-            </div>
-          </li>
-          {/* Shai */}
-          <li className="bg-surface-alt border border-border rounded-2xl p-6 hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-xl font-display font-black text-white shrink-0 ring-2 ring-white shadow-sm">
-                SA
-              </div>
-              <div>
-                <p className="font-semibold text-text">Shai And</p>
-                <p className="text-sm text-text-secondary">Co-Founder &amp; CTO</p>
-              </div>
-            </div>
-            <p className="text-sm text-text-secondary leading-relaxed mb-4">
-              Shai is the technical co-founder and engineering lead. He designed and built the platform&apos;s
-              infrastructure, data pipeline, and AI integration layer. Daniel and Shai have worked
-              together since the beginning, combining curiosity with engineering to make the idea real.
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://www.facebook.com/shai.and1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Facebook<span className="sr-only"> (opens in new tab)</span>
-              </a>
-              <span className="text-text-secondary text-xs">·</span>
-              <a
-                href="mailto:Shai.and1@gmail.com"
-                className="text-xs text-primary-600 hover:underline font-medium"
-              >
-                Email
-              </a>
-            </div>
-          </li>
         </ul>
       </section>
 
