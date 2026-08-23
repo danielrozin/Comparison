@@ -126,6 +126,11 @@ export default async function sitemap({
       { url: `${SITE_URL}/how-we-write-verdicts`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/who-is-this-for`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       { url: `${SITE_URL}/requests`, lastModified: ABOUT_DATE, changeFrequency: "weekly", priority: 0.5 },
+      // Hub index pages — targets of breadcrumb JSON-LD across the site
+      { url: `${SITE_URL}/category`, lastModified: maxComparisonDate, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/entity`, lastModified: maxComparisonDate, changeFrequency: "weekly", priority: 0.6 },
+      { url: `${SITE_URL}/best`, lastModified: maxComparisonDate, changeFrequency: "weekly", priority: 0.7 },
+      { url: `${SITE_URL}/authors`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       // Author page
       { url: `${SITE_URL}/authors/daniel-rozin`, lastModified: ABOUT_DATE, changeFrequency: "monthly", priority: 0.5 },
       // FAQ competitor comparison pages
