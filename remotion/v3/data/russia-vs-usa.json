@@ -1,0 +1,129 @@
+{
+  "title": "Russia vs USA",
+  "entityA": "Russia",
+  "entityB": "United States",
+  "category": "countries",
+  "shortAnswer": "The USA has a vastly larger economy ($25.5T vs $1.9T) and more global influence. Russia has more nuclear warheads (6,257 vs 5,550), the world's largest land area, and vast natural resources including oil and gas.",
+  "stats": [
+    {
+      "label": "GDP",
+      "valueA": "$1.9T",
+      "valueB": "$25.5T",
+      "winner": "b"
+    },
+    {
+      "label": "Nuclear Warheads",
+      "valueA": "6,257",
+      "valueB": "5,550",
+      "winner": "a"
+    },
+    {
+      "label": "Land Area",
+      "valueA": "17.1M km²",
+      "valueB": "9.8M km²",
+      "winner": "a"
+    },
+    {
+      "label": "Military Budget",
+      "valueA": "$86B",
+      "valueB": "$877B",
+      "winner": "b"
+    }
+  ],
+  "verdict": "The USA dominates economically and diplomatically. Russia's strengths lie in its nuclear arsenal, natural resources, and geographic size.",
+  "slug": "russia-vs-usa",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One country outspends the other ten to one on defense. It still can't sleep easy.",
+    "tape": "America buys power. Russia inherited it, in land and in warheads.",
+    "rounds": [
+      "America's economy is thirteen Russias. That gap decides most fights before they start.",
+      "Russia keeps 707 more warheads than anyone else on Earth. That's the whole argument.",
+      "Russia is nearly two Americas of ground. Nobody has ever conquered all of it.",
+      "$877B against $86B. America spends more on defense than Russia's entire economy earns."
+    ],
+    "verdict": "Tied on paper, and the money wins. Pick Russia if geography and warheads outrank cash."
+  },
+  "audio": {
+    "cold": "video-assets/russia-vs-usa/audio/cold.mp3",
+    "tape": "video-assets/russia-vs-usa/audio/tape.mp3",
+    "rounds": [
+      "video-assets/russia-vs-usa/audio/round-1.mp3",
+      "video-assets/russia-vs-usa/audio/round-2.mp3",
+      "video-assets/russia-vs-usa/audio/round-3.mp3",
+      "video-assets/russia-vs-usa/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/russia-vs-usa/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 185,
+    "tape": 180,
+    "rounds": [
+      202,
+      231,
+      170,
+      272
+    ],
+    "verdict": 209,
+    "leadInFrames": 9
+  },
+  "transcript": "One country outspends the other ten to one on defense. It still can't sleep easy. America buys power. Russia inherited it, in land and in warheads. America's economy is thirteen Russias. That gap decides most fights before they start. Russia keeps 707 more warheads than anyone else on Earth. That's the whole argument. Russia is nearly two Americas of ground. Nobody has ever conquered all of it. $877B against $86B. America spends more on defense than Russia's entire economy earns. Tied on paper, and the money wins. Pick Russia if geography and warheads outrank cash.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One country outspends the other ten to one on defense. It still can't sleep easy.",
+      "startOffset": 0,
+      "endOffset": 6.178979999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "America buys power. Russia inherited it, in land and in warheads.",
+      "startOffset": 6.178979999999999,
+      "endOffset": 12.175101999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "America's economy is thirteen Russias. That gap decides most fights before they start.",
+      "startOffset": 12.175101999999999,
+      "endOffset": 18.902653
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Russia keeps 707 more warheads than anyone else on Earth. That's the whole argument.",
+      "startOffset": 18.902653,
+      "endOffset": 26.596735000000002
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Russia is nearly two Americas of ground. Nobody has ever conquered all of it.",
+      "startOffset": 26.596735000000002,
+      "endOffset": 32.279388000000004
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "$877B against $86B. America spends more on defense than Russia's entire economy earns.",
+      "startOffset": 32.279388000000004,
+      "endOffset": 41.33183700000001
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Tied on paper, and the money wins. Pick Russia if geography and warheads outrank cash.",
+      "startOffset": 41.33183700000001,
+      "endOffset": 48.29449000000001
+    }
+  ],
+  "youtubeTitle": "Russia vs United States: The Comparison That Ends 2-2",
+  "youtubeDescription": "Russia and the United States compared on GDP, nuclear warheads, land area and military budget. America holds a $25.5T economy and an $877B defense budget, while Russia leads with 6,257 warheads and 17.1 million square kilometers. The score finishes level, so we make the call.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/russia-vs-usa",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

@@ -1,0 +1,113 @@
+{
+  "title": "Mac vs Windows",
+  "entityA": "Mac (macOS)",
+  "entityB": "Windows",
+  "category": "technology",
+  "shortAnswer": "Mac (macOS) excels in creative workflows, build quality, and security. Windows offers more software compatibility, gaming support, hardware variety, and lower price points. Mac runs on Apple Silicon which is very power-efficient.",
+  "stats": [
+    {
+      "label": "Market Share (Desktop)",
+      "valueA": "16%",
+      "valueB": "72%",
+      "winner": "b"
+    },
+    {
+      "label": "Malware Risk",
+      "valueA": "Very Low",
+      "valueB": "Higher",
+      "winner": "tie"
+    },
+    {
+      "label": "Gaming Library",
+      "valueA": "Limited",
+      "valueB": "Largest",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "Mac for creative professionals and Apple ecosystem users. Windows for gamers, enterprise, and budget-conscious buyers.",
+  "slug": "mac-vs-windows",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Windows runs on 72 percent of desktops. Mac gets 16. That gap decides everything.",
+    "tape": "One built the world's software library. The other built a quieter, safer machine.",
+    "rounds": [
+      "72 against 16. Developers build for the crowd, and the crowd runs Windows.",
+      "Mac's malware risk stays very low, partly because attackers chase the bigger target.",
+      "The largest game library on earth, and Mac barely gets an invitation."
+    ],
+    "verdict": "Windows takes it on points. Pick Mac if you create for a living."
+  },
+  "audio": {
+    "cold": "video-assets/mac-vs-windows/audio/cold.mp3",
+    "tape": "video-assets/mac-vs-windows/audio/tape.mp3",
+    "rounds": [
+      "video-assets/mac-vs-windows/audio/round-1.mp3",
+      "video-assets/mac-vs-windows/audio/round-2.mp3",
+      "video-assets/mac-vs-windows/audio/round-3.mp3"
+    ],
+    "verdict": "video-assets/mac-vs-windows/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 240,
+    "tape": 178,
+    "rounds": [
+      204,
+      188,
+      161
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Windows runs on 72 percent of desktops. Mac gets 16. That gap decides everything. One built the world's software library. The other built a quieter, safer machine. 72 against 16. Developers build for the crowd, and the crowd runs Windows. Mac's malware risk stays very low, partly because attackers chase the bigger target. The largest game library on earth, and Mac barely gets an invitation. Windows takes it on points. Pick Mac if you create for a living.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Windows runs on 72 percent of desktops. Mac gets 16. That gap decides everything.",
+      "startOffset": 0,
+      "endOffset": 8.007551
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One built the world's software library. The other built a quieter, safer machine.",
+      "startOffset": 8.007551,
+      "endOffset": 13.925305999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "72 against 16. Developers build for the crowd, and the crowd runs Windows.",
+      "startOffset": 13.925305999999999,
+      "endOffset": 20.731223999999997
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Mac's malware risk stays very low, partly because attackers chase the bigger target.",
+      "startOffset": 20.731223999999997,
+      "endOffset": 26.988570999999997
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "The largest game library on earth, and Mac barely gets an invitation.",
+      "startOffset": 26.988570999999997,
+      "endOffset": 32.357755
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Windows takes it on points. Pick Mac if you create for a living.",
+      "startOffset": 32.357755,
+      "endOffset": 38.857755
+    }
+  ],
+  "youtubeTitle": "Mac vs Windows: The 72 Percent Problem",
+  "youtubeDescription": "Head to head on desktop market share, malware risk, and gaming library size. Windows dominates on reach and games, macOS holds the security edge. Here's which one actually fits how you work.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mac-vs-windows",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

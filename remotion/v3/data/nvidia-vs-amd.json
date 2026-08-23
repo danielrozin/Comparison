@@ -1,0 +1,154 @@
+{
+  "title": "NVIDIA vs AMD",
+  "entityA": "NVIDIA",
+  "entityB": "AMD",
+  "category": "technology",
+  "shortAnswer": "NVIDIA dominates the high-end GPU market and AI computing with its RTX series and CUDA platform. AMD offers better value-per-dollar, competitive mid-range GPUs, and also makes CPUs (Ryzen) that lead in multi-threaded performance.",
+  "stats": [
+    {
+      "label": "AI Compute",
+      "valueA": "Dominant",
+      "valueB": "Growing",
+      "winner": "a"
+    },
+    {
+      "label": "Value for Money",
+      "valueA": "Premium",
+      "valueB": "Excellent",
+      "winner": "b"
+    },
+    {
+      "label": "Market Cap",
+      "valueA": "$2.5T+",
+      "valueB": "$250B",
+      "winner": "a"
+    },
+    {
+      "label": "CPU Market",
+      "valueA": "None",
+      "valueB": "Leading",
+      "winner": "b"
+    }
+  ],
+  "verdict": "NVIDIA for top-tier performance and AI. AMD for value and CPU+GPU combo. NVIDIA leads the AI revolution; AMD is the value champion.",
+  "slug": "nvidia-vs-amd",
+  "imageA": {
+    "url": "video-assets/nvidia-vs-amd/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/2788-2888_San_Tomas_Expwy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 4914,
+    "height": 3306,
+    "credit": "Coolcaesar",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:2788-2888_San_Tomas_Expwy.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/2788-2888_San_Tomas_Expwy.jpg/3840px-2788-2888_San_Tomas_Expwy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "imageB": {
+    "url": "video-assets/nvidia-vs-amd/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/1/11/2485_Augustine_Drive_headquarters_in_Santa_Clara%2C_California.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 4312,
+    "height": 3188,
+    "credit": "Coolcaesar",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:2485_Augustine_Drive_headquarters_in_Santa_Clara,_California.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/2485_Augustine_Drive_headquarters_in_Santa_Clara%2C_California.jpg/3840px-2485_Augustine_Drive_headquarters_in_Santa_Clara%2C_California.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "lines": {
+    "hook": "One of these companies is worth ten of the other. It wasn't always.",
+    "tape": "NVIDIA sells the future at full price. AMD sells today's performance at a discount.",
+    "rounds": [
+      "AI compute is NVIDIA's kingdom. AMD is knocking, but the door's still shut.",
+      "AMD gives you more frames per dollar. NVIDIA charges you for the badge.",
+      "A $2.5 trillion valuation versus $250 billion. The market picked a winner already.",
+      "AMD builds the CPU too. NVIDIA doesn't even show up to that fight."
+    ],
+    "verdict": "Two apiece, honestly tied. Want AI and the ceiling? NVIDIA. Building a whole PC? AMD."
+  },
+  "audio": {
+    "cold": "video-assets/nvidia-vs-amd/audio/cold.mp3",
+    "tape": "video-assets/nvidia-vs-amd/audio/tape.mp3",
+    "rounds": [
+      "video-assets/nvidia-vs-amd/audio/round-1.mp3",
+      "video-assets/nvidia-vs-amd/audio/round-2.mp3",
+      "video-assets/nvidia-vs-amd/audio/round-3.mp3",
+      "video-assets/nvidia-vs-amd/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/nvidia-vs-amd/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 163,
+    "tape": 195,
+    "rounds": [
+      195,
+      163,
+      262,
+      170
+    ],
+    "verdict": 279,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these companies is worth ten of the other. It wasn't always. NVIDIA sells the future at full price. AMD sells today's performance at a discount. AI compute is NVIDIA's kingdom. AMD is knocking, but the door's still shut. AMD gives you more frames per dollar. NVIDIA charges you for the badge. A $2.5 trillion valuation versus $250 billion. The market picked a winner already. AMD builds the CPU too. NVIDIA doesn't even show up to that fight. Two apiece, honestly tied. Want AI and the ceiling? NVIDIA. Building a whole PC? AMD.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these companies is worth ten of the other. It wasn't always.",
+      "startOffset": 0,
+      "endOffset": 5.447551
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "NVIDIA sells the future at full price. AMD sells today's performance at a discount.",
+      "startOffset": 5.447551,
+      "endOffset": 11.94
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "AI compute is NVIDIA's kingdom. AMD is knocking, but the door's still shut.",
+      "startOffset": 11.94,
+      "endOffset": 18.432449
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "AMD gives you more frames per dollar. NVIDIA charges you for the badge.",
+      "startOffset": 18.432449,
+      "endOffset": 23.88
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "A $2.5 trillion valuation versus $250 billion. The market picked a winner already.",
+      "startOffset": 23.88,
+      "endOffset": 32.61898
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "AMD builds the CPU too. NVIDIA doesn't even show up to that fight.",
+      "startOffset": 32.61898,
+      "endOffset": 38.301633
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Two apiece, honestly tied. Want AI and the ceiling? NVIDIA. Building a whole PC? AMD.",
+      "startOffset": 38.301633,
+      "endOffset": 47.589184
+    }
+  ],
+  "youtubeTitle": "NVIDIA vs AMD: Who Actually Wins on the Numbers",
+  "youtubeDescription": "A head-to-head between NVIDIA and AMD across AI compute, value for money, market cap, and the CPU market. NVIDIA runs away with AI dominance and a $2.5 trillion valuation, while AMD counters with better price-to-performance and a CPU business NVIDIA doesn't have. The score ends level, so here's how to actually pick.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/nvidia-vs-amd",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Coolcaesar (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:2788-2888_San_Tomas_Expwy.jpg",
+    "Image B by Coolcaesar (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:2485_Augustine_Drive_headquarters_in_Santa_Clara,_California.jpg"
+  ]
+}
