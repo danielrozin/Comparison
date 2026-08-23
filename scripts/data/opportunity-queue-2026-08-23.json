@@ -1,0 +1,1727 @@
+{
+  "generatedAt": "2026-08-23",
+  "source": "DataForSEO Labs keyword_ideas + keyword_suggestions (US/en), verified against live google/organic top 10",
+  "note": "Build queue only. All generation paths are gated behind GENERATION_FREEZE (DAN-2157); nothing here has been published.",
+  "funnel": {
+    "keywordsScanned": 14739,
+    "comparisonQueries": 2657,
+    "pageClusters": 917,
+    "serpVerified": 68,
+    "livePagesToday": 290,
+    "dropped": {
+      "notComparison": 9430,
+      "fixture": 782,
+      "junk": 198,
+      "spiky": 283,
+      "badEntity": 88,
+      "existing": 66,
+      "lowVol": 1235
+    }
+  },
+  "tiers": {
+    "buildFirst": {
+      "criteria": "non-YMYL, <=2 major publishers in live top 10",
+      "count": 33,
+      "totalSearchVolume": 1585220,
+      "pages": [
+        {
+          "slug": "fidelity-vs-schwab",
+          "headKeyword": "fidelity vs schwab",
+          "searchVolume": 64520,
+          "cpc": 17.79,
+          "majorsInTop10": 2,
+          "forumsInTop10": 2,
+          "queriesCovered": 12,
+          "topDomains": [
+            "reddit.com",
+            "nerdwallet.com",
+            "masudalehrman.com",
+            "whitecoatinvestor.com",
+            "unbiased.com"
+          ],
+          "category": "finance",
+          "score": 224.83,
+          "variants": [
+            "fidelity vs schwab",
+            "fidelity investments vs schwab",
+            "charles schwab vs fidelity",
+            "fidelity investments vs charles schwab",
+            "schwab vs fidelity",
+            "fidelity vs charles schwab",
+            "schwab vs fidelity roth ira",
+            "fidelity vs charles schwab roth ira",
+            "roth ira fidelity vs charles schwab",
+            "fidelity vs schwab roth ira",
+            "roth ira schwab vs fidelity",
+            "charles schwab vs fidelity roth ira"
+          ]
+        },
+        {
+          "slug": "doctorate-vs-phd",
+          "headKeyword": "phd vs doctorate",
+          "searchVolume": 138600,
+          "cpc": 20.32,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 14,
+          "topDomains": [
+            "uagc.edu",
+            "reddit.com",
+            "capella.edu",
+            "phdportal.com",
+            "waldenu.edu"
+          ],
+          "category": "education",
+          "score": 215.39,
+          "variants": [
+            "phd vs doctorate",
+            "phd vs doctorate degree",
+            "doctorate vs phd degree",
+            "doctoral degree vs phd",
+            "doctorates vs phd",
+            "phd degree vs doctorate",
+            "doctoral vs phd degree",
+            "doctoral vs phd",
+            "doctorate vs phd",
+            "doctorate degree vs phd",
+            "phd vs doctoral degree",
+            "phd vs doctor",
+            "doctor vs phd",
+            "doctor degree vs phd"
+          ]
+        },
+        {
+          "slug": "fidelity-vs-schwab-vs-vanguard",
+          "headKeyword": "vanguard vs fidelity vs schwab",
+          "searchVolume": 35200,
+          "cpc": 24.03,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 8,
+          "topDomains": [
+            "reddit.com",
+            "masudalehrman.com",
+            "smartasset.com",
+            "unbiased.com",
+            "nerdwallet.com"
+          ],
+          "category": "finance",
+          "score": 212.58,
+          "variants": [
+            "vanguard vs fidelity vs schwab",
+            "fidelity vs schwab vs vanguard",
+            "vanguard vs schwab vs fidelity",
+            "vanguard vs charles schwab vs fidelity",
+            "schwab vs vanguard vs fidelity",
+            "charles schwab vs fidelity vs vanguard",
+            "schwab vs fidelity vs vanguard",
+            "fidelity vs vanguard vs schwab"
+          ]
+        },
+        {
+          "slug": "masters-vs-phd",
+          "headKeyword": "master degree vs phd",
+          "searchVolume": 25200,
+          "cpc": 5.55,
+          "majorsInTop10": 0,
+          "forumsInTop10": 3,
+          "queriesCovered": 7,
+          "topDomains": [
+            "reddit.com",
+            "ucla.edu",
+            "ets.org",
+            "collegeessayguy.com",
+            "youtube.com"
+          ],
+          "category": "phd vs",
+          "score": 204.96,
+          "variants": [
+            "master degree vs phd",
+            "phd vs masters",
+            "phd vs master",
+            "phd vs master's",
+            "masters vs phd",
+            "phd vs ms",
+            "ms vs phd"
+          ]
+        },
+        {
+          "slug": "lunar-eclipse-vs-solar-eclipse",
+          "headKeyword": "lunar vs solar eclipse",
+          "searchVolume": 79200,
+          "cpc": 7.9,
+          "majorsInTop10": 1,
+          "forumsInTop10": 3,
+          "queriesCovered": 8,
+          "topDomains": [
+            "spaceplace.nasa.gov",
+            "perlan.is",
+            "reddit.com",
+            "britannica.com",
+            "helioclipse.com"
+          ],
+          "category": "solar vs",
+          "score": 200.67,
+          "variants": [
+            "lunar vs solar eclipse",
+            "solar eclipse vs lunar",
+            "eclipse solar vs eclipse lunar",
+            "solar eclipse vs lunar eclipse",
+            "lunar eclipse vs solar",
+            "lunar eclipse vs solar eclipse",
+            "solar vs lunar eclipse",
+            "eclipse solar vs lunar"
+          ]
+        },
+        {
+          "slug": "associate-degree-vs-bachelors-degree",
+          "headKeyword": "associate degree vs bachelor's degree",
+          "searchVolume": 26440,
+          "cpc": 26.67,
+          "majorsInTop10": 0,
+          "forumsInTop10": 3,
+          "queriesCovered": 7,
+          "topDomains": [
+            "snhu.edu",
+            "reddit.com",
+            "pennfoster.edu",
+            "youtube.com",
+            "bachelors-completion.northeastern.edu"
+          ],
+          "category": "associate degree vs",
+          "score": 199.7,
+          "variants": [
+            "associate degree vs bachelor degree",
+            "associate degree vs bachelor's degree",
+            "bachelor vs associate degree",
+            "associate degree vs bachelor's",
+            "associate degree vs bachelor",
+            "associate vs bachelor degree",
+            "associate vs bachelor's degree"
+          ]
+        },
+        {
+          "slug": "delta-business-class-vs-delta-first-class",
+          "headKeyword": "business class vs first class delta",
+          "searchVolume": 6160,
+          "cpc": 6.43,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 7,
+          "topDomains": [
+            "delta.com",
+            "reddit.com",
+            "notesfromeurope.com",
+            "cbsnews.com"
+          ],
+          "category": "delta vs",
+          "score": 198.34,
+          "variants": [
+            "business class vs first class delta",
+            "delta first class vs business class",
+            "business vs first class delta",
+            "delta business vs first class",
+            "delta first class vs business",
+            "delta business class vs first class",
+            "first class vs business class delta"
+          ]
+        },
+        {
+          "slug": "mba-vs-ms-finance",
+          "headKeyword": "masters of finance vs mba",
+          "searchVolume": 18960,
+          "cpc": 23.96,
+          "majorsInTop10": 1,
+          "forumsInTop10": 1,
+          "queriesCovered": 23,
+          "topDomains": [
+            "reddit.com",
+            "investopedia.com",
+            "phoenix.edu",
+            "gmac.com",
+            "indeed.com"
+          ],
+          "category": "mba vs",
+          "score": 198.22,
+          "variants": [
+            "masters of finance vs mba",
+            "mba vs masters in finance",
+            "mba in finance vs masters in finance",
+            "masters in finance vs mba",
+            "master in finance vs mba",
+            "masters finance vs mba",
+            "mba vs masters finance",
+            "masters degree in finance vs mba",
+            "master of finance vs mba",
+            "mba vs master of finance",
+            "masters in finance vs mba in finance",
+            "ms finance vs mba",
+            "mba vs ms in finance",
+            "ms vs mba in finance",
+            "ms in finance vs mba in finance",
+            "ms in finance vs mba",
+            "mba vs ms finance",
+            "mba in finance vs ms in finance",
+            "mba finance vs ms finance",
+            "msc finance vs mba",
+            "mba vs msc finance",
+            "msc in finance vs mba",
+            "msc finance vs mba finance"
+          ]
+        },
+        {
+          "slug": "slack-vs-teams",
+          "headKeyword": "slack vs teams",
+          "searchVolume": 4980,
+          "cpc": 8.39,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 4,
+          "topDomains": [
+            "reddit.com",
+            "slack.com",
+            "chanty.com",
+            "proofhub.com",
+            "zapier.com"
+          ],
+          "category": "slack vs",
+          "score": 197.44,
+          "variants": [
+            "slack vs teams",
+            "slack vs team",
+            "teams vs slack",
+            "team vs slack"
+          ]
+        },
+        {
+          "slug": "granite-countertops-vs-quartz",
+          "headKeyword": "quartz vs granite countertops",
+          "searchVolume": 250580,
+          "cpc": 1.34,
+          "majorsInTop10": 1,
+          "forumsInTop10": 1,
+          "queriesCovered": 62,
+          "topDomains": [
+            "reddit.com",
+            "arcsurfaces.com",
+            "homedepot.com",
+            "thestonecollection.com",
+            "universalmgranite.net"
+          ],
+          "category": "quartz vs",
+          "score": 197.33,
+          "variants": [
+            "quartz vs granite countertops",
+            "granite countertops vs quartz countertops",
+            "quartz vs granite for countertops",
+            "granite vs quartz for countertops",
+            "quartz countertops vs granite",
+            "countertops quartz vs granite",
+            "countertop granite vs quartz",
+            "granite vs quartz countertops",
+            "granite vs quartz countertop",
+            "granite countertop vs quartz",
+            "countertops granite vs quartz",
+            "quartz countertop vs granite countertop",
+            "quartz countertops vs granite countertops",
+            "countertop quartz vs granite",
+            "quartz vs granite",
+            "granite vs quartz",
+            "granite vs quartz price",
+            "quartz vs granite prices",
+            "quartz vs granite cost",
+            "price quartz vs granite",
+            "quartz vs granite price",
+            "quartz price vs granite",
+            "granite prices vs quartz",
+            "price of granite vs quartz",
+            "price for quartz vs granite",
+            "quartz vs granite costs",
+            "quartz prices vs granite",
+            "cost quartz vs granite",
+            "price granite vs quartz",
+            "granite price vs quartz",
+            "cost granite vs quartz",
+            "price of quartz vs granite",
+            "granite vs quartz cost",
+            "cost of quartz vs granite",
+            "quartz countertop vs granite",
+            "granite countertops vs quartz",
+            "costs of quartz vs granite countertops",
+            "price of quartz countertops vs granite",
+            "quartz countertops vs granite cost",
+            "cost of granite vs quartz countertops",
+            "quartz countertops vs granite countertops price",
+            "quartz vs granite countertop price",
+            "quartz countertop vs granite cost",
+            "quartz vs granite countertop cost",
+            "granite vs quartz countertops price",
+            "quartz countertops price vs granite",
+            "price of quartz vs granite countertops",
+            "cost of quartz countertops vs granite",
+            "countertop quartz vs granite price",
+            "quartz countertops vs granite price",
+            "cost of granite countertops vs quartz",
+            "cost of quartz vs granite countertops",
+            "costs quartz vs granite countertops",
+            "countertop cost quartz vs granite",
+            "quartz vs granite countertops price",
+            "granite countertops vs quartz cost",
+            "granite countertops cost vs quartz",
+            "granite countertops vs quartz countertops cost",
+            "granite countertops vs quartz price",
+            "granite vs quartz countertops cost",
+            "cost quartz countertops vs granite",
+            "countertops quartz vs granite cost"
+          ]
+        },
+        {
+          "slug": "tank-vs-tankless-water-heater",
+          "headKeyword": "tank vs tankless water heater",
+          "searchVolume": 92620,
+          "cpc": 2.8,
+          "majorsInTop10": 1,
+          "forumsInTop10": 2,
+          "queriesCovered": 13,
+          "topDomains": [
+            "reddit.com",
+            "marrsheating.com",
+            "4abc.com",
+            "consumerreports.org",
+            "facebook.com"
+          ],
+          "category": "tankless water heater vs",
+          "score": 195.23,
+          "variants": [
+            "tank vs tankless water heater",
+            "tankless vs tank water heater",
+            "water heater tank vs tankless",
+            "tankless water heater vs tank water heater",
+            "tankless water heater vs tank heater",
+            "tank water heater vs tankless",
+            "water heater tankless vs tank",
+            "tank water heater vs tankless water heater",
+            "tankless water heater vs tank",
+            "tank vs tankless water heater cost",
+            "tankless water heater vs tank cost",
+            "tankless water heater cost vs tank",
+            "tankless vs tank water heater cost"
+          ]
+        },
+        {
+          "slug": "chatgpt-vs-gemini",
+          "headKeyword": "gemini vs chatgpt",
+          "searchVolume": 24700,
+          "cpc": 4.06,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 2,
+          "topDomains": [
+            "reddit.com",
+            "zapier.com",
+            "gurusup.com",
+            "pcmag.com",
+            "datacamp.com"
+          ],
+          "category": "technology",
+          "score": 194.5,
+          "variants": [
+            "gemini vs chatgpt",
+            "chatgpt vs gemini"
+          ]
+        },
+        {
+          "slug": "mba-vs-masters",
+          "headKeyword": "mba vs ms",
+          "searchVolume": 14760,
+          "cpc": 26.02,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 12,
+          "topDomains": [
+            "reddit.com",
+            "coursera.org",
+            "charteroak.edu",
+            "rowanblog.com",
+            "snhu.edu"
+          ],
+          "category": "mba vs",
+          "score": 193.71,
+          "variants": [
+            "mba vs ms",
+            "ms degree vs mba",
+            "mba vs ms degree",
+            "ms vs mba",
+            "ms vs mba degree",
+            "master vs mba",
+            "master degree vs mba",
+            "masters vs mba degree",
+            "mba vs master",
+            "masters of science vs mba",
+            "mba vs master of science",
+            "master of science vs mba"
+          ]
+        },
+        {
+          "slug": "airbnb-vs-vrbo",
+          "headKeyword": "vrbo vs airbnb",
+          "searchVolume": 16500,
+          "cpc": 11.65,
+          "majorsInTop10": 0,
+          "forumsInTop10": 3,
+          "queriesCovered": 2,
+          "topDomains": [
+            "reddit.com",
+            "facebook.com",
+            "bemytravelmuse.com",
+            "unsaltedvacations.com",
+            "youtube.com"
+          ],
+          "category": "travel",
+          "score": 193.4,
+          "variants": [
+            "vrbo vs airbnb",
+            "airbnb vs vrbo"
+          ]
+        },
+        {
+          "slug": "charles-schwab-vs-robinhood",
+          "headKeyword": "robinhood vs charles schwab",
+          "searchVolume": 7600,
+          "cpc": 15.17,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 4,
+          "topDomains": [
+            "reddit.com",
+            "nerdwallet.com",
+            "unbiased.com",
+            "archlending.com",
+            "schwab.com"
+          ],
+          "category": "robinhood vs",
+          "score": 193.12,
+          "variants": [
+            "robinhood vs charles schwab",
+            "charles schwab vs robinhood",
+            "schwab vs robinhood",
+            "robinhood vs schwab"
+          ]
+        },
+        {
+          "slug": "fidelity-vs-robinhood",
+          "headKeyword": "robinhood vs fidelity",
+          "searchVolume": 5800,
+          "cpc": 20.23,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 2,
+          "topDomains": [
+            "reddit.com",
+            "investopedia.com",
+            "nerdwallet.com",
+            "stockbrokers.com",
+            "wise.com"
+          ],
+          "category": "fidelity vs",
+          "score": 191.67,
+          "variants": [
+            "robinhood vs fidelity",
+            "fidelity vs robinhood"
+          ]
+        },
+        {
+          "slug": "creatine-hcl-vs-creatine-monohydrate",
+          "headKeyword": "monohydrate vs hydrochloride creatine",
+          "searchVolume": 208900,
+          "cpc": 1.16,
+          "majorsInTop10": 1,
+          "forumsInTop10": 1,
+          "queriesCovered": 13,
+          "topDomains": [
+            "pmc.ncbi.nlm.nih.gov",
+            "reddit.com",
+            "health.com",
+            "prosupps.com",
+            "cooperaerobics.com"
+          ],
+          "category": "creatine vs",
+          "score": 191.25,
+          "variants": [
+            "monohydrate vs hydrochloride creatine",
+            "hydrochloride creatine vs monohydrate",
+            "creatine hydrochloride vs monohydrate",
+            "creatine hcl vs creatine monohydrate",
+            "creatine monohydrate vs hydrochloride",
+            "hydrochloride vs monohydrate creatine",
+            "hcl creatine vs monohydrate",
+            "creatine monohydrate vs creatine hcl",
+            "creatine hcl vs monohydrate",
+            "creatine monohydrate vs creatine hydrochloride",
+            "monohydrate creatine vs hydrochloride",
+            "creatine monohydrate vs hcl",
+            "creatine hydrochloride vs creatine monohydrate"
+          ]
+        },
+        {
+          "slug": "doctorate-in-education-vs-phd",
+          "headKeyword": "phd vs doctorate in education",
+          "searchVolume": 9600,
+          "cpc": 14.39,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 4,
+          "topDomains": [
+            "drexel.edu",
+            "reddit.com",
+            "charlotte.northeastern.edu",
+            "belmont.edu",
+            "rossier.usc.edu"
+          ],
+          "category": "phd vs",
+          "score": 190.8,
+          "variants": [
+            "phd vs doctorate in education",
+            "phd vs doctorate education",
+            "education doctorate vs phd",
+            "doctorate of education vs phd"
+          ]
+        },
+        {
+          "slug": "squarespace-vs-wix-vs-wordpress",
+          "headKeyword": "squarespace vs wix vs wordpress",
+          "searchVolume": 3540,
+          "cpc": 10.11,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 6,
+          "topDomains": [
+            "reddit.com",
+            "tooltester.com",
+            "websitebuilderexpert.com",
+            "experte.com",
+            "liquidweb.com"
+          ],
+          "category": "squarespace vs",
+          "score": 190.23,
+          "variants": [
+            "squarespace vs wix vs wordpress",
+            "wordpress vs wix vs squarespace",
+            "wix vs wordpress vs squarespace",
+            "wix vs squarespace vs wordpress",
+            "wordpress vs squarespace vs wix",
+            "squarespace vs wordpress vs wix"
+          ]
+        },
+        {
+          "slug": "american-airlines-vs-delta",
+          "headKeyword": "american airline vs delta",
+          "searchVolume": 54000,
+          "cpc": 0,
+          "majorsInTop10": 1,
+          "forumsInTop10": 5,
+          "queriesCovered": 10,
+          "topDomains": [
+            "reddit.com",
+            "sanspotter.com",
+            "facebook.com",
+            "eyeoftheflyer.com",
+            "youtube.com"
+          ],
+          "category": "delta vs",
+          "score": 189.55,
+          "variants": [
+            "american airline vs delta",
+            "delta vs american airlines",
+            "delta airline vs american airline",
+            "american airlines vs delta",
+            "american airlines vs delta airlines",
+            "delta airlines vs american airlines",
+            "delta airlines vs american",
+            "aa vs delta",
+            "delta vs american",
+            "american vs delta"
+          ]
+        },
+        {
+          "slug": "magnesium-citrate-vs-magnesium-glycinate",
+          "headKeyword": "magnesium glycinate vs citrate",
+          "searchVolume": 296000,
+          "cpc": 0.62,
+          "majorsInTop10": 1,
+          "forumsInTop10": 0,
+          "queriesCovered": 4,
+          "topDomains": [
+            "healthfirsthagerstown.com",
+            "health.com",
+            "ubiehealth.com",
+            "traceminerals.com",
+            "naturemade.com"
+          ],
+          "category": "magnesium vs",
+          "score": 189.03,
+          "variants": [
+            "magnesium glycinate vs citrate",
+            "magnesium citrate vs magnesium glycinate",
+            "magnesium glycinate vs magnesium citrate",
+            "magnesium citrate vs glycinate"
+          ]
+        },
+        {
+          "slug": "quickbooks-desktop-vs-quickbooks-online",
+          "headKeyword": "online quickbooks vs desktop",
+          "searchVolume": 13300,
+          "cpc": 17.8,
+          "majorsInTop10": 1,
+          "forumsInTop10": 1,
+          "queriesCovered": 7,
+          "topDomains": [
+            "reddit.com",
+            "quickbooks.intuit.com",
+            "tipalti.com",
+            "finoptimal.com",
+            "forbes.com"
+          ],
+          "category": "quickbooks vs",
+          "score": 188.03,
+          "variants": [
+            "online quickbooks vs desktop",
+            "online vs desktop quickbooks",
+            "desktop quickbooks vs online quickbooks",
+            "desktop vs online quickbooks",
+            "quickbooks desktop vs online",
+            "quickbooks online vs desktop",
+            "quickbooks desktop vs quickbooks online"
+          ]
+        },
+        {
+          "slug": "braces-vs-invisalign",
+          "headKeyword": "price of braces vs invisalign",
+          "searchVolume": 13200,
+          "cpc": 11.39,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 3,
+          "topDomains": [
+            "reddit.com",
+            "invisalign.com",
+            "atlantadentalspa.com",
+            "dentiquedentalcare.com",
+            "captaindental.com"
+          ],
+          "category": "invisalign vs",
+          "score": 185.41,
+          "variants": [
+            "price of braces vs invisalign",
+            "braces cost vs invisalign cost",
+            "invisalign vs braces costs"
+          ]
+        },
+        {
+          "slug": "creatine-micronized-vs-creatine-monohydrate",
+          "headKeyword": "micronized creatine vs monohydrate creatine",
+          "searchVolume": 48400,
+          "cpc": 1.96,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 11,
+          "topDomains": [
+            "livemomentous.com",
+            "reddit.com",
+            "infusd.tech",
+            "kaged.com",
+            "wellversed.in"
+          ],
+          "category": "creatine vs",
+          "score": 185.1,
+          "variants": [
+            "micronized creatine vs monohydrate creatine",
+            "creatine monohydrate vs micronized",
+            "micronized creatine vs monohydrate",
+            "creatine monohydrate vs creatine micronized",
+            "micronized creatine vs creatine monohydrate",
+            "monohydrate vs micronized creatine",
+            "creatine micronized vs monohydrate",
+            "monohydrate creatine vs micronized",
+            "creatine monohydrate vs micronized creatine",
+            "micronized vs monohydrate creatine",
+            "micronized creatine monohydrate vs creatine monohydrate"
+          ]
+        },
+        {
+          "slug": "gmat-vs-gre",
+          "headKeyword": "gmat vs gre mba",
+          "searchVolume": 4320,
+          "cpc": 11.91,
+          "majorsInTop10": 2,
+          "forumsInTop10": 2,
+          "queriesCovered": 6,
+          "topDomains": [
+            "reddit.com",
+            "princetonreview.com",
+            "gmac.com",
+            "ets.org",
+            "stacyblackman.com"
+          ],
+          "category": "mba vs",
+          "score": 184.86,
+          "variants": [
+            "gmat vs gre mba",
+            "gmat vs gre for mba",
+            "mba gre vs gmat",
+            "mba gmat vs gre",
+            "gre vs gmat mba",
+            "gre vs gmat for mba"
+          ]
+        },
+        {
+          "slug": "aws-vs-azure",
+          "headKeyword": "azure vs aws",
+          "searchVolume": 7200,
+          "cpc": 18.44,
+          "majorsInTop10": 1,
+          "forumsInTop10": 3,
+          "queriesCovered": 3,
+          "topDomains": [
+            "reddit.com",
+            "azure.microsoft.com",
+            "intercept.cloud",
+            "linkedin.com",
+            "fivetran.com"
+          ],
+          "category": "software",
+          "score": 184.75,
+          "variants": [
+            "azure vs aws",
+            "aws vs azure",
+            "aws vs azure vs"
+          ]
+        },
+        {
+          "slug": "phd-vs-scd",
+          "headKeyword": "scd degree vs phd",
+          "searchVolume": 2620,
+          "cpc": 13.96,
+          "majorsInTop10": 2,
+          "forumsInTop10": 3,
+          "queriesCovered": 4,
+          "topDomains": [
+            "reddit.com",
+            "en.wikipedia.org",
+            "pmc.ncbi.nlm.nih.gov",
+            "academia.stackexchange.com",
+            "quora.com"
+          ],
+          "category": "phd vs",
+          "score": 184.62,
+          "variants": [
+            "scd degree vs phd",
+            "phd vs scd",
+            "sc.d degree vs phd",
+            "scd vs phd"
+          ]
+        },
+        {
+          "slug": "charles-schwab-vs-etrade",
+          "headKeyword": "e-trade vs schwab",
+          "searchVolume": 3520,
+          "cpc": 17.2,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 4,
+          "topDomains": [
+            "reddit.com",
+            "nerdwallet.com",
+            "schwab.com",
+            "finance.yahoo.com",
+            "stockbrokers.com"
+          ],
+          "category": "schwab vs",
+          "score": 184.48,
+          "variants": [
+            "e-trade vs schwab",
+            "e-trade vs charles schwab",
+            "e trade vs charles schwab",
+            "e trade vs schwab"
+          ]
+        },
+        {
+          "slug": "mba-vs-mpa",
+          "headKeyword": "mba vs mpa degree",
+          "searchVolume": 2880,
+          "cpc": 25.78,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 4,
+          "topDomains": [
+            "reddit.com",
+            "franklin.edu",
+            "publicaffairs.northeastern.edu",
+            "publicpolicy.cornell.edu",
+            "online.lsu.edu"
+          ],
+          "category": "mba vs",
+          "score": 184.39,
+          "variants": [
+            "mba vs mpa degree",
+            "mpa vs mba",
+            "mpa vs mba degree",
+            "mba vs mpa"
+          ]
+        },
+        {
+          "slug": "delta-dental-ppo-vs-delta-dental-premier",
+          "headKeyword": "delta dental ppo vs delta dental premier",
+          "searchVolume": 6400,
+          "cpc": 6.08,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 4,
+          "topDomains": [
+            "deltadentalwa.com",
+            "deltadentalil.com",
+            "www1.deltadentalins.com",
+            "content.copera.org",
+            "reddit.com"
+          ],
+          "category": "delta vs",
+          "score": 184.37,
+          "variants": [
+            "delta dental ppo vs delta dental premier",
+            "delta dental ppo vs premier",
+            "delta dental premier vs ppo",
+            "ppo vs premier delta dental"
+          ]
+        },
+        {
+          "slug": "magnesium-glycinate-vs-magnesium-l-threonate",
+          "headKeyword": "magnesium l-threonate vs glycinate",
+          "searchVolume": 90800,
+          "cpc": 1.09,
+          "majorsInTop10": 1,
+          "forumsInTop10": 0,
+          "queriesCovered": 8,
+          "topDomains": [
+            "livemomentous.com",
+            "mitohealth.com",
+            "alpine-psych.com",
+            "lifeextension.com",
+            "verywellhealth.com"
+          ],
+          "category": "magnesium vs",
+          "score": 183.96,
+          "variants": [
+            "magnesium l-threonate vs glycinate",
+            "magnesium l threonate vs glycinate",
+            "magnesium glycinate vs magnesium l threonate",
+            "magnesium l threonate vs magnesium glycinate",
+            "magnesium l-threonate vs magnesium glycinate",
+            "magnesium glycinate vs magnesium l-threonate",
+            "magnesium glycinate vs l-threonate",
+            "magnesium glycinate vs l threonate"
+          ]
+        },
+        {
+          "slug": "executive-mba-vs-mba",
+          "headKeyword": "mba vs executive mba",
+          "searchVolume": 4000,
+          "cpc": 22.11,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 4,
+          "topDomains": [
+            "executivemba.wharton.upenn.edu",
+            "reddit.com",
+            "online.uc.edu",
+            "news.ucdenver.edu",
+            "stern.nyuad.nyu.edu"
+          ],
+          "category": "mba vs",
+          "score": 183.49,
+          "variants": [
+            "mba vs executive mba",
+            "mba vs mba executive",
+            "executive mba vs mba",
+            "mba executive vs mba"
+          ]
+        },
+        {
+          "slug": "bonds-vs-bond-etfs",
+          "headKeyword": "bond vs bond etf",
+          "searchVolume": 4720,
+          "cpc": 6.8,
+          "majorsInTop10": 2,
+          "forumsInTop10": 2,
+          "queriesCovered": 8,
+          "topDomains": [
+            "reddit.com",
+            "advisors.vanguard.com",
+            "schwab.com",
+            "etf.com",
+            "ssga.com"
+          ],
+          "category": "etf vs",
+          "score": 183.23,
+          "variants": [
+            "bond vs bond etf",
+            "etf vs bonds",
+            "etf vs bond",
+            "bonds vs etf",
+            "bond etf vs bonds",
+            "bond vs etf",
+            "bonds vs bond etf",
+            "bond etf vs bond"
+          ]
+        }
+      ]
+    },
+    "contested": {
+      "criteria": "non-YMYL, 3+ major publishers in live top 10",
+      "count": 6,
+      "pages": [
+        {
+          "slug": "fidelity-vs-vanguard",
+          "headKeyword": "roth ira fidelity vs vanguard",
+          "searchVolume": 9100,
+          "cpc": 33.27,
+          "majorsInTop10": 3,
+          "forumsInTop10": 1,
+          "queriesCovered": 7,
+          "topDomains": [
+            "reddit.com",
+            "investopedia.com",
+            "choosefi.com",
+            "nerdwallet.com",
+            "wsj.com"
+          ],
+          "category": "fidelity vs",
+          "score": 198.43,
+          "variants": [
+            "roth ira fidelity vs vanguard",
+            "fidelity roth ira vs vanguard roth ira",
+            "vanguard vs fidelity roth ira",
+            "roth ira vanguard vs fidelity",
+            "vanguard vs fidelity for roth ira",
+            "vanguard roth ira vs fidelity",
+            "fidelity vs vanguard roth ira"
+          ]
+        },
+        {
+          "slug": "etf-vs-index-fund",
+          "headKeyword": "etf vs index fund",
+          "searchVolume": 145520,
+          "cpc": 3.45,
+          "majorsInTop10": 4,
+          "forumsInTop10": 2,
+          "queriesCovered": 9,
+          "topDomains": [
+            "fidelity.com",
+            "reddit.com",
+            "navyfederal.org",
+            "investor.vanguard.com",
+            "schwab.com"
+          ],
+          "category": "finance",
+          "score": 197.01,
+          "variants": [
+            "etf vs index fund",
+            "etf fund vs index fund",
+            "etf vs index funds",
+            "index etf vs index fund",
+            "index fund vs etf",
+            "etf funds vs index funds",
+            "index funds vs etf funds",
+            "index funds vs etf",
+            "index vs etf"
+          ]
+        },
+        {
+          "slug": "delta-8-vs-delta-9",
+          "headKeyword": "delta-8 vs delta 9",
+          "searchVolume": 128400,
+          "cpc": 3.18,
+          "majorsInTop10": 3,
+          "forumsInTop10": 0,
+          "queriesCovered": 8,
+          "topDomains": [
+            "forbes.com",
+            "healthline.com",
+            "sevencounties.org",
+            "pmc.ncbi.nlm.nih.gov",
+            "cannaspecialists.org"
+          ],
+          "category": "delta vs",
+          "score": 196.22,
+          "variants": [
+            "delta-8 vs delta 9",
+            "delta 8 vs delta 9",
+            "delta-8 vs delta-9",
+            "delta 8 vs delta-9",
+            "delta-9 vs delta 8",
+            "delta 9 vs delta-8",
+            "delta 9 vs delta 8",
+            "delta-9 vs delta-8"
+          ]
+        },
+        {
+          "slug": "geico-vs-progressive",
+          "headKeyword": "progressive vs geico",
+          "searchVolume": 8800,
+          "cpc": 29.23,
+          "majorsInTop10": 3,
+          "forumsInTop10": 3,
+          "queriesCovered": 2,
+          "topDomains": [
+            "reddit.com",
+            "usnews.com",
+            "nerdwallet.com",
+            "lendingtree.com",
+            "youtube.com"
+          ],
+          "category": "geico vs",
+          "score": 184.79,
+          "variants": [
+            "progressive vs geico",
+            "geico vs progressive"
+          ]
+        },
+        {
+          "slug": "etf-vs-mutual-fund",
+          "headKeyword": "etf fund vs mutual fund",
+          "searchVolume": 214340,
+          "cpc": 2.06,
+          "majorsInTop10": 3,
+          "forumsInTop10": 0,
+          "queriesCovered": 11,
+          "topDomains": [
+            "schwab.com",
+            "investor.vanguard.com",
+            "finra.org",
+            "fidelity.com",
+            "navyfederal.org"
+          ],
+          "category": "etf vs",
+          "score": 184.27,
+          "variants": [
+            "difference between mutual fund and etf",
+            "etf fund vs mutual fund",
+            "mutual fund vs etf",
+            "mutual funds vs etf",
+            "etf vs mutual fund",
+            "etf funds vs mutual funds",
+            "etf vs mutual",
+            "etf vs mutual funds",
+            "what is an etf vs a mutual fund",
+            "what is an etf vs mutual fund",
+            "what is etf vs mutual fund"
+          ]
+        },
+        {
+          "slug": "geico-vs-state-farm",
+          "headKeyword": "geico vs state farm",
+          "searchVolume": 3200,
+          "cpc": 21.47,
+          "majorsInTop10": 4,
+          "forumsInTop10": 2,
+          "queriesCovered": 2,
+          "topDomains": [
+            "reddit.com",
+            "usnews.com",
+            "lendingtree.com",
+            "youtube.com",
+            "nerdwallet.com"
+          ],
+          "category": "geico vs",
+          "score": 183.4,
+          "variants": [
+            "geico vs state farm",
+            "state farm vs geico"
+          ]
+        }
+      ]
+    },
+    "ymylHold": {
+      "criteria": "money-or-your-life topics — high E-E-A-T bar, deferred during suppression recovery",
+      "count": 19,
+      "pages": [
+        {
+          "slug": "conventional-loan-vs-fha-loan",
+          "headKeyword": "fha mortgage vs conventional mortgage",
+          "searchVolume": 253400,
+          "cpc": 4.48,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 14,
+          "topDomains": [
+            "reddit.com",
+            "capitalbankmd.com",
+            "rocketmortgage.com",
+            "nerdwallet.com",
+            "vectrabank.com"
+          ],
+          "category": "mortgage vs",
+          "score": 218.68,
+          "variants": [
+            "fha mortgage vs conventional mortgage",
+            "fha vs conventional mortgage",
+            "fha vs conventional mortgage loan",
+            "fha mortgage vs conventional loan",
+            "conventional mortgage vs fha mortgage",
+            "mortgage conventional vs fha",
+            "conventional mortgage vs fha loan",
+            "fha mortgage vs conventional",
+            "conventional mortgage vs fha",
+            "conventional mortgage loan vs fha",
+            "fha loan vs conventional mortgage",
+            "conventional vs fha mortgage",
+            "fha vs conventional mortgage loans",
+            "mortgage loan fha vs conventional"
+          ]
+        },
+        {
+          "slug": "llc-vs-s-corp",
+          "headKeyword": "s-corp vs llc",
+          "searchVolume": 271000,
+          "cpc": 8.57,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 10,
+          "topDomains": [
+            "uschamber.com",
+            "wolterskluwer.com",
+            "reddit.com",
+            "stripe.com",
+            "rossidemarco.com"
+          ],
+          "category": "llc vs",
+          "score": 215.26,
+          "variants": [
+            "s-corp vs llc",
+            "s corp vs llc s corp",
+            "llc vs corp s",
+            "llc vs llc s corp",
+            "llc s corp vs llc",
+            "corp s vs llc",
+            "s corp vs llc",
+            "llc corp vs s corp",
+            "llc s corp vs s corp",
+            "llc vs s corp"
+          ]
+        },
+        {
+          "slug": "amex-gold-vs-amex-platinum",
+          "headKeyword": "gold amex vs platinum",
+          "searchVolume": 111300,
+          "cpc": 27.06,
+          "majorsInTop10": 5,
+          "forumsInTop10": 2,
+          "queriesCovered": 12,
+          "topDomains": [
+            "reddit.com",
+            "americanexpress.com",
+            "nerdwallet.com",
+            "thepointsguy.com",
+            "youtube.com"
+          ],
+          "category": "amex vs",
+          "score": 213.98,
+          "variants": [
+            "gold amex vs platinum",
+            "amex platinum vs gold card",
+            "amex gold vs platinum",
+            "amex platinum card vs gold",
+            "amex gold card vs platinum",
+            "amex platinum vs amex gold",
+            "gold vs platinum amex",
+            "platinum vs gold amex",
+            "platinum amex vs gold",
+            "amex gold vs platinum card",
+            "amex gold vs amex platinum",
+            "amex platinum vs gold"
+          ]
+        },
+        {
+          "slug": "term-life-insurance-vs-whole-life-insurance",
+          "headKeyword": "life insurance term vs whole",
+          "searchVolume": 374640,
+          "cpc": 7.75,
+          "majorsInTop10": 2,
+          "forumsInTop10": 2,
+          "queriesCovered": 26,
+          "topDomains": [
+            "fidelity.com",
+            "reddit.com",
+            "guardianlife.com",
+            "protective.com",
+            "aflac.com"
+          ],
+          "category": "term life insurance vs",
+          "score": 212.82,
+          "variants": [
+            "life insurance term vs whole",
+            "whole life insurance vs term insurance",
+            "life insurance term vs whole life",
+            "term insurance vs whole life insurance",
+            "term life vs whole insurance",
+            "life insurance whole vs term",
+            "whole vs term life insurance",
+            "whole term vs term life insurance",
+            "term insurance vs whole life",
+            "whole life vs term insurance",
+            "whole of life vs term insurance",
+            "term insurance vs whole of life",
+            "whole life insurance vs term",
+            "term life insurance vs whole",
+            "insurance term vs whole life",
+            "insurance whole life vs term",
+            "term vs whole life insurance",
+            "life insurance whole life vs term",
+            "whole life insurance vs term life",
+            "whole life insurance vs term life insurance",
+            "term life vs whole life insurance",
+            "term life insurance vs whole life insurance",
+            "term life insurance vs whole life",
+            "whole life vs term life insurance",
+            "what is whole life vs term insurance",
+            "what is term vs whole life insurance"
+          ]
+        },
+        {
+          "slug": "roth-ira-vs-traditional-ira",
+          "headKeyword": "roth ira vs standard ira",
+          "searchVolume": 672880,
+          "cpc": 4.14,
+          "majorsInTop10": 3,
+          "forumsInTop10": 1,
+          "queriesCovered": 22,
+          "topDomains": [
+            "investor.vanguard.com",
+            "fidelity.com",
+            "reddit.com",
+            "schwab.com",
+            "protective.com"
+          ],
+          "category": "roth ira vs",
+          "score": 212.41,
+          "variants": [
+            "traditional ira vs roth ira",
+            "traditional vs roth ira",
+            "roth ira vs standard ira",
+            "roth ira vs traditional ira",
+            "regular vs roth ira",
+            "standard ira vs roth ira",
+            "roth vs traditional ira",
+            "ira roth vs traditional",
+            "regular ira vs roth",
+            "roth ira vs traditional",
+            "roth ira vs a traditional ira",
+            "ira traditional vs roth",
+            "traditional roth ira vs roth ira",
+            "traditional ira vs roth",
+            "roth ira vs traditional roth",
+            "roth vs standard ira",
+            "traditional roth vs roth ira",
+            "regular ira vs roth ira",
+            "roth ira vs regular ira",
+            "roth vs regular ira",
+            "what is traditional ira vs roth ira",
+            "what is roth ira vs traditional"
+          ]
+        },
+        {
+          "slug": "chase-sapphire-preferred-vs-chase-sapphire-reserve",
+          "headKeyword": "chase reserve vs sapphire preferred",
+          "searchVolume": 59400,
+          "cpc": 8.04,
+          "majorsInTop10": 4,
+          "forumsInTop10": 3,
+          "queriesCovered": 6,
+          "topDomains": [
+            "chase.com",
+            "thepointsguy.com",
+            "nerdwallet.com",
+            "youtube.com",
+            "creditcards.chase.com"
+          ],
+          "category": "chase sapphire vs",
+          "score": 208.68,
+          "variants": [
+            "chase reserve vs sapphire preferred",
+            "chase sapphire reserve vs preferred",
+            "chase sapphire reserve vs sapphire preferred",
+            "chase sapphire preferred vs reserve",
+            "chase sapphire reserve vs chase sapphire preferred",
+            "chase sapphire preferred vs chase sapphire reserve"
+          ]
+        },
+        {
+          "slug": "401k-vs-roth-ira",
+          "headKeyword": "roth ira vs 401k",
+          "searchVolume": 532280,
+          "cpc": 3.79,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 22,
+          "topDomains": [
+            "fidelity.com",
+            "reddit.com",
+            "abaretirement.com",
+            "newyorklife.com"
+          ],
+          "category": "finance",
+          "score": 204.12,
+          "variants": [
+            "roth ira vs 401k",
+            "roth 401k vs roth ira",
+            "roth ira vs roth 401k",
+            "ira roth vs 401k",
+            "401k vs ira vs roth ira",
+            "ira vs roth 401k",
+            "roth ira vs ira vs 401k",
+            "roth 401k vs ira",
+            "roth vs 401k vs ira",
+            "ira vs roth ira vs 401k",
+            "401k vs roth ira",
+            "401k vs ira roth",
+            "ira vs roth vs 401k",
+            "401k vs ira vs roth",
+            "roth 401k vs 401k vs roth ira",
+            "ira vs 401k vs roth",
+            "roth vs ira 401k",
+            "401k roth vs roth ira",
+            "401k vs roth vs ira",
+            "401k roth ira vs roth ira",
+            "roth vs ira vs 401k",
+            "what is roth ira vs 401k"
+          ]
+        },
+        {
+          "slug": "15-year-mortgage-vs-30-year-mortgage",
+          "headKeyword": "15-year mortgage vs 30-year mortgage",
+          "searchVolume": 40600,
+          "cpc": 6,
+          "majorsInTop10": 3,
+          "forumsInTop10": 1,
+          "queriesCovered": 14,
+          "topDomains": [
+            "reddit.com",
+            "landmarkcu.com",
+            "usbank.com",
+            "allstate.com",
+            "texasbaycu.org"
+          ],
+          "category": "mortgage vs",
+          "score": 203.07,
+          "variants": [
+            "15-year mortgage vs 30-year mortgage",
+            "15-year mortgage vs 30 year mortgage",
+            "15-year vs 30 year mortgage",
+            "15-year vs 30-year mortgage",
+            "15 years vs 30 year mortgage",
+            "15 year vs 30 mortgage",
+            "30 year vs 15 year mortgage",
+            "30 year mortgage vs 15 year",
+            "15 year mortgage vs 30 year mortgage",
+            "15 year mortgage vs 30 year",
+            "15 year vs 30 year mortgage",
+            "30-year vs 15-year mortgage",
+            "15 years mortgage vs 30 years mortgage",
+            "15 years vs 30 years mortgage"
+          ]
+        },
+        {
+          "slug": "c-corp-vs-s-corp",
+          "headKeyword": "llc c corp vs llc s corp",
+          "searchVolume": 53800,
+          "cpc": 7.71,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 13,
+          "topDomains": [
+            "tax.thomsonreuters.com",
+            "wolterskluwer.com",
+            "stripe.com",
+            "poole.ncsu.edu",
+            "barrettlaw.com"
+          ],
+          "category": "llc vs",
+          "score": 199.57,
+          "variants": [
+            "llc c corp vs llc s corp",
+            "c corp vs llc vs s corp",
+            "c corp vs s corp llc",
+            "s corp vs llc vs c corp",
+            "llc c vs s corp",
+            "s vs c corp llc",
+            "s corp vs c corp vs llc",
+            "llc s corp vs c corp",
+            "c corp vs s corp vs llc",
+            "llc c corp vs s corp",
+            "llc s corp vs llc c corp",
+            "s corp vs c corp llc",
+            "llc s vs c corp"
+          ]
+        },
+        {
+          "slug": "roth-401k-vs-roth-ira",
+          "headKeyword": "roth 401 k vs ira",
+          "searchVolume": 191600,
+          "cpc": 3.82,
+          "majorsInTop10": 5,
+          "forumsInTop10": 1,
+          "queriesCovered": 7,
+          "topDomains": [
+            "reddit.com",
+            "fidelity.com",
+            "empower.com",
+            "schwab.com",
+            "citizensbank.com"
+          ],
+          "category": "roth ira vs",
+          "score": 198.55,
+          "variants": [
+            "roth 401 k vs ira",
+            "401 k vs roth ira",
+            "roth ira vs 401 k",
+            "401 k vs ira vs roth ira",
+            "roth 401 k vs roth ira",
+            "401 k roth vs roth ira",
+            "roth ira vs roth 401 k"
+          ]
+        },
+        {
+          "slug": "mounjaro-vs-ozempic",
+          "headKeyword": "mounjaro vs ozempic",
+          "searchVolume": 52600,
+          "cpc": 13.13,
+          "majorsInTop10": 1,
+          "forumsInTop10": 2,
+          "queriesCovered": 2,
+          "topDomains": [
+            "drugwatch.com",
+            "goodrx.com",
+            "health.com",
+            "youtube.com",
+            "eliteprimarycaregroup.com"
+          ],
+          "category": "ozempic vs",
+          "score": 198.37,
+          "variants": [
+            "mounjaro vs ozempic",
+            "ozempic vs mounjaro"
+          ]
+        },
+        {
+          "slug": "401k-vs-pension",
+          "headKeyword": "pension plans vs 401k",
+          "searchVolume": 59400,
+          "cpc": 3.02,
+          "majorsInTop10": 0,
+          "forumsInTop10": 1,
+          "queriesCovered": 6,
+          "topDomains": [
+            "reddit.com",
+            "newyorklife.com",
+            "dol.gov",
+            "protective.com",
+            "eliteincomeadvisors.com"
+          ],
+          "category": "401k vs",
+          "score": 196.68,
+          "variants": [
+            "pension plans vs 401k",
+            "pension vs 401k",
+            "401k vs pension plan",
+            "pension plan vs 401k",
+            "401k vs pension",
+            "401k vs pension plans"
+          ]
+        },
+        {
+          "slug": "heloc-vs-home-equity-loan",
+          "headKeyword": "home equity loans vs heloc",
+          "searchVolume": 72200,
+          "cpc": 16.09,
+          "majorsInTop10": 2,
+          "forumsInTop10": 1,
+          "queriesCovered": 6,
+          "topDomains": [
+            "consumerfinance.gov",
+            "bankofamerica.com",
+            "equifax.com",
+            "heartlandcu.org",
+            "huntington.com"
+          ],
+          "category": "heloc vs",
+          "score": 196.12,
+          "variants": [
+            "home equity loans vs heloc",
+            "home equity loan vs heloc",
+            "heloc vs home equity loan",
+            "heloc vs home equity loans",
+            "home equity vs heloc",
+            "heloc vs home equity"
+          ]
+        },
+        {
+          "slug": "apr-vs-interest-rate",
+          "headKeyword": "mortgage apr vs interest rate",
+          "searchVolume": 108000,
+          "cpc": 6.94,
+          "majorsInTop10": 2,
+          "forumsInTop10": 2,
+          "queriesCovered": 20,
+          "topDomains": [
+            "consumerfinance.gov",
+            "bankofamerica.com",
+            "reddit.com",
+            "bankrate.com",
+            "usbank.com"
+          ],
+          "category": "mortgage vs",
+          "score": 195.63,
+          "variants": [
+            "mortgage apr vs interest rate",
+            "interest rates vs apr mortgage",
+            "apr vs interest rate for mortgage",
+            "apr vs interest rate mortgage",
+            "apr vs mortgage interest rate",
+            "apr vs interest rate in mortgage",
+            "mortgage interest rates vs apr",
+            "interest rate vs apr mortgage",
+            "mortgage loan apr vs interest rate",
+            "interest rate vs apr for mortgage",
+            "mortgage interest rate vs apr",
+            "mortgage rate vs mortgage apr",
+            "rate vs apr mortgage",
+            "mortgage rate vs apr",
+            "mortgage rates vs apr",
+            "mortgage loan rate vs apr",
+            "mortgage apr vs rate",
+            "apr vs mortgage rate",
+            "apr vs rate mortgage",
+            "mortgage rates apr vs rate"
+          ]
+        },
+        {
+          "slug": "chapter-13-vs-chapter-7-bankruptcy",
+          "headKeyword": "chapter 13 vs chapter 7 bankruptcy",
+          "searchVolume": 72400,
+          "cpc": 8.47,
+          "majorsInTop10": 1,
+          "forumsInTop10": 1,
+          "queriesCovered": 4,
+          "topDomains": [
+            "stlouisfed.org",
+            "canb.uscourts.gov",
+            "reddit.com",
+            "experian.com",
+            "hlrs.org"
+          ],
+          "category": "chapter 7 vs",
+          "score": 194.94,
+          "variants": [
+            "chapter 13 vs chapter 7 bankruptcy",
+            "chapter 7 vs chapter 13",
+            "chapter 7 vs 13 bankruptcy",
+            "chapter 13 vs chapter 7"
+          ]
+        },
+        {
+          "slug": "amex-platinum-vs-chase-sapphire-reserve",
+          "headKeyword": "amex platinum vs chase sapphire reserve",
+          "searchVolume": 36300,
+          "cpc": 14.69,
+          "majorsInTop10": 2,
+          "forumsInTop10": 3,
+          "queriesCovered": 3,
+          "topDomains": [
+            "reddit.com",
+            "thepointsguy.com",
+            "nerdwallet.com",
+            "steven-xu.com",
+            "youtube.com"
+          ],
+          "category": "amex vs",
+          "score": 194.5,
+          "variants": [
+            "amex platinum vs chase sapphire reserve",
+            "chase sapphire reserve vs amex platinum",
+            "platinum amex vs chase sapphire reserve"
+          ]
+        },
+        {
+          "slug": "401k-vs-ira",
+          "headKeyword": "ira account vs 401k",
+          "searchVolume": 88800,
+          "cpc": 4.48,
+          "majorsInTop10": 5,
+          "forumsInTop10": 1,
+          "queriesCovered": 4,
+          "topDomains": [
+            "fidelity.com",
+            "investor.vanguard.com",
+            "reddit.com",
+            "citizensbank.com"
+          ],
+          "category": "401k vs",
+          "score": 194.27,
+          "variants": [
+            "ira account vs 401k",
+            "401k vs ira",
+            "ira accounts vs 401k",
+            "ira vs 401k"
+          ]
+        },
+        {
+          "slug": "llc-vs-s-corp-vs-inc",
+          "headKeyword": "llc vs s corp vs inc",
+          "searchVolume": 81300,
+          "cpc": 8.83,
+          "majorsInTop10": 0,
+          "forumsInTop10": 0,
+          "queriesCovered": 3,
+          "topDomains": [
+            "wolterskluwer.com",
+            "tax.thomsonreuters.com",
+            "stripe.com",
+            "legalshield.com",
+            "mycorporation.com"
+          ],
+          "category": "llc vs",
+          "score": 193.7,
+          "variants": [
+            "llc vs s corp vs inc",
+            "inc s corp vs llc",
+            "inc vs llc vs s corp"
+          ]
+        },
+        {
+          "slug": "corporation-vs-llc",
+          "headKeyword": "corporation vs llc",
+          "searchVolume": 60500,
+          "cpc": 7.14,
+          "majorsInTop10": 0,
+          "forumsInTop10": 2,
+          "queriesCovered": 5,
+          "topDomains": [
+            "mycorporation.com",
+            "reddit.com",
+            "orrick.com",
+            "wolterskluwer.com",
+            "youtube.com"
+          ],
+          "category": "llc vs",
+          "score": 193.54,
+          "variants": [
+            "corporation vs llc",
+            "llc vs corporation",
+            "corporations vs llc",
+            "llc vs corporations",
+            "llc vs a corporation"
+          ]
+        }
+      ]
+    }
+  }
+}
