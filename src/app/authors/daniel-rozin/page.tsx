@@ -27,7 +27,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
@@ -117,7 +116,6 @@ const personSchema = {
     SITE_URL,
     "https://www.linkedin.com/in/daniel-rozin-56a066b0/",
     "https://www.facebook.com/daniel.rozin.94",
-    "https://twitter.com/aversusb",
   ],
   mainEntityOfPage: {
     "@type": "ProfilePage",

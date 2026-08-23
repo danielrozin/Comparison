@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: REQ_TITLE,
     description: REQ_DESC,
     images: [REQ_OG_IMAGE],

@@ -50,7 +50,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     twitter: {
       card: "summary_large_image",
-    site: "@aversusb",
       title: hub.title,
       description: hub.description,
       images: [{ url: ogImage, alt: `${hub.h1} — A Versus B comparison hub` }],

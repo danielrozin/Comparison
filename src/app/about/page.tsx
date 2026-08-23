@@ -33,7 +33,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: ABOUT_TITLE,
     description: ABOUT_DESC,
   },

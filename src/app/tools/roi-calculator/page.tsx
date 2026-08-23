@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
   },
-  twitter: { card: "summary_large_image", site: "@aversusb", title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 const TODAY = new Date().toISOString().slice(0, 10);

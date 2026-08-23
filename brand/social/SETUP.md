@@ -17,7 +17,7 @@ node brand/social/render.mjs
 | Field | Value |
 |---|---|
 | Brand name | A Versus B |
-| Handle (all platforms) | `aversusb` — already in use on X, YouTube, LinkedIn and Mastodon, so keep it consistent |
+| Handle | `aversusb` for Facebook and Instagram. YouTube is already `@aversusb-net` — note the suffix; `@aversusb` is a different channel. |
 | Website | https://www.aversusb.net |
 | Contact email | Info@aversusb.net |
 | Tagline | Compare Anything |
@@ -90,7 +90,7 @@ posts cross-publish and the Page's action button carries over.
 
 ## 3. YouTube
 
-The channel already exists at youtube.com/@aversusb — this is finishing it,
+The channel already exists at youtube.com/@aversusb-net — this is finishing it,
 not creating it.
 
 | Setting | Where | Value |
@@ -98,8 +98,8 @@ not creating it.
 | Banner | Studio → Customisation → Branding | `aversusb-youtube-banner-2560x1440.png` |
 | Profile picture | same screen | `aversusb-profile-1024.png` |
 | Channel name | Customisation → Basic info | `A Versus B` |
-| Handle | Basic info | `@aversusb` |
-| Links | Basic info → Links | Website → https://www.aversusb.net · X → https://x.com/aversusb |
+| Handle | Basic info | `@aversusb-net` |
+| Links | Basic info → Links | Website → https://www.aversusb.net (the only one — there is no X or LinkedIn account) |
 | Contact email | Basic info | Info@aversusb.net |
 | Country | Settings → Channel → Basic info | Your country of residence — leave whatever is already set. Audience targeting comes from the videos, not this field. |
 | Keywords | Settings → Channel → Basic info | `comparison, vs, versus, head to head, side by side, product comparison, tech comparison, compare` |

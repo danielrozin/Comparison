@@ -25,6 +25,9 @@ const TARGETS = [
   { file: "profile.html", out: "aversusb-profile-1024.png", w: 1024, h: 1024 },
   { file: "facebook-cover.html", out: "aversusb-facebook-cover-1640x624.png", w: 1640, h: 624 },
   { file: "youtube-banner.html", out: "aversusb-youtube-banner-2560x1440.png", w: 2560, h: 1440 },
+  // Default share card. Copied to public/images/og-default.png, which ~26
+  // pages already reference and which did not exist until now.
+  { file: "og-default.html", out: "og-default.png", w: 1200, h: 630 },
 ];
 
 fs.mkdirSync(OUT, { recursive: true });

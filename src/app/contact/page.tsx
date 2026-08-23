@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: `Contact ${SITE_NAME}`,
     description: `Get in touch with the ${SITE_NAME} team. We respond within 2 business days.`,
     images: [`${SITE_URL}/images/og-default.png`],

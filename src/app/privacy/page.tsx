@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: `Privacy Policy — ${SITE_NAME}`,
     description: `Read the ${SITE_NAME} Privacy Policy to understand how we collect, use, and protect your personal information.`,
     images: [`${SITE_URL}/images/og-default.png`],

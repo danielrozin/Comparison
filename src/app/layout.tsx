@@ -5,7 +5,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav } from "@/components/layout/GlobalClientWidgets";
-import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema, YOUTUBE_CHANNEL_URL } from "@/lib/seo/schema";
 import { prisma } from "@/lib/db/prisma";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
@@ -77,7 +77,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: `${SITE_NAME} — Compare Anything`,
     description: "The internet's best destination for comparisons.",
     images: [{ url: `${SITE_URL}/api/og?title=Compare+Anything&type=home`, alt: "A Versus B — Compare Anything" }],
@@ -143,9 +142,7 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
         {/* Identity + license link relations — used by AI crawlers for E-E-A-T and training eligibility */}
-        <link rel="me" href="https://x.com/aversusb" />
-        <link rel="me" href="https://www.linkedin.com/company/aversusb" />
-        <link rel="me" href="https://www.youtube.com/@aversusb" />
+        <link rel="me" href={YOUTUBE_CHANNEL_URL} />
         <link rel="author" href={`${SITE_URL}/authors/daniel-rozin`} />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
         {/* OpenSearch — enables browser address-bar search shortcut (Firefox, Chrome, Safari, Edge) */}
@@ -161,10 +158,6 @@ export default async function RootLayout({
         {/* pingback — XML-RPC blog backlink discovery; WordPress/Ghost sites POST here when
             they link to aversusb.net, accelerating inbound link indexing */}
         <link rel="pingback" href={`${SITE_URL}/api/pingback`} />
-        {/* fediverse:creator — Mastodon/Threads/ActivityPub attribution tag.
-            When aversusb.net pages are shared on the Fediverse, this links the
-            content to the @aversusb@mastodon.social identity for E-E-A-T signals */}
-        <meta name="fediverse:creator" content="@aversusb@mastodon.social" />
         {/* referrer — send origin (no path) on cross-origin requests; omit on downgrade.
             Gives analytics accurate referrer data without leaking user paths */}
         <meta name="referrer" content="origin-when-cross-origin" />

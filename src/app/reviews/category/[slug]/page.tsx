@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       locale: "en_US",      images: [{ url: ogImage, width: 1200, height: 630, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }],
     },
     twitter: { card: "summary_large_image",
-    site: "@aversusb", title, description: desc, images: [{ url: ogImage, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }] },
+    title, description: desc, images: [{ url: ogImage, alt: `Best ${cat.name} reviews — A Versus B SmartReview` }] },
     other: {
       "citation_title": title,
       "citation_author": SITE_NAME,

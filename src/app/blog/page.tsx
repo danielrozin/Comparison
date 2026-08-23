@@ -46,7 +46,6 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      site: "@aversusb",
       title: `Blog — ${SITE_NAME}`,
       description: blogDescription,
       images: [{ url: ogImage, alt: `${SITE_NAME} Blog` }],

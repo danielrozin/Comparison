@@ -220,6 +220,9 @@ export function Header() {
             <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Reviews
             </Link>
+            <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname === "/about" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+              Our Story
+            </Link>
             <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
               Requests
             </Link>
@@ -380,6 +383,12 @@ export function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
               <span className="text-xs font-semibold">Requests</span>
+            </Link>
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 py-3 text-text bg-surface-alt rounded-xl active:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset">
+              <svg className="w-5 h-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-1a3 3 0 00-3-3h-1m-2 4H7m10 0v-1a3 3 0 00-3-3H9a3 3 0 00-3 3v1m0 0H2v-1a3 3 0 013-3h1m0-4a3 3 0 116 0 3 3 0 01-6 0zm9-3a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span className="text-xs font-semibold">Our Story</span>
             </Link>
           </div>
         </div>

@@ -231,7 +231,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: "Search Comparisons | A Versus B",
     description: PAGE_DESCRIPTION,
     images: [{ url: OG_IMAGE, alt: "Search Comparisons — A Versus B" }],

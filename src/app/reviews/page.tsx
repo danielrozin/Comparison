@@ -41,7 +41,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: REVIEWS_TITLE,
     description: REVIEWS_DESC,
     images: [`${SITE_URL}/api/og?title=${encodeURIComponent("SmartReview — Product Reviews")}&type=reviews`],

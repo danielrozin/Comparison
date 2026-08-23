@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema } from "@/lib/seo/schema";
+import { organizationSchema, webSiteSchema, dataCatalogSchema, siteNavigationSchema, definedTermSetSchema, webApplicationSchema, YOUTUBE_CHANNEL_URL } from "@/lib/seo/schema";
 import { SITE_URL } from "@/lib/utils/constants";
 
 // DAN-432 Phase C: Pages Router shell for /compare/[slug].
@@ -26,9 +26,7 @@ export default function Document() {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* Identity + license link relations — matches layout.tsx for E-E-A-T parity on Pages Router */}
-        <link rel="me" href="https://x.com/aversusb" />
-        <link rel="me" href="https://www.linkedin.com/company/aversusb" />
-        <link rel="me" href="https://www.youtube.com/@aversusb" />
+        <link rel="me" href={YOUTUBE_CHANNEL_URL} />
         <link rel="author" href={`${SITE_URL}/about`} />
         <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
         {/* OpenSearch — enables browser address-bar search shortcut; parity with layout.tsx */}
@@ -44,8 +42,6 @@ export default function Document() {
         <meta name="rating" content="General" />
         {/* referrer — send origin on cross-origin requests; parity with layout.tsx */}
         <meta name="referrer" content="origin-when-cross-origin" />
-        {/* fediverse:creator — Mastodon/ActivityPub attribution; parity with layout.tsx */}
-        <meta name="fediverse:creator" content="@aversusb@mastodon.social" />
         {/* format-detection — disable iOS Safari auto-linking; parity with layout.tsx */}
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         {/* Preconnect to critical origins — reduces TCP handshake latency for LCP resources.

@@ -28,7 +28,6 @@ export const metadata: Metadata = {
   openGraph: { title: PAGE_TITLE, description: PAGE_DESCRIPTION, url: PAGE_URL, type: "article", locale: "en_US", siteName: SITE_NAME, images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: PAGE_TITLE }] },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     images: [OG_IMAGE],

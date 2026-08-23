@@ -55,6 +55,14 @@ export function contentAuthorArray() {
 // Organization schema (site-wide)
 // ============================================================
 
+/**
+ * The one social account that actually exists. Declared once here so the
+ * footer, the rel="me" link relations and the Organization sameAs cannot
+ * drift onto different handles — @aversusb and @aversusb-net are different
+ * channels, and only the latter is ours.
+ */
+export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@aversusb-net";
+
 // Centralized social profile URLs for Organization sameAs entity-graph signals.
 // Each slot is overridable via NEXT_PUBLIC_SOCIAL_* env vars so URL list updates
 // (DAN-422 / DAN-419 social activation) ship as a config change, not a code deploy.
@@ -64,13 +72,15 @@ export function contentAuthorArray() {
 // Empty/unset slots are filtered out so unverified handles don't leak into JSON-LD.
 export function socialSameAs(): string[] {
   const slots = [
-    // Env-var overrides take precedence; hardcoded defaults ensure Organization
-    // always emits rich sameAs even when vars are not set (e.g. local dev).
-    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "https://x.com/aversusb",
-    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "https://www.linkedin.com/company/aversusb",
+    // Only YouTube is a claimed, live account. Everything else stays empty
+    // until the profile actually exists — the X/LinkedIn defaults that used to
+    // sit here contradicted the rule above and shipped a sameAs pointing at a
+    // 404 LinkedIn company page, which is worse than emitting nothing.
+    process.env.NEXT_PUBLIC_SOCIAL_TWITTER ?? "",
+    process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_GITHUB ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK ?? "",
-    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "https://www.youtube.com/@aversusb",
+    process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? YOUTUBE_CHANNEL_URL,
     process.env.NEXT_PUBLIC_SOCIAL_PINTEREST ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_REDDIT ?? "",
     process.env.NEXT_PUBLIC_SOCIAL_QUORA ?? "",
@@ -275,7 +285,7 @@ export function dataCatalogSchema(numberOfItems = CANONICAL_COMPARISON_COUNT_FAL
     // what the dataset contains without crawling thousands of pages.
     workExample: [
       { "@type": "CreativeWork", name: "ChatGPT vs Claude", url: `${SITE_URL}/compare/chatgpt-vs-claude` },
-      { "@type": "CreativeWork", name: "iPhone vs Samsung Galaxy", url: `${SITE_URL}/compare/iphone-16-vs-samsung-galaxy-s25` },
+      { "@type": "CreativeWork", name: "iPhone vs Samsung Galaxy", url: `${SITE_URL}/compare/iphone-17-vs-samsung-s26` },
       { "@type": "CreativeWork", name: "Messi vs Ronaldo", url: `${SITE_URL}/compare/messi-vs-ronaldo` },
     ],
     dataset: {
@@ -526,6 +536,7 @@ export function siteNavigationSchema() {
     { name: "Search", url: `${SITE_URL}/search` },
     { name: "Data Studies", url: `${SITE_URL}/studies` },
     { name: "Developer API", url: `${SITE_URL}/developers` },
+    { name: "Our Story", url: `${SITE_URL}/about` },
   ];
 
   return {

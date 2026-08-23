@@ -32,7 +32,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: SITEMAP_TITLE,
     description: SITEMAP_DESC,
     images: [{ url: OG_IMAGE, alt: "Site Map — A Versus B" }],

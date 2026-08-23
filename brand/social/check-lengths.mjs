@@ -17,7 +17,7 @@ const FIELDS = [
   { platform: "YouTube", field: "Channel name", limit: 100,
     text: "A Versus B" },
   { platform: "YouTube", field: "Handle", limit: 30,
-    text: "@aversusb" },
+    text: "@aversusb-net" },
   { platform: "YouTube", field: "Description", limit: 1000,
     text: `A Versus B settles comparisons.
 

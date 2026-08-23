@@ -38,7 +38,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@aversusb",
     title: TITLE,
     description: DESCRIPTION,
     images: [{ url: ogImage, alt: "Investing & Finance Comparison Report 2026" }],
