@@ -141,7 +141,7 @@ export function Header() {
               const hasSubs = subs && subs.length > 0;
               const isOpen = openDropdown === item.slug;
               // Hide last 2 items on lg, show all on xl
-              const hideOnLg = idx >= NAV_ITEMS.length - 2;
+              const hideOnLg = idx >= NAV_ITEMS.length - 4;
 
               return (
                 <div
@@ -220,16 +220,22 @@ export function Header() {
             <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Reviews
             </Link>
-            <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname === "/about" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+            <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined} className={`hidden xl:inline-flex flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname === "/about" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Our Story
             </Link>
-            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
+            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="hidden xl:inline-flex flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
               Requests
             </Link>
           </nav>
 
           {/* Right side */}
           <div className="flex items-center gap-2 flex-shrink-0">
+            <Link
+              href="/pricing?src=header"
+              className="hidden sm:inline-flex flex-shrink-0 items-center px-3.5 h-9 text-[13px] font-bold text-white bg-primary-600 hover:bg-primary-700 rounded-full transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+            >
+              Go Pro
+            </Link>
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event("open-search-overlay"))}
@@ -389,6 +395,12 @@ export function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-1a3 3 0 00-3-3h-1m-2 4H7m10 0v-1a3 3 0 00-3-3H9a3 3 0 00-3 3v1m0 0H2v-1a3 3 0 013-3h1m0-4a3 3 0 116 0 3 3 0 01-6 0zm9-3a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               <span className="text-xs font-semibold">Our Story</span>
+            </Link>
+            <Link href="/pricing?src=mobile-menu" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center gap-1 py-3 text-white bg-primary-600 rounded-xl active:bg-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span className="text-xs font-semibold">Go Pro</span>
             </Link>
           </div>
         </div>

@@ -191,6 +191,16 @@ export default function RequestsPage() {
             Can&apos;t find what you&apos;re looking for? Suggest it and vote on others&apos;
             requests. Top-voted comparisons get built first!
           </p>
+          {/* Pro upsell — this page IS the demand signal for the paid product */}
+          <p className="mt-5">
+            <Link
+              href="/pricing?src=requests"
+              className="inline-flex items-center gap-2 rounded-xl bg-white/15 border border-white/25 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/25 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              <span aria-hidden="true">⚡</span>
+              Don&apos;t want to wait for votes? Pro members get any comparison built within 24 hours →
+            </Link>
+          </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
