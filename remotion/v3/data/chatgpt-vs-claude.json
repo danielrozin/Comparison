@@ -1,0 +1,145 @@
+{
+  "title": "Chatgpt vs Claude",
+  "entityA": "Chatgpt",
+  "entityB": "Claude",
+  "category": "General",
+  "shortAnswer": "ChatGPT (GPT-5.4) offers broader multimodal capabilities and ecosystem integration, while Claude 4 Opus excels in coding and analytical tasks with superior context handling.",
+  "stats": [
+    {
+      "label": "Model Version",
+      "valueA": "GPT-5.4",
+      "valueB": "Claude 4 Opus",
+      "winner": "tie"
+    },
+    {
+      "label": "Global User Base",
+      "valueA": "Most users worldwide",
+      "valueB": "Smaller user base",
+      "winner": "a"
+    },
+    {
+      "label": "Third-party Integrations",
+      "valueA": "Thousands of specialized GPTs",
+      "valueB": "Limited integrations",
+      "winner": "a"
+    },
+    {
+      "label": "Coding Test Performance",
+      "valueA": "Good performance",
+      "valueB": "Superior performance in palindromic substring test",
+      "winner": "b"
+    },
+    {
+      "label": "Writing Quality",
+      "valueA": "High quality product descriptions",
+      "valueB": "High quality analytical writing",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "The choice depends on specific use cases: ChatGPT excels for diverse business applications requiring multimodal capabilities and extensive integrations, while Claude is superior for coding, research, and analytical tasks. For production applications, both offer competitive pricing with GuruSup supporting both engines for optimal task assignment.",
+  "slug": "chatgpt-vs-claude",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One of these has thousands of add-ons. The other just writes better code.",
+    "tape": "Reach and ecosystem against raw reasoning depth. Two different bets.",
+    "rounds": [
+      "GPT-5.4 versus Claude 4 Opus. Version numbers tell you nothing here.",
+      "ChatGPT has the most users on earth. Claude is the niche pick.",
+      "Thousands of specialized GPTs versus limited integrations. That gap is enormous.",
+      "On the palindromic substring test, Claude beat it. Coding is Claude's home turf.",
+      "ChatGPT nails product descriptions. Claude nails analysis. Pick your writing job."
+    ],
+    "verdict": "ChatGPT takes it two to one on breadth. Coders and researchers should still choose Claude."
+  },
+  "audio": {
+    "cold": "video-assets/chatgpt-vs-claude/audio/cold.mp3",
+    "tape": "video-assets/chatgpt-vs-claude/audio/tape.mp3",
+    "rounds": [
+      "video-assets/chatgpt-vs-claude/audio/round-1.mp3",
+      "video-assets/chatgpt-vs-claude/audio/round-2.mp3",
+      "video-assets/chatgpt-vs-claude/audio/round-3.mp3",
+      "video-assets/chatgpt-vs-claude/audio/round-4.mp3",
+      "video-assets/chatgpt-vs-claude/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/chatgpt-vs-claude/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 154,
+    "tape": 161,
+    "rounds": [
+      224,
+      156,
+      207,
+      209,
+      214
+    ],
+    "verdict": 207,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these has thousands of add-ons. The other just writes better code. Reach and ecosystem against raw reasoning depth. Two different bets. GPT-5.4 versus Claude 4 Opus. Version numbers tell you nothing here. ChatGPT has the most users on earth. Claude is the niche pick. Thousands of specialized GPTs versus limited integrations. That gap is enormous. On the palindromic substring test, Claude beat it. Coding is Claude's home turf. ChatGPT nails product descriptions. Claude nails analysis. Pick your writing job. ChatGPT takes it two to one on breadth. Coders and researchers should still choose Claude.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these has thousands of add-ons. The other just writes better code.",
+      "startOffset": 0,
+      "endOffset": 5.134081999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Reach and ecosystem against raw reasoning depth. Two different bets.",
+      "startOffset": 5.134081999999999,
+      "endOffset": 10.503266
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "GPT-5.4 versus Claude 4 Opus. Version numbers tell you nothing here.",
+      "startOffset": 10.503266,
+      "endOffset": 17.962246
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "ChatGPT has the most users on earth. Claude is the niche pick.",
+      "startOffset": 17.962246,
+      "endOffset": 23.174695
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Thousands of specialized GPTs versus limited integrations. That gap is enormous.",
+      "startOffset": 23.174695,
+      "endOffset": 30.058981
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "On the palindromic substring test, Claude beat it. Coding is Claude's home turf.",
+      "startOffset": 30.058981,
+      "endOffset": 37.021634
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "ChatGPT nails product descriptions. Claude nails analysis. Pick your writing job.",
+      "startOffset": 37.021634,
+      "endOffset": 44.141022
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "ChatGPT takes it two to one on breadth. Coders and researchers should still choose Claude.",
+      "startOffset": 44.141022,
+      "endOffset": 51.025307999999995
+    }
+  ],
+  "youtubeTitle": "ChatGPT vs Claude: Which One Actually Wins?",
+  "youtubeDescription": "A head-to-head between ChatGPT (GPT-5.4) and Claude 4 Opus across user base, integrations, coding performance and writing quality. ChatGPT wins on reach and ecosystem, Claude wins on coding and analytical work. Here is which one fits your use case.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/chatgpt-vs-claude",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

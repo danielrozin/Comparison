@@ -1,0 +1,129 @@
+{
+  "title": "Chrome vs Firefox",
+  "entityA": "Google Chrome",
+  "entityB": "Mozilla Firefox",
+  "category": "technology",
+  "shortAnswer": "Chrome dominates with 65% browser market share and best-in-class extension ecosystem. Firefox offers superior privacy, lower memory usage, and is backed by the non-profit Mozilla Foundation focused on internet freedom.",
+  "stats": [
+    {
+      "label": "Market Share",
+      "valueA": "65%",
+      "valueB": "3%",
+      "winner": "a"
+    },
+    {
+      "label": "Privacy",
+      "valueA": "Low",
+      "valueB": "High",
+      "winner": "b"
+    },
+    {
+      "label": "Memory Usage",
+      "valueA": "High",
+      "valueB": "Moderate",
+      "winner": "b"
+    },
+    {
+      "label": "Extensions",
+      "valueA": "Most",
+      "valueB": "Good",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Chrome for compatibility and extensions. Firefox for privacy and resource efficiency. Both are excellent browsers.",
+  "slug": "chrome-vs-firefox",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Google Chrome or Mozilla Firefox? The numbers settle it.",
+    "tape": "Five categories. One winner. Here is how they actually compare.",
+    "rounds": [
+      "Google Chrome takes market share.",
+      "Mozilla Firefox takes privacy.",
+      "Mozilla Firefox takes memory usage.",
+      "Google Chrome takes extensions."
+    ],
+    "verdict": "It ends level. Your call."
+  },
+  "audio": {
+    "cold": "video-assets/chrome-vs-firefox/audio/cold.mp3",
+    "tape": "video-assets/chrome-vs-firefox/audio/tape.mp3",
+    "rounds": [
+      "video-assets/chrome-vs-firefox/audio/round-1.mp3",
+      "video-assets/chrome-vs-firefox/audio/round-2.mp3",
+      "video-assets/chrome-vs-firefox/audio/round-3.mp3",
+      "video-assets/chrome-vs-firefox/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/chrome-vs-firefox/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 170,
+    "tape": 190,
+    "rounds": [
+      150,
+      150,
+      150,
+      150
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Google Chrome or Mozilla Firefox? The numbers settle it. Five categories. One winner. Here is how they actually compare. Google Chrome takes market share. Mozilla Firefox takes privacy. Mozilla Firefox takes memory usage. Google Chrome takes extensions. It ends level. Your call.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Google Chrome or Mozilla Firefox? The numbers settle it.",
+      "startOffset": 0,
+      "endOffset": 5.682652999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Five categories. One winner. Here is how they actually compare.",
+      "startOffset": 5.682652999999999,
+      "endOffset": 12.018366999999998
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Google Chrome takes market share.",
+      "startOffset": 12.018366999999998,
+      "endOffset": 17.018366999999998
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Mozilla Firefox takes privacy.",
+      "startOffset": 17.018366999999998,
+      "endOffset": 22.018366999999998
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Mozilla Firefox takes memory usage.",
+      "startOffset": 22.018366999999998,
+      "endOffset": 27.018366999999998
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Google Chrome takes extensions.",
+      "startOffset": 27.018366999999998,
+      "endOffset": 32.018367
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "It ends level. Your call.",
+      "startOffset": 32.018367,
+      "endOffset": 38.518367
+    }
+  ],
+  "youtubeTitle": "Google Chrome vs Mozilla Firefox: Full Comparison",
+  "youtubeDescription": "Chrome dominates with 65% browser market share and best-in-class extension ecosystem. Firefox offers superior privacy, lower memory usage, and is backed by the non-profit Mozilla Foundation focused on internet freedom.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/chrome-vs-firefox",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

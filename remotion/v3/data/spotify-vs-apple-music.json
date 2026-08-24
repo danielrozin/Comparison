@@ -1,0 +1,142 @@
+{
+  "title": "Spotify vs Apple Music",
+  "entityA": "Spotify",
+  "entityB": "Apple Music",
+  "category": "technology",
+  "shortAnswer": "Spotify leads with 220M+ premium subscribers, superior discovery algorithms, and a free tier. Apple Music offers higher audio quality (lossless), better Apple ecosystem integration, and supports more artists per stream payment.",
+  "stats": [
+    {
+      "label": "Subscribers",
+      "valueA": "220M+",
+      "valueB": "100M+",
+      "winner": "a"
+    },
+    {
+      "label": "Audio Quality",
+      "valueA": "Up to 320kbps",
+      "valueB": "Lossless (24-bit)",
+      "winner": "b"
+    },
+    {
+      "label": "Free Tier",
+      "valueA": "Yes",
+      "valueB": "No",
+      "winner": "a"
+    },
+    {
+      "label": "Artist Payout per Stream",
+      "valueA": "$0.003-0.005",
+      "valueB": "$0.007-0.01",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Spotify for discovery and social features. Apple Music for audio quality and Apple users.",
+  "slug": "spotify-vs-apple-music",
+  "imageA": {
+    "url": "video-assets/spotify-vs-apple-music/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/Spotify_HK_Stockholm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3000,
+    "height": 4000,
+    "credit": "Goombah",
+    "license": "CC0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spotify_HK_Stockholm.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Spotify_HK_Stockholm.jpg/1920px-Spotify_HK_Stockholm.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "Apple Music pays artists roughly twice per stream. Spotify still has double the subscribers.",
+    "tape": "One won the habit. The other won the fidelity and the paycheck.",
+    "rounds": [
+      "220 million versus 100 million. Spotify didn't win sound, it won default.",
+      "320kbps is good. 24-bit lossless is what the studio actually heard.",
+      "A free tier is how you get a billion people to try you.",
+      "Three tenths of a cent versus a full cent. Same song, different rent."
+    ],
+    "verdict": "Two apiece, genuinely tied. Take Spotify for discovery. Take Apple Music for ears and artists."
+  },
+  "audio": {
+    "cold": "video-assets/spotify-vs-apple-music/audio/cold.mp3",
+    "tape": "video-assets/spotify-vs-apple-music/audio/tape.mp3",
+    "rounds": [
+      "video-assets/spotify-vs-apple-music/audio/round-1.mp3",
+      "video-assets/spotify-vs-apple-music/audio/round-2.mp3",
+      "video-assets/spotify-vs-apple-music/audio/round-3.mp3",
+      "video-assets/spotify-vs-apple-music/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/spotify-vs-apple-music/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 221,
+    "tape": 150,
+    "rounds": [
+      228,
+      243,
+      150,
+      180
+    ],
+    "verdict": 250,
+    "leadInFrames": 9
+  },
+  "transcript": "Apple Music pays artists roughly twice per stream. Spotify still has double the subscribers. One won the habit. The other won the fidelity and the paycheck. 220 million versus 100 million. Spotify didn't win sound, it won default. 320kbps is good. 24-bit lossless is what the studio actually heard. A free tier is how you get a billion people to try you. Three tenths of a cent versus a full cent. Same song, different rent. Two apiece, genuinely tied. Take Spotify for discovery. Take Apple Music for ears and artists.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Apple Music pays artists roughly twice per stream. Spotify still has double the subscribers.",
+      "startOffset": 0,
+      "endOffset": 7.380611999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One won the habit. The other won the fidelity and the paycheck.",
+      "startOffset": 7.380611999999999,
+      "endOffset": 12.380612
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "220 million versus 100 million. Spotify didn't win sound, it won default.",
+      "startOffset": 12.380612,
+      "endOffset": 19.996326
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "320kbps is good. 24-bit lossless is what the studio actually heard.",
+      "startOffset": 19.996326,
+      "endOffset": 28.082244
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "A free tier is how you get a billion people to try you.",
+      "startOffset": 28.082244,
+      "endOffset": 33.082244
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Three tenths of a cent versus a full cent. Same song, different rent.",
+      "startOffset": 33.082244,
+      "endOffset": 39.078366
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Two apiece, genuinely tied. Take Spotify for discovery. Take Apple Music for ears and artists.",
+      "startOffset": 39.078366,
+      "endOffset": 47.39938600000001
+    }
+  ],
+  "youtubeTitle": "Spotify vs Apple Music: Subscribers, Sound Quality and Payouts",
+  "youtubeDescription": "Spotify has 220M+ subscribers and a free tier. Apple Music counters with 24-bit lossless audio and nearly double the artist payout per stream. We break down four stats and call who each service is actually built for.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/spotify-vs-apple-music",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Goombah (CC0) — https://commons.wikimedia.org/wiki/File:Spotify_HK_Stockholm.jpg"
+  ]
+}
