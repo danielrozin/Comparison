@@ -64,15 +64,21 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 - [x] `POST /api/checkout` — Stripe when configured, reservation until then
 - [x] Header + footer "Pricing" links
 - [x] /requests upsell banner
+- [x] Pro upsell card on every /compare/* page (src=compare-{slug})
 - [x] PostHog server events on reservation/checkout
 
 **Phase 2 — when Stripe keys land (days)**
 - [ ] Create Stripe products/prices, set `STRIPE_SECRET_KEY`,
       `STRIPE_PRICE_PRO_MONTHLY`, `STRIPE_PRICE_PRO_YEARLY`,
       `STRIPE_PRICE_BUSINESS_MONTHLY` in Vercel
-- [ ] `/api/stripe/webhook` — provision on `checkout.session.completed`
+- [x] `/api/stripe/webhook` — built and inert until `STRIPE_WEBHOOK_SECRET`
+      is set; verifies signatures, dedupes events, records members to Redis,
+      notifies Info@ on purchase and cancel, fires `checkout_completed`
+- [ ] Point a Stripe webhook endpoint at `/api/stripe/webhook`
+      (event: checkout.session.completed, customer.subscription.deleted)
+      and set `STRIPE_WEBHOOK_SECRET`
 - [ ] Email the reservation list (they locked founding price) with checkout links
-- [ ] Success/cancel pages (`/pricing/thanks`, back-to-pricing)
+- [x] Success page `/pricing/thanks` (noindex)
 
 **Phase 3 — deliver the Pro promises**
 - [ ] Custom-comparison request form for Pro users → generation queue

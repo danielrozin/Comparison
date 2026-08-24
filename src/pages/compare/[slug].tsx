@@ -25,6 +25,7 @@ import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
+import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
 import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
@@ -1076,6 +1077,11 @@ export default function ComparisonPage(props: Props) {
           {/* Inline Newsletter Signup */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <NewsletterSignup source="comparison_inline" referrerSlug={comparison.slug} variant="card" />
+          </div>
+
+          {/* Pro upsell — the highest-intent moment on the site */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+            <ProUpsellCard slug={comparison.slug} />
           </div>
 
           {/* FAQ */}
