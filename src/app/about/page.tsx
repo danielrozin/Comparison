@@ -440,7 +440,7 @@ export default function AboutPage() {
             That one came from loss — Daniel had lost his mother, Shai his grandfather, and neither of
             us could find a way to keep a whole life in one place.
           </p>
-          <p className="text-text-secondary leading-relaxed">
+          <p className="text-text-secondary leading-relaxed mb-4">
             Same instinct, different feeling. Scan2Remember came out of grief. {SITE_NAME} came out of
             curiosity. Both exist because we went looking for something, could not find it, and were
             stubborn enough to build it.{" "}
@@ -454,6 +454,21 @@ export default function AboutPage() {
               <span className="sr-only"> on Scan2Remember (opens in new tab)</span>
             </a>
             .
+          </p>
+          <p className="text-text-secondary leading-relaxed">
+            The newest one is still in development:{" "}
+            <a
+              href="https://cpgsite.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 font-medium hover:underline"
+            >
+              Free Coloring Pages
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
+            {" "}— thousands of free printable coloring pages for kids and adults. Different corner of
+            the internet, same rule: find something people keep searching for and can&apos;t get without
+            a catch, then build it without the catch.
           </p>
         </div>
       </section>

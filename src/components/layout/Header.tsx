@@ -140,13 +140,16 @@ export function Header() {
               const subs = CATEGORY_SUBCATEGORIES[item.slug];
               const hasSubs = subs && subs.length > 0;
               const isOpen = openDropdown === item.slug;
-              // Hide last 2 items on lg, show all on xl
-              const hideOnLg = idx >= NAV_ITEMS.length - 4;
+              // The full 8 dropdowns never fit next to the links and search
+              // inside max-w-7xl — cap at 4 (lg), 5 (xl), 6 (2xl). Everything
+              // hidden here stays reachable in the mobile menu and footer.
+              const visibility =
+                idx < 4 ? "" : idx < 5 ? "hidden xl:block" : idx < 6 ? "hidden 2xl:block" : "hidden";
 
               return (
                 <div
                   key={item.slug}
-                  className={`relative flex-shrink-0 ${hideOnLg ? "hidden xl:block" : ""}`}
+                  className={`relative flex-shrink-0 ${visibility}`}
                   onMouseEnter={() => hasSubs && handleEnter(item.slug)}
                   onMouseLeave={handleLeave}
                   onFocus={() => hasSubs && setOpenDropdown(item.slug)}
@@ -217,14 +220,8 @@ export function Header() {
             <Link href="/blog" aria-current={pathname?.startsWith("/blog") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/blog") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Blog
             </Link>
-            <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
+            <Link href="/reviews" aria-current={pathname?.startsWith("/reviews") ? "page" : undefined} className={`hidden xl:inline-flex flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname?.startsWith("/reviews") ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
               Reviews
-            </Link>
-            <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined} className={`hidden xl:inline-flex flex-shrink-0 px-2.5 py-2 text-[13px] font-medium hover:bg-surface-alt/60 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 ${pathname === "/about" ? "text-text bg-surface-alt" : "text-text-secondary hover:text-text"}`}>
-              Our Story
-            </Link>
-            <Link href="/requests" aria-current={pathname === "/requests" ? "page" : undefined} className="hidden xl:inline-flex flex-shrink-0 px-2.5 py-2 text-[13px] font-medium text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500">
-              Requests
             </Link>
           </nav>
 
@@ -245,10 +242,10 @@ export function Header() {
               <svg className="w-4 h-4 group-hover:text-primary-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span className="hidden sm:inline overflow-hidden whitespace-nowrap" aria-live="off" aria-hidden="true">
+              <span className="hidden xl:inline max-w-[140px] truncate overflow-hidden whitespace-nowrap" aria-live="off" aria-hidden="true">
                 {SEARCH_HINTS[searchHintIdx]}
               </span>
-              <span className="hidden md:inline-flex items-center gap-1 text-xs text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
+              <span className="hidden 2xl:inline-flex items-center gap-1 text-xs text-text-secondary/40 group-hover:text-text-secondary/60 transition-colors">
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">⌘K</kbd>
                 <span className="text-text-secondary/20">/</span>
                 <kbd className="inline-flex items-center bg-white border border-border/60 rounded px-1.5 py-0.5 font-mono group-hover:border-primary-200 transition-colors">/</kbd>
