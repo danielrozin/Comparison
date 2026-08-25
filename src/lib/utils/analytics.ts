@@ -76,6 +76,23 @@ export function trackAffiliateClick(product: string, position: string, page: str
   posthog.capture("affiliate_link_clicked", { product, position, page });
 }
 
+/** Pricing page viewed — top of the monetization funnel. `src` is the surface
+ *  that sent the visitor (header, footer, requests, compare-{slug}, direct). */
+export function trackPricingViewed(src: string) {
+  trackEvent("pricing_viewed", { src });
+  clarityTagAction("pricing_viewed");
+  posthog.capture("pricing_viewed", { src });
+}
+
+/** Buy button clicked on /pricing — before the checkout/reservation POST, so
+ *  drop-off between click and completed request is visible. */
+export function trackCheckoutClicked(plan: string, interval: string, src: string) {
+  trackEvent("checkout_clicked", { plan, interval, src });
+  clarityTagAction("checkout_clicked");
+  clarityTagEngagement("converted");
+  posthog.capture("checkout_clicked", { plan, interval, src });
+}
+
 export function trackComparisonVote(entityA: string, entityB: string, choice: string) {
   trackEvent("comparison_vote", { entity_a: entityA, entity_b: entityB, choice });
   clarityTagAction("vote");

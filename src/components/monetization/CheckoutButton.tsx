@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackCheckoutClicked } from "@/lib/utils/analytics";
 
 /**
  * The one buy button. POSTs to /api/checkout:
@@ -27,6 +28,7 @@ export function CheckoutButton({
 
   async function submit(withEmail: boolean) {
     setPhase("busy");
+    if (!withEmail) trackCheckoutClicked(plan, interval, src); // first click only, not the email re-submit
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

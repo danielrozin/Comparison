@@ -6,6 +6,7 @@ import { HubShell } from "@/components/layout/HubShell";
 import { breadcrumbSchema } from "@/lib/seo/schema";
 import { PLANS } from "@/lib/monetization/plans";
 import { CheckoutButton } from "@/components/monetization/CheckoutButton";
+import { PricingViewTracker } from "@/components/monetization/PricingViewTracker";
 
 const PAGE_TITLE = `Pricing — Go Pro on ${SITE_NAME}`;
 const PAGE_DESC = `Every comparison stays free. Pro adds custom comparisons on demand, exports and alerts from $49/yr founding. Business adds API access and white-label embeds.`;
@@ -94,6 +95,7 @@ export default async function PricingPage({
   return (
     <>
       <JsonLd data={[offersSchema, faqSchema]} />
+      <PricingViewTracker src={src} />
       <HubShell
         eyebrow="Pricing"
         title={"The comparisons are free. The superpowers aren't."}
