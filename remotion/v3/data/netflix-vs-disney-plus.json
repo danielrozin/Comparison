@@ -1,0 +1,129 @@
+{
+  "title": "Netflix vs Disney+",
+  "entityA": "Netflix",
+  "entityB": "Disney+",
+  "category": "companies",
+  "shortAnswer": "Netflix has 260M+ subscribers and the largest content library. Disney+ has 150M+ subscribers with unmatched franchise power (Marvel, Star Wars, Pixar, Disney). Netflix spends more on content but Disney owns its IP.",
+  "stats": [
+    {
+      "label": "Subscribers",
+      "valueA": "260M+",
+      "valueB": "150M+",
+      "winner": "a"
+    },
+    {
+      "label": "Content Spend",
+      "valueA": "$17B/year",
+      "valueB": "$9B/year",
+      "winner": "a"
+    },
+    {
+      "label": "Franchise Power",
+      "valueA": "Limited",
+      "valueB": "Unmatched",
+      "winner": "b"
+    },
+    {
+      "label": "Price",
+      "valueA": "$15.49/mo",
+      "valueB": "$13.99/mo",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Netflix for variety and original content. Disney+ for families and franchise fans. Netflix leads in subscribers; Disney leads in IP ownership.",
+  "slug": "netflix-vs-disney-plus",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Netflix spends eight billion more a year and still can't buy Star Wars.",
+    "tape": "One rents attention with volume. The other owns characters people never stop loving.",
+    "rounds": [
+      "260 million against 150 million. Netflix got there first and the lead held.",
+      "17 billion a year buys everything. 9 billion buys what Disney already owns.",
+      "Netflix rents its hits. Disney hands down Marvel, Star Wars and Pixar forever.",
+      "A dollar fifty a month cheaper, and the cheaper one owns the library."
+    ],
+    "verdict": "Two apiece, genuinely tied. Netflix if you want variety. Disney+ if there are kids."
+  },
+  "audio": {
+    "cold": "video-assets/netflix-vs-disney-plus/audio/cold.mp3",
+    "tape": "video-assets/netflix-vs-disney-plus/audio/tape.mp3",
+    "rounds": [
+      "video-assets/netflix-vs-disney-plus/audio/round-1.mp3",
+      "video-assets/netflix-vs-disney-plus/audio/round-2.mp3",
+      "video-assets/netflix-vs-disney-plus/audio/round-3.mp3",
+      "video-assets/netflix-vs-disney-plus/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/netflix-vs-disney-plus/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 152,
+    "tape": 178,
+    "rounds": [
+      238,
+      204,
+      207,
+      150
+    ],
+    "verdict": 231,
+    "leadInFrames": 9
+  },
+  "transcript": "Netflix spends eight billion more a year and still can't buy Star Wars. One rents attention with volume. The other owns characters people never stop loving. 260 million against 150 million. Netflix got there first and the lead held. 17 billion a year buys everything. 9 billion buys what Disney already owns. Netflix rents its hits. Disney hands down Marvel, Star Wars and Pixar forever. A dollar fifty a month cheaper, and the cheaper one owns the library. Two apiece, genuinely tied. Netflix if you want variety. Disney+ if there are kids.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Netflix spends eight billion more a year and still can't buy Star Wars.",
+      "startOffset": 0,
+      "endOffset": 5.055714
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One rents attention with volume. The other owns characters people never stop loving.",
+      "startOffset": 5.055714,
+      "endOffset": 10.973469
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "260 million against 150 million. Netflix got there first and the lead held.",
+      "startOffset": 10.973469,
+      "endOffset": 18.902653
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "17 billion a year buys everything. 9 billion buys what Disney already owns.",
+      "startOffset": 18.902653,
+      "endOffset": 25.708571
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Netflix rents its hits. Disney hands down Marvel, Star Wars and Pixar forever.",
+      "startOffset": 25.708571,
+      "endOffset": 32.592856999999995
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "A dollar fifty a month cheaper, and the cheaper one owns the library.",
+      "startOffset": 32.592856999999995,
+      "endOffset": 37.592856999999995
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Two apiece, genuinely tied. Netflix if you want variety. Disney+ if there are kids.",
+      "startOffset": 37.592856999999995,
+      "endOffset": 45.286939
+    }
+  ],
+  "youtubeTitle": "Netflix vs Disney+: Subscribers, Spend and Franchise Power",
+  "youtubeDescription": "Netflix has 260M+ subscribers and spends $17B a year on content. Disney+ has 150M+ subscribers at $13.99 a month with Marvel, Star Wars and Pixar behind it. We compare subscribers, content spend, franchise power and price to see which streamer actually wins.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/netflix-vs-disney-plus",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

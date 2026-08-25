@@ -4013,6 +4013,168 @@
       "youtubeVideoId": "R-Fp_q4d1a8",
       "youtubeUrl": "https://www.youtube.com/watch?v=R-Fp_q4d1a8",
       "uploadedAt": "2026-08-24T05:56:44.894Z"
+    },
+    {
+      "slug": "netflix-vs-disney-plus",
+      "title": "Netflix vs Disney+",
+      "entityA": "Netflix",
+      "entityB": "Disney+",
+      "category": "companies",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "netflix-vs-disney-plus.mp4",
+      "durationSeconds": 43,
+      "transcript": "Netflix spends eight billion more a year and still can't buy Star Wars. One rents attention with volume. The other owns characters people never stop loving. 260 million against 150 million. Netflix got there first and the lead held. 17 billion a year buys everything. 9 billion buys what Disney already owns. Netflix rents its hits. Disney hands down Marvel, Star Wars and Pixar forever. A dollar fifty a month cheaper, and the cheaper one owns the library. Two apiece, genuinely tied. Netflix if you want variety. Disney+ if there are kids.",
+      "chapters": [
+        {
+          "name": "Netflix vs Disney+",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Subscribers",
+          "startOffset": 11,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Content Spend",
+          "startOffset": 19,
+          "endOffset": 26
+        },
+        {
+          "name": "Round 3: Franchise Power",
+          "startOffset": 26,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Price",
+          "startOffset": 33,
+          "endOffset": 38
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 38,
+          "endOffset": 45
+        }
+      ],
+      "youtubeTitle": "Netflix vs Disney+: Subscribers, Spend and Franchise Power",
+      "youtubeDescription": "Netflix has 260M+ subscribers and spends $17B a year on content. Disney+ has 150M+ subscribers at $13.99 a month with Marvel, Star Wars and Pixar behind it. We compare subscribers, content spend, franchise power and price to see which streamer actually wins.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/netflix-vs-disney-plus\n\nFull comparison: https://www.aversusb.net/compare/netflix-vs-disney-plus",
+      "youtubeVideoId": "SJQG27t_My0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SJQG27t_My0",
+      "uploadedAt": "2026-08-25T05:37:54.310Z"
+    },
+    {
+      "slug": "tesla-vs-ford",
+      "title": "Tesla vs Ford",
+      "entityA": "Tesla",
+      "entityB": "Ford",
+      "category": "companies",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "tesla-vs-ford.mp4",
+      "durationSeconds": 44,
+      "transcript": "Ford sells more than twice the cars and is worth sixteen times less. One company gets paid for what it will be. The other for what it is. Eight hundred billion against fifty. The market is buying a story, not a factory. Ford moved 4.2 million cars. Volume that Tesla still cannot touch. Fifty five percent of American EVs. Tesla is the default, Ford is an option. 121 years against 21. Ford survived things Tesla has never been tested by. Two apiece, honestly tied. Tesla if you buy the future. Ford if you need a truck today.",
+      "chapters": [
+        {
+          "name": "Tesla vs Ford",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Market Cap",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Vehicles Sold (2023)",
+          "startOffset": 18,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: EV Market Share (US)",
+          "startOffset": 24,
+          "endOffset": 31
+        },
+        {
+          "name": "Round 4: History",
+          "startOffset": 31,
+          "endOffset": 39
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 39,
+          "endOffset": 46
+        }
+      ],
+      "youtubeTitle": "Tesla vs Ford: The Numbers Do Not Agree",
+      "youtubeDescription": "Tesla is worth over $800 billion while Ford sits near $50 billion, yet Ford sold 4.2 million vehicles in 2023 to Tesla's 1.8 million. We compare market cap, sales volume, US EV market share and 121 years of history to see which automaker actually wins. Spoiler: the scoreboard ties.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tesla-vs-ford\n\nFull comparison: https://www.aversusb.net/compare/tesla-vs-ford",
+      "youtubeVideoId": "4LMSZ4USbiA",
+      "youtubeUrl": "https://www.youtube.com/watch?v=4LMSZ4USbiA",
+      "uploadedAt": "2026-08-25T05:42:55.379Z"
+    },
+    {
+      "slug": "uber-vs-lyft",
+      "title": "Uber vs Lyft",
+      "entityA": "Uber",
+      "entityB": "Lyft",
+      "category": "companies",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "uber-vs-lyft.mp4",
+      "durationSeconds": 41,
+      "transcript": "Two apps, same road. One runs 70 countries, the other never left home. Uber built an empire. Lyft built a cheaper ride in one corner of it. 70-plus countries versus two. Uber is infrastructure, Lyft is a regional option. 68 to 32. Uber takes two out of every three American rides. Uber Eats means Uber earns when nobody's riding. Lyft has no plan B. Lyft's lower average fare is the whole pitch, and it's a real one. Uber takes it 3-1 on scale. Pick Lyft if your ride is domestic and the price matters.",
+      "chapters": [
+        {
+          "name": "Uber vs Lyft",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Global Coverage",
+          "startOffset": 12,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Market Share (US)",
+          "startOffset": 19,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Food Delivery",
+          "startOffset": 25,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: Average Fare",
+          "startOffset": 32,
+          "endOffset": 37
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 37,
+          "endOffset": 43
+        }
+      ],
+      "youtubeTitle": "Uber vs Lyft: Which Rideshare App Actually Wins?",
+      "youtubeDescription": "We compare Uber and Lyft on global coverage, US market share, food delivery, and average fare. Uber dominates on scale with 70+ countries and 68% of the US market, while Lyft counters with lower prices in the US and Canada. Here's which one you should actually be opening.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/uber-vs-lyft\n\nImage credits:\nImage A by HaeB (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Uber_offices,_Mission_Bay_(July_2020)_-2.jpg\n\nFull comparison: https://www.aversusb.net/compare/uber-vs-lyft",
+      "youtubeVideoId": "VLO4YQ1KBQs",
+      "youtubeUrl": "https://www.youtube.com/watch?v=VLO4YQ1KBQs",
+      "uploadedAt": "2026-08-25T05:49:03.231Z"
     }
   ]
 }

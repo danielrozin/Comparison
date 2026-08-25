@@ -1,0 +1,129 @@
+{
+  "title": "Tesla vs Ford",
+  "entityA": "Tesla",
+  "entityB": "Ford",
+  "category": "companies",
+  "shortAnswer": "Tesla is the world's most valuable automaker ($800B+ market cap) despite selling far fewer cars. Ford sold 4.2M vehicles in 2023 vs Tesla's 1.8M but Ford's market cap is only ~$50B. Tesla leads in EVs; Ford leads in trucks.",
+  "stats": [
+    {
+      "label": "Market Cap",
+      "valueA": "$800B+",
+      "valueB": "$50B",
+      "winner": "a"
+    },
+    {
+      "label": "Vehicles Sold (2023)",
+      "valueA": "1.8M",
+      "valueB": "4.2M",
+      "winner": "b"
+    },
+    {
+      "label": "EV Market Share (US)",
+      "valueA": "55%",
+      "valueB": "7%",
+      "winner": "a"
+    },
+    {
+      "label": "History",
+      "valueA": "21 years",
+      "valueB": "121 years",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Tesla for EVs and tech. Ford for trucks and legacy. The market values Tesla's future more than Ford's present.",
+  "slug": "tesla-vs-ford",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Ford sells more than twice the cars and is worth sixteen times less.",
+    "tape": "One company gets paid for what it will be. The other for what it is.",
+    "rounds": [
+      "Eight hundred billion against fifty. The market is buying a story, not a factory.",
+      "Ford moved 4.2 million cars. Volume that Tesla still cannot touch.",
+      "Fifty five percent of American EVs. Tesla is the default, Ford is an option.",
+      "121 years against 21. Ford survived things Tesla has never been tested by."
+    ],
+    "verdict": "Two apiece, honestly tied. Tesla if you buy the future. Ford if you need a truck today."
+  },
+  "audio": {
+    "cold": "video-assets/tesla-vs-ford/audio/cold.mp3",
+    "tape": "video-assets/tesla-vs-ford/audio/tape.mp3",
+    "rounds": [
+      "video-assets/tesla-vs-ford/audio/round-1.mp3",
+      "video-assets/tesla-vs-ford/audio/round-2.mp3",
+      "video-assets/tesla-vs-ford/audio/round-3.mp3",
+      "video-assets/tesla-vs-ford/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/tesla-vs-ford/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 188,
+    "tape": 150,
+    "rounds": [
+      190,
+      192,
+      207,
+      236
+    ],
+    "verdict": 228,
+    "leadInFrames": 9
+  },
+  "transcript": "Ford sells more than twice the cars and is worth sixteen times less. One company gets paid for what it will be. The other for what it is. Eight hundred billion against fifty. The market is buying a story, not a factory. Ford moved 4.2 million cars. Volume that Tesla still cannot touch. Fifty five percent of American EVs. Tesla is the default, Ford is an option. 121 years against 21. Ford survived things Tesla has never been tested by. Two apiece, honestly tied. Tesla if you buy the future. Ford if you need a truck today.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Ford sells more than twice the cars and is worth sixteen times less.",
+      "startOffset": 0,
+      "endOffset": 6.257346999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One company gets paid for what it will be. The other for what it is.",
+      "startOffset": 6.257346999999999,
+      "endOffset": 11.257347
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Eight hundred billion against fifty. The market is buying a story, not a factory.",
+      "startOffset": 11.257347,
+      "endOffset": 17.593061
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Ford moved 4.2 million cars. Volume that Tesla still cannot touch.",
+      "startOffset": 17.593061,
+      "endOffset": 24.007143
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Fifty five percent of American EVs. Tesla is the default, Ford is an option.",
+      "startOffset": 24.007143,
+      "endOffset": 30.891429
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "121 years against 21. Ford survived things Tesla has never been tested by.",
+      "startOffset": 30.891429,
+      "endOffset": 38.742245
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Two apiece, honestly tied. Tesla if you buy the future. Ford if you need a truck today.",
+      "startOffset": 38.742245,
+      "endOffset": 46.357958999999994
+    }
+  ],
+  "youtubeTitle": "Tesla vs Ford: The Numbers Do Not Agree",
+  "youtubeDescription": "Tesla is worth over $800 billion while Ford sits near $50 billion, yet Ford sold 4.2 million vehicles in 2023 to Tesla's 1.8 million. We compare market cap, sales volume, US EV market share and 121 years of history to see which automaker actually wins. Spoiler: the scoreboard ties.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tesla-vs-ford",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
