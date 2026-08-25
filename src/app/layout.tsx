@@ -177,6 +177,11 @@ export default async function RootLayout({
             crossOrigin="anonymous"
           />
         )}
+        {/* Google Preferred Sources — renders the "Add preferred source"
+            button wherever a [google-add-preferred-source-btn] div appears
+            (site-wide in the Footer). Readers who add us get our content
+            badged "preferred" in Top Stories, AI Mode and AI Overviews. */}
+        <script async src="https://news.google.com/swg/js/v1/publisher.js"></script>
         {/* Clarity — only loads if analytics consent granted or non-EU without prior choice */}
         <script
           dangerouslySetInnerHTML={{

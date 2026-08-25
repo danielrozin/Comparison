@@ -47,6 +47,14 @@ export function Footer() {
                 </svg>
               </a>
             </div>
+            {/* Google Preferred Sources — the footer is dark, so the dark
+                theme; Google localizes the label from the reader's browser.
+                The div stays empty until news.google.com's script (loaded in
+                the head) hydrates it, so there is no layout shift or dead UI
+                if the script is blocked. */}
+            <div className="mb-3 min-h-0" aria-hidden="false">
+              <div google-add-preferred-source-btn="" data-theme="dark"></div>
+            </div>
             {/* Trust badges */}
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-2.5 py-1">

@@ -937,6 +937,13 @@ export default async function BlogPostPage({
             </div>
             <div className="px-6 py-4 bg-white">
               <ShareBar title={article.title} slug={slug} path="blog" />
+              {/* Google Preferred Sources — articles are what Top Stories
+                  surfaces, so the share box is where the ask belongs. Google's
+                  script (loaded in the head) hydrates this div; it stays empty
+                  and collapses if the script is blocked. */}
+              <div className="mt-3">
+                <div google-add-preferred-source-btn="" data-theme="light"></div>
+              </div>
             </div>
           </section>
 
