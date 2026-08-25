@@ -942,7 +942,7 @@ export default async function BlogPostPage({
                   script (loaded in the head) hydrates this div; it stays empty
                   and collapses if the script is blocked. */}
               <div className="mt-3">
-                <div google-add-preferred-source-btn="" data-theme="light"></div>
+                <div google-add-preferred-source-btn="" data-lang="en" data-theme="light"></div>
               </div>
             </div>
           </section>

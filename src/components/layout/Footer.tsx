@@ -53,7 +53,7 @@ export function Footer() {
                 the head) hydrates it, so there is no layout shift or dead UI
                 if the script is blocked. */}
             <div className="mb-3 min-h-0" aria-hidden="false">
-              <div google-add-preferred-source-btn="" data-theme="dark"></div>
+              <div google-add-preferred-source-btn="" data-lang="en" data-theme="dark"></div>
             </div>
             {/* Trust badges */}
             <div className="flex items-center gap-3">
