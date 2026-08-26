@@ -1,0 +1,129 @@
+{
+  "title": "Nike vs Adidas",
+  "entityA": "Nike",
+  "entityB": "Adidas",
+  "category": "brands",
+  "shortAnswer": "Nike is the world's largest sportswear brand with $51B revenue and dominant US market share. Adidas generates $24B revenue with stronger presence in European football and lifestyle fashion through collaborations like Yeezy.",
+  "stats": [
+    {
+      "label": "Revenue",
+      "valueA": "$51B",
+      "valueB": "$24B",
+      "winner": "a"
+    },
+    {
+      "label": "Market Share (Global)",
+      "valueA": "#1",
+      "valueB": "#2",
+      "winner": "a"
+    },
+    {
+      "label": "Football (Soccer)",
+      "valueA": "Growing",
+      "valueB": "Dominant",
+      "winner": "b"
+    },
+    {
+      "label": "Lifestyle/Street",
+      "valueA": "Strong",
+      "valueB": "Very Strong",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Nike for performance sportswear and US dominance. Adidas for football and streetwear culture. Nike leads overall market.",
+  "slug": "nike-vs-adidas",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One brand makes more than twice the money. It still loses two rounds.",
+    "tape": "Nike owns the scoreboard. Adidas owns the culture. Only one of those pays better.",
+    "rounds": [
+      "Fifty one billion against twenty four. Nike isn't ahead, it's a different weight class.",
+      "Number one and number two globally, and nobody else is close to either.",
+      "Football is Adidas territory. Nike is growing there, which is a polite way of saying chasing.",
+      "On the street Adidas wins. Collabs and culture beat billboards every single time."
+    ],
+    "verdict": "Two apiece, honestly. Nike wins the business. Pick Adidas if football and streetwear are your world."
+  },
+  "audio": {
+    "cold": "video-assets/nike-vs-adidas/audio/cold.mp3",
+    "tape": "video-assets/nike-vs-adidas/audio/tape.mp3",
+    "rounds": [
+      "video-assets/nike-vs-adidas/audio/round-1.mp3",
+      "video-assets/nike-vs-adidas/audio/round-2.mp3",
+      "video-assets/nike-vs-adidas/audio/round-3.mp3",
+      "video-assets/nike-vs-adidas/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/nike-vs-adidas/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 175,
+    "tape": 214,
+    "rounds": [
+      204,
+      150,
+      218,
+      269
+    ],
+    "verdict": 243,
+    "leadInFrames": 9
+  },
+  "transcript": "One brand makes more than twice the money. It still loses two rounds. Nike owns the scoreboard. Adidas owns the culture. Only one of those pays better. Fifty one billion against twenty four. Nike isn't ahead, it's a different weight class. Number one and number two globally, and nobody else is close to either. Football is Adidas territory. Nike is growing there, which is a polite way of saying chasing. On the street Adidas wins. Collabs and culture beat billboards every single time. Two apiece, honestly. Nike wins the business. Pick Adidas if football and streetwear are your world.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One brand makes more than twice the money. It still loses two rounds.",
+      "startOffset": 0,
+      "endOffset": 5.839388
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Nike owns the scoreboard. Adidas owns the culture. Only one of those pays better.",
+      "startOffset": 5.839388,
+      "endOffset": 12.958776
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Fifty one billion against twenty four. Nike isn't ahead, it's a different weight class.",
+      "startOffset": 12.958776,
+      "endOffset": 19.764694
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Number one and number two globally, and nobody else is close to either.",
+      "startOffset": 19.764694,
+      "endOffset": 24.764694
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Football is Adidas territory. Nike is growing there, which is a polite way of saying chasing.",
+      "startOffset": 24.764694,
+      "endOffset": 32.040816
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "On the street Adidas wins. Collabs and culture beat billboards every single time.",
+      "startOffset": 32.040816,
+      "endOffset": 41.014898
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Two apiece, honestly. Nike wins the business. Pick Adidas if football and streetwear are your world.",
+      "startOffset": 41.014898,
+      "endOffset": 49.100816
+    }
+  ],
+  "youtubeTitle": "Nike vs Adidas: The Money Says One Thing, The Street Says Another",
+  "youtubeDescription": "Nike pulls $51B in revenue and sits at number one globally, but Adidas dominates football and holds the edge in lifestyle and streetwear. We break down revenue, market share, football and street credibility to settle which brand actually wins. The score comes out tied, so we tell you which one is for you.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/nike-vs-adidas",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

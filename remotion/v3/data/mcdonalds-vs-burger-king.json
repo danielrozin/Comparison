@@ -1,0 +1,145 @@
+{
+  "title": "Mcdonalds vs Burger King",
+  "entityA": "Mcdonalds",
+  "entityB": "Burger King",
+  "category": "General",
+  "shortAnswer": "McDonald's generates 2.4x more revenue per location ($3.96M vs $1.63M) but requires much higher initial investment ($1.47M vs $232K). McDonald's dominates in efficiency and brand strength.",
+  "stats": [
+    {
+      "label": "Revenue Per Location",
+      "valueA": "$3.96M",
+      "valueB": "$1.63M",
+      "winner": "a"
+    },
+    {
+      "label": "Revenue Multiplier",
+      "valueA": "2.4x higher",
+      "valueB": "Base level",
+      "winner": "a"
+    },
+    {
+      "label": "Minimum Investment",
+      "valueA": "$1.47M",
+      "valueB": "$232K",
+      "winner": "b"
+    },
+    {
+      "label": "Investment Difference",
+      "valueA": "6.3x higher",
+      "valueB": "6.3x lower",
+      "winner": "b"
+    },
+    {
+      "label": "Cheeseburger Price per Ounce",
+      "valueA": "$1.91",
+      "valueB": "Not in top rankings",
+      "winner": "a"
+    }
+  ],
+  "verdict": "McDonald's demonstrates superior business performance with 2.4x higher revenue per location and stronger market positioning, justifying its premium investment requirements. While Burger King offers lower entry costs and more affordable menu options, McDonald's operational efficiency and brand strength provide better long-term returns for investors willing to make the higher initial investment.",
+  "slug": "mcdonalds-vs-burger-king",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One store makes four million dollars a year. Its rival makes less than half.",
+    "tape": "This isn't burgers. It's two totally different bets on how much money you have.",
+    "rounds": [
+      "McDonald's pulls $3.96 million per store. Burger King does $1.63 million. Same street, different planet.",
+      "2.4 times the revenue from the same real estate. That gap is the whole story.",
+      "Getting in costs $1.47 million with McDonald's. Burger King lets you start at $232K.",
+      "6.3 times cheaper to open the doors. That's the difference between dream and bank loan.",
+      "McDonald's cheeseburger runs $1.91 an ounce and still ranks. Burger King doesn't even chart."
+    ],
+    "verdict": "McDonald's takes it 3 to 2. Pick Burger King only if capital is your ceiling."
+  },
+  "audio": {
+    "cold": "video-assets/mcdonalds-vs-burger-king/audio/cold.mp3",
+    "tape": "video-assets/mcdonalds-vs-burger-king/audio/tape.mp3",
+    "rounds": [
+      "video-assets/mcdonalds-vs-burger-king/audio/round-1.mp3",
+      "video-assets/mcdonalds-vs-burger-king/audio/round-2.mp3",
+      "video-assets/mcdonalds-vs-burger-king/audio/round-3.mp3",
+      "video-assets/mcdonalds-vs-burger-king/audio/round-4.mp3",
+      "video-assets/mcdonalds-vs-burger-king/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/mcdonalds-vs-burger-king/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 173,
+    "tape": 166,
+    "rounds": [
+      312,
+      218,
+      245,
+      216,
+      240
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "One store makes four million dollars a year. Its rival makes less than half. This isn't burgers. It's two totally different bets on how much money you have. McDonald's pulls $3.96 million per store. Burger King does $1.63 million. Same street, different planet. 2.4 times the revenue from the same real estate. That gap is the whole story. Getting in costs $1.47 million with McDonald's. Burger King lets you start at $232K. 6.3 times cheaper to open the doors. That's the difference between dream and bank loan. McDonald's cheeseburger runs $1.91 an ounce and still ranks. Burger King doesn't even chart. McDonald's takes it 3 to 2. Pick Burger King only if capital is your ceiling.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One store makes four million dollars a year. Its rival makes less than half.",
+      "startOffset": 0,
+      "endOffset": 5.761019999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "This isn't burgers. It's two totally different bets on how much money you have.",
+      "startOffset": 5.761019999999999,
+      "endOffset": 11.286938
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "McDonald's pulls $3.96 million per store. Burger King does $1.63 million. Same street, different planet.",
+      "startOffset": 11.286938,
+      "endOffset": 21.697754000000003
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "2.4 times the revenue from the same real estate. That gap is the whole story.",
+      "startOffset": 21.697754000000003,
+      "endOffset": 28.973876000000004
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Getting in costs $1.47 million with McDonald's. Burger King lets you start at $232K.",
+      "startOffset": 28.973876000000004,
+      "endOffset": 37.13816200000001
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "6.3 times cheaper to open the doors. That's the difference between dream and bank loan.",
+      "startOffset": 37.13816200000001,
+      "endOffset": 44.33591700000001
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "McDonald's cheeseburger runs $1.91 an ounce and still ranks. Burger King doesn't even chart.",
+      "startOffset": 44.33591700000001,
+      "endOffset": 52.34346800000001
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "McDonald's takes it 3 to 2. Pick Burger King only if capital is your ceiling.",
+      "startOffset": 52.34346800000001,
+      "endOffset": 58.84346800000001
+    }
+  ],
+  "youtubeTitle": "McDonald's vs Burger King: The Revenue Gap Nobody Talks About",
+  "youtubeDescription": "McDonald's averages $3.96 million per location against Burger King's $1.63 million, a 2.4x gap on the same kind of corner lot. But getting into McDonald's costs $1.47 million versus $232K for Burger King. We break down revenue per store, entry cost and menu pricing to name a winner.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mcdonalds-vs-burger-king",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

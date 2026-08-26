@@ -4175,6 +4175,178 @@
       "youtubeVideoId": "VLO4YQ1KBQs",
       "youtubeUrl": "https://www.youtube.com/watch?v=VLO4YQ1KBQs",
       "uploadedAt": "2026-08-25T05:49:03.231Z"
+    },
+    {
+      "slug": "airbnb-vs-booking",
+      "title": "Airbnb vs Booking",
+      "entityA": "Airbnb",
+      "entityB": "Booking",
+      "category": "Travel",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "airbnb-vs-booking.mp4",
+      "durationSeconds": 47,
+      "transcript": "Two thirds of hosts list on both. Only 23% actually earn more. One platform protects your margin. The other buys you time you have to pay for. Hosts hedge by listing everywhere, and most of them get nothing for it. The typical Airbnb guest is 38, old enough to have money, young enough to travel. 4.2 trips a year means these are repeat travelers, not once-a-summer bookers. 4.3 nights per stay is the sweet spot. Long enough to matter, short enough to turn over. Booking needs 15 to 20% higher rates to match. That gap is your profit. Airbnb wins on the numbers. Take Booking only if you run multiple properties hands-off.",
+      "chapters": [
+        {
+          "name": "Airbnb vs Booking",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Dual Platform Success Rate",
+          "startOffset": 12,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Average Guest Age",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Trips Per Year",
+          "startOffset": 23,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 4: Average Stay Duration",
+          "startOffset": 29,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 5: Pricing Premium Required",
+          "startOffset": 36,
+          "endOffset": 44
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 44,
+          "endOffset": 50
+        }
+      ],
+      "youtubeTitle": "Airbnb vs Booking.com: Which One Actually Pays Hosts More?",
+      "youtubeDescription": "A stat-by-stat comparison of Airbnb and Booking.com for hosts, covering dual-listing outcomes, guest profiles, trip frequency, stay length and the pricing premium Booking requires. We break down why Airbnb protects margins better and when Booking.com still makes sense.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/airbnb-vs-booking\n\nImage credits:\nImage A by Dllu (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:888_Brannan,_San_Francisco,_2016.jpg\n\nFull comparison: https://www.aversusb.net/compare/airbnb-vs-booking",
+      "youtubeVideoId": "WGZTrV8S_-w",
+      "youtubeUrl": "https://www.youtube.com/watch?v=WGZTrV8S_-w",
+      "uploadedAt": "2026-08-26T05:42:29.647Z"
+    },
+    {
+      "slug": "nike-vs-adidas",
+      "title": "Nike vs Adidas",
+      "entityA": "Nike",
+      "entityB": "Adidas",
+      "category": "brands",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "nike-vs-adidas.mp4",
+      "durationSeconds": 47,
+      "transcript": "One brand makes more than twice the money. It still loses two rounds. Nike owns the scoreboard. Adidas owns the culture. Only one of those pays better. Fifty one billion against twenty four. Nike isn't ahead, it's a different weight class. Number one and number two globally, and nobody else is close to either. Football is Adidas territory. Nike is growing there, which is a polite way of saying chasing. On the street Adidas wins. Collabs and culture beat billboards every single time. Two apiece, honestly. Nike wins the business. Pick Adidas if football and streetwear are your world.",
+      "chapters": [
+        {
+          "name": "Nike vs Adidas",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Revenue",
+          "startOffset": 13,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 2: Market Share (Global)",
+          "startOffset": 20,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Football (Soccer)",
+          "startOffset": 25,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: Lifestyle/Street",
+          "startOffset": 32,
+          "endOffset": 41
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 41,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "Nike vs Adidas: The Money Says One Thing, The Street Says Another",
+      "youtubeDescription": "Nike pulls $51B in revenue and sits at number one globally, but Adidas dominates football and holds the edge in lifestyle and streetwear. We break down revenue, market share, football and street credibility to settle which brand actually wins. The score comes out tied, so we tell you which one is for you.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/nike-vs-adidas\n\nFull comparison: https://www.aversusb.net/compare/nike-vs-adidas",
+      "youtubeVideoId": "90nvYjky7X0",
+      "youtubeUrl": "https://www.youtube.com/watch?v=90nvYjky7X0",
+      "uploadedAt": "2026-08-26T05:47:48.557Z"
+    },
+    {
+      "slug": "mcdonalds-vs-burger-king",
+      "title": "Mcdonalds vs Burger King",
+      "entityA": "Mcdonalds",
+      "entityB": "Burger King",
+      "category": "General",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "mcdonalds-vs-burger-king.mp4",
+      "durationSeconds": 56,
+      "transcript": "One store makes four million dollars a year. Its rival makes less than half. This isn't burgers. It's two totally different bets on how much money you have. McDonald's pulls $3.96 million per store. Burger King does $1.63 million. Same street, different planet. 2.4 times the revenue from the same real estate. That gap is the whole story. Getting in costs $1.47 million with McDonald's. Burger King lets you start at $232K. 6.3 times cheaper to open the doors. That's the difference between dream and bank loan. McDonald's cheeseburger runs $1.91 an ounce and still ranks. Burger King doesn't even chart. McDonald's takes it 3 to 2. Pick Burger King only if capital is your ceiling.",
+      "chapters": [
+        {
+          "name": "Mcdonalds vs Burger King",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Revenue Per Location",
+          "startOffset": 11,
+          "endOffset": 22
+        },
+        {
+          "name": "Round 2: Revenue Multiplier",
+          "startOffset": 22,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 3: Minimum Investment",
+          "startOffset": 29,
+          "endOffset": 37
+        },
+        {
+          "name": "Round 4: Investment Difference",
+          "startOffset": 37,
+          "endOffset": 44
+        },
+        {
+          "name": "Round 5: Cheeseburger Price per Ounce",
+          "startOffset": 44,
+          "endOffset": 52
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 52,
+          "endOffset": 59
+        }
+      ],
+      "youtubeTitle": "McDonald's vs Burger King: The Revenue Gap Nobody Talks About",
+      "youtubeDescription": "McDonald's averages $3.96 million per location against Burger King's $1.63 million, a 2.4x gap on the same kind of corner lot. But getting into McDonald's costs $1.47 million versus $232K for Burger King. We break down revenue per store, entry cost and menu pricing to name a winner.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mcdonalds-vs-burger-king\n\nFull comparison: https://www.aversusb.net/compare/mcdonalds-vs-burger-king",
+      "youtubeVideoId": "SA2Pf9zm3Zk",
+      "youtubeUrl": "https://www.youtube.com/watch?v=SA2Pf9zm3Zk",
+      "uploadedAt": "2026-08-26T05:54:06.928Z"
     }
   ]
 }

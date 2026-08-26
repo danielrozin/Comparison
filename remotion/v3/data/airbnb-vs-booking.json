@@ -1,0 +1,158 @@
+{
+  "title": "Airbnb vs Booking",
+  "entityA": "Airbnb",
+  "entityB": "Booking",
+  "category": "Travel",
+  "shortAnswer": "Airbnb offers lower commissions and better guest screening, while Booking.com provides hands-off management and attracts international travelers with less cancellations.",
+  "stats": [
+    {
+      "label": "Dual Platform Success Rate",
+      "valueA": "67% list on both platforms",
+      "valueB": "Only 23% make more money",
+      "winner": "tie"
+    },
+    {
+      "label": "Average Guest Age",
+      "valueA": "38 years old",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Trips Per Year",
+      "valueA": "4.2 trips annually",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Average Stay Duration",
+      "valueA": "4.3 nights",
+      "valueB": "Not specified",
+      "winner": "tie"
+    },
+    {
+      "label": "Pricing Premium Required",
+      "valueA": "Standard pricing",
+      "valueB": "15-20% higher needed",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Choose Airbnb for single properties with hands-on management and better profit margins. Choose Booking.com for multiple properties targeting professional travelers who prefer hands-off operations.",
+  "slug": "airbnb-vs-booking",
+  "imageA": {
+    "url": "video-assets/airbnb-vs-booking/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/888_Brannan%2C_San_Francisco%2C_2016.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 13604,
+    "height": 5000,
+    "credit": "Dllu",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:888_Brannan,_San_Francisco,_2016.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/888_Brannan%2C_San_Francisco%2C_2016.jpg/3840px-888_Brannan%2C_San_Francisco%2C_2016.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "Two thirds of hosts list on both. Only 23% actually earn more.",
+    "tape": "One platform protects your margin. The other buys you time you have to pay for.",
+    "rounds": [
+      "Hosts hedge by listing everywhere, and most of them get nothing for it.",
+      "The typical Airbnb guest is 38, old enough to have money, young enough to travel.",
+      "4.2 trips a year means these are repeat travelers, not once-a-summer bookers.",
+      "4.3 nights per stay is the sweet spot. Long enough to matter, short enough to turn over.",
+      "Booking needs 15 to 20% higher rates to match. That gap is your profit."
+    ],
+    "verdict": "Airbnb wins on the numbers. Take Booking only if you run multiple properties hands-off."
+  },
+  "audio": {
+    "cold": "video-assets/airbnb-vs-booking/audio/cold.mp3",
+    "tape": "video-assets/airbnb-vs-booking/audio/tape.mp3",
+    "rounds": [
+      "video-assets/airbnb-vs-booking/audio/round-1.mp3",
+      "video-assets/airbnb-vs-booking/audio/round-2.mp3",
+      "video-assets/airbnb-vs-booking/audio/round-3.mp3",
+      "video-assets/airbnb-vs-booking/audio/round-4.mp3",
+      "video-assets/airbnb-vs-booking/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/airbnb-vs-booking/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 188,
+    "tape": 161,
+    "rounds": [
+      150,
+      195,
+      183,
+      216,
+      214
+    ],
+    "verdict": 199,
+    "leadInFrames": 9
+  },
+  "transcript": "Two thirds of hosts list on both. Only 23% actually earn more. One platform protects your margin. The other buys you time you have to pay for. Hosts hedge by listing everywhere, and most of them get nothing for it. The typical Airbnb guest is 38, old enough to have money, young enough to travel. 4.2 trips a year means these are repeat travelers, not once-a-summer bookers. 4.3 nights per stay is the sweet spot. Long enough to matter, short enough to turn over. Booking needs 15 to 20% higher rates to match. That gap is your profit. Airbnb wins on the numbers. Take Booking only if you run multiple properties hands-off.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Two thirds of hosts list on both. Only 23% actually earn more.",
+      "startOffset": 0,
+      "endOffset": 6.257346999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One platform protects your margin. The other buys you time you have to pay for.",
+      "startOffset": 6.257346999999999,
+      "endOffset": 11.626531
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Hosts hedge by listing everywhere, and most of them get nothing for it.",
+      "startOffset": 11.626531,
+      "endOffset": 16.626531
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "The typical Airbnb guest is 38, old enough to have money, young enough to travel.",
+      "startOffset": 16.626531,
+      "endOffset": 23.11898
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "4.2 trips a year means these are repeat travelers, not once-a-summer bookers.",
+      "startOffset": 23.11898,
+      "endOffset": 29.219592
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "4.3 nights per stay is the sweet spot. Long enough to matter, short enough to turn over.",
+      "startOffset": 29.219592,
+      "endOffset": 36.417347
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Booking needs 15 to 20% higher rates to match. That gap is your profit.",
+      "startOffset": 36.417347,
+      "endOffset": 43.536735
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Airbnb wins on the numbers. Take Booking only if you run multiple properties hands-off.",
+      "startOffset": 43.536735,
+      "endOffset": 50.185919
+    }
+  ],
+  "youtubeTitle": "Airbnb vs Booking.com: Which One Actually Pays Hosts More?",
+  "youtubeDescription": "A stat-by-stat comparison of Airbnb and Booking.com for hosts, covering dual-listing outcomes, guest profiles, trip frequency, stay length and the pricing premium Booking requires. We break down why Airbnb protects margins better and when Booking.com still makes sense.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/airbnb-vs-booking",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Dllu (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:888_Brannan,_San_Francisco,_2016.jpg"
+  ]
+}
