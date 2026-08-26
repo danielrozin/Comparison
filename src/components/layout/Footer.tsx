@@ -113,6 +113,7 @@ export function Footer() {
               <Link href="/partnerships" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Partnerships</Link>
               <Link href="/who-is-this-for" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Who Is This For?</Link>
               <a href="/feed" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">RSS Feed</a>
+              <Link href="/archive" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Archive</Link>
               <Link href="/site-map" className="inline-flex items-center min-h-11 sm:min-h-0 sm:py-1 text-sm text-white/60 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60">Sitemap</Link>
             </nav>
           </div>

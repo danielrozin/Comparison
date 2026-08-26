@@ -537,6 +537,7 @@ export function siteNavigationSchema() {
     { name: "Data Studies", url: `${SITE_URL}/studies` },
     { name: "Developer API", url: `${SITE_URL}/developers` },
     { name: "Our Story", url: `${SITE_URL}/about` },
+    { name: "Archive", url: `${SITE_URL}/archive` },
   ];
 
   return {
