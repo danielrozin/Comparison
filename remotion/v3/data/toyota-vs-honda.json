@@ -1,0 +1,154 @@
+{
+  "title": "Toyota vs Honda",
+  "entityA": "Toyota",
+  "entityB": "Honda",
+  "category": "brands",
+  "shortAnswer": "Toyota is the world's largest automaker by sales (10.5M vehicles/year) and leads in hybrid technology with the Prius. Honda is known for engine reliability, the Civic's legacy, and strong motorcycle division.",
+  "stats": [
+    {
+      "label": "Annual Sales",
+      "valueA": "10.5M",
+      "valueB": "4.2M",
+      "winner": "a"
+    },
+    {
+      "label": "Hybrid Range",
+      "valueA": "Extensive",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Engine Reputation",
+      "valueA": "Very Good",
+      "valueB": "Legendary",
+      "winner": "b"
+    },
+    {
+      "label": "Revenue",
+      "valueA": "$275B",
+      "valueB": "$130B",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Toyota for reliability and hybrid tech. Honda for engines and value. Both are legendary Japanese automakers.",
+  "slug": "toyota-vs-honda",
+  "imageA": {
+    "url": "video-assets/toyota-vs-honda/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Headquarter_of_Toyota_Motor_Corporation_3.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 900,
+    "height": 1200,
+    "credit": "Tokumeigakarinoaoshima",
+    "license": "CC0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Headquarter_of_Toyota_Motor_Corporation_3.JPG",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Headquarter_of_Toyota_Motor_Corporation_3.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/toyota-vs-honda/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Toranomon_Alcea_Tower_26Dec2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2268,
+    "height": 4032,
+    "credit": "Horocassi234",
+    "license": "CC0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toranomon_Alcea_Tower_26Dec2025.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Toranomon_Alcea_Tower_26Dec2025.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Toyota sells two and a half cars for every one Honda moves.",
+    "tape": "One built the biggest car company on earth. The other built the better engine.",
+    "rounds": [
+      "10.5 million a year. Nobody on the planet sells more cars than that.",
+      "Toyota bet on hybrids decades early. Honda is still playing catch-up.",
+      "Here Honda wins outright. Its engines aren't just reliable, they're worshipped.",
+      "275 billion against 130. Toyota has the money to outspend anyone."
+    ],
+    "verdict": "Toyota wins on points. Pick Honda if you care more about the engine than the empire."
+  },
+  "audio": {
+    "cold": "video-assets/toyota-vs-honda/audio/cold.mp3",
+    "tape": "video-assets/toyota-vs-honda/audio/tape.mp3",
+    "rounds": [
+      "video-assets/toyota-vs-honda/audio/round-1.mp3",
+      "video-assets/toyota-vs-honda/audio/round-2.mp3",
+      "video-assets/toyota-vs-honda/audio/round-3.mp3",
+      "video-assets/toyota-vs-honda/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/toyota-vs-honda/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 134,
+    "tape": 183,
+    "rounds": [
+      192,
+      195,
+      185,
+      226
+    ],
+    "verdict": 199,
+    "leadInFrames": 9
+  },
+  "transcript": "Toyota sells two and a half cars for every one Honda moves. One built the biggest car company on earth. The other built the better engine. 10.5 million a year. Nobody on the planet sells more cars than that. Toyota bet on hybrids decades early. Honda is still playing catch-up. Here Honda wins outright. Its engines aren't just reliable, they're worshipped. 275 billion against 130. Toyota has the money to outspend anyone. Toyota wins on points. Pick Honda if you care more about the engine than the empire.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Toyota sells two and a half cars for every one Honda moves.",
+      "startOffset": 0,
+      "endOffset": 4.48102
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One built the biggest car company on earth. The other built the better engine.",
+      "startOffset": 4.48102,
+      "endOffset": 10.581631999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "10.5 million a year. Nobody on the planet sells more cars than that.",
+      "startOffset": 10.581631999999999,
+      "endOffset": 16.995714
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Toyota bet on hybrids decades early. Honda is still playing catch-up.",
+      "startOffset": 16.995714,
+      "endOffset": 23.488163
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Here Honda wins outright. Its engines aren't just reliable, they're worshipped.",
+      "startOffset": 23.488163,
+      "endOffset": 29.667143
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "275 billion against 130. Toyota has the money to outspend anyone.",
+      "startOffset": 29.667143,
+      "endOffset": 37.20449
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Toyota wins on points. Pick Honda if you care more about the engine than the empire.",
+      "startOffset": 37.20449,
+      "endOffset": 43.853674
+    }
+  ],
+  "youtubeTitle": "Toyota vs Honda: Which Japanese Giant Actually Wins?",
+  "youtubeDescription": "Toyota moves 10.5 million cars a year on $275 billion in revenue, with a hybrid lineup Honda can't match. Honda counters with engines that have a legendary reputation. We compare sales, hybrids, engines and revenue to settle it.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/toyota-vs-honda",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Tokumeigakarinoaoshima (CC0) — https://commons.wikimedia.org/wiki/File:Headquarter_of_Toyota_Motor_Corporation_3.JPG",
+    "Image B by Horocassi234 (CC0) — https://commons.wikimedia.org/wiki/File:Toranomon_Alcea_Tower_26Dec2025.jpg"
+  ]
+}

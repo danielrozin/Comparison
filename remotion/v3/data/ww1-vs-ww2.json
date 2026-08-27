@@ -1,0 +1,170 @@
+{
+  "title": "Ww1 vs Ww2",
+  "entityA": "Ww1",
+  "entityB": "Ww2",
+  "category": "General",
+  "shortAnswer": "WW2 was significantly more deadly than WW1, with 70-85 million deaths vs ~20 million. WW2 had far greater civilian casualties and expanded to the Pacific Theatre.",
+  "stats": [
+    {
+      "label": "Total Deaths",
+      "valueA": "~20 million",
+      "valueB": "70-85 million",
+      "winner": "a"
+    },
+    {
+      "label": "Civilian Deaths",
+      "valueA": "7-8 million",
+      "valueB": "40-55 million",
+      "winner": "a"
+    },
+    {
+      "label": "Civilian Death Percentage",
+      "valueA": "35-40%",
+      "valueB": "55-65%",
+      "winner": "a"
+    },
+    {
+      "label": "Pacific Theatre Deaths",
+      "valueA": "0",
+      "valueB": "15-25 million",
+      "winner": "a"
+    },
+    {
+      "label": "China-Japan War Deaths",
+      "valueA": "Not applicable",
+      "valueB": "15-20 million",
+      "winner": "a"
+    }
+  ],
+  "verdict": "While both wars were devastating, WW2 was significantly more deadly and destructive than WW1. WW2's expanded geographic scope, systematic targeting of civilians, and advanced warfare technology resulted in 3-4 times more casualties than WW1.",
+  "slug": "ww1-vs-ww2",
+  "imageA": {
+    "url": "video-assets/ww1-vs-ww2/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Bataille_de_Verdun_1916.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1875,
+    "height": 1402,
+    "credit": "Collection DocAnciens/docpix.fr",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bataille_de_Verdun_1916.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Bataille_de_Verdun_1916.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/ww1-vs-ww2/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/Bundesarchiv_Bild_101I-646-5188-17%2C_Flugzeuge_Junkers_Ju_87.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 798,
+    "height": 544,
+    "credit": "Richard Opitz",
+    "license": "CC BY-SA 3.0 de",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_101I-646-5188-17,_Flugzeuge_Junkers_Ju_87.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/1/10/Bundesarchiv_Bild_101I-646-5188-17%2C_Flugzeuge_Junkers_Ju_87.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One war killed 20 million. The sequel killed up to 85.",
+    "tape": "Same continent, twenty years apart. The difference is who ended up dying.",
+    "rounds": [
+      "Roughly 20 million against 70 to 85 million. The sequel quadrupled the bill.",
+      "Seven million civilians versus up to 55 million. That gap is the whole story.",
+      "Under 40 percent civilian in one war, up to 65 in the other. Killing moved off the battlefield.",
+      "One of these wars never touched the Pacific. The other lost 25 million there.",
+      "China and Japan alone cost more lives than the entire First World War."
+    ],
+    "verdict": "On every count, WW1 was the smaller catastrophe. Study WW2 to see war go total."
+  },
+  "audio": {
+    "cold": "video-assets/ww1-vs-ww2/audio/cold.mp3",
+    "tape": "video-assets/ww1-vs-ww2/audio/tape.mp3",
+    "rounds": [
+      "video-assets/ww1-vs-ww2/audio/round-1.mp3",
+      "video-assets/ww1-vs-ww2/audio/round-2.mp3",
+      "video-assets/ww1-vs-ww2/audio/round-3.mp3",
+      "video-assets/ww1-vs-ww2/audio/round-4.mp3",
+      "video-assets/ww1-vs-ww2/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/ww1-vs-ww2/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 166,
+    "tape": 170,
+    "rounds": [
+      231,
+      214,
+      250,
+      175,
+      166
+    ],
+    "verdict": 260,
+    "leadInFrames": 9
+  },
+  "transcript": "One war killed 20 million. The sequel killed up to 85. Same continent, twenty years apart. The difference is who ended up dying. Roughly 20 million against 70 to 85 million. The sequel quadrupled the bill. Seven million civilians versus up to 55 million. That gap is the whole story. Under 40 percent civilian in one war, up to 65 in the other. Killing moved off the battlefield. One of these wars never touched the Pacific. The other lost 25 million there. China and Japan alone cost more lives than the entire First World War. On every count, WW1 was the smaller catastrophe. Study WW2 to see war go total.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One war killed 20 million. The sequel killed up to 85.",
+      "startOffset": 0,
+      "endOffset": 5.525918
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Same continent, twenty years apart. The difference is who ended up dying.",
+      "startOffset": 5.525918,
+      "endOffset": 11.208571
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Roughly 20 million against 70 to 85 million. The sequel quadrupled the bill.",
+      "startOffset": 11.208571,
+      "endOffset": 18.902653
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Seven million civilians versus up to 55 million. That gap is the whole story.",
+      "startOffset": 18.902653,
+      "endOffset": 26.022041
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Under 40 percent civilian in one war, up to 65 in the other. Killing moved off the battlefield.",
+      "startOffset": 26.022041,
+      "endOffset": 34.343061000000006
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "One of these wars never touched the Pacific. The other lost 25 million there.",
+      "startOffset": 34.343061000000006,
+      "endOffset": 40.182449000000005
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "China and Japan alone cost more lives than the entire First World War.",
+      "startOffset": 40.182449000000005,
+      "endOffset": 45.708367
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "On every count, WW1 was the smaller catastrophe. Study WW2 to see war go total.",
+      "startOffset": 45.708367,
+      "endOffset": 54.368979
+    }
+  ],
+  "youtubeTitle": "WW1 vs WW2: The Death Tolls Compared",
+  "youtubeDescription": "A stat by stat comparison of World War 1 and World War 2, covering total deaths, civilian casualties, the civilian share of the dead, and the Pacific and China-Japan theatres. WW1 killed around 20 million. WW2 killed 70 to 85 million, most of them civilians.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ww1-vs-ww2",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Collection DocAnciens/docpix.fr (Public domain) — https://commons.wikimedia.org/wiki/File:Bataille_de_Verdun_1916.jpg",
+    "Image B by Richard Opitz (CC BY-SA 3.0 de) — https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_101I-646-5188-17,_Flugzeuge_Junkers_Ju_87.jpg"
+  ]
+}

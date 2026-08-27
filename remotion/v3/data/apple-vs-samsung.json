@@ -1,0 +1,122 @@
+{
+  "title": "Apple vs Samsung",
+  "entityA": "Apple",
+  "entityB": "Samsung",
+  "category": "brands",
+  "shortAnswer": "Apple leads in brand value, revenue per device, and ecosystem lock-in. Samsung sells more phones globally and offers products at every price point from budget to premium. Apple leads in the US; Samsung leads globally.",
+  "stats": [
+    {
+      "label": "Global Phone Market Share",
+      "valueA": "20%",
+      "valueB": "21%",
+      "winner": "b"
+    },
+    {
+      "label": "Brand Value (USD)",
+      "valueA": "#1 ($502B)",
+      "valueB": "#5 ($100B)",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "Apple for ecosystem and premium experience. Samsung for variety and global market leadership.",
+  "slug": "apple-vs-samsung",
+  "imageA": {
+    "url": "video-assets/apple-vs-samsung/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pink_lady_and_cross_section.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2800,
+    "height": 950,
+    "credit": "fir0002 flagstaffotos [at] gmail.com Canon 20D + Sigma 150mm f/2.8",
+    "license": "GFDL 1.2",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pink_lady_and_cross_section.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Pink_lady_and_cross_section.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/apple-vs-samsung/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Samsung_headquarters.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3594,
+    "height": 2848,
+    "credit": "Oskar Alexanderson",
+    "license": "CC BY-SA 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Samsung_headquarters.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Samsung_headquarters.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "Samsung sells more phones than Apple. Apple's brand is worth five times as much.",
+    "tape": "One brand wins the volume war. The other wins the money war.",
+    "rounds": [
+      "21 percent to 20. Samsung ships more phones, and it's closer than you think.",
+      "502 billion versus 100. Apple isn't just number one, it's a different league."
+    ],
+    "verdict": "Samsung takes it on points and global reach. Buy Apple if the ecosystem owns you."
+  },
+  "audio": {
+    "cold": "video-assets/apple-vs-samsung/audio/cold.mp3",
+    "tape": "video-assets/apple-vs-samsung/audio/tape.mp3",
+    "rounds": [
+      "video-assets/apple-vs-samsung/audio/round-1.mp3",
+      "video-assets/apple-vs-samsung/audio/round-2.mp3"
+    ],
+    "verdict": "video-assets/apple-vs-samsung/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 192,
+    "tape": 150,
+    "rounds": [
+      204,
+      216
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Samsung sells more phones than Apple. Apple's brand is worth five times as much. One brand wins the volume war. The other wins the money war. 21 percent to 20. Samsung ships more phones, and it's closer than you think. 502 billion versus 100. Apple isn't just number one, it's a different league. Samsung takes it on points and global reach. Buy Apple if the ecosystem owns you.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Samsung sells more phones than Apple. Apple's brand is worth five times as much.",
+      "startOffset": 0,
+      "endOffset": 6.414082
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One brand wins the volume war. The other wins the money war.",
+      "startOffset": 6.414082,
+      "endOffset": 11.414082
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "21 percent to 20. Samsung ships more phones, and it's closer than you think.",
+      "startOffset": 11.414082,
+      "endOffset": 18.22
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "502 billion versus 100. Apple isn't just number one, it's a different league.",
+      "startOffset": 18.22,
+      "endOffset": 25.417755
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Samsung takes it on points and global reach. Buy Apple if the ecosystem owns you.",
+      "startOffset": 25.417755,
+      "endOffset": 31.917755
+    }
+  ],
+  "youtubeTitle": "Apple vs Samsung: Who Actually Wins the Phone War?",
+  "youtubeDescription": "Samsung edges Apple on global phone market share at 21 percent to 20, but Apple's 502 billion dollar brand value dwarfs Samsung's 100 billion. We break down what those two numbers really mean and which brand deserves your money.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/apple-vs-samsung",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by fir0002 flagstaffotos [at] gmail.com Canon 20D + Sigma 150mm f/2.8 (GFDL 1.2) — https://commons.wikimedia.org/wiki/File:Pink_lady_and_cross_section.jpg",
+    "Image B by Oskar Alexanderson (CC BY-SA 2.0) — https://commons.wikimedia.org/wiki/File:Samsung_headquarters.jpg"
+  ]
+}

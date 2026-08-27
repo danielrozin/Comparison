@@ -4347,6 +4347,163 @@
       "youtubeVideoId": "SA2Pf9zm3Zk",
       "youtubeUrl": "https://www.youtube.com/watch?v=SA2Pf9zm3Zk",
       "uploadedAt": "2026-08-26T05:54:06.928Z"
+    },
+    {
+      "slug": "apple-vs-samsung",
+      "title": "Apple vs Samsung",
+      "entityA": "Apple",
+      "entityB": "Samsung",
+      "category": "brands",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "apple-vs-samsung.mp4",
+      "durationSeconds": 30,
+      "transcript": "Samsung sells more phones than Apple. Apple's brand is worth five times as much. One brand wins the volume war. The other wins the money war. 21 percent to 20. Samsung ships more phones, and it's closer than you think. 502 billion versus 100. Apple isn't just number one, it's a different league. Samsung takes it on points and global reach. Buy Apple if the ecosystem owns you.",
+      "chapters": [
+        {
+          "name": "Apple vs Samsung",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Global Phone Market Share",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Brand Value (USD)",
+          "startOffset": 18,
+          "endOffset": 25
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 25,
+          "endOffset": 32
+        }
+      ],
+      "youtubeTitle": "Apple vs Samsung: Who Actually Wins the Phone War?",
+      "youtubeDescription": "Samsung edges Apple on global phone market share at 21 percent to 20, but Apple's 502 billion dollar brand value dwarfs Samsung's 100 billion. We break down what those two numbers really mean and which brand deserves your money.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/apple-vs-samsung\n\nImage credits:\nImage A by fir0002 flagstaffotos [at] gmail.com Canon 20D + Sigma 150mm f/2.8 (GFDL 1.2) — https://commons.wikimedia.org/wiki/File:Pink_lady_and_cross_section.jpg\nImage B by Oskar Alexanderson (CC BY-SA 2.0) — https://commons.wikimedia.org/wiki/File:Samsung_headquarters.jpg\n\nFull comparison: https://www.aversusb.net/compare/apple-vs-samsung",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-27T16:15:48.509Z"
+    },
+    {
+      "slug": "toyota-vs-honda",
+      "title": "Toyota vs Honda",
+      "entityA": "Toyota",
+      "entityB": "Honda",
+      "category": "brands",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "toyota-vs-honda.mp4",
+      "durationSeconds": 41,
+      "transcript": "Toyota sells two and a half cars for every one Honda moves. One built the biggest car company on earth. The other built the better engine. 10.5 million a year. Nobody on the planet sells more cars than that. Toyota bet on hybrids decades early. Honda is still playing catch-up. Here Honda wins outright. Its engines aren't just reliable, they're worshipped. 275 billion against 130. Toyota has the money to outspend anyone. Toyota wins on points. Pick Honda if you care more about the engine than the empire.",
+      "chapters": [
+        {
+          "name": "Toyota vs Honda",
+          "startOffset": 0,
+          "endOffset": 4
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 4,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Annual Sales",
+          "startOffset": 11,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Hybrid Range",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Engine Reputation",
+          "startOffset": 23,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 4: Revenue",
+          "startOffset": 30,
+          "endOffset": 37
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 37,
+          "endOffset": 44
+        }
+      ],
+      "youtubeTitle": "Toyota vs Honda: Which Japanese Giant Actually Wins?",
+      "youtubeDescription": "Toyota moves 10.5 million cars a year on $275 billion in revenue, with a hybrid lineup Honda can't match. Honda counters with engines that have a legendary reputation. We compare sales, hybrids, engines and revenue to settle it.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/toyota-vs-honda\n\nImage credits:\nImage A by Tokumeigakarinoaoshima (CC0) — https://commons.wikimedia.org/wiki/File:Headquarter_of_Toyota_Motor_Corporation_3.JPG\nImage B by Horocassi234 (CC0) — https://commons.wikimedia.org/wiki/File:Toranomon_Alcea_Tower_26Dec2025.jpg\n\nFull comparison: https://www.aversusb.net/compare/toyota-vs-honda",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-27T16:22:57.810Z"
+    },
+    {
+      "slug": "ww1-vs-ww2",
+      "title": "Ww1 vs Ww2",
+      "entityA": "Ww1",
+      "entityB": "Ww2",
+      "category": "General",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "ww1-vs-ww2.mp4",
+      "durationSeconds": 52,
+      "transcript": "One war killed 20 million. The sequel killed up to 85. Same continent, twenty years apart. The difference is who ended up dying. Roughly 20 million against 70 to 85 million. The sequel quadrupled the bill. Seven million civilians versus up to 55 million. That gap is the whole story. Under 40 percent civilian in one war, up to 65 in the other. Killing moved off the battlefield. One of these wars never touched the Pacific. The other lost 25 million there. China and Japan alone cost more lives than the entire First World War. On every count, WW1 was the smaller catastrophe. Study WW2 to see war go total.",
+      "chapters": [
+        {
+          "name": "Ww1 vs Ww2",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Total Deaths",
+          "startOffset": 11,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Civilian Deaths",
+          "startOffset": 19,
+          "endOffset": 26
+        },
+        {
+          "name": "Round 3: Civilian Death Percentage",
+          "startOffset": 26,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 4: Pacific Theatre Deaths",
+          "startOffset": 34,
+          "endOffset": 40
+        },
+        {
+          "name": "Round 5: China-Japan War Deaths",
+          "startOffset": 40,
+          "endOffset": 46
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 46,
+          "endOffset": 54
+        }
+      ],
+      "youtubeTitle": "WW1 vs WW2: The Death Tolls Compared",
+      "youtubeDescription": "A stat by stat comparison of World War 1 and World War 2, covering total deaths, civilian casualties, the civilian share of the dead, and the Pacific and China-Japan theatres. WW1 killed around 20 million. WW2 killed 70 to 85 million, most of them civilians.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/ww1-vs-ww2\n\nImage credits:\nImage A by Collection DocAnciens/docpix.fr (Public domain) — https://commons.wikimedia.org/wiki/File:Bataille_de_Verdun_1916.jpg\nImage B by Richard Opitz (CC BY-SA 3.0 de) — https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_101I-646-5188-17,_Flugzeuge_Junkers_Ju_87.jpg\n\nFull comparison: https://www.aversusb.net/compare/ww1-vs-ww2",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-27T16:31:17.014Z"
     }
   ]
 }
