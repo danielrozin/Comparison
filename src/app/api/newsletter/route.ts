@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { logAdminEvent } from "@/lib/services/admin-logger";
-import { sendNotificationEmail } from "@/lib/services/email";
+import { sendNotificationEmail, sendOutreachEmail } from "@/lib/services/email";
 import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(request: NextRequest) {
@@ -17,8 +17,11 @@ export async function POST(request: NextRequest) {
 
     // Store in database (non-blocking — don't fail the signup if DB is down)
     const prisma = getPrisma();
+    let isNewSubscriber = true;
     if (prisma) {
       try {
+        const existing = await prisma.newsletterSubscriber.findUnique({ where: { email: normalizedEmail }, select: { id: true, status: true } });
+        isNewSubscriber = !existing || existing.status !== "active";
         await prisma.newsletterSubscriber.upsert({
           where: { email: normalizedEmail },
           update: { status: "active", updatedAt: new Date() },
@@ -38,6 +41,39 @@ export async function POST(request: NextRequest) {
         ) {
           console.error("Newsletter DB error (non-fatal):", dbError);
         }
+      }
+    }
+
+    // Welcome email to the subscriber — the subscriber→customer bridge.
+    // Previously signup sent nothing to the subscriber at all; the first
+    // touch is where founding-member conversion is highest, so the welcome
+    // carries the pitch. Only on genuinely new/reactivated subscriptions.
+    if (isNewSubscriber) {
+      const followed = typeof referrerSlug === "string" && referrerSlug.includes("-vs-")
+        ? referrerSlug.replace(/-vs-/g, " vs ").replace(/-/g, " ")
+        : null;
+      try {
+        await sendOutreachEmail({
+          to: normalizedEmail,
+          subject: followed ? `Following: ${followed} — you're in` : "You're in — here's what you'll get",
+          html: `
+            <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;color:#0f172a;line-height:1.6">
+              <p style="font-size:16px"><strong>Welcome to A Versus B.</strong></p>
+              <p>${followed
+                ? `You're now following <strong>${followed}</strong> — we'll email you when the verdict, specs or prices change, and send the week's best head-to-heads.`
+                : `Every week you'll get the comparisons people are actually deciding with — verdicts included, no affiliate fluff.`}</p>
+              <p style="margin:20px 0;padding:16px 18px;background:#eff6ff;border-left:4px solid #2563eb;border-radius:6px">
+                <strong>Founding member offer.</strong> We're opening Pro — any comparison you want, researched and published for you within 24 hours. Founding price is <strong>$49/year</strong> (later $90), locked for as long as you stay.<br/>
+                <a href="https://www.aversusb.net/pricing?src=welcome-email" style="color:#2563eb;font-weight:600">Lock the founding price →</a>
+              </p>
+              <p>Questions? Just reply — a founder answers.</p>
+              <p style="color:#64748b;font-size:13px">Daniel &amp; Shai, founders of <a href="https://www.aversusb.net" style="color:#2563eb">aversusb.net</a><br/>
+              <a href="https://www.aversusb.net/api/newsletter/unsubscribe?email=${encodeURIComponent(normalizedEmail)}" style="color:#94a3b8">Unsubscribe</a></p>
+            </div>`,
+          tags: [{ name: "type", value: "welcome" }],
+        });
+      } catch (welcomeErr) {
+        console.error("Welcome email failed (non-fatal):", welcomeErr);
       }
     }
 

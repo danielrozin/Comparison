@@ -48,8 +48,14 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p role="status" aria-live="polite" className="text-base font-bold text-emerald-800 mb-1">You&apos;re in!</p>
-              <p className="text-sm text-emerald-700/80">We&apos;ll send you the best comparisons weekly. No spam, unsubscribe anytime.</p>
+              <p role="status" aria-live="polite" className="text-base font-bold text-emerald-800 mb-1">You&apos;re in — check your inbox!</p>
+              <p className="text-sm text-emerald-700/80 mb-3">We&apos;ll send you the best comparisons weekly. No spam, unsubscribe anytime.</p>
+              <a
+                href="/pricing?src=post-signup"
+                className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-xs font-bold text-white hover:bg-primary-700 transition-colors"
+              >
+                Founding offer: any comparison built for you — $49/yr →
+              </a>
             </div>
           </div>
         </div>
@@ -106,11 +112,13 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               </svg>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-text">
-              Get the best comparisons in your inbox
+              {referrerSlug?.includes("-vs-") ? "Follow this comparison" : "Get the best comparisons in your inbox"}
             </h3>
           </div>
           <p className="text-sm text-text-secondary mb-4 text-center">
-            Weekly digest of trending comparisons, new categories, and expert insights. No spam.
+            {referrerSlug?.includes("-vs-")
+              ? "One email when the verdict, specs or prices change — plus the week's best head-to-heads. No spam."
+              : "Weekly digest of trending comparisons, new categories, and expert insights. No spam."}
           </p>
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
             <input
@@ -131,7 +139,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               disabled={status === "loading"}
               className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
-              {status === "loading" ? "Subscribing..." : "Subscribe Free"}
+              {status === "loading" ? "Subscribing..." : referrerSlug?.includes("-vs-") ? "Follow — Free" : "Subscribe Free"}
             </button>
           </form>
           {status === "error" && (
