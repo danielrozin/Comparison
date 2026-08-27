@@ -1344,7 +1344,7 @@ export function comparisonPageSchema(
       const hasHowTo = Boolean(comparison.category && howtoEligible.has(comparison.category) && comparison.attributes.length >= 3);
       const parts = [
         ...(hasFaqs ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
-        ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         // DefinedTermSet — Article→DefinedTermSet graph edge so AI crawlers discover the
         // attribute vocabulary directly from the Article node without loading the Dataset first.
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
@@ -1369,7 +1369,7 @@ export function comparisonPageSchema(
     // isBasedOn — formal graph edge from Article to its Dataset; Google and AI fact-checkers
     // use this to trace the evidence chain from editorial claim → structured data source.
     ...(comparison.attributes.length > 0 && {
-      isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
+      isBasedOn: { "@id": `${url}#dataset` },
     }),
     // teaches — typed DefinedTerm node (not plain string) so AI KGs can traverse the
     // teaches→DefinedTermSet graph edge. Educational classifiers (ChatGPT, Perplexity)
@@ -1669,8 +1669,8 @@ export function comparisonPageSchema(
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
-        ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}.`
-        : `Structured comparison data for ${comparison.entities.map((e) => e.name).join(" vs ")}`,
+        ? `Structured side-by-side comparison dataset based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points${citation.reviewsAnalyzed ? `, analyzing ${citation.reviewsAnalyzed} reviews` : ""}, covering ${comparison.entities.map((e) => e.name).join(" vs ")} attribute by attribute.`
+        : `Structured side-by-side comparison dataset for ${comparison.entities.map((e) => e.name).join(" vs ")} — attributes, verdict and FAQs collected by A Versus B.`,
       url,
       inLanguage: "en-US",
       isAccessibleForFree: true,
@@ -1750,10 +1750,12 @@ export function comparisonPageSchema(
       // spatialCoverage for country comparisons — signals geographic scope to AI geographic
       // knowledge graphs and Google Geo Knowledge Panels.
       ...(isCountryComparison && {
-        spatialCoverage: comparison.entities.map((e) => ({
-          "@type": "Country",
-          name: e.name,
-        })),
+        // Single Place node — GSC flagged the array-of-Country form as
+        // "Invalid object type for field 'spatialCoverage'".
+        spatialCoverage: {
+          "@type": "Place",
+          name: comparison.entities.map((e) => e.name).join(", "),
+        },
       }),
       ...(citation && citation.sourceCount > 0 && {
         isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
@@ -1779,6 +1781,7 @@ export function comparisonPageSchema(
       // Map vote share to 1–5 scale: 0% → 1.0, 50% → 3.0, 100% → 5.0
       const ratingValue = 1 + voteShare * 4;
       const schemaType = entitySchemaType(entity.entityType);
+      if (!canCarryAggregateRating(schemaType)) continue;
 
       schemas.push({
         "@context": "https://schema.org",
@@ -1799,49 +1802,12 @@ export function comparisonPageSchema(
     }
   }
 
-  // 7. SportsEvent schema for sports comparisons — Google Sports and AI sports
-  // query slots prefer Event nodes with competitors listed as `competitor`.
-  if (comparison.category === "sports" && comparison.entities.length === 2) {
-    const [a, b] = comparison.entities;
-    schemas.push({
-      "@context": "https://schema.org",
-      "@type": "SportsEvent",
-      "@id": `${url}#event`,
-      name: comparison.title,
-      description: comparison.shortAnswer || comparison.metadata.metaDescription,
-      url,
-      // inLanguage — language-scoped sports event for Google Sports and Perplexity sports-mode
-      // carousels; prevents entity disambiguation errors in multilingual KG merges.
-      inLanguage: "en-US",
-      // startDate — required for Event rich results; maps to comparison publish date as the
-      // "event record" creation date when no actual event date is known.
-      startDate: comparison.metadata.publishedAt ?? comparison.metadata.updatedAt,
-      eventStatus: "https://schema.org/EventScheduled",
-      eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-      competitor: [
-        {
-          // Use entity-specific schema type: Person for athletes, SportsTeam for teams.
-          "@type": entitySchemaType(a.entityType) === "Person" ? "Person" : "SportsTeam",
-          name: a.name,
-          url: `${SITE_URL}/entity/${a.slug}`,
-          ...(a.imageUrl && { image: a.imageUrl }),
-          sameAs: entityWikipediaSameAs(a.name),
-        },
-        {
-          "@type": entitySchemaType(b.entityType) === "Person" ? "Person" : "SportsTeam",
-          name: b.name,
-          url: `${SITE_URL}/entity/${b.slug}`,
-          ...(b.imageUrl && { image: b.imageUrl }),
-          sameAs: entityWikipediaSameAs(b.name),
-        },
-      ],
-      organizer: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME },
-      location: { "@type": "VirtualLocation", url },
-      isAccessibleForFree: true,
-      conditionsOfAccess: "Free",
-      image: `${SITE_URL}/api/og?title=${encodeURIComponent(comparison.title)}&type=comparison`,
-    });
-  }
+  // 7. (removed) A SportsEvent node used to be emitted for sports comparisons
+  // with a fabricated startDate (the publish date) and no location/offers —
+  // every required Event field was missing or fake, which put the whole site
+  // in GSC's Events error report. A comparison page is not an event; the
+  // SportsTeam/Person typing on the entity nodes already carries the sports
+  // context.
 
   // 8. DefinedTermSet — formal vocabulary for this comparison's attribute dimensions.
   // AI research tools (Perplexity, ChatGPT) and Google Dataset Search extract DefinedTerm
@@ -1855,7 +1821,7 @@ export function comparisonPageSchema(
       name: `${comparison.entities.map((e) => e.name).join(" vs ")} — Comparison Attribute Vocabulary`,
       description: `Formal definitions of the attributes used to compare ${comparison.entities.map((e) => e.name).join(" and ")}.`,
       inLanguage: "en-US",
-      isPartOf: { "@type": "Dataset", "@id": `${url}#dataset` },
+      isPartOf: { "@id": `${url}#dataset` },
       hasDefinedTerm: comparison.attributes.map((attr) => ({
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
@@ -2024,7 +1990,7 @@ function buildMultiEntityGraph(
         : "Public Figure";
     }
 
-    if (realVotes) {
+    if (realVotes && canCarryAggregateRating(schemaType)) {
       const entityVotes = realVotes.votes[entity.name] ?? 0;
       if (entityVotes > 0) {
         const voteShare = entityVotes / realVotes.total;
@@ -2277,7 +2243,7 @@ function buildMultiEntityGraph(
     ...(() => {
       const parts = [
         ...(comparison.faqs.length > 0 ? [{ "@type": "FAQPage", "@id": `${url}#faq` }] : []),
-        ...(comparison.attributes.length > 0 ? [{ "@type": "Dataset", "@id": `${url}#dataset` }] : []),
+        ...(comparison.attributes.length > 0 ? [{ "@id": `${url}#dataset` }] : []),
         ...(comparison.attributes.length > 0 ? [{ "@type": "DefinedTermSet", "@id": `${url}#terms` }] : []),
         // ItemList — Article→ItemList graph edge for AI to extract the compared entity list.
         { "@type": "ItemList", "@id": `${url}#list`, numberOfItems: comparison.entities.length },
@@ -2296,7 +2262,7 @@ function buildMultiEntityGraph(
     })(),
     // isBasedOn — formal graph edge from Article to Dataset evidence source.
     ...(comparison.attributes.length > 0 && {
-      isBasedOn: { "@type": "Dataset", "@id": `${url}#dataset` },
+      isBasedOn: { "@id": `${url}#dataset` },
     }),
     // citation — external sources backing the comparison; always populated with explicit
     // sources merged with per-entity Wikipedia references so every Article node provides
@@ -2524,8 +2490,8 @@ function buildMultiEntityGraph(
       "@id": `${url}#dataset`,
       name: `${comparison.title} - Comparison Data`,
       description: citation
-        ? `Structured comparison based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points.`
-        : `Structured comparison data for ${comparison.entities.map((e) => e.name).join(", ")}`,
+        ? `Structured side-by-side comparison dataset based on ${citation.sourceCount} sources and ${citation.dataPointCount} data points, covering ${comparison.entities.map((e) => e.name).join(", ")} attribute by attribute.`
+        : `Structured side-by-side comparison dataset for ${comparison.entities.map((e) => e.name).join(", ")} — attributes, verdict and FAQs collected by A Versus B.`,
       url,
       inLanguage: "en-US",
       isAccessibleForFree: true,
@@ -2579,7 +2545,7 @@ function buildMultiEntityGraph(
         valueReference: { "@type": "DefinedTerm", "@id": `${url}#term-${termSlug(attr.name)}` },
       })),
       ...(isCountryComparison && {
-        spatialCoverage: comparison.entities.map((e) => ({ "@type": "Country", name: e.name })),
+        spatialCoverage: { "@type": "Place", name: comparison.entities.map((e) => e.name).join(", ") },
       }),
       ...(citation && citation.sourceCount > 0 && {
         isBasedOn: citation.sources.filter((s) => s.url).map((s) => ({
@@ -2696,7 +2662,7 @@ function buildMultiEntityGraph(
       name: `${comparison.entities.map((e) => e.name).join(", ")} — Comparison Attribute Vocabulary`,
       description: `Formal definitions of the attributes used to compare ${comparison.entities.map((e) => e.name).join(", ")}.`,
       inLanguage: "en-US",
-      isPartOf: { "@type": "Dataset", "@id": `${url}#dataset` },
+      isPartOf: { "@id": `${url}#dataset` },
       hasDefinedTerm: comparison.attributes.map((attr) => ({
         "@type": "DefinedTerm",
         "@id": `${url}#term-${termSlug(attr.name)}`,
@@ -3137,19 +3103,38 @@ export function aggregateRatingSchema(entity: {
     },
     // sameAs — Wikipedia + DBpedia + Wikidata anchors for AI knowledge-graph disambiguation.
     ...(wikiSameAs.length > 0 && { sameAs: wikiSameAs }),
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: entity.ratingValue.toFixed(1),
-      bestRating: entity.bestRating ?? 5,
-      worstRating: entity.worstRating ?? 1,
-      reviewCount: entity.reviewCount,
-    },
+    ...(canCarryAggregateRating(schemaType) && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: entity.ratingValue.toFixed(1),
+        bestRating: entity.bestRating ?? 5,
+        worstRating: entity.worstRating ?? 1,
+        reviewCount: entity.reviewCount,
+      },
+    }),
   };
 }
 
 // ============================================================
 // Helpers
 // ============================================================
+
+/**
+ * Types Google accepts as the parent of an AggregateRating for review
+ * snippets (including subtypes we emit: Vehicle/Car ⊂ Product, VideoGame ⊂
+ * Game, SportsTeam/EducationalOrganization ⊂ Organization). Ratings attached
+ * to anything else (Person, Country, Thing, Event, CreativeWork…) produce
+ * "Invalid object type for field '<parent_node>'" in GSC's Review snippets
+ * report, which is exactly what happened.
+ */
+const RATEABLE_SCHEMA_TYPES = new Set([
+  "Product", "SoftwareApplication", "VideoGame", "Vehicle", "Car",
+  "Organization", "SportsTeam", "EducationalOrganization", "LocalBusiness", "Brand",
+]);
+
+export function canCarryAggregateRating(schemaType: string): boolean {
+  return RATEABLE_SCHEMA_TYPES.has(schemaType);
+}
 
 export function entitySchemaType(entityType: string): string {
   const map: Record<string, string> = {
@@ -3160,8 +3145,11 @@ export function entitySchemaType(entityType: string): string {
     company: "Organization",
     technology: "SoftwareApplication",
     brand: "Brand",
-    event: "Event",
-    war: "Event",
+    // GSC Events report: an "Event" type demands location/startDate/offers —
+    // wars and abstract events are topics, not schedulable events. Type them
+    // as Thing so Google never runs Event rich-result validation on them.
+    event: "Thing",
+    war: "Thing",
     software: "SoftwareApplication",
     place: "Place",
     // Automotive: Vehicle is the Schema.org canonical type for cars/trucks/motorcycles.
@@ -3313,7 +3301,9 @@ export function profilePageSchema(entity: {
     },
   };
 
-  const today = new Date().toISOString().slice(0, 10);
+  // Full ISO datetime — GSC rejects date-only values for ProfilePage
+  // dateCreated/dateModified ("Invalid datetime value").
+  const today = new Date().toISOString();
   const significantLinks = [
     `${SITE_URL}/alternatives/${entity.slug}`,
     ...(entity.topComparisons ?? []).slice(0, 5).map((c) => `${SITE_URL}/compare/${c.slug}`),
@@ -3321,9 +3311,15 @@ export function profilePageSchema(entity: {
   const profileDesc = entity.shortDesc ||
     `${entity.name} comparisons, profile, and alternatives — ${entity.comparisonCount ?? 0}+ head-to-head comparisons on A Versus B.`;
 
+  // GSC Profile page report: ProfilePage mainEntity must be a Person or an
+  // Organization. Products, countries, wars etc. are not "profiles" — those
+  // pages become plain WebPage (mainEntity is legal there and the profile
+  // rich-result validator never runs on it).
+  const isProfileEntity = ["Person", "Organization", "SportsTeam", "EducationalOrganization"].includes(schemaType);
+
   return {
     "@context": "https://schema.org",
-    "@type": "ProfilePage",
+    "@type": isProfileEntity ? "ProfilePage" : "WebPage",
     "@id": `${url}#profilepage`,
     additionalType: "https://schema.org/LearningResource",
     learningResourceType: "Entity Profile",
@@ -3335,7 +3331,7 @@ export function profilePageSchema(entity: {
     // datePublished + dateCreated — stable platform baseline (all entity profiles live since 2024-01-01).
     // Without these, Google and AI crawlers treat entity pages as undated, weakening E-E-A-T signals.
     datePublished: "2024-01-01",
-    dateCreated: "2024-01-01",
+    dateCreated: "2024-01-01T00:00:00+00:00",
     dateModified: today,
     lastReviewed: today,
     reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
