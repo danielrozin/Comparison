@@ -1,0 +1,113 @@
+{
+  "title": "US Military vs China Military",
+  "entityA": "US Military",
+  "entityB": "China Military",
+  "category": "military",
+  "shortAnswer": "The US has the world's most powerful military with $877B budget, 11 aircraft carriers, and global force projection. China has the largest military by personnel (2M active), is rapidly modernizing, and has the second largest budget ($292B).",
+  "stats": [
+    {
+      "label": "Defense Budget (USD)",
+      "valueA": "$877 Billion",
+      "valueB": "$292 Billion",
+      "winner": "a"
+    },
+    {
+      "label": "Active Personnel",
+      "valueA": "1.4 Million",
+      "valueB": "2.0 Million",
+      "winner": "b"
+    },
+    {
+      "label": "Aircraft Carriers (Count)",
+      "valueA": "11",
+      "valueB": "3",
+      "winner": "a"
+    }
+  ],
+  "verdict": "The US military is still the most capable globally. China is closing the gap rapidly, especially in naval power and missile technology.",
+  "slug": "us-military-vs-china-military",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "America spends three dollars on defense for every one China spends.",
+    "tape": "One military is built to go anywhere. The other is built to hold ground.",
+    "rounds": [
+      "$877 billion against $292 billion. That gap buys reach, not just hardware.",
+      "Two million to 1.4 million. China wins the headcount and always has.",
+      "Eleven carriers to three. That's the difference between global power and regional power."
+    ],
+    "verdict": "US takes it two to one. China wins if the fight stays close to home."
+  },
+  "audio": {
+    "cold": "video-assets/us-military-vs-china-military/audio/cold.mp3",
+    "tape": "video-assets/us-military-vs-china-military/audio/tape.mp3",
+    "rounds": [
+      "video-assets/us-military-vs-china-military/audio/round-1.mp3",
+      "video-assets/us-military-vs-china-military/audio/round-2.mp3",
+      "video-assets/us-military-vs-china-military/audio/round-3.mp3"
+    ],
+    "verdict": "video-assets/us-military-vs-china-military/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 154,
+    "tape": 163,
+    "rounds": [
+      286,
+      188,
+      183
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "America spends three dollars on defense for every one China spends. One military is built to go anywhere. The other is built to hold ground. $877 billion against $292 billion. That gap buys reach, not just hardware. Two million to 1.4 million. China wins the headcount and always has. Eleven carriers to three. That's the difference between global power and regional power. US takes it two to one. China wins if the fight stays close to home.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "America spends three dollars on defense for every one China spends.",
+      "startOffset": 0,
+      "endOffset": 5.134081999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One military is built to go anywhere. The other is built to hold ground.",
+      "startOffset": 5.134081999999999,
+      "endOffset": 10.581633
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "$877 billion against $292 billion. That gap buys reach, not just hardware.",
+      "startOffset": 10.581633,
+      "endOffset": 20.104286000000002
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Two million to 1.4 million. China wins the headcount and always has.",
+      "startOffset": 20.104286000000002,
+      "endOffset": 26.361633
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Eleven carriers to three. That's the difference between global power and regional power.",
+      "startOffset": 26.361633,
+      "endOffset": 32.462245
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "US takes it two to one. China wins if the fight stays close to home.",
+      "startOffset": 32.462245,
+      "endOffset": 38.962245
+    }
+  ],
+  "youtubeTitle": "US Military vs China Military: Budget, Troops, Carriers",
+  "youtubeDescription": "A head-to-head breakdown of the US and Chinese militaries across defense spending, active personnel and aircraft carrier fleets. The US leads on budget and carriers, China leads on manpower. Here's what those three numbers actually mean.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/us-military-vs-china-military",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

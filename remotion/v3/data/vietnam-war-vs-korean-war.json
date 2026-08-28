@@ -1,0 +1,170 @@
+{
+  "title": "Vietnam War vs Korean War",
+  "entityA": "Vietnam War",
+  "entityB": "Korean War",
+  "category": "Countries",
+  "shortAnswer": "Korean War (1950-53) ended in stalemate preserving South Korea. Vietnam War (1955-75) was longer, more controversial, ending in US withdrawal and defeat.",
+  "stats": [
+    {
+      "label": "US Military Deaths",
+      "valueA": "58,220",
+      "valueB": "36,574",
+      "winner": "b"
+    },
+    {
+      "label": "Total Deaths",
+      "valueA": "~3.5 million",
+      "valueB": "~2.5 million",
+      "winner": "b"
+    },
+    {
+      "label": "War Duration",
+      "valueA": "20 years",
+      "valueB": "3 years",
+      "winner": "b"
+    },
+    {
+      "label": "Start Year",
+      "valueA": "1955",
+      "valueB": "1950",
+      "winner": "tie"
+    },
+    {
+      "label": "End Year",
+      "valueA": "1975",
+      "valueB": "1953",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "The Korean War was more strategically successful, preserving South Korean democracy with fewer casualties and less domestic controversy. The Vietnam War, while demonstrating US resolve, ended in defeat after a much longer and more divisive conflict.",
+  "slug": "vietnam-war-vs-korean-war",
+  "imageA": {
+    "url": "video-assets/vietnam-war-vs-korean-war/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/6/67/U.S._Army_UH-1H_Hueys_insert_ARVN_troops_at_Kh%C3%A2m_%C4%90%E1%BB%A9c%2C_Vietnam%2C_12_July_1970_%2879431435%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 1085,
+    "height": 664,
+    "credit": "U.S. Air Force (Operation Holly 1970 (Folder 13 of 15), sheet 182)",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:U.S._Army_UH-1H_Hueys_insert_ARVN_troops_at_Kh%C3%A2m_%C4%90%E1%BB%A9c,_Vietnam,_12_July_1970_(79431435).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/6/67/U.S._Army_UH-1H_Hueys_insert_ARVN_troops_at_Kh%C3%A2m_%C4%90%E1%BB%A9c%2C_Vietnam%2C_12_July_1970_%2879431435%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/vietnam-war-vs-korean-war/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Chosin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2858,
+    "height": 2294,
+    "credit": "Photo by Corporal Peter McDonald, USMC",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chosin.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Chosin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One war took three years. The other took twenty and ended in defeat.",
+    "tape": "Same Cold War logic, same enemy on paper. Wildly different bills at the end.",
+    "rounds": [
+      "58,220 Americans dead in Vietnam. Nearly 22,000 more than Korea cost.",
+      "3.5 million dead in Vietnam against 2.5 million in Korea. A million-life gap.",
+      "Twenty years versus three. Vietnam lasted almost seven Korean Wars back to back.",
+      "Korea opened in 1950, Vietnam in 1955. Five years to forget the lesson.",
+      "Korea closed in 1953 with a line still standing. Vietnam closed in 1975 with none."
+    ],
+    "verdict": "Korea takes it on points. Study Vietnam if you want to see how superpowers lose."
+  },
+  "audio": {
+    "cold": "video-assets/vietnam-war-vs-korean-war/audio/cold.mp3",
+    "tape": "video-assets/vietnam-war-vs-korean-war/audio/tape.mp3",
+    "rounds": [
+      "video-assets/vietnam-war-vs-korean-war/audio/round-1.mp3",
+      "video-assets/vietnam-war-vs-korean-war/audio/round-2.mp3",
+      "video-assets/vietnam-war-vs-korean-war/audio/round-3.mp3",
+      "video-assets/vietnam-war-vs-korean-war/audio/round-4.mp3",
+      "video-assets/vietnam-war-vs-korean-war/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/vietnam-war-vs-korean-war/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 168,
+    "tape": 207,
+    "rounds": [
+      245,
+      254,
+      199,
+      233,
+      262
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "One war took three years. The other took twenty and ended in defeat. Same Cold War logic, same enemy on paper. Wildly different bills at the end. 58,220 Americans dead in Vietnam. Nearly 22,000 more than Korea cost. 3.5 million dead in Vietnam against 2.5 million in Korea. A million-life gap. Twenty years versus three. Vietnam lasted almost seven Korean Wars back to back. Korea opened in 1950, Vietnam in 1955. Five years to forget the lesson. Korea closed in 1953 with a line still standing. Vietnam closed in 1975 with none. Korea takes it on points. Study Vietnam if you want to see how superpowers lose.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One war took three years. The other took twenty and ended in defeat.",
+      "startOffset": 0,
+      "endOffset": 5.604285999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Same Cold War logic, same enemy on paper. Wildly different bills at the end.",
+      "startOffset": 5.604285999999999,
+      "endOffset": 12.488571999999998
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "58,220 Americans dead in Vietnam. Nearly 22,000 more than Korea cost.",
+      "startOffset": 12.488571999999998,
+      "endOffset": 20.652858
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "3.5 million dead in Vietnam against 2.5 million in Korea. A million-life gap.",
+      "startOffset": 20.652858,
+      "endOffset": 29.130612999999997
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Twenty years versus three. Vietnam lasted almost seven Korean Wars back to back.",
+      "startOffset": 29.130612999999997,
+      "endOffset": 35.779796999999995
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Korea opened in 1950, Vietnam in 1955. Five years to forget the lesson.",
+      "startOffset": 35.779796999999995,
+      "endOffset": 43.552246
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Korea closed in 1953 with a line still standing. Vietnam closed in 1975 with none.",
+      "startOffset": 43.552246,
+      "endOffset": 52.291225999999995
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Korea takes it on points. Study Vietnam if you want to see how superpowers lose.",
+      "startOffset": 52.291225999999995,
+      "endOffset": 58.791225999999995
+    }
+  ],
+  "youtubeTitle": "Vietnam War vs Korean War: The Numbers Behind Two Cold War Fights",
+  "youtubeDescription": "A stat-by-stat comparison of the Vietnam War and the Korean War, covering US military deaths, total deaths, duration, and the years each conflict ran. Korea cost fewer lives over three years, while Vietnam dragged on for two decades and ended in American withdrawal.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/vietnam-war-vs-korean-war",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by U.S. Air Force (Operation Holly 1970 (Folder 13 of 15), sheet 182) (Public domain) — https://commons.wikimedia.org/wiki/File:U.S._Army_UH-1H_Hueys_insert_ARVN_troops_at_Kh%C3%A2m_%C4%90%E1%BB%A9c,_Vietnam,_12_July_1970_(79431435).jpg",
+    "Image B by Photo by Corporal Peter McDonald, USMC (Public domain) — https://commons.wikimedia.org/wiki/File:Chosin.jpg"
+  ]
+}

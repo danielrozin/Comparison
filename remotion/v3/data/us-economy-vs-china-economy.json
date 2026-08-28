@@ -1,0 +1,158 @@
+{
+  "title": "US Economy vs China Economy",
+  "entityA": "US Economy",
+  "entityB": "China Economy",
+  "category": "economy",
+  "shortAnswer": "The US has the world's largest nominal GDP ($25.5T) and leads in technology, finance, and innovation. China ($17.7T) is the world's largest manufacturer and may surpass the US in total GDP by PPP. The US has 6x higher GDP per capita.",
+  "stats": [
+    {
+      "label": "GDP Per Capita (USD)",
+      "valueA": "$89,000",
+      "valueB": "$12,720",
+      "winner": "a"
+    },
+    {
+      "label": "GDP Growth Rate 2026 (%)",
+      "valueA": "1.9%",
+      "valueB": "3-4%",
+      "winner": "b"
+    },
+    {
+      "label": "Global Solar Panel Production (%)",
+      "valueA": "8%",
+      "valueB": "~80%",
+      "winner": "b"
+    },
+    {
+      "label": "Total GDP 2026 (USD Trillions)",
+      "valueA": "$30+ trillion",
+      "valueB": "$17.9",
+      "winner": "a"
+    },
+    {
+      "label": "Per Capita GDP (USD)",
+      "valueA": "$89,500",
+      "valueB": "$14,750",
+      "winner": "a"
+    }
+  ],
+  "verdict": "The US leads in total GDP, per-capita wealth, and innovation. China leads in manufacturing and growth rate. The gap is narrowing.",
+  "slug": "us-economy-vs-china-economy",
+  "imageA": {
+    "url": "video-assets/us-economy-vs-china-economy/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 8207,
+    "height": 4616,
+    "credit": "Dllu",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_(cropped).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg/3840px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "Eighty percent of the world's solar panels come from one country. It isn't America.",
+    "tape": "America is richer per person. China builds more and grows faster. Different games entirely.",
+    "rounds": [
+      "Eighty-nine grand a head. The average American is six times wealthier.",
+      "Nineteen versus three to four percent. China closes the gap every single year.",
+      "Eight percent against eighty. China doesn't compete in solar, it owns it.",
+      "Thirty trillion versus seventeen point nine. Still the biggest economy on Earth.",
+      "Eighty-nine thousand five hundred against fourteen seven fifty. Scale isn't the same as living standards."
+    ],
+    "verdict": "US takes it three to two. Bet on China if you're buying the next decade."
+  },
+  "audio": {
+    "cold": "video-assets/us-economy-vs-china-economy/audio/cold.mp3",
+    "tape": "video-assets/us-economy-vs-china-economy/audio/tape.mp3",
+    "rounds": [
+      "video-assets/us-economy-vs-china-economy/audio/round-1.mp3",
+      "video-assets/us-economy-vs-china-economy/audio/round-2.mp3",
+      "video-assets/us-economy-vs-china-economy/audio/round-3.mp3",
+      "video-assets/us-economy-vs-china-economy/audio/round-4.mp3",
+      "video-assets/us-economy-vs-china-economy/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/us-economy-vs-china-economy/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 180,
+    "tape": 236,
+    "rounds": [
+      166,
+      185,
+      175,
+      173,
+      247
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Eighty percent of the world's solar panels come from one country. It isn't America. America is richer per person. China builds more and grows faster. Different games entirely. Eighty-nine grand a head. The average American is six times wealthier. Nineteen versus three to four percent. China closes the gap every single year. Eight percent against eighty. China doesn't compete in solar, it owns it. Thirty trillion versus seventeen point nine. Still the biggest economy on Earth. Eighty-nine thousand five hundred against fourteen seven fifty. Scale isn't the same as living standards. US takes it three to two. Bet on China if you're buying the next decade.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Eighty percent of the world's solar panels come from one country. It isn't America.",
+      "startOffset": 0,
+      "endOffset": 5.996122
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "America is richer per person. China builds more and grows faster. Different games entirely.",
+      "startOffset": 5.996122,
+      "endOffset": 13.846938
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Eighty-nine grand a head. The average American is six times wealthier.",
+      "startOffset": 13.846938,
+      "endOffset": 19.372856
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Nineteen versus three to four percent. China closes the gap every single year.",
+      "startOffset": 19.372856,
+      "endOffset": 25.551835999999998
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Eight percent against eighty. China doesn't compete in solar, it owns it.",
+      "startOffset": 25.551835999999998,
+      "endOffset": 31.391223999999998
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Thirty trillion versus seventeen point nine. Still the biggest economy on Earth.",
+      "startOffset": 31.391223999999998,
+      "endOffset": 37.152243999999996
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Eighty-nine thousand five hundred against fourteen seven fifty. Scale isn't the same as living standards.",
+      "startOffset": 37.152243999999996,
+      "endOffset": 45.394897
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "US takes it three to two. Bet on China if you're buying the next decade.",
+      "startOffset": 45.394897,
+      "endOffset": 51.894897
+    }
+  ],
+  "youtubeTitle": "US Economy vs China Economy: Who Actually Wins on the Numbers",
+  "youtubeDescription": "A head-to-head breakdown of the US and Chinese economies on GDP per capita, total GDP, 2026 growth rates, and global solar panel production. The US leads on wealth and total output, China leads on growth and manufacturing dominance. Here's who wins on points and why the gap keeps narrowing.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/us-economy-vs-china-economy",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Dllu (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu_(cropped).jpg"
+  ]
+}
