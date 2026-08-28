@@ -118,6 +118,22 @@ export function buildDigestHtml(comparisons: DigestComparison[]): string {
             </td>
           </tr>
 
+          <!-- Founding offer — the weekly send is a recurring subscriber→paying
+               touch; before this block it never mentioned Pro at all. -->
+          <tr>
+            <td style="padding: 8px 32px 24px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 8px;">
+                <tr>
+                  <td style="padding: 16px 18px;">
+                    <p style="margin: 0 0 6px; color: #111827; font-size: 14px; font-weight: 600;">Need a comparison we haven&rsquo;t built?</p>
+                    <p style="margin: 0 0 10px; color: #374151; font-size: 13px; line-height: 1.5;">Pro members request any matchup and get it researched and published within 24 hours. Founding price: <strong>$49/year</strong> (later $90), locked for as long as you stay.</p>
+                    <a href="${SITE_URL}/pricing?src=weekly-digest" style="color: #2563eb; font-weight: 600; font-size: 13px; text-decoration: none;">Lock the founding price &rarr;</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
           <!-- Footer -->
           <tr>
             <td style="padding: 24px 32px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center;">

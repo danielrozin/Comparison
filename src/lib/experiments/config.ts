@@ -29,6 +29,17 @@ export const experiments: ExperimentConfig[] = [
     goalMetric: "engagement_rate",
   },
   {
+    // Follow-CTA framing on comparison pages: "follow the comparison" vs
+    // "price-drop alerts". Goal = newsletter signups from compare pages.
+    id: "follow-cta-copy",
+    name: "Follow CTA Copy",
+    variants: ["control", "alerts"],
+    trafficPercent: 100,
+    startDate: "2026-08-28",
+    endDate: "2026-10-28",
+    goalMetric: "newsletter_signup",
+  },
+  {
     id: "cta-placement",
     name: "CTA Placement",
     variants: ["control", "sticky-bottom", "inline-verdict"],

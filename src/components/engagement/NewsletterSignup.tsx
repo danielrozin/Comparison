@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useExperiment } from "@/lib/experiments";
 import { trackNewsletterSignup } from "@/lib/utils/analytics";
 
 interface NewsletterSignupProps {
@@ -10,6 +11,8 @@ interface NewsletterSignupProps {
 }
 
 export function NewsletterSignup({ source, referrerSlug, variant = "card" }: NewsletterSignupProps) {
+  const { variant: followCopy } = useExperiment("follow-cta-copy");
+  const alertsFraming = followCopy === "alerts";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -112,12 +115,12 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               </svg>
             </div>
             <h3 className="text-lg sm:text-xl font-bold text-text">
-              {referrerSlug?.includes("-vs-") ? "Follow this comparison" : "Get the best comparisons in your inbox"}
+              {referrerSlug?.includes("-vs-") ? (alertsFraming ? "Get price-drop & verdict alerts" : "Follow this comparison") : "Get the best comparisons in your inbox"}
             </h3>
           </div>
           <p className="text-sm text-text-secondary mb-4 text-center">
             {referrerSlug?.includes("-vs-")
-              ? "One email when the verdict, specs or prices change — plus the week's best head-to-heads. No spam."
+              ? (alertsFraming ? "We watch the prices and specs on this matchup — you get one email the moment something changes. No spam." : "One email when the verdict, specs or prices change — plus the week's best head-to-heads. No spam.")
               : "Weekly digest of trending comparisons, new categories, and expert insights. No spam."}
           </p>
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
@@ -139,7 +142,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
               disabled={status === "loading"}
               className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white text-sm font-semibold rounded-lg transition-all duration-150 hover:shadow-md disabled:opacity-50 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
             >
-              {status === "loading" ? "Subscribing..." : referrerSlug?.includes("-vs-") ? "Follow — Free" : "Subscribe Free"}
+              {status === "loading" ? "Subscribing..." : referrerSlug?.includes("-vs-") ? (alertsFraming ? "Alert Me — Free" : "Follow — Free") : "Subscribe Free"}
             </button>
           </form>
           {status === "error" && (
