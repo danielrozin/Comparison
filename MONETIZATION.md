@@ -58,6 +58,12 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 
 ## Task board
 
+**Content engine — running (freeze lifted 2026-08-26 per founder directive)**
+- [x] Wave 1 (08-26): 12 comparisons + 8 blogs — reviewed, published, indexed
+- [x] Wave 2 (08-28): 20 comparisons + 6 blogs — buildFirst tier now 33/33 done
+- [ ] Wave 3: SERP-verify the next 40 clusters from the 917 backlog, then generate
+- [ ] Fold the AEO question bank into wave-1/2 pages' FAQ blocks
+
 **Phase 1 — shipped in this commit**
 - [x] `src/lib/monetization/plans.ts` — single source of truth for tiers/pricing
 - [x] `/pricing` page (Offer schema, founding-member framing, honest copy)
@@ -77,7 +83,17 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 - [ ] Point a Stripe webhook endpoint at `/api/stripe/webhook`
       (event: checkout.session.completed, customer.subscription.deleted)
       and set `STRIPE_WEBHOOK_SECRET`
-- [ ] Email the reservation list (they locked founding price) with checkout links
+- [ ] Email the reservation list (they locked founding price) with checkout
+      links. Draft (send via sendOutreachEmail, from Info@, replyTo founder):
+
+      Subject: Your founding price is live — $49/yr, locked
+      Body: You reserved the founding price on A Versus B Pro. Checkout is
+      now open — your price stays $49/year for as long as you subscribe
+      (public price is $90). [Checkout link]. Your first custom comparison:
+      reply to this email with any matchup and it's live within 24 hours.
+      — Daniel & Shai
+
+      List: Redis `monetization:reservations`; send day-of-Stripe only.
 - [x] Success page `/pricing/thanks` (noindex)
 
 **Phase 3 — deliver the Pro promises**
