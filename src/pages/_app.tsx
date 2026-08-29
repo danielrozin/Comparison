@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FeedbackWidget, CookieConsentBanner, BackToTop, ReadingProgress, SearchOverlay, MobileBottomNav } from "@/components/layout/GlobalClientWidgets";
 import { ExperimentProvider } from "@/lib/experiments/ExperimentProvider";
+import { PostHogInit } from "@/components/analytics/PostHogInit";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <GoogleTagManager />
       <MetaPixel />
       <ClarityTags />
+      <PostHogInit />
       <ExperimentProvider initialCookie="">
         <Header />
         <main id="main-content" className="flex-1">

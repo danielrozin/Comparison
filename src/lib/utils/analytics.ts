@@ -76,6 +76,17 @@ export function trackAffiliateClick(product: string, position: string, page: str
   posthog.capture("affiliate_link_clicked", { product, position, page });
 }
 
+/**
+ * Merge the anonymous browsing identity into the email identity the server
+ * events use as distinctId. This is what stitches pageview → signup →
+ * welcome email → pricing → checkout into ONE person in PostHog.
+ */
+export function identifySubscriber(email: string) {
+  const normalized = email.toLowerCase().trim();
+  if (!normalized) return;
+  posthog.identify(normalized, { email: normalized });
+}
+
 /** Pricing page viewed — top of the monetization funnel. `src` is the surface
  *  that sent the visitor (header, footer, requests, compare-{slug}, direct). */
 export function trackPricingViewed(src: string) {
@@ -104,7 +115,9 @@ export function trackNewsletterSignup(page: string, placement: string) {
   trackEvent("newsletter_signup", { page, placement });
   trackEvent("generate_lead", { lead_source: "newsletter", page, placement });
   trackMetaEvent("Lead", { content_name: "newsletter", content_category: placement });
-  posthog.capture("newsletter_subscribed", { page, placement });
+  // client-side intent event; the server fires the canonical
+  // "newsletter_subscribed" — distinct names so PostHog never double-counts
+  posthog.capture("newsletter_signup_submitted", { page, placement });
 }
 
 /**

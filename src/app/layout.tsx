@@ -34,6 +34,7 @@ const getPublishedComparisonCount = unstable_cache(
   { revalidate: 3600 }
 );
 import { ExperimentProviderServer } from "@/lib/experiments/ExperimentProviderServer";
+import { PostHogInit } from "@/components/analytics/PostHogInit";
 import { GoogleTagManager } from "@/components/tracking/GoogleTagManager";
 import { MetaPixel } from "@/components/tracking/MetaPixel";
 import { ClarityTags } from "@/components/tracking/ClarityTags";
@@ -231,6 +232,7 @@ export default async function RootLayout({
         <MetaPixel />
         <ClarityTags />
         <FirstTouchAttribution />
+        <PostHogInit />
         <ExperimentProviderServer>
           <Header />
           <main id="main-content" className="flex-1">{children}</main>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sendWeeklyDigest } from "@/lib/services/newsletter-digest";
 import { sendNotificationEmail } from "@/lib/services/email";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export const maxDuration = 120; // 2 minutes
 
@@ -22,6 +23,13 @@ export async function GET(request: NextRequest) {
     const result = await sendWeeklyDigest();
 
     // Notify admin
+    try {
+      getPostHogClient().capture({
+        distinctId: "system",
+        event: "digest_sent",
+        properties: { subscribers: result.subscriberCount, sent: result.sentCount ?? null },
+      });
+    } catch {}
     await sendNotificationEmail({
       subject: "Weekly Digest Sent",
       type: "cron-report",

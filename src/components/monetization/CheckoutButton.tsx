@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { trackCheckoutClicked } from "@/lib/utils/analytics";
+import { identifySubscriber, trackCheckoutClicked } from "@/lib/utils/analytics";
 
 /**
  * The one buy button. POSTs to /api/checkout:
@@ -41,6 +41,7 @@ export function CheckoutButton({
         return;
       }
       if (res.ok && data.mode === "reservation") {
+        if (email) identifySubscriber(email);
         setMessage(data.message);
         setPhase("done");
         return;

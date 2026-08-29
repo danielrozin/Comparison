@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 import { z } from "zod";
 import {
   generateComparison,
@@ -165,6 +166,13 @@ export async function POST(request: NextRequest) {
       // but we log it as a failed attempt so monitoring can pick it up.
       try {
         await saveComparison(result.comparison);
+        try {
+          getPostHogClient().capture({
+            distinctId: "system",
+            event: "comparison_generated",
+            properties: { slug: result.comparison.slug, category: result.comparison.category ?? null },
+          });
+        } catch {}
         if (attempt) {
           await finishAttemptSuccess(attempt.id, Date.now() - startedAt);
         }

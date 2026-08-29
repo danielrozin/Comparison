@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 import {
   generateBlogArticle,
   saveBlogArticle,
@@ -43,6 +44,13 @@ export async function POST(request: NextRequest) {
 
     // Save to database
     const saved = await saveBlogArticle(article);
+    try {
+      getPostHogClient().capture({
+        distinctId: "system",
+        event: "blog_generated",
+        properties: { slug: article.slug, topic },
+      });
+    } catch {}
 
     return NextResponse.json({
       article: { ...article, id: saved?.id },

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useExperiment } from "@/lib/experiments";
-import { trackNewsletterSignup } from "@/lib/utils/analytics";
+import { identifySubscriber, trackNewsletterSignup } from "@/lib/utils/analytics";
 
 interface NewsletterSignupProps {
   source: string;
@@ -29,6 +29,7 @@ export function NewsletterSignup({ source, referrerSlug, variant = "card" }: New
       });
       if (res.ok) {
         setStatus("success");
+        identifySubscriber(email);
         setEmail("");
         trackNewsletterSignup(referrerSlug || source, variant);
       } else {

@@ -72,6 +72,11 @@ export async function POST(request: NextRequest) {
             </div>`,
           tags: [{ name: "type", value: "welcome" }],
         });
+        getPostHogClient().capture({
+          distinctId: normalizedEmail,
+          event: "welcome_email_sent",
+          properties: { source: source || "unknown", referrer_slug: referrerSlug || null },
+        });
       } catch (welcomeErr) {
         console.error("Welcome email failed (non-fatal):", welcomeErr);
       }
