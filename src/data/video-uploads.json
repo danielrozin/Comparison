@@ -4671,6 +4671,178 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-08-28T17:32:45.429Z"
+    },
+    {
+      "slug": "tylenol-vs-advil",
+      "title": "Tylenol vs Advil",
+      "entityA": "Tylenol",
+      "entityB": "Advil",
+      "category": "Health",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "tylenol-vs-advil.mp4",
+      "durationSeconds": 48,
+      "transcript": "Two bottles in every medicine cabinet, and most people grab the wrong one. One kills pain. The other kills pain and the swelling causing it. Advil buys you six to eight hours. Tylenol taps out around four. This is the whole fight. Tylenol does nothing for swelling. Advil does. Advil can chew on your stomach lining. Tylenol just passes through quietly. Pregnancy flips it hard. Tylenol is the safer call. Advil gets restricted. Headache or fever, reach for Tylenol. Twisted ankle or sore muscles, Advil. Dead even, two apiece. Swelling means Advil. Sensitive stomach or pregnancy means Tylenol.",
+      "chapters": [
+        {
+          "name": "Tylenol vs Advil",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: Duration (hours)",
+          "startOffset": 10,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Anti-inflammatory",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Stomach Safety",
+          "startOffset": 23,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 4: Pregnancy Safety",
+          "startOffset": 29,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 5: Best For",
+          "startOffset": 36,
+          "endOffset": 43
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 43,
+          "endOffset": 51
+        }
+      ],
+      "youtubeTitle": "Tylenol vs Advil: Which One Should You Actually Take?",
+      "youtubeDescription": "Tylenol and Advil get used interchangeably, but they work differently. We compare duration, anti-inflammatory effect, stomach safety, pregnancy safety, and what each one is actually best for. Consult a doctor before long term use of either.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tylenol-vs-advil\n\nImage credits:\nImage A by Ragesoss (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Extra_Strength_Tylenol_and_Tylenol_PM.jpg\nImage B by Tony Webster from United States (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Advil_Pills_(48609832971).jpg\n\nFull comparison: https://www.aversusb.net/compare/tylenol-vs-advil",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-29T11:39:13.572Z"
+    },
+    {
+      "slug": "keto-vs-paleo",
+      "title": "Keto vs Paleo",
+      "entityA": "Keto Diet",
+      "entityB": "Paleo Diet",
+      "category": "health",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "keto-vs-paleo.mp4",
+      "durationSeconds": 48,
+      "transcript": "Under 50 grams of carbs a day. That's one banana and you're done. Keto is a metabolic switch. Paleo is a grocery list. Very different levels of strict. Keto puts a hard ceiling on carbs. Paleo just deletes grains and moves on. Seventy to eighty percent of your calories from fat. Fat becomes the fuel. Paleo lets you eat an apple. On keto, fruit is a budget item. Both diets throw out beans and lentils. Nobody wins this one. Keto has clinical backing for epilepsy and weight loss. Paleo's evidence is thinner. Keto takes it 3-1 on the numbers. Pick paleo if you want something you'll still be doing next year.",
+      "chapters": [
+        {
+          "name": "Keto Diet vs Paleo Diet",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 12
+        },
+        {
+          "name": "Round 1: Carb Restriction",
+          "startOffset": 12,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Fat Intake",
+          "startOffset": 19,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Fruit Allowed",
+          "startOffset": 25,
+          "endOffset": 31
+        },
+        {
+          "name": "Round 4: Legumes Allowed",
+          "startOffset": 31,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 5: Research Evidence",
+          "startOffset": 36,
+          "endOffset": 43
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 43,
+          "endOffset": 51
+        }
+      ],
+      "youtubeTitle": "Keto vs Paleo: Which Diet Actually Holds Up?",
+      "youtubeDescription": "A head-to-head breakdown of the ketogenic diet versus the paleo diet on carb limits, fat intake, fruit and legumes, and research evidence. Keto wins on points thanks to stronger clinical backing, but paleo is the less restrictive option for the long haul.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/keto-vs-paleo\n\nImage credits:\nImage B by trmdttr (CC BY-SA 2.0) — https://commons.wikimedia.org/wiki/File:Paleo_food.jpg\n\nFull comparison: https://www.aversusb.net/compare/keto-vs-paleo",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-29T11:47:00.277Z"
+    },
+    {
+      "slug": "wegovy-vs-ozempic",
+      "title": "Wegovy vs Ozempic",
+      "entityA": "Wegovy (Semaglutide 2.4mg)",
+      "entityB": "Ozempic (Semaglutide 0.5-2mg)",
+      "category": "health",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "wegovy-vs-ozempic.mp4",
+      "durationSeconds": 51,
+      "transcript": "Same drug. Same company. One label says diabetes, the other says obesity. Identical molecule, different dose and different paperwork. That paperwork decides which one you get. The only real difference on paper. Ozempic treats diabetes, Wegovy treats weight. Wegovy pushes semaglutide to 2.4mg. Ozempic stops at 2mg. Higher dose, bigger effect. 15 to 17 percent versus about 10. That gap is the whole dose story. Roughly 1,300 a month against 900. You pay 400 extra for that gap. Wegovy takes it on dose and results. If you have type 2 diabetes, Ozempic is your prescription.",
+      "chapters": [
+        {
+          "name": "Wegovy (Semaglutide 2.4mg) vs Ozempic (Semaglutide 0.5-2mg)",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 15
+        },
+        {
+          "name": "Round 1: FDA Approval",
+          "startOffset": 15,
+          "endOffset": 22
+        },
+        {
+          "name": "Round 2: Semaglutide Dose",
+          "startOffset": 22,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 3: Average Weight Loss",
+          "startOffset": 32,
+          "endOffset": 38
+        },
+        {
+          "name": "Round 4: Monthly Cost",
+          "startOffset": 38,
+          "endOffset": 46
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 46,
+          "endOffset": 53
+        }
+      ],
+      "youtubeTitle": "Wegovy vs Ozempic: Same Drug, Two Very Different Labels",
+      "youtubeDescription": "Wegovy and Ozempic both contain semaglutide from Novo Nordisk, but the dose, FDA approval, and price are not the same. We compare 2.4mg Wegovy against 0.5-2mg Ozempic on approved use, average weight loss, and monthly cost. Here is which one actually fits your situation.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/wegovy-vs-ozempic\n\nFull comparison: https://www.aversusb.net/compare/wegovy-vs-ozempic",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-29T11:53:54.777Z"
     }
   ]
 }

@@ -1,0 +1,129 @@
+{
+  "title": "Wegovy vs Ozempic",
+  "entityA": "Wegovy (Semaglutide 2.4mg)",
+  "entityB": "Ozempic (Semaglutide 0.5-2mg)",
+  "category": "health",
+  "shortAnswer": "Both contain semaglutide (same active ingredient) and are made by Novo Nordisk. Ozempic (0.5-2mg) is FDA-approved for type 2 diabetes. Wegovy (2.4mg, higher dose) is FDA-approved for chronic weight management. Wegovy produces greater average weight loss (~15-17%).",
+  "stats": [
+    {
+      "label": "FDA Approval",
+      "valueA": "Obesity/weight loss",
+      "valueB": "Type 2 diabetes",
+      "winner": "tie"
+    },
+    {
+      "label": "Semaglutide Dose",
+      "valueA": "2.4mg",
+      "valueB": "0.5-2mg",
+      "winner": "a"
+    },
+    {
+      "label": "Average Weight Loss",
+      "valueA": "15-17%",
+      "valueB": "~10%",
+      "winner": "a"
+    },
+    {
+      "label": "Monthly Cost",
+      "valueA": "~$1,300",
+      "valueB": "~$900",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Ozempic is the diabetes treatment; Wegovy is the weight loss version. If you have diabetes, Ozempic is prescribed; if the goal is weight loss without diabetes, Wegovy is the indicated drug.",
+  "slug": "wegovy-vs-ozempic",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Same drug. Same company. One label says diabetes, the other says obesity.",
+    "tape": "Identical molecule, different dose and different paperwork. That paperwork decides which one you get.",
+    "rounds": [
+      "The only real difference on paper. Ozempic treats diabetes, Wegovy treats weight.",
+      "Wegovy pushes semaglutide to 2.4mg. Ozempic stops at 2mg. Higher dose, bigger effect.",
+      "15 to 17 percent versus about 10. That gap is the whole dose story.",
+      "Roughly 1,300 a month against 900. You pay 400 extra for that gap."
+    ],
+    "verdict": "Wegovy takes it on dose and results. If you have type 2 diabetes, Ozempic is your prescription."
+  },
+  "audio": {
+    "cold": "video-assets/wegovy-vs-ozempic/audio/cold.mp3",
+    "tape": "video-assets/wegovy-vs-ozempic/audio/tape.mp3",
+    "rounds": [
+      "video-assets/wegovy-vs-ozempic/audio/round-1.mp3",
+      "video-assets/wegovy-vs-ozempic/audio/round-2.mp3",
+      "video-assets/wegovy-vs-ozempic/audio/round-3.mp3",
+      "video-assets/wegovy-vs-ozempic/audio/round-4.mp3"
+    ],
+    "verdict": "video-assets/wegovy-vs-ozempic/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 211,
+    "tape": 233,
+    "rounds": [
+      218,
+      286,
+      202,
+      216
+    ],
+    "verdict": 233,
+    "leadInFrames": 9
+  },
+  "transcript": "Same drug. Same company. One label says diabetes, the other says obesity. Identical molecule, different dose and different paperwork. That paperwork decides which one you get. The only real difference on paper. Ozempic treats diabetes, Wegovy treats weight. Wegovy pushes semaglutide to 2.4mg. Ozempic stops at 2mg. Higher dose, bigger effect. 15 to 17 percent versus about 10. That gap is the whole dose story. Roughly 1,300 a month against 900. You pay 400 extra for that gap. Wegovy takes it on dose and results. If you have type 2 diabetes, Ozempic is your prescription.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Same drug. Same company. One label says diabetes, the other says obesity.",
+      "startOffset": 0,
+      "endOffset": 7.04102
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Identical molecule, different dose and different paperwork. That paperwork decides which one you get.",
+      "startOffset": 7.04102,
+      "endOffset": 14.813469
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "The only real difference on paper. Ozempic treats diabetes, Wegovy treats weight.",
+      "startOffset": 14.813469,
+      "endOffset": 22.089591
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Wegovy pushes semaglutide to 2.4mg. Ozempic stops at 2mg. Higher dose, bigger effect.",
+      "startOffset": 22.089591,
+      "endOffset": 31.612244
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "15 to 17 percent versus about 10. That gap is the whole dose story.",
+      "startOffset": 31.612244,
+      "endOffset": 38.339795
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Roughly 1,300 a month against 900. You pay 400 extra for that gap.",
+      "startOffset": 38.339795,
+      "endOffset": 45.53755
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Wegovy takes it on dose and results. If you have type 2 diabetes, Ozempic is your prescription.",
+      "startOffset": 45.53755,
+      "endOffset": 53.309999000000005
+    }
+  ],
+  "youtubeTitle": "Wegovy vs Ozempic: Same Drug, Two Very Different Labels",
+  "youtubeDescription": "Wegovy and Ozempic both contain semaglutide from Novo Nordisk, but the dose, FDA approval, and price are not the same. We compare 2.4mg Wegovy against 0.5-2mg Ozempic on approved use, average weight loss, and monthly cost. Here is which one actually fits your situation.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/wegovy-vs-ozempic",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

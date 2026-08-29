@@ -1,0 +1,170 @@
+{
+  "title": "Tylenol vs Advil",
+  "entityA": "Tylenol",
+  "entityB": "Advil",
+  "category": "Health",
+  "shortAnswer": "Tylenol (acetaminophen) relieves pain and fever without anti-inflammatory effects and is gentler on the stomach. Advil (ibuprofen) reduces pain, fever, AND inflammation, making it better for muscle aches and arthritis.",
+  "stats": [
+    {
+      "label": "Duration (hours)",
+      "valueA": "4-6",
+      "valueB": "6-8",
+      "winner": "b"
+    },
+    {
+      "label": "Anti-inflammatory",
+      "valueA": "No",
+      "valueB": "Yes",
+      "winner": "b"
+    },
+    {
+      "label": "Stomach Safety",
+      "valueA": "Gentle",
+      "valueB": "Can irritate",
+      "winner": "a"
+    },
+    {
+      "label": "Pregnancy Safety",
+      "valueA": "Safer",
+      "valueB": "Restricted",
+      "winner": "a"
+    },
+    {
+      "label": "Best For",
+      "valueA": "Headaches, fever",
+      "valueB": "Inflammation, muscle",
+      "winner": "tie"
+    }
+  ],
+  "verdict": "Tylenol is safer for stomach issues and blood thinners. Advil is better for inflammation-based pain. Consult a doctor for chronic use of either.",
+  "slug": "tylenol-vs-advil",
+  "imageA": {
+    "url": "video-assets/tylenol-vs-advil/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Extra_Strength_Tylenol_and_Tylenol_PM.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2361,
+    "height": 2953,
+    "credit": "Ragesoss",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Extra_Strength_Tylenol_and_Tylenol_PM.jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Extra_Strength_Tylenol_and_Tylenol_PM.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": {
+    "url": "video-assets/tylenol-vs-advil/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Advil_Pills_%2848609832971%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 5266,
+    "height": 3655,
+    "credit": "Tony Webster from United States",
+    "license": "CC BY 2.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Advil_Pills_(48609832971).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Advil_Pills_%2848609832971%29.jpg/3840px-Advil_Pills_%2848609832971%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "lines": {
+    "hook": "Two bottles in every medicine cabinet, and most people grab the wrong one.",
+    "tape": "One kills pain. The other kills pain and the swelling causing it.",
+    "rounds": [
+      "Advil buys you six to eight hours. Tylenol taps out around four.",
+      "This is the whole fight. Tylenol does nothing for swelling. Advil does.",
+      "Advil can chew on your stomach lining. Tylenol just passes through quietly.",
+      "Pregnancy flips it hard. Tylenol is the safer call. Advil gets restricted.",
+      "Headache or fever, reach for Tylenol. Twisted ankle or sore muscles, Advil."
+    ],
+    "verdict": "Dead even, two apiece. Swelling means Advil. Sensitive stomach or pregnancy means Tylenol."
+  },
+  "audio": {
+    "cold": "video-assets/tylenol-vs-advil/audio/cold.mp3",
+    "tape": "video-assets/tylenol-vs-advil/audio/tape.mp3",
+    "rounds": [
+      "video-assets/tylenol-vs-advil/audio/round-1.mp3",
+      "video-assets/tylenol-vs-advil/audio/round-2.mp3",
+      "video-assets/tylenol-vs-advil/audio/round-3.mp3",
+      "video-assets/tylenol-vs-advil/audio/round-4.mp3",
+      "video-assets/tylenol-vs-advil/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/tylenol-vs-advil/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 149,
+    "tape": 163,
+    "rounds": [
+      183,
+      183,
+      180,
+      211,
+      209
+    ],
+    "verdict": 252,
+    "leadInFrames": 9
+  },
+  "transcript": "Two bottles in every medicine cabinet, and most people grab the wrong one. One kills pain. The other kills pain and the swelling causing it. Advil buys you six to eight hours. Tylenol taps out around four. This is the whole fight. Tylenol does nothing for swelling. Advil does. Advil can chew on your stomach lining. Tylenol just passes through quietly. Pregnancy flips it hard. Tylenol is the safer call. Advil gets restricted. Headache or fever, reach for Tylenol. Twisted ankle or sore muscles, Advil. Dead even, two apiece. Swelling means Advil. Sensitive stomach or pregnancy means Tylenol.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Two bottles in every medicine cabinet, and most people grab the wrong one.",
+      "startOffset": 0,
+      "endOffset": 4.977347
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One kills pain. The other kills pain and the swelling causing it.",
+      "startOffset": 4.977347,
+      "endOffset": 10.424897999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Advil buys you six to eight hours. Tylenol taps out around four.",
+      "startOffset": 10.424897999999999,
+      "endOffset": 16.525509999999997
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "This is the whole fight. Tylenol does nothing for swelling. Advil does.",
+      "startOffset": 16.525509999999997,
+      "endOffset": 22.626121999999995
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Advil can chew on your stomach lining. Tylenol just passes through quietly.",
+      "startOffset": 22.626121999999995,
+      "endOffset": 28.622243999999995
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Pregnancy flips it hard. Tylenol is the safer call. Advil gets restricted.",
+      "startOffset": 28.622243999999995,
+      "endOffset": 35.663264
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Headache or fever, reach for Tylenol. Twisted ankle or sore muscles, Advil.",
+      "startOffset": 35.663264,
+      "endOffset": 42.625917
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Dead even, two apiece. Swelling means Advil. Sensitive stomach or pregnancy means Tylenol.",
+      "startOffset": 42.625917,
+      "endOffset": 51.025305
+    }
+  ],
+  "youtubeTitle": "Tylenol vs Advil: Which One Should You Actually Take?",
+  "youtubeDescription": "Tylenol and Advil get used interchangeably, but they work differently. We compare duration, anti-inflammatory effect, stomach safety, pregnancy safety, and what each one is actually best for. Consult a doctor before long term use of either.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/tylenol-vs-advil",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Ragesoss (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Extra_Strength_Tylenol_and_Tylenol_PM.jpg",
+    "Image B by Tony Webster from United States (CC BY 2.0) — https://commons.wikimedia.org/wiki/File:Advil_Pills_(48609832971).jpg"
+  ]
+}
