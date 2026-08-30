@@ -61,7 +61,19 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 **Content engine — running (freeze lifted 2026-08-26 per founder directive)**
 - [x] Wave 1 (08-26): 12 comparisons + 8 blogs — reviewed, published, indexed
 - [x] Wave 2 (08-28): 20 comparisons + 6 blogs — buildFirst tier now 33/33 done
-- [ ] Wave 3: SERP-verify the next 40 clusters from the 917 backlog, then generate
+- [x] Wave 3 (08-30): fresh DataForSEO funnel (the 917 backlog was never
+      committed) → 40 SERP-verified slugs → 39 generated → every page read →
+      **23 published**, 16 held as archived for factual errors (stale/invented
+      specs: iPhone Air, Camry V6, C-5 payload, Accord 2.0T, ANG squadrons…).
+      Hold reasons per slug: `scripts/data/wave-run-2026-08-30.json` → review.
+      Tooling: `scripts/wave-discover.mjs` → `wave-generate.mjs` → "Wave
+      publish" workflow (`wave-publish.mjs --review/--publish`).
+- [ ] Wave 3 fact-fix pass: the 16 held pages need regeneration with a
+      stronger model + web verification (or targeted field edits), then
+      re-review → publish. Blind regeneration reproduces the same errors.
+- [ ] Wave 4: `wave-discover.mjs --cluster` reuses the cached pull (730
+      shortlist remain; 15 "contested" slugs with 3+ majors are in the queue
+      file too); SERP-verify the next 100 → generate → review.
 - [x] AEO question bank folded into FAQ blocks (08-30): 101 PAA answers across
       31 live target pages, 22 questions deliberately skipped (forecasts, named
       opinions, individual medical/legal advice, off-scope rankings).
