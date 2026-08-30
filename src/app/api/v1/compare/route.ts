@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getComparisonBySlug, searchComparisons } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -128,7 +129,7 @@ export async function GET(request: NextRequest) {
           ...HEADERS,
           ETag: etag,
           ...((found.shortAnswer || found.verdict)
-            ? { "X-Summary": (found.shortAnswer || found.verdict!.slice(0, 250)).slice(0, 500) }
+            ? { "X-Summary": headerSafe((found.shortAnswer || found.verdict!.slice(0, 250))) }
             : {}),
           "X-Source": SITE_NAME,
           "X-Source-URL": comparisonUrl,

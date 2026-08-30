@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
       headers: {
         ...HEADERS,
         ETag: etag,
-        "X-Summary": summary.slice(0, 500),
+        "X-Summary": headerSafe(summary),
       },
     }
   );

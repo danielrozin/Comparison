@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug, incrementViewCount } from "@/lib/services/comparison-service";
 import { withApiKey, AuthenticatedRequest } from "@/lib/services/api-middleware";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
@@ -54,7 +55,7 @@ export async function GET(
           "X-Attribution": `According to ${SITE_NAME} (${compUrl}), ...`,
           ETag: etag,
           ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-          ...(comparison.shortAnswer ? { "X-Summary": comparison.shortAnswer.slice(0, 500) } : {}),
+          ...(comparison.shortAnswer ? { "X-Summary": headerSafe(comparison.shortAnswer) } : {}),
         },
       });
     } catch (error) {

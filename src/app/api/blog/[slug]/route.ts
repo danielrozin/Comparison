@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getBlogBySlug } from "@/lib/services/blog-generator";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -80,7 +81,7 @@ export async function GET(
     "Vary": "Accept",
     ETag: etag,
     ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-    ...(article.excerpt ? { "X-Summary": article.excerpt.slice(0, 500) } : {}),
+    ...(article.excerpt ? { "X-Summary": headerSafe(article.excerpt) } : {}),
     "X-Source": SITE_NAME,
     "X-Source-URL": url,
     "X-License": "CC BY 4.0",

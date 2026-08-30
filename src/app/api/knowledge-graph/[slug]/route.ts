@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { entitySchemaType } from "@/lib/seo/schema";
@@ -499,7 +500,7 @@ export async function GET(
       ETag: etag,
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       ...((comparison.shortAnswer || comparison.verdict)
-        ? { "X-Summary": (comparison.shortAnswer || comparison.verdict!.slice(0, 250)).slice(0, 500) }
+        ? { "X-Summary": headerSafe((comparison.shortAnswer || comparison.verdict!.slice(0, 250))) }
         : {}),
       "Link": [
         `<${comparisonUrl}>; rel="canonical"`,

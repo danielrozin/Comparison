@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -111,9 +112,9 @@ export async function GET(
         ETag: etag,
         ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
         ...(comparison.faqs?.[0]?.answer
-          ? { "X-Summary": comparison.faqs[0].answer.slice(0, 500) }
+          ? { "X-Summary": headerSafe(comparison.faqs[0].answer) }
           : comparison.shortAnswer
-          ? { "X-Summary": comparison.shortAnswer.slice(0, 500) }
+          ? { "X-Summary": headerSafe(comparison.shortAnswer) }
           : {}),
       },
     }

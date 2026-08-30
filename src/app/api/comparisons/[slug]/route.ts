@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL } from "@/lib/utils/constants";
 
@@ -40,9 +41,9 @@ export async function GET(
     "Vary": "Accept",
     ETag: etag,
     // X-Summary: shortAnswer (verdict fallback) for AI crawlers scanning headers
-    ...(xSummary ? { "X-Summary": xSummary.slice(0, 500) } : {}),
+    ...(xSummary ? { "X-Summary": headerSafe(xSummary) } : {}),
     // X-Source-* — attribution headers for AI training pipelines and citation engines
-    "X-Source-Title": comparison.title,
+    "X-Source-Title": headerSafe(comparison.title),
     "X-Source-URL": `${SITE_URL}/compare/${slug}`,
     "X-Source-License": "CC BY 4.0",
     "X-Source-Attribution": `A Versus B (${SITE_URL}/compare/${slug})`,

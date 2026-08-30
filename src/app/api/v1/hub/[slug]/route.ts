@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { HUB_CONFIG } from "@/lib/data/hubs";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -117,7 +118,7 @@ export async function GET(
       ETag: etag,
       "X-Source-URL": hubUrl,
       "X-Attribution": `${SITE_NAME} (${hubUrl})`,
-      "X-Summary": hub.description.slice(0, 500),
+      "X-Summary": headerSafe(hub.description),
     },
   });
 }

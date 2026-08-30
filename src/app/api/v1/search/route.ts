@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { headerSafe } from "@/lib/utils/header-safe";
 
 // GET /api/v1/search?q={query}&types=comparisons,entities,blog&limit=10
 //
@@ -216,9 +217,9 @@ export async function GET(request: NextRequest) {
     {
       headers: {
         ...HEADERS,
-        "X-Summary": total > 0
+        "X-Summary": headerSafe(total > 0
           ? `${total} result${total !== 1 ? "s" : ""} for "${q}" on ${SITE_NAME}: ${allResults[0].title}.`
-          : `No results for "${q}" on ${SITE_NAME}.`,
+          : `No results for "${q}" on ${SITE_NAME}.`),
       },
     }
   );

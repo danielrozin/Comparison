@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPrisma } from "@/lib/db/prisma";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
@@ -111,7 +112,7 @@ export async function GET(request: NextRequest) {
     const summary = buildSummary(total, pages);
     return NextResponse.json(
       { total, limit, offset, hasMore, pages, dataFeed },
-      { headers: { ...HEADERS, "X-Summary": summary } }
+      { headers: { ...HEADERS, "X-Summary": headerSafe(summary) } }
     );
   }
 
@@ -136,6 +137,6 @@ export async function GET(request: NextRequest) {
   const summary = buildSummary(total, pages);
   return NextResponse.json(
     { total, limit, offset, hasMore: offset + limit < total, pages, dataFeed },
-    { headers: { ...HEADERS, "X-Summary": summary } }
+    { headers: { ...HEADERS, "X-Summary": headerSafe(summary) } }
   );
 }

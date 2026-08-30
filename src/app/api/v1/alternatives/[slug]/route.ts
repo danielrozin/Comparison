@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getAlternativesForEntity } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -117,7 +118,7 @@ export async function GET(
         ETag: etag,
         "X-Source-URL": alternativesPageUrl,
         "X-Attribution": `${SITE_NAME} (${alternativesPageUrl})`,
-        "X-Summary": summary.slice(0, 500),
+        "X-Summary": headerSafe(summary),
       },
     }
   );

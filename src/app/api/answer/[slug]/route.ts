@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -69,7 +70,7 @@ export async function HEAD(
       "X-Source-URL": url,
       "X-Attribution": `${SITE_NAME} (${url})`,
       ETag: etag,
-      ...(headSummary ? { "X-Summary": headSummary.slice(0, 500) } : {}),
+      ...(headSummary ? { "X-Summary": headerSafe(headSummary) } : {}),
       ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
       "Link": [
         `<${url}>; rel="canonical"`,
@@ -252,7 +253,7 @@ export async function GET(
         "X-Attribution": `${SITE_NAME} (${url})`,
         ETag: etag,
         ...(updatedAt ? { "Last-Modified": new Date(updatedAt).toUTCString() } : {}),
-        ...(syntheticAnswer ? { "X-Summary": syntheticAnswer.slice(0, 500) } : {}),
+        ...(syntheticAnswer ? { "X-Summary": headerSafe(syntheticAnswer) } : {}),
         "Link": [
           `<${url}>; rel="canonical"`,
           `<${SITE_URL}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"`,

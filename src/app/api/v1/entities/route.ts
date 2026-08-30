@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { prisma } from "@/lib/db/prisma";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -108,7 +109,7 @@ export async function GET(request: NextRequest) {
     {
       headers: {
         ...HEADERS,
-        "X-Summary": summary.slice(0, 500),
+        "X-Summary": headerSafe(summary),
       },
     }
   );

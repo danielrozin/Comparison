@@ -1,0 +1,55 @@
+name: AEO FAQ fold-in
+
+# Inserts the reviewed answers in scripts/data/aeo-faq-foldin.json into the
+# FAQ blocks of their comparison pages. Generation happens locally
+# (`node scripts/aeo-faq-foldin.mjs --generate`) so the file can be read before
+# anything touches production; this only runs the --apply half, here because
+# the working DATABASE_URL is a repo secret and the local one is stale.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Limit to these slugs (space/comma separated). Empty = every page in the file"
+        required: false
+        default: ""
+      dry_run:
+        description: "Report what would change, write nothing"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+concurrency:
+  group: aeo-faq-foldin
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install --no-audit --no-fund
+      - run: npx prisma generate
+
+      - name: Apply FAQs
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          FLAG=""
+          [ "${{ github.event.inputs.dry_run }}" = "true" ] && FLAG="--dry"
+          node scripts/aeo-faq-foldin.mjs --apply $FLAG $SLUGS
+
+      - name: Spot-check the FAQ endpoint
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        run: |
+          # ISR caches the page for up to an hour; the JSON endpoint is dynamic.
+          for s in $(node -e 'for (const p of require("./scripts/data/aeo-faq-foldin.json").pages) if (p.faqs.length) console.log(p.slug)' | head -5); do
+            echo "  $s -> $(curl -s https://www.aversusb.net/api/faq/$s | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>console.log("faqCount", JSON.parse(d).faqCount))')"
+          done

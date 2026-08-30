@@ -1,0 +1,468 @@
+{
+  "generatedAt": "2026-08-30T12:27:13.010Z",
+  "model": "claude-opus-5",
+  "site": "https://www.aversusb.net",
+  "pages": [
+    {
+      "slug": "american-airlines-vs-delta",
+      "title": "American Airlines vs Delta",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Who is better to fly with, American or Delta?",
+          "answer": "Delta edges ahead overall, with better on-time performance (83.5% versus 81.2%), a slightly larger fleet of 902 aircraft, and stronger customer satisfaction and fleet modernization. American Airlines counters with competitive base fares and a wider international map at 350-plus destinations against Delta's 330-plus. Time-sensitive and premium travelers tend to favor Delta; value-focused and globe-trotting flyers often do better with American."
+        },
+        {
+          "question": "Why do people prefer Delta?",
+          "answer": "Delta's main draw is operational reliability: it posts 83.5% on-time performance against American's 81.2%, so fewer schedules unravel. It also runs a slightly larger fleet at 902 aircraft, leads on revenue at $56.3 billion, and has invested more heavily in fleet modernization, which shows up in newer cabins. SkyMiles elite tiers are generally regarded as offering strong benefits and faster point accumulation."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Does American or Delta have bigger seats?",
+          "reason": "No seat pitch or width data in the page context; answering would require inventing cabin dimensions."
+        },
+        {
+          "question": "What is the best airline in the US?",
+          "reason": "Requires an industry-wide ranking beyond the two carriers covered in the context."
+        }
+      ]
+    },
+    {
+      "slug": "associate-degree-vs-bachelors-degree",
+      "title": "Associate Degree vs Bachelor's Degree",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is a 2 year degree a bachelor's degree?",
+          "answer": "No. A two-year program leads to an associate degree; a bachelor's degree typically requires four years of full-time study. The two credentials also differ in cost and outcomes, with an associate degree averaging about $18,000 at a public institution versus roughly $80,000 for a bachelor's, and median annual pay of $42,000 versus $62,000. An associate degree can, however, serve as the first half of a bachelor's through transfer."
+        },
+        {
+          "question": "Do bachelors get paid more than associates?",
+          "answer": "Yes, on average. Bachelor's degree holders earn a median of $62,000 per year compared with $42,000 for associate degree holders, a $20,000 annual gap that compounds to roughly $900,000 over a full career ($3.2 million versus $2.3 million in lifetime earnings). The gap narrows in technical fields such as nursing, dental hygiene, and skilled trades, where associate-level credentials carry strong market value."
+        },
+        {
+          "question": "Can two associate degrees equal a bachelor's?",
+          "answer": "No. Two associate degrees represent roughly four years of study but do not equal a bachelor's degree, because a bachelor's requires upper-division coursework and a major concentration that associate programs do not include. Employers and licensing bodies treat the credentials separately. A more efficient path is transferring a single associate degree into a bachelor's program, which typically grants junior standing and leaves two years of study."
+        },
+        {
+          "question": "What are the disadvantages of an associate's degree?",
+          "answer": "The main drawbacks are narrower job eligibility and lower pay. Associate degree holders qualify mainly for entry-level technical, nursing, and trades roles rather than management, engineering, law, medicine, or business positions that require a bachelor's. Median annual earnings sit at $42,000 versus $62,000, and the employment rate is 82% versus 88%. Credits also may not fully transfer if a student later pursues a bachelor's degree."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "magnesium-citrate-vs-magnesium-glycinate",
+      "title": "Magnesium Citrate vs Magnesium Glycinate",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is magnesium glycinate or magnesium citrate better?",
+          "answer": "Neither is universally better—they serve different purposes. Magnesium citrate is the stronger option for constipation, working in 30 minutes to 6 hours and costing $8-12 per 100 servings, but 45-60% of users report cramping or bloating. Magnesium glycinate offers 25-35% bioavailability versus citrate's 10-15% and causes GI effects in only 5-10% of users, making it the better choice for daily supplementation at $18-25 per 100 servings."
+        },
+        {
+          "question": "Which is better for leg cramps, magnesium citrate or magnesium glycinate?",
+          "answer": "Magnesium glycinate is generally the more practical choice for ongoing cramp-related supplementation, since leg cramps are addressed through sustained magnesium intake rather than a single dose. Its 25-35% bioavailability is two to three times citrate's 10-15%, and only 5-10% of users report mild digestive effects, so daily use is easier to sustain. Citrate can raise magnesium levels too, but its strong laxative action makes long-term daily dosing less comfortable."
+        },
+        {
+          "question": "What is the best type of magnesium to take?",
+          "answer": "Between these two forms, the best type depends on the goal. Magnesium glycinate suits daily supplementation, chronic deficiency, and sleep support thanks to 25-35% bioavailability and a mild side-effect profile rated 2/10 for laxative potency. Magnesium citrate, rated 8/10 for laxative strength, is the better pick for occasional constipation relief and costs less at $8-12 per 100 servings. Both deliver roughly 47-48 mg of elemental magnesium per 500 mg."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Is magnesium ok to take with lamotrigine?",
+          "reason": "Drug-interaction question requiring individual medical advice; outside the scope of this supplement-form comparison."
+        }
+      ]
+    },
+    {
+      "slug": "delta-dental-ppo-vs-delta-dental-premier",
+      "title": "Delta Dental PPO vs Delta Dental Premier",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is Delta PPO better than Premier?",
+          "answer": "Delta Dental PPO is better on network size and coverage depth, but not on price. It includes 150,000+ in-network dentists versus 65,000+ under Premier, caps out-of-network coinsurance at 20-40% rather than 40-50%, and carries a higher annual maximum of $1,200-$1,500 against Premier's $1,000-$1,200. Premier wins on cost, with individual premiums of $20-$35 a month compared with $35-$50 for PPO."
+        },
+        {
+          "question": "What are the disadvantages of Delta Dental Premier?",
+          "answer": "Premier's drawbacks are a smaller network of roughly 65,000 dentists, out-of-network coinsurance of 40-50%, and a lower annual maximum benefit of $1,000-$1,200. That combination means a member whose preferred dentist falls outside the network can pay noticeably more per procedure, and anyone needing extensive restorative work may exhaust the yearly cap sooner than under a PPO plan."
+        },
+        {
+          "question": "Which Delta Dental plan is better?",
+          "answer": "Neither plan is universally better; the choice turns on provider access versus premium cost. PPO suits people who want maximum dentist choice, live outside the Premier network footprint, or anticipate major treatment, thanks to its larger network and $1,200-$1,500 annual maximum. Premier suits budget-focused members who mainly use preventive care and can stay in-network, since premiums run $20-$35 monthly with deductibles of $0-$100."
+        },
+        {
+          "question": "Is PPO the same as Premier?",
+          "answer": "No, they are separate Delta Dental networks with different economics. PPO contracts with 150,000+ dentists and reimburses out-of-network care at 20-40% coinsurance, while Premier's network is about 65,000 dentists with 40-50% out-of-network coinsurance. Premiums differ too: $35-$50 monthly for individual PPO coverage versus $20-$35 for Premier. Both cover in-network preventive cleanings, exams, and X-rays at 100%."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "quickbooks-desktop-vs-quickbooks-online",
+      "title": "QuickBooks Desktop vs QuickBooks Online",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is QuickBooks Online better than desktop version?",
+          "answer": "Neither version is universally better; the right choice depends on how a business works. QuickBooks Online wins on collaboration and access, with unlimited concurrent users on the Plus plan, full-featured iOS and Android apps, and automatic updates from $15/month for Simple Start. Desktop wins on offline capability, deeper customization through third-party apps, and a one-time $199–$399 purchase instead of a recurring subscription, which suits solo operators and very small teams."
+        },
+        {
+          "question": "Is QuickBooks Desktop going away in 2026?",
+          "answer": "QuickBooks Desktop is being phased out rather than switched off overnight. Intuit ended major feature updates in 2023 and ended support for versions prior to 2023 in 2024, with security patches for the 2023 version running through 2024, and the company is steering customers toward the cloud product. Existing installations keep running locally, but businesses relying on Desktop should plan a migration path within roughly one to two years."
+        },
+        {
+          "question": "Why do CPAS not like QuickBooks Online?",
+          "answer": "The common objections centre on control and capability rather than the cloud itself. QuickBooks Online depends on an active internet connection and offers only limited sync-on-demand offline use, while Desktop runs entirely locally. Desktop also supports deeper customization through third-party apps, and some custom fields, add-ons and advanced setups do not carry over during migration. Recurring subscription pricing is another sticking point for accountants used to a one-time $199–$399 licence."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Will QuickBooks Desktop be discontinued in 2027?",
+          "reason": "Requires a forecast about dates beyond the context and beyond 2026."
+        }
+      ]
+    },
+    {
+      "slug": "doctorate-in-education-vs-phd",
+      "title": "Doctorate in Education vs PhD",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is it better to get a PhD or EdD?",
+          "answer": "Neither ranks above the other; the better choice depends on the career target. An Ed.D fits working educators moving into administrative leadership such as superintendent, principal, or dean, and typically takes 3-6 years, often part-time, at roughly $30,000-$80,000. A PhD suits those committed to original research and faculty positions at research-intensive institutions, generally requiring 5-7 years of full-time study."
+        },
+        {
+          "question": "Can I call myself Dr. with an EdD",
+          "answer": "Yes. The Ed.D is a terminal doctoral degree, so holders are entitled to the title \"Dr.\" in the same way PhD holders are. The distinction between the two lies in focus rather than rank: the Ed.D centers on professional practice and educational leadership, while the PhD centers on original research contributions to a discipline."
+        },
+        {
+          "question": "Is a doctorate in education considered a PhD?",
+          "answer": "No, the Ed.D and the PhD are separate credentials. Both are terminal degrees, but the Ed.D is a professional doctorate built around practitioner-oriented, applied dissertation projects for educational leaders, while the PhD is a research doctorate requiring original empirical or theoretical work that advances the field. Some universities also offer a PhD in Education, which is research-focused and distinct from the Ed.D."
+        },
+        {
+          "question": "Is a PhD higher than a doctorate?",
+          "answer": "No. A PhD is a type of doctorate, not a level above one, and both the PhD and the Ed.D are terminal degrees. The difference is purpose: PhD programs emphasize original research and prepare graduates for academic faculty and scholarly publication, while Ed.D programs emphasize applied problem-solving and lead to district and university leadership roles."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "doctorate-vs-phd",
+      "title": "Doctorate vs PhD",
+      "existingFaqCount": 5,
+      "hadAnswerContext": false,
+      "faqs": [
+        {
+          "question": "Is a PhD higher than a doctorate?",
+          "answer": "No, a PhD is not higher than a doctorate—it is one kind of doctorate. Doctorate is the umbrella category covering research degrees like the PhD and professional degrees such as the MD, DDS, DVM, DPT, and EdD. They sit at the same level of the degree hierarchy, differing in purpose: the PhD centres on original research, while professional doctorates prepare graduates for licensed or applied practice."
+        },
+        {
+          "question": "Can someone with a PhD be called Dr.?",
+          "answer": "Yes. A PhD is a doctorate, and holders are properly addressed as 'Dr.' in academic and scholarly settings, where the title is standard on faculty listings, correspondence, and publications. Convention shifts by context: in clinical environments, 'Doctor' is normally reserved for MDs, DDS, DVM, and similar licensed practitioners, so a PhD may use the title less often in hospitals or media."
+        },
+        {
+          "question": "What takes longer, a doctorate or PhD?",
+          "answer": "A PhD generally takes longer than most professional doctorates, averaging 5–7 years against 4 years for MD, DDS, and DVM programmes and 3 years for a DPT. Medical training extends further once residency is counted, which can add several more years before independent practice. Research doctorates outside the sciences may run longer still, since completion depends on the dissertation, funding, and institution."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "charles-schwab-vs-etrade",
+      "title": "Charles Schwab vs E*TRADE",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "What are the cons of E-Trade?",
+          "answer": "The main drawback is that E*TRADE is no longer independent: Schwab acquired it in 2020, and most product development and backend systems have been consolidated onto Schwab's platform. Its mobile app rates 4.5 out of 5 on the Apple App Store versus Schwab's 4.7, and its product range is narrower, with futures and forex access sitting on the Schwab side. New features tend to reach Schwab customers first."
+        },
+        {
+          "question": "What is the downside to Schwab?",
+          "answer": "Schwab's costs show up outside of trading commissions rather than in them: stock and ETF trades are $0, but foreign exchange fees of roughly 1-2% of transaction value apply to international trades, margin interest accrues on borrowed funds, options trading requires separate approval, and mutual funds may carry sales loads. Longtime E*TRADE users may also find Schwab's interface unfamiliar as the two platforms are consolidated."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "What brokerage is better than Schwab?",
+          "reason": "Requires ranking brokerages outside the Schwab vs E*TRADE comparison scope."
+        },
+        {
+          "question": "Which brokerage firm is better, Charles Schwab, Fidelity, Vanguard, or E-Trade?",
+          "reason": "Fidelity and Vanguard fall outside this comparison; no context data to rank them."
+        }
+      ]
+    },
+    {
+      "slug": "fidelity-vs-robinhood",
+      "title": "Robinhood vs Fidelity",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "What is the downside to using Robinhood?",
+          "answer": "The main drawback is depth: Robinhood offers only basic market data, so serious investors miss the extensive research library and AI-driven analytics available at Fidelity. Its account services are limited to trading and crypto, with no banking, financial planning, or advisory options. The minimalist, mobile-first design that helps beginners can also feel restrictive once a portfolio grows beyond simple buy-and-hold or casual trading."
+        },
+        {
+          "question": "What is the downside to Fidelity?",
+          "answer": "Fidelity's breadth comes with a steeper learning curve, since its advanced interface and extensive tool set take time to navigate compared with Robinhood's minimalist design. Crypto is also a weak spot: Fidelity supports cryptocurrency trading but with limited coin options, while Robinhood covers 20-plus coins alongside newer offerings like prediction markets. Casual traders who only want simple, commission-free stock orders may find the platform more than they need."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "What are the top 3 brokerage accounts?",
+          "reason": "Requires a ranking of brokerages beyond the two entities compared; no such list in context."
+        },
+        {
+          "question": "Is a $300,000 investment better in Vanguard or in Fidelity?",
+          "reason": "Involves Vanguard, which is outside this comparison, and asks for portfolio advice specific to one reader's balance."
+        }
+      ]
+    },
+    {
+      "slug": "fidelity-vs-schwab",
+      "title": "Fidelity vs Charles Schwab",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "What is the downside of Fidelity?",
+          "answer": "Fidelity's main drawbacks are a more complex interface and slightly higher costs on some passive products. Its average ETF expense ratio is 0.12% versus 0.08% at Schwab, and it scores lower in J.D. Power customer satisfaction at 4.5/5 compared with 4.8/5. The depth of its research and planning tools, while a strength for experienced investors, can overwhelm newer account holders."
+        },
+        {
+          "question": "What is the 4% rule in Schwab?",
+          "answer": "The 4% rule is a general retirement withdrawal guideline, not a Schwab product or account feature: a retiree withdraws 4% of the portfolio in the first year of retirement, then adjusts that dollar amount for inflation each year afterward. Schwab, like most large brokerages, references it in retirement education content and planning calculators. Fidelity publishes similar withdrawal-rate guidance through its own retirement planning tools."
+        },
+        {
+          "question": "What is Fidelity's 45% rule?",
+          "answer": "Fidelity's 45% rule is a retirement planning guideline stating that savings and investments should replace roughly 45% of pre-retirement income, with Social Security expected to cover much of the remainder. It appears in Fidelity's retirement planning tools and research, an area where the firm's proprietary content is a noted strength. It is a planning benchmark rather than an account rule or trading restriction."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Is Fidelity a Trump supporter?",
+          "reason": "Political affiliation question; outside the scope of a broker feature comparison and not supported by the page context."
+        }
+      ]
+    },
+    {
+      "slug": "fidelity-vs-schwab-vs-vanguard",
+      "title": "fidelity vs schwab vs vanguard",
+      "existingFaqCount": 6,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Why do people prefer Vanguard over Fidelity?",
+          "answer": "The main draws are cost and ownership structure. Vanguard's average equity fund expense ratio is 0.12% versus Fidelity's 0.62%, a gap that compounds meaningfully over decades of holding. Vanguard is also a client-owned mutual company, so investors effectively own the firm and its incentives align with them rather than outside shareholders. Its deliberately narrow lineup of about 400 funds also appeals to passive investors who want simplicity over choice."
+        },
+        {
+          "question": "Is a $300,000 investment better in Vanguard or in Fidelity?",
+          "answer": "Neither is universally better at that balance, since both charge $0 stock commissions and require no account minimum. The deciding factor is what the money is invested in: Vanguard's 0.12% average equity fund expense ratio costs far less annually than Fidelity's 0.62% on comparable holdings, which matters most for buy-and-hold index portfolios. Fidelity is the stronger choice if the account needs deep research tools, active management, or a wider mix of products."
+        },
+        {
+          "question": "What is the downside of Vanguard?",
+          "answer": "The trade-offs are selection, tools, and support. Vanguard intentionally limits its lineup to about 400 funds, far fewer than Schwab's 12,000+ or Fidelity's 9,500+, and it ranks third of the three for research depth because it minimizes tools that encourage frequent trading. Advisory services are also more limited, centered on low-cost passive guidance rather than the full range of models Fidelity and Schwab offer. Active traders and those wanting hands-on help usually find it restrictive."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "What does Warren Buffett think of Vanguard?",
+          "reason": "Requires a named person's opinion, which is outside the comparison context."
+        }
+      ]
+    },
+    {
+      "slug": "magnesium-glycinate-vs-magnesium-l-threonate",
+      "title": "Magnesium Glycinate vs Magnesium L-Threonate",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is there a downside to taking magnesium L-threonate?",
+          "answer": "The main drawbacks are dose efficiency and cost. Magnesium L-threonate delivers only about 48–144 mg of elemental magnesium per serving versus 100–200 mg for glycinate, so correcting a general deficiency often requires several capsules, and its absorption is moderate at roughly 60–70 percent compared with up to 90 percent for the glycine chelate. It is also more expensive per milligram, though its laxative effect remains low."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Can I take magnesium if I have colitis?",
+          "reason": "Requires individual medical advice for an inflammatory bowel condition; outside the scope of this form-to-form comparison."
+        },
+        {
+          "question": "When to take magnesium with Vyvanse?",
+          "reason": "Drug-supplement timing and interaction guidance for a prescription stimulant is medical advice not supported by the page context."
+        }
+      ]
+    },
+    {
+      "slug": "gmat-vs-gre",
+      "title": "GMAT vs GRE",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Does Harvard MBA prefer GMAT or GRE?",
+          "answer": "Harvard Business School accepts both and does not require one over the other, actively encouraging GRE submissions and reporting high GRE applicant volume. That said, GMAT remains the more common choice at elite programs, including all top 10 business schools, and is accepted by 1,800+ MBA programs versus 650+ for the GRE. A strong score on either test is increasingly competitive at HBS."
+        },
+        {
+          "question": "Is GRE more difficult than GMAT?",
+          "answer": "Neither test is objectively harder; the challenge shifts by section. The GRE leans on vocabulary and more conceptual math with limited calculator use, which tends to trip up non-native English speakers, while the GMAT's quantitative section emphasizes data sufficiency and business math that many candidates find tougher. The GRE also runs longer at 3 hours 45 minutes versus the GMAT's 3 hours 7 minutes. A diagnostic test for each reveals which format suits a given skill set."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "What is 700 GMAT equivalent in GRE?",
+          "reason": "Requires a specific score-concordance conversion figure not present in the page context."
+        },
+        {
+          "question": "Does MIT prefer GMAT or GRE?",
+          "reason": "MIT's specific admissions policy is not covered in the page context."
+        }
+      ]
+    },
+    {
+      "slug": "braces-vs-invisalign",
+      "title": "Braces vs Invisalign",
+      "existingFaqCount": 5,
+      "hadAnswerContext": false,
+      "faqs": [
+        {
+          "question": "Why don't dentists recommend Invisalign?",
+          "answer": "The most common reason is case complexity: Invisalign is designed for mild to moderate misalignment, so severe crowding, skeletal discrepancies, and complex bites are usually referred to traditional braces. Aligners also struggle with significant tooth rotation or vertical repositioning. Compliance is a second concern, since results depend on wearing trays about 20–22 hours a day, and insufficient wear stalls progress or causes treatment to fail."
+        },
+        {
+          "question": "Is 35 too old for Invisalign?",
+          "answer": "No, 35 is not too old, since teeth can be moved at any age once growth is complete and adults make up a large share of clear aligner patients. The deciding factors are case complexity and gum and bone health, not age: mild to moderate misalignment suits Invisalign, while severe crowding or bite problems still point toward braces. Discretion during treatment is a common reason working adults choose aligners."
+        },
+        {
+          "question": "Is $3000 a good price for Invisalign?",
+          "answer": "That figure sits below the typical $3,500–$8,000 range for Invisalign, so it would generally be considered low, and it is closer to the $3,000–$5,000 starting range quoted for standard braces. Quotes at that level often reflect a short, simple case or a limited number of aligner sets. Check what the fee includes, since refinements, retainers, and replacement aligners ($200–$500 per set) can be billed separately."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "How much would 4 months of Invisalign cost?",
+          "reason": "Requires a per-month price figure the context doesn't support; only full-treatment ranges are given."
+        }
+      ]
+    },
+    {
+      "slug": "masters-vs-phd",
+      "title": "Master's Degree vs PhD",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is a PhD higher than a Masters degree?",
+          "answer": "Yes, a PhD sits above a Master's in the academic hierarchy as the terminal research degree in most fields. The gap shows in the requirements: a Master's averages about 2 years of coursework and applied training, while a PhD runs 5-7 years and centers on producing original research. Higher level does not automatically mean higher pay, though—Master's starting salaries run $55,000-$70,000 versus $50,000-$65,000 for new PhDs."
+        },
+        {
+          "question": "Is a PhD better than a Masters degree?",
+          "answer": "Neither is universally better; they serve different goals. A Master's wins on speed and cost—2 years and $30,000-$60,000 at a public university, with a first job typically landed within 1-3 months—making it the stronger choice for management, consulting, and specialized industry roles. A PhD costs $40,000-$120,000 over 5-7 years but is required for professorships, principal investigator roles, and research leadership, and carries higher lifetime earnings in STEM."
+        },
+        {
+          "question": "Is a PhD faster if you have a Masters?",
+          "answer": "Sometimes, but the savings are modest. Programs that accept transferred graduate credit may waive part of the coursework phase, potentially trimming roughly a year from the 5-7 year average. The dissertation stage—research design, data collection, writing, and defense—is what drives most of the timeline, and it rarely shortens because of a prior degree. Some fields and universities grant no credit at all for outside Master's work."
+        },
+        {
+          "question": "Which is harder, Masters or PhD?",
+          "answer": "A PhD is generally the harder path. Master's programs are structured around coursework and defined deliverables over about 2 years, while a PhD demands 5-7 years of largely self-directed work culminating in an original contribution to the field, with no guaranteed completion date. The attrition risk, isolation, and $20,000-$30,000 stipend living standard add strain that a shorter, more prescribed Master's does not."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "mba-vs-mpa",
+      "title": "MBA vs MPA: Master's Degree Comparison",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is it better to get an MBA or MPA?",
+          "answer": "Neither is universally better; the right choice tracks the sector you want to work in. An MBA suits corporate management, finance, consulting and private equity, with starting salaries around $85,000–$95,000, while an MPA suits government, policy and nonprofit leadership at roughly $55,000–$65,000 to start. MPA tuition is also lower, about $25,000–$60,000 versus $60,000–$120,000 for an MBA."
+        },
+        {
+          "question": "Is an MPA equivalent to an MBA?",
+          "answer": "No, the two are parallel management degrees rather than equivalents. Both typically run 18–24 months full time and cover organizational leadership, but an MBA emphasizes finance, accounting, marketing, operations and strategy for profit-driven firms, while an MPA emphasizes public policy, public finance and nonprofit management. Employers treat them as distinct credentials, and the MBA carries broader mobility across industries."
+        },
+        {
+          "question": "Is MBA no longer worth it?",
+          "answer": "An MBA still pays off for most graduates entering consulting, finance or tech, where the typical payback period on tuition runs 3–5 years. Starting salaries of roughly $85,000–$95,000 against tuition of $60,000–$120,000 keep the economics workable, and mid-career pay near $210,000 widens the gap further. The weaker cases are candidates paying full price without a clear post-degree sector target."
+        },
+        {
+          "question": "Is an MPA still a professional degree?",
+          "answer": "Yes, the MPA remains a professional master's degree, the public sector counterpart to the MBA. It trains students for administrative and leadership roles in government agencies, nonprofits and policy organizations through coursework in public policy, public finance, organizational behavior and nonprofit management. Graduates commonly enter civil service positions that carry pensions, healthcare and union protections alongside starting pay of about $55,000–$65,000."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "creatine-micronized-vs-creatine-monohydrate",
+      "title": "Creatine Micronized vs Creatine Monohydrate",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Which is better, micronized creatine or monohydrate?",
+          "answer": "Neither is better for results—both build muscle and strength identically, so the choice comes down to cost versus convenience. Monohydrate is backed by 500+ peer-reviewed studies and costs about $0.03-0.05 per serving, while micronized runs $0.08-0.12 per serving and dissolves in 30-45 seconds instead of 2-5 minutes. Micronized suits anyone bothered by grit or mild bloating; monohydrate suits everyone else."
+        },
+        {
+          "question": "Is micronized creatine really better?",
+          "answer": "Micronized creatine is genuinely better on two measurable points: particle size of 1-10 micrometers versus 50-100, and 5-15% higher bioavailability than standard monohydrate. Those advantages show up as faster mixing and less gastric irritation, not as extra muscle. Meta-analyses find the same gains in mass and strength from both forms over 8-12 weeks, so the 2-3x price premium buys comfort rather than performance."
+        },
+        {
+          "question": "What should you never mix with creatine?",
+          "answer": "Creatine should not be mixed into very hot or strongly acidic liquids and then left to sit, since prolonged exposure converts it to creatinine, an inactive byproduct. Mixing into water, juice, or a shake and drinking it promptly is fine. Micronized creatine's smaller particle size dissolves in 30-45 seconds, so it spends less time suspended than monohydrate, which can take 2-5 minutes."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Is creatine ok for your heart?",
+          "reason": "Cardiovascular health question requires medical guidance and falls outside the scope of this micronized-versus-monohydrate comparison."
+        }
+      ]
+    },
+    {
+      "slug": "squarespace-vs-wix-vs-wordpress",
+      "title": "squarespace vs wix vs wordpress",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "What are the top 3 website builders?",
+          "answer": "Squarespace, Wix and WordPress are the three most commonly compared platforms for building a site. Squarespace is known for premium all-in-one design, Wix for drag-and-drop simplicity backed by a large app ecosystem, and WordPress for flexibility and low cost. By global market share, WordPress powers far more sites than either hosted builder, while Wix sits at 3.2% and Squarespace at 2.5% of websites."
+        },
+        {
+          "question": "Which is easier, Squarespace or Wix?",
+          "answer": "Both rate as very easy, since each uses a drag-and-drop editor and requires no code. Wix gives more freedom to place elements anywhere on the canvas and offers 800+ designs plus extensive app integrations, which suits small businesses that want to tinker. Squarespace works within stricter, more structured templates—roughly 150+ premium designs—which means fewer layout decisions and a more polished result with less effort."
+        },
+        {
+          "question": "What is the downside to Squarespace?",
+          "answer": "The main drawbacks are price and limited customisation: plans start at $15/month, higher than Wix's $13/month and far above self-hosted WordPress software, which is free apart from hosting. Template flexibility is narrower too, with 150+ premium designs and structured layouts that resist deep changes. SEO customisation is capped compared with WordPress, and there is no free plan—only a 14-day trial."
+        },
+        {
+          "question": "Why use WordPress instead of Wix?",
+          "answer": "WordPress makes sense when full code control, deep SEO customisation and unlimited scalability matter more than convenience. Plugins such as Yoast allow granular metadata control that Wix's built-in tools cannot match, and self-hosted WordPress costs nothing for the software itself beyond $3-15/month hosting. The trade-off is responsibility for hosting, security and plugin updates, either handled personally or by a hired developer."
+        }
+      ],
+      "skipped": []
+    }
+  ],
+  "totals": {
+    "pages": 18,
+    "missing": 48,
+    "asked": 70,
+    "answered": 54,
+    "skipped": 16,
+    "dupes": 2
+  }
+}

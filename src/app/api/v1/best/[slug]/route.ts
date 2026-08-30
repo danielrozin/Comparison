@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getPrisma } from "@/lib/db/prisma";
 import { BEST_CONFIG } from "@/lib/data/best-entries";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
@@ -189,7 +190,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         ETag: etag,
         "X-Source-URL": url,
         "X-Attribution": `${SITE_NAME} (${url})`,
-        "X-Summary": `${h1 ?? title}: ranked list of ${listItems.length} items.`,
+        "X-Summary": headerSafe(`${h1 ?? title}: ranked list of ${listItems.length} items.`),
         "Link": [
           `<${url}>; rel="canonical"`,
           `<${SITE_URL}/api/v1/best/${slug}>; rel="alternate"; type="application/json"; title="Best-of JSON"`,

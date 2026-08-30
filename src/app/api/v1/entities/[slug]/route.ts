@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { prisma } from "@/lib/db/prisma";
 import { getComparisonsForEntity } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
@@ -233,7 +234,7 @@ export async function GET(
         "X-License-URL": "https://creativecommons.org/licenses/by/4.0/",
         "X-Attribution": `${SITE_NAME} (${url})`,
         ETag: etag,
-        ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
+        ...(entity.shortDesc ? { "X-Summary": headerSafe(entity.shortDesc) } : {}),
         ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
         "Link": `<${url}>; rel="canonical"`,
       },
@@ -246,7 +247,7 @@ export async function GET(
       ETag: etag,
       "X-Source-URL": url,
       "X-Attribution": `${SITE_NAME} (${url})`,
-      ...(entity.shortDesc ? { "X-Summary": entity.shortDesc.slice(0, 500) } : {}),
+      ...(entity.shortDesc ? { "X-Summary": headerSafe(entity.shortDesc) } : {}),
       ...(entity.updatedAt ? { "Last-Modified": new Date(entity.updatedAt).toUTCString() } : {}),
       "Link": [
         `<${url}>; rel="canonical"`,

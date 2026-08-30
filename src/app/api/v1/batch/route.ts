@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headerSafe } from "@/lib/utils/header-safe";
 import { getComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 
@@ -133,7 +134,7 @@ async function handleBatch(slugs: string[], fields: string[] | null) {
     {
       headers: {
         ...HEADERS,
-        ...(firstShortAnswer ? { "X-Summary": firstShortAnswer.slice(0, 500) } : {}),
+        ...(firstShortAnswer ? { "X-Summary": headerSafe(firstShortAnswer) } : {}),
       },
     }
   );
