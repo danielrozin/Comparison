@@ -1,0 +1,158 @@
+{
+  "title": "WordPress vs Wix",
+  "entityA": "WordPress",
+  "entityB": "Wix",
+  "category": "technology",
+  "shortAnswer": "WordPress powers 43% of all websites and offers unlimited customization through plugins and themes. Wix is a drag-and-drop website builder requiring no coding knowledge. WordPress is more powerful; Wix is easier for non-technical users.",
+  "stats": [
+    {
+      "label": "Market Share",
+      "valueA": "43% of web",
+      "valueB": "~3% of web",
+      "winner": "a"
+    },
+    {
+      "label": "Ease of Use",
+      "valueA": "Moderate",
+      "valueB": "Very Easy",
+      "winner": "b"
+    },
+    {
+      "label": "Customization",
+      "valueA": "Unlimited",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "SEO Control",
+      "valueA": "Full",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Cost (basic)",
+      "valueA": "~$5-15/mo hosting",
+      "valueB": "$16-45/mo",
+      "winner": "a"
+    }
+  ],
+  "verdict": "WordPress for scalability, SEO, and advanced customization. Wix for beginners who want a quick, easy website without technical skills.",
+  "slug": "wordpress-vs-wix",
+  "imageA": {
+    "url": "video-assets/wordpress-vs-wix/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e0/WordPress_7.0_Dashboard.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2400,
+    "height": 1600,
+    "credit": "WordPress Foundation",
+    "license": "GPL",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:WordPress_7.0_Dashboard.png",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e0/WordPress_7.0_Dashboard.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "Forty-three percent of the entire internet runs on one platform. The other has three.",
+    "tape": "One gives you everything and asks you to learn. One gives you less, instantly.",
+    "rounds": [
+      "WordPress isn't a competitor to Wix. It's the default setting of the web.",
+      "Wix is very easy. WordPress is moderate, which means a weekend of learning.",
+      "Unlimited versus limited. With Wix you eventually hit a wall you can't move.",
+      "Full SEO control means you can chase rankings. Limited means you hope.",
+      "Five to fifteen a month against sixteen to forty five. WordPress is cheaper forever."
+    ],
+    "verdict": "WordPress takes it four to one. Pick Wix only if you want a site tonight."
+  },
+  "audio": {
+    "cold": "video-assets/wordpress-vs-wix/audio/cold.mp3",
+    "tape": "video-assets/wordpress-vs-wix/audio/tape.mp3",
+    "rounds": [
+      "video-assets/wordpress-vs-wix/audio/round-1.mp3",
+      "video-assets/wordpress-vs-wix/audio/round-2.mp3",
+      "video-assets/wordpress-vs-wix/audio/round-3.mp3",
+      "video-assets/wordpress-vs-wix/audio/round-4.mp3",
+      "video-assets/wordpress-vs-wix/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/wordpress-vs-wix/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 199,
+    "tape": 195,
+    "rounds": [
+      175,
+      195,
+      188,
+      207,
+      218
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Forty-three percent of the entire internet runs on one platform. The other has three. One gives you everything and asks you to learn. One gives you less, instantly. WordPress isn't a competitor to Wix. It's the default setting of the web. Wix is very easy. WordPress is moderate, which means a weekend of learning. Unlimited versus limited. With Wix you eventually hit a wall you can't move. Full SEO control means you can chase rankings. Limited means you hope. Five to fifteen a month against sixteen to forty five. WordPress is cheaper forever. WordPress takes it four to one. Pick Wix only if you want a site tonight.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Forty-three percent of the entire internet runs on one platform. The other has three.",
+      "startOffset": 0,
+      "endOffset": 6.649184
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One gives you everything and asks you to learn. One gives you less, instantly.",
+      "startOffset": 6.649184,
+      "endOffset": 13.141632999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "WordPress isn't a competitor to Wix. It's the default setting of the web.",
+      "startOffset": 13.141632999999999,
+      "endOffset": 18.981021
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Wix is very easy. WordPress is moderate, which means a weekend of learning.",
+      "startOffset": 18.981021,
+      "endOffset": 25.47347
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Unlimited versus limited. With Wix you eventually hit a wall you can't move.",
+      "startOffset": 25.47347,
+      "endOffset": 31.730817
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Full SEO control means you can chase rankings. Limited means you hope.",
+      "startOffset": 31.730817,
+      "endOffset": 38.615103
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Five to fifteen a month against sixteen to forty five. WordPress is cheaper forever.",
+      "startOffset": 38.615103,
+      "endOffset": 45.891225
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "WordPress takes it four to one. Pick Wix only if you want a site tonight.",
+      "startOffset": 45.891225,
+      "endOffset": 52.391225
+    }
+  ],
+  "youtubeTitle": "WordPress vs Wix: Which One Should Actually Build Your Site?",
+  "youtubeDescription": "WordPress powers 43% of the web with unlimited customization, full SEO control, and hosting from around $5 a month. Wix wins on ease of use but costs more and caps what you can build. Here's the head to head across market share, customization, SEO, and price.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/wordpress-vs-wix",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by WordPress Foundation (GPL) — https://commons.wikimedia.org/wiki/File:WordPress_7.0_Dashboard.png"
+  ]
+}

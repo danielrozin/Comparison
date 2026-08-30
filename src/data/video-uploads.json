@@ -4843,6 +4843,183 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-08-29T11:53:54.777Z"
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "ChatGPT vs Gemini",
+      "entityA": "ChatGPT",
+      "entityB": "Gemini",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "chatgpt-vs-gemini.mp4",
+      "durationSeconds": 54,
+      "transcript": "Two chatbots, roughly 200 million users each. Only one lives inside your inbox. ChatGOT built the ecosystem. Gemini was born inside Google. That is the whole fight. Both near 200 million monthly. Nobody is winning on scale anymore. Gemini searches the live web for free. ChatGPT puts that behind a paywall. Gemini reads your Gmail and Workspace. ChatGPT has no idea who you are. ChatGPT's plugin library is the biggest. That is where power users actually live. DALL-E 3 ships inside ChatGPT. Gemini's Imagen is still holding back. Dead even, two apiece. ChatGPT if you build things. Gemini if you live in Google.",
+      "chapters": [
+        {
+          "name": "ChatGPT vs Gemini",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 15
+        },
+        {
+          "name": "Round 1: Monthly Users",
+          "startOffset": 15,
+          "endOffset": 21
+        },
+        {
+          "name": "Round 2: Real-time Search",
+          "startOffset": 21,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 3: Google Integration",
+          "startOffset": 28,
+          "endOffset": 35
+        },
+        {
+          "name": "Round 4: Plugin Ecosystem",
+          "startOffset": 35,
+          "endOffset": 41
+        },
+        {
+          "name": "Round 5: Image Generation",
+          "startOffset": 41,
+          "endOffset": 48
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 48,
+          "endOffset": 57
+        }
+      ],
+      "youtubeTitle": "ChatGPT vs Gemini: The Comparison Ends 2-2",
+      "youtubeDescription": "A head-to-head between ChatGPT and Gemini across monthly users, real-time search, Google integration, plugins, and image generation. ChatGPT wins on ecosystem and DALL-E 3, Gemini wins on free live search and deep Gmail and Workspace integration. The score finishes tied, so we explain exactly which user should pick which.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/chatgpt-vs-gemini\n\nFull comparison: https://www.aversusb.net/compare/chatgpt-vs-gemini",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-30T10:24:59.379Z"
+    },
+    {
+      "slug": "python-vs-javascript",
+      "title": "Python vs JavaScript",
+      "entityA": "Python",
+      "entityB": "JavaScript",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "python-vs-javascript.mp4",
+      "durationSeconds": 49,
+      "transcript": "One of these languages runs inside your browser. The other one can't. Ever. JavaScript owns where code runs. Python owns what code thinks about. Python needs a server to exist. JavaScript covers both ends of the stack. Every serious AI tool speaks Python first. JavaScript is an afterthought there. No browser will ever run Python natively. JavaScript was born there. Python reads like English. JavaScript is fine, but you'll trip over it. Python's job market is very strong. JavaScript's is simply the biggest there is. JavaScript wins on points, three to two. Pick Python if AI or data is the goal.",
+      "chapters": [
+        {
+          "name": "Python vs JavaScript",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Web Development",
+          "startOffset": 13,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: AI/ML Ecosystem",
+          "startOffset": 19,
+          "endOffset": 26
+        },
+        {
+          "name": "Round 3: Browser Support",
+          "startOffset": 26,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: Syntax Simplicity",
+          "startOffset": 32,
+          "endOffset": 38
+        },
+        {
+          "name": "Round 5: Job Market",
+          "startOffset": 38,
+          "endOffset": 44
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 44,
+          "endOffset": 51
+        }
+      ],
+      "youtubeTitle": "Python vs JavaScript: Which One Actually Wins?",
+      "youtubeDescription": "A head to head breakdown of Python and JavaScript across web development, AI and machine learning, browser support, syntax simplicity, and job market size. JavaScript edges it three to two, but the reason Python still wins for a huge group of developers comes down to one category.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/python-vs-javascript\n\nFull comparison: https://www.aversusb.net/compare/python-vs-javascript",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-30T10:30:54.512Z"
+    },
+    {
+      "slug": "wordpress-vs-wix",
+      "title": "WordPress vs Wix",
+      "entityA": "WordPress",
+      "entityB": "Wix",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "wordpress-vs-wix.mp4",
+      "durationSeconds": 50,
+      "transcript": "Forty-three percent of the entire internet runs on one platform. The other has three. One gives you everything and asks you to learn. One gives you less, instantly. WordPress isn't a competitor to Wix. It's the default setting of the web. Wix is very easy. WordPress is moderate, which means a weekend of learning. Unlimited versus limited. With Wix you eventually hit a wall you can't move. Full SEO control means you can chase rankings. Limited means you hope. Five to fifteen a month against sixteen to forty five. WordPress is cheaper forever. WordPress takes it four to one. Pick Wix only if you want a site tonight.",
+      "chapters": [
+        {
+          "name": "WordPress vs Wix",
+          "startOffset": 0,
+          "endOffset": 7
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 7,
+          "endOffset": 13
+        },
+        {
+          "name": "Round 1: Market Share",
+          "startOffset": 13,
+          "endOffset": 19
+        },
+        {
+          "name": "Round 2: Ease of Use",
+          "startOffset": 19,
+          "endOffset": 25
+        },
+        {
+          "name": "Round 3: Customization",
+          "startOffset": 25,
+          "endOffset": 32
+        },
+        {
+          "name": "Round 4: SEO Control",
+          "startOffset": 32,
+          "endOffset": 39
+        },
+        {
+          "name": "Round 5: Cost (basic)",
+          "startOffset": 39,
+          "endOffset": 46
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 46,
+          "endOffset": 52
+        }
+      ],
+      "youtubeTitle": "WordPress vs Wix: Which One Should Actually Build Your Site?",
+      "youtubeDescription": "WordPress powers 43% of the web with unlimited customization, full SEO control, and hosting from around $5 a month. Wix wins on ease of use but costs more and caps what you can build. Here's the head to head across market share, customization, SEO, and price.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/wordpress-vs-wix\n\nImage credits:\nImage A by WordPress Foundation (GPL) — https://commons.wikimedia.org/wiki/File:WordPress_7.0_Dashboard.png\n\nFull comparison: https://www.aversusb.net/compare/wordpress-vs-wix",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-30T10:37:35.226Z"
     }
   ]
 }

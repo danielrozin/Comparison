@@ -1,0 +1,145 @@
+{
+  "title": "Python vs JavaScript",
+  "entityA": "Python",
+  "entityB": "JavaScript",
+  "category": "technology",
+  "shortAnswer": "Python is the #1 language for AI/ML, data science, and scripting with simple syntax. JavaScript is the only language that runs natively in browsers and dominates web development. Both are among the top 3 most used languages worldwide.",
+  "stats": [
+    {
+      "label": "Web Development",
+      "valueA": "Backend only",
+      "valueB": "Frontend + Backend",
+      "winner": "b"
+    },
+    {
+      "label": "AI/ML Ecosystem",
+      "valueA": "Dominant",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Browser Support",
+      "valueA": "No (needs server)",
+      "valueB": "Native",
+      "winner": "b"
+    },
+    {
+      "label": "Syntax Simplicity",
+      "valueA": "Excellent",
+      "valueB": "Good",
+      "winner": "a"
+    },
+    {
+      "label": "Job Market",
+      "valueA": "Very strong",
+      "valueB": "Largest",
+      "winner": "b"
+    }
+  ],
+  "verdict": "Python for data science, AI, and scripting. JavaScript for web development and full-stack apps. Python leads in AI; JS leads in web.",
+  "slug": "python-vs-javascript",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "One of these languages runs inside your browser. The other one can't. Ever.",
+    "tape": "JavaScript owns where code runs. Python owns what code thinks about.",
+    "rounds": [
+      "Python needs a server to exist. JavaScript covers both ends of the stack.",
+      "Every serious AI tool speaks Python first. JavaScript is an afterthought there.",
+      "No browser will ever run Python natively. JavaScript was born there.",
+      "Python reads like English. JavaScript is fine, but you'll trip over it.",
+      "Python's job market is very strong. JavaScript's is simply the biggest there is."
+    ],
+    "verdict": "JavaScript wins on points, three to two. Pick Python if AI or data is the goal."
+  },
+  "audio": {
+    "cold": "video-assets/python-vs-javascript/audio/cold.mp3",
+    "tape": "video-assets/python-vs-javascript/audio/tape.mp3",
+    "rounds": [
+      "video-assets/python-vs-javascript/audio/round-1.mp3",
+      "video-assets/python-vs-javascript/audio/round-2.mp3",
+      "video-assets/python-vs-javascript/audio/round-3.mp3",
+      "video-assets/python-vs-javascript/audio/round-4.mp3",
+      "video-assets/python-vs-javascript/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/python-vs-javascript/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 202,
+    "tape": 192,
+    "rounds": [
+      178,
+      214,
+      175,
+      178,
+      178
+    ],
+    "verdict": 224,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these languages runs inside your browser. The other one can't. Ever. JavaScript owns where code runs. Python owns what code thinks about. Python needs a server to exist. JavaScript covers both ends of the stack. Every serious AI tool speaks Python first. JavaScript is an afterthought there. No browser will ever run Python natively. JavaScript was born there. Python reads like English. JavaScript is fine, but you'll trip over it. Python's job market is very strong. JavaScript's is simply the biggest there is. JavaScript wins on points, three to two. Pick Python if AI or data is the goal.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these languages runs inside your browser. The other one can't. Ever.",
+      "startOffset": 0,
+      "endOffset": 6.727551
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "JavaScript owns where code runs. Python owns what code thinks about.",
+      "startOffset": 6.727551,
+      "endOffset": 13.141632999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Python needs a server to exist. JavaScript covers both ends of the stack.",
+      "startOffset": 13.141632999999999,
+      "endOffset": 19.059388
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Every serious AI tool speaks Python first. JavaScript is an afterthought there.",
+      "startOffset": 19.059388,
+      "endOffset": 26.178776
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "No browser will ever run Python natively. JavaScript was born there.",
+      "startOffset": 26.178776,
+      "endOffset": 32.018164
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Python reads like English. JavaScript is fine, but you'll trip over it.",
+      "startOffset": 32.018164,
+      "endOffset": 37.935919
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Python's job market is very strong. JavaScript's is simply the biggest there is.",
+      "startOffset": 37.935919,
+      "endOffset": 43.853674
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "JavaScript wins on points, three to two. Pick Python if AI or data is the goal.",
+      "startOffset": 43.853674,
+      "endOffset": 51.312653999999995
+    }
+  ],
+  "youtubeTitle": "Python vs JavaScript: Which One Actually Wins?",
+  "youtubeDescription": "A head to head breakdown of Python and JavaScript across web development, AI and machine learning, browser support, syntax simplicity, and job market size. JavaScript edges it three to two, but the reason Python still wins for a huge group of developers comes down to one category.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/python-vs-javascript",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}

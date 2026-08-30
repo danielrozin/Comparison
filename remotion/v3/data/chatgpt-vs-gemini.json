@@ -1,0 +1,145 @@
+{
+  "title": "ChatGPT vs Gemini",
+  "entityA": "ChatGPT",
+  "entityB": "Gemini",
+  "category": "technology",
+  "shortAnswer": "ChatGPT (OpenAI) was the first major AI chatbot and has 200M+ monthly users. Gemini (Google) is deeply integrated with Google Search, Gmail, and Workspace. ChatGPT leads in ecosystem and plugins; Gemini leads in Google integration and real-time search.",
+  "stats": [
+    {
+      "label": "Monthly Users",
+      "valueA": "200M+",
+      "valueB": "~200M (growing)",
+      "winner": "tie"
+    },
+    {
+      "label": "Real-time Search",
+      "valueA": "Paid only",
+      "valueB": "Free (Google integration)",
+      "winner": "b"
+    },
+    {
+      "label": "Google Integration",
+      "valueA": "None",
+      "valueB": "Deep",
+      "winner": "b"
+    },
+    {
+      "label": "Plugin Ecosystem",
+      "valueA": "Largest",
+      "valueB": "Growing",
+      "winner": "a"
+    },
+    {
+      "label": "Image Generation",
+      "valueA": "DALL-E 3 built-in",
+      "valueB": "Imagen (limited)",
+      "winner": "a"
+    }
+  ],
+  "verdict": "ChatGPT for versatility, plugins, and coding. Gemini for Google ecosystem users and real-time information. Both are top-tier AI assistants.",
+  "slug": "chatgpt-vs-gemini",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Two chatbots, roughly 200 million users each. Only one lives inside your inbox.",
+    "tape": "ChatGOT built the ecosystem. Gemini was born inside Google. That is the whole fight.",
+    "rounds": [
+      "Both near 200 million monthly. Nobody is winning on scale anymore.",
+      "Gemini searches the live web for free. ChatGPT puts that behind a paywall.",
+      "Gemini reads your Gmail and Workspace. ChatGPT has no idea who you are.",
+      "ChatGPT's plugin library is the biggest. That is where power users actually live.",
+      "DALL-E 3 ships inside ChatGPT. Gemini's Imagen is still holding back."
+    ],
+    "verdict": "Dead even, two apiece. ChatGPT if you build things. Gemini if you live in Google."
+  },
+  "audio": {
+    "cold": "video-assets/chatgpt-vs-gemini/audio/cold.mp3",
+    "tape": "video-assets/chatgpt-vs-gemini/audio/tape.mp3",
+    "rounds": [
+      "video-assets/chatgpt-vs-gemini/audio/round-1.mp3",
+      "video-assets/chatgpt-vs-gemini/audio/round-2.mp3",
+      "video-assets/chatgpt-vs-gemini/audio/round-3.mp3",
+      "video-assets/chatgpt-vs-gemini/audio/round-4.mp3",
+      "video-assets/chatgpt-vs-gemini/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/chatgpt-vs-gemini/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 221,
+    "tape": 218,
+    "rounds": [
+      204,
+      197,
+      204,
+      197,
+      211
+    ],
+    "verdict": 254,
+    "leadInFrames": 9
+  },
+  "transcript": "Two chatbots, roughly 200 million users each. Only one lives inside your inbox. ChatGOT built the ecosystem. Gemini was born inside Google. That is the whole fight. Both near 200 million monthly. Nobody is winning on scale anymore. Gemini searches the live web for free. ChatGPT puts that behind a paywall. Gemini reads your Gmail and Workspace. ChatGPT has no idea who you are. ChatGPT's plugin library is the biggest. That is where power users actually live. DALL-E 3 ships inside ChatGPT. Gemini's Imagen is still holding back. Dead even, two apiece. ChatGPT if you build things. Gemini if you live in Google.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Two chatbots, roughly 200 million users each. Only one lives inside your inbox.",
+      "startOffset": 0,
+      "endOffset": 7.380611999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "ChatGOT built the ecosystem. Gemini was born inside Google. That is the whole fight.",
+      "startOffset": 7.380611999999999,
+      "endOffset": 14.656734
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Both near 200 million monthly. Nobody is winning on scale anymore.",
+      "startOffset": 14.656734,
+      "endOffset": 21.462652
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Gemini searches the live web for free. ChatGPT puts that behind a paywall.",
+      "startOffset": 21.462652,
+      "endOffset": 28.033468
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Gemini reads your Gmail and Workspace. ChatGPT has no idea who you are.",
+      "startOffset": 28.033468,
+      "endOffset": 34.839386
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "ChatGPT's plugin library is the biggest. That is where power users actually live.",
+      "startOffset": 34.839386,
+      "endOffset": 41.410202
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "DALL-E 3 ships inside ChatGPT. Gemini's Imagen is still holding back.",
+      "startOffset": 41.410202,
+      "endOffset": 48.451222
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Dead even, two apiece. ChatGPT if you build things. Gemini if you live in Google.",
+      "startOffset": 48.451222,
+      "endOffset": 56.928977
+    }
+  ],
+  "youtubeTitle": "ChatGPT vs Gemini: The Comparison Ends 2-2",
+  "youtubeDescription": "A head-to-head between ChatGPT and Gemini across monthly users, real-time search, Google integration, plugins, and image generation. ChatGPT wins on ecosystem and DALL-E 3, Gemini wins on free live search and deep Gmail and Workspace integration. The score finishes tied, so we explain exactly which user should pick which.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/chatgpt-vs-gemini",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
