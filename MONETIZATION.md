@@ -62,7 +62,14 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 - [x] Wave 1 (08-26): 12 comparisons + 8 blogs — reviewed, published, indexed
 - [x] Wave 2 (08-28): 20 comparisons + 6 blogs — buildFirst tier now 33/33 done
 - [ ] Wave 3: SERP-verify the next 40 clusters from the 917 backlog, then generate
-- [ ] Fold the AEO question bank into wave-1/2 pages' FAQ blocks
+- [x] AEO question bank folded into FAQ blocks (08-30): 101 PAA answers across
+      31 live target pages, 22 questions deliberately skipped (forecasts, named
+      opinions, individual medical/legal advice, off-scope rankings).
+      Tooling: `scripts/aeo-faq-foldin.mjs` (--generate locally → reviewable
+      JSON; --apply via the "AEO FAQ fold-in" GH workflow). Re-run --generate
+      after wave 3 lands — the other 35 bank targets aren't built yet.
+      Side find: em-dashes in X-Summary headers were 500'ing /api/faq and
+      /api/answer on 11 of 29 pages — fixed with `headerSafe()` (19 routes).
 
 **Phase 1 — shipped in this commit**
 - [x] `src/lib/monetization/plans.ts` — single source of truth for tiers/pricing
