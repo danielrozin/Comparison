@@ -20,6 +20,15 @@ const UP =
 const DOWN = /\b(smaller|lower|less|fewer|slower|weaker|trails?|behind|lags?)\b/i;
 // Rank/ordinal context: "higher" means a SMALLER ordinal — inverts the numeric test.
 const RANK = /\b(rank|ranked|ranking|ranks|no\.|#|position|place|nth|first|1st)\b/i;
+// Durations: a smaller number is the faster/quicker/shorter one, so a speed or
+// time direction word inverts the numeric test the same way a rank does.
+// ("faster (0.1ms vs 6ms)", "resolves claims faster (4 days vs 6 days)")
+const TIME_UNIT = /\d\s*(ms|milliseconds?|s|sec|secs|seconds?|min|mins|minutes?|hrs?|hours?|days?|weeks?|months?|years?)\b/i;
+const SPEED_WORD = /\b(faster|quicker|slower|shorter|longer|sooner|later)\b/i;
+// The direction word must belong to the clause the numbers sit in, not the
+// previous one: "lower costs ($520 vs $680), and better resale (55% vs 42%)"
+// must not read "lower" against the resale numbers.
+const CLAUSE_BREAK = /[,;:.!?]|\band\b|\bbut\b|\bwhile\b|\bwhereas\b|\balthough\b/gi;
 
 const WORD_SCALE: Record<string, number> = {
   trillion: 1e12,
@@ -91,14 +100,20 @@ export function scanTextForSelfContradictions(
     const b = parseNumericMagnitude(parts[1]);
     if (a === null || b === null || a === b) continue;
 
-    const lead = text.slice(Math.max(0, m.index - 90), m.index);
+    const window = text.slice(Math.max(0, m.index - 90), m.index);
+    let lead = window;
+    let brk: RegExpExecArray | null;
+    CLAUSE_BREAK.lastIndex = 0;
+    while ((brk = CLAUSE_BREAK.exec(window)) !== null) lead = window.slice(brk.index + brk[0].length);
     const up = UP.test(lead);
     const down = DOWN.test(lead);
     if (up === down) continue; // need exactly one unambiguous direction
 
     const isRank = RANK.test(lead) || RANK.test(inner);
-    // For ranks, "higher/better" means a smaller ordinal: invert the test.
-    const aWins = isRank ? a < b : a > b;
+    const isDuration = TIME_UNIT.test(inner) && SPEED_WORD.test(lead);
+    // For ranks, "higher/better" means a smaller ordinal; for durations,
+    // "faster" means a smaller number: invert the test.
+    const aWins = isRank || isDuration ? a < b : a > b;
     if (up === aWins) continue; // prose and numbers agree
 
     out.push({
