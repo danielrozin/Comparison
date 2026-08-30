@@ -1,7 +1,11 @@
 {
-  "generatedAt": "2026-08-30T12:27:13.010Z",
+  "generatedAt": "2026-08-30T12:41:56.541Z",
   "model": "claude-opus-5",
   "site": "https://www.aversusb.net",
+  "passes": {
+    "pass1": "2026-08-30T12:27:13.010Z",
+    "pass2": "2026-08-30T12:39:19.051Z"
+  },
   "pages": [
     {
       "slug": "american-airlines-vs-delta",
@@ -455,14 +459,346 @@
         }
       ],
       "skipped": []
+    },
+    {
+      "slug": "slack-vs-teams",
+      "title": "Slack vs Microsoft Teams",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Why use Slack instead of Teams?",
+          "answer": "Slack wins on day-to-day messaging experience: its interface rates 9.2/10 for intuitiveness versus 7.8/10 for Teams, and message search returns results in under 500ms compared with 1,200-1,500ms. It also posts 99.99% uptime and threaded conversations that keep channels readable. Creative and tech teams that live in chat, rather than in Office documents, typically get more value from that speed."
+        },
+        {
+          "question": "Why are companies switching from Teams to Slack?",
+          "answer": "The usual triggers are search latency and interface friction. Teams routes queries through SharePoint and OneDrive infrastructure, producing 1,200-1,500ms message searches against Slack's sub-500ms results, and users rate Slack's interface 9.2/10 versus 7.8/10. Around 62% of knowledge workers express a preference for Slack, and that gap matters most in organizations with light Office 365 dependence."
+        },
+        {
+          "question": "What are the disadvantages of Slack?",
+          "answer": "Cost and integration depth are the main drawbacks. Slack's Pro plan runs $12.50 per user per month against $6 for Microsoft Teams bundled with Microsoft 365, and it ships 100+ native integrations versus 300+ built-in connectors on the Teams side. Free-tier video also caps at 100 participants rather than 300, which limits all-hands use without an upgrade."
+        },
+        {
+          "question": "Does anyone still use Slack?",
+          "answer": "Slack remains widely used, particularly in creative and technology organizations that are not standardized on Microsoft 365. Roughly 62% of knowledge workers express a preference for it, driven by sub-500ms message search, a 9.2/10 interface rating and 99.99% uptime. Some companies also run it alongside Teams, using Slack for fast internal chat and Teams for Office-dependent workflows."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "lunar-eclipse-vs-solar-eclipse",
+      "title": "Lunar Eclipse vs Solar Eclipse",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Which is more rarer, a solar or lunar eclipse?",
+          "answer": "Globally, lunar eclipses are the rarer event: 0-3 occur annually versus 2-5 solar eclipses. From a fixed spot on the ground the picture flips, because a solar eclipse is only visible along a path about 160 km wide. A total solar eclipse returns to the same location roughly once every 300-400 years, while a lunar eclipse is visible from a given region every 2-3 years on average."
+        },
+        {
+          "question": "Why is a lunar eclipse so special?",
+          "answer": "A lunar eclipse is notable for its accessibility and length: it is visible from the entire night side of Earth, roughly half the planet at once, and totality can last up to 1 hour 47 minutes compared with a maximum of 7 minutes 31 seconds for a total solar eclipse. It also needs no equipment, being safe to watch with the naked eye throughout, and Earth's atmosphere filters sunlight so the Moon glows red."
+        },
+        {
+          "question": "Why is a full moon not a lunar eclipse?",
+          "answer": "Every lunar eclipse happens at full moon, but most full moons are not eclipses because the Moon's orbit is tilted about five degrees relative to Earth's orbit around the Sun. At most full moons the Moon passes above or below Earth's shadow rather than through it. Only when the alignment is close enough does Earth block sunlight from reaching the Moon, which is why just 0-3 lunar eclipses occur annually."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Is there a blood moon on March 3rd?",
+          "reason": "Requires a specific eclipse date/calendar prediction not present in the page context."
+        }
+      ]
+    },
+    {
+      "slug": "phd-vs-scd",
+      "title": "PhD vs ScD: Research Doctorates Compared",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is DSc higher than PhD?",
+          "answer": "No—DSc (also written ScD) is not ranked above a PhD; in the United States the two are functionally equivalent research doctorates, both requiring an original research contribution and typically 5-7 years of study. The DSc/ScD is simply the title used by a small number of institutions, chiefly MIT and the Harvard School of Public Health. The PhD holds broader recognition, being standard across 180+ countries and more than 10,000 universities."
+        },
+        {
+          "question": "Can I call myself a Doctor with a PhD?",
+          "answer": "Yes—a PhD is a doctoral degree, so holders are entitled to the title \"Dr.\" and to postnominal letters such as \"PhD.\" The same applies to ScD holders, since both are research doctorates awarded on the basis of an original dissertation. Conventions vary by setting: in clinical or hospital environments, academic doctorates are often clarified to avoid confusion with medical practitioners."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Is a DBA as respected as a PhD?",
+          "reason": "The DBA is outside this comparison's scope; the page context covers only PhD versus ScD research doctorates."
+        }
+      ]
+    },
+    {
+      "slug": "tank-vs-tankless-water-heater",
+      "title": "Tank vs Tankless Water Heater",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Why do plumbers not recommend tankless water heaters?",
+          "answer": "Common objections centre on installation complexity and maintenance rather than the technology itself. Gas models typically need a 1/2-inch line upgraded to 3/4-inch ($300-$800), and electric units often require a 200-amp service upgrade ($1,500-$3,000), pushing total installation to $1,200-$3,500 against $400-$800 for a tank. Flow is capped at 2-5 GPM, and hard water requires descaling every 6-12 months."
+        },
+        {
+          "question": "What are the downsides of tankless water heaters?",
+          "answer": "The main drawbacks are cost, capacity and upkeep. Installation runs $1,200-$3,500 versus $400-$800 for a tank, often including a gas line or electrical service upgrade. Residential units deliver 2-5 GPM, so a second simultaneous shower cools the water or drops pressure, and there is a 5-10 second wait for hot water instead of instant delivery from storage. Narrow heating coils also need descaling every 6-12 months in hard water."
+        },
+        {
+          "question": "Is it worth replacing a tank water heater with a tankless?",
+          "answer": "The switch pays off for households staying long term with moderate hot water demand. Annual savings of $120-$260 (a 24-34% operating cost reduction) against $1,200-$3,500 installation give a payback of roughly 6-12 years, so a 10+ year occupancy is generally needed to come out ahead. The 15-20 year lifespan and 0.5-1 sq ft wall-mounted footprint add value in space-constrained homes."
+        },
+        {
+          "question": "Can a tankless water heater replace a 50 gallon water heater?",
+          "answer": "Yes, provided the unit is sized to peak flow rather than gallons stored. A tankless heater holds no water and instead supplies 2-5 GPM continuously in residential models; since one shower uses about 2.5 GPM, a properly sized unit covers a household running one or two fixtures at a time. Homes that regularly run multiple showers plus laundry may exceed that capacity."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "mba-vs-masters",
+      "title": "MBA vs Master's Degree",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is an MBA higher than an MS?",
+          "answer": "No — both are master's-level qualifications and sit at the same academic tier. An MBA is a general management degree that typically expects two to five years of prior work experience, while an MS signals deep specialization in one discipline such as computer science, finance, or engineering. Neither outranks the other; they differ in breadth versus depth, and in the roles each one feeds into."
+        },
+        {
+          "question": "Is an MBA better than a Masters?",
+          "answer": "Neither is universally better — the MBA wins on career-switching power and network value, while a specialized Master's wins on technical depth and cost. Top MBA programs run roughly $150K–$200K over two years; specialized Master's programs typically run $30K–$100K in one to two years. Choose the MBA for leadership tracks and pivots into new industries, and the Master's for expertise within a defined field."
+        },
+        {
+          "question": "Is MS equivalent to MBA?",
+          "answer": "An MS and an MBA are equivalent in academic level but not in purpose. The MS builds deep specialization in a single discipline and often admits students straight from undergraduate study; the MBA covers general management across functions and usually expects several years of work experience first. Employers treat them as distinct credentials — the MS as proof of technical depth, the MBA as preparation for management and career change."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Which pays more, MBA or MS?",
+          "reason": "Substantially duplicates the existing FAQ 'Does an MBA pay more than a Masters?'"
+        }
+      ]
+    },
+    {
+      "slug": "creatine-hcl-vs-creatine-monohydrate",
+      "title": "Creatine HCL vs Creatine Monohydrate",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is it okay to switch from creatine HCl to monohydrate?",
+          "answer": "Switching between the two forms is fine, since both deliver the same active creatine to muscle. Moving from HCL to monohydrate means raising the daily dose from 1-3g to about 5g, and expect 3-5 lbs of water weight in the first week as intracellular hydration increases. An optional loading phase of 20g daily for 5-7 days speeds saturation, but continuing at 5g maintains it either way."
+        },
+        {
+          "question": "Is creatine HCl easier on kidneys?",
+          "answer": "There is no evidence that creatine HCL is easier on the kidneys than monohydrate. Neither form damages kidneys in people with normal renal function, and monohydrate carries 30+ years of use and 500+ studies confirming safety in healthy individuals, versus roughly 50 studies for HCL with no known safety issues. Anyone with existing kidney disease should speak with a doctor before using either form."
+        },
+        {
+          "question": "How much creatine HCl is equivalent to 5g monohydrate?",
+          "answer": "Roughly 1-3g of creatine HCL is the typical daily dose used in place of 5g of monohydrate, based on HCL's higher solubility and bioavailability. Both dosing schemes aim at the same endpoint: full muscle creatine saturation, which HCL reaches in about 7-14 days without loading. Note that the smaller HCL dose is a manufacturer convention rather than a precisely established equivalence, since HCL has far less research behind it."
+        },
+        {
+          "question": "Which form of creatine is most effective?",
+          "answer": "Creatine monohydrate is the most thoroughly validated form, with 500+ peer-reviewed studies behind it compared with roughly 50 for HCL. In practice both raise strength and power similarly, producing gains of about 1-3% over 4-6 weeks, so the differences come down to dosing, absorption speed of 30-60 minutes versus 60-120, water retention and cost of $15-25 versus $8-12 per month."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "granite-countertops-vs-quartz",
+      "title": "Granite Countertops vs Quartz Countertops",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Which is better quality, quartz or granite countertops?",
+          "answer": "Quartz rates higher on most durability measures: it scores 7–8 on the Mohs hardness scale versus granite's 6–7, and its non-porous engineered surface resists 99% of common stains without sealing. Granite, a 100% natural igneous rock, needs sealing every 1–3 years and absorbs oils and acids more readily. Granite still wins on heat tolerance and on unique, non-repeating veining that engineered slabs cannot replicate."
+        },
+        {
+          "question": "Can you use Clorox wipes on a quartz countertop?",
+          "answer": "Bleach-based wipes are not recommended for routine quartz cleaning. Quartz slabs are about 93% crushed quartz bound with 7% polymer resins and pigments, and harsh bleach or high-alkaline cleaners can dull or discolor that resin over time. Mild dish soap and warm water handle nearly all cleanup, since the non-porous surface resists 99% of common stains and never needs sealing."
+        },
+        {
+          "question": "What is the downside of quartz countertops?",
+          "answer": "The main drawbacks are cost and heat sensitivity. Quartz runs $80–$150 per square foot installed, roughly 20–30% more than granite's $60–$100, and its polymer resin binder tolerates only about 300°F, so hot pans can scorch or warp the surface without a trivet. Its manufactured consistency also lacks the one-of-a-kind veining found in natural granite slabs."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Why is quartz on the decline?",
+          "reason": "length 1w"
+        }
+      ]
+    },
+    {
+      "slug": "mba-vs-ms-finance",
+      "title": "MBA vs MS Finance",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is an MBA better than a master's in finance?",
+          "answer": "Neither is universally better; an MBA is broader, covering accounting, marketing, operations, strategy and leadership, while an MS Finance goes deeper into corporate finance, investment analysis, risk management and derivatives. The MBA suits general management, consulting and career flexibility across industries. The MS Finance suits investment banking, asset management and quantitative roles, and it costs less ($40K–$80K versus $60K–$120K) and finishes sooner."
+        },
+        {
+          "question": "Which pays more, MBA or MS?",
+          "answer": "MS Finance pays more at the start in finance roles, with median starting salaries of $95,000–$110,000 as of 2025 versus $85,000–$95,000 for MBA graduates. The gap tends to reverse over a longer horizon: MBA holders generally see steeper growth as they move into management and executive positions, where breadth of training and cross-industry networks matter more than technical finance depth."
+        },
+        {
+          "question": "Is it smart to get a master's in finance?",
+          "answer": "A master's in finance makes sense when the target career is investment banking, asset management, risk, or quantitative finance. The program runs 12–18 months full-time, costs roughly $40,000–$80,000, and aligns closely with CFA Level I and II curriculum, which shortens exam preparation. It is a weaker choice for general management or strategy consulting, where MBA recruiting pipelines dominate."
+        },
+        {
+          "question": "Is an MS in finance worth it?",
+          "answer": "The value case is strong for finance-specific careers: median starting salaries of $95,000–$110,000 (2025) against a total cost of $40,000–$80,000 and 12–18 months out of the workforce. The trade-off is breadth. Coursework concentrates on corporate finance, investments, derivatives and quantitative methods, so career pivots into marketing, operations or strategy roles are harder than with an MBA."
+        },
+        {
+          "question": "Is it better to get a MS or MBA?",
+          "answer": "An MS Finance is better for depth, speed and cost, finishing in 12–18 months for $40,000–$80,000 with high alignment to CFA Levels I and II. An MBA is better for optionality, adding management, marketing, operations and leadership coursework plus cross-industry networking, at 18–24 months and $60,000–$120,000. Match the choice to whether the goal is a technical finance seat or a general management track."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Do most CEOs have MBAs?",
+          "reason": "Requires CEO-education statistics not present in the page context."
+        }
+      ]
+    },
+    {
+      "slug": "aws-vs-azure",
+      "title": "Amazon Web Services (AWS) vs Microsoft Azure",
+      "existingFaqCount": 4,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Who are the big 3 cloud providers?",
+          "answer": "The big three are Amazon Web Services, Microsoft Azure, and Google Cloud Platform. AWS holds roughly 32% of the global cloud market and Azure about 23%, with Google Cloud a distant third. AWS and Azure each offer 200+ services spanning compute, storage, databases, networking, and AI, and together the three dominate public cloud infrastructure spending worldwide."
+        },
+        {
+          "question": "Who is AWS' biggest competitor?",
+          "answer": "Microsoft Azure is AWS's biggest competitor, holding about 23% of the global cloud market against AWS's 32%. Azure's strength comes from enterprise integration — roughly 95% of Fortune 500 companies tie into Microsoft products such as Office 365, Dynamics 365, and Windows Server — plus a larger footprint of 60+ data center regions versus AWS's 33. Google Cloud ranks third."
+        },
+        {
+          "question": "Is it better to learn Azure or AWS?",
+          "answer": "AWS is the safer first platform for most learners: it has the largest market share at 32%, the broadest service catalog, and the most widely recognized certifications and community documentation. Azure is the stronger choice for anyone working in Microsoft-centric enterprises, since .NET, SQL Server, Windows Server, and Office 365 skills transfer directly. Core cloud concepts carry over between the two, so the second platform is much faster to pick up."
+        },
+        {
+          "question": "Who is bigger, AWS or Azure?",
+          "answer": "AWS is bigger by market share, holding about 32% of global cloud spending compared with Azure's 23%. Azure is larger on other measures, though: it operates 60+ data center regions against AWS's 33, and it reaches roughly 95% of Fortune 500 companies through Microsoft's enterprise footprint versus about 75% for AWS. Both offer 200+ services."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "airbnb-vs-vrbo",
+      "title": "Airbnb vs VRBO",
+      "existingFaqCount": 4,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Why do people use Vrbo instead of Airbnb?",
+          "answer": "Vrbo appeals to travelers who want a guaranteed whole property, since it lists only entire homes, condos, cabins and vacation houses rather than private or shared rooms. It also draws longer-stay guests and whole-home seekers, and holds strong inventory in traditional US vacation destinations such as Florida beaches, lake houses and mountain cabins. Hosts often favour it for higher nightly rates and fewer turnovers — about 54 per year versus Airbnb's 89."
+        },
+        {
+          "question": "Is it better to go through Vrbo or Airbnb?",
+          "answer": "Airbnb suits short, frequent trips and offers far more choice, with 7M+ listings across 220+ countries plus private rooms as well as entire places. Vrbo is the stronger pick for longer stays and group or family travel, because every listing is a whole property. For hosts, listing on both platforms simultaneously produces roughly 34% higher combined revenue than using either alone."
+        },
+        {
+          "question": "Who charges more fees, Vrbo or Airbnb?",
+          "answer": "Vrbo tends to charge hosts more, at roughly 8% compared with Airbnb's approximately 3%, and those costs are often built into nightly rates. On the guest side, Airbnb applies a service fee of about 6-12%, shown transparently before booking. Because fee structures differ and hosts set their own rates, the total price on equivalent properties should be compared on both platforms."
+        }
+      ],
+      "skipped": [
+        {
+          "question": "Why are people no longer using Airbnb?",
+          "reason": "Requires trend data and sentiment claims about declining usage that the page context does not contain."
+        }
+      ]
+    },
+    {
+      "slug": "charles-schwab-vs-robinhood",
+      "title": "Charles Schwab vs Robinhood",
+      "existingFaqCount": 4,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "What is the downside to Robinhood?",
+          "answer": "The main drawbacks are limited scope and a thinner product shelf: Robinhood offers roughly two account types (individual and IRA) versus 15-plus at Schwab, with no mutual funds, minimal bond access, and no in-depth research or professional guidance. It also relies on payment for order flow, and its regulatory history includes a $70M FINRA fine in 2021 and the January 2021 GameStop trading restrictions that damaged user trust."
+        },
+        {
+          "question": "What is the downside to Charles Schwab?",
+          "answer": "Schwab's breadth comes with complexity — 15-plus account types, multiple platforms, and dense research tools can overwhelm someone who just wants to buy a first share. The mobile experience is heavier and slower than Robinhood's stripped-down app, and features like thinkorswim carry a real learning curve. Neither firm charges stock or ETF commissions or requires a minimum balance, so cost is not the trade-off here."
+        },
+        {
+          "question": "Why don't traders like Robinhood?",
+          "answer": "Criticism centers on the January 2021 GameStop episode, when Robinhood restricted buying during the short squeeze, plus multiple FINRA and SEC enforcement actions including a $70M FINRA fine in 2021. Active traders also object to the platform's shallow tooling — basic options only, no mutual funds, and limited research — compared with Schwab's thinkorswim, and to the gamified interface's influence on trading behavior."
+        },
+        {
+          "question": "Who is better than Charles Schwab?",
+          "answer": "No single firm is objectively better across the board; Schwab manages $7.78 trillion in assets and offers 15-plus account types with $0 stock and ETF commissions, which is difficult to beat on breadth. Fidelity is the closest peer on comprehensive retirement platforms and research depth. Robinhood wins narrowly on mobile speed and simplicity, and on its 1-3% IRA contribution match, but not on product range."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "executive-mba-vs-mba",
+      "title": "Executive MBA vs MBA",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Which is better, MBA or Executive MBA?",
+          "answer": "Neither is universally better; the fit depends on career stage. An Executive MBA suits professionals with 10+ years of experience who want to keep working, study part-time over 18–24 months, and learn alongside a cohort averaging 38–45 years old. A traditional full-time MBA suits those with 2–5 years of experience who can pause work for two years, want internships, and prefer the lower tuition range of $40,000–$120,000 versus $120,000–$250,000."
+        },
+        {
+          "question": "Is EMBA more prestigious than MBA?",
+          "answer": "Neither degree outranks the other in prestige; both are graduate business degrees, and reputation follows the granting school more than the format. EMBA cohorts skew more senior—directors, VPs, and C-suite candidates averaging 38–45 years old with 10+ years of experience—which lends the room seniority. Traditional full-time MBAs carry stronger recruiting pipelines and internship access, which matters more for candidates changing industries or functions."
+        },
+        {
+          "question": "Is an executive MBA worth it?",
+          "answer": "An Executive MBA is worth it for senior professionals who want advancement without leaving their jobs, with a median salary increase of $35k within 2–3 years of graduating and a typical payback of 3–4 years for six-figure earners. The $120,000–$250,000 cost is a heavier lift when self-funded, though around 60% of EMBA-offering institutions partner with employers on tuition. Early-career candidates generally get better value from a traditional MBA."
+        },
+        {
+          "question": "Does an executive MBA count as an MBA?",
+          "answer": "Yes, an Executive MBA is a full MBA degree, awarded by the same business schools and carrying the same Master of Business Administration credential. The difference lies in format and audience: EMBA programs run part-time over 18–24 months on evenings, weekends, or intensive modules for participants with 10+ years of experience, while traditional programs run full-time on weekdays over 24 months with internships built in."
+        }
+      ],
+      "skipped": []
+    },
+    {
+      "slug": "chatgpt-vs-gemini",
+      "title": "ChatGPT (GPT-5.2) vs Gemini (3.0 Pro)",
+      "existingFaqCount": 5,
+      "hadAnswerContext": true,
+      "faqs": [
+        {
+          "question": "Is Gemini actually better than ChatGPT?",
+          "answer": "Gemini 3.0 Pro wins on most measurable specs but not all. It leads on context window (1,000,000 vs 128,000 tokens), native audio and video input, a December 2024 training cutoff versus April 2024, and average latency of 0.8 seconds versus 1.2. ChatGPT (GPT-5.2) still edges ahead on reasoning, scoring 94.2% on the MATH benchmark against Gemini's 91.8%, and on nuanced creative writing."
+        },
+        {
+          "question": "Can Gemini do everything ChatGPT can?",
+          "answer": "Gemini 3.0 Pro covers the same core ground—text generation, coding, analysis, image understanding—and adds native audio and video input that ChatGPT (GPT-5.2) lacks. The gap runs the other way on reasoning depth: ChatGPT scores 94.2% on the MATH benchmark to Gemini's 91.8% and is generally stronger on conversational coherence and creative writing where nuance matters."
+        },
+        {
+          "question": "Is there a better AI than ChatGPT?",
+          "answer": "Gemini 3.0 Pro beats ChatGPT (GPT-5.2) on several concrete measures: a 1,000,000-token context window against 128,000, native video and audio input, 0.8-second average latency versus 1.2, and a far lower token price at $0.075 per 1M input tokens against $2.50. \"Better\" depends on the workload, since ChatGPT retains the reasoning edge at 94.2% on MATH versus 91.8%."
+        },
+        {
+          "question": "How much does Gemini cost?",
+          "answer": "Gemini 3.0 Pro is priced at $0.075 per 1 million input tokens, compared with $2.50 for ChatGPT (GPT-5.2)—roughly a 33x difference on input. That gap compounds quickly for teams processing millions of tokens a month, which is why Gemini tends to win on cost for high-volume document, video, and audio workloads."
+        }
+      ],
+      "skipped": []
     }
   ],
   "totals": {
-    "pages": 18,
-    "missing": 48,
-    "asked": 70,
-    "answered": 54,
-    "skipped": 16,
-    "dupes": 2
+    "pages": 31,
+    "answered": 101,
+    "skipped": 22
   }
 }

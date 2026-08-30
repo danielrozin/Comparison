@@ -157,8 +157,11 @@ Return ONLY a JSON array, one object per input question, in the same order:
       });
       if (res.stop_reason === 'refusal') throw new Error(`refusal: ${res.stop_details?.category}`);
       const text = res.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
-      const m = text.match(/\[[\s\S]*\]/);
-      parsed = JSON.parse(m ? m[0] : text);
+      // Slice from the first "[{" to the last "}]" — a leading "[" in any
+      // preamble the model adds otherwise swallows the real array.
+      const start = text.indexOf('[{');
+      const end = text.lastIndexOf('}]');
+      parsed = JSON.parse(start >= 0 && end > start ? text.slice(start, end + 2) : text);
       if (!Array.isArray(parsed)) throw new Error('not an array');
     } catch (e) {
       console.log(`  ! generation failed for ${slug}: ${e.message}`);
