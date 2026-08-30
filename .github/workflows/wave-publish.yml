@@ -1,0 +1,56 @@
+name: Wave publish
+
+# Review gate + publish for generated comparison pages (scripts/wave-publish.mjs).
+# Generated pages sit at status "archived" until a human/agent has read them;
+# --review prints the full copy plus automated checks into this log, --publish
+# flips the passing ones to published. Runs here because the working
+# DATABASE_URL is a repo secret.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: "Slugs (space or comma separated)"
+        required: true
+      mode:
+        description: "review = print + check only; publish = flip passing pages live"
+        required: true
+        default: "review"
+        type: choice
+        options: ["review", "publish", "publish-force"]
+
+concurrency:
+  group: wave-publish
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm install --no-audit --no-fund
+      - run: npx prisma generate
+
+      - name: Review / publish
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          case "${{ github.event.inputs.mode }}" in
+            review)        node scripts/wave-publish.mjs --review $SLUGS ;;
+            publish)       node scripts/wave-publish.mjs --publish $SLUGS ;;
+            publish-force) node scripts/wave-publish.mjs --publish --force $SLUGS ;;
+          esac
+
+      - name: Verify pages render
+        if: ${{ github.event.inputs.mode != 'review' }}
+        run: |
+          SLUGS="$(echo "${{ github.event.inputs.slugs }}" | tr ',' ' ')"
+          for s in $SLUGS; do
+            echo "  $s -> HTTP $(curl -s -o /dev/null -w '%{http_code}' https://www.aversusb.net/compare/$s)"
+          done
