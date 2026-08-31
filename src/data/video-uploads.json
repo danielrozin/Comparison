@@ -5020,6 +5020,183 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-08-30T10:37:35.226Z"
+    },
+    {
+      "slug": "notion-vs-obsidian",
+      "title": "Notion vs Obsidian",
+      "entityA": "Notion",
+      "entityB": "Obsidian",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "notion-vs-obsidian.mp4",
+      "durationSeconds": 46,
+      "transcript": "One of these apps keeps your notes. The other keeps them on someone else's servers. Notion is a workspace built for teams. Obsidian is a vault built for one. Notion's collaboration is excellent. Obsidian's is limited, because it was never the point. Cloud only versus local first. Your notes live on your drive or theirs. Lose your wifi and Notion stalls. Obsidian doesn't notice. Kanban and tables ship with Notion. Obsidian needs plugins before it manages anything. Notion's curve is moderate. Obsidian asks you to learn its way of thinking. Notion takes it three to two. Pick Obsidian if privacy and offline beat teamwork.",
+      "chapters": [
+        {
+          "name": "Notion vs Obsidian",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Collaboration",
+          "startOffset": 11,
+          "endOffset": 18
+        },
+        {
+          "name": "Round 2: Privacy/Local Storage",
+          "startOffset": 18,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Offline Access",
+          "startOffset": 24,
+          "endOffset": 29
+        },
+        {
+          "name": "Round 4: Project Management",
+          "startOffset": 29,
+          "endOffset": 36
+        },
+        {
+          "name": "Round 5: Learning Curve",
+          "startOffset": 36,
+          "endOffset": 41
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 41,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "Notion vs Obsidian: Which Note App Actually Fits You?",
+      "youtubeDescription": "A head-to-head between Notion's cloud based all-in-one workspace and Obsidian's local-first markdown vault. We compare collaboration, privacy and local storage, offline access, built-in project management, and how steep each learning curve really is. Notion wins on points, but Obsidian wins for a specific kind of user.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/notion-vs-obsidian\n\nImage credits:\nImage B by Ji-Elle It feels nice and warm It feels like a love storm (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:Lipari-Obsidienne_(5).jpg\n\nFull comparison: https://www.aversusb.net/compare/notion-vs-obsidian",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-31T11:30:55.498Z"
+    },
+    {
+      "slug": "aws-vs-azure",
+      "title": "AWS vs Azure",
+      "entityA": "AWS (Amazon)",
+      "entityB": "Microsoft Azure",
+      "category": "technology",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "aws-vs-azure.mp4",
+      "durationSeconds": 53,
+      "transcript": "Two companies run half the internet. Ten points of market share separate them. AWS won the cloud. Azure won the office. Same catalog, different front door. 32 against 22. AWS still leads, but that gap used to be a canyon. Both crossed 200 services. Nobody picks a cloud on the menu length anymore. Azure is dominant where the budgets are biggest. AWS is strong, not king. AWS owns the startups. The next decade of companies is being built there. Azure plugs straight into Microsoft's stack. AWS has nothing to plug in at all. Dead even, two apiece. Running Microsoft software? Azure. Building something new from zero? AWS.",
+      "chapters": [
+        {
+          "name": "AWS (Amazon) vs Microsoft Azure",
+          "startOffset": 0,
+          "endOffset": 6
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 6,
+          "endOffset": 14
+        },
+        {
+          "name": "Round 1: Market Share",
+          "startOffset": 14,
+          "endOffset": 20
+        },
+        {
+          "name": "Round 2: Services Offered",
+          "startOffset": 20,
+          "endOffset": 27
+        },
+        {
+          "name": "Round 3: Enterprise Adoption",
+          "startOffset": 27,
+          "endOffset": 33
+        },
+        {
+          "name": "Round 4: Startup Ecosystem",
+          "startOffset": 33,
+          "endOffset": 40
+        },
+        {
+          "name": "Round 5: Microsoft Integration",
+          "startOffset": 40,
+          "endOffset": 46
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 46,
+          "endOffset": 56
+        }
+      ],
+      "youtubeTitle": "AWS vs Microsoft Azure: Which Cloud Actually Wins?",
+      "youtubeDescription": "AWS holds 32% of the cloud market to Azure's 22%, but Azure dominates enterprise adoption thanks to deep Microsoft integration. We compare market share, service catalogs, startup ecosystems and enterprise pull to settle which platform fits which team.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/aws-vs-azure\n\nFull comparison: https://www.aversusb.net/compare/aws-vs-azure",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-31T11:36:55.549Z"
+    },
+    {
+      "slug": "vanguard-vs-fidelity",
+      "title": "Vanguard vs Fidelity",
+      "entityA": "Vanguard",
+      "entityB": "Fidelity",
+      "category": "finance",
+      "renderer": "v3",
+      "asOf": "August 2026",
+      "videoFile": "vanguard-vs-fidelity.mp4",
+      "durationSeconds": 47,
+      "transcript": "Vanguard invented the index fund. Fidelity just made it free. One built the philosophy. The other built the better product around it. Fidelity manages 12 trillion dollars. Vanguard's 8 trillion is no longer the ceiling. Vanguard's 0.03 percent was the record. Fidelity charges literally nothing. Vanguard's platform gets you in and out. Active Trader Pro is a cockpit. FZROX and FZILX cost zero forever. Vanguard has no answer to that. Both answer the phone. Fidelity answers it faster and knows more. Fidelity sweeps it 5-0. Choose Vanguard if you only ever buy and hold.",
+      "chapters": [
+        {
+          "name": "Vanguard vs Fidelity",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 10
+        },
+        {
+          "name": "Round 1: Assets Under Management",
+          "startOffset": 10,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Lowest Expense Ratio",
+          "startOffset": 17,
+          "endOffset": 24
+        },
+        {
+          "name": "Round 3: Trading Platform Quality",
+          "startOffset": 24,
+          "endOffset": 30
+        },
+        {
+          "name": "Round 4: Zero-Fee Index Funds",
+          "startOffset": 30,
+          "endOffset": 38
+        },
+        {
+          "name": "Round 5: Customer Service",
+          "startOffset": 38,
+          "endOffset": 43
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 43,
+          "endOffset": 50
+        }
+      ],
+      "youtubeTitle": "Vanguard vs Fidelity: Which Broker Actually Wins?",
+      "youtubeDescription": "A head-to-head breakdown of Vanguard and Fidelity across assets under management, expense ratios, trading platforms, zero-fee index funds and customer service. Fidelity takes every round on paper, but Vanguard still has a case for pure buy-and-hold index investors. Here's who should pick which.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/vanguard-vs-fidelity\n\nImage credits:\nImage B by Giovanni Dall'Orto (Attribution) — https://commons.wikimedia.org/wiki/File:4243_-_Venezia_-_Palazzo_ducale_-_Capitello_28_-_In_fidelitate_nullli_gero_-_Foto_Giovanni_Dall%27Orto,_30-Jul-2008.jpg\n\nFull comparison: https://www.aversusb.net/compare/vanguard-vs-fidelity",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-08-31T11:44:21.382Z"
     }
   ]
 }

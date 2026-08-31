@@ -1,0 +1,158 @@
+{
+  "title": "Notion vs Obsidian",
+  "entityA": "Notion",
+  "entityB": "Obsidian",
+  "category": "technology",
+  "shortAnswer": "Notion is a cloud-based all-in-one workspace with databases, wikis, and project management. Obsidian is a local-first markdown editor focused on personal knowledge management and bidirectional linking. Notion is collaborative; Obsidian is private and offline.",
+  "stats": [
+    {
+      "label": "Collaboration",
+      "valueA": "Excellent",
+      "valueB": "Limited",
+      "winner": "a"
+    },
+    {
+      "label": "Privacy/Local Storage",
+      "valueA": "Cloud only",
+      "valueB": "Local first",
+      "winner": "b"
+    },
+    {
+      "label": "Offline Access",
+      "valueA": "Limited",
+      "valueB": "Full",
+      "winner": "b"
+    },
+    {
+      "label": "Project Management",
+      "valueA": "Built-in (kanban/tables)",
+      "valueB": "Plugins only",
+      "winner": "a"
+    },
+    {
+      "label": "Learning Curve",
+      "valueA": "Moderate",
+      "valueB": "Steeper",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Notion for teams, collaboration, and project management. Obsidian for personal knowledge management and privacy-focused note-taking.",
+  "slug": "notion-vs-obsidian",
+  "imageA": null,
+  "imageB": {
+    "url": "video-assets/notion-vs-obsidian/entity-b.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/1/17/Lipari-Obsidienne_%285%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 3648,
+    "height": 2736,
+    "credit": "Ji-Elle It feels nice and warm It feels like a love storm",
+    "license": "CC BY-SA 3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lipari-Obsidienne_(5).jpg",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/1/17/Lipari-Obsidienne_%285%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "lines": {
+    "hook": "One of these apps keeps your notes. The other keeps them on someone else's servers.",
+    "tape": "Notion is a workspace built for teams. Obsidian is a vault built for one.",
+    "rounds": [
+      "Notion's collaboration is excellent. Obsidian's is limited, because it was never the point.",
+      "Cloud only versus local first. Your notes live on your drive or theirs.",
+      "Lose your wifi and Notion stalls. Obsidian doesn't notice.",
+      "Kanban and tables ship with Notion. Obsidian needs plugins before it manages anything.",
+      "Notion's curve is moderate. Obsidian asks you to learn its way of thinking."
+    ],
+    "verdict": "Notion takes it three to two. Pick Obsidian if privacy and offline beat teamwork."
+  },
+  "audio": {
+    "cold": "video-assets/notion-vs-obsidian/audio/cold.mp3",
+    "tape": "video-assets/notion-vs-obsidian/audio/tape.mp3",
+    "rounds": [
+      "video-assets/notion-vs-obsidian/audio/round-1.mp3",
+      "video-assets/notion-vs-obsidian/audio/round-2.mp3",
+      "video-assets/notion-vs-obsidian/audio/round-3.mp3",
+      "video-assets/notion-vs-obsidian/audio/round-4.mp3",
+      "video-assets/notion-vs-obsidian/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/notion-vs-obsidian/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 161,
+    "tape": 178,
+    "rounds": [
+      190,
+      195,
+      150,
+      199,
+      170
+    ],
+    "verdict": 214,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these apps keeps your notes. The other keeps them on someone else's servers. Notion is a workspace built for teams. Obsidian is a vault built for one. Notion's collaboration is excellent. Obsidian's is limited, because it was never the point. Cloud only versus local first. Your notes live on your drive or theirs. Lose your wifi and Notion stalls. Obsidian doesn't notice. Kanban and tables ship with Notion. Obsidian needs plugins before it manages anything. Notion's curve is moderate. Obsidian asks you to learn its way of thinking. Notion takes it three to two. Pick Obsidian if privacy and offline beat teamwork.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these apps keeps your notes. The other keeps them on someone else's servers.",
+      "startOffset": 0,
+      "endOffset": 5.369184
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "Notion is a workspace built for teams. Obsidian is a vault built for one.",
+      "startOffset": 5.369184,
+      "endOffset": 11.286939
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Notion's collaboration is excellent. Obsidian's is limited, because it was never the point.",
+      "startOffset": 11.286939,
+      "endOffset": 17.622653
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Cloud only versus local first. Your notes live on your drive or theirs.",
+      "startOffset": 17.622653,
+      "endOffset": 24.115102
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Lose your wifi and Notion stalls. Obsidian doesn't notice.",
+      "startOffset": 24.115102,
+      "endOffset": 29.115102
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Kanban and tables ship with Notion. Obsidian needs plugins before it manages anything.",
+      "startOffset": 29.115102,
+      "endOffset": 35.764286
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Notion's curve is moderate. Obsidian asks you to learn its way of thinking.",
+      "startOffset": 35.764286,
+      "endOffset": 41.446939
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Notion takes it three to two. Pick Obsidian if privacy and offline beat teamwork.",
+      "startOffset": 41.446939,
+      "endOffset": 48.566327
+    }
+  ],
+  "youtubeTitle": "Notion vs Obsidian: Which Note App Actually Fits You?",
+  "youtubeDescription": "A head-to-head between Notion's cloud based all-in-one workspace and Obsidian's local-first markdown vault. We compare collaboration, privacy and local storage, offline access, built-in project management, and how steep each learning curve really is. Notion wins on points, but Obsidian wins for a specific kind of user.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/notion-vs-obsidian",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image B by Ji-Elle It feels nice and warm It feels like a love storm (CC BY-SA 3.0) — https://commons.wikimedia.org/wiki/File:Lipari-Obsidienne_(5).jpg"
+  ]
+}

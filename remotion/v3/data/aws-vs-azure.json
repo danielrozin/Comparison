@@ -1,0 +1,145 @@
+{
+  "title": "AWS vs Azure",
+  "entityA": "AWS (Amazon)",
+  "entityB": "Microsoft Azure",
+  "category": "technology",
+  "shortAnswer": "AWS (Amazon) is the cloud market leader with 32% share and the most comprehensive service catalog. Azure (Microsoft) is #2 with 22% share and leads in enterprise adoption due to Microsoft 365 and Active Directory integration.",
+  "stats": [
+    {
+      "label": "Market Share",
+      "valueA": "32%",
+      "valueB": "22%",
+      "winner": "a"
+    },
+    {
+      "label": "Services Offered",
+      "valueA": "200+",
+      "valueB": "200+",
+      "winner": "tie"
+    },
+    {
+      "label": "Enterprise Adoption",
+      "valueA": "Strong",
+      "valueB": "Dominant",
+      "winner": "b"
+    },
+    {
+      "label": "Startup Ecosystem",
+      "valueA": "Largest",
+      "valueB": "Growing",
+      "winner": "a"
+    },
+    {
+      "label": "Microsoft Integration",
+      "valueA": "None",
+      "valueB": "Deep",
+      "winner": "b"
+    }
+  ],
+  "verdict": "AWS for startups and breadth of services. Azure for enterprises running Microsoft software. Both are world-class cloud platforms.",
+  "slug": "aws-vs-azure",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Two companies run half the internet. Ten points of market share separate them.",
+    "tape": "AWS won the cloud. Azure won the office. Same catalog, different front door.",
+    "rounds": [
+      "32 against 22. AWS still leads, but that gap used to be a canyon.",
+      "Both crossed 200 services. Nobody picks a cloud on the menu length anymore.",
+      "Azure is dominant where the budgets are biggest. AWS is strong, not king.",
+      "AWS owns the startups. The next decade of companies is being built there.",
+      "Azure plugs straight into Microsoft's stack. AWS has nothing to plug in at all."
+    ],
+    "verdict": "Dead even, two apiece. Running Microsoft software? Azure. Building something new from zero? AWS."
+  },
+  "audio": {
+    "cold": "video-assets/aws-vs-azure/audio/cold.mp3",
+    "tape": "video-assets/aws-vs-azure/audio/tape.mp3",
+    "rounds": [
+      "video-assets/aws-vs-azure/audio/round-1.mp3",
+      "video-assets/aws-vs-azure/audio/round-2.mp3",
+      "video-assets/aws-vs-azure/audio/round-3.mp3",
+      "video-assets/aws-vs-azure/audio/round-4.mp3",
+      "video-assets/aws-vs-azure/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/aws-vs-azure/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 175,
+    "tape": 231,
+    "rounds": [
+      202,
+      188,
+      199,
+      195,
+      190
+    ],
+    "verdict": 293,
+    "leadInFrames": 9
+  },
+  "transcript": "Two companies run half the internet. Ten points of market share separate them. AWS won the cloud. Azure won the office. Same catalog, different front door. 32 against 22. AWS still leads, but that gap used to be a canyon. Both crossed 200 services. Nobody picks a cloud on the menu length anymore. Azure is dominant where the budgets are biggest. AWS is strong, not king. AWS owns the startups. The next decade of companies is being built there. Azure plugs straight into Microsoft's stack. AWS has nothing to plug in at all. Dead even, two apiece. Running Microsoft software? Azure. Building something new from zero? AWS.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Two companies run half the internet. Ten points of market share separate them.",
+      "startOffset": 0,
+      "endOffset": 5.839388
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "AWS won the cloud. Azure won the office. Same catalog, different front door.",
+      "startOffset": 5.839388,
+      "endOffset": 13.53347
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "32 against 22. AWS still leads, but that gap used to be a canyon.",
+      "startOffset": 13.53347,
+      "endOffset": 20.261021
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Both crossed 200 services. Nobody picks a cloud on the menu length anymore.",
+      "startOffset": 20.261021,
+      "endOffset": 26.518368
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Azure is dominant where the budgets are biggest. AWS is strong, not king.",
+      "startOffset": 26.518368,
+      "endOffset": 33.167552
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "AWS owns the startups. The next decade of companies is being built there.",
+      "startOffset": 33.167552,
+      "endOffset": 39.660001
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Azure plugs straight into Microsoft's stack. AWS has nothing to plug in at all.",
+      "startOffset": 39.660001,
+      "endOffset": 45.995715000000004
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Dead even, two apiece. Running Microsoft software? Azure. Building something new from zero? AWS.",
+      "startOffset": 45.995715000000004,
+      "endOffset": 55.75347000000001
+    }
+  ],
+  "youtubeTitle": "AWS vs Microsoft Azure: Which Cloud Actually Wins?",
+  "youtubeDescription": "AWS holds 32% of the cloud market to Azure's 22%, but Azure dominates enterprise adoption thanks to deep Microsoft integration. We compare market share, service catalogs, startup ecosystems and enterprise pull to settle which platform fits which team.\n\nFigures accurate as of August 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/aws-vs-azure",
+  "asOf": "August 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
