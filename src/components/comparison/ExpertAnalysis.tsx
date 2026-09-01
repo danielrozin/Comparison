@@ -49,7 +49,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
                 dateTime={updatedAt}
                 className="text-xs text-text-secondary"
               >
-                Updated {new Date(updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                Updated {new Date(updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
               </time>
             </div>
           </div>

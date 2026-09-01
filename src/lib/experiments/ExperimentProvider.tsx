@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type ReactNode,
 } from "react";
 import { getActiveExperiments } from "./config";
@@ -118,23 +119,27 @@ export function ExperimentProvider({
     [initialCookie]
   );
 
-  // Resolve: keep existing assignments, add new ones for active experiments
-  const assignments = useMemo(
-    () => resolveAssignments(serverAssignments),
-    [serverAssignments]
+  // Start from the server-known assignments so the first client render matches
+  // the server HTML. New variants need a browser-only visitor id, so they are
+  // resolved after mount (below) — resolving them during render would bucket
+  // against the literal "server" id and mismatch on hydration (React #418).
+  const [assignments, setAssignments] = useState<ExperimentAssignments>(
+    serverAssignments
   );
 
-  // Persist to cookie & fire GA4 events (client-only, once)
+  // Resolve variants, persist to cookie & fire GA4 events (client-only, once)
   const firedRef = useRef(false);
   useEffect(() => {
-    writeCookie(assignments);
+    const resolved = resolveAssignments(serverAssignments);
+    setAssignments(resolved);
+    writeCookie(resolved);
 
     if (firedRef.current) return;
     firedRef.current = true;
 
     const active = getActiveExperiments();
     for (const exp of active) {
-      const assignment = assignments[exp.id];
+      const assignment = resolved[exp.id];
       if (assignment) {
         trackEvent("experiment_view", {
           experiment_id: exp.id,
@@ -143,7 +148,7 @@ export function ExperimentProvider({
         });
       }
     }
-  }, [assignments]);
+  }, [serverAssignments]);
 
   return (
     <ExperimentContext.Provider value={assignments}>
