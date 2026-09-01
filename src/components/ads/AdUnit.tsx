@@ -13,6 +13,10 @@ interface AdUnitProps {
 
 const PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUB_ID;
 
+// AdSense rejects fluid responsive slots narrower than this and throws a
+// TagError, which leaves the slot empty. Wait for a measurable width first.
+const MIN_AD_WIDTH = 250;
+
 export function AdUnit({
   slot,
   format = "auto",
@@ -23,14 +27,33 @@ export function AdUnit({
   const pushed = useRef(false);
 
   useEffect(() => {
-    if (!PUBLISHER_ID || pushed.current) return;
-    try {
-      ((window as unknown as Record<string, unknown[]>).adsbygoogle =
-        (window as unknown as Record<string, unknown[]>).adsbygoogle || []).push({});
+    if (!PUBLISHER_ID) return;
+    const el = adRef.current;
+    if (!el) return;
+
+    // Only push once the <ins> is attached and wide enough. push({}) is
+    // untargeted, so pushing before layout can bind to a zero-width slot.
+    const tryPush = () => {
+      if (pushed.current) return true;
+      if (el.offsetWidth < MIN_AD_WIDTH) return false;
       pushed.current = true;
-    } catch {
-      // AdSense not loaded or blocked
-    }
+      try {
+        ((window as unknown as Record<string, unknown[]>).adsbygoogle =
+          (window as unknown as Record<string, unknown[]>).adsbygoogle || []).push({});
+      } catch {
+        // AdSense not loaded or blocked
+      }
+      return true;
+    };
+
+    if (tryPush()) return;
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      if (tryPush()) observer.disconnect();
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   if (!PUBLISHER_ID) return null;
