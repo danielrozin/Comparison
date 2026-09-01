@@ -1,0 +1,158 @@
+{
+  "title": "MBA vs Master's Degree",
+  "entityA": "MBA",
+  "entityB": "Master's Degree",
+  "category": "education",
+  "shortAnswer": "An MBA (Master of Business Administration) is a professional degree focused on business management and leadership, typically requiring work experience. A Master's degree is an academic/professional degree in a specific discipline. MBAs offer career switching; Master's offer deep expertise.",
+  "stats": [
+    {
+      "label": "Duration",
+      "valueA": "2 years (full-time)",
+      "valueB": "1-2 years",
+      "winner": "tie"
+    },
+    {
+      "label": "Average Cost (Top Programs)",
+      "valueA": "$150K-$200K",
+      "valueB": "$30K-$100K",
+      "winner": "b"
+    },
+    {
+      "label": "Career Switching Power",
+      "valueA": "High",
+      "valueB": "Low",
+      "winner": "a"
+    },
+    {
+      "label": "Technical Depth",
+      "valueA": "General",
+      "valueB": "Deep specialization",
+      "winner": "b"
+    },
+    {
+      "label": "Network Value",
+      "valueA": "Exceptional (top schools)",
+      "valueB": "Good",
+      "winner": "a"
+    }
+  ],
+  "verdict": "MBA for career switchers, leadership roles, and business networking. Master's for deep technical expertise and specialized careers. The right choice depends entirely on your career goals.",
+  "slug": "mba-vs-masters",
+  "imageA": {
+    "url": "video-assets/mba-vs-masters/entity-a.jpg",
+    "fullUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Michigan_MBA.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "width": 2304,
+    "height": 1778,
+    "credit": "Cfls",
+    "license": "CC BY-SA 4.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michigan_MBA.png",
+    "tier": 1,
+    "origin": "wikipedia-lead",
+    "remoteUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Michigan_MBA.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "imageB": null,
+  "lines": {
+    "hook": "One of these costs five times more and teaches you less about your field.",
+    "tape": "An MBA buys you a new career. A Master's buys you a deeper one.",
+    "rounds": [
+      "Two locked years versus one, if you pick the right Master's. Call it even.",
+      "Up to 200 grand against 30. That gap is a house deposit.",
+      "The MBA is the only one that lets you walk into a new industry.",
+      "One makes you fluent in everything. The other makes you the expert in one thing.",
+      "Top MBA classmates become your board, your investors, your job offers for thirty years."
+    ],
+    "verdict": "Dead even, two apiece. Switching careers, take the MBA. Going deeper in your field, Master's."
+  },
+  "audio": {
+    "cold": "video-assets/mba-vs-masters/audio/cold.mp3",
+    "tape": "video-assets/mba-vs-masters/audio/tape.mp3",
+    "rounds": [
+      "video-assets/mba-vs-masters/audio/round-1.mp3",
+      "video-assets/mba-vs-masters/audio/round-2.mp3",
+      "video-assets/mba-vs-masters/audio/round-3.mp3",
+      "video-assets/mba-vs-masters/audio/round-4.mp3",
+      "video-assets/mba-vs-masters/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/mba-vs-masters/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 161,
+    "tape": 166,
+    "rounds": [
+      188,
+      183,
+      150,
+      170,
+      202
+    ],
+    "verdict": 262,
+    "leadInFrames": 9
+  },
+  "transcript": "One of these costs five times more and teaches you less about your field. An MBA buys you a new career. A Master's buys you a deeper one. Two locked years versus one, if you pick the right Master's. Call it even. Up to 200 grand against 30. That gap is a house deposit. The MBA is the only one that lets you walk into a new industry. One makes you fluent in everything. The other makes you the expert in one thing. Top MBA classmates become your board, your investors, your job offers for thirty years. Dead even, two apiece. Switching careers, take the MBA. Going deeper in your field, Master's.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "One of these costs five times more and teaches you less about your field.",
+      "startOffset": 0,
+      "endOffset": 5.369184
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "An MBA buys you a new career. A Master's buys you a deeper one.",
+      "startOffset": 5.369184,
+      "endOffset": 10.895102
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Two locked years versus one, if you pick the right Master's. Call it even.",
+      "startOffset": 10.895102,
+      "endOffset": 17.152448999999997
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Up to 200 grand against 30. That gap is a house deposit.",
+      "startOffset": 17.152448999999997,
+      "endOffset": 23.253060999999995
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "The MBA is the only one that lets you walk into a new industry.",
+      "startOffset": 23.253060999999995,
+      "endOffset": 28.253060999999995
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "One makes you fluent in everything. The other makes you the expert in one thing.",
+      "startOffset": 28.253060999999995,
+      "endOffset": 33.935714
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Top MBA classmates become your board, your investors, your job offers for thirty years.",
+      "startOffset": 33.935714,
+      "endOffset": 40.663264999999996
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Dead even, two apiece. Switching careers, take the MBA. Going deeper in your field, Master's.",
+      "startOffset": 40.663264999999996,
+      "endOffset": 49.40224499999999
+    }
+  ],
+  "youtubeTitle": "MBA vs Master's Degree: Which One Actually Pays Off?",
+  "youtubeDescription": "A head to head breakdown of the MBA and the traditional Master's degree across cost, duration, career switching power, technical depth, and network value. The MBA runs $150K to $200K at top programs versus $30K to $100K for a Master's, but only one of them lets you change industries. Here is who each degree is really built for.\n\nFigures accurate as of September 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mba-vs-masters",
+  "asOf": "September 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": [
+    "Image A by Cfls (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Michigan_MBA.png"
+  ]
+}

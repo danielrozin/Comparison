@@ -5197,6 +5197,65 @@
       "youtubeVideoId": null,
       "youtubeUrl": null,
       "uploadedAt": "2026-08-31T11:44:21.382Z"
+    },
+    {
+      "slug": "mba-vs-masters",
+      "title": "MBA vs Master's Degree",
+      "entityA": "MBA",
+      "entityB": "Master's Degree",
+      "category": "education",
+      "renderer": "v3",
+      "asOf": "September 2026",
+      "videoFile": "mba-vs-masters.mp4",
+      "durationSeconds": 47,
+      "transcript": "One of these costs five times more and teaches you less about your field. An MBA buys you a new career. A Master's buys you a deeper one. Two locked years versus one, if you pick the right Master's. Call it even. Up to 200 grand against 30. That gap is a house deposit. The MBA is the only one that lets you walk into a new industry. One makes you fluent in everything. The other makes you the expert in one thing. Top MBA classmates become your board, your investors, your job offers for thirty years. Dead even, two apiece. Switching careers, take the MBA. Going deeper in your field, Master's.",
+      "chapters": [
+        {
+          "name": "MBA vs Master's Degree",
+          "startOffset": 0,
+          "endOffset": 5
+        },
+        {
+          "name": "Tale of the tape",
+          "startOffset": 5,
+          "endOffset": 11
+        },
+        {
+          "name": "Round 1: Duration",
+          "startOffset": 11,
+          "endOffset": 17
+        },
+        {
+          "name": "Round 2: Average Cost (Top Programs)",
+          "startOffset": 17,
+          "endOffset": 23
+        },
+        {
+          "name": "Round 3: Career Switching Power",
+          "startOffset": 23,
+          "endOffset": 28
+        },
+        {
+          "name": "Round 4: Technical Depth",
+          "startOffset": 28,
+          "endOffset": 34
+        },
+        {
+          "name": "Round 5: Network Value",
+          "startOffset": 34,
+          "endOffset": 41
+        },
+        {
+          "name": "The verdict",
+          "startOffset": 41,
+          "endOffset": 49
+        }
+      ],
+      "youtubeTitle": "MBA vs Master's Degree: Which One Actually Pays Off?",
+      "youtubeDescription": "A head to head breakdown of the MBA and the traditional Master's degree across cost, duration, career switching power, technical depth, and network value. The MBA runs $150K to $200K at top programs versus $30K to $100K for a Master's, but only one of them lets you change industries. Here is who each degree is really built for.\n\nFigures accurate as of September 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/mba-vs-masters\n\nImage credits:\nImage A by Cfls (CC BY-SA 4.0) — https://commons.wikimedia.org/wiki/File:Michigan_MBA.png\n\nFull comparison: https://www.aversusb.net/compare/mba-vs-masters",
+      "youtubeVideoId": null,
+      "youtubeUrl": null,
+      "uploadedAt": "2026-09-01T09:55:18.520Z"
     }
   ]
 }
