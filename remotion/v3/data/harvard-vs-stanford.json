@@ -1,0 +1,145 @@
+{
+  "title": "Harvard vs Stanford",
+  "entityA": "Harvard University",
+  "entityB": "Stanford University",
+  "category": "education",
+  "shortAnswer": "Harvard (founded 1636) is the oldest US university with the largest endowment ($50B) and leads in law and medical school prestige. Stanford (founded 1885) dominates in technology and entrepreneurship — more venture capital has been raised by Stanford alumni than any other university.",
+  "stats": [
+    {
+      "label": "Founded",
+      "valueA": "1636",
+      "valueB": "1885",
+      "winner": "a"
+    },
+    {
+      "label": "Endowment",
+      "valueA": "$50.9B",
+      "valueB": "$36B",
+      "winner": "a"
+    },
+    {
+      "label": "Acceptance Rate (2024)",
+      "valueA": "~3%",
+      "valueB": "~3.7%",
+      "winner": "tie"
+    },
+    {
+      "label": "Tech/Entrepreneurship",
+      "valueA": "Good",
+      "valueB": "World's best",
+      "winner": "b"
+    },
+    {
+      "label": "Law School Prestige",
+      "valueA": "#1-2",
+      "valueB": "#2-4",
+      "winner": "a"
+    }
+  ],
+  "verdict": "Harvard for law, medicine, and political leadership. Stanford for tech entrepreneurship and Silicon Valley connections. Both are world #1 caliber institutions.",
+  "slug": "harvard-vs-stanford",
+  "imageA": null,
+  "imageB": null,
+  "lines": {
+    "hook": "Harvard was 249 years old before Stanford existed. Stanford still caught up.",
+    "tape": "One school owns the old money and the old power. The other owns the future.",
+    "rounds": [
+      "Harvard predates the United States by 140 years. Nobody in America is older.",
+      "Fifty billion dollars. That's not a college fund, that's a sovereign wealth fund.",
+      "Three percent versus three point seven. Both reject roughly everyone who applies.",
+      "Stanford alumni have raised more venture capital than any school on Earth.",
+      "Harvard Law sits at number one. Everyone else is arguing over second."
+    ],
+    "verdict": "Harvard University wins it 3 to 1."
+  },
+  "audio": {
+    "cold": "video-assets/harvard-vs-stanford/audio/cold.mp3",
+    "tape": "video-assets/harvard-vs-stanford/audio/tape.mp3",
+    "rounds": [
+      "video-assets/harvard-vs-stanford/audio/round-1.mp3",
+      "video-assets/harvard-vs-stanford/audio/round-2.mp3",
+      "video-assets/harvard-vs-stanford/audio/round-3.mp3",
+      "video-assets/harvard-vs-stanford/audio/round-4.mp3",
+      "video-assets/harvard-vs-stanford/audio/round-5.mp3"
+    ],
+    "verdict": "video-assets/harvard-vs-stanford/audio/verdict.mp3"
+  },
+  "timings": {
+    "cold": 221,
+    "tape": 188,
+    "rounds": [
+      231,
+      178,
+      183,
+      156,
+      166
+    ],
+    "verdict": 195,
+    "leadInFrames": 9
+  },
+  "transcript": "Harvard was 249 years old before Stanford existed. Stanford still caught up. One school owns the old money and the old power. The other owns the future. Harvard predates the United States by 140 years. Nobody in America is older. Fifty billion dollars. That's not a college fund, that's a sovereign wealth fund. Three percent versus three point seven. Both reject roughly everyone who applies. Stanford alumni have raised more venture capital than any school on Earth. Harvard Law sits at number one. Everyone else is arguing over second. Harvard University wins it 3 to 1.",
+  "chapters": [
+    {
+      "id": "cold",
+      "kind": "cold",
+      "text": "Harvard was 249 years old before Stanford existed. Stanford still caught up.",
+      "startOffset": 0,
+      "endOffset": 7.380611999999999
+    },
+    {
+      "id": "tape",
+      "kind": "tape",
+      "text": "One school owns the old money and the old power. The other owns the future.",
+      "startOffset": 7.380611999999999,
+      "endOffset": 13.637958999999999
+    },
+    {
+      "id": "round-1",
+      "kind": "round",
+      "text": "Harvard predates the United States by 140 years. Nobody in America is older.",
+      "startOffset": 13.637958999999999,
+      "endOffset": 21.332040999999997
+    },
+    {
+      "id": "round-2",
+      "kind": "round",
+      "text": "Fifty billion dollars. That's not a college fund, that's a sovereign wealth fund.",
+      "startOffset": 21.332040999999997,
+      "endOffset": 27.249795999999996
+    },
+    {
+      "id": "round-3",
+      "kind": "round",
+      "text": "Three percent versus three point seven. Both reject roughly everyone who applies.",
+      "startOffset": 27.249795999999996,
+      "endOffset": 33.350407999999995
+    },
+    {
+      "id": "round-4",
+      "kind": "round",
+      "text": "Stanford alumni have raised more venture capital than any school on Earth.",
+      "startOffset": 33.350407999999995,
+      "endOffset": 38.562856999999994
+    },
+    {
+      "id": "round-5",
+      "kind": "round",
+      "text": "Harvard Law sits at number one. Everyone else is arguing over second.",
+      "startOffset": 38.562856999999994,
+      "endOffset": 44.08877499999999
+    },
+    {
+      "id": "verdict",
+      "kind": "verdict",
+      "text": "Harvard University wins it 3 to 1.",
+      "startOffset": 44.08877499999999,
+      "endOffset": 50.58877499999999
+    }
+  ],
+  "youtubeTitle": "Harvard University vs Stanford University",
+  "youtubeDescription": "...,. Harics.\n\nFigures accurate as of September 2026. Statistics change over time — see the full, maintained comparison at https://www.aversusb.net/compare/harvard-vs-stanford",
+  "asOf": "September 2026",
+  "narrationSrc": null,
+  "musicSrc": null,
+  "attribution": []
+}
