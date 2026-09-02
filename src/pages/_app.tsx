@@ -21,9 +21,9 @@ const inter = Inter({
 });
 
 // DAN-432 Phase C: Pages Router app shell for /compare/[slug].
-// Mirrors the body chrome from src/app/layout.tsx. ExperimentProvider is seeded
-// with an empty cookie and buckets client-side (the static page has no per-request
-// cookie at build/ISR time — identical to the App Router SSG behaviour it replaces).
+// Mirrors the body chrome from src/app/layout.tsx. The static page has no
+// per-request cookie at build/ISR time, so ExperimentProvider renders control
+// on the server and buckets client-side after mount.
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={inter.variable} style={{ display: "contents" }}>
@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <MetaPixel />
       <ClarityTags />
       <PostHogInit />
-      <ExperimentProvider initialCookie="">
+      <ExperimentProvider>
         <Header />
         <main id="main-content" className="flex-1">
           <Component {...pageProps} />
