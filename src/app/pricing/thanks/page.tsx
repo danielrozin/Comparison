@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
+import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { HubShell } from "@/components/layout/HubShell";
 
 const PAGE_TITLE = `You're in — ${SITE_NAME}`;
@@ -34,7 +34,7 @@ export default function PricingThanksPage() {
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">2</span>
-            <span><strong className="text-text">Activation email.</strong> Within the hour you&apos;ll get a welcome email from Info@aversusb.net with how to request your first custom comparison.</span>
+            <span><strong className="text-text">Activation email.</strong> Within the hour you&apos;ll get a welcome email from {CONTACT_EMAIL} with how to request your first custom comparison.</span>
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">3</span>
@@ -44,8 +44,8 @@ export default function PricingThanksPage() {
 
         <p className="text-sm text-text-secondary">
           Didn&apos;t get the email? Write to{" "}
-          <a href="mailto:Info@aversusb.net" className="text-primary-600 font-medium hover:underline">
-            Info@aversusb.net
+          <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary-600 font-medium hover:underline">
+            {CONTACT_EMAIL}
           </a>{" "}
           and a founder answers — usually the same day.
         </p>
