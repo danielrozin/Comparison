@@ -6,7 +6,8 @@ import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, socialSameAs, howToSchemaFromBlog, entityWikipediaSameAs, blogClaimReviewSchema } from "@/lib/seo/schema";
 import { getBlogSchemaExtras } from "@/lib/data/blog-schema-extras";
-import { resolveCompareLinksInHtml, filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
+import { resolveCompareLinksInHtml } from "@/lib/seo/resolve-internal-links";
+import { resolveBlogRelatedCompareSlugs } from "@/lib/data/blog-related-compares";
 
 export const revalidate = 3600; // ISR: revalidate blog pages every 1 hour
 import { ShareBar } from "@/components/engagement/ShareBar";
@@ -14,6 +15,8 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
+import { BlogCompareCTA } from "@/components/blog/BlogCompareCTA";
+import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
@@ -385,10 +388,14 @@ export default async function BlogPostPage({
   // comparisons were live and nothing prunes it when a consolidation batch archives
   // one. It feeds the visible related rail AND five JSON-LD edges (about, citation,
   // isBasedOn, mentions, significantLink), so resolve it once here and let the filtered
-  // list drive all six. This rail was the bulk of the 764 dead /blog links.
+  // list drive all six. ROO-9 also merges curated fallbacks for top landers, then
+  // live-filters — never invent dead /compare hrefs.
   const article = {
     ...rawArticle,
-    relatedComparisonSlugs: await filterLiveCompareSlugs(rawArticle.relatedComparisonSlugs ?? []),
+    relatedComparisonSlugs: await resolveBlogRelatedCompareSlugs(
+      slug,
+      rawArticle.relatedComparisonSlugs ?? []
+    ),
   };
 
   const readTime = estimateReadTime(article.content);
@@ -896,6 +903,14 @@ export default async function BlogPostPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
+              {/* ROO-9: mid-article compare CTA when live related slugs exist */}
+              {article.relatedComparisonSlugs && article.relatedComparisonSlugs.length > 0 && (
+                <BlogCompareCTA
+                  blogSlug={slug}
+                  primarySlug={article.relatedComparisonSlugs[0]}
+                  primaryTitle={comparisonTitles[article.relatedComparisonSlugs[0]] ?? null}
+                />
+              )}
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
                 <div
                   className="prose-custom"
@@ -952,59 +967,12 @@ export default async function BlogPostPage({
             <NewsletterSignup source="blog" referrerSlug={slug} />
           </div>
 
-          {/* Related Comparisons */}
-          {article.relatedComparisonSlugs &&
-            article.relatedComparisonSlugs.length > 0 && (
-              <section aria-labelledby="blog-related-comparisons-heading" className="mt-8 rounded-xl border border-border overflow-hidden">
-                <div className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-primary-50 to-accent-50 border-b border-border">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h2 id="blog-related-comparisons-heading" className="text-base font-bold text-text">
-                      Related Comparisons
-                    </h2>
-                    <p className="text-xs text-text-secondary">{article.relatedComparisonSlugs.length} head-to-head comparisons</p>
-                  </div>
-                </div>
-                <div className="p-4 bg-white">
-                <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 list-none">
-                  {article.relatedComparisonSlugs.map((compSlug) => {
-                    const title = comparisonTitles[compSlug] || compSlug.replace(/-/g, " ");
-                    const parts = title.split(/\s+vs\.?\s+/i);
-                    return (
-                      <li key={compSlug} className="flex">
-                      <Link
-                        href={`/compare/${compSlug}`}
-                        className="flex items-center gap-3 p-3 rounded-xl border border-border bg-surface-alt/30 hover:border-primary-300 hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
-                      >
-                        <div className="relative flex-shrink-0 h-9" style={{ width: "50px" }}>
-                          <div className="absolute left-0 top-0 w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
-                            {(parts[0] || "A").charAt(0).toUpperCase()}
-                          </div>
-                          <div className="absolute left-4 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
-                            {(parts[1] || "B").charAt(0).toUpperCase()}
-                          </div>
-                          <div className="absolute -bottom-0.5 left-[14px] z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white">
-                            <span className="text-[6px] font-black text-white leading-none">VS</span>
-                          </div>
-                        </div>
-                        <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors flex-1 min-w-0 truncate">
-                          {title}
-                        </span>
-                        <svg className="w-3.5 h-3.5 text-text-secondary/50 group-hover:text-primary-500 group-hover:translate-x-0.5 transition-all flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-                </div>
-              </section>
-            )}
+          {/* Related Comparisons — tracked clicks (ROO-9); soft explore if empty */}
+          <BlogRelatedComparisons
+            blogSlug={slug}
+            slugs={article.relatedComparisonSlugs ?? []}
+            titles={comparisonTitles}
+          />
 
           {/* Ad: before back button */}
           <div className="my-8">

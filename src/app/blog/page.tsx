@@ -5,6 +5,8 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
+import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
+import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
@@ -409,6 +411,14 @@ export default async function BlogPage({
     `${SITE_URL}/blog#breadcrumb`
   );
 
+  // ROO-9: hub CTA — only surface live featured compares (DAN-2581)
+  const featuredLiveSlugs = await filterLiveCompareSlugs(
+    FEATURED_COMPARISONS.map((f) => f.slug)
+  );
+  const featuredLive = FEATURED_COMPARISONS.filter((f) =>
+    featuredLiveSlugs.includes(f.slug)
+  ).slice(0, 3);
+
   return (
     <>
       <script
@@ -474,6 +484,47 @@ export default async function BlogPage({
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
+          {/* ROO-9: hub → compare entry CTA (720 visitors / 94% bounce) */}
+          <div className="mt-8 max-w-2xl mx-auto">
+            <div className="rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20 p-4 sm:p-5 text-left">
+              <p className="text-sm font-semibold text-white mb-1">Skip the bounce — compare side by side</p>
+              <p className="text-xs text-primary-200 mb-3">
+                Search any two options, or jump into a featured head-to-head.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                <Link
+                  href="/search"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  Search comparisons
+                </Link>
+                <Link
+                  href="/trending"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-white/10 ring-1 ring-white/25 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                >
+                  Trending
+                </Link>
+              </div>
+              {featuredLive.length > 0 && (
+                <ul className="mt-3 flex flex-wrap gap-2 list-none p-0">
+                  {featuredLive.map((f) => (
+                    <li key={f.slug}>
+                      <Link
+                        href={`/compare/${f.slug}`}
+                        className="inline-flex items-center gap-1.5 text-xs font-medium text-primary-100 hover:text-white underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
+                      >
+                        <span className="text-accent-300" aria-hidden="true">VS</span>
+                        {f.anchor}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
