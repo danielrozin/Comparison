@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
-import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-related-compares";
+import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
 
 export interface BlogCompareCTAProps {
   blogSlug: string;
