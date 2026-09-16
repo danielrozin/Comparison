@@ -42,6 +42,14 @@ const nextConfig: NextConfig = {
   },
   skipTrailingSlashRedirect: true,
 
+  // public/videos (~290MB of mp4s) must not be NFT-traced into serverless
+  // functions. sitemap/video.xml calls selfHostedVideoExists (fs.stat) which
+  // otherwise bundles every mp4 and blows the 250MB Vercel function limit
+  // (seen as sitemap/video.xml.rsc ~317MB after ROO-9 #246 compile).
+  outputFileTracingExcludes: {
+    "*": ["./public/videos/**"],
+  },
+
   async headers() {
     return [
       {
