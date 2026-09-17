@@ -10,7 +10,11 @@ import { SearchBox } from "@/components/home/SearchBox";
 import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeaturedComparisons } from "@/components/home/FeaturedComparisons";
+import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
+import { HomeFooterCompareCTA } from "@/components/home/HomeFooterCompareCTA";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
+import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
+import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 import { TrendingCard } from "@/components/home/TrendingCard";
 import { CategoryCard } from "@/components/home/CategoryCard";
 import { RecentSearches } from "@/components/home/RecentSearches";
@@ -62,6 +66,44 @@ export default async function HomePage() {
     listBlogArticles({ limit: 3, status: "published" }),
   ]);
   const blogArticles = blogResult.articles;
+
+  // ROO-16: live-filter curated chips (DAN-2581) — never emit dead /compare hrefs
+  const chipCandidateSlugs = [
+    ...FEATURED_COMPARISONS.map((f) => f.slug),
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => c.slug),
+  ];
+  const liveChipSlugs = await filterLiveCompareSlugs(chipCandidateSlugs);
+  const liveChipSet = new Set(liveChipSlugs);
+
+  const featuredLive = FEATURED_COMPARISONS.filter((f) => liveChipSet.has(f.slug));
+  const labelBySlug = new Map<string, string>([
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => [c.slug, c.label] as const),
+    ...FEATURED_COMPARISONS.map((f) => [f.slug, f.anchor] as const),
+    ...trending.map((t) => [t.slug, t.title] as const),
+  ]);
+
+  // Prefer curated featured primary; fall back to first trending (already live from DB)
+  const primarySlug = featuredLive[0]?.slug ?? trending[0]?.slug ?? null;
+  const primaryTitle =
+    featuredLive[0]?.anchor ??
+    (primarySlug ? labelBySlug.get(primarySlug) ?? null : null);
+
+  // Chips: curated live first, then trending fillers (deduped), max 6
+  const chipSlugs: string[] = [];
+  for (const slug of liveChipSlugs) {
+    if (!chipSlugs.includes(slug)) chipSlugs.push(slug);
+    if (chipSlugs.length >= 6) break;
+  }
+  if (chipSlugs.length < 6) {
+    for (const t of trending) {
+      if (!chipSlugs.includes(t.slug)) chipSlugs.push(t.slug);
+      if (chipSlugs.length >= 6) break;
+    }
+  }
+  const homeCompareChips = chipSlugs.map((slug) => ({
+    slug,
+    label: labelBySlug.get(slug) || slug.replace(/-/g, " "),
+  }));
 
   const homeOgImage = `${SITE_URL}/api/og?title=${encodeURIComponent("Compare Anything")}&type=home`;
   const homeToday = new Date().toISOString().slice(0, 10);
@@ -276,24 +318,12 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Quick example chips */}
-            <div className="flex flex-wrap justify-center gap-2 mt-5 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              {[
-                { label: "Messi vs Ronaldo", href: "/compare/messi-vs-ronaldo" },
-                { label: "Japan vs China", href: "/compare/japan-vs-china" },
-                { label: "iPhone vs Samsung", href: "/compare/iphone-17-vs-samsung-s26" },
-                { label: "WW1 vs WW2", href: "/compare/ww1-vs-ww2" },
-              ].map((example) => (
-                <Link
-                  key={example.href}
-                  href={example.href}
-                  className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3.5 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all backdrop-blur-sm"
-                >
-                  <span className="text-xs text-white/40" aria-hidden="true">↗</span>
-                  {example.label}
-                </Link>
-              ))}
-            </div>
+            {/* ROO-16: primary path into live /compare + tracked chips */}
+            <HomeCompareCTA
+              primarySlug={primarySlug}
+              primaryTitle={primaryTitle}
+              chips={homeCompareChips}
+            />
 
             {/* Category pill links */}
             <div className="mt-6 animate-fade-in" style={{ animationDelay: "0.5s" }}>
@@ -698,35 +728,8 @@ export default async function HomePage() {
       {/* Newsletter Signup */}
       <NewsletterSignup source="homepage" />
 
-      {/* CTA */}
-      <section aria-labelledby="cta-heading" className="bg-gradient-to-br from-primary-700 via-primary-600 to-accent-700 text-white py-16 relative overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
-          <defs>
-            <pattern id="home-cta-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M0 0h32v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".4"/>
-              <path d="M0 16h32M16 0v32" fill="none" stroke="#888" strokeWidth=".5" strokeOpacity=".2"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#home-cta-grid)"/>
-        </svg>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 id="cta-heading" className="text-2xl sm:text-3xl font-display font-bold mb-4">
-            Ready to Compare?
-          </h2>
-          <p className="text-primary-100 mb-8">
-            Start with any comparison — sports, countries, products, or anything else.
-          </p>
-          <Link
-            href="/#search"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-700 font-bold rounded-full hover:bg-primary-50 transition-colors shadow-lg"
-          >
-            Start Comparing
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
-        </div>
-      </section>
+      {/* ROO-16: footer CTA → live compare / trending (not soft /#search) */}
+      <HomeFooterCompareCTA primarySlug={primarySlug} primaryTitle={primaryTitle} />
     </>
   );
 }
