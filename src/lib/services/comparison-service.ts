@@ -642,6 +642,14 @@ async function getRelatedFromDb(
   return [];
 }
 
+/**
+ * Search comparisons for hub/site autocomplete and /search.
+ *
+ * ROO-18 / DAN-2581: only emit canonical live slugs. Without
+ * `canonicalComparisonWhere`, archived and redirect-source rows (e.g.
+ * iphone-vs-android, oneplus-vs-iphone) surfaced as `/compare/*` 404s from
+ * hub `/blog` → `/search` and the global search overlay.
+ */
 export async function searchComparisons(
   query: string,
   limit: number = 20
@@ -655,13 +663,17 @@ export async function searchComparisons(
     try {
       const lower = query.toLowerCase();
       const rows = await prisma.comparison.findMany({
-        where: {
-          OR: [
-            { title: { contains: lower, mode: "insensitive" } },
-            { slug: { contains: lower.replace(/\s+/g, "-") } },
-            { category: { contains: lower, mode: "insensitive" } },
+        where: canonicalComparisonWhere({
+          AND: [
+            {
+              OR: [
+                { title: { contains: lower, mode: "insensitive" as const } },
+                { slug: { contains: lower.replace(/\s+/g, "-") } },
+                { category: { contains: lower, mode: "insensitive" as const } },
+              ],
+            },
           ],
-        },
+        }),
         select: {
           slug: true,
           title: true,
@@ -672,7 +684,7 @@ export async function searchComparisons(
         take: limit,
       });
       if (rows.length > 0) {
-        return rows.map(
+        const mapped = rows.map(
           (r: { slug: string; title: string; category: string | null; viewCount: number }) => ({
             slug: r.slug,
             title: r.title,
@@ -680,18 +692,21 @@ export async function searchComparisons(
             viewCount: r.viewCount,
           })
         );
+        await setCache(searchCacheKey, mapped, CACHE_TTL_SEARCH);
+        return mapped;
       }
     } catch (e) {
       console.warn("Prisma query failed for searchComparisons, falling back to mock:", e);
     }
   }
 
-  // Mock fallback
+  // Mock fallback — exclude redirect sources so local/dev autocomplete matches prod.
   const allSlugs = getAllMockSlugs();
   const lower = query.toLowerCase();
   const results: { slug: string; title: string; category: string; viewCount: number }[] = [];
 
   for (const slug of allSlugs) {
+    if (isRedirectedCompareSlug(slug)) continue;
     const comp = getMockComparison(slug);
     if (!comp) continue;
     const titleLower = comp.title.toLowerCase();

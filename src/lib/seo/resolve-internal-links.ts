@@ -90,6 +90,39 @@ export async function filterLiveCompareSlugs(slugs: string[]): Promise<string[]>
 }
 
 /**
+ * ROO-18 — search/autocomplete counterpart to `filterLiveCompareSlugs`.
+ *
+ * Hub `/blog` → `/search`, the global search overlay, and `/api/v1/search` all
+ * emit `/compare/${slug}` from ranked result rows. Apply the same live-slug
+ * gate as blog CTAs before those URLs leave the server: fold retired sources
+ * onto survivors, drop anything that would 404, preserve rank order, dedupe.
+ */
+export async function filterLiveSearchComparisons<T extends { slug: string }>(
+  results: T[]
+): Promise<T[]> {
+  if (results.length === 0) return [];
+
+  const liveOrdered = await filterLiveCompareSlugs(results.map((r) => r.slug));
+  if (liveOrdered.length === 0) return [];
+
+  const byFolded = new Map<string, T>();
+  for (const result of results) {
+    const folded = toCanonicalSlug(result.slug);
+    if (!byFolded.has(folded)) {
+      byFolded.set(
+        folded,
+        folded === result.slug ? result : { ...result, slug: folded }
+      );
+    }
+  }
+
+  return liveOrdered.flatMap((slug) => {
+    const hit = byFolded.get(slug);
+    return hit ? [hit] : [];
+  });
+}
+
+/**
  * Curated `{ href, label }` nav lists (`/tools`, `/guides`) mix `/compare` and `/blog`
  * targets, and the 2026-07-21 crawl found both kinds dead. Drop the dead ones and fold
  * surviving `/compare` hrefs onto their canonical slug; hrefs of any other shape pass
