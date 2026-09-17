@@ -66,6 +66,12 @@ export function HomeCompareCTA({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  function withSourcePage(href: string) {
+    if (!source) return href;
+    const join = href.includes("?") ? "&" : "?";
+    return `${href}${join}source_page=${encodeURIComponent(source)}`;
+  }
+
   function track(target: string) {
     trackRelatedComparisonClick(source, target);
   }
@@ -113,7 +119,7 @@ export function HomeCompareCTA({
             <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
               {hasPrimary || !useFocusSearch ? (
                 <Link
-                  href={primaryHref}
+                  href={withSourcePage(primaryHref)}
                   onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 >
@@ -135,7 +141,7 @@ export function HomeCompareCTA({
                 </button>
               )}
               <Link
-                href={HOME_COMPARE_TRENDING_HREF}
+                href={withSourcePage(HOME_COMPARE_TRENDING_HREF)}
                 onClick={() => track(HOME_COMPARE_TRENDING_HREF)}
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-white/10 ring-1 ring-white/25 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               >
@@ -149,7 +155,7 @@ export function HomeCompareCTA({
               {chips.map((chip) => (
                 <li key={chip.slug}>
                   <Link
-                    href={`/compare/${chip.slug}`}
+                    href={withSourcePage(`/compare/${chip.slug}`)}
                     onClick={() => track(chip.slug)}
                     className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/85 hover:text-white transition-all backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   >
@@ -180,7 +186,7 @@ export function HomeCompareCTA({
           </div>
           {hasPrimary || !useFocusSearch ? (
             <Link
-              href={primaryHref}
+              href={withSourcePage(primaryHref)}
               onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
