@@ -90,6 +90,19 @@ describe('Comparison Service (mock-data fallback)', () => {
       const results = await searchComparisons('vs', 2)
       expect(results.length).toBeLessThanOrEqual(2)
     })
+
+    // ROO-18: hub/site search must never surface these known stale /compare 404s.
+    it('never returns known dead compare slugs from smoke (ROO-18)', async () => {
+      const results = await searchComparisons('iphone', 50)
+      const slugs = results.map((r) => r.slug)
+      for (const dead of [
+        'iphone-vs-android',
+        'iphone-15-vs-iphone-se',
+        'oneplus-vs-iphone',
+      ]) {
+        expect(slugs).not.toContain(dead)
+      }
+    })
   })
 
   describe('getComparisonsByCategory', () => {

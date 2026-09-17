@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPrisma } from "@/lib/db/prisma";
+import { canonicalComparisonWhere } from "@/lib/db/canonical-comparisons";
+import { filterLiveSearchComparisons } from "@/lib/seo/resolve-internal-links";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { headerSafe } from "@/lib/utils/header-safe";
 
@@ -54,17 +56,23 @@ export async function GET(request: NextRequest) {
   const prisma = getPrisma();
 
   const [compResults, entityResults, blogResults] = await Promise.all([
-    // Comparisons (direct Prisma query to include shortAnswer)
+    // Comparisons (direct Prisma query to include shortAnswer).
+    // ROO-18 / DAN-2581: canonical-only + live-slug filter so AI/hub search never
+    // returns stale /compare 404s (iphone-vs-android, oneplus-vs-iphone, …).
     types.includes("comparisons") && prisma
       ? prisma.comparison
           .findMany({
-            where: {
-              OR: [
-                { title: { contains: q, mode: "insensitive" } },
-                { slug: { contains: q.toLowerCase().replace(/\s+/g, "-") } },
-                { category: { contains: q, mode: "insensitive" } },
+            where: canonicalComparisonWhere({
+              AND: [
+                {
+                  OR: [
+                    { title: { contains: q, mode: "insensitive" as const } },
+                    { slug: { contains: q.toLowerCase().replace(/\s+/g, "-") } },
+                    { category: { contains: q, mode: "insensitive" as const } },
+                  ],
+                },
               ],
-            },
+            }),
             select: {
               slug: true,
               title: true,
@@ -72,19 +80,36 @@ export async function GET(request: NextRequest) {
               category: true,
             },
             orderBy: { viewCount: "desc" },
-            take: limit,
+            take: Math.min(limit * 2, 40),
           })
-          .then((results) =>
-            results.map((r) => ({
-              type: "comparison" as const,
-              slug: r.slug,
-              title: r.title,
-              url: `${SITE_URL}/compare/${r.slug}`,
-              excerpt: r.shortAnswer ?? undefined,
-              answerUrl: `${SITE_URL}/api/answer/${r.slug}`,
-              knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${r.slug}`,
-              schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${r.slug}`,
-            }))
+          .then(
+            async (
+              results: {
+                slug: string;
+                title: string;
+                shortAnswer: string | null;
+                category: string | null;
+              }[]
+            ) => {
+              const mapped = results.map((r) => ({
+                type: "comparison" as const,
+                slug: r.slug,
+                title: r.title,
+                url: `${SITE_URL}/compare/${r.slug}`,
+                excerpt: r.shortAnswer ?? undefined,
+                answerUrl: `${SITE_URL}/api/answer/${r.slug}`,
+                knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${r.slug}`,
+                schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${r.slug}`,
+              }));
+              const live = await filterLiveSearchComparisons(mapped);
+              return live.slice(0, limit).map((r) => ({
+                ...r,
+                url: `${SITE_URL}/compare/${r.slug}`,
+                answerUrl: `${SITE_URL}/api/answer/${r.slug}`,
+                knowledgeGraphUrl: `${SITE_URL}/api/knowledge-graph/${r.slug}`,
+                schemaJsonLdUrl: `${SITE_URL}/api/v1/schema/${r.slug}`,
+              }));
+            }
           )
       : Promise.resolve([]),
 
