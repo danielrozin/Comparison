@@ -48,3 +48,6 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
 
 /** Soft explore target when no live compare slugs remain. */
 export const BLOG_COMPARE_SOFT_HREF = "/search";
+
+/** PostHog source_page for hub `/blog` → compare CTA clicks (ROO-23). */
+export const BLOG_HUB_COMPARE_SOURCE = "blog-hub";

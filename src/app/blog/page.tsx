@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { listBlogArticles } from "@/lib/services/blog-generator";
+import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
+import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
+import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
+import {
+  BLOG_COMPARE_SOFT_HREF,
+  BLOG_HUB_COMPARE_SOURCE,
+} from "@/lib/data/blog-compare-constants";
 import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
@@ -241,12 +248,15 @@ export default async function BlogPage({
   const limit = 12;
   const offset = (page - 1) * limit;
 
-  const { articles, total } = await listBlogArticles({
-    category,
-    limit,
-    offset,
-    status: "published",
-  });
+  const [{ articles, total }, trending] = await Promise.all([
+    listBlogArticles({
+      category,
+      limit,
+      offset,
+      status: "published",
+    }),
+    getTrendingComparisons(10),
+  ]);
 
   const totalPages = Math.ceil(total / limit);
   const activeCategory = params.category || "all";
@@ -411,13 +421,43 @@ export default async function BlogPage({
     `${SITE_URL}/blog#breadcrumb`
   );
 
-  // ROO-9: hub CTA — only surface live featured compares (DAN-2581)
-  const featuredLiveSlugs = await filterLiveCompareSlugs(
-    FEATURED_COMPARISONS.map((f) => f.slug)
-  );
-  const featuredLive = FEATURED_COMPARISONS.filter((f) =>
-    featuredLiveSlugs.includes(f.slug)
-  ).slice(0, 3);
+  // ROO-23: hub → compare — reuse HomeCompareCTA with live primary + chips
+  // (ROO-9 only linked /search + /trending; chips were untracked text links).
+  // DAN-2581: never emit dead /compare hrefs. `trending` fetched above in Promise.all.
+  const chipCandidateSlugs = [
+    ...FEATURED_COMPARISONS.map((f) => f.slug),
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => c.slug),
+  ];
+  const liveChipSlugs = await filterLiveCompareSlugs(chipCandidateSlugs);
+  const liveChipSet = new Set(liveChipSlugs);
+
+  const featuredLive = FEATURED_COMPARISONS.filter((f) => liveChipSet.has(f.slug));
+  const labelBySlug = new Map<string, string>([
+    ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => [c.slug, c.label] as const),
+    ...FEATURED_COMPARISONS.map((f) => [f.slug, f.anchor] as const),
+    ...trending.map((t) => [t.slug, t.title] as const),
+  ]);
+
+  const primarySlug = featuredLive[0]?.slug ?? trending[0]?.slug ?? null;
+  const primaryTitle =
+    featuredLive[0]?.anchor ??
+    (primarySlug ? labelBySlug.get(primarySlug) ?? null : null);
+
+  const chipSlugs: string[] = [];
+  for (const slug of liveChipSlugs) {
+    if (!chipSlugs.includes(slug)) chipSlugs.push(slug);
+    if (chipSlugs.length >= 6) break;
+  }
+  if (chipSlugs.length < 6) {
+    for (const t of trending) {
+      if (!chipSlugs.includes(t.slug)) chipSlugs.push(t.slug);
+      if (chipSlugs.length >= 6) break;
+    }
+  }
+  const blogHubCompareChips = chipSlugs.map((slug) => ({
+    slug,
+    label: labelBySlug.get(slug) || slug.replace(/-/g, " "),
+  }));
 
   return (
     <>
@@ -484,47 +524,14 @@ export default async function BlogPage({
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
-          {/* ROO-9: hub → compare entry CTA (720 visitors / 94% bounce) */}
-          <div className="mt-8 max-w-2xl mx-auto">
-            <div className="rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20 p-4 sm:p-5 text-left">
-              <p className="text-sm font-semibold text-white mb-1">Skip the bounce — compare side by side</p>
-              <p className="text-xs text-primary-200 mb-3">
-                Search any two options, or jump into a featured head-to-head.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-                <Link
-                  href="/search"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  Search comparisons
-                </Link>
-                <Link
-                  href="/trending"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-white/10 ring-1 ring-white/25 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                >
-                  Trending
-                </Link>
-              </div>
-              {featuredLive.length > 0 && (
-                <ul className="mt-3 flex flex-wrap gap-2 list-none p-0">
-                  {featuredLive.map((f) => (
-                    <li key={f.slug}>
-                      <Link
-                        href={`/compare/${f.slug}`}
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-primary-100 hover:text-white underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
-                      >
-                        <span className="text-accent-300" aria-hidden="true">VS</span>
-                        {f.anchor}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
+          {/* ROO-23: above-fold HomeCompareCTA — primary live /compare + tracked chips */}
+          <HomeCompareCTA
+            primarySlug={primarySlug}
+            primaryTitle={primaryTitle}
+            chips={blogHubCompareChips}
+            source={BLOG_HUB_COMPARE_SOURCE}
+            softHref={BLOG_COMPARE_SOFT_HREF}
+          />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

@@ -20,6 +20,14 @@ export interface HomeCompareCTAProps {
   primaryTitle?: string | null;
   /** Live chip targets already filtered server-side (DAN-2581). */
   chips?: HomeCompareChip[];
+  /** PostHog source_page for related_comparison_click (default: home). */
+  source?: string;
+  /**
+   * Soft explore href when no live primary (e.g. /search on /blog hub).
+   * When set, the primary button is a Link instead of focusSearch —
+   * required on pages without a #search input.
+   */
+  softHref?: string;
 }
 
 /**
@@ -31,14 +39,19 @@ export function HomeCompareCTA({
   primarySlug,
   primaryTitle,
   chips = [],
+  source = HOME_COMPARE_SOURCE,
+  softHref,
 }: HomeCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
-  const primaryHref = hasPrimary ? `/compare/${primarySlug}` : HOME_COMPARE_SOFT_HREF;
+  const exploreHref = softHref || HOME_COMPARE_SOFT_HREF;
+  const primaryHref = hasPrimary ? `/compare/${primarySlug}` : exploreHref;
   const primaryLabel = hasPrimary
     ? primaryTitle || primarySlug!.replace(/-/g, " ")
     : "Explore side-by-side comparisons";
   const ctaVerb = hasPrimary ? "Compare now" : "Start a comparison";
+  // Prefer Link softHref on non-home pages; focusSearch only when no softHref.
+  const useFocusSearch = !hasPrimary && !softHref;
 
   useEffect(() => {
     function onScroll() {
@@ -54,11 +67,11 @@ export function HomeCompareCTA({
   }, []);
 
   function track(target: string) {
-    trackRelatedComparisonClick(HOME_COMPARE_SOURCE, target);
+    trackRelatedComparisonClick(source, target);
   }
 
   function focusSearch() {
-    track(HOME_COMPARE_SOFT_HREF);
+    track(exploreHref);
     const input = document.querySelector<HTMLInputElement>('#search input[type="text"]');
     if (input) {
       input.focus();
@@ -98,15 +111,15 @@ export function HomeCompareCTA({
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
-              {hasPrimary ? (
+              {hasPrimary || !useFocusSearch ? (
                 <Link
                   href={primaryHref}
-                  onClick={() => track(primarySlug!)}
+                  onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 >
                   {ctaVerb}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
                   </svg>
                 </Link>
               ) : (
@@ -165,10 +178,10 @@ export function HomeCompareCTA({
             <p className="text-[11px] font-semibold uppercase tracking-wide text-primary-600">Compare</p>
             <p className="text-sm font-semibold text-text truncate">{primaryLabel}</p>
           </div>
-          {hasPrimary ? (
+          {hasPrimary || !useFocusSearch ? (
             <Link
               href={primaryHref}
-              onClick={() => track(primarySlug!)}
+              onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
             >
               Go
