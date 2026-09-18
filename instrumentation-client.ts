@@ -1,7 +1,7 @@
 import posthog from "posthog-js";
 
 /**
- * Single client-side PostHog bootstrap.
+ * Single client-side PostHog bootstrap (ROO-33 / #244).
  *
  * Next.js runs this instrumentation hook once at browser start, before React
  * hydrates. It is the only place that calls posthog.init. A second init used
@@ -12,6 +12,9 @@ import posthog from "posthog-js";
  * Consent: mirror the Clarity rule in both document heads — track when the
  * visitor granted analytics consent, or made no choice outside the EU.
  * Otherwise stay dark.
+ *
+ * Keeps the SPA pageview / pageleave / no-autocapture settings from the old
+ * PostHogInit so CRO funnels and $pageview stay intact after the collapse.
  */
 
 function analyticsAllowed(): boolean {
@@ -32,7 +35,10 @@ function experimentAssignments(): Record<string, string> {
   try {
     const m = document.cookie.match(/(?:^|; )ab_experiments=([^;]*)/);
     if (!m) return {};
-    const raw = JSON.parse(decodeURIComponent(m[1])) as Record<string, { variant?: string } | string>;
+    const raw = JSON.parse(decodeURIComponent(m[1])) as Record<
+      string,
+      { variant?: string } | string
+    >;
     const out: Record<string, string> = {};
     for (const [id, v] of Object.entries(raw)) {
       const variant = typeof v === "string" ? v : v?.variant;
@@ -49,13 +55,17 @@ if (token && analyticsAllowed()) {
   posthog.init(token, {
     api_host: "/ingest",
     ui_host: "https://us.posthog.com",
-    defaults: "2026-01-30",
+    // SPA-aware pageviews + pageleave (carried over from PostHogInit)
+    capture_pageview: "history_change",
+    capture_pageleave: true,
+    // deliberate instrumentation via analytics.ts — autocapture is noise here
+    autocapture: false,
+    persistence: "localStorage+cookie",
     capture_exceptions: true,
     debug: process.env.NODE_ENV === "development",
   });
 
-  // Super properties: every subsequent event carries the visitor's A/B variant,
-  // which makes "signups by variant" a one-click breakdown.
+  // Super properties: every subsequent event carries the visitor's A/B variant
   const assignments = experimentAssignments();
   if (Object.keys(assignments).length > 0) {
     posthog.register(assignments);
