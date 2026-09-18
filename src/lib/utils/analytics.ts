@@ -145,6 +145,11 @@ export function trackShareClick(platform: string, page: string) {
 
 export function trackRelatedComparisonClick(sourcePage: string, targetPage: string) {
   trackEvent("related_comparison_click", { source_page: sourcePage, target_page: targetPage });
+  // ROO-30: was GA-only — PostHog never saw blog-hub/home CTA clicks
+  posthog.capture("related_comparison_click", {
+    source_page: sourcePage,
+    target_page: targetPage,
+  });
 }
 
 export function trackReviewSubmission(product: string, rating: number) {
@@ -173,7 +178,16 @@ export function trackComparisonView(slug: string, category: string) {
   trackEvent("comparison_view", { comparison_slug: slug, category });
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
   clarityTagComparison(slug, category);
-  posthog.capture("comparison_viewed", { comparison_slug: slug, category });
+  // ROO-30: pick up ?source_page= from home/blog CTAs when present
+  const sourcePage =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("source_page") || undefined
+      : undefined;
+  posthog.capture("comparison_viewed", {
+    comparison_slug: slug,
+    category,
+    ...(sourcePage ? { source_page: sourcePage } : {}),
+  });
 }
 
 export function trackPollEmailCapture(page: string) {
