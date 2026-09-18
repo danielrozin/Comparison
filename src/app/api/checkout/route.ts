@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/utils/constants";
 import { getPlan, getInterval, stripeConfigured } from "@/lib/monetization/plans";
 import { getRedis } from "@/lib/services/redis";
 import { sendNotificationEmail } from "@/lib/services/email";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 
 /**
  * POST /api/checkout — the one conversion endpoint.
@@ -69,12 +69,16 @@ export async function POST(request: NextRequest) {
         throw new Error(session?.error?.message || `Stripe ${res.status}`);
       }
       try {
+        // ROO-31: await flush — serverless freeze was dropping server events
         getPostHogClient().capture({
           distinctId: body.email?.trim() || "anonymous",
           event: "checkout_started",
           properties: { plan: plan.id, interval: interval.interval, src },
         });
-      } catch {}
+        await flushPostHog();
+      } catch (err) {
+        console.error("[posthog] checkout_started capture failed:", err);
+      }
       return NextResponse.json({ mode: "stripe", url: session.url });
     } catch (err) {
       return NextResponse.json(
@@ -126,7 +130,10 @@ export async function POST(request: NextRequest) {
         event: "reservation_created",
         properties: { plan: plan.id, interval: interval.interval, price: interval.foundingPrice, src },
       });
-    } catch {}
+      await flushPostHog();
+    } catch (err) {
+      console.error("[posthog] reservation_created capture failed:", err);
+    }
   }
 
   return NextResponse.json({

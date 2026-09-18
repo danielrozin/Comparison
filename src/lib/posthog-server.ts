@@ -16,6 +16,16 @@ export function getPostHogClient() {
   return posthogClient;
 }
 
+/** Await pending captures before the serverless function freezes (ROO-31). */
+export async function flushPostHog() {
+  if (!posthogClient) return;
+  try {
+    await posthogClient.flush();
+  } catch (err) {
+    console.error("[posthog] flush failed:", err);
+  }
+}
+
 export async function shutdownPostHog() {
   if (posthogClient) {
     await posthogClient.shutdown();

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 import { z } from "zod";
 import {
   generateComparison,
@@ -167,12 +167,21 @@ export async function POST(request: NextRequest) {
       try {
         await saveComparison(result.comparison);
         try {
+          // ROO-31: include comparison_slug (taxonomy) + await flush so
+          // Vercel serverless does not drop the event on freeze.
           getPostHogClient().capture({
             distinctId: "system",
             event: "comparison_generated",
-            properties: { slug: result.comparison.slug, category: result.comparison.category ?? null },
+            properties: {
+              slug: result.comparison.slug,
+              comparison_slug: result.comparison.slug,
+              category: result.comparison.category ?? null,
+            },
           });
-        } catch {}
+          await flushPostHog();
+        } catch (err) {
+          console.error("[posthog] comparison_generated capture failed:", err);
+        }
         if (attempt) {
           await finishAttemptSuccess(attempt.id, Date.now() - startedAt);
         }
