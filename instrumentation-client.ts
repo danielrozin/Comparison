@@ -1,4 +1,5 @@
 import posthog from "posthog-js";
+import { isThirdPartyException } from "@/lib/utils/third-party-errors";
 
 /**
  * Single client-side PostHog bootstrap (ROO-33 / #244).
@@ -63,6 +64,9 @@ if (token && analyticsAllowed()) {
     persistence: "localStorage+cookie",
     capture_exceptions: true,
     debug: process.env.NODE_ENV === "development",
+    // ROO-33 / #242: drop exceptions thrown only inside third-party scripts
+    before_send: (event) =>
+      event && isThirdPartyException(event.event, event.properties) ? null : event,
   });
 
   // Super properties: every subsequent event carries the visitor's A/B variant
