@@ -31,7 +31,7 @@ function ComparisonCard({
   const gradB = avatarGradient((parts[1] || "B").charAt(0));
   return (
     <Link
-      href={`/compare/${comp.slug}`}
+      href={`/compare/${comp.slug}?source_page=${encodeURIComponent(sourceSlug || "compare-related")}`}
       onClick={() => trackRelatedComparisonClick(sourceSlug, comp.slug)}
       className="flex items-center gap-3 p-3 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group shrink-0 lg:shrink relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
     >

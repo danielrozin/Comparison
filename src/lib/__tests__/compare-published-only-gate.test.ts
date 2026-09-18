@@ -23,6 +23,8 @@ vi.mock('@/lib/services/comparison-service', () => ({
   getTrendingComparisons: vi.fn().mockResolvedValue([]),
   isComparisonDbConfigured: () => isComparisonDbConfigured(),
   isComparisonDbReachable: () => isComparisonDbReachable(),
+  // ROO-29: getStaticProps → buildCompareNextChips → filterLiveCompareSlugs
+  resolveCanonicalComparisonSlugs: async (slugs: string[]) => new Set(slugs),
 }))
 
 // The generator must be unreachable from a page request. Any call here is the

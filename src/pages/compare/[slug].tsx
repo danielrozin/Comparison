@@ -25,6 +25,8 @@ import { KeyDifferencesBlock } from "@/components/comparison/KeyDifferences";
 import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
+import { CompareNextStepCTA } from "@/components/comparison/CompareNextStepCTA";
+import { buildCompareNextChips, type CompareNextChip } from "@/lib/data/build-compare-next-chips";
 import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
 import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
@@ -168,6 +170,8 @@ type Props = {
   slug: string;
   comparison: Comparison;
   sidebarComparisons: RelatedComparison[];
+  /** ROO-29: live next-step chips (related + cluster, DAN-2581 filtered). */
+  nextStepChips: CompareNextChip[];
   smartReviews: SmartReviewEntry[];
   videoMeta: ReturnType<typeof getVideoMetadata>;
   hasSelfHostedVideo: boolean;
@@ -460,6 +464,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     sidebarComparisons = [...sidebarComparisons, ...additional].slice(0, 6);
   }
 
+  // ROO-29: mid-page next-step chips — related + GDP/geo/rideshare cluster, live-filtered
+  const nextStepChips = await buildCompareNextChips(slug, [
+    ...sidebarComparisons.map((c) => ({ slug: c.slug, title: c.title })),
+    ...enrichedComparison.relatedComparisons.map((c) => ({ slug: c.slug, title: c.title })),
+  ]);
+
   const isMultiEntity = enrichedComparison.entities.length > 2;
   const entityA = enrichedComparison.entities[0]?.name || "";
   const entityB = enrichedComparison.entities[1]?.name || "";
@@ -639,6 +649,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       slug,
       comparison: enrichedComparison,
       sidebarComparisons,
+      nextStepChips,
       smartReviews,
       videoMeta,
       hasSelfHostedVideo: !!selfHostedVideo,
@@ -833,7 +844,7 @@ export default function ComparisonPage(props: Props) {
     );
   }
 
-  const { comparison, slug, sidebarComparisons, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
+  const { comparison, slug, sidebarComparisons, nextStepChips, videoMeta, hasSelfHostedVideo, jsonLd, claimReviewJsonLd } = props;
 
   const winnerSide = (() => {
     const wn = comparison.quickAnswer?.winnerName;
@@ -1023,6 +1034,10 @@ export default function ComparisonPage(props: Props) {
         />
       )}
 
+
+      {/* ROO-29: mid-page next-step compare chips — bounce recovery */}
+      <CompareNextStepCTA chips={nextStepChips} />
+
       {/* Key Facts & Figures table */}
       {comparison.attributes.length > 0 && (
         <div id="key-facts" className="scroll-mt-28">
@@ -1183,12 +1198,14 @@ function MultiEntityLayout({
   comparison,
   slug,
   sidebarComparisons,
+  nextStepChips,
   smartReviews,
   jsonLd,
 }: {
   comparison: Comparison;
   slug: string;
   sidebarComparisons: RelatedComparison[];
+  nextStepChips: CompareNextChip[];
   smartReviews: SmartReviewEntry[];
   jsonLd: string;
 }) {
@@ -1293,6 +1310,10 @@ function MultiEntityLayout({
       )}
 
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
+
+
+      {/* ROO-29: mid-page next-step compare chips — bounce recovery */}
+      <CompareNextStepCTA chips={nextStepChips} />
 
       {/* Below the fold */}
       <div className="max-w-7xl mx-auto lg:flex lg:gap-8 lg:px-8">
