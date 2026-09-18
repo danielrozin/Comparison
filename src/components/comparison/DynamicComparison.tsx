@@ -9,7 +9,7 @@ import { ComparisonTable } from "./ComparisonTable";
 import { ProsConsBlock } from "./ProsCons";
 import { VerdictBlock } from "./Verdict";
 import { FAQBlock } from "./FAQ";
-import { trackComparisonView } from "@/lib/utils/analytics";
+import { trackComparisonView, trackComparisonGenerated } from "@/lib/utils/analytics";
 import { ShareBar } from "@/components/engagement/ShareBar";
 import { LikeButton } from "@/components/engagement/LikeButton";
 import { EmbedButton } from "@/components/comparison/EmbedButton";
@@ -117,6 +117,7 @@ export function DynamicComparison({ slug }: { slug: string }) {
         setProgress(100);
         setComparison(data.comparison);
         setStatus("ready");
+        trackComparisonGenerated(slug, data.comparison.category || "dynamic");
         trackComparisonView(slug, data.comparison.category || "dynamic");
 
         // Log to recent searches

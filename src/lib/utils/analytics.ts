@@ -174,6 +174,17 @@ export function trackComparisonSearch(query: string, resultType: string, resultC
   posthog.capture("comparison_search_performed", { search_term: query, result_type: resultType, result_count: resultCount ?? 0 });
 }
 
+export function trackComparisonGenerated(slug: string, category: string) {
+  // ROO-31: client mirror of server comparison_generated — survives
+  // serverless capture drops and proves the generate UI path fired.
+  trackEvent("comparison_generated", { comparison_slug: slug, category });
+  posthog.capture("comparison_generated", {
+    comparison_slug: slug,
+    category,
+    source: "client",
+  });
+}
+
 export function trackComparisonView(slug: string, category: string) {
   trackEvent("comparison_view", { comparison_slug: slug, category });
   trackMetaEvent("ViewContent", { content_name: slug, content_category: category });
