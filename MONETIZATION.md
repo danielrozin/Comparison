@@ -92,6 +92,12 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 - [x] Pro upsell card on every /compare/* page (src=compare-{slug})
 - [x] PostHog server events on reservation/checkout
 
+**ROO-12 readiness (audited 2026-09-19)**
+- Prod `/api/checkout` is in **reservation mode** (no `STRIPE_SECRET_KEY` / price IDs on Vercel).
+- Prod `/api/stripe/webhook` returns **503** until `STRIPE_WEBHOOK_SECRET` is set.
+- PostHog funnel (client + server) is wired: `pricing_viewed` → `checkout_clicked` → `reservation_created` (pre-Stripe) or `checkout_started` → `checkout_completed` (webhook, post-Stripe).
+- Flip to live charge = set env vars below in Vercel + Stripe Dashboard webhook; no code change required for the charge path itself.
+
 **Phase 2 — when Stripe keys land (days)**
 - [ ] Create Stripe products/prices, set `STRIPE_SECRET_KEY`,
       `STRIPE_PRICE_PRO_MONTHLY`, `STRIPE_PRICE_PRO_YEARLY`,

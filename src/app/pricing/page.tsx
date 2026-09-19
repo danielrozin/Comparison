@@ -170,7 +170,7 @@ export default async function PricingPage({
                   ))}
                 </ul>
 
-                <div className="mt-7 pt-2 mt-auto">
+                <div className="mt-7 pt-2 mt-auto space-y-2">
                   <CheckoutButton
                     plan={plan.id}
                     interval={primary.interval}
@@ -182,6 +182,15 @@ export default async function PricingPage({
                         : "bg-slate-900 text-white hover:bg-slate-800 focus-visible:ring-slate-500"
                     } disabled:opacity-60`}
                   />
+                  {plan.intervals[1] && (
+                    <CheckoutButton
+                      plan={plan.id}
+                      interval={plan.intervals[1].interval}
+                      src={src}
+                      label={`Or $${plan.intervals[1].foundingPrice}/${plan.intervals[1].interval} founding`}
+                      className="w-full rounded-xl px-5 py-2.5 text-sm font-semibold border border-border bg-white text-text hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 disabled:opacity-60"
+                    />
+                  )}
                 </div>
               </section>
             );
