@@ -69,11 +69,32 @@ export function trackMetaCustomEvent(eventName: string, params?: Record<string, 
   }
 }
 
-export function trackAffiliateClick(product: string, position: string, page: string) {
-  trackEvent("affiliate_click", { product, position, page });
+/** Affiliate / shop CTA click — GA `affiliate_click` + PostHog `affiliate_link_clicked`.
+ *  `position` is the UI placement (e.g. hero_cta, where_to_buy, sticky_cta, left/right).
+ *  `page` is the comparison slug (or pathname fallback). Extra props (url, partner, …)
+ *  are forwarded to both GA and PostHog. */
+export function trackAffiliateClick(
+  product: string,
+  position: string,
+  page: string,
+  extra?: Record<string, string | number | undefined>,
+) {
+  const props: Record<string, string | number> = {
+    product,
+    position,
+    page,
+    comparison_slug: page,
+    placement: position,
+  };
+  if (extra) {
+    for (const [key, value] of Object.entries(extra)) {
+      if (value !== undefined) props[key] = value;
+    }
+  }
+  trackEvent("affiliate_click", props);
   clarityTagAction("affiliate_click");
   clarityTagEngagement("converted");
-  posthog.capture("affiliate_link_clicked", { product, position, page });
+  posthog.capture("affiliate_link_clicked", props);
 }
 
 /**

@@ -1,7 +1,7 @@
 "use client";
 
 import type { AffiliateLink } from "@/types";
-import { trackEvent } from "@/lib/utils/analytics";
+import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 
@@ -38,14 +38,28 @@ function partnerLabel(partner: string): string {
   return labels[partner] || "Shop";
 }
 
+
+/** Comparison slug from /compare/{slug} pathname, else the pathname itself. */
+function comparisonPageSlug(): string {
+  if (typeof window === "undefined") return "";
+  const match = window.location.pathname.match(/\/compare\/([^/?#]+)/);
+  return match?.[1] ?? window.location.pathname;
+}
+
 export function AffiliateButton({
   link,
   variant = "primary",
   size = "sm",
+  productName,
+  placement = "affiliate_button",
 }: {
   link: AffiliateLink;
   variant?: "primary" | "secondary";
   size?: "sm" | "md";
+  /** Product / entity name for analytics (falls back to link.label). */
+  productName?: string;
+  /** UI placement for analytics (e.g. hero_cta, table_cta). */
+  placement?: string;
 }) {
   const icon = PARTNER_ICONS[link.partner];
   const href = usePaidAffiliateHref(link.url);
@@ -95,9 +109,23 @@ export function AffiliateButton({
       aria-label={`${ctaText} — ${link.label}`}
       className={`${baseClasses} ${sizeClasses} ${variantClasses}`}
       onClick={() => {
-        trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
-          affiliate_partner: link.partner,
-          affiliate_label: link.label,
+        const page = comparisonPageSlug();
+        const product = productName || link.label;
+        if (isGeneric) {
+          trackEvent("generic_cta_click", {
+            affiliate_partner: link.partner,
+            affiliate_label: link.label,
+            product,
+            page,
+            placement,
+            cta_variant: ctaVariant,
+          });
+          return;
+        }
+        trackAffiliateClick(product, placement, page, {
+          url: href,
+          partner: link.partner,
+          label: link.label,
           cta_variant: ctaVariant,
         });
       }}
@@ -165,10 +193,24 @@ function WhereToBuyCard({
           : "hover:border-amber-300 hover:bg-amber-50/50"
       }`}
       onClick={() => {
-        trackEvent(isGeneric ? "generic_cta_click" : "affiliate_click", {
-          affiliate_partner: link.partner,
-          affiliate_label: link.label,
-          cta_type: isGeneric ? "learn_more" : "affiliate",
+        const page = comparisonPageSlug();
+        const placement = "where_to_buy";
+        if (isGeneric) {
+          trackEvent("generic_cta_click", {
+            affiliate_partner: link.partner,
+            affiliate_label: link.label,
+            product: entityName,
+            page,
+            placement,
+            cta_type: "learn_more",
+          });
+          return;
+        }
+        trackAffiliateClick(entityName, placement, page, {
+          url: href,
+          partner: link.partner,
+          label: link.label,
+          cta_type: "affiliate",
         });
       }}
     >

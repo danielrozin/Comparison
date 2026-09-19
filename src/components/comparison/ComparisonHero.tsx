@@ -176,7 +176,7 @@ function EntityCard({
       <ScoreBar entity={entity} variant={variant} />
       {entity.affiliateLinks && entity.affiliateLinks.length > 0 && (
         <div className="mt-3">
-          <AffiliateButton link={entity.affiliateLinks[0]} size="sm" />
+          <AffiliateButton link={entity.affiliateLinks[0]} productName={entity.name} placement="hero_cta" size="sm" />
         </div>
       )}
     </div>

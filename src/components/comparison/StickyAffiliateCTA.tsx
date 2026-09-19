@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import type { ComparisonEntityData } from "@/types";
-import { trackEvent } from "@/lib/utils/analytics";
+import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
 import { usePaidAffiliateHref } from "@/lib/hooks/usePaidAffiliateHref";
 
@@ -116,16 +116,36 @@ export function StickyAffiliateCTA({
     }
   };
 
-  const handleClick = (entity: ComparisonEntityData, position: string) => {
+  const handleClick = (
+    entity: ComparisonEntityData,
+    position: string,
+    url: string,
+  ) => {
     const isEntityGeneric = isGenericLink(entity);
-    trackEvent(isEntityGeneric ? "generic_cta_click" : "affiliate_click", {
-      product: entity.name,
+    const placement =
+      placementVariant === "inline-verdict" ? "inline_cta" : "sticky_cta";
+    if (isEntityGeneric) {
+      trackEvent("generic_cta_click", {
+        product: entity.name,
+        position,
+        page: slug,
+        placement,
+        source: placement,
+        cta_variant: ctaVariant,
+        cta_placement: placementVariant,
+        cta_type: "learn_more",
+      });
+      return;
+    }
+    trackAffiliateClick(entity.name, placement, slug, {
+      url,
       position,
-      page: slug,
-      source: placementVariant === "inline-verdict" ? "inline_cta" : "sticky_cta",
+      partner: entity.affiliateLinks?.[0]?.partner ?? "",
+      label: entity.affiliateLinks?.[0]?.label ?? "",
+      source: placement,
       cta_variant: ctaVariant,
       cta_placement: placementVariant,
-      cta_type: isEntityGeneric ? "learn_more" : "affiliate",
+      cta_type: "affiliate",
     });
   };
 
@@ -155,7 +175,7 @@ export function StickyAffiliateCTA({
                   target="_blank"
                   rel={isGenericLink(entityA) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   aria-label={ctaLabel(entityA)}
-                  onClick={() => handleClick(entityA, "left")}
+                  onClick={() => handleClick(entityA, "left", hrefA)}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                     isGenericLink(entityA)
                       ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
@@ -187,7 +207,7 @@ export function StickyAffiliateCTA({
                   target="_blank"
                   rel={isGenericLink(entityB) ? "noopener noreferrer" : "noopener noreferrer nofollow sponsored"}
                   aria-label={ctaLabel(entityB)}
-                  onClick={() => handleClick(entityB, "right")}
+                  onClick={() => handleClick(entityB, "right", hrefB)}
                   className={`flex-1 inline-flex flex-col items-center justify-center gap-0.5 px-4 py-2 text-white rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                     isGenericLink(entityB)
                       ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
