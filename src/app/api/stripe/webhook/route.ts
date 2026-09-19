@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { getRedis } from "@/lib/services/redis";
 import { sendNotificationEmail } from "@/lib/services/email";
-import { getPostHogClient } from "@/lib/posthog-server";
+import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 
 /**
  * POST /api/stripe/webhook — Phase 2 of MONETIZATION.md.
@@ -109,6 +109,7 @@ export async function POST(request: NextRequest) {
       });
     } catch {}
     try {
+      // ROO-12 / ROO-31: await flush — serverless freeze was dropping server events
       getPostHogClient().capture({
         distinctId: email,
         event: "checkout_completed",
@@ -119,7 +120,10 @@ export async function POST(request: NextRequest) {
           amount: (record.amountTotal ?? 0) / 100,
         },
       });
-    } catch {}
+      await flushPostHog();
+    } catch (err) {
+      console.error("[posthog] checkout_completed capture failed:", err);
+    }
   }
 
   if (event.type === "customer.subscription.deleted") {
