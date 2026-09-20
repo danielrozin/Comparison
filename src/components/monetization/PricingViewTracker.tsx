@@ -1,16 +1,21 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackPricingViewed } from "@/lib/utils/analytics";
+import { trackCheckoutCanceled, trackPricingViewed } from "@/lib/utils/analytics";
 
 /**
- * Fires pricing_viewed once per mount with the referring surface, closing the
- * top of the funnel: pricing_viewed → checkout_clicked →
- * checkout_started/reservation_created (server) → checkout_completed (webhook).
+ * Fires pricing_viewed once per mount with the referring surface.
+ * When Stripe's cancel_url lands here (`?canceled=1`), also fires
+ * checkout_canceled so abandon after checkout_started is visible.
+ *
+ * Funnel: pricing_viewed → checkout_clicked → checkout_started →
+ * purchase (webhook, `$revenue`). Side: checkout_canceled / thanks /
+ * subscription_canceled.
  */
-export function PricingViewTracker({ src }: { src: string }) {
+export function PricingViewTracker({ src, canceled }: { src: string; canceled?: boolean }) {
   useEffect(() => {
     trackPricingViewed(src);
-  }, [src]);
+    if (canceled) trackCheckoutCanceled(src);
+  }, [src, canceled]);
   return null;
 }

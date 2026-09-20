@@ -15,6 +15,9 @@ import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
  * Deliberately does NOT auto-email the customer yet: the welcome email is a
  * founder-signed onboarding message during launch week, which converts a
  * buyer into a user far better than a template. Automate it in Phase 3.
+ *
+ * PostHog (ROO-41): checkout.session.completed → checkout_completed + purchase
+ * ($revenue in major units). customer.subscription.deleted → subscription_canceled.
  */
 
 const MEMBERS_KEY = "monetization:members"; // list of JSON records
@@ -75,6 +78,7 @@ export async function POST(request: NextRequest) {
 
   if (event.type === "checkout.session.completed") {
     const s = (event.data?.object ?? {}) as {
+      id?: string;
       customer_email?: string;
       customer_details?: { email?: string };
       customer?: string;
@@ -83,9 +87,12 @@ export async function POST(request: NextRequest) {
       currency?: string;
       metadata?: { plan?: string; interval?: string; src?: string };
     };
-    const email = s.customer_details?.email || s.customer_email || "unknown";
+    const email = s.customer_details?.email || s.customer_email || "";
+    // Prefer email so pageview → checkout stitches to one person; fall back to
+    // Stripe customer id (same distinctId for checkout_completed + purchase).
+    const distinctId = email || s.customer || "unknown";
     const record = {
-      email,
+      email: email || "unknown",
       plan: s.metadata?.plan ?? "unknown",
       interval: s.metadata?.interval ?? "unknown",
       src: s.metadata?.src ?? "unknown",
@@ -95,6 +102,9 @@ export async function POST(request: NextRequest) {
       currency: s.currency ?? "usd",
       at: new Date().toISOString(),
     };
+    // Stripe amount_total is the smallest currency unit (cents). PostHog
+    // revenue tiles / funnel `purchase` expect major units via `$revenue`.
+    const revenue = (record.amountTotal ?? 0) / 100;
 
     if (redis) {
       try {
@@ -103,31 +113,56 @@ export async function POST(request: NextRequest) {
     }
     try {
       await sendNotificationEmail({
-        subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${email}`,
+        subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${record.email}`,
         type: "monetization",
-        message: `New paying member: ${email} bought ${record.plan}/${record.interval} for ${((record.amountTotal ?? 0) / 100).toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). Send the founder welcome email today — onboarding instructions are in MONETIZATION.md Phase 2.`,
+        message: `New paying member: ${record.email} bought ${record.plan}/${record.interval} for ${revenue.toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). Send the founder welcome email today — onboarding instructions are in MONETIZATION.md Phase 2.`,
       });
     } catch {}
     try {
       // ROO-12 / ROO-31: await flush — serverless freeze was dropping server events
-      getPostHogClient().capture({
-        distinctId: email,
+      const ph = getPostHogClient();
+      ph.capture({
+        distinctId,
         event: "checkout_completed",
         properties: {
           plan: record.plan,
           interval: record.interval,
           src: record.src,
-          amount: (record.amountTotal ?? 0) / 100,
+          amount: revenue,
+        },
+      });
+      // ROO-41: keep checkout_completed; also emit `purchase` so dashboard
+      // 2116269 / funnel 0vnNHD98 can convert on `$revenue`.
+      ph.capture({
+        distinctId,
+        event: "purchase",
+        properties: {
+          $revenue: revenue,
+          revenue,
+          currency: record.currency.toLowerCase(),
+          plan: record.plan,
+          interval: record.interval,
+          src: record.src,
+          stripe_session_id: s.id ?? null,
+          stripe_customer: record.stripeCustomer,
+          stripe_subscription: record.stripeSubscription,
         },
       });
       await flushPostHog();
     } catch (err) {
-      console.error("[posthog] checkout_completed capture failed:", err);
+      console.error("[posthog] checkout_completed/purchase capture failed:", err);
     }
   }
 
   if (event.type === "customer.subscription.deleted") {
-    const s = (event.data?.object ?? {}) as { id?: string; customer?: string };
+    const s = (event.data?.object ?? {}) as {
+      id?: string;
+      customer?: string;
+      status?: string;
+      canceled_at?: number;
+      cancellation_details?: { reason?: string; comment?: string; feedback?: string };
+      metadata?: { plan?: string; interval?: string; src?: string };
+    };
     try {
       await sendNotificationEmail({
         subject: `⚠️ Subscription canceled: ${s.id ?? "unknown"}`,
@@ -135,6 +170,25 @@ export async function POST(request: NextRequest) {
         message: `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}) was canceled. Worth a one-line "what was missing?" email.`,
       });
     } catch {}
+    try {
+      getPostHogClient().capture({
+        distinctId: s.customer || s.id || "unknown",
+        event: "subscription_canceled",
+        properties: {
+          stripe_subscription: s.id ?? null,
+          stripe_customer: s.customer ?? null,
+          status: s.status ?? "canceled",
+          cancellation_reason: s.cancellation_details?.reason ?? null,
+          canceled_at: s.canceled_at ?? null,
+          plan: s.metadata?.plan ?? null,
+          interval: s.metadata?.interval ?? null,
+          src: s.metadata?.src ?? null,
+        },
+      });
+      await flushPostHog();
+    } catch (err) {
+      console.error("[posthog] subscription_canceled capture failed:", err);
+    }
   }
 
   return NextResponse.json({ received: true });
