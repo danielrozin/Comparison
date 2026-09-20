@@ -104,6 +104,41 @@ describe("COMPARE_REDIRECTS", () => {
     });
   });
 
+  describe("ROO-24 US↔China GDP soft-404 cluster", () => {
+    const CANONICAL = "us-vs-china-gdp";
+    const SAMPLES = [
+      "china-vs-united-states-gdp-comparison-2026",
+      "current-nominal-gdp-us-vs-china-2026",
+      "china-vs-us-gdp-nominal-2026",
+      "american-economy-vs-china",
+    ];
+    const LIVE_RELATED = [
+      "us-economy-vs-china-economy",
+      "usa-vs-china",
+      "china-vs-us-gdp-military-tech-comparison-2026",
+      "us-nominal-gdp-vs-china-2026",
+      "usa-vs-china-vs-india-gdp-2026",
+    ];
+
+    it("folds Product soft-404 samples onto the locked canonical in one hop", () => {
+      for (const from of SAMPLES) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(CANONICAL);
+        expect(getConsolidatedCompareSlug(CANONICAL)).toBeNull();
+      }
+    });
+
+    it("never redirects live related pages", () => {
+      expect(getConsolidatedCompareSlug(CANONICAL)).toBeNull();
+      for (const live of LIVE_RELATED) {
+        expect(getConsolidatedCompareSlug(live), live).toBeNull();
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${live}`),
+          `${live} must not be a redirect source`,
+        ).toBe(false);
+      }
+    });
+  });
+
   describe("DAN-2323 cron-drift keyword-suffixed near-duplicates", () => {
     // Post-2026-07-14 enrichment-cron drift: keyword-suffixed variants of matchups
     // that already have a clean canonical 200. Each folds into the clean canonical

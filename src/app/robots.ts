@@ -231,9 +231,14 @@ export default function robots(): MetadataRoute.Robots {
     // and markdown (llms.txt, ai.txt) URLs, which Search Console reports as
     // fetch errors. Child sitemaps 0-4/images/video are already referenced by
     // the sitemap.xml index and must not be double-listed.
+    //
+    // P1 (live audit 2026-09-20): do not declare /sitemap/news.xml. That
+    // urlset is empty whenever no blog article was published in the last
+    // 48h (Google News window). An empty declared news sitemap is a
+    // crawl-quality fail. Re-add the URL only when the news route emits
+    // at least one <url>.
     sitemap: [
       "https://www.aversusb.net/sitemap.xml",
-      "https://www.aversusb.net/sitemap/news.xml",
     ],
   };
 }

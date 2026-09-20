@@ -47,7 +47,8 @@ export async function GET() {
     return new Date(a.publishedAt) >= cutoff;
   });
 
-  // If no recent articles, emit an empty but valid sitemap
+  // Empty urlset is valid XML but must not be advertised in robots.txt
+  // (P1 live audit 2026-09-20). robots.ts only lists /sitemap.xml.
   const urlEntries = recentArticles.map((article) => {
     const pubDate = new Date(article.publishedAt!).toISOString();
     const title = escapeXml(article.title);

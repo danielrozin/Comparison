@@ -156,23 +156,12 @@ export function middleware(request: NextRequest) {
     // structured-data alternatives without parsing HTML. Having JSON-LD reachable via
     // Link header is the fastest path for LLM crawlers (Perplexity, ChatGPT-User,
     // ClaudeBot) to find citation-ready data in a single HEAD request.
-    if (pathname.startsWith("/compare/")) {
-      const slug = pathname.replace("/compare/", "").replace(/\/$/, "");
-      if (slug) {
-        response.headers.set(
-          "Link",
-          [
-            `<${SITE}/api/v1/schema/${slug}>; rel="describedby"; type="application/ld+json"; title="Schema.org JSON-LD"`,
-            `<${SITE}/api/v1/schema/${slug}>; rel="alternate"; type="application/ld+json"; title="Schema.org JSON-LD"`,
-            `<${SITE}/api/knowledge-graph/${slug}>; rel="alternate"; type="application/ld+json"; title="Knowledge Graph"`,
-            `<${SITE}/api/comparisons/${slug}>; rel="alternate"; type="application/json"; title="Comparison JSON"`,
-            `<${SITE}/api/answer/${slug}>; rel="alternate"; type="application/json"; title="AI Answer"`,
-            `<${SITE}/api/faq/${slug}>; rel="alternate"; type="application/json"; title="FAQ Pairs"`,
-            `<${SITE}/compare/${slug}>; rel="cite-as"`,
-          ].join(", ")
-        );
-      }
-    } else if (pathname.startsWith("/blog/")) {
+    // ROO-24 / P0-2: do not emit compare schema/FAQ/answer Link headers here.
+    // Middleware runs before getStaticProps and cannot tell a live 200 from a
+    // hard 404, so a missing slug used to advertise /api/faq/{slug} etc.
+    // Live compares still expose those alternates as HTML <link> in MetaHead.
+    // next.config headers() must not stamp them either (same slug-blind match).
+    if (pathname.startsWith("/blog/")) {
       const slug = pathname.replace("/blog/", "").replace(/\/$/, "");
       if (slug) {
         response.headers.set(

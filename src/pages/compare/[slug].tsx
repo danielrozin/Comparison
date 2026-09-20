@@ -9,6 +9,7 @@ import {
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import { resolveUsChinaGdpRedirect } from "@/lib/redirects/us-china-gdp-cluster";
 import {
   startAttempt,
   finishAttemptSuccess,
@@ -356,6 +357,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     return { notFound: true };
   }
 
+  // Edge map + ROO-24 explicit GDP aliases. next.config redirects() should
+  // already 301 these; this is the ISR-layer backstop so a missed edge rule
+  // never serves a 404 (or a stale draft) for a known alias.
+  const consolidated = getConsolidatedCompareSlug(slug);
+  if (consolidated) {
+    return { redirect: { destination: `/compare/${consolidated}`, statusCode: 301 } };
+  }
+
   let comparison: Comparison | null = null;
   try {
     comparison = (await getComparisonBySlug(slug)) as Comparison | null;
@@ -369,6 +378,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   // entityA/entityB exist and throws a hard 500 on a record with <2 entities
   // (DAN-1201/DAN-1262 — 25 such records were live in prod).
   if (!isRenderableComparison(comparison)) {
+    // ROO-24: unpublished US↔China GDP phrasing (explicit + conservative
+    // pattern) 301s to the Product-locked canonical. Live related pages are
+    // excluded inside resolveUsChinaGdpRedirect.
+    const gdpCanonical = resolveUsChinaGdpRedirect(slug);
+    if (gdpCanonical) {
+      return { redirect: { destination: `/compare/${gdpCanonical}`, statusCode: 301 } };
+    }
+
     // DAN-1265: a non-canonical ordering (B-vs-A) must never become its own URL.
     // Fold it into the canonical alphabetically-sorted ordering — but only when
     // that ordering is itself published. sortComparisonSlug() sorts the raw
