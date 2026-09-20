@@ -82,17 +82,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Compare pages: add Link rel=describedby pointing to the knowledge graph API.
-        // W3C Linked Data standard; AI crawlers that follow HTTP Link headers (Perplexity,
-        // Googlebot, DuckDuckGo) can discover JSON-LD without parsing HTML.
-        // Vary: Accept — tells Vercel/CDN to cache separate versions for HTML vs JSON-LD
-        // requests (content negotiation is active on /compare/* via middleware).
+        // Compare pages: Vary: Accept — content negotiation is active on
+        // /compare/* via middleware (Accept: application/ld+json → 303).
+        //
+        // ROO-24 / P0-2: do NOT stamp citation Link headers here. next.config
+        // headers() match `/compare/:slug` even when getStaticProps returns
+        // notFound, so a missing slug advertised /api/faq/{slug} etc. Live
+        // pages still get Link headers from middleware (only when the slug
+        // is not a redirect source) plus HTML <link> tags in MetaHead.
         source: "/compare/:slug",
         headers: [
-          {
-            key: "Link",
-            value: "</api/knowledge-graph/:slug>; rel=\"describedby\"; type=\"application/ld+json\", </api/comparisons/:slug>; rel=\"alternate\"; type=\"application/json\", </api/faq/:slug>; rel=\"alternate\"; type=\"application/json\", </api/v1/related/:slug>; rel=\"related\"; type=\"application/json\", </api/answer/:slug>; rel=\"alternate\"; type=\"application/json\"; title=\"AI Answer\"",
-          },
           {
             key: "Vary",
             value: "Accept",
