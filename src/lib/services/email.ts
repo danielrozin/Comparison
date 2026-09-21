@@ -9,8 +9,9 @@
  * domain the key does not authorize returns a 403 and drops the mail (DAN-323).
  *
  * Fallback transport: Web3Forms. NOTE — Web3Forms' API ignores the `to` field and
- * always delivers to the access-key owner's mailbox, so it is only a best-effort
- * fallback for ADMIN notifications (never for external recipients).
+ * always delivers to the access-key owner's mailbox, so it cannot fan-out to
+ * multiple founders. It is only a best-effort fallback for ADMIN notifications
+ * (never for external recipients).
  *
  * Historical bug (DAN-1204): admin notifications ran Web3Forms FIRST and returned
  * its `success` verbatim. Web3Forms accepts the submission (success:true) but the
@@ -25,8 +26,45 @@ import { Resend } from "resend";
 // trailing space; importing the normalized constant keeps embed snippets clean.
 import { SITE_URL } from "@/lib/utils/constants";
 
-const NOTIFICATION_EMAIL =
-  process.env.ADMIN_NOTIFICATION_EMAIL || "daniarozin@gmail.com";
+/** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
+export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
+  "daniarozin@gmail.com",
+  "shai.and1@gmail.com",
+] as const;
+
+/**
+ * Parse ADMIN_NOTIFICATION_EMAIL as a comma/semicolon-separated list.
+ * Empty / unset values fall back to both founders so purchase and cancel
+ * alerts never silently go to a single inbox.
+ */
+export function parseAdminNotificationEmails(
+  raw: string | undefined | null
+): string[] {
+  const parsed = (raw ?? "")
+    .split(/[,;]/)
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0);
+
+  if (parsed.length === 0) {
+    return [...DEFAULT_ADMIN_NOTIFICATION_EMAILS];
+  }
+
+  const seen = new Set<string>();
+  const unique: string[] = [];
+  for (const email of parsed) {
+    const key = email.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(email);
+  }
+  return unique;
+}
+
+const NOTIFICATION_EMAILS = parseAdminNotificationEmails(
+  process.env.ADMIN_NOTIFICATION_EMAIL
+);
+// Outreach reply-to stays a single address (Resend replyTo / mail clients).
+const NOTIFICATION_REPLY_TO = NOTIFICATION_EMAILS[0];
 const WEB3FORMS_URL = "https://api.web3forms.com/submit";
 const WEB3FORMS_KEY = process.env.WEB3FORMS_ACCESS_KEY || "";
 
@@ -72,7 +110,7 @@ export async function sendOutreachEmail(opts: {
       subject: opts.subject,
       html: opts.html,
       text: opts.text,
-      replyTo: opts.replyTo || NOTIFICATION_EMAIL,
+      replyTo: opts.replyTo || NOTIFICATION_REPLY_TO,
       tags: opts.tags,
     });
 
@@ -112,7 +150,7 @@ export async function sendBatchOutreachEmails(
     subject: e.subject,
     html: e.html,
     text: e.text,
-    replyTo: e.replyTo || NOTIFICATION_EMAIL,
+    replyTo: e.replyTo || NOTIFICATION_REPLY_TO,
     tags: e.tags,
   }));
 
@@ -157,26 +195,27 @@ export async function sendNotificationEmail(opts: {
     try {
       const { data, error } = await resend.emails.send({
         from: NOTIFICATION_FROM,
-        to: NOTIFICATION_EMAIL,
+        to: NOTIFICATION_EMAILS,
         subject,
         text,
       });
       if (!error) {
         console.log(
-          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAIL} | id=${data?.id ?? "?"}`
+          `[EMAIL][resend][ok] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | id=${data?.id ?? "?"}`
         );
         return { success: true, method: "resend" };
       }
       console.error(
-        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAIL} | ${error.message}`
+        `[EMAIL][resend][fail] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | ${error.message}`
       );
     } catch (err) {
       console.error(`[EMAIL][resend][throw] ${context} |`, err);
     }
   }
 
-  // 2) Fallback: Web3Forms — delivers to the key owner's mailbox only (the `to`
-  //    field is ignored), so it is a best-effort fallback for admin alerts.
+  // 2) Fallback: Web3Forms — its API ignores `to` and always delivers to the
+  //    access-key owner's mailbox only, so it cannot fan-out to every admin
+  //    recipient. Best-effort fallback for admin alerts, not a multi-inbox path.
   if (WEB3FORMS_KEY) {
     try {
       const res = await fetch(WEB3FORMS_URL, {
@@ -204,7 +243,7 @@ export async function sendNotificationEmail(opts: {
 
   // 3) Last resort: log so the submission is recoverable from serverless logs.
   console.error(
-    `[EMAIL][undelivered] ${context} -> ${NOTIFICATION_EMAIL} | subject="${opts.subject}" message="${opts.message}" from=${opts.senderEmail || "Anonymous"} page=${opts.pageUrl || "N/A"}`
+    `[EMAIL][undelivered] ${context} -> ${NOTIFICATION_EMAILS.join(", ")} | subject="${opts.subject}" message="${opts.message}" from=${opts.senderEmail || "Anonymous"} page=${opts.pageUrl || "N/A"}`
   );
   return { success: false, method: "undelivered" };
 }
