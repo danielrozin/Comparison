@@ -319,8 +319,8 @@ export const DEAD_REDIRECT_SOURCES_DAN2045: string[] = [
   "webex-vs-google-meet",
   // -> mlflow-vs-weights-biases (archived); source is archived
   "weights-biases-vs-mlflow",
-  // -> telegram-vs-whatsapp (archived); source is archived
-  "whatsapp-vs-telegram",
+  // ROO-27: whatsapp-vs-telegram is a live editorial canonical again.
+  // Do not list it here — aliases (…-2026 / …-comparison) 301 onto it.
   // -> apple-watch-vs-whoop (archived); source is archived
   "whoop-vs-apple-watch",
   // -> fitbit-vs-whoop (archived); source is archived

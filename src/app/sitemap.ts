@@ -9,6 +9,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
 import { REDIRECTED_COMPARE_SLUGS } from "@/lib/redirects/compare-redirects";
 import { isDegenerateComparisonSlug, isCleanSlug } from "@/lib/utils/slugify";
+import { listEditorialCompareSitemapEntries } from "@/lib/data/editorial-compares";
 
 function comparisonOgImageUrl(title: string, entityA: string, entityB: string, category: string): string {
   return (
@@ -117,7 +118,7 @@ export default async function sitemap({
       // Curated comparison landing pages
       { url: `${SITE_URL}/llm-comparisons`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/llm-comparisons/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
-      { url: `${SITE_URL}/browser-comparison-2026`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
+      { url: `${SITE_URL}/browser-comparison-2026`, lastModified: "2026-09-21", changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/browser-comparison-2026/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
       { url: `${SITE_URL}/password-manager-comparison`, lastModified: COMPARISONS_DATE, changeFrequency: "weekly", priority: 0.9 },
       { url: `${SITE_URL}/password-manager-comparison/methodology`, lastModified: COMPARISONS_DATE, changeFrequency: "monthly", priority: 0.6 },
@@ -241,9 +242,34 @@ export default async function sitemap({
   // fetch. The dedicated /sitemap/images.xml remains in the index for crawlers
   // that process image sitemaps independently.
   if (numId === 1) {
+    const toEntry = (
+      slug: string,
+      title: string,
+      category: string,
+      lastModified: Date | string,
+      entityA: string,
+      entityB: string
+    ) => {
+      const imageUrl = comparisonOgImageUrl(title, entityA, entityB, category);
+      return {
+        url: `${SITE_URL}/compare/${slug}`,
+        lastModified,
+        changeFrequency: "weekly" as const,
+        priority: 0.9,
+        images: [imageUrl],
+      };
+    };
+
+    const editorialFallback = () =>
+      listEditorialCompareSitemapEntries()
+        .filter((row) => isCleanSlug(row.slug) && !isDegenerateComparisonSlug(row.slug))
+        .map((row) =>
+          toEntry(row.slug, row.title, row.category, row.lastModified, row.entityA, row.entityB)
+        );
+
     try {
       const prisma = getPrisma();
-      if (!prisma) return [];
+      if (!prisma) return editorialFallback();
 
       // DAN-2067: canonicalComparisonWhere, not `status: "published"` — 22 published
       // rows are redirect sources that 308 at the edge, and we were submitting them
@@ -268,22 +294,33 @@ export default async function sitemap({
         take: MAX_URLS_PER_SITEMAP,
       });
 
-      return rows
+      const seen = new Set<string>();
+      const entries = rows
         .filter((row) => isCleanSlug(row.slug) && !isDegenerateComparisonSlug(row.slug))
         .map((row) => {
+          seen.add(row.slug);
           const entityA = row.entities[0]?.entity.name ?? "";
           const entityB = row.entities[1]?.entity.name ?? entityA;
-          const imageUrl = comparisonOgImageUrl(row.title, entityA, entityB, row.category ?? "");
-          return {
-            url: `${SITE_URL}/compare/${row.slug}`,
-            lastModified: row.updatedAt,
-            changeFrequency: "weekly" as const,
-            priority: 0.9,
-            images: [imageUrl],
-          };
+          return toEntry(
+            row.slug,
+            row.title,
+            row.category ?? "",
+            row.updatedAt,
+            entityA,
+            entityB
+          );
         });
+
+      // ROO-27: include reviewed editorial compares that are not yet a published row.
+      for (const extra of editorialFallback()) {
+        const slug = extra.url.replace(`${SITE_URL}/compare/`, "");
+        if (seen.has(slug)) continue;
+        entries.push(extra);
+      }
+
+      return entries;
     } catch {
-      return [];
+      return editorialFallback();
     }
   }
 

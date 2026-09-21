@@ -151,6 +151,18 @@ const MANUAL_CONSOLIDATIONS: Record<string, string> = {
   "real-madrid-vs-barcelona-total-titles-comparison-2026":
     "real-madrid-vs-barcelona-total-trophies-comparison-2026",
   "nfl-ratings-vs-nba-ratings": "nfl-vs-nba-viewership",
+
+  // ROO-27: messaging cluster — reverse-order + phrasing aliases onto the
+  // new live canonicals. Do not add the canonical slugs themselves as sources.
+  "whatsapp-vs-signal": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-2026": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-comparison": "signal-vs-whatsapp",
+  "signal-vs-whatsapp-comparison-2026": "signal-vs-whatsapp",
+  "telegram-vs-signal": "signal-vs-telegram",
+  "signal-vs-telegram-2026": "signal-vs-telegram",
+  "signal-vs-telegram-comparison": "signal-vs-telegram",
+  "whatsapp-vs-telegram-2026": "whatsapp-vs-telegram",
+  "whatsapp-vs-telegram-comparison": "whatsapp-vs-telegram",
 };
 
 // DAN-1265: entity-alias duplicates — same comparison, different entity naming.
@@ -273,6 +285,16 @@ const COMPARE_CONSOLIDATIONS: Record<string, string> = {
 // is the exact shape of the DAN-2065 inversion: a live page 308ing away to a page we
 // meant to retire. Same remedy as SURVIVOR_OVERRIDES below: delete the survivor's key.
 for (const survivor of Object.values(RIVALRY_CONSOLIDATIONS_DAN2078)) {
+  delete COMPARE_CONSOLIDATIONS[survivor];
+}
+
+// ROO-27: the new messaging canonicals must never appear as redirect sources,
+// including if an older generated layer mapped them onto an archived sibling.
+for (const survivor of [
+  "signal-vs-whatsapp",
+  "signal-vs-telegram",
+  "whatsapp-vs-telegram",
+]) {
   delete COMPARE_CONSOLIDATIONS[survivor];
 }
 

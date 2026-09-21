@@ -27,6 +27,13 @@ import { canonicalComparisonWhere, CANONICAL_COMPARISON_COUNT_FALLBACK } from "@
 import { REDIRECTED_COMPARE_SLUGS, isRedirectedCompareSlug } from "@/lib/redirects/compare-redirects";
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
+import {
+  getEditorialComparison,
+  isEditorialCompareSlug,
+  listEditorialComparisons,
+  mergeEditorialEnrichment,
+} from "@/lib/data/editorial-compares";
+import { applyEditorialAeoOverlay } from "@/lib/data/editorial-aeo-overlays";
 
 import { getRedis } from "./redis";
 
@@ -275,8 +282,23 @@ function transformToPageData(
       status: row.status,
     },
     ...(row.schemaMarkup ? { schemaMarkup: row.schemaMarkup as Record<string, unknown> } : {}),
-    ...(row.content && typeof row.content === "object" && row.content !== null && "expertAnalysis" in (row.content as object)
-      ? { expertAnalysis: (row.content as Record<string, unknown>).expertAnalysis as string }
+    ...extractContentExtras(row.content),
+  };
+}
+
+function extractContentExtras(content: unknown): Pick<
+  ComparisonPageData,
+  "expertAnalysis" | "quickAnswer" | "citationStats"
+> {
+  if (!content || typeof content !== "object") return {};
+  const c = content as Record<string, unknown>;
+  return {
+    ...(typeof c.expertAnalysis === "string" ? { expertAnalysis: c.expertAnalysis } : {}),
+    ...(c.quickAnswer && typeof c.quickAnswer === "object"
+      ? { quickAnswer: c.quickAnswer as ComparisonPageData["quickAnswer"] }
+      : {}),
+    ...(c.citationStats && typeof c.citationStats === "object"
+      ? { citationStats: c.citationStats as ComparisonPageData["citationStats"] }
       : {}),
   };
 }
@@ -337,6 +359,11 @@ export async function isComparisonDbReachable(): Promise<boolean> {
   }
 }
 
+function finalizeComparisonPage(data: ComparisonPageData): ComparisonPageData {
+  const editorial = getEditorialComparison(data.slug);
+  return applyEditorialAeoOverlay(mergeEditorialEnrichment(data, editorial));
+}
+
 export async function getComparisonBySlug(
   slug: string
 ): Promise<ComparisonPageData | null> {
@@ -344,6 +371,8 @@ export async function getComparisonBySlug(
   const cacheKey = `comparison:${slug}`;
   const cached = await getFromCache<ComparisonPageData>(cacheKey);
   if (cached) return cached;
+
+  const editorial = getEditorialComparison(slug);
 
   const prisma = getPrismaClient();
   if (prisma) {
@@ -353,6 +382,14 @@ export async function getComparisonBySlug(
         include: COMPARISON_INCLUDE,
       });
       if (row) {
+        // ROO-27: an archived/draft row for a reviewed editorial slug must
+        // not win over the in-repo published pack (those rows were thin 404s).
+        // Internal callers still see every other archived row below.
+        if (editorial && row.status !== "published") {
+          const result = finalizeComparisonPage({ ...editorial });
+          await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+          return result;
+        }
         // Use the linking engine for smarter related suggestions
         const entitySlugs = (row as PrismaComparisonRow).entities.map(
           (ce) => ce.entity.slug
@@ -371,13 +408,26 @@ export async function getComparisonBySlug(
           title: l.title,
           category: l.category,
         }));
-        const result = transformToPageData(row as PrismaComparisonRow, related, blogPosts);
+        const result = finalizeComparisonPage(
+          transformToPageData(row as PrismaComparisonRow, related, blogPosts)
+        );
+        await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+        return result;
+      }
+      if (editorial) {
+        const result = finalizeComparisonPage({ ...editorial });
         await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
         return result;
       }
     } catch (e) {
       console.warn("Prisma query failed for getComparisonBySlug, falling back to mock:", e);
     }
+  }
+
+  if (editorial) {
+    const result = finalizeComparisonPage({ ...editorial });
+    await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+    return result;
   }
 
   // Mock fallback — also use the linking engine
@@ -395,7 +445,9 @@ export async function getComparisonBySlug(
       category: l.category,
     }));
     mock.relatedBlogPosts = [];
-    await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
+    const result = finalizeComparisonPage(mock);
+    await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+    return result;
   }
   return mock;
 }
@@ -454,8 +506,10 @@ export async function getComparisonSlugsExisting(
 
   const prisma = getPrismaClient();
   if (!prisma) {
-    // Fall back to mock data check
-    return slugs.filter((slug) => getMockComparison(slug) !== null);
+    // Fall back to mock + editorial catalog
+    return slugs.filter(
+      (slug) => getMockComparison(slug) !== null || isEditorialCompareSlug(slug)
+    );
   }
 
   try {
@@ -464,13 +518,16 @@ export async function getComparisonSlugsExisting(
       select: { slug: true },
     });
     const dbSlugs = rows.map((r: { slug: string }) => r.slug);
-    // Also check mock data for any slugs not in DB
-    const mockSlugs = slugs.filter(
-      (s) => !dbSlugs.includes(s) && getMockComparison(s) !== null
+    const extra = slugs.filter(
+      (s) =>
+        !dbSlugs.includes(s) &&
+        (isEditorialCompareSlug(s) || getMockComparison(s) !== null)
     );
-    return [...dbSlugs, ...mockSlugs];
+    return [...dbSlugs, ...extra];
   } catch {
-    return slugs.filter((slug) => getMockComparison(slug) !== null);
+    return slugs.filter(
+      (slug) => getMockComparison(slug) !== null || isEditorialCompareSlug(slug)
+    );
   }
 }
 
@@ -1289,7 +1346,10 @@ export async function resolveCanonicalComparisonSlugs(
   const prisma = getPrismaClient();
   if (!prisma) {
     // No DB: fall back to the mock catalog so local/dev rendering stays honest.
-    return new Set(unique.filter(isLinkableMock));
+    // Editorial slugs are also live (ROO-27).
+    return new Set(
+      unique.filter((s) => isLinkableMock(s) || isEditorialCompareSlug(s))
+    );
   }
 
   try {
@@ -1307,10 +1367,19 @@ export async function resolveCanonicalComparisonSlugs(
     // slug absent from the published catalog was resolved "live" here and then 404'd.
     // That is how /entity and /compare pages kept emitting dead links (react-vs-angular,
     // federer-vs-nadal, curry-vs-lebron, …) after DAN-2551/DAN-2565.
-    return new Set<string>(rows.map((r: { slug: string }) => r.slug));
+    //
+    // ROO-27: reviewed editorial slugs are catalog pages even before the
+    // prod-DB publish workflow runs. They are an allowlist, not fixtures.
+    const live = new Set<string>(rows.map((r: { slug: string }) => r.slug));
+    for (const slug of unique) {
+      if (isEditorialCompareSlug(slug) && !unlinkable.has(slug)) live.add(slug);
+    }
+    return live;
   } catch (e) {
     console.warn("Prisma resolveCanonicalComparisonSlugs failed:", e);
-    return new Set(unique.filter(isLinkableMock));
+    return new Set(
+      unique.filter((s) => isLinkableMock(s) || isEditorialCompareSlug(s))
+    );
   }
 }
 
@@ -1348,6 +1417,16 @@ export async function getComparisonsForEntity(
       }
     } catch (e) {
       console.warn("Prisma getComparisonsForEntity failed, falling back to mock:", e);
+    }
+  }
+
+  // ROO-27: editorial messaging compares belong on entity hubs even when the
+  // DB has not been published yet. Allowlisted, not fixtures.
+  for (const comp of listEditorialComparisons()) {
+    if (seenSlugs.has(comp.slug)) continue;
+    if (comp.entities.some((e) => e.slug === entitySlug) || comp.slug.includes(entitySlug)) {
+      seenSlugs.add(comp.slug);
+      results.push({ slug: comp.slug, title: comp.title, category: comp.category });
     }
   }
 

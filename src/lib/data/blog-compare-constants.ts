@@ -44,6 +44,16 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "usa-vs-china",
     "us-economy-vs-china-economy",
   ],
+  "whatsapp-vs-signal-2026-which-messaging-app-is-more-private": [
+    "signal-vs-whatsapp",
+    "signal-vs-telegram",
+    "whatsapp-vs-telegram",
+  ],
+  "signal-vs-telegram-2026-which-messaging-app-is-actually-private": [
+    "signal-vs-telegram",
+    "signal-vs-whatsapp",
+    "whatsapp-vs-telegram",
+  ],
 };
 
 /** Soft explore target when no live compare slugs remain. */
