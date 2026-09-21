@@ -6,8 +6,11 @@ import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
  * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ
  * (fetched 2026-09-21). Japan vs China figures come only from in-repo
  * `mock-data.ts` and `faq-expansion.ts` — do not invent IMF/World Bank
- * totals (including PPP GDP). If the pipeline later refreshes a scorecard,
- * keep using that page’s own printed figures in shortAnswer/FAQ.
+ * totals (including PPP GDP). Messi vs Ronaldo figures come only from
+ * in-repo `mock-data.ts` — never invent Ballon d'Or or goal totals. If a
+ * stat is not on that scorecard, say unknown. If the pipeline later
+ * refreshes a scorecard, keep using that page’s own printed figures in
+ * shortAnswer/FAQ.
  */
 
 const GDP_SHORT_ANSWER =
@@ -109,6 +112,59 @@ const JAPAN_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
     "Total GDP and GDP per capita disagree on this page. Always name the measure when you say which country is “ahead.”",
 };
 
+// Scorecard figures from `mock-data.ts` `messi-vs-ronaldo` only:
+// Ballon d'Or 8 vs 5; career goals 838 vs 899; assists 369 vs 262;
+// World Cup 1 vs 0 (2022); Champions League 4 vs 5; international goals 112 vs 135.
+const MESSI_SHORT_ANSWER =
+  "On this page’s scorecard Messi leads Ballon d'Or awards (8 vs 5), career assists (369 vs 262), and World Cup titles (1 vs 0). Ronaldo leads career goals (899 vs 838), Champions League titles (5 vs 4), and international goals (135 vs 112). Cite the metric — this page does not name a single GOAT. Stats not printed on the scorecard are unknown; do not invent newer Ballon d'Or or goal totals.";
+
+const MESSI_FAQS: FAQData[] = [
+  {
+    question: "Who is better, Messi or Ronaldo?",
+    answer:
+      "This page does not name a single GOAT. On this page’s scorecard Messi leads Ballon d'Or awards (8 vs 5), career assists (369 vs 262), and World Cup titles (1 vs 0). Ronaldo leads career goals (899 vs 838), Champions League titles (5 vs 4), and international goals (135 vs 112). Quote the winner by metric.",
+  },
+  {
+    question: "Who has more Ballon d'Or awards, Messi or Ronaldo?",
+    answer:
+      "This page’s scorecard lists Messi with 8 Ballon d'Or awards and Ronaldo with 5. Use those dated figures — do not invent a newer Ballon d'Or total.",
+  },
+  {
+    question: "Who has scored more career goals, Messi or Ronaldo?",
+    answer:
+      "This page’s scorecard lists Ronaldo with 899 career goals and Messi with 838. Use those dated figures — do not invent a newer career-goal total.",
+  },
+  {
+    question: "Who won the World Cup, Messi or Ronaldo?",
+    answer:
+      "This page’s scorecard lists Messi with 1 World Cup title and Ronaldo with 0. Messi won the 2022 FIFA World Cup with Argentina; Ronaldo has not won the World Cup with Portugal.",
+  },
+  {
+    question: "Who has more Champions League titles, Messi or Ronaldo?",
+    answer:
+      "This page’s scorecard lists Ronaldo with 5 Champions League titles and Messi with 4. It does not print Champions League goal totals — treat those as unknown.",
+  },
+  {
+    question: "Who has more career assists, Messi or Ronaldo?",
+    answer:
+      "This page’s scorecard lists Messi with 369 career assists and Ronaldo with 262. International goals on the same scorecard are 112 (Messi) vs 135 (Ronaldo).",
+  },
+  {
+    question: "Which Messi vs Ronaldo stats does this page not print?",
+    answer:
+      "This page’s scorecard does not print Champions League goal totals, hat-tricks, or a combined club-trophy count. Treat those as unknown. Ballon d'Or (8 vs 5) and career goals (838 vs 899) are the dated figures already on the scorecard — never invent newer totals.",
+  },
+];
+
+const MESSI_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: MESSI_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Messi Ballon d'Or, assists, World Cup; Ronaldo goals, Champions League, international goals.",
+  keyFact:
+    "This page does not name a single GOAT. Always name the metric. Stats missing from the scorecard are unknown.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -126,6 +182,11 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     faqs: JAPAN_CHINA_FAQS,
     quickAnswer: JAPAN_CHINA_QUICK_ANSWER,
   },
+  "messi-vs-ronaldo": {
+    shortAnswer: MESSI_SHORT_ANSWER,
+    faqs: MESSI_FAQS,
+    quickAnswer: MESSI_QUICK_ANSWER,
+  },
 };
 
 export function getEditorialAeoOverlay(slug: string): AeoOverlay | null {
@@ -134,7 +195,7 @@ export function getEditorialAeoOverlay(slug: string): AeoOverlay | null {
 
 /**
  * Strengthen speakable Quick Answer + visible FAQ for Copilot-style citation
- * without replacing the published scorecard or inventing new GDP totals.
+ * without replacing the published scorecard or inventing new totals.
  */
 export function applyEditorialAeoOverlay(
   comparison: ComparisonPageData
