@@ -445,7 +445,9 @@ export async function getComparisonBySlug(
       category: l.category,
     }));
     mock.relatedBlogPosts = [];
-    await setCache(cacheKey, mock, CACHE_TTL_COMPARISON);
+    const result = finalizeComparisonPage(mock);
+    await setCache(cacheKey, result, CACHE_TTL_COMPARISON);
+    return result;
   }
   return mock;
 }
