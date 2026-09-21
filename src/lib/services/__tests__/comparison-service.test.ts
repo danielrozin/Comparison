@@ -71,6 +71,21 @@ describe('Comparison Service (mock-data fallback)', () => {
       expect(result!.faqs[0]).toHaveProperty('question')
       expect(result!.faqs[0]).toHaveProperty('answer')
     })
+
+    it('applies the Copilot AEO overlay on messi-vs-ronaldo', async () => {
+      const result = await getComparisonBySlug('messi-vs-ronaldo')
+      expect(result!.faqs).toHaveLength(7)
+      expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+      expect(result!.faqs.map((f) => f.question)).toEqual([
+        'Who is better, Messi or Ronaldo?',
+        "Who has more Ballon d'Or awards, Messi or Ronaldo?",
+        'Who has scored more career goals, Messi or Ronaldo?',
+        'Who won the World Cup, Messi or Ronaldo?',
+        'Who has more Champions League titles, Messi or Ronaldo?',
+        'Who has more career assists, Messi or Ronaldo?',
+        'Which Messi vs Ronaldo stats does this page not print?',
+      ])
+    })
   })
 
   describe('searchComparisons', () => {
