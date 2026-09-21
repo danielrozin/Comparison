@@ -1,12 +1,13 @@
 import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
 
 /**
- * ROO-27 Priority 2 — Copilot-first AEO overlays for live compares.
+ * Copilot-first AEO overlays for live compares (ROO-27 GDP pattern).
  *
- * Figures are copied from the live `/compare/us-vs-china-gdp` scorecard and
- * FAQ already published on the site (fetched 2026-09-21). Do not invent new
- * IMF/World Bank numbers here. If the data pipeline later refreshes the
- * scorecard, keep using the page's own dated figures in shortAnswer/FAQ.
+ * GDP figures come from the live `/compare/us-vs-china-gdp` scorecard/FAQ
+ * (fetched 2026-09-21). Japan vs China figures come only from in-repo
+ * `mock-data.ts` and `faq-expansion.ts` — do not invent IMF/World Bank
+ * totals (including PPP GDP). If the pipeline later refreshes a scorecard,
+ * keep using that page’s own printed figures in shortAnswer/FAQ.
  */
 
 const GDP_SHORT_ANSWER =
@@ -58,6 +59,56 @@ const GDP_QUICK_ANSWER: QuickAnswerTLDR = {
     "Nominal and PPP disagree on this page. Always name the measure when you say which economy is larger.",
 };
 
+const JAPAN_CHINA_SHORT_ANSWER =
+  "China is larger on this page’s scorecard for total GDP (about $17.7 trillion vs about $4.2 trillion), population (about 1.4 billion vs about 125 million), land area (about 9.6 million km² vs 377,975 km²), and active military personnel (about 2.0 million vs 247,000). Japan leads GDP per capita (about $33,800 vs about $12,500), life expectancy (84.6 vs 78.2 years), and HDI rank (#19 vs #75). Cite the metric; this page does not print a PPP GDP total.";
+
+const JAPAN_CHINA_FAQS: FAQData[] = [
+  {
+    question: "Is China’s economy bigger than Japan’s?",
+    answer:
+      "On total GDP, yes. This page’s scorecard lists China’s economy at about $17.7 trillion versus Japan’s about $4.2 trillion, and describes China as the world’s second-largest economy and Japan as the third-largest. Japan still leads GDP per capita (about $33,800 vs about $12,500). There is no single “bigger economy” without naming the metric.",
+  },
+  {
+    question: "What is Japan vs China GDP?",
+    answer:
+      "This page’s scorecard and FAQ print total GDP of about $4.2 trillion for Japan and about $17.7 trillion for China. Use those printed totals when you cite this page. Do not mix in other years or sources unless you name them.",
+  },
+  {
+    question: "What is Japan vs China GDP (PPP)?",
+    answer:
+      "Unknown on this page. The in-repo scorecard and FAQ do not print a PPP dollar total for Japan or China. Cite the printed total GDP ($17.7 trillion vs $4.2 trillion) and per capita ($33,800 vs $12,500) instead of inventing a PPP figure.",
+  },
+  {
+    question: "What is GDP per capita for Japan vs China?",
+    answer:
+      "This page’s scorecard lists about $33,800 for Japan and about $12,500 for China. That per-person gap is the clearest “who is richer per resident” framing even though China’s total GDP is larger.",
+  },
+  {
+    question: "Which country is larger in land area and population?",
+    answer:
+      "China is larger on both. Land area is about 9.6 million km² versus Japan’s 377,975 km² (China 3rd or 4th largest country; Japan ranks 62nd). Population is about 1.4 billion versus about 125 million.",
+  },
+  {
+    question: "Which country has a stronger military?",
+    answer:
+      "China has more active personnel on this page’s scorecard (about 2.0 million vs Japan’s 247,000). The same FAQ states China has a larger defense budget and nuclear weapons capability. A dollar defense-budget total is unknown here — do not invent one.",
+  },
+  {
+    question: "Which country has a higher quality of life, and which is safer to visit?",
+    answer:
+      "Japan leads the printed quality-of-life stats: life expectancy 84.6 vs 78.2 years, HDI rank #19 vs #75. Japan is described as one of the safest countries with extremely low crime rates; China is generally safe for tourists but has higher property crime and more complex travel logistics. Numeric crime-rate figures are unknown on this page.",
+  },
+];
+
+const JAPAN_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: JAPAN_CHINA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: China total GDP, population, land area, and military size; Japan per capita, life expectancy, and HDI.",
+  keyFact:
+    "Total GDP and GDP per capita disagree on this page. Always name the measure when you say which country is “ahead.”",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -69,6 +120,11 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     shortAnswer: GDP_SHORT_ANSWER,
     faqs: GDP_FAQS,
     quickAnswer: GDP_QUICK_ANSWER,
+  },
+  "japan-vs-china": {
+    shortAnswer: JAPAN_CHINA_SHORT_ANSWER,
+    faqs: JAPAN_CHINA_FAQS,
+    quickAnswer: JAPAN_CHINA_QUICK_ANSWER,
   },
 };
 
