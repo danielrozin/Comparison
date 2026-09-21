@@ -8,7 +8,47 @@ const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
 const PAGE_DESCRIPTION =
   "Independent comparison of 10 major web browsers in 2026 — engine, market share, privacy, extensions, performance, and standards compliance. All figures cited to primary sources.";
-const LAST_UPDATED = "2026-07-11";
+const LAST_UPDATED = "2026-09-21";
+const QUICK_ANSWER =
+  "For everyday use pick Chrome or Edge (both Chromium). For privacy pick Brave, which blocks ads and trackers by default. For an auditable open-source engine pick Firefox or Tor Browser. On iPhone and Mac, Safari leads on battery and Intelligent Tracking Prevention. Verdict is by use-case, not a single winner.";
+
+const BROWSER_FAQS: { question: string; answer: string }[] = [
+  {
+    question: "Which web browser is best in 2026?",
+    answer:
+      "There is no single best browser. This page’s Quick Answer is by use-case: Chrome or Edge for everyday Chromium use, Brave for default privacy blocking, Firefox or Tor Browser for an auditable open-source engine, and Safari on iPhone and Mac for battery and Intelligent Tracking Prevention.",
+  },
+  {
+    question: "Which browser is most private?",
+    answer:
+      "On this page Brave is the privacy pick: Shields block ads and trackers by default, with fingerprinting protection and optional Tor in a private window. Firefox ships Enhanced Tracking Protection on by default. Tor Browser is the strongest anonymity option. Chrome and Edge keep telemetry on by default and do not ship the same default blocker.",
+  },
+  {
+    question: "Chrome vs Firefox — which should I use?",
+    answer:
+      "Chrome if you want the largest extension catalog and Google-account sync. Firefox if you want a non-Blink engine (Gecko), MPL-2.0 licensing, and default Enhanced Tracking Protection. Both are free. Market-share figures on this page (StatCounter, April 2026) do not decide the privacy or engine question.",
+  },
+  {
+    question: "Is Brave better than Chrome for everyday browsing?",
+    answer:
+      "Brave is better when you want ad and tracker blocking without installing an extension — that is this page’s privacy verdict. Chrome is better when you want the default Google ecosystem and the largest desktop share. Both are Blink/V8. Everyday speed is similar; the gap is defaults, not the engine.",
+  },
+  {
+    question: "Which browser is best on iPhone?",
+    answer:
+      "Safari. This page lists Safari as the iOS/macOS pick for battery efficiency and Intelligent Tracking Prevention. Other iOS browsers still use WebKit under Apple’s rules. Desktop Chrome or Edge do not change that iPhone constraint.",
+  },
+  {
+    question: "Are Chrome and Edge the same?",
+    answer:
+      "They share the Blink/V8 engine. Edge adds Windows integration, tracking-prevention modes, and built-in Copilot. Chrome remains the larger-share everyday default on this page’s StatCounter table. Treat them as related Chromium browsers, not identical products.",
+  },
+  {
+    question: "Which browsers are open source?",
+    answer:
+      "Firefox (MPL-2.0), Brave (MPL-2.0), and Tor Browser (MPL-2.0 + GPL) are the fully auditable options listed here. Chrome, Edge, Safari, Opera, and Samsung Internet ship proprietary products on top of partly open engines (Chromium or WebKit).",
+  },
+];
 const BROWSER_OG_IMAGE = `${SITE_URL}/api/og?title=${encodeURIComponent("Browser Comparison 2026")}&type=article`;
 
 export const metadata: Metadata = {
@@ -104,7 +144,8 @@ const articleSchema = {
   reviewedBy: [personAuthorNode(), { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: SITE_NAME, url: SITE_URL }],
   isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
   potentialAction: { "@type": "ReadAction", target: PAGE_URL },
-  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro"] },
+  speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", "#page-intro", "#quick-answer", ".faq-answer"] },
+  hasPart: [{ "@type": "FAQPage", "@id": `${PAGE_URL}#faq` }],
   about: { "@type": "Thing", name: "Web browsers", sameAs: "https://en.wikipedia.org/wiki/Web_browser" },
   mentions: [
     { "@type": "SoftwareApplication", name: "Google Chrome", url: "https://www.google.com/chrome/" },
@@ -123,6 +164,27 @@ const articleSchema = {
   publishingPrinciples: `${SITE_URL}/how-we-write-verdicts`,
   ethicsPolicy: `${SITE_URL}/disclaimer`,
   correctionsPolicy: `${SITE_URL}/how-we-write-verdicts`,
+};
+
+const browserFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${PAGE_URL}#faq`,
+  name: "Best Web Browsers Compared (2026) — Frequently Asked Questions",
+  url: `${PAGE_URL}#faq`,
+  inLanguage: "en-US",
+  isAccessibleForFree: true,
+  speakable: { "@type": "SpeakableSpecification", cssSelector: [".faq-answer"] },
+  mainEntity: BROWSER_FAQS.map((faq, i) => ({
+    "@type": "Question",
+    "@id": `${PAGE_URL}#q${i + 1}`,
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      "@id": `${PAGE_URL}#a${i + 1}`,
+      text: faq.answer,
+    },
+  })),
 };
 
 const productSchemas = [
@@ -309,7 +371,7 @@ const BROWSERS: Browser[] = [
 export default function BrowserComparison2026Page() {
   return (
     <>
-      <JsonLd data={[articleSchema, ...productSchemas]} />
+      <JsonLd data={[articleSchema, browserFaqSchema, ...productSchemas]} />
 
       {/* Hero Banner */}
       <div className="bg-gradient-to-br from-cyan-900 via-teal-900 to-primary-900 text-white relative overflow-hidden">
@@ -353,8 +415,7 @@ export default function BrowserComparison2026Page() {
                 Best Web Browsers Compared (2026)
               </h1>
               <p id="page-intro" className="mt-2 text-cyan-100 text-base sm:text-lg leading-relaxed max-w-3xl">
-                An independent, citation-backed comparison of 10 major browsers — covering rendering engine,
-                market share, privacy defaults, extension support, and open-source status.
+                {QUICK_ANSWER}
               </p>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-cyan-200">
                 <span>
@@ -386,6 +447,14 @@ export default function BrowserComparison2026Page() {
       </div>
 
     <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* Quick Answer — speakable (#quick-answer) */}
+      <section aria-labelledby="browscomp-quick-answer" className="mb-6 p-5 bg-amber-50 border border-amber-200 rounded-2xl">
+        <h2 id="browscomp-quick-answer" className="font-display font-bold text-text mb-2">Quick Answer</h2>
+        <p id="quick-answer" className="text-text-secondary text-sm sm:text-base leading-relaxed">
+          {QUICK_ANSWER}
+        </p>
+      </section>
 
       {/* Quick verdict */}
       <section aria-labelledby="browscomp-quick-verdict" className="mb-10 p-5 bg-surface-alt rounded-2xl border border-border">
@@ -443,6 +512,21 @@ export default function BrowserComparison2026Page() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      {/* FAQ — visible 1:1 with FAQPage JSON-LD */}
+      <section id="faq" aria-labelledby="browscomp-faq" className="mb-12">
+        <h2 id="browscomp-faq" className="text-2xl font-display font-bold text-text mb-4">
+          Frequently asked questions
+        </h2>
+        <dl className="space-y-4">
+          {BROWSER_FAQS.map((faq) => (
+            <div key={faq.question} className="p-4 border border-border rounded-xl bg-surface-alt/40">
+              <dt className="font-semibold text-text">{faq.question}</dt>
+              <dd className="faq-answer mt-2 text-sm text-text-secondary leading-relaxed">{faq.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* Methodology link */}

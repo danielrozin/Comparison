@@ -104,6 +104,36 @@ describe("COMPARE_REDIRECTS", () => {
     });
   });
 
+  describe("ROO-27 messaging compares", () => {
+    const CANONICALS = [
+      "signal-vs-whatsapp",
+      "signal-vs-telegram",
+      "whatsapp-vs-telegram",
+    ];
+    const ALIASES: Record<string, string> = {
+      "whatsapp-vs-signal": "signal-vs-whatsapp",
+      "signal-vs-whatsapp-2026": "signal-vs-whatsapp",
+      "telegram-vs-signal": "signal-vs-telegram",
+      "whatsapp-vs-telegram-2026": "whatsapp-vs-telegram",
+    };
+
+    it("does not redirect the new messaging canonicals", () => {
+      for (const slug of CANONICALS) {
+        expect(getConsolidatedCompareSlug(slug), slug).toBeNull();
+        expect(
+          COMPARE_REDIRECTS.some((r) => r.source === `/compare/${slug}`),
+          `${slug} must not be a redirect source`,
+        ).toBe(false);
+      }
+    });
+
+    it("folds reverse-order and phrasing aliases onto those canonicals", () => {
+      for (const [from, to] of Object.entries(ALIASES)) {
+        expect(getConsolidatedCompareSlug(from), from).toBe(to);
+      }
+    });
+  });
+
   describe("ROO-24 US↔China GDP soft-404 cluster", () => {
     const CANONICAL = "us-vs-china-gdp";
     const SAMPLES = [

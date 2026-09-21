@@ -6,6 +6,7 @@
 import type { ComparisonPageData, TrendingComparison, RelatedComparison } from "@/types";
 import { getExtraComparisons, getExtraTrendingData } from "./mock-data-extra";
 import { FAQ_EXPANSION } from "@/lib/data/faq-expansion";
+import { listEditorialComparisons } from "@/lib/data/editorial-compares";
 
 const EXTRA_COMPARISONS = getExtraComparisons();
 
@@ -2005,6 +2006,7 @@ const MOCK_COMPARISONS: Record<string, ComparisonPageData> = {
     Object.entries(MOCK_COMPARISONS_BASE).map(([k, v]) => [k, { ...v, relatedBlogPosts: [] }])
   ),
   ...EXTRA_COMPARISONS,
+  ...Object.fromEntries(listEditorialComparisons().map((c) => [c.slug, c])),
 };
 
 const EXTRA_TRENDING = getExtraTrendingData();

@@ -78,6 +78,18 @@ export const COMPARE_NEXT_CLUSTER_FALLBACKS: Readonly<
     { slug: "uber-vs-taxi", label: "Uber vs taxi" },
     { slug: "doordash-vs-uber-eats", label: "DoorDash vs Uber Eats" },
   ],
+  "signal-vs-whatsapp": [
+    { slug: "signal-vs-telegram", label: "Signal vs Telegram" },
+    { slug: "whatsapp-vs-telegram", label: "WhatsApp vs Telegram" },
+  ],
+  "signal-vs-telegram": [
+    { slug: "signal-vs-whatsapp", label: "Signal vs WhatsApp" },
+    { slug: "whatsapp-vs-telegram", label: "WhatsApp vs Telegram" },
+  ],
+  "whatsapp-vs-telegram": [
+    { slug: "signal-vs-whatsapp", label: "Signal vs WhatsApp" },
+    { slug: "signal-vs-telegram", label: "Signal vs Telegram" },
+  ],
 };
 
 /**
