@@ -88,14 +88,14 @@ const faqSchema = {
 export default async function PricingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ src?: string }>;
+  searchParams: Promise<{ src?: string; canceled?: string }>;
 }) {
-  const { src = "direct" } = await searchParams;
+  const { src = "direct", canceled } = await searchParams;
 
   return (
     <>
       <JsonLd data={[offersSchema, faqSchema]} />
-      <PricingViewTracker src={src} />
+      <PricingViewTracker src={src} canceled={canceled === "1" || canceled === "true"} />
       <HubShell
         eyebrow="Pricing"
         title={"The comparisons are free. The superpowers aren't."}

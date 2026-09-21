@@ -46,11 +46,18 @@ export async function POST(request: NextRequest) {
         mode: "subscription",
         "line_items[0][price]": process.env[interval.stripePriceEnv] as string,
         "line_items[0][quantity]": "1",
+        // Client fires checkout_thanks_viewed on success, checkout_canceled on
+        // /pricing?canceled=1. Keep `src` on cancel so the drop-off is attributed.
         success_url: `${SITE_URL}/pricing/thanks?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${SITE_URL}/pricing?canceled=1`,
+        cancel_url: `${SITE_URL}/pricing?canceled=1&src=${encodeURIComponent(src)}`,
         "metadata[plan]": plan.id,
         "metadata[interval]": interval.interval,
         "metadata[src]": src,
+        // Copied onto the Subscription so customer.subscription.deleted
+        // can emit subscription_canceled with plan / interval / src.
+        "subscription_data[metadata][plan]": plan.id,
+        "subscription_data[metadata][interval]": interval.interval,
+        "subscription_data[metadata][src]": src,
         allow_promotion_codes: "true",
       });
       if (body.email && EMAIL_RE.test(body.email)) {

@@ -109,7 +109,11 @@ export function identifySubscriber(email: string) {
 }
 
 /** Pricing page viewed — top of the monetization funnel. `src` is the surface
- *  that sent the visitor (header, footer, requests, compare-{slug}, direct). */
+ *  that sent the visitor (header, footer, requests, compare-{slug}, direct).
+ *
+ *  Funnel: pricing_viewed → checkout_clicked → checkout_started → purchase
+ *  (webhook, with `$revenue`). Side paths: checkout_canceled (Stripe cancel_url),
+ *  checkout_thanks_viewed (success_url), subscription_canceled (webhook). */
 export function trackPricingViewed(src: string) {
   trackEvent("pricing_viewed", { src });
   clarityTagAction("pricing_viewed");
@@ -123,6 +127,22 @@ export function trackCheckoutClicked(plan: string, interval: string, src: string
   clarityTagAction("checkout_clicked");
   clarityTagEngagement("converted");
   posthog.capture("checkout_clicked", { plan, interval, src });
+}
+
+/** Stripe cancel_url (`/pricing?canceled=1`) — abandon after checkout_started. */
+export function trackCheckoutCanceled(src: string) {
+  trackEvent("checkout_canceled", { src });
+  clarityTagAction("checkout_canceled");
+  posthog.capture("checkout_canceled", { src });
+}
+
+/** Stripe success_url (`/pricing/thanks`) — client confirmation of paid return. */
+export function trackCheckoutThanksViewed(sessionId?: string) {
+  const props: Record<string, string> = {};
+  if (sessionId) props.stripe_session_id = sessionId;
+  trackEvent("checkout_thanks_viewed", props);
+  clarityTagAction("checkout_thanks_viewed");
+  posthog.capture("checkout_thanks_viewed", props);
 }
 
 export function trackComparisonVote(entityA: string, entityB: string, choice: string) {

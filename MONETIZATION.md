@@ -52,9 +52,12 @@ No deploy, no code change.
 
 ## Analytics (PostHog, already wired)
 
-Events: `pricing_viewed` (with `src`), `checkout_started` (plan, interval),
-`reservation_created` (plan), later `checkout_completed` via Stripe webhook.
-Funnel to watch: pricing_viewed → checkout_started → completed, split by `src`.
+Events: `pricing_viewed` (with `src`), `checkout_clicked`, `checkout_started`
+(plan, interval), `reservation_created` (plan), `purchase` + `checkout_completed`
+via Stripe webhook (`$revenue` / `revenue` in major units), `checkout_canceled`
+(cancel_url), `checkout_thanks_viewed` (success_url), `subscription_canceled`
+(webhook). Funnel to watch: pricing_viewed → checkout_clicked →
+checkout_started → purchase, split by `src`.
 
 ## Task board
 
@@ -95,7 +98,7 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
 **ROO-12 readiness (audited 2026-09-19)**
 - Prod `/api/checkout` is in **reservation mode** (no `STRIPE_SECRET_KEY` / price IDs on Vercel).
 - Prod `/api/stripe/webhook` returns **503** until `STRIPE_WEBHOOK_SECRET` is set.
-- PostHog funnel (client + server) is wired: `pricing_viewed` → `checkout_clicked` → `reservation_created` (pre-Stripe) or `checkout_started` → `checkout_completed` (webhook, post-Stripe).
+- PostHog funnel (client + server) is wired: `pricing_viewed` → `checkout_clicked` → `reservation_created` (pre-Stripe) or `checkout_started` → `purchase` + `checkout_completed` (webhook, post-Stripe, `$revenue`). Cancel/thanks: `checkout_canceled`, `checkout_thanks_viewed`, `subscription_canceled`.
 - Flip to live charge = set env vars below in Vercel + Stripe Dashboard webhook; no code change required for the charge path itself.
 
 **Phase 2 — when Stripe keys land (days)**
@@ -104,7 +107,8 @@ Funnel to watch: pricing_viewed → checkout_started → completed, split by `sr
       `STRIPE_PRICE_BUSINESS_MONTHLY` in Vercel
 - [x] `/api/stripe/webhook` — built and inert until `STRIPE_WEBHOOK_SECRET`
       is set; verifies signatures, dedupes events, records members to Redis,
-      notifies Info@ on purchase and cancel, fires `checkout_completed`
+      notifies Info@ on purchase and cancel, fires `checkout_completed` +
+      `purchase` (`$revenue`) and `subscription_canceled`
 - [ ] Point a Stripe webhook endpoint at `/api/stripe/webhook`
       (event: checkout.session.completed, customer.subscription.deleted)
       and set `STRIPE_WEBHOOK_SECRET`

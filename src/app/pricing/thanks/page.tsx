@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { HubShell } from "@/components/layout/HubShell";
+import { CheckoutThanksTracker } from "@/components/monetization/CheckoutThanksTracker";
 
 const PAGE_TITLE = `You're in — ${SITE_NAME}`;
 
@@ -17,15 +18,25 @@ export const metadata: Metadata = {
  * Stripe Checkout success_url lands here. Kept dependency-free on purpose:
  * whether provisioning is manual (launch week) or webhook-driven (Phase 2),
  * this page is honest either way — payment done, activation by email.
+ * Client fires checkout_thanks_viewed; the webhook fires purchase +
+ * checkout_completed with `$revenue`.
  */
-export default function PricingThanksPage() {
+export default async function PricingThanksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string }>;
+}) {
+  const { session_id } = await searchParams;
+
   return (
-    <HubShell
-      eyebrow="Confirmed"
-      title="You're in. Welcome aboard."
-      lede="Payment received — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
-      breadcrumbLabel="Thanks"
-    >
+    <>
+      <CheckoutThanksTracker sessionId={session_id} />
+      <HubShell
+        eyebrow="Confirmed"
+        title="You're in. Welcome aboard."
+        lede="Payment received — your founding price is locked. Your account details and first custom-comparison instructions arrive by email within the hour."
+        breadcrumbLabel="Thanks"
+      >
       <div className="max-w-xl space-y-6">
         <ol className="space-y-4 text-sm text-text-secondary">
           <li className="flex gap-3">
@@ -57,6 +68,7 @@ export default function PricingThanksPage() {
           Browse trending comparisons →
         </Link>
       </div>
-    </HubShell>
+      </HubShell>
+    </>
   );
 }
