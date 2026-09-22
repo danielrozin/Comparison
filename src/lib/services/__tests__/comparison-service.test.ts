@@ -72,6 +72,29 @@ describe('Comparison Service (mock-data fallback)', () => {
       expect(result!.faqs[0]).toHaveProperty('answer')
     })
 
+    it('applies the Copilot AEO overlay on ps5-vs-xbox-series-x', async () => {
+      const result = await getComparisonBySlug('ps5-vs-xbox-series-x')
+      expect(result!.faqs).toHaveLength(8)
+      expect(result!.quickAnswer?.winnerName).toBeNull()
+      expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+      expect(result!.keyDifferences.map((d) => d.label)).toEqual([
+        'GPU Power',
+        'SSD Speed',
+        'Exclusive Games',
+        'Subscription Value',
+      ])
+      expect(result!.faqs.map((f) => f.question)).toEqual([
+        'Which console is better, PS5 or Xbox Series X?',
+        'How much storage does the PS5 have compared with the Xbox Series X?',
+        'Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?',
+        'How much do the PS5 and Xbox Series X cost?',
+        'Which console has better exclusive games, PS5 or Xbox?',
+        'Which console has better backward compatibility, PS5 or Xbox Series X?',
+        'Do the PS5 and Xbox Series X support 4K at 120Hz?',
+        'Which should you buy, a PS5 or an Xbox Series X?',
+      ])
+    })
+
     it('applies the Copilot AEO overlay on messi-vs-ronaldo', async () => {
       const result = await getComparisonBySlug('messi-vs-ronaldo')
       expect(result!.faqs).toHaveLength(7)
