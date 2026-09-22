@@ -38,6 +38,17 @@ const BRIEF_MESSI_FAQS = [
   "Which Messi vs Ronaldo stats does this page not print?",
 ];
 
+const BRIEF_PS5_FAQS = [
+  "Which console is better, PS5 or Xbox Series X?",
+  "How much storage does the PS5 have compared with the Xbox Series X?",
+  "Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?",
+  "How much do the PS5 and Xbox Series X cost?",
+  "Which console has better exclusive games, PS5 or Xbox?",
+  "Which console has better backward compatibility, PS5 or Xbox Series X?",
+  "Do the PS5 and Xbox Series X support 4K at 120Hz?",
+  "Which should you buy, a PS5 or an Xbox Series X?",
+];
+
 function stubGdpPage(): ComparisonPageData {
   return {
     id: "us-vs-china-gdp",
@@ -307,6 +318,104 @@ describe("Messi vs Ronaldo Copilot AEO overlay", () => {
     expect(next.faqs.map((f) => f.question)).toEqual(BRIEF_MESSI_FAQS);
     expect(next.shortAnswer).toBe(getEditorialAeoOverlay("messi-vs-ronaldo")!.shortAnswer);
     expect(next.keyDifferences).toEqual(scorecard);
+  });
+});
+
+function mockPs5AllowedNumbers(): Set<string> {
+  const mock = getMockComparison("ps5-vs-xbox-series-x");
+  if (!mock) throw new Error("expected ps5-vs-xbox-series-x mock comparison");
+  const texts = [
+    mock.shortAnswer,
+    mock.verdict,
+    mock.metadata.metaTitle,
+    mock.metadata.metaDescription,
+    ...mock.keyDifferences.flatMap((d) => [d.label, d.entityAValue, d.entityBValue]),
+    ...mock.faqs.flatMap((f) => [f.question, f.answer]),
+    ...mock.entities.flatMap((e) => [e.name, e.shortDesc, e.bestFor, ...(e.pros || []), ...(e.cons || [])]),
+    ...mock.attributes.flatMap((a) => [a.name, a.unit, ...a.values.map((v) => v.valueText)]),
+  ];
+  const set = new Set<string>();
+  for (const t of texts) {
+    if (!t) continue;
+    for (const n of numbersIn(t)) set.add(n);
+  }
+  return set;
+}
+
+describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+    const overlay = getEditorialAeoOverlay("ps5-vs-xbox-series-x");
+    expect(overlay).toBeTruthy();
+    expect(overlay!.faqs).toHaveLength(8);
+    expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_PS5_FAQS);
+    expect(overlay!.quickAnswer.tldr).toBe(overlay!.shortAnswer);
+    expect(overlay!.quickAnswer.winnerName).toBeNull();
+    expect(getEditorialAeoOverlay("playstation-5-vs-xbox-series-x")).toBeNull();
+
+    const mock = getMockComparison("ps5-vs-xbox-series-x");
+    expect(mock).toBeTruthy();
+    const scorecard = mock!.keyDifferences.map((d) => ({ ...d }));
+    const next = applyEditorialAeoOverlay(mock!);
+    expect(next.shortAnswer).toBe(overlay!.shortAnswer);
+    expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
+    expect(next.faqs).toEqual(overlay!.faqs);
+    expect(next.faqs.map((f) => f.question)).toEqual(BRIEF_PS5_FAQS);
+    expect(next.keyDifferences).toEqual(scorecard);
+    expect(next.verdict).toBe(mock!.verdict);
+
+    const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
+    const faqPage = schemas.find((s) => s["@type"] === "FAQPage") as {
+      mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
+      speakable: { "@type": string };
+    };
+    expect(faqPage).toBeTruthy();
+    expect(faqPage.speakable["@type"]).toBe("SpeakableSpecification");
+    expect(faqPage.mainEntity).toHaveLength(overlay!.faqs.length);
+    expect(faqPage.mainEntity.map((q) => q.name)).toEqual(BRIEF_PS5_FAQS);
+    expect(faqPage.mainEntity.map((q) => q.acceptedAnswer.text)).toEqual(
+      overlay!.faqs.map((f) => f.answer),
+    );
+  });
+
+  it("uses only printed mock numbers and marks missing specs unknown", () => {
+    const overlay = getEditorialAeoOverlay("ps5-vs-xbox-series-x")!;
+    const allowed = mockPs5AllowedNumbers();
+    // 4 and 120 name the unprinted resolution question. They are not a spec claim.
+    const unknownTopicLabels = new Set(["4", "120"]);
+    const prose = overlayProse(overlay);
+
+    for (const n of numbersIn(prose)) {
+      const ok = allowed.has(n) || unknownTopicLabels.has(n);
+      expect(ok, `overlay invented number ${n} not present in mock ps5-vs-xbox-series-x data`).toBe(true);
+    }
+
+    expect(prose).toMatch(/12 TFLOPS vs 10\.28 TFLOPS/);
+    expect(prose).toMatch(/5\.5 GB\/s vs 2\.4 GB\/s/);
+    expect(prose).toMatch(/\$499/);
+    expect(prose).not.toMatch(/\b825\b/);
+    expect(prose).not.toMatch(/\b50\s*M/i);
+    expect(prose).not.toMatch(/12\.15/);
+    expect(prose).not.toMatch(/\$15/);
+    expect(prose).not.toMatch(/\b400\b/);
+    expect(prose).not.toMatch(/\b21\s*M/i);
+
+    const storage = overlay.faqs.find((f) => f.question.includes("storage"));
+    const resolution = overlay.faqs.find((f) => f.question.includes("4K"));
+    expect(storage?.answer).toMatch(/unknown/i);
+    expect(storage?.answer).toMatch(/do not invent a gigabyte total/i);
+    expect(resolution?.answer).toMatch(/unknown/i);
+    expect(resolution?.answer).toMatch(/do not invent a frame-rate or resolution spec/i);
+  });
+
+  it("does not self-contradict quoted (A vs B) order", () => {
+    const overlay = getEditorialAeoOverlay("ps5-vs-xbox-series-x")!;
+    expect(
+      findSelfContradictions({
+        shortAnswer: overlay.shortAnswer,
+        quickAnswer: overlay.quickAnswer,
+        faqs: overlay.faqs,
+      }),
+    ).toHaveLength(0);
   });
 });
 

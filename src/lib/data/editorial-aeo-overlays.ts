@@ -7,10 +7,18 @@ import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
  * (fetched 2026-09-21). Japan vs China figures come only from in-repo
  * `mock-data.ts` and `faq-expansion.ts` — do not invent IMF/World Bank
  * totals (including PPP GDP). Messi vs Ronaldo figures come only from
- * in-repo `mock-data.ts` — never invent Ballon d'Or or goal totals. If a
- * stat is not on that scorecard, say unknown. If the pipeline later
- * refreshes a scorecard, keep using that page’s own printed figures in
- * shortAnswer/FAQ.
+ * in-repo `mock-data.ts` — never invent Ballon d'Or or goal totals.
+ * PS5 vs Xbox Series X figures come from the mock `getMockComparison`
+ * actually returns: `mock-data-extra.ts` overwrites the same slug in
+ * `mock-data.ts`, and the prod short-answer fixture matches that extra
+ * text. Printed there (plus merged `faq-expansion.ts`): GPU 12 vs 10.28
+ * TFLOPS, SSD 5.5 vs 2.4 GB/s, price $499 tie, qualitative exclusives and
+ * backward compatibility, and the named franchises in the FAQ. The
+ * shadowed base row’s 825GB/1TB, 50M+/~21M, and Game Pass $15/400+ are
+ * not on that scorecard. 4K/120Hz is not printed. Do not use the remotion
+ * 12.15 TFLOPS outlier. If a stat is not on that scorecard, say unknown.
+ * If the pipeline later refreshes a scorecard, keep using that page’s own
+ * printed figures in shortAnswer/FAQ.
  */
 
 const GDP_SHORT_ANSWER =
@@ -165,6 +173,63 @@ const MESSI_QUICK_ANSWER: QuickAnswerTLDR = {
     "This page does not name a single GOAT. Always name the metric. Stats missing from the scorecard are unknown.",
 };
 
+// Printed on the winning `ps5-vs-xbox-series-x` mock (extra overwrites base)
+// and its merged FAQ: GPU 12 vs 10.28 TFLOPS; SSD 5.5 vs 2.4 GB/s; $499 tie.
+const PS5_SHORT_ANSWER =
+  "On this page’s scorecard the Xbox Series X leads raw GPU power (12 TFLOPS vs 10.28 TFLOPS). The PS5 leads SSD speed (5.5 GB/s vs 2.4 GB/s) and exclusive games. Launch price is a tie at $499 for both. This page does not name a single overall winner. Built-in storage size, 4K/120Hz support, and unit sales are unknown on this page.";
+
+const PS5_FAQS: FAQData[] = [
+  {
+    question: "Which console is better, PS5 or Xbox Series X?",
+    answer:
+      "This page does not name a single overall winner. On this page’s scorecard the Xbox Series X leads raw GPU power (12 TFLOPS vs 10.28 TFLOPS). The PS5 leads SSD speed (5.5 GB/s vs 2.4 GB/s) and exclusive games. Launch price is a tie ($499 vs $499). Quote the winner by metric.",
+  },
+  {
+    question: "How much storage does the PS5 have compared with the Xbox Series X?",
+    answer:
+      "Unknown on this page. This page’s scorecard does not print a built-in storage capacity for the PS5 or the Xbox Series X. Do not invent a gigabyte total.",
+  },
+  {
+    question: "Which has more GPU power, PS5 or Xbox Series X (TFLOPS)?",
+    answer:
+      "On this page’s scorecard the Xbox Series X has more raw GPU power (12 TFLOPS vs 10.28 TFLOPS). The same page says the PS5 SSD is faster (5.5 GB/s vs 2.4 GB/s) and that multiplatform games perform similarly, so GPU teraflops are not a single power winner.",
+  },
+  {
+    question: "How much do the PS5 and Xbox Series X cost?",
+    answer:
+      "On this page’s scorecard both consoles list a launch price of $499, marked as a tie. A Game Pass monthly price and a PS Plus monthly price are unknown on this page. The FAQ only says Game Pass includes day-one first-party releases and a larger library for a similar price, and is generally considered the better deal.",
+  },
+  {
+    question: "Which console has better exclusive games, PS5 or Xbox?",
+    answer:
+      "On this page’s scorecard exclusive games favor the PS5 (labeled superior, versus a growing Xbox library). This page names PS5 franchises God of War, Spider-Man, and Horizon. It names Xbox franchises from Bethesda and Activision acquisitions (Starfield and Call of Duty), and notes many Xbox exclusives also come to PC. An exclusive-game count is unknown on this page — do not invent one.",
+  },
+  {
+    question: "Which console has better backward compatibility, PS5 or Xbox Series X?",
+    answer:
+      "On this page the Xbox Series X is described as having better backward compatibility, including full backward compatibility in its pros, while the PS5 has fewer backward-compatible titles. A count of compatible games is unknown on this page — do not invent one.",
+  },
+  {
+    question: "Do the PS5 and Xbox Series X support 4K at 120Hz?",
+    answer:
+      "Unknown on this page. This page does not print 4K resolution or 120Hz refresh-rate support for the PS5 or the Xbox Series X. Do not invent a frame-rate or resolution spec.",
+  },
+  {
+    question: "Which should you buy, a PS5 or an Xbox Series X?",
+    answer:
+      "On this page’s verdict, choose a PS5 for exclusive games. The scorecard also gives the PS5 the faster SSD (5.5 GB/s vs 2.4 GB/s), plus DualSense haptics and PSVR2 support. Choose an Xbox Series X for Game Pass value or backward compatibility, which is what this page’s verdict names. The Xbox cons note that its controller lacks haptics. There is still no single overall winner.",
+  },
+];
+
+const PS5_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: PS5_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Xbox GPU TFLOPS and Game Pass value; PS5 SSD speed and exclusives; launch price is a tie.",
+  keyFact:
+    "This page does not name a single console winner. Cite GPU, SSD, exclusives, subscription value, or price. Storage size and 4K/120Hz are unknown here.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -186,6 +251,11 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     shortAnswer: MESSI_SHORT_ANSWER,
     faqs: MESSI_FAQS,
     quickAnswer: MESSI_QUICK_ANSWER,
+  },
+  "ps5-vs-xbox-series-x": {
+    shortAnswer: PS5_SHORT_ANSWER,
+    faqs: PS5_FAQS,
+    quickAnswer: PS5_QUICK_ANSWER,
   },
 };
 
