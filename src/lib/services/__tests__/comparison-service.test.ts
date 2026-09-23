@@ -22,7 +22,8 @@ import {
   getComparisonSlugsExisting,
   incrementViewCount,
 } from '../comparison-service'
-import { getAllMockSlugs } from '../mock-data'
+import { getAllMockSlugs, getMockComparison } from '../mock-data'
+import { getEditorialAeoOverlay } from '@/lib/data/editorial-aeo-overlays'
 
 describe('Comparison Service (mock-data fallback)', () => {
   beforeEach(() => {
@@ -93,6 +94,25 @@ describe('Comparison Service (mock-data fallback)', () => {
         'Do the PS5 and Xbox Series X support 4K at 120Hz?',
         'Which should you buy, a PS5 or an Xbox Series X?',
       ])
+    })
+
+    it('applies citation AEO overlays on figma, canva, and chatgpt compares', async () => {
+      for (const slug of ['figma-vs-sketch', 'canva-vs-photoshop', 'chatgpt-vs-gemini']) {
+        const mock = getMockComparison(slug)
+        expect(mock).not.toBeNull()
+        const scorecard = mock!.keyDifferences.map((d) => ({ ...d }))
+        const result = await getComparisonBySlug(slug)
+        const overlay = getEditorialAeoOverlay(slug)
+        expect(overlay).not.toBeNull()
+        expect(result!.quickAnswer?.winnerName).toBeNull()
+        expect(result!.quickAnswer?.tldr).toBe(result!.shortAnswer)
+        expect(result!.shortAnswer).toBe(overlay!.shortAnswer)
+        expect(result!.faqs.map((f) => f.question)).toEqual(overlay!.faqs.map((f) => f.question))
+        expect(result!.faqs.length).toBeGreaterThanOrEqual(6)
+        expect(result!.faqs.length).toBeLessThanOrEqual(8)
+        expect(result!.keyDifferences).toEqual(scorecard)
+        expect(result!.verdict).toBe(mock!.verdict)
+      }
     })
 
     it('applies the Copilot AEO overlay on messi-vs-ronaldo', async () => {

@@ -49,6 +49,39 @@ const BRIEF_PS5_FAQS = [
   "Which should you buy, a PS5 or an Xbox Series X?",
 ];
 
+const BRIEF_FIGMA_FAQS = [
+  "Which is better, Figma or Sketch?",
+  "What is Figma vs Sketch market share?",
+  "Does Figma work on Windows, and does Sketch?",
+  "Which has better real-time collaboration, Figma or Sketch?",
+  "How much do Figma and Sketch cost?",
+  "Can you use Figma or Sketch offline?",
+  "Is Figma free?",
+  "Which Figma vs Sketch figures does this page not print?",
+];
+
+const BRIEF_CANVA_FAQS = [
+  "Which is better, Canva or Photoshop?",
+  "How much do Canva and Photoshop cost?",
+  "Is Canva replacing Photoshop?",
+  "Who has more users, Canva or Photoshop?",
+  "Which is easier to learn, Canva or Photoshop?",
+  "Which is better for photo retouching and templates?",
+  "Can Canva be used professionally?",
+  "Which Canva vs Photoshop figures does this page not print?",
+];
+
+const BRIEF_CHATGPT_FAQS = [
+  "Which AI is better, ChatGPT or Gemini?",
+  "Who has more monthly users, ChatGPT or Gemini?",
+  "Which has free real-time web search, ChatGPT or Gemini?",
+  "What does the free tier include on this page?",
+  "How much do ChatGPT and Gemini cost on this page?",
+  "Which is better for images, plugins, and Google integration?",
+  "Is Gemini free?",
+  "Which ChatGPT vs Gemini stats does this page not print?",
+];
+
 function stubGdpPage(): ComparisonPageData {
   return {
     id: "us-vs-china-gdp",
@@ -416,6 +449,159 @@ describe("ps5-vs-xbox-series-x citation AEO overlay", () => {
         faqs: overlay.faqs,
       }),
     ).toHaveLength(0);
+  });
+});
+
+function mockAllowedNumbers(slug: string): Set<string> {
+  const mock = getMockComparison(slug);
+  if (!mock) throw new Error(`expected ${slug} mock comparison`);
+  const texts = [
+    mock.shortAnswer,
+    mock.verdict,
+    mock.metadata.metaTitle,
+    mock.metadata.metaDescription,
+    ...mock.keyDifferences.flatMap((d) => [d.label, d.entityAValue, d.entityBValue]),
+    ...mock.faqs.flatMap((f) => [f.question, f.answer]),
+    ...mock.entities.flatMap((e) => [e.name, e.shortDesc, e.bestFor, ...(e.pros || []), ...(e.cons || [])]),
+    ...mock.attributes.flatMap((a) => [a.name, a.unit, ...a.values.map((v) => v.valueText)]),
+  ];
+  const set = new Set<string>();
+  for (const t of texts) {
+    if (!t) continue;
+    for (const n of numbersIn(t)) set.add(n);
+  }
+  return set;
+}
+
+function expectCitationOverlay(
+  slug: string,
+  questions: string[],
+) {
+  const overlay = getEditorialAeoOverlay(slug);
+  expect(overlay).toBeTruthy();
+  expect(overlay!.faqs).toHaveLength(questions.length);
+  expect(overlay!.faqs.map((f) => f.question)).toEqual(questions);
+  expect(overlay!.quickAnswer.tldr).toBe(overlay!.shortAnswer);
+  expect(overlay!.quickAnswer.winnerName).toBeNull();
+
+  const mock = getMockComparison(slug);
+  expect(mock).toBeTruthy();
+  const scorecard = mock!.keyDifferences.map((d) => ({ ...d }));
+  const next = applyEditorialAeoOverlay(mock!);
+  expect(next.shortAnswer).toBe(overlay!.shortAnswer);
+  expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
+  expect(next.faqs).toEqual(overlay!.faqs);
+  expect(next.keyDifferences).toEqual(scorecard);
+  expect(next.verdict).toBe(mock!.verdict);
+
+  const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
+  const faqPage = schemas.find((s) => s["@type"] === "FAQPage") as {
+    mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
+    speakable: { "@type": string };
+  };
+  expect(faqPage).toBeTruthy();
+  expect(faqPage.speakable["@type"]).toBe("SpeakableSpecification");
+  expect(faqPage.mainEntity).toHaveLength(overlay!.faqs.length);
+  expect(faqPage.mainEntity.map((q) => q.name)).toEqual(questions);
+  expect(faqPage.mainEntity.map((q) => q.acceptedAnswer.text)).toEqual(
+    overlay!.faqs.map((f) => f.answer),
+  );
+
+  const allowed = mockAllowedNumbers(slug);
+  const prose = overlayProse(overlay!);
+  for (const n of numbersIn(prose)) {
+    expect(allowed.has(n), `overlay invented number ${n} not present in mock ${slug} data`).toBe(true);
+  }
+  // Boilerplate meta title year and pageview counters are not scorecard stats.
+  expect(prose).not.toMatch(/\b2026\b/);
+
+  expect(
+    findSelfContradictions({
+      shortAnswer: overlay!.shortAnswer,
+      quickAnswer: overlay!.quickAnswer,
+      faqs: overlay!.faqs,
+    }),
+  ).toHaveLength(0);
+}
+
+describe("figma-vs-sketch citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("sketch-vs-figma")).toBeNull();
+    expectCitationOverlay("figma-vs-sketch", BRIEF_FIGMA_FAQS);
+  });
+
+  it("keeps winnerName null and cites only printed share, seats, and prices", () => {
+    const overlay = getEditorialAeoOverlay("figma-vs-sketch")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/~80% of designers vs ~15% of designers/);
+    expect(prose).toMatch(/4M\+ vs ~1M/);
+    expect(prose).toMatch(/Free \/ \$12\+\/mo vs \$9\/mo or \$99\/yr/);
+    expect(prose).toMatch(/3 projects/);
+    expect(prose).toMatch(/Figma has won the UI design market/);
+    expect(prose).not.toMatch(/\b20\s*billion/i);
+    expect(prose).not.toMatch(/\b2023\b/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/plugin count/i);
+    expect(missing?.answer).toMatch(/one-time/i);
+  });
+});
+
+describe("canva-vs-photoshop citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("photoshop-vs-canva")).toBeNull();
+    expectCitationOverlay("canva-vs-photoshop", BRIEF_CANVA_FAQS);
+  });
+
+  it("keeps winnerName null and cites both printed Canva prices without inventing a third", () => {
+    const overlay = getEditorialAeoOverlay("canva-vs-photoshop")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/Free\/\$13\/mo vs \$22\.99\/mo/);
+    expect(prose).toMatch(/Free \/ \$12\.99 vs \$22\.99/);
+    expect(prose).toMatch(/170M\+ registered vs ~30M paid subscribers/);
+    expect(prose).toMatch(/not the same kind of count/);
+    expect(prose).toMatch(/Do not collapse Free\/\$13\/mo and Free \/ \$12\.99/);
+    expect(prose).not.toMatch(/\b54\.99\b/);
+    expect(prose).not.toMatch(/\b250,?000\b/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/exact template count/i);
+    expect(missing?.answer).toMatch(/like-for-like paid-subscriber total/i);
+  });
+});
+
+describe("chatgpt-vs-gemini citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("gemini-vs-chatgpt")).toBeNull();
+    expectCitationOverlay("chatgpt-vs-gemini", BRIEF_CHATGPT_FAQS);
+  });
+
+  it("keeps winnerName null, treats monthly users as a tie, and marks missing specs unknown", () => {
+    const overlay = getEditorialAeoOverlay("chatgpt-vs-gemini")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/tie \(200M\+ vs ~200M\)/);
+    expect(prose).toMatch(/\$20\+\/mo/);
+    expect(prose).toMatch(/\$19\.99\/month/);
+    expect(prose).toMatch(/GPT-3\.5 \(basic\)/);
+    expect(prose).toMatch(/Gemini 1\.5 Pro/);
+    expect(prose).toMatch(/DALL-E 3 built-in vs Imagen \(limited\)/);
+    expect(prose).not.toMatch(/\b128\b/);
+    expect(prose).not.toMatch(/\bGPT-5\b/);
+    expect(prose).not.toMatch(/\b2\.5\b/);
+    expect(prose).not.toMatch(/\b1M\b/);
+
+    const users = overlay.faqs.find((f) => f.question.includes("monthly users"));
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(users?.answer).toMatch(/tie/i);
+    expect(users?.answer).toMatch(/do not treat that tie as a win/i);
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/context-window/i);
+    expect(missing?.answer).toMatch(/benchmark/i);
   });
 });
 

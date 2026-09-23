@@ -17,6 +17,15 @@ import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
  * shadowed base row’s 825GB/1TB, 50M+/~21M, and Game Pass $15/400+ are
  * not on that scorecard. 4K/120Hz is not printed. Do not use the remotion
  * 12.15 TFLOPS outlier. If a stat is not on that scorecard, say unknown.
+ * Figma vs Sketch, Canva vs Photoshop, and ChatGPT vs Gemini figures come
+ * only from the object `getMockComparison` returns. All three rows live in
+ * `mock-data-extra.ts` (nothing in `mock-data.ts` or `faq-expansion.ts`
+ * overwrites them). Canva’s monthly cost is printed twice and the Canva
+ * cell disagrees: scorecard Free/$13/mo versus attribute Free / $12.99,
+ * both against Photoshop $22.99. Cite both. ChatGPT vs Gemini monthly
+ * users are a tie (200M+ vs ~200M). None of the three scorecards names a
+ * single winner on every row, so winnerName stays null. If a stat is not
+ * on that returned page, say unknown.
  * If the pipeline later refreshes a scorecard, keep using that page’s own
  * printed figures in shortAnswer/FAQ.
  */
@@ -230,6 +239,180 @@ const PS5_QUICK_ANSWER: QuickAnswerTLDR = {
     "This page does not name a single console winner. Cite GPU, SSD, exclusives, subscription value, or price. Storage size and 4K/120Hz are unknown here.",
 };
 
+// Printed by getMockComparison("figma-vs-sketch") — extra row only.
+// Market share ~80% vs ~15%; active designers 4M+ vs ~1M; price
+// Free / $12+/mo vs $9/mo or $99/yr (Sketch). Free tier: 3 projects.
+const FIGMA_SHORT_ANSWER =
+  "On this page’s scorecard Figma leads platform access (Any (browser) versus Mac only) and real-time collaboration (excellent vs limited). Figma’s market share is higher (~80% of designers vs ~15% of designers), and Figma lists more active designers (4M+ vs ~1M). Sketch leads offline use (full vs limited). The price row marks Sketch the winner (Free / $12+/mo vs $9/mo or $99/yr). This page’s verdict says Figma has won the UI design market, but the scorecard does not name a single winner on every row. A plugin count and a separate one-time Sketch license price are unknown on this page.";
+
+const FIGMA_FAQS: FAQData[] = [
+  {
+    question: "Which is better, Figma or Sketch?",
+    answer:
+      "This page does not name a single scorecard winner. Figma leads platform access (Mac, Windows, Linux, and browser versus Mac only) and real-time collaboration (excellent vs limited). Figma’s market share is higher (~80% of designers vs ~15% of designers), and Figma lists more active designers (4M+ vs ~1M). Sketch leads offline use (full vs limited). The price row marks Sketch the winner (Free / $12+/mo vs $9/mo or $99/yr). This page’s verdict says Figma has won the UI design market. Quote the metric.",
+  },
+  {
+    question: "What is Figma vs Sketch market share?",
+    answer:
+      "On this page’s scorecard market share is ~80% of designers for Figma versus ~15% of designers for Sketch. Figma’s share is higher (~80% of designers vs ~15% of designers). The active-designers attribute is 4M+ versus ~1M, and Figma lists more active designers (4M+ vs ~1M).",
+  },
+  {
+    question: "Does Figma work on Windows, and does Sketch?",
+    answer:
+      "On this page Figma’s platform support is Mac, Windows, Linux, and Browser. Sketch is Mac only. The scorecard platform row is Any (browser) for Figma versus Mac only for Sketch, marked as a Figma win.",
+  },
+  {
+    question: "Which has better real-time collaboration, Figma or Sketch?",
+    answer:
+      "On this page’s scorecard real-time collaboration is excellent for Figma and limited for Sketch, marked as a Figma win. Figma’s pros name real-time collaboration. Sketch’s cons say real-time collaboration is limited. A numeric collaboration score is unknown on this page.",
+  },
+  {
+    question: "How much do Figma and Sketch cost?",
+    answer:
+      "On this page’s scorecard the price row is Free / $12+/mo for Figma versus $9/mo or $99/yr for Sketch, and it marks Sketch the winner. The on-page FAQ says Figma’s free tier allows 3 projects and unlimited personal files, and teams need the $12+/user/month plan. Sketch’s cons repeat $9/month or $99/year. Sketch’s pros mention a one-time license option, but a separate one-time dollar price is unknown on this page.",
+  },
+  {
+    question: "Can you use Figma or Sketch offline?",
+    answer:
+      "On this page’s scorecard offline use is limited for Figma and full for Sketch, marked as a Sketch win. Figma’s cons say it requires an internet connection. Sketch’s pros say it is offline capable. An offline-file limit is unknown on this page.",
+  },
+  {
+    question: "Is Figma free?",
+    answer:
+      "Yes, on this page’s FAQ. The free tier allows 3 projects and unlimited personal files. Teams need the $12+/user/month plan. The scorecard price cell is Free / $12+/mo versus Sketch at $9/mo or $99/yr.",
+  },
+  {
+    question: "Which Figma vs Sketch figures does this page not print?",
+    answer:
+      "Unknown on this page: a plugin count for either tool, a Sketch one-time license dollar amount other than the printed $9/mo or $99/yr, and any dollar figure for the Adobe acquisition (the cons only say the deal was blocked). Do not invent those.",
+  },
+];
+
+const FIGMA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: FIGMA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Figma platform, collaboration, market share, and active designers; Sketch offline use and the price row. The verdict says Figma won the UI design market.",
+  keyFact:
+    "No single scorecard winner. Market share is higher for Figma (~80% of designers vs ~15% of designers). The price row marks Sketch the winner (Free / $12+/mo vs $9/mo or $99/yr).",
+};
+
+// Printed by getMockComparison("canva-vs-photoshop") — extra row only.
+// Scorecard cost Free/$13/mo vs $22.99/mo. Attribute cost Free / $12.99 vs $22.99.
+// Users 170M+ registered vs ~30M paid subscribers.
+const CANVA_SHORT_ANSWER =
+  "On this page’s scorecard Canva leads the learning curve (minimal vs steep) and the template library (massive vs none built-in). Photoshop leads professional features (advanced vs basic) and photo retouching (professional vs basic). File format support prints as limited versus comprehensive. Canva’s users figure is larger (170M+ registered vs ~30M paid subscribers), and those labels are not the same kind of count. Canva’s scorecard monthly cost is lower (Free/$13/mo vs $22.99/mo). The attribute row is also lower for Canva (Free / $12.99 vs $22.99). This page does not name a single overall winner. An exact template count is unknown on this page.";
+
+const CANVA_FAQS: FAQData[] = [
+  {
+    question: "Which is better, Canva or Photoshop?",
+    answer:
+      "This page does not name a single overall winner. On this page’s scorecard Canva leads the learning curve (minimal vs steep) and the template library (massive vs none built-in). Photoshop leads professional features (advanced vs basic) and photo retouching (professional vs basic). The verdict assigns Canva to quick social graphics and non-designers, and Photoshop to professional photo editing. Quote the metric.",
+  },
+  {
+    question: "How much do Canva and Photoshop cost?",
+    answer:
+      "On this page’s scorecard monthly cost is Free/$13/mo for Canva versus $22.99/mo for Photoshop, marked as a Canva win. Canva’s scorecard monthly cost is lower (Free/$13/mo vs $22.99/mo). The attribute row prints a different Canva figure, Free / $12.99, against the same Photoshop price of $22.99. The attribute row is also lower for Canva (Free / $12.99 vs $22.99). Photoshop’s cons also say $22.99/month. Do not collapse Free/$13/mo and Free / $12.99 into one price.",
+  },
+  {
+    question: "Is Canva replacing Photoshop?",
+    answer:
+      "No, on this page’s FAQ. They serve different audiences. Canva covers simple design tasks for non-professionals. Photoshop remains the tool this page calls irreplaceable for professional photography and advanced design.",
+  },
+  {
+    question: "Who has more users, Canva or Photoshop?",
+    answer:
+      "On this page’s users attribute Canva is 170M+ registered and Photoshop is ~30M paid subscribers, marked as a Canva win. Canva’s users figure is larger (170M+ registered vs ~30M paid subscribers). Registered users and paid subscribers are not the same kind of count. A like-for-like paid-user total is unknown on this page.",
+  },
+  {
+    question: "Which is easier to learn, Canva or Photoshop?",
+    answer:
+      "On this page’s scorecard the learning curve is minimal for Canva and steep for Photoshop, marked as a Canva win. Canva’s pros say no design skills are required. Photoshop’s cons name a steep learning curve.",
+  },
+  {
+    question: "Which is better for photo retouching and templates?",
+    answer:
+      "On this page’s scorecard photo retouching is basic for Canva and professional for Photoshop. The template library is Massive for Canva and None built-in for Photoshop. The short answer says Canva has thousands of templates. An exact template count is unknown on this page. File format support prints as Limited for Canva and Comprehensive for Photoshop.",
+  },
+  {
+    question: "Can Canva be used professionally?",
+    answer:
+      "On this page’s FAQ, yes for marketing materials, social media, and presentations, and no for professional photo retouching or complex design work. Canva’s best-for line is social media graphics, presentations, and non-designers. Photoshop’s best-for line is professional photographers, designers, and retouchers.",
+  },
+  {
+    question: "Which Canva vs Photoshop figures does this page not print?",
+    answer:
+      "Unknown on this page: an exact template count (only “thousands” and “massive”), a like-for-like paid-subscriber total, and any Photoshop price other than $22.99/month. The two Canva prices that are printed, Free/$13/mo and Free / $12.99, should both be cited. Do not invent a third price.",
+  },
+];
+
+const CANVA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: CANVA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Canva ease, templates, monthly cost, and the users row; Photoshop professional features, photo retouching, and file formats.",
+  keyFact:
+    "Monthly cost is printed twice and the Canva cells do not match: Free/$13/mo on the scorecard and Free / $12.99 on the attribute row, both against Photoshop at $22.99. Do not collapse those Canva prices into one number.",
+};
+
+// Printed by getMockComparison("chatgpt-vs-gemini") — extra row only.
+// Users tie 200M+ vs ~200M. Real-time search Paid ($20+/mo) vs Free.
+// Gemini Advanced FAQ price $19.99/month. Free tier GPT-3.5 vs Gemini 1.5 Pro.
+const CHATGPT_SHORT_ANSWER =
+  "On this page’s scorecard monthly users are a tie (200M+ vs ~200M), with Gemini also described as ~200M (growing). ChatGPT leads the plugin ecosystem (largest vs growing) and image generation (DALL-E 3 built-in vs Imagen (limited)). Gemini leads real-time search (free vs paid only) and Google integration (deep vs none). The free-tier attribute prints GPT-3.5 (basic) for ChatGPT and Gemini 1.5 Pro (strong) for Gemini. ChatGPT real-time web search is priced at $20+/mo on that attribute row. The on-page FAQ prices Gemini Advanced at $19.99/month. This page does not name a single overall winner. Context-window sizes and benchmark scores are unknown on this page.";
+
+const CHATGPT_FAQS: FAQData[] = [
+  {
+    question: "Which AI is better, ChatGPT or Gemini?",
+    answer:
+      "This page does not name a single overall winner. The on-page FAQ says ChatGPT (GPT-4o) and Gemini Ultra are broadly comparable. On this page’s scorecard ChatGPT leads plugins (largest vs growing) and image generation (DALL-E 3 built-in vs Imagen (limited)). Gemini leads real-time search (free vs paid only) and Google integration (deep vs none). Monthly users are a tie (200M+ vs ~200M). Quote the metric.",
+  },
+  {
+    question: "Who has more monthly users, ChatGPT or Gemini?",
+    answer:
+      "Neither, on this page. The scorecard monthly-users row is a tie: 200M+ for ChatGPT versus ~200M (growing) for Gemini. The attribute row prints 200M+ versus ~200M. Monthly users are a tie (200M+ vs ~200M). Do not treat that tie as a win for either side.",
+  },
+  {
+    question: "Which has free real-time web search, ChatGPT or Gemini?",
+    answer:
+      "On this page’s scorecard real-time search is paid only for ChatGPT and free, via Google integration, for Gemini. The attribute row prints Paid ($20+/mo) for ChatGPT and Free for Gemini. ChatGPT’s cons say there is no real-time web search on the free tier.",
+  },
+  {
+    question: "What does the free tier include on this page?",
+    answer:
+      "On this page’s free-tier attribute, ChatGPT is GPT-3.5 (basic) and Gemini is Gemini 1.5 Pro (strong). The on-page FAQ says Gemini’s base version with Gemini 1.5 Pro is free. ChatGPT’s cons say the best models are on a paid tier. A context-window size for either free tier is unknown on this page.",
+  },
+  {
+    question: "How much do ChatGPT and Gemini cost on this page?",
+    answer:
+      "On this page the attribute row prices ChatGPT real-time web search at $20+/mo. The on-page FAQ says Gemini Advanced, with the most powerful model, requires a Google One subscription at $19.99/month. Those are different products. A ChatGPT Plus plan name is not printed on this page. Do not invent another price.",
+  },
+  {
+    question: "Which is better for images, plugins, and Google integration?",
+    answer:
+      "On this page’s scorecard image generation favors ChatGPT (DALL-E 3 built-in vs Imagen (limited)) and the plugin ecosystem favors ChatGPT (largest vs growing). Google integration favors Gemini (deep vs none). The short answer also names Gemini’s integration with Google Search, Gmail, and Workspace. An image-count limit and a plugin count are unknown on this page.",
+  },
+  {
+    question: "Is Gemini free?",
+    answer:
+      "Yes for the base version, on this page’s FAQ: Gemini 1.5 Pro is free. Gemini Advanced requires a Google One subscription at $19.99/month. The scorecard says Gemini real-time search is free, while ChatGPT’s is paid only at $20+/mo.",
+  },
+  {
+    question: "Which ChatGPT vs Gemini stats does this page not print?",
+    answer:
+      "Unknown on this page: context-window token counts, benchmark scores, and parameter counts. The verdict names ChatGPT for coding and the pros say strong coding (GPT-4o), but no numeric coding score is printed for ChatGPT or Gemini. Do not invent a token limit or a benchmark.",
+  },
+];
+
+const CHATGPT_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: CHATGPT_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: ChatGPT plugins and image generation; Gemini real-time search and Google integration; monthly users are a tie. The verdict also names ChatGPT for coding, with no coding score printed for Gemini.",
+  keyFact:
+    "Monthly users are a tie (200M+ vs ~200M). Do not crown a user-count winner. Context windows and benchmark scores are unknown on this page.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -256,6 +439,21 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     shortAnswer: PS5_SHORT_ANSWER,
     faqs: PS5_FAQS,
     quickAnswer: PS5_QUICK_ANSWER,
+  },
+  "figma-vs-sketch": {
+    shortAnswer: FIGMA_SHORT_ANSWER,
+    faqs: FIGMA_FAQS,
+    quickAnswer: FIGMA_QUICK_ANSWER,
+  },
+  "canva-vs-photoshop": {
+    shortAnswer: CANVA_SHORT_ANSWER,
+    faqs: CANVA_FAQS,
+    quickAnswer: CANVA_QUICK_ANSWER,
+  },
+  "chatgpt-vs-gemini": {
+    shortAnswer: CHATGPT_SHORT_ANSWER,
+    faqs: CHATGPT_FAQS,
+    quickAnswer: CHATGPT_QUICK_ANSWER,
   },
 };
 
