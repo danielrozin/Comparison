@@ -33,6 +33,7 @@ import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { CompareNextStepCTA } from "@/components/comparison/CompareNextStepCTA";
 import { buildCompareNextChips, type CompareNextChip } from "@/lib/data/build-compare-next-chips";
 import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { RelatedBlogPosts } from "@/components/comparison/RelatedBlogPosts";
 import { DeferUntilVisible } from "@/components/comparison/DeferUntilVisible";
 import { InternalLinks } from "@/components/comparison/InternalLinks";
@@ -1050,6 +1051,11 @@ export default function ComparisonPage(props: Props) {
       {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
       <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
 
+      {/* ROO-44: soft Pro line near the fold. The answer and verdict stay above it. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-1 pb-2">
+        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+      </div>
+
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
         <ComparisonPoll
@@ -1345,6 +1351,10 @@ function MultiEntityLayout({
 
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
 
+      {/* ROO-44: soft Pro line near the fold. The quick answer stays above it. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
+        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+      </div>
 
       {/* ROO-29: mid-page next-step compare chips — bounce recovery */}
       <CompareNextStepCTA chips={nextStepChips} />

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { personAuthorNode } from "@/lib/seo/schema";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/browser-comparison-2026`;
 const PAGE_TITLE = `Best Web Browsers Compared (2026) | ${SITE_NAME}`;
@@ -438,6 +439,7 @@ export default function BrowserComparison2026Page() {
               </div>
             </div>
           </div>
+          <SoftPricingLine src="browser-comparison-2026" tone="onDark" className="mt-4" />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { personAuthorNode } from "@/lib/seo/schema";
 
 const PAGE_URL = `${SITE_URL}/blog/best-cloud-platform-2026`;
@@ -385,6 +386,7 @@ export default function BestCloudPlatform2026Page() {
               </p>
             </div>
           </div>
+          <SoftPricingLine src="blog-best-cloud-platform-2026" tone="onDark" className="mt-4" />
         </div>
         <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

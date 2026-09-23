@@ -14,6 +14,7 @@ import { TrendingSortSelect } from "@/components/ui/TrendingSortSelect";
 import { personAuthorNode, breadcrumbSchema, teachesDefinedTerm, faqSchema } from "@/lib/seo/schema";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { CategoryIcon } from "@/lib/utils/category-icons";
 
 export const revalidate = 300; // ISR: revalidate trending page every 5 minutes
@@ -555,15 +556,12 @@ export default async function TrendingPage({ searchParams }: PageProps) {
         {safePage === 1 && (
           <div className="mt-16">
             <NewsletterSignup source="trending" />
-            <p className="mt-6 text-center text-sm text-text-secondary">
-              Need a matchup that isn&apos;t on this list?{" "}
-              <Link
-                href="/pricing?src=trending"
-                className="font-semibold text-primary-600 hover:text-primary-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
-              >
-                Lock the Pro founding price
-              </Link>
-            </p>
+            <SoftPricingLine
+              src="trending"
+              lead="Need a matchup that isn't on this list?"
+              label="Lock the Pro founding price"
+              className="mt-6 text-center"
+            />
           </div>
         )}
       </div>

@@ -7,6 +7,7 @@ import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
 import { HomeCompareCTA, TrackedCompareLink } from "@/components/home/HomeCompareCTA";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
 import {
@@ -557,6 +558,8 @@ export default async function BlogPage({
             source={BLOG_HUB_COMPARE_SOURCE}
             softHref={BLOG_COMPARE_SOFT_HREF}
           />
+          {/* ROO-44: soft Pro line in the hero. Compare stays the primary CTA. */}
+          <SoftPricingLine src="blog" tone="onDark" className="mt-4 text-center" />
         </div>
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
