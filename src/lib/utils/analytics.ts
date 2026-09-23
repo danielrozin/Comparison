@@ -8,6 +8,7 @@ import {
   tagEngagement as clarityTagEngagement,
 } from "@/lib/services/clarity-service";
 import posthog from "posthog-js";
+import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
 
 declare global {
   interface Window {
@@ -235,11 +236,9 @@ export function trackComparisonView(slug: string, category: string) {
     typeof window !== "undefined"
       ? new URLSearchParams(window.location.search).get("source_page") || undefined
       : undefined;
-  posthog.capture("comparison_viewed", {
-    comparison_slug: slug,
-    category,
-    ...(sourcePage ? { source_page: sourcePage } : {}),
-  });
+  // Shared with the bootstrap capture (ROO-48). A second call for the same
+  // slug in this document is a no-op, so hydration does not double-count.
+  captureComparisonViewed(slug, category, sourcePage);
 }
 
 export function trackPollEmailCapture(page: string) {
