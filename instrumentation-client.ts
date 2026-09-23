@@ -1,4 +1,5 @@
 import posthog from "posthog-js";
+import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
 import { isThirdPartyException } from "@/lib/utils/third-party-errors";
 
 /**
@@ -74,4 +75,7 @@ if (token && analyticsAllowed()) {
   if (Object.keys(assignments).length > 0) {
     posthog.register(assignments);
   }
+
+  // ROO-48: same turn as $pageview. Do not wait for the hydrated compare chunk.
+  captureComparisonViewedFromLocation();
 }
