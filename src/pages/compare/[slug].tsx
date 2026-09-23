@@ -9,6 +9,10 @@ import {
   isComparisonDbReachable,
 } from "@/lib/services/comparison-service";
 import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
+import {
+  HTML_SUFFIX_COMPARE_STATUS,
+  resolveHtmlSuffixCompareRedirect,
+} from "@/lib/redirects/html-suffix-compare";
 import { resolveUsChinaGdpRedirect } from "@/lib/redirects/us-china-gdp-cluster";
 import {
   startAttempt,
@@ -327,6 +331,19 @@ function appendVideoToGraph(
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const slug = String(params?.slug || "");
+
+  // ROO-25: single-segment HTML suffix (`neymar-vs-mbappe:A<b>Neymar`).
+  // Paths whose tail contains a raw `/` (`</b`) never reach this route;
+  // middleware 301s those. Same helper, so the destination cannot drift.
+  const htmlSuffixCanonical = resolveHtmlSuffixCompareRedirect(slug);
+  if (htmlSuffixCanonical) {
+    return {
+      redirect: {
+        destination: `/compare/${htmlSuffixCanonical}`,
+        statusCode: HTML_SUFFIX_COMPARE_STATUS,
+      },
+    };
+  }
 
   // Validate slug format — must be "entity-a-vs-entity-b" (or N-way: "a-vs-b-vs-c-...")
   const slugParts = parseComparisonSlug(slug);

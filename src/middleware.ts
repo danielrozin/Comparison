@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  compareHtmlSuffixRedirectPath,
+  HTML_SUFFIX_COMPARE_STATUS,
+} from "@/lib/redirects/html-suffix-compare";
 
 // Simple in-memory rate limiter (per-instance; works on Edge Runtime)
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -66,6 +70,19 @@ function cleanupStaleEntries() {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // ROO-25: `/compare/{slug}:{html}` soft-404s. The colon is not a legal
+  // slug character, and a truncated `</b` adds a raw slash, so next.config
+  // redirects and [slug] cannot see the long tail. 301 at the edge.
+  const htmlSuffixDest =
+    compareHtmlSuffixRedirectPath(pathname) ??
+    compareHtmlSuffixRedirectPath(request.url);
+  if (htmlSuffixDest) {
+    const url = request.nextUrl.clone();
+    url.pathname = htmlSuffixDest;
+    url.search = "";
+    return NextResponse.redirect(url, HTML_SUFFIX_COMPARE_STATUS);
+  }
 
   // Content-serving API endpoints that AI crawlers and indexers should be allowed to index.
   // These endpoints serve structured data (JSON-LD, JSON) referenced from HTML pages and llms.txt.
