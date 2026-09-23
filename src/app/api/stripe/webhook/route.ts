@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { getRedis } from "@/lib/services/redis";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
+import { MEMBERS_LIST_KEY, revokeMember, upsertMember } from "@/lib/monetization/members";
 
 /**
  * POST /api/stripe/webhook — Phase 2 of MONETIZATION.md.
@@ -18,9 +19,12 @@ import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
  *
  * PostHog (ROO-41): checkout.session.completed → checkout_completed + purchase
  * ($revenue in major units). customer.subscription.deleted → subscription_canceled.
+ *
+ * Membership (ROO-42): checkout and subscription create/update upsert Redis
+ * hash monetization:member:{email}. subscription.deleted marks that hash
+ * canceled (access off). Founder notification emails stay as they were.
  */
 
-const MEMBERS_KEY = "monetization:members"; // list of JSON records
 const EVENTS_SEEN_KEY = "monetization:stripe-events"; // set, idempotency
 
 function verifyStripeSignature(payload: string, header: string, secret: string): boolean {
@@ -108,8 +112,23 @@ export async function POST(request: NextRequest) {
 
     if (redis) {
       try {
-        await redis.lpush(MEMBERS_KEY, JSON.stringify(record));
+        // Append-only purchase log. Access checks use the hash below, not this list.
+        await redis.lpush(MEMBERS_LIST_KEY, JSON.stringify(record));
       } catch {}
+      try {
+        await upsertMember({
+          email: record.email,
+          plan: record.plan,
+          interval: record.interval,
+          stripeCustomer: record.stripeCustomer,
+          stripeSubscription: record.stripeSubscription,
+          src: record.src,
+          status: "active",
+          replaceSubscription: true,
+        });
+      } catch (err) {
+        console.error("[membership] checkout upsert failed:", err);
+      }
     }
     try {
       await sendNotificationEmail({
@@ -154,6 +173,32 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  if (
+    event.type === "customer.subscription.created" ||
+    event.type === "customer.subscription.updated"
+  ) {
+    const s = (event.data?.object ?? {}) as {
+      id?: string;
+      customer?: string;
+      status?: string;
+      metadata?: { plan?: string; interval?: string; src?: string; email?: string };
+    };
+    try {
+      await upsertMember({
+        email: s.metadata?.email,
+        plan: s.metadata?.plan,
+        interval: s.metadata?.interval,
+        src: s.metadata?.src,
+        stripeCustomer: s.customer,
+        stripeSubscription: s.id,
+        status: s.status || "active",
+        replaceSubscription: false,
+      });
+    } catch (err) {
+      console.error("[membership] subscription upsert failed:", err);
+    }
+  }
+
   if (event.type === "customer.subscription.deleted") {
     const s = (event.data?.object ?? {}) as {
       id?: string;
@@ -161,8 +206,19 @@ export async function POST(request: NextRequest) {
       status?: string;
       canceled_at?: number;
       cancellation_details?: { reason?: string; comment?: string; feedback?: string };
-      metadata?: { plan?: string; interval?: string; src?: string };
+      metadata?: { plan?: string; interval?: string; src?: string; email?: string };
     };
+    try {
+      await revokeMember({
+        email: s.metadata?.email,
+        stripeCustomer: s.customer,
+        stripeSubscription: s.id,
+      });
+    } catch (err) {
+      console.error("[membership] revoke failed:", err);
+    }
+    // Founder inboxes (sendNotificationEmail) stay on this path. Revoke is
+    // the hash update above; the email is still the same-day cancel notice.
     try {
       await sendNotificationEmail({
         subject: `⚠️ Subscription canceled: ${s.id ?? "unknown"}`,

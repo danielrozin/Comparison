@@ -9,8 +9,63 @@ const capture = vi.fn();
 const flushPostHog = vi.fn().mockResolvedValue(undefined);
 const sendNotificationEmail = vi.fn().mockResolvedValue(undefined);
 
+type Hash = Record<string, string>;
+
+const redisState = vi.hoisted(() => {
+  const hashes = new Map<string, Hash>();
+  const strings = new Map<string, string>();
+  const lists = new Map<string, string[]>();
+  const sets = new Map<string, Set<string>>();
+  const api = {
+    hashes,
+    strings,
+    lists,
+    sets,
+    reset() {
+      hashes.clear();
+      strings.clear();
+      lists.clear();
+      sets.clear();
+    },
+    async sadd(key: string, member: string) {
+      let set = sets.get(key);
+      if (!set) {
+        set = new Set();
+        sets.set(key, set);
+      }
+      const sizeBefore = set.size;
+      set.add(member);
+      return set.size > sizeBefore ? 1 : 0;
+    },
+    async lpush(key: string, value: string) {
+      const list = lists.get(key) ?? [];
+      list.unshift(value);
+      lists.set(key, list);
+      return list.length;
+    },
+    async hset(key: string, fields: Hash) {
+      const current = hashes.get(key) ?? {};
+      Object.assign(current, fields);
+      hashes.set(key, current);
+      return Object.keys(fields).length;
+    },
+    async hgetall(key: string) {
+      const current = hashes.get(key);
+      return current ? { ...current } : null;
+    },
+    async get(key: string) {
+      return strings.get(key) ?? null;
+    },
+    async set(key: string, value: string) {
+      strings.set(key, value);
+      return "OK";
+    },
+  };
+  return api;
+});
+
 vi.mock("@/lib/services/redis", () => ({
-  getRedis: () => null,
+  getRedis: () => redisState,
 }));
 
 vi.mock("@/lib/services/email", () => ({
@@ -48,6 +103,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     flushPostHog.mockClear();
     sendNotificationEmail.mockClear();
     sendNotificationEmail.mockResolvedValue(undefined);
+    redisState.reset();
   });
 
   afterEach(() => {
@@ -175,5 +231,139 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
       },
     });
     expect(flushPostHog).toHaveBeenCalled();
+  });
+
+  it("upserts the member hash on checkout and still LPUSHes the purchase list", async () => {
+    const payload = JSON.stringify({
+      id: "evt_completed_hash",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_test_hash",
+          customer_details: { email: "Buyer@Example.com" },
+          customer: "cus_hash",
+          subscription: "sub_hash",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: { plan: "pro", interval: "year", src: "header" },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+
+    expect(redisState.hashes.get("monetization:member:buyer@example.com")).toMatchObject({
+      email: "buyer@example.com",
+      plan: "pro",
+      interval: "year",
+      stripeCustomer: "cus_hash",
+      stripeSubscription: "sub_hash",
+      status: "active",
+      active: "1",
+      src: "header",
+    });
+    expect(redisState.strings.get("monetization:member-by-subscription:sub_hash")).toBe(
+      "buyer@example.com",
+    );
+    const purchaseLog = redisState.lists.get("monetization:members") ?? [];
+    expect(purchaseLog).toHaveLength(1);
+    // The list keeps the email Stripe sent. The hash key is the normalized one.
+    expect(purchaseLog[0]).toContain("Buyer@Example.com");
+    expect(sendNotificationEmail).toHaveBeenCalled();
+  });
+
+  it("updates the same hash on subscription.updated when the sub id matches", async () => {
+    await postWebhook(
+      JSON.stringify({
+        id: "evt_completed_before_update",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            customer_details: { email: "buyer@example.com" },
+            customer: "cus_hash",
+            subscription: "sub_hash",
+            amount_total: 900,
+            currency: "usd",
+            metadata: { plan: "pro", interval: "month", src: "pricing" },
+          },
+        },
+      }),
+      secret,
+    );
+
+    const res = await postWebhook(
+      JSON.stringify({
+        id: "evt_sub_updated",
+        type: "customer.subscription.updated",
+        data: {
+          object: {
+            id: "sub_hash",
+            customer: "cus_hash",
+            status: "past_due",
+            metadata: { plan: "pro", interval: "month" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(res.status).toBe(200);
+
+    const hash = redisState.hashes.get("monetization:member:buyer@example.com");
+    expect(hash?.status).toBe("past_due");
+    expect(hash?.active).toBe("0");
+    expect(hash?.plan).toBe("pro");
+  });
+
+  it("revokes the member hash on subscription.deleted and still emails founders", async () => {
+    await postWebhook(
+      JSON.stringify({
+        id: "evt_completed_before_delete",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            customer_details: { email: "buyer@example.com" },
+            customer: "cus_hash",
+            subscription: "sub_hash",
+            amount_total: 4900,
+            currency: "usd",
+            metadata: { plan: "pro", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    sendNotificationEmail.mockClear();
+
+    const res = await postWebhook(
+      JSON.stringify({
+        id: "evt_deleted_hash",
+        type: "customer.subscription.deleted",
+        data: {
+          object: {
+            id: "sub_hash",
+            customer: "cus_hash",
+            status: "canceled",
+            metadata: { plan: "pro", interval: "year", src: "header" },
+          },
+        },
+      }),
+      secret,
+    );
+    expect(res.status).toBe(200);
+
+    const hash = redisState.hashes.get("monetization:member:buyer@example.com");
+    expect(hash).toMatchObject({
+      plan: "pro",
+      interval: "year",
+      status: "canceled",
+      active: "0",
+      stripeSubscription: "sub_hash",
+    });
+    expect(sendNotificationEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        subject: expect.stringContaining("sub_hash"),
+      }),
+    );
   });
 });
