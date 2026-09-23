@@ -137,12 +137,20 @@ export function trackPricingViewed(src: string) {
 }
 
 /** Buy button clicked on /pricing — before the checkout/reservation POST, so
- *  drop-off between click and completed request is visible. */
+ *  drop-off between click and completed request is visible.
+ *
+ *  Sent immediately with sendBeacon. A normal batched capture sits in memory
+ *  until the flush interval, and the Stripe redirect unloads the page before
+ *  that flush — so checkout_started (server) was landing with no click. */
 export function trackCheckoutClicked(plan: string, interval: string, src: string) {
   trackEvent("checkout_clicked", { plan, interval, src });
   clarityTagAction("checkout_clicked");
   clarityTagEngagement("converted");
-  posthog.capture("checkout_clicked", { plan, interval, src });
+  posthog.capture(
+    "checkout_clicked",
+    { plan, interval, src },
+    { send_instantly: true, transport: "sendBeacon" },
+  );
 }
 
 /** Stripe cancel_url (`/pricing?canceled=1`) — abandon after checkout_started. */

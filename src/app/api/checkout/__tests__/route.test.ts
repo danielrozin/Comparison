@@ -4,6 +4,7 @@
  */
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { NextRequest } from "next/server";
+import { SITE_URL } from "@/lib/utils/constants";
 
 const capture = vi.fn();
 const flushPostHog = vi.fn().mockResolvedValue(undefined);
@@ -84,12 +85,30 @@ describe("POST /api/checkout (ROO-40)", () => {
     expect(params.get("subscription_data[metadata][posthog_distinct_id]")).toBe("ph_anon_019");
     expect(params.get("customer_email")).toBe("Buyer@Example.com");
     expect(params.get("metadata[plan]")).toBe("pro");
+    // Stripe substitutes this placeholder. It has to survive form encoding
+    // as the literal token, and cancel must return to /pricing.
+    expect(params.get("success_url")).toBe(
+      `${SITE_URL}/pricing/thanks?session_id={CHECKOUT_SESSION_ID}`,
+    );
+    expect(params.get("cancel_url")).toBe(`${SITE_URL}/pricing?canceled=1&src=header`);
 
-    expect(capture).toHaveBeenCalledWith({
+    const events = capture.mock.calls.map((call) => call[0] as {
+      distinctId: string;
+      event: string;
+      properties: { plan: string; interval: string; src: string };
+      timestamp: Date;
+    });
+    const clicked = events.find((event) => event.event === "checkout_clicked");
+    const started = events.find((event) => event.event === "checkout_started");
+    expect(clicked).toMatchObject({
       distinctId: "ph_anon_019",
-      event: "checkout_started",
       properties: { plan: "pro", interval: "year", src: "header" },
     });
+    expect(started).toMatchObject({
+      distinctId: "ph_anon_019",
+      properties: { plan: "pro", interval: "year", src: "header" },
+    });
+    expect(clicked?.timestamp.getTime()).toBeLessThan(started!.timestamp.getTime());
     expect(flushPostHog).toHaveBeenCalled();
   });
 
