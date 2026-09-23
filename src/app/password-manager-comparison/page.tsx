@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { JsonLd } from "@/components/schema/JsonLd";
 import { personAuthorNode } from "@/lib/seo/schema";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/password-manager-comparison`;
 const PAGE_TITLE = `Best Password Managers Compared (2026) | ${SITE_NAME}`;
@@ -401,6 +402,7 @@ export default function PasswordManagerComparisonPage() {
               </div>
             </div>
           </div>
+          <SoftPricingLine src="password-manager-comparison" tone="onDark" className="mt-4" />
         </div>
         <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

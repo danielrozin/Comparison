@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { BATTLES, HEADLINE_TOTAL, BATTLE_COUNT } from "./data";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { personAuthorNode } from "@/lib/seo/schema";
 
 const PAGE_PATH = "/q1-2026-ai-battles";
@@ -229,6 +230,7 @@ export default function Q1AiBattlesPage() {
           <p className="text-primary-100 text-sm sm:text-base max-w-2xl">
             {nf.format(HEADLINE_TOTAL)} US comparison searches across {BATTLE_COUNT} head-to-head battles (Jan–Mar 2026) — documented with full methodology and downloadable dataset.
           </p>
+          <SoftPricingLine src="q1-2026-ai-battles" tone="onDark" className="mt-4" />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

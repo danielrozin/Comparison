@@ -75,8 +75,10 @@ describe("/trending page wiring (ROO-47)", () => {
 
   it("keeps the pricing link below the list, not in the hero", () => {
     const heroEnd = source.indexOf("Category filter chips");
-    const pricingAt = source.indexOf('href="/pricing?src=trending"');
+    const pricingAt = source.indexOf('<SoftPricingLine');
     expect(heroEnd).toBeGreaterThan(-1);
     expect(pricingAt).toBeGreaterThan(heroEnd);
+    expect(source).toContain('src="trending"');
+    expect(source).not.toContain('href="/pricing?src=trending"');
   });
 });

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { TrackedPricingLink } from "@/components/monetization/SoftPricingLine";
 
 /**
  * Pro upsell for comparison pages. Pure presentational — this renders inside
@@ -21,12 +21,13 @@ export function ProUpsellCard({ slug }: { slug: string }) {
         Pro members request any matchup — we research it and publish the full side-by-side,
         verdict included, within 24 hours. Founding price locked at $49/year.
       </p>
-      <Link
-        href={`/pricing?src=compare-${slug}`}
+      <TrackedPricingLink
+        src={`compare-${slug}`}
+        placement="pro-upsell"
         className="inline-flex items-center rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
       >
         Get your comparison built →
-      </Link>
+      </TrackedPricingLink>
     </aside>
   );
 }

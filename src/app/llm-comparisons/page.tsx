@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { personAuthorNode, breadcrumbSchema, faqSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { JsonLd } from "@/components/schema/JsonLd";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 
 const PAGE_URL = `${SITE_URL}/llm-comparisons`;
 const PAGE_TITLE = `LLM Comparison 2026: GPT-4o vs Claude vs Gemini vs Llama | ${SITE_NAME}`;
@@ -440,6 +441,7 @@ export default function LLMComparisonsPage() {
               </div>
             </div>
           </div>
+          <SoftPricingLine src="llm-comparisons" tone="onDark" className="mt-4" />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

@@ -16,6 +16,7 @@ import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
+import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
 import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
@@ -869,6 +870,8 @@ export default async function BlogPostPage({
               source={slug}
               softHref={BLOG_COMPARE_SOFT_HREF}
             />
+            {/* ROO-44: pricing sits under the compare CTA, still in the hero. */}
+            <SoftPricingLine src={`blog-${slug}`} tone="onDark" className="mt-4 text-center" />
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
               <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
