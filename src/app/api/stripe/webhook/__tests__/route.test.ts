@@ -268,7 +268,8 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     );
     const purchaseLog = redisState.lists.get("monetization:members") ?? [];
     expect(purchaseLog).toHaveLength(1);
-    expect(purchaseLog[0]).toContain("buyer@example.com");
+    // The list keeps the email Stripe sent. The hash key is the normalized one.
+    expect(purchaseLog[0]).toContain("Buyer@Example.com");
     expect(sendNotificationEmail).toHaveBeenCalled();
   });
 
