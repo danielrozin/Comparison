@@ -81,11 +81,58 @@ describe("CheckoutButton identify-before-redirect (ROO-40)", () => {
       src: "header",
       posthogDistinctId: "ph_anon_019",
     });
-    expect(capture).toHaveBeenCalledWith("checkout_clicked", {
-      plan: "pro",
-      interval: "year",
-      src: "header",
+    expect(capture).toHaveBeenCalledWith(
+      "checkout_clicked",
+      { plan: "pro", interval: "year", src: "header" },
+      { send_instantly: true, transport: "sendBeacon" },
+    );
+    // The click is handed to PostHog before the checkout request starts,
+    // so it is in flight while Stripe creates the session.
+    expect(capture.mock.invocationCallOrder[0]).toBeLessThan(fetchMock.mock.invocationCallOrder[0]);
+  });
+
+  it("shows the Stripe note when this price is live", async () => {
+    const { CheckoutButton } = await import("../CheckoutButton");
+    render(
+      <CheckoutButton plan="pro" interval="year" src="header" label="Get Pro" paymentsLive />,
+    );
+    expect(screen.getByText(/Continues on Stripe/)).toBeInTheDocument();
+  });
+
+  it("shows the Stripe error instead of the reservation form when session create fails", async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 502,
+      json: async () => ({ error: "Checkout failed: Invalid API Key provided: sk_test_x" }),
     });
+
+    const { CheckoutButton } = await import("../CheckoutButton");
+    render(<CheckoutButton plan="pro" interval="year" src="header" label="Get Pro" paymentsLive />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Get Pro" }));
+
+    expect(await screen.findByText(/Checkout failed: Invalid API Key/)).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("you@company.com")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Nothing is charged today/)).not.toBeInTheDocument();
+  });
+
+  it("shows an error instead of the reservation form when checkout rejects for a non-email reason", async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: async () => ({ error: "Unknown plan" }),
+    });
+
+    const { CheckoutButton } = await import("../CheckoutButton");
+    render(
+      <CheckoutButton plan="nope" interval="year" src="header" label="Get Pro" paymentsLive />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Get Pro" }));
+
+    expect(await screen.findByText("Unknown plan")).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("you@company.com")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Nothing is charged today/)).not.toBeInTheDocument();
   });
 
   it("calls posthog.identify with the email before redirecting to Stripe", async () => {

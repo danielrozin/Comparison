@@ -28,6 +28,18 @@ describe("monetization client events (ROO-41)", () => {
     window.gtag = gtag;
   });
 
+  it("beacons checkout_clicked immediately so the Stripe redirect cannot drop it", async () => {
+    const { trackCheckoutClicked } = await import("../analytics");
+
+    trackCheckoutClicked("pro", "year", "header");
+
+    expect(capture).toHaveBeenCalledWith(
+      "checkout_clicked",
+      { plan: "pro", interval: "year", src: "header" },
+      { send_instantly: true, transport: "sendBeacon" },
+    );
+  });
+
   it("captures checkout_canceled with src", async () => {
     const { trackCheckoutCanceled } = await import("../analytics");
 

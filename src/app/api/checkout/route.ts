@@ -102,15 +102,31 @@ export async function POST(request: NextRequest) {
         throw new Error(session?.error?.message || `Stripe ${res.status}`);
       }
       try {
-        // ROO-31: await flush — serverless freeze was dropping server events
-        getPostHogClient().capture({
-          distinctId: distinctId || "anonymous",
+        // ROO-31: await flush — serverless freeze was dropping server events.
+        // ROO-45: the browser beacons checkout_clicked, but that request can
+        // die on the redirect. Record the same click here, 1ms earlier, on
+        // the same distinct id, so the ordered funnel still has click → start
+        // when the beacon never arrives. A second click on one person does
+        // not double the funnel step.
+        const ph = getPostHogClient();
+        const startedAt = new Date();
+        const props = { plan: plan.id, interval: interval.interval, src };
+        const personId = distinctId || "anonymous";
+        ph.capture({
+          distinctId: personId,
+          event: "checkout_clicked",
+          properties: props,
+          timestamp: new Date(startedAt.getTime() - 1),
+        });
+        ph.capture({
+          distinctId: personId,
           event: "checkout_started",
-          properties: { plan: plan.id, interval: interval.interval, src },
+          properties: props,
+          timestamp: startedAt,
         });
         await flushPostHog();
       } catch (err) {
-        console.error("[posthog] checkout_started capture failed:", err);
+        console.error("[posthog] checkout click/start capture failed:", err);
       }
       return NextResponse.json({ mode: "stripe", url: session.url });
     } catch (err) {

@@ -8,6 +8,11 @@ import {
   trackCheckoutClicked,
 } from "@/lib/utils/analytics";
 
+/** Reservation mode answers 400 with this idea. Any other 400 is a real error. */
+function isReservationEmailError(error: unknown): boolean {
+  return typeof error === "string" && /email/i.test(error);
+}
+
 /**
  * The one buy button. POSTs to /api/checkout:
  * - Stripe configured → redirect straight to Stripe's hosted checkout.
@@ -20,12 +25,15 @@ export function CheckoutButton({
   src,
   label,
   className,
+  paymentsLive = false,
 }: {
   plan: string;
   interval: string;
   src: string;
   label: string;
   className?: string;
+  /** This interval has a Stripe price. The note under the button says so. */
+  paymentsLive?: boolean;
 }) {
   const [phase, setPhase] = useState<"idle" | "email" | "busy" | "done" | "error">("idle");
   const [email, setEmail] = useState("");
@@ -70,8 +78,10 @@ export function CheckoutButton({
         setPhase("done");
         return;
       }
-      // reservation mode needs an email — reveal the field
-      if (res.status === 400 && !withEmail) {
+      // reservation mode needs an email — reveal the field.
+      // A different 400 (unknown plan, and so on) must not pretend checkout
+      // is still "nothing charged today" once Stripe is the live path.
+      if (res.status === 400 && !withEmail && isReservationEmailError(data.error)) {
         setPhase("email");
         return;
       }
@@ -133,6 +143,11 @@ export function CheckoutButton({
       <button type="button" onClick={() => void submit(false)} disabled={phase === "busy"} className={className}>
         {phase === "busy" ? "One moment…" : label}
       </button>
+      {paymentsLive && (
+        <p className="text-[11px] text-text-secondary leading-snug">
+          Continues on Stripe. Your card is entered there, not on this site.
+        </p>
+      )}
       {phase === "error" && <p className="text-xs text-red-600">{message}</p>}
     </div>
   );
