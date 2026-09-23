@@ -34,8 +34,8 @@ export interface HomeCompareCTAProps {
    */
   variant?: "glass" | "solid";
   /**
-   * Secondary /trending link. Off on blog surfaces: /trending does not mount
-   * a /compare/* page, so that click cannot fire comparison_viewed.
+   * Secondary /trending link. Off on blog surfaces and on /trending itself:
+   * that click never mounts a /compare/* page, so it cannot fire comparison_viewed.
    */
   showTrending?: boolean;
 }

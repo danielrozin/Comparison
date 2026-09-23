@@ -27,3 +27,6 @@ export const HOME_COMPARE_CHIP_CANDIDATES: ReadonlyArray<{
 ];
 
 export const HOME_COMPARE_SOURCE = "home";
+
+/** PostHog source_page for `/trending` → compare CTA clicks (ROO-47). */
+export const TRENDING_COMPARE_SOURCE = "trending";
