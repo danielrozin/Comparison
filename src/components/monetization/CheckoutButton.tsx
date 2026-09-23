@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { identifySubscriber, trackCheckoutClicked } from "@/lib/utils/analytics";
+import { normalizeCheckoutEmail } from "@/lib/analytics/checkout-identity";
+import {
+  getCheckoutDistinctId,
+  identifySubscriber,
+  trackCheckoutClicked,
+} from "@/lib/utils/analytics";
 
 /**
  * The one buy button. POSTs to /api/checkout:
@@ -29,19 +34,38 @@ export function CheckoutButton({
   async function submit(withEmail: boolean) {
     setPhase("busy");
     if (!withEmail) trackCheckoutClicked(plan, interval, src); // first click only, not the email re-submit
+
+    // Snapshot the id that already owns this browser's funnel events, then
+    // alias it to the email when we know one. Identify runs before the
+    // redirect (and before the request, so the alias has time to send).
+    // The session still stores the pre-identify id — see ROO-40.
+    const posthogDistinctId = getCheckoutDistinctId();
+    const typedEmail = withEmail ? normalizeCheckoutEmail(email) : undefined;
+    const knownEmail = typedEmail || normalizeCheckoutEmail(posthogDistinctId);
+    if (knownEmail) identifySubscriber(knownEmail);
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, interval, src, ...(withEmail ? { email } : {}) }),
+        body: JSON.stringify({
+          plan,
+          interval,
+          src,
+          ...(withEmail && email.trim() ? { email: email.trim() } : {}),
+          ...(posthogDistinctId ? { posthogDistinctId } : {}),
+        }),
       });
       const data = await res.json();
       if (data.mode === "stripe" && data.url) {
+        // Call again immediately before navigation so PostHog can flush the
+        // $identify on page unload if the first call is still queued.
+        if (knownEmail) identifySubscriber(knownEmail);
         window.location.assign(data.url);
         return;
       }
       if (res.ok && data.mode === "reservation") {
-        if (email) identifySubscriber(email);
+        if (typedEmail) identifySubscriber(typedEmail);
         setMessage(data.message);
         setPhase("done");
         return;

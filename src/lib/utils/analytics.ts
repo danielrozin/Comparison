@@ -8,6 +8,7 @@ import {
   tagEngagement as clarityTagEngagement,
 } from "@/lib/services/clarity-service";
 import posthog from "posthog-js";
+import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
 
 declare global {
@@ -107,6 +108,20 @@ export function identifySubscriber(email: string) {
   const normalized = email.toLowerCase().trim();
   if (!normalized) return;
   posthog.identify(normalized, { email: normalized });
+}
+
+/**
+ * The distinct id this browser is already sending with pricing_viewed and
+ * checkout_clicked. Read it before identify() — identify swaps the id to the
+ * email, and the Checkout Session must carry the id those earlier events used.
+ */
+export function getCheckoutDistinctId(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    return sanitizeCheckoutDistinctId(posthog.get_distinct_id());
+  } catch {
+    return undefined;
+  }
 }
 
 /** Pricing page viewed — top of the monetization funnel. `src` is the surface

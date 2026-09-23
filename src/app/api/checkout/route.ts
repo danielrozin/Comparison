@@ -4,6 +4,11 @@ import { getPlan, getInterval, stripeConfigured } from "@/lib/monetization/plans
 import { getRedis } from "@/lib/services/redis";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
+import {
+  checkoutEventDistinctId,
+  normalizeCheckoutEmail,
+  sanitizeCheckoutDistinctId,
+} from "@/lib/analytics/checkout-identity";
 
 /**
  * POST /api/checkout — the one conversion endpoint.
@@ -18,14 +23,18 @@ import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
  * from day one. Flipping to live checkout is purely an env-var change.
  */
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
 // Redis keys
 const RESERVATIONS_KEY = "monetization:reservations"; // list of JSON records
 const RESERVED_EMAILS_KEY = "monetization:reserved-emails"; // set, dedup
 
 export async function POST(request: NextRequest) {
-  let body: { plan?: string; interval?: string; email?: string; src?: string };
+  let body: {
+    plan?: string;
+    interval?: string;
+    email?: string;
+    src?: string;
+    posthogDistinctId?: string;
+  };
   try {
     body = await request.json();
   } catch {
@@ -38,6 +47,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unknown plan" }, { status: 400 });
   }
   const src = (body.src ?? "direct").slice(0, 40);
+  // Browser id (pricing_viewed / checkout_clicked) wins. Email is only used
+  // when the client did not send one, so we never split the funnel.
+  const distinctId = checkoutEventDistinctId({
+    posthogDistinctId: body.posthogDistinctId,
+    email: normalizeCheckoutEmail(body.email) ? body.email : undefined,
+    fallback: "anonymous",
+  });
+  const storedDistinctId = sanitizeCheckoutDistinctId(distinctId);
 
   // ---- Live path: Stripe Checkout ------------------------------------------
   if (stripeConfigured(interval)) {
@@ -60,7 +77,16 @@ export async function POST(request: NextRequest) {
         "subscription_data[metadata][src]": src,
         allow_promotion_codes: "true",
       });
-      if (body.email && EMAIL_RE.test(body.email)) {
+      // Both fields ride back on checkout.session.completed. The webhook
+      // prefers metadata, then client_reference_id, and does not replace
+      // either with the Stripe email.
+      if (storedDistinctId) {
+        params.set("client_reference_id", storedDistinctId);
+        params.set("metadata[posthog_distinct_id]", storedDistinctId);
+        params.set("subscription_data[metadata][posthog_distinct_id]", storedDistinctId);
+      }
+      const checkoutEmail = normalizeCheckoutEmail(body.email);
+      if (checkoutEmail && body.email) {
         params.set("customer_email", body.email.trim());
       }
       const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
@@ -78,7 +104,7 @@ export async function POST(request: NextRequest) {
       try {
         // ROO-31: await flush — serverless freeze was dropping server events
         getPostHogClient().capture({
-          distinctId: body.email?.trim() || "anonymous",
+          distinctId: distinctId || "anonymous",
           event: "checkout_started",
           properties: { plan: plan.id, interval: interval.interval, src },
         });
@@ -97,7 +123,7 @@ export async function POST(request: NextRequest) {
 
   // ---- Pre-launch path: founding-member reservation ------------------------
   const email = body.email?.trim() ?? "";
-  if (!EMAIL_RE.test(email)) {
+  if (!normalizeCheckoutEmail(email)) {
     return NextResponse.json({ error: "A valid email is required to reserve the founding price" }, { status: 400 });
   }
 
@@ -133,7 +159,7 @@ export async function POST(request: NextRequest) {
     } catch {}
     try {
       getPostHogClient().capture({
-        distinctId: email,
+        distinctId: storedDistinctId || email,
         event: "reservation_created",
         properties: { plan: plan.id, interval: interval.interval, price: interval.foundingPrice, src },
       });

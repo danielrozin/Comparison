@@ -167,6 +167,79 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     expect(sendNotificationEmail).toHaveBeenCalled();
   });
 
+  it("captures purchase on the Checkout Session distinct id, not the Stripe email", async () => {
+    const payload = JSON.stringify({
+      id: "evt_completed_stitch",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_test_stitch",
+          client_reference_id: "ph_anon_019",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_abc",
+          subscription: "sub_xyz",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: {
+            plan: "pro",
+            interval: "year",
+            src: "header",
+            posthog_distinct_id: "ph_anon_019",
+          },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+
+    expect(capture).toHaveBeenCalledWith(
+      expect.objectContaining({
+        distinctId: "ph_anon_019",
+        event: "checkout_completed",
+      }),
+    );
+    expect(capture).toHaveBeenCalledWith(
+      expect.objectContaining({
+        distinctId: "ph_anon_019",
+        event: "purchase",
+        properties: expect.objectContaining({ $revenue: 49 }),
+      }),
+    );
+    expect(capture).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        distinctId: "buyer@example.com",
+        event: "purchase",
+      }),
+    );
+  });
+
+  it("uses client_reference_id when metadata has no posthog distinct id", async () => {
+    const payload = JSON.stringify({
+      id: "evt_completed_ref_only",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_test_ref",
+          client_reference_id: "ph_from_reference",
+          customer_details: { email: "buyer@example.com" },
+          customer: "cus_abc",
+          amount_total: 900,
+          currency: "usd",
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+    expect(capture).toHaveBeenCalledWith(
+      expect.objectContaining({
+        distinctId: "ph_from_reference",
+        event: "purchase",
+      }),
+    );
+  });
+
   it("falls back to Stripe customer id when email is missing", async () => {
     const payload = JSON.stringify({
       id: "evt_completed_2",
@@ -231,6 +304,35 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
       },
     });
     expect(flushPostHog).toHaveBeenCalled();
+  });
+
+  it("captures subscription_canceled on the session distinct id when metadata has one", async () => {
+    const payload = JSON.stringify({
+      id: "evt_deleted_stitch",
+      type: "customer.subscription.deleted",
+      data: {
+        object: {
+          id: "sub_canceled_stitch",
+          customer: "cus_gone",
+          status: "canceled",
+          metadata: {
+            plan: "pro",
+            interval: "year",
+            src: "header",
+            posthog_distinct_id: "ph_anon_019",
+          },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+    expect(capture).toHaveBeenCalledWith(
+      expect.objectContaining({
+        distinctId: "ph_anon_019",
+        event: "subscription_canceled",
+      }),
+    );
   });
 
   it("upserts the member hash on checkout and still LPUSHes the purchase list", async () => {
