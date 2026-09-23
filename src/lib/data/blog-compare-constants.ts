@@ -23,6 +23,10 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "macbook-air-vs-macbook-pro",
     "mac-vs-windows",
   ],
+  "macbook-air-weight-comparison-2025-2026-which-model-is-right-for-you": [
+    "macbook-air-vs-macbook-pro",
+    "mac-vs-windows",
+  ],
   "mercedes-benz-alternatives-in-2026-best-luxury-cars-brands-to-consider": [
     "bmw-vs-mercedes",
     "mercedes-vs-audi",
@@ -34,10 +38,18 @@ export const BLOG_COMPARE_FALLBACKS: Record<string, string[]> = {
     "mercedes-vs-lexus",
   ],
   "best-cloud-platforms-2026": ["aws-vs-azure", "aws-vs-azure-vs-gcp"],
-  // tanks: abrams compares currently 404 live — candidates filtered out at runtime
+  // tanks: abrams/leopard compares 404 live (2026-09-23). Keep them so a
+  // future publish is picked up, and offer the live military compare so the
+  // lander is not left with zero /compare links.
   "best-tanks-world-2026-abrams-vs-t-90-vs-leopard": [
     "m1-abrams-vs-t-90",
     "abrams-tank-vs-leopard-2",
+    "us-military-vs-china-military",
+  ],
+  // workspace-vs-365 compares 404 live; slack/zoom are published workplace tools.
+  "google-workspace-alternatives-2026": [
+    "slack-vs-microsoft-teams",
+    "zoom-vs-google-meet",
   ],
   "us-china-military-comparison-2026-defense-spending-nuclear-naval": [
     "us-military-vs-china-military",

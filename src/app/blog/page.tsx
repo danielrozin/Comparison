@@ -6,14 +6,19 @@ import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { breadcrumbSchema, teachesDefinedTerm } from "@/lib/seo/schema";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { Pagination } from "@/components/ui/Pagination";
-import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
+import { HomeCompareCTA, TrackedCompareLink } from "@/components/home/HomeCompareCTA";
 import { FEATURED_COMPARISONS } from "@/lib/data/featured-comparisons";
 import { HOME_COMPARE_CHIP_CANDIDATES } from "@/lib/data/home-compare-constants";
 import {
   BLOG_COMPARE_SOFT_HREF,
   BLOG_HUB_COMPARE_SOURCE,
 } from "@/lib/data/blog-compare-constants";
+import {
+  articleCompareCandidates,
+  firstLiveCompareSlug,
+} from "@/lib/data/blog-hub-compare";
 import { filterLiveCompareSlugs } from "@/lib/seo/resolve-internal-links";
+import { getComparisonTitlesBySlugs } from "@/lib/services/comparison-service";
 
 const blogDescription = "Expert comparison guides, buyer's guides, and in-depth articles to help you make better decisions.";
 const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(`Blog — ${SITE_NAME}`)}&type=blog`;
@@ -427,6 +432,9 @@ export default async function BlogPage({
   const chipCandidateSlugs = [
     ...FEATURED_COMPARISONS.map((f) => f.slug),
     ...HOME_COMPARE_CHIP_CANDIDATES.map((c) => c.slug),
+    ...articles.flatMap((article) =>
+      articleCompareCandidates(article.slug, article.relatedComparisonSlugs),
+    ),
   ];
   const liveChipSlugs = await filterLiveCompareSlugs(chipCandidateSlugs);
   const liveChipSet = new Set(liveChipSlugs);
@@ -458,6 +466,20 @@ export default async function BlogPage({
     slug,
     label: labelBySlug.get(slug) || slug.replace(/-/g, " "),
   }));
+
+  // Per-card compare link: the article the visitor is about to open, not a
+  // generic featured slug. Only slugs that survived the live filter above.
+  const cardCompareSlug = new Map<string, string>();
+  for (const article of articles) {
+    const chosen = firstLiveCompareSlug(
+      articleCompareCandidates(article.slug, article.relatedComparisonSlugs),
+      liveChipSet,
+    );
+    if (chosen) cardCompareSlug.set(article.slug, chosen);
+  }
+  const cardCompareTitles = await getComparisonTitlesBySlugs(
+    Array.from(new Set(cardCompareSlug.values())),
+  );
 
   return (
     <>
@@ -492,7 +514,7 @@ export default async function BlogPage({
           <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
         </svg>
         <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-8 sm:pt-10 sm:pb-10 relative text-center">
           <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
               <li>
@@ -517,15 +539,18 @@ export default async function BlogPage({
             </svg>
             <span>Expert Comparison Guides</span>
           </div>
-          <h1 id="blog-hero-heading" className="text-4xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight mb-4">
+          <h1 id="blog-hero-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
             The Comparison Blog
           </h1>
-          <p className="blog-hero-description text-lg text-primary-200 max-w-2xl mx-auto">
+          <p className="blog-hero-description text-base sm:text-lg text-primary-200 max-w-2xl mx-auto">
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
-          {/* ROO-23: above-fold HomeCompareCTA — primary live /compare + tracked chips */}
+          {/* ROO-46: solid above-fold CTA. Trending is omitted — /trending
+              never mounts /compare/* so it cannot fire comparison_viewed. */}
           <HomeCompareCTA
+            variant="solid"
+            showTrending={false}
             primarySlug={primarySlug}
             primaryTitle={primaryTitle}
             chips={blogHubCompareChips}
@@ -533,7 +558,7 @@ export default async function BlogPage({
             softHref={BLOG_COMPARE_SOFT_HREF}
           />
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
@@ -597,11 +622,12 @@ export default async function BlogPage({
                 const isNew = article.publishedAt
                   ? Date.now() - new Date(article.publishedAt).getTime() < 7 * 24 * 60 * 60 * 1000
                   : false;
+                const compareSlug = cardCompareSlug.get(article.slug);
                 return (
-                <li key={article.slug} className="flex">
+                <li key={article.slug} className="flex flex-col">
                 <Link
                   href={`/blog/${article.slug}`}
-                  className="group bg-white rounded-xl border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col w-full"
+                  className={`group bg-white ${compareSlug ? "rounded-t-xl" : "rounded-xl"} border border-border hover:border-primary-300 hover:shadow-lg transition-all duration-200 overflow-hidden flex flex-col w-full flex-1`}
                 >
                   {/* Card header — gradient with title text overlay */}
                   <div className={`h-36 bg-gradient-to-br ${getBlogCardGradient(article.category)} flex flex-col justify-end relative overflow-hidden`}>
@@ -672,6 +698,18 @@ export default async function BlogPage({
                     </div>
                   </div>
                 </Link>
+                {compareSlug && (
+                  <TrackedCompareLink
+                    slug={compareSlug}
+                    source={BLOG_HUB_COMPARE_SOURCE}
+                    className="flex items-center justify-between gap-2 px-4 py-2.5 bg-primary-50 border border-t-0 border-primary-200 rounded-b-xl text-sm font-semibold text-primary-800 hover:bg-primary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                  >
+                    <span className="truncate">
+                      Compare: {cardCompareTitles[compareSlug] || compareSlug.replace(/-/g, " ")}
+                    </span>
+                    <span aria-hidden="true">&rarr;</span>
+                  </TrackedCompareLink>
+                )}
                 </li>
                 );
               })}
