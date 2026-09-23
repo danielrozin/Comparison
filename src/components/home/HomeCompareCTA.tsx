@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 import {
   HOME_COMPARE_SOFT_HREF,
@@ -28,6 +28,36 @@ export interface HomeCompareCTAProps {
    * required on pages without a #search input.
    */
   softHref?: string;
+  /**
+   * glass: translucent card on the home hero.
+   * solid: white card with a filled button so blog heroes read as a compare CTA.
+   */
+  variant?: "glass" | "solid";
+  /**
+   * Secondary /trending link. Off on blog surfaces: /trending does not mount
+   * a /compare/* page, so that click cannot fire comparison_viewed.
+   */
+  showTrending?: boolean;
+}
+
+/** `/compare/:slug?source_page=` link that records related_comparison_click. */
+export function TrackedCompareLink({
+  slug,
+  source,
+  className,
+  children,
+}: {
+  slug: string;
+  source: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const href = `/compare/${slug}?source_page=${encodeURIComponent(source)}`;
+  return (
+    <Link href={href} onClick={() => trackRelatedComparisonClick(source, slug)} className={className}>
+      {children}
+    </Link>
+  );
 }
 
 /**
@@ -41,6 +71,8 @@ export function HomeCompareCTA({
   chips = [],
   source = HOME_COMPARE_SOURCE,
   softHref,
+  variant = "glass",
+  showTrending = true,
 }: HomeCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
@@ -52,6 +84,7 @@ export function HomeCompareCTA({
   const ctaVerb = hasPrimary ? "Compare now" : "Start a comparison";
   // Prefer Link softHref on non-home pages; focusSearch only when no softHref.
   const useFocusSearch = !hasPrimary && !softHref;
+  const solid = variant === "solid";
 
   useEffect(() => {
     function onScroll() {
@@ -91,10 +124,16 @@ export function HomeCompareCTA({
     <>
       <aside
         aria-label="Start a comparison"
-        className="mt-8 max-w-2xl mx-auto animate-slide-up text-left"
+        className={`${solid ? "mt-5 max-w-3xl" : "mt-8 max-w-2xl"} mx-auto animate-slide-up text-left`}
         style={{ animationDelay: "0.25s" }}
       >
-        <div className="rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20 p-4 sm:p-5 overflow-hidden">
+        <div
+          className={
+            solid
+              ? "rounded-2xl bg-white text-text shadow-lg ring-1 ring-black/10 p-3 sm:p-4 overflow-hidden"
+              : "rounded-2xl bg-white/10 backdrop-blur-sm ring-1 ring-white/20 p-4 sm:p-5 overflow-hidden"
+          }
+        >
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex items-start gap-3 flex-1 min-w-0">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-400 to-primary-500 flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -103,13 +142,13 @@ export function HomeCompareCTA({
                 </svg>
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-semibold uppercase tracking-wide text-accent-300 mb-0.5">
+                <p className={`text-xs font-semibold uppercase tracking-wide mb-0.5 ${solid ? "text-primary-600" : "text-accent-300"}`}>
                   {hasPrimary ? "Start a comparison" : "Ready to decide?"}
                 </p>
-                <p className="text-sm sm:text-base font-bold text-white leading-snug truncate sm:whitespace-normal">
+                <p className={`text-sm sm:text-base font-bold leading-snug truncate sm:whitespace-normal ${solid ? "text-text" : "text-white"}`}>
                   {primaryLabel}
                 </p>
-                <p className="text-xs text-primary-200 mt-1">
+                <p className={`text-xs mt-1 ${solid ? "text-text-secondary" : "text-primary-200"}`}>
                   {hasPrimary
                     ? "Jump into a live head-to-head — winners, verdict, and community votes."
                     : "Search any two options or browse trending side-by-sides."}
@@ -121,7 +160,11 @@ export function HomeCompareCTA({
                 <Link
                   href={withSourcePage(primaryHref)}
                   onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  className={
+                    solid
+                      ? "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                      : "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  }
                 >
                   {ctaVerb}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -140,26 +183,41 @@ export function HomeCompareCTA({
                   </svg>
                 </button>
               )}
-              <Link
-                href={withSourcePage(HOME_COMPARE_TRENDING_HREF)}
-                onClick={() => track(HOME_COMPARE_TRENDING_HREF)}
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-white/10 ring-1 ring-white/25 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-              >
-                Trending
-              </Link>
+              {showTrending && (
+                <Link
+                  href={withSourcePage(HOME_COMPARE_TRENDING_HREF)}
+                  onClick={() => track(HOME_COMPARE_TRENDING_HREF)}
+                  className={
+                    solid
+                      ? "inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-primary-800 bg-primary-50 ring-1 ring-primary-200 hover:bg-primary-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                      : "inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-white/10 ring-1 ring-white/25 hover:bg-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  }
+                >
+                  Trending
+                </Link>
+              )}
             </div>
           </div>
 
           {chips.length > 0 && (
-            <ul className="mt-3 flex flex-wrap gap-2 list-none p-0" aria-label="Popular comparisons">
+            <ul
+              className={`mt-3 flex gap-2 list-none p-0 ${
+                solid ? "flex-nowrap overflow-x-auto scrollbar-hide" : "flex-wrap"
+              }`}
+              aria-label="Popular comparisons"
+            >
               {chips.map((chip) => (
-                <li key={chip.slug}>
+                <li key={chip.slug} className={solid ? "flex-shrink-0" : undefined}>
                   <Link
                     href={withSourcePage(`/compare/${chip.slug}`)}
                     onClick={() => track(chip.slug)}
-                    className="inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/85 hover:text-white transition-all backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                    className={
+                      solid
+                        ? "inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-primary-50 hover:bg-primary-100 border border-primary-200 rounded-full text-xs font-semibold text-primary-800 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                        : "inline-flex items-center gap-1.5 min-h-11 sm:min-h-0 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/30 rounded-full text-xs font-medium text-white/85 hover:text-white transition-all backdrop-blur-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                    }
                   >
-                    <span className="text-[10px] font-black text-accent-300" aria-hidden="true">
+                    <span className={`text-[10px] font-black ${solid ? "text-accent-600" : "text-accent-300"}`} aria-hidden="true">
                       VS
                     </span>
                     {chip.label}

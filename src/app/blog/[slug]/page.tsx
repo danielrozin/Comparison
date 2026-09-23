@@ -15,8 +15,9 @@ import { InContentAd } from "@/components/ads/AdUnit";
 import { NewsletterSignup } from "@/components/engagement/NewsletterSignup";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
-import { BlogCompareCTA } from "@/components/blog/BlogCompareCTA";
+import { HomeCompareCTA } from "@/components/home/HomeCompareCTA";
 import { BlogRelatedComparisons } from "@/components/blog/BlogRelatedComparisons";
+import { BLOG_COMPARE_SOFT_HREF } from "@/lib/data/blog-compare-constants";
 import { AuthorByline } from "@/components/comparison/AuthorByline";
 
 // ---------- Tag-type inference ----------
@@ -814,7 +815,7 @@ export default async function BlogPostPage({
         </div>
 
         {/* Article Header */}
-        <header className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-12 sm:py-16 pb-20 sm:pb-24 relative overflow-hidden">
+        <header className="bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900 text-white py-8 sm:py-10 pb-14 sm:pb-16 relative overflow-hidden">
           <svg className="absolute inset-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
             <defs>
               <pattern id="blog-article-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -850,6 +851,25 @@ export default async function BlogPostPage({
               </p>
             )}
 
+            {/* ROO-46: compare CTA inside the hero so it is in the first viewport.
+                The old mid-article BlogCompareCTA sat at or below a 768px fold. */}
+            <HomeCompareCTA
+              variant="solid"
+              showTrending={false}
+              primarySlug={article.relatedComparisonSlugs?.[0] ?? null}
+              primaryTitle={
+                article.relatedComparisonSlugs?.[0]
+                  ? comparisonTitles[article.relatedComparisonSlugs[0]] ?? null
+                  : null
+              }
+              chips={(article.relatedComparisonSlugs ?? []).slice(1, 5).map((compareSlug) => ({
+                slug: compareSlug,
+                label: comparisonTitles[compareSlug] || compareSlug.replace(/-/g, " "),
+              }))}
+              source={slug}
+              softHref={BLOG_COMPARE_SOFT_HREF}
+            />
+
             <div className="flex flex-wrap items-center gap-3 mt-6">
               <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-400/80 to-accent-500/80 flex items-center justify-center border-2 border-white/30 flex-shrink-0 shadow-sm group-hover:border-white/50 transition-all">
@@ -881,7 +901,7 @@ export default async function BlogPostPage({
             </div>
           </div>
           {/* Wave divider */}
-          <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none" aria-hidden="true">
             <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
               <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
             </svg>
@@ -903,14 +923,6 @@ export default async function BlogPostPage({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className={`flex gap-8 items-start ${toc.length >= 2 ? "xl:grid xl:grid-cols-[1fr_220px]" : ""}`}>
             <article id="blog-article-body" className="min-w-0 flex-1">
-              {/* ROO-9: mid-article compare CTA when live related slugs exist */}
-              {article.relatedComparisonSlugs && article.relatedComparisonSlugs.length > 0 && (
-                <BlogCompareCTA
-                  blogSlug={slug}
-                  primarySlug={article.relatedComparisonSlugs[0]}
-                  primaryTitle={comparisonTitles[article.relatedComparisonSlugs[0]] ?? null}
-                />
-              )}
               <div className="bg-white rounded-2xl shadow-sm border border-border p-6 sm:p-10">
                 <div
                   className="prose-custom"
