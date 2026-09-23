@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { TrendingComparison } from "@/types";
+import { trackRelatedComparisonClick } from "@/lib/utils/analytics";
 
 const RANK_COLORS = [
   "from-amber-400 to-orange-500",   // #1
@@ -16,9 +19,19 @@ const RANK_BORDERS = [
 export function TrendingCard({
   comparison,
   rank,
+  trackSource,
+  emphasizeCta = false,
 }: {
   comparison: TrendingComparison;
   rank: number;
+  /**
+   * When set, the card click fires `related_comparison_click` with this
+   * source_page. Home leaves it unset, so those clicks do not emit the
+   * trending click event (ROO-47).
+   */
+  trackSource?: string;
+  /** Keep the compare action visible without a hover (desktop landers). */
+  emphasizeCta?: boolean;
 }) {
   const parts = comparison.title.split(/\s+vs\.?\s+/i);
   const entityA = parts[0] || comparison.title;
@@ -29,8 +42,13 @@ export function TrendingCard({
 
   return (
     <Link
-      href={`/compare/${comparison.slug}?source_page=trending`}
+      href={`/compare/${comparison.slug}?source_page=${encodeURIComponent(trackSource || "trending")}`}
       aria-label={`${comparison.title} — rank ${rank}`}
+      onClick={
+        trackSource
+          ? () => trackRelatedComparisonClick(trackSource, comparison.slug)
+          : undefined
+      }
       className={`group relative flex flex-col bg-white border ${borderClass} rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-2 focus-visible:outline-primary-500 focus-visible:outline-offset-2`}
     >
       <h3 className="sr-only">{comparison.title}</h3>
@@ -114,7 +132,7 @@ export function TrendingCard({
               Trending
             </span>
           ) : (
-            <span className="ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-primary-500 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-150">
+            <span className={`ml-auto inline-flex items-center gap-0.5 text-xs font-semibold text-primary-500 ${emphasizeCta ? "" : "sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-150"}`}>
               Compare
               <svg className="w-2.5 h-2.5 sm:group-hover:translate-x-0.5 transition-transform duration-150" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -123,8 +141,9 @@ export function TrendingCard({
           )}
         </div>
 
-        {/* CTA — always visible on mobile (no hover on touch), hover-expand on desktop */}
-        <div className="mt-2 sm:overflow-hidden sm:max-h-0 sm:group-hover:max-h-8 sm:transition-all sm:duration-200 sm:mt-0 sm:group-hover:mt-2">
+        {/* CTA — always visible on mobile. Desktop hides it until hover
+            unless emphasizeCta (ROO-47 /trending lander). */}
+        <div className={emphasizeCta ? "mt-2" : "mt-2 sm:overflow-hidden sm:max-h-0 sm:group-hover:max-h-8 sm:transition-all sm:duration-200 sm:mt-0 sm:group-hover:mt-2"}>
           <div className={`flex items-center justify-center gap-1 text-xs font-semibold text-white rounded-lg py-1.5 ${
             isTopThree
               ? `bg-gradient-to-r ${rankGradient}`
