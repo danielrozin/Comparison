@@ -109,8 +109,18 @@ checkout_started → purchase, split by `src`.
       is set; verifies signatures, dedupes events, records members to Redis,
       notifies Info@ on purchase and cancel, fires `checkout_completed` +
       `purchase` (`$revenue`) and `subscription_canceled`
+- [x] Redis hash `monetization:member:{email}` (plan, interval, stripeCustomer,
+      stripeSubscription, updatedAt, status). Checkout and
+      `customer.subscription.created` / `updated` upsert it.
+      `customer.subscription.deleted` sets status `canceled` and `active=0`
+      (access revoked). The list `monetization:members` is still LPUSH'd on
+      checkout as an append-only purchase log; do not scan it for access.
+      Founder check: `GET /api/admin/membership?email=` with
+      `Authorization: Bearer $ADMIN_TOKEN` (or `$CRON_SECRET`, or header
+      `x-admin-token: $ADMIN_TOKEN`). `active: true` means the plan is on.
 - [ ] Point a Stripe webhook endpoint at `/api/stripe/webhook`
-      (event: checkout.session.completed, customer.subscription.deleted)
+      (events: checkout.session.completed, customer.subscription.created,
+      customer.subscription.updated, customer.subscription.deleted)
       and set `STRIPE_WEBHOOK_SECRET`
 - [ ] Email the reservation list (they locked founding price) with checkout
       links. Draft (send via sendOutreachEmail, from Info@, replyTo founder):
