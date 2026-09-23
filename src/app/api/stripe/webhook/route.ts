@@ -4,6 +4,7 @@ import { getRedis } from "@/lib/services/redis";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 import { MEMBERS_LIST_KEY, revokeMember, upsertMember } from "@/lib/monetization/members";
+import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
 
 /**
  * POST /api/stripe/webhook — Phase 2 of MONETIZATION.md.
@@ -19,6 +20,10 @@ import { MEMBERS_LIST_KEY, revokeMember, upsertMember } from "@/lib/monetization
  *
  * PostHog (ROO-41): checkout.session.completed → checkout_completed + purchase
  * ($revenue in major units). customer.subscription.deleted → subscription_canceled.
+ *
+ * PostHog identity (ROO-40): those captures use the distinct id stored on the
+ * Checkout Session (`metadata.posthog_distinct_id`, then `client_reference_id`).
+ * The Stripe email is only a fallback so one person owns pricing → purchase.
  *
  * Membership (ROO-42): checkout and subscription create/update upsert Redis
  * hash monetization:member:{email}. subscription.deleted marks that hash
@@ -89,12 +94,19 @@ export async function POST(request: NextRequest) {
       subscription?: string;
       amount_total?: number;
       currency?: string;
-      metadata?: { plan?: string; interval?: string; src?: string };
+      client_reference_id?: string;
+      metadata?: { plan?: string; interval?: string; src?: string; posthog_distinct_id?: string };
     };
     const email = s.customer_details?.email || s.customer_email || "";
-    // Prefer email so pageview → checkout stitches to one person; fall back to
-    // Stripe customer id (same distinctId for checkout_completed + purchase).
-    const distinctId = email || s.customer || "unknown";
+    // The browser id from session create. Do not replace it with the email —
+    // that split pricing_viewed (anon) from purchase (email) in funnel 0vnNHD98.
+    const distinctId =
+      checkoutEventDistinctId({
+        posthogDistinctId: s.metadata?.posthog_distinct_id,
+        clientReferenceId: s.client_reference_id,
+        email,
+        fallback: s.customer || "unknown",
+      }) || "unknown";
     const record = {
       email: email || "unknown",
       plan: s.metadata?.plan ?? "unknown",
@@ -206,7 +218,13 @@ export async function POST(request: NextRequest) {
       status?: string;
       canceled_at?: number;
       cancellation_details?: { reason?: string; comment?: string; feedback?: string };
-      metadata?: { plan?: string; interval?: string; src?: string; email?: string };
+      metadata?: {
+        plan?: string;
+        interval?: string;
+        src?: string;
+        email?: string;
+        posthog_distinct_id?: string;
+      };
     };
     try {
       await revokeMember({
@@ -228,7 +246,11 @@ export async function POST(request: NextRequest) {
     } catch {}
     try {
       getPostHogClient().capture({
-        distinctId: s.customer || s.id || "unknown",
+        distinctId:
+          checkoutEventDistinctId({
+            posthogDistinctId: s.metadata?.posthog_distinct_id,
+            fallback: s.customer || s.id || "unknown",
+          }) || "unknown",
         event: "subscription_canceled",
         properties: {
           stripe_subscription: s.id ?? null,
