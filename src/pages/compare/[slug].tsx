@@ -1045,6 +1045,7 @@ export default function ComparisonPage(props: Props) {
           entities={comparison.entities}
           attributes={comparison.attributes}
           comparisonSlug={comparison.slug}
+          winnerName={comparison.quickAnswer?.winnerName}
         />
       )}
 
