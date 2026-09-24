@@ -379,8 +379,8 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           <rect width="100%" height="100%" fill="url(#trending-grid)"/>
         </svg>
         <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
-          <nav className="mb-5" aria-label="Breadcrumb">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-6 sm:py-14 relative">
+          <nav className="mb-3 sm:mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-orange-200">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center gap-1">
@@ -398,13 +398,13 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               <li className="text-white font-medium" aria-current="page">Trending</li>
             </ol>
           </nav>
-          {/* ROO-51: same lead placement as /blog. The cookie banner covers a
-              CTA that sits under this title row on short phones. Solid card
-              (not glass) so the desktop button reads as the primary action.
-              No self-link back to /trending. */}
+          {/* ROO-51 / ROO-53: same lead placement as /blog. Named compare cards
+              sit under the breadcrumb so a 390×667 phone can tap one above the
+              cookie banner. Solid card on desktop. No self-link to /trending. */}
           <HomeCompareCTA
             variant="solid"
             mobileLead
+            popularCards
             primarySlug={trendingCompare.primarySlug}
             primaryTitle={trendingCompare.primaryTitle}
             chips={trendingCompare.chips}
@@ -419,7 +419,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             tone="onDark"
             lead="Need a matchup that isn't on this list?"
             label="Lock the Pro founding price"
-            className="mt-3 mb-4"
+            className="mt-2 mb-3 sm:mt-3 sm:mb-4"
           />
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
