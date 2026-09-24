@@ -915,6 +915,15 @@ export default function ComparisonPage(props: Props) {
       {/* Breadcrumbs */}
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
+      {/* ROO-52: soft Pro line under the breadcrumb, above the hero.
+          ROO-44 put this after the verdict. On a ~667px phone the cookie
+          banner (fixed, z-60, ~362px tall) plus the author, contents, and
+          share row push that spot under the banner, so the tap never
+          reaches "See Pro pricing". Same above-the-title band as ROO-50/51. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+      </div>
+
       {/* Author byline — E-E-A-T signal */}
       <AuthorByline
         updatedAt={comparison.metadata.updatedAt}
@@ -1050,11 +1059,6 @@ export default function ComparisonPage(props: Props) {
 
       {/* DAN-406: Track this comparison — high-intent capture right under verdict */}
       <TrackComparisonCard comparisonSlug={comparison.slug} comparisonTitle={comparison.title} />
-
-      {/* ROO-44: soft Pro line near the fold. The answer and verdict stay above it. */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-1 pb-2">
-        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
-      </div>
 
       {/* User Poll — after verdict card */}
       {comparison.entities.length >= 2 && (
@@ -1261,6 +1265,13 @@ function MultiEntityLayout({
 
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
+      {/* ROO-52: same cookie-safe band as the two-entity layout. The quick
+          answer stays in the page; this line has to be above the hero or the
+          banner covers it on a short phone. */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+      </div>
+
       <TableOfContents
         items={[
           ...(comparison.shortAnswer || comparison.verdict ? [{ id: "verdict", label: "Quick Answer" }] : []),
@@ -1350,11 +1361,6 @@ function MultiEntityLayout({
       )}
 
       {comparison.citationStats && <CitationStatsBar stats={comparison.citationStats} />}
-
-      {/* ROO-44: soft Pro line near the fold. The quick answer stays above it. */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-2">
-        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
-      </div>
 
       {/* ROO-29: mid-page next-step compare chips — bounce recovery */}
       <CompareNextStepCTA chips={nextStepChips} />

@@ -38,15 +38,27 @@ describe("ROO-44 lander wiring", () => {
     expect(bodyAt).toBeGreaterThan(pricingAt);
   });
 
-  it("tags both compare layouts with compare-{slug} after the answer", () => {
+  it("tags both compare layouts with compare-{slug} above the hero", () => {
     const page = source("src/pages/compare/[slug].tsx");
     const needle = "src={`compare-${slug}`}";
     const first = page.indexOf(needle);
     const second = page.indexOf(needle, first + needle.length);
-    const answerAt = page.indexOf("Quick Answer TL;DR");
+    const twoEntityCrumbs = page.indexOf("<Breadcrumbs");
+    const hero = page.indexOf("<ComparisonHero");
+    const multiStart = page.indexOf("function MultiEntityLayout");
+    const multiCrumbs = page.indexOf("<Breadcrumbs", multiStart);
+    const multiHeading = page.indexOf('id="compare-hero-heading"');
 
-    expect(first).toBeGreaterThan(answerAt);
-    expect(second).toBeGreaterThan(first);
+    // Two-entity: under the breadcrumb, before the author/hero that push
+    // a later line into the cookie banner on a short phone.
+    expect(first).toBeGreaterThan(twoEntityCrumbs);
+    expect(page.indexOf("<AuthorByline")).toBeGreaterThan(first);
+    expect(hero).toBeGreaterThan(first);
+
+    // N-entity: same band, before the title.
+    expect(second).toBeGreaterThan(multiCrumbs);
+    expect(multiHeading).toBeGreaterThan(second);
+    expect(page.indexOf(needle, second + needle.length)).toBe(-1);
   });
 
   it("tags curated SEO landers in the hero, before the article", () => {
