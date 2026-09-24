@@ -548,6 +548,11 @@ export default async function BlogPage({
             source={BLOG_HUB_COMPARE_SOURCE}
             softHref={BLOG_COMPARE_SOFT_HREF}
           />
+          {/* ROO-50: this line used to follow the headline. On a ~700px phone
+              the cookie banner (fixed, z-60, ~362px tall) covered it, so the
+              tap hit Accept / Reject and pricing_cta_click never fired.
+              It stays a text link under the compare lead. */}
+          <SoftPricingLine src="blog" tone="onDark" className="mt-3 mb-4 text-center" />
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 text-sm font-medium text-primary-100 mb-5">
             <svg className="w-4 h-4 text-primary-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -561,8 +566,6 @@ export default async function BlogPage({
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
-          {/* ROO-44: soft Pro line in the hero. Compare stays the primary CTA. */}
-          <SoftPricingLine src="blog" tone="onDark" className="mt-4 text-center" />
         </div>
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">

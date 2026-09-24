@@ -115,13 +115,13 @@ export function CookieConsentBanner() {
       role="dialog"
       aria-label="Cookie consent"
       aria-modal="false"
-      className="fixed bottom-0 left-0 right-0 z-[60]"
+      className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none"
       style={{ animation: "slide-up 0.4s ease-out forwards" }}
     >
       <div className="mx-auto max-w-3xl px-3 pb-[calc(4.5rem+env(safe-area-inset-bottom))] sm:px-6 md:pb-6">
         {/* The preferences view is taller than a short phone viewport; without a
             cap it grew off the top of the screen with no way to reach the top. */}
-        <div className="rounded-xl border border-border bg-surface shadow-2xl shadow-black/10 max-h-[calc(100dvh-8rem)] overflow-y-auto overscroll-contain">
+        <div className="pointer-events-auto rounded-xl border border-border bg-surface shadow-2xl shadow-black/10 max-h-[calc(100dvh-8rem)] overflow-y-auto overscroll-contain">
           {!showPreferences ? (
             <div className="p-4 sm:p-6">
               <div className="flex items-start gap-3">
@@ -141,27 +141,30 @@ export function CookieConsentBanner() {
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+              {/* One row on a phone. Three stacked 44px buttons made this bar
+                  ~362px tall and covered the pricing line on a ~667px screen. */}
+              <div className="mt-3 grid grid-cols-3 gap-2 sm:mt-4 sm:flex sm:flex-row sm:items-center sm:gap-3">
                 <button
                   type="button"
                   onClick={handleAcceptAll}
-                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Accept All
                 </button>
                 <button
                   type="button"
                   onClick={handleRejectAll}
-                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  className="inline-flex items-center justify-center min-h-11 px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Reject All
                 </button>
                 <button
                   type="button"
                   onClick={handleManageClick}
-                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
+                  className="inline-flex items-center justify-center min-h-11 px-2 sm:px-4 py-2 text-xs sm:text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
                 >
-                  Manage Preferences
+                  <span className="sm:hidden">Settings</span>
+                  <span className="hidden sm:inline">Manage Preferences</span>
                 </button>
               </div>
             </div>

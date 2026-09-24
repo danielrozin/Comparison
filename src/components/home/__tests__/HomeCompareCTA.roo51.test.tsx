@@ -91,7 +91,10 @@ describe("hub pages place the compare CTA above the headline (ROO-51)", () => {
 
     expect(cta).toBeGreaterThan(page.indexOf('aria-label="Breadcrumb"'));
     expect(heading).toBeGreaterThan(cta);
-    expect(pricing).toBeGreaterThan(heading);
+    // ROO-50: the pricing line follows the compare lead and stays above the
+    // headline. Under the headline it lands inside the cookie banner.
+    expect(pricing).toBeGreaterThan(cta);
+    expect(heading).toBeGreaterThan(pricing);
     expect(page).toContain("mobileLead");
     expect(page).toContain('variant="solid"');
     expect(page).toContain("showTrending={false}");

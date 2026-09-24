@@ -75,11 +75,17 @@ describe("/trending page wiring (ROO-47)", () => {
     expect(source).toContain("emphasizeCta");
   });
 
-  it("keeps the pricing link below the list, not in the hero", () => {
+  it("puts a pricing line under the compare lead and keeps one below the list", () => {
+    const cta = source.indexOf("<HomeCompareCTA");
+    const heading = source.indexOf('id="trending-hero-heading"');
+    const heroLine = source.indexOf('<SoftPricingLine');
     const heroEnd = source.indexOf("Category filter chips");
-    const pricingAt = source.indexOf('<SoftPricingLine');
+    const footerLine = source.indexOf('<SoftPricingLine', heroLine + 1);
+
+    expect(heroLine).toBeGreaterThan(cta);
+    expect(heading).toBeGreaterThan(heroLine);
     expect(heroEnd).toBeGreaterThan(-1);
-    expect(pricingAt).toBeGreaterThan(heroEnd);
+    expect(footerLine).toBeGreaterThan(heroEnd);
     expect(source).toContain('src="trending"');
     expect(source).not.toContain('href="/pricing?src=trending"');
   });
