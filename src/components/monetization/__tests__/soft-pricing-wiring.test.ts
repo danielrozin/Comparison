@@ -11,24 +11,30 @@ function source(rel: string): string {
 }
 
 describe("ROO-44 lander wiring", () => {
-  it("places the blog hub line in the hero, under the compare CTA", () => {
+  it("places the blog hub line under the compare CTA and above the headline", () => {
     const page = source("src/app/blog/page.tsx");
     const compareAt = page.indexOf("<HomeCompareCTA");
     const pricingAt = page.indexOf('<SoftPricingLine src="blog"');
+    const headingAt = page.indexOf('id="blog-hero-heading"');
     const filtersAt = page.indexOf("Filter articles by category");
 
     expect(compareAt).toBeGreaterThan(-1);
     expect(pricingAt).toBeGreaterThan(compareAt);
+    // A line under the headline is covered by the cookie banner on a short phone.
+    expect(headingAt).toBeGreaterThan(pricingAt);
     expect(filtersAt).toBeGreaterThan(pricingAt);
   });
 
-  it("tags each blog article with blog-{slug} inside the hero", () => {
+  it("tags each blog article with blog-{slug} above the headline", () => {
     const page = source("src/app/blog/[slug]/page.tsx");
     const compareAt = page.indexOf("<HomeCompareCTA");
     const pricingAt = page.indexOf("src={`blog-${slug}`}");
+    const headingAt = page.indexOf("font-display font-bold leading-tight mb-4");
     const bodyAt = page.indexOf('id="blog-article-body"');
 
     expect(pricingAt).toBeGreaterThan(compareAt);
+    expect(headingAt).toBeGreaterThan(pricingAt);
+    expect(page).toContain("mobileLead");
     expect(bodyAt).toBeGreaterThan(pricingAt);
   });
 
@@ -58,8 +64,11 @@ describe("ROO-44 lander wiring", () => {
       const page = source(file);
       const at = page.indexOf(`<SoftPricingLine src="${src}"`);
       const after = page.indexOf(afterMarker);
+      const intro = page.indexOf('id="page-intro"');
       expect(at, file).toBeGreaterThan(-1);
       expect(after, file).toBeGreaterThan(at);
+      // Long intros used to push the line into the cookie banner.
+      if (intro !== -1) expect(intro, file).toBeGreaterThan(at);
     }
   });
 });

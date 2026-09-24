@@ -227,12 +227,13 @@ export default function Q1AiBattlesPage() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-3">
             The most-compared AI tools on US Google Search, Q1 2026
           </h1>
+          {/* ROO-50: under the title, before the deck, so the cookie banner cannot cover it. */}
+          <SoftPricingLine src="q1-2026-ai-battles" tone="onDark" className="mt-3" />
           <p className="text-primary-100 text-sm sm:text-base max-w-2xl">
             {nf.format(HEADLINE_TOTAL)} US comparison searches across {BATTLE_COUNT} head-to-head battles (Jan–Mar 2026) — documented with full methodology and downloadable dataset.
           </p>
-          <SoftPricingLine src="q1-2026-ai-battles" tone="onDark" className="mt-4" />
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>

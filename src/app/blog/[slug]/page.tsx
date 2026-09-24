@@ -842,21 +842,12 @@ export default async function BlogPostPage({
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
-              {article.title}
-            </h1>
-
-            {article.excerpt && (
-              <p className="article-excerpt text-lg text-primary-100 leading-relaxed max-w-3xl">
-                {article.excerpt}
-              </p>
-            )}
-
-            {/* ROO-46: compare CTA inside the hero so it is in the first viewport.
-                The old mid-article BlogCompareCTA sat at or below a 768px fold. */}
+            {/* ROO-46 / ROO-51: compare lead above the title. A card under a
+                long headline sits inside the cookie banner on a short phone. */}
             <HomeCompareCTA
               variant="solid"
               showTrending={false}
+              mobileLead
               primarySlug={article.relatedComparisonSlugs?.[0] ?? null}
               primaryTitle={
                 article.relatedComparisonSlugs?.[0]
@@ -870,8 +861,19 @@ export default async function BlogPostPage({
               source={slug}
               softHref={BLOG_COMPARE_SOFT_HREF}
             />
-            {/* ROO-44: pricing sits under the compare CTA, still in the hero. */}
-            <SoftPricingLine src={`blog-${slug}`} tone="onDark" className="mt-4 text-center" />
+            {/* ROO-50: text link under the compare lead, above the headline,
+                so the cookie banner cannot cover it. */}
+            <SoftPricingLine src={`blog-${slug}`} tone="onDark" className="mt-3 mb-4 text-center" />
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold leading-tight mb-4">
+              {article.title}
+            </h1>
+
+            {article.excerpt && (
+              <p className="article-excerpt text-lg text-primary-100 leading-relaxed max-w-3xl">
+                {article.excerpt}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center gap-3 mt-6">
               <Link href="/authors/daniel-rozin" rel="author" className="flex items-center gap-2 text-xs text-primary-200 hover:text-white transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">

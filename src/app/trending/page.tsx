@@ -412,6 +412,15 @@ export default async function TrendingPage({ searchParams }: PageProps) {
             softHref={HOME_COMPARE_SOFT_HREF}
             showTrending={false}
           />
+          {/* ROO-50: text link under the compare lead. The copy at the bottom
+              of the list sits under the cookie banner once you scroll there. */}
+          <SoftPricingLine
+            src="trending"
+            tone="onDark"
+            lead="Need a matchup that isn't on this list?"
+            label="Lock the Pro founding price"
+            className="mt-3 mb-4"
+          />
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">

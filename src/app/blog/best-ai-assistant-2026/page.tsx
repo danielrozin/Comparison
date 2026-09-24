@@ -374,14 +374,15 @@ export default function BestAiAssistant2026Page() {
               <h1 id="best-ai-heading" className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight leading-tight">
                 Best AI Assistant 2026: The Honest Buying Guide
               </h1>
+              {/* ROO-50: under the title so the cookie banner cannot cover the link. */}
+              <SoftPricingLine src="blog-best-ai-assistant-2026" tone="onDark" className="mt-3" />
               <p className="mt-2 text-sm text-primary-200">
                 <time dateTime="2026-06-01">Updated June 2026</time> · A no-hype guide to ChatGPT, Claude, Gemini, Copilot &amp; Perplexity — by use case, price, and integration.
               </p>
             </div>
           </div>
-          <SoftPricingLine src="blog-best-ai-assistant-2026" tone="onDark" className="mt-4" />
         </div>
-        <div className="absolute bottom-0 left-0 right-0" aria-hidden="true">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" aria-hidden="true">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
