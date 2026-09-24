@@ -27,6 +27,12 @@ describe("parseAdminNotificationEmails", () => {
     ).toEqual(["a@x.com", "b@y.com", "c@z.com"]);
   });
 
+  it("accepts both founder inboxes as one Production env value", () => {
+    expect(
+      parseAdminNotificationEmails("daniarozin@gmail.com,Shai.and1@gmail.com")
+    ).toEqual(["daniarozin@gmail.com", "Shai.and1@gmail.com"]);
+  });
+
   it("keeps a single explicit override", () => {
     expect(parseAdminNotificationEmails("ops@aversusb.net")).toEqual([
       "ops@aversusb.net",

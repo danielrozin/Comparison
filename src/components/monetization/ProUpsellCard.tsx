@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TrackedPricingLink } from "@/components/monetization/SoftPricingLine";
 
 /**
@@ -28,6 +29,15 @@ export function ProUpsellCard({ slug }: { slug: string }) {
       >
         Get your comparison built →
       </TrackedPricingLink>
+      <p className="mt-3 text-sm text-text-secondary">
+        Already a member?{" "}
+        <Link
+          href={`/custom-compare?slug=${encodeURIComponent(slug)}`}
+          className="font-semibold text-primary-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded"
+        >
+          Request this matchup
+        </Link>
+      </p>
     </aside>
   );
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MissingCompareCta } from "@/components/monetization/MissingCompareCta";
 import { getTrendingComparisons } from "@/lib/services/comparison-service";
 import { CATEGORIES } from "@/lib/utils/constants";
 import { CategoryIcon } from "@/lib/utils/category-icons";
@@ -87,6 +88,9 @@ export default async function NotFound() {
             >
               Browse Trending
             </Link>
+            <MissingCompareCta className="px-6 py-2.5 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors backdrop-blur-sm ring-1 ring-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-800">
+              Request a custom comparison
+            </MissingCompareCta>
           </div>
         </div>
 

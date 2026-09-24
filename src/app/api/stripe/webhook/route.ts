@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { getRedis } from "@/lib/services/redis";
-import { sendNotificationEmail } from "@/lib/services/email";
+import { sendMemberWelcomeEmail, sendNotificationEmail } from "@/lib/services/email";
 import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
-import { MEMBERS_LIST_KEY, revokeMember, upsertMember } from "@/lib/monetization/members";
+import { MEMBERS_LIST_KEY, normalizeMemberEmail, revokeMember, upsertMember } from "@/lib/monetization/members";
 import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
 
 /**
@@ -14,9 +14,10 @@ import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
  * SDK dependency, same as /api/checkout), records the subscription in Redis
  * and notifies Info@ so the founder can onboard the customer the same day.
  *
- * Deliberately does NOT auto-email the customer yet: the welcome email is a
- * founder-signed onboarding message during launch week, which converts a
- * buyer into a user far better than a template. Automate it in Phase 3.
+ * On checkout.session.completed the buyer gets a Resend welcome / receipt
+ * (plan, manage-billing link, what that plan unlocks) when the email is real.
+ * Founder alerts still go through sendNotificationEmail, which fans out to
+ * every address in ADMIN_NOTIFICATION_EMAIL.
  *
  * PostHog (ROO-41): checkout.session.completed → checkout_completed + purchase
  * ($revenue in major units). customer.subscription.deleted → subscription_canceled.
@@ -27,7 +28,7 @@ import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
  *
  * Membership (ROO-42): checkout and subscription create/update upsert Redis
  * hash monetization:member:{email}. subscription.deleted marks that hash
- * canceled (access off). Founder notification emails stay as they were.
+ * canceled (access off). Founder notification emails stay on this path.
  */
 
 const EVENTS_SEEN_KEY = "monetization:stripe-events"; // set, idempotency
@@ -142,11 +143,30 @@ export async function POST(request: NextRequest) {
         console.error("[membership] checkout upsert failed:", err);
       }
     }
+    const welcomeTo = normalizeMemberEmail(email);
+    let welcomeNote = "Welcome email: skipped (no buyer email on the Checkout Session).";
+    if (welcomeTo) {
+      try {
+        const welcome = await sendMemberWelcomeEmail({
+          to: welcomeTo,
+          planId: record.plan,
+          interval: record.interval,
+          amountMajor: revenue,
+          currency: record.currency,
+        });
+        welcomeNote = welcome.success
+          ? `Welcome email: sent to ${welcomeTo} via ${welcome.method}.`
+          : `Welcome email: NOT sent to ${welcomeTo} (${welcome.error || welcome.method}). Check RESEND_API_KEY and RESEND_FROM_EMAIL.`;
+      } catch (err) {
+        console.error("[email] member welcome failed:", err);
+        welcomeNote = `Welcome email: NOT sent to ${welcomeTo} (threw). Check RESEND_API_KEY and RESEND_FROM_EMAIL.`;
+      }
+    }
     try {
       await sendNotificationEmail({
         subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${record.email}`,
         type: "monetization",
-        message: `New paying member: ${record.email} bought ${record.plan}/${record.interval} for ${revenue.toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). Send the founder welcome email today — onboarding instructions are in MONETIZATION.md Phase 2.`,
+        message: `New paying member: ${record.email} bought ${record.plan}/${record.interval} for ${revenue.toFixed(2)} ${record.currency.toUpperCase()} (src: ${record.src}). ${welcomeNote}`,
       });
     } catch {}
     try {
@@ -226,22 +246,25 @@ export async function POST(request: NextRequest) {
         posthog_distinct_id?: string;
       };
     };
+    let memberEmail = s.metadata?.email ?? null;
     try {
-      await revokeMember({
+      const revoked = await revokeMember({
         email: s.metadata?.email,
         stripeCustomer: s.customer,
         stripeSubscription: s.id,
       });
+      memberEmail = revoked.email ?? memberEmail;
     } catch (err) {
       console.error("[membership] revoke failed:", err);
     }
     // Founder inboxes (sendNotificationEmail) stay on this path. Revoke is
     // the hash update above; the email is still the same-day cancel notice.
+    // sendNotificationEmail delivers to every ADMIN_NOTIFICATION_EMAIL.
     try {
       await sendNotificationEmail({
         subject: `⚠️ Subscription canceled: ${s.id ?? "unknown"}`,
         type: "monetization",
-        message: `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}) was canceled. Worth a one-line "what was missing?" email.`,
+        message: `Stripe subscription ${s.id ?? "?"} (customer ${s.customer ?? "?"}, member ${memberEmail || "unknown"}) was canceled. Access is off on monetization:member:{email}. Worth a one-line "what was missing?" email.`,
       });
     } catch {}
     try {
