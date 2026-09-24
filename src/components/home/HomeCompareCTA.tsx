@@ -8,6 +8,7 @@ import {
   HOME_COMPARE_SOURCE,
   HOME_COMPARE_TRENDING_HREF,
 } from "@/lib/data/home-compare-constants";
+import { buildPopularCompareDestinations } from "@/lib/data/hub-popular-compares";
 
 export interface HomeCompareChip {
   slug: string;
@@ -46,6 +47,14 @@ export interface HomeCompareCTAProps {
    * flow under the breadcrumb stays above that banner.
    */
   mobileLead?: boolean;
+  /**
+   * ROO-53: on /blog and /trending, replace the single mobile button with a
+   * short stack of real compare cards. A "Compare now" label was above the
+   * banner after ROO-51, but short visits still left without opening
+   * /compare/*. Two named cards under the breadcrumb stay in the clear band
+   * above that banner on a 390×667 phone.
+   */
+  popularCards?: boolean;
 }
 
 /** `/compare/:slug?source_page=` link that records related_comparison_click. */
@@ -82,6 +91,7 @@ export function HomeCompareCTA({
   variant = "glass",
   showTrending = true,
   mobileLead = false,
+  popularCards = false,
 }: HomeCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
@@ -94,6 +104,11 @@ export function HomeCompareCTA({
   // Prefer Link softHref on non-home pages; focusSearch only when no softHref.
   const useFocusSearch = !hasPrimary && !softHref;
   const solid = variant === "solid";
+  // Only slugs the page already resolved. Two cards fit above the cookie
+  // banner; a longer list would land inside it on a 667px phone.
+  const popularDestinations = popularCards
+    ? buildPopularCompareDestinations(primarySlug, primaryLabel, chips, 2)
+    : [];
 
   useEffect(() => {
     if (mobileLead) return;
@@ -161,46 +176,93 @@ export function HomeCompareCTA({
   return (
     <>
       {mobileLead && (
-        <div className="md:hidden mb-4 text-left" data-testid="mobile-compare-lead">
-          {hasPrimary || !useFocusSearch ? (
-            <Link
-              href={withSourcePage(primaryHref)}
-              onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
-              className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+        <div className="md:hidden mb-3 text-left" data-testid="mobile-compare-lead">
+          {popularDestinations.length > 0 ? (
+            // In normal flow, not fixed. z-10 sits under the header (z-50) and
+            // the cookie dialog (z-60). pointer-events-auto so a decorative
+            // hero layer cannot swallow the tap. The dialog only captures
+            // clicks on its own card, which these rows sit above on a 667px phone.
+            <section
+              aria-label="Popular compares"
+              data-testid="popular-compares"
+              className="relative z-10 pointer-events-auto rounded-2xl bg-white text-text shadow-lg ring-1 ring-black/10 p-3"
             >
-              <span>{ctaVerb}</span>
-              {hasPrimary && <span className="truncate font-semibold">{primaryLabel}</span>}
-              <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
-              </svg>
-            </Link>
+              <p className="text-xs font-semibold uppercase tracking-wide text-primary-600 mb-2">
+                Popular compares
+              </p>
+              <ul className="flex flex-col gap-2 list-none m-0 p-0">
+                {popularDestinations.map((item, index) => (
+                  <li key={item.slug}>
+                    <Link
+                      href={withSourcePage(`/compare/${item.slug}`)}
+                      onClick={() => track(item.slug)}
+                      aria-label={`Compare ${item.label}`}
+                      className={
+                        index === 0
+                          ? "flex w-full min-h-12 items-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-accent-600 px-3 py-2 text-sm font-bold text-white shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary-700"
+                          : "flex w-full min-h-12 items-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-3 py-2 text-sm font-bold text-primary-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                      }
+                    >
+                      <span
+                        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black ${
+                          index === 0 ? "bg-white/20 text-white" : "bg-white text-accent-600 ring-1 ring-primary-200"
+                        }`}
+                        aria-hidden="true"
+                      >
+                        VS
+                      </span>
+                      <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                      <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ) : (
-            <button
-              type="button"
-              onClick={focusSearch}
-              className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md"
-            >
-              {ctaVerb}
-            </button>
-          )}
-          {chips.length > 0 && (
-            <ul
-              className="mt-2 flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide list-none p-0"
-              aria-label="Popular comparisons"
-            >
-              {chips.map((chip) => (
-                <li key={chip.slug} className="flex-shrink-0">
-                  <Link
-                    href={withSourcePage(`/compare/${chip.slug}`)}
-                    onClick={() => track(chip.slug)}
-                    className="inline-flex items-center gap-1.5 min-h-11 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-                  >
-                    <span className="text-[10px] font-black text-accent-300" aria-hidden="true">VS</span>
-                    {chip.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <>
+              {hasPrimary || !useFocusSearch ? (
+                <Link
+                  href={withSourcePage(primaryHref)}
+                  onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
+                  className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                >
+                  <span>{ctaVerb}</span>
+                  {hasPrimary && <span className="truncate font-semibold">{primaryLabel}</span>}
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
+                  </svg>
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={focusSearch}
+                  className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md"
+                >
+                  {ctaVerb}
+                </button>
+              )}
+              {chips.length > 0 && (
+                <ul
+                  className="mt-2 flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide list-none p-0"
+                  aria-label="Popular comparisons"
+                >
+                  {chips.map((chip) => (
+                    <li key={chip.slug} className="flex-shrink-0">
+                      <Link
+                        href={withSourcePage(`/compare/${chip.slug}`)}
+                        onClick={() => track(chip.slug)}
+                        className="inline-flex items-center gap-1.5 min-h-11 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                      >
+                        <span className="text-[10px] font-black text-accent-300" aria-hidden="true">VS</span>
+                        {chip.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </div>
       )}

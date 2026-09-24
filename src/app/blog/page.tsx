@@ -515,8 +515,8 @@ export default async function BlogPage({
           <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
         </svg>
         <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-8 sm:pt-10 sm:pb-10 relative text-center">
-          <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-6 sm:pt-10 sm:pb-10 relative text-center">
+          <nav className="mb-3 sm:mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
               <li>
                 <Link href="/" className="hover:text-white transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-1 focus-visible:ring-offset-primary-900 rounded">
@@ -534,14 +534,16 @@ export default async function BlogPage({
               <li className="text-white font-medium" aria-current="page">Blog</li>
             </ol>
           </nav>
-          {/* ROO-51: compare link sits under the breadcrumb, above the title.
-              On a ~667px phone the cookie banner (z-60, ~362px tall) covers a
-              CTA that lives under the headline. This placement stays above it.
-              Trending is omitted — /trending never mounts /compare/*. */}
+          {/* ROO-51 / ROO-53: compare cards sit under the breadcrumb, above the
+              title. On a ~667px phone the cookie banner (z-60) covers a CTA
+              under the headline. Two named /compare cards stay in the clear
+              band above that banner. Trending is omitted — /trending never
+              mounts /compare/*. */}
           <HomeCompareCTA
             variant="solid"
             showTrending={false}
             mobileLead
+            popularCards
             primarySlug={primarySlug}
             primaryTitle={primaryTitle}
             chips={blogHubCompareChips}
@@ -552,7 +554,7 @@ export default async function BlogPage({
               the cookie banner (fixed, z-60, ~362px tall) covered it, so the
               tap hit Accept / Reject and pricing_cta_click never fired.
               It stays a text link under the compare lead. */}
-          <SoftPricingLine src="blog" tone="onDark" className="mt-3 mb-4 text-center" />
+          <SoftPricingLine src="blog" tone="onDark" className="mt-2 mb-3 sm:mt-3 sm:mb-4 text-center" />
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 text-sm font-medium text-primary-100 mb-5">
             <svg className="w-4 h-4 text-primary-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
