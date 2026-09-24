@@ -514,7 +514,7 @@ export default async function BlogPage({
           </defs>
           <rect width="100%" height="100%" fill="url(#blog-hero-grid)"/>
         </svg>
-        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-8 sm:pt-10 sm:pb-10 relative text-center">
           <nav className="mb-6 flex justify-start" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-primary-200">
@@ -534,6 +534,20 @@ export default async function BlogPage({
               <li className="text-white font-medium" aria-current="page">Blog</li>
             </ol>
           </nav>
+          {/* ROO-51: compare link sits under the breadcrumb, above the title.
+              On a ~667px phone the cookie banner (z-60, ~362px tall) covers a
+              CTA that lives under the headline. This placement stays above it.
+              Trending is omitted — /trending never mounts /compare/*. */}
+          <HomeCompareCTA
+            variant="solid"
+            showTrending={false}
+            mobileLead
+            primarySlug={primarySlug}
+            primaryTitle={primaryTitle}
+            chips={blogHubCompareChips}
+            source={BLOG_HUB_COMPARE_SOURCE}
+            softHref={BLOG_COMPARE_SOFT_HREF}
+          />
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm ring-1 ring-white/20 text-sm font-medium text-primary-100 mb-5">
             <svg className="w-4 h-4 text-primary-200 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -547,17 +561,6 @@ export default async function BlogPage({
             Expert guides, in-depth analyses, and data-driven insights to help
             you compare and choose the best options.
           </p>
-          {/* ROO-46: solid above-fold CTA. Trending is omitted — /trending
-              never mounts /compare/* so it cannot fire comparison_viewed. */}
-          <HomeCompareCTA
-            variant="solid"
-            showTrending={false}
-            primarySlug={primarySlug}
-            primaryTitle={primaryTitle}
-            chips={blogHubCompareChips}
-            source={BLOG_HUB_COMPARE_SOURCE}
-            softHref={BLOG_COMPARE_SOFT_HREF}
-          />
           {/* ROO-44: soft Pro line in the hero. Compare stays the primary CTA. */}
           <SoftPricingLine src="blog" tone="onDark" className="mt-4 text-center" />
         </div>

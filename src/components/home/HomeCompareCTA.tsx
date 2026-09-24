@@ -38,6 +38,14 @@ export interface HomeCompareCTAProps {
    * that click never mounts a /compare/* page, so it cannot fire comparison_viewed.
    */
   showTrending?: boolean;
+  /**
+   * ROO-51: put a compact compare link at the top of the hero and hide the
+   * bottom sticky bar. The cookie banner is `fixed` at `z-[60]` and about
+   * 362px tall on a phone, so it covers the in-hero "Compare now" button
+   * (and the old bottom bar) on viewports around 667–700px. A link in normal
+   * flow under the breadcrumb stays above that banner.
+   */
+  mobileLead?: boolean;
 }
 
 /** `/compare/:slug?source_page=` link that records related_comparison_click. */
@@ -73,6 +81,7 @@ export function HomeCompareCTA({
   softHref,
   variant = "glass",
   showTrending = true,
+  mobileLead = false,
 }: HomeCompareCTAProps) {
   const [showSticky, setShowSticky] = useState(false);
   const hasPrimary = Boolean(primarySlug);
@@ -87,6 +96,7 @@ export function HomeCompareCTA({
   const solid = variant === "solid";
 
   useEffect(() => {
+    if (mobileLead) return;
     function onScroll() {
       const scrolled = window.scrollY;
       const docH = document.documentElement.scrollHeight - window.innerHeight;
@@ -97,7 +107,7 @@ export function HomeCompareCTA({
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [mobileLead]);
 
   function withSourcePage(href: string) {
     if (!source) return href;
@@ -120,11 +130,83 @@ export function HomeCompareCTA({
     window.location.hash = "search";
   }
 
+  const primaryClass = solid
+    ? "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+    : "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70";
+
+  const primaryButton = (hasPrimary || !useFocusSearch) ? (
+    <Link
+      href={withSourcePage(primaryHref)}
+      onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
+      className={primaryClass}
+    >
+      {ctaVerb}
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
+      </svg>
+    </Link>
+  ) : (
+    <button
+      type="button"
+      onClick={focusSearch}
+      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+    >
+      {ctaVerb}
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </button>
+  );
+
   return (
     <>
+      {mobileLead && (
+        <div className="md:hidden mb-4 text-left" data-testid="mobile-compare-lead">
+          {hasPrimary || !useFocusSearch ? (
+            <Link
+              href={withSourcePage(primaryHref)}
+              onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
+              className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            >
+              <span>{ctaVerb}</span>
+              {hasPrimary && <span className="truncate font-semibold">{primaryLabel}</span>}
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
+              </svg>
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={focusSearch}
+              className="flex w-full min-h-12 items-center justify-center gap-2 rounded-xl px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 shadow-md"
+            >
+              {ctaVerb}
+            </button>
+          )}
+          {chips.length > 0 && (
+            <ul
+              className="mt-2 flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide list-none p-0"
+              aria-label="Popular comparisons"
+            >
+              {chips.map((chip) => (
+                <li key={chip.slug} className="flex-shrink-0">
+                  <Link
+                    href={withSourcePage(`/compare/${chip.slug}`)}
+                    onClick={() => track(chip.slug)}
+                    className="inline-flex items-center gap-1.5 min-h-11 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-full text-xs font-semibold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  >
+                    <span className="text-[10px] font-black text-accent-300" aria-hidden="true">VS</span>
+                    {chip.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       <aside
         aria-label="Start a comparison"
-        className={`${solid ? "mt-5 max-w-3xl" : "mt-8 max-w-2xl"} mx-auto animate-slide-up text-left`}
+        className={`${mobileLead ? "hidden md:block " : ""}${solid ? "mt-5 max-w-3xl" : "mt-8 max-w-2xl"} mx-auto animate-slide-up text-left`}
         style={{ animationDelay: "0.25s" }}
       >
         <div
@@ -156,33 +238,7 @@ export function HomeCompareCTA({
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
-              {hasPrimary || !useFocusSearch ? (
-                <Link
-                  href={withSourcePage(primaryHref)}
-                  onClick={() => track(hasPrimary ? primarySlug! : exploreHref)}
-                  className={
-                    solid
-                      ? "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-                      : "inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                  }
-                >
-                  {ctaVerb}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d={hasPrimary ? "M13 7l5 5m0 0l-5 5m5-5H6" : "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"} />
-                  </svg>
-                </Link>
-              ) : (
-                <button
-                  type="button"
-                  onClick={focusSearch}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-primary-900 bg-white hover:bg-primary-50 shadow-sm hover:shadow-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                >
-                  {ctaVerb}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              )}
+              {primaryButton}
               {showTrending && (
                 <Link
                   href={withSourcePage(HOME_COMPARE_TRENDING_HREF)}
@@ -229,7 +285,10 @@ export function HomeCompareCTA({
         </div>
       </aside>
 
-      {/* Sticky mobile bar — md:hidden */}
+      {/* Sticky mobile bar — md:hidden.
+          Skipped when mobileLead is set: this bar is z-40, under the cookie
+          banner (z-60), so taps never reach it until consent is dismissed. */}
+      {!mobileLead && (
       <div
         className={`fixed bottom-0 inset-x-0 z-40 md:hidden transition-transform duration-200 ${
           showSticky ? "translate-y-0" : "translate-y-full"
@@ -264,6 +323,7 @@ export function HomeCompareCTA({
           )}
         </div>
       </div>
+      )}
     </>
   );
 }
