@@ -12,7 +12,9 @@ import {
   pricingPayments,
 } from "@/lib/monetization/pricing-messaging";
 import { CheckoutButton } from "@/components/monetization/CheckoutButton";
+import { PricingHeroCta } from "@/components/monetization/PricingHeroCta";
 import { PricingViewTracker } from "@/components/monetization/PricingViewTracker";
+import { normalizePricingSrc } from "@/lib/analytics/pricing-view-capture";
 
 const PAGE_TITLE = `Pricing — Go Pro on ${SITE_NAME}`;
 const PAGE_DESC = `Every comparison stays free. Pro adds custom comparisons on demand, exports and alerts from $49/yr founding. Business adds API access and white-label embeds.`;
@@ -81,11 +83,16 @@ export default async function PricingPage({
 }: {
   searchParams: Promise<{ src?: string; canceled?: string }>;
 }) {
-  const { src = "direct", canceled } = await searchParams;
+  const { src: rawSrc = "direct", canceled } = await searchParams;
+  // Same string the bootstrap writes onto pricing_viewed and the buy button
+  // sends to checkout, so the funnel steps share one src.
+  const src = normalizePricingSrc(rawSrc);
   // Read env on each request. A module-level string would freeze the
   // pre-launch copy from whenever the server first imported this file.
   const payments = pricingPayments();
   const faq = pricingFaq(payments);
+  const primaryPlan = PLANS.find((plan) => plan.highlight) ?? PLANS[0];
+  const primaryInterval = primaryPlan.intervals[0];
 
   return (
     <>
@@ -96,6 +103,16 @@ export default async function PricingPage({
         title={"The comparisons are free. The superpowers aren't."}
         lede="Reading any comparison costs nothing, forever. Pro is for the moment the comparison you need doesn't exist yet — we build it for you within 24 hours."
         breadcrumbLabel="Pricing"
+        beforeTitle={
+          <PricingHeroCta
+            plan={primaryPlan.id}
+            planName={primaryPlan.name}
+            interval={primaryInterval.interval}
+            price={primaryInterval.foundingPrice}
+            src={src}
+            paymentsLive={stripeConfigured(primaryInterval)}
+          />
+        }
       >
         {/* Founding banner */}
         <div className="mb-10 rounded-2xl border border-accent-500/30 bg-accent-50 px-5 py-4 text-sm text-text">

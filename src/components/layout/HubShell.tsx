@@ -14,12 +14,18 @@ export function HubShell({
   title,
   lede,
   breadcrumbLabel,
+  beforeTitle,
   children,
 }: {
   eyebrow: string;
   title: string;
   lede: string;
   breadcrumbLabel: string;
+  /**
+   * Renders under the breadcrumb and above the headline. Use this for a
+   * primary action that must stay above the cookie banner on a short phone.
+   */
+  beforeTitle?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -55,6 +61,7 @@ export function HubShell({
             </ol>
           </nav>
 
+          {beforeTitle ? <div className="mb-6">{beforeTitle}</div> : null}
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-300 mb-1.5">{eyebrow}</p>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-4">{title}</h1>
           <p className="text-primary-100 text-base sm:text-lg leading-relaxed max-w-2xl">{lede}</p>

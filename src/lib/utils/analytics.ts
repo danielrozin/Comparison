@@ -10,6 +10,7 @@ import {
 import posthog from "posthog-js";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
+import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
 
 declare global {
   interface Window {
@@ -129,11 +130,17 @@ export function getCheckoutDistinctId(): string | undefined {
  *
  *  Funnel: pricing_viewed → checkout_clicked → checkout_started → purchase
  *  (webhook, with `$revenue`). Side paths: checkout_canceled (Stripe cancel_url),
- *  checkout_thanks_viewed (success_url), subscription_canceled (webhook). */
+ *  checkout_thanks_viewed (success_url), subscription_canceled (webhook).
+ *
+ *  `pricing_cta_click` is the lander link (SoftPricingLine), not this page.
+ *  The buy button on `/pricing` is `checkout_clicked`.
+ *
+ *  PostHog capture is shared with the bootstrap (ROO-54). The hydrated call
+ *  on the same full page load is a no-op so the event is not counted twice. */
 export function trackPricingViewed(src: string) {
   trackEvent("pricing_viewed", { src });
   clarityTagAction("pricing_viewed");
-  posthog.capture("pricing_viewed", { src });
+  capturePricingViewed(src);
 }
 
 /**
