@@ -30,7 +30,7 @@ import { buildMemberWelcomeEmail } from "@/lib/monetization/welcome-email";
 /** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
 export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
   "daniarozin@gmail.com",
-  "shai.and1@gmail.com",
+  "Shai.and1@gmail.com",
 ] as const;
 
 /**

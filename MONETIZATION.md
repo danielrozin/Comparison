@@ -145,7 +145,7 @@ checkout_started → purchase, split by `src`.
       `ADMIN_NOTIFICATION_EMAIL` (comma or semicolon). Unset falls back to
       both founders. **Production must set the full list** if the variable
       already exists as a single inbox, or the second founder is skipped:
-      `Daniarozin@gmail.com,Shai.and1@gmail.com`
+      `daniarozin@gmail.com,Shai.and1@gmail.com`
       Vercel → Settings → Environment Variables → Production → edit
       `ADMIN_NOTIFICATION_EMAIL` → Save → redeploy is not required for
       serverless env (new invocations pick it up; a redeploy makes it
