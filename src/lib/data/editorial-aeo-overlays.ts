@@ -26,6 +26,16 @@ import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
  * users are a tie (200M+ vs ~200M). None of the three scorecards names a
  * single winner on every row, so winnerName stays null. If a stat is not
  * on that returned page, say unknown.
+ * Cursor vs Copilot, Android vs iOS, and NVIDIA vs AMD figures come only
+ * from the object `getMockComparison` returns. Android and NVIDIA live in
+ * both `mock-data.ts` and `mock-data-extra.ts`; the extra row wins, the
+ * same way PS5 does. Do not cite the shadowed base cells (Android ~27% and
+ * US ~44/~56, or NVIDIA RTX 4090 / $300–500 / RX 7800 XT / H100). Cursor
+ * has no base row; the extra row is the 10 published key-difference cells,
+ * not the contradictory attribute dump or the FAQ that says Copilot is
+ * GPT-4o only. None of the three scorecards names a single winner on every
+ * row, so winnerName stays null. If a stat is not on that returned page,
+ * say unknown.
  * If the pipeline later refreshes a scorecard, keep using that page’s own
  * printed figures in shortAnswer/FAQ.
  */
@@ -413,6 +423,174 @@ const CHATGPT_QUICK_ANSWER: QuickAnswerTLDR = {
     "Monthly users are a tie (200M+ vs ~200M). Do not crown a user-count winner. Context windows and benchmark scores are unknown on this page.",
 };
 
+// Printed by getMockComparison("cursor-vs-copilot") — extra row only.
+// Pricing: Cursor Pro $20/mo (~$192/yr), Business $40/user/mo vs Copilot
+// Pro $10/mo ($100/yr), Pro+ $39/mo, Business $19/user/mo, Enterprise $39/user/mo.
+// Agentic + indexing favor Cursor. IDE, GitHub, enterprise, onboarding favor Copilot.
+// Models and inline autocomplete are ties. No single overall winner.
+const CURSOR_SHORT_ANSWER =
+  "On this page’s scorecard GitHub Copilot leads pricing. Cursor Pro is higher ($20/mo vs $10/mo), the annual figure is higher (roughly $192/yr vs $100/yr), and Business is higher ($40/user/mo vs $19/user/mo). Copilot also prints Pro+ at $39/mo and Enterprise at $39/user/mo. A Cursor Pro+ price and a Cursor Enterprise dollar price are not on that row. Cursor leads agentic capabilities and codebase indexing. Copilot leads the IDE model (a VS Code fork versus a plugin) and GitHub integration. Underlying models and inline autocomplete are ties. This page does not name a single overall winner. Context-window sizes, user counts, benchmark scores, and model version numbers are unknown on this scorecard.";
+
+const CURSOR_FAQS: FAQData[] = [
+  {
+    question: "Which is better, Cursor or GitHub Copilot?",
+    answer:
+      "This page does not name a single overall winner. On this page’s scorecard GitHub Copilot leads pricing: Cursor Pro is higher ($20/mo vs $10/mo). Cursor leads agentic capabilities (Composer plan-execute-verify versus Copilot’s agent mode, Workspace, and issue-to-PR agent) and codebase indexing. Copilot leads the IDE model and GitHub integration. Underlying models and inline autocomplete are ties. Quote the metric.",
+  },
+  {
+    question: "How much do Cursor and GitHub Copilot cost?",
+    answer:
+      "On this page’s scorecard Cursor Pro is $20/mo (or roughly $192/yr billed annually) and Business is $40/user/mo. GitHub Copilot Pro is $10/mo (or $100/yr — two months free annually), Pro+ is $39/mo, Business is $19/user/mo, and Enterprise is $39/user/mo. Cursor Pro is higher ($20/mo vs $10/mo). Business is higher ($40/user/mo vs $19/user/mo). The annual figure is higher (roughly $192/yr vs $100/yr). Cursor also has a limited free Hobby tier. Copilot has a free tier and is fully free for verified students, teachers, and maintainers. A Hobby completion count and a Cursor Enterprise dollar price are unknown on this row.",
+  },
+  {
+    question: "Which has better agentic and multi-file editing, Cursor or Copilot?",
+    answer:
+      "On this page’s scorecard agentic capabilities favor Cursor. Composer (Agent mode) runs a plan-execute-verify loop across files, terminal commands, and tests. Copilot has an in-editor agent, Copilot Workspace, and an issue-to-PR coding agent, and the same page says that tight in-editor loop trails Composer. The multi-file refactor row also favors Cursor. A numeric agent score is unknown on this page.",
+  },
+  {
+    question: "Which works in more editors, Cursor or GitHub Copilot?",
+    answer:
+      "On this page’s scorecard the IDE row favors GitHub Copilot. Cursor is a standalone editor, a fork of VS Code. Copilot is a plugin for VS Code, Visual Studio, the JetBrains suite, Neovim, Xcode, Eclipse, and more. An IDE count is unknown on this page — do not invent one.",
+  },
+  {
+    question: "Which has better GitHub integration and enterprise controls?",
+    answer:
+      "On this page’s scorecard GitHub and PR integration favors Copilot (PR summaries, issue-to-PR agent, GitHub CLI, and GitHub.com). Enterprise and security also favors Copilot (org policy, SSO, audit logs, content exclusion, data residency, and IP indemnification). Cursor’s enterprise cell names SSO/SAML, a privacy mode, and SOC 2 compliance, and says its certifications are less extensive. A Cursor Enterprise dollar price is unknown on this page.",
+  },
+  {
+    question: "Do Cursor and Copilot both offer Claude, GPT, and Gemini?",
+    answer:
+      "Yes, on this page’s scorecard, and the underlying-models row is a tie. Cursor switches among Anthropic Claude (Sonnet/Opus class), OpenAI GPT models, Google Gemini, and its own fast models. Copilot’s chat and agent picker offers Claude, GPT, and Gemini families, while inline autocomplete still defaults to GitHub’s OpenAI-based completion engine. Model version numbers and context-window sizes are unknown on this scorecard.",
+  },
+  {
+    question: "Which is better for inline autocomplete and onboarding?",
+    answer:
+      "On this page’s scorecard inline autocomplete is a tie: Cursor Tab predicts the next edit, and Copilot’s ghost text is described as effectively a tie for ordinary single-file work. Onboarding favors Copilot (one extension in the IDE you already use). Cursor’s onboarding cell calls an individual setup a five-minute setup because you install a new application. A latency number is unknown on this page.",
+  },
+  {
+    question: "Which Cursor vs Copilot figures does this page not print?",
+    answer:
+      "Unknown on this scorecard: context-window token counts, user or subscriber totals, benchmark or accuracy scores, a Hobby completion quota, an IDE count, and a Cursor Enterprise dollar price. The pricing row does print Copilot Enterprise at $39/user/mo and Pro+ at $39/mo. Do not invent a model version or a user count.",
+  },
+];
+
+const CURSOR_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: CURSOR_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Copilot price, IDE coverage, GitHub integration, enterprise controls, and onboarding; Cursor agentic editing and repo indexing; models and inline autocomplete are ties.",
+  keyFact:
+    "No single scorecard winner. Cursor Pro is higher ($20/mo vs $10/mo). Context windows, user counts, and model version numbers are unknown on this scorecard.",
+};
+
+// Printed by getMockComparison("android-vs-ios") — extra row overwrites base.
+// Market share 72% vs 28%. Updates 2-3 years vs 5-6 years.
+// Customization Extensive vs Limited. Privacy Good vs Excellent.
+// Shadowed base cells (~27%, US ~44/~56, 2x app revenue, 2-4 years) are not here.
+const ANDROID_SHORT_ANSWER =
+  "On this page’s scorecard Android leads global market share (72% vs 28%) and customization (Extensive vs Limited). iOS leads software updates (2-3 years vs 5-6 years) and privacy (Good vs Excellent). This page’s verdict assigns Android to freedom and choice, and iOS to privacy, polish, and ecosystem integration. It does not name a single overall winner. US market share, an app-revenue multiple, and an exact app count are unknown on this page.";
+
+const ANDROID_FAQS: FAQData[] = [
+  {
+    question: "Which is better, Android or iOS?",
+    answer:
+      "This page does not name a single overall winner. On this page’s scorecard Android leads global market share (72% vs 28%) and customization (Extensive vs Limited). iOS leads software updates (2-3 years vs 5-6 years) and privacy (Good vs Excellent). The verdict says both are excellent mobile platforms. Quote the metric.",
+  },
+  {
+    question: "What is Android vs iOS global market share?",
+    answer:
+      "On this page’s scorecard global market share is 72% for Android versus 28% for iOS, marked as an Android win. Android’s share is higher (72% vs 28%). The same 72% and 28% are repeated on the attribute row and in Android’s description (runs on 72% of smartphones). A US market-share split is unknown on this page.",
+  },
+  {
+    question: "Which gets software updates longer, Android or iOS?",
+    answer:
+      "On this page’s scorecard the software-updates row favors iOS (2-3 years vs 5-6 years). The attribute row prints average update support as 2-3 versus 5-6 years. iOS’s pros repeat 5-6 years of updates. Android’s cons say updates are fragmented. An Android update range other than 2-3 years is not on this page.",
+  },
+  {
+    question: "Which is more private and secure, Android or iOS?",
+    answer:
+      "On this page’s scorecard privacy favors iOS (Good vs Excellent). The on-page FAQ says iOS is generally considered more secure because of Apple’s walled garden, mandatory app review, and longer update support. Android’s cons say more malware. A numeric security score is unknown on this page.",
+  },
+  {
+    question: "Which is more customizable, Android or iOS?",
+    answer:
+      "On this page’s scorecard customization favors Android (Extensive vs Limited). Android’s pros say full customization and sideloading. iOS’s cons say limited customization and no sideloading. A customization score is unknown on this page.",
+  },
+  {
+    question: "Can you sideload apps, and can you switch from Android to iPhone?",
+    answer:
+      "On this page Android allows sideloading and iOS does not (iOS’s cons say no sideloading). The on-page FAQ says Apple’s Move to iOS app transfers contacts, messages, photos, and apps, and that you may need to repurchase apps. An exact app count is unknown — the FAQ only says both platforms have millions of apps.",
+  },
+  {
+    question: "Which Android vs iOS figures does this page not print?",
+    answer:
+      "Unknown on this page: a US market-share split, an app-revenue multiple, an exact app-store count, and a numeric security score. Global share on this page is 72% vs 28%, and update support is 2-3 years vs 5-6 years. Do not invent the missing figures.",
+  },
+];
+
+const ANDROID_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: ANDROID_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Android market share and customization; iOS software updates and privacy. The verdict says both are excellent.",
+  keyFact:
+    "No single scorecard winner. Android’s global share is higher (72% vs 28%). US market share is unknown on this page.",
+};
+
+// Printed by getMockComparison("nvidia-vs-amd") — extra row overwrites base.
+// Market cap $2.5T+ vs $250B, also $2.5 Trillion vs $250 Billion, and a
+// separate NVIDIA description figure of $2T+. Discrete share 80% vs 20%.
+// Shadowed base cells (RTX 4090, $300-500, RX 7800 XT, H100/A100/MI300X) are not here.
+const NVIDIA_SHORT_ANSWER =
+  "On this page’s scorecard NVIDIA leads AI compute (Dominant vs Growing) and market cap ($2.5T+ vs $250B). The attribute row prints that market cap again as $2.5 Trillion vs $250 Billion. NVIDIA’s description also prints a separate $2T+ market cap. Do not collapse $2T+ and $2.5T+ into one figure. AMD leads value for money (Premium vs Excellent) and the CPU market (None vs Leading). Discrete GPU market share is higher for NVIDIA (80% vs 20%). This page does not name a single overall winner. A ray-tracing score, a flagship GPU name, and a mid-range dollar price are unknown on this page.";
+
+const NVIDIA_FAQS: FAQData[] = [
+  {
+    question: "Which is better, NVIDIA or AMD?",
+    answer:
+      "This page does not name a single overall winner. On this page’s scorecard NVIDIA leads AI compute (Dominant vs Growing) and market cap ($2.5T+ vs $250B). AMD leads value for money (Premium vs Excellent) and the CPU market (None vs Leading). The verdict assigns NVIDIA to top-tier performance and AI, and AMD to value and a CPU plus GPU combo. Quote the metric.",
+  },
+  {
+    question: "What is NVIDIA vs AMD discrete GPU market share?",
+    answer:
+      "On this page’s attribute row discrete GPU market share is 80% for NVIDIA versus 20% for AMD, marked as an NVIDIA win. NVIDIA’s share is higher (80% vs 20%). Those cells do not use a tilde. A separate gaming-only share is unknown on this page.",
+  },
+  {
+    question: "Which has the larger market cap, NVIDIA or AMD?",
+    answer:
+      "NVIDIA, on this page. The scorecard market-cap row is $2.5T+ versus $250B. The attribute row prints $2.5 Trillion versus $250 Billion. NVIDIA’s description also says $2T+ market cap. NVIDIA’s market cap is larger ($2.5T+ vs $250B). Do not collapse $2T+ and $2.5T+ into one figure.",
+  },
+  {
+    question: "Which is better for AI, NVIDIA or AMD?",
+    answer:
+      "On this page’s scorecard AI compute favors NVIDIA (Dominant vs Growing). The on-page FAQ says NVIDIA dominates AI workloads because of CUDA, and that AMD’s ROCm is improving but has much less ecosystem support. A benchmark score and a named accelerator chip are unknown on this page.",
+  },
+  {
+    question: "Which is better for gaming value, and who makes CPUs?",
+    answer:
+      "On this page’s scorecard value for money favors AMD (Premium vs Excellent). The CPU-market row is None for NVIDIA versus Leading for AMD, so AMD leads CPUs. The FAQ says NVIDIA generally has the fastest GPUs, while AMD offers better value, and that NVIDIA leads high-end gaming with better ray tracing and DLSS while AMD is stronger at mid-range rasterization. A flagship model name and a mid-range dollar price are unknown on this page.",
+  },
+  {
+    question: "What is DLSS vs FSR on this page?",
+    answer:
+      "On this page’s FAQ, DLSS (NVIDIA) and FSR (AMD) are AI upscaling technologies that boost frame rates. DLSS uses dedicated AI hardware (Tensor cores). FSR works on any GPU, with slightly lower quality at equivalent settings. NVIDIA’s pros name DLSS ray tracing. AMD’s pros name FSR as an open standard. A frame-rate number is unknown on this page.",
+  },
+  {
+    question: "Which NVIDIA vs AMD figures does this page not print?",
+    answer:
+      "Unknown on this page: a ray-tracing score, a flagship GPU model name, a mid-range street price, and a named data-center accelerator. What is printed: discrete share 80% vs 20%, market cap $2.5T+ vs $250B (and $2.5 Trillion vs $250 Billion), plus a separate NVIDIA description figure of $2T+. Do not invent the missing specs.",
+  },
+];
+
+const NVIDIA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: NVIDIA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: NVIDIA AI compute, market cap, and discrete GPU share; AMD value for money and CPUs. The verdict splits the same way.",
+  keyFact:
+    "Market cap is printed more than once. The scorecard is $2.5T+ vs $250B, the attribute row is $2.5 Trillion vs $250 Billion, and the NVIDIA description also says $2T+. Do not collapse those.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -454,6 +632,21 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     shortAnswer: CHATGPT_SHORT_ANSWER,
     faqs: CHATGPT_FAQS,
     quickAnswer: CHATGPT_QUICK_ANSWER,
+  },
+  "cursor-vs-copilot": {
+    shortAnswer: CURSOR_SHORT_ANSWER,
+    faqs: CURSOR_FAQS,
+    quickAnswer: CURSOR_QUICK_ANSWER,
+  },
+  "android-vs-ios": {
+    shortAnswer: ANDROID_SHORT_ANSWER,
+    faqs: ANDROID_FAQS,
+    quickAnswer: ANDROID_QUICK_ANSWER,
+  },
+  "nvidia-vs-amd": {
+    shortAnswer: NVIDIA_SHORT_ANSWER,
+    faqs: NVIDIA_FAQS,
+    quickAnswer: NVIDIA_QUICK_ANSWER,
   },
 };
 

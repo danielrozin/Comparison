@@ -96,8 +96,8 @@ describe('Comparison Service (mock-data fallback)', () => {
       ])
     })
 
-    it('applies citation AEO overlays on figma, canva, and chatgpt compares', async () => {
-      for (const slug of ['figma-vs-sketch', 'canva-vs-photoshop', 'chatgpt-vs-gemini']) {
+    it('applies citation AEO overlays on figma, canva, chatgpt, cursor, android, and nvidia compares', async () => {
+      for (const slug of ['figma-vs-sketch', 'canva-vs-photoshop', 'chatgpt-vs-gemini', 'cursor-vs-copilot', 'android-vs-ios', 'nvidia-vs-amd']) {
         const mock = getMockComparison(slug)
         expect(mock).not.toBeNull()
         const scorecard = mock!.keyDifferences.map((d) => ({ ...d }))

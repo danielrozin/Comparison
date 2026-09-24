@@ -71,6 +71,37 @@ const BRIEF_CANVA_FAQS = [
   "Which Canva vs Photoshop figures does this page not print?",
 ];
 
+const BRIEF_CURSOR_FAQS = [
+  "Which is better, Cursor or GitHub Copilot?",
+  "How much do Cursor and GitHub Copilot cost?",
+  "Which has better agentic and multi-file editing, Cursor or Copilot?",
+  "Which works in more editors, Cursor or GitHub Copilot?",
+  "Which has better GitHub integration and enterprise controls?",
+  "Do Cursor and Copilot both offer Claude, GPT, and Gemini?",
+  "Which is better for inline autocomplete and onboarding?",
+  "Which Cursor vs Copilot figures does this page not print?",
+];
+
+const BRIEF_ANDROID_FAQS = [
+  "Which is better, Android or iOS?",
+  "What is Android vs iOS global market share?",
+  "Which gets software updates longer, Android or iOS?",
+  "Which is more private and secure, Android or iOS?",
+  "Which is more customizable, Android or iOS?",
+  "Can you sideload apps, and can you switch from Android to iPhone?",
+  "Which Android vs iOS figures does this page not print?",
+];
+
+const BRIEF_NVIDIA_FAQS = [
+  "Which is better, NVIDIA or AMD?",
+  "What is NVIDIA vs AMD discrete GPU market share?",
+  "Which has the larger market cap, NVIDIA or AMD?",
+  "Which is better for AI, NVIDIA or AMD?",
+  "Which is better for gaming value, and who makes CPUs?",
+  "What is DLSS vs FSR on this page?",
+  "Which NVIDIA vs AMD figures does this page not print?",
+];
+
 const BRIEF_CHATGPT_FAQS = [
   "Which AI is better, ChatGPT or Gemini?",
   "Who has more monthly users, ChatGPT or Gemini?",
@@ -602,6 +633,100 @@ describe("chatgpt-vs-gemini citation AEO overlay", () => {
     expect(missing?.answer).toMatch(/unknown/i);
     expect(missing?.answer).toMatch(/context-window/i);
     expect(missing?.answer).toMatch(/benchmark/i);
+  });
+});
+
+describe("cursor-vs-copilot citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 8 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("copilot-vs-cursor")).toBeNull();
+    expect(getEditorialAeoOverlay("cursor-vs-github-copilot")).toBeNull();
+    expectCitationOverlay("cursor-vs-copilot", BRIEF_CURSOR_FAQS);
+  });
+
+  it("keeps winnerName null and cites only printed plan prices", () => {
+    const overlay = getEditorialAeoOverlay("cursor-vs-copilot")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/\$20\/mo vs \$10\/mo/);
+    expect(prose).toMatch(/roughly \$192\/yr vs \$100\/yr/);
+    expect(prose).toMatch(/\$40\/user\/mo vs \$19\/user\/mo/);
+    expect(prose).toMatch(/\$39\/mo/);
+    expect(prose).toMatch(/\$39\/user\/mo/);
+    expect(prose).toMatch(/two months free annually/);
+    expect(prose).toMatch(/effectively a tie/);
+    expect(prose).toMatch(/SOC 2/);
+    expect(prose).not.toMatch(/\b3\.7\b/);
+    expect(prose).not.toMatch(/\bGPT-4o\b/);
+    expect(prose).not.toMatch(/\b55\b/);
+    expect(prose).not.toMatch(/\b2,?000\b/);
+    expect(prose).not.toMatch(/\b128\b/);
+    expect(prose).not.toMatch(/\b63\b/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/context-window/i);
+    expect(missing?.answer).toMatch(/user or subscriber totals/i);
+    expect(missing?.answer).toMatch(/Cursor Enterprise dollar price/i);
+  });
+});
+
+describe("android-vs-ios citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("ios-vs-android")).toBeNull();
+    expectCitationOverlay("android-vs-ios", BRIEF_ANDROID_FAQS);
+  });
+
+  it("keeps winnerName null and cites the extra-row share, not the shadowed base cells", () => {
+    const overlay = getEditorialAeoOverlay("android-vs-ios")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/72% vs 28%/);
+    expect(prose).toMatch(/2-3 years vs 5-6 years/);
+    expect(prose).toMatch(/Extensive vs Limited/);
+    expect(prose).toMatch(/Good vs Excellent/);
+    expect(prose).toMatch(/Both are excellent mobile platforms|both are excellent/);
+    expect(prose).not.toMatch(/~27%/);
+    expect(prose).not.toMatch(/~44%/);
+    expect(prose).not.toMatch(/~56%/);
+    expect(prose).not.toMatch(/2-4/);
+    expect(prose).not.toMatch(/2x/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/US market-share/i);
+    expect(missing?.answer).toMatch(/app-revenue multiple/i);
+  });
+});
+
+describe("nvidia-vs-amd citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("amd-vs-nvidia")).toBeNull();
+    expectCitationOverlay("nvidia-vs-amd", BRIEF_NVIDIA_FAQS);
+  });
+
+  it("keeps winnerName null and cites both printed market-cap figures without the shadowed base specs", () => {
+    const overlay = getEditorialAeoOverlay("nvidia-vs-amd")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/\$2\.5T\+ vs \$250B/);
+    expect(prose).toMatch(/\$2\.5 Trillion vs \$250 Billion/);
+    expect(prose).toMatch(/\$2T\+/);
+    expect(prose).toMatch(/Do not collapse \$2T\+ and \$2\.5T\+/);
+    expect(prose).toMatch(/80% vs 20%/);
+    expect(prose).toMatch(/Dominant vs Growing/);
+    expect(prose).toMatch(/None vs Leading/);
+    expect(prose).not.toMatch(/\b4090\b/);
+    expect(prose).not.toMatch(/\b7800\b/);
+    expect(prose).not.toMatch(/\$300/);
+    expect(prose).not.toMatch(/\bH100\b/);
+    expect(prose).not.toMatch(/\bA100\b/);
+    expect(prose).not.toMatch(/\bMI300X\b/);
+    expect(prose).not.toMatch(/~80%/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this page not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/flagship GPU model name/i);
+    expect(missing?.answer).toMatch(/mid-range street price/i);
   });
 });
 
