@@ -68,6 +68,8 @@ describe("/trending page wiring (ROO-47)", () => {
     expect(source).toContain("<HomeCompareCTA");
     expect(source).toContain("source={TRENDING_COMPARE_SOURCE}");
     expect(source).toContain("showTrending={false}");
+    expect(source).toContain("mobileLead");
+    expect(source).toContain('variant="solid"');
     expect(source).toContain("buildTrendingCompareCta");
     expect(source).toContain('trackSource={TRENDING_COMPARE_SOURCE}');
     expect(source).toContain("emphasizeCta");

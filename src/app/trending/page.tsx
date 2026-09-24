@@ -378,7 +378,7 @@ export default async function TrendingPage({ searchParams }: PageProps) {
           </defs>
           <rect width="100%" height="100%" fill="url(#trending-grid)"/>
         </svg>
-        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 relative">
           <nav className="mb-5" aria-label="Breadcrumb">
             <ol className="flex items-center gap-1.5 text-sm text-orange-200">
@@ -398,6 +398,20 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               <li className="text-white font-medium" aria-current="page">Trending</li>
             </ol>
           </nav>
+          {/* ROO-51: same lead placement as /blog. The cookie banner covers a
+              CTA that sits under this title row on short phones. Solid card
+              (not glass) so the desktop button reads as the primary action.
+              No self-link back to /trending. */}
+          <HomeCompareCTA
+            variant="solid"
+            mobileLead
+            primarySlug={trendingCompare.primarySlug}
+            primaryTitle={trendingCompare.primaryTitle}
+            chips={trendingCompare.chips}
+            source={TRENDING_COMPARE_SOURCE}
+            softHref={HOME_COMPARE_SOFT_HREF}
+            showTrending={false}
+          />
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm ring-1 ring-white/20">
               <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
@@ -417,19 +431,8 @@ export default async function TrendingPage({ searchParams }: PageProps) {
               </p>
             </div>
           </div>
-          {/* ROO-47: above-fold path into live /compare. Click fires
-              related_comparison_click; ?source_page=trending is what ROO-48
-              copies onto comparison_viewed. No "Trending" self-link. */}
-          <HomeCompareCTA
-            primarySlug={trendingCompare.primarySlug}
-            primaryTitle={trendingCompare.primaryTitle}
-            chips={trendingCompare.chips}
-            source={TRENDING_COMPARE_SOURCE}
-            softHref={HOME_COMPARE_SOFT_HREF}
-            showTrending={false}
-          />
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
           <svg viewBox="0 0 1440 24" fill="none" className="w-full" aria-hidden="true">
             <path d="M0 24V8C360 20 720 0 1080 12C1260 18 1380 6 1440 8V24H0Z" fill="white" />
           </svg>
