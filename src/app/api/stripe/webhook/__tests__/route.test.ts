@@ -8,6 +8,7 @@ import { NextRequest } from "next/server";
 const capture = vi.fn();
 const flushPostHog = vi.fn().mockResolvedValue(undefined);
 const sendNotificationEmail = vi.fn().mockResolvedValue(undefined);
+const sendMemberWelcomeEmail = vi.fn().mockResolvedValue({ success: true, method: "resend" });
 
 type Hash = Record<string, string>;
 
@@ -70,6 +71,7 @@ vi.mock("@/lib/services/redis", () => ({
 
 vi.mock("@/lib/services/email", () => ({
   sendNotificationEmail: (...args: unknown[]) => sendNotificationEmail(...args),
+  sendMemberWelcomeEmail: (...args: unknown[]) => sendMemberWelcomeEmail(...args),
 }));
 
 vi.mock("@/lib/posthog-server", () => ({
@@ -103,6 +105,8 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     flushPostHog.mockClear();
     sendNotificationEmail.mockClear();
     sendNotificationEmail.mockResolvedValue(undefined);
+    sendMemberWelcomeEmail.mockClear();
+    sendMemberWelcomeEmail.mockResolvedValue({ success: true, method: "resend" });
     redisState.reset();
   });
 
@@ -165,6 +169,13 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
 
     expect(flushPostHog).toHaveBeenCalled();
     expect(sendNotificationEmail).toHaveBeenCalled();
+    expect(sendMemberWelcomeEmail).toHaveBeenCalledWith({
+      to: "buyer@example.com",
+      planId: "pro",
+      interval: "year",
+      amountMajor: 49,
+      currency: "USD",
+    });
   });
 
   it("captures purchase on the Checkout Session distinct id, not the Stripe email", async () => {
@@ -263,6 +274,7 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
         properties: expect.objectContaining({ $revenue: 9, revenue: 9 }),
       }),
     );
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
   });
 
   it("captures subscription_canceled and still emails Info@", async () => {

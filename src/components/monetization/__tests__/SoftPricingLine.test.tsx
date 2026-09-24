@@ -78,5 +78,9 @@ describe("ProUpsellCard pricing link", () => {
       "compare-japan-vs-china",
       "pro-upsell",
     );
+    expect(within(container).getByRole("link", { name: /Request this matchup/i })).toHaveAttribute(
+      "href",
+      "/custom-compare?slug=japan-vs-china",
+    );
   });
 });

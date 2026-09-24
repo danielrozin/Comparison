@@ -25,6 +25,7 @@ import { Resend } from "resend";
 // Whitespace-hardened base URL (DAN-1033) — the env var has shipped with a
 // trailing space; importing the normalized constant keeps embed snippets clean.
 import { SITE_URL } from "@/lib/utils/constants";
+import { buildMemberWelcomeEmail } from "@/lib/monetization/welcome-email";
 
 /** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
 export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
@@ -125,6 +126,39 @@ export async function sendOutreachEmail(opts: {
     console.error("Resend send failed:", msg);
     return { success: false, error: msg };
   }
+}
+
+/**
+ * Paid-checkout welcome / receipt (ROO-49). Same Resend sender as the rest of
+ * the product — no second mail stack. Fails honestly when RESEND_API_KEY is
+ * unset so the webhook can say so in the founder alert.
+ */
+export async function sendMemberWelcomeEmail(opts: {
+  to: string;
+  planId: string;
+  interval: string;
+  amountMajor?: number | null;
+  currency?: string | null;
+}): Promise<{ success: boolean; method: string; error?: string }> {
+  const built = buildMemberWelcomeEmail({
+    planId: opts.planId,
+    interval: opts.interval,
+    amountMajor: opts.amountMajor,
+    currency: opts.currency,
+  });
+  const result = await sendOutreachEmail({
+    to: opts.to,
+    subject: built.subject,
+    html: built.html,
+    text: built.text,
+    tags: [{ name: "type", value: "member_welcome" }],
+  });
+  if (!result.success) {
+    console.error(`[EMAIL][welcome][fail] -> ${opts.to} | ${result.error ?? "unknown"}`);
+    return { success: false, method: "undelivered", error: result.error };
+  }
+  console.log(`[EMAIL][welcome][ok] -> ${opts.to} | id=${result.id ?? "?"}`);
+  return { success: true, method: "resend" };
 }
 
 // ─── Batch outreach (up to 100 at a time) ───────────────────────────

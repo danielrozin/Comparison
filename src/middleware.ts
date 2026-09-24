@@ -10,6 +10,8 @@ const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMITS: Record<string, { windowMs: number; maxRequests: number }> = {
   "/api/v1/": { windowMs: 60_000, maxRequests: 60 },
   "/api/comparisons/generate": { windowMs: 60_000, maxRequests: 5 },
+  "/api/custom-compare": { windowMs: 60_000, maxRequests: 8 },
+  "/api/billing-portal": { windowMs: 60_000, maxRequests: 8 },
   "/api/comments": { windowMs: 60_000, maxRequests: 10 },
   "/api/feedback": { windowMs: 60_000, maxRequests: 5 },
   "/api/consent": { windowMs: 60_000, maxRequests: 5 },

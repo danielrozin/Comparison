@@ -134,10 +134,34 @@ checkout_started → purchase, split by `src`.
 
       List: Redis `monetization:reservations`; send day-of-Stripe only.
 - [x] Success page `/pricing/thanks` (noindex)
+- [x] Welcome / receipt email on `checkout.session.completed` (ROO-49).
+      Resend via `sendMemberWelcomeEmail` → `sendOutreachEmail` (same stack
+      as newsletter welcome). Includes plan name, amount, what that plan's
+      live features unlock, `/custom-compare`, and `/account/billing`.
+      Skipped when the Checkout Session has no email, or when `RESEND_API_KEY`
+      is unset — the founder purchase alert says which. Needs
+      `RESEND_API_KEY` + `RESEND_FROM_EMAIL` in Vercel Production.
+- [x] Founder purchase and cancel alerts fan out to every address in
+      `ADMIN_NOTIFICATION_EMAIL` (comma or semicolon). Unset falls back to
+      both founders. **Production must set the full list** if the variable
+      already exists as a single inbox, or the second founder is skipped:
+      `Daniarozin@gmail.com,Shai.and1@gmail.com`
+      Vercel → Settings → Environment Variables → Production → edit
+      `ADMIN_NOTIFICATION_EMAIL` → Save → redeploy is not required for
+      serverless env (new invocations pick it up; a redeploy makes it
+      immediate). Web3Forms fallback cannot fan out; Resend is the path
+      that reaches both inboxes.
 
 **Phase 3 — deliver the Pro promises**
-- [ ] Custom-comparison request form for Pro users → generation queue
-      (per-request unfreeze; DAN-2157 freeze stays on for bulk)
+- [x] Custom-comparison request for Pro users (ROO-49): `/custom-compare`
+      and `POST /api/custom-compare`. Allowed only when Redis
+      `monetization:member:{email}` is active (same check as
+      `GET /api/admin/membership`). Free or canceled emails get
+      `403` + `upgradeUrl: /pricing?src=custom-compare` (the page shows
+      that link; it does not fail silently). Cap is 2 new matchups per
+      UTC month, matching the Pro feature line. Community `/requests`
+      stays free. DAN-2157 generation freeze stays on — this queues a
+      founder-built page, it does not re-open public AI generation.
 - [ ] PDF export of any comparison (server-render → print CSS → PDF)
 - [ ] Verdict-change alerts (weekly diff job + Resend email)
 - [ ] Gate: simple auth (email magic link) before this phase

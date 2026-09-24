@@ -49,7 +49,9 @@ export default async function PricingThanksPage({
           </li>
           <li className="flex gap-3">
             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary-600 text-xs font-bold">3</span>
-            <span><strong className="text-text">First request.</strong> Reply to that email with any matchup — it&apos;s live on the site within 24 hours.</span>
+            <span><strong className="text-text">First request.</strong> Use the link in that email, or open{" "}
+              <Link href="/custom-compare" className="text-primary-600 font-medium hover:underline">custom compare</Link>
+              {" "}with the email you paid with. It&apos;s live on the site within 24 hours.</span>
           </li>
         </ol>
 
