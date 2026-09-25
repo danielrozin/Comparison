@@ -36,6 +36,24 @@ import type { ComparisonPageData, FAQData, QuickAnswerTLDR } from "@/types";
  * GPT-4o only. None of the three scorecards names a single winner on every
  * row, so winnerName stays null. If a stat is not on that returned page,
  * say unknown.
+ * US Economy vs China Economy and USA vs China figures come only from the
+ * Key Differences scorecard `getMockComparison` returns. Both slugs exist
+ * in `mock-data.ts` and `mock-data-extra.ts`; the extra row wins. Cite
+ * those scorecard cells only. Do not cite the shadowed base row (economy
+ * nominal $27.4T, PPP $35T, growth 5.2%, per capita $80,300, stock $46T;
+ * country GDP $27.4T, population 335M, military $916B, per capita $80,300,
+ * nuclear 5,550). Do not cite the merged `faq-expansion.ts` cells (~$26.9
+ * trillion, $886 billion). The live economy attribute table also prints
+ * other nominal GDP figures ($27.4T, $29.4T, "$30+ trillion") and copies
+ * some China-only values into the US column. Those are not scorecard rows.
+ * Leave them uncited. Lyft vs Uber is not in the mock map (`uber-vs-lyft`
+ * is a different scorecard and redirects away). Its figures come only from
+ * the published page’s Key Differences scorecard (fetched 2026-09-25):
+ * presence, 71% vs 29%, revenue mix, 25-30% vs ~25% platform fee, $38.7
+ * billion vs $4.3 billion, driver base, and a 4.6+ star tie. Do not cite
+ * the attribute-table commission that is not that row, or the `uber-vs-lyft`
+ * mock (68% / $37 billion / 70+ countries). None of the three scorecards
+ * names a single winner on every row, so winnerName stays null.
  * If the pipeline later refreshes a scorecard, keep using that page’s own
  * printed figures in shortAnswer/FAQ.
  */
@@ -591,6 +609,174 @@ const NVIDIA_QUICK_ANSWER: QuickAnswerTLDR = {
     "Market cap is printed more than once. The scorecard is $2.5T+ vs $250B, the attribute row is $2.5 Trillion vs $250 Billion, and the NVIDIA description also says $2T+. Do not collapse those.",
 };
 
+// Printed by getMockComparison("us-economy-vs-china-economy") — extra row
+// overwrites base. Scorecard only, US column first:
+// Nominal GDP $25.5T vs $17.7T; GDP per Capita $76,300 vs $12,500;
+// Manufacturing Share 16% vs 30%; GDP Growth Rate 2.5% vs 4.5%.
+// Shadowed base and the live attribute table disagree. Do not cite them.
+const US_ECONOMY_CHINA_SHORT_ANSWER =
+  "On this page’s Key Differences scorecard the Nominal GDP row is $25.5T vs $17.7T, the GDP per Capita row is $76,300 vs $12,500, the Manufacturing Share row is 16% vs 30%, and the GDP Growth Rate row is 2.5% vs 4.5%. The US column is first. The US figure is higher on Nominal GDP ($25.5T vs $17.7T) and on GDP per Capita ($76,300 vs $12,500). China’s figure is higher on Manufacturing Share (30% vs 16%) and on GDP Growth Rate (4.5% vs 2.5%). This page does not name a single overall winner. A PPP dollar total, and any nominal GDP figure that is not the Nominal GDP row, are unknown on this scorecard.";
+
+const US_ECONOMY_CHINA_FAQS: FAQData[] = [
+  {
+    question: "Which economy is bigger, the US or China?",
+    answer:
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the Nominal GDP row ($25.5T vs $17.7T) and on the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Manufacturing Share row (30% vs 16%) and on the GDP Growth Rate row (4.5% vs 2.5%). The US column is first on every row. Quote the row.",
+  },
+  {
+    question: "What is US vs China nominal GDP on this page?",
+    answer:
+      "On this page’s Nominal GDP row the cells are $25.5T for the US and $17.7T for China. The US figure is higher ($25.5T vs $17.7T). That is the only nominal GDP pair on the Key Differences scorecard. A second nominal total is unknown on this scorecard.",
+  },
+  {
+    question: "What is GDP per capita for the US vs China on this page?",
+    answer:
+      "On this page’s GDP per Capita row the cells are $76,300 for the US and $12,500 for China. The US figure is higher ($76,300 vs $12,500). Cite that row when you say who is richer per person.",
+  },
+  {
+    question: "Who has the larger manufacturing share on this page?",
+    answer:
+      "China, on the Manufacturing Share row. That row prints 16% in the US column and 30% in the China column. China’s share is higher (30% vs 16%).",
+  },
+  {
+    question: "Which economy is growing faster on this page?",
+    answer:
+      "China, on the GDP Growth Rate row. That row prints 2.5% in the US column and 4.5% in the China column. China’s rate is higher (4.5% vs 2.5%). A growth figure that is not this row is unknown on this scorecard.",
+  },
+  {
+    question: "Does this page name one overall economy winner?",
+    answer:
+      "No. The Nominal GDP row and the GDP per Capita row favor the US ($25.5T vs $17.7T, and $76,300 vs $12,500). The Manufacturing Share row and the GDP Growth Rate row favor China (30% vs 16%, and 4.5% vs 2.5%). Cite the metric.",
+  },
+  {
+    question: "Which US vs China economy figures does this scorecard not print?",
+    answer:
+      "Unknown on this Key Differences scorecard: a PPP dollar total, a stock-market capitalization, and any nominal GDP figure other than the Nominal GDP row ($25.5T vs $17.7T). Attribute-table duplicates are not scorecard rows. Do not cite them.",
+  },
+];
+
+const US_ECONOMY_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: US_ECONOMY_CHINA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: US Nominal GDP and GDP per Capita; China Manufacturing Share and GDP Growth Rate.",
+  keyFact:
+    "No single scorecard winner. The Nominal GDP row is $25.5T vs $17.7T. The Manufacturing Share row is 16% vs 30%. Cite the row. A second nominal GDP figure is unknown on this scorecard.",
+};
+
+// Printed by getMockComparison("usa-vs-china") — extra row overwrites base.
+// Scorecard only, United States column first:
+// GDP $25.5T vs $17.7T; Population 333M vs 1.4B; Military Spending $877B vs $292B;
+// GDP per Capita $76,300 vs $12,500; Manufacturing Output #2 vs #1.
+const USA_CHINA_SHORT_ANSWER =
+  "On this page’s Key Differences scorecard the GDP row is $25.5T vs $17.7T, the Population row is 333M vs 1.4B, the Military Spending row is $877B vs $292B, the GDP per Capita row is $76,300 vs $12,500, and the Manufacturing Output row is #2 vs #1. The United States column is first. The US figure is higher on GDP ($25.5T vs $17.7T), on Military Spending ($877B vs $292B), and on GDP per Capita ($76,300 vs $12,500). China’s figure is higher on Population (1.4B vs 333M). The Manufacturing Output row prints #2 for the United States and #1 for China, and that row’s winner is China. This page does not name a single overall winner.";
+
+const USA_CHINA_FAQS: FAQData[] = [
+  {
+    question: "Which is ahead, the USA or China?",
+    answer:
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard the US figure is higher on the GDP row ($25.5T vs $17.7T), the Military Spending row ($877B vs $292B), and the GDP per Capita row ($76,300 vs $12,500). China’s figure is higher on the Population row (1.4B vs 333M). The Manufacturing Output row prints #2 for the United States and #1 for China, and that row’s winner is China. Quote the row.",
+  },
+  {
+    question: "What is USA vs China GDP on this page?",
+    answer:
+      "On this page’s GDP row the cells are $25.5T for the United States and $17.7T for China. The US figure is higher ($25.5T vs $17.7T). That is the only GDP pair on the Key Differences scorecard.",
+  },
+  {
+    question: "Which country has the larger population on this page?",
+    answer:
+      "China, on the Population row. That row prints 333M in the United States column and 1.4B in the China column. China’s population is higher (1.4B vs 333M).",
+  },
+  {
+    question: "Which country spends more on the military on this page?",
+    answer:
+      "The United States, on the Military Spending row. That row prints $877B in the United States column and $292B in the China column. The US figure is higher ($877B vs $292B).",
+  },
+  {
+    question: "What is GDP per capita for the USA vs China on this page?",
+    answer:
+      "On this page’s GDP per Capita row the cells are $76,300 for the United States and $12,500 for China. The US figure is higher ($76,300 vs $12,500).",
+  },
+  {
+    question: "Who leads manufacturing output on this page?",
+    answer:
+      "The Manufacturing Output row prints #2 for the United States and #1 for China. That row’s winner is China. A manufacturing percentage is unknown on this scorecard — the cells are ranks, #2 vs #1.",
+  },
+  {
+    question: "Which USA vs China figures does this scorecard not print?",
+    answer:
+      "Unknown on this Key Differences scorecard: a nuclear-warhead count, a life-expectancy figure, an HDI rank, and any GDP or military total other than the GDP row ($25.5T vs $17.7T) and the Military Spending row ($877B vs $292B). Do not cite a figure that is not one of the five scorecard rows.",
+  },
+];
+
+const USA_CHINA_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: USA_CHINA_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: US GDP, military spending, and GDP per Capita; China population and manufacturing output.",
+  keyFact:
+    "No single scorecard winner. The GDP row is $25.5T vs $17.7T. The Population row is 333M vs 1.4B. The Military Spending row is $877B vs $292B. Cite the row.",
+};
+
+// Published /compare/lyft-vs-uber Key Differences scorecard (fetched 2026-09-25).
+// Not in getMockComparison. Uber column first. Do not cite uber-vs-lyft.
+// Global Market Presence: 72 countries across 6 continents vs US and Canada only.
+// US Rideshare Market Share: 71% vs 29%.
+// Revenue Diversification: Rideshare, Uber Eats, Uber Freight, Uber Jump, Uber Elevate vs Rideshare only.
+// Driver Commission Rate: 25-30% platform fee vs approximately 25% platform fee.
+// 2024 Annual Revenue: $38.7 billion vs $4.3 billion.
+// Active Driver Base (Estimated): 6+ million globally vs 600,000-700,000 in North America.
+// Average Driver Rating Requirements: 4.6+ stars to remain active vs 4.6+ stars to remain active (tie).
+const LYFT_UBER_SHORT_ANSWER =
+  "On this page’s Key Differences scorecard the Global Market Presence row is 72 countries across 6 continents vs US and Canada only, the US Rideshare Market Share row is 71% vs 29%, the Revenue Diversification row is Rideshare, Uber Eats, Uber Freight, Uber Jump, Uber Elevate vs Rideshare only, the Driver Commission Rate row is 25-30% platform fee vs approximately 25% platform fee, the 2024 Annual Revenue row is $38.7 billion vs $4.3 billion, the Active Driver Base (Estimated) row is 6+ million globally vs 600,000-700,000 in North America, and the Average Driver Rating Requirements row is 4.6+ stars to remain active vs 4.6+ stars to remain active. The Uber column is first. Uber’s figure is higher on US Rideshare Market Share (71% vs 29%) and on 2024 Annual Revenue ($38.7 billion vs $4.3 billion). The driver-rating row is a tie. This page does not name a single overall winner.";
+
+const LYFT_UBER_FAQS: FAQData[] = [
+  {
+    question: "Which is bigger, Uber or Lyft?",
+    answer:
+      "This page does not name a single overall winner. On this page’s Key Differences scorecard Uber’s figure is higher on the US Rideshare Market Share row (71% vs 29%) and on the 2024 Annual Revenue row ($38.7 billion vs $4.3 billion). The Global Market Presence row is 72 countries across 6 continents vs US and Canada only, and that row’s winner is Uber. The Revenue Diversification row’s winner is Uber. Lyft’s platform fee is the winner on the Driver Commission Rate row. The Average Driver Rating Requirements row is a tie (4.6+ stars to remain active vs 4.6+ stars to remain active). Quote the row.",
+  },
+  {
+    question: "What is Uber vs Lyft US rideshare market share on this page?",
+    answer:
+      "On this page’s US Rideshare Market Share row the cells are 71% for Uber and 29% for Lyft. Uber’s share is higher (71% vs 29%).",
+  },
+  {
+    question: "Where do Uber and Lyft operate on this page?",
+    answer:
+      "On this page’s Global Market Presence row Uber is 72 countries across 6 continents and Lyft is US and Canada only. That row’s winner is Uber. A city count is unknown on this scorecard.",
+  },
+  {
+    question: "How much revenue do Uber and Lyft report on this page?",
+    answer:
+      "On this page’s 2024 Annual Revenue row the cells are $38.7 billion for Uber and $4.3 billion for Lyft. Uber’s revenue is higher ($38.7 billion vs $4.3 billion). A revenue figure that is not this row is unknown on this scorecard.",
+  },
+  {
+    question: "What driver commission does this page print?",
+    answer:
+      "On this page’s Driver Commission Rate row Uber is a 25-30% platform fee and Lyft is approximately 25% platform fee. That row’s winner is Lyft. A commission percentage that is not this row is unknown on this scorecard.",
+  },
+  {
+    question: "How many drivers does this page print, and is the rating a tie?",
+    answer:
+      "On this page’s Active Driver Base (Estimated) row the cells are 6+ million globally for Uber and 600,000-700,000 in North America for Lyft. That row’s winner is Uber. The Average Driver Rating Requirements row is a tie: 4.6+ stars to remain active vs 4.6+ stars to remain active.",
+  },
+  {
+    question: "Which Uber vs Lyft figures does this scorecard not print?",
+    answer:
+      "Unknown on this Key Differences scorecard: a market-cap dollar figure, a monthly-active-user total, a wait time, and a commission rate other than the Driver Commission Rate row (25-30% platform fee vs approximately 25% platform fee). Do not cite a figure that is not one of the seven scorecard rows.",
+  },
+];
+
+const LYFT_UBER_QUICK_ANSWER: QuickAnswerTLDR = {
+  tldr: LYFT_UBER_SHORT_ANSWER,
+  winnerName: null,
+  winnerReason:
+    "By metric only: Uber presence, US share, revenue mix, annual revenue, and driver base; Lyft driver commission; driver rating is a tie.",
+  keyFact:
+    "No single scorecard winner. The US Rideshare Market Share row is 71% vs 29%. The 2024 Annual Revenue row is $38.7 billion vs $4.3 billion. The driver-rating row is a tie at 4.6+ stars.",
+};
+
 type AeoOverlay = {
   shortAnswer: string;
   faqs: FAQData[];
@@ -647,6 +833,21 @@ const OVERLAYS: Record<string, AeoOverlay> = {
     shortAnswer: NVIDIA_SHORT_ANSWER,
     faqs: NVIDIA_FAQS,
     quickAnswer: NVIDIA_QUICK_ANSWER,
+  },
+  "us-economy-vs-china-economy": {
+    shortAnswer: US_ECONOMY_CHINA_SHORT_ANSWER,
+    faqs: US_ECONOMY_CHINA_FAQS,
+    quickAnswer: US_ECONOMY_CHINA_QUICK_ANSWER,
+  },
+  "usa-vs-china": {
+    shortAnswer: USA_CHINA_SHORT_ANSWER,
+    faqs: USA_CHINA_FAQS,
+    quickAnswer: USA_CHINA_QUICK_ANSWER,
+  },
+  "lyft-vs-uber": {
+    shortAnswer: LYFT_UBER_SHORT_ANSWER,
+    faqs: LYFT_UBER_FAQS,
+    quickAnswer: LYFT_UBER_QUICK_ANSWER,
   },
 };
 
