@@ -5,6 +5,7 @@
 
 import { SITE_NAME, SITE_URL } from "@/lib/utils/constants";
 import { CANONICAL_COMPARISON_COUNT_FALLBACK } from "@/lib/db/canonical-comparisons";
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 import type { ComparisonPageData, FAQData, CitationStats } from "@/types";
 
 // ============================================================
@@ -662,13 +663,15 @@ const WIKIDATA_Q_MAP: Record<string, string> = {
  * AI models (ChatGPT, Perplexity, Gemini) use sameAs to unambiguously
  * resolve entities during knowledge-graph grounding and citation merging.
  */
-export function entityWikipediaSameAs(name: string): string[] {
+export function entityWikipediaSameAs(name: string, slug?: string): string[] {
   if (!name || name.trim().length === 0) return [];
-  const wikiSlug = name.trim().replace(/ /g, "_");
-  const urls = [
-    `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiSlug)}`,
-    `https://dbpedia.org/resource/${encodeURIComponent(wikiSlug)}`,
-  ];
+  const wikiUrl = resolveEntityWikipediaUrl({ name, slug });
+  const urls = [wikiUrl];
+  // DBpedia only when we resolved a real article. A search URL is not a resource.
+  if (wikiUrl.includes("/wiki/")) {
+    const title = wikiUrl.slice(wikiUrl.indexOf("/wiki/") + "/wiki/".length);
+    urls.push(`https://dbpedia.org/resource/${title}`);
+  }
   // Append Wikidata entity URL when Q-ID is known — third knowledge-graph anchor
   // that AI crawlers resolve via the Wikidata API for entity disambiguation.
   const qId = WIKIDATA_Q_MAP[name.trim()] ?? WIKIDATA_Q_MAP[name.trim().split(" ")[0]];
@@ -1060,7 +1063,7 @@ export function comparisonPageSchema(
           },
         }),
         ...(e.slug && { url: `${SITE_URL}/entity/${e.slug}` }),
-        sameAs: entityWikipediaSameAs(e.name),
+        sameAs: entityWikipediaSameAs(e.name, e.slug),
         subjectOf: { "@type": "Article", "@id": `${url}#article` },
         // mainEntityOfPage — cross-page graph edge from entity node (inside Article about[])
         // to the entity's canonical ProfilePage. AI crawlers follow this to the profile
@@ -1129,7 +1132,7 @@ export function comparisonPageSchema(
         // disambiguation; previously only Wikipedia was emitted (DBpedia was dropped).
         ...(schType === "Country" && {
           additionalType: "https://schema.org/Country",
-          sameAs: entityWikipediaSameAs(e.name),
+          sameAs: entityWikipediaSameAs(e.name, e.slug),
           // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
           // Perplexity/ChatGPT country-query routing — parity with multi-entity path.
           geo: { "@type": "GeoShape", name: e.name },
@@ -1165,7 +1168,7 @@ export function comparisonPageSchema(
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
-      sameAs: entityWikipediaSameAs(e.name),
+      sameAs: entityWikipediaSameAs(e.name, e.slug),
     })),
     // articleSection — tells Google/AI models the category domain of this comparison.
     ...(comparison.category && { articleSection: comparison.category }),
@@ -1302,13 +1305,16 @@ export function comparisonPageSchema(
             ...(domain && { publisher: { "@type": "Organization", name: domain } }),
           };
         }),
-      ...comparison.entities.map((e) => ({
-        "@type": "Article",
-        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
-      })),
+      ...comparison.entities.map((e) => {
+        const wikipediaUrl = resolveEntityWikipediaUrl(e);
+        return {
+          "@type": "Article",
+          "@id": wikipediaUrl,
+          name: `${e.name} — Wikipedia`,
+          url: wikipediaUrl,
+          publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
+        };
+      }),
     ],
     // potentialAction — ReadAction lets AI crawlers understand that this article
     // is readable at its canonical URL; CompareAction tells AI/Google that this page
@@ -1914,7 +1920,7 @@ function buildMultiEntityGraph(
       acquireLicensePage: `${SITE_URL}/terms`,
       license: "https://creativecommons.org/licenses/by/4.0/",
     };
-    const wikiSameAs = entityWikipediaSameAs(entity.name);
+    const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
     if (wikiSameAs.length > 0) node.sameAs = wikiSameAs;
     // alternateName — legal-suffix-stripped aliases for AI Knowledge Graph cross-document merging.
     const itemAliases = entityAlternateNames(entity.name);
@@ -1968,7 +1974,7 @@ function buildMultiEntityGraph(
     if (schemaType === "Country") {
       node.additionalType = "https://schema.org/Country";
       // entityWikipediaSameAs gives both Wikipedia + DBpedia; don't narrow to Wikipedia-only.
-      node.sameAs = entityWikipediaSameAs(entity.name);
+      node.sameAs = entityWikipediaSameAs(entity.name, entity.slug);
       // geo: GeoShape signals this is a geo-typed entity to Google Geo crawlers and
       // Perplexity/ChatGPT country-query routing — even without precise coordinates.
       node.geo = { "@type": "GeoShape", name: entity.name };
@@ -2281,13 +2287,16 @@ function buildMultiEntityGraph(
             ...(domain && { publisher: { "@type": "Organization", name: domain } }),
           };
         }),
-      ...comparison.entities.map((e) => ({
-        "@type": "Article",
-        "@id": `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
-        publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
-      })),
+      ...comparison.entities.map((e) => {
+        const wikipediaUrl = resolveEntityWikipediaUrl(e);
+        return {
+          "@type": "Article",
+          "@id": wikipediaUrl,
+          name: `${e.name} — Wikipedia`,
+          url: wikipediaUrl,
+          publisher: { "@type": "Organization", name: "Wikipedia", url: "https://en.wikipedia.org" },
+        };
+      }),
     ],
     mainEntity: { "@id": itemListId },
     // about[] — primary subjects of this comparison article; @id matches ProfilePage mainEntity.
@@ -2307,7 +2316,7 @@ function buildMultiEntityGraph(
           "@id": `${SITE_URL}/entity/${e.slug}#profilepage`,
           url: `${SITE_URL}/entity/${e.slug}`,
         },
-        sameAs: entityWikipediaSameAs(e.name),
+        sameAs: entityWikipediaSameAs(e.name, e.slug),
       };
     }),
     // @id on each mentions entry matches ProfilePage mainEntity for cross-document merge.
@@ -2317,7 +2326,7 @@ function buildMultiEntityGraph(
       "@id": `${SITE_URL}/entity/${e.slug}`,
       name: e.name,
       url: `${SITE_URL}/entity/${e.slug}`,
-      sameAs: entityWikipediaSameAs(e.name),
+      sameAs: entityWikipediaSameAs(e.name, e.slug),
     })),
     // Properties added for feature parity with 2-entity schema
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: SITE_NAME, url: SITE_URL },
@@ -3057,7 +3066,7 @@ export function entityPageSchema(entity: {
         ],
       },
     },
-    sameAs: entityWikipediaSameAs(entity.name),
+    sameAs: entityWikipediaSameAs(entity.name, entity.slug),
   };
 }
 
@@ -3077,7 +3086,7 @@ export function aggregateRatingSchema(entity: {
   const url = `${SITE_URL}/entity/${entity.slug}`;
   const schemaType = entitySchemaType(entity.entityType);
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
-  const wikiSameAs = entityWikipediaSameAs(entity.name);
+  const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
 
   return {
     "@context": "https://schema.org",
@@ -3231,7 +3240,7 @@ export function profilePageSchema(entity: {
     url: `${SITE_URL}/compare/${c.slug}`,
   }));
 
-  const wikiSameAs = entityWikipediaSameAs(entity.name);
+  const wikiSameAs = entityWikipediaSameAs(entity.name, entity.slug);
   // OG image URL — computed early so mainEntity can reference it as a fallback image.
   const ogImage = `${SITE_URL}/api/og?title=${encodeURIComponent(entity.name)}&type=entity`;
   const mainEntity: Record<string, unknown> = {
