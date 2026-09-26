@@ -164,4 +164,77 @@ describe("StickyAffiliateCTA first-scroll", () => {
     block.remove();
     banner.remove();
   });
+
+  it("sits above a compact 65px cookie bar on a phone", () => {
+    Object.defineProperty(window, "innerWidth", {
+      value: 390,
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(window, "innerHeight", {
+      value: 667,
+      writable: true,
+      configurable: true,
+    });
+    const block = document.createElement("div");
+    block.id = "compare-under-verdict";
+    const banner = document.createElement("div");
+    banner.setAttribute("aria-label", "Cookie consent");
+    banner.setAttribute("data-cookie-bar", "compact");
+    const nav = document.createElement("nav");
+    nav.setAttribute("aria-label", "Mobile bottom navigation");
+    document.body.append(block, banner, nav);
+    vi.spyOn(block, "getBoundingClientRect").mockReturnValue({
+      top: 40,
+      bottom: 160,
+      left: 0,
+      right: 390,
+      width: 390,
+      height: 120,
+      x: 0,
+      y: 40,
+      toJSON() {
+        return {};
+      },
+    });
+    // ROO-81 compact phone bar: h-16 (64px) plus a 1px border, at the viewport bottom.
+    vi.spyOn(banner, "getBoundingClientRect").mockReturnValue({
+      top: 602,
+      bottom: 667,
+      left: 0,
+      right: 390,
+      width: 390,
+      height: 65,
+      x: 0,
+      y: 602,
+      toJSON() {
+        return {};
+      },
+    });
+    vi.spyOn(nav, "getBoundingClientRect").mockReturnValue({
+      top: 611,
+      bottom: 667,
+      left: 0,
+      right: 390,
+      width: 390,
+      height: 56,
+      x: 0,
+      y: 611,
+      toJSON() {
+        return {};
+      },
+    });
+
+    const { container } = render(
+      <StickyAffiliateCTA entities={[entity]} category="technology" slug="iphone-17-vs-samsung-s26" />,
+    );
+    setScrollY(180);
+    const bar = within(container).getByRole("region", { name: "Comparison purchase options" });
+    expect(bar).toHaveAttribute("data-visible", "true");
+    expect(bar).toHaveStyle({ bottom: "65px" });
+
+    block.remove();
+    banner.remove();
+    nav.remove();
+  });
 });
