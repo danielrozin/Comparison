@@ -31,6 +31,7 @@ import { ProsConsBlock } from "@/components/comparison/ProsCons";
 import { FAQBlock } from "@/components/comparison/FAQ";
 import { RelatedComparisons } from "@/components/comparison/RelatedComparisons";
 import { CompareNextStepCTA } from "@/components/comparison/CompareNextStepCTA";
+import { CompareUnderVerdictNextStep } from "@/components/comparison/CompareUnderVerdictNextStep";
 import { buildCompareNextChips, type CompareNextChip } from "@/lib/data/build-compare-next-chips";
 import { ProUpsellCard } from "@/components/monetization/ProUpsellCard";
 import { SoftPricingLine } from "@/components/monetization/SoftPricingLine";
@@ -917,11 +918,18 @@ export default function ComparisonPage(props: Props) {
 
       {/* ROO-52: soft Pro line under the breadcrumb, above the hero.
           ROO-44 put this after the verdict. On a ~667px phone the cookie
-          banner (fixed, z-60, ~362px tall) plus the author, contents, and
-          share row push that spot under the banner, so the tap never
-          reaches "See Pro pricing". Same above-the-title band as ROO-50/51. */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
-        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+          banner (fixed, z-60) covers everything below ~413px, and the
+          verdict itself starts around 2300px — so the next-step row has to
+          share this above-fold card. SoftPricingLine is unchanged. */}
+      <div id="compare-under-verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+        <div className="rounded-xl border border-border/80 bg-white px-3 py-2 shadow-sm">
+          <CompareUnderVerdictNextStep
+            entities={comparison.entities}
+            slug={slug}
+            chips={nextStepChips}
+          />
+          <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+        </div>
       </div>
 
       {/* Author byline — E-E-A-T signal */}
@@ -1266,11 +1274,16 @@ function MultiEntityLayout({
 
       <Breadcrumbs title={comparison.title} slug={comparison.slug} category={comparison.category} />
 
-      {/* ROO-52: same cookie-safe band as the two-entity layout. The quick
-          answer stays in the page; this line has to be above the hero or the
-          banner covers it on a short phone. */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
-        <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+      {/* ROO-52 / ROO-55: same above-fold card as the two-entity layout. */}
+      <div id="compare-under-verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+        <div className="rounded-xl border border-border/80 bg-white px-3 py-2 shadow-sm">
+          <CompareUnderVerdictNextStep
+            entities={comparison.entities}
+            slug={slug}
+            chips={nextStepChips}
+          />
+          <SoftPricingLine src={`compare-${slug}`} className="text-center" />
+        </div>
       </div>
 
       <TableOfContents
