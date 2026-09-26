@@ -136,10 +136,24 @@ describe('DAN-2065: /compare/[slug] renders only published comparisons', () => {
     })
   })
 
-  it('404s a reordering whose canonical target is not published, rather than 308ing to a dead URL', async () => {
+  it('301s a mapped ordering even when the DB row is missing, and 404s an unmapped reordering', async () => {
+    // notion-vs-clickup is an explicit edge consolidation, not an unknown slug:
+    // DAN-1265's ordering map and DAN-2518's batch-archive map both fold it
+    // into clickup-vs-notion. getStaticProps applies getConsolidatedCompareSlug
+    // before the published-row gate (the same map next.config redirects()
+    // emits), so a missing DB row still 301s. That redirect is intentional —
+    // the edge map survives even if the archived source row is later deleted.
     getComparisonBySlug.mockResolvedValue(null)
 
-    expect(await run('notion-vs-clickup')).toMatchObject({ notFound: true })
+    expect(await run('notion-vs-clickup')).toMatchObject({
+      redirect: { destination: '/compare/clickup-vs-notion', statusCode: 301 },
+    })
+
+    // Unknown slugs still 404. stapler-vs-banana is not in any consolidation
+    // map; its alphabetical canonical (banana-vs-stapler) is unpublished here,
+    // so the runtime ordering fold must not 301 at a URL that does not exist.
+    expect(await run('stapler-vs-banana')).toMatchObject({ notFound: true })
+    expect(generateComparison).not.toHaveBeenCalled()
   })
 
   it('404s a mock-fixture row in prod — fixtures are not the catalog', async () => {
