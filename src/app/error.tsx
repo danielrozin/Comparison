@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import posthog from "posthog-js";
+import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 
 export default function Error({
   error,
@@ -12,6 +14,22 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error("Page error:", error);
+    // Consent matches the bootstrap in instrumentation-client.ts. A denied
+    // visitor must not get an exception event from this boundary.
+    if (!analyticsAllowed()) return;
+    try {
+      if (typeof posthog.captureException === "function") {
+        posthog.captureException(error);
+      } else {
+        posthog.capture("$exception", {
+          $exception_message: error.message,
+          $exception_type: error.name,
+          $exception_stack_trace_raw: error.stack,
+        });
+      }
+    } catch {
+      // Reporting must not replace the boundary the visitor is looking at.
+    }
   }, [error]);
 
   return (
@@ -44,7 +62,7 @@ export default function Error({
             Error ID: {error.digest}
           </p>
         )}
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             onClick={reset}
@@ -57,6 +75,12 @@ export default function Error({
             className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             Go home
+          </Link>
+          <Link
+            href="/trending"
+            className="px-6 py-3 bg-surface-alt text-text font-semibold rounded-xl hover:bg-surface-alt transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          >
+            Browse popular comparisons
           </Link>
         </div>
       </div>

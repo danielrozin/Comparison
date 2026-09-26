@@ -1,4 +1,5 @@
 import posthog from "posthog-js";
+import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
 import { capturePricingViewedFromLocation } from "@/lib/analytics/pricing-view-capture";
 import { isThirdPartyException } from "@/lib/utils/third-party-errors";
@@ -19,20 +20,6 @@ import { isThirdPartyException } from "@/lib/utils/third-party-errors";
  * Keeps the SPA pageview / pageleave / no-autocapture settings from the old
  * PostHogInit so CRO funnels and $pageview stay intact after the collapse.
  */
-
-function analyticsAllowed(): boolean {
-  try {
-    const m = document.cookie.match(/(?:^|; )cookie_consent=([^;]*)/);
-    if (m) {
-      const settings = JSON.parse(decodeURIComponent(m[1]));
-      return Boolean(settings.analytics);
-    }
-    // no explicit choice: allowed unless the visitor was geo-flagged EU
-    return document.cookie.indexOf("consent_region=eu") === -1;
-  } catch {
-    return false;
-  }
-}
 
 function experimentAssignments(): Record<string, string> {
   try {

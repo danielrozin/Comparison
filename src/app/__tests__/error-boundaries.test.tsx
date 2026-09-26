@@ -1,14 +1,32 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 
+const captureException = vi.hoisted(() => vi.fn())
+const capture = vi.hoisted(() => vi.fn())
+
+vi.mock('posthog-js', () => ({
+  default: {
+    captureException: (...args: unknown[]) => captureException(...args),
+    capture: (...args: unknown[]) => capture(...args),
+  },
+}))
+
 import ErrorPage from '../error'
 import GlobalErrorPage from '../global-error'
+
+function clearCookies() {
+  document.cookie.split(';').forEach((part) => {
+    const name = part.split('=')[0]?.trim()
+    if (name) document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+  })
+}
 
 describe('Error Boundary (error.tsx)', () => {
   const mockReset = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
+    clearCookies()
     vi.spyOn(console, 'error').mockImplementation(() => {})
   })
 
@@ -54,6 +72,27 @@ describe('Error Boundary (error.tsx)', () => {
     const err = createError('Test error')
     render(<ErrorPage error={err} reset={mockReset} />)
     expect(console.error).toHaveBeenCalledWith('Page error:', err)
+  })
+
+  it('reports the error to PostHog when analytics consent allows', () => {
+    const err = createError('Test error')
+    render(<ErrorPage error={err} reset={mockReset} />)
+    expect(captureException).toHaveBeenCalledWith(err)
+    expect(capture).not.toHaveBeenCalled()
+  })
+
+  it('does not report the error when analytics consent is denied', () => {
+    document.cookie = `cookie_consent=${encodeURIComponent(JSON.stringify({ analytics: false }))}`
+    const err = createError('Test error')
+    render(<ErrorPage error={err} reset={mockReset} />)
+    expect(console.error).toHaveBeenCalledWith('Page error:', err)
+    expect(captureException).not.toHaveBeenCalled()
+    expect(capture).not.toHaveBeenCalled()
+  })
+
+  it('links to popular comparisons so a dead-end retry is not the only exit', () => {
+    render(<ErrorPage error={createError('fail')} reset={mockReset} />)
+    expect(screen.getByText('Browse popular comparisons')).toHaveAttribute('href', '/trending')
   })
 })
 
