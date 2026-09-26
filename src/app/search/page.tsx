@@ -113,8 +113,61 @@ const searchPageSchema = {
   ],
 };
 
-// Legacy alias kept for JSX reference below
-const searchFaqSchema = searchPageSchema["@graph"][1] as { mainEntity: { name: string; acceptedAnswer: { text: string } }[] };
+// FAQ questions live on the FAQPage node. Index [1] is the BreadcrumbList,
+// which has no mainEntity — calling .map on it threw and sent every /search
+// page into the error boundary (ROO-82).
+const searchFaqQuestions = searchPageSchema["@graph"].flatMap((node) => {
+  if (node["@type"] !== "FAQPage" || !("mainEntity" in node) || !Array.isArray(node.mainEntity)) {
+    return [];
+  }
+  return node.mainEntity;
+});
+
+function PopularComparisons({ items }: { items: { slug: string; title: string }[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-4">
+        <svg className="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+        </svg>
+        <p className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Popular right now</p>
+      </div>
+      <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
+        {items.map((item) => {
+          const title = item.title || "Comparison";
+          const parts = title.split(/\s+vs\.?\s+/i);
+          return (
+            <li key={item.slug}>
+              <Link
+                href={`/compare/${item.slug}`}
+                className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
+              >
+                <div className="relative flex flex-shrink-0">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
+                    {(parts[0] || "A").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="absolute left-5 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
+                    {(parts[1] || "B").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="absolute -bottom-1 left-4 z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white" aria-hidden="true">
+                    <span className="text-[7px] font-black text-white leading-none">VS</span>
+                  </div>
+                </div>
+                <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors truncate flex-1 pl-3">
+                  {title}
+                </span>
+                <svg className="w-4 h-4 text-text-secondary group-hover:translate-x-0.5 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -139,19 +192,38 @@ function SearchContent() {
 
   useEffect(() => {
     setSearchQuery(query);
-    if (query) {
-      saveSearchContext(query);
-      setLoading(true);
-      fetch(`/api/search?q=${encodeURIComponent(query)}`)
-        .then((r) => r.json())
-        .then((data) => {
-          const items = data.results || [];
-          setResults(items);
-          setLoading(false);
-          trackComparisonSearch(query, items.length > 0 ? "results" : "no_results");
-        })
-        .catch(() => setLoading(false));
+    if (!query) {
+      setResults([]);
+      setLoading(false);
+      return;
     }
+
+    let cancelled = false;
+    saveSearchContext(query);
+    setLoading(true);
+    fetch(`/api/search?q=${encodeURIComponent(query)}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`search failed: ${r.status}`);
+        return r.json();
+      })
+      .then((data) => {
+        if (cancelled) return;
+        const items = Array.isArray(data?.results) ? data.results : [];
+        setResults(items);
+        setLoading(false);
+        trackComparisonSearch(query, items.length > 0 ? "results" : "no_results");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        // A failed search is an empty result, not a page crash.
+        setResults([]);
+        setLoading(false);
+        trackComparisonSearch(query, "no_results");
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [query]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -274,7 +346,8 @@ function SearchContent() {
           </p>
           <ul role="list" className="space-y-3 list-none" aria-label="Search results">
           {results.map((result) => {
-            const parts = result.title.split(/\s+vs\.?\s+/i);
+            const title = result.title || "Comparison";
+            const parts = title.split(/\s+vs\.?\s+/i);
             return (
               <li key={result.slug}>
               <Link
@@ -294,7 +367,7 @@ function SearchContent() {
                 </div>
                 <div className="flex-1 pl-4">
                   <p className="font-semibold text-text group-hover:text-primary-700 transition-colors">
-                    {result.title}
+                    {title}
                   </p>
                   <p className="text-xs text-text-secondary capitalize mt-0.5">{result.category}</p>
                 </div>
@@ -308,39 +381,20 @@ function SearchContent() {
           </ul>
         </div>
       ) : query ? (
-        <div className="space-y-6">
-          {/* Entity page link — for single-entity searches */}
-          <div className="bg-white border border-border rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center shadow-sm">
-                <span className="text-white font-bold">{query.charAt(0).toUpperCase()}</span>
-              </div>
-              <div>
-                <p className="font-semibold text-text">Looking for {query}?</p>
-                <p className="text-sm text-text-secondary">View all comparisons featuring this entity</p>
-              </div>
-            </div>
-            <Link
-              href={`/entity/${slugify(query)}`}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 font-medium rounded-lg hover:bg-primary-100 transition-colors text-sm"
-            >
-              View {query} comparisons
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-
-          {/* Quick comparison builder */}
-          <div className="text-center py-8 bg-surface-alt rounded-xl">
+        <div className="space-y-8">
+          {/* No exact match — never throw. Show the raw query and a way to create one. */}
+          <div className="text-center py-8 bg-surface-alt rounded-xl px-4">
             <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
               <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
             </div>
-            <p className="text-text font-semibold mb-2">Compare &ldquo;{query}&rdquo; with something</p>
+            <h2 className="text-text font-display font-bold text-xl mb-2">
+              No exact match for &ldquo;{query}&rdquo;
+            </h2>
             <p className="text-text-secondary text-sm mb-4">
-              Type what you&apos;d like to compare it against — we&apos;ll generate the comparison instantly.
+              Nothing in the library matches <span className="font-medium text-text">{query}</span> exactly.
+              Name something to compare it with and we&apos;ll create the comparison.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 justify-center">
               <span className="text-sm font-medium text-text">{query} vs</span>
@@ -369,54 +423,15 @@ function SearchContent() {
                 }}
                 className="inline-block px-5 py-2.5 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-semibold rounded-lg transition-all duration-150 hover:shadow-md hover:scale-105 active:scale-95"
               >
-                Compare Now
+                Create this comparison
               </button>
             </div>
           </div>
+          <PopularComparisons items={trending} />
         </div>
       ) : (
         <div className="space-y-8 pt-2">
-          {trending.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <svg className="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
-                </svg>
-                <p className="text-sm font-semibold text-text-secondary uppercase tracking-wider">Popular right now</p>
-              </div>
-              <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-3 list-none">
-                {trending.map((item) => {
-                  const parts = item.title.split(/\s+vs\.?\s+/i);
-                  return (
-                    <li key={item.slug}>
-                    <Link
-                      href={`/compare/${item.slug}`}
-                      className="flex items-center gap-3 p-3.5 bg-white border border-border rounded-xl hover:border-primary-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 group"
-                    >
-                      <div className="relative flex flex-shrink-0">
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-10">
-                          {(parts[0] || "A").charAt(0).toUpperCase()}
-                        </div>
-                        <div className="absolute left-5 top-0 w-8 h-8 bg-gradient-to-br from-accent-400 to-accent-600 rounded-full flex items-center justify-center text-xs font-bold text-white ring-2 ring-white shadow-sm z-0">
-                          {(parts[1] || "B").charAt(0).toUpperCase()}
-                        </div>
-                        <div className="absolute -bottom-1 left-4 z-20 w-4 h-4 bg-gradient-to-br from-primary-600 to-accent-500 rounded-full flex items-center justify-center ring-1 ring-white" aria-hidden="true">
-                          <span className="text-[7px] font-black text-white leading-none">VS</span>
-                        </div>
-                      </div>
-                      <span className="text-sm font-medium text-text group-hover:text-primary-700 transition-colors truncate flex-1 pl-3">
-                        {item.title}
-                      </span>
-                      <svg className="w-4 h-4 text-text-secondary group-hover:translate-x-0.5 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
+          <PopularComparisons items={trending} />
           <p className="text-center text-sm text-text-secondary py-4">
             Or type &ldquo;A vs B&rdquo; above to generate any comparison instantly.
           </p>
@@ -432,7 +447,7 @@ function SearchContent() {
             Frequently Asked Questions
           </h2>
           <dl className="divide-y divide-border">
-            {searchFaqSchema.mainEntity.map((item) => (
+            {searchFaqQuestions.map((item) => (
               <div key={item.name} className="py-5">
                 <dt className="font-semibold text-text text-base mb-2">{item.name}</dt>
                 <dd className="text-text-secondary text-sm leading-relaxed faq-answer">{item.acceptedAnswer.text}</dd>
