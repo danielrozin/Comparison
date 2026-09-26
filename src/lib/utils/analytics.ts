@@ -8,9 +8,47 @@ import {
   tagEngagement as clarityTagEngagement,
 } from "@/lib/services/clarity-service";
 import posthog from "posthog-js";
+import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
+
+/**
+ * GA event names whose action is already sent to PostHog by a direct
+ * `posthog.capture` (sometimes under a different name). Mirroring these from
+ * `trackEvent` would double-count. Call sites are unchanged; this set is the
+ * guard.
+ *
+ * Same name: pricing_cta_click, checkout_clicked, checkout_canceled,
+ * checkout_thanks_viewed, related_comparison_click, comparison_generated,
+ * ux_study_banner_shown, pricing_viewed.
+ * Different PostHog name: affiliate_click, comparison_vote, newsletter_signup,
+ * share_click, comparison_search, comparison_view, comment_submission,
+ * track_comparison_submit, verdict_feedback_vote_up/down,
+ * ux_study_banner_click, ux_study_banner_dismiss.
+ */
+const ALREADY_CAPTURED_IN_POSTHOG = new Set([
+  "affiliate_click",
+  "pricing_viewed",
+  "pricing_cta_click",
+  "checkout_clicked",
+  "checkout_canceled",
+  "checkout_thanks_viewed",
+  "comparison_vote",
+  "newsletter_signup",
+  "share_click",
+  "related_comparison_click",
+  "comparison_search",
+  "comparison_generated",
+  "comparison_view",
+  "comment_submission",
+  "track_comparison_submit",
+  "verdict_feedback_vote_up",
+  "verdict_feedback_vote_down",
+  "ux_study_banner_shown",
+  "ux_study_banner_click",
+  "ux_study_banner_dismiss",
+]);
 
 declare global {
   interface Window {
@@ -38,6 +76,14 @@ function trackEvent(eventName: string, params: Record<string, string | number>) 
     // GTM mode or pre-load: push to dataLayer (queued until GTM/gtag.js loads)
     getDataLayer().push({ event: eventName, ...params });
   }
+
+  // Same event name and properties, for events that have no direct capture.
+  // posthog.capture is a no-op until init, and init only runs when this gate
+  // passes — check it here too so a later reject on the same page stops
+  // further events without waiting for a reload.
+  if (ALREADY_CAPTURED_IN_POSTHOG.has(eventName)) return;
+  if (!analyticsAllowed()) return;
+  posthog.capture(eventName, params);
 }
 
 /** Track a Google Ads conversion (e.g. 'AW-XXXXXXX/YYYYYY') */
