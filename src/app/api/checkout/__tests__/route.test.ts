@@ -98,17 +98,19 @@ describe("POST /api/checkout (ROO-40)", () => {
       properties: { plan: string; interval: string; src: string };
       timestamp: Date;
     });
-    const clicked = events.find((event) => event.event === "checkout_clicked");
+    const sessionCreated = events.find((event) => event.event === "checkout_session_created");
     const started = events.find((event) => event.event === "checkout_started");
-    expect(clicked).toMatchObject({
+    expect(events.some((event) => event.event === "checkout_clicked")).toBe(false);
+    expect(sessionCreated).toMatchObject({
       distinctId: "ph_anon_019",
+      event: "checkout_session_created",
       properties: { plan: "pro", interval: "year", src: "header" },
     });
     expect(started).toMatchObject({
       distinctId: "ph_anon_019",
       properties: { plan: "pro", interval: "year", src: "header" },
     });
-    expect(clicked?.timestamp.getTime()).toBeLessThan(started!.timestamp.getTime());
+    expect(sessionCreated?.timestamp.getTime()).toBeLessThan(started!.timestamp.getTime());
     expect(flushPostHog).toHaveBeenCalled();
   });
 
