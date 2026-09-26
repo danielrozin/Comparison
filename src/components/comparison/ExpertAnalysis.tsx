@@ -7,9 +7,11 @@ interface ExpertAnalysisProps {
   entityAName: string;
   entityBName: string;
   updatedAt: string;
+  /** Overrides the default "Expert Analysis: A vs B" heading (used for 3-way pages). */
+  heading?: string;
 }
 
-export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }: ExpertAnalysisProps) {
+export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt, heading }: ExpertAnalysisProps) {
   if (!analysis) return null;
 
   const paragraphs = analysis.split(/\n\n+/).filter(Boolean);
@@ -31,7 +33,7 @@ export function ExpertAnalysis({ analysis, entityAName, entityBName, updatedAt }
           </div>
           <div className="min-w-0">
             <h2 id="expert-analysis-heading" className="text-lg sm:text-xl font-display font-bold text-text">
-              Expert Analysis: {entityAName} vs {entityBName}
+              {heading ?? `Expert Analysis: ${entityAName} vs ${entityBName}`}
             </h2>
             <div className="flex flex-wrap items-center gap-3 mt-1.5">
               <Link

@@ -65,7 +65,7 @@ import { CitationStatsBar } from "@/components/comparison/CitationStatsBar";
 import { DataFactsTable } from "@/components/comparison/DataFactsTable";
 import { getVideoMetadata } from "@/lib/services/video-service";
 import { selfHostedVideoExists, selfHostedVideoUploadDate } from "@/lib/services/self-hosted-video";
-import type { RelatedComparison } from "@/types";
+import type { ComparisonResource, RelatedComparison } from "@/types";
 
 // DAN-432 Phase C: /compare/[slug] served by the Pages Router.
 //
@@ -150,6 +150,15 @@ import {
 } from "@/components/comparison/ComparisonClientWidgets";
 
 type Comparison = NonNullable<Awaited<ReturnType<typeof getComparisonBySlug>>>;
+
+/** Curated editorial sources first, then the generated Wikipedia/blog cards. */
+function withCuratedResources(comparison: Comparison): ComparisonResource[] {
+  const generated = generateResources(comparison.slug, comparison.entities);
+  const curated = comparison.resources ?? [];
+  if (curated.length === 0) return generated;
+  const seen = new Set(generated.map((item) => item.url));
+  return [...curated.filter((item) => item.url && !seen.has(item.url)), ...generated];
+}
 
 interface PageMeta {
   title: string;
@@ -1162,7 +1171,7 @@ export default function ComparisonPage(props: Props) {
           {/* Resources & Learn More */}
           <div id="resources" className="scroll-mt-28">
             <ResourcesSection
-              resources={generateResources(comparison.slug, comparison.entities)}
+              resources={withCuratedResources(comparison)}
               entities={comparison.entities}
             />
           </div>
@@ -1275,10 +1284,11 @@ function MultiEntityLayout({
 
       <TableOfContents
         items={[
-          ...(comparison.shortAnswer || comparison.verdict ? [{ id: "verdict", label: "Quick Answer" }] : []),
+          ...(comparison.shortAnswer || comparison.verdict ? [{ id: "short-answer", label: "Quick Answer" }] : []),
           ...(comparison.attributes.length > 0 ? [{ id: "comparison-table", label: "Comparison Table" }] : []),
           { id: "pros-cons", label: "Pros & Cons" },
           ...(comparison.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+          ...(comparison.expertAnalysis ? [{ id: "expert-analysis", label: "Expert Analysis" }] : []),
           { id: "resources", label: "Resources" },
           { id: "comments", label: "Comments" },
         ]}
@@ -1381,7 +1391,7 @@ function MultiEntityLayout({
 
           {/* Verdict — plain text fallback to avoid 2-entity VerdictCard */}
           {comparison.verdict && (
-            <section aria-label="Verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <section id="verdict" aria-label="Verdict" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-28">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm flex-shrink-0">
                   <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -1403,9 +1413,19 @@ function MultiEntityLayout({
             <FAQBlock faqs={comparison.faqs} />
           )}
 
+          {comparison.expertAnalysis && (
+            <ExpertAnalysis
+              analysis={comparison.expertAnalysis}
+              entityAName={comparison.entities[0]?.name ?? ""}
+              entityBName={comparison.entities[comparison.entities.length - 1]?.name ?? ""}
+              heading={`Expert Analysis: ${comparison.entities.map((entity) => entity.name).join(" vs ")}`}
+              updatedAt={comparison.metadata.updatedAt}
+            />
+          )}
+
           <div id="resources" className="scroll-mt-28">
             <ResourcesSection
-              resources={generateResources(comparison.slug, comparison.entities)}
+              resources={withCuratedResources(comparison)}
               entities={comparison.entities}
             />
           </div>

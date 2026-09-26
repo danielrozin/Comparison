@@ -1,5 +1,8 @@
 import type { CitationStats } from "@/types";
 
+/** How many source links to print before collapsing the rest to "+N more". */
+const VISIBLE_SOURCE_LINKS = 12;
+
 interface CitationStatsBarProps {
   stats: CitationStats;
 }
@@ -108,7 +111,7 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
           {stats.sources.length > 0 && (
             <div className="flex flex-wrap items-center gap-x-1 gap-y-0.5 mt-2 text-xs text-indigo-400 border-t border-indigo-100/80 pt-2">
               <span className="font-semibold text-indigo-500 mr-0.5">Sources:</span>
-              {stats.sources.slice(0, 5).map((source, i) => (
+              {stats.sources.slice(0, VISIBLE_SOURCE_LINKS).map((source, i) => (
                 <span key={i}>
                   {source.url ? (
                     <a
@@ -122,11 +125,11 @@ export function CitationStatsBar({ stats }: CitationStatsBarProps) {
                   ) : (
                     source.name
                   )}
-                  {i < Math.min(stats.sources.length, 5) - 1 && <span className="mx-0.5 text-indigo-200">·</span>}
+                  {i < Math.min(stats.sources.length, VISIBLE_SOURCE_LINKS) - 1 && <span className="mx-0.5 text-indigo-200">·</span>}
                 </span>
               ))}
-              {stats.sources.length > 5 && (
-                <span className="text-indigo-300">+{stats.sources.length - 5} more</span>
+              {stats.sources.length > VISIBLE_SOURCE_LINKS && (
+                <span className="text-indigo-300">+{stats.sources.length - VISIBLE_SOURCE_LINKS} more</span>
               )}
             </div>
           )}
