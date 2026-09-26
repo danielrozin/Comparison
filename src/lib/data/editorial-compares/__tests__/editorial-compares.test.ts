@@ -165,6 +165,7 @@ describe("ROO-92 iPhone 17 vs 17 Pro vs 16 Pro", () => {
         "https://www.apple.com/newsroom/2025/09/apple-debuts-iphone-17/",
         "https://www.apple.com/newsroom/2025/09/apple-unveils-iphone-17-pro-and-iphone-17-pro-max/",
         "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+        "https://www.apple.com/iphone/compare/",
         "https://appleinsider.com/inside/iphone-17/vs/iphone-17-pro-vs-iphone-16-pro---the-new-top-tier-compared",
         "https://www.gsmarena.com/compare.php3?idPhone1=14050&idPhone2=14049&idPhone3=13315",
         "https://www.apple.com/shop/refurbished/iphone",
@@ -172,8 +173,11 @@ describe("ROO-92 iPhone 17 vs 17 Pro vs 16 Pro", () => {
       ])
     );
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
-    expect(page().relatedComparisons.map((item) => item.slug)).toContain(
-      "iphone-17-pro-vs-pro-max"
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-pro-vs-pro-max",
+    ]);
+    expect(pageText(page())).toMatch(
+      /iPhone 17 Pro, like the iPhone 16 Pro, is mostly a refurbished or third-party purchase/
     );
     expect(pageText(page())).not.toMatch(/\bu\/[A-Za-z0-9_-]+/);
     expect(findSelfContradictions(page())).toEqual([]);
