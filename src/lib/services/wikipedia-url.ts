@@ -8,9 +8,22 @@
  *   "China Economy"  -> /wiki/China_Economy   (404; real article is Economy of China)
  *   "Mac (macOS)"    -> /wiki/Mac_macOS       (404; real article is macOS)
  *
- * Confirmed titles are mapped below. A parenthetical qualifier is not glued
- * onto the title. Anything that would still be one of the known-missing
- * articles falls back to a Wikipedia search URL, which returns 200.
+ * Confirmed titles are mapped below. A parenthetical qualifier is removed
+ * wherever it sits in the name, not only at the end:
+ *
+ *   "Ketogenic (Keto) Diet" -> Ketogenic_Diet   (real article)
+ *   "Mac (macOS)"           -> still MacOS via the name map, not /wiki/Mac
+ *
+ * "401(k)" is left alone: the parenthesis is part of the name, not a
+ * separate qualifier, because there is no space before it.
+ *
+ * Product lines and insurance plans are not encyclopedia articles. Guessing
+ * /wiki/Delta_Dental_PPO or /wiki/Dyson_Cordless_Vacuums 404s. Those names
+ * fall back to a Wikipedia search URL, which returns 200. The same rules
+ * cover any similar name; they are not a list of five titles.
+ *
+ * Anything that would still be one of the known-missing articles also falls
+ * back to search.
  */
 
 export interface WikipediaEntityRef {
@@ -123,6 +136,50 @@ function normalizeName(name: string): string {
   return name.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+/**
+ * Remove qualifier groups like " (Keto)" anywhere in the name.
+ * A parenthesis glued to a word, as in "401(k)", is kept.
+ */
+export function stripParentheticalQualifiers(name: string): string {
+  return name
+    .replace(/(^|\s)\([^)]*\)(?=\s|$)/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Insurance plan codes. Matched as whole words so "HMO" is a plan code
+ * and "Thermometer" is not.
+ */
+const PLAN_CODE = /\b(?:PPO|HMO|EPO|POS|DHMO|HDHP|HSA|FSA)\b/i;
+
+/**
+ * A tier word only counts as a plan when the name is also about a benefit.
+ * "Premier League" and "Disney Plus" do not match. "Delta Dental Premier" does.
+ */
+const PLAN_TIER =
+  /\b(?:Premier|Preferred|Select|Advantage|Basic|Standard|Premium|Plus)\b/i;
+const BENEFIT_DOMAIN =
+  /\b(?:dental|medical|vision|health|insurance|medicare|medicaid)\b/i;
+
+/**
+ * A brand plus a product line ("Dyson Cordless Vacuums") is a shopping
+ * phrase, not an article title. The brand alone ("Dyson") still is.
+ */
+const PRODUCT_LINE =
+  /\b(?:cordless|robot|robotic|stick|upright|canister|handheld)\s+(?:vacuums?|cleaners?|mops?)\b/i;
+
+export function isProductOrPlanName(name: string): boolean {
+  const text = name.trim();
+  if (!text) return false;
+
+  const wordCount = text.split(/\s+/).length;
+  if (wordCount >= 2 && PLAN_CODE.test(text)) return true;
+  if (PLAN_TIER.test(text) && BENEFIT_DOMAIN.test(text)) return true;
+  if (PRODUCT_LINE.test(text)) return true;
+  return false;
+}
+
 /** Titles we authored may already contain percent-encoding (apostrophes). */
 function articleUrl(title: string): string {
   const segment = title.includes("%") ? title : encodeURIComponent(title);
@@ -139,16 +196,19 @@ export function wikipediaSearchUrl(query: string): string {
  *
  * "World War I (1914-1918)" keeps "World War I". The old code deleted the
  * parentheses and produced "World_War_I_1914-1918", which 404s.
+ * "Ketogenic (Keto) Diet" keeps "Ketogenic Diet" (the qualifier is in the
+ * middle, so a trailing-only strip used to leave the parentheses in place).
  * "401(k)" has no space before the parenthesis, so the whole name is the title.
  *
- * Returns null when the result is a title we already know does not exist.
+ * Returns null for product and plan names, and for titles we already know
+ * do not exist. The caller then uses a search URL.
  */
 export function guessedWikipediaTitle(name: string): string | null {
   const trimmed = name.trim().replace(/\s+/g, " ");
   if (!trimmed) return null;
+  if (isProductOrPlanName(trimmed)) return null;
 
-  const qualified = trimmed.match(/^(.+?)\s+\(([^)]*)\)$/);
-  const base = (qualified ? qualified[1] : trimmed).trim();
+  const base = stripParentheticalQualifiers(trimmed);
   if (!base) return null;
 
   const title = base.replace(/\s+/g, "_");
@@ -164,6 +224,13 @@ export function resolveEntityWikipediaUrl(entity: WikipediaEntityRef): string {
 
   const byName = TITLE_BY_NAME[normalizeName(entity.name)];
   if (byName) return articleUrl(byName);
+
+  // "China (PRC) Economy" is not in the name map, but "China Economy" is.
+  const stripped = stripParentheticalQualifiers(entity.name);
+  if (stripped && stripped !== entity.name.trim()) {
+    const byStripped = TITLE_BY_NAME[normalizeName(stripped)];
+    if (byStripped) return articleUrl(byStripped);
+  }
 
   const guessed = guessedWikipediaTitle(entity.name);
   if (!guessed) return wikipediaSearchUrl(entity.name || slug || "Wikipedia");
