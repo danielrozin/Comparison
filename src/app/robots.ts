@@ -28,17 +28,21 @@ export default function robots(): MetadataRoute.Robots {
           "/api/sitemap",
           "/api/answer/",
           "/.well-known/",
-          // JS/CSS bundles + image optimizer MUST stay crawlable — Google
-          // renders pages before indexing, and a blanket /_next/ block makes
-          // every page render broken in its eyes (hurts mobile-friendliness
-          // and CWV assessment). Longest-match wins over the /_next/ disallow.
+          // Explicit allows for the JS/CSS bundles and the image optimizer.
+          // `Allow: /` already covers them; they stay so the intent is obvious
+          // next to the /api/ allows above.
           "/_next/static/",
           "/_next/image",
         ],
+        // Do not add `Disallow: /_next/`. Search crawlers (Googlebot, bingbot,
+        // …) inherit this * group. `/_next/static/` is the JS and CSS they
+        // need to render a page, and `/_next/image` is the image optimizer.
+        // The more specific Allow lines do not make a parent Disallow safe:
+        // many crawlers ignore Allow or skip longest-match, and `/_next/data/`
+        // (Pages Router JSON for /compare/[slug]) was never covered by them.
         disallow: [
           "/api/",
           "/admin/",
-          "/_next/",
           "/embed/",
           "/developers/dashboard",
           "/survey",
