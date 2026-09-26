@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import type { ComparisonEntityData } from "@/types";
 import { trackAffiliateClick, trackEvent } from "@/lib/utils/analytics";
 import { useExperiment } from "@/lib/experiments";
@@ -42,6 +42,52 @@ function ctaText(entity: ComparisonEntityData): string {
   return "Check Price";
 }
 
+/** Show the sticky bar once the visitor has moved past the first screenful of chrome. */
+export const STICKY_AFFILIATE_SHOW_AFTER_PX = 150;
+
+/** Minimum gap between the above-fold next-step card and this bar on a phone. */
+const STICKY_CLEARANCE_PX = 80;
+
+function isMobileViewport(): boolean {
+  return window.innerWidth < 768;
+}
+
+function occupiedBottomPx(): number {
+  let offset = 0;
+  if (isMobileViewport()) {
+    const nav = document.querySelector('nav[aria-label="Mobile bottom navigation"]');
+    if (nav) {
+      const rect = nav.getBoundingClientRect();
+      if (rect.height > 0 && rect.top < window.innerHeight) {
+        offset = Math.max(offset, Math.round(window.innerHeight - rect.top));
+      }
+    }
+  }
+  const banner = document.querySelector('[aria-label="Cookie consent"]');
+  if (banner) {
+    const rect = banner.getBoundingClientRect();
+    if (rect.height > 0 && rect.top < window.innerHeight) {
+      offset = Math.max(offset, Math.round(window.innerHeight - rect.top));
+    }
+  }
+  return offset;
+}
+
+/** True when the bar would sit on the cookie buttons or the above-fold next step. */
+function stickyWouldCoverContent(offset: number): boolean {
+  if (!isMobileViewport()) return false;
+  const block = document.getElementById("compare-under-verdict");
+  if (!block) return false;
+  const blockBottom = block.getBoundingClientRect().bottom;
+  const banner = document.querySelector('[aria-label="Cookie consent"]');
+  if (banner) {
+    const bannerTop = banner.getBoundingClientRect().top;
+    if (bannerTop - blockBottom < STICKY_CLEARANCE_PX) return true;
+  }
+  const barTop = window.innerHeight - offset - STICKY_CLEARANCE_PX;
+  return barTop < blockBottom + 8;
+}
+
 export function StickyAffiliateCTA({
   entities,
   category,
@@ -53,7 +99,7 @@ export function StickyAffiliateCTA({
 }) {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [bottomOffset, setBottomOffset] = useState(0);
   const { variant: ctaVariant } = useExperiment("cta-button-style");
   const { variant: placementVariant } = useExperiment("cta-placement");
   const isTreatment = ctaVariant === "treatment";
@@ -89,22 +135,27 @@ export function StickyAffiliateCTA({
       return;
     }
 
-    // "sticky-bottom" (default) and "control": observe verdict section
-    const target =
-      document.getElementById("verdict-sentinel") ||
-      document.querySelector("[data-verdict]");
-    if (!target) return;
+    // ROO-55: the verdict is far below the fold, so waiting for it to leave
+    // the viewport meant almost nobody saw this bar. Show after a short scroll.
+    const update = () => {
+      const offset = occupiedBottomPx();
+      const show =
+        window.scrollY >= STICKY_AFFILIATE_SHOW_AFTER_PX &&
+        !stickyWouldCoverContent(offset);
+      setBottomOffset((prev) => (prev === offset ? prev : offset));
+      setVisible(show);
+    };
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Show when verdict scrolls out of view (above viewport)
-        setVisible(!entry.isIntersecting);
-      },
-      { threshold: 0 },
-    );
-
-    observer.observe(target);
-    return () => observer.disconnect();
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    // Cookie banner mounts ~800ms after load; don't watch the whole page.
+    const timer = window.setInterval(update, 500);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+      window.clearInterval(timer);
+    };
   }, [hasLinks, slug, placementVariant]);
 
   if (!hasLinks || dismissed) return null;
@@ -122,15 +173,19 @@ export function StickyAffiliateCTA({
     url: string,
   ) => {
     const isEntityGeneric = isGenericLink(entity);
-    const placement =
+    // `source` stays sticky_cta / inline_cta. The sticky bar's placement is
+    // `sticky` so PostHog can split it from the under-verdict row.
+    const source =
       placementVariant === "inline-verdict" ? "inline_cta" : "sticky_cta";
+    const placement =
+      placementVariant === "inline-verdict" ? "inline_cta" : "sticky";
     if (isEntityGeneric) {
       trackEvent("generic_cta_click", {
         product: entity.name,
         position,
         page: slug,
         placement,
-        source: placement,
+        source,
         cta_variant: ctaVariant,
         cta_placement: placementVariant,
         cta_type: "learn_more",
@@ -142,7 +197,7 @@ export function StickyAffiliateCTA({
       position,
       partner: entity.affiliateLinks?.[0]?.partner ?? "",
       label: entity.affiliateLinks?.[0]?.label ?? "",
-      source: placement,
+      source,
       cta_variant: ctaVariant,
       cta_placement: placementVariant,
       cta_type: "affiliate",
@@ -151,19 +206,29 @@ export function StickyAffiliateCTA({
 
   return (
     <>
-      {/* Sentinel element placed near verdict for IntersectionObserver */}
-      <div ref={sentinelRef} />
-
-      {/* CTA bar — sticky-bottom or inline depending on experiment */}
+      {/* CTA bar — sticky-bottom or inline depending on experiment.
+          z-50 stays under the cookie dialog (z-60). bottomOffset lifts the
+          bar above the cookie buttons and the mobile nav. */}
       <div
         role="region"
         aria-label="Comparison purchase options"
+        data-visible={visible ? "true" : "false"}
         className={`${
           placementVariant === "inline-verdict"
             ? `relative ${visible ? "opacity-100" : "opacity-0"} transition-opacity duration-300`
-            : `fixed bottom-14 md:bottom-0 left-0 right-0 z-50 transition-transform duration-300 ${visible ? "translate-y-0" : "translate-y-full"}`
+            : `fixed left-0 right-0 z-50 transition-transform duration-300 ${
+                visible ? "translate-y-0" : "translate-y-[100vh] pointer-events-none"
+              }`
         }`}
-        style={placementVariant !== "inline-verdict" ? { paddingBottom: "env(safe-area-inset-bottom, 0px)" } : undefined}
+        style={
+          placementVariant !== "inline-verdict"
+            ? {
+                bottom: bottomOffset,
+                paddingBottom:
+                  bottomOffset > 0 ? undefined : "env(safe-area-inset-bottom, 0px)",
+              }
+            : undefined
+        }
       >
         <div className="bg-white/96 backdrop-blur-xl border-t border-border shadow-[0_-8px_32px_rgba(0,0,0,0.12)]">
           <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
