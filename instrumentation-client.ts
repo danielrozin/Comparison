@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
+import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { captureComparisonViewedFromLocation } from "@/lib/analytics/comparison-view-capture";
 import { capturePricingViewedFromLocation } from "@/lib/analytics/pricing-view-capture";
 import { isThirdPartyException } from "@/lib/utils/third-party-errors";
@@ -41,7 +42,9 @@ function experimentAssignments(): Record<string, string> {
 }
 
 const token = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-if (token && analyticsAllowed()) {
+// ROO-97: webdriver and known headless UAs never init. posthog.capture is a
+// no-op until init, so client events are not sent. Server events use posthog-node.
+if (token && analyticsAllowed() && !isAutomatedClient()) {
   posthog.init(token, {
     api_host: "/ingest",
     ui_host: "https://us.posthog.com",
