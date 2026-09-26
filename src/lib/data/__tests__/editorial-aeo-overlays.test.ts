@@ -102,6 +102,54 @@ const BRIEF_NVIDIA_FAQS = [
   "Which NVIDIA vs AMD figures does this page not print?",
 ];
 
+const BRIEF_US_ECONOMY_CHINA_FAQS = [
+  "Which economy is bigger, the US or China?",
+  "What is US vs China nominal GDP on this page?",
+  "What is GDP per capita for the US vs China on this page?",
+  "Who has the larger manufacturing share on this page?",
+  "Which economy is growing faster on this page?",
+  "Does this page name one overall economy winner?",
+  "Which US vs China economy figures does this scorecard not print?",
+];
+
+const BRIEF_USA_CHINA_FAQS = [
+  "Which is ahead, the USA or China?",
+  "What is USA vs China GDP on this page?",
+  "Which country has the larger population on this page?",
+  "Which country spends more on the military on this page?",
+  "What is GDP per capita for the USA vs China on this page?",
+  "Who leads manufacturing output on this page?",
+  "Which USA vs China figures does this scorecard not print?",
+];
+
+const BRIEF_LYFT_UBER_FAQS = [
+  "Which is bigger, Uber or Lyft?",
+  "What is Uber vs Lyft US rideshare market share on this page?",
+  "Where do Uber and Lyft operate on this page?",
+  "How much revenue do Uber and Lyft report on this page?",
+  "What driver commission does this page print?",
+  "How many drivers does this page print, and is the rating a tie?",
+  "Which Uber vs Lyft figures does this scorecard not print?",
+];
+
+// Published lyft-vs-uber Key Differences cells only. The slug is not in the mock map.
+const LYFT_UBER_SCORECARD = [
+  "72 countries across 6 continents",
+  "US and Canada only",
+  "71%",
+  "29%",
+  "Rideshare, Uber Eats, Uber Freight, Uber Jump, Uber Elevate",
+  "Rideshare only",
+  "25-30% platform fee",
+  "Approximately 25% platform fee",
+  "$38.7 billion",
+  "$4.3 billion",
+  "6+ million globally",
+  "600,000-700,000 in North America",
+  "4.6+ stars to remain active",
+  "2024 Annual Revenue",
+];
+
 const BRIEF_CHATGPT_FAQS = [
   "Which AI is better, ChatGPT or Gemini?",
   "Who has more monthly users, ChatGPT or Gemini?",
@@ -727,6 +775,174 @@ describe("nvidia-vs-amd citation AEO overlay", () => {
     expect(missing?.answer).toMatch(/unknown/i);
     expect(missing?.answer).toMatch(/flagship GPU model name/i);
     expect(missing?.answer).toMatch(/mid-range street price/i);
+  });
+});
+
+describe("us-economy-vs-china-economy citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+    expectCitationOverlay("us-economy-vs-china-economy", BRIEF_US_ECONOMY_CHINA_FAQS);
+  });
+
+  it("keeps winnerName null and cites only the extra-row scorecard", () => {
+    const overlay = getEditorialAeoOverlay("us-economy-vs-china-economy")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/Nominal GDP row is \$25\.5T vs \$17\.7T/);
+    expect(prose).toMatch(/GDP per Capita row is \$76,300 vs \$12,500/);
+    expect(prose).toMatch(/Manufacturing Share row is 16% vs 30%/);
+    expect(prose).toMatch(/GDP Growth Rate row is 2\.5% vs 4\.5%/);
+    expect(prose).toMatch(/higher on Manufacturing Share \(30% vs 16%\)/);
+    expect(prose).toMatch(/higher \(4\.5% vs 2\.5%\)/);
+    expect(prose).not.toMatch(/27\.4/);
+    expect(prose).not.toMatch(/29\.4/);
+    expect(prose).not.toMatch(/30\+/);
+    expect(prose).not.toMatch(/\$35T/);
+    expect(prose).not.toMatch(/5\.2%/);
+    expect(prose).not.toMatch(/80,300/);
+    expect(prose).not.toMatch(/\$46T/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this scorecard not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/PPP dollar total/i);
+    expect(missing?.answer).toMatch(/Nominal GDP row/);
+  });
+});
+
+describe("usa-vs-china citation AEO overlay", () => {
+  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+    expect(getEditorialAeoOverlay("china-vs-usa")).toBeNull();
+    expectCitationOverlay("usa-vs-china", BRIEF_USA_CHINA_FAQS);
+  });
+
+  it("keeps winnerName null and cites the extra-row scorecard, not the shadowed base cells", () => {
+    const overlay = getEditorialAeoOverlay("usa-vs-china")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/GDP row is \$25\.5T vs \$17\.7T/);
+    expect(prose).toMatch(/Population row is 333M vs 1\.4B/);
+    expect(prose).toMatch(/Military Spending row is \$877B vs \$292B/);
+    expect(prose).toMatch(/GDP per Capita row is \$76,300 vs \$12,500/);
+    expect(prose).toMatch(/Manufacturing Output row is #2 vs #1/);
+    expect(prose).toMatch(/higher on Population \(1\.4B vs 333M\)/);
+    expect(prose).not.toMatch(/27\.4/);
+    expect(prose).not.toMatch(/335M/);
+    expect(prose).not.toMatch(/\$916B/);
+    expect(prose).not.toMatch(/80,300/);
+    expect(prose).not.toMatch(/5,550/);
+    expect(prose).not.toMatch(/26\.9/);
+    expect(prose).not.toMatch(/\$886/);
+    expect(prose).not.toMatch(/77\.5/);
+    expect(prose).not.toMatch(/78\.2/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this scorecard not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/nuclear-warhead/i);
+    expect(missing?.answer).toMatch(/life-expectancy/i);
+  });
+});
+
+describe("lyft-vs-uber citation AEO overlay", () => {
+  it("is the substitute for the military slug, which has no in-repo comparison", () => {
+    expect(getMockComparison("china-vs-us-gdp-military-tech-comparison-2026")).toBeNull();
+    expect(getEditorialAeoOverlay("china-vs-us-gdp-military-tech-comparison-2026")).toBeNull();
+    expect(getMockComparison("lyft-vs-uber")).toBeNull();
+    expect(getEditorialAeoOverlay("uber-vs-lyft")).toBeNull();
+  });
+
+  it("rewrites speakable Quick Answer and 7 visible FAQs 1:1 with FAQPage", () => {
+    const overlay = getEditorialAeoOverlay("lyft-vs-uber");
+    expect(overlay).toBeTruthy();
+    expect(overlay!.faqs.map((f) => f.question)).toEqual(BRIEF_LYFT_UBER_FAQS);
+    expect(overlay!.quickAnswer.tldr).toBe(overlay!.shortAnswer);
+    expect(overlay!.quickAnswer.winnerName).toBeNull();
+
+    const page: ComparisonPageData = {
+      id: "lyft-vs-uber",
+      slug: "lyft-vs-uber",
+      title: "Uber vs Lyft",
+      shortAnswer: "Old buried answer.",
+      verdict: "Existing verdict.",
+      category: "companies",
+      entities: [
+        { id: "uber", slug: "uber", name: "Uber Technologies Inc.", shortDesc: null, imageUrl: null, entityType: "company", position: 0, pros: [], cons: [], bestFor: null },
+        { id: "lyft", slug: "lyft", name: "Lyft Inc.", shortDesc: null, imageUrl: null, entityType: "company", position: 1, pros: [], cons: [], bestFor: null },
+      ],
+      attributes: [],
+      keyDifferences: [
+        { label: "US Rideshare Market Share", entityAValue: "71%", entityBValue: "29%", winner: "a" },
+      ],
+      faqs: [{ question: "Old Q", answer: "Old A" }],
+      relatedComparisons: [],
+      relatedBlogPosts: [],
+      metadata: {
+        metaTitle: "Uber vs Lyft",
+        metaDescription: "Compare Uber and Lyft.",
+        publishedAt: "2024-06-15T00:00:00Z",
+        updatedAt: "2026-09-22T00:00:00Z",
+        isAutoGenerated: false,
+        isHumanReviewed: true,
+        viewCount: 1,
+        status: "published",
+      },
+    };
+    const scorecard = page.keyDifferences.map((d) => ({ ...d }));
+    const next = applyEditorialAeoOverlay(page);
+    expect(next.shortAnswer).toBe(overlay!.shortAnswer);
+    expect(next.quickAnswer?.tldr).toBe(overlay!.shortAnswer);
+    expect(next.faqs).toEqual(overlay!.faqs);
+    expect(next.keyDifferences).toEqual(scorecard);
+    expect(next.verdict).toBe(page.verdict);
+
+    const schemas = comparisonPageSchema(next) as Array<Record<string, unknown>>;
+    const faqPage = schemas.find((s) => s["@type"] === "FAQPage") as {
+      mainEntity: Array<{ name: string; acceptedAnswer: { text: string } }>;
+      speakable: { "@type": string };
+    };
+    expect(faqPage.speakable["@type"]).toBe("SpeakableSpecification");
+    expect(faqPage.mainEntity.map((q) => q.name)).toEqual(BRIEF_LYFT_UBER_FAQS);
+    expect(faqPage.mainEntity.map((q) => q.acceptedAnswer.text)).toEqual(
+      overlay!.faqs.map((f) => f.answer),
+    );
+
+    const allowed = new Set<string>();
+    for (const cell of LYFT_UBER_SCORECARD) {
+      for (const n of numbersIn(cell)) allowed.add(n);
+    }
+    const prose = overlayProse(overlay!);
+    for (const n of numbersIn(prose)) {
+      expect(allowed.has(n), `overlay invented number ${n} not on the lyft-vs-uber scorecard`).toBe(true);
+    }
+    expect(prose).not.toMatch(/\b2026\b/);
+    expect(
+      findSelfContradictions({
+        shortAnswer: overlay!.shortAnswer,
+        quickAnswer: overlay!.quickAnswer,
+        faqs: overlay!.faqs,
+      }),
+    ).toHaveLength(0);
+  });
+
+  it("keeps winnerName null and cites the published scorecard, not the uber-vs-lyft mock", () => {
+    const overlay = getEditorialAeoOverlay("lyft-vs-uber")!;
+    expect(overlay.quickAnswer.winnerName).toBeNull();
+    const prose = overlayProse(overlay);
+    expect(prose).toMatch(/72 countries across 6 continents vs US and Canada only/);
+    expect(prose).toMatch(/71% vs 29%/);
+    expect(prose).toMatch(/25-30% platform fee vs approximately 25% platform fee/);
+    expect(prose).toMatch(/\$38\.7 billion vs \$4\.3 billion/);
+    expect(prose).toMatch(/6\+ million globally vs 600,000-700,000 in North America/);
+    expect(prose).toMatch(/4\.6\+ stars to remain active vs 4\.6\+ stars to remain active/);
+    expect(prose).toMatch(/tie/i);
+    expect(prose).not.toMatch(/\b68%/);
+    expect(prose).not.toMatch(/\$37/);
+    expect(prose).not.toMatch(/\$4\.4B/);
+    expect(prose).not.toMatch(/75-80%/);
+    expect(prose).not.toMatch(/\b70\+/);
+
+    const missing = overlay.faqs.find((f) => f.question.includes("does this scorecard not print"));
+    expect(missing?.answer).toMatch(/unknown/i);
+    expect(missing?.answer).toMatch(/market-cap/i);
+    expect(missing?.answer).toMatch(/Driver Commission Rate row/);
   });
 });
 
