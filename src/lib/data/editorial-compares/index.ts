@@ -2,6 +2,8 @@ import type { ComparisonPageData } from "@/types";
 import { SIGNAL_VS_WHATSAPP } from "./signal-vs-whatsapp";
 import { SIGNAL_VS_TELEGRAM } from "./signal-vs-telegram";
 import { WHATSAPP_VS_TELEGRAM } from "./whatsapp-vs-telegram";
+import { IPHONE_17_VS_17_PRO_VS_16_PRO } from "./iphone-17-vs-iphone-17-pro-vs-iphone-16-pro";
+import { CARHARTT_VS_DICKIES } from "./carhartt-vs-dickies";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -21,7 +23,33 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [SIGNAL_VS_WHATSAPP.slug]: SIGNAL_VS_WHATSAPP,
   [SIGNAL_VS_TELEGRAM.slug]: SIGNAL_VS_TELEGRAM,
   [WHATSAPP_VS_TELEGRAM.slug]: WHATSAPP_VS_TELEGRAM,
+  [IPHONE_17_VS_17_PRO_VS_16_PRO.slug]: IPHONE_17_VS_17_PRO_VS_16_PRO,
+  [CARHARTT_VS_DICKIES.slug]: CARHARTT_VS_DICKIES,
 };
+
+/**
+ * Related links a live DB row does not already carry. Applied at read time so
+ * /compare/patagonia-vs-rei can point at Carhartt vs Dickies without rewriting
+ * that page's FAQs or scorecard.
+ */
+const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedComparisons"]> = {
+  "patagonia-vs-rei": [
+    {
+      slug: "carhartt-vs-dickies",
+      title: "Carhartt vs Dickies",
+      category: "brands",
+    },
+  ],
+};
+
+export function appendEditorialRelatedLinks(page: ComparisonPageData): ComparisonPageData {
+  const extra = EDITORIAL_INBOUND_RELATED[page.slug];
+  if (!extra?.length) return page;
+  const seen = new Set(page.relatedComparisons.map((item) => item.slug));
+  const additions = extra.filter((item) => item.slug !== page.slug && !seen.has(item.slug));
+  if (additions.length === 0) return page;
+  return { ...page, relatedComparisons: [...page.relatedComparisons, ...additions] };
+}
 
 export function getEditorialComparison(slug: string): EditorialComparison | null {
   return EDITORIAL_COMPARES[slug] ?? null;
