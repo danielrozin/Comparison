@@ -3,6 +3,7 @@ import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { entitySchemaType } from "@/lib/seo/schema";
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 
 // /api/knowledge-graph/[slug] — JSON-LD knowledge graph for a comparison.
 //
@@ -91,9 +92,7 @@ export async function GET(
           caption: entity.name,
         },
       } : {}),
-      sameAs: [
-        `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
-      ],
+      sameAs: [resolveEntityWikipediaUrl(entity)],
       subjectOf: { "@type": "Article", "@id": `${url}#article` },
     };
   });
@@ -225,7 +224,7 @@ export async function GET(
       citation: comparison.entities.map((e) => ({
         "@type": "CreativeWork",
         name: `${e.name} — Wikipedia`,
-        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+        url: resolveEntityWikipediaUrl(e),
       })),
       // teaches — explicit decision-intent signal for AI topic classifiers
       teaches: `How to choose between ${comparison.entities.map((e) => e.name).join(" and ")}`,

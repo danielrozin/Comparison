@@ -3,6 +3,7 @@ import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
 import { entitySchemaType } from "@/lib/seo/schema";
+import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 
 // GET /api/v1/schema/{slug}
 //
@@ -219,7 +220,7 @@ export async function GET(
     citation: comparison.entities.map((e) => ({
       "@type": "CreativeWork",
       name: `${e.name} — Wikipedia`,
-      url: `https://en.wikipedia.org/wiki/${encodeURIComponent(e.name.replace(/ /g, "_"))}`,
+      url: resolveEntityWikipediaUrl(e),
     })),
     // significantLink — entity profiles, alternatives, answer API, knowledge-graph
     // so AI crawlers can traverse all machine-readable representations of this topic.
@@ -273,9 +274,7 @@ export async function GET(
           caption: entity.name,
         },
       } : {}),
-      sameAs: [
-        `https://en.wikipedia.org/wiki/${encodeURIComponent(entity.name.replace(/ /g, "_"))}`,
-      ],
+      sameAs: [resolveEntityWikipediaUrl(entity)],
       subjectOf: { "@type": "Article", "@id": `${url}#article` },
     });
   }
