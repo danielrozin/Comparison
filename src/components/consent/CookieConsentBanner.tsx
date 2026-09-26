@@ -12,6 +12,12 @@ import {
 } from "@/lib/utils/consent";
 import { trackEvent } from "@/lib/utils/analytics";
 
+/**
+ * ROO-81 compact phone bar. Set to false to restore the previous card
+ * (about 182px, sitting in a ~254px band above the bottom nav).
+ */
+export const COMPACT_MOBILE_COOKIE_BAR = true;
+
 const CATEGORIES = [
   {
     key: "necessary" as const,
@@ -109,6 +115,116 @@ export function CookieConsentBanner() {
   }, [visible, showPreferences]);
 
   if (!visible) return null;
+
+  // Phone bar only. Settings still opens the full preferences sheet below,
+  // and md+ keeps the original card. Consent handlers are unchanged.
+  if (COMPACT_MOBILE_COOKIE_BAR && !showPreferences) {
+    return (
+      <div
+        role="dialog"
+        aria-label="Cookie consent"
+        aria-modal="false"
+        className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none"
+        style={{ animation: "slide-up 0.4s ease-out forwards" }}
+      >
+        {/* One row, 64px (h-16), under the ~80px target at 390px wide.
+            Inline word-break overrides the global `* { word-break: break-word }`
+            so "Accept All" / "Reject All" stay on this row (ROO-50). */}
+        <div
+          data-cookie-bar="compact"
+          className="md:hidden pointer-events-auto border-t border-border bg-surface shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
+          <div
+            className="flex h-16 items-center gap-1.5 px-2"
+            style={{ wordBreak: "normal", overflowWrap: "normal" }}
+          >
+            <p className="min-w-0 flex-1 text-[11px] leading-tight text-text-secondary">
+              We use cookies.{" "}
+              <a
+                href="/cookie-policy"
+                className="text-primary-600 underline underline-offset-2 hover:text-primary-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+              >
+                Cookie Policy
+              </a>
+            </p>
+            <div className="flex shrink-0 items-center gap-1" data-cookie-actions="compact">
+              <button
+                type="button"
+                onClick={handleAcceptAll}
+                className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-lg bg-primary-600 px-2 text-[11px] font-medium text-white hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                style={{ wordBreak: "keep-all" }}
+              >
+                Accept All
+              </button>
+              <button
+                type="button"
+                onClick={handleRejectAll}
+                className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-lg border border-border px-2 text-[11px] font-medium text-text hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                style={{ wordBreak: "keep-all" }}
+              >
+                Reject All
+              </button>
+              <button
+                type="button"
+                onClick={handleManageClick}
+                className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-lg px-2 text-[11px] font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                style={{ wordBreak: "keep-all" }}
+              >
+                Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:block mx-auto max-w-3xl px-6 pb-6">
+          <div className="pointer-events-auto rounded-xl border border-border bg-surface shadow-2xl shadow-black/10">
+            <div className="p-6">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 text-lg" aria-hidden="true">🍪</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-text">We value your privacy</p>
+                  <p className="mt-1 text-sm text-text-secondary leading-relaxed">
+                    We use cookies to improve your experience, analyze traffic, and personalize content.
+                    You can choose which cookies to allow.{" "}
+                    <a
+                      href="/cookie-policy"
+                      className="text-primary-600 underline underline-offset-2 hover:text-primary-700 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                    >
+                      Cookie Policy
+                    </a>
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4 flex flex-row items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleAcceptAll}
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                >
+                  Accept All
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRejectAll}
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text border border-border rounded-lg hover:bg-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                >
+                  Reject All
+                </button>
+                <button
+                  type="button"
+                  onClick={handleManageClick}
+                  className="inline-flex items-center justify-center min-h-11 px-4 py-2 text-sm font-medium text-text-secondary hover:text-text transition-colors focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
+                >
+                  Manage Preferences
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
