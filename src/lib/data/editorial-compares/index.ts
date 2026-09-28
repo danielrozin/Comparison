@@ -42,13 +42,6 @@ const EDITORIAL_INBOUND_RELATED: Record<string, ComparisonPageData["relatedCompa
       category: "brands",
     },
   ],
-  "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra": [
-    {
-      slug: "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
-      title: "Samsung Galaxy S24 Ultra vs Samsung Galaxy S25 Ultra",
-      category: "technology",
-    },
-  ],
 };
 
 export function appendEditorialRelatedLinks(page: ComparisonPageData): ComparisonPageData {

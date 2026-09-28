@@ -23,17 +23,21 @@ const REDDIT =
   "https://www.reddit.com/r/samsunggalaxy/comments/1wrr9qy/s24_ultra_vs_s25_ultra_which_one_should_i_get/";
 const REDDIT_CROSSPOST =
   "https://www.reddit.com/r/S24Ultra/comments/1wrrehr/s24_ultra_vs_s25_ultra_which_one_should_i_get/";
+const GSMARENA_SPEN =
+  "https://www.gsmarena.com/galaxy_s25_ultra_replacement_s_pens_are_49_a_pop_despite_lacking_bluetooth-news-66381.php";
+const GSMARENA_AIR_ACTIONS =
+  "https://www.gsmarena.com/s_pen_in_samsung_galaxy_s25_ultra_to_become_even_less_usable-news-66041.php";
 
 const PUBLISHED = "2026-09-28T00:00:00Z";
 
 const SHORT_ANSWER =
-  "If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026: same 5,000 mAh battery class, the same 200MP main and 5x periscope cameras, and seven years of OS updates from launch. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite chip, the larger 6.9-inch display, the 50MP ultrawide upgrade, and a lighter body.";
+  "If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026: same 5,000 mAh battery class, the same 200MP main and 5x periscope cameras, and seven years of OS updates from launch. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide upgrade, and a lighter body.";
 
 const FAQS = [
   {
     question: "Is the Samsung Galaxy S25 Ultra worth it over the S24 Ultra?",
     answer:
-      "Only if you want the Snapdragon 8 Elite chip, the larger 6.9-inch display, the lighter body, or the 50MP ultrawide camera. A discounted Galaxy S24 Ultra is the better value for most buyers.",
+      "Only if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the lighter body, or the 50MP ultrawide camera. A discounted Galaxy S24 Ultra is the better value for most buyers.",
   },
   {
     question: "Does the Galaxy S25 Ultra have better battery life than the S24 Ultra?",
@@ -48,7 +52,7 @@ const FAQS = [
   {
     question: "What did the Galaxy S25 Ultra S Pen lose compared with the S24 Ultra?",
     answer:
-      "The S25 Ultra S Pen no longer works as a Bluetooth remote shutter the way the S24 Ultra S Pen did.",
+      "The S25 Ultra S Pen has no Bluetooth, so Air Actions (remote shutter, gestures, and media control) are gone. The S24 Ultra S Pen still supports them. GSMArena says Samsung removed Bluetooth from the S25 Ultra S Pen. That outlet describes Air Actions as the Bluetooth gesture and remote-control set, including the camera shutter, and says a Bluetooth S Pen also controlled gallery swipes, slides, and music playback.",
   },
   {
     question: "How long will the S24 Ultra and S25 Ultra receive updates?",
@@ -68,13 +72,13 @@ Best upgrade: Galaxy S25 Ultra (chip, display, ultrawide). Choose it for the Sna
 
 There is no single winner on this page.`;
 
-const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. This page does not crown one phone.
+const EXPERT_ANALYSIS = `If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide, and a lighter body. This page does not crown one phone.
 
 Spec snapshot
 
 GSMArena lists the S24 Ultra at 232 g or 233 g and the S25 Ultra at 218 g. Digital Trends lists 233 g and 218 g, and says the S25 Ultra is 15 grams lighter. Both spec sheets list a 3120 x 1440 resolution, a 120Hz refresh rate, and 2,600 nits of peak brightness. GSMArena calls both panels Dynamic LTPO AMOLED 2X. Samsung's S24 Ultra page says that display can reach a peak brightness of up to 2600 nits, and that the screen measures 6.8 inches. Samsung's S25 Ultra page says the screen is 6.9 inches in the full rectangle and 6.8 inches once the rounded corners are accounted for.
 
-The chips are Qualcomm Snapdragon 8 Gen 3 on the S24 Ultra and Snapdragon 8 Elite on the S25 Ultra (GSMArena). Samsung's own pages use the "for Galaxy" names: Snapdragon 8 Gen 3 for Galaxy, and Snapdragon 8 Elite for Galaxy.
+Samsung names the chips Snapdragon 8 Gen 3 for Galaxy on the S24 Ultra and Snapdragon 8 Elite for Galaxy on the S25 Ultra. GSMArena's compare lists those same chipsets.
 
 Cameras match on three modules. Both have a 200MP main camera, a 10MP 3x telephoto, and a 50MP 5x periscope (Digital Trends and GSMArena). Samsung's S24 Ultra page lists a 12MP ultrawide. Samsung's S25 Ultra page lists an upgraded 50MP ultrawide. That ultrawide is the clear hardware gap.
 
@@ -96,13 +100,13 @@ The S24 Ultra is still described as strong for everyday use and games. Digital T
 
 S Pen and software support
 
-Digital Trends says the S25 Ultra S Pen no longer works as a remote shutter. GSMArena lists Bluetooth integration, an accelerometer, and a gyro on the S24 Ultra stylus, and lists the S25 Ultra stylus without those. Samsung's S25 Ultra page still says the phone comes with a built-in S Pen. It does not describe a Bluetooth remote shutter.
+GSMArena says Samsung removed Bluetooth from the S25 Ultra S Pen. The same outlet describes Air Actions as the Bluetooth set of gestures and remote controls, including a camera shutter, and says a Bluetooth S Pen also worked as a remote for photos, videos, gallery swipes, slides, and music playback. Those Air Actions are gone on the S25 Ultra. GSMArena's spec sheet lists Bluetooth integration, an accelerometer, and a gyro on the S24 Ultra stylus, and lists the S25 Ultra stylus without them. Samsung's S25 Ultra page still says the phone comes with a built-in S Pen. It does not describe Bluetooth or Air Actions.
 
 Digital Trends says Samsung promised seven years of security updates and OS upgrades for both phones. In that February 2025 article, the S25 Ultra's final OS update would be Android 22, likely in 2032, and the S24 Ultra's would be Android 21. GSMArena lists up to 7 major OS updates for both. The S25 Ultra starts one generation later. That article also listed launch software as One UI 7 on Android 15 for the S25 Ultra and One UI 6.1 on Android 14 for the S24 Ultra. Those are the versions at the time of the article, not a claim about what is installed in September 2026.
 
 Who should buy which
 
-Buy a discounted Galaxy S24 Ultra if you want flagship cameras, a 5,000 mAh battery, and a long update window without paying for the newer chip, the larger panel, or the 50MP ultrawide. The Bluetooth S Pen remote shutter is still the S24 Ultra feature the S25 Ultra dropped.
+Buy a discounted Galaxy S24 Ultra if you want flagship cameras, a 5,000 mAh battery, and a long update window without paying for the newer chip, the larger panel, or the 50MP ultrawide. The Bluetooth S Pen, including Air Actions, is still the S24 Ultra feature the S25 Ultra dropped.
 
 Buy the Galaxy S25 Ultra if those upgrades are the point: Snapdragon 8 Elite for Galaxy, the 6.9-inch display, the lighter body, the 50MP ultrawide, and the newer cooling hardware.
 
@@ -128,21 +132,21 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       slug: S24,
       name: "Samsung Galaxy S24 Ultra",
       shortDesc:
-        "2024 Ultra with a Snapdragon 8 Gen 3, a 6.8-inch 2600-nit display, a 12MP ultrawide, and a Bluetooth S Pen.",
+        "2024 Ultra with a Snapdragon 8 Gen 3 for Galaxy, a 6.8-inch 2600-nit display, a 12MP ultrawide, and a Bluetooth S Pen.",
       imageUrl: null,
       entityType: "product",
       position: 0,
       pros: [
         "Same 5,000 mAh battery class, 200MP main camera, and 50MP 5x periscope as the S25 Ultra",
         "Seven years of OS and security updates from its launch year (Digital Trends, GSMArena)",
-        "S Pen still has Bluetooth integration (GSMArena) and worked as a remote shutter (Digital Trends)",
+        "S Pen still has Bluetooth, so Air Actions (remote shutter, gestures, and media control) still work (GSMArena)",
         "Snapdragon 8 Gen 3 for Galaxy still handled demanding games without overheating in the Digital Trends review",
       ],
       cons: [
         "Heavier: 232 g or 233 g, against 218 g on the S25 Ultra (GSMArena)",
         "12MP ultrawide, against 50MP on the S25 Ultra",
         "6.8-inch display, against 6.9 inches on the S25 Ultra",
-        "Older chip: Snapdragon 8 Gen 3, against Snapdragon 8 Elite",
+        "Older chip: Snapdragon 8 Gen 3 for Galaxy, against Snapdragon 8 Elite for Galaxy",
       ],
       bestFor: "Best value: Galaxy S24 Ultra (on sale)",
     },
@@ -163,7 +167,7 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
         "Seven-year update promise starts one generation later",
       ],
       cons: [
-        "S Pen no longer works as a Bluetooth remote shutter (Digital Trends)",
+        "S Pen has no Bluetooth, so Air Actions are gone (GSMArena)",
         "Digital Trends was underwhelmed by the camera upgrade beyond the ultrawide",
         "The better value only if you specifically want the chip, display, ultrawide, or lighter body",
       ],
@@ -203,8 +207,8 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
     },
     {
       label: "S Pen",
-      entityAValue: "Bluetooth remote shutter",
-      entityBValue: "Stylus only; remote shutter removed",
+      entityAValue: "Bluetooth Air Actions (shutter, gestures, media)",
+      entityBValue: "No Bluetooth; Air Actions removed",
       winner: "a",
     },
   ],
@@ -273,16 +277,16 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       "Features",
       S24,
       S25,
-      "Bluetooth integration; works as a remote shutter (GSMArena, Digital Trends)",
-      "Built-in stylus; remote shutter removed (Digital Trends)",
+      "Bluetooth S Pen with Air Actions: remote shutter, gestures, and media control (GSMArena)",
+      "No Bluetooth, so Air Actions are gone (GSMArena)",
       "a"
     ),
   ],
   faqs: FAQS,
   relatedComparisons: [
     {
-      slug: "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra",
-      title: "Samsung Galaxy S25 vs Samsung Galaxy S25 Ultra",
+      slug: "iphone-16-pro-vs-galaxy-s25-ultra",
+      title: "iPhone 16 Pro vs Galaxy S25 Ultra",
       category: "technology",
     },
   ],
@@ -296,7 +300,7 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       "Both phones are a 5,000 mAh battery with a 200MP main camera and a 50MP 5x periscope. GSMArena lists the S25 Ultra at 218 g and the S24 Ultra at 232 g or 233 g. Both displays are rated for 2600 nits peak.",
   },
   citationStats: {
-    sourceCount: 6,
+    sourceCount: 8,
     dataPointCount: 7,
     reviewsAnalyzed: null,
     preferencePercent: null,
@@ -309,6 +313,14 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       { name: "Samsung — Galaxy S24 Ultra (Levant)", url: SAMSUNG_S24 },
       { name: "Reddit — r/samsunggalaxy thread (Sep 27, 2026)", url: REDDIT },
       { name: "Reddit — r/S24Ultra cross-post", url: REDDIT_CROSSPOST },
+      {
+        name: "GSMArena — S25 Ultra S Pen lost Bluetooth (Feb 5, 2025)",
+        url: GSMARENA_SPEN,
+      },
+      {
+        name: "GSMArena — Air Actions are the S Pen's Bluetooth controls",
+        url: GSMARENA_AIR_ACTIONS,
+      },
     ],
   },
   resources: [
@@ -317,7 +329,7 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       label: "GSMArena spec compare",
       url: GSMARENA,
       description:
-        "Weight, display, chip, cameras, 5,000 mAh battery, 45W/15W charging, and stylus Bluetooth on the S24 Ultra.",
+        "Weight, display, chip, cameras, 5,000 mAh battery, 45W/15W charging. S24 Ultra stylus lists Bluetooth; the S25 Ultra stylus does not.",
     },
     {
       type: "external",
@@ -352,6 +364,20 @@ export const SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA: EditorialComparison = buildE
       label: "Reddit cross-post (summary only)",
       url: REDDIT_CROSSPOST,
       description: "r/S24Ultra replies split. No usernames quoted.",
+    },
+    {
+      type: "external",
+      label: "GSMArena — Bluetooth removed from the S25 Ultra S Pen",
+      url: GSMARENA_SPEN,
+      description:
+        "Feb 5, 2025. Samsung removed Bluetooth. A Bluetooth S Pen was a remote for photos, videos, gallery swipes, slides, and music.",
+    },
+    {
+      type: "external",
+      label: "GSMArena — Air Actions",
+      url: GSMARENA_AIR_ACTIONS,
+      description:
+        "Names Air Actions as the Bluetooth gesture and remote-control set, including the camera shutter.",
     },
   ],
   metaTitle: "Galaxy S24 Ultra vs S25 Ultra: Which Should You Buy? | A Versus B",

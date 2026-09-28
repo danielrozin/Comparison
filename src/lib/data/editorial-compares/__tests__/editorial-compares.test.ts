@@ -274,7 +274,7 @@ const ULTRA_FAQS = [
   "Which is better for gaming?",
 ];
 const ULTRA_QUICK_ANSWER =
-  "If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026: same 5,000 mAh battery class, the same 200MP main and 5x periscope cameras, and seven years of OS updates from launch. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite chip, the larger 6.9-inch display, the 50MP ultrawide upgrade, and a lighter body.";
+  "If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026: same 5,000 mAh battery class, the same 200MP main and 5x periscope cameras, and seven years of OS updates from launch. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite for Galaxy chip, the larger 6.9-inch display, the 50MP ultrawide upgrade, and a lighter body.";
 
 describe("ROO-115 Galaxy S24 Ultra vs Galaxy S25 Ultra", () => {
   const page = () => getEditorialComparison(ULTRA_SLUG)!;
@@ -335,20 +335,29 @@ describe("ROO-115 Galaxy S24 Ultra vs Galaxy S25 Ultra", () => {
     );
     expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
     expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
-      "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra",
+      "iphone-16-pro-vs-galaxy-s25-ultra",
     ]);
+    expect(page().relatedComparisons.map((item) => item.slug)).not.toContain(
+      "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra"
+    );
+    expect(pageText(page())).not.toMatch(/Snapdragon 8 Elite(?! for Galaxy)/);
+    const pen = page().faqs.find(
+      (faq) => faq.question === "What did the Galaxy S25 Ultra S Pen lose compared with the S24 Ultra?"
+    );
+    expect(pen?.answer).toContain("Air Actions");
+    expect(pen?.answer).toContain("no Bluetooth");
     expect(pageText(page())).toContain("the asker's prices");
   });
 
-  it("appends this compare onto Galaxy S25 vs S25 Ultra without duplicating it", () => {
-    const base = {
+  it("does not attach this compare to the unpublished S25 vs S25 Ultra slug", () => {
+    const dead = {
       slug: "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra",
       relatedComparisons: [],
     } as unknown as ComparisonPageData;
-    const once = appendEditorialRelatedLinks(base);
-    expect(once.relatedComparisons.map((item) => item.slug)).toEqual([ULTRA_SLUG]);
-    const twice = appendEditorialRelatedLinks(once);
-    expect(twice.relatedComparisons).toHaveLength(1);
+    expect(appendEditorialRelatedLinks(dead)).toBe(dead);
     expect(appendEditorialRelatedLinks(page())).toBe(page());
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-16-pro-vs-galaxy-s25-ultra",
+    ]);
   });
 });
