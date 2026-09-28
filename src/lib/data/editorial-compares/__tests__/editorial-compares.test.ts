@@ -263,3 +263,92 @@ describe("ROO-93 Carhartt vs Dickies", () => {
     expect(appendEditorialRelatedLinks(page())).toBe(page());
   });
 });
+
+const ULTRA_SLUG = "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra";
+const ULTRA_FAQS = [
+  "Is the Samsung Galaxy S25 Ultra worth it over the S24 Ultra?",
+  "Does the Galaxy S25 Ultra have better battery life than the S24 Ultra?",
+  "Is the S25 Ultra camera better than the S24 Ultra?",
+  "What did the Galaxy S25 Ultra S Pen lose compared with the S24 Ultra?",
+  "How long will the S24 Ultra and S25 Ultra receive updates?",
+  "Which is better for gaming?",
+];
+const ULTRA_QUICK_ANSWER =
+  "If you can buy a discounted Galaxy S24 Ultra, it is still the better value for most people in 2026: same 5,000 mAh battery class, the same 200MP main and 5x periscope cameras, and seven years of OS updates from launch. Choose the Galaxy S25 Ultra if you want the Snapdragon 8 Elite chip, the larger 6.9-inch display, the 50MP ultrawide upgrade, and a lighter body.";
+
+describe("ROO-115 Galaxy S24 Ultra vs Galaxy S25 Ultra", () => {
+  const page = () => getEditorialComparison(ULTRA_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(ULTRA_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(ULTRA_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "samsung-galaxy-s24-ultra",
+      "samsung-galaxy-s25-ultra",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best value: Galaxy S24 Ultra (on sale)",
+      "Best upgrade: Galaxy S25 Ultra (chip, display, ultrawide)",
+    ]);
+    expect(page().shortAnswer).toBe(ULTRA_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(ULTRA_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(ULTRA_SLUG);
+    expect(pageText(page())).not.toMatch(/\bu\/[A-Za-z0-9_-]+/);
+    expect(findSelfContradictions(page())).toEqual([]);
+  });
+
+  it("keeps six FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(6);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(ULTRA_FAQS);
+    expect(faqQuestions(page())).toEqual(ULTRA_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(ULTRA_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("gives every source a URL and links the related Ultra compare", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources.length).toBeGreaterThan(0);
+    for (const source of sources) {
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        "https://www.gsmarena.com/compare.php3?idPhone1=13322&idPhone2=12771",
+        "https://www.digitaltrends.com/phones/samsung-galaxy-s25-ultra-vs-samsung-galaxy-s24-ultra/",
+        "https://www.samsung.com/us/smartphones/galaxy-s25-ultra/",
+        "https://www.samsung.com/levant/smartphones/galaxy-s24-ultra/",
+        "https://www.reddit.com/r/samsunggalaxy/comments/1wrr9qy/s24_ultra_vs_s25_ultra_which_one_should_i_get/",
+      ])
+    );
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra",
+    ]);
+    expect(pageText(page())).toContain("the asker's prices");
+  });
+
+  it("appends this compare onto Galaxy S25 vs S25 Ultra without duplicating it", () => {
+    const base = {
+      slug: "samsung-galaxy-s25-vs-samsung-galaxy-s25-ultra",
+      relatedComparisons: [],
+    } as unknown as ComparisonPageData;
+    const once = appendEditorialRelatedLinks(base);
+    expect(once.relatedComparisons.map((item) => item.slug)).toEqual([ULTRA_SLUG]);
+    const twice = appendEditorialRelatedLinks(once);
+    expect(twice.relatedComparisons).toHaveLength(1);
+    expect(appendEditorialRelatedLinks(page())).toBe(page());
+  });
+});
