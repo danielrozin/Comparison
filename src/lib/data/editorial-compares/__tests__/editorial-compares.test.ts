@@ -210,21 +210,36 @@ describe("ROO-93 Carhartt vs Dickies", () => {
     expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(PANTS_SLUG);
     expect(pageText(page())).not.toMatch(/\$\d/);
     expect(pageText(page())).not.toMatch(/\bu\/[A-Za-z0-9_-]+/);
-    expect(pageText(page())).not.toMatch(/accepts knee pads/i);
+    expect(pageText(page())).not.toMatch(/not confirmed/i);
+    expect(pageText(page())).not.toMatch(/confirm on carhartt\.com/i);
+    expect(pageText(page())).not.toMatch(/made in the U\.S\./i);
+    expect(pageText(page())).toContain("Imported or Made in USA of Imported Parts");
     expect(findSelfContradictions(page())).toEqual([]);
   });
 
   it("keeps FAQ questions 1:1 and emits FAQPage plus speakable selectors", () => {
     expect(page().faqs.map((faq) => faq.question)).toEqual(PANTS_FAQS);
     expect(faqQuestions(page())).toEqual(PANTS_FAQS);
+    const kneePad = page().faqs.find((faq) => faq.question === "Can you use knee pads?");
+    expect(kneePad?.answer).toContain("compatible with the Carhartt Knee Pad");
+    expect(kneePad?.answer).toContain("openings for adding knee pads");
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.find((item) => item.name === "Can you use knee pads?")?.acceptedAnswer?.text).toBe(
+      kneePad?.answer
+    );
     const selectors = speakableSelectors(page());
     expect(selectors).toContain("#short-answer");
     expect(selectors).toContain(".faq-answer");
   });
 
-  it("cites Dickies, Gear Patrol, and the Reddit thread, and cross-links Patagonia", () => {
+  it("cites Carhartt, Dickies, Gear Patrol, and the Reddit thread, and cross-links Patagonia", () => {
     const urls = (page().citationStats?.sources ?? []).map((source) => source.url);
     expect(urls).toEqual([
+      "https://www.carhartt.com/product/106679",
       "https://www.dickies.com/en-us/products/original-874-r-work-pants-dk0008740gh",
       "https://www.gearpatrol.com/style/a37114165/carhartt-dickies-double-knee-work-pants/",
       "https://www.reddit.com/r/BuyItForLife/comments/1wp1i7e/which_pants_are_biflier_carhartt_or_dickies/",
