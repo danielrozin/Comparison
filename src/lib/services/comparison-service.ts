@@ -28,6 +28,7 @@ import { REDIRECTED_COMPARE_SLUGS, isRedirectedCompareSlug } from "@/lib/redirec
 import { submitComparisonToIndexNow } from "@/lib/seo/indexnow";
 import { resolveComparisonDescription } from "@/lib/seo/metadata";
 import {
+  appendEditorialRelatedLinks,
   getEditorialComparison,
   isEditorialCompareSlug,
   listEditorialComparisons,
@@ -361,7 +362,9 @@ export async function isComparisonDbReachable(): Promise<boolean> {
 
 function finalizeComparisonPage(data: ComparisonPageData): ComparisonPageData {
   const editorial = getEditorialComparison(data.slug);
-  return applyEditorialAeoOverlay(mergeEditorialEnrichment(data, editorial));
+  return appendEditorialRelatedLinks(
+    applyEditorialAeoOverlay(mergeEditorialEnrichment(data, editorial))
+  );
 }
 
 export async function getComparisonBySlug(
