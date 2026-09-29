@@ -26,6 +26,7 @@ import { Resend } from "resend";
 // trailing space; importing the normalized constant keeps embed snippets clean.
 import { SITE_URL } from "@/lib/utils/constants";
 import { buildMemberWelcomeEmail } from "@/lib/monetization/welcome-email";
+import { resendFromAddress, resendNotificationFromAddress } from "@/lib/services/resend-from";
 
 /** Both founders receive admin alerts when ADMIN_NOTIFICATION_EMAIL is unset. */
 export const DEFAULT_ADMIN_NOTIFICATION_EMAILS = [
@@ -77,17 +78,13 @@ function getResend(): Resend | null {
   return _resend;
 }
 
-const RESEND_FROM =
-  process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
-
 // Admin/transactional notifications MUST send from a domain that is VERIFIED on
 // the Resend key, or Resend rejects the send with a 403 ("domain is not
 // verified") and the founder silently receives nothing (DAN-323). The production
 // key authorizes aversusb.net, so notifications default to the same verified
-// aversusb.net sender as the rest of the app (RESEND_FROM). RESEND_NOTIFICATION_FROM
-// is an optional override for environments whose key verifies a different domain.
-const NOTIFICATION_FROM =
-  process.env.RESEND_NOTIFICATION_FROM || RESEND_FROM;
+// aversusb.net sender as the rest of the app. RESEND_NOTIFICATION_FROM is an
+// optional override. Both are read on each send so a trailing newline in the
+// env var is stripped (see resendFromAddress).
 
 // ─── Outreach email (Resend only) ───────────────────────────────────
 
@@ -106,7 +103,7 @@ export async function sendOutreachEmail(opts: {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: RESEND_FROM,
+      from: resendFromAddress(),
       to: opts.to,
       subject: opts.subject,
       html: opts.html,
@@ -179,7 +176,7 @@ export async function sendBatchOutreachEmails(
   }
 
   const batch = emails.map((e) => ({
-    from: RESEND_FROM,
+    from: resendFromAddress(),
     to: e.to,
     subject: e.subject,
     html: e.html,
@@ -228,7 +225,7 @@ export async function sendNotificationEmail(opts: {
   if (resend) {
     try {
       const { data, error } = await resend.emails.send({
-        from: NOTIFICATION_FROM,
+        from: resendNotificationFromAddress(),
         to: NOTIFICATION_EMAILS,
         subject,
         text,
@@ -327,7 +324,7 @@ export async function sendPartnerKeyEmail(opts: {
   if (resend) {
     try {
       const { error } = await resend.emails.send({
-        from: RESEND_FROM,
+        from: resendFromAddress(),
         to: opts.partnerEmail,
         subject: "[A Versus B] Your Embed Partner Key",
         text: messageLines.join("\n"),

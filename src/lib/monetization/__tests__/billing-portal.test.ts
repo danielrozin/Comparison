@@ -37,7 +37,13 @@ vi.mock("@/lib/services/redis", () => ({
   getRedis: () => (redisBox.enabled ? redisBox : null),
 }));
 
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("./in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
+
 import { upsertMember } from "../members";
+import { resetMembershipTestDb } from "./in-memory-membership-db";
 import { startBillingPortal } from "../billing-portal";
 
 describe("startBillingPortal", () => {
@@ -45,6 +51,7 @@ describe("startBillingPortal", () => {
 
   beforeEach(async () => {
     redisBox.reset();
+    resetMembershipTestDb();
     process.env.STRIPE_SECRET_KEY = "sk_test_billing";
     await upsertMember({
       email: "buyer@example.com",

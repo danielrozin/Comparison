@@ -43,7 +43,16 @@ vi.mock("@/lib/services/redis", () => ({
   getRedis: () => (redisBox.enabled ? redisBox : null),
 }));
 
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("@/lib/monetization/__tests__/in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
+
 import { upsertMember } from "@/lib/monetization/members";
+import {
+  resetMembershipTestDb,
+  setMembershipDbEnabled,
+} from "@/lib/monetization/__tests__/in-memory-membership-db";
 
 async function getMembership(email: string | null, headers: Record<string, string> = {}) {
   const { GET } = await import("../route");
@@ -59,6 +68,7 @@ describe("GET /api/admin/membership", () => {
 
   beforeEach(() => {
     redisBox.reset();
+    resetMembershipTestDb();
     process.env.ADMIN_TOKEN = "admin-secret";
     delete process.env.CRON_SECRET;
   });
@@ -167,8 +177,26 @@ describe("GET /api/admin/membership", () => {
     expect(invalid.status).toBe(400);
   });
 
-  it("returns 503 when Redis is not configured", async () => {
+  it("returns the plan when Redis is not configured", async () => {
     redisBox.enabled = false;
+    await upsertMember({
+      email: "buyer@example.com",
+      plan: "pro",
+      interval: "year",
+      status: "active",
+      replaceSubscription: true,
+    });
+    const res = await getMembership("buyer@example.com", {
+      authorization: "Bearer admin-secret",
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.found).toBe(true);
+    expect(body.active).toBe(true);
+  });
+
+  it("returns 503 when Postgres is not configured", async () => {
+    setMembershipDbEnabled(false);
     const res = await getMembership("buyer@example.com", {
       authorization: "Bearer admin-secret",
     });

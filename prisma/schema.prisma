@@ -1071,3 +1071,56 @@ model ContactSubmission {
   @@index([email])
   @@map("contact_submissions")
 }
+
+// ============================================================
+// PRO MEMBERSHIP — consumer Stripe subscriptions (not API keys)
+//
+// Postgres is the source of truth for who has Pro. Redis may mirror these
+// rows when it is configured, but access checks must not depend on it.
+// The API-key Stripe fields on ApiKey belong to /api/v1/stripe/webhook.
+// ============================================================
+
+model ProMember {
+  id                   String    @id @default(cuid())
+  /// Lowercased checkout email. Access checks use this column.
+  email                String    @unique
+  stripeCustomerId     String?   @unique @map("stripe_customer_id")
+  stripeSubscriptionId String?   @unique @map("stripe_subscription_id")
+  plan                 String    @default("")
+  interval             String    @default("")
+  /// Stripe subscription status: active, trialing, past_due, canceled, ...
+  status               String    @default("active")
+  src                  String    @default("")
+  currentPeriodEnd     DateTime? @map("current_period_end")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("pro_members")
+}
+
+/// Webhook idempotency. One row per Stripe event id, written only after the
+/// membership change for that event has been saved.
+model ProcessedStripeEvent {
+  id        String   @id
+  type      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("processed_stripe_events")
+}
+
+/// Pro custom-compare quota. One row per member email per calendar month.
+/// `pair_keys` holds the distinct matchups already counted this month.
+model ProCustomCompareUsage {
+  id        String   @id @default(cuid())
+  email     String
+  /// Calendar month in UTC, `YYYY-MM`.
+  month     String
+  pairKeys  String[] @default([]) @map("pair_keys")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([email, month])
+  @@index([email, month])
+  @@map("pro_custom_compare_usage")
+}

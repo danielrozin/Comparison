@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { lookupMember, normalizeMemberEmail } from "@/lib/monetization/members";
+import { configuredAdminSecrets, isAdminAuthorized } from "@/lib/monetization/admin-auth";
 
 /**
  * GET /api/admin/membership?email=buyer@example.com
  *
- * Founder / ops check of a paid plan (ROO-42). O(1) read of Redis hash
- * `monetization:member:{email}`, written by POST /api/stripe/webhook.
+ * Founder / ops check of a paid plan. Reads the Postgres `pro_members` row
+ * written by POST /api/stripe/webhook. Redis is not required.
  *
  * No user login. Same secrets the rest of ops already uses:
  *   Authorization: Bearer $ADMIN_TOKEN
@@ -19,33 +20,13 @@ import { lookupMember, normalizeMemberEmail } from "@/lib/monetization/members";
  *
  *   curl -H "Authorization: Bearer $ADMIN_TOKEN" \
  *     "https://aversusb.net/api/admin/membership?email=buyer@example.com"
- *
- * The append-only list `monetization:members` is still LPUSH'd on checkout
- * for the purchase log. Do not use it for this check; this route is the lookup.
  */
 
-function configuredSecrets(): string[] {
-  return [process.env.ADMIN_TOKEN, process.env.CRON_SECRET].filter(
-    (value): value is string => Boolean(value)
-  );
-}
-
-function isAuthorized(request: NextRequest): boolean {
-  const secrets = configuredSecrets();
-  if (secrets.length === 0) return false;
-
-  const headerToken = request.headers.get("x-admin-token")?.trim() ?? "";
-  const bearer = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? "";
-  const presented = headerToken || bearer;
-  if (!presented) return false;
-  return secrets.includes(presented);
-}
-
 export async function GET(request: NextRequest) {
-  if (configuredSecrets().length === 0) {
+  if (configuredAdminSecrets().length === 0) {
     return NextResponse.json({ error: "Membership lookup not configured" }, { status: 503 });
   }
-  if (!isAuthorized(request)) {
+  if (!isAdminAuthorized(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

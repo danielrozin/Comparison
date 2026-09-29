@@ -5,9 +5,11 @@
  * per month — request any matchup, built for you within 24 hours."
  * Community suggestions on /requests stay free. This path is the fast lane.
  *
- * Access is the Redis hash from ROO-42 (`monetization:member:{email}`).
- * `active` is true only for Stripe status active or trialing. Cancel sets
- * active to 0, so a canceled member is denied here with no extra revoke step.
+ * Access is the Postgres `pro_members` row (`lookupMember`). `active` is
+ * true only for Stripe status active or trialing. Cancel sets status to
+ * canceled, so a canceled member is denied here with no extra revoke step.
+ * The monthly quota is `pro_custom_compare_usage` (one row per member per
+ * month). Redis is not required.
  *
  * There is no login yet. The buyer proves membership by submitting the email
  * they paid with — the same key the webhook writes.
@@ -17,6 +19,7 @@ import { getPrisma } from "@/lib/db/prisma";
 import { sendNotificationEmail } from "@/lib/services/email";
 import { getRedis } from "@/lib/services/redis";
 import { lookupMember, normalizeMemberEmail, type MemberRecord } from "@/lib/monetization/members";
+import { isUniqueConstraintError } from "@/lib/monetization/prisma-errors";
 import { SITE_URL } from "@/lib/utils/constants";
 
 /** Matches the Pro feature line in `plans.ts`. Business includes everything in Pro. */
@@ -24,8 +27,6 @@ export const CUSTOM_COMPARE_MONTHLY_LIMIT = 2;
 
 export const CUSTOM_COMPARE_UPGRADE_PATH = "/pricing?src=custom-compare";
 export const CUSTOM_COMPARE_LOG_KEY = "monetization:custom-compares";
-
-const PAIR_TTL_SECONDS = 40 * 24 * 60 * 60;
 
 export interface CustomCompareInput {
   entityA: string;
@@ -68,6 +69,54 @@ export function customComparePairKey(entityA: string, entityB: string): string {
 
 export function customCompareMonthKey(email: string, now = new Date()): string {
   return `monetization:custom-compare:${email}:${now.toISOString().slice(0, 7)}`;
+}
+
+type QuotaOutcome = { kind: "added" | "already" | "limit"; used: number };
+
+/**
+ * Count a distinct matchup against this member's month, or report that it
+ * was already counted. The unique (email, month) row is the counter.
+ */
+async function reserveCustomComparePair(
+  email: string,
+  month: string,
+  pair: string
+): Promise<QuotaOutcome> {
+  const prisma = getPrisma();
+  if (!prisma) throw new Error("membership database unavailable");
+
+  const once = () =>
+    prisma.$transaction(async (tx) => {
+      const existing = await tx.proCustomCompareUsage.findUnique({
+        where: { email_month: { email, month } },
+      });
+      const pairKeys = existing?.pairKeys ?? [];
+      if (pairKeys.includes(pair)) {
+        return { kind: "already" as const, used: pairKeys.length };
+      }
+      if (pairKeys.length >= CUSTOM_COMPARE_MONTHLY_LIMIT) {
+        return { kind: "limit" as const, used: pairKeys.length };
+      }
+      const next = [...pairKeys, pair];
+      if (existing) {
+        await tx.proCustomCompareUsage.update({
+          where: { id: existing.id },
+          data: { pairKeys: next },
+        });
+      } else {
+        await tx.proCustomCompareUsage.create({
+          data: { email, month, pairKeys: next },
+        });
+      }
+      return { kind: "added" as const, used: next.length };
+    });
+
+  try {
+    return await once();
+  } catch (err) {
+    if (!isUniqueConstraintError(err)) throw err;
+    return once();
+  }
 }
 
 function upgradeDenied(member: MemberRecord | null): CustomCompareResult {
@@ -119,8 +168,8 @@ export async function submitCustomCompare(
     return upgradeDenied(lookup.member);
   }
 
-  const redis = getRedis();
-  if (!redis) {
+  const prisma = getPrisma();
+  if (!prisma) {
     return {
       ok: false,
       status: 503,
@@ -129,14 +178,22 @@ export async function submitCustomCompare(
     };
   }
 
-  const monthKey = customCompareMonthKey(email, now);
+  const month = now.toISOString().slice(0, 7);
   const pair = customComparePairKey(entityA, entityB);
-  const added = await redis.sadd(monthKey, pair);
-  const used = await redis.scard(monthKey);
-  await redis.expire(monthKey, PAIR_TTL_SECONDS);
+  let quota: { kind: "added" | "already" | "limit"; used: number };
+  try {
+    quota = await reserveCustomComparePair(email, month, pair);
+  } catch (err) {
+    console.error("[custom-compare] quota write failed:", err);
+    return {
+      ok: false,
+      status: 503,
+      code: "unavailable",
+      error: "We could not check membership just now. Nothing was submitted. Please try again in a minute.",
+    };
+  }
 
-  if (added === 1 && used > CUSTOM_COMPARE_MONTHLY_LIMIT) {
-    await redis.srem(monthKey, pair);
+  if (quota.kind === "limit") {
     return {
       ok: false,
       status: 429,
@@ -147,8 +204,8 @@ export async function submitCustomCompare(
     };
   }
 
-  const remaining = Math.max(0, CUSTOM_COMPARE_MONTHLY_LIMIT - used);
-  if (added === 0) {
+  const remaining = Math.max(0, CUSTOM_COMPARE_MONTHLY_LIMIT - quota.used);
+  if (quota.kind === "already") {
     return {
       ok: true,
       status: 200,
@@ -167,7 +224,14 @@ export async function submitCustomCompare(
     note: (input.note ?? "").trim().slice(0, 500),
     at: now.toISOString(),
   };
-  await redis.lpush(CUSTOM_COMPARE_LOG_KEY, JSON.stringify(record));
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.lpush(CUSTOM_COMPARE_LOG_KEY, JSON.stringify(record));
+    } catch (err) {
+      console.error("[custom-compare] redis log failed:", err);
+    }
+  }
 
   try {
     await sendNotificationEmail({
@@ -212,8 +276,8 @@ export async function submitCustomCompare(
       });
     }
   } catch (err) {
-    // Redis already has the request and founders were emailed. A database
-    // miss should not look like a failed submit to the member.
+    // The quota row is already saved and founders were emailed. A miss on
+    // the public request table should not look like a failed submit.
     console.error("[custom-compare] request row failed:", err);
   }
 

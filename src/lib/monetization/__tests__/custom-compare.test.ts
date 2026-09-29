@@ -80,12 +80,18 @@ vi.mock("@/lib/services/email", () => ({
   sendNotificationEmail: (...args: unknown[]) => sendNotificationEmail(...args),
 }));
 
-vi.mock("@/lib/db/prisma", () => ({
-  getPrisma: () => null,
-}));
+vi.mock("@/lib/db/prisma", async () => {
+  const db = await import("./in-memory-membership-db");
+  return { getPrisma: () => db.getMembershipTestPrisma() };
+});
 
 import { revokeMember, upsertMember } from "../members";
 import { CUSTOM_COMPARE_LOG_KEY, submitCustomCompare } from "../custom-compare";
+import {
+  membershipTestUsage,
+  resetMembershipTestDb,
+  setMembershipDbEnabled,
+} from "./in-memory-membership-db";
 import { POST } from "@/app/api/custom-compare/route";
 import { NextRequest } from "next/server";
 
@@ -94,6 +100,7 @@ const now = new Date("2026-09-24T12:00:00.000Z");
 describe("submitCustomCompare", () => {
   beforeEach(async () => {
     redisBox.reset();
+    resetMembershipTestDb();
     sendNotificationEmail.mockClear();
     await upsertMember({
       email: "buyer@example.com",
@@ -186,18 +193,46 @@ describe("submitCustomCompare", () => {
   });
 
   it("returns 503 when the membership store is down", async () => {
-    redisBox.enabled = false;
+    setMembershipDbEnabled(false);
     const result = await submitCustomCompare(
       { entityA: "Notion", entityB: "Obsidian", email: "buyer@example.com" },
       now
     );
     expect(result).toMatchObject({ ok: false, status: 503, code: "unavailable" });
   });
+
+  it("enforces the monthly quota from Postgres when Redis is not configured", async () => {
+    redisBox.enabled = false;
+    const first = await submitCustomCompare(
+      { entityA: "Notion", entityB: "Obsidian", email: "buyer@example.com" },
+      now
+    );
+    const second = await submitCustomCompare(
+      { entityA: "Linear", entityB: "Jira", email: "buyer@example.com" },
+      now
+    );
+    const third = await submitCustomCompare(
+      { entityA: "Figma", entityB: "Sketch", email: "buyer@example.com" },
+      now
+    );
+    expect(first).toMatchObject({ ok: true, remaining: 1 });
+    expect(second).toMatchObject({ ok: true, remaining: 0 });
+    expect(third).toMatchObject({ ok: false, status: 429, code: "monthly_limit" });
+    expect(redisBox.lists.get(CUSTOM_COMPARE_LOG_KEY)).toBeUndefined();
+    expect(membershipTestUsage()).toEqual([
+      expect.objectContaining({
+        email: "buyer@example.com",
+        month: "2026-09",
+        pairKeys: ["notion::obsidian", "jira::linear"],
+      }),
+    ]);
+  });
 });
 
 describe("POST /api/custom-compare", () => {
   beforeEach(() => {
     redisBox.reset();
+    resetMembershipTestDb();
   });
 
   it("returns the upgrade payload for a free email", async () => {

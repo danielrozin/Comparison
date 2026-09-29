@@ -9,9 +9,9 @@ import { getTrendingComparisons } from "./comparison-service";
 // Use the whitespace-hardened constant (DAN-1033) instead of re-reading the env
 // var, which has shipped with a trailing space and broke absolute URLs.
 import { SITE_URL } from "@/lib/utils/constants";
+import { resendFromAddress } from "@/lib/services/resend-from";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
-const RESEND_FROM = process.env.RESEND_FROM_EMAIL || "A Versus B <hello@aversusb-mail.com>";
 
 interface DigestComparison {
   title: string;
@@ -169,7 +169,7 @@ export async function sendDigestEmail(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: RESEND_FROM,
+          from: resendFromAddress(),
           to,
           subject: "Your Weekly Comparison Digest - A Versus B",
           html: personalizedHtml,
