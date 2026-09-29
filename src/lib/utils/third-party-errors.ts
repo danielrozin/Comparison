@@ -24,7 +24,6 @@ interface StackFrame {
 }
 
 interface ExceptionItem {
-  type?: string;
   value?: string;
   stacktrace?: { frames?: StackFrame[] };
 }
@@ -37,17 +36,13 @@ function isThirdPartySource(filename: string): boolean {
 // React then fails to insert or remove a node next to one that is gone, and
 // the stack holds only React frames. We drop it only when the browser language
 // is not English, so the same crash from an English browser still reaches us.
-const DOM_MUTATION_ERROR = /Failed to execute '(insertBefore|removeChild)' on 'Node'/;
+const DOM_MUTATION_ERROR = /NotFoundError: Failed to execute '(insertBefore|removeChild)' on 'Node'/;
 
 function isTranslationDomError(list: ExceptionItem[], language: unknown): boolean {
   if (typeof language !== "string" || !language) return false;
   if (language.toLowerCase().startsWith("en")) return false;
 
-  return list.some(
-    (item) =>
-      `${item?.type ?? ""} ${item?.value ?? ""}`.includes("NotFoundError") &&
-      DOM_MUTATION_ERROR.test(item?.value ?? ""),
-  );
+  return list.some((item) => DOM_MUTATION_ERROR.test(item?.value ?? ""));
 }
 
 /**
