@@ -528,3 +528,102 @@ describe("ROO-122 Polaroid Go Gen 2 vs Instax Mini", () => {
     expect(pageText(page())).toContain("US$79.99");
   });
 });
+
+const FOLD_SLUG = "galaxy-z-fold-7-vs-samsung-galaxy-s26-ultra";
+const FOLD_FAQS = [
+  "Which phone is better if you want to keep it for 4-5 years?",
+  "How durable is the Galaxy Z Fold 7 hinge?",
+  "Does the Galaxy Z Fold 7 have the better camera?",
+  "Which phone has the better battery?",
+  "How long is software support on the Fold 7 and the S26 Ultra?",
+];
+const FOLD_QUICK_ANSWER =
+  "The Galaxy S26 Ultra suits a 4-5 year keep. GSMArena lists IP68, a 5,000 mAh battery, 60W wired and 25W wireless charging, a 5x periscope, and a 7.9 mm slab. The Galaxy Z Fold 7 is the pick only if the 8.0-inch inner screen and multitasking are why you are buying, and you accept IP48, a 4,400 mAh battery, 25W wired charging, and the extra care a hinge needs. Both phones have a 200MP main camera and up to 7 major OS updates. GSMArena's active-use score is 11:44h on the Fold 7 and 16:23h on the S26 Ultra. This page does not crown a winner.";
+
+describe("ROO-120 Galaxy Z Fold 7 vs Galaxy S26 Ultra", () => {
+  const page = () => getEditorialComparison(FOLD_SLUG)!;
+
+  it("publishes the slug with no page-level winner and a sitemap row", () => {
+    expect(isEditorialCompareSlug(FOLD_SLUG)).toBe(true);
+    expect(isDegenerateComparisonSlug(FOLD_SLUG)).toBe(false);
+    expect(page().metadata.status).toBe("published");
+    expect(page().entities.map((entity) => entity.slug)).toEqual([
+      "galaxy-z-fold-7",
+      "samsung-galaxy-s26-ultra",
+    ]);
+    expect(page().quickAnswer?.winnerName).toBeNull();
+    expect(page().entities.map((entity) => entity.bestFor)).toEqual([
+      "Best for the inner foldable screen",
+      "Best for a 4-5 year keep",
+    ]);
+    expect(page().shortAnswer).toBe(FOLD_QUICK_ANSWER);
+    expect(page().quickAnswer?.tldr).toBe(FOLD_QUICK_ANSWER);
+    expect(listEditorialCompareSitemapEntries().map((entry) => entry.slug)).toContain(FOLD_SLUG);
+    expect(page().metadata.updatedAt).toBe("2026-09-29T00:00:00Z");
+    const title = buildPageTitle(page().metadata.metaTitle);
+    const description = clampDescription(page().metadata.metaDescription);
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(description.length).toBeGreaterThanOrEqual(70);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(findSelfContradictions(page())).toEqual([]);
+    expect(pageText(page())).not.toMatch(/\d[\d,]*\s*(hinge|fold)[- ]cycles/i);
+    expect(pageText(page())).not.toMatch(/AnTuTu|Geekbench/i);
+  });
+
+  it("keeps five FAQs and copies the same answer text into FAQPage JSON-LD", () => {
+    expect(page().faqs).toHaveLength(5);
+    expect(page().faqs.map((faq) => faq.question)).toEqual(FOLD_FAQS);
+    expect(faqQuestions(page())).toEqual(FOLD_FAQS);
+    const faq = schemaNodes(page()).find((node) => node["@type"] === "FAQPage");
+    const main = (faq?.mainEntity ?? []) as {
+      name: string;
+      acceptedAnswer?: { text?: string };
+    }[];
+    expect(main.map((item) => item.name)).toEqual(FOLD_FAQS);
+    for (const item of page().faqs) {
+      expect(main.find((row) => row.name === item.question)?.acceptedAnswer?.text).toBe(item.answer);
+    }
+    const selectors = speakableSelectors(page());
+    expect(selectors).toContain("#short-answer");
+    expect(selectors).toContain(".faq-answer");
+  });
+
+  it("cites the fetched spec pages and only links sitemap-backed compares", () => {
+    const sources = page().citationStats?.sources ?? [];
+    expect(sources).toHaveLength(7);
+    expect(page().citationStats?.lastResearched).toBe("2026-09-29");
+    for (const source of sources) {
+      expect(source.name).toMatch(/2026-09-29/);
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+    const urls = sources.map((source) => source.url);
+    expect(urls).toEqual([
+      "https://www.gsmarena.com/compare.php3?idPhone1=13826&idPhone2=14320",
+      "https://www.gsmarena.com/samsung_galaxy_z_fold7-13826.php",
+      "https://www.gsmarena.com/samsung_galaxy_s26_ultra_5g-14320.php",
+      "https://www.geeky-gadgets.com/galaxy-s26-ultra-vs-z-fold-7/",
+      "https://www.samsung.com/us/support/warranty/",
+      "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/",
+      "https://www.androidauthority.com/samsung-galaxy-z-fold-7-drops-s-pen-support-3575176/",
+    ]);
+    expect(page().resources?.map((resource) => resource.url)).toEqual(urls);
+    expect(page().relatedComparisons.map((item) => item.slug)).toEqual([
+      "iphone-17-vs-samsung-s26",
+      "samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra",
+    ]);
+    expect(pageText(page())).toContain("Source note:");
+    expect(pageText(page())).toContain("IP48");
+    expect(pageText(page())).toContain("IP68");
+    expect(pageText(page())).toContain("11:44h");
+    expect(pageText(page())).toContain("16:23h");
+    expect(pageText(page())).toContain("S Pen");
+    expect(pageText(page())).toContain("Not supported");
+    expect(pageText(page())).toContain("Built-in S Pen");
+    expect(pageText(page())).not.toMatch(/Air Actions|Bluetooth/i);
+    const pen = page().attributes.find((attr) => attr.slug === "s-pen");
+    expect(pen?.values.find((value) => value.entityId === "samsung-galaxy-s26-ultra")?.winner).toBe(
+      true
+    );
+    expect(page().quickAnswer?.winnerName).toBeNull();
+  });
+});
