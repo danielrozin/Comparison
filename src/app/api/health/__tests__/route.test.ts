@@ -107,4 +107,53 @@ describe("GET /api/health", () => {
     });
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
+
+  it("returns 200 when the database is up and the Resend key is send-only", async () => {
+    process.env.RESEND_API_KEY = "re_send_only";
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+      expect(String(url)).toBe("https://api.resend.com/domains");
+      expect(init?.method ?? "GET").toBe("GET");
+      expect(String(url)).not.toContain("/emails");
+      return {
+        ok: false,
+        status: 401,
+        json: async () => ({
+          statusCode: 401,
+          name: "restricted_api_key",
+          message: "This API key is restricted to only send emails.",
+        }),
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = await GET();
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.status).toBe("ok");
+    expect(body.checks.database.status).toBe("ok");
+    expect(body.checks.email.status).toBe("ok");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("degrades when Resend rejects the key for a reason other than send-only", async () => {
+    process.env.RESEND_API_KEY = "re_invalid";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: false,
+        status: 401,
+        json: async () => ({
+          statusCode: 401,
+          name: "validation_error",
+          message: "API key is invalid",
+        }),
+      }))
+    );
+
+    const res = await GET();
+    expect(res.status).toBe(503);
+    const body = await res.json();
+    expect(body.status).toBe("degraded");
+    expect(body.checks.email.status).toBe("error");
+  });
 });

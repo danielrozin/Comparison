@@ -74,9 +74,32 @@ export function customCompareMonthKey(email: string, now = new Date()): string {
 type QuotaOutcome = { kind: "added" | "already" | "limit"; used: number };
 
 /**
- * Count a distinct matchup against this member's month, or report that it
- * was already counted. The unique (email, month) row is the counter.
+ * Append one matchup only when the month is still under the limit and the
+ * pair is new. Postgres takes a row lock for this UPDATE, so two requests
+ * cannot both pass the count check. The unique (email, month) constraint
+ * covers the first insert of the month.
+ *
+ * Value order is part of the query: pair, email, month, limit, pair.
  */
+async function conditionalAppendPair(
+  email: string,
+  month: string,
+  pair: string
+): Promise<number> {
+  const prisma = getPrisma();
+  if (!prisma) throw new Error("membership database unavailable");
+  const updated = await prisma.$executeRaw`
+    UPDATE "pro_custom_compare_usage"
+    SET "pair_keys" = array_append("pair_keys", ${pair}),
+        "updated_at" = CURRENT_TIMESTAMP
+    WHERE "email" = ${email}
+      AND "month" = ${month}
+      AND cardinality("pair_keys") < ${CUSTOM_COMPARE_MONTHLY_LIMIT}
+      AND NOT (${pair} = ANY("pair_keys"))
+  `;
+  return Number(updated);
+}
+
 async function reserveCustomComparePair(
   email: string,
   month: string,
@@ -85,38 +108,41 @@ async function reserveCustomComparePair(
   const prisma = getPrisma();
   if (!prisma) throw new Error("membership database unavailable");
 
-  const once = () =>
-    prisma.$transaction(async (tx) => {
-      const existing = await tx.proCustomCompareUsage.findUnique({
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const updated = await conditionalAppendPair(email, month, pair);
+    if (updated === 1) {
+      const row = await prisma.proCustomCompareUsage.findUnique({
         where: { email_month: { email, month } },
       });
-      const pairKeys = existing?.pairKeys ?? [];
-      if (pairKeys.includes(pair)) {
-        return { kind: "already" as const, used: pairKeys.length };
-      }
-      if (pairKeys.length >= CUSTOM_COMPARE_MONTHLY_LIMIT) {
-        return { kind: "limit" as const, used: pairKeys.length };
-      }
-      const next = [...pairKeys, pair];
-      if (existing) {
-        await tx.proCustomCompareUsage.update({
-          where: { id: existing.id },
-          data: { pairKeys: next },
-        });
-      } else {
-        await tx.proCustomCompareUsage.create({
-          data: { email, month, pairKeys: next },
-        });
-      }
-      return { kind: "added" as const, used: next.length };
-    });
+      return { kind: "added", used: row?.pairKeys.length ?? 1 };
+    }
 
-  try {
-    return await once();
-  } catch (err) {
-    if (!isUniqueConstraintError(err)) throw err;
-    return once();
+    const existing = await prisma.proCustomCompareUsage.findUnique({
+      where: { email_month: { email, month } },
+    });
+    if (!existing) {
+      try {
+        await prisma.proCustomCompareUsage.create({
+          data: { email, month, pairKeys: [pair] },
+        });
+        return { kind: "added", used: 1 };
+      } catch (err) {
+        if (!isUniqueConstraintError(err) || attempt === 1) throw err;
+        continue;
+      }
+    }
+    if (existing.pairKeys.includes(pair)) {
+      return { kind: "already", used: existing.pairKeys.length };
+    }
+    if (existing.pairKeys.length >= CUSTOM_COMPARE_MONTHLY_LIMIT) {
+      return { kind: "limit", used: existing.pairKeys.length };
+    }
   }
+
+  const latest = await prisma.proCustomCompareUsage.findUnique({
+    where: { email_month: { email, month } },
+  });
+  return { kind: "limit", used: latest?.pairKeys.length ?? CUSTOM_COMPARE_MONTHLY_LIMIT };
 }
 
 function upgradeDenied(member: MemberRecord | null): CustomCompareResult {

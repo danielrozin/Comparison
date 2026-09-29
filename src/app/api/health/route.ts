@@ -28,9 +28,21 @@ async function checkDatabase(): Promise<{ status: string; latencyMs: number }> {
 }
 
 /**
- * Confirm the Resend key without sending mail. GET /domains is a read of
- * the account; it does not deliver a message.
+ * A full-access key can list domains. A send-only key is rejected with
+ * 401 `restricted_api_key` and never delivers mail from this check.
+ * That rejection still proves Resend accepted the key, which is what
+ * production uses to send.
  */
+export function resendKeyCanSend(
+  status: number,
+  body: { name?: string; message?: string }
+): boolean {
+  if (status >= 200 && status < 300) return true;
+  if (status !== 401) return false;
+  if (body.name === "restricted_api_key") return true;
+  return (body.message ?? "").toLowerCase().includes("restricted to only send");
+}
+
 async function checkEmail(): Promise<{ status: string; latencyMs: number; from?: string }> {
   const apiKey = (process.env.RESEND_API_KEY ?? "").replace(/[\r\n]+/g, "").trim();
   if (!apiKey) return { status: "not_configured", latencyMs: 0 };
@@ -42,8 +54,11 @@ async function checkEmail(): Promise<{ status: string; latencyMs: number; from?:
       method: "GET",
       headers: { Authorization: `Bearer ${apiKey}` },
     });
-    await res.arrayBuffer?.().catch(() => undefined);
-    if (!res.ok) return { status: "error", latencyMs: Date.now() - start, from };
+    const body = (await res.json?.().catch(() => ({}))) as { name?: string; message?: string };
+    const status = typeof res.status === "number" ? res.status : res.ok ? 200 : 0;
+    if (!res.ok && !resendKeyCanSend(status, body)) {
+      return { status: "error", latencyMs: Date.now() - start, from };
+    }
     return { status: "ok", latencyMs: Date.now() - start, from };
   } catch {
     return { status: "error", latencyMs: Date.now() - start, from };

@@ -41,6 +41,10 @@ import { checkoutEventDistinctId } from "@/lib/analytics/checkout-identity";
 const MEMBERSHIP_NOT_RECORDED =
   "WARNING: membership was NOT recorded in Postgres. Stripe will retry this event. Do not treat this customer as Pro until a later alert omits this warning.";
 
+/** Checkout with no buyer email is acknowledged on purpose, so Stripe will not retry it. */
+const CHECKOUT_WITHOUT_EMAIL =
+  "WARNING: membership was NOT recorded in Postgres because the Checkout Session had no buyer email. This event was acknowledged, so Stripe will not retry it.";
+
 function verifyStripeSignature(payload: string, header: string, secret: string): boolean {
   // Stripe-Signature: t=<ts>,v1=<hmac>[,v1=...]
   const parts = Object.fromEntries(
@@ -157,9 +161,7 @@ export async function POST(request: NextRequest) {
     }
 
     const welcomeTo = saved ? normalizeMemberEmail(email) : null;
-    let welcomeNote = saved
-      ? "Welcome email: skipped (no buyer email on the Checkout Session)."
-      : MEMBERSHIP_NOT_RECORDED;
+    let welcomeNote = "Welcome email: skipped (no buyer email on the Checkout Session).";
     if (welcomeTo) {
       try {
         const welcome = await sendMemberWelcomeEmail({
@@ -177,7 +179,7 @@ export async function POST(request: NextRequest) {
         welcomeNote = `Welcome email: NOT sent to ${welcomeTo} (threw). Check RESEND_API_KEY and RESEND_FROM_EMAIL.`;
       }
     }
-    const recordedNote = saved ? "" : ` ${MEMBERSHIP_NOT_RECORDED}`;
+    const recordedNote = saved ? "" : ` ${CHECKOUT_WITHOUT_EMAIL}`;
     try {
       await sendNotificationEmail({
         subject: `🎉 PAID: ${record.plan} (${record.interval}) — ${record.email}`,

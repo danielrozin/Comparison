@@ -643,4 +643,36 @@ describe("POST /api/stripe/webhook (ROO-41)", () => {
     const granted = await lookupMember("buyer@example.com");
     expect(granted.available && granted.member?.active).toBe(true);
   });
+
+  it("does not say Stripe will retry when checkout has no buyer email", async () => {
+    const payload = JSON.stringify({
+      id: "evt_no_email",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_no_email",
+          customer: "cus_no_email",
+          subscription: "sub_no_email",
+          amount_total: 4900,
+          currency: "usd",
+          metadata: { plan: "pro", interval: "year", src: "header" },
+        },
+      },
+    });
+
+    const res = await postWebhook(payload, secret);
+    expect(res.status).toBe(200);
+    expect(sendMemberWelcomeEmail).not.toHaveBeenCalled();
+    const message = String(sendNotificationEmail.mock.calls[0]?.[0]?.message ?? "");
+    expect(message).toContain("no buyer email");
+    expect(message).toContain("Stripe will not retry");
+    expect(message).not.toContain("Stripe will retry this event");
+    expect(membershipTestEvents().map((event) => event.id)).toEqual(["evt_no_email"]);
+
+    sendNotificationEmail.mockClear();
+    const again = await postWebhook(payload, secret);
+    expect(again.status).toBe(200);
+    expect(await again.json()).toMatchObject({ duplicate: true });
+    expect(sendNotificationEmail).not.toHaveBeenCalled();
+  });
 });
