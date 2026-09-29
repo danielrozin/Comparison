@@ -6,6 +6,7 @@ import { IPHONE_17_VS_17_PRO_VS_16_PRO } from "./iphone-17-vs-iphone-17-pro-vs-i
 import { CARHARTT_VS_DICKIES } from "./carhartt-vs-dickies";
 import { SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA } from "./samsung-galaxy-s24-ultra-vs-samsung-galaxy-s25-ultra";
 import { IPHONE_16E_VS_IPHONE_17E } from "./iphone-16e-vs-iphone-17e";
+import { POLAROID_GO_GEN_2_VS_INSTAX_MINI } from "./polaroid-go-gen-2-vs-fujifilm-instax-mini";
 import type { EditorialComparison } from "./types";
 
 export type { EditorialComparison } from "./types";
@@ -29,6 +30,7 @@ const EDITORIAL_COMPARES: Record<string, EditorialComparison> = {
   [CARHARTT_VS_DICKIES.slug]: CARHARTT_VS_DICKIES,
   [SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA.slug]: SAMSUNG_GALAXY_S24_ULTRA_VS_S25_ULTRA,
   [IPHONE_16E_VS_IPHONE_17E.slug]: IPHONE_16E_VS_IPHONE_17E,
+  [POLAROID_GO_GEN_2_VS_INSTAX_MINI.slug]: POLAROID_GO_GEN_2_VS_INSTAX_MINI,
 };
 
 /**
