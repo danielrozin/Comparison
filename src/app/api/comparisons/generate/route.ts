@@ -3,12 +3,20 @@ import { getPostHogClient, flushPostHog } from "@/lib/posthog-server";
 import { z } from "zod";
 import {
   generateComparison,
-  generateMultiComparison,
   type GenerationErrorStage,
 } from "@/lib/services/ai-comparison-generator";
-import { parseComparisonSlug, sortComparisonSlug, stripKeywordSuffixSlug } from "@/lib/utils/slugify";
-import { getConsolidatedCompareSlug } from "@/lib/redirects/compare-redirects";
-import { getComparisonBySlug, saveComparison } from "@/lib/services/comparison-service";
+import {
+  isDegenerateComparisonSlug,
+  parseComparisonSlug,
+  stripKeywordSuffixSlug,
+} from "@/lib/utils/slugify";
+import { canonicalRequestedComparisonSlug } from "@/lib/parse-comparison-query";
+import { relatedComparisonSlugs } from "@/lib/compare-slug-resolution";
+import {
+  getComparisonBySlug,
+  isComparisonDbConfigured,
+  saveComparison,
+} from "@/lib/services/comparison-service";
 import { warmCacheForSlug } from "@/lib/services/cache-warming";
 import { sanitizeErrorMessage } from "@/lib/utils/sanitize";
 import {
@@ -18,41 +26,99 @@ import {
   evaluateAttemptGuard,
   type AttemptStage,
 } from "@/lib/services/generation-attempt-tracker";
+import { assertBrowserGenerationRequest } from "@/lib/generation/generation-bot-check";
+import {
+  isUserGenerationEnabled,
+  queryBlockReason,
+  validateRealEntities,
+} from "@/lib/generation/user-generation-guard";
+import { consumeUserGenerationSlot } from "@/lib/generation/user-generation-rate-limit";
+import type { ComparisonPageData } from "@/types";
 
-export const maxDuration = 60; // Allow up to 60s for AI generation
+export const maxDuration = 60;
+export const runtime = "nodejs";
 
 const generateSchema = z.object({
   slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/, "Slug must be lowercase alphanumeric with hyphens"),
 });
 
+const HIDDEN_STATUSES = new Set(["archived", "draft", "review"]);
+
+function clientIp(request: NextRequest): string {
+  return (
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+function isServable(row: ComparisonPageData | null): row is ComparisonPageData {
+  if (!row || (row.entities?.length ?? 0) < 2) return false;
+  const status = row.metadata?.status;
+  if (!status) return !isComparisonDbConfigured();
+  return status === "published" || status === "provisional";
+}
+
+function blocksRegeneration(row: ComparisonPageData | null): boolean {
+  const status = row?.metadata?.status;
+  return typeof status === "string" && HIDDEN_STATUSES.has(status);
+}
+
+async function loadRow(slug: string): Promise<ComparisonPageData | null> {
+  return getComparisonBySlug(slug).catch(() => null);
+}
+
+/**
+ * Server events use a fixed distinct id. Never a test project id, and never
+ * a visitor id copied from the browser (ROO-97: headless clients must not
+ * mint analytics identities through this route).
+ */
+async function captureServerEvent(
+  event: string,
+  properties: { slug: string; reason: string; duration_ms: number },
+) {
+  try {
+    getPostHogClient().capture({
+      distinctId: "system",
+      event,
+      properties,
+    });
+    await flushPostHog();
+  } catch (err) {
+    console.error(`[posthog] ${event} capture failed:`, err);
+  }
+}
+
 /**
  * POST /api/comparisons/generate
  *
- * Generates an AI comparison synchronously and persists the result.
+ * Visitor-requested generation. Independent of GENERATION_FREEZE and
+ * PAUSE_GENERIC_GENERATION — those still freeze cron and batch jobs.
+ * This route runs only when USER_GENERATION_ENABLED=true.
  *
- * Failure-handling contract (DAN-596):
- *   - Every attempt is recorded in `generation_attempts` so visits to
- *     a stuck slug surface a real error instead of looping the
- *     loading UI forever.
- *   - Concurrent visits to the same slug are deduplicated against an
- *     in-flight attempt (90s window).
- *   - After N recent failures the route short-circuits with a 503 +
- *     `errorStage: "blocked"` so the client renders a meaningful
- *     error and stops auto-retrying every visit.
- *   - The DB save is awaited so a save failure is recorded, not
- *     silently dropped.
+ * A null save is a failure. The route never reports success unless the
+ * row was persisted.
  */
 export async function POST(request: NextRequest) {
-  // DAN-2157: generation freeze — algorithmic suppression recovery.
-  // Set GENERATION_FREEZE=false to re-enable on-demand comparison generation.
-  if ((process.env.GENERATION_FREEZE ?? "true").toLowerCase() !== "false") {
+  if (!isUserGenerationEnabled()) {
     return NextResponse.json(
-      { status: "frozen", error: "Comparison generation is paused for site recovery (DAN-2157). Set GENERATION_FREEZE=false to re-enable." },
-      { status: 503 }
+      {
+        status: "disabled",
+        error: "On-demand comparison generation is turned off.",
+      },
+      { status: 503 },
     );
   }
 
   try {
+    const bot = await assertBrowserGenerationRequest(request);
+    if (!bot.ok) {
+      return NextResponse.json(
+        { status: "refused", reason: bot.reason, error: "This request was not accepted." },
+        { status: 403 },
+      );
+    }
+
     const body = await request.json();
     const parsed = generateSchema.safeParse(body);
     if (!parsed.success) {
@@ -60,67 +126,76 @@ export async function POST(request: NextRequest) {
     }
 
     const { slug } = parsed.data;
-
     const slugParts = parseComparisonSlug(slug);
-    if (!slugParts) {
-      return NextResponse.json({ error: "Invalid comparison slug format. Use: entity-a-vs-entity-b" }, { status: 400 });
+    if (!slugParts || slugParts.entities.length !== 2) {
+      return NextResponse.json(
+        { error: "Invalid comparison slug format. Use: entity-a-vs-entity-b" },
+        { status: 400 },
+      );
+    }
+    if (isDegenerateComparisonSlug(slug)) {
+      return NextResponse.json({ status: "refused", reason: "self_compare", error: "That comparison is the same thing twice." }, { status: 400 });
     }
 
-    // DAN-1265 source prevention: never (re)generate a known duplicate slug.
-    // If the requested slug is a retired A-vs-B/B-vs-A or alias duplicate, serve
-    // the surviving canonical page instead of persisting the duplicate again.
-    const consolidated = getConsolidatedCompareSlug(slug);
-    if (consolidated) {
-      const survivor = await getComparisonBySlug(consolidated).catch(() => null);
-      if (survivor) {
-        return NextResponse.json({ status: "ready", comparison: survivor, canonicalSlug: consolidated });
-      }
+    const canonicalSlug = canonicalRequestedComparisonSlug(slug);
+    if (!canonicalSlug) {
+      return NextResponse.json(
+        { status: "refused", reason: "self_compare", error: "That comparison is the same thing twice." },
+        { status: 400 },
+      );
     }
-
-    // If the comparison was generated and saved while this request was
-    // queueing (common for popular slugs), short-circuit and serve it
-    // instead of regenerating — but ONLY when the existing record is valid.
-    // An empty/corrupt record (fewer than 2 entities) must fall through and
-    // regenerate, otherwise the broken row is served forever and the compare
-    // page 500s on it (DAN-1201 follow-up). saveComparison upserts by slug.
-    const existing = await getComparisonBySlug(slug).catch(() => null);
-    if (existing && Array.isArray(existing.entities) && existing.entities.length >= 2) {
-      return NextResponse.json({ status: "ready", comparison: existing });
-    }
-
-    // DAN-1265 source prevention for *new* comparisons: force a single canonical
-    // ordering so we can never create both A-vs-B and B-vs-A. If the slug is a
-    // reverse ordering, normalize to the alphabetically-sorted slug — and if that
-    // canonical page already exists, serve it rather than minting the reverse.
-    const canonicalSlug = consolidated ?? sortComparisonSlug(slug);
-    if (canonicalSlug !== slug) {
-      const canonicalExisting = await getComparisonBySlug(canonicalSlug).catch(() => null);
-      if (canonicalExisting) {
-        return NextResponse.json({ status: "ready", comparison: canonicalExisting, canonicalSlug });
-      }
-    }
-    // DAN-2324: keyword/year-suffix dedupe guard. A slug whose entity token
-    // carries a tail (`china-economic-comparison-2026-vs-united-states`) parses
-    // into a distinct entity pair that both the consolidation map and the
-    // ordering-sort miss. Strip the known tails and, if a clean canonical exists
-    // for the base pair, serve it instead of minting the near-duplicate.
     const baseSlug = stripKeywordSuffixSlug(canonicalSlug);
-    if (baseSlug && baseSlug !== canonicalSlug) {
-      const baseExisting = await getComparisonBySlug(baseSlug).catch(() => null);
-      if (baseExisting) {
-        return NextResponse.json({ status: "ready", comparison: baseExisting, canonicalSlug: baseSlug });
+    // Reverse order, alias spellings, and keyword-suffix forms are the same
+    // matchup. A live row on any of them is returned instead of a new copy.
+    const candidates = [
+      ...new Set([...relatedComparisonSlugs(slug), ...(baseSlug ? [baseSlug] : [])]),
+    ];
+
+    const rows = await Promise.all(candidates.map((candidate) => loadRow(candidate)));
+    for (let i = 0; i < candidates.length; i++) {
+      const row = rows[i];
+      if (isServable(row)) {
+        return NextResponse.json({
+          status: "ready",
+          comparison: row,
+          canonicalSlug: row.slug,
+        });
       }
     }
+    if (rows.some((row) => blocksRegeneration(row))) {
+      return NextResponse.json(
+        {
+          status: "refused",
+          reason: "unavailable",
+          error: "This comparison isn't available to build.",
+        },
+        { status: 409 },
+      );
+    }
 
-    // From here on, generate and persist under the canonical ordering only.
-    const genSlug = canonicalSlug;
-    const genSlugParts = parseComparisonSlug(genSlug) ?? slugParts;
+    const genSlug = baseSlug && baseSlug !== canonicalSlug ? baseSlug : canonicalSlug;
+    const genParts = parseComparisonSlug(genSlug) ?? slugParts;
+    const entityNames = genParts.entities.map((part) => part.replace(/-/g, " "));
+    const [entityA, entityB] = entityNames;
+
+    const blocked = queryBlockReason(entityA, entityB);
+    if (blocked) {
+      await captureServerEvent("generation_failed", {
+        slug: genSlug,
+        reason: blocked,
+        duration_ms: 0,
+      });
+      return NextResponse.json(
+        { status: "refused", reason: blocked, error: "We can't build that comparison." },
+        { status: 422 },
+      );
+    }
 
     const guard = await evaluateAttemptGuard(genSlug);
     if (guard.action === "dedupe_inflight") {
       return NextResponse.json(
         { status: "in_progress", error: guard.reason },
-        { status: 202 }
+        { status: 202 },
       );
     }
     if (guard.action === "block_repeat_failure") {
@@ -130,77 +205,132 @@ export async function POST(request: NextRequest) {
           error: guard.reason,
           errorStage: guard.lastErrorStage ?? "unknown",
           blocked: true,
+          reason: "blocked",
         },
-        { status: 503 }
+        { status: 503 },
       );
     }
 
-    const entityNames = genSlugParts.entities.map((p) => p.replace(/-/g, " "));
-    const entityA = entityNames[0];
-    const entityB = entityNames[1];
-    const isMulti = entityNames.length > 2;
+    const slot = await consumeUserGenerationSlot(clientIp(request), genSlug);
+    if (!slot.allowed) {
+      await captureServerEvent("generation_failed", {
+        slug: genSlug,
+        reason: slot.reason,
+        duration_ms: 0,
+      });
+      return NextResponse.json(
+        {
+          status: "refused",
+          reason: slot.reason,
+          error: "Too many comparisons are being built right now. Please try again later.",
+        },
+        { status: 429 },
+      );
+    }
+
+    const entities = await validateRealEntities(entityA, entityB);
+    if (!entities.ok) {
+      await captureServerEvent("generation_failed", {
+        slug: genSlug,
+        reason: entities.reason,
+        duration_ms: 0,
+      });
+      return NextResponse.json(
+        {
+          status: "refused",
+          reason: entities.reason,
+          error: "We couldn't confirm both sides are real topics.",
+        },
+        { status: 422 },
+      );
+    }
 
     const attempt = await startAttempt(genSlug, "user");
     const startedAt = Date.now();
+    await captureServerEvent("generation_started", {
+      slug: genSlug,
+      reason: "user_request",
+      duration_ms: 0,
+    });
 
     let result;
     try {
-      result = isMulti
-        ? await generateMultiComparison(entityNames, genSlug)
-        : await generateComparison(entityA, entityB, genSlug);
+      result = await generateComparison(entityA, entityB, genSlug, { keepBelowQualityBar: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Generation crashed";
       if (attempt) {
         await finishAttemptFailure(attempt.id, "unknown", message, Date.now() - startedAt);
       }
+      await captureServerEvent("generation_failed", {
+        slug: genSlug,
+        reason: "unknown",
+        duration_ms: Date.now() - startedAt,
+      });
       return NextResponse.json(
-        { status: "error", error: sanitizeErrorMessage(err, "Generation failed"), errorStage: "unknown" },
-        { status: 500 }
+        { status: "error", error: sanitizeErrorMessage(err, "Generation failed"), errorStage: "unknown", reason: "unknown" },
+        { status: 500 },
       );
     }
 
     if (result.success && result.comparison) {
-      // Await the save — a silent save-failure was the second-order
-      // bug behind the stuck-page symptom. If the save fails we still
-      // return the comparison to the user (they get a one-shot view)
-      // but we log it as a failed attempt so monitoring can pick it up.
-      try {
-        await saveComparison(result.comparison);
-        try {
-          // ROO-31: include comparison_slug (taxonomy) + await flush so
-          // Vercel serverless does not drop the event on freeze.
-          getPostHogClient().capture({
-            distinctId: "system",
-            event: "comparison_generated",
-            properties: {
-              slug: result.comparison.slug,
-              comparison_slug: result.comparison.slug,
-              category: result.comparison.category ?? null,
-            },
-          });
-          await flushPostHog();
-        } catch (err) {
-          console.error("[posthog] comparison_generated capture failed:", err);
-        }
+      const saved = await saveComparison(result.comparison, { origin: "user" });
+      if (!saved) {
         if (attempt) {
-          await finishAttemptSuccess(attempt.id, Date.now() - startedAt);
+          await finishAttemptFailure(attempt.id, "save", "saveComparison returned null", Date.now() - startedAt);
         }
-        // Warm the ISR cache so crawlers get the full SSR page immediately
-        // instead of the client-only <DynamicComparison> shell until the next
-        // 3600s ISR window (DAN-1201). Best-effort — never block the response.
-        // Warm the CANONICAL slug we actually persisted under (genSlug), not the
-        // requested slug: after DAN-1265 canonicalization a reverse-ordering
-        // request persists under genSlug and `slug` would only 308-redirect, so
-        // warming `slug` would revalidate the wrong (redirecting) path.
-        void warmCacheForSlug(genSlug);
-      } catch (saveErr) {
-        console.error("Failed to save generated comparison to DB:", saveErr);
-        if (attempt) {
-          const message = saveErr instanceof Error ? saveErr.message : "DB save failed";
-          await finishAttemptFailure(attempt.id, "save", message, Date.now() - startedAt);
-        }
+        await captureServerEvent("generation_failed", {
+          slug: genSlug,
+          reason: "save_rejected",
+          duration_ms: Date.now() - startedAt,
+        });
+        return NextResponse.json(
+          {
+            status: "error",
+            error: "We couldn't save this comparison.",
+            errorStage: "save",
+            reason: "save_rejected",
+          },
+          { status: 500 },
+        );
       }
-      return NextResponse.json({ status: "ready", comparison: result.comparison });
+
+      if (attempt) {
+        await finishAttemptSuccess(attempt.id, Date.now() - startedAt);
+      }
+      await captureServerEvent("generation_succeeded", {
+        slug: result.comparison.slug,
+        reason: saved.status,
+        duration_ms: Date.now() - startedAt,
+      });
+      if (saved.promoted) {
+        await captureServerEvent("generated_page_promoted", {
+          slug: result.comparison.slug,
+          reason: "quality_pass",
+          duration_ms: Date.now() - startedAt,
+        });
+      }
+      try {
+        getPostHogClient().capture({
+          distinctId: "system",
+          event: "comparison_generated",
+          properties: {
+            slug: result.comparison.slug,
+            comparison_slug: result.comparison.slug,
+            category: result.comparison.category ?? null,
+            status: saved.status,
+          },
+        });
+        await flushPostHog();
+      } catch (err) {
+        console.error("[posthog] comparison_generated capture failed:", err);
+      }
+      await warmCacheForSlug(result.comparison.slug);
+      return NextResponse.json({
+        status: "ready",
+        comparison: result.comparison,
+        canonicalSlug: result.comparison.slug,
+        persistedStatus: saved.status,
+      });
     }
 
     const stage: AttemptStage = (result.errorStage as GenerationErrorStage | undefined) ?? "unknown";
@@ -209,17 +339,22 @@ export async function POST(request: NextRequest) {
         attempt.id,
         stage,
         result.error ?? "Generation failed",
-        Date.now() - startedAt
+        Date.now() - startedAt,
       );
     }
+    await captureServerEvent("generation_failed", {
+      slug: genSlug,
+      reason: stage,
+      duration_ms: Date.now() - startedAt,
+    });
     return NextResponse.json(
-      { status: "error", error: result.error || "Generation failed", errorStage: stage },
-      { status: 500 }
+      { status: "error", error: result.error || "Generation failed", errorStage: stage, reason: stage },
+      { status: 500 },
     );
   } catch (error) {
     return NextResponse.json(
-      { status: "error", error: error instanceof Error ? error.message : "Generation failed" },
-      { status: 500 }
+      { status: "error", error: error instanceof Error ? error.message : "Generation failed", reason: "unknown" },
+      { status: 500 },
     );
   }
 }

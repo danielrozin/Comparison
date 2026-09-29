@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { comparisonRobotsTag } from "@/lib/seo/comparison-robots-tag";
 
 // GET /api/answer/[slug]
 //
@@ -67,6 +68,7 @@ export async function HEAD(
     status: 200,
     headers: {
       ...HEADERS,
+      "X-Robots-Tag": comparisonRobotsTag(comparison.metadata?.status),
       "X-Source-URL": url,
       "X-Attribution": `${SITE_NAME} (${url})`,
       ETag: etag,
@@ -249,6 +251,7 @@ export async function GET(
     {
       headers: {
         ...HEADERS,
+        "X-Robots-Tag": comparisonRobotsTag(comparison.metadata?.status),
         "X-Source-URL": url,
         "X-Attribution": `${SITE_NAME} (${url})`,
         ETag: etag,

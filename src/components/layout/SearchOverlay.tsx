@@ -3,25 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { slugify } from "@/lib/utils/slugify";
+import { parseComparisonQuery } from "@/lib/parse-comparison-query";
+import { trackSearchParsed } from "@/lib/utils/analytics";
 import { CategoryIcon } from "@/lib/utils/category-icons";
-
-function parseComparison(input: string): [string, string] | null {
-  const patterns = [
-    /^(.+?)\s+(?:vs\.?|versus|compared\s+to|against)\s+(.+)$/i,
-    /^compare\s+(.+?)\s+(?:to|and|with|vs\.?)\s+(.+)$/i,
-    /^differences?\s+between\s+(.+?)\s+and\s+(.+)$/i,
-    /^(.+?)\s+compared\s+(?:to|with)\s+(.+)$/i,
-    /^(.+?)\s+[-–—]\s+(.+)$/,
-  ];
-  for (const pattern of patterns) {
-    const match = input.trim().match(pattern);
-    if (match?.[1]?.trim() && match?.[2]?.trim()) {
-      return [match[1].trim(), match[2].trim()];
-    }
-  }
-  return null;
-}
 
 interface SearchResult {
   slug: string;
@@ -158,9 +142,10 @@ export function SearchOverlay() {
       close();
       return;
     }
-    const parsed = parseComparison(query);
-    if (parsed) {
-      router.push(`/compare/${slugify(parsed[0])}-vs-${slugify(parsed[1])}`);
+    const parsed = parseComparisonQuery(query);
+    trackSearchParsed(query.trim(), parsed.slug, parsed.parsed);
+    if (parsed.parsed && parsed.slug) {
+      router.push(`/compare/${parsed.slug}`);
     } else {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }

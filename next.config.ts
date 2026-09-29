@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 import { withSentryConfig } from "@sentry/nextjs";
 import { BLOG_REDIRECTS } from "./src/lib/redirects/blog-redirects";
 import { VS_REDIRECTS } from "./src/lib/redirects/vs-redirects";
@@ -180,11 +181,13 @@ const nextConfig: NextConfig = {
 
 const sentryEnabled = !!(process.env.SENTRY_ORG && process.env.SENTRY_PROJECT);
 
+const configWithBotId = withBotId(nextConfig);
+
 export default sentryEnabled
-  ? withSentryConfig(nextConfig, {
+  ? withSentryConfig(configWithBotId, {
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       silent: !process.env.CI,
       widenClientFileUpload: true,
     })
-  : nextConfig;
+  : configWithBotId;

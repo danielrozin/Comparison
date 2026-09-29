@@ -3,21 +3,24 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 const state = vi.hoisted(() => ({ q: "osticket" }));
 const trackComparisonSearch = vi.hoisted(() => vi.fn());
+const trackSearchParsed = vi.hoisted(() => vi.fn());
+const replace = vi.hoisted(() => vi.fn());
 
 vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams({ q: state.q }),
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: vi.fn(), replace }),
 }));
 
 vi.mock("@/lib/utils/analytics", () => ({
   trackComparisonSearch: (...args: unknown[]) => trackComparisonSearch(...args),
+  trackSearchParsed: (...args: unknown[]) => trackSearchParsed(...args),
 }));
 
 vi.mock("@/lib/utils/recently-viewed", () => ({
   saveSearchContext: vi.fn(),
 }));
 
-import SearchPage from "../page";
+import { SearchContent } from "../search-content";
 
 function installFetch(options: { results?: unknown; fail?: boolean }) {
   vi.stubGlobal(
@@ -47,11 +50,13 @@ describe("Search page (ROO-82)", () => {
   beforeEach(() => {
     state.q = "osticket";
     trackComparisonSearch.mockClear();
+    trackSearchParsed.mockClear();
+    replace.mockClear();
     installFetch({ results: [] });
   });
 
   it("renders a no-exact-match state instead of throwing when nothing matches", async () => {
-    render(<SearchPage />);
+    render(<SearchContent generationEnabled={false} />);
 
     expect(await screen.findByRole("heading", { name: /No exact match for “osticket”/ })).toBeInTheDocument();
     expect(screen.getByText("osticket", { selector: "span" })).toBeInTheDocument();
@@ -59,7 +64,12 @@ describe("Search page (ROO-82)", () => {
       "href",
       "/compare/iphone-vs-android",
     );
+    expect(screen.getByText(/Name something to compare it with/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create this comparison" })).toBeInTheDocument();
+    expect(screen.queryByText(/We're building your comparison/i)).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(trackSearchParsed).toHaveBeenCalledWith("osticket", null, false);
+    });
     // FAQ used to index the breadcrumb node and crash the whole page.
     expect(screen.getByText("How does search work on A Versus B?")).toBeInTheDocument();
     await waitFor(() => {
@@ -70,13 +80,13 @@ describe("Search page (ROO-82)", () => {
 
   it("keeps the raw query, including spaces, in the no-match heading", async () => {
     state.q = "Porn star";
-    render(<SearchPage />);
+    render(<SearchContent generationEnabled={false} />);
     expect(await screen.findByRole("heading", { name: /No exact match for “Porn star”/ })).toBeInTheDocument();
   });
 
   it("shows the same no-match state when search fails, and still records the search", async () => {
     installFetch({ fail: true });
-    render(<SearchPage />);
+    render(<SearchContent generationEnabled={false} />);
     expect(await screen.findByRole("heading", { name: /No exact match for “osticket”/ })).toBeInTheDocument();
     await waitFor(() => {
       expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "no_results");
@@ -87,7 +97,7 @@ describe("Search page (ROO-82)", () => {
     installFetch({
       results: [{ slug: "os-ticket-vs-zendesk", title: "osTicket vs Zendesk", category: "software" }],
     });
-    render(<SearchPage />);
+    render(<SearchContent generationEnabled={false} />);
     expect(await screen.findByRole("link", { name: /osTicket vs Zendesk/ })).toHaveAttribute(
       "href",
       "/compare/os-ticket-vs-zendesk?from=osticket",
@@ -96,5 +106,22 @@ describe("Search page (ROO-82)", () => {
     await waitFor(() => {
       expect(trackComparisonSearch).toHaveBeenCalledWith("osticket", "results");
     });
+  });
+
+  it("promises an on-demand page only when visitor generation is enabled", async () => {
+    render(<SearchContent generationEnabled={true} />);
+    expect(await screen.findByRole("heading", { name: /No exact match for “osticket”/ })).toBeInTheDocument();
+    expect(screen.getByText(/we'll create that comparison/i)).toBeInTheDocument();
+    expect(screen.getByText(/We're building your comparison/)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create this comparison" })).not.toBeInTheDocument();
+  });
+
+  it("sends a two-entity query straight to the canonical comparison", async () => {
+    state.q = "Vietnam vs Thailand";
+    render(<SearchContent generationEnabled={false} />);
+    await waitFor(() => {
+      expect(replace).toHaveBeenCalledWith("/compare/thailand-vs-vietnam");
+    });
+    expect(trackSearchParsed).toHaveBeenCalledWith("Vietnam vs Thailand", "thailand-vs-vietnam", true);
   });
 });

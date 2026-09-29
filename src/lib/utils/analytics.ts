@@ -9,6 +9,7 @@ import {
 } from "@/lib/services/clarity-service";
 import posthog from "posthog-js";
 import { analyticsAllowed } from "@/lib/analytics/analytics-allowed";
+import { isAutomatedClient } from "@/lib/analytics/automated-client";
 import { sanitizeCheckoutDistinctId } from "@/lib/analytics/checkout-identity";
 import { captureComparisonViewed } from "@/lib/analytics/comparison-view-capture";
 import { capturePricingViewed } from "@/lib/analytics/pricing-view-capture";
@@ -40,6 +41,9 @@ const ALREADY_CAPTURED_IN_POSTHOG = new Set([
   "related_comparison_click",
   "comparison_search",
   "comparison_generated",
+  "compare_not_found",
+  "generation_requested",
+  "search_parsed",
   "comparison_view",
   "comment_submission",
   "track_comparison_submit",
@@ -303,6 +307,32 @@ export function trackComparisonSearch(query: string, resultType: string, resultC
   trackMetaEvent("Search", { search_string: query, content_category: resultType });
   clarityTagSearch(query, resultCount ?? 0);
   posthog.capture("comparison_search_performed", { search_term: query, result_type: resultType, result_count: resultCount ?? 0 });
+}
+
+function captureClient(eventName: string, params: Record<string, string | number | boolean>) {
+  if (typeof window === "undefined" || isAutomatedClient()) return;
+  const gaParams: Record<string, string | number> = {};
+  for (const [key, value] of Object.entries(params)) {
+    gaParams[key] = typeof value === "boolean" ? (value ? 1 : 0) : value;
+  }
+  trackEvent(eventName, gaParams);
+  if (!analyticsAllowed()) return;
+  posthog.capture(eventName, params);
+}
+
+/** Fired when a missing comparison URL shows the building shell. */
+export function trackCompareNotFound(slug: string, source: string) {
+  captureClient("compare_not_found", { slug, source });
+}
+
+/** Fired in the browser the moment we ask the server to build a page. */
+export function trackGenerationRequested(slug: string, reason: string, durationMs: number) {
+  captureClient("generation_requested", { slug, reason, duration_ms: durationMs });
+}
+
+/** Fired when a search box or /search?q= runs the shared parser. */
+export function trackSearchParsed(raw: string, slug: string | null, parsed: boolean) {
+  captureClient("search_parsed", { raw, slug: slug ?? "", parsed });
 }
 
 export function trackComparisonGenerated(slug: string, category: string) {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { headerSafe } from "@/lib/utils/header-safe";
 import { getPublishedComparisonBySlug } from "@/lib/services/comparison-service";
 import { SITE_URL, SITE_NAME } from "@/lib/utils/constants";
+import { comparisonRobotsTag } from "@/lib/seo/comparison-robots-tag";
 import { entitySchemaType } from "@/lib/seo/schema";
 import { resolveEntityWikipediaUrl } from "@/lib/services/wikipedia-url";
 
@@ -492,6 +493,7 @@ export async function GET(
     status: 200,
     headers: {
       ...HEADERS,
+      "X-Robots-Tag": comparisonRobotsTag(comparison.metadata?.status),
       "Content-Type": "application/ld+json",
       "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
       "X-Source-URL": comparisonUrl,
